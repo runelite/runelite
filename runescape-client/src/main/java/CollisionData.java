@@ -67,12 +67,12 @@ public class CollisionData {
 
          if(var4 == 1) {
             this.method2316(var1, var2, 2);
-            this.method2316(var1, 1 + var2, 32);
+            this.method2316(var1, var2 + 1, 32);
          }
 
          if(var4 == 2) {
             this.method2316(var1, var2, 8);
-            this.method2316(1 + var1, var2, 128);
+            this.method2316(var1 + 1, var2, 128);
          }
 
          if(var4 == 3) {
@@ -89,12 +89,12 @@ public class CollisionData {
 
          if(var4 == 1) {
             this.method2316(var1, var2, 4);
-            this.method2316(var1 + 1, 1 + var2, 64);
+            this.method2316(var1 + 1, var2 + 1, 64);
          }
 
          if(var4 == 2) {
             this.method2316(var1, var2, 16);
-            this.method2316(1 + var1, var2 - 1, 1);
+            this.method2316(var1 + 1, var2 - 1, 1);
          }
 
          if(var4 == 3) {
@@ -112,13 +112,13 @@ public class CollisionData {
 
          if(var4 == 1) {
             this.method2316(var1, var2, 10);
-            this.method2316(var1, 1 + var2, 32);
-            this.method2316(1 + var1, var2, 128);
+            this.method2316(var1, var2 + 1, 32);
+            this.method2316(var1 + 1, var2, 128);
          }
 
          if(var4 == 2) {
             this.method2316(var1, var2, 40);
-            this.method2316(1 + var1, var2, 128);
+            this.method2316(var1 + 1, var2, 128);
             this.method2316(var1, var2 - 1, 2);
          }
 
@@ -155,7 +155,7 @@ public class CollisionData {
          if(var3 == 1 || var3 == 3) {
             if(var4 == 0) {
                this.method2316(var1, var2, 512);
-               this.method2316(var1 - 1, 1 + var2, 8192);
+               this.method2316(var1 - 1, var2 + 1, 8192);
             }
 
             if(var4 == 1) {
@@ -178,7 +178,7 @@ public class CollisionData {
             if(var4 == 0) {
                this.method2316(var1, var2, 66560);
                this.method2316(var1 - 1, var2, 4096);
-               this.method2316(var1, 1 + var2, 16384);
+               this.method2316(var1, var2 + 1, 16384);
             }
 
             if(var4 == 1) {
@@ -258,7 +258,7 @@ public class CollisionData {
       if(var3 == 1 || var3 == 3) {
          if(var4 == 0) {
             this.method2324(var1, var2, 1);
-            this.method2324(var1 - 1, 1 + var2, 16);
+            this.method2324(var1 - 1, var2 + 1, 16);
          }
 
          if(var4 == 1) {
@@ -268,7 +268,7 @@ public class CollisionData {
 
          if(var4 == 2) {
             this.method2324(var1, var2, 16);
-            this.method2324(1 + var1, var2 - 1, 1);
+            this.method2324(var1 + 1, var2 - 1, 1);
          }
 
          if(var4 == 3) {
@@ -286,13 +286,13 @@ public class CollisionData {
 
          if(var4 == 1) {
             this.method2324(var1, var2, 10);
-            this.method2324(var1, 1 + var2, 32);
-            this.method2324(1 + var1, var2, 128);
+            this.method2324(var1, var2 + 1, 32);
+            this.method2324(var1 + 1, var2, 128);
          }
 
          if(var4 == 2) {
             this.method2324(var1, var2, 40);
-            this.method2324(1 + var1, var2, 128);
+            this.method2324(var1 + 1, var2, 128);
             this.method2324(var1, var2 - 1, 2);
          }
 
@@ -312,12 +312,12 @@ public class CollisionData {
 
             if(var4 == 1) {
                this.method2324(var1, var2, 1024);
-               this.method2324(var1, 1 + var2, 16384);
+               this.method2324(var1, var2 + 1, 16384);
             }
 
             if(var4 == 2) {
                this.method2324(var1, var2, 4096);
-               this.method2324(1 + var1, var2, 65536);
+               this.method2324(var1 + 1, var2, 65536);
             }
 
             if(var4 == 3) {
@@ -334,7 +334,7 @@ public class CollisionData {
 
             if(var4 == 1) {
                this.method2324(var1, var2, 2048);
-               this.method2324(1 + var1, var2 + 1, '耀');
+               this.method2324(var1 + 1, var2 + 1, '耀');
             }
 
             if(var4 == 2) {
@@ -357,13 +357,13 @@ public class CollisionData {
 
             if(var4 == 1) {
                this.method2324(var1, var2, 5120);
-               this.method2324(var1, 1 + var2, 16384);
+               this.method2324(var1, var2 + 1, 16384);
                this.method2324(var1 + 1, var2, 65536);
             }
 
             if(var4 == 2) {
                this.method2324(var1, var2, 20480);
-               this.method2324(1 + var1, var2, 65536);
+               this.method2324(var1 + 1, var2, 65536);
                this.method2324(var1, var2 - 1, 1024);
             }
 

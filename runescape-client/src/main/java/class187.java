@@ -60,34 +60,30 @@ public class class187 extends CacheableNode {
                   if(var9) {
                      var8 = true;
                   } else {
-                     char[] var10 = class204.field3088;
-                     int var11 = 0;
+                     label122: {
+                        char[] var10 = class204.field3088;
 
-                     label101:
-                     while(true) {
+                        int var11;
                         char var12;
-                        if(var11 >= var10.length) {
-                           var10 = class204.field3089;
-
-                           for(var11 = 0; var11 < var10.length; ++var11) {
-                              var12 = var10[var11];
-                              if(var7 == var12) {
-                                 var8 = true;
-                                 break label101;
-                              }
+                        for(var11 = 0; var11 < var10.length; ++var11) {
+                           var12 = var10[var11];
+                           if(var7 == var12) {
+                              var8 = true;
+                              break label122;
                            }
-
-                           var8 = false;
-                           break;
                         }
 
-                        var12 = var10[var11];
-                        if(var7 == var12) {
-                           var8 = true;
-                           break;
+                        var10 = class204.field3089;
+
+                        for(var11 = 0; var11 < var10.length; ++var11) {
+                           var12 = var10[var11];
+                           if(var7 == var12) {
+                              var8 = true;
+                              break label122;
+                           }
                         }
 
-                        ++var11;
+                        var8 = false;
                      }
                   }
                }

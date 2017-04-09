@@ -165,121 +165,123 @@ public final class class152 {
          class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3 + var4;
          return 1;
       } else {
-         String var27;
+         String var5;
          if(var0 == 4101) {
             class32.scriptStringStackSize -= 2;
             var3 = class32.scriptStringStack[class32.scriptStringStackSize];
-            var27 = class32.scriptStringStack[1 + class32.scriptStringStackSize];
-            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3 + var27;
+            var5 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
+            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3 + var5;
             return 1;
          } else {
-            int var25;
+            int var6;
+            int var7;
+            int var8;
+            int var21;
             if(var0 == 4102) {
                var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
                var4 = class32.field743[--class30.field713];
-               String[] var5 = class32.scriptStringStack;
-               var25 = ++class32.scriptStringStackSize - 1;
-               String var8;
+               String[] var18 = class32.scriptStringStack;
+               var6 = ++class32.scriptStringStackSize - 1;
+               String var19;
                if(var4 < 0) {
-                  var8 = Integer.toString(var4);
+                  var19 = Integer.toString(var4);
                } else {
-                  int var10 = var4;
-                  String var9;
+                  var7 = var4;
+                  String var20;
                   if(var4 < 0) {
-                     var9 = Integer.toString(var4, 10);
+                     var20 = Integer.toString(var4, 10);
                   } else {
-                     int var11 = 2;
+                     var8 = 2;
 
-                     for(int var12 = var4 / 10; var12 != 0; ++var11) {
-                        var12 /= 10;
+                     for(var21 = var4 / 10; var21 != 0; ++var8) {
+                        var21 /= 10;
                      }
 
-                     char[] var13 = new char[var11];
-                     var13[0] = 43;
+                     char[] var24 = new char[var8];
+                     var24[0] = 43;
 
-                     for(int var14 = var11 - 1; var14 > 0; --var14) {
-                        int var15 = var10;
-                        var10 /= 10;
-                        int var16 = var15 - 10 * var10;
-                        if(var16 >= 10) {
-                           var13[var14] = (char)(87 + var16);
+                     for(int var22 = var8 - 1; var22 > 0; --var22) {
+                        int var23 = var7;
+                        var7 /= 10;
+                        int var25 = var23 - var7 * 10;
+                        if(var25 >= 10) {
+                           var24[var22] = (char)(var25 + 87);
                         } else {
-                           var13[var14] = (char)(var16 + 48);
+                           var24[var22] = (char)(var25 + 48);
                         }
                      }
 
-                     var9 = new String(var13);
+                     var20 = new String(var24);
                   }
 
-                  var8 = var9;
+                  var19 = var20;
                }
 
-               var5[var25] = var3 + var8;
+               var18[var6] = var3 + var19;
                return 1;
             } else if(var0 == 4103) {
                var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.toLowerCase();
                return 1;
             } else {
-               int var18;
+               int var9;
                if(var0 == 4104) {
-                  var18 = class32.field743[--class30.field713];
-                  long var20 = 86400000L * ((long)var18 + 11745L);
-                  class32.field752.setTime(new Date(var20));
-                  var25 = class32.field752.get(5);
-                  int var26 = class32.field752.get(2);
-                  int var22 = class32.field752.get(1);
-                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var25 + "-" + class32.field744[var26] + "-" + var22;
+                  var9 = class32.field743[--class30.field713];
+                  long var17 = 86400000L * ((long)var9 + 11745L);
+                  class32.field752.setTime(new Date(var17));
+                  var6 = class32.field752.get(5);
+                  var21 = class32.field752.get(2);
+                  var8 = class32.field752.get(1);
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var6 + "-" + class32.field744[var21] + "-" + var8;
                   return 1;
                } else if(var0 == 4105) {
                   class32.scriptStringStackSize -= 2;
                   var3 = class32.scriptStringStack[class32.scriptStringStackSize];
-                  var27 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
-                  if(null != Projectile.localPlayer.composition && Projectile.localPlayer.composition.isFemale) {
-                     class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var27;
+                  var5 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
+                  if(Projectile.localPlayer.composition != null && Projectile.localPlayer.composition.isFemale) {
+                     class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var5;
                   } else {
                      class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3;
                   }
 
                   return 1;
                } else if(var0 == 4106) {
-                  var18 = class32.field743[--class30.field713];
-                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Integer.toString(var18);
+                  var9 = class32.field743[--class30.field713];
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Integer.toString(var9);
                   return 1;
                } else if(var0 == 4107) {
                   class32.scriptStringStackSize -= 2;
                   class32.field743[++class30.field713 - 1] = class8.method89(ChatLineBuffer.method939(class32.scriptStringStack[class32.scriptStringStackSize], class32.scriptStringStack[class32.scriptStringStackSize + 1], Client.field308));
                   return 1;
                } else {
-                  Font var19;
-                  int var23;
-                  byte[] var24;
+                  Font var10;
+                  byte[] var11;
                   if(var0 == 4108) {
                      var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
                      class30.field713 -= 2;
                      var4 = class32.field743[class30.field713];
-                     var23 = class32.field743[class30.field713 + 1];
-                     var24 = class5.field56.getConfigData(var23, 0);
-                     var19 = new Font(var24);
-                     class32.field743[++class30.field713 - 1] = var19.method3921(var3, var4);
+                     var7 = class32.field743[class30.field713 + 1];
+                     var11 = class5.field56.getConfigData(var7, 0);
+                     var10 = new Font(var11);
+                     class32.field743[++class30.field713 - 1] = var10.method3921(var3, var4);
                      return 1;
                   } else if(var0 == 4109) {
                      var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
                      class30.field713 -= 2;
                      var4 = class32.field743[class30.field713];
-                     var23 = class32.field743[1 + class30.field713];
-                     var24 = class5.field56.getConfigData(var23, 0);
-                     var19 = new Font(var24);
-                     class32.field743[++class30.field713 - 1] = var19.method3908(var3, var4);
+                     var7 = class32.field743[class30.field713 + 1];
+                     var11 = class5.field56.getConfigData(var7, 0);
+                     var10 = new Font(var11);
+                     class32.field743[++class30.field713 - 1] = var10.method3908(var3, var4);
                      return 1;
                   } else if(var0 == 4110) {
                      class32.scriptStringStackSize -= 2;
                      var3 = class32.scriptStringStack[class32.scriptStringStackSize];
-                     var27 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
+                     var5 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
                      if(class32.field743[--class30.field713] == 1) {
                         class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3;
                      } else {
-                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var27;
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var5;
                      }
 
                      return 1;
@@ -293,38 +295,38 @@ public final class class152 {
                      class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3 + (char)var4;
                      return 1;
                   } else {
-                     boolean var6;
-                     char var7;
-                     int[] var17;
+                     boolean var12;
+                     char var13;
+                     int[] var14;
                      if(var0 == 4113) {
-                        var18 = class32.field743[--class30.field713];
-                        var17 = class32.field743;
-                        var23 = ++class30.field713 - 1;
-                        var7 = (char)var18;
-                        if(var7 >= 32 && var7 <= 126) {
-                           var6 = true;
-                        } else if(var7 >= 160 && var7 <= 255) {
-                           var6 = true;
-                        } else if(var7 != 8364 && var7 != 338 && var7 != 8212 && var7 != 339 && var7 != 376) {
-                           var6 = false;
+                        var9 = class32.field743[--class30.field713];
+                        var14 = class32.field743;
+                        var7 = ++class30.field713 - 1;
+                        var13 = (char)var9;
+                        if(var13 >= 32 && var13 <= 126) {
+                           var12 = true;
+                        } else if(var13 >= 160 && var13 <= 255) {
+                           var12 = true;
+                        } else if(var13 != 8364 && var13 != 338 && var13 != 8212 && var13 != 339 && var13 != 376) {
+                           var12 = false;
                         } else {
-                           var6 = true;
+                           var12 = true;
                         }
 
-                        var17[var23] = var6?1:0;
+                        var14[var7] = var12?1:0;
                         return 1;
                      } else if(var0 != 4114) {
                         if(var0 == 4115) {
-                           var18 = class32.field743[--class30.field713];
-                           class32.field743[++class30.field713 - 1] = FrameMap.method1734((char)var18)?1:0;
+                           var9 = class32.field743[--class30.field713];
+                           class32.field743[++class30.field713 - 1] = FrameMap.method1734((char)var9)?1:0;
                            return 1;
                         } else if(var0 == 4116) {
-                           var18 = class32.field743[--class30.field713];
-                           class32.field743[++class30.field713 - 1] = class204.method3835((char)var18)?1:0;
+                           var9 = class32.field743[--class30.field713];
+                           class32.field743[++class30.field713 - 1] = class204.method3835((char)var9)?1:0;
                            return 1;
                         } else if(var0 == 4117) {
                            var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                           if(null != var3) {
+                           if(var3 != null) {
                               class32.field743[++class30.field713 - 1] = var3.length();
                            } else {
                               class32.field743[++class30.field713 - 1] = 0;
@@ -335,26 +337,26 @@ public final class class152 {
                            var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
                            class30.field713 -= 2;
                            var4 = class32.field743[class30.field713];
-                           var23 = class32.field743[1 + class30.field713];
-                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.substring(var4, var23);
+                           var7 = class32.field743[class30.field713 + 1];
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.substring(var4, var7);
                            return 1;
                         } else if(var0 == 4119) {
                            var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                           StringBuilder var28 = new StringBuilder(var3.length());
-                           boolean var29 = false;
+                           StringBuilder var15 = new StringBuilder(var3.length());
+                           boolean var16 = false;
 
-                           for(var25 = 0; var25 < var3.length(); ++var25) {
-                              var7 = var3.charAt(var25);
-                              if(var7 == 60) {
-                                 var29 = true;
-                              } else if(var7 == 62) {
-                                 var29 = false;
-                              } else if(!var29) {
-                                 var28.append(var7);
+                           for(var6 = 0; var6 < var3.length(); ++var6) {
+                              var13 = var3.charAt(var6);
+                              if(var13 == 60) {
+                                 var16 = true;
+                              } else if(var13 == 62) {
+                                 var16 = false;
+                              } else if(!var16) {
+                                 var15.append(var13);
                               }
                            }
 
-                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var28.toString();
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var15.toString();
                            return 1;
                         } else if(var0 == 4120) {
                            var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
@@ -364,20 +366,20 @@ public final class class152 {
                         } else if(var0 == 4121) {
                            class32.scriptStringStackSize -= 2;
                            var3 = class32.scriptStringStack[class32.scriptStringStackSize];
-                           var27 = class32.scriptStringStack[1 + class32.scriptStringStackSize];
-                           var23 = class32.field743[--class30.field713];
-                           class32.field743[++class30.field713 - 1] = var3.indexOf(var27, var23);
+                           var5 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
+                           var7 = class32.field743[--class30.field713];
+                           class32.field743[++class30.field713 - 1] = var3.indexOf(var5, var7);
                            return 1;
                         } else {
                            return 2;
                         }
                      } else {
-                        var18 = class32.field743[--class30.field713];
-                        var17 = class32.field743;
-                        var23 = ++class30.field713 - 1;
-                        var7 = (char)var18;
-                        var6 = var7 >= 48 && var7 <= 57 || var7 >= 65 && var7 <= 90 || var7 >= 97 && var7 <= 122;
-                        var17[var23] = var6?1:0;
+                        var9 = class32.field743[--class30.field713];
+                        var14 = class32.field743;
+                        var7 = ++class30.field713 - 1;
+                        var13 = (char)var9;
+                        var12 = var13 >= 48 && var13 <= 57 || var13 >= 65 && var13 <= 90 || var13 >= 97 && var13 <= 122;
+                        var14[var7] = var12?1:0;
                         return 1;
                      }
                   }

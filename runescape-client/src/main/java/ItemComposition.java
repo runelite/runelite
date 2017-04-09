@@ -386,7 +386,7 @@ public class ItemComposition extends CacheableNode {
          } else if(var2 == 98) {
             this.notedTemplate = var1.readUnsignedShort();
          } else if(var2 >= 100 && var2 < 110) {
-            if(null == this.countObj) {
+            if(this.countObj == null) {
                this.countObj = new int[10];
                this.countCo = new int[10];
             }
@@ -426,48 +426,48 @@ public class ItemComposition extends CacheableNode {
    @Export("getModel")
    public final Model getModel(int var1) {
       if(this.countObj != null && var1 > 1) {
-         int var6 = -1;
+         int var2 = -1;
 
          for(int var3 = 0; var3 < 10; ++var3) {
             if(var1 >= this.countCo[var3] && this.countCo[var3] != 0) {
-               var6 = this.countObj[var3];
+               var2 = this.countObj[var3];
             }
          }
 
-         if(var6 != -1) {
-            return class196.getItemDefinition(var6).getModel(1);
+         if(var2 != -1) {
+            return class196.getItemDefinition(var2).getModel(1);
          }
       }
 
-      Model var2 = (Model)itemModelCache.get((long)this.id);
-      if(var2 != null) {
-         return var2;
+      Model var5 = (Model)itemModelCache.get((long)this.id);
+      if(var5 != null) {
+         return var5;
       } else {
-         ModelData var5 = ModelData.method1495(class47.field956, this.inventoryModel, 0);
-         if(null == var5) {
+         ModelData var6 = ModelData.method1495(class47.field956, this.inventoryModel, 0);
+         if(var6 == null) {
             return null;
          } else {
             if(this.resizeX != 128 || this.resizeY != 128 || this.resizeZ != 128) {
-               var5.method1494(this.resizeX, this.resizeY, this.resizeZ);
+               var6.method1494(this.resizeX, this.resizeY, this.resizeZ);
             }
 
             int var4;
-            if(null != this.colourToReplace) {
+            if(this.colourToReplace != null) {
                for(var4 = 0; var4 < this.colourToReplace.length; ++var4) {
-                  var5.method1509(this.colourToReplace[var4], this.colourToReplaceWith[var4]);
+                  var6.method1509(this.colourToReplace[var4], this.colourToReplaceWith[var4]);
                }
             }
 
             if(this.textureToReplace != null) {
                for(var4 = 0; var4 < this.textureToReplace.length; ++var4) {
-                  var5.method1510(this.textureToReplace[var4], this.textToReplaceWith[var4]);
+                  var6.method1510(this.textureToReplace[var4], this.textToReplaceWith[var4]);
                }
             }
 
-            var2 = var5.method1524(64 + this.ambient, 768 + this.contrast, -50, -10, -50);
-            var2.field1409 = true;
-            itemModelCache.put(var2, (long)this.id);
-            return var2;
+            var5 = var6.method1524(this.ambient + 64, this.contrast + 768, -50, -10, -50);
+            var5.field1409 = true;
+            itemModelCache.put(var5, (long)this.id);
+            return var5;
          }
       }
    }
@@ -478,7 +478,7 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "1942378763"
    )
    public ItemComposition method3683(int var1) {
-      if(null != this.countObj && var1 > 1) {
+      if(this.countObj != null && var1 > 1) {
          int var2 = -1;
 
          for(int var3 = 0; var3 < 10; ++var3) {
@@ -501,18 +501,18 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "45"
    )
    public final ModelData method3685(int var1) {
-      int var3;
+      int var2;
       if(this.countObj != null && var1 > 1) {
-         int var2 = -1;
+         int var3 = -1;
 
-         for(var3 = 0; var3 < 10; ++var3) {
-            if(var1 >= this.countCo[var3] && this.countCo[var3] != 0) {
-               var2 = this.countObj[var3];
+         for(var2 = 0; var2 < 10; ++var2) {
+            if(var1 >= this.countCo[var2] && this.countCo[var2] != 0) {
+               var3 = this.countObj[var2];
             }
          }
 
-         if(var2 != -1) {
-            return class196.getItemDefinition(var2).method3685(1);
+         if(var3 != -1) {
+            return class196.getItemDefinition(var3).method3685(1);
          }
       }
 
@@ -525,14 +525,14 @@ public class ItemComposition extends CacheableNode {
          }
 
          if(this.colourToReplace != null) {
-            for(var3 = 0; var3 < this.colourToReplace.length; ++var3) {
-               var4.method1509(this.colourToReplace[var3], this.colourToReplaceWith[var3]);
+            for(var2 = 0; var2 < this.colourToReplace.length; ++var2) {
+               var4.method1509(this.colourToReplace[var2], this.colourToReplaceWith[var2]);
             }
          }
 
          if(this.textureToReplace != null) {
-            for(var3 = 0; var3 < this.textureToReplace.length; ++var3) {
-               var4.method1510(this.textureToReplace[var3], this.textToReplaceWith[var3]);
+            for(var2 = 0; var2 < this.textureToReplace.length; ++var2) {
+               var4.method1510(this.textureToReplace[var2], this.textToReplaceWith[var2]);
             }
          }
 
@@ -546,7 +546,7 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "-8434"
    )
    public int method3687() {
-      return this.team != -1 && this.inventoryActions != null?(this.team >= 0?(null != this.inventoryActions[this.team]?this.team:-1):("Drop".equalsIgnoreCase(this.inventoryActions[4])?4:-1)):-1;
+      return this.team != -1 && this.inventoryActions != null?(this.team >= 0?(this.inventoryActions[this.team] != null?this.team:-1):("Drop".equalsIgnoreCase(this.inventoryActions[4])?4:-1)):-1;
    }
 
    @ObfuscatedName("d")
@@ -590,7 +590,7 @@ public class ItemComposition extends CacheableNode {
          }
 
          int var9;
-         if(null != this.colourToReplace) {
+         if(this.colourToReplace != null) {
             for(var9 = 0; var9 < this.colourToReplace.length; ++var9) {
                var5.method1509(this.colourToReplace[var9], this.colourToReplaceWith[var9]);
             }

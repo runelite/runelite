@@ -30,8 +30,8 @@ public class class146 {
       garbageValue = "-97"
    )
    public void method2803(Buffer var1, byte[] var2) {
-      if(var1.payload[var1.offset] == 31 && var1.payload[1 + var1.offset] == -117) {
-         if(null == this.field2039) {
+      if(var1.payload[var1.offset] == 31 && var1.payload[var1.offset + 1] == -117) {
+         if(this.field2039 == null) {
             this.field2039 = new Inflater(true);
          }
 

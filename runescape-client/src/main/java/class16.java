@@ -91,47 +91,47 @@ public class class16 extends class131 {
       if(class41.username.length() == 0) {
          class65.method1204("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
       } else {
-         long var1;
+         long var0;
          try {
-            URL var3 = new URL(class173.method3310("services", false) + "m=accountappeal/login.ws");
-            URLConnection var4 = var3.openConnection();
-            var4.setRequestProperty("connection", "close");
-            var4.setDoInput(true);
-            var4.setDoOutput(true);
-            var4.setConnectTimeout(5000);
-            OutputStreamWriter var5 = new OutputStreamWriter(var4.getOutputStream());
-            var5.write("data1=req");
-            var5.flush();
-            InputStream var6 = var4.getInputStream();
-            Buffer var7 = new Buffer(new byte[1000]);
+            URL var2 = new URL(class173.method3310("services", false) + "m=accountappeal/login.ws");
+            URLConnection var3 = var2.openConnection();
+            var3.setRequestProperty("connection", "close");
+            var3.setDoInput(true);
+            var3.setDoOutput(true);
+            var3.setConnectTimeout(5000);
+            OutputStreamWriter var4 = new OutputStreamWriter(var3.getOutputStream());
+            var4.write("data1=req");
+            var4.flush();
+            InputStream var5 = var3.getInputStream();
+            Buffer var6 = new Buffer(new byte[1000]);
 
             while(true) {
-               int var8 = var6.read(var7.payload, var7.offset, 1000 - var7.offset);
-               if(var8 == -1) {
-                  var7.offset = 0;
-                  long var10 = var7.readLong();
-                  var1 = var10;
+               int var7 = var5.read(var6.payload, var6.offset, 1000 - var6.offset);
+               if(var7 == -1) {
+                  var6.offset = 0;
+                  long var8 = var6.readLong();
+                  var0 = var8;
                   break;
                }
 
-               var7.offset += var8;
-               if(var7.offset >= 1000) {
-                  var1 = 0L;
+               var6.offset += var7;
+               if(var6.offset >= 1000) {
+                  var0 = 0L;
                   break;
                }
             }
-         } catch (Exception var14) {
-            var1 = 0L;
+         } catch (Exception var10) {
+            var0 = 0L;
          }
 
-         int var0;
-         if(var1 == 0L) {
-            var0 = 5;
+         int var11;
+         if(var0 == 0L) {
+            var11 = 5;
          } else {
-            var0 = class168.method3248(var1, class41.username);
+            var11 = class168.method3248(var0, class41.username);
          }
 
-         switch(var0) {
+         switch(var11) {
          case 2:
             class65.method1204("", "Page has opened in a new window.", "(Please check your popup blocker.)");
             class41.loginIndex = 6;
@@ -151,8 +151,8 @@ public class class16 extends class131 {
          case 7:
             class65.method1204("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
          }
-
       }
+
    }
 
    class16(String var1, int var2) {

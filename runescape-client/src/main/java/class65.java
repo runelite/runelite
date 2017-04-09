@@ -23,7 +23,7 @@ public class class65 {
       garbageValue = "-47"
    )
    byte[] method1194(byte[] var1) {
-      if(null != this.field1135) {
+      if(this.field1135 != null) {
          int var2 = (int)((long)var1.length * (long)this.field1131 / (long)this.field1136) + 14;
          int[] var3 = new int[var2];
          int var4 = 0;
@@ -64,51 +64,52 @@ public class class65 {
 
    public class65(int var1, int var2) {
       if(var1 != var2) {
-         int var4 = var1;
-         int var5 = var2;
+         int var3 = var1;
+         int var4 = var2;
          if(var2 > var1) {
-            var4 = var2;
-            var5 = var1;
+            var3 = var2;
+            var4 = var1;
          }
 
-         while(var5 != 0) {
-            int var6 = var4 % var5;
+         int var5;
+         while(var4 != 0) {
+            var5 = var3 % var4;
+            var3 = var4;
             var4 = var5;
-            var5 = var6;
          }
 
-         var1 /= var4;
-         var2 /= var4;
+         var1 /= var3;
+         var2 /= var3;
          this.field1136 = var1;
          this.field1131 = var2;
          this.field1135 = new int[var1][14];
 
-         for(int var7 = 0; var7 < var1; ++var7) {
-            int[] var8 = this.field1135[var7];
-            double var9 = 6.0D + (double)var7 / (double)var1;
-            int var11 = (int)Math.floor(1.0D + (var9 - 7.0D));
-            if(var11 < 0) {
-               var11 = 0;
+         for(var5 = 0; var5 < var1; ++var5) {
+            int[] var6 = this.field1135[var5];
+            double var7 = 6.0D + (double)var5 / (double)var1;
+            int var9 = (int)Math.floor(1.0D + (var7 - 7.0D));
+            if(var9 < 0) {
+               var9 = 0;
             }
 
-            int var12 = (int)Math.ceil(var9 + 7.0D);
-            if(var12 > 14) {
-               var12 = 14;
+            int var10 = (int)Math.ceil(var7 + 7.0D);
+            if(var10 > 14) {
+               var10 = 14;
             }
 
-            for(double var13 = (double)var2 / (double)var1; var11 < var12; ++var11) {
-               double var15 = ((double)var11 - var9) * 3.141592653589793D;
-               double var17 = var13;
-               if(var15 < -1.0E-4D || var15 > 1.0E-4D) {
-                  var17 = var13 * (Math.sin(var15) / var15);
+            for(double var11 = (double)var2 / (double)var1; var9 < var10; ++var9) {
+               double var13 = ((double)var9 - var7) * 3.141592653589793D;
+               double var15 = var11;
+               if(var13 < -1.0E-4D || var13 > 1.0E-4D) {
+                  var15 = var11 * (Math.sin(var13) / var13);
                }
 
-               var17 *= 0.54D + 0.46D * Math.cos(0.2243994752564138D * ((double)var11 - var9));
-               var8[var11] = (int)Math.floor(0.5D + 65536.0D * var17);
+               var15 *= 0.54D + 0.46D * Math.cos(0.2243994752564138D * ((double)var9 - var7));
+               var6[var9] = (int)Math.floor(0.5D + 65536.0D * var15);
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("u")
@@ -118,7 +119,7 @@ public class class65 {
    )
    int method1195(int var1) {
       if(this.field1135 != null) {
-         var1 = 6 + (int)((long)this.field1131 * (long)var1 / (long)this.field1136);
+         var1 = (int)((long)this.field1131 * (long)var1 / (long)this.field1136) + 6;
       }
 
       return var1;
@@ -156,7 +157,7 @@ public class class65 {
    static void method1205(Widget[] var0, int var1, int var2, int var3, boolean var4) {
       for(int var5 = 0; var5 < var0.length; ++var5) {
          Widget var6 = var0[var5];
-         if(null != var6 && var1 == var6.parentId) {
+         if(var6 != null && var1 == var6.parentId) {
             ScriptState.method143(var6, var2, var3, var4);
             class16.method170(var6, var2, var3);
             if(var6.scrollX > var6.scrollWidth - var6.width) {

@@ -89,7 +89,7 @@ public class class30 {
       garbageValue = "-14932502"
    )
    static void method640() {
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2420(); null != var0; var0 = (WidgetNode)Client.componentTable.method2422()) {
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2420(); var0 != null; var0 = (WidgetNode)Client.componentTable.method2422()) {
          int var1 = var0.id;
          if(Ignore.method178(var1)) {
             boolean var2 = true;
@@ -106,7 +106,7 @@ public class class30 {
             if(!var2) {
                var4 = (int)var0.hash;
                Widget var5 = FaceNormal.method1932(var4);
-               if(null != var5) {
+               if(var5 != null) {
                   class22.method197(var5);
                }
             }
@@ -129,27 +129,27 @@ public class class30 {
          for(int var1 = 0; var1 < Client.menuOptionCount - 1; ++var1) {
             if(Client.menuTypes[var1] < 1000 && Client.menuTypes[var1 + 1] > 1000) {
                String var2 = Client.menuTargets[var1];
-               Client.menuTargets[var1] = Client.menuTargets[1 + var1];
-               Client.menuTargets[1 + var1] = var2;
+               Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
+               Client.menuTargets[var1 + 1] = var2;
                String var3 = Client.menuOptions[var1];
                Client.menuOptions[var1] = Client.menuOptions[var1 + 1];
-               Client.menuOptions[1 + var1] = var3;
+               Client.menuOptions[var1 + 1] = var3;
                int var4 = Client.menuTypes[var1];
-               Client.menuTypes[var1] = Client.menuTypes[1 + var1];
-               Client.menuTypes[1 + var1] = var4;
+               Client.menuTypes[var1] = Client.menuTypes[var1 + 1];
+               Client.menuTypes[var1 + 1] = var4;
                var4 = Client.menuActionParams0[var1];
-               Client.menuActionParams0[var1] = Client.menuActionParams0[1 + var1];
-               Client.menuActionParams0[1 + var1] = var4;
+               Client.menuActionParams0[var1] = Client.menuActionParams0[var1 + 1];
+               Client.menuActionParams0[var1 + 1] = var4;
                var4 = Client.menuActionParams1[var1];
-               Client.menuActionParams1[var1] = Client.menuActionParams1[1 + var1];
+               Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
                Client.menuActionParams1[var1 + 1] = var4;
                var4 = Client.menuIdentifiers[var1];
-               Client.menuIdentifiers[var1] = Client.menuIdentifiers[1 + var1];
-               Client.menuIdentifiers[1 + var1] = var4;
+               Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
+               Client.menuIdentifiers[var1 + 1] = var4;
                if(Client.field449 != -1) {
                   if(Client.field449 == var1) {
                      Client.field449 = var1 + 1;
-                  } else if(1 + var1 == Client.field449) {
+                  } else if(var1 + 1 == Client.field449) {
                      Client.field449 = var1;
                   }
                }
@@ -218,8 +218,8 @@ public class class30 {
       garbageValue = "-304378835"
    )
    static final int method651(int var0, int var1) {
-      int var2 = TextureProvider.method1488(var0 - 1, var1 - 1) + TextureProvider.method1488(var0 + 1, var1 - 1) + TextureProvider.method1488(var0 - 1, var1 + 1) + TextureProvider.method1488(1 + var0, 1 + var1);
-      int var3 = TextureProvider.method1488(var0 - 1, var1) + TextureProvider.method1488(var0 + 1, var1) + TextureProvider.method1488(var0, var1 - 1) + TextureProvider.method1488(var0, 1 + var1);
+      int var2 = TextureProvider.method1488(var0 - 1, var1 - 1) + TextureProvider.method1488(var0 + 1, var1 - 1) + TextureProvider.method1488(var0 - 1, var1 + 1) + TextureProvider.method1488(var0 + 1, var1 + 1);
+      int var3 = TextureProvider.method1488(var0 - 1, var1) + TextureProvider.method1488(var0 + 1, var1) + TextureProvider.method1488(var0, var1 - 1) + TextureProvider.method1488(var0, var1 + 1);
       int var4 = TextureProvider.method1488(var0, var1);
       return var3 / 8 + var2 / 16 + var4 / 4;
    }

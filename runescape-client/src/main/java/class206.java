@@ -9,10 +9,14 @@ public class class206 {
    @ObfuscatedName("f")
    static char[] field3100 = new char[64];
 
+   class206() throws Throwable {
+      throw new Error();
+   }
+
    static {
       int var0;
       for(var0 = 0; var0 < 26; ++var0) {
-         field3100[var0] = (char)(65 + var0);
+         field3100[var0] = (char)(var0 + 65);
       }
 
       for(var0 = 26; var0 < 52; ++var0) {
@@ -28,11 +32,11 @@ public class class206 {
       field3098 = new char[64];
 
       for(var0 = 0; var0 < 26; ++var0) {
-         field3098[var0] = (char)(65 + var0);
+         field3098[var0] = (char)(var0 + 65);
       }
 
       for(var0 = 26; var0 < 52; ++var0) {
-         field3098[var0] = (char)(97 + var0 - 26);
+         field3098[var0] = (char)(var0 + 97 - 26);
       }
 
       for(var0 = 52; var0 < 62; ++var0) {
@@ -59,15 +63,11 @@ public class class206 {
          field3097[var0] = var0 - 48 + 52;
       }
 
-      int[] var2 = field3097;
-      field3097[43] = 62;
-      var2[42] = 62;
       int[] var1 = field3097;
+      field3097[43] = 62;
+      var1[42] = 62;
+      int[] var2 = field3097;
       field3097[47] = 63;
-      var1[45] = 63;
-   }
-
-   class206() throws Throwable {
-      throw new Error();
+      var2[45] = 63;
    }
 }

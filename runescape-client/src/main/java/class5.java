@@ -68,72 +68,72 @@ final class class5 implements Comparator {
          var3 = class187.baseY;
 
          int var6;
-         int var8;
+         int var7;
          for(var6 = 0; var6 < '耀'; ++var6) {
-            NPC var7 = Client.cachedNPCs[var6];
-            if(var7 != null) {
-               for(var8 = 0; var8 < 10; ++var8) {
-                  var7.pathX[var8] -= var4;
-                  var7.pathY[var8] -= var5;
+            NPC var8 = Client.cachedNPCs[var6];
+            if(var8 != null) {
+               for(var7 = 0; var7 < 10; ++var7) {
+                  var8.pathX[var7] -= var4;
+                  var8.pathY[var7] -= var5;
                }
 
-               var7.x -= 128 * var4;
-               var7.y -= var5 * 128;
+               var8.x -= var4 * 128;
+               var8.y -= var5 * 128;
             }
          }
 
          for(var6 = 0; var6 < 2048; ++var6) {
-            Player var20 = Client.cachedPlayers[var6];
-            if(var20 != null) {
-               for(var8 = 0; var8 < 10; ++var8) {
-                  var20.pathX[var8] -= var4;
-                  var20.pathY[var8] -= var5;
+            Player var19 = Client.cachedPlayers[var6];
+            if(var19 != null) {
+               for(var7 = 0; var7 < 10; ++var7) {
+                  var19.pathX[var7] -= var4;
+                  var19.pathY[var7] -= var5;
                }
 
-               var20.x -= 128 * var4;
-               var20.y -= 128 * var5;
+               var19.x -= var4 * 128;
+               var19.y -= var5 * 128;
             }
          }
 
-         byte var19 = 0;
-         byte var18 = 104;
-         byte var21 = 1;
+         byte var20 = 0;
+         byte var9 = 104;
+         byte var10 = 1;
          if(var4 < 0) {
-            var19 = 103;
-            var18 = -1;
-            var21 = -1;
-         }
-
-         byte var9 = 0;
-         byte var10 = 104;
-         byte var11 = 1;
-         if(var5 < 0) {
-            var9 = 103;
+            var20 = 103;
+            var9 = -1;
             var10 = -1;
-            var11 = -1;
          }
 
-         int var13;
-         for(int var17 = var19; var18 != var17; var17 += var21) {
-            for(var13 = var9; var10 != var13; var13 += var11) {
-               int var14 = var17 + var4;
-               int var15 = var5 + var13;
+         byte var11 = 0;
+         byte var12 = 104;
+         byte var13 = 1;
+         if(var5 < 0) {
+            var11 = 103;
+            var12 = -1;
+            var13 = -1;
+         }
 
-               for(int var16 = 0; var16 < 4; ++var16) {
-                  if(var14 >= 0 && var15 >= 0 && var14 < 104 && var15 < 104) {
-                     Client.groundItemDeque[var16][var17][var13] = Client.groundItemDeque[var16][var14][var15];
+         int var14;
+         for(int var15 = var20; var9 != var15; var15 += var10) {
+            for(var14 = var11; var12 != var14; var14 += var13) {
+               int var16 = var15 + var4;
+               int var17 = var5 + var14;
+
+               for(int var18 = 0; var18 < 4; ++var18) {
+                  if(var16 >= 0 && var17 >= 0 && var16 < 104 && var17 < 104) {
+                     Client.groundItemDeque[var18][var15][var14] = Client.groundItemDeque[var18][var16][var17];
                   } else {
-                     Client.groundItemDeque[var16][var17][var13] = null;
+                     Client.groundItemDeque[var18][var15][var14] = null;
                   }
                }
             }
          }
 
-         for(class25 var12 = (class25)Client.field461.method2464(); null != var12; var12 = (class25)Client.field461.method2472()) {
-            var12.field599 -= var4;
-            var12.field597 -= var5;
-            if(var12.field599 < 0 || var12.field597 < 0 || var12.field599 >= 104 || var12.field597 >= 104) {
-               var12.unlink();
+         for(class25 var21 = (class25)Client.field461.method2464(); var21 != null; var21 = (class25)Client.field461.method2472()) {
+            var21.field599 -= var4;
+            var21.field597 -= var5;
+            if(var21.field599 < 0 || var21.field597 < 0 || var21.field599 >= 104 || var21.field597 >= 104) {
+               var21.unlink();
             }
          }
 
@@ -148,11 +148,11 @@ final class class5 implements Comparator {
          Client.field391.method2458();
          Client.projectiles.method2458();
 
-         for(var13 = 0; var13 < 4; ++var13) {
-            Client.collisionMaps[var13].method2346();
+         for(var14 = 0; var14 < 4; ++var14) {
+            Client.collisionMaps[var14].method2346();
          }
-
       }
+
    }
 
    @ObfuscatedName("y")
@@ -179,16 +179,16 @@ final class class5 implements Comparator {
          int var3;
          int var4;
          if(Client.field330 == 20) {
-            int[] var34 = new int[9];
+            int[] var5 = new int[9];
 
             for(var1 = 0; var1 < 9; ++var1) {
-               var2 = 15 + 128 + var1 * 32;
-               var3 = 3 * var2 + 600;
+               var2 = var1 * 32 + 143;
+               var3 = var2 * 3 + 600;
                var4 = class84.field1475[var2];
-               var34[var1] = var4 * var3 >> 16;
+               var5[var1] = var4 * var3 >> 16;
             }
 
-            Region.method1810(var34, 500, 800, 512, 334);
+            Region.method1810(var5, 500, 800, 512, 334);
             class41.field852 = "Prepared visibility map";
             class41.field851 = 10;
             Client.field330 = 30;
@@ -213,8 +213,8 @@ final class class5 implements Comparator {
             class41.field851 = 20;
             Client.field330 = 40;
          } else if(Client.field330 == 40) {
-            byte var31 = 0;
-            var0 = var31 + class157.field2137.method3425() * 4 / 100;
+            byte var28 = 0;
+            var0 = var28 + class157.field2137.method3425() * 4 / 100;
             var0 += ChatLineBuffer.indexConfigs.method3425() * 4 / 100;
             var0 += ChatLineBuffer.field990.method3425() * 2 / 100;
             var0 += class37.indexInterfaces.method3425() * 2 / 100;
@@ -242,24 +242,24 @@ final class class5 implements Comparator {
                Client.field330 = 45;
             }
          } else {
-            IndexData var25;
-            IndexData var26;
+            IndexData var6;
+            IndexData var29;
             if(Client.field330 == 45) {
-               boolean var30 = !Client.field306;
+               boolean var7 = !Client.field306;
                class57.field1077 = 22050;
-               class57.field1078 = var30;
+               class57.field1078 = var7;
                class217.field3186 = 2;
-               class139 var36 = new class139();
-               var36.method2577(9, 128);
+               class139 var8 = new class139();
+               var8.method2577(9, 128);
                class2.field23 = RSSocket.method2120(class108.field1755, Projectile.canvas, 0, 22050);
-               class2.field23.method1081(var36);
-               var25 = Ignore.field215;
-               IndexData var27 = class57.field1083;
-               var26 = IndexFile.indexSoundEffects;
-               class138.field1945 = var25;
-               class146.field2037 = var27;
-               class138.field1942 = var26;
-               class138.field1939 = var36;
+               class2.field23.method1081(var8);
+               var6 = Ignore.field215;
+               IndexData var9 = class57.field1083;
+               var29 = IndexFile.indexSoundEffects;
+               class138.field1945 = var6;
+               class146.field2037 = var9;
+               class138.field1942 = var29;
+               class138.field1939 = var8;
                class137.field1927 = RSSocket.method2120(class108.field1755, Projectile.canvas, 1, 2048);
                Ignore.field224 = new class51();
                class137.field1927.method1081(Ignore.field224);
@@ -288,7 +288,7 @@ final class class5 implements Comparator {
                }
 
                if(var0 < 3) {
-                  class41.field852 = "Loading fonts - " + 100 * var0 / 3 + "%";
+                  class41.field852 = "Loading fonts - " + var0 * 100 / 3 + "%";
                   class41.field851 = 40;
                } else {
                   WallObject.field1573 = new class230(true);
@@ -313,63 +313,63 @@ final class class5 implements Comparator {
                   class41.field852 = "Loading config - " + ChatLineBuffer.field990.method3424() + "%";
                   class41.field851 = 60;
                } else {
-                  IndexData var33 = ChatLineBuffer.field990;
-                  Overlay.field3047 = var33;
+                  IndexData var30 = ChatLineBuffer.field990;
+                  Overlay.field3047 = var30;
                   GameObject.method1959(ChatLineBuffer.field990);
                   class101.method1999(ChatLineBuffer.field990, CollisionData.indexModels);
-                  IndexData var35 = ChatLineBuffer.field990;
-                  var25 = CollisionData.indexModels;
-                  boolean var29 = Client.field306;
-                  ObjectComposition.field2897 = var35;
-                  ObjectComposition.field2898 = var25;
-                  ObjectComposition.field2935 = var29;
-                  var26 = ChatLineBuffer.field990;
-                  IndexData var28 = CollisionData.indexModels;
-                  NPCComposition.field3022 = var26;
-                  NPCComposition.field3036 = var28;
-                  IndexData var6 = ChatLineBuffer.field990;
-                  IndexData var7 = CollisionData.indexModels;
-                  boolean var8 = Client.isMembers;
-                  Font var9 = class180.field2717;
-                  Frames.field1592 = var6;
-                  class47.field956 = var7;
-                  class109.isMembersWorld = var8;
+                  IndexData var33 = ChatLineBuffer.field990;
+                  var6 = CollisionData.indexModels;
+                  boolean var36 = Client.field306;
+                  ObjectComposition.field2897 = var33;
+                  ObjectComposition.field2898 = var6;
+                  ObjectComposition.field2935 = var36;
+                  var29 = ChatLineBuffer.field990;
+                  IndexData var10 = CollisionData.indexModels;
+                  NPCComposition.field3022 = var29;
+                  NPCComposition.field3036 = var10;
+                  IndexData var11 = ChatLineBuffer.field990;
+                  IndexData var12 = CollisionData.indexModels;
+                  boolean var13 = Client.isMembers;
+                  Font var14 = class180.field2717;
+                  Frames.field1592 = var11;
+                  class47.field956 = var12;
+                  class109.isMembersWorld = var13;
                   ItemComposition.field3000 = Frames.field1592.method3346(10);
-                  ItemComposition.field2993 = var9;
+                  ItemComposition.field2993 = var14;
                   class107.method2084(ChatLineBuffer.field990, class157.field2137, ChatLineBuffer.indexConfigs);
                   class211.method3982(ChatLineBuffer.field990, CollisionData.indexModels);
-                  IndexData var10 = ChatLineBuffer.field990;
-                  Varbit.field2857 = var10;
-                  IndexData var11 = ChatLineBuffer.field990;
-                  class187.field2788 = var11;
+                  IndexData var15 = ChatLineBuffer.field990;
+                  Varbit.field2857 = var15;
+                  IndexData var16 = ChatLineBuffer.field990;
+                  class187.field2788 = var16;
                   class187.field2789 = class187.field2788.method3346(16);
-                  IndexData var12 = class37.indexInterfaces;
-                  IndexData var13 = CollisionData.indexModels;
-                  IndexData var14 = FileOnDisk.indexSprites;
-                  IndexData var15 = field56;
-                  Widget.field2301 = var12;
-                  Widget.field2211 = var13;
-                  Widget.field2317 = var14;
-                  class20.field235 = var15;
+                  IndexData var17 = class37.indexInterfaces;
+                  IndexData var18 = CollisionData.indexModels;
+                  IndexData var19 = FileOnDisk.indexSprites;
+                  IndexData var20 = field56;
+                  Widget.field2301 = var17;
+                  Widget.field2211 = var18;
+                  Widget.field2317 = var19;
+                  class20.field235 = var20;
                   Widget.widgets = new Widget[Widget.field2301.method3357()][];
                   class6.validInterfaces = new boolean[Widget.field2301.method3357()];
                   class30.method644(ChatLineBuffer.field990);
-                  IndexData var16 = ChatLineBuffer.field990;
-                  class195.field2867 = var16;
-                  IndexData var17 = ChatLineBuffer.field990;
-                  class188.field2797 = var17;
+                  IndexData var21 = ChatLineBuffer.field990;
+                  class195.field2867 = var21;
+                  IndexData var22 = ChatLineBuffer.field990;
+                  class188.field2797 = var22;
                   Client.method557(ChatLineBuffer.field990);
                   class9.chatMessages = new ChatMessages();
-                  IndexData var18 = ChatLineBuffer.field990;
-                  IndexData var19 = FileOnDisk.indexSprites;
-                  IndexData var20 = field56;
-                  class196.field2885 = var18;
-                  class196.field2883 = var19;
-                  class0.field5 = var20;
-                  IndexData var21 = ChatLineBuffer.field990;
-                  IndexData var22 = FileOnDisk.indexSprites;
-                  CombatInfo2.field2852 = var21;
-                  CombatInfo2.field2842 = var22;
+                  IndexData var23 = ChatLineBuffer.field990;
+                  IndexData var24 = FileOnDisk.indexSprites;
+                  IndexData var25 = field56;
+                  class196.field2885 = var23;
+                  class196.field2883 = var24;
+                  class0.field5 = var25;
+                  IndexData var26 = ChatLineBuffer.field990;
+                  IndexData var27 = FileOnDisk.indexSprites;
+                  CombatInfo2.field2852 = var26;
+                  CombatInfo2.field2842 = var27;
                   class41.field852 = "Loaded config";
                   class41.field851 = 60;
                   Client.field330 = 80;
@@ -380,8 +380,8 @@ final class class5 implements Comparator {
                      class41.field852 = "Loading textures - " + class171.indexTextures.method3424() + "%";
                      class41.field851 = 90;
                   } else {
-                     TextureProvider var32 = new TextureProvider(class171.indexTextures, FileOnDisk.indexSprites, 20, 0.8D, Client.field306?64:128);
-                     class84.method1675(var32);
+                     TextureProvider var31 = new TextureProvider(class171.indexTextures, FileOnDisk.indexSprites, 20, 0.8D, Client.field306?64:128);
+                     class84.method1675(var31);
                      class84.method1680(0.8D);
                      class41.field852 = "Loaded textures";
                      class41.field851 = 90;
@@ -395,11 +395,11 @@ final class class5 implements Comparator {
                   Client.field330 = 120;
                } else if(Client.field330 == 120) {
                   if(!WallObject.field1581.method3354("huffman", "")) {
-                     class41.field852 = "Loading wordpack - " + 0 + "%";
+                     class41.field852 = "Loading wordpack - 0%";
                      class41.field851 = 96;
                   } else {
-                     class145 var23 = new class145(WallObject.field1581.method3353("huffman", ""));
-                     class210.field3133 = var23;
+                     class145 var32 = new class145(WallObject.field1581.method3353("huffman", ""));
+                     class210.field3133 = var32;
                      class41.field852 = "Loaded wordpack";
                      class41.field851 = 96;
                      Client.field330 = 130;
@@ -409,10 +409,10 @@ final class class5 implements Comparator {
                      class41.field852 = "Loading interfaces - " + class37.indexInterfaces.method3424() * 4 / 5 + "%";
                      class41.field851 = 100;
                   } else if(!Projectile.indexScripts.method3358()) {
-                     class41.field852 = "Loading interfaces - " + (80 + Projectile.indexScripts.method3424() / 6) + "%";
+                     class41.field852 = "Loading interfaces - " + (Projectile.indexScripts.method3424() / 6 + 80) + "%";
                      class41.field851 = 100;
                   } else if(!field56.method3358()) {
-                     class41.field852 = "Loading interfaces - " + (96 + field56.method3424() / 20) + "%";
+                     class41.field852 = "Loading interfaces - " + (field56.method3424() / 20 + 96) + "%";
                      class41.field851 = 100;
                   } else {
                      class41.field852 = "Loaded interfaces";
@@ -424,28 +424,28 @@ final class class5 implements Comparator {
                }
             } else {
                var0 = 0;
-               SpritePixels var24;
+               SpritePixels var34;
                if(XGrandExchangeOffer.field39 == null) {
-                  var25 = FileOnDisk.indexSprites;
-                  var3 = var25.method3351("compass");
-                  var4 = var25.method3352(var3, "");
-                  var24 = class26.method564(var25, var3, var4);
-                  XGrandExchangeOffer.field39 = var24;
+                  var6 = FileOnDisk.indexSprites;
+                  var3 = var6.method3351("compass");
+                  var4 = var6.method3352(var3, "");
+                  var34 = class26.method564(var6, var3, var4);
+                  XGrandExchangeOffer.field39 = var34;
                } else {
                   ++var0;
                }
 
-               if(null == class180.field2718) {
-                  var25 = FileOnDisk.indexSprites;
-                  var3 = var25.method3351("mapedge");
-                  var4 = var25.method3352(var3, "");
-                  var24 = class26.method564(var25, var3, var4);
-                  class180.field2718 = var24;
+               if(class180.field2718 == null) {
+                  var6 = FileOnDisk.indexSprites;
+                  var3 = var6.method3351("mapedge");
+                  var4 = var6.method3352(var3, "");
+                  var34 = class26.method564(var6, var3, var4);
+                  class180.field2718 = var34;
                } else {
                   ++var0;
                }
 
-               if(null == field47) {
+               if(field47 == null) {
                   field47 = ItemComposition.method3719(FileOnDisk.indexSprites, "mapscene", "");
                } else {
                   ++var0;
@@ -463,7 +463,7 @@ final class class5 implements Comparator {
                   ++var0;
                }
 
-               if(null == ScriptState.field108) {
+               if(ScriptState.field108 == null) {
                   ScriptState.field108 = class99.method1981(FileOnDisk.indexSprites, "headicons_prayer", "");
                } else {
                   ++var0;
@@ -493,7 +493,7 @@ final class class5 implements Comparator {
                   ++var0;
                }
 
-               if(null == Tile.field1372) {
+               if(Tile.field1372 == null) {
                   Tile.field1372 = ItemComposition.method3719(FileOnDisk.indexSprites, "scrollbar", "");
                } else {
                   ++var0;
@@ -506,7 +506,7 @@ final class class5 implements Comparator {
                }
 
                if(var0 < 12) {
-                  class41.field852 = "Loading sprites - " + 100 * var0 / 12 + "%";
+                  class41.field852 = "Loading sprites - " + var0 * 100 / 12 + "%";
                   class41.field851 = 70;
                } else {
                   FontTypeFace.modIcons = Tile.field1373;
@@ -516,8 +516,8 @@ final class class5 implements Comparator {
                   var3 = (int)(Math.random() * 21.0D) - 10;
                   var4 = (int)(Math.random() * 41.0D) - 20;
 
-                  for(int var5 = 0; var5 < class15.field171.length; ++var5) {
-                     class15.field171[var5].method4171(var1 + var4, var2 + var4, var4 + var3);
+                  for(int var35 = 0; var35 < class15.field171.length; ++var35) {
+                     class15.field171[var35].method4171(var1 + var4, var2 + var4, var4 + var3);
                   }
 
                   field47[0].method4090(var1 + var4, var4 + var2, var4 + var3);
@@ -528,6 +528,7 @@ final class class5 implements Comparator {
             }
          }
       }
+
    }
 
    @ObfuscatedName("f")
@@ -562,12 +563,12 @@ final class class5 implements Comparator {
       }
 
       ItemComposition var9 = class196.getItemDefinition(var0);
-      if(var1 > 1 && null != var9.countObj) {
+      if(var1 > 1 && var9.countObj != null) {
          int var10 = -1;
 
-         for(int var21 = 0; var21 < 10; ++var21) {
-            if(var1 >= var9.countCo[var21] && var9.countCo[var21] != 0) {
-               var10 = var9.countObj[var21];
+         for(int var11 = 0; var11 < 10; ++var11) {
+            if(var1 >= var9.countCo[var11] && var9.countCo[var11] != 0) {
+               var10 = var9.countObj[var11];
             }
          }
 
@@ -576,24 +577,24 @@ final class class5 implements Comparator {
          }
       }
 
-      Model var22 = var9.getModel(1);
-      if(null == var22) {
+      Model var21 = var9.getModel(1);
+      if(var21 == null) {
          return null;
       } else {
-         SpritePixels var11 = null;
+         SpritePixels var22 = null;
          if(var9.notedTemplate != -1) {
-            var11 = createSprite(var9.note, 10, 1, 0, 0, true);
-            if(var11 == null) {
+            var22 = createSprite(var9.note, 10, 1, 0, 0, true);
+            if(var22 == null) {
                return null;
             }
          } else if(var9.field2951 != -1) {
-            var11 = createSprite(var9.field2963, var1, var2, var3, 0, false);
-            if(var11 == null) {
+            var22 = createSprite(var9.field2963, var1, var2, var3, 0, false);
+            if(var22 == null) {
                return null;
             }
          } else if(var9.field3001 != -1) {
-            var11 = createSprite(var9.field2958, var1, 0, 0, 0, false);
-            if(null == var11) {
+            var22 = createSprite(var9.field2958, var1, 0, 0, 0, false);
+            if(var22 == null) {
                return null;
             }
          }
@@ -610,7 +611,7 @@ final class class5 implements Comparator {
          class84.method1674(16, 16);
          class84.rasterGouraudLowRes = false;
          if(var9.field3001 != -1) {
-            var11.method4143(0, 0);
+            var22.method4143(0, 0);
          }
 
          int var16 = var9.zoom2d;
@@ -622,10 +623,10 @@ final class class5 implements Comparator {
 
          int var17 = class84.field1475[var9.xan2d] * var16 >> 16;
          int var18 = var16 * class84.field1469[var9.xan2d] >> 16;
-         var22.method1643();
-         var22.method1599(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var9.offsetY2d + var22.modelHeight / 2 + var17, var18 + var9.offsetY2d);
+         var21.method1643();
+         var21.method1599(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var9.offsetY2d + var21.modelHeight / 2 + var17, var18 + var9.offsetY2d);
          if(var9.field2951 != -1) {
-            var11.method4143(0, 0);
+            var22.method4143(0, 0);
          }
 
          if(var2 >= 1) {
@@ -642,7 +643,7 @@ final class class5 implements Comparator {
 
          Rasterizer2D.setRasterBuffer(var8.image, 36, 32);
          if(var9.notedTemplate != -1) {
-            var11.method4143(0, 0);
+            var22.method4143(0, 0);
          }
 
          if(var4 == 1 || var4 == 2 && var9.isStackable == 1) {
@@ -651,9 +652,9 @@ final class class5 implements Comparator {
             if(var1 < 100000) {
                var20 = "<col=ffff00>" + var1 + "</col>";
             } else if(var1 < 10000000) {
-               var20 = "<col=ffffff>" + var1 / 1000 + "K" + "</col>";
+               var20 = "<col=ffffff>" + var1 / 1000 + "K</col>";
             } else {
-               var20 = "<col=00ff80>" + var1 / 1000000 + "M" + "</col>";
+               var20 = "<col=00ff80>" + var1 / 1000000 + "M</col>";
             }
 
             var19.method3930(var20, 0, 9, 16776960, 1);

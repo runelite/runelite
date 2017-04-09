@@ -16,18 +16,6 @@ public class class165 {
    @ObfuscatedName("c")
    static int[] field2183;
 
-   static {
-      int var0 = 2;
-
-      for(int var1 = 0; var1 < 32; ++var1) {
-         field2182[var1] = var0 - 1;
-         var0 += var0;
-      }
-
-      settings = new int[2000];
-      widgetSettings = new int[2000];
-   }
-
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)Z",
@@ -44,7 +32,7 @@ public class class165 {
       class185.field2763 += var2;
       if(class185.field2769 == 0 && class185.field2766 == 0 && class185.field2771 == 0 && class185.field2774 == 0) {
          return true;
-      } else if(null == class185.field2770) {
+      } else if(class185.field2770 == null) {
          return false;
       } else {
          try {
@@ -76,69 +64,69 @@ public class class165 {
                   ++class185.field2769;
                }
 
-               for(int var15 = 0; var15 < 100; ++var15) {
-                  int var16 = class185.field2770.method2108();
-                  if(var16 < 0) {
+               for(int var5 = 0; var5 < 100; ++var5) {
+                  int var6 = class185.field2770.method2108();
+                  if(var6 < 0) {
                      throw new IOException();
                   }
 
-                  if(var16 == 0) {
+                  if(var6 == 0) {
                      break;
                   }
 
                   class185.field2763 = 0;
-                  byte var5 = 0;
+                  byte var7 = 0;
                   if(class1.field14 == null) {
-                     var5 = 8;
+                     var7 = 8;
                   } else if(class185.field2776 == 0) {
-                     var5 = 1;
+                     var7 = 1;
                   }
 
-                  int var6;
-                  int var7;
                   int var8;
+                  int var9;
                   int var10;
-                  if(var5 > 0) {
-                     var6 = var5 - class185.field2773.offset;
-                     if(var6 > var16) {
-                        var6 = var16;
+                  int var11;
+                  if(var7 > 0) {
+                     var8 = var7 - class185.field2773.offset;
+                     if(var8 > var6) {
+                        var8 = var6;
                      }
 
-                     class185.field2770.method2104(class185.field2773.payload, class185.field2773.offset, var6);
+                     class185.field2770.method2104(class185.field2773.payload, class185.field2773.offset, var8);
                      if(class185.field2780 != 0) {
-                        for(var7 = 0; var7 < var6; ++var7) {
-                           class185.field2773.payload[class185.field2773.offset + var7] ^= class185.field2780;
+                        for(var9 = 0; var9 < var8; ++var9) {
+                           class185.field2773.payload[class185.field2773.offset + var9] ^= class185.field2780;
                         }
                      }
 
-                     class185.field2773.offset += var6;
-                     if(class185.field2773.offset < var5) {
+                     class185.field2773.offset += var8;
+                     if(class185.field2773.offset < var7) {
                         break;
                      }
 
                      if(class1.field14 == null) {
                         class185.field2773.offset = 0;
-                        var7 = class185.field2773.readUnsignedByte();
-                        var8 = class185.field2773.readUnsignedShort();
-                        int var9 = class185.field2773.readUnsignedByte();
-                        var10 = class185.field2773.readInt();
-                        long var11 = (long)((var7 << 16) + var8);
-                        class181 var13 = (class181)class185.field2767.method2417(var11);
+                        var9 = class185.field2773.readUnsignedByte();
+                        var10 = class185.field2773.readUnsignedShort();
+                        int var12 = class185.field2773.readUnsignedByte();
+                        var11 = class185.field2773.readInt();
+                        long var13 = (long)((var9 << 16) + var10);
+                        class181 var15 = (class181)class185.field2767.method2417(var13);
                         class26.field609 = true;
-                        if(var13 == null) {
-                           var13 = (class181)class185.field2772.method2417(var11);
+                        if(var15 == null) {
+                           var15 = (class181)class185.field2772.method2417(var13);
                            class26.field609 = false;
                         }
 
-                        if(null == var13) {
+                        if(var15 == null) {
                            throw new IOException();
                         }
 
-                        int var14 = var9 == 0?5:9;
-                        class1.field14 = var13;
-                        class185.field2775 = new Buffer(var14 + var10 + class1.field14.field2721);
-                        class185.field2775.putByte(var9);
-                        class185.field2775.putInt(var10);
+                        int var16 = var12 == 0?5:9;
+                        class1.field14 = var15;
+                        class185.field2775 = new Buffer(var16 + var11 + class1.field14.field2721);
+                        class185.field2775.putByte(var12);
+                        class185.field2775.putInt(var11);
                         class185.field2776 = 8;
                         class185.field2773.offset = 0;
                      } else if(class185.field2776 == 0) {
@@ -150,46 +138,46 @@ public class class165 {
                         }
                      }
                   } else {
-                     var6 = class185.field2775.payload.length - class1.field14.field2721;
-                     var7 = 512 - class185.field2776;
-                     if(var7 > var6 - class185.field2775.offset) {
-                        var7 = var6 - class185.field2775.offset;
+                     var8 = class185.field2775.payload.length - class1.field14.field2721;
+                     var9 = 512 - class185.field2776;
+                     if(var9 > var8 - class185.field2775.offset) {
+                        var9 = var8 - class185.field2775.offset;
                      }
 
-                     if(var7 > var16) {
-                        var7 = var16;
+                     if(var9 > var6) {
+                        var9 = var6;
                      }
 
-                     class185.field2770.method2104(class185.field2775.payload, class185.field2775.offset, var7);
+                     class185.field2770.method2104(class185.field2775.payload, class185.field2775.offset, var9);
                      if(class185.field2780 != 0) {
-                        for(var8 = 0; var8 < var7; ++var8) {
-                           class185.field2775.payload[var8 + class185.field2775.offset] ^= class185.field2780;
+                        for(var10 = 0; var10 < var9; ++var10) {
+                           class185.field2775.payload[var10 + class185.field2775.offset] ^= class185.field2780;
                         }
                      }
 
-                     class185.field2775.offset += var7;
-                     class185.field2776 += var7;
-                     if(class185.field2775.offset == var6) {
+                     class185.field2775.offset += var9;
+                     class185.field2776 += var9;
+                     if(class185.field2775.offset == var8) {
                         if(class1.field14.hash == 16711935L) {
                            class149.field2064 = class185.field2775;
 
-                           for(var8 = 0; var8 < 256; ++var8) {
-                              IndexData var17 = class185.field2779[var8];
-                              if(var17 != null) {
-                                 class149.field2064.offset = var8 * 8 + 5;
-                                 var10 = class149.field2064.readInt();
-                                 int var18 = class149.field2064.readInt();
-                                 var17.method3420(var10, var18);
+                           for(var10 = 0; var10 < 256; ++var10) {
+                              IndexData var20 = class185.field2779[var10];
+                              if(var20 != null) {
+                                 class149.field2064.offset = var10 * 8 + 5;
+                                 var11 = class149.field2064.readInt();
+                                 int var21 = class149.field2064.readInt();
+                                 var20.method3420(var11, var21);
                               }
                            }
                         } else {
                            class185.field2764.reset();
-                           class185.field2764.update(class185.field2775.payload, 0, var6);
-                           var8 = (int)class185.field2764.getValue();
-                           if(var8 != class1.field14.field2722) {
+                           class185.field2764.update(class185.field2775.payload, 0, var8);
+                           var10 = (int)class185.field2764.getValue();
+                           if(var10 != class1.field14.field2722) {
                               try {
                                  class185.field2770.method2113();
-                              } catch (Exception var20) {
+                              } catch (Exception var18) {
                                  ;
                               }
 
@@ -226,10 +214,10 @@ public class class165 {
 
                return true;
             }
-         } catch (IOException var21) {
+         } catch (IOException var19) {
             try {
                class185.field2770.method2113();
-            } catch (Exception var19) {
+            } catch (Exception var17) {
                ;
             }
 
@@ -292,5 +280,18 @@ public class class165 {
          class3.method19(true);
          class41.field860 = false;
       }
+
+   }
+
+   static {
+      int var0 = 2;
+
+      for(int var1 = 0; var1 < 32; ++var1) {
+         field2182[var1] = var0 - 1;
+         var0 += var0;
+      }
+
+      settings = new int[2000];
+      widgetSettings = new int[2000];
    }
 }

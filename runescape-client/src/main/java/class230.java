@@ -166,25 +166,25 @@ public class class230 extends Node {
    )
    public int method4271() {
       byte var1 = 38;
-      String var4 = this.field3273;
-      int var3 = var4.length() + 2;
-      int var20 = var1 + var3;
-      String var7 = this.field3288;
-      int var6 = var7.length() + 2;
-      var20 += var6;
-      String var10 = this.field3289;
-      int var9 = var10.length() + 2;
-      var20 += var9;
-      String var13 = this.field3290;
-      int var12 = var13.length() + 2;
-      var20 += var12;
-      String var16 = this.field3268;
-      int var15 = var16.length() + 2;
-      var20 += var15;
-      String var19 = this.field3296;
-      int var18 = var19.length() + 2;
-      var20 += var18;
-      return var20;
+      String var2 = this.field3273;
+      int var3 = var2.length() + 2;
+      int var4 = var1 + var3;
+      String var5 = this.field3288;
+      int var6 = var5.length() + 2;
+      var4 += var6;
+      String var7 = this.field3289;
+      int var8 = var7.length() + 2;
+      var4 += var8;
+      String var9 = this.field3290;
+      int var10 = var9.length() + 2;
+      var4 += var10;
+      String var11 = this.field3268;
+      int var12 = var11.length() + 2;
+      var4 += var12;
+      String var13 = this.field3296;
+      int var14 = var13.length() + 2;
+      var4 += var14;
+      return var4;
    }
 
    @ObfuscatedSignature(
@@ -205,14 +205,14 @@ public class class230 extends Node {
       String var2;
       try {
          var2 = System.getProperty("os.arch").toLowerCase();
-      } catch (Exception var13) {
+      } catch (Exception var12) {
          var2 = "";
       }
 
       String var3;
       try {
          var3 = System.getProperty("os.version").toLowerCase();
-      } catch (Exception var12) {
+      } catch (Exception var11) {
          var3 = "";
       }
 
@@ -222,7 +222,7 @@ public class class230 extends Node {
       try {
          var4 = System.getProperty("java.vendor");
          var5 = System.getProperty("java.version");
-      } catch (Exception var11) {
+      } catch (Exception var10) {
          ;
       }
 
@@ -284,57 +284,57 @@ public class class230 extends Node {
          this.field3278 = 4;
       }
 
-      int var9 = 2;
+      int var6 = 2;
       int var7 = 0;
 
       char var8;
       try {
-         while(var9 < var5.length()) {
-            var8 = var5.charAt(var9);
+         while(var6 < var5.length()) {
+            var8 = var5.charAt(var6);
             if(var8 < 48 || var8 > 57) {
                break;
             }
 
             var7 = var8 - 48 + var7 * 10;
-            ++var9;
-         }
-      } catch (Exception var16) {
-         ;
-      }
-
-      this.field3279 = var7;
-      var9 = var5.indexOf(46, 2) + 1;
-      var7 = 0;
-
-      try {
-         while(var9 < var5.length()) {
-            var8 = var5.charAt(var9);
-            if(var8 < 48 || var8 > 57) {
-               break;
-            }
-
-            var7 = var7 * 10 + (var8 - 48);
-            ++var9;
+            ++var6;
          }
       } catch (Exception var15) {
          ;
       }
 
-      this.field3298 = var7;
-      var9 = var5.indexOf(95, 4) + 1;
+      this.field3279 = var7;
+      var6 = var5.indexOf(46, 2) + 1;
       var7 = 0;
 
       try {
-         while(var9 < var5.length()) {
-            var8 = var5.charAt(var9);
+         while(var6 < var5.length()) {
+            var8 = var5.charAt(var6);
+            if(var8 < 48 || var8 > 57) {
+               break;
+            }
+
+            var7 = var7 * 10 + (var8 - 48);
+            ++var6;
+         }
+      } catch (Exception var14) {
+         ;
+      }
+
+      this.field3298 = var7;
+      var6 = var5.indexOf(95, 4) + 1;
+      var7 = 0;
+
+      try {
+         while(var6 < var5.length()) {
+            var8 = var5.charAt(var6);
             if(var8 < 48 || var8 > 57) {
                break;
             }
 
             var7 = var8 - 48 + var7 * 10;
-            ++var9;
+            ++var6;
          }
-      } catch (Exception var14) {
+      } catch (Exception var13) {
          ;
       }
 
@@ -352,11 +352,11 @@ public class class230 extends Node {
          this.field3273 = "";
       }
 
-      if(null == this.field3288) {
+      if(this.field3288 == null) {
          this.field3288 = "";
       }
 
-      if(null == this.field3289) {
+      if(this.field3289 == null) {
          this.field3289 = "";
       }
 
@@ -368,7 +368,7 @@ public class class230 extends Node {
          this.field3268 = "";
       }
 
-      if(null == this.field3296) {
+      if(this.field3296 == null) {
          this.field3296 = "";
       }
 

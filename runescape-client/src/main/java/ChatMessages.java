@@ -68,22 +68,22 @@ public class ChatMessages {
 
       int var1;
       for(var1 = 0; var1 < this.field939.length; ++var1) {
-         class188 var3 = (class188)class188.field2795.get((long)var1);
-         class188 var2;
-         if(null != var3) {
-            var2 = var3;
+         class188 var2 = (class188)class188.field2795.get((long)var1);
+         class188 var3;
+         if(var2 != null) {
+            var3 = var2;
          } else {
             byte[] var4 = class188.field2797.getConfigData(19, var1);
-            var3 = new class188();
-            if(null != var4) {
-               var3.method3500(new Buffer(var4));
+            var2 = new class188();
+            if(var4 != null) {
+               var2.method3500(new Buffer(var4));
             }
 
-            class188.field2795.put(var3, (long)var1);
-            var2 = var3;
+            class188.field2795.put(var2, (long)var1);
+            var3 = var2;
          }
 
-         this.field937[var1] = var2.field2794;
+         this.field937[var1] = var3.field2794;
       }
 
       this.field936 = new boolean[this.messages.length];
@@ -125,39 +125,39 @@ public class ChatMessages {
 
          for(int var5 = 0; var5 < this.messages.length; ++var5) {
             if(this.field936[var5] && this.messages[var5] != null) {
-               var2 += 2 + class72.method1439(this.messages[var5]);
+               var2 += class72.method1439(this.messages[var5]) + 2;
                ++var4;
             }
          }
 
-         Buffer var9 = new Buffer(var2);
-         var9.putByte(1);
-         var9.putShort(var3);
+         Buffer var17 = new Buffer(var2);
+         var17.putByte(1);
+         var17.putShort(var3);
 
          int var6;
          for(var6 = 0; var6 < this.field939.length; ++var6) {
             if(this.field937[var6] && this.field939[var6] != -1) {
-               var9.putShort(var6);
-               var9.putInt(this.field939[var6]);
+               var17.putShort(var6);
+               var17.putInt(this.field939[var6]);
             }
          }
 
-         var9.putShort(var4);
+         var17.putShort(var4);
 
          for(var6 = 0; var6 < this.messages.length; ++var6) {
             if(this.field936[var6] && this.messages[var6] != null) {
-               var9.putShort(var6);
-               var9.method2931(this.messages[var6]);
+               var17.putShort(var6);
+               var17.method2931(this.messages[var6]);
             }
          }
 
-         var1.method1447(var9.payload, 0, var9.offset);
-      } catch (Exception var17) {
+         var1.method1447(var17.payload, 0, var17.offset);
+      } catch (Exception var15) {
          ;
       } finally {
          try {
             var1.method1448();
-         } catch (Exception var16) {
+         } catch (Exception var14) {
             ;
          }
 
@@ -239,61 +239,61 @@ public class ChatMessages {
    void method902() {
       FileOnDisk var1 = this.method883(false);
 
-      label191: {
+      label196: {
          try {
             byte[] var2 = new byte[(int)var1.method1449()];
 
-            int var4;
-            for(int var3 = 0; var3 < var2.length; var3 += var4) {
-               var4 = var1.method1450(var2, var3, var2.length - var3);
-               if(var4 == -1) {
+            int var3;
+            for(int var4 = 0; var4 < var2.length; var4 += var3) {
+               var3 = var1.method1450(var2, var4, var2.length - var4);
+               if(var3 == -1) {
                   throw new EOFException();
                }
             }
 
-            Buffer var13 = new Buffer(var2);
-            if(var13.payload.length - var13.offset < 1) {
+            Buffer var23 = new Buffer(var2);
+            if(var23.payload.length - var23.offset >= 1) {
+               int var5 = var23.readUnsignedByte();
+               if(var5 >= 0 && var5 <= 1) {
+                  int var6 = var23.readUnsignedShort();
+
+                  int var7;
+                  int var8;
+                  int var9;
+                  for(var7 = 0; var7 < var6; ++var7) {
+                     var8 = var23.readUnsignedShort();
+                     var9 = var23.readInt();
+                     if(this.field937[var8]) {
+                        this.field939[var8] = var9;
+                     }
+                  }
+
+                  var7 = var23.readUnsignedShort();
+                  var8 = 0;
+
+                  while(true) {
+                     if(var8 >= var7) {
+                        break label196;
+                     }
+
+                     var9 = var23.readUnsignedShort();
+                     String var10 = var23.readString();
+                     if(this.field936[var9]) {
+                        this.messages[var9] = var10;
+                     }
+
+                     ++var8;
+                  }
+               }
+
                return;
             }
-
-            int var14 = var13.readUnsignedByte();
-            if(var14 >= 0 && var14 <= 1) {
-               int var15 = var13.readUnsignedShort();
-
-               int var7;
-               int var8;
-               int var9;
-               for(var7 = 0; var7 < var15; ++var7) {
-                  var8 = var13.readUnsignedShort();
-                  var9 = var13.readInt();
-                  if(this.field937[var8]) {
-                     this.field939[var8] = var9;
-                  }
-               }
-
-               var7 = var13.readUnsignedShort();
-               var8 = 0;
-
-               while(true) {
-                  if(var8 >= var7) {
-                     break label191;
-                  }
-
-                  var9 = var13.readUnsignedShort();
-                  String var10 = var13.readString();
-                  if(this.field936[var9]) {
-                     this.messages[var9] = var10;
-                  }
-
-                  ++var8;
-               }
-            }
-         } catch (Exception var24) {
-            break label191;
+         } catch (Exception var21) {
+            break label196;
          } finally {
             try {
                var1.method1448();
-            } catch (Exception var23) {
+            } catch (Exception var20) {
                ;
             }
 
@@ -327,16 +327,13 @@ public class ChatMessages {
             VertexNormal.gameDraw(class162.field2170, -1412584499, var1, var2, var3, var4, class149.field2062, MessageNode.field245, var7);
             class162.field2170 = null;
          }
-
+      } else if(var7 != -1) {
+         Client.field508[var7] = true;
       } else {
-         if(var7 != -1) {
-            Client.field508[var7] = true;
-         } else {
-            for(int var8 = 0; var8 < 100; ++var8) {
-               Client.field508[var8] = true;
-            }
+         for(int var8 = 0; var8 < 100; ++var8) {
+            Client.field508[var8] = true;
          }
-
       }
+
    }
 }

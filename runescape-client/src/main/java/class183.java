@@ -20,29 +20,40 @@ public class class183 implements Runnable {
    public void run() {
       try {
          while(true) {
+            Deque var1 = field2746;
             Deque var2 = field2746;
-            class180 var1;
+            Deque var4 = field2746;
+            class180 var3;
             synchronized(field2746) {
-               var1 = (class180)field2746.method2464();
+               var3 = (class180)field2746.method2464();
             }
 
-            Object var14;
-            if(null != var1) {
-               if(var1.field2719 == 0) {
-                  var1.field2716.method2303((int)var1.hash, var1.field2715, var1.field2715.length);
-                  var2 = field2746;
+            Object var18;
+            Object var5;
+            if(var3 != null) {
+               Deque var19;
+               Deque var7;
+               if(var3.field2719 == 0) {
+                  var3.field2716.method2303((int)var3.hash, var3.field2715, var3.field2715.length);
+                  var1 = field2746;
+                  var19 = field2746;
+                  var7 = field2746;
                   synchronized(field2746) {
-                     var1.unlink();
+                     var3.unlink();
                   }
-               } else if(var1.field2719 == 1) {
-                  var1.field2715 = var1.field2716.method2310((int)var1.hash);
-                  var2 = field2746;
+               } else if(var3.field2719 == 1) {
+                  var3.field2715 = var3.field2716.method2310((int)var3.hash);
+                  var1 = field2746;
+                  var19 = field2746;
+                  var7 = field2746;
                   synchronized(field2746) {
-                     field2745.method2459(var1);
+                     field2745.method2459(var3);
                   }
                }
 
-               var14 = field2748;
+               var5 = field2748;
+               var18 = field2748;
+               Object var20 = field2748;
                synchronized(field2748) {
                   if(field2747 <= 1) {
                      field2747 = 0;
@@ -54,7 +65,9 @@ public class class183 implements Runnable {
                }
             } else {
                class115.method2300(100L);
-               var14 = field2748;
+               var5 = field2748;
+               var18 = field2748;
+               Object var6 = field2748;
                synchronized(field2748) {
                   if(field2747 <= 1) {
                      field2747 = 0;
@@ -66,8 +79,8 @@ public class class183 implements Runnable {
                }
             }
          }
-      } catch (Exception var13) {
-         GameObject.method1958((String)null, var13);
+      } catch (Exception var17) {
+         GameObject.method1958((String)null, var17);
       }
    }
 
@@ -77,14 +90,14 @@ public class class183 implements Runnable {
       garbageValue = "224888880"
    )
    static final void method3409(int var0, int var1, int var2, int var3, SpritePixels var4, class164 var5) {
-      if(null != var4) {
+      if(var4 != null) {
          int var6 = Client.mapAngle + Client.mapScale & 2047;
          int var7 = var3 * var3 + var2 * var2;
          if(var7 <= 6400) {
             int var8 = class84.field1475[var6];
             int var9 = class84.field1469[var6];
             var8 = var8 * 256 / (Client.mapScaleDelta + 256);
-            var9 = 256 * var9 / (256 + Client.mapScaleDelta);
+            var9 = var9 * 256 / (Client.mapScaleDelta + 256);
             int var10 = var2 * var9 + var8 * var3 >> 16;
             int var11 = var3 * var9 - var8 * var2 >> 16;
             if(var7 > 2500) {
@@ -92,9 +105,9 @@ public class class183 implements Runnable {
             } else {
                var4.method4143(var5.field2174 / 2 + var0 + var10 - var4.maxWidth / 2, var5.field2172 / 2 + var1 - var11 - var4.maxHeight / 2);
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("i")
@@ -190,7 +203,7 @@ public class class183 implements Runnable {
          }
       }
 
-      if(null != Client.field467) {
+      if(Client.field467 != null) {
          class22.method197(Client.field467);
          Client.field467 = null;
       }
@@ -203,15 +216,15 @@ public class class183 implements Runnable {
       garbageValue = "756595681"
    )
    public static void method3415(class103 var0, Object var1) {
-      if(null != var0.field1696) {
+      if(var0.field1696 != null) {
          for(int var2 = 0; var2 < 50 && var0.field1696.peekEvent() != null; ++var2) {
             class115.method2300(1L);
          }
 
-         if(null != var1) {
+         if(var1 != null) {
             var0.field1696.postEvent(new ActionEvent(var1, 1001, "dummy"));
          }
-
       }
+
    }
 }

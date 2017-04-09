@@ -52,5 +52,6 @@ public class class39 {
          Client.secretCipherBuffer1.putByte(class72.method1439(var0));
          Client.secretCipherBuffer1.method2931(var0);
       }
+
    }
 }

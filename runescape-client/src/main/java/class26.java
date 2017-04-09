@@ -87,23 +87,23 @@ public class class26 {
       if(!VertexNormal.method1667(var0, var1, var2)) {
          return null;
       } else {
-         SpritePixels var4 = new SpritePixels();
-         var4.maxWidth = class225.field3231;
-         var4.maxHeight = class146.field2038;
-         var4.offsetX = class225.field3230[0];
-         var4.offsetY = ItemComposition.field3003[0];
-         var4.width = class225.field3232[0];
-         var4.height = ChatLineBuffer.field994[0];
-         int var5 = var4.width * var4.height;
-         byte[] var6 = BufferProvider.field3199[0];
-         var4.image = new int[var5];
+         SpritePixels var3 = new SpritePixels();
+         var3.maxWidth = class225.field3231;
+         var3.maxHeight = class146.field2038;
+         var3.offsetX = class225.field3230[0];
+         var3.offsetY = ItemComposition.field3003[0];
+         var3.width = class225.field3232[0];
+         var3.height = ChatLineBuffer.field994[0];
+         int var4 = var3.width * var3.height;
+         byte[] var5 = BufferProvider.field3199[0];
+         var3.image = new int[var4];
 
-         for(int var7 = 0; var7 < var5; ++var7) {
-            var4.image[var7] = class225.field3234[var6[var7] & 255];
+         for(int var6 = 0; var6 < var4; ++var6) {
+            var3.image[var6] = class225.field3234[var5[var6] & 255];
          }
 
          WidgetNode.method172();
-         return var4;
+         return var3;
       }
    }
 

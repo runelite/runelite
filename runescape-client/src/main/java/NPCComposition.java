@@ -167,11 +167,11 @@ public class NPCComposition extends CacheableNode {
    )
    public final Model method3739(Sequence var1, int var2, Sequence var3, int var4) {
       if(this.configs != null) {
-         NPCComposition var12 = this.method3741();
-         return null == var12?null:var12.method3739(var1, var2, var3, var4);
+         NPCComposition var11 = this.method3741();
+         return var11 == null?null:var11.method3739(var1, var2, var3, var4);
       } else {
          Model var5 = (Model)npcModelCache.get((long)this.id);
-         if(null == var5) {
+         if(var5 == null) {
             boolean var6 = false;
 
             for(int var7 = 0; var7 < this.models.length; ++var7) {
@@ -184,42 +184,42 @@ public class NPCComposition extends CacheableNode {
                return null;
             }
 
-            ModelData[] var8 = new ModelData[this.models.length];
+            ModelData[] var12 = new ModelData[this.models.length];
 
-            int var9;
-            for(var9 = 0; var9 < this.models.length; ++var9) {
-               var8[var9] = ModelData.method1495(field3036, this.models[var9], 0);
+            int var8;
+            for(var8 = 0; var8 < this.models.length; ++var8) {
+               var12[var8] = ModelData.method1495(field3036, this.models[var8], 0);
             }
 
-            ModelData var11;
-            if(var8.length == 1) {
-               var11 = var8[0];
+            ModelData var9;
+            if(var12.length == 1) {
+               var9 = var12[0];
             } else {
-               var11 = new ModelData(var8, var8.length);
+               var9 = new ModelData(var12, var12.length);
             }
 
             if(this.field3021 != null) {
-               for(var9 = 0; var9 < this.field3021.length; ++var9) {
-                  var11.method1509(this.field3021[var9], this.field3006[var9]);
+               for(var8 = 0; var8 < this.field3021.length; ++var8) {
+                  var9.method1509(this.field3021[var8], this.field3006[var8]);
                }
             }
 
-            if(null != this.field3023) {
-               for(var9 = 0; var9 < this.field3023.length; ++var9) {
-                  var11.method1510(this.field3023[var9], this.field3024[var9]);
+            if(this.field3023 != null) {
+               for(var8 = 0; var8 < this.field3023.length; ++var8) {
+                  var9.method1510(this.field3023[var8], this.field3024[var8]);
                }
             }
 
-            var5 = var11.method1524(this.field3013 + 64, 850 + this.field3032, -30, -50, -30);
+            var5 = var9.method1524(this.field3013 + 64, this.field3032 + 850, -30, -50, -30);
             npcModelCache.put(var5, (long)this.id);
          }
 
          Model var10;
-         if(var1 != null && null != var3) {
+         if(var1 != null && var3 != null) {
             var10 = var1.method3792(var5, var2, var3, var4);
-         } else if(null != var1) {
+         } else if(var1 != null) {
             var10 = var1.method3789(var5, var2);
-         } else if(null != var3) {
+         } else if(var3 != null) {
             var10 = var3.method3789(var5, var4);
          } else {
             var10 = var5.method1584(true);
@@ -240,49 +240,49 @@ public class NPCComposition extends CacheableNode {
    )
    public final ModelData method3740() {
       if(this.configs != null) {
-         NPCComposition var1 = this.method3741();
-         return null == var1?null:var1.method3740();
-      } else if(null == this.field3005) {
+         NPCComposition var5 = this.method3741();
+         return var5 == null?null:var5.method3740();
+      } else if(this.field3005 == null) {
          return null;
       } else {
-         boolean var5 = false;
+         boolean var1 = false;
 
          for(int var2 = 0; var2 < this.field3005.length; ++var2) {
             if(!field3036.method3338(this.field3005[var2], 0)) {
-               var5 = true;
+               var1 = true;
             }
          }
 
-         if(var5) {
+         if(var1) {
             return null;
          } else {
-            ModelData[] var7 = new ModelData[this.field3005.length];
+            ModelData[] var6 = new ModelData[this.field3005.length];
 
-            for(int var6 = 0; var6 < this.field3005.length; ++var6) {
-               var7[var6] = ModelData.method1495(field3036, this.field3005[var6], 0);
+            for(int var3 = 0; var3 < this.field3005.length; ++var3) {
+               var6[var3] = ModelData.method1495(field3036, this.field3005[var3], 0);
             }
 
-            ModelData var3;
-            if(var7.length == 1) {
-               var3 = var7[0];
+            ModelData var7;
+            if(var6.length == 1) {
+               var7 = var6[0];
             } else {
-               var3 = new ModelData(var7, var7.length);
+               var7 = new ModelData(var6, var6.length);
             }
 
             int var4;
-            if(null != this.field3021) {
+            if(this.field3021 != null) {
                for(var4 = 0; var4 < this.field3021.length; ++var4) {
-                  var3.method1509(this.field3021[var4], this.field3006[var4]);
+                  var7.method1509(this.field3021[var4], this.field3006[var4]);
                }
             }
 
-            if(null != this.field3023) {
+            if(this.field3023 != null) {
                for(var4 = 0; var4 < this.field3023.length; ++var4) {
-                  var3.method1510(this.field3023[var4], this.field3024[var4]);
+                  var7.method1510(this.field3023[var4], this.field3024[var4]);
                }
             }
 
-            return var3;
+            return var7;
          }
       }
    }
@@ -316,7 +316,7 @@ public class NPCComposition extends CacheableNode {
       garbageValue = "1435314390"
    )
    public boolean method3742() {
-      if(null == this.configs) {
+      if(this.configs == null) {
          return true;
       } else {
          int var1 = -1;

@@ -67,6 +67,8 @@ public class Varbit extends CacheableNode {
    )
    public static void method3598() {
       class115 var0 = class115.mouse;
+      class115 var1 = class115.mouse;
+      class115 var2 = class115.mouse;
       synchronized(class115.mouse) {
          class115.field1811 = class115.field1829;
          class115.field1817 = class115.field1814;

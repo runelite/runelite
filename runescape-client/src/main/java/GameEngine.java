@@ -193,27 +193,27 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          this.method2196();
          this.vmethod2159();
 
-         Object var9;
+         Object var8;
          try {
-            var9 = new class98();
-         } catch (Throwable var7) {
-            var9 = new class99();
+            var8 = new class98();
+         } catch (Throwable var6) {
+            var8 = new class99();
          }
 
-         FaceNormal.field1590 = (class109)var9;
+         FaceNormal.field1590 = (class109)var8;
 
          while(field1784 == 0L || class45.method867() < field1784) {
             FaceNormal.field1583 = FaceNormal.field1590.vmethod2091(field1798, field1788);
 
-            for(int var6 = 0; var6 < FaceNormal.field1583; ++var6) {
+            for(int var9 = 0; var9 < FaceNormal.field1583; ++var9) {
                this.method2150();
             }
 
             this.method2158();
             class183.method3415(class108.field1755, Projectile.canvas);
          }
-      } catch (Exception var8) {
-         GameObject.method1958((String)null, var8);
+      } catch (Exception var7) {
+         GameObject.method1958((String)null, var7);
          this.method2162("crash");
       }
 
@@ -250,6 +250,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       if(field1785 == this && !field1783) {
          field1784 = class45.method867() + 4000L;
       }
+
    }
 
    public void destroy() {
@@ -258,6 +259,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          class115.method2300(5000L);
          this.method2180();
       }
+
    }
 
    public final void update(Graphics var1) {
@@ -293,8 +295,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       field1791[class41.field834] = var2;
       class41.field834 = class41.field834 + 1 & 31;
       if(var4 != 0L && var2 > var4) {
-         int var7 = (int)(var2 - var4);
-         FPS = ((var7 >> 1) + 32000) / var7;
+         int var6 = (int)(var2 - var4);
+         FPS = ((var6 >> 1) + 32000) / var6;
       }
 
       if(++field1796 - 1 > 50) {
@@ -303,8 +305,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          Projectile.canvas.setSize(class32.field755, class168.field2207);
          Projectile.canvas.setVisible(true);
          if(CollisionData.field1860 == var1) {
-            Insets var6 = CollisionData.field1860.getInsets();
-            Projectile.canvas.setLocation(var6.left + field1792, field1782 + var6.top);
+            Insets var7 = CollisionData.field1860.getInsets();
+            Projectile.canvas.setLocation(var7.left + field1792, field1782 + var7.top);
          } else {
             Projectile.canvas.setLocation(field1792, field1782);
          }
@@ -343,8 +345,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                field1794 = true;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("qt")
@@ -362,8 +364,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          } catch (Exception var3) {
             ;
          }
-
       }
+
    }
 
    @ObfuscatedName("qx")
@@ -424,7 +426,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             }
          }
 
-         if(null != class108.field1755) {
+         if(class108.field1755 != null) {
             try {
                class108.field1755.method2001();
             } catch (Exception var2) {
@@ -434,6 +436,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
          this.vmethod2188();
       }
+
    }
 
    @ObfuscatedName("r")
@@ -458,7 +461,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       class32.field755 = Math.max(var1.getWidth(), class40.field831);
       class168.field2207 = Math.max(var1.getHeight(), field1802);
       Insets var2;
-      if(null != CollisionData.field1860) {
+      if(CollisionData.field1860 != null) {
          var2 = CollisionData.field1860.getInsets();
          class32.field755 -= var2.right + var2.left;
          class168.field2207 -= var2.bottom + var2.top;
@@ -499,6 +502,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       if(field1785 == this && !field1783) {
          field1784 = 0L;
       }
+
    }
 
    public final void windowDeactivated(WindowEvent var1) {

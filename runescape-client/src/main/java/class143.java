@@ -31,22 +31,22 @@ public class class143 extends class68 {
    protected void vmethod2755(int[] var1, int var2, int var3) {
       this.field2023.vmethod2755(var1, var2, var3);
 
-      for(class140 var6 = (class140)this.field2024.method2464(); null != var6; var6 = (class140)this.field2024.method2472()) {
-         if(!this.field2027.method2587(var6)) {
-            int var4 = var2;
-            int var5 = var3;
+      for(class140 var4 = (class140)this.field2024.method2464(); var4 != null; var4 = (class140)this.field2024.method2472()) {
+         if(!this.field2027.method2587(var4)) {
+            int var5 = var2;
+            int var6 = var3;
 
             do {
-               if(var5 <= var6.field1994) {
-                  this.method2757(var6, var1, var4, var5, var5 + var4);
-                  var6.field1994 -= var5;
+               if(var6 <= var4.field1994) {
+                  this.method2757(var4, var1, var5, var6, var6 + var5);
+                  var4.field1994 -= var6;
                   break;
                }
 
-               this.method2757(var6, var1, var4, var6.field1994, var5 + var4);
-               var4 += var6.field1994;
-               var5 -= var6.field1994;
-            } while(!this.field2027.method2588(var6, var1, var4, var5));
+               this.method2757(var4, var1, var5, var4.field1994, var6 + var5);
+               var5 += var4.field1994;
+               var6 -= var4.field1994;
+            } while(!this.field2027.method2588(var4, var1, var5, var6));
          }
       }
 
@@ -56,20 +56,20 @@ public class class143 extends class68 {
    protected void vmethod2756(int var1) {
       this.field2023.vmethod2756(var1);
 
-      for(class140 var3 = (class140)this.field2024.method2464(); var3 != null; var3 = (class140)this.field2024.method2472()) {
-         if(!this.field2027.method2587(var3)) {
-            int var2 = var1;
+      for(class140 var2 = (class140)this.field2024.method2464(); var2 != null; var2 = (class140)this.field2024.method2472()) {
+         if(!this.field2027.method2587(var2)) {
+            int var3 = var1;
 
             do {
-               if(var2 <= var3.field1994) {
-                  this.method2758(var3, var2);
-                  var3.field1994 -= var2;
+               if(var3 <= var2.field1994) {
+                  this.method2758(var2, var3);
+                  var2.field1994 -= var3;
                   break;
                }
 
-               this.method2758(var3, var3.field1994);
-               var2 -= var3.field1994;
-            } while(!this.field2027.method2588(var3, (int[])null, 0, var2));
+               this.method2758(var2, var2.field1994);
+               var3 -= var2.field1994;
+            } while(!this.field2027.method2588(var2, (int[])null, 0, var3));
          }
       }
 
@@ -85,7 +85,7 @@ public class class143 extends class68 {
          int var6 = this.field2027.field1963[var1.field1990] / class57.field1077;
 
          while(true) {
-            int var7 = (1048575 + var6 - var1.field1996) / var6;
+            int var7 = (var6 + 1048575 - var1.field1996) / var6;
             if(var7 > var4) {
                var1.field1996 += var6 * var4;
                break;
@@ -133,7 +133,7 @@ public class class143 extends class68 {
    void method2758(class140 var1, int var2) {
       if((this.field2027.field1958[var1.field1990] & 4) != 0 && var1.field1983 < 0) {
          int var3 = this.field2027.field1963[var1.field1990] / class57.field1077;
-         int var4 = (1048575 + var3 - var1.field1996) / var3;
+         int var4 = (var3 + 1048575 - var1.field1996) / var3;
          var1.field1996 = var3 * var2 + var1.field1996 & 1048575;
          if(var4 <= var2) {
             if(this.field2027.field1969[var1.field1990] == 0) {
@@ -162,7 +162,7 @@ public class class143 extends class68 {
    @ObfuscatedName("l")
    protected class68 vmethod2768() {
       class140 var1 = (class140)this.field2024.method2464();
-      return (class68)(null == var1?null:(var1.field1993 != null?var1.field1993:this.vmethod2753()));
+      return (class68)(var1 == null?null:(var1.field1993 != null?var1.field1993:this.vmethod2753()));
    }
 
    @ObfuscatedName("cw")
@@ -204,7 +204,7 @@ public class class143 extends class68 {
          int var5 = var0 - Client.field324 + Client.field477.scrollX;
          int var6 = Client.field477.scrollY + (var1 - Client.field483);
          class18 var7;
-         if(null != Client.field476.field2308 && Client.field487) {
+         if(Client.field476.field2308 != null && Client.field487) {
             var7 = new class18();
             var7.field207 = Client.field476;
             var7.field198 = var5;
@@ -235,27 +235,24 @@ public class class143 extends class68 {
                   Client.secretCipherBuffer1.method2908(Client.field476.id);
                }
             } else {
-               int var11 = World.method635();
-               if(Client.menuOptionCount > 2 && (Client.field439 == 1 && !class187.method3495() || class177.method3324(var11))) {
+               int var8 = World.method635();
+               if(Client.menuOptionCount > 2 && (Client.field439 == 1 && !class187.method3495() || class177.method3324(var8))) {
                   class41.method815(Client.field454 + Client.field478, Client.field491 + Client.field479);
                } else if(Client.menuOptionCount > 0) {
-                  int var8 = Client.field454 + Client.field478;
-                  int var9 = Client.field491 + Client.field479;
-                  class38 var10 = GameObject.field1645;
-                  Item.menuAction(var10.field820, var10.field816, var10.field817, var10.field818, var10.field819, var10.field819, var8, var9);
+                  int var9 = Client.field454 + Client.field478;
+                  int var10 = Client.field491 + Client.field479;
+                  class38 var11 = GameObject.field1645;
+                  Item.menuAction(var11.field820, var11.field816, var11.field817, var11.field818, var11.field819, var11.field819, var9, var10);
                   GameObject.field1645 = null;
                }
             }
 
             Client.field476 = null;
          }
-
-      } else {
-         if(class44.field912 > 1) {
-            Client.field476 = null;
-         }
-
+      } else if(class44.field912 > 1) {
+         Client.field476 = null;
       }
+
    }
 
    @ObfuscatedName("f")
@@ -277,7 +274,7 @@ public class class143 extends class68 {
                var2.append('%');
                int var6 = var5 >> 4 & 15;
                if(var6 >= 10) {
-                  var2.append((char)(55 + var6));
+                  var2.append((char)(var6 + 55));
                } else {
                   var2.append((char)(var6 + 48));
                }

@@ -84,6 +84,7 @@ public class PlayerComposition {
       if(var1 != this.isFemale) {
          this.method3231((int[])null, this.bodyPartColours, var1, -1);
       }
+
    }
 
    @ObfuscatedName("o")
@@ -165,7 +166,7 @@ public class PlayerComposition {
       } else {
          long var5 = this.hash;
          int[] var7 = this.equipmentIds;
-         if(null != var1 && (var1.leftHandItem >= 0 || var1.rightHandItem >= 0)) {
+         if(var1 != null && (var1.leftHandItem >= 0 || var1.rightHandItem >= 0)) {
             var7 = new int[12];
 
             for(int var8 = 0; var8 < 12; ++var8) {
@@ -183,86 +184,86 @@ public class PlayerComposition {
             }
          }
 
-         Model var16 = (Model)field2193.get(var5);
-         if(null == var16) {
+         Model var15 = (Model)field2193.get(var5);
+         if(var15 == null) {
             boolean var9 = false;
 
-            int var11;
-            for(int var17 = 0; var17 < 12; ++var17) {
-               var11 = var7[var17];
-               if(var11 >= 256 && var11 < 512 && !RSCanvas.getKitDefinition(var11 - 256).ready()) {
+            int var10;
+            for(int var11 = 0; var11 < 12; ++var11) {
+               var10 = var7[var11];
+               if(var10 >= 256 && var10 < 512 && !RSCanvas.getKitDefinition(var10 - 256).ready()) {
                   var9 = true;
                }
 
-               if(var11 >= 512 && !class196.getItemDefinition(var11 - 512).readyWorn(this.isFemale)) {
+               if(var10 >= 512 && !class196.getItemDefinition(var10 - 512).readyWorn(this.isFemale)) {
                   var9 = true;
                }
             }
 
             if(var9) {
                if(-1L != this.field2189) {
-                  var16 = (Model)field2193.get(this.field2189);
+                  var15 = (Model)field2193.get(this.field2189);
                }
 
-               if(var16 == null) {
+               if(var15 == null) {
                   return null;
                }
             }
 
-            if(null == var16) {
-               ModelData[] var10 = new ModelData[12];
-               var11 = 0;
+            if(var15 == null) {
+               ModelData[] var17 = new ModelData[12];
+               var10 = 0;
 
-               int var13;
-               for(int var12 = 0; var12 < 12; ++var12) {
-                  var13 = var7[var12];
+               int var12;
+               for(int var13 = 0; var13 < 12; ++var13) {
+                  var12 = var7[var13];
                   ModelData var14;
-                  if(var13 >= 256 && var13 < 512) {
-                     var14 = RSCanvas.getKitDefinition(var13 - 256).getModelData();
+                  if(var12 >= 256 && var12 < 512) {
+                     var14 = RSCanvas.getKitDefinition(var12 - 256).getModelData();
                      if(var14 != null) {
-                        var10[var11++] = var14;
+                        var17[var10++] = var14;
                      }
                   }
 
-                  if(var13 >= 512) {
-                     var14 = class196.getItemDefinition(var13 - 512).getWornModelData(this.isFemale);
+                  if(var12 >= 512) {
+                     var14 = class196.getItemDefinition(var12 - 512).getWornModelData(this.isFemale);
                      if(var14 != null) {
-                        var10[var11++] = var14;
+                        var17[var10++] = var14;
                      }
                   }
                }
 
-               ModelData var15 = new ModelData(var10, var11);
+               ModelData var18 = new ModelData(var17, var10);
 
-               for(var13 = 0; var13 < 5; ++var13) {
-                  if(this.bodyPartColours[var13] < field2191[var13].length) {
-                     var15.method1509(field2190[var13], field2191[var13][this.bodyPartColours[var13]]);
+               for(var12 = 0; var12 < 5; ++var12) {
+                  if(this.bodyPartColours[var12] < field2191[var12].length) {
+                     var18.method1509(field2190[var12], field2191[var12][this.bodyPartColours[var12]]);
                   }
 
-                  if(this.bodyPartColours[var13] < GroundObject.field1321[var13].length) {
-                     var15.method1509(VertexNormal.field1446[var13], GroundObject.field1321[var13][this.bodyPartColours[var13]]);
+                  if(this.bodyPartColours[var12] < GroundObject.field1321[var12].length) {
+                     var18.method1509(VertexNormal.field1446[var12], GroundObject.field1321[var12][this.bodyPartColours[var12]]);
                   }
                }
 
-               var16 = var15.method1524(64, 850, -30, -50, -30);
-               field2193.put(var16, var5);
+               var15 = var18.method1524(64, 850, -30, -50, -30);
+               field2193.put(var15, var5);
                this.field2189 = var5;
             }
          }
 
-         if(var1 == null && null == var3) {
-            return var16;
+         if(var1 == null && var3 == null) {
+            return var15;
          } else {
-            Model var18;
-            if(null != var1 && var3 != null) {
-               var18 = var1.method3792(var16, var2, var3, var4);
-            } else if(null != var1) {
-               var18 = var1.method3789(var16, var2);
+            Model var16;
+            if(var1 != null && var3 != null) {
+               var16 = var1.method3792(var15, var2, var3, var4);
+            } else if(var1 != null) {
+               var16 = var1.method3789(var15, var2);
             } else {
-               var18 = var3.method3789(var16, var4);
+               var16 = var3.method3789(var15, var4);
             }
 
-            return var18;
+            return var16;
          }
       }
    }
@@ -273,7 +274,7 @@ public class PlayerComposition {
       garbageValue = "24734"
    )
    public int method3208() {
-      return this.field2187 == -1?(this.equipmentIds[11] << 5) + (this.equipmentIds[0] << 15) + (this.bodyPartColours[4] << 20) + (this.bodyPartColours[0] << 25) + (this.equipmentIds[8] << 10) + this.equipmentIds[1]:305419896 + class15.getNpcDefinition(this.field2187).id;
+      return this.field2187 == -1?(this.equipmentIds[11] << 5) + (this.equipmentIds[0] << 15) + (this.bodyPartColours[4] << 20) + (this.bodyPartColours[0] << 25) + (this.equipmentIds[8] << 10) + this.equipmentIds[1]:class15.getNpcDefinition(this.field2187).id + 305419896;
    }
 
    @ObfuscatedName("m")
@@ -287,14 +288,14 @@ public class PlayerComposition {
       } else {
          boolean var1 = false;
 
-         int var3;
-         for(int var2 = 0; var2 < 12; ++var2) {
-            var3 = this.equipmentIds[var2];
-            if(var3 >= 256 && var3 < 512 && !RSCanvas.getKitDefinition(var3 - 256).method3554()) {
+         int var2;
+         for(int var3 = 0; var3 < 12; ++var3) {
+            var2 = this.equipmentIds[var3];
+            if(var2 >= 256 && var2 < 512 && !RSCanvas.getKitDefinition(var2 - 256).method3554()) {
                var1 = true;
             }
 
-            if(var3 >= 512 && !class196.getItemDefinition(var3 - 512).method3697(this.isFemale)) {
+            if(var2 >= 512 && !class196.getItemDefinition(var2 - 512).method3697(this.isFemale)) {
                var1 = true;
             }
          }
@@ -303,40 +304,40 @@ public class PlayerComposition {
             return null;
          } else {
             ModelData[] var7 = new ModelData[12];
-            var3 = 0;
+            var2 = 0;
 
-            int var5;
-            for(int var8 = 0; var8 < 12; ++var8) {
-               var5 = this.equipmentIds[var8];
+            int var4;
+            for(int var5 = 0; var5 < 12; ++var5) {
+               var4 = this.equipmentIds[var5];
                ModelData var6;
-               if(var5 >= 256 && var5 < 512) {
-                  var6 = RSCanvas.getKitDefinition(var5 - 256).method3555();
-                  if(null != var6) {
-                     var7[var3++] = var6;
-                  }
-               }
-
-               if(var5 >= 512) {
-                  var6 = class196.getItemDefinition(var5 - 512).method3690(this.isFemale);
+               if(var4 >= 256 && var4 < 512) {
+                  var6 = RSCanvas.getKitDefinition(var4 - 256).method3555();
                   if(var6 != null) {
-                     var7[var3++] = var6;
+                     var7[var2++] = var6;
+                  }
+               }
+
+               if(var4 >= 512) {
+                  var6 = class196.getItemDefinition(var4 - 512).method3690(this.isFemale);
+                  if(var6 != null) {
+                     var7[var2++] = var6;
                   }
                }
             }
 
-            ModelData var4 = new ModelData(var7, var3);
+            ModelData var8 = new ModelData(var7, var2);
 
-            for(var5 = 0; var5 < 5; ++var5) {
-               if(this.bodyPartColours[var5] < field2191[var5].length) {
-                  var4.method1509(field2190[var5], field2191[var5][this.bodyPartColours[var5]]);
+            for(var4 = 0; var4 < 5; ++var4) {
+               if(this.bodyPartColours[var4] < field2191[var4].length) {
+                  var8.method1509(field2190[var4], field2191[var4][this.bodyPartColours[var4]]);
                }
 
-               if(this.bodyPartColours[var5] < GroundObject.field1321[var5].length) {
-                  var4.method1509(VertexNormal.field1446[var5], GroundObject.field1321[var5][this.bodyPartColours[var5]]);
+               if(this.bodyPartColours[var4] < GroundObject.field1321[var4].length) {
+                  var8.method1509(VertexNormal.field1446[var4], GroundObject.field1321[var4][this.bodyPartColours[var4]]);
                }
             }
 
-            return var4;
+            return var8;
          }
       }
    }
@@ -354,25 +355,30 @@ public class PlayerComposition {
 
             KitDefinition var4;
             do {
-               if(!var2) {
-                  --var3;
-                  if(var3 < 0) {
-                     var3 = KitDefinition.field2831 - 1;
-                  }
-               } else {
-                  ++var3;
-                  if(var3 >= KitDefinition.field2831) {
-                     var3 = 0;
-                  }
-               }
+               do {
+                  do {
+                     if(!var2) {
+                        --var3;
+                        if(var3 < 0) {
+                           var3 = KitDefinition.field2831 - 1;
+                        }
+                     } else {
+                        ++var3;
+                        if(var3 >= KitDefinition.field2831) {
+                           var3 = 0;
+                        }
+                     }
 
-               var4 = RSCanvas.getKitDefinition(var3);
-            } while(var4 == null || var4.nonSelectable || var1 + (this.isFemale?7:0) != var4.bodyPartId);
+                     var4 = RSCanvas.getKitDefinition(var3);
+                  } while(var4 == null);
+               } while(var4.nonSelectable);
+            } while(var1 + (this.isFemale?7:0) != var4.bodyPartId);
 
-            this.equipmentIds[field2196[var1]] = 256 + var3;
+            this.equipmentIds[field2196[var1]] = var3 + 256;
             this.method3205();
          }
       }
+
    }
 
    @ObfuscatedName("f")

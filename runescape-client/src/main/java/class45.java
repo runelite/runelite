@@ -48,8 +48,10 @@ public class class45 {
       garbageValue = "1270322947"
    )
    public static void method864() {
-      if(null != class115.mouse) {
+      if(class115.mouse != null) {
          class115 var0 = class115.mouse;
+         class115 var1 = class115.mouse;
+         class115 var2 = class115.mouse;
          synchronized(class115.mouse) {
             class115.mouse = null;
          }
@@ -68,7 +70,7 @@ public class class45 {
          var0.field1164.field1198 = 0;
       }
 
-      for(class68 var1 = var0.vmethod2768(); null != var1; var1 = var0.vmethod2753()) {
+      for(class68 var1 = var0.vmethod2768(); var1 != null; var1 = var0.vmethod2753()) {
          method866(var1);
       }
 
@@ -102,9 +104,9 @@ public class class45 {
       File var3 = new File(class167.field2200, "preferences" + var0 + ".dat");
       if(var3.exists()) {
          try {
-            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
+            FileOnDisk var11 = new FileOnDisk(var3, "rw", 10000L);
+            return var11;
+         } catch (IOException var10) {
             ;
          }
       }
@@ -122,7 +124,7 @@ public class class45 {
          try {
             var6 = new FileOnDisk(var5, "rw", 10000L);
             return var6;
-         } catch (IOException var8) {
+         } catch (IOException var9) {
             ;
          }
       }
@@ -130,7 +132,7 @@ public class class45 {
       try {
          var6 = new FileOnDisk(var3, "rw", 10000L);
          return var6;
-      } catch (IOException var7) {
+      } catch (IOException var8) {
          throw new RuntimeException();
       }
    }

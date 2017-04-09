@@ -57,7 +57,7 @@ public class Friend {
 
          class104.field1714.method1435();
          class104.field1712.method1435();
-      } catch (Exception var2) {
+      } catch (Exception var1) {
          ;
       }
 

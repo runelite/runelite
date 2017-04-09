@@ -117,8 +117,8 @@ public final class NPC extends Actor {
       super.field651 = 0;
       super.pathX[0] = var1;
       super.pathY[0] = var2;
-      super.x = super.field622 * 64 + 128 * super.pathX[0];
-      super.y = super.field622 * 64 + 128 * super.pathY[0];
+      super.x = super.field622 * 64 + super.pathX[0] * 128;
+      super.y = super.field622 * 64 + super.pathY[0] * 128;
    }
 
    @ObfuscatedName("n")
@@ -171,7 +171,7 @@ public final class NPC extends Actor {
       garbageValue = "-230287285"
    )
    static final int method748(Widget var0, int var1) {
-      if(null != var0.dynamicValues && var1 < var0.dynamicValues.length) {
+      if(var0.dynamicValues != null && var1 < var0.dynamicValues.length) {
          try {
             int[] var2 = var0.dynamicValues[var1];
             int var3 = 0;
@@ -209,7 +209,7 @@ public final class NPC extends Actor {
                   var11 = var2[var4++];
                   if(var11 != -1 && (!class196.getItemDefinition(var11).isMembers || Client.isMembers)) {
                      for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(var10.itemIds[var12] == 1 + var11) {
+                        if(var10.itemIds[var12] == var11 + 1) {
                            var7 += var10.itemQuantities[var12];
                         }
                      }
@@ -247,7 +247,7 @@ public final class NPC extends Actor {
                   var11 = var2[var4++];
                   if(var11 != -1 && (!class196.getItemDefinition(var11).isMembers || Client.isMembers)) {
                      for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(var10.itemIds[var12] == 1 + var11) {
+                        if(var10.itemIds[var12] == var11 + 1) {
                            var7 = 999999999;
                            break;
                         }
@@ -335,7 +335,7 @@ public final class NPC extends Actor {
    )
    static int method749(int var0) {
       MessageNode var1 = (MessageNode)class47.field949.method2380((long)var0);
-      return null == var1?-1:(var1.previous == class47.field952.field1923?-1:((MessageNode)var1.previous).id);
+      return var1 == null?-1:(var1.previous == class47.field952.field1923?-1:((MessageNode)var1.previous).id);
    }
 
    @ObfuscatedName("as")
@@ -349,22 +349,22 @@ public final class NPC extends Actor {
             if(Client.gameCycle >= var0.startTime) {
                if(var0.interacting > 0) {
                   NPC var1 = Client.cachedNPCs[var0.interacting - 1];
-                  if(null != var1 && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
+                  if(var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
                      var0.method816(var1.x, var1.y, class103.method2025(var1.x, var1.y, var0.floor) - var0.field878, Client.gameCycle);
                   }
                }
 
                if(var0.interacting < 0) {
-                  int var2 = -var0.interacting - 1;
-                  Player var3;
-                  if(var2 == Client.localInteractingIndex) {
-                     var3 = Projectile.localPlayer;
+                  int var3 = -var0.interacting - 1;
+                  Player var2;
+                  if(var3 == Client.localInteractingIndex) {
+                     var2 = Projectile.localPlayer;
                   } else {
-                     var3 = Client.cachedPlayers[var2];
+                     var2 = Client.cachedPlayers[var3];
                   }
 
-                  if(var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
-                     var0.method816(var3.x, var3.y, class103.method2025(var3.x, var3.y, var0.floor) - var0.field878, Client.gameCycle);
+                  if(var2 != null && var2.x >= 0 && var2.x < 13312 && var2.y >= 0 && var2.y < 13312) {
+                     var0.method816(var2.x, var2.y, class103.method2025(var2.x, var2.y, var0.floor) - var0.field878, Client.gameCycle);
                   }
                }
 

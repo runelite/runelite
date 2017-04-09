@@ -54,6 +54,8 @@ public final class ItemLayer {
    )
    public static final boolean method1491() {
       class105 var0 = class105.keyboard;
+      class105 var1 = class105.keyboard;
+      class105 var2 = class105.keyboard;
       synchronized(class105.keyboard) {
          if(class105.field1726 == class105.field1742) {
             return false;

@@ -147,11 +147,12 @@ public final class class25 extends Node {
                   class2.method9(var9, var10, var11);
                } else {
                   int var20;
+                  int var21;
                   int var22;
                   int var23;
-                  int var39;
-                  int var43;
-                  boolean var47;
+                  int var24;
+                  boolean var25;
+                  boolean var26;
                   if(!Client.isMenuOpen && var16 >= var12 && var17 >= var13 && var16 < var14 && var17 < var15) {
                      var18 = var16 - var10;
                      var19 = var17 - var11;
@@ -159,20 +160,20 @@ public final class class25 extends Node {
                         class119.addMenuEntry(var9.tooltip, "", 24, 0, 0, var9.id);
                      }
 
-                     String var37;
+                     String var27;
                      if(var9.field2222 == 2 && !Client.field458) {
-                        var22 = FloorUnderlayDefinition.method3533(var9);
-                        var39 = var22 >> 11 & 63;
-                        if(var39 == 0) {
-                           var37 = null;
-                        } else if(null != var9.field2328 && var9.field2328.trim().length() != 0) {
-                           var37 = var9.field2328;
+                        var21 = FloorUnderlayDefinition.method3533(var9);
+                        var23 = var21 >> 11 & 63;
+                        if(var23 == 0) {
+                           var27 = null;
+                        } else if(var9.field2328 != null && var9.field2328.trim().length() != 0) {
+                           var27 = var9.field2328;
                         } else {
-                           var37 = null;
+                           var27 = null;
                         }
 
-                        if(null != var37) {
-                           class119.addMenuEntry(var37, XItemContainer.method153('\uff00') + var9.field2335, 25, 0, -1, var9.id);
+                        if(var27 != null) {
+                           class119.addMenuEntry(var27, XItemContainer.method153('\uff00') + var9.field2335, 25, 0, -1, var9.id);
                         }
                      }
 
@@ -188,144 +189,146 @@ public final class class25 extends Node {
                         class119.addMenuEntry(var9.tooltip, "", 29, 0, 0, var9.id);
                      }
 
-                     if(var9.field2222 == 6 && null == Client.field467) {
+                     if(var9.field2222 == 6 && Client.field467 == null) {
                         class119.addMenuEntry(var9.tooltip, "", 30, 0, -1, var9.id);
                      }
 
                      if(var9.type == 2) {
                         var20 = 0;
 
-                        for(var39 = 0; var39 < var9.height; ++var39) {
-                           for(var22 = 0; var22 < var9.width; ++var22) {
-                              var23 = (32 + var9.field2285) * var22;
-                              var43 = (var9.field2286 + 32) * var39;
+                        for(var23 = 0; var23 < var9.height; ++var23) {
+                           for(var21 = 0; var21 < var9.width; ++var21) {
+                              var22 = (var9.field2285 + 32) * var21;
+                              var24 = (var9.field2286 + 32) * var23;
                               if(var20 < 20) {
-                                 var23 += var9.field2340[var20];
-                                 var43 += var9.field2288[var20];
+                                 var22 += var9.field2340[var20];
+                                 var24 += var9.field2288[var20];
                               }
 
-                              if(var18 >= var23 && var19 >= var43 && var18 < 32 + var23 && var19 < 32 + var43) {
+                              if(var18 >= var22 && var19 >= var24 && var18 < var22 + 32 && var19 < var24 + 32) {
                                  Client.field418 = var20;
                                  class161.field2160 = var9;
                                  if(var9.itemIds[var20] > 0) {
-                                    label1505: {
-                                       ItemComposition var25 = class196.getItemDefinition(var9.itemIds[var20] - 1);
-                                       int var27;
-                                       boolean var38;
+                                    label1093: {
+                                       ItemComposition var28 = class196.getItemDefinition(var9.itemIds[var20] - 1);
+                                       int var29;
+                                       boolean var30;
                                        if(Client.field455 == 1) {
-                                          var27 = FloorUnderlayDefinition.method3533(var9);
-                                          var38 = (var27 >> 30 & 1) != 0;
-                                          if(var38) {
+                                          var29 = FloorUnderlayDefinition.method3533(var9);
+                                          var30 = (var29 >> 30 & 1) != 0;
+                                          if(var30) {
                                              if(var9.id != class177.field2689 || var20 != class47.field957) {
-                                                class119.addMenuEntry("Use", Client.field457 + " " + "->" + " " + XItemContainer.method153(16748608) + var25.name, 31, var25.id, var20, var9.id);
+                                                class119.addMenuEntry("Use", Client.field457 + " -> " + XItemContainer.method153(16748608) + var28.name, 31, var28.id, var20, var9.id);
                                              }
-                                             break label1505;
+                                             break label1093;
                                           }
                                        }
 
                                        if(Client.field458) {
-                                          var27 = FloorUnderlayDefinition.method3533(var9);
-                                          var38 = (var27 >> 30 & 1) != 0;
-                                          if(var38) {
+                                          var29 = FloorUnderlayDefinition.method3533(var9);
+                                          var30 = (var29 >> 30 & 1) != 0;
+                                          if(var30) {
                                              if((ItemComposition.field3004 & 16) == 16) {
-                                                class119.addMenuEntry(Client.field326, Client.field527 + " " + "->" + " " + XItemContainer.method153(16748608) + var25.name, 32, var25.id, var20, var9.id);
+                                                class119.addMenuEntry(Client.field326, Client.field527 + " -> " + XItemContainer.method153(16748608) + var28.name, 32, var28.id, var20, var9.id);
                                              }
-                                             break label1505;
+                                             break label1093;
                                           }
                                        }
 
-                                       String[] var26 = var25.inventoryActions;
+                                       String[] var31 = var28.inventoryActions;
                                        if(Client.field474) {
-                                          var26 = class31.method659(var26);
+                                          var31 = class31.method659(var31);
                                        }
 
-                                       var27 = var25.method3687();
-                                       int var29 = FloorUnderlayDefinition.method3533(var9);
-                                       boolean var28 = (var29 >> 30 & 1) != 0;
-                                       if(var28) {
-                                          for(int var30 = 4; var30 >= 3; --var30) {
-                                             boolean var31 = var27 == var30;
-                                             if(null != var26 && var26[var30] != null) {
-                                                byte var32;
-                                                if(var30 == 3) {
-                                                   var32 = 36;
-                                                } else {
-                                                   var32 = 37;
-                                                }
-
-                                                class168.method3249(var26[var30], XItemContainer.method153(16748608) + var25.name, var32, var25.id, var20, var9.id, var31);
-                                             } else if(var30 == 4) {
-                                                class168.method3249("Drop", XItemContainer.method153(16748608) + var25.name, 37, var25.id, var20, var9.id, var31);
-                                             }
-                                          }
-                                       }
-
-                                       int var52 = FloorUnderlayDefinition.method3533(var9);
-                                       boolean var51 = (var52 >> 31 & 1) != 0;
-                                       if(var51) {
-                                          class119.addMenuEntry("Use", XItemContainer.method153(16748608) + var25.name, 38, var25.id, var20, var9.id);
-                                       }
-
-                                       int var33 = FloorUnderlayDefinition.method3533(var9);
-                                       boolean var53 = (var33 >> 30 & 1) != 0;
+                                       var29 = var28.method3687();
+                                       int var32 = FloorUnderlayDefinition.method3533(var9);
+                                       boolean var33 = (var32 >> 30 & 1) != 0;
                                        int var34;
-                                       if(var53 && null != var26) {
-                                          for(var34 = 2; var34 >= 0; --var34) {
-                                             boolean var35 = var27 == var34;
-                                             if(var26[var34] != null) {
-                                                byte var36 = 0;
-                                                if(var34 == 0) {
-                                                   var36 = 33;
-                                                }
-
-                                                if(var34 == 1) {
-                                                   var36 = 34;
-                                                }
-
-                                                if(var34 == 2) {
-                                                   var36 = 35;
-                                                }
-
-                                                class168.method3249(var26[var34], XItemContainer.method153(16748608) + var25.name, var36, var25.id, var20, var9.id, var35);
-                                             }
-                                          }
-                                       }
-
-                                       var26 = var9.field2336;
-                                       if(Client.field474) {
-                                          var26 = class31.method659(var26);
-                                       }
-
-                                       if(null != var26) {
-                                          for(var34 = 4; var34 >= 0; --var34) {
-                                             if(null != var26[var34]) {
-                                                byte var54 = 0;
-                                                if(var34 == 0) {
-                                                   var54 = 39;
-                                                }
-
-                                                if(var34 == 1) {
-                                                   var54 = 40;
-                                                }
-
-                                                if(var34 == 2) {
-                                                   var54 = 41;
-                                                }
-
+                                       boolean var35;
+                                       if(var33) {
+                                          for(var34 = 4; var34 >= 3; --var34) {
+                                             var35 = var29 == var34;
+                                             if(var31 != null && var31[var34] != null) {
+                                                byte var36;
                                                 if(var34 == 3) {
-                                                   var54 = 42;
+                                                   var36 = 36;
+                                                } else {
+                                                   var36 = 37;
                                                 }
 
-                                                if(var34 == 4) {
-                                                   var54 = 43;
-                                                }
-
-                                                class119.addMenuEntry(var26[var34], XItemContainer.method153(16748608) + var25.name, var54, var25.id, var20, var9.id);
+                                                class168.method3249(var31[var34], XItemContainer.method153(16748608) + var28.name, var36, var28.id, var20, var9.id, var35);
+                                             } else if(var34 == 4) {
+                                                class168.method3249("Drop", XItemContainer.method153(16748608) + var28.name, 37, var28.id, var20, var9.id, var35);
                                              }
                                           }
                                        }
 
-                                       class119.addMenuEntry("Examine", XItemContainer.method153(16748608) + var25.name, 1005, var25.id, var20, var9.id);
+                                       var34 = FloorUnderlayDefinition.method3533(var9);
+                                       var35 = (var34 >> 31 & 1) != 0;
+                                       if(var35) {
+                                          class119.addMenuEntry("Use", XItemContainer.method153(16748608) + var28.name, 38, var28.id, var20, var9.id);
+                                       }
+
+                                       int var50 = FloorUnderlayDefinition.method3533(var9);
+                                       boolean var37 = (var50 >> 30 & 1) != 0;
+                                       int var38;
+                                       if(var37 && var31 != null) {
+                                          for(var38 = 2; var38 >= 0; --var38) {
+                                             boolean var39 = var29 == var38;
+                                             if(var31[var38] != null) {
+                                                byte var40 = 0;
+                                                if(var38 == 0) {
+                                                   var40 = 33;
+                                                }
+
+                                                if(var38 == 1) {
+                                                   var40 = 34;
+                                                }
+
+                                                if(var38 == 2) {
+                                                   var40 = 35;
+                                                }
+
+                                                class168.method3249(var31[var38], XItemContainer.method153(16748608) + var28.name, var40, var28.id, var20, var9.id, var39);
+                                             }
+                                          }
+                                       }
+
+                                       var31 = var9.field2336;
+                                       if(Client.field474) {
+                                          var31 = class31.method659(var31);
+                                       }
+
+                                       if(var31 != null) {
+                                          for(var38 = 4; var38 >= 0; --var38) {
+                                             if(var31[var38] != null) {
+                                                byte var51 = 0;
+                                                if(var38 == 0) {
+                                                   var51 = 39;
+                                                }
+
+                                                if(var38 == 1) {
+                                                   var51 = 40;
+                                                }
+
+                                                if(var38 == 2) {
+                                                   var51 = 41;
+                                                }
+
+                                                if(var38 == 3) {
+                                                   var51 = 42;
+                                                }
+
+                                                if(var38 == 4) {
+                                                   var51 = 43;
+                                                }
+
+                                                class119.addMenuEntry(var31[var38], XItemContainer.method153(16748608) + var28.name, var51, var28.id, var20, var9.id);
+                                             }
+                                          }
+                                       }
+
+                                       class119.addMenuEntry("Examine", XItemContainer.method153(16748608) + var28.name, 1005, var28.id, var20, var9.id);
                                     }
                                  }
                               }
@@ -337,59 +340,58 @@ public final class class25 extends Node {
 
                      if(var9.hasScript) {
                         if(Client.field458) {
-                           var39 = FloorUnderlayDefinition.method3533(var9);
-                           var47 = (var39 >> 21 & 1) != 0;
-                           if(var47 && (ItemComposition.field3004 & 32) == 32) {
-                              class119.addMenuEntry(Client.field326, Client.field527 + " " + "->" + " " + var9.name, 58, 0, var9.index, var9.id);
+                           var23 = FloorUnderlayDefinition.method3533(var9);
+                           var25 = (var23 >> 21 & 1) != 0;
+                           if(var25 && (ItemComposition.field3004 & 32) == 32) {
+                              class119.addMenuEntry(Client.field326, Client.field527 + " -> " + var9.name, 58, 0, var9.index, var9.id);
                            }
                         } else {
+                           String var41;
                            for(var20 = 9; var20 >= 5; --var20) {
-                              String var21;
                               if(!class152.method2849(FloorUnderlayDefinition.method3533(var9), var20) && var9.field2319 == null) {
-                                 var21 = null;
-                              } else if(var9.actions != null && var9.actions.length > var20 && null != var9.actions[var20] && var9.actions[var20].trim().length() != 0) {
-                                 var21 = var9.actions[var20];
+                                 var41 = null;
+                              } else if(var9.actions != null && var9.actions.length > var20 && var9.actions[var20] != null && var9.actions[var20].trim().length() != 0) {
+                                 var41 = var9.actions[var20];
                               } else {
-                                 var21 = null;
+                                 var41 = null;
                               }
 
-                              if(var21 != null) {
-                                 class119.addMenuEntry(var21, var9.name, 1007, var20 + 1, var9.index, var9.id);
+                              if(var41 != null) {
+                                 class119.addMenuEntry(var41, var9.name, 1007, var20 + 1, var9.index, var9.id);
+                              }
+                           }
+
+                           var21 = FloorUnderlayDefinition.method3533(var9);
+                           var23 = var21 >> 11 & 63;
+                           if(var23 == 0) {
+                              var27 = null;
+                           } else if(var9.field2328 != null && var9.field2328.trim().length() != 0) {
+                              var27 = var9.field2328;
+                           } else {
+                              var27 = null;
+                           }
+
+                           if(var27 != null) {
+                              class119.addMenuEntry(var27, var9.name, 25, 0, var9.index, var9.id);
+                           }
+
+                           for(var21 = 4; var21 >= 0; --var21) {
+                              if(!class152.method2849(FloorUnderlayDefinition.method3533(var9), var21) && var9.field2319 == null) {
+                                 var41 = null;
+                              } else if(var9.actions != null && var9.actions.length > var21 && var9.actions[var21] != null && var9.actions[var21].trim().length() != 0) {
+                                 var41 = var9.actions[var21];
+                              } else {
+                                 var41 = null;
+                              }
+
+                              if(var41 != null) {
+                                 class119.addMenuEntry(var41, var9.name, 57, var21 + 1, var9.index, var9.id);
                               }
                            }
 
                            var22 = FloorUnderlayDefinition.method3533(var9);
-                           var39 = var22 >> 11 & 63;
-                           if(var39 == 0) {
-                              var37 = null;
-                           } else if(var9.field2328 != null && var9.field2328.trim().length() != 0) {
-                              var37 = var9.field2328;
-                           } else {
-                              var37 = null;
-                           }
-
-                           if(null != var37) {
-                              class119.addMenuEntry(var37, var9.name, 25, 0, var9.index, var9.id);
-                           }
-
-                           for(var22 = 4; var22 >= 0; --var22) {
-                              String var44;
-                              if(!class152.method2849(FloorUnderlayDefinition.method3533(var9), var22) && null == var9.field2319) {
-                                 var44 = null;
-                              } else if(null != var9.actions && var9.actions.length > var22 && null != var9.actions[var22] && var9.actions[var22].trim().length() != 0) {
-                                 var44 = var9.actions[var22];
-                              } else {
-                                 var44 = null;
-                              }
-
-                              if(var44 != null) {
-                                 class119.addMenuEntry(var44, var9.name, 57, var22 + 1, var9.index, var9.id);
-                              }
-                           }
-
-                           var23 = FloorUnderlayDefinition.method3533(var9);
-                           boolean var50 = (var23 & 1) != 0;
-                           if(var50) {
+                           var26 = (var22 & 1) != 0;
+                           if(var26) {
                               class119.addMenuEntry("Continue", "", 30, 0, var9.index, var9.id);
                            }
                         }
@@ -402,17 +404,17 @@ public final class class25 extends Node {
                      }
 
                      method558(var0, var9.id, var12, var13, var14, var15, var10 - var9.scrollX, var11 - var9.scrollY);
-                     if(null != var9.children) {
+                     if(var9.children != null) {
                         method558(var9.children, var9.id, var12, var13, var14, var15, var10 - var9.scrollX, var11 - var9.scrollY);
                      }
 
                      WidgetNode var42 = (WidgetNode)Client.componentTable.method2417((long)var9.id);
                      if(var42 != null) {
                         if(var42.field187 == 0 && class115.field1817 >= var12 && class115.field1818 >= var13 && class115.field1817 < var14 && class115.field1818 < var15 && !Client.isMenuOpen && !Client.field473) {
-                           for(class18 var40 = (class18)Client.field502.method2464(); null != var40; var40 = (class18)Client.field502.method2472()) {
-                              if(var40.field197) {
-                                 var40.unlink();
-                                 var40.field207.field2252 = false;
+                           for(class18 var46 = (class18)Client.field502.method2464(); var46 != null; var46 = (class18)Client.field502.method2472()) {
+                              if(var46.field197) {
+                                 var46.unlink();
+                                 var46.field207.field2252 = false;
                               }
                            }
 
@@ -438,20 +440,20 @@ public final class class25 extends Node {
                   }
 
                   if(var9.hasScript) {
-                     class18 var55;
+                     class18 var43;
                      if(!var9.field2210) {
                         if(var9.field2353 && class115.field1817 >= var12 && class115.field1818 >= var13 && class115.field1817 < var14 && class115.field1818 < var15) {
-                           for(var55 = (class18)Client.field502.method2464(); null != var55; var55 = (class18)Client.field502.method2472()) {
-                              if(var55.field197 && var55.field207.field2262 == var55.field199) {
-                                 var55.unlink();
+                           for(var43 = (class18)Client.field502.method2464(); var43 != null; var43 = (class18)Client.field502.method2472()) {
+                              if(var43.field197 && var43.field207.field2262 == var43.field199) {
+                                 var43.unlink();
                               }
                            }
                         }
                      } else if(class115.field1817 >= var12 && class115.field1818 >= var13 && class115.field1817 < var14 && class115.field1818 < var15) {
-                        for(var55 = (class18)Client.field502.method2464(); null != var55; var55 = (class18)Client.field502.method2472()) {
-                           if(var55.field197) {
-                              var55.unlink();
-                              var55.field207.field2252 = false;
+                        for(var43 = (class18)Client.field502.method2464(); var43 != null; var43 = (class18)Client.field502.method2472()) {
+                           if(var43.field197) {
+                              var43.unlink();
+                              var43.field207.field2252 = false;
                            }
                         }
 
@@ -468,28 +470,27 @@ public final class class25 extends Node {
                         }
                      }
 
-                     boolean var46;
                      if(class115.field1817 >= var12 && class115.field1818 >= var13 && class115.field1817 < var14 && class115.field1818 < var15) {
-                        var46 = true;
+                        var26 = true;
                      } else {
-                        var46 = false;
+                        var26 = false;
                      }
 
                      boolean var48 = false;
-                     if((class115.field1811 == 1 || !class177.field2687 && class115.field1811 == 4) && var46) {
+                     if((class115.field1811 == 1 || !class177.field2687 && class115.field1811 == 4) && var26) {
                         var48 = true;
                      }
 
-                     var47 = false;
+                     var25 = false;
                      if((class115.field1823 == 1 || !class177.field2687 && class115.field1823 == 4) && class115.field1825 >= var12 && class115.field1813 >= var13 && class115.field1825 < var14 && class115.field1813 < var15) {
-                        var47 = true;
+                        var25 = true;
                      }
 
-                     if(var47) {
+                     if(var25) {
                         class20.method187(var9, class115.field1825 - var10, class115.field1813 - var11);
                      }
 
-                     if(Client.field476 != null && var9 != Client.field476 && var46 && class168.method3247(FloorUnderlayDefinition.method3533(var9))) {
+                     if(Client.field476 != null && var9 != Client.field476 && var26 && class168.method3247(FloorUnderlayDefinition.method3533(var9))) {
                         Client.field480 = var9;
                      }
 
@@ -500,133 +501,133 @@ public final class class25 extends Node {
                      }
 
                      if(var9.field2299) {
-                        class18 var49;
-                        if(var46 && Client.field538 != 0 && null != var9.field2262) {
-                           var49 = new class18();
-                           var49.field197 = true;
-                           var49.field207 = var9;
-                           var49.field201 = Client.field538;
-                           var49.field199 = var9.field2262;
-                           Client.field502.method2459(var49);
+                        class18 var44;
+                        if(var26 && Client.field538 != 0 && var9.field2262 != null) {
+                           var44 = new class18();
+                           var44.field197 = true;
+                           var44.field207 = var9;
+                           var44.field201 = Client.field538;
+                           var44.field199 = var9.field2262;
+                           Client.field502.method2459(var44);
                         }
 
-                        if(null != Client.field476 || null != class164.field2177 || Client.isMenuOpen) {
-                           var47 = false;
+                        if(Client.field476 != null || class164.field2177 != null || Client.isMenuOpen) {
+                           var25 = false;
                            var48 = false;
-                           var46 = false;
+                           var26 = false;
                         }
 
-                        if(!var9.field2345 && var47) {
+                        if(!var9.field2345 && var25) {
                            var9.field2345 = true;
                            if(var9.field2337 != null) {
-                              var49 = new class18();
-                              var49.field197 = true;
-                              var49.field207 = var9;
-                              var49.field198 = class115.field1825 - var10;
-                              var49.field201 = class115.field1813 - var11;
-                              var49.field199 = var9.field2337;
-                              Client.field502.method2459(var49);
+                              var44 = new class18();
+                              var44.field197 = true;
+                              var44.field207 = var9;
+                              var44.field198 = class115.field1825 - var10;
+                              var44.field201 = class115.field1813 - var11;
+                              var44.field199 = var9.field2337;
+                              Client.field502.method2459(var44);
                            }
                         }
 
-                        if(var9.field2345 && var48 && null != var9.field2287) {
-                           var49 = new class18();
-                           var49.field197 = true;
-                           var49.field207 = var9;
-                           var49.field198 = class115.field1817 - var10;
-                           var49.field201 = class115.field1818 - var11;
-                           var49.field199 = var9.field2287;
-                           Client.field502.method2459(var49);
+                        if(var9.field2345 && var48 && var9.field2287 != null) {
+                           var44 = new class18();
+                           var44.field197 = true;
+                           var44.field207 = var9;
+                           var44.field198 = class115.field1817 - var10;
+                           var44.field201 = class115.field1818 - var11;
+                           var44.field199 = var9.field2287;
+                           Client.field502.method2459(var44);
                         }
 
                         if(var9.field2345 && !var48) {
                            var9.field2345 = false;
                            if(var9.field2303 != null) {
-                              var49 = new class18();
-                              var49.field197 = true;
-                              var49.field207 = var9;
-                              var49.field198 = class115.field1817 - var10;
-                              var49.field201 = class115.field1818 - var11;
-                              var49.field199 = var9.field2303;
-                              Client.field504.method2459(var49);
+                              var44 = new class18();
+                              var44.field197 = true;
+                              var44.field207 = var9;
+                              var44.field198 = class115.field1817 - var10;
+                              var44.field201 = class115.field1818 - var11;
+                              var44.field199 = var9.field2303;
+                              Client.field504.method2459(var44);
                            }
                         }
 
                         if(var48 && var9.field2304 != null) {
-                           var49 = new class18();
-                           var49.field197 = true;
-                           var49.field207 = var9;
-                           var49.field198 = class115.field1817 - var10;
-                           var49.field201 = class115.field1818 - var11;
-                           var49.field199 = var9.field2304;
-                           Client.field502.method2459(var49);
+                           var44 = new class18();
+                           var44.field197 = true;
+                           var44.field207 = var9;
+                           var44.field198 = class115.field1817 - var10;
+                           var44.field201 = class115.field1818 - var11;
+                           var44.field199 = var9.field2304;
+                           Client.field502.method2459(var44);
                         }
 
-                        if(!var9.field2252 && var46) {
+                        if(!var9.field2252 && var26) {
                            var9.field2252 = true;
-                           if(null != var9.field2300) {
-                              var49 = new class18();
-                              var49.field197 = true;
-                              var49.field207 = var9;
-                              var49.field198 = class115.field1817 - var10;
-                              var49.field201 = class115.field1818 - var11;
-                              var49.field199 = var9.field2300;
-                              Client.field502.method2459(var49);
+                           if(var9.field2300 != null) {
+                              var44 = new class18();
+                              var44.field197 = true;
+                              var44.field207 = var9;
+                              var44.field198 = class115.field1817 - var10;
+                              var44.field201 = class115.field1818 - var11;
+                              var44.field199 = var9.field2300;
+                              Client.field502.method2459(var44);
                            }
                         }
 
-                        if(var9.field2252 && var46 && var9.field2306 != null) {
-                           var49 = new class18();
-                           var49.field197 = true;
-                           var49.field207 = var9;
-                           var49.field198 = class115.field1817 - var10;
-                           var49.field201 = class115.field1818 - var11;
-                           var49.field199 = var9.field2306;
-                           Client.field502.method2459(var49);
+                        if(var9.field2252 && var26 && var9.field2306 != null) {
+                           var44 = new class18();
+                           var44.field197 = true;
+                           var44.field207 = var9;
+                           var44.field198 = class115.field1817 - var10;
+                           var44.field201 = class115.field1818 - var11;
+                           var44.field199 = var9.field2306;
+                           Client.field502.method2459(var44);
                         }
 
-                        if(var9.field2252 && !var46) {
+                        if(var9.field2252 && !var26) {
                            var9.field2252 = false;
                            if(var9.field2248 != null) {
-                              var49 = new class18();
-                              var49.field197 = true;
-                              var49.field207 = var9;
-                              var49.field198 = class115.field1817 - var10;
-                              var49.field201 = class115.field1818 - var11;
-                              var49.field199 = var9.field2248;
-                              Client.field504.method2459(var49);
+                              var44 = new class18();
+                              var44.field197 = true;
+                              var44.field207 = var9;
+                              var44.field198 = class115.field1817 - var10;
+                              var44.field201 = class115.field1818 - var11;
+                              var44.field199 = var9.field2248;
+                              Client.field504.method2459(var44);
                            }
                         }
 
                         if(var9.field2318 != null) {
-                           var49 = new class18();
-                           var49.field207 = var9;
-                           var49.field199 = var9.field2318;
-                           Client.field307.method2459(var49);
+                           var44 = new class18();
+                           var44.field207 = var9;
+                           var44.field199 = var9.field2318;
+                           Client.field307.method2459(var44);
                         }
 
-                        class18 var24;
-                        if(null != var9.field2312 && Client.field490 > var9.field2347) {
+                        class18 var45;
+                        if(var9.field2312 != null && Client.field490 > var9.field2347) {
                            if(var9.field2313 != null && Client.field490 - var9.field2347 <= 32) {
-                              label1168:
-                              for(var39 = var9.field2347; var39 < Client.field490; ++var39) {
-                                 var22 = Client.field489[var39 & 31];
+                              label756:
+                              for(var23 = var9.field2347; var23 < Client.field490; ++var23) {
+                                 var21 = Client.field489[var23 & 31];
 
-                                 for(var23 = 0; var23 < var9.field2313.length; ++var23) {
-                                    if(var22 == var9.field2313[var23]) {
-                                       var24 = new class18();
-                                       var24.field207 = var9;
-                                       var24.field199 = var9.field2312;
-                                       Client.field502.method2459(var24);
-                                       break label1168;
+                                 for(var22 = 0; var22 < var9.field2313.length; ++var22) {
+                                    if(var21 == var9.field2313[var22]) {
+                                       var45 = new class18();
+                                       var45.field207 = var9;
+                                       var45.field199 = var9.field2312;
+                                       Client.field502.method2459(var45);
+                                       break label756;
                                     }
                                  }
                               }
                            } else {
-                              var49 = new class18();
-                              var49.field207 = var9;
-                              var49.field199 = var9.field2312;
-                              Client.field502.method2459(var49);
+                              var44 = new class18();
+                              var44.field207 = var9;
+                              var44.field199 = var9.field2312;
+                              Client.field502.method2459(var44);
                            }
 
                            var9.field2347 = Client.field490;
@@ -634,107 +635,107 @@ public final class class25 extends Node {
 
                         if(var9.field2314 != null && Client.field492 > var9.field2348) {
                            if(var9.field2315 != null && Client.field492 - var9.field2348 <= 32) {
-                              label1144:
-                              for(var39 = var9.field2348; var39 < Client.field492; ++var39) {
-                                 var22 = Client.interfaceItemTriggers[var39 & 31];
+                              label732:
+                              for(var23 = var9.field2348; var23 < Client.field492; ++var23) {
+                                 var21 = Client.interfaceItemTriggers[var23 & 31];
 
-                                 for(var23 = 0; var23 < var9.field2315.length; ++var23) {
-                                    if(var22 == var9.field2315[var23]) {
-                                       var24 = new class18();
-                                       var24.field207 = var9;
-                                       var24.field199 = var9.field2314;
-                                       Client.field502.method2459(var24);
-                                       break label1144;
+                                 for(var22 = 0; var22 < var9.field2315.length; ++var22) {
+                                    if(var21 == var9.field2315[var22]) {
+                                       var45 = new class18();
+                                       var45.field207 = var9;
+                                       var45.field199 = var9.field2314;
+                                       Client.field502.method2459(var45);
+                                       break label732;
                                     }
                                  }
                               }
                            } else {
-                              var49 = new class18();
-                              var49.field207 = var9;
-                              var49.field199 = var9.field2314;
-                              Client.field502.method2459(var49);
+                              var44 = new class18();
+                              var44.field207 = var9;
+                              var44.field199 = var9.field2314;
+                              Client.field502.method2459(var44);
                            }
 
                            var9.field2348 = Client.field492;
                         }
 
-                        if(null != var9.field2316 && Client.field503 > var9.field2349) {
-                           if(null != var9.field2282 && Client.field503 - var9.field2349 <= 32) {
-                              label1120:
-                              for(var39 = var9.field2349; var39 < Client.field503; ++var39) {
-                                 var22 = Client.field493[var39 & 31];
+                        if(var9.field2316 != null && Client.field503 > var9.field2349) {
+                           if(var9.field2282 != null && Client.field503 - var9.field2349 <= 32) {
+                              label708:
+                              for(var23 = var9.field2349; var23 < Client.field503; ++var23) {
+                                 var21 = Client.field493[var23 & 31];
 
-                                 for(var23 = 0; var23 < var9.field2282.length; ++var23) {
-                                    if(var22 == var9.field2282[var23]) {
-                                       var24 = new class18();
-                                       var24.field207 = var9;
-                                       var24.field199 = var9.field2316;
-                                       Client.field502.method2459(var24);
-                                       break label1120;
+                                 for(var22 = 0; var22 < var9.field2282.length; ++var22) {
+                                    if(var21 == var9.field2282[var22]) {
+                                       var45 = new class18();
+                                       var45.field207 = var9;
+                                       var45.field199 = var9.field2316;
+                                       Client.field502.method2459(var45);
+                                       break label708;
                                     }
                                  }
                               }
                            } else {
-                              var49 = new class18();
-                              var49.field207 = var9;
-                              var49.field199 = var9.field2316;
-                              Client.field502.method2459(var49);
+                              var44 = new class18();
+                              var44.field207 = var9;
+                              var44.field199 = var9.field2316;
+                              Client.field502.method2459(var44);
                            }
 
                            var9.field2349 = Client.field503;
                         }
 
-                        if(Client.field495 > var9.field2346 && null != var9.field2321) {
-                           var49 = new class18();
-                           var49.field207 = var9;
-                           var49.field199 = var9.field2321;
-                           Client.field502.method2459(var49);
+                        if(Client.field495 > var9.field2346 && var9.field2321 != null) {
+                           var44 = new class18();
+                           var44.field207 = var9;
+                           var44.field199 = var9.field2321;
+                           Client.field502.method2459(var44);
                         }
 
                         if(Client.field496 > var9.field2346 && var9.field2290 != null) {
-                           var49 = new class18();
-                           var49.field207 = var9;
-                           var49.field199 = var9.field2290;
-                           Client.field502.method2459(var49);
+                           var44 = new class18();
+                           var44.field207 = var9;
+                           var44.field199 = var9.field2290;
+                           Client.field502.method2459(var44);
                         }
 
                         if(Client.field497 > var9.field2346 && var9.field2324 != null) {
-                           var49 = new class18();
-                           var49.field207 = var9;
-                           var49.field199 = var9.field2324;
-                           Client.field502.method2459(var49);
+                           var44 = new class18();
+                           var44.field207 = var9;
+                           var44.field199 = var9.field2324;
+                           Client.field502.method2459(var44);
                         }
 
-                        if(Client.field498 > var9.field2346 && null != var9.field2329) {
-                           var49 = new class18();
-                           var49.field207 = var9;
-                           var49.field199 = var9.field2329;
-                           Client.field502.method2459(var49);
+                        if(Client.field498 > var9.field2346 && var9.field2329 != null) {
+                           var44 = new class18();
+                           var44.field207 = var9;
+                           var44.field199 = var9.field2329;
+                           Client.field502.method2459(var44);
                         }
 
-                        if(Client.field499 > var9.field2346 && null != var9.field2330) {
-                           var49 = new class18();
-                           var49.field207 = var9;
-                           var49.field199 = var9.field2330;
-                           Client.field502.method2459(var49);
+                        if(Client.field499 > var9.field2346 && var9.field2330 != null) {
+                           var44 = new class18();
+                           var44.field207 = var9;
+                           var44.field199 = var9.field2330;
+                           Client.field502.method2459(var44);
                         }
 
                         if(Client.field500 > var9.field2346 && var9.field2284 != null) {
-                           var49 = new class18();
-                           var49.field207 = var9;
-                           var49.field199 = var9.field2284;
-                           Client.field502.method2459(var49);
+                           var44 = new class18();
+                           var44.field207 = var9;
+                           var44.field199 = var9.field2284;
+                           Client.field502.method2459(var44);
                         }
 
                         var9.field2346 = Client.field561;
-                        if(null != var9.field2322) {
-                           for(var39 = 0; var39 < Client.field345; ++var39) {
-                              class18 var41 = new class18();
-                              var41.field207 = var9;
-                              var41.field204 = Client.field528[var39];
-                              var41.field205 = Client.field419[var39];
-                              var41.field199 = var9.field2322;
-                              Client.field502.method2459(var41);
+                        if(var9.field2322 != null) {
+                           for(var23 = 0; var23 < Client.field345; ++var23) {
+                              class18 var49 = new class18();
+                              var49.field207 = var9;
+                              var49.field204 = Client.field528[var23];
+                              var49.field205 = Client.field419[var23];
+                              var49.field199 = var9.field2322;
+                              Client.field502.method2459(var49);
                            }
                         }
                      }
@@ -757,8 +758,8 @@ public final class class25 extends Node {
                         var18 = var10 + var9.width;
                         var19 = var9.height;
                         var20 = var9.scrollHeight;
-                        var39 = class115.field1817;
-                        var22 = class115.field1818;
+                        var23 = class115.field1817;
+                        var21 = class115.field1818;
                         if(Client.field321) {
                            Client.field365 = 32;
                         } else {
@@ -767,29 +768,29 @@ public final class class25 extends Node {
 
                         Client.field321 = false;
                         if(class115.field1811 == 1 || !class177.field2687 && class115.field1811 == 4) {
-                           if(var39 >= var18 && var39 < var18 + 16 && var22 >= var11 && var22 < 16 + var11) {
+                           if(var23 >= var18 && var23 < var18 + 16 && var21 >= var11 && var21 < var11 + 16) {
                               var9.scrollY -= 4;
                               class22.method197(var9);
-                           } else if(var39 >= var18 && var39 < 16 + var18 && var22 >= var11 + var19 - 16 && var22 < var11 + var19) {
+                           } else if(var23 >= var18 && var23 < var18 + 16 && var21 >= var11 + var19 - 16 && var21 < var11 + var19) {
                               var9.scrollY += 4;
                               class22.method197(var9);
-                           } else if(var39 >= var18 - Client.field365 && var39 < Client.field365 + var18 + 16 && var22 >= 16 + var11 && var22 < var19 + var11 - 16) {
-                              var23 = (var19 - 32) * var19 / var20;
-                              if(var23 < 8) {
-                                 var23 = 8;
+                           } else if(var23 >= var18 - Client.field365 && var23 < Client.field365 + var18 + 16 && var21 >= var11 + 16 && var21 < var19 + var11 - 16) {
+                              var22 = (var19 - 32) * var19 / var20;
+                              if(var22 < 8) {
+                                 var22 = 8;
                               }
 
-                              var43 = var22 - var11 - 16 - var23 / 2;
-                              int var45 = var19 - 32 - var23;
-                              var9.scrollY = (var20 - var19) * var43 / var45;
+                              var24 = var21 - var11 - 16 - var22 / 2;
+                              int var47 = var19 - 32 - var22;
+                              var9.scrollY = (var20 - var19) * var24 / var47;
                               class22.method197(var9);
                               Client.field321 = true;
                            }
                         }
 
                         if(Client.field538 != 0) {
-                           var23 = var9.width;
-                           if(var39 >= var18 - var23 && var22 >= var11 && var39 < 16 + var18 && var22 <= var11 + var19) {
+                           var22 = var9.width;
+                           if(var23 >= var18 - var22 && var21 >= var11 && var23 < var18 + 16 && var21 <= var11 + var19) {
                               var9.scrollY += Client.field538 * 45;
                               class22.method197(var9);
                            }
@@ -820,88 +821,87 @@ public final class class25 extends Node {
       byte var10 = 0;
       int var11 = 0;
       class118.field1869[var10] = var0;
-      byte var10001 = var10;
-      int var18 = var10 + 1;
-      class118.field1867[var10001] = var1;
-      int[][] var12 = var3.flags;
+      int var12 = var10 + 1;
+      class118.field1867[var10] = var1;
+      int[][] var13 = var3.flags;
 
-      while(var18 != var11) {
+      while(var12 != var11) {
          var4 = class118.field1869[var11];
          var5 = class118.field1867[var11];
          var11 = var11 + 1 & 4095;
-         int var16 = var4 - var8;
-         int var17 = var5 - var9;
-         int var13 = var4 - var3.x;
-         int var14 = var5 - var3.y;
+         int var14 = var4 - var8;
+         int var15 = var5 - var9;
+         int var16 = var4 - var3.x;
+         int var17 = var5 - var3.y;
          if(var2.vmethod2355(1, var4, var5, var3)) {
             class118.field1866 = var4;
             class118.field1863 = var5;
             return true;
          }
 
-         int var15 = 1 + class118.field1870[var16][var17];
-         if(var16 > 0 && class118.field1865[var16 - 1][var17] == 0 && (var12[var13 - 1][var14] & 19136776) == 0) {
-            class118.field1869[var18] = var4 - 1;
-            class118.field1867[var18] = var5;
-            var18 = var18 + 1 & 4095;
-            class118.field1865[var16 - 1][var17] = 2;
-            class118.field1870[var16 - 1][var17] = var15;
+         int var18 = class118.field1870[var14][var15] + 1;
+         if(var14 > 0 && class118.field1865[var14 - 1][var15] == 0 && (var13[var16 - 1][var17] & 19136776) == 0) {
+            class118.field1869[var12] = var4 - 1;
+            class118.field1867[var12] = var5;
+            var12 = var12 + 1 & 4095;
+            class118.field1865[var14 - 1][var15] = 2;
+            class118.field1870[var14 - 1][var15] = var18;
          }
 
-         if(var16 < 127 && class118.field1865[1 + var16][var17] == 0 && (var12[1 + var13][var14] & 19136896) == 0) {
-            class118.field1869[var18] = var4 + 1;
-            class118.field1867[var18] = var5;
-            var18 = var18 + 1 & 4095;
-            class118.field1865[var16 + 1][var17] = 8;
-            class118.field1870[var16 + 1][var17] = var15;
+         if(var14 < 127 && class118.field1865[var14 + 1][var15] == 0 && (var13[var16 + 1][var17] & 19136896) == 0) {
+            class118.field1869[var12] = var4 + 1;
+            class118.field1867[var12] = var5;
+            var12 = var12 + 1 & 4095;
+            class118.field1865[var14 + 1][var15] = 8;
+            class118.field1870[var14 + 1][var15] = var18;
          }
 
-         if(var17 > 0 && class118.field1865[var16][var17 - 1] == 0 && (var12[var13][var14 - 1] & 19136770) == 0) {
-            class118.field1869[var18] = var4;
-            class118.field1867[var18] = var5 - 1;
-            var18 = var18 + 1 & 4095;
-            class118.field1865[var16][var17 - 1] = 1;
-            class118.field1870[var16][var17 - 1] = var15;
+         if(var15 > 0 && class118.field1865[var14][var15 - 1] == 0 && (var13[var16][var17 - 1] & 19136770) == 0) {
+            class118.field1869[var12] = var4;
+            class118.field1867[var12] = var5 - 1;
+            var12 = var12 + 1 & 4095;
+            class118.field1865[var14][var15 - 1] = 1;
+            class118.field1870[var14][var15 - 1] = var18;
          }
 
-         if(var17 < 127 && class118.field1865[var16][var17 + 1] == 0 && (var12[var13][1 + var14] & 19136800) == 0) {
-            class118.field1869[var18] = var4;
-            class118.field1867[var18] = var5 + 1;
-            var18 = 1 + var18 & 4095;
-            class118.field1865[var16][1 + var17] = 4;
-            class118.field1870[var16][var17 + 1] = var15;
+         if(var15 < 127 && class118.field1865[var14][var15 + 1] == 0 && (var13[var16][var17 + 1] & 19136800) == 0) {
+            class118.field1869[var12] = var4;
+            class118.field1867[var12] = var5 + 1;
+            var12 = var12 + 1 & 4095;
+            class118.field1865[var14][var15 + 1] = 4;
+            class118.field1870[var14][var15 + 1] = var18;
          }
 
-         if(var16 > 0 && var17 > 0 && class118.field1865[var16 - 1][var17 - 1] == 0 && (var12[var13 - 1][var14 - 1] & 19136782) == 0 && (var12[var13 - 1][var14] & 19136776) == 0 && (var12[var13][var14 - 1] & 19136770) == 0) {
-            class118.field1869[var18] = var4 - 1;
-            class118.field1867[var18] = var5 - 1;
-            var18 = var18 + 1 & 4095;
-            class118.field1865[var16 - 1][var17 - 1] = 3;
-            class118.field1870[var16 - 1][var17 - 1] = var15;
+         if(var14 > 0 && var15 > 0 && class118.field1865[var14 - 1][var15 - 1] == 0 && (var13[var16 - 1][var17 - 1] & 19136782) == 0 && (var13[var16 - 1][var17] & 19136776) == 0 && (var13[var16][var17 - 1] & 19136770) == 0) {
+            class118.field1869[var12] = var4 - 1;
+            class118.field1867[var12] = var5 - 1;
+            var12 = var12 + 1 & 4095;
+            class118.field1865[var14 - 1][var15 - 1] = 3;
+            class118.field1870[var14 - 1][var15 - 1] = var18;
          }
 
-         if(var16 < 127 && var17 > 0 && class118.field1865[var16 + 1][var17 - 1] == 0 && (var12[1 + var13][var14 - 1] & 19136899) == 0 && (var12[var13 + 1][var14] & 19136896) == 0 && (var12[var13][var14 - 1] & 19136770) == 0) {
-            class118.field1869[var18] = 1 + var4;
-            class118.field1867[var18] = var5 - 1;
-            var18 = 1 + var18 & 4095;
-            class118.field1865[var16 + 1][var17 - 1] = 9;
-            class118.field1870[1 + var16][var17 - 1] = var15;
+         if(var14 < 127 && var15 > 0 && class118.field1865[var14 + 1][var15 - 1] == 0 && (var13[var16 + 1][var17 - 1] & 19136899) == 0 && (var13[var16 + 1][var17] & 19136896) == 0 && (var13[var16][var17 - 1] & 19136770) == 0) {
+            class118.field1869[var12] = var4 + 1;
+            class118.field1867[var12] = var5 - 1;
+            var12 = var12 + 1 & 4095;
+            class118.field1865[var14 + 1][var15 - 1] = 9;
+            class118.field1870[var14 + 1][var15 - 1] = var18;
          }
 
-         if(var16 > 0 && var17 < 127 && class118.field1865[var16 - 1][var17 + 1] == 0 && (var12[var13 - 1][var14 + 1] & 19136824) == 0 && (var12[var13 - 1][var14] & 19136776) == 0 && (var12[var13][var14 + 1] & 19136800) == 0) {
-            class118.field1869[var18] = var4 - 1;
-            class118.field1867[var18] = var5 + 1;
-            var18 = var18 + 1 & 4095;
-            class118.field1865[var16 - 1][var17 + 1] = 6;
-            class118.field1870[var16 - 1][1 + var17] = var15;
+         if(var14 > 0 && var15 < 127 && class118.field1865[var14 - 1][var15 + 1] == 0 && (var13[var16 - 1][var17 + 1] & 19136824) == 0 && (var13[var16 - 1][var17] & 19136776) == 0 && (var13[var16][var17 + 1] & 19136800) == 0) {
+            class118.field1869[var12] = var4 - 1;
+            class118.field1867[var12] = var5 + 1;
+            var12 = var12 + 1 & 4095;
+            class118.field1865[var14 - 1][var15 + 1] = 6;
+            class118.field1870[var14 - 1][var15 + 1] = var18;
          }
 
-         if(var16 < 127 && var17 < 127 && class118.field1865[var16 + 1][1 + var17] == 0 && (var12[1 + var13][var14 + 1] & 19136992) == 0 && (var12[var13 + 1][var14] & 19136896) == 0 && (var12[var13][var14 + 1] & 19136800) == 0) {
-            class118.field1869[var18] = 1 + var4;
-            class118.field1867[var18] = 1 + var5;
-            var18 = var18 + 1 & 4095;
-            class118.field1865[var16 + 1][1 + var17] = 12;
-            class118.field1870[1 + var16][1 + var17] = var15;
+         if(var14 < 127 && var15 < 127 && class118.field1865[var14 + 1][var15 + 1] == 0 && (var13[var16 + 1][var17 + 1] & 19136992) == 0 && (var13[var16 + 1][var17] & 19136896) == 0 && (var13[var16][var17 + 1] & 19136800) == 0) {
+            class118.field1869[var12] = var4 + 1;
+            class118.field1867[var12] = var5 + 1;
+            var12 = var12 + 1 & 4095;
+            class118.field1865[var14 + 1][var15 + 1] = 12;
+            class118.field1870[var14 + 1][var15 + 1] = var18;
          }
       }
 

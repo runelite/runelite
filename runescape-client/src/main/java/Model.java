@@ -547,35 +547,34 @@ public class Model extends Renderable {
 
                      try {
                         this.method1601(var23, var26, var9);
-                     } catch (Exception var37) {
+                     } catch (Exception var36) {
                         ;
                      }
-
                   }
                }
             }
          }
       }
+
    }
 
    @ObfuscatedName("w")
    public void method1588(Frames var1, int var2) {
-      if(this.field1400 != null) {
-         if(var2 != -1) {
-            Frame var3 = var1.field1595[var2];
-            FrameMap var4 = var3.field1342;
-            field1428 = 0;
-            field1429 = 0;
-            field1430 = 0;
+      if(this.field1400 != null && var2 != -1) {
+         Frame var3 = var1.field1595[var2];
+         FrameMap var4 = var3.field1342;
+         field1428 = 0;
+         field1429 = 0;
+         field1430 = 0;
 
-            for(int var5 = 0; var5 < var3.field1343; ++var5) {
-               int var6 = var3.field1341[var5];
-               this.method1661(var4.field1489[var6], var4.field1490[var6], var3.translator_x[var5], var3.translator_y[var5], var3.translator_z[var5]);
-            }
-
-            this.field1396 = 0;
+         for(int var5 = 0; var5 < var3.field1343; ++var5) {
+            int var6 = var3.field1341[var5];
+            this.method1661(var4.field1489[var6], var4.field1490[var6], var3.translator_x[var5], var3.translator_y[var5], var3.translator_z[var5]);
          }
+
+         this.field1396 = 0;
       }
+
    }
 
    @ObfuscatedName("m")
@@ -641,6 +640,65 @@ public class Model extends Renderable {
       int var9 = class84.field1455;
       int var10000 = field1436[var1];
       var10000 = field1437[var1];
+      int var11 = field1436[var2];
+      int var12 = field1437[var2];
+      int var13 = field1436[var3];
+      int var14 = field1437[var3];
+      int var15 = field1436[var4];
+      int var16 = field1437[var4];
+      int var17 = var6 * var15 + var7 * var16 >> 16;
+
+      for(int var18 = 0; var18 < this.field1380; ++var18) {
+         int var19 = this.verticesX[var18];
+         int var20 = this.verticesY[var18];
+         int var21 = this.verticesZ[var18];
+         int var22;
+         if(var3 != 0) {
+            var22 = var20 * var13 + var19 * var14 >> 16;
+            var20 = var20 * var14 - var19 * var13 >> 16;
+            var19 = var22;
+         }
+
+         if(var2 != 0) {
+            var22 = var21 * var11 + var19 * var12 >> 16;
+            var21 = var21 * var12 - var19 * var11 >> 16;
+            var19 = var22;
+         }
+
+         var19 += var5;
+         var20 += var6;
+         var21 += var7;
+         var22 = var20 * var16 - var21 * var15 >> 16;
+         var21 = var20 * var15 + var21 * var16 >> 16;
+         field1381[var18] = var21 - var17;
+         field1411[var18] = var8 + var19 * class84.field1461 / var21;
+         field1412[var18] = var9 + var22 * class84.field1461 / var21;
+         if(this.field1401 > 0) {
+            field1393[var18] = var19;
+            field1415[var18] = var22;
+            field1394[var18] = var21;
+         }
+      }
+
+      try {
+         this.method1601(false, false, 0);
+      } catch (Exception var23) {
+         ;
+      }
+
+   }
+
+   @ObfuscatedName("b")
+   public final void method1600(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      field1418[0] = -1;
+      if(this.field1396 != 2 && this.field1396 != 1) {
+         this.method1658();
+      }
+
+      int var9 = class84.field1456;
+      int var10 = class84.field1455;
+      int var10000 = field1436[var1];
+      var10000 = field1437[var1];
       int var12 = field1436[var2];
       int var13 = field1437[var2];
       int var14 = field1436[var3];
@@ -672,8 +730,8 @@ public class Model extends Renderable {
          var23 = var21 * var17 - var22 * var16 >> 16;
          var22 = var21 * var16 + var22 * var17 >> 16;
          field1381[var19] = var22 - var18;
-         field1411[var19] = var8 + var20 * class84.field1461 / var22;
-         field1412[var19] = var9 + var23 * class84.field1461 / var22;
+         field1411[var19] = var9 + var20 * class84.field1461 / var8;
+         field1412[var19] = var10 + var23 * class84.field1461 / var8;
          if(this.field1401 > 0) {
             field1393[var19] = var20;
             field1415[var19] = var23;
@@ -683,76 +741,10 @@ public class Model extends Renderable {
 
       try {
          this.method1601(false, false, 0);
-      } catch (Exception var25) {
+      } catch (Exception var24) {
          ;
       }
 
-   }
-
-   @ObfuscatedName("b")
-   public final void method1600(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-      field1418[0] = -1;
-      if(this.field1396 != 2 && this.field1396 != 1) {
-         this.method1658();
-      }
-
-      int var9 = class84.field1456;
-      int var10 = class84.field1455;
-      int var10000 = field1436[var1];
-      var10000 = field1437[var1];
-      int var13 = field1436[var2];
-      int var14 = field1437[var2];
-      int var15 = field1436[var3];
-      int var16 = field1437[var3];
-      int var17 = field1436[var4];
-      int var18 = field1437[var4];
-      int var19 = var6 * var17 + var7 * var18 >> 16;
-
-      for(int var20 = 0; var20 < this.field1380; ++var20) {
-         int var21 = this.verticesX[var20];
-         int var22 = this.verticesY[var20];
-         int var23 = this.verticesZ[var20];
-         int var24;
-         if(var3 != 0) {
-            var24 = var22 * var15 + var21 * var16 >> 16;
-            var22 = var22 * var16 - var21 * var15 >> 16;
-            var21 = var24;
-         }
-
-         if(var2 != 0) {
-            var24 = var23 * var13 + var21 * var14 >> 16;
-            var23 = var23 * var14 - var21 * var13 >> 16;
-            var21 = var24;
-         }
-
-         var21 += var5;
-         var22 += var6;
-         var23 += var7;
-         var24 = var22 * var18 - var23 * var17 >> 16;
-         var23 = var22 * var17 + var23 * var18 >> 16;
-         field1381[var20] = var23 - var19;
-         field1411[var20] = var9 + var21 * class84.field1461 / var8;
-         field1412[var20] = var10 + var24 * class84.field1461 / var8;
-         if(this.field1401 > 0) {
-            field1393[var20] = var21;
-            field1415[var20] = var24;
-            field1394[var20] = var23;
-         }
-      }
-
-      try {
-         this.method1601(false, false, 0);
-      } catch (Exception var26) {
-         ;
-      }
-
-   }
-
-   static {
-      field1436 = class84.field1475;
-      field1437 = class84.field1469;
-      field1422 = class84.colorPalette;
-      field1439 = class84.field1474;
    }
 
    @ObfuscatedName("k")
@@ -768,10 +760,10 @@ public class Model extends Renderable {
          int var7;
          int var8;
          int var9;
+         int var10;
+         int var11;
          int var12;
          int var13;
-         int var15;
-         int var24;
          for(var4 = 0; var4 < this.field1384; ++var4) {
             if(this.field1377[var4] != -2) {
                var5 = this.indices1[var4];
@@ -779,66 +771,65 @@ public class Model extends Renderable {
                var7 = this.indices3[var4];
                var8 = field1411[var5];
                var9 = field1411[var6];
-               var24 = field1411[var7];
-               int var11;
-               if(var1 && (var8 == -5000 || var9 == -5000 || var24 == -5000)) {
-                  var11 = field1393[var5];
-                  var12 = field1393[var6];
-                  var13 = field1393[var7];
-                  int var14 = field1415[var5];
-                  var15 = field1415[var6];
-                  int var16 = field1415[var7];
-                  int var17 = field1394[var5];
-                  int var18 = field1394[var6];
-                  int var19 = field1394[var7];
-                  var11 -= var12;
-                  var13 -= var12;
-                  var14 -= var15;
-                  var16 -= var15;
-                  var17 -= var18;
-                  var19 -= var18;
-                  int var20 = var14 * var19 - var17 * var16;
-                  int var21 = var17 * var13 - var11 * var19;
-                  int var22 = var11 * var16 - var14 * var13;
-                  if(var12 * var20 + var15 * var21 + var18 * var22 > 0) {
-                     field1410[var4] = true;
-                     int var23 = (field1381[var5] + field1381[var6] + field1381[var7]) / 3 + this.field1407;
-                     field1419[var23][field1418[var23]++] = var4;
-                  }
-               } else {
-                  if(var2 && this.method1604(field1408, field1433, field1412[var5], field1412[var6], field1412[var7], var8, var9, var24)) {
+               var13 = field1411[var7];
+               int var14;
+               if(!var1 || var8 != -5000 && var9 != -5000 && var13 != -5000) {
+                  if(var2 && this.method1604(field1408, field1433, field1412[var5], field1412[var6], field1412[var7], var8, var9, var13)) {
                      field1435[field1421++] = var3;
                      var2 = false;
                   }
 
-                  if((var8 - var9) * (field1412[var7] - field1412[var6]) - (field1412[var5] - field1412[var6]) * (var24 - var9) > 0) {
+                  if((var8 - var9) * (field1412[var7] - field1412[var6]) - (field1412[var5] - field1412[var6]) * (var13 - var9) > 0) {
                      field1410[var4] = false;
-                     if(var8 >= 0 && var9 >= 0 && var24 >= 0 && var8 <= class84.rasterClipX && var9 <= class84.rasterClipX && var24 <= class84.rasterClipX) {
+                     if(var8 >= 0 && var9 >= 0 && var13 >= 0 && var8 <= class84.rasterClipX && var9 <= class84.rasterClipX && var13 <= class84.rasterClipX) {
                         field1438[var4] = false;
                      } else {
                         field1438[var4] = true;
                      }
 
-                     var11 = (field1381[var5] + field1381[var6] + field1381[var7]) / 3 + this.field1407;
-                     field1419[var11][field1418[var11]++] = var4;
+                     var14 = (field1381[var5] + field1381[var6] + field1381[var7]) / 3 + this.field1407;
+                     field1419[var14][field1418[var14]++] = var4;
+                  }
+               } else {
+                  var14 = field1393[var5];
+                  var10 = field1393[var6];
+                  var11 = field1393[var7];
+                  int var15 = field1415[var5];
+                  var12 = field1415[var6];
+                  int var16 = field1415[var7];
+                  int var17 = field1394[var5];
+                  int var18 = field1394[var6];
+                  int var19 = field1394[var7];
+                  var14 -= var10;
+                  var11 -= var10;
+                  var15 -= var12;
+                  var16 -= var12;
+                  var17 -= var18;
+                  var19 -= var18;
+                  int var20 = var15 * var19 - var17 * var16;
+                  int var21 = var17 * var11 - var14 * var19;
+                  int var22 = var14 * var16 - var15 * var11;
+                  if(var10 * var20 + var12 * var21 + var18 * var22 > 0) {
+                     field1410[var4] = true;
+                     int var23 = (field1381[var5] + field1381[var6] + field1381[var7]) / 3 + this.field1407;
+                     field1419[var23][field1418[var23]++] = var4;
                   }
                }
             }
          }
 
-         int[] var25;
+         int[] var24;
          if(this.field1403 == null) {
             for(var4 = this.field1440 - 1; var4 >= 0; --var4) {
                var5 = field1418[var4];
                if(var5 > 0) {
-                  var25 = field1419[var4];
+                  var24 = field1419[var4];
 
                   for(var7 = 0; var7 < var5; ++var7) {
-                     this.method1602(var25[var7]);
+                     this.method1602(var24[var7]);
                   }
                }
             }
-
          } else {
             for(var4 = 0; var4 < 12; ++var4) {
                field1420[var4] = 0;
@@ -848,19 +839,19 @@ public class Model extends Renderable {
             for(var4 = this.field1440 - 1; var4 >= 0; --var4) {
                var5 = field1418[var4];
                if(var5 > 0) {
-                  var25 = field1419[var4];
+                  var24 = field1419[var4];
 
                   for(var7 = 0; var7 < var5; ++var7) {
-                     var8 = var25[var7];
-                     byte var28 = this.field1403[var8];
-                     var24 = field1420[var28]++;
-                     field1417[var28][var24] = var8;
-                     if(var28 < 10) {
-                        field1424[var28] += var4;
-                     } else if(var28 == 10) {
-                        field1395[var24] = var4;
+                     var8 = var24[var7];
+                     byte var25 = this.field1403[var8];
+                     var13 = field1420[var25]++;
+                     field1417[var25][var13] = var8;
+                     if(var25 < 10) {
+                        field1424[var25] += var4;
+                     } else if(var25 == 10) {
+                        field1395[var13] = var4;
                      } else {
-                        field1423[var24] = var4;
+                        field1423[var13] = var4;
                      }
                   }
                }
@@ -883,96 +874,96 @@ public class Model extends Renderable {
 
             var8 = 0;
             var9 = field1420[10];
-            int[] var10 = field1417[10];
-            int[] var26 = field1395;
+            int[] var26 = field1417[10];
+            int[] var27 = field1395;
             if(var8 == var9) {
                var8 = 0;
                var9 = field1420[11];
-               var10 = field1417[11];
-               var26 = field1423;
+               var26 = field1417[11];
+               var27 = field1423;
             }
 
             if(var8 < var9) {
-               var7 = var26[var8];
+               var7 = var27[var8];
             } else {
                var7 = -1000;
             }
 
-            for(var12 = 0; var12 < 10; ++var12) {
-               while(var12 == 0 && var7 > var4) {
-                  this.method1602(var10[var8++]);
-                  if(var8 == var9 && var10 != field1417[11]) {
+            for(var10 = 0; var10 < 10; ++var10) {
+               while(var10 == 0 && var7 > var4) {
+                  this.method1602(var26[var8++]);
+                  if(var8 == var9 && var26 != field1417[11]) {
                      var8 = 0;
                      var9 = field1420[11];
-                     var10 = field1417[11];
-                     var26 = field1423;
+                     var26 = field1417[11];
+                     var27 = field1423;
                   }
 
                   if(var8 < var9) {
-                     var7 = var26[var8];
+                     var7 = var27[var8];
                   } else {
                      var7 = -1000;
                   }
                }
 
-               while(var12 == 3 && var7 > var5) {
-                  this.method1602(var10[var8++]);
-                  if(var8 == var9 && var10 != field1417[11]) {
+               while(var10 == 3 && var7 > var5) {
+                  this.method1602(var26[var8++]);
+                  if(var8 == var9 && var26 != field1417[11]) {
                      var8 = 0;
                      var9 = field1420[11];
-                     var10 = field1417[11];
-                     var26 = field1423;
+                     var26 = field1417[11];
+                     var27 = field1423;
                   }
 
                   if(var8 < var9) {
-                     var7 = var26[var8];
+                     var7 = var27[var8];
                   } else {
                      var7 = -1000;
                   }
                }
 
-               while(var12 == 5 && var7 > var6) {
-                  this.method1602(var10[var8++]);
-                  if(var8 == var9 && var10 != field1417[11]) {
+               while(var10 == 5 && var7 > var6) {
+                  this.method1602(var26[var8++]);
+                  if(var8 == var9 && var26 != field1417[11]) {
                      var8 = 0;
                      var9 = field1420[11];
-                     var10 = field1417[11];
-                     var26 = field1423;
+                     var26 = field1417[11];
+                     var27 = field1423;
                   }
 
                   if(var8 < var9) {
-                     var7 = var26[var8];
+                     var7 = var27[var8];
                   } else {
                      var7 = -1000;
                   }
                }
 
-               var13 = field1420[var12];
-               int[] var27 = field1417[var12];
+               var11 = field1420[var10];
+               int[] var28 = field1417[var10];
 
-               for(var15 = 0; var15 < var13; ++var15) {
-                  this.method1602(var27[var15]);
+               for(var12 = 0; var12 < var11; ++var12) {
+                  this.method1602(var28[var12]);
                }
             }
 
             while(var7 != -1000) {
-               this.method1602(var10[var8++]);
-               if(var8 == var9 && var10 != field1417[11]) {
+               this.method1602(var26[var8++]);
+               if(var8 == var9 && var26 != field1417[11]) {
                   var8 = 0;
-                  var10 = field1417[11];
+                  var26 = field1417[11];
                   var9 = field1420[11];
-                  var26 = field1423;
+                  var27 = field1423;
                }
 
                if(var8 < var9) {
-                  var7 = var26[var8];
+                  var7 = var27[var8];
                } else {
                   var7 = -1000;
                }
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("t")
@@ -1015,8 +1006,8 @@ public class Model extends Renderable {
          } else {
             class84.rasterGouraud(field1412[var2], field1412[var3], field1412[var4], field1411[var2], field1411[var3], field1411[var4], this.field1388[var1], this.field1389[var1], this.field1377[var1]);
          }
-
       }
+
    }
 
    @ObfuscatedName("c")
@@ -1235,6 +1226,7 @@ public class Model extends Renderable {
          this.field1407 = (int)(Math.sqrt((double)(this.field1416 * this.field1416 + super.modelHeight * super.modelHeight)) + 0.99D);
          this.field1440 = this.field1407 + (int)(Math.sqrt((double)(this.field1416 * this.field1416 + this.field1404 * this.field1404)) + 0.99D);
       }
+
    }
 
    @ObfuscatedName("j")
@@ -1248,18 +1240,18 @@ public class Model extends Renderable {
             field1429 = 0;
             field1430 = 0;
             byte var9 = 0;
-            int var13 = var9 + 1;
-            int var10 = var5[var9];
+            int var10 = var9 + 1;
+            int var11 = var5[var9];
 
-            int var11;
             int var12;
-            for(var11 = 0; var11 < var6.field1343; ++var11) {
-               for(var12 = var6.field1341[var11]; var12 > var10; var10 = var5[var13++]) {
+            int var13;
+            for(var12 = 0; var12 < var6.field1343; ++var12) {
+               for(var13 = var6.field1341[var12]; var13 > var11; var11 = var5[var10++]) {
                   ;
                }
 
-               if(var12 != var10 || var8.field1489[var12] == 0) {
-                  this.method1661(var8.field1489[var12], var8.field1490[var12], var6.translator_x[var11], var6.translator_y[var11], var6.translator_z[var11]);
+               if(var13 != var11 || var8.field1489[var13] == 0) {
+                  this.method1661(var8.field1489[var13], var8.field1490[var13], var6.translator_x[var12], var6.translator_y[var12], var6.translator_z[var12]);
                }
             }
 
@@ -1267,16 +1259,16 @@ public class Model extends Renderable {
             field1429 = 0;
             field1430 = 0;
             var9 = 0;
-            var13 = var9 + 1;
-            var10 = var5[var9];
+            var10 = var9 + 1;
+            var11 = var5[var9];
 
-            for(var11 = 0; var11 < var7.field1343; ++var11) {
-               for(var12 = var7.field1341[var11]; var12 > var10; var10 = var5[var13++]) {
+            for(var12 = 0; var12 < var7.field1343; ++var12) {
+               for(var13 = var7.field1341[var12]; var13 > var11; var11 = var5[var10++]) {
                   ;
                }
 
-               if(var12 == var10 || var8.field1489[var12] == 0) {
-                  this.method1661(var8.field1489[var12], var8.field1490[var12], var7.translator_x[var11], var7.translator_y[var11], var7.translator_z[var11]);
+               if(var13 == var11 || var8.field1489[var13] == 0) {
+                  this.method1661(var8.field1489[var13], var8.field1490[var13], var7.translator_x[var12], var7.translator_y[var12], var7.translator_z[var12]);
                }
             }
 
@@ -1285,6 +1277,7 @@ public class Model extends Renderable {
             this.method1588(var1, var2);
          }
       }
+
    }
 
    @ObfuscatedName("q")
@@ -1318,6 +1311,7 @@ public class Model extends Renderable {
          this.field1407 = this.field1416;
          this.field1440 = this.field1416 + this.field1416;
       }
+
    }
 
    @ObfuscatedName("s")
@@ -1325,8 +1319,10 @@ public class Model extends Renderable {
       int var6 = var2.length;
       int var7;
       int var8;
+      int var9;
+      int var10;
       int var11;
-      int var12;
+      int[] var12;
       if(var1 == 0) {
          var7 = 0;
          field1428 = 0;
@@ -1334,15 +1330,15 @@ public class Model extends Renderable {
          field1430 = 0;
 
          for(var8 = 0; var8 < var6; ++var8) {
-            int var9 = var2[var8];
-            if(var9 < this.field1400.length) {
-               int[] var10 = this.field1400[var9];
+            var11 = var2[var8];
+            if(var11 < this.field1400.length) {
+               var12 = this.field1400[var11];
 
-               for(var11 = 0; var11 < var10.length; ++var11) {
-                  var12 = var10[var11];
-                  field1428 += this.verticesX[var12];
-                  field1429 += this.verticesY[var12];
-                  field1430 += this.verticesZ[var12];
+               for(var9 = 0; var9 < var12.length; ++var9) {
+                  var10 = var12[var9];
+                  field1428 += this.verticesX[var10];
+                  field1429 += this.verticesY[var10];
+                  field1430 += this.verticesZ[var10];
                   ++var7;
                }
             }
@@ -1357,117 +1353,114 @@ public class Model extends Renderable {
             field1429 = var4;
             field1430 = var5;
          }
+      } else if(var1 == 1) {
+         for(var7 = 0; var7 < var6; ++var7) {
+            var8 = var2[var7];
+            if(var8 < this.field1400.length) {
+               var12 = this.field1400[var8];
 
-      } else {
-         int var18;
-         int[] var19;
-         if(var1 == 1) {
-            for(var7 = 0; var7 < var6; ++var7) {
-               var8 = var2[var7];
-               if(var8 < this.field1400.length) {
-                  var19 = this.field1400[var8];
-
-                  for(var18 = 0; var18 < var19.length; ++var18) {
-                     var11 = var19[var18];
-                     this.verticesX[var11] += var3;
-                     this.verticesY[var11] += var4;
-                     this.verticesZ[var11] += var5;
-                  }
+               for(var11 = 0; var11 < var12.length; ++var11) {
+                  var9 = var12[var11];
+                  this.verticesX[var9] += var3;
+                  this.verticesY[var9] += var4;
+                  this.verticesZ[var9] += var5;
                }
             }
+         }
+      } else if(var1 == 2) {
+         for(var7 = 0; var7 < var6; ++var7) {
+            var8 = var2[var7];
+            if(var8 < this.field1400.length) {
+               var12 = this.field1400[var8];
 
-         } else if(var1 == 2) {
-            for(var7 = 0; var7 < var6; ++var7) {
-               var8 = var2[var7];
-               if(var8 < this.field1400.length) {
-                  var19 = this.field1400[var8];
-
-                  for(var18 = 0; var18 < var19.length; ++var18) {
-                     var11 = var19[var18];
-                     this.verticesX[var11] -= field1428;
-                     this.verticesY[var11] -= field1429;
-                     this.verticesZ[var11] -= field1430;
-                     var12 = (var3 & 255) * 8;
-                     int var13 = (var4 & 255) * 8;
-                     int var14 = (var5 & 255) * 8;
-                     int var15;
-                     int var16;
-                     int var17;
-                     if(var14 != 0) {
-                        var15 = field1436[var14];
-                        var16 = field1437[var14];
-                        var17 = this.verticesY[var11] * var15 + this.verticesX[var11] * var16 >> 16;
-                        this.verticesY[var11] = this.verticesY[var11] * var16 - this.verticesX[var11] * var15 >> 16;
-                        this.verticesX[var11] = var17;
-                     }
-
-                     if(var12 != 0) {
-                        var15 = field1436[var12];
-                        var16 = field1437[var12];
-                        var17 = this.verticesY[var11] * var16 - this.verticesZ[var11] * var15 >> 16;
-                        this.verticesZ[var11] = this.verticesY[var11] * var15 + this.verticesZ[var11] * var16 >> 16;
-                        this.verticesY[var11] = var17;
-                     }
-
-                     if(var13 != 0) {
-                        var15 = field1436[var13];
-                        var16 = field1437[var13];
-                        var17 = this.verticesZ[var11] * var15 + this.verticesX[var11] * var16 >> 16;
-                        this.verticesZ[var11] = this.verticesZ[var11] * var16 - this.verticesX[var11] * var15 >> 16;
-                        this.verticesX[var11] = var17;
-                     }
-
-                     this.verticesX[var11] += field1428;
-                     this.verticesY[var11] += field1429;
-                     this.verticesZ[var11] += field1430;
+               for(var11 = 0; var11 < var12.length; ++var11) {
+                  var9 = var12[var11];
+                  this.verticesX[var9] -= field1428;
+                  this.verticesY[var9] -= field1429;
+                  this.verticesZ[var9] -= field1430;
+                  var10 = (var3 & 255) * 8;
+                  int var13 = (var4 & 255) * 8;
+                  int var14 = (var5 & 255) * 8;
+                  int var15;
+                  int var16;
+                  int var17;
+                  if(var14 != 0) {
+                     var15 = field1436[var14];
+                     var16 = field1437[var14];
+                     var17 = this.verticesY[var9] * var15 + this.verticesX[var9] * var16 >> 16;
+                     this.verticesY[var9] = this.verticesY[var9] * var16 - this.verticesX[var9] * var15 >> 16;
+                     this.verticesX[var9] = var17;
                   }
+
+                  if(var10 != 0) {
+                     var15 = field1436[var10];
+                     var16 = field1437[var10];
+                     var17 = this.verticesY[var9] * var16 - this.verticesZ[var9] * var15 >> 16;
+                     this.verticesZ[var9] = this.verticesY[var9] * var15 + this.verticesZ[var9] * var16 >> 16;
+                     this.verticesY[var9] = var17;
+                  }
+
+                  if(var13 != 0) {
+                     var15 = field1436[var13];
+                     var16 = field1437[var13];
+                     var17 = this.verticesZ[var9] * var15 + this.verticesX[var9] * var16 >> 16;
+                     this.verticesZ[var9] = this.verticesZ[var9] * var16 - this.verticesX[var9] * var15 >> 16;
+                     this.verticesX[var9] = var17;
+                  }
+
+                  this.verticesX[var9] += field1428;
+                  this.verticesY[var9] += field1429;
+                  this.verticesZ[var9] += field1430;
                }
             }
+         }
+      } else if(var1 == 3) {
+         for(var7 = 0; var7 < var6; ++var7) {
+            var8 = var2[var7];
+            if(var8 < this.field1400.length) {
+               var12 = this.field1400[var8];
 
-         } else if(var1 == 3) {
-            for(var7 = 0; var7 < var6; ++var7) {
-               var8 = var2[var7];
-               if(var8 < this.field1400.length) {
-                  var19 = this.field1400[var8];
-
-                  for(var18 = 0; var18 < var19.length; ++var18) {
-                     var11 = var19[var18];
-                     this.verticesX[var11] -= field1428;
-                     this.verticesY[var11] -= field1429;
-                     this.verticesZ[var11] -= field1430;
-                     this.verticesX[var11] = this.verticesX[var11] * var3 / 128;
-                     this.verticesY[var11] = this.verticesY[var11] * var4 / 128;
-                     this.verticesZ[var11] = this.verticesZ[var11] * var5 / 128;
-                     this.verticesX[var11] += field1428;
-                     this.verticesY[var11] += field1429;
-                     this.verticesZ[var11] += field1430;
-                  }
+               for(var11 = 0; var11 < var12.length; ++var11) {
+                  var9 = var12[var11];
+                  this.verticesX[var9] -= field1428;
+                  this.verticesY[var9] -= field1429;
+                  this.verticesZ[var9] -= field1430;
+                  this.verticesX[var9] = this.verticesX[var9] * var3 / 128;
+                  this.verticesY[var9] = this.verticesY[var9] * var4 / 128;
+                  this.verticesZ[var9] = this.verticesZ[var9] * var5 / 128;
+                  this.verticesX[var9] += field1428;
+                  this.verticesY[var9] += field1429;
+                  this.verticesZ[var9] += field1430;
                }
             }
+         }
+      } else if(var1 == 5 && this.field1405 != null && this.field1392 != null) {
+         for(var7 = 0; var7 < var6; ++var7) {
+            var8 = var2[var7];
+            if(var8 < this.field1405.length) {
+               var12 = this.field1405[var8];
 
-         } else if(var1 == 5) {
-            if(this.field1405 != null && this.field1392 != null) {
-               for(var7 = 0; var7 < var6; ++var7) {
-                  var8 = var2[var7];
-                  if(var8 < this.field1405.length) {
-                     var19 = this.field1405[var8];
-
-                     for(var18 = 0; var18 < var19.length; ++var18) {
-                        var11 = var19[var18];
-                        var12 = (this.field1392[var11] & 255) + var3 * 8;
-                        if(var12 < 0) {
-                           var12 = 0;
-                        } else if(var12 > 255) {
-                           var12 = 255;
-                        }
-
-                        this.field1392[var11] = (byte)var12;
-                     }
+               for(var11 = 0; var11 < var12.length; ++var11) {
+                  var9 = var12[var11];
+                  var10 = (this.field1392[var9] & 255) + var3 * 8;
+                  if(var10 < 0) {
+                     var10 = 0;
+                  } else if(var10 > 255) {
+                     var10 = 255;
                   }
+
+                  this.field1392[var9] = (byte)var10;
                }
             }
-
          }
       }
+
+   }
+
+   static {
+      field1436 = class84.field1475;
+      field1437 = class84.field1469;
+      field1422 = class84.colorPalette;
+      field1439 = class84.field1474;
    }
 }

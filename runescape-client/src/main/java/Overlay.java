@@ -189,8 +189,8 @@ public class Overlay extends CacheableNode {
       garbageValue = "-580079244"
    )
    static final int method3784(int var0, int var1) {
-      int var2 = class217.method3987('넵' + var0, 91923 + var1, 4) - 128 + (class217.method3987(var0 + 10294, var1 + '鎽', 2) - 128 >> 1) + (class217.method3987(var0, var1, 1) - 128 >> 2);
-      var2 = 35 + (int)((double)var2 * 0.3D);
+      int var2 = class217.method3987(var0 + '넵', var1 + 91923, 4) - 128 + (class217.method3987(var0 + 10294, var1 + '鎽', 2) - 128 >> 1) + (class217.method3987(var0, var1, 1) - 128 >> 2);
+      var2 = (int)((double)var2 * 0.3D) + 35;
       if(var2 < 10) {
          var2 = 10;
       } else if(var2 > 60) {

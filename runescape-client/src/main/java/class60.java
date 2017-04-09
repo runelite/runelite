@@ -32,11 +32,11 @@ public class class60 {
       class55 var7 = (class55)this.field1103.method2417(var5);
       if(var7 != null) {
          return var7;
-      } else if(null != var3 && var3[0] <= 0) {
+      } else if(var3 != null && var3[0] <= 0) {
          return null;
       } else {
          SoundEffect var8 = SoundEffect.method1013(this.field1108, var1, var2);
-         if(null == var8) {
+         if(var8 == null) {
             return null;
          } else {
             var7 = var8.method1008();
@@ -105,13 +105,13 @@ public class class60 {
       class55 var7 = (class55)this.field1103.method2417(var5);
       if(var7 != null) {
          return var7;
-      } else if(null != var3 && var3[0] <= 0) {
+      } else if(var3 != null && var3[0] <= 0) {
          return null;
       } else {
          class54 var8 = (class54)this.field1102.method2417(var5);
-         if(null == var8) {
+         if(var8 == null) {
             var8 = class54.method1026(this.field1101, var1, var2);
-            if(null == var8) {
+            if(var8 == null) {
                return null;
             }
 
@@ -119,7 +119,7 @@ public class class60 {
          }
 
          var7 = var8.method1028(var3);
-         if(null == var7) {
+         if(var7 == null) {
             return null;
          } else {
             var8.unlink();
@@ -150,306 +150,302 @@ public class class60 {
       garbageValue = "-11"
    )
    static final void method1179() {
+      int var0;
       int var1;
       int var2;
       int var3;
-      int var4;
-      Item var5;
-      int var35;
+      Item var4;
+      int var5;
       if(Client.packetOpcode == 181) {
-         var35 = Client.secretCipherBuffer2.readUnsignedByte();
-         var1 = class119.field1880 + (var35 >> 4 & 7);
-         var2 = MessageNode.field250 + (var35 & 7);
-         var3 = Client.secretCipherBuffer2.method2853();
-         var4 = Client.secretCipherBuffer2.readUnsignedShort();
-         if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
-            var5 = new Item();
-            var5.id = var4;
-            var5.quantity = var3;
-            if(Client.groundItemDeque[Sequence.plane][var1][var2] == null) {
-               Client.groundItemDeque[Sequence.plane][var1][var2] = new Deque();
+         var5 = Client.secretCipherBuffer2.readUnsignedByte();
+         var0 = class119.field1880 + (var5 >> 4 & 7);
+         var1 = MessageNode.field250 + (var5 & 7);
+         var2 = Client.secretCipherBuffer2.method2853();
+         var3 = Client.secretCipherBuffer2.readUnsignedShort();
+         if(var0 >= 0 && var1 >= 0 && var0 < 104 && var1 < 104) {
+            var4 = new Item();
+            var4.id = var3;
+            var4.quantity = var2;
+            if(Client.groundItemDeque[Sequence.plane][var0][var1] == null) {
+               Client.groundItemDeque[Sequence.plane][var0][var1] = new Deque();
             }
 
-            Client.groundItemDeque[Sequence.plane][var1][var2].method2459(var5);
-            Client.groundItemSpawned(var1, var2);
+            Client.groundItemDeque[Sequence.plane][var0][var1].method2459(var4);
+            Client.groundItemSpawned(var0, var1);
          }
-
       } else {
+         int var6;
+         int var7;
+         int var8;
          int var9;
          int var10;
          int var11;
-         int var12;
-         int var29;
-         int var31;
          if(Client.packetOpcode == 205) {
-            byte var0 = Client.secretCipherBuffer2.method2898();
-            var1 = Client.secretCipherBuffer2.method2853();
-            var2 = Client.secretCipherBuffer2.readUnsignedByte();
-            var3 = var2 >> 2;
-            var4 = var2 & 3;
-            var29 = Client.field450[var3];
-            byte var6 = Client.secretCipherBuffer2.method2898();
-            var31 = Client.secretCipherBuffer2.method2853();
-            byte var32 = Client.secretCipherBuffer2.method2898();
-            var9 = Client.secretCipherBuffer2.method2921();
-            var10 = class119.field1880 + (var9 >> 4 & 7);
-            var11 = MessageNode.field250 + (var9 & 7);
-            var12 = Client.secretCipherBuffer2.method2903();
-            int var13 = Client.secretCipherBuffer2.method2904();
-            byte var14 = Client.secretCipherBuffer2.method2960();
-            Player var15;
-            if(var1 == Client.localInteractingIndex) {
-               var15 = Projectile.localPlayer;
+            byte var12 = Client.secretCipherBuffer2.method2898();
+            var0 = Client.secretCipherBuffer2.method2853();
+            var1 = Client.secretCipherBuffer2.readUnsignedByte();
+            var2 = var1 >> 2;
+            var3 = var1 & 3;
+            var10 = Client.field450[var2];
+            byte var13 = Client.secretCipherBuffer2.method2898();
+            var11 = Client.secretCipherBuffer2.method2853();
+            byte var14 = Client.secretCipherBuffer2.method2898();
+            var6 = Client.secretCipherBuffer2.method2921();
+            var7 = class119.field1880 + (var6 >> 4 & 7);
+            var8 = MessageNode.field250 + (var6 & 7);
+            var9 = Client.secretCipherBuffer2.method2903();
+            int var15 = Client.secretCipherBuffer2.method2904();
+            byte var16 = Client.secretCipherBuffer2.method2960();
+            Player var17;
+            if(var0 == Client.localInteractingIndex) {
+               var17 = Projectile.localPlayer;
             } else {
-               var15 = Client.cachedPlayers[var1];
+               var17 = Client.cachedPlayers[var0];
             }
 
-            if(var15 != null) {
-               ObjectComposition var16 = class140.getObjectDefinition(var13);
-               int var17;
-               int var18;
-               if(var4 != 1 && var4 != 3) {
-                  var17 = var16.sizeX;
-                  var18 = var16.sizeY;
+            if(var17 != null) {
+               ObjectComposition var18 = class140.getObjectDefinition(var15);
+               int var19;
+               int var20;
+               if(var3 != 1 && var3 != 3) {
+                  var19 = var18.sizeX;
+                  var20 = var18.sizeY;
                } else {
-                  var17 = var16.sizeY;
-                  var18 = var16.sizeX;
+                  var19 = var18.sizeY;
+                  var20 = var18.sizeX;
                }
 
-               int var19 = var10 + (var17 >> 1);
-               int var20 = (1 + var17 >> 1) + var10;
-               int var21 = (var18 >> 1) + var11;
-               int var22 = (1 + var18 >> 1) + var11;
-               int[][] var23 = class10.tileHeights[Sequence.plane];
-               int var24 = var23[var20][var22] + var23[var20][var21] + var23[var19][var21] + var23[var19][var22] >> 2;
-               int var25 = (var10 << 7) + (var17 << 6);
-               int var26 = (var18 << 6) + (var11 << 7);
-               Model var27 = var16.method3644(var3, var4, var23, var25, var24, var26);
-               if(var27 != null) {
-                  ISAACCipher.method3134(Sequence.plane, var10, var11, var29, -1, 0, 0, 1 + var12, var31 + 1);
-                  var15.totalLevel = var12 + Client.gameCycle;
-                  var15.field264 = var31 + Client.gameCycle;
-                  var15.model = var27;
-                  var15.field280 = var10 * 128 + var17 * 64;
-                  var15.field267 = var18 * 64 + 128 * var11;
-                  var15.field268 = var24;
-                  byte var28;
-                  if(var14 > var32) {
-                     var28 = var14;
-                     var14 = var32;
-                     var32 = var28;
+               int var21 = var7 + (var19 >> 1);
+               int var22 = (var19 + 1 >> 1) + var7;
+               int var23 = (var20 >> 1) + var8;
+               int var24 = (var20 + 1 >> 1) + var8;
+               int[][] var25 = class10.tileHeights[Sequence.plane];
+               int var26 = var25[var22][var24] + var25[var22][var23] + var25[var21][var23] + var25[var21][var24] >> 2;
+               int var27 = (var7 << 7) + (var19 << 6);
+               int var28 = (var20 << 6) + (var8 << 7);
+               Model var29 = var18.method3644(var2, var3, var25, var27, var26, var28);
+               if(var29 != null) {
+                  ISAACCipher.method3134(Sequence.plane, var7, var8, var10, -1, 0, 0, var9 + 1, var11 + 1);
+                  var17.totalLevel = var9 + Client.gameCycle;
+                  var17.field264 = var11 + Client.gameCycle;
+                  var17.model = var29;
+                  var17.field280 = var7 * 128 + var19 * 64;
+                  var17.field267 = var20 * 64 + var8 * 128;
+                  var17.field268 = var26;
+                  byte var30;
+                  if(var16 > var14) {
+                     var30 = var16;
+                     var16 = var14;
+                     var14 = var30;
                   }
 
-                  if(var6 > var0) {
-                     var28 = var6;
-                     var6 = var0;
-                     var0 = var28;
+                  if(var13 > var12) {
+                     var30 = var13;
+                     var13 = var12;
+                     var12 = var30;
                   }
 
-                  var15.field269 = var14 + var10;
-                  var15.field271 = var10 + var32;
-                  var15.field270 = var6 + var11;
-                  var15.field272 = var11 + var0;
+                  var17.field269 = var16 + var7;
+                  var17.field271 = var7 + var14;
+                  var17.field270 = var13 + var8;
+                  var17.field272 = var8 + var12;
                }
             }
          }
 
-         int var36;
-         int var40;
+         int var31;
+         int var32;
          if(Client.packetOpcode == 162) {
-            var35 = Client.secretCipherBuffer2.readUnsignedByte();
-            var1 = (var35 >> 4 & 7) + class119.field1880;
-            var2 = MessageNode.field250 + (var35 & 7);
-            var3 = Client.secretCipherBuffer2.readUnsignedShort();
-            var4 = Client.secretCipherBuffer2.readUnsignedByte();
-            var29 = var4 >> 4 & 15;
-            var36 = var4 & 7;
-            var31 = Client.secretCipherBuffer2.readUnsignedByte();
-            if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
-               var40 = var29 + 1;
-               if(Projectile.localPlayer.pathX[0] >= var1 - var40 && Projectile.localPlayer.pathX[0] <= var1 + var40 && Projectile.localPlayer.pathY[0] >= var2 - var40 && Projectile.localPlayer.pathY[0] <= var40 + var2 && Client.field544 != 0 && var36 > 0 && Client.field545 < 50) {
-                  Client.field546[Client.field545] = var3;
-                  Client.field547[Client.field545] = var36;
-                  Client.field334[Client.field545] = var31;
+            var5 = Client.secretCipherBuffer2.readUnsignedByte();
+            var0 = (var5 >> 4 & 7) + class119.field1880;
+            var1 = MessageNode.field250 + (var5 & 7);
+            var2 = Client.secretCipherBuffer2.readUnsignedShort();
+            var3 = Client.secretCipherBuffer2.readUnsignedByte();
+            var10 = var3 >> 4 & 15;
+            var31 = var3 & 7;
+            var11 = Client.secretCipherBuffer2.readUnsignedByte();
+            if(var0 >= 0 && var1 >= 0 && var0 < 104 && var1 < 104) {
+               var32 = var10 + 1;
+               if(Projectile.localPlayer.pathX[0] >= var0 - var32 && Projectile.localPlayer.pathX[0] <= var0 + var32 && Projectile.localPlayer.pathY[0] >= var1 - var32 && Projectile.localPlayer.pathY[0] <= var32 + var1 && Client.field544 != 0 && var31 > 0 && Client.field545 < 50) {
+                  Client.field546[Client.field545] = var2;
+                  Client.field547[Client.field545] = var31;
+                  Client.field334[Client.field545] = var11;
                   Client.field550[Client.field545] = null;
-                  Client.field464[Client.field545] = var29 + (var2 << 8) + (var1 << 16);
+                  Client.field464[Client.field545] = var10 + (var1 << 8) + (var0 << 16);
                   ++Client.field545;
                }
             }
          }
 
          if(Client.packetOpcode == 12) {
-            var35 = Client.secretCipherBuffer2.readUnsignedByte();
-            var1 = (var35 >> 4 & 7) + class119.field1880;
-            var2 = MessageNode.field250 + (var35 & 7);
-            var3 = Client.secretCipherBuffer2.readUnsignedShort();
-            var4 = Client.secretCipherBuffer2.readUnsignedByte();
-            var29 = Client.secretCipherBuffer2.readUnsignedShort();
-            if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
-               var1 = 64 + var1 * 128;
-               var2 = 64 + 128 * var2;
-               class33 var41 = new class33(var3, Sequence.plane, var1, var2, class103.method2025(var1, var2, Sequence.plane) - var4, var29, Client.gameCycle);
-               Client.field391.method2459(var41);
-            }
-
-         } else if(Client.packetOpcode == 77) {
-            var35 = Client.secretCipherBuffer2.readUnsignedByte();
-            var1 = class119.field1880 + (var35 >> 4 & 7);
-            var2 = (var35 & 7) + MessageNode.field250;
-            var3 = Client.secretCipherBuffer2.readUnsignedShort();
-            var4 = Client.secretCipherBuffer2.readUnsignedShort();
-            var29 = Client.secretCipherBuffer2.readUnsignedShort();
-            if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
-               Deque var33 = Client.groundItemDeque[Sequence.plane][var1][var2];
-               if(var33 != null) {
-                  for(Item var7 = (Item)var33.method2464(); var7 != null; var7 = (Item)var33.method2472()) {
-                     if((var3 & 32767) == var7.id && var4 == var7.quantity) {
-                        var7.quantity = var29;
-                        break;
-                     }
-                  }
-
-                  Client.groundItemSpawned(var1, var2);
-               }
-            }
-
-         } else if(Client.packetOpcode == 94) {
-            var35 = Client.secretCipherBuffer2.method2903();
-            var1 = Client.secretCipherBuffer2.method3015();
-            var2 = class119.field1880 + (var1 >> 4 & 7);
-            var3 = (var1 & 7) + MessageNode.field250;
-            if(var2 >= 0 && var3 >= 0 && var2 < 104 && var3 < 104) {
-               Deque var30 = Client.groundItemDeque[Sequence.plane][var2][var3];
-               if(null != var30) {
-                  for(var5 = (Item)var30.method2464(); null != var5; var5 = (Item)var30.method2472()) {
-                     if(var5.id == (var35 & 32767)) {
-                        var5.unlink();
-                        break;
-                     }
-                  }
-
-                  if(var30.method2464() == null) {
-                     Client.groundItemDeque[Sequence.plane][var2][var3] = null;
-                  }
-
-                  Client.groundItemSpawned(var2, var3);
-               }
-            }
-
-         } else if(Client.packetOpcode == 147) {
-            var35 = Client.secretCipherBuffer2.method3015();
-            var1 = var35 >> 2;
-            var2 = var35 & 3;
-            var3 = Client.field450[var1];
-            var4 = Client.secretCipherBuffer2.method3015();
-            var29 = (var4 >> 4 & 7) + class119.field1880;
-            var36 = MessageNode.field250 + (var4 & 7);
-            if(var29 >= 0 && var36 >= 0 && var29 < 104 && var36 < 104) {
-               ISAACCipher.method3134(Sequence.plane, var29, var36, var3, -1, var1, var2, 0, -1);
-            }
-
-         } else if(Client.packetOpcode == 36) {
-            var35 = Client.secretCipherBuffer2.readUnsignedShort();
-            var1 = Client.secretCipherBuffer2.readUnsignedByte();
-            var2 = (var1 >> 4 & 7) + class119.field1880;
-            var3 = MessageNode.field250 + (var1 & 7);
-            var4 = Client.secretCipherBuffer2.readUnsignedByte();
-            var29 = var4 >> 2;
-            var36 = var4 & 3;
-            var31 = Client.field450[var29];
-            if(var2 >= 0 && var3 >= 0 && var2 < 104 && var3 < 104) {
-               ISAACCipher.method3134(Sequence.plane, var2, var3, var31, var35, var29, var36, 0, -1);
-            }
-
-         } else if(Client.packetOpcode != 245) {
-            if(Client.packetOpcode == 194) {
-               var35 = Client.secretCipherBuffer2.readUnsignedByte();
-               var1 = class119.field1880 + (var35 >> 4 & 7);
-               var2 = MessageNode.field250 + (var35 & 7);
-               var3 = var1 + Client.secretCipherBuffer2.readByte();
-               var4 = var2 + Client.secretCipherBuffer2.readByte();
-               var29 = Client.secretCipherBuffer2.readShort();
-               var36 = Client.secretCipherBuffer2.readUnsignedShort();
-               var31 = Client.secretCipherBuffer2.readUnsignedByte() * 4;
-               var40 = Client.secretCipherBuffer2.readUnsignedByte() * 4;
-               var9 = Client.secretCipherBuffer2.readUnsignedShort();
-               var10 = Client.secretCipherBuffer2.readUnsignedShort();
-               var11 = Client.secretCipherBuffer2.readUnsignedByte();
-               var12 = Client.secretCipherBuffer2.readUnsignedByte();
-               if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104 && var3 >= 0 && var4 >= 0 && var3 < 104 && var4 < 104 && var36 != '\uffff') {
-                  var1 = 64 + 128 * var1;
-                  var2 = var2 * 128 + 64;
-                  var3 = var3 * 128 + 64;
-                  var4 = var4 * 128 + 64;
-                  Projectile var34 = new Projectile(var36, Sequence.plane, var1, var2, class103.method2025(var1, var2, Sequence.plane) - var31, Client.gameCycle + var9, Client.gameCycle + var10, var11, var12, var29, var40);
-                  var34.method816(var3, var4, class103.method2025(var3, var4, Sequence.plane) - var40, var9 + Client.gameCycle);
-                  Client.projectiles.method2459(var34);
-               }
-
+            var5 = Client.secretCipherBuffer2.readUnsignedByte();
+            var0 = (var5 >> 4 & 7) + class119.field1880;
+            var1 = MessageNode.field250 + (var5 & 7);
+            var2 = Client.secretCipherBuffer2.readUnsignedShort();
+            var3 = Client.secretCipherBuffer2.readUnsignedByte();
+            var10 = Client.secretCipherBuffer2.readUnsignedShort();
+            if(var0 >= 0 && var1 >= 0 && var0 < 104 && var1 < 104) {
+               var0 = var0 * 128 + 64;
+               var1 = var1 * 128 + 64;
+               class33 var33 = new class33(var2, Sequence.plane, var0, var1, class103.method2025(var0, var1, Sequence.plane) - var3, var10, Client.gameCycle);
+               Client.field391.method2459(var33);
             }
          } else {
-            var35 = Client.secretCipherBuffer2.method2921();
-            var1 = class119.field1880 + (var35 >> 4 & 7);
-            var2 = (var35 & 7) + MessageNode.field250;
-            var3 = Client.secretCipherBuffer2.method3051();
-            var4 = var3 >> 2;
-            var29 = var3 & 3;
-            var36 = Client.field450[var4];
-            var31 = Client.secretCipherBuffer2.readUnsignedShort();
-            if(var1 >= 0 && var2 >= 0 && var1 < 103 && var2 < 103) {
-               if(var36 == 0) {
-                  WallObject var8 = CombatInfo1.region.method1837(Sequence.plane, var1, var2);
-                  if(var8 != null) {
-                     var9 = var8.hash >> 14 & 32767;
-                     if(var4 == 2) {
-                        var8.renderable1 = new class49(var9, 2, var29 + 4, Sequence.plane, var1, var2, var31, false, var8.renderable1);
-                        var8.renderable2 = new class49(var9, 2, var29 + 1 & 3, Sequence.plane, var1, var2, var31, false, var8.renderable2);
-                     } else {
-                        var8.renderable1 = new class49(var9, var4, var29, Sequence.plane, var1, var2, var31, false, var8.renderable1);
-                     }
-                  }
-               }
-
-               if(var36 == 1) {
-                  DecorativeObject var37 = CombatInfo1.region.method1759(Sequence.plane, var1, var2);
-                  if(var37 != null) {
-                     var9 = var37.hash >> 14 & 32767;
-                     if(var4 != 4 && var4 != 5) {
-                        if(var4 == 6) {
-                           var37.renderable1 = new class49(var9, 4, 4 + var29, Sequence.plane, var1, var2, var31, false, var37.renderable1);
-                        } else if(var4 == 7) {
-                           var37.renderable1 = new class49(var9, 4, (2 + var29 & 3) + 4, Sequence.plane, var1, var2, var31, false, var37.renderable1);
-                        } else if(var4 == 8) {
-                           var37.renderable1 = new class49(var9, 4, 4 + var29, Sequence.plane, var1, var2, var31, false, var37.renderable1);
-                           var37.renderable2 = new class49(var9, 4, 4 + (2 + var29 & 3), Sequence.plane, var1, var2, var31, false, var37.renderable2);
+            Deque var34;
+            if(Client.packetOpcode == 77) {
+               var5 = Client.secretCipherBuffer2.readUnsignedByte();
+               var0 = class119.field1880 + (var5 >> 4 & 7);
+               var1 = (var5 & 7) + MessageNode.field250;
+               var2 = Client.secretCipherBuffer2.readUnsignedShort();
+               var3 = Client.secretCipherBuffer2.readUnsignedShort();
+               var10 = Client.secretCipherBuffer2.readUnsignedShort();
+               if(var0 >= 0 && var1 >= 0 && var0 < 104 && var1 < 104) {
+                  var34 = Client.groundItemDeque[Sequence.plane][var0][var1];
+                  if(var34 != null) {
+                     for(Item var35 = (Item)var34.method2464(); var35 != null; var35 = (Item)var34.method2472()) {
+                        if((var2 & 32767) == var35.id && var3 == var35.quantity) {
+                           var35.quantity = var10;
+                           break;
                         }
-                     } else {
-                        var37.renderable1 = new class49(var9, 4, var29, Sequence.plane, var1, var2, var31, false, var37.renderable1);
+                     }
+
+                     Client.groundItemSpawned(var0, var1);
+                  }
+               }
+            } else if(Client.packetOpcode == 94) {
+               var5 = Client.secretCipherBuffer2.method2903();
+               var0 = Client.secretCipherBuffer2.method3015();
+               var1 = class119.field1880 + (var0 >> 4 & 7);
+               var2 = (var0 & 7) + MessageNode.field250;
+               if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
+                  var34 = Client.groundItemDeque[Sequence.plane][var1][var2];
+                  if(var34 != null) {
+                     for(var4 = (Item)var34.method2464(); var4 != null; var4 = (Item)var34.method2472()) {
+                        if(var4.id == (var5 & 32767)) {
+                           var4.unlink();
+                           break;
+                        }
+                     }
+
+                     if(var34.method2464() == null) {
+                        Client.groundItemDeque[Sequence.plane][var1][var2] = null;
+                     }
+
+                     Client.groundItemSpawned(var1, var2);
+                  }
+               }
+            } else if(Client.packetOpcode == 147) {
+               var5 = Client.secretCipherBuffer2.method3015();
+               var0 = var5 >> 2;
+               var1 = var5 & 3;
+               var2 = Client.field450[var0];
+               var3 = Client.secretCipherBuffer2.method3015();
+               var10 = (var3 >> 4 & 7) + class119.field1880;
+               var31 = MessageNode.field250 + (var3 & 7);
+               if(var10 >= 0 && var31 >= 0 && var10 < 104 && var31 < 104) {
+                  ISAACCipher.method3134(Sequence.plane, var10, var31, var2, -1, var0, var1, 0, -1);
+               }
+            } else if(Client.packetOpcode == 36) {
+               var5 = Client.secretCipherBuffer2.readUnsignedShort();
+               var0 = Client.secretCipherBuffer2.readUnsignedByte();
+               var1 = (var0 >> 4 & 7) + class119.field1880;
+               var2 = MessageNode.field250 + (var0 & 7);
+               var3 = Client.secretCipherBuffer2.readUnsignedByte();
+               var10 = var3 >> 2;
+               var31 = var3 & 3;
+               var11 = Client.field450[var10];
+               if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
+                  ISAACCipher.method3134(Sequence.plane, var1, var2, var11, var5, var10, var31, 0, -1);
+               }
+            } else if(Client.packetOpcode != 245) {
+               if(Client.packetOpcode == 194) {
+                  var5 = Client.secretCipherBuffer2.readUnsignedByte();
+                  var0 = class119.field1880 + (var5 >> 4 & 7);
+                  var1 = MessageNode.field250 + (var5 & 7);
+                  var2 = var0 + Client.secretCipherBuffer2.readByte();
+                  var3 = var1 + Client.secretCipherBuffer2.readByte();
+                  var10 = Client.secretCipherBuffer2.readShort();
+                  var31 = Client.secretCipherBuffer2.readUnsignedShort();
+                  var11 = Client.secretCipherBuffer2.readUnsignedByte() * 4;
+                  var32 = Client.secretCipherBuffer2.readUnsignedByte() * 4;
+                  var6 = Client.secretCipherBuffer2.readUnsignedShort();
+                  var7 = Client.secretCipherBuffer2.readUnsignedShort();
+                  var8 = Client.secretCipherBuffer2.readUnsignedByte();
+                  var9 = Client.secretCipherBuffer2.readUnsignedByte();
+                  if(var0 >= 0 && var1 >= 0 && var0 < 104 && var1 < 104 && var2 >= 0 && var3 >= 0 && var2 < 104 && var3 < 104 && var31 != '\uffff') {
+                     var0 = var0 * 128 + 64;
+                     var1 = var1 * 128 + 64;
+                     var2 = var2 * 128 + 64;
+                     var3 = var3 * 128 + 64;
+                     Projectile var36 = new Projectile(var31, Sequence.plane, var0, var1, class103.method2025(var0, var1, Sequence.plane) - var11, Client.gameCycle + var6, Client.gameCycle + var7, var8, var9, var10, var32);
+                     var36.method816(var2, var3, class103.method2025(var2, var3, Sequence.plane) - var32, var6 + Client.gameCycle);
+                     Client.projectiles.method2459(var36);
+                  }
+               }
+            } else {
+               var5 = Client.secretCipherBuffer2.method2921();
+               var0 = class119.field1880 + (var5 >> 4 & 7);
+               var1 = (var5 & 7) + MessageNode.field250;
+               var2 = Client.secretCipherBuffer2.method3051();
+               var3 = var2 >> 2;
+               var10 = var2 & 3;
+               var31 = Client.field450[var3];
+               var11 = Client.secretCipherBuffer2.readUnsignedShort();
+               if(var0 >= 0 && var1 >= 0 && var0 < 103 && var1 < 103) {
+                  if(var31 == 0) {
+                     WallObject var37 = CombatInfo1.region.method1837(Sequence.plane, var0, var1);
+                     if(var37 != null) {
+                        var6 = var37.hash >> 14 & 32767;
+                        if(var3 == 2) {
+                           var37.renderable1 = new class49(var6, 2, var10 + 4, Sequence.plane, var0, var1, var11, false, var37.renderable1);
+                           var37.renderable2 = new class49(var6, 2, var10 + 1 & 3, Sequence.plane, var0, var1, var11, false, var37.renderable2);
+                        } else {
+                           var37.renderable1 = new class49(var6, var3, var10, Sequence.plane, var0, var1, var11, false, var37.renderable1);
+                        }
                      }
                   }
-               }
 
-               if(var36 == 2) {
-                  GameObject var38 = CombatInfo1.region.method1760(Sequence.plane, var1, var2);
-                  if(var4 == 11) {
-                     var4 = 10;
+                  if(var31 == 1) {
+                     DecorativeObject var38 = CombatInfo1.region.method1759(Sequence.plane, var0, var1);
+                     if(var38 != null) {
+                        var6 = var38.hash >> 14 & 32767;
+                        if(var3 != 4 && var3 != 5) {
+                           if(var3 == 6) {
+                              var38.renderable1 = new class49(var6, 4, var10 + 4, Sequence.plane, var0, var1, var11, false, var38.renderable1);
+                           } else if(var3 == 7) {
+                              var38.renderable1 = new class49(var6, 4, (var10 + 2 & 3) + 4, Sequence.plane, var0, var1, var11, false, var38.renderable1);
+                           } else if(var3 == 8) {
+                              var38.renderable1 = new class49(var6, 4, var10 + 4, Sequence.plane, var0, var1, var11, false, var38.renderable1);
+                              var38.renderable2 = new class49(var6, 4, (var10 + 2 & 3) + 4, Sequence.plane, var0, var1, var11, false, var38.renderable2);
+                           }
+                        } else {
+                           var38.renderable1 = new class49(var6, 4, var10, Sequence.plane, var0, var1, var11, false, var38.renderable1);
+                        }
+                     }
                   }
 
-                  if(var38 != null) {
-                     var38.renderable = new class49(var38.hash >> 14 & 32767, var4, var29, Sequence.plane, var1, var2, var31, false, var38.renderable);
-                  }
-               }
+                  if(var31 == 2) {
+                     GameObject var39 = CombatInfo1.region.method1760(Sequence.plane, var0, var1);
+                     if(var3 == 11) {
+                        var3 = 10;
+                     }
 
-               if(var36 == 3) {
-                  GroundObject var39 = CombatInfo1.region.method1761(Sequence.plane, var1, var2);
-                  if(var39 != null) {
-                     var39.renderable = new class49(var39.hash >> 14 & 32767, 22, var29, Sequence.plane, var1, var2, var31, false, var39.renderable);
+                     if(var39 != null) {
+                        var39.renderable = new class49(var39.hash >> 14 & 32767, var3, var10, Sequence.plane, var0, var1, var11, false, var39.renderable);
+                     }
+                  }
+
+                  if(var31 == 3) {
+                     GroundObject var40 = CombatInfo1.region.method1761(Sequence.plane, var0, var1);
+                     if(var40 != null) {
+                        var40.renderable = new class49(var40.hash >> 14 & 32767, 22, var10, Sequence.plane, var0, var1, var11, false, var40.renderable);
+                     }
                   }
                }
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("r")
@@ -467,7 +463,7 @@ public class class60 {
                }
             }
 
-            if(null == XClanMember.field285) {
+            if(XClanMember.field285 == null) {
                XClanMember.field285 = new class60(class138.field1942, class146.field2037);
             }
 
@@ -503,10 +499,10 @@ public class class60 {
       int var2 = var0.method3111(2);
       int var3;
       int var4;
+      int var5;
+      int var6;
       int var7;
       int var8;
-      int var9;
-      int var10;
       if(var2 == 0) {
          if(var0.method3111(1) != 0) {
             method1182(var0, var1);
@@ -514,30 +510,30 @@ public class class60 {
 
          var3 = var0.method3111(13);
          var4 = var0.method3111(13);
-         boolean var12 = var0.method3111(1) == 1;
-         if(var12) {
+         boolean var11 = var0.method3111(1) == 1;
+         if(var11) {
             class45.field931[++class45.field930 - 1] = var1;
          }
 
-         if(null != Client.cachedPlayers[var1]) {
+         if(Client.cachedPlayers[var1] != null) {
             throw new RuntimeException();
          } else {
-            Player var11 = Client.cachedPlayers[var1] = new Player();
-            var11.field266 = var1;
-            if(null != class45.field919[var1]) {
-               var11.method206(class45.field919[var1]);
+            Player var12 = Client.cachedPlayers[var1] = new Player();
+            var12.field266 = var1;
+            if(class45.field919[var1] != null) {
+               var12.method206(class45.field919[var1]);
             }
 
-            var11.field669 = class45.field928[var1];
-            var11.interacting = class45.field929[var1];
-            var7 = class45.field927[var1];
-            var8 = var7 >> 28;
-            var9 = var7 >> 14 & 255;
-            var10 = var7 & 255;
-            var11.field675[0] = class45.field921[var1];
-            var11.field276 = (byte)var8;
-            var11.method216((var9 << 13) + var3 - class119.baseX, (var10 << 13) + var4 - class187.baseY);
-            var11.field259 = false;
+            var12.field669 = class45.field928[var1];
+            var12.interacting = class45.field929[var1];
+            var5 = class45.field927[var1];
+            var6 = var5 >> 28;
+            var7 = var5 >> 14 & 255;
+            var8 = var5 & 255;
+            var12.field675[0] = class45.field921[var1];
+            var12.field276 = (byte)var6;
+            var12.method216((var7 << 13) + var3 - class119.baseX, (var8 << 13) + var4 - class187.baseY);
+            var12.field259 = false;
             return true;
          }
       } else if(var2 == 1) {
@@ -546,64 +542,64 @@ public class class60 {
          class45.field927[var1] = (var4 & 268435455) + (((var4 >> 28) + var3 & 3) << 28);
          return false;
       } else {
-         int var5;
-         int var6;
+         int var9;
+         int var10;
          if(var2 == 2) {
             var3 = var0.method3111(5);
             var4 = var3 >> 3;
-            var5 = var3 & 7;
-            var6 = class45.field927[var1];
-            var7 = (var6 >> 28) + var4 & 3;
-            var8 = var6 >> 14 & 255;
-            var9 = var6 & 255;
-            if(var5 == 0) {
-               --var8;
-               --var9;
+            var9 = var3 & 7;
+            var10 = class45.field927[var1];
+            var5 = (var10 >> 28) + var4 & 3;
+            var6 = var10 >> 14 & 255;
+            var7 = var10 & 255;
+            if(var9 == 0) {
+               --var6;
+               --var7;
             }
 
-            if(var5 == 1) {
-               --var9;
+            if(var9 == 1) {
+               --var7;
             }
 
-            if(var5 == 2) {
-               ++var8;
-               --var9;
+            if(var9 == 2) {
+               ++var6;
+               --var7;
             }
 
-            if(var5 == 3) {
-               --var8;
+            if(var9 == 3) {
+               --var6;
             }
 
-            if(var5 == 4) {
-               ++var8;
+            if(var9 == 4) {
+               ++var6;
             }
 
-            if(var5 == 5) {
-               --var8;
-               ++var9;
+            if(var9 == 5) {
+               --var6;
+               ++var7;
             }
 
-            if(var5 == 6) {
-               ++var9;
+            if(var9 == 6) {
+               ++var7;
             }
 
-            if(var5 == 7) {
-               ++var8;
-               ++var9;
+            if(var9 == 7) {
+               ++var6;
+               ++var7;
             }
 
-            class45.field927[var1] = var9 + (var8 << 14) + (var7 << 28);
+            class45.field927[var1] = var7 + (var6 << 14) + (var5 << 28);
             return false;
          } else {
             var3 = var0.method3111(18);
             var4 = var3 >> 16;
-            var5 = var3 >> 8 & 255;
-            var6 = var3 & 255;
-            var7 = class45.field927[var1];
-            var8 = (var7 >> 28) + var4 & 3;
-            var9 = var5 + (var7 >> 14) & 255;
-            var10 = var6 + var7 & 255;
-            class45.field927[var1] = var10 + (var9 << 14) + (var8 << 28);
+            var9 = var3 >> 8 & 255;
+            var10 = var3 & 255;
+            var5 = class45.field927[var1];
+            var6 = (var5 >> 28) + var4 & 3;
+            var7 = var9 + (var5 >> 14) & 255;
+            var8 = var10 + var5 & 255;
+            class45.field927[var1] = var8 + (var7 << 14) + (var6 << 28);
             return false;
          }
       }

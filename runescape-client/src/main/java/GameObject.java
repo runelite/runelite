@@ -109,7 +109,7 @@ public final class GameObject {
             Client.field336 = 0;
          }
 
-         if(var0 != 20 && var0 != 40 && null != class157.field2139) {
+         if(var0 != 20 && var0 != 40 && class157.field2139 != null) {
             class157.field2139.method2113();
             class157.field2139 = null;
          }
@@ -136,6 +136,7 @@ public final class GameObject {
 
          Client.gameState = var0;
       }
+
    }
 
    @ObfuscatedName("f")

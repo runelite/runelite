@@ -20,20 +20,19 @@ public final class class205 {
       class181 var8 = (class181)class185.field2765.method2417(var6);
       if(var8 == null) {
          var8 = (class181)class185.field2767.method2417(var6);
-         if(null == var8) {
+         if(var8 == null) {
             var8 = (class181)class185.field2762.method2417(var6);
-            if(null != var8) {
+            if(var8 != null) {
                if(var5) {
                   var8.method2495();
                   class185.field2765.method2418(var8, var6);
                   --class185.field2771;
                   ++class185.field2774;
                }
-
             } else {
                if(!var5) {
                   var8 = (class181)class185.field2772.method2417(var6);
-                  if(null != var8) {
+                  if(var8 != null) {
                      return;
                   }
                }
@@ -50,10 +49,10 @@ public final class class205 {
                   class185.field2762.method2418(var8, var6);
                   ++class185.field2771;
                }
-
             }
          }
       }
+
    }
 
    class205() throws Throwable {

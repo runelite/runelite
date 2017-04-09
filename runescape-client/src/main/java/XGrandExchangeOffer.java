@@ -67,17 +67,17 @@ public class XGrandExchangeOffer {
       if(!VertexNormal.method1667(var0, var3, var4)) {
          var5 = null;
       } else {
-         ModIcon var7 = new ModIcon();
-         var7.width = class225.field3231;
-         var7.originalHeight = class146.field2038;
-         var7.offsetX = class225.field3230[0];
-         var7.offsetY = ItemComposition.field3003[0];
-         var7.originalWidth = class225.field3232[0];
-         var7.height = ChatLineBuffer.field994[0];
-         var7.palette = class225.field3234;
-         var7.pixels = BufferProvider.field3199[0];
+         ModIcon var6 = new ModIcon();
+         var6.width = class225.field3231;
+         var6.originalHeight = class146.field2038;
+         var6.offsetX = class225.field3230[0];
+         var6.offsetY = ItemComposition.field3003[0];
+         var6.originalWidth = class225.field3232[0];
+         var6.height = ChatLineBuffer.field994[0];
+         var6.palette = class225.field3234;
+         var6.pixels = BufferProvider.field3199[0];
          WidgetNode.method172();
-         var5 = var7;
+         var5 = var6;
       }
 
       return var5;
@@ -106,23 +106,23 @@ public class XGrandExchangeOffer {
          var0.field651 = 0;
       } else {
          if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
-            Sequence var10 = Friend.getAnimation(var0.animation);
-            if(var0.field655 > 0 && var10.precedenceAnimating == 0) {
+            Sequence var1 = Friend.getAnimation(var0.animation);
+            if(var0.field655 > 0 && var1.precedenceAnimating == 0) {
                ++var0.field651;
                return;
             }
 
-            if(var0.field655 <= 0 && var10.priority == 0) {
+            if(var0.field655 <= 0 && var1.priority == 0) {
                ++var0.field651;
                return;
             }
          }
 
-         int var1 = var0.x;
+         int var10 = var0.x;
          int var2 = var0.y;
          int var3 = var0.pathX[var0.field672 - 1] * 128 + var0.field622 * 64;
-         int var4 = 128 * var0.pathY[var0.field672 - 1] + var0.field622 * 64;
-         if(var1 < var3) {
+         int var4 = var0.pathY[var0.field672 - 1] * 128 + var0.field622 * 64;
+         if(var10 < var3) {
             if(var2 < var4) {
                var0.field669 = 1280;
             } else if(var2 > var4) {
@@ -130,7 +130,7 @@ public class XGrandExchangeOffer {
             } else {
                var0.field669 = 1536;
             }
-         } else if(var1 > var3) {
+         } else if(var10 > var3) {
             if(var2 < var4) {
                var0.field669 = 768;
             } else if(var2 > var4) {
@@ -145,7 +145,7 @@ public class XGrandExchangeOffer {
          }
 
          byte var5 = var0.field675[var0.field672 - 1];
-         if(var3 - var1 <= 256 && var3 - var1 >= -256 && var4 - var2 <= 256 && var4 - var2 >= -256) {
+         if(var3 - var10 <= 256 && var3 - var10 >= -256 && var4 - var2 <= 256 && var4 - var2 >= -256) {
             int var6 = var0.field669 - var0.angle & 2047;
             if(var6 > 1024) {
                var6 -= 2048;
@@ -211,13 +211,13 @@ public class XGrandExchangeOffer {
                var0.poseAnimation = var0.field630;
             }
 
-            if(var3 != var1 || var4 != var2) {
-               if(var1 < var3) {
+            if(var3 != var10 || var4 != var2) {
+               if(var10 < var3) {
                   var0.x += var8;
                   if(var0.x > var3) {
                      var0.x = var3;
                   }
-               } else if(var1 > var3) {
+               } else if(var10 > var3) {
                   var0.x -= var8;
                   if(var0.x < var3) {
                      var0.x = var3;
@@ -243,7 +243,6 @@ public class XGrandExchangeOffer {
                   --var0.field655;
                }
             }
-
          } else {
             var0.x = var3;
             var0.y = var4;
@@ -251,9 +250,9 @@ public class XGrandExchangeOffer {
             if(var0.field655 > 0) {
                --var0.field655;
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("o")

@@ -127,31 +127,6 @@ public class class41 {
       throw new Error();
    }
 
-   static {
-      loginWindowX = 202 + field859;
-      field843 = new int[256];
-      field845 = 0;
-      field846 = 0;
-      field856 = 0;
-      field844 = 0;
-      field849 = 0;
-      field850 = 0;
-      field851 = 10;
-      field852 = "";
-      loginIndex = 0;
-      field854 = "";
-      loginMessage1 = "";
-      loginMessage2 = "";
-      loginMessage3 = "";
-      username = "";
-      password = "";
-      field858 = class97.field1651;
-      field861 = true;
-      loginIndex2 = 0;
-      worldSelectShown = false;
-      field866 = -1;
-   }
-
    @ObfuscatedName("br")
    @ObfuscatedSignature(
       signature = "(ZI)V",
@@ -162,7 +137,7 @@ public class class41 {
       ++Client.field436;
       if(Client.field436 >= 50 || var0) {
          Client.field436 = 0;
-         if(!Client.field517 && null != class20.field233) {
+         if(!Client.field517 && class20.field233 != null) {
             Client.secretCipherBuffer1.putOpcode(210);
 
             try {
@@ -172,8 +147,8 @@ public class class41 {
                Client.field517 = true;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("u")
@@ -207,47 +182,72 @@ public class class41 {
 
       int var3;
       for(var3 = 0; var3 < Client.menuOptionCount; ++var3) {
-         Font var7 = class63.field1119;
-         String var8;
+         Font var4 = class63.field1119;
+         String var5;
          if(var3 < 0) {
-            var8 = "";
+            var5 = "";
          } else if(Client.menuTargets[var3].length() > 0) {
-            var8 = Client.menuOptions[var3] + " " + Client.menuTargets[var3];
+            var5 = Client.menuOptions[var3] + " " + Client.menuTargets[var3];
          } else {
-            var8 = Client.menuOptions[var3];
+            var5 = Client.menuOptions[var3];
          }
 
-         int var6 = var7.method3897(var8);
+         int var6 = var4.method3897(var5);
          if(var6 > var2) {
             var2 = var6;
          }
       }
 
       var2 += 8;
-      var3 = 22 + Client.menuOptionCount * 15;
-      int var4 = var0 - var2 / 2;
-      if(var4 + var2 > class32.field755) {
-         var4 = class32.field755 - var2;
+      var3 = Client.menuOptionCount * 15 + 22;
+      int var7 = var0 - var2 / 2;
+      if(var7 + var2 > class32.field755) {
+         var7 = class32.field755 - var2;
       }
 
-      if(var4 < 0) {
-         var4 = 0;
+      if(var7 < 0) {
+         var7 = 0;
       }
 
-      int var5 = var1;
+      int var8 = var1;
       if(var3 + var1 > class168.field2207) {
-         var5 = class168.field2207 - var3;
+         var8 = class168.field2207 - var3;
       }
 
-      if(var5 < 0) {
-         var5 = 0;
+      if(var8 < 0) {
+         var8 = 0;
       }
 
       CombatInfo1.region.method1773(Sequence.plane, var0, var1, false);
       Client.isMenuOpen = true;
-      World.menuX = var4;
-      class104.menuY = var5;
+      World.menuX = var7;
+      class104.menuY = var8;
       Widget.menuWidth = var2;
       class97.menuHeight = Client.menuOptionCount * 15 + 22;
+   }
+
+   static {
+      loginWindowX = field859 + 202;
+      field843 = new int[256];
+      field845 = 0;
+      field846 = 0;
+      field856 = 0;
+      field844 = 0;
+      field849 = 0;
+      field850 = 0;
+      field851 = 10;
+      field852 = "";
+      loginIndex = 0;
+      field854 = "";
+      loginMessage1 = "";
+      loginMessage2 = "";
+      loginMessage3 = "";
+      username = "";
+      password = "";
+      field858 = class97.field1651;
+      field861 = true;
+      loginIndex2 = 0;
+      worldSelectShown = false;
+      field866 = -1;
    }
 }

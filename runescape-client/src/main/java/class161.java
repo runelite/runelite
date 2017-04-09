@@ -15,9 +15,9 @@ public class class161 {
    static String method3136() {
       String var0 = "";
 
-      MessageNode var2;
-      for(Iterator var1 = class47.field949.iterator(); var1.hasNext(); var0 = var0 + var2.name + ':' + var2.value + '\n') {
-         var2 = (MessageNode)var1.next();
+      MessageNode var1;
+      for(Iterator var2 = class47.field949.iterator(); var2.hasNext(); var0 = var0 + var1.name + ':' + var1.value + '\n') {
+         var1 = (MessageNode)var2.next();
       }
 
       return var0;
@@ -29,7 +29,7 @@ public class class161 {
       garbageValue = "1"
    )
    static final boolean method3138(Widget var0) {
-      if(null == var0.field2224) {
+      if(var0.field2224 == null) {
          return false;
       } else {
          for(int var1 = 0; var1 < var0.field2224.length; ++var1) {

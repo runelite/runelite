@@ -133,13 +133,13 @@ public class SoundEffect1 {
             this.field1178.method1140();
             this.field1175.method1140();
             var11 = 0;
-            boolean var19 = false;
-            boolean var20 = true;
+            boolean var17 = false;
+            boolean var18 = true;
 
             for(var14 = 0; var14 < var1; ++var14) {
                var15 = this.field1178.method1141(var1);
                var16 = this.field1175.method1141(var1);
-               if(var20) {
+               if(var18) {
                   var12 = this.field1178.field1088 + ((this.field1178.field1089 - this.field1178.field1088) * var15 >> 8);
                } else {
                   var12 = this.field1178.field1088 + ((this.field1178.field1089 - this.field1178.field1088) * var16 >> 8);
@@ -148,10 +148,10 @@ public class SoundEffect1 {
                var11 += 256;
                if(var11 >= var12) {
                   var11 = 0;
-                  var20 = !var20;
+                  var18 = !var18;
                }
 
-               if(var20) {
+               if(var18) {
                   field1189[var14] = 0;
                }
             }
@@ -177,16 +177,16 @@ public class SoundEffect1 {
                   var15 = var1 - var12;
                }
 
-               int var17;
+               int var19;
                while(var14 < var15) {
                   var16 = (int)((long)field1189[var14 + var12] * (long)SoundEffect3.field1160 >> 16);
 
-                  for(var17 = 0; var17 < var12; ++var17) {
-                     var16 += (int)((long)field1189[var14 + var12 - 1 - var17] * (long)SoundEffect3.field1158[0][var17] >> 16);
+                  for(var19 = 0; var19 < var12; ++var19) {
+                     var16 += (int)((long)field1189[var14 + var12 - 1 - var19] * (long)SoundEffect3.field1158[0][var19] >> 16);
                   }
 
-                  for(var17 = 0; var17 < var14; ++var17) {
-                     var16 -= (int)((long)field1189[var14 - 1 - var17] * (long)SoundEffect3.field1158[1][var17] >> 16);
+                  for(var19 = 0; var19 < var14; ++var19) {
+                     var16 -= (int)((long)field1189[var14 - 1 - var19] * (long)SoundEffect3.field1158[1][var19] >> 16);
                   }
 
                   field1189[var14] = var16;
@@ -201,36 +201,36 @@ public class SoundEffect1 {
                      var15 = var1 - var12;
                   }
 
-                  int var18;
+                  int var20;
                   while(var14 < var15) {
-                     var17 = (int)((long)field1189[var14 + var12] * (long)SoundEffect3.field1160 >> 16);
+                     var19 = (int)((long)field1189[var14 + var12] * (long)SoundEffect3.field1160 >> 16);
 
-                     for(var18 = 0; var18 < var12; ++var18) {
-                        var17 += (int)((long)field1189[var14 + var12 - 1 - var18] * (long)SoundEffect3.field1158[0][var18] >> 16);
+                     for(var20 = 0; var20 < var12; ++var20) {
+                        var19 += (int)((long)field1189[var14 + var12 - 1 - var20] * (long)SoundEffect3.field1158[0][var20] >> 16);
                      }
 
-                     for(var18 = 0; var18 < var13; ++var18) {
-                        var17 -= (int)((long)field1189[var14 - 1 - var18] * (long)SoundEffect3.field1158[1][var18] >> 16);
+                     for(var20 = 0; var20 < var13; ++var20) {
+                        var19 -= (int)((long)field1189[var14 - 1 - var20] * (long)SoundEffect3.field1158[1][var20] >> 16);
                      }
 
-                     field1189[var14] = var17;
+                     field1189[var14] = var19;
                      var11 = this.field1186.method1141(var1 + 1);
                      ++var14;
                   }
 
                   if(var14 >= var1 - var12) {
                      while(var14 < var1) {
-                        var17 = 0;
+                        var19 = 0;
 
-                        for(var18 = var14 + var12 - var1; var18 < var12; ++var18) {
-                           var17 += (int)((long)field1189[var14 + var12 - 1 - var18] * (long)SoundEffect3.field1158[0][var18] >> 16);
+                        for(var20 = var14 + var12 - var1; var20 < var12; ++var20) {
+                           var19 += (int)((long)field1189[var14 + var12 - 1 - var20] * (long)SoundEffect3.field1158[0][var20] >> 16);
                         }
 
-                        for(var18 = 0; var18 < var13; ++var18) {
-                           var17 -= (int)((long)field1189[var14 - 1 - var18] * (long)SoundEffect3.field1158[1][var18] >> 16);
+                        for(var20 = 0; var20 < var13; ++var20) {
+                           var19 -= (int)((long)field1189[var14 - 1 - var20] * (long)SoundEffect3.field1158[1][var20] >> 16);
                         }
 
-                        field1189[var14] = var17;
+                        field1189[var14] = var19;
                         this.field1186.method1141(var1 + 1);
                         ++var14;
                      }
@@ -256,28 +256,6 @@ public class SoundEffect1 {
 
          return field1189;
       }
-   }
-
-   static {
-      Random var0 = new Random(0L);
-
-      int var1;
-      for(var1 = 0; var1 < '耀'; ++var1) {
-         field1190[var1] = (var0.nextInt() & 2) - 1;
-      }
-
-      field1191 = new int['耀'];
-
-      for(var1 = 0; var1 < '耀'; ++var1) {
-         field1191[var1] = (int)(Math.sin((double)var1 / 5215.1903D) * 16384.0D);
-      }
-
-      field1189 = new int[220500];
-      field1197 = new int[5];
-      field1194 = new int[5];
-      field1195 = new int[5];
-      field1196 = new int[5];
-      field1185 = new int[5];
    }
 
    @ObfuscatedName("i")
@@ -336,5 +314,27 @@ public class SoundEffect1 {
       this.field1182 = new SoundEffect3();
       this.field1186 = new SoundEffect2();
       this.field1182.method1362(var1, this.field1186);
+   }
+
+   static {
+      Random var0 = new Random(0L);
+
+      int var1;
+      for(var1 = 0; var1 < '耀'; ++var1) {
+         field1190[var1] = (var0.nextInt() & 2) - 1;
+      }
+
+      field1191 = new int['耀'];
+
+      for(var1 = 0; var1 < '耀'; ++var1) {
+         field1191[var1] = (int)(Math.sin((double)var1 / 5215.1903D) * 16384.0D);
+      }
+
+      field1189 = new int[220500];
+      field1197 = new int[5];
+      field1194 = new int[5];
+      field1195 = new int[5];
+      field1196 = new int[5];
+      field1185 = new int[5];
    }
 }

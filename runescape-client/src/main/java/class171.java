@@ -19,10 +19,10 @@ public class class171 {
       garbageValue = "-759398057"
    )
    public static void method3304(RSSocket var0, boolean var1) {
-      if(null != class185.field2770) {
+      if(class185.field2770 != null) {
          try {
             class185.field2770.method2113();
-         } catch (Exception var6) {
+         } catch (Exception var7) {
             ;
          }
 
@@ -41,18 +41,18 @@ public class class171 {
          if(var2 == null) {
             while(true) {
                var2 = (class181)class185.field2772.method2420();
-               if(null == var2) {
+               if(var2 == null) {
                   if(class185.field2780 != 0) {
                      try {
-                        Buffer var7 = new Buffer(4);
-                        var7.putByte(4);
-                        var7.putByte(class185.field2780);
-                        var7.putShort(0);
-                        class185.field2770.queueForWrite(var7.payload, 0, 4);
-                     } catch (IOException var5) {
+                        Buffer var3 = new Buffer(4);
+                        var3.putByte(4);
+                        var3.putByte(class185.field2780);
+                        var3.putShort(0);
+                        class185.field2770.queueForWrite(var3.payload, 0, 4);
+                     } catch (IOException var6) {
                         try {
                            class185.field2770.method2113();
-                        } catch (Exception var4) {
+                        } catch (Exception var5) {
                            ;
                         }
 

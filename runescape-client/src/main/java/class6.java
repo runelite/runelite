@@ -82,7 +82,7 @@ final class class6 implements Comparator {
    static void method77() {
       if(Client.field458) {
          Widget var0 = class118.method2354(XClanMember.field284, Client.field414);
-         if(var0 != null && null != var0.field2311) {
+         if(var0 != null && var0.field2311 != null) {
             class18 var1 = new class18();
             var1.field207 = var0;
             var1.field199 = var0.field2311;
@@ -92,6 +92,7 @@ final class class6 implements Comparator {
          Client.field458 = false;
          class22.method197(var0);
       }
+
    }
 
    public int compare(Object var1, Object var2) {
@@ -108,7 +109,7 @@ final class class6 implements Comparator {
          throw new RuntimeException("");
       } else {
          File var1 = (File)class107.field1754.get(var0);
-         if(null != var1) {
+         if(var1 != null) {
             return var1;
          } else {
             File var2 = new File(class107.field1752, var0);
@@ -128,13 +129,13 @@ final class class6 implements Comparator {
                   class107.field1754.put(var0, var2);
                   return var2;
                }
-            } catch (Exception var8) {
+            } catch (Exception var7) {
                try {
-                  if(null != var3) {
+                  if(var3 != null) {
                      var3.close();
                      var3 = null;
                   }
-               } catch (Exception var7) {
+               } catch (Exception var6) {
                   ;
                }
 

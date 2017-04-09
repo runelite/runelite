@@ -72,7 +72,7 @@ public class SoundEffect {
       if(var1 == 0) {
          return new byte[0];
       } else {
-         var2 = 22050 * var1 / 1000;
+         var2 = var1 * 22050 / 1000;
          byte[] var3 = new byte[var2];
 
          for(int var4 = 0; var4 < 10; ++var4) {
@@ -99,7 +99,7 @@ public class SoundEffect {
    @ObfuscatedName("i")
    public class55 method1008() {
       byte[] var1 = this.method1007();
-      return new class55(22050, var1, 22050 * this.field1006 / 1000, 22050 * this.field1009 / 1000);
+      return new class55(22050, var1, this.field1006 * 22050 / 1000, this.field1009 * 22050 / 1000);
    }
 
    @ObfuscatedName("f")

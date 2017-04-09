@@ -16,7 +16,7 @@ final class class3 implements Comparator {
       garbageValue = "-15"
    )
    public static void method19(boolean var0) {
-      if(null != class185.field2770) {
+      if(class185.field2770 != null) {
          try {
             Buffer var1 = new Buffer(4);
             var1.putByte(var0?2:3);
@@ -32,8 +32,8 @@ final class class3 implements Comparator {
             ++class185.field2782;
             class185.field2770 = null;
          }
-
       }
+
    }
 
    public int compare(Object var1, Object var2) {
@@ -184,62 +184,60 @@ final class class3 implements Comparator {
       garbageValue = "-193118310"
    )
    static final void method24(Player var0, int var1, int var2, int var3) {
-      if(Projectile.localPlayer != var0) {
-         if(Client.menuOptionCount < 400) {
-            String var4;
-            if(var0.field261 == 0) {
-               var4 = var0.actions[0] + var0.name + var0.actions[1] + RSCanvas.method2130(var0.combatLevel, Projectile.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
-            } else {
-               var4 = var0.actions[0] + var0.name + var0.actions[1] + " " + " (" + "skill-" + var0.field261 + ")" + var0.actions[2];
+      if(Projectile.localPlayer != var0 && Client.menuOptionCount < 400) {
+         String var4;
+         if(var0.field261 == 0) {
+            var4 = var0.actions[0] + var0.name + var0.actions[1] + RSCanvas.method2130(var0.combatLevel, Projectile.localPlayer.combatLevel) + "  (level-" + var0.combatLevel + ")" + var0.actions[2];
+         } else {
+            var4 = var0.actions[0] + var0.name + var0.actions[1] + "  (skill-" + var0.field261 + ")" + var0.actions[2];
+         }
+
+         int var5;
+         if(Client.field455 == 1) {
+            class119.addMenuEntry("Use", Client.field457 + " -> " + XItemContainer.method153(16777215) + var4, 14, var1, var2, var3);
+         } else if(Client.field458) {
+            if((ItemComposition.field3004 & 8) == 8) {
+               class119.addMenuEntry(Client.field326, Client.field527 + " -> " + XItemContainer.method153(16777215) + var4, 15, var1, var2, var3);
             }
+         } else {
+            for(var5 = 7; var5 >= 0; --var5) {
+               if(Client.playerOptions[var5] != null) {
+                  short var6 = 0;
+                  if(Client.playerOptions[var5].equalsIgnoreCase("Attack")) {
+                     if(class40.field827 == Client.field328) {
+                        continue;
+                     }
 
-            int var5;
-            if(Client.field455 == 1) {
-               class119.addMenuEntry("Use", Client.field457 + " " + "->" + " " + XItemContainer.method153(16777215) + var4, 14, var1, var2, var3);
-            } else if(Client.field458) {
-               if((ItemComposition.field3004 & 8) == 8) {
-                  class119.addMenuEntry(Client.field326, Client.field527 + " " + "->" + " " + XItemContainer.method153(16777215) + var4, 15, var1, var2, var3);
-               }
-            } else {
-               for(var5 = 7; var5 >= 0; --var5) {
-                  if(null != Client.playerOptions[var5]) {
-                     short var6 = 0;
-                     if(Client.playerOptions[var5].equalsIgnoreCase("Attack")) {
-                        if(class40.field827 == Client.field328) {
-                           continue;
-                        }
-
-                        if(class40.field830 == Client.field328 || Client.field328 == class40.field829 && var0.combatLevel > Projectile.localPlayer.combatLevel) {
-                           var6 = 2000;
-                        }
-
-                        if(Projectile.localPlayer.team != 0 && var0.team != 0) {
-                           if(var0.team == Projectile.localPlayer.team) {
-                              var6 = 2000;
-                           } else {
-                              var6 = 0;
-                           }
-                        }
-                     } else if(Client.playerOptionsPriority[var5]) {
+                     if(class40.field830 == Client.field328 || Client.field328 == class40.field829 && var0.combatLevel > Projectile.localPlayer.combatLevel) {
                         var6 = 2000;
                      }
 
-                     boolean var7 = false;
-                     int var8 = Client.field420[var5] + var6;
-                     class119.addMenuEntry(Client.playerOptions[var5], XItemContainer.method153(16777215) + var4, var8, var1, var2, var3);
+                     if(Projectile.localPlayer.team != 0 && var0.team != 0) {
+                        if(var0.team == Projectile.localPlayer.team) {
+                           var6 = 2000;
+                        } else {
+                           var6 = 0;
+                        }
+                     }
+                  } else if(Client.playerOptionsPriority[var5]) {
+                     var6 = 2000;
                   }
+
+                  boolean var7 = false;
+                  int var8 = Client.field420[var5] + var6;
+                  class119.addMenuEntry(Client.playerOptions[var5], XItemContainer.method153(16777215) + var4, var8, var1, var2, var3);
                }
             }
+         }
 
-            for(var5 = 0; var5 < Client.menuOptionCount; ++var5) {
-               if(Client.menuTypes[var5] == 23) {
-                  Client.menuTargets[var5] = XItemContainer.method153(16777215) + var4;
-                  break;
-               }
+         for(var5 = 0; var5 < Client.menuOptionCount; ++var5) {
+            if(Client.menuTypes[var5] == 23) {
+               Client.menuTargets[var5] = XItemContainer.method153(16777215) + var4;
+               break;
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("u")
@@ -348,7 +346,7 @@ final class class3 implements Comparator {
          }
 
          method25(var0, var1, var6, var3, var4);
-         method25(var0, 1 + var6, var2, var3, var4);
+         method25(var0, var6 + 1, var2, var3, var4);
       }
 
    }
@@ -360,24 +358,24 @@ final class class3 implements Comparator {
    )
    static void method26(GameEngine var0) {
       if(class115.field1823 == 1 || !class177.field2687 && class115.field1823 == 4) {
-         int var1 = 280 + class41.field859;
+         int var1 = class41.field859 + 280;
          if(class115.field1825 >= var1 && class115.field1825 <= var1 + 14 && class115.field1813 >= 4 && class115.field1813 <= 18) {
             class20.method186(0, 0);
             return;
          }
 
-         if(class115.field1825 >= 15 + var1 && class115.field1825 <= var1 + 80 && class115.field1813 >= 4 && class115.field1813 <= 18) {
+         if(class115.field1825 >= var1 + 15 && class115.field1825 <= var1 + 80 && class115.field1813 >= 4 && class115.field1813 <= 18) {
             class20.method186(0, 1);
             return;
          }
 
-         int var2 = 390 + class41.field859;
-         if(class115.field1825 >= var2 && class115.field1825 <= 14 + var2 && class115.field1813 >= 4 && class115.field1813 <= 18) {
+         int var2 = class41.field859 + 390;
+         if(class115.field1825 >= var2 && class115.field1825 <= var2 + 14 && class115.field1813 >= 4 && class115.field1813 <= 18) {
             class20.method186(1, 0);
             return;
          }
 
-         if(class115.field1825 >= 15 + var2 && class115.field1825 <= var2 + 80 && class115.field1813 >= 4 && class115.field1813 <= 18) {
+         if(class115.field1825 >= var2 + 15 && class115.field1825 <= var2 + 80 && class115.field1813 >= 4 && class115.field1813 <= 18) {
             class20.method186(1, 1);
             return;
          }
@@ -393,7 +391,7 @@ final class class3 implements Comparator {
             return;
          }
 
-         int var4 = 610 + class41.field859;
+         int var4 = class41.field859 + 610;
          if(class115.field1825 >= var4 && class115.field1825 <= var4 + 14 && class115.field1813 >= 4 && class115.field1813 <= 18) {
             class20.method186(3, 0);
             return;
@@ -404,11 +402,11 @@ final class class3 implements Comparator {
             return;
          }
 
-         if(class115.field1825 >= class41.field859 + 708 && class115.field1813 >= 4 && class115.field1825 <= 50 + 708 + class41.field859 && class115.field1813 <= 20) {
+         if(class115.field1825 >= class41.field859 + 708 && class115.field1813 >= 4 && class115.field1825 <= class41.field859 + 758 && class115.field1813 <= 20) {
             class41.worldSelectShown = false;
             class41.field838.method4141(class41.field859, 0);
-            class1.field7.method4141(382 + class41.field859, 0);
-            class41.field839.method4088(382 + class41.field859 - class41.field839.originalWidth / 2, 18);
+            class1.field7.method4141(class41.field859 + 382, 0);
+            class41.field839.method4088(class41.field859 + 382 - class41.field839.originalWidth / 2, 18);
             return;
          }
 
@@ -418,7 +416,7 @@ final class class3 implements Comparator {
             class41.worldSelectShown = false;
             class41.field838.method4141(class41.field859, 0);
             class1.field7.method4141(class41.field859 + 382, 0);
-            class41.field839.method4088(382 + class41.field859 - class41.field839.originalWidth / 2, 18);
+            class41.field839.method4088(class41.field859 + 382 - class41.field839.originalWidth / 2, 18);
             return;
          }
       }
@@ -432,7 +430,7 @@ final class class3 implements Comparator {
    )
    static boolean method27(IndexDataBase var0, int var1) {
       byte[] var2 = var0.method3389(var1);
-      if(null == var2) {
+      if(var2 == null) {
          return false;
       } else {
          IndexData.method3451(var2);

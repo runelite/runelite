@@ -16,33 +16,33 @@ public class class170 {
       if(var2 == 0) {
          return "";
       } else if(var2 == 1) {
-         CharSequence var3 = var0[var1];
-         return var3 == null?"null":var3.toString();
+         CharSequence var8 = var0[var1];
+         return var8 == null?"null":var8.toString();
       } else {
-         int var8 = var2 + var1;
+         int var3 = var2 + var1;
          int var4 = 0;
 
-         for(int var5 = var1; var5 < var8; ++var5) {
-            CharSequence var9 = var0[var5];
-            if(null == var9) {
+         for(int var5 = var1; var5 < var3; ++var5) {
+            CharSequence var6 = var0[var5];
+            if(var6 == null) {
                var4 += 4;
             } else {
-               var4 += var9.length();
+               var4 += var6.length();
             }
          }
 
-         StringBuilder var10 = new StringBuilder(var4);
+         StringBuilder var9 = new StringBuilder(var4);
 
-         for(int var6 = var1; var6 < var8; ++var6) {
-            CharSequence var7 = var0[var6];
+         for(int var10 = var1; var10 < var3; ++var10) {
+            CharSequence var7 = var0[var10];
             if(var7 == null) {
-               var10.append("null");
+               var9.append("null");
             } else {
-               var10.append(var7);
+               var9.append(var7);
             }
          }
 
-         return var10.toString();
+         return var9.toString();
       }
    }
 }

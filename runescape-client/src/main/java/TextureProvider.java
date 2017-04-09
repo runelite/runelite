@@ -57,7 +57,7 @@ public class TextureProvider implements class93 {
    )
    public void method1467() {
       for(int var1 = 0; var1 < this.field1229.length; ++var1) {
-         if(null != this.field1229[var1]) {
+         if(this.field1229[var1] != null) {
             this.field1229[var1].method1572();
          }
       }
@@ -91,17 +91,17 @@ public class TextureProvider implements class93 {
       if(!class3.method27(var0, var1)) {
          return null;
       } else {
-         ModIcon var3 = new ModIcon();
-         var3.width = class225.field3231;
-         var3.originalHeight = class146.field2038;
-         var3.offsetX = class225.field3230[0];
-         var3.offsetY = ItemComposition.field3003[0];
-         var3.originalWidth = class225.field3232[0];
-         var3.height = ChatLineBuffer.field994[0];
-         var3.palette = class225.field3234;
-         var3.pixels = BufferProvider.field3199[0];
+         ModIcon var2 = new ModIcon();
+         var2.width = class225.field3231;
+         var2.originalHeight = class146.field2038;
+         var2.offsetX = class225.field3230[0];
+         var2.offsetY = ItemComposition.field3003[0];
+         var2.originalWidth = class225.field3232[0];
+         var2.height = ChatLineBuffer.field994[0];
+         var2.palette = class225.field3234;
+         var2.pixels = BufferProvider.field3199[0];
          WidgetNode.method172();
-         return var3;
+         return var2;
       }
    }
 
@@ -114,7 +114,7 @@ public class TextureProvider implements class93 {
    public int[] load(int var1) {
       class79 var2 = this.field1229[var1];
       if(var2 != null) {
-         if(null != var2.field1335) {
+         if(var2.field1335 != null) {
             this.field1220.method2460(var2);
             var2.field1336 = true;
             return var2.field1335;
@@ -144,7 +144,7 @@ public class TextureProvider implements class93 {
       garbageValue = "1733741580"
    )
    public int vmethod1942(int var1) {
-      return null != this.field1229[var1]?this.field1229[var1].field1327:0;
+      return this.field1229[var1] != null?this.field1229[var1].field1327:0;
    }
 
    @ObfuscatedName("m")
@@ -199,7 +199,7 @@ public class TextureProvider implements class93 {
    static final int method1488(int var0, int var1) {
       int var2 = var0 + var1 * 57;
       var2 ^= var2 << 13;
-      int var3 = 1376312589 + var2 * (15731 * var2 * var2 + 789221) & Integer.MAX_VALUE;
+      int var3 = var2 * (var2 * 15731 * var2 + 789221) + 1376312589 & Integer.MAX_VALUE;
       return var3 >> 19 & 255;
    }
 

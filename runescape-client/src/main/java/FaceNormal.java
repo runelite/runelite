@@ -46,7 +46,7 @@ public class FaceNormal {
       }
 
       if(var4.itemIds.length <= var1) {
-         int[] var5 = new int[1 + var1];
+         int[] var5 = new int[var1 + 1];
          int[] var6 = new int[var1 + 1];
 
          int var7;
@@ -98,6 +98,6 @@ public class FaceNormal {
          var1 = var1.substring(0, var2) + "," + var1.substring(var2);
       }
 
-      return var1.length() > 9?" " + XItemContainer.method153('ﾀ') + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + XItemContainer.method153(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + XItemContainer.method153(16776960) + var1 + "</col>");
+      return var1.length() > 9?" " + XItemContainer.method153('ﾀ') + var1.substring(0, var1.length() - 8) + "M  (" + var1 + ")</col>":(var1.length() > 6?" " + XItemContainer.method153(16777215) + var1.substring(0, var1.length() - 4) + "K  (" + var1 + ")</col>":" " + XItemContainer.method153(16776960) + var1 + "</col>");
    }
 }

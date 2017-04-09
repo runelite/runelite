@@ -31,6 +31,7 @@ public final class SecondaryBufferProvider extends BufferProvider implements Ima
          this.field3216.setPixels(0, 0, super.width, super.height, this.field3215, super.pixels, 0, super.width);
          this.field3216.imageComplete(2);
       }
+
    }
 
    @ObfuscatedName("u")
@@ -99,10 +100,11 @@ public final class SecondaryBufferProvider extends BufferProvider implements Ima
       garbageValue = "-803297748"
    )
    synchronized void method4106(int var1, int var2, int var3, int var4) {
-      if(null != this.field3216) {
+      if(this.field3216 != null) {
          this.field3216.setPixels(var1, var2, var3, var4, this.field3215, super.pixels, var2 * super.width + var1, super.width);
          this.field3216.imageComplete(2);
       }
+
    }
 
    public boolean imageUpdate(Image var1, int var2, int var3, int var4, int var5, int var6) {

@@ -60,22 +60,22 @@ public class class49 extends Renderable {
       int var3 = var1.readInt();
       if(var3 >= 0 && (IndexDataBase.field2740 == 0 || var3 <= IndexDataBase.field2740)) {
          if(var2 == 0) {
-            byte[] var4 = new byte[var3];
-            var1.readBytes(var4, 0, var3);
-            return var4;
+            byte[] var6 = new byte[var3];
+            var1.readBytes(var6, 0, var3);
+            return var6;
          } else {
-            int var6 = var1.readInt();
-            if(var6 >= 0 && (IndexDataBase.field2740 == 0 || var6 <= IndexDataBase.field2740)) {
-               byte[] var5 = new byte[var6];
+            int var4 = var1.readInt();
+            if(var4 < 0 || IndexDataBase.field2740 != 0 && var4 > IndexDataBase.field2740) {
+               throw new RuntimeException();
+            } else {
+               byte[] var5 = new byte[var4];
                if(var2 == 1) {
-                  class147.method2806(var5, var6, var0, var3, 9);
+                  class147.method2806(var5, var4, var0, var3, 9);
                } else {
                   IndexDataBase.field2736.method2803(var1, var5);
                }
 
                return var5;
-            } else {
-               throw new RuntimeException();
             }
          }
       } else {
@@ -90,19 +90,19 @@ public class class49 extends Renderable {
    )
    protected final Model getModel() {
       if(this.field978 != null) {
-         int var12 = Client.gameCycle - this.field973;
-         if(var12 > 100 && this.field978.frameStep > 0) {
-            var12 = 100;
+         int var1 = Client.gameCycle - this.field973;
+         if(var1 > 100 && this.field978.frameStep > 0) {
+            var1 = 100;
          }
 
-         label66: {
+         label47: {
             do {
                do {
-                  if(var12 <= this.field978.frameLenghts[this.field979]) {
-                     break label66;
+                  if(var1 <= this.field978.frameLenghts[this.field979]) {
+                     break label47;
                   }
 
-                  var12 -= this.field978.frameLenghts[this.field979];
+                  var1 -= this.field978.frameLenghts[this.field979];
                   ++this.field979;
                } while(this.field979 < this.field978.frameIDs.length);
 
@@ -112,36 +112,36 @@ public class class49 extends Renderable {
             this.field978 = null;
          }
 
-         this.field973 = Client.gameCycle - var12;
+         this.field973 = Client.gameCycle - var1;
       }
 
-      ObjectComposition var1 = class140.getObjectDefinition(this.field982);
-      if(var1.impostorIds != null) {
-         var1 = var1.getImpostor();
+      ObjectComposition var12 = class140.getObjectDefinition(this.field982);
+      if(var12.impostorIds != null) {
+         var12 = var12.getImpostor();
       }
 
-      if(null == var1) {
+      if(var12 == null) {
          return null;
       } else {
          int var2;
          int var3;
          if(this.field974 != 1 && this.field974 != 3) {
-            var2 = var1.sizeX;
-            var3 = var1.sizeY;
+            var2 = var12.sizeX;
+            var3 = var12.sizeY;
          } else {
-            var2 = var1.sizeY;
-            var3 = var1.sizeX;
+            var2 = var12.sizeY;
+            var3 = var12.sizeX;
          }
 
          int var4 = this.field976 + (var2 >> 1);
-         int var5 = (1 + var2 >> 1) + this.field976;
+         int var5 = (var2 + 1 >> 1) + this.field976;
          int var6 = this.field977 + (var3 >> 1);
          int var7 = (var3 + 1 >> 1) + this.field977;
          int[][] var8 = class10.tileHeights[this.field981];
          int var9 = var8[var5][var7] + var8[var4][var7] + var8[var5][var6] + var8[var4][var6] >> 2;
          int var10 = (this.field976 << 7) + (var2 << 6);
          int var11 = (var3 << 6) + (this.field977 << 7);
-         return var1.method3645(this.field980, this.field974, var8, var10, var9, var11, this.field978, this.field979);
+         return var12.method3645(this.field980, this.field974, var8, var10, var9, var11, this.field978, this.field979);
       }
    }
 
@@ -174,7 +174,7 @@ public class class49 extends Renderable {
          this.field978 = Friend.getAnimation(var7);
          this.field979 = 0;
          this.field973 = Client.gameCycle - 1;
-         if(this.field978.replyMode == 0 && null != var9 && var9 instanceof class49) {
+         if(this.field978.replyMode == 0 && var9 != null && var9 instanceof class49) {
             class49 var10 = (class49)var9;
             if(this.field978 == var10.field978) {
                this.field979 = var10.field979;
@@ -218,7 +218,7 @@ public class class49 extends Renderable {
       } else if(var0 == 1301) {
          class30.field713 -= 2;
          var4 = class32.field743[class30.field713];
-         int var5 = class32.field743[1 + class30.field713];
+         int var5 = class32.field743[class30.field713 + 1];
          var3.parent = class118.method2354(var4, var5);
          return 1;
       } else if(var0 == 1302) {

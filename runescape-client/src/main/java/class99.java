@@ -71,7 +71,7 @@ public class class99 extends class109 {
          this.field1670 = var3;
          this.field1665 = var4;
       } else if(this.field1666 > this.field1672[this.field1664]) {
-         this.field1670 = (int)((long)(2560 * var1) / (this.field1666 - this.field1672[this.field1664]));
+         this.field1670 = (int)((long)(var1 * 2560) / (this.field1666 - this.field1672[this.field1664]));
       }
 
       if(this.field1670 < 25) {
@@ -88,7 +88,7 @@ public class class99 extends class109 {
       }
 
       this.field1672[this.field1664] = this.field1666;
-      this.field1664 = (1 + this.field1664) % 10;
+      this.field1664 = (this.field1664 + 1) % 10;
       int var5;
       if(this.field1665 > 1) {
          for(var5 = 0; var5 < 10; ++var5) {

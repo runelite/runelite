@@ -148,7 +148,7 @@ public class class196 extends CacheableNode {
             return var1;
          } else {
             var1 = class26.method564(field2883, this.field2887, 0);
-            if(null != var1) {
+            if(var1 != null) {
                spriteCache.put(var1, (long)this.field2887);
             }
 
@@ -167,7 +167,7 @@ public class class196 extends CacheableNode {
          return null;
       } else {
          SpritePixels var1 = (SpritePixels)spriteCache.get((long)this.field2888);
-         if(null != var1) {
+         if(var1 != null) {
             return var1;
          } else {
             var1 = class26.method564(field2883, this.field2888, 0);
@@ -190,11 +190,11 @@ public class class196 extends CacheableNode {
          return null;
       } else {
          SpritePixels var1 = (SpritePixels)spriteCache.get((long)this.field2874);
-         if(null != var1) {
+         if(var1 != null) {
             return var1;
          } else {
             var1 = class26.method564(field2883, this.field2874, 0);
-            if(null != var1) {
+            if(var1 != null) {
                spriteCache.put(var1, (long)this.field2874);
             }
 
@@ -213,7 +213,7 @@ public class class196 extends CacheableNode {
          return null;
       } else {
          SpritePixels var1 = (SpritePixels)spriteCache.get((long)this.field2884);
-         if(null != var1) {
+         if(var1 != null) {
             return var1;
          } else {
             var1 = class26.method564(field2883, this.field2884, 0);
@@ -240,7 +240,7 @@ public class class196 extends CacheableNode {
             return var1;
          } else {
             var1 = XItemContainer.method157(field2883, class0.field5, this.field2879, 0);
-            if(null != var1) {
+            if(var1 != null) {
                field2877.put(var1, (long)this.field2879);
             }
 
@@ -273,13 +273,13 @@ public class class196 extends CacheableNode {
    @Export("getItemDefinition")
    public static ItemComposition getItemDefinition(int var0) {
       ItemComposition var1 = (ItemComposition)ItemComposition.field2952.get((long)var0);
-      if(null != var1) {
+      if(var1 != null) {
          return var1;
       } else {
          byte[] var2 = Frames.field1592.getConfigData(10, var0);
          var1 = new ItemComposition();
          var1.id = var0;
-         if(null != var2) {
+         if(var2 != null) {
             var1.loadBuffer(new Buffer(var2));
          }
 
@@ -364,7 +364,7 @@ public class class196 extends CacheableNode {
          }
 
          int var4 = var1.readUnsignedByte();
-         this.field2892 = new int[2 + var4];
+         this.field2892 = new int[var4 + 2];
 
          for(int var5 = 0; var5 <= var4; ++var5) {
             this.field2892[var5] = var1.readUnsignedShort();

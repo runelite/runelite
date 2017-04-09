@@ -81,8 +81,8 @@ public final class class33 extends Renderable {
                break;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("u")
@@ -139,5 +139,6 @@ public final class class33 extends Renderable {
       if(Ignore.method178(var0)) {
          Projectile.method826(Widget.widgets[var0], var1);
       }
+
    }
 }

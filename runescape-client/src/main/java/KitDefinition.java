@@ -145,7 +145,7 @@ public class KitDefinition extends CacheableNode {
 
       ModelData var5 = new ModelData(var1, var2);
       int var4;
-      if(null != this.recolorToFind) {
+      if(this.recolorToFind != null) {
          for(var4 = 0; var4 < this.recolorToFind.length; ++var4) {
             var5.method1509(this.recolorToFind[var4], this.recolorToReplace[var4]);
          }
@@ -200,7 +200,7 @@ public class KitDefinition extends CacheableNode {
          }
 
          int var3;
-         if(null != this.recolorToFind) {
+         if(this.recolorToFind != null) {
             for(var3 = 0; var3 < this.recolorToFind.length; ++var3) {
                var4.method1509(this.recolorToFind[var3], this.recolorToReplace[var3]);
             }

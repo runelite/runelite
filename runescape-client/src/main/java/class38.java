@@ -91,7 +91,7 @@ public class class38 {
          } else if(var5 >= 97 && var5 <= 122) {
             var1 += (long)(var5 + 1 - 97);
          } else if(var5 >= 48 && var5 <= 57) {
-            var1 += (long)(27 + var5 - 48);
+            var1 += (long)(var5 + 27 - 48);
          }
 
          if(var1 >= 177917621779460413L) {
@@ -115,22 +115,22 @@ public class class38 {
       if(!VertexNormal.method1667(var0, var1, var2)) {
          return null;
       } else {
-         ModIcon[] var4 = new ModIcon[class225.field3233];
+         ModIcon[] var3 = new ModIcon[class225.field3233];
 
-         for(int var5 = 0; var5 < class225.field3233; ++var5) {
-            ModIcon var6 = var4[var5] = new ModIcon();
-            var6.width = class225.field3231;
-            var6.originalHeight = class146.field2038;
-            var6.offsetX = class225.field3230[var5];
-            var6.offsetY = ItemComposition.field3003[var5];
-            var6.originalWidth = class225.field3232[var5];
-            var6.height = ChatLineBuffer.field994[var5];
-            var6.palette = class225.field3234;
-            var6.pixels = BufferProvider.field3199[var5];
+         for(int var4 = 0; var4 < class225.field3233; ++var4) {
+            ModIcon var5 = var3[var4] = new ModIcon();
+            var5.width = class225.field3231;
+            var5.originalHeight = class146.field2038;
+            var5.offsetX = class225.field3230[var4];
+            var5.offsetY = ItemComposition.field3003[var4];
+            var5.originalWidth = class225.field3232[var4];
+            var5.height = ChatLineBuffer.field994[var4];
+            var5.palette = class225.field3234;
+            var5.pixels = BufferProvider.field3199[var4];
          }
 
          WidgetNode.method172();
-         return var4;
+         return var3;
       }
    }
 

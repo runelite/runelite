@@ -52,7 +52,7 @@ public abstract class class112 {
       } else if(var1 == 1) {
          try {
             Object var3 = class100.method1985(class114.field1804, var2, new Object[]{(new URL(class114.field1804.getCodeBase(), var0)).toString()});
-            return null != var3;
+            return var3 != null;
          } catch (Throwable var6) {
             return false;
          }

@@ -80,10 +80,10 @@ public abstract class IndexDataBase {
       garbageValue = "139731796"
    )
    public boolean method3338(int var1, int var2) {
-      if(var1 >= 0 && var1 < this.field2735.length && null != this.field2735[var1] && var2 >= 0 && var2 < this.field2735[var1].length) {
-         if(null != this.field2735[var1][var2]) {
+      if(var1 >= 0 && var1 < this.field2735.length && this.field2735[var1] != null && var2 >= 0 && var2 < this.field2735[var1].length) {
+         if(this.field2735[var1][var2] != null) {
             return true;
-         } else if(null != this.field2734[var1]) {
+         } else if(this.field2734[var1] != null) {
             return true;
          } else {
             this.vmethod3419(var1);
@@ -139,7 +139,7 @@ public abstract class IndexDataBase {
    )
    public void method3349() {
       for(int var1 = 0; var1 < this.field2735.length; ++var1) {
-         if(null != this.field2735[var1]) {
+         if(this.field2735[var1] != null) {
             for(int var2 = 0; var2 < this.field2735[var1].length; ++var2) {
                this.field2735[var1][var2] = null;
             }
@@ -205,6 +205,7 @@ public abstract class IndexDataBase {
       if(var2 >= 0) {
          this.vmethod3422(var2);
       }
+
    }
 
    @ObfuscatedName("p")
@@ -226,9 +227,9 @@ public abstract class IndexDataBase {
 
       for(int var2 = 0; var2 < this.field2725.length; ++var2) {
          int var3 = this.field2725[var2];
-         if(null == this.field2734[var3]) {
+         if(this.field2734[var3] == null) {
             this.vmethod3419(var3);
-            if(null == this.field2734[var3]) {
+            if(this.field2734[var3] == null) {
                var1 = false;
             }
          }
@@ -254,7 +255,7 @@ public abstract class IndexDataBase {
    )
    @Export("getConfigData")
    public byte[] getConfigData(int var1, int var2, int[] var3) {
-      if(var1 >= 0 && var1 < this.field2735.length && null != this.field2735[var1] && var2 >= 0 && var2 < this.field2735[var1].length) {
+      if(var1 >= 0 && var1 < this.field2735.length && this.field2735[var1] != null && var2 >= 0 && var2 < this.field2735[var1].length) {
          if(this.field2735[var1][var2] == null) {
             boolean var4 = this.method3397(var1, var3);
             if(!var4) {
@@ -284,19 +285,19 @@ public abstract class IndexDataBase {
    )
    public byte[] method3371(int var1, int var2) {
       if(var1 >= 0 && var1 < this.field2735.length && this.field2735[var1] != null && var2 >= 0 && var2 < this.field2735[var1].length) {
-         if(null == this.field2735[var1][var2]) {
-            boolean var4 = this.method3397(var1, (int[])null);
-            if(!var4) {
+         if(this.field2735[var1][var2] == null) {
+            boolean var3 = this.method3397(var1, (int[])null);
+            if(!var3) {
                this.vmethod3419(var1);
-               var4 = this.method3397(var1, (int[])null);
-               if(!var4) {
+               var3 = this.method3397(var1, (int[])null);
+               if(!var3) {
                   return null;
                }
             }
          }
 
-         byte[] var3 = class37.method763(this.field2735[var1][var2], false);
-         return var3;
+         byte[] var4 = class37.method763(this.field2735[var1][var2], false);
+         return var4;
       } else {
          return null;
       }
@@ -327,7 +328,7 @@ public abstract class IndexDataBase {
          return true;
       } else {
          this.vmethod3419(var1);
-         return null != this.field2734[var1];
+         return this.field2734[var1] != null;
       }
    }
 
@@ -387,14 +388,14 @@ public abstract class IndexDataBase {
             }
          }
 
-         this.field2724 = new int[1 + var6];
+         this.field2724 = new int[var6 + 1];
          this.field2726 = new int[var6 + 1];
          this.field2730 = new int[var6 + 1];
-         this.field2738 = new int[1 + var6][];
+         this.field2738 = new int[var6 + 1][];
          this.field2734 = new Object[var6 + 1];
-         this.field2735 = new Object[1 + var6][];
+         this.field2735 = new Object[var6 + 1][];
          if(var4 != 0) {
-            this.field2741 = new int[1 + var6];
+            this.field2741 = new int[var6 + 1];
 
             for(var7 = 0; var7 < this.field2727; ++var7) {
                this.field2741[this.field2725[var7]] = var2.readInt();
@@ -435,7 +436,7 @@ public abstract class IndexDataBase {
                   }
                }
 
-               this.field2735[var8] = new Object[1 + var10];
+               this.field2735[var8] = new Object[var10 + 1];
             }
          } else {
             for(var7 = 0; var7 < this.field2727; ++var7) {
@@ -503,7 +504,7 @@ public abstract class IndexDataBase {
             return true;
          } else {
             byte[] var18;
-            if(null == var2 || var2[0] == 0 && var2[1] == 0 && var2[2] == 0 && var2[3] == 0) {
+            if(var2 == null || var2[0] == 0 && var2[1] == 0 && var2[2] == 0 && var2[3] == 0) {
                var18 = class37.method763(this.field2734[var1], false);
             } else {
                var18 = class37.method763(this.field2734[var1], true);
@@ -511,63 +512,63 @@ public abstract class IndexDataBase {
                var8.method2924(var2, 5, var8.payload.length);
             }
 
-            byte[] var20 = class49.method924(var18);
+            byte[] var19 = class49.method924(var18);
             if(this.field2729) {
                this.field2734[var1] = null;
             }
 
             if(var3 > 1) {
-               int var9 = var20.length;
+               int var9 = var19.length;
                --var9;
-               int var10 = var20[var9] & 255;
+               int var10 = var19[var9] & 255;
                var9 -= var3 * var10 * 4;
-               Buffer var11 = new Buffer(var20);
+               Buffer var11 = new Buffer(var19);
                int[] var12 = new int[var3];
                var11.offset = var9;
 
+               int var13;
                int var14;
-               int var15;
-               for(int var13 = 0; var13 < var10; ++var13) {
-                  var14 = 0;
+               for(int var15 = 0; var15 < var10; ++var15) {
+                  var13 = 0;
 
-                  for(var15 = 0; var15 < var3; ++var15) {
-                     var14 += var11.readInt();
-                     var12[var15] += var14;
+                  for(var14 = 0; var14 < var3; ++var14) {
+                     var13 += var11.readInt();
+                     var12[var14] += var13;
                   }
                }
 
-               byte[][] var19 = new byte[var3][];
+               byte[][] var20 = new byte[var3][];
 
-               for(var14 = 0; var14 < var3; ++var14) {
-                  var19[var14] = new byte[var12[var14]];
-                  var12[var14] = 0;
+               for(var13 = 0; var13 < var3; ++var13) {
+                  var20[var13] = new byte[var12[var13]];
+                  var12[var13] = 0;
                }
 
                var11.offset = var9;
-               var14 = 0;
+               var13 = 0;
 
-               for(var15 = 0; var15 < var10; ++var15) {
+               for(var14 = 0; var14 < var10; ++var14) {
                   int var16 = 0;
 
                   for(int var17 = 0; var17 < var3; ++var17) {
                      var16 += var11.readInt();
-                     System.arraycopy(var20, var14, var19[var17], var12[var17], var16);
+                     System.arraycopy(var19, var13, var20[var17], var12[var17], var16);
                      var12[var17] += var16;
-                     var14 += var16;
+                     var13 += var16;
                   }
                }
 
-               for(var15 = 0; var15 < var3; ++var15) {
+               for(var14 = 0; var14 < var3; ++var14) {
                   if(!this.field2739) {
-                     var5[var4[var15]] = Client.method425(var19[var15], false);
+                     var5[var4[var14]] = Client.method425(var20[var14], false);
                   } else {
-                     var5[var4[var15]] = var19[var15];
+                     var5[var4[var14]] = var20[var14];
                   }
                }
             } else if(!this.field2739) {
-               var5[var4[0]] = Client.method425(var20, false);
+               var5[var4[0]] = Client.method425(var19, false);
             } else {
-               var5[var4[0]] = var20;
+               var5[var4[0]] = var19;
             }
 
             return true;
@@ -607,21 +608,21 @@ public abstract class IndexDataBase {
          XClanMember.field296 = new int[var3];
          class85.field1484 = new byte[var3][];
          Frames.field1593 = new byte[var3][];
-         boolean var13 = false;
+         boolean var8 = false;
          if((var2 / 8 == 48 || var2 / 8 == 49) && var1 / 8 == 48) {
-            var13 = true;
+            var8 = true;
          }
 
          if(var2 / 8 == 48 && var1 / 8 == 148) {
-            var13 = true;
+            var8 = true;
          }
 
          var3 = 0;
 
          for(var5 = (var2 - 6) / 8; var5 <= (var2 + 6) / 8; ++var5) {
-            for(var6 = (var1 - 6) / 8; var6 <= (6 + var1) / 8; ++var6) {
+            for(var6 = (var1 - 6) / 8; var6 <= (var1 + 6) / 8; ++var6) {
                var7 = var6 + (var5 << 8);
-               if(!var13 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
+               if(!var8 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
                   class25.mapRegions[var3] = var7;
                   class44.field915[var3] = class205.indexMaps.method3351("m" + var5 + "_" + var6);
                   XClanMember.field296[var3] = class205.indexMaps.method3351("l" + var5 + "_" + var6);
@@ -671,9 +672,9 @@ public abstract class IndexDataBase {
                for(var6 = 0; var6 < 13; ++var6) {
                   var7 = Client.field364[var4][var5][var6];
                   if(var7 != -1) {
-                     int var8 = var7 >> 14 & 1023;
+                     int var13 = var7 >> 14 & 1023;
                      int var9 = var7 >> 3 & 2047;
-                     int var10 = var9 / 8 + (var8 / 8 << 8);
+                     int var10 = var9 / 8 + (var13 / 8 << 8);
 
                      int var11;
                      for(var11 = 0; var11 < var3; ++var11) {

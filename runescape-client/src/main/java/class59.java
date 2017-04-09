@@ -48,19 +48,20 @@ public class class59 extends class57 {
          this.field1097.start();
          this.field1098 = var1;
       } catch (LineUnavailableException var5) {
-         int var4 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
-         var4 = (var4 >>> 2 & 858993459) + (var4 & 858993459);
-         var4 = (var4 >>> 4) + var4 & 252645135;
-         var4 += var4 >>> 8;
-         var4 += var4 >>> 16;
-         int var3 = var4 & 255;
-         if(var3 != 1) {
-            this.vmethod1149(World.method601(var1));
-         } else {
+         int var3 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
+         var3 = (var3 >>> 2 & 858993459) + (var3 & 858993459);
+         var3 = (var3 >>> 4) + var3 & 252645135;
+         var3 += var3 >>> 8;
+         var3 += var3 >>> 16;
+         int var4 = var3 & 255;
+         if(var4 == 1) {
             this.field1097 = null;
             throw var5;
          }
+
+         this.vmethod1149(World.method601(var1));
       }
+
    }
 
    @ObfuscatedName("s")
@@ -82,12 +83,12 @@ public class class59 extends class57 {
 
       for(int var2 = 0; var2 < var1; ++var2) {
          int var3 = super.field1064[var2];
-         if((8388608 + var3 & -16777216) != 0) {
+         if((var3 + 8388608 & -16777216) != 0) {
             var3 = 8388607 ^ var3 >> 31;
          }
 
-         this.field1099[2 * var2] = (byte)(var3 >> 8);
-         this.field1099[1 + var2 * 2] = (byte)(var3 >> 16);
+         this.field1099[var2 * 2] = (byte)(var3 >> 8);
+         this.field1099[var2 * 2 + 1] = (byte)(var3 >> 16);
       }
 
       this.field1097.write(this.field1099, 0, var1 << 1);

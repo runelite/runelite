@@ -43,28 +43,28 @@ public final class class9 {
                }
 
                method97(var0, var3.id);
-               if(null != var3.children) {
+               if(var3.children != null) {
                   method97(var3.children, var3.id);
                }
 
                WidgetNode var4 = (WidgetNode)Client.componentTable.method2417((long)var3.id);
-               if(null != var4) {
+               if(var4 != null) {
                   class148.method2833(var4.id);
                }
             }
 
             if(var3.type == 6) {
-               int var5;
+               int var7;
                if(var3.field2266 != -1 || var3.field2276 != -1) {
-                  boolean var7 = class161.method3138(var3);
-                  if(var7) {
-                     var5 = var3.field2276;
+                  boolean var5 = class161.method3138(var3);
+                  if(var5) {
+                     var7 = var3.field2276;
                   } else {
-                     var5 = var3.field2266;
+                     var7 = var3.field2266;
                   }
 
-                  if(var5 != -1) {
-                     Sequence var6 = Friend.getAnimation(var5);
+                  if(var7 != -1) {
+                     Sequence var6 = Friend.getAnimation(var7);
 
                      for(var3.field2342 += Client.field511; var3.field2342 > var6.frameLenghts[var3.field2344]; class22.method197(var3)) {
                         var3.field2342 -= var6.frameLenghts[var3.field2344];
@@ -81,11 +81,11 @@ public final class class9 {
 
                if(var3.field2275 != 0 && !var3.hasScript) {
                   int var8 = var3.field2275 >> 16;
-                  var5 = var3.field2275 << 16 >> 16;
+                  var7 = var3.field2275 << 16 >> 16;
                   var8 *= Client.field511;
-                  var5 *= Client.field511;
+                  var7 *= Client.field511;
                   var3.rotationX = var8 + var3.rotationX & 2047;
-                  var3.rotationZ = var5 + var3.rotationZ & 2047;
+                  var3.rotationZ = var7 + var3.rotationZ & 2047;
                   class22.method197(var3);
                }
             }
@@ -101,7 +101,7 @@ public final class class9 {
    )
    static IndexData method98(int var0, boolean var1, boolean var2, boolean var3) {
       IndexFile var4 = null;
-      if(null != class104.field1713) {
+      if(class104.field1713 != null) {
          var4 = new IndexFile(var0, class104.field1713, WidgetNode.field186[var0], 1000000);
       }
 
