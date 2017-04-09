@@ -25,7 +25,7 @@
 
 package net.runelite.api;
 
-import java.awt.*;
+import java.awt.Canvas;
 import java.util.Arrays;
 
 public class Client
@@ -102,5 +102,60 @@ public class Client
 	public int getClientWidth()
 	{
 		return client.getCanvas().getWidth();
+	}
+
+	public int getCameraX()
+	{
+		return client.getCameraX();
+	}
+
+	public int getCameraY()
+	{
+		return client.getCameraY();
+	}
+
+	public int getCameraZ()
+	{
+		return client.getCameraZ();
+	}
+
+	public int getCameraPitch()
+	{
+		return client.getCameraPitch();
+	}
+
+	public int getCameraYaw()
+	{
+		return client.getCameraYaw();
+	}
+
+	public int getCamera2()
+	{
+		return client.getCamera2();
+	}
+
+	public int getCamera3()
+	{
+		return client.getCamera3();
+	}
+
+	public int getScale()
+	{
+		return client.getScale();
+	}
+
+	public int[][][] getTileHeights()
+	{
+		return client.getTileHeights();
+	}
+
+	public byte[][][] getTileSettings()
+	{
+		return client.getTileSettings();
+	}
+
+	public int getPlane()
+	{
+		return client.getPlane();
 	}
 }
