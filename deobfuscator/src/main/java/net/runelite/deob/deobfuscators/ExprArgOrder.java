@@ -22,15 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.asm.attributes.code.instructions.AConstNull;
+import net.runelite.asm.attributes.code.instructions.IAdd;
+import net.runelite.asm.attributes.code.instructions.IMul;
+import net.runelite.asm.attributes.code.instructions.IfACmpEq;
+import net.runelite.asm.attributes.code.instructions.IfACmpNe;
 import net.runelite.asm.attributes.code.instructions.IfICmpEq;
 import net.runelite.asm.attributes.code.instructions.IfICmpNe;
 import net.runelite.asm.execution.Execution;
@@ -44,29 +49,66 @@ import org.slf4j.LoggerFactory;
 public class ExprArgOrder implements Deobfuscator
 {
 	private static final Logger logger = LoggerFactory.getLogger(ExprArgOrder.class);
-	
+
 	private Set<Instruction> swap = new HashSet<>();
 	private int count;
 
 	private void visit(InstructionContext ctx)
 	{
-		if (!(ctx.getInstruction() instanceof IfICmpEq) && !(ctx.getInstruction() instanceof IfICmpNe))
-			return;
+		Instruction ins = ctx.getInstruction();
 
-		StackContext one = ctx.getPops().get(0),
-			two = ctx.getPops().get(1);
-
-		if (!(one.getPushed().getInstruction() instanceof PushConstantInstruction) &&
-			(two.getPushed().getInstruction() instanceof PushConstantInstruction))
+		if (ins instanceof IfICmpEq || ins instanceof IfICmpNe
+			|| ins instanceof IAdd || ins instanceof IMul)
 		{
-			swap.add(ctx.getInstruction());
+			StackContext one = ctx.getPops().get(0),
+				two = ctx.getPops().get(1);
+
+			if (!(one.getPushed().getInstruction() instanceof PushConstantInstruction)
+				&& (two.getPushed().getInstruction() instanceof PushConstantInstruction))
+			{
+				swap.add(ins);
+			}
 		}
+
+		if (ins instanceof IfACmpEq || ins instanceof IfACmpNe)
+		{
+			StackContext one = ctx.getPops().get(0),
+				two = ctx.getPops().get(1);
+
+			if (!(one.getPushed().getInstruction() instanceof AConstNull)
+				&& (two.getPushed().getInstruction() instanceof AConstNull))
+			{
+				swap.add(ins);
+			}
+		}
+	}
+
+	private boolean alwaysPopsFromSameInstructions(MethodContext mctx, Instruction i)
+	{
+		Collection<InstructionContext> instructonContexts = mctx.getInstructonContexts(i);
+		InstructionContext ictx = instructonContexts.iterator().next();
+
+		for (InstructionContext i2 : instructonContexts)
+		{
+			if (!i2.equals(ictx))
+			{
+				// this instruction doesn't always pop the same thing
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	private void visit(MethodContext ctx)
 	{
 		for (Instruction i : swap)
 		{
+			if (!alwaysPopsFromSameInstructions(ctx, i))
+			{
+				continue;
+			}
+
 			InstructionContext ictx = ctx.getInstructonContexts(i).iterator().next();
 
 			StackContext one = ictx.getPops().get(0),
@@ -78,7 +120,9 @@ public class ExprArgOrder implements Deobfuscator
 			Instructions ins = i.getInstructions();
 
 			if (i1.getInstructions() == null || i2.getInstructions() == null)
+			{
 				continue;
+			}
 
 			assert i1.getInstructions() == ins;
 			assert i2.getInstructions() == ins;
@@ -98,7 +142,7 @@ public class ExprArgOrder implements Deobfuscator
 		}
 		swap.clear();
 	}
-	
+
 	@Override
 	public void run(ClassGroup group)
 	{
@@ -108,6 +152,6 @@ public class ExprArgOrder implements Deobfuscator
 		execution.populateInitialMethods();
 		execution.run();
 
-		logger.info("Reordered {} if arguments", count);
+		logger.info("Reordered {} expressions", count);
 	}
 }
