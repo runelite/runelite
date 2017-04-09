@@ -73,6 +73,7 @@ public final class ModIcon extends Rasterizer2D {
       if(var6 > 0 && var5 > 0) {
          method4093(Rasterizer2D.graphicsPixels, this.pixels, this.palette, var4, var3, var6, var5, var7, var8);
       }
+
    }
 
    @ObfuscatedName("i")
@@ -125,6 +126,7 @@ public final class ModIcon extends Rasterizer2D {
          this.offsetX = 0;
          this.offsetY = 0;
       }
+
    }
 
    @ObfuscatedName("r")

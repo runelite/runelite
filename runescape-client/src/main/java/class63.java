@@ -31,8 +31,8 @@ public class class63 implements Runnable {
             class115.method2300(10L);
             class183.method3415(this.field1115, (Object)null);
          }
-      } catch (Exception var7) {
-         GameObject.method1958((String)null, var7);
+      } catch (Exception var6) {
+         GameObject.method1958((String)null, var6);
       } finally {
          this.field1116 = false;
       }

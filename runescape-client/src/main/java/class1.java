@@ -32,11 +32,11 @@ public class class1 {
    static int method4(int var0, Script var1, boolean var2) {
       Widget var3 = var2?class154.field2123:class32.field746;
       if(var0 == 1800) {
-         int[] var4 = class32.field743;
+         int[] var8 = class32.field743;
          int var5 = ++class30.field713 - 1;
-         int var7 = FloorUnderlayDefinition.method3533(var3);
-         int var6 = var7 >> 11 & 63;
-         var4[var5] = var6;
+         int var6 = FloorUnderlayDefinition.method3533(var3);
+         int var7 = var6 >> 11 & 63;
+         var8[var5] = var7;
          return 1;
       } else if(var0 != 1801) {
          if(var0 == 1802) {
@@ -51,10 +51,10 @@ public class class1 {
             return 2;
          }
       } else {
-         int var8 = class32.field743[--class30.field713];
-         --var8;
-         if(null != var3.actions && var8 < var3.actions.length && var3.actions[var8] != null) {
-            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.actions[var8];
+         int var4 = class32.field743[--class30.field713];
+         --var4;
+         if(var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
+            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.actions[var4];
          } else {
             class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
          }
@@ -116,15 +116,15 @@ public class class1 {
                }
 
                String var4 = var0.substring(0, var3);
-               int var6 = NPC.method748(var1, var2 - 1);
-               String var5;
-               if(var6 < 999999999) {
-                  var5 = Integer.toString(var6);
+               int var5 = NPC.method748(var1, var2 - 1);
+               String var6;
+               if(var5 < 999999999) {
+                  var6 = Integer.toString(var5);
                } else {
-                  var5 = "*";
+                  var6 = "*";
                }
 
-               var0 = var4 + var5 + var0.substring(2 + var3);
+               var0 = var4 + var6 + var0.substring(var3 + 2);
             }
          }
 
@@ -135,25 +135,18 @@ public class class1 {
             }
 
             String var7 = "";
-            if(null != class36.field795) {
+            if(class36.field795 != null) {
                var7 = class172.method3307(class36.field795.field1688);
-               if(null != class36.field795.field1690) {
+               if(class36.field795.field1690 != null) {
                   var7 = (String)class36.field795.field1690;
                }
             }
 
-            var0 = var0.substring(0, var2) + var7 + var0.substring(4 + var2);
+            var0 = var0.substring(0, var2) + var7 + var0.substring(var2 + 4);
          }
       }
 
       return var0;
-   }
-
-   static {
-      new class0();
-      field16 = new class5();
-      field10 = new class6();
-      field11 = new class3();
    }
 
    @ObfuscatedName("u")
@@ -166,5 +159,13 @@ public class class1 {
       if(var1 != null) {
          var1.unlink();
       }
+
+   }
+
+   static {
+      new class0();
+      field16 = new class5();
+      field10 = new class6();
+      field11 = new class3();
    }
 }

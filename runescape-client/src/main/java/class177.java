@@ -52,27 +52,27 @@ public class class177 implements class158 {
          World.worldList[var1] = var8;
 
          for(int var9 = var0; var9 < var1; ++var9) {
-            World var11 = World.worldList[var9];
-            int var12 = CombatInfo1.method594(var11, var8, var2, var3);
-            int var10;
-            if(var12 != 0) {
+            World var10 = World.worldList[var9];
+            int var11 = CombatInfo1.method594(var10, var8, var2, var3);
+            int var12;
+            if(var11 != 0) {
                if(var3) {
-                  var10 = -var12;
+                  var12 = -var11;
                } else {
-                  var10 = var12;
+                  var12 = var11;
                }
             } else if(var4 == -1) {
-               var10 = 0;
+               var12 = 0;
             } else {
-               int var13 = CombatInfo1.method594(var11, var8, var4, var5);
+               int var13 = CombatInfo1.method594(var10, var8, var4, var5);
                if(var5) {
-                  var10 = -var13;
+                  var12 = -var13;
                } else {
-                  var10 = var13;
+                  var12 = var13;
                }
             }
 
-            if(var10 <= 0) {
+            if(var12 <= 0) {
                World var14 = World.worldList[var9];
                World.worldList[var9] = World.worldList[var7];
                World.worldList[var7++] = var14;

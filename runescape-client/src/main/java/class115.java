@@ -136,7 +136,7 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
    }
 
    public final synchronized void mouseEntered(MouseEvent var1) {
-      if(null != mouse) {
+      if(mouse != null) {
          mouseIdleTicks = 0;
          field1814 = var1.getX();
          field1815 = var1.getY();
@@ -145,7 +145,7 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
    }
 
    public final synchronized void mouseMoved(MouseEvent var1) {
-      if(null != mouse) {
+      if(mouse != null) {
          mouseIdleTicks = 0;
          field1814 = var1.getX();
          field1815 = var1.getY();
@@ -154,7 +154,7 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
    }
 
    public final synchronized void focusLost(FocusEvent var1) {
-      if(null != mouse) {
+      if(mouse != null) {
          field1829 = 0;
       }
 
@@ -170,7 +170,7 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
    }
 
    public final synchronized void mouseReleased(MouseEvent var1) {
-      if(null != mouse) {
+      if(mouse != null) {
          mouseIdleTicks = 0;
          field1829 = 0;
       }
@@ -189,23 +189,23 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
 
             try {
                Thread.sleep(var2);
-            } catch (InterruptedException var8) {
+            } catch (InterruptedException var7) {
                ;
             }
 
             try {
                Thread.sleep(1L);
-            } catch (InterruptedException var7) {
+            } catch (InterruptedException var6) {
                ;
             }
          } else {
             try {
                Thread.sleep(var0);
-            } catch (InterruptedException var6) {
+            } catch (InterruptedException var5) {
                ;
             }
          }
-
       }
+
    }
 }

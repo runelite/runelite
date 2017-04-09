@@ -46,7 +46,7 @@ public class class22 extends class119 {
       } else {
          byte[] var2 = Varbit.field2857.getConfigData(14, var0);
          var1 = new Varbit();
-         if(null != var2) {
+         if(var2 != null) {
             var1.method3596(new Buffer(var2));
          }
 
@@ -62,15 +62,15 @@ public class class22 extends class119 {
    )
    static void method202() {
       for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
-         int var2 = Client.menuTypes[var0];
-         boolean var1 = var2 == 57 || var2 == 58 || var2 == 1007 || var2 == 25 || var2 == 30;
-         if(var1) {
+         int var1 = Client.menuTypes[var0];
+         boolean var2 = var1 == 57 || var1 == 58 || var1 == 1007 || var1 == 25 || var1 == 30;
+         if(var2) {
             if(var0 < Client.menuOptionCount - 1) {
                for(int var3 = var0; var3 < Client.menuOptionCount - 1; ++var3) {
-                  Client.menuOptions[var3] = Client.menuOptions[1 + var3];
+                  Client.menuOptions[var3] = Client.menuOptions[var3 + 1];
                   Client.menuTargets[var3] = Client.menuTargets[var3 + 1];
                   Client.menuTypes[var3] = Client.menuTypes[var3 + 1];
-                  Client.menuIdentifiers[var3] = Client.menuIdentifiers[1 + var3];
+                  Client.menuIdentifiers[var3] = Client.menuIdentifiers[var3 + 1];
                   Client.menuActionParams0[var3] = Client.menuActionParams0[var3 + 1];
                   Client.menuActionParams1[var3] = Client.menuActionParams1[var3 + 1];
                }
@@ -99,7 +99,7 @@ public class class22 extends class119 {
       int var4;
       int var5;
       for(var3 = 1; var3 < 103; ++var3) {
-         var4 = 24628 + (103 - var3) * 2048;
+         var4 = (103 - var3) * 2048 + 24628;
 
          for(var5 = 1; var5 < 103; ++var5) {
             if((class10.tileSettings[var0][var5][var3] & 24) == 0) {
@@ -107,15 +107,15 @@ public class class22 extends class119 {
             }
 
             if(var0 < 3 && (class10.tileSettings[var0 + 1][var5][var3] & 8) != 0) {
-               CombatInfo1.region.method1770(var1, var4, 512, 1 + var0, var5, var3);
+               CombatInfo1.region.method1770(var1, var4, 512, var0 + 1, var5, var3);
             }
 
             var4 += 4;
          }
       }
 
-      var3 = (238 + (int)(Math.random() * 20.0D) - 10 << 16) + (238 + (int)(Math.random() * 20.0D) - 10 << 8) + (238 + (int)(Math.random() * 20.0D) - 10);
-      var4 = 238 + (int)(Math.random() * 20.0D) - 10 << 16;
+      var3 = ((int)(Math.random() * 20.0D) + 238 - 10 << 16) + ((int)(Math.random() * 20.0D) + 238 - 10 << 8) + ((int)(Math.random() * 20.0D) + 238 - 10);
+      var4 = (int)(Math.random() * 20.0D) + 238 - 10 << 16;
       CombatInfo1.field686.method4133();
 
       int var6;
@@ -143,23 +143,23 @@ public class class22 extends class119 {
                   int var9 = var5;
                   int var10 = var6;
                   if(var8 != 22 && var8 != 29 && var8 != 34 && var8 != 36 && var8 != 46 && var8 != 47 && var8 != 48) {
-                     int[][] var13 = Client.collisionMaps[Sequence.plane].flags;
+                     int[][] var11 = Client.collisionMaps[Sequence.plane].flags;
 
-                     for(int var14 = 0; var14 < 10; ++var14) {
-                        int var15 = (int)(Math.random() * 4.0D);
-                        if(var15 == 0 && var9 > 0 && var9 > var5 - 3 && (var13[var9 - 1][var10] & 19136776) == 0) {
+                     for(int var12 = 0; var12 < 10; ++var12) {
+                        int var13 = (int)(Math.random() * 4.0D);
+                        if(var13 == 0 && var9 > 0 && var9 > var5 - 3 && (var11[var9 - 1][var10] & 19136776) == 0) {
                            --var9;
                         }
 
-                        if(var15 == 1 && var9 < 103 && var9 < 3 + var5 && (var13[var9 + 1][var10] & 19136896) == 0) {
+                        if(var13 == 1 && var9 < 103 && var9 < var5 + 3 && (var11[var9 + 1][var10] & 19136896) == 0) {
                            ++var9;
                         }
 
-                        if(var15 == 2 && var10 > 0 && var10 > var6 - 3 && (var13[var9][var10 - 1] & 19136770) == 0) {
+                        if(var13 == 2 && var10 > 0 && var10 > var6 - 3 && (var11[var9][var10 - 1] & 19136770) == 0) {
                            --var10;
                         }
 
-                        if(var15 == 3 && var10 < 103 && var10 < var6 + 3 && (var13[var9][var10 + 1] & 19136800) == 0) {
+                        if(var13 == 3 && var10 < 103 && var10 < var6 + 3 && (var11[var9][var10 + 1] & 19136800) == 0) {
                            ++var10;
                         }
                      }

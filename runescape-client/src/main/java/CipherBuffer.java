@@ -62,7 +62,7 @@ public final class CipherBuffer extends Buffer {
       garbageValue = "-1518563149"
    )
    public void method3103() {
-      super.offset = (7 + this.field2147) / 8;
+      super.offset = (this.field2147 + 7) / 8;
    }
 
    @ObfuscatedSignature(
@@ -79,72 +79,73 @@ public final class CipherBuffer extends Buffer {
       garbageValue = "65280"
    )
    static int method3104(int var0, Script var1, boolean var2) {
+      int var3;
       int var4;
-      int var9;
+      Widget var5;
       if(var0 == 100) {
          class30.field713 -= 3;
-         var9 = class32.field743[class30.field713];
-         var4 = class32.field743[1 + class30.field713];
-         int var5 = class32.field743[class30.field713 + 2];
-         if(var4 == 0) {
+         var4 = class32.field743[class30.field713];
+         var3 = class32.field743[class30.field713 + 1];
+         int var9 = class32.field743[class30.field713 + 2];
+         if(var3 == 0) {
             throw new RuntimeException();
          } else {
-            Widget var6 = FaceNormal.method1932(var9);
-            if(null == var6.children) {
-               var6.children = new Widget[1 + var5];
+            var5 = FaceNormal.method1932(var4);
+            if(var5.children == null) {
+               var5.children = new Widget[var9 + 1];
             }
 
-            if(var6.children.length <= var5) {
-               Widget[] var7 = new Widget[var5 + 1];
+            if(var5.children.length <= var9) {
+               Widget[] var7 = new Widget[var9 + 1];
 
-               for(int var8 = 0; var8 < var6.children.length; ++var8) {
-                  var7[var8] = var6.children[var8];
+               for(int var8 = 0; var8 < var5.children.length; ++var8) {
+                  var7[var8] = var5.children[var8];
                }
 
-               var6.children = var7;
+               var5.children = var7;
             }
 
-            if(var5 > 0 && var6.children[var5 - 1] == null) {
-               throw new RuntimeException("" + (var5 - 1));
+            if(var9 > 0 && var5.children[var9 - 1] == null) {
+               throw new RuntimeException("" + (var9 - 1));
             } else {
-               Widget var12 = new Widget();
-               var12.type = var4;
-               var12.parentId = var12.id = var6.id;
-               var12.index = var5;
-               var12.hasScript = true;
-               var6.children[var5] = var12;
+               Widget var10 = new Widget();
+               var10.type = var3;
+               var10.parentId = var10.id = var5.id;
+               var10.index = var9;
+               var10.hasScript = true;
+               var5.children[var9] = var10;
                if(var2) {
-                  class154.field2123 = var12;
+                  class154.field2123 = var10;
                } else {
-                  class32.field746 = var12;
+                  class32.field746 = var10;
                }
 
-               class22.method197(var6);
+               class22.method197(var5);
                return 1;
             }
          }
       } else {
-         Widget var3;
+         Widget var6;
          if(var0 == 101) {
-            var3 = var2?class154.field2123:class32.field746;
-            Widget var11 = FaceNormal.method1932(var3.id);
-            var11.children[var3.index] = null;
-            class22.method197(var11);
+            var6 = var2?class154.field2123:class32.field746;
+            var5 = FaceNormal.method1932(var6.id);
+            var5.children[var6.index] = null;
+            class22.method197(var5);
             return 1;
          } else if(var0 == 102) {
-            var3 = FaceNormal.method1932(class32.field743[--class30.field713]);
-            var3.children = null;
-            class22.method197(var3);
+            var6 = FaceNormal.method1932(class32.field743[--class30.field713]);
+            var6.children = null;
+            class22.method197(var6);
             return 1;
          } else if(var0 != 200) {
             if(var0 == 201) {
-               var3 = FaceNormal.method1932(class32.field743[--class30.field713]);
-               if(var3 != null) {
+               var6 = FaceNormal.method1932(class32.field743[--class30.field713]);
+               if(var6 != null) {
                   class32.field743[++class30.field713 - 1] = 1;
                   if(var2) {
-                     class154.field2123 = var3;
+                     class154.field2123 = var6;
                   } else {
-                     class32.field746 = var3;
+                     class32.field746 = var6;
                   }
                } else {
                   class32.field743[++class30.field713 - 1] = 0;
@@ -156,15 +157,15 @@ public final class CipherBuffer extends Buffer {
             }
          } else {
             class30.field713 -= 2;
-            var9 = class32.field743[class30.field713];
-            var4 = class32.field743[1 + class30.field713];
-            Widget var10 = class118.method2354(var9, var4);
-            if(var10 != null && var4 != -1) {
+            var4 = class32.field743[class30.field713];
+            var3 = class32.field743[class30.field713 + 1];
+            var5 = class118.method2354(var4, var3);
+            if(var5 != null && var3 != -1) {
                class32.field743[++class30.field713 - 1] = 1;
                if(var2) {
-                  class154.field2123 = var10;
+                  class154.field2123 = var5;
                } else {
-                  class32.field746 = var10;
+                  class32.field746 = var5;
                }
             } else {
                class32.field743[++class30.field713 - 1] = 0;

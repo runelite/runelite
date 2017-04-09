@@ -28,7 +28,7 @@ public class class150 {
       }
 
       try {
-         if(null != var0) {
+         if(var0 != null) {
             var0.method1448();
          }
       } catch (Exception var2) {
@@ -44,6 +44,6 @@ public class class150 {
    )
    static int method2841(int var0, int var1) {
       XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.method2417((long)var0);
-      return null == var2?-1:(var1 >= 0 && var1 < var2.itemIds.length?var2.itemIds[var1]:-1);
+      return var2 == null?-1:(var1 >= 0 && var1 < var2.itemIds.length?var2.itemIds[var1]:-1);
    }
 }

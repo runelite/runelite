@@ -46,6 +46,8 @@ public class class20 implements Runnable {
    public void run() {
       for(; this.field228; class115.method2300(50L)) {
          Object var1 = this.field227;
+         Object var2 = this.field227;
+         Object var3 = this.field227;
          synchronized(this.field227) {
             if(this.field234 < 500) {
                this.field229[this.field234] = class115.field1817;
@@ -67,9 +69,9 @@ public class class20 implements Runnable {
          int var2 = World.method635();
          String var3;
          if(Client.field455 == 1 && Client.menuOptionCount < 2) {
-            var3 = "Use" + " " + Client.field457 + " " + "->";
+            var3 = "Use " + Client.field457 + " ->";
          } else if(Client.field458 && Client.menuOptionCount < 2) {
-            var3 = Client.field326 + " " + Client.field527 + " " + "->";
+            var3 = Client.field326 + " " + Client.field527 + " ->";
          } else {
             String var4;
             if(var2 < 0) {
@@ -87,8 +89,9 @@ public class class20 implements Runnable {
             var3 = var3 + XItemContainer.method153(16777215) + " " + '/' + " " + (Client.menuOptionCount - 2) + " more options";
          }
 
-         class63.field1119.method3909(var3, var0 + 4, 15 + var1, 16777215, 0, Client.gameCycle / 1000);
+         class63.field1119.method3909(var3, var0 + 4, var1 + 15, 16777215, 0, Client.gameCycle / 1000);
       }
+
    }
 
    @ObfuscatedName("i")
@@ -122,40 +125,38 @@ public class class20 implements Runnable {
       garbageValue = "778713301"
    )
    static final void method187(Widget var0, int var1, int var2) {
-      if(null == Client.field476 && !Client.isMenuOpen) {
-         if(null != var0) {
-            Widget var4 = DecorativeObject.method1956(var0);
-            if(null == var4) {
-               var4 = var0.parent;
-            }
-
-            if(null != var4) {
-               Client.field476 = var0;
-               var4 = DecorativeObject.method1956(var0);
-               if(null == var4) {
-                  var4 = var0.parent;
-               }
-
-               Client.field477 = var4;
-               Client.field478 = var1;
-               Client.field479 = var2;
-               class44.field912 = 0;
-               Client.field487 = false;
-               int var5 = World.method635();
-               if(var5 != -1) {
-                  GameObject.field1645 = new class38();
-                  GameObject.field1645.field820 = Client.menuActionParams0[var5];
-                  GameObject.field1645.field816 = Client.menuActionParams1[var5];
-                  GameObject.field1645.field817 = Client.menuTypes[var5];
-                  GameObject.field1645.field818 = Client.menuIdentifiers[var5];
-                  GameObject.field1645.field819 = Client.menuOptions[var5];
-               }
-
-               return;
-            }
+      if(Client.field476 == null && !Client.isMenuOpen && var0 != null) {
+         Widget var3 = DecorativeObject.method1956(var0);
+         if(var3 == null) {
+            var3 = var0.parent;
          }
 
+         if(var3 != null) {
+            Client.field476 = var0;
+            var3 = DecorativeObject.method1956(var0);
+            if(var3 == null) {
+               var3 = var0.parent;
+            }
+
+            Client.field477 = var3;
+            Client.field478 = var1;
+            Client.field479 = var2;
+            class44.field912 = 0;
+            Client.field487 = false;
+            int var4 = World.method635();
+            if(var4 != -1) {
+               GameObject.field1645 = new class38();
+               GameObject.field1645.field820 = Client.menuActionParams0[var4];
+               GameObject.field1645.field816 = Client.menuActionParams1[var4];
+               GameObject.field1645.field817 = Client.menuTypes[var4];
+               GameObject.field1645.field818 = Client.menuIdentifiers[var4];
+               GameObject.field1645.field819 = Client.menuOptions[var4];
+            }
+
+            return;
+         }
       }
+
    }
 
    @ObfuscatedName("i")
@@ -165,12 +166,12 @@ public class class20 implements Runnable {
    )
    public static class189 method188(int var0) {
       class189 var1 = (class189)class189.field2799.get((long)var0);
-      if(null != var1) {
+      if(var1 != null) {
          return var1;
       } else {
          byte[] var2 = class189.field2801.getConfigData(15, var0);
          var1 = new class189();
-         if(null != var2) {
+         if(var2 != null) {
             var1.method3503(new Buffer(var2));
          }
 

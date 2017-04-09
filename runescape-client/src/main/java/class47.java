@@ -55,22 +55,20 @@ public class class47 {
       int var4 = var0.pathX[0];
       int var5 = var0.pathY[0];
       int var6 = var0.method207();
-      if(var4 >= var6 && var4 < 104 - var6 && var5 >= var6 && var5 < 104 - var6) {
-         if(var1 >= var6 && var1 < 104 - var6 && var2 >= var6 && var2 < 104 - var6) {
-            int var9 = var0.method207();
-            Client.field582.field1874 = var1;
-            Client.field582.field1882 = var2;
-            Client.field582.field1876 = 1;
-            Client.field582.field1875 = 1;
-            class22 var10 = Client.field582;
-            int var11 = class109.method2098(var4, var5, var9, var10, Client.collisionMaps[var0.field276], true, Client.field583, Client.field584);
-            if(var11 >= 1) {
-               for(int var12 = 0; var12 < var11 - 1; ++var12) {
-                  var0.method211(Client.field583[var12], Client.field584[var12], var3);
-               }
-
+      if(var4 >= var6 && var4 < 104 - var6 && var5 >= var6 && var5 < 104 - var6 && var1 >= var6 && var1 < 104 - var6 && var2 >= var6 && var2 < 104 - var6) {
+         int var7 = var0.method207();
+         Client.field582.field1874 = var1;
+         Client.field582.field1882 = var2;
+         Client.field582.field1876 = 1;
+         Client.field582.field1875 = 1;
+         class22 var8 = Client.field582;
+         int var9 = class109.method2098(var4, var5, var7, var8, Client.collisionMaps[var0.field276], true, Client.field583, Client.field584);
+         if(var9 >= 1) {
+            for(int var10 = 0; var10 < var9 - 1; ++var10) {
+               var0.method211(Client.field583[var10], Client.field584[var10], var3);
             }
          }
       }
+
    }
 }

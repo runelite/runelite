@@ -6,7 +6,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ae")
 final class class44 implements Comparator {
-   // $FF: synthetic field
    final boolean val$preferOwnWorld;
    @ObfuscatedName("kh")
    @ObfuscatedGetter(

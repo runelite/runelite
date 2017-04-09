@@ -243,38 +243,38 @@ public final class Projectile extends Renderable {
    static final void method826(Widget[] var0, int var1) {
       for(int var2 = 0; var2 < var0.length; ++var2) {
          Widget var3 = var0[var2];
-         if(null != var3) {
+         if(var3 != null) {
             if(var3.type == 0) {
                if(var3.children != null) {
                   method826(var3.children, var1);
                }
 
                WidgetNode var4 = (WidgetNode)Client.componentTable.method2417((long)var3.id);
-               if(null != var4) {
+               if(var4 != null) {
                   class33.method718(var4.id, var1);
                }
             }
 
-            class18 var5;
-            if(var1 == 0 && null != var3.field2326) {
-               var5 = new class18();
-               var5.field207 = var3;
-               var5.field199 = var3.field2326;
-               class26.method565(var5);
+            class18 var6;
+            if(var1 == 0 && var3.field2326 != null) {
+               var6 = new class18();
+               var6.field207 = var3;
+               var6.field199 = var3.field2326;
+               class26.method565(var6);
             }
 
-            if(var1 == 1 && null != var3.field2234) {
+            if(var1 == 1 && var3.field2234 != null) {
                if(var3.index >= 0) {
-                  Widget var6 = FaceNormal.method1932(var3.id);
-                  if(var6 == null || var6.children == null || var3.index >= var6.children.length || var6.children[var3.index] != var3) {
+                  Widget var5 = FaceNormal.method1932(var3.id);
+                  if(var5 == null || var5.children == null || var3.index >= var5.children.length || var5.children[var3.index] != var3) {
                      continue;
                   }
                }
 
-               var5 = new class18();
-               var5.field207 = var3;
-               var5.field199 = var3.field2234;
-               class26.method565(var5);
+               var6 = new class18();
+               var6.field207 = var3;
+               var6.field199 = var3.field2234;
+               class26.method565(var6);
             }
          }
       }

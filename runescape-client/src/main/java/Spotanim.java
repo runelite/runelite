@@ -86,7 +86,7 @@ public class Spotanim extends CacheableNode {
    )
    public final Model method3517(int var1) {
       Model var2 = (Model)field2818.get((long)this.field2806);
-      if(null == var2) {
+      if(var2 == null) {
          ModelData var3 = ModelData.method1495(field2803, this.field2807, 0);
          if(var3 == null) {
             return null;
@@ -99,13 +99,13 @@ public class Spotanim extends CacheableNode {
             }
          }
 
-         if(null != this.field2819) {
+         if(this.field2819 != null) {
             for(var4 = 0; var4 < this.field2819.length; ++var4) {
                var3.method1510(this.field2819[var4], this.field2812[var4]);
             }
          }
 
-         var2 = var3.method1524(64 + this.field2816, this.field2811 + 850, -30, -50, -30);
+         var2 = var3.method1524(this.field2816 + 64, this.field2811 + 850, -30, -50, -30);
          field2818.put(var2, (long)this.field2806);
       }
 

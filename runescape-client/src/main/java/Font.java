@@ -51,6 +51,7 @@ public final class Font extends FontTypeFace {
       if(var4 > 0 && var5 > 0) {
          FontTypeFace.method3920(Rasterizer2D.graphicsPixels, var1, var6, var11, var8, var4, var5, var9, var10, var7);
       }
+
    }
 
    @ObfuscatedName("f")
@@ -92,5 +93,6 @@ public final class Font extends FontTypeFace {
       if(var4 > 0 && var5 > 0) {
          FontTypeFace.method3927(Rasterizer2D.graphicsPixels, var1, var6, var10, var7, var4, var5, var8, var9);
       }
+
    }
 }

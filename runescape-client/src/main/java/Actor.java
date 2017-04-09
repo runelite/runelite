@@ -305,25 +305,25 @@ public abstract class Actor extends Renderable {
       garbageValue = "-1412061942"
    )
    final void method569(int var1) {
-      CombatInfo2 var3 = (CombatInfo2)CombatInfo2.field2841.get((long)var1);
-      CombatInfo2 var2;
-      if(var3 != null) {
-         var2 = var3;
+      CombatInfo2 var2 = (CombatInfo2)CombatInfo2.field2841.get((long)var1);
+      CombatInfo2 var3;
+      if(var2 != null) {
+         var3 = var2;
       } else {
          byte[] var4 = CombatInfo2.field2852.getConfigData(33, var1);
-         var3 = new CombatInfo2();
+         var2 = new CombatInfo2();
          if(var4 != null) {
-            var3.method3572(new Buffer(var4));
+            var2.method3572(new Buffer(var4));
          }
 
-         CombatInfo2.field2841.put(var3, (long)var1);
-         var2 = var3;
+         CombatInfo2.field2841.put(var2, (long)var1);
+         var3 = var2;
       }
 
-      var3 = var2;
+      var2 = var3;
 
-      for(CombatInfoListHolder var5 = (CombatInfoListHolder)this.combatInfoList.method2442(); null != var5; var5 = (CombatInfoListHolder)this.combatInfoList.method2433()) {
-         if(var3 == var5.combatInfo2) {
+      for(CombatInfoListHolder var5 = (CombatInfoListHolder)this.combatInfoList.method2442(); var5 != null; var5 = (CombatInfoListHolder)this.combatInfoList.method2433()) {
+         if(var2 == var5.combatInfo2) {
             var5.unlink();
             return;
          }
@@ -337,36 +337,36 @@ public abstract class Actor extends Renderable {
       garbageValue = "17"
    )
    final void method570(int var1, int var2, int var3, int var4, int var5, int var6) {
-      CombatInfo2 var8 = (CombatInfo2)CombatInfo2.field2841.get((long)var1);
-      CombatInfo2 var7;
-      if(var8 != null) {
-         var7 = var8;
+      CombatInfo2 var7 = (CombatInfo2)CombatInfo2.field2841.get((long)var1);
+      CombatInfo2 var8;
+      if(var7 != null) {
+         var8 = var7;
       } else {
          byte[] var9 = CombatInfo2.field2852.getConfigData(33, var1);
-         var8 = new CombatInfo2();
+         var7 = new CombatInfo2();
          if(var9 != null) {
-            var8.method3572(new Buffer(var9));
+            var7.method3572(new Buffer(var9));
          }
 
-         CombatInfo2.field2841.put(var8, (long)var1);
-         var7 = var8;
+         CombatInfo2.field2841.put(var7, (long)var1);
+         var8 = var7;
       }
 
-      var8 = var7;
+      var7 = var8;
       CombatInfoListHolder var14 = null;
       CombatInfoListHolder var10 = null;
-      int var11 = var7.field2849;
+      int var11 = var8.field2849;
       int var12 = 0;
 
       CombatInfoListHolder var13;
       for(var13 = (CombatInfoListHolder)this.combatInfoList.method2442(); var13 != null; var13 = (CombatInfoListHolder)this.combatInfoList.method2433()) {
          ++var12;
-         if(var8.field2845 == var13.combatInfo2.field2845) {
+         if(var7.field2845 == var13.combatInfo2.field2845) {
             var13.method720(var2 + var4, var5, var6, var3);
             return;
          }
 
-         if(var13.combatInfo2.field2839 <= var8.field2839) {
+         if(var13.combatInfo2.field2839 <= var7.field2839) {
             var14 = var13;
          }
 
@@ -377,8 +377,8 @@ public abstract class Actor extends Renderable {
       }
 
       if(var10 != null || var12 < 4) {
-         var13 = new CombatInfoListHolder(var8);
-         if(null == var14) {
+         var13 = new CombatInfoListHolder(var7);
+         if(var14 == null) {
             this.combatInfoList.method2443(var13);
          } else {
             CombatInfoList.method2432(var13, var14);
@@ -388,8 +388,8 @@ public abstract class Actor extends Renderable {
          if(var12 >= 4) {
             var10.unlink();
          }
-
       }
+
    }
 
    @ObfuscatedName("df")
@@ -398,31 +398,32 @@ public abstract class Actor extends Renderable {
       garbageValue = "-20"
    )
    static void method571(Buffer var0) {
-      if(null != Client.field529) {
+      if(Client.field529 != null) {
          var0.putBytes(Client.field529, 0, Client.field529.length);
       } else {
-         byte[] var2 = new byte[24];
+         byte[] var1 = new byte[24];
 
          try {
             class104.field1712.method1437(0L);
-            class104.field1712.method1415(var2);
+            class104.field1712.method1415(var1);
 
-            int var3;
-            for(var3 = 0; var3 < 24 && var2[var3] == 0; ++var3) {
+            int var2;
+            for(var2 = 0; var2 < 24 && var1[var2] == 0; ++var2) {
                ;
             }
 
-            if(var3 >= 24) {
+            if(var2 >= 24) {
                throw new IOException();
             }
-         } catch (Exception var6) {
-            for(int var4 = 0; var4 < 24; ++var4) {
-               var2[var4] = -1;
+         } catch (Exception var4) {
+            for(int var3 = 0; var3 < 24; ++var3) {
+               var1[var3] = -1;
             }
          }
 
-         var0.putBytes(var2, 0, var2.length);
+         var0.putBytes(var1, 0, var1.length);
       }
+
    }
 
    @ObfuscatedName("i")
@@ -446,174 +447,174 @@ public abstract class Actor extends Renderable {
       garbageValue = "623170996"
    )
    static int method573(int var0, Script var1, boolean var2) {
-      int var4 = -1;
-      Widget var3;
+      int var3 = -1;
+      Widget var4;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var4 = class32.field743[--class30.field713];
-         var3 = FaceNormal.method1932(var4);
+         var3 = class32.field743[--class30.field713];
+         var4 = FaceNormal.method1932(var3);
       } else {
-         var3 = var2?class154.field2123:class32.field746;
+         var4 = var2?class154.field2123:class32.field746;
       }
 
       if(var0 == 1100) {
          class30.field713 -= 2;
-         var3.scrollX = class32.field743[class30.field713];
-         if(var3.scrollX > var3.scrollWidth - var3.width) {
-            var3.scrollX = var3.scrollWidth - var3.width;
+         var4.scrollX = class32.field743[class30.field713];
+         if(var4.scrollX > var4.scrollWidth - var4.width) {
+            var4.scrollX = var4.scrollWidth - var4.width;
          }
 
-         if(var3.scrollX < 0) {
-            var3.scrollX = 0;
+         if(var4.scrollX < 0) {
+            var4.scrollX = 0;
          }
 
-         var3.scrollY = class32.field743[class30.field713 + 1];
-         if(var3.scrollY > var3.scrollHeight - var3.height) {
-            var3.scrollY = var3.scrollHeight - var3.height;
+         var4.scrollY = class32.field743[class30.field713 + 1];
+         if(var4.scrollY > var4.scrollHeight - var4.height) {
+            var4.scrollY = var4.scrollHeight - var4.height;
          }
 
-         if(var3.scrollY < 0) {
-            var3.scrollY = 0;
+         if(var4.scrollY < 0) {
+            var4.scrollY = 0;
          }
 
-         class22.method197(var3);
+         class22.method197(var4);
          return 1;
       } else if(var0 == 1101) {
-         var3.textColor = class32.field743[--class30.field713];
-         class22.method197(var3);
+         var4.textColor = class32.field743[--class30.field713];
+         class22.method197(var4);
          return 1;
       } else if(var0 == 1102) {
-         var3.field2267 = class32.field743[--class30.field713] == 1;
-         class22.method197(var3);
+         var4.field2267 = class32.field743[--class30.field713] == 1;
+         class22.method197(var4);
          return 1;
       } else if(var0 == 1103) {
-         var3.opacity = class32.field743[--class30.field713];
-         class22.method197(var3);
+         var4.opacity = class32.field743[--class30.field713];
+         class22.method197(var4);
          return 1;
       } else if(var0 == 1104) {
-         var3.field2218 = class32.field743[--class30.field713];
-         class22.method197(var3);
+         var4.field2218 = class32.field743[--class30.field713];
+         class22.method197(var4);
          return 1;
       } else if(var0 == 1105) {
-         var3.textureId = class32.field743[--class30.field713];
-         class22.method197(var3);
+         var4.textureId = class32.field743[--class30.field713];
+         class22.method197(var4);
          return 1;
       } else if(var0 == 1106) {
-         var3.field2294 = class32.field743[--class30.field713];
-         class22.method197(var3);
+         var4.field2294 = class32.field743[--class30.field713];
+         class22.method197(var4);
          return 1;
       } else if(var0 == 1107) {
-         var3.field2257 = class32.field743[--class30.field713] == 1;
-         class22.method197(var3);
+         var4.field2257 = class32.field743[--class30.field713] == 1;
+         class22.method197(var4);
          return 1;
       } else if(var0 == 1108) {
-         var3.modelType = 1;
-         var3.modelId = class32.field743[--class30.field713];
-         class22.method197(var3);
+         var4.modelType = 1;
+         var4.modelId = class32.field743[--class30.field713];
+         class22.method197(var4);
          return 1;
       } else if(var0 == 1109) {
          class30.field713 -= 6;
-         var3.field2268 = class32.field743[class30.field713];
-         var3.field2269 = class32.field743[class30.field713 + 1];
-         var3.rotationX = class32.field743[class30.field713 + 2];
-         var3.rotationZ = class32.field743[3 + class30.field713];
-         var3.rotationY = class32.field743[class30.field713 + 4];
-         var3.field2320 = class32.field743[class30.field713 + 5];
-         class22.method197(var3);
+         var4.field2268 = class32.field743[class30.field713];
+         var4.field2269 = class32.field743[class30.field713 + 1];
+         var4.rotationX = class32.field743[class30.field713 + 2];
+         var4.rotationZ = class32.field743[class30.field713 + 3];
+         var4.rotationY = class32.field743[class30.field713 + 4];
+         var4.field2320 = class32.field743[class30.field713 + 5];
+         class22.method197(var4);
          return 1;
       } else {
          int var5;
          if(var0 == 1110) {
             var5 = class32.field743[--class30.field713];
-            if(var5 != var3.field2266) {
-               var3.field2266 = var5;
-               var3.field2344 = 0;
-               var3.field2342 = 0;
-               class22.method197(var3);
+            if(var5 != var4.field2266) {
+               var4.field2266 = var5;
+               var4.field2344 = 0;
+               var4.field2342 = 0;
+               class22.method197(var4);
             }
 
             return 1;
          } else if(var0 == 1111) {
-            var3.field2296 = class32.field743[--class30.field713] == 1;
-            class22.method197(var3);
+            var4.field2296 = class32.field743[--class30.field713] == 1;
+            class22.method197(var4);
             return 1;
          } else if(var0 == 1112) {
-            String var8 = class32.scriptStringStack[--class32.scriptStringStackSize];
-            if(!var8.equals(var3.text)) {
-               var3.text = var8;
-               class22.method197(var3);
+            String var9 = class32.scriptStringStack[--class32.scriptStringStackSize];
+            if(!var9.equals(var4.text)) {
+               var4.text = var9;
+               class22.method197(var4);
             }
 
             return 1;
          } else if(var0 == 1113) {
-            var3.fontId = class32.field743[--class30.field713];
-            class22.method197(var3);
+            var4.fontId = class32.field743[--class30.field713];
+            class22.method197(var4);
             return 1;
          } else if(var0 == 1114) {
             class30.field713 -= 3;
-            var3.field2219 = class32.field743[class30.field713];
-            var3.field2283 = class32.field743[1 + class30.field713];
-            var3.field2212 = class32.field743[2 + class30.field713];
-            class22.method197(var3);
+            var4.field2219 = class32.field743[class30.field713];
+            var4.field2283 = class32.field743[class30.field713 + 1];
+            var4.field2212 = class32.field743[class30.field713 + 2];
+            class22.method197(var4);
             return 1;
          } else if(var0 == 1115) {
-            var3.field2298 = class32.field743[--class30.field713] == 1;
-            class22.method197(var3);
+            var4.field2298 = class32.field743[--class30.field713] == 1;
+            class22.method197(var4);
             return 1;
          } else if(var0 == 1116) {
-            var3.borderThickness = class32.field743[--class30.field713];
-            class22.method197(var3);
+            var4.borderThickness = class32.field743[--class30.field713];
+            class22.method197(var4);
             return 1;
          } else if(var0 == 1117) {
-            var3.sprite2 = class32.field743[--class30.field713];
-            class22.method197(var3);
+            var4.sprite2 = class32.field743[--class30.field713];
+            class22.method197(var4);
             return 1;
          } else if(var0 == 1118) {
-            var3.flippedVertically = class32.field743[--class30.field713] == 1;
-            class22.method197(var3);
+            var4.flippedVertically = class32.field743[--class30.field713] == 1;
+            class22.method197(var4);
             return 1;
          } else if(var0 == 1119) {
-            var3.flippedHorizontally = class32.field743[--class30.field713] == 1;
-            class22.method197(var3);
+            var4.flippedHorizontally = class32.field743[--class30.field713] == 1;
+            class22.method197(var4);
             return 1;
          } else if(var0 == 1120) {
             class30.field713 -= 2;
-            var3.scrollWidth = class32.field743[class30.field713];
-            var3.scrollHeight = class32.field743[1 + class30.field713];
-            class22.method197(var3);
-            if(var4 != -1 && var3.type == 0) {
-               class2.method16(Widget.widgets[var4 >> 16], var3, false);
+            var4.scrollWidth = class32.field743[class30.field713];
+            var4.scrollHeight = class32.field743[class30.field713 + 1];
+            class22.method197(var4);
+            if(var3 != -1 && var4.type == 0) {
+               class2.method16(Widget.widgets[var3 >> 16], var4, false);
             }
 
             return 1;
          } else if(var0 == 1121) {
-            var5 = var3.id;
-            int var6 = var3.index;
+            var5 = var4.id;
+            int var8 = var4.index;
             Client.secretCipherBuffer1.putOpcode(153);
-            Client.secretCipherBuffer1.method2900(var6);
+            Client.secretCipherBuffer1.method2900(var8);
             Client.secretCipherBuffer1.method2908(var5);
-            Client.field467 = var3;
-            class22.method197(var3);
+            Client.field467 = var4;
+            class22.method197(var4);
             return 1;
          } else if(var0 == 1122) {
-            var3.field2332 = class32.field743[--class30.field713];
-            class22.method197(var3);
+            var4.field2332 = class32.field743[--class30.field713];
+            class22.method197(var4);
             return 1;
          } else if(var0 == 1123) {
-            var3.field2245 = class32.field743[--class30.field713];
-            class22.method197(var3);
+            var4.field2245 = class32.field743[--class30.field713];
+            class22.method197(var4);
             return 1;
          } else if(var0 == 1124) {
-            var3.field2251 = class32.field743[--class30.field713];
-            class22.method197(var3);
+            var4.field2251 = class32.field743[--class30.field713];
+            class22.method197(var4);
             return 1;
          } else if(var0 == 1125) {
             var5 = class32.field743[--class30.field713];
-            class221[] var9 = new class221[]{class221.field3200, class221.field3201, class221.field3203, class221.field3202, class221.field3206};
-            class221 var7 = (class221)Client.method556(var9, var5);
+            class221[] var6 = new class221[]{class221.field3200, class221.field3201, class221.field3203, class221.field3202, class221.field3206};
+            class221 var7 = (class221)Client.method556(var6, var5);
             if(var7 != null) {
-               var3.field2249 = var7;
-               class22.method197(var3);
+               var4.field2249 = var7;
+               class22.method197(var4);
             }
 
             return 1;
@@ -701,6 +702,7 @@ public abstract class Actor extends Renderable {
          this.field642[var9] = var4;
          this.field644[var9] = var11 + var5 + var6;
       }
+
    }
 
    @ObfuscatedName("m")
@@ -709,7 +711,7 @@ public abstract class Actor extends Renderable {
       garbageValue = "654781456"
    )
    public static void method587() {
-      if(null != class185.field2770) {
+      if(class185.field2770 != null) {
          class185.field2770.method2113();
       }
 

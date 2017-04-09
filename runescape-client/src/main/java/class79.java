@@ -182,7 +182,7 @@ public class class79 extends Node {
          int var5;
          int var6;
          int var7;
-         int[] var10;
+         int[] var8;
          if(this.field1324 == 1 || this.field1324 == 3) {
             if(field1337 == null || field1337.length < this.field1335.length) {
                field1337 = new int[this.field1335.length];
@@ -206,9 +206,9 @@ public class class79 extends Node {
                field1337[var6] = this.field1335[var7];
             }
 
-            var10 = this.field1335;
+            var8 = this.field1335;
             this.field1335 = field1337;
-            field1337 = var10;
+            field1337 = var8;
          }
 
          if(this.field1324 == 2 || this.field1324 == 4) {
@@ -231,17 +231,17 @@ public class class79 extends Node {
 
             for(var6 = 0; var6 < var3; var6 += var2) {
                for(var7 = 0; var7 < var2; ++var7) {
-                  int var8 = var6 + var7;
-                  int var9 = var6 + (var7 + var4 & var5);
-                  field1337[var8] = this.field1335[var9];
+                  int var9 = var6 + var7;
+                  int var10 = var6 + (var7 + var4 & var5);
+                  field1337[var9] = this.field1335[var10];
                }
             }
 
-            var10 = this.field1335;
+            var8 = this.field1335;
             this.field1335 = field1337;
-            field1337 = var10;
+            field1337 = var8;
          }
-
       }
+
    }
 }

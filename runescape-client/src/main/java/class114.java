@@ -21,22 +21,20 @@ public class class114 {
       garbageValue = "-44"
    )
    static void method2257(int var0) {
-      if(var0 != -1) {
-         if(Ignore.method178(var0)) {
-            Widget[] var1 = Widget.widgets[var0];
+      if(var0 != -1 && Ignore.method178(var0)) {
+         Widget[] var1 = Widget.widgets[var0];
 
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               Widget var3 = var1[var2];
-               if(var3.field2225 != null) {
-                  class18 var4 = new class18();
-                  var4.field207 = var3;
-                  var4.field199 = var3.field2225;
-                  CombatInfoListHolder.method719(var4, 2000000);
-               }
+         for(int var2 = 0; var2 < var1.length; ++var2) {
+            Widget var3 = var1[var2];
+            if(var3.field2225 != null) {
+               class18 var4 = new class18();
+               var4.field207 = var3;
+               var4.field199 = var3.field2225;
+               CombatInfoListHolder.method719(var4, 2000000);
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("f")
@@ -46,12 +44,12 @@ public class class114 {
    )
    public static class196 method2258(int var0) {
       class196 var1 = (class196)class196.field2875.get((long)var0);
-      if(null != var1) {
+      if(var1 != null) {
          return var1;
       } else {
          byte[] var2 = class196.field2885.getConfigData(32, var0);
          var1 = new class196();
-         if(null != var2) {
+         if(var2 != null) {
             var1.method3618(new Buffer(var2));
          }
 

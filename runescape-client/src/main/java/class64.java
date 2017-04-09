@@ -58,21 +58,21 @@ public class class64 {
                      if(this.field1127 == 0) {
                         var15 = this.field1123 / var14.field1003;
 
-                        for(int var16 = 0; var16 < var15; ++var16) {
-                           float[] var19 = var14.method997();
+                        for(int var19 = 0; var19 < var15; ++var19) {
+                           float[] var20 = var14.method997();
 
                            for(int var18 = 0; var18 < var14.field1003; ++var18) {
-                              var1[var13 + var16 + var18 * var15] += var19[var18];
+                              var1[var13 + var19 + var18 * var15] += var20[var18];
                            }
                         }
                      } else {
                         var15 = 0;
 
                         while(var15 < this.field1123) {
-                           float[] var20 = var14.method997();
+                           float[] var16 = var14.method997();
 
                            for(int var17 = 0; var17 < var14.field1003; ++var17) {
-                              var1[var13 + var15] += var20[var17];
+                              var1[var13 + var15] += var16[var17];
                               ++var15;
                            }
                         }
@@ -86,8 +86,8 @@ public class class64 {
                }
             }
          }
-
       }
+
    }
 
    class64() {

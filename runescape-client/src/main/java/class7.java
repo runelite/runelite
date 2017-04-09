@@ -17,22 +17,22 @@ final class class7 implements Comparator {
                ++var2;
             }
 
-            StringBuilder var5;
+            StringBuilder var4;
             char var8;
-            for(var5 = new StringBuilder(var2); var0 != 0L; var5.append(var8)) {
-               long var6 = var0;
+            for(var4 = new StringBuilder(var2); var0 != 0L; var4.append(var8)) {
+               long var5 = var0;
                var0 /= 37L;
-               var8 = class205.field3092[(int)(var6 - var0 * 37L)];
+               var8 = class205.field3092[(int)(var5 - var0 * 37L)];
                if(var8 == 95) {
-                  int var9 = var5.length() - 1;
-                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
+                  int var7 = var4.length() - 1;
+                  var4.setCharAt(var7, Character.toUpperCase(var4.charAt(var7)));
                   var8 = 160;
                }
             }
 
-            var5.reverse();
-            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
-            return var5.toString();
+            var4.reverse();
+            var4.setCharAt(0, Character.toUpperCase(var4.charAt(0)));
+            return var4.toString();
          }
       } else {
          return null;
@@ -69,10 +69,10 @@ final class class7 implements Comparator {
          var0 = class45.method868("", Client.field304.field2709, false);
          byte[] var2 = new byte[(int)var0.method1449()];
 
-         int var4;
-         for(int var3 = 0; var3 < var2.length; var3 += var4) {
-            var4 = var0.method1450(var2, var3, var2.length - var3);
-            if(var4 == -1) {
+         int var3;
+         for(int var4 = 0; var4 < var2.length; var4 += var3) {
+            var3 = var0.method1450(var2, var4, var2.length - var4);
+            if(var3 == -1) {
                throw new IOException();
             }
          }
@@ -113,8 +113,8 @@ final class class7 implements Comparator {
       garbageValue = "10"
    )
    static void method88() {
-      for(class31 var0 = (class31)class31.field732.method2464(); null != var0; var0 = (class31)class31.field732.method2472()) {
-         if(null != var0.field736) {
+      for(class31 var0 = (class31)class31.field732.method2464(); var0 != null; var0 = (class31)class31.field732.method2472()) {
+         if(var0.field736 != null) {
             Ignore.field224.method943(var0.field736);
             var0.field736 = null;
          }

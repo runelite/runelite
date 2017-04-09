@@ -38,6 +38,6 @@ public class WidgetNode extends Node {
       class225.field3232 = null;
       ChatLineBuffer.field994 = null;
       class225.field3234 = null;
-      BufferProvider.field3199 = null;
+      BufferProvider.field3199 = (byte[][])((byte[][])null);
    }
 }

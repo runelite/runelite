@@ -20,11 +20,12 @@ public class class181 extends CacheableNode {
       garbageValue = "1541867859"
    )
    static final void method3331(String var0) {
-      if(null != class156.clanMembers) {
+      if(class156.clanMembers != null) {
          Client.secretCipherBuffer1.putOpcode(23);
          Client.secretCipherBuffer1.putByte(class72.method1439(var0));
          Client.secretCipherBuffer1.method2931(var0);
       }
+
    }
 
    @ObfuscatedName("dt")

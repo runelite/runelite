@@ -14,13 +14,13 @@ public final class class176 {
 
          for(int var2 = 0; var2 < var1.length; ++var2) {
             Widget var3 = var1[var2];
-            if(null != var3) {
+            if(var3 != null) {
                var3.field2344 = 0;
                var3.field2342 = 0;
             }
          }
-
       }
+
    }
 
    class176() throws Throwable {

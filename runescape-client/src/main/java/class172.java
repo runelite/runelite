@@ -18,31 +18,22 @@ public class class172 {
    static void method3305(int var0, IndexFile var1, IndexData var2) {
       byte[] var3 = null;
       Deque var4 = class183.field2746;
+      Deque var5 = class183.field2746;
+      Deque var6 = class183.field2746;
       synchronized(class183.field2746) {
-         for(class180 var5 = (class180)class183.field2746.method2464(); null != var5; var5 = (class180)class183.field2746.method2472()) {
-            if((long)var0 == var5.hash && var5.field2716 == var1 && var5.field2719 == 0) {
-               var3 = var5.field2715;
+         for(class180 var7 = (class180)class183.field2746.method2464(); var7 != null; var7 = (class180)class183.field2746.method2472()) {
+            if((long)var0 == var7.hash && var7.field2716 == var1 && var7.field2719 == 0) {
+               var3 = var7.field2715;
                break;
             }
          }
       }
 
-      if(null != var3) {
+      if(var3 != null) {
          var2.method3426(var1, var0, var3, true);
       } else {
-         byte[] var8 = var1.method2310(var0);
-         var2.method3426(var1, var0, var8, true);
-      }
-   }
-
-   static {
-      int var0 = 0;
-
-      for(int var1 = 0; var1 < 99; ++var1) {
-         int var2 = 1 + var1;
-         int var3 = (int)((double)var2 + 300.0D * Math.pow(2.0D, (double)var2 / 7.0D));
-         var0 += var3;
-         field2369[var1] = var0 / 4;
+         byte[] var10 = var1.method2310(var0);
+         var2.method3426(var1, var0, var10, true);
       }
 
    }
@@ -86,5 +77,17 @@ public class class172 {
    )
    public static String method3307(int var0) {
       return (var0 >> 24 & 255) + "." + (var0 >> 16 & 255) + "." + (var0 >> 8 & 255) + "." + (var0 & 255);
+   }
+
+   static {
+      int var0 = 0;
+
+      for(int var1 = 0; var1 < 99; ++var1) {
+         int var2 = var1 + 1;
+         int var3 = (int)((double)var2 + 300.0D * Math.pow(2.0D, (double)var2 / 7.0D));
+         var0 += var3;
+         field2369[var1] = var0 / 4;
+      }
+
    }
 }

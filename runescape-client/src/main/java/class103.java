@@ -41,6 +41,7 @@ public class class103 implements Runnable {
       if(var4 != null) {
          class185.field2768.method2364(var4);
       }
+
    }
 
    @ObfuscatedName("r")
@@ -71,7 +72,7 @@ public class class103 implements Runnable {
                   return;
                }
 
-               if(null != this.field1693) {
+               if(this.field1693 != null) {
                   var1 = this.field1693;
                   this.field1693 = this.field1693.field1682;
                   if(this.field1693 == null) {
@@ -82,33 +83,33 @@ public class class103 implements Runnable {
 
                try {
                   this.wait();
-               } catch (InterruptedException var8) {
+               } catch (InterruptedException var7) {
                   ;
                }
             }
          }
 
          try {
-            int var5 = var1.field1687;
-            if(var5 == 1) {
+            int var2 = var1.field1687;
+            if(var2 == 1) {
                var1.field1690 = new Socket(InetAddress.getByName((String)var1.field1689), var1.field1688);
-            } else if(var5 == 2) {
+            } else if(var2 == 2) {
                Thread var3 = new Thread((Runnable)var1.field1689);
                var3.setDaemon(true);
                var3.start();
                var3.setPriority(var1.field1688);
                var1.field1690 = var3;
-            } else if(var5 == 4) {
+            } else if(var2 == 4) {
                var1.field1690 = new DataInputStream(((URL)var1.field1689).openStream());
-            } else if(var5 == 3) {
-               String var10 = (var1.field1688 >> 24 & 255) + "." + (var1.field1688 >> 16 & 255) + "." + (var1.field1688 >> 8 & 255) + "." + (var1.field1688 & 255);
-               var1.field1690 = InetAddress.getByName(var10).getHostName();
+            } else if(var2 == 3) {
+               String var9 = (var1.field1688 >> 24 & 255) + "." + (var1.field1688 >> 16 & 255) + "." + (var1.field1688 >> 8 & 255) + "." + (var1.field1688 & 255);
+               var1.field1690 = InetAddress.getByName(var9).getHostName();
             }
 
             var1.field1686 = 1;
-         } catch (ThreadDeath var6) {
-            throw var6;
-         } catch (Throwable var7) {
+         } catch (ThreadDeath var5) {
+            throw var5;
+         } catch (Throwable var6) {
             var1.field1686 = 2;
          }
       }
@@ -191,7 +192,7 @@ public class class103 implements Runnable {
          int var6 = var0 & 127;
          int var7 = var1 & 127;
          int var8 = var6 * class10.tileHeights[var5][var3 + 1][var4] + (128 - var6) * class10.tileHeights[var5][var3][var4] >> 7;
-         int var9 = class10.tileHeights[var5][var3][1 + var4] * (128 - var6) + var6 * class10.tileHeights[var5][var3 + 1][var4 + 1] >> 7;
+         int var9 = class10.tileHeights[var5][var3][var4 + 1] * (128 - var6) + var6 * class10.tileHeights[var5][var3 + 1][var4 + 1] >> 7;
          return (128 - var7) * var8 + var7 * var9 >> 7;
       } else {
          return 0;

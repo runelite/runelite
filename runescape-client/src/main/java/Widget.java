@@ -975,7 +975,7 @@ public class Widget extends Node {
                return var3;
             } else {
                var3 = class26.method564(field2317, var2, 0);
-               if(null != var3) {
+               if(var3 != null) {
                   field2260.put(var3, (long)var2);
                } else {
                   field2213 = true;
@@ -1022,7 +1022,7 @@ public class Widget extends Node {
       } else {
          long var3 = ((long)this.sprite2 << 40) + ((this.flippedHorizontally?1L:0L) << 39) + ((this.flippedVertically?1L:0L) << 38) + ((long)this.borderThickness << 36) + (long)var2;
          SpritePixels var5 = (SpritePixels)field2260.get(var3);
-         if(null != var5) {
+         if(var5 != null) {
             return var5;
          } else {
             var5 = class26.method564(field2317, var2, 0);
@@ -1072,11 +1072,11 @@ public class Widget extends Node {
          return null;
       } else {
          Font var1 = (Font)field2215.get((long)this.fontId);
-         if(null != var1) {
+         if(var1 != null) {
             return var1;
          } else {
             var1 = XItemContainer.method157(field2317, class20.field235, this.fontId, 0);
-            if(null != var1) {
+            if(var1 != null) {
                field2215.put(var1, (long)this.fontId);
             } else {
                field2213 = true;
@@ -1214,11 +1214,11 @@ public class Widget extends Node {
          return null;
       } else {
          Model var7 = (Model)field2214.get((long)(var6 + (var5 << 16)));
-         if(null == var7) {
+         if(var7 == null) {
             ModelData var8;
             if(var5 == 1) {
                var8 = ModelData.method1495(field2211, var6, 0);
-               if(null == var8) {
+               if(var8 == null) {
                   field2213 = true;
                   return null;
                }
@@ -1237,7 +1237,7 @@ public class Widget extends Node {
             }
 
             if(var5 == 3) {
-               if(null == var4) {
+               if(var4 == null) {
                   return null;
                }
 
@@ -1258,13 +1258,13 @@ public class Widget extends Node {
                   return null;
                }
 
-               var7 = var8.method1524(64 + var9.ambient, var9.contrast + 768, -50, -10, -50);
+               var7 = var8.method1524(var9.ambient + 64, var9.contrast + 768, -50, -10, -50);
             }
 
             field2214.put(var7, (long)(var6 + (var5 << 16)));
          }
 
-         if(null != var1) {
+         if(var1 != null) {
             var7 = var1.method3805(var7, var2);
          }
 
@@ -1318,7 +1318,7 @@ public class Widget extends Node {
             return var5;
          } else {
             SpritePixels var6 = this.method3256(var1);
-            if(null == var6) {
+            if(var6 == null) {
                return null;
             } else {
                SpritePixels var7 = var6.method4132();
@@ -1383,11 +1383,11 @@ public class Widget extends Node {
             Client.field407 = -1;
             Client.field408 = -1;
          }
-
       } else {
          Client.field407 = -1;
          Client.field408 = -1;
       }
+
    }
 
    @ObfuscatedName("az")
@@ -1396,98 +1396,98 @@ public class Widget extends Node {
       garbageValue = "-2070528285"
    )
    static final void method3299(Actor var0, int var1, int var2, int var3, int var4, int var5) {
-      if(null != var0 && var0.vmethod738()) {
+      if(var0 != null && var0.vmethod738()) {
          if(var0 instanceof NPC) {
             NPCComposition var6 = ((NPC)var0).composition;
-            if(null != var6.configs) {
+            if(var6.configs != null) {
                var6 = var6.method3741();
             }
 
-            if(null == var6) {
+            if(var6 == null) {
                return;
             }
          }
 
-         int var77 = class45.field923;
+         int var75 = class45.field923;
          int[] var7 = class45.field918;
          int var8 = 3;
-         int var14;
-         int var21;
-         int var22;
+         int var9;
+         int var10;
+         int var11;
+         int var12;
+         int var13;
          if(!var0.combatInfoList.method2429()) {
             XGrandExchangeOffer.method56(var0, var0.field676 + 15);
 
-            for(CombatInfoListHolder var75 = (CombatInfoListHolder)var0.combatInfoList.method2442(); null != var75; var75 = (CombatInfoListHolder)var0.combatInfoList.method2433()) {
-               CombatInfo1 var10 = var75.method726(Client.gameCycle);
-               if(null == var10) {
-                  if(var75.method722()) {
-                     var75.unlink();
+            for(CombatInfoListHolder var14 = (CombatInfoListHolder)var0.combatInfoList.method2442(); var14 != null; var14 = (CombatInfoListHolder)var0.combatInfoList.method2433()) {
+               CombatInfo1 var15 = var14.method726(Client.gameCycle);
+               if(var15 == null) {
+                  if(var14.method722()) {
+                     var14.unlink();
                   }
                } else {
-                  CombatInfo2 var11 = var75.combatInfo2;
-                  SpritePixels var12 = var11.method3574();
-                  SpritePixels var13 = var11.method3573();
-                  int var15 = 0;
-                  if(var12 != null && null != var13) {
-                     if(var11.field2853 * 2 < var13.width) {
-                        var15 = var11.field2853;
+                  CombatInfo2 var16 = var14.combatInfo2;
+                  SpritePixels var17 = var16.method3574();
+                  SpritePixels var18 = var16.method3573();
+                  int var19 = 0;
+                  if(var17 != null && var18 != null) {
+                     if(var16.field2853 * 2 < var18.width) {
+                        var19 = var16.field2853;
                      }
 
-                     var14 = var13.width - 2 * var15;
+                     var9 = var18.width - var19 * 2;
                   } else {
-                     var14 = var11.healthScale;
+                     var9 = var16.healthScale;
                   }
 
-                  int var16 = 255;
-                  boolean var17 = true;
-                  int var76 = Client.gameCycle - var10.field684;
-                  int var19 = var10.health * var14 / var11.healthScale;
-                  int var20;
-                  int var86;
-                  if(var10.field690 > var76) {
-                     var20 = var11.field2848 == 0?0:var11.field2848 * (var76 / var11.field2848);
-                     var21 = var14 * var10.healthRatio / var11.healthScale;
-                     var86 = var21 + (var19 - var21) * var20 / var10.field690;
+                  int var20 = 255;
+                  boolean var21 = true;
+                  int var22 = Client.gameCycle - var15.field684;
+                  int var23 = var15.health * var9 / var16.healthScale;
+                  if(var15.field690 > var22) {
+                     var12 = var16.field2848 == 0?0:var16.field2848 * (var22 / var16.field2848);
+                     var10 = var9 * var15.healthRatio / var16.healthScale;
+                     var13 = var10 + (var23 - var10) * var12 / var15.field690;
                   } else {
-                     var86 = var19;
-                     var20 = var10.field690 + var11.field2840 - var76;
-                     if(var11.field2847 >= 0) {
-                        var16 = (var20 << 8) / (var11.field2840 - var11.field2847);
+                     var13 = var23;
+                     var12 = var15.field690 + var16.field2840 - var22;
+                     if(var16.field2847 >= 0) {
+                        var20 = (var12 << 8) / (var16.field2840 - var16.field2847);
                      }
                   }
 
-                  if(var10.health > 0 && var86 < 1) {
-                     var86 = 1;
+                  if(var15.health > 0 && var13 < 1) {
+                     var13 = 1;
                   }
 
-                  var20 = var2 + Client.field407 - (var14 >> 1);
-                  var21 = var3 + Client.field408 - var8;
-                  if(null != var12 && var13 != null) {
-                     var20 -= var15;
-                     if(var14 == var86) {
-                        var86 += 2 * var15;
+                  var12 = var2 + Client.field407 - (var9 >> 1);
+                  var10 = var3 + Client.field408 - var8;
+                  if(var17 != null && var18 != null) {
+                     var12 -= var19;
+                     if(var9 == var13) {
+                        var13 += var19 * 2;
                      } else {
-                        var86 += var15;
+                        var13 += var19;
                      }
 
-                     var22 = var12.height;
-                     var8 += var22;
-                     if(var16 >= 0 && var16 < 255) {
-                        var12.method4149(var20, var21, var16);
-                        Rasterizer2D.method4002(var20, var21, var86 + var20, var22 + var21);
-                        var13.method4149(var20, var21, var16);
+                     var11 = var17.height;
+                     var8 += var11;
+                     if(var20 >= 0 && var20 < 255) {
+                        var17.method4149(var12, var10, var20);
+                        Rasterizer2D.method4002(var12, var10, var13 + var12, var11 + var10);
+                        var18.method4149(var12, var10, var20);
                      } else {
-                        var12.method4143(var20, var21);
-                        Rasterizer2D.method4002(var20, var21, var86 + var20, var22 + var21);
-                        var13.method4143(var20, var21);
+                        var17.method4143(var12, var10);
+                        Rasterizer2D.method4002(var12, var10, var13 + var12, var11 + var10);
+                        var18.method4143(var12, var10);
                      }
 
                      Rasterizer2D.method4001(var2, var3, var4 + var2, var5 + var3);
                      var8 += 2;
                   } else {
                      if(Client.field407 > -1) {
-                        Rasterizer2D.method4007(var20, var21, var86, 5, '\uff00');
-                        Rasterizer2D.method4007(var86 + var20, var21, var14 - var86, 5, 16711680);
+                        Rasterizer2D.method4007(var12, var10, var13, 5, '\uff00');
+                        Rasterizer2D.method4007(var13 + var12, var10, var9 - var13, 5, 16711680);
                      }
 
                      var8 += 7;
@@ -1500,55 +1500,55 @@ public class Widget extends Node {
             var8 = 30;
          }
 
-         if(var1 < var77) {
-            Player var88 = (Player)var0;
-            if(var88.field265) {
+         if(var1 < var75) {
+            Player var78 = (Player)var0;
+            if(var78.field265) {
                return;
             }
 
-            if(var88.skullIcon != -1 || var88.overheadIcon != -1) {
+            if(var78.skullIcon != -1 || var78.overheadIcon != -1) {
                XGrandExchangeOffer.method56(var0, var0.field676 + 15);
                if(Client.field407 > -1) {
-                  if(var88.skullIcon != -1) {
-                     class57.field1082[var88.skullIcon].method4143(var2 + Client.field407 - 12, var3 + Client.field408 - var8);
+                  if(var78.skullIcon != -1) {
+                     class57.field1082[var78.skullIcon].method4143(var2 + Client.field407 - 12, var3 + Client.field408 - var8);
                      var8 += 25;
                   }
 
-                  if(var88.overheadIcon != -1) {
-                     ScriptState.field108[var88.overheadIcon].method4143(Client.field407 + var2 - 12, Client.field408 + var3 - var8);
+                  if(var78.overheadIcon != -1) {
+                     ScriptState.field108[var78.overheadIcon].method4143(Client.field407 + var2 - 12, Client.field408 + var3 - var8);
                      var8 += 25;
                   }
                }
             }
 
             if(var1 >= 0 && Client.field320 == 10 && var7[var1] == Client.field322) {
-               XGrandExchangeOffer.method56(var0, 15 + var0.field676);
+               XGrandExchangeOffer.method56(var0, var0.field676 + 15);
                if(Client.field407 > -1) {
                   class15.field170[1].method4143(var2 + Client.field407 - 12, var3 + Client.field408 - var8);
                }
             }
          } else {
-            NPCComposition var89 = ((NPC)var0).composition;
-            if(null != var89.configs) {
-               var89 = var89.method3741();
+            NPCComposition var76 = ((NPC)var0).composition;
+            if(var76.configs != null) {
+               var76 = var76.method3741();
             }
 
-            if(var89.field3033 >= 0 && var89.field3033 < ScriptState.field108.length) {
-               XGrandExchangeOffer.method56(var0, 15 + var0.field676);
+            if(var76.field3033 >= 0 && var76.field3033 < ScriptState.field108.length) {
+               XGrandExchangeOffer.method56(var0, var0.field676 + 15);
                if(Client.field407 > -1) {
-                  ScriptState.field108[var89.field3033].method4143(Client.field407 + var2 - 12, var3 + Client.field408 - 30);
+                  ScriptState.field108[var76.field3033].method4143(Client.field407 + var2 - 12, var3 + Client.field408 - 30);
                }
             }
 
-            if(Client.field320 == 1 && Client.field342[var1 - var77] == Client.field341 && Client.gameCycle % 20 < 10) {
-               XGrandExchangeOffer.method56(var0, 15 + var0.field676);
+            if(Client.field320 == 1 && Client.field342[var1 - var75] == Client.field341 && Client.gameCycle % 20 < 10) {
+               XGrandExchangeOffer.method56(var0, var0.field676 + 15);
                if(Client.field407 > -1) {
                   class15.field170[0].method4143(Client.field407 + var2 - 12, var3 + Client.field408 - 28);
                }
             }
          }
 
-         if(null != var0.overhead && (var1 >= var77 || !var0.inSequence && (Client.field521 == 4 || !var0.field632 && (Client.field521 == 0 || Client.field521 == 3 || Client.field521 == 1 && class10.method137(((Player)var0).name, false))))) {
+         if(var0.overhead != null && (var1 >= var75 || !var0.inSequence && (Client.field521 == 4 || !var0.field632 && (Client.field521 == 0 || Client.field521 == 3 || Client.field521 == 1 && class10.method137(((Player)var0).name, false))))) {
             XGrandExchangeOffer.method56(var0, var0.field676);
             if(Client.field407 > -1 && Client.field395 < Client.field396) {
                Client.field444[Client.field395] = class63.field1119.method3897(var0.overhead) / 2;
@@ -1563,74 +1563,75 @@ public class Widget extends Node {
             }
          }
 
-         for(int var9 = 0; var9 < 4; ++var9) {
-            int var74 = var0.field644[var9];
-            int var82 = var0.field657[var9];
-            class196 var85 = null;
-            int var84 = 0;
-            if(var82 >= 0) {
-               if(var74 <= Client.gameCycle) {
+         for(int var79 = 0; var79 < 4; ++var79) {
+            int var77 = var0.field644[var79];
+            int var80 = var0.field657[var79];
+            class196 var81 = null;
+            int var82 = 0;
+            if(var80 >= 0) {
+               if(var77 <= Client.gameCycle) {
                   continue;
                }
 
-               var85 = class114.method2258(var0.field657[var9]);
-               var84 = var85.field2881;
-               if(var85 != null && null != var85.field2892) {
-                  var85 = var85.method3605();
-                  if(var85 == null) {
-                     var0.field644[var9] = -1;
+               var81 = class114.method2258(var0.field657[var79]);
+               var82 = var81.field2881;
+               if(var81 != null && var81.field2892 != null) {
+                  var81 = var81.method3605();
+                  if(var81 == null) {
+                     var0.field644[var79] = -1;
                      continue;
                   }
                }
-            } else if(var74 < 0) {
+            } else if(var77 < 0) {
                continue;
             }
 
-            var14 = var0.field641[var9];
-            class196 var78 = null;
-            if(var14 >= 0) {
-               var78 = class114.method2258(var14);
-               if(null != var78 && null != var78.field2892) {
-                  var78 = var78.method3605();
+            var9 = var0.field641[var79];
+            class196 var83 = null;
+            if(var9 >= 0) {
+               var83 = class114.method2258(var9);
+               if(var83 != null && var83.field2892 != null) {
+                  var83 = var83.method3605();
                }
             }
 
-            if(var74 - var84 <= Client.gameCycle) {
-               if(null == var85) {
-                  var0.field644[var9] = -1;
+            if(var77 - var82 <= Client.gameCycle) {
+               if(var81 == null) {
+                  var0.field644[var79] = -1;
                } else {
                   XGrandExchangeOffer.method56(var0, var0.field676 / 2);
                   if(Client.field407 > -1) {
-                     if(var9 == 1) {
+                     if(var79 == 1) {
                         Client.field408 -= 20;
                      }
 
-                     if(var9 == 2) {
+                     if(var79 == 2) {
                         Client.field407 -= 15;
                         Client.field408 -= 10;
                      }
 
-                     if(var9 == 3) {
+                     if(var79 == 3) {
                         Client.field407 += 15;
                         Client.field408 -= 10;
                      }
 
-                     SpritePixels var79 = null;
-                     SpritePixels var18 = null;
-                     SpritePixels var80 = null;
-                     SpritePixels var81 = null;
-                     var21 = 0;
-                     var22 = 0;
-                     int var23 = 0;
+                     SpritePixels var84 = null;
+                     SpritePixels var85 = null;
+                     SpritePixels var86 = null;
+                     SpritePixels var87 = null;
+                     var10 = 0;
+                     var11 = 0;
+                     var12 = 0;
+                     var13 = 0;
                      int var24 = 0;
                      int var25 = 0;
                      int var26 = 0;
                      int var27 = 0;
-                     int var28 = 0;
+                     SpritePixels var28 = null;
                      SpritePixels var29 = null;
                      SpritePixels var30 = null;
                      SpritePixels var31 = null;
-                     SpritePixels var32 = null;
+                     int var32 = 0;
                      int var33 = 0;
                      int var34 = 0;
                      int var35 = 0;
@@ -1639,106 +1640,105 @@ public class Widget extends Node {
                      int var38 = 0;
                      int var39 = 0;
                      int var40 = 0;
-                     int var41 = 0;
-                     var79 = var85.method3609();
-                     int var42;
-                     if(null != var79) {
-                        var21 = var79.width;
-                        var42 = var79.height;
-                        if(var42 > var41) {
-                           var41 = var42;
+                     var84 = var81.method3609();
+                     int var41;
+                     if(var84 != null) {
+                        var10 = var84.width;
+                        var41 = var84.height;
+                        if(var41 > var40) {
+                           var40 = var41;
                         }
 
-                        var25 = var79.offsetX;
+                        var24 = var84.offsetX;
                      }
 
-                     var18 = var85.method3610();
-                     if(null != var18) {
-                        var22 = var18.width;
-                        var42 = var18.height;
-                        if(var42 > var41) {
-                           var41 = var42;
+                     var85 = var81.method3610();
+                     if(var85 != null) {
+                        var11 = var85.width;
+                        var41 = var85.height;
+                        if(var41 > var40) {
+                           var40 = var41;
                         }
 
-                        var26 = var18.offsetX;
+                        var25 = var85.offsetX;
                      }
 
-                     var80 = var85.method3611();
-                     if(var80 != null) {
-                        var23 = var80.width;
-                        var42 = var80.height;
-                        if(var42 > var41) {
-                           var41 = var42;
+                     var86 = var81.method3611();
+                     if(var86 != null) {
+                        var12 = var86.width;
+                        var41 = var86.height;
+                        if(var41 > var40) {
+                           var40 = var41;
                         }
 
-                        var27 = var80.offsetX;
+                        var26 = var86.offsetX;
                      }
 
-                     var81 = var85.method3612();
-                     if(var81 != null) {
-                        var24 = var81.width;
-                        var42 = var81.height;
-                        if(var42 > var41) {
-                           var41 = var42;
+                     var87 = var81.method3612();
+                     if(var87 != null) {
+                        var13 = var87.width;
+                        var41 = var87.height;
+                        if(var41 > var40) {
+                           var40 = var41;
                         }
 
-                        var28 = var81.offsetX;
+                        var27 = var87.offsetX;
                      }
 
-                     if(var78 != null) {
-                        var29 = var78.method3609();
+                     if(var83 != null) {
+                        var28 = var83.method3609();
+                        if(var28 != null) {
+                           var32 = var28.width;
+                           var41 = var28.height;
+                           if(var41 > var40) {
+                              var40 = var41;
+                           }
+
+                           var36 = var28.offsetX;
+                        }
+
+                        var29 = var83.method3610();
                         if(var29 != null) {
                            var33 = var29.width;
-                           var42 = var29.height;
-                           if(var42 > var41) {
-                              var41 = var42;
+                           var41 = var29.height;
+                           if(var41 > var40) {
+                              var40 = var41;
                            }
 
                            var37 = var29.offsetX;
                         }
 
-                        var30 = var78.method3610();
-                        if(null != var30) {
+                        var30 = var83.method3611();
+                        if(var30 != null) {
                            var34 = var30.width;
-                           var42 = var30.height;
-                           if(var42 > var41) {
-                              var41 = var42;
+                           var41 = var30.height;
+                           if(var41 > var40) {
+                              var40 = var41;
                            }
 
                            var38 = var30.offsetX;
                         }
 
-                        var31 = var78.method3611();
-                        if(null != var31) {
+                        var31 = var83.method3612();
+                        if(var31 != null) {
                            var35 = var31.width;
-                           var42 = var31.height;
-                           if(var42 > var41) {
-                              var41 = var42;
+                           var41 = var31.height;
+                           if(var41 > var40) {
+                              var40 = var41;
                            }
 
                            var39 = var31.offsetX;
                         }
-
-                        var32 = var78.method3612();
-                        if(var32 != null) {
-                           var36 = var32.width;
-                           var42 = var32.height;
-                           if(var42 > var41) {
-                              var41 = var42;
-                           }
-
-                           var40 = var32.offsetX;
-                        }
                      }
 
-                     Font var83 = var85.method3613();
-                     if(var83 == null) {
-                        var83 = class180.field2717;
+                     Font var42 = var81.method3613();
+                     if(var42 == null) {
+                        var42 = class180.field2717;
                      }
 
                      Font var43;
-                     if(var78 != null) {
-                        var43 = var78.method3613();
+                     if(var83 != null) {
+                        var43 = var83.method3613();
                         if(var43 == null) {
                            var43 = class180.field2717;
                         }
@@ -1750,221 +1750,221 @@ public class Widget extends Node {
                      String var45 = null;
                      boolean var46 = false;
                      int var47 = 0;
-                     var44 = var85.method3608(var0.field639[var9]);
-                     int var87 = var83.method3897(var44);
-                     if(null != var78) {
-                        var45 = var78.method3608(var0.field642[var9]);
+                     var44 = var81.method3608(var0.field639[var79]);
+                     int var48 = var42.method3897(var44);
+                     if(var83 != null) {
+                        var45 = var83.method3608(var0.field642[var79]);
                         var47 = var43.method3897(var45);
                      }
 
-                     int var48 = 0;
                      int var49 = 0;
-                     if(var22 > 0) {
-                        if(var80 == null && var81 == null) {
-                           var48 = 1;
-                        } else {
-                           var48 = var87 / var22 + 1;
-                        }
-                     }
-
-                     if(var78 != null && var34 > 0) {
-                        if(null == var31 && null == var32) {
+                     int var50 = 0;
+                     if(var11 > 0) {
+                        if(var86 == null && var87 == null) {
                            var49 = 1;
                         } else {
-                           var49 = 1 + var47 / var34;
+                           var49 = var48 / var11 + 1;
                         }
                      }
 
-                     int var50 = 0;
-                     int var51 = var50;
-                     if(var21 > 0) {
-                        var50 += var21;
+                     if(var83 != null && var33 > 0) {
+                        if(var30 == null && var31 == null) {
+                           var50 = 1;
+                        } else {
+                           var50 = var47 / var33 + 1;
+                        }
                      }
 
-                     var50 += 2;
-                     int var52 = var50;
-                     if(var23 > 0) {
-                        var50 += var23;
+                     int var51 = 0;
+                     int var52 = var51;
+                     if(var10 > 0) {
+                        var51 += var10;
                      }
 
-                     int var53 = var50;
-                     int var54 = var50;
-                     int var55;
-                     if(var22 > 0) {
-                        var55 = var22 * var48;
-                        var50 += var55;
-                        var54 += (var55 - var87) / 2;
+                     var51 += 2;
+                     int var53 = var51;
+                     if(var12 > 0) {
+                        var51 += var12;
+                     }
+
+                     int var54 = var51;
+                     int var55 = var51;
+                     int var56;
+                     if(var11 > 0) {
+                        var56 = var11 * var49;
+                        var51 += var56;
+                        var55 += (var56 - var48) / 2;
                      } else {
-                        var50 += var87;
+                        var51 += var48;
                      }
 
-                     var55 = var50;
-                     if(var24 > 0) {
-                        var50 += var24;
+                     var56 = var51;
+                     if(var13 > 0) {
+                        var51 += var13;
                      }
 
-                     int var56 = 0;
                      int var57 = 0;
                      int var58 = 0;
                      int var59 = 0;
                      int var60 = 0;
-                     int var61;
-                     if(var78 != null) {
-                        var50 += 2;
-                        var56 = var50;
-                        if(var33 > 0) {
-                           var50 += var33;
+                     int var61 = 0;
+                     int var62;
+                     if(var83 != null) {
+                        var51 += 2;
+                        var57 = var51;
+                        if(var32 > 0) {
+                           var51 += var32;
                         }
 
-                        var50 += 2;
-                        var57 = var50;
-                        if(var35 > 0) {
-                           var50 += var35;
-                        }
-
-                        var58 = var50;
-                        var60 = var50;
+                        var51 += 2;
+                        var58 = var51;
                         if(var34 > 0) {
-                           var61 = var34 * var49;
-                           var50 += var61;
-                           var60 += (var61 - var47) / 2;
+                           var51 += var34;
+                        }
+
+                        var59 = var51;
+                        var61 = var51;
+                        if(var33 > 0) {
+                           var62 = var33 * var50;
+                           var51 += var62;
+                           var61 += (var62 - var47) / 2;
                         } else {
-                           var50 += var47;
+                           var51 += var47;
                         }
 
-                        var59 = var50;
-                        if(var36 > 0) {
-                           var50 += var36;
+                        var60 = var51;
+                        if(var35 > 0) {
+                           var51 += var35;
                         }
                      }
 
-                     var61 = var0.field644[var9] - Client.gameCycle;
-                     int var62 = var85.field2886 - var61 * var85.field2886 / var85.field2881;
-                     int var63 = -var85.field2873 + var85.field2873 * var61 / var85.field2881;
-                     int var64 = var2 + Client.field407 - (var50 >> 1) + var62;
-                     int var65 = var63 + (var3 + Client.field408 - 12);
-                     int var66 = var65;
-                     int var67 = var41 + var65;
-                     int var68 = var85.field2891 + var65 + 15;
-                     int var69 = var68 - var83.field3118;
-                     int var70 = var83.field3119 + var68;
-                     if(var69 < var65) {
-                        var66 = var69;
-                     }
-
-                     if(var70 > var67) {
+                     var62 = var0.field644[var79] - Client.gameCycle;
+                     int var63 = var81.field2886 - var62 * var81.field2886 / var81.field2881;
+                     int var64 = -var81.field2873 + var81.field2873 * var62 / var81.field2881;
+                     int var65 = var2 + Client.field407 - (var51 >> 1) + var63;
+                     int var66 = var64 + (var3 + Client.field408 - 12);
+                     int var67 = var66;
+                     int var68 = var40 + var66;
+                     int var69 = var81.field2891 + var66 + 15;
+                     int var70 = var69 - var42.field3118;
+                     int var71 = var42.field3119 + var69;
+                     if(var70 < var66) {
                         var67 = var70;
                      }
 
-                     int var71 = 0;
-                     int var72;
+                     if(var71 > var68) {
+                        var68 = var71;
+                     }
+
+                     int var72 = 0;
                      int var73;
-                     if(null != var78) {
-                        var71 = var78.field2891 + 15 + var65;
-                        var72 = var71 - var43.field3118;
-                        var73 = var43.field3119 + var71;
-                        if(var72 < var66) {
+                     int var74;
+                     if(var83 != null) {
+                        var72 = var83.field2891 + 15 + var66;
+                        var73 = var72 - var43.field3118;
+                        var74 = var43.field3119 + var72;
+                        if(var73 < var67) {
                            ;
                         }
 
-                        if(var73 > var67) {
+                        if(var74 > var68) {
                            ;
                         }
                      }
 
-                     var72 = 255;
-                     if(var85.field2880 >= 0) {
-                        var72 = (var61 << 8) / (var85.field2881 - var85.field2880);
+                     var73 = 255;
+                     if(var81.field2880 >= 0) {
+                        var73 = (var62 << 8) / (var81.field2881 - var81.field2880);
                      }
 
-                     if(var72 >= 0 && var72 < 255) {
-                        if(null != var79) {
-                           var79.method4149(var51 + var64 - var25, var65, var72);
+                     if(var73 >= 0 && var73 < 255) {
+                        if(var84 != null) {
+                           var84.method4149(var52 + var65 - var24, var66, var73);
                         }
 
-                        if(var80 != null) {
-                           var80.method4149(var64 + var52 - var27, var65, var72);
+                        if(var86 != null) {
+                           var86.method4149(var65 + var53 - var26, var66, var73);
                         }
 
-                        if(null != var18) {
-                           for(var73 = 0; var73 < var48; ++var73) {
-                              var18.method4149(var64 + var53 - var26 + var73 * var22, var65, var72);
+                        if(var85 != null) {
+                           for(var74 = 0; var74 < var49; ++var74) {
+                              var85.method4149(var65 + var54 - var25 + var74 * var11, var66, var73);
                            }
                         }
 
-                        if(null != var81) {
-                           var81.method4149(var64 + var55 - var28, var65, var72);
+                        if(var87 != null) {
+                           var87.method4149(var65 + var56 - var27, var66, var73);
                         }
 
-                        var83.method3902(var44, var64 + var54, var68, var85.field2882, 0, var72);
-                        if(var78 != null) {
+                        var42.method3902(var44, var65 + var55, var69, var81.field2882, 0, var73);
+                        if(var83 != null) {
+                           if(var28 != null) {
+                              var28.method4149(var57 + var65 - var36, var66, var73);
+                           }
+
+                           if(var30 != null) {
+                              var30.method4149(var58 + var65 - var38, var66, var73);
+                           }
+
                            if(var29 != null) {
-                              var29.method4149(var56 + var64 - var37, var65, var72);
+                              for(var74 = 0; var74 < var50; ++var74) {
+                                 var29.method4149(var59 + var65 - var37 + var33 * var74, var66, var73);
+                              }
                            }
 
                            if(var31 != null) {
-                              var31.method4149(var57 + var64 - var39, var65, var72);
+                              var31.method4149(var65 + var60 - var39, var66, var73);
                            }
 
-                           if(null != var30) {
-                              for(var73 = 0; var73 < var49; ++var73) {
-                                 var30.method4149(var58 + var64 - var38 + var34 * var73, var65, var72);
-                              }
-                           }
-
-                           if(null != var32) {
-                              var32.method4149(var64 + var59 - var40, var65, var72);
-                           }
-
-                           var43.method3902(var45, var64 + var60, var71, var78.field2882, 0, var72);
+                           var43.method3902(var45, var65 + var61, var72, var83.field2882, 0, var73);
                         }
                      } else {
-                        if(var79 != null) {
-                           var79.method4143(var64 + var51 - var25, var65);
+                        if(var84 != null) {
+                           var84.method4143(var65 + var52 - var24, var66);
                         }
 
-                        if(null != var80) {
-                           var80.method4143(var64 + var52 - var27, var65);
+                        if(var86 != null) {
+                           var86.method4143(var65 + var53 - var26, var66);
                         }
 
-                        if(var18 != null) {
-                           for(var73 = 0; var73 < var48; ++var73) {
-                              var18.method4143(var73 * var22 + (var53 + var64 - var26), var65);
+                        if(var85 != null) {
+                           for(var74 = 0; var74 < var49; ++var74) {
+                              var85.method4143(var74 * var11 + (var54 + var65 - var25), var66);
                            }
                         }
 
-                        if(null != var81) {
-                           var81.method4143(var55 + var64 - var28, var65);
+                        if(var87 != null) {
+                           var87.method4143(var56 + var65 - var27, var66);
                         }
 
-                        var83.method3930(var44, var54 + var64, var68, var85.field2882 | -16777216, 0);
-                        if(var78 != null) {
+                        var42.method3930(var44, var55 + var65, var69, var81.field2882 | -16777216, 0);
+                        if(var83 != null) {
+                           if(var28 != null) {
+                              var28.method4143(var57 + var65 - var36, var66);
+                           }
+
+                           if(var30 != null) {
+                              var30.method4143(var65 + var58 - var38, var66);
+                           }
+
                            if(var29 != null) {
-                              var29.method4143(var56 + var64 - var37, var65);
-                           }
-
-                           if(null != var31) {
-                              var31.method4143(var64 + var57 - var39, var65);
-                           }
-
-                           if(null != var30) {
-                              for(var73 = 0; var73 < var49; ++var73) {
-                                 var30.method4143(var34 * var73 + (var58 + var64 - var38), var65);
+                              for(var74 = 0; var74 < var50; ++var74) {
+                                 var29.method4143(var33 * var74 + (var59 + var65 - var37), var66);
                               }
                            }
 
-                           if(null != var32) {
-                              var32.method4143(var64 + var59 - var40, var65);
+                           if(var31 != null) {
+                              var31.method4143(var65 + var60 - var39, var66);
                            }
 
-                           var43.method3930(var45, var64 + var60, var71, var78.field2882 | -16777216, 0);
+                           var43.method3930(var45, var65 + var61, var72, var83.field2882 | -16777216, 0);
                         }
                      }
                   }
                }
             }
          }
-
       }
+
    }
 }

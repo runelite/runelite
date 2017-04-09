@@ -18,7 +18,7 @@ public class class202 {
 
       for(int var2 = 0; var2 < var0; ++var2) {
          Player var3 = Client.cachedPlayers[var1[var2]];
-         if(null != var3) {
+         if(var3 != null) {
             Client.method555(var3, 1);
          }
       }
@@ -42,13 +42,13 @@ public class class202 {
       if(var0 == 1927) {
          if(class32.field751 >= 10) {
             throw new RuntimeException();
-         } else if(null == var3.field2341) {
+         } else if(var3.field2341 == null) {
             return 0;
          } else {
             class18 var4 = new class18();
             var4.field207 = var3;
             var4.field199 = var3.field2341;
-            var4.field208 = 1 + class32.field751;
+            var4.field208 = class32.field751 + 1;
             Client.field502.method2459(var4);
             return 1;
          }

@@ -44,14 +44,14 @@ public final class Item extends Renderable {
          ISAACCipher.method3132(var2);
       }
 
-      for(class133 var4 = (class133)Client.widgetFlags.method2420(); null != var4; var4 = (class133)Client.widgetFlags.method2422()) {
+      for(class133 var4 = (class133)Client.widgetFlags.method2420(); var4 != null; var4 = (class133)Client.widgetFlags.method2422()) {
          if((var4.hash >> 48 & 65535L) == (long)var2) {
             var4.unlink();
          }
       }
 
       Widget var5 = FaceNormal.method1932(var3);
-      if(null != var5) {
+      if(var5 != null) {
          class22.method197(var5);
       }
 
@@ -72,7 +72,7 @@ public final class Item extends Renderable {
       Buffer var4 = new Buffer(var0);
       int var5 = -1;
 
-      label86:
+      label56:
       while(true) {
          int var6 = var4.method2880();
          if(var6 == 0) {
@@ -84,23 +84,23 @@ public final class Item extends Renderable {
          boolean var8 = false;
 
          while(true) {
-            int var9;
+            int var13;
             while(!var8) {
-               var9 = var4.method2880();
-               if(var9 == 0) {
-                  continue label86;
+               var13 = var4.method2880();
+               if(var13 == 0) {
+                  continue label56;
                }
 
-               var7 += var9 - 1;
-               int var10 = var7 & 63;
-               int var11 = var7 >> 6 & 63;
-               int var12 = var4.readUnsignedByte() >> 2;
-               int var13 = var11 + var1;
-               int var14 = var2 + var10;
-               if(var13 > 0 && var14 > 0 && var13 < 103 && var14 < 103) {
-                  ObjectComposition var15 = class140.getObjectDefinition(var5);
-                  if(var12 != 22 || !Client.field306 || var15.field2916 != 0 || var15.field2914 == 1 || var15.field2945) {
-                     if(!var15.method3642()) {
+               var7 += var13 - 1;
+               int var14 = var7 & 63;
+               int var15 = var7 >> 6 & 63;
+               int var9 = var4.readUnsignedByte() >> 2;
+               int var11 = var15 + var1;
+               int var12 = var2 + var14;
+               if(var11 > 0 && var12 > 0 && var11 < 103 && var12 < 103) {
+                  ObjectComposition var10 = class140.getObjectDefinition(var5);
+                  if(var9 != 22 || !Client.field306 || var10.field2916 != 0 || var10.field2914 == 1 || var10.field2945) {
+                     if(!var10.method3642()) {
                         ++Client.field359;
                         var3 = false;
                      }
@@ -110,8 +110,8 @@ public final class Item extends Renderable {
                }
             }
 
-            var9 = var4.method2880();
-            if(var9 == 0) {
+            var13 = var4.method2880();
+            if(var13 == 0) {
                break;
             }
 
@@ -147,10 +147,10 @@ public final class Item extends Renderable {
          }
       }
 
-      NPC var20;
+      NPC var9;
       if(var2 == 9) {
-         var20 = Client.cachedNPCs[var3];
-         if(var20 != null) {
+         var9 = Client.cachedNPCs[var3];
+         if(var9 != null) {
             Client.field557 = var6;
             Client.field410 = var7;
             Client.field412 = 2;
@@ -172,8 +172,8 @@ public final class Item extends Renderable {
       }
 
       if(var2 == 12) {
-         var20 = Client.cachedNPCs[var3];
-         if(null != var20) {
+         var9 = Client.cachedNPCs[var3];
+         if(var9 != null) {
             Client.field557 = var6;
             Client.field410 = var7;
             Client.field412 = 2;
@@ -215,16 +215,16 @@ public final class Item extends Renderable {
          }
       }
 
-      int var9;
-      Widget var21;
+      int var10;
+      Widget var11;
       if(var2 == 28) {
          Client.secretCipherBuffer1.putOpcode(143);
          Client.secretCipherBuffer1.putInt(var1);
-         var21 = FaceNormal.method1932(var1);
-         if(null != var21.dynamicValues && var21.dynamicValues[0][0] == 5) {
-            var9 = var21.dynamicValues[0][1];
-            class165.widgetSettings[var9] = 1 - class165.widgetSettings[var9];
-            Client.method550(var9);
+         var11 = FaceNormal.method1932(var1);
+         if(var11.dynamicValues != null && var11.dynamicValues[0][0] == 5) {
+            var10 = var11.dynamicValues[0][1];
+            class165.widgetSettings[var10] = 1 - class165.widgetSettings[var10];
+            Client.method550(var10);
          }
       }
 
@@ -233,16 +233,16 @@ public final class Item extends Renderable {
          Client.field410 = var7;
          Client.field412 = 2;
          Client.field312 = 0;
-         var20 = Client.cachedNPCs[var3];
-         if(var20 != null) {
-            NPCComposition var16 = var20.composition;
-            if(var16.configs != null) {
-               var16 = var16.method3741();
+         var9 = Client.cachedNPCs[var3];
+         if(var9 != null) {
+            NPCComposition var12 = var9.composition;
+            if(var12.configs != null) {
+               var12 = var12.method3741();
             }
 
-            if(null != var16) {
+            if(var12 != null) {
                Client.secretCipherBuffer1.putOpcode(125);
-               Client.secretCipherBuffer1.method2900(var16.id);
+               Client.secretCipherBuffer1.method2900(var12.id);
             }
          }
       }
@@ -260,12 +260,12 @@ public final class Item extends Renderable {
       if(var2 == 29) {
          Client.secretCipherBuffer1.putOpcode(143);
          Client.secretCipherBuffer1.putInt(var1);
-         var21 = FaceNormal.method1932(var1);
-         if(null != var21.dynamicValues && var21.dynamicValues[0][0] == 5) {
-            var9 = var21.dynamicValues[0][1];
-            if(var21.field2333[0] != class165.widgetSettings[var9]) {
-               class165.widgetSettings[var9] = var21.field2333[0];
-               Client.method550(var9);
+         var11 = FaceNormal.method1932(var1);
+         if(var11.dynamicValues != null && var11.dynamicValues[0][0] == 5) {
+            var10 = var11.dynamicValues[0][1];
+            if(var11.field2333[0] != class165.widgetSettings[var10]) {
+               class165.widgetSettings[var10] = var11.field2333[0];
+               Client.method550(var10);
             }
          }
       }
@@ -317,11 +317,11 @@ public final class Item extends Renderable {
       }
 
       if(var2 == 58) {
-         var21 = class118.method2354(var1, var0);
-         if(null != var21) {
+         var11 = class118.method2354(var1, var0);
+         if(var11 != null) {
             Client.secretCipherBuffer1.putOpcode(171);
             Client.secretCipherBuffer1.method2908(var1);
-            Client.secretCipherBuffer1.putShort(var21.item);
+            Client.secretCipherBuffer1.putShort(var11.item);
             Client.secretCipherBuffer1.method2973(var0);
             Client.secretCipherBuffer1.putInt(XClanMember.field284);
             Client.secretCipherBuffer1.putShort(Client.field460);
@@ -405,50 +405,49 @@ public final class Item extends Renderable {
       }
 
       if(var2 == 25) {
-         var21 = class118.method2354(var1, var0);
-         if(null != var21) {
+         var11 = class118.method2354(var1, var0);
+         if(var11 != null) {
             class6.method77();
-            int var10 = FloorUnderlayDefinition.method3533(var21);
-            var9 = var10 >> 11 & 63;
-            int var12 = var21.item;
-            Widget var13 = class118.method2354(var1, var0);
-            if(null != var13 && null != var13.field2350) {
-               class18 var14 = new class18();
-               var14.field207 = var13;
-               var14.field199 = var13.field2350;
-               class26.method565(var14);
+            int var18 = FloorUnderlayDefinition.method3533(var11);
+            var10 = var18 >> 11 & 63;
+            int var13 = var11.item;
+            Widget var14 = class118.method2354(var1, var0);
+            if(var14 != null && var14.field2350 != null) {
+               class18 var15 = new class18();
+               var15.field207 = var14;
+               var15.field199 = var14.field2350;
+               class26.method565(var15);
             }
 
-            Client.field460 = var12;
+            Client.field460 = var13;
             Client.field458 = true;
             XClanMember.field284 = var1;
             Client.field414 = var0;
-            ItemComposition.field3004 = var9;
-            class22.method197(var13);
+            ItemComposition.field3004 = var10;
+            class22.method197(var14);
             Client.field455 = 0;
-            int var15 = FloorUnderlayDefinition.method3533(var21);
-            int var19 = var15 >> 11 & 63;
-            String var23;
-            if(var19 == 0) {
-               var23 = null;
-            } else if(null != var21.field2328 && var21.field2328.trim().length() != 0) {
-               var23 = var21.field2328;
+            int var23 = FloorUnderlayDefinition.method3533(var11);
+            int var16 = var23 >> 11 & 63;
+            String var17;
+            if(var16 == 0) {
+               var17 = null;
+            } else if(var11.field2328 != null && var11.field2328.trim().length() != 0) {
+               var17 = var11.field2328;
             } else {
-               var23 = null;
+               var17 = null;
             }
 
-            Client.field326 = var23;
+            Client.field326 = var17;
             if(Client.field326 == null) {
                Client.field326 = "Null";
             }
 
-            if(var21.hasScript) {
-               Client.field527 = var21.name + XItemContainer.method153(16777215);
+            if(var11.hasScript) {
+               Client.field527 = var11.name + XItemContainer.method153(16777215);
             } else {
-               Client.field527 = XItemContainer.method153('\uff00') + var21.field2335 + XItemContainer.method153(16777215);
+               Client.field527 = XItemContainer.method153('\uff00') + var11.field2335 + XItemContainer.method153(16777215);
             }
          }
-
       } else {
          if(var2 == 1001) {
             Client.field557 = var6;
@@ -466,7 +465,7 @@ public final class Item extends Renderable {
 
          if(var2 == 51) {
             var8 = Client.cachedPlayers[var3];
-            if(null != var8) {
+            if(var8 != null) {
                Client.field557 = var6;
                Client.field410 = var7;
                Client.field412 = 2;
@@ -480,94 +479,94 @@ public final class Item extends Renderable {
          }
 
          if(var2 == 57 || var2 == 1007) {
-            var21 = class118.method2354(var1, var0);
-            if(null != var21) {
-               var9 = var21.item;
-               Widget var18 = class118.method2354(var1, var0);
-               if(var18 != null) {
-                  if(var18.field2319 != null) {
-                     class18 var17 = new class18();
-                     var17.field207 = var18;
-                     var17.field202 = var3;
-                     var17.field200 = var5;
-                     var17.field199 = var18.field2319;
-                     class26.method565(var17);
+            var11 = class118.method2354(var1, var0);
+            if(var11 != null) {
+               var10 = var11.item;
+               Widget var19 = class118.method2354(var1, var0);
+               if(var19 != null) {
+                  if(var19.field2319 != null) {
+                     class18 var20 = new class18();
+                     var20.field207 = var19;
+                     var20.field202 = var3;
+                     var20.field200 = var5;
+                     var20.field199 = var19.field2319;
+                     class26.method565(var20);
                   }
 
-                  boolean var11 = true;
-                  if(var18.contentType > 0) {
-                     var11 = GroundObject.method1568(var18);
+                  boolean var21 = true;
+                  if(var19.contentType > 0) {
+                     var21 = GroundObject.method1568(var19);
                   }
 
-                  if(var11 && class152.method2849(FloorUnderlayDefinition.method3533(var18), var3 - 1)) {
+                  if(var21 && class152.method2849(FloorUnderlayDefinition.method3533(var19), var3 - 1)) {
                      if(var3 == 1) {
                         Client.secretCipherBuffer1.putOpcode(74);
                         Client.secretCipherBuffer1.putInt(var1);
                         Client.secretCipherBuffer1.putShort(var0);
-                        Client.secretCipherBuffer1.putShort(var9);
+                        Client.secretCipherBuffer1.putShort(var10);
                      }
 
                      if(var3 == 2) {
                         Client.secretCipherBuffer1.putOpcode(155);
                         Client.secretCipherBuffer1.putInt(var1);
                         Client.secretCipherBuffer1.putShort(var0);
-                        Client.secretCipherBuffer1.putShort(var9);
+                        Client.secretCipherBuffer1.putShort(var10);
                      }
 
                      if(var3 == 3) {
                         Client.secretCipherBuffer1.putOpcode(70);
                         Client.secretCipherBuffer1.putInt(var1);
                         Client.secretCipherBuffer1.putShort(var0);
-                        Client.secretCipherBuffer1.putShort(var9);
+                        Client.secretCipherBuffer1.putShort(var10);
                      }
 
                      if(var3 == 4) {
                         Client.secretCipherBuffer1.putOpcode(190);
                         Client.secretCipherBuffer1.putInt(var1);
                         Client.secretCipherBuffer1.putShort(var0);
-                        Client.secretCipherBuffer1.putShort(var9);
+                        Client.secretCipherBuffer1.putShort(var10);
                      }
 
                      if(var3 == 5) {
                         Client.secretCipherBuffer1.putOpcode(179);
                         Client.secretCipherBuffer1.putInt(var1);
                         Client.secretCipherBuffer1.putShort(var0);
-                        Client.secretCipherBuffer1.putShort(var9);
+                        Client.secretCipherBuffer1.putShort(var10);
                      }
 
                      if(var3 == 6) {
                         Client.secretCipherBuffer1.putOpcode(219);
                         Client.secretCipherBuffer1.putInt(var1);
                         Client.secretCipherBuffer1.putShort(var0);
-                        Client.secretCipherBuffer1.putShort(var9);
+                        Client.secretCipherBuffer1.putShort(var10);
                      }
 
                      if(var3 == 7) {
                         Client.secretCipherBuffer1.putOpcode(142);
                         Client.secretCipherBuffer1.putInt(var1);
                         Client.secretCipherBuffer1.putShort(var0);
-                        Client.secretCipherBuffer1.putShort(var9);
+                        Client.secretCipherBuffer1.putShort(var10);
                      }
 
                      if(var3 == 8) {
                         Client.secretCipherBuffer1.putOpcode(8);
                         Client.secretCipherBuffer1.putInt(var1);
                         Client.secretCipherBuffer1.putShort(var0);
-                        Client.secretCipherBuffer1.putShort(var9);
+                        Client.secretCipherBuffer1.putShort(var10);
                      }
 
                      if(var3 == 9) {
                         Client.secretCipherBuffer1.putOpcode(115);
                         Client.secretCipherBuffer1.putInt(var1);
                         Client.secretCipherBuffer1.putShort(var0);
-                        Client.secretCipherBuffer1.putShort(var9);
+                        Client.secretCipherBuffer1.putShort(var10);
                      }
 
                      if(var3 == 10) {
                         Client.secretCipherBuffer1.putOpcode(194);
                         Client.secretCipherBuffer1.putInt(var1);
                         Client.secretCipherBuffer1.putShort(var0);
-                        Client.secretCipherBuffer1.putShort(var9);
+                        Client.secretCipherBuffer1.putShort(var10);
                      }
                   }
                }
@@ -576,7 +575,7 @@ public final class Item extends Renderable {
 
          if(var2 == 47) {
             var8 = Client.cachedPlayers[var3];
-            if(null != var8) {
+            if(var8 != null) {
                Client.field557 = var6;
                Client.field410 = var7;
                Client.field412 = 2;
@@ -591,7 +590,7 @@ public final class Item extends Renderable {
 
          if(var2 == 46) {
             var8 = Client.cachedPlayers[var3];
-            if(null != var8) {
+            if(var8 != null) {
                Client.field557 = var6;
                Client.field410 = var7;
                Client.field412 = 2;
@@ -654,8 +653,8 @@ public final class Item extends Renderable {
          }
 
          if(var2 == 7) {
-            var20 = Client.cachedNPCs[var3];
-            if(var20 != null) {
+            var9 = Client.cachedNPCs[var3];
+            if(var9 != null) {
                Client.field557 = var6;
                Client.field410 = var7;
                Client.field412 = 2;
@@ -749,8 +748,8 @@ public final class Item extends Renderable {
          }
 
          if(var2 == 13) {
-            var20 = Client.cachedNPCs[var3];
-            if(null != var20) {
+            var9 = Client.cachedNPCs[var3];
+            if(var9 != null) {
                Client.field557 = var6;
                Client.field410 = var7;
                Client.field412 = 2;
@@ -790,7 +789,7 @@ public final class Item extends Renderable {
 
          if(var2 == 44) {
             var8 = Client.cachedPlayers[var3];
-            if(null != var8) {
+            if(var8 != null) {
                Client.field557 = var6;
                Client.field410 = var7;
                Client.field412 = 2;
@@ -818,8 +817,8 @@ public final class Item extends Renderable {
          }
 
          if(var2 == 8) {
-            var20 = Client.cachedNPCs[var3];
-            if(null != var20) {
+            var9 = Client.cachedNPCs[var3];
+            if(var9 != null) {
                Client.field557 = var6;
                Client.field410 = var7;
                Client.field412 = 2;
@@ -843,8 +842,8 @@ public final class Item extends Renderable {
          }
 
          if(var2 == 10) {
-            var20 = Client.cachedNPCs[var3];
-            if(null != var20) {
+            var9 = Client.cachedNPCs[var3];
+            if(var9 != null) {
                Client.field557 = var6;
                Client.field410 = var7;
                Client.field412 = 2;
@@ -902,17 +901,16 @@ public final class Item extends Renderable {
 
          if(var2 == 38) {
             class6.method77();
-            var21 = FaceNormal.method1932(var1);
+            var11 = FaceNormal.method1932(var1);
             Client.field455 = 1;
             class47.field957 = var0;
             class177.field2689 = var1;
             Client.field456 = var3;
-            class22.method197(var21);
+            class22.method197(var11);
             Client.field457 = XItemContainer.method153(16748608) + class196.getItemDefinition(var3).name + XItemContainer.method153(16777215);
-            if(null == Client.field457) {
+            if(Client.field457 == null) {
                Client.field457 = "null";
             }
-
          } else {
             if(var2 == 26) {
                class183.method3413();
@@ -928,9 +926,9 @@ public final class Item extends Renderable {
             }
 
             if(var2 == 1005) {
-               var21 = FaceNormal.method1932(var1);
-               if(null != var21 && var21.itemQuantities[var0] >= 100000) {
-                  Player.sendGameMessage(27, "", var21.itemQuantities[var0] + " x " + class196.getItemDefinition(var3).name);
+               var11 = FaceNormal.method1932(var1);
+               if(var11 != null && var11.itemQuantities[var0] >= 100000) {
+                  Player.sendGameMessage(27, "", var11.itemQuantities[var0] + " x " + class196.getItemDefinition(var3).name);
                } else {
                   Client.secretCipherBuffer1.putOpcode(63);
                   Client.secretCipherBuffer1.method2900(var3);
@@ -956,8 +954,8 @@ public final class Item extends Renderable {
             }
 
             if(var2 == 11) {
-               var20 = Client.cachedNPCs[var3];
-               if(null != var20) {
+               var9 = Client.cachedNPCs[var3];
+               if(var9 != null) {
                   Client.field557 = var6;
                   Client.field410 = var7;
                   Client.field412 = 2;
@@ -995,10 +993,10 @@ public final class Item extends Renderable {
             }
 
             if(var2 == 24) {
-               var21 = FaceNormal.method1932(var1);
+               var11 = FaceNormal.method1932(var1);
                boolean var22 = true;
-               if(var21.contentType > 0) {
-                  var22 = GroundObject.method1568(var21);
+               if(var11.contentType > 0) {
+                  var22 = GroundObject.method1568(var11);
                }
 
                if(var22) {
@@ -1019,8 +1017,8 @@ public final class Item extends Renderable {
             if(XGrandExchangeOffer.field42 != null && Client.field351 == 0) {
                class22.method197(XGrandExchangeOffer.field42);
             }
-
          }
       }
+
    }
 }

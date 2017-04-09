@@ -23,7 +23,7 @@ public class CombatInfoListHolder extends Node {
       Object[] var2 = var0.field199;
       int var3 = ((Integer)var2[0]).intValue();
       Script var4 = CombatInfo1.method593(var3);
-      if(null != var4) {
+      if(var4 != null) {
          class30.field713 = 0;
          class32.scriptStringStackSize = 0;
          int var5 = -1;
@@ -32,18 +32,18 @@ public class CombatInfoListHolder extends Node {
          byte var8 = -1;
          class32.scriptStackCount = 0;
 
-         int var11;
+         int var9;
          try {
             class32.field739 = new int[var4.localIntCount];
-            int var9 = 0;
-            class32.field740 = new String[var4.localStringCount];
             int var10 = 0;
+            class32.field740 = new String[var4.localStringCount];
+            int var22 = 0;
 
             int var12;
-            String var19;
-            for(var11 = 1; var11 < var2.length; ++var11) {
-               if(var2[var11] instanceof Integer) {
-                  var12 = ((Integer)var2[var11]).intValue();
+            String var13;
+            for(var9 = 1; var9 < var2.length; ++var9) {
+               if(var2[var9] instanceof Integer) {
+                  var12 = ((Integer)var2[var9]).intValue();
                   if(var12 == -2147483647) {
                      var12 = var0.field198;
                   }
@@ -53,7 +53,7 @@ public class CombatInfoListHolder extends Node {
                   }
 
                   if(var12 == -2147483645) {
-                     var12 = null != var0.field207?var0.field207.id:-1;
+                     var12 = var0.field207 != null?var0.field207.id:-1;
                   }
 
                   if(var12 == -2147483644) {
@@ -65,11 +65,11 @@ public class CombatInfoListHolder extends Node {
                   }
 
                   if(var12 == -2147483642) {
-                     var12 = null != var0.field203?var0.field203.id:-1;
+                     var12 = var0.field203 != null?var0.field203.id:-1;
                   }
 
                   if(var12 == -2147483641) {
-                     var12 = null != var0.field203?var0.field203.index:-1;
+                     var12 = var0.field203 != null?var0.field203.index:-1;
                   }
 
                   if(var12 == -2147483640) {
@@ -80,18 +80,18 @@ public class CombatInfoListHolder extends Node {
                      var12 = var0.field205;
                   }
 
-                  class32.field739[var9++] = var12;
-               } else if(var2[var11] instanceof String) {
-                  var19 = (String)var2[var11];
-                  if(var19.equals("event_opbase")) {
-                     var19 = var0.field200;
+                  class32.field739[var10++] = var12;
+               } else if(var2[var9] instanceof String) {
+                  var13 = (String)var2[var9];
+                  if(var13.equals("event_opbase")) {
+                     var13 = var0.field200;
                   }
 
-                  class32.field740[var10++] = var19;
+                  class32.field740[var22++] = var13;
                }
             }
 
-            var11 = 0;
+            var9 = 0;
             class32.field751 = var0.field208;
 
             while(true) {
@@ -119,92 +119,92 @@ public class CombatInfoListHolder extends Node {
                                                                               while(true) {
                                                                                  while(true) {
                                                                                     while(true) {
-                                                                                       label281:
+                                                                                       label221:
                                                                                        while(true) {
-                                                                                          ++var11;
-                                                                                          if(var11 > var1) {
+                                                                                          ++var9;
+                                                                                          if(var9 > var1) {
                                                                                              throw new RuntimeException();
                                                                                           }
 
                                                                                           ++var5;
-                                                                                          int var27 = var6[var5];
-                                                                                          int var13;
-                                                                                          if(var27 < 100) {
-                                                                                             if(var27 != 0) {
-                                                                                                if(var27 != 1) {
-                                                                                                   if(var27 != 2) {
-                                                                                                      if(var27 != 3) {
-                                                                                                         if(var27 != 6) {
-                                                                                                            if(var27 != 7) {
-                                                                                                               if(var27 != 8) {
-                                                                                                                  if(var27 != 9) {
-                                                                                                                     if(var27 != 10) {
-                                                                                                                        if(var27 != 21) {
-                                                                                                                           if(var27 != 25) {
-                                                                                                                              int var16;
-                                                                                                                              if(var27 != 27) {
-                                                                                                                                 if(var27 != 31) {
-                                                                                                                                    if(var27 != 32) {
-                                                                                                                                       if(var27 != 33) {
-                                                                                                                                          if(var27 != 34) {
-                                                                                                                                             if(var27 != 35) {
-                                                                                                                                                if(var27 != 36) {
-                                                                                                                                                   if(var27 != 37) {
-                                                                                                                                                      if(var27 != 38) {
-                                                                                                                                                         if(var27 != 39) {
-                                                                                                                                                            if(var27 != 40) {
-                                                                                                                                                               if(var27 != 42) {
-                                                                                                                                                                  if(var27 != 43) {
-                                                                                                                                                                     if(var27 == 44) {
+                                                                                          int var14 = var6[var5];
+                                                                                          int var15;
+                                                                                          if(var14 < 100) {
+                                                                                             if(var14 != 0) {
+                                                                                                if(var14 != 1) {
+                                                                                                   if(var14 != 2) {
+                                                                                                      if(var14 != 3) {
+                                                                                                         if(var14 != 6) {
+                                                                                                            if(var14 != 7) {
+                                                                                                               if(var14 != 8) {
+                                                                                                                  if(var14 != 9) {
+                                                                                                                     if(var14 != 10) {
+                                                                                                                        if(var14 != 21) {
+                                                                                                                           if(var14 != 25) {
+                                                                                                                              int var24;
+                                                                                                                              if(var14 != 27) {
+                                                                                                                                 if(var14 != 31) {
+                                                                                                                                    if(var14 != 32) {
+                                                                                                                                       if(var14 != 33) {
+                                                                                                                                          if(var14 != 34) {
+                                                                                                                                             if(var14 != 35) {
+                                                                                                                                                if(var14 != 36) {
+                                                                                                                                                   if(var14 != 37) {
+                                                                                                                                                      if(var14 != 38) {
+                                                                                                                                                         if(var14 != 39) {
+                                                                                                                                                            if(var14 != 40) {
+                                                                                                                                                               if(var14 != 42) {
+                                                                                                                                                                  if(var14 != 43) {
+                                                                                                                                                                     if(var14 == 44) {
                                                                                                                                                                         var12 = var7[var5] >> 16;
-                                                                                                                                                                        var13 = var7[var5] & '\uffff';
-                                                                                                                                                                        int var23 = class32.field743[--class30.field713];
-                                                                                                                                                                        if(var23 >= 0 && var23 <= 5000) {
-                                                                                                                                                                           class32.field741[var12] = var23;
+                                                                                                                                                                        var15 = var7[var5] & '\uffff';
+                                                                                                                                                                        int var27 = class32.field743[--class30.field713];
+                                                                                                                                                                        if(var27 >= 0 && var27 <= 5000) {
+                                                                                                                                                                           class32.field741[var12] = var27;
                                                                                                                                                                            byte var29 = -1;
-                                                                                                                                                                           if(var13 == 105) {
+                                                                                                                                                                           if(var15 == 105) {
                                                                                                                                                                               var29 = 0;
                                                                                                                                                                            }
 
-                                                                                                                                                                           var16 = 0;
+                                                                                                                                                                           var24 = 0;
 
                                                                                                                                                                            while(true) {
-                                                                                                                                                                              if(var16 >= var23) {
-                                                                                                                                                                                 continue label281;
+                                                                                                                                                                              if(var24 >= var27) {
+                                                                                                                                                                                 continue label221;
                                                                                                                                                                               }
 
-                                                                                                                                                                              class32.field742[var12][var16] = var29;
-                                                                                                                                                                              ++var16;
+                                                                                                                                                                              class32.field742[var12][var24] = var29;
+                                                                                                                                                                              ++var24;
                                                                                                                                                                            }
                                                                                                                                                                         }
 
                                                                                                                                                                         throw new RuntimeException();
-                                                                                                                                                                     } else if(var27 == 45) {
+                                                                                                                                                                     } else if(var14 == 45) {
                                                                                                                                                                         var12 = var7[var5];
-                                                                                                                                                                        var13 = class32.field743[--class30.field713];
-                                                                                                                                                                        if(var13 < 0 || var13 >= class32.field741[var12]) {
+                                                                                                                                                                        var15 = class32.field743[--class30.field713];
+                                                                                                                                                                        if(var15 < 0 || var15 >= class32.field741[var12]) {
                                                                                                                                                                            throw new RuntimeException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class32.field743[++class30.field713 - 1] = class32.field742[var12][var13];
-                                                                                                                                                                     } else if(var27 == 46) {
+                                                                                                                                                                        class32.field743[++class30.field713 - 1] = class32.field742[var12][var15];
+                                                                                                                                                                     } else if(var14 == 46) {
                                                                                                                                                                         var12 = var7[var5];
                                                                                                                                                                         class30.field713 -= 2;
-                                                                                                                                                                        var13 = class32.field743[class30.field713];
-                                                                                                                                                                        if(var13 < 0 || var13 >= class32.field741[var12]) {
+                                                                                                                                                                        var15 = class32.field743[class30.field713];
+                                                                                                                                                                        if(var15 < 0 || var15 >= class32.field741[var12]) {
                                                                                                                                                                            throw new RuntimeException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class32.field742[var12][var13] = class32.field743[1 + class30.field713];
-                                                                                                                                                                     } else if(var27 == 47) {
-                                                                                                                                                                        var19 = class9.chatMessages.method873(var7[var5]);
-                                                                                                                                                                        if(null == var19) {
-                                                                                                                                                                           var19 = "null";
+                                                                                                                                                                        class32.field742[var12][var15] = class32.field743[class30.field713 + 1];
+                                                                                                                                                                     } else if(var14 == 47) {
+                                                                                                                                                                        var13 = class9.chatMessages.method873(var7[var5]);
+                                                                                                                                                                        if(var13 == null) {
+                                                                                                                                                                           var13 = "null";
                                                                                                                                                                         }
 
-                                                                                                                                                                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var19;
+                                                                                                                                                                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var13;
                                                                                                                                                                      } else {
-                                                                                                                                                                        if(var27 != 48) {
+                                                                                                                                                                        if(var14 != 48) {
                                                                                                                                                                            throw new IllegalStateException();
                                                                                                                                                                         }
 
@@ -218,32 +218,32 @@ public class CombatInfoListHolder extends Node {
                                                                                                                                                                }
                                                                                                                                                             } else {
                                                                                                                                                                var12 = var7[var5];
-                                                                                                                                                               Script var32 = CombatInfo1.method593(var12);
-                                                                                                                                                               int[] var28 = new int[var32.localIntCount];
-                                                                                                                                                               String[] var21 = new String[var32.localStringCount];
+                                                                                                                                                               Script var26 = CombatInfo1.method593(var12);
+                                                                                                                                                               int[] var28 = new int[var26.localIntCount];
+                                                                                                                                                               String[] var30 = new String[var26.localStringCount];
 
-                                                                                                                                                               for(var16 = 0; var16 < var32.intStackCount; ++var16) {
-                                                                                                                                                                  var28[var16] = class32.field743[var16 + (class30.field713 - var32.intStackCount)];
+                                                                                                                                                               for(var24 = 0; var24 < var26.intStackCount; ++var24) {
+                                                                                                                                                                  var28[var24] = class32.field743[var24 + (class30.field713 - var26.intStackCount)];
                                                                                                                                                                }
 
-                                                                                                                                                               for(var16 = 0; var16 < var32.stringStackCount; ++var16) {
-                                                                                                                                                                  var21[var16] = class32.scriptStringStack[var16 + (class32.scriptStringStackSize - var32.stringStackCount)];
+                                                                                                                                                               for(var24 = 0; var24 < var26.stringStackCount; ++var24) {
+                                                                                                                                                                  var30[var24] = class32.scriptStringStack[var24 + (class32.scriptStringStackSize - var26.stringStackCount)];
                                                                                                                                                                }
 
-                                                                                                                                                               class30.field713 -= var32.intStackCount;
-                                                                                                                                                               class32.scriptStringStackSize -= var32.stringStackCount;
-                                                                                                                                                               ScriptState var22 = new ScriptState();
-                                                                                                                                                               var22.field111 = var4;
-                                                                                                                                                               var22.field104 = var5;
-                                                                                                                                                               var22.field105 = class32.field739;
-                                                                                                                                                               var22.field112 = class32.field740;
-                                                                                                                                                               class32.scriptStack[++class32.scriptStackCount - 1] = var22;
-                                                                                                                                                               var4 = var32;
-                                                                                                                                                               var6 = var32.instructions;
-                                                                                                                                                               var7 = var32.intOperands;
+                                                                                                                                                               class30.field713 -= var26.intStackCount;
+                                                                                                                                                               class32.scriptStringStackSize -= var26.stringStackCount;
+                                                                                                                                                               ScriptState var31 = new ScriptState();
+                                                                                                                                                               var31.field111 = var4;
+                                                                                                                                                               var31.field104 = var5;
+                                                                                                                                                               var31.field105 = class32.field739;
+                                                                                                                                                               var31.field112 = class32.field740;
+                                                                                                                                                               class32.scriptStack[++class32.scriptStackCount - 1] = var31;
+                                                                                                                                                               var4 = var26;
+                                                                                                                                                               var6 = var26.instructions;
+                                                                                                                                                               var7 = var26.intOperands;
                                                                                                                                                                var5 = -1;
                                                                                                                                                                class32.field739 = var28;
-                                                                                                                                                               class32.field740 = var21;
+                                                                                                                                                               class32.field740 = var30;
                                                                                                                                                             }
                                                                                                                                                          } else {
                                                                                                                                                             --class32.scriptStringStackSize;
@@ -254,8 +254,8 @@ public class CombatInfoListHolder extends Node {
                                                                                                                                                    } else {
                                                                                                                                                       var12 = var7[var5];
                                                                                                                                                       class32.scriptStringStackSize -= var12;
-                                                                                                                                                      String var20 = class170.method3303(class32.scriptStringStack, class32.scriptStringStackSize, var12);
-                                                                                                                                                      class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var20;
+                                                                                                                                                      String var25 = class170.method3303(class32.scriptStringStack, class32.scriptStringStackSize, var12);
+                                                                                                                                                      class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var25;
                                                                                                                                                    }
                                                                                                                                                 } else {
                                                                                                                                                    class32.field740[var7[var5]] = class32.scriptStringStack[--class32.scriptStringStackSize];
@@ -271,30 +271,30 @@ public class CombatInfoListHolder extends Node {
                                                                                                                                        }
                                                                                                                                     } else {
                                                                                                                                        class30.field713 -= 2;
-                                                                                                                                       if(class32.field743[class30.field713] >= class32.field743[1 + class30.field713]) {
+                                                                                                                                       if(class32.field743[class30.field713] >= class32.field743[class30.field713 + 1]) {
                                                                                                                                           var5 += var7[var5];
                                                                                                                                        }
                                                                                                                                     }
                                                                                                                                  } else {
                                                                                                                                     class30.field713 -= 2;
-                                                                                                                                    if(class32.field743[class30.field713] <= class32.field743[1 + class30.field713]) {
+                                                                                                                                    if(class32.field743[class30.field713] <= class32.field743[class30.field713 + 1]) {
                                                                                                                                        var5 += var7[var5];
                                                                                                                                     }
                                                                                                                                  }
                                                                                                                               } else {
                                                                                                                                  var12 = var7[var5];
-                                                                                                                                 var13 = class32.field743[--class30.field713];
-                                                                                                                                 Varbit var14 = class22.method201(var12);
-                                                                                                                                 int var15 = var14.leastSignificantBit;
-                                                                                                                                 var16 = var14.configId;
-                                                                                                                                 int var17 = var14.mostSignificantBit;
-                                                                                                                                 int var18 = class165.field2182[var17 - var16];
-                                                                                                                                 if(var13 < 0 || var13 > var18) {
-                                                                                                                                    var13 = 0;
+                                                                                                                                 var15 = class32.field743[--class30.field713];
+                                                                                                                                 Varbit var17 = class22.method201(var12);
+                                                                                                                                 int var18 = var17.leastSignificantBit;
+                                                                                                                                 var24 = var17.configId;
+                                                                                                                                 int var19 = var17.mostSignificantBit;
+                                                                                                                                 int var20 = class165.field2182[var19 - var24];
+                                                                                                                                 if(var15 < 0 || var15 > var20) {
+                                                                                                                                    var15 = 0;
                                                                                                                                  }
 
-                                                                                                                                 var18 <<= var16;
-                                                                                                                                 class165.widgetSettings[var15] = class165.widgetSettings[var15] & ~var18 | var13 << var16 & var18;
+                                                                                                                                 var20 <<= var24;
+                                                                                                                                 class165.widgetSettings[var18] = class165.widgetSettings[var18] & ~var20 | var15 << var24 & var20;
                                                                                                                               }
                                                                                                                            } else {
                                                                                                                               var12 = var7[var5];
@@ -305,17 +305,17 @@ public class CombatInfoListHolder extends Node {
                                                                                                                               return;
                                                                                                                            }
 
-                                                                                                                           ScriptState var31 = class32.scriptStack[--class32.scriptStackCount];
-                                                                                                                           var4 = var31.field111;
+                                                                                                                           ScriptState var23 = class32.scriptStack[--class32.scriptStackCount];
+                                                                                                                           var4 = var23.field111;
                                                                                                                            var6 = var4.instructions;
                                                                                                                            var7 = var4.intOperands;
-                                                                                                                           var5 = var31.field104;
-                                                                                                                           class32.field739 = var31.field105;
-                                                                                                                           class32.field740 = var31.field112;
+                                                                                                                           var5 = var23.field104;
+                                                                                                                           class32.field739 = var23.field105;
+                                                                                                                           class32.field740 = var23.field112;
                                                                                                                         }
                                                                                                                      } else {
                                                                                                                         class30.field713 -= 2;
-                                                                                                                        if(class32.field743[class30.field713] > class32.field743[1 + class30.field713]) {
+                                                                                                                        if(class32.field743[class30.field713] > class32.field743[class30.field713 + 1]) {
                                                                                                                            var5 += var7[var5];
                                                                                                                         }
                                                                                                                      }
@@ -327,7 +327,7 @@ public class CombatInfoListHolder extends Node {
                                                                                                                   }
                                                                                                                } else {
                                                                                                                   class30.field713 -= 2;
-                                                                                                                  if(class32.field743[1 + class30.field713] == class32.field743[class30.field713]) {
+                                                                                                                  if(class32.field743[class30.field713 + 1] == class32.field743[class30.field713]) {
                                                                                                                      var5 += var7[var5];
                                                                                                                   }
                                                                                                                }
@@ -356,15 +356,15 @@ public class CombatInfoListHolder extends Node {
                                                                                                 class32.field743[++class30.field713 - 1] = var7[var5];
                                                                                              }
                                                                                           } else {
-                                                                                             boolean var30;
+                                                                                             boolean var16;
                                                                                              if(var4.intOperands[var5] == 1) {
-                                                                                                var30 = true;
+                                                                                                var16 = true;
                                                                                              } else {
-                                                                                                var30 = false;
+                                                                                                var16 = false;
                                                                                              }
 
-                                                                                             var13 = class13.method158(var27, var4, var30);
-                                                                                             switch(var13) {
+                                                                                             var15 = class13.method158(var14, var4, var16);
+                                                                                             switch(var15) {
                                                                                              case 0:
                                                                                                 return;
                                                                                              case 1:
@@ -400,18 +400,19 @@ public class CombatInfoListHolder extends Node {
                   }
                }
             }
-         } catch (Exception var26) {
-            StringBuilder var25 = new StringBuilder(30);
-            var25.append("").append(var4.hash).append(" ");
+         } catch (Exception var21) {
+            StringBuilder var11 = new StringBuilder(30);
+            var11.append("").append(var4.hash).append(" ");
 
-            for(var11 = class32.scriptStackCount - 1; var11 >= 0; --var11) {
-               var25.append("").append(class32.scriptStack[var11].field111.hash).append(" ");
+            for(var9 = class32.scriptStackCount - 1; var9 >= 0; --var9) {
+               var11.append("").append(class32.scriptStack[var9].field111.hash).append(" ");
             }
 
-            var25.append("").append(var8);
-            GameObject.method1958(var25.toString(), var26);
+            var11.append("").append(var8);
+            GameObject.method1958(var11.toString(), var21);
          }
       }
+
    }
 
    @ObfuscatedName("f")
@@ -439,14 +440,13 @@ public class CombatInfoListHolder extends Node {
          if(var6 < 4) {
             this.combatInfo1.method2443(new CombatInfo1(var1, var2, var3, var4));
          }
-
       } else {
          CombatInfoList.method2432(new CombatInfo1(var1, var2, var3, var4), var5);
          if(var6 >= 4) {
             this.combatInfo1.method2442().unlink();
          }
-
       }
+
    }
 
    @ObfuscatedName("u")
@@ -470,20 +470,20 @@ public class CombatInfoListHolder extends Node {
             class15.worldServersDownload = new class26(class108.field1755, new URL(NPC.field780));
          } else {
             byte[] var0 = class15.worldServersDownload.method562();
-            if(null != var0) {
+            if(var0 != null) {
                Buffer var1 = new Buffer(var0);
                World.field708 = var1.readUnsignedShort();
                World.worldList = new World[World.field708];
 
-               World var3;
-               for(int var2 = 0; var2 < World.field708; var3.index = var2++) {
-                  var3 = World.worldList[var2] = new World();
-                  var3.id = var1.readUnsignedShort();
-                  var3.mask = var1.readInt();
-                  var3.address = var1.readString();
-                  var3.activity = var1.readString();
-                  var3.location = var1.readUnsignedByte();
-                  var3.playerCount = var1.readShort();
+               World var2;
+               for(int var3 = 0; var3 < World.field708; var2.index = var3++) {
+                  var2 = World.worldList[var3] = new World();
+                  var2.id = var1.readUnsignedShort();
+                  var2.mask = var1.readInt();
+                  var2.address = var1.readString();
+                  var2.activity = var1.readString();
+                  var2.location = var1.readUnsignedByte();
+                  var2.playerCount = var1.readShort();
                }
 
                class3.method25(World.worldList, 0, World.worldList.length - 1, World.field699, World.field698);
@@ -507,7 +507,7 @@ public class CombatInfoListHolder extends Node {
    CombatInfo1 method726(int var1) {
       CombatInfo1 var2 = (CombatInfo1)this.combatInfo1.method2442();
       if(var2 != null && var2.field684 <= var1) {
-         for(CombatInfo1 var3 = (CombatInfo1)this.combatInfo1.method2433(); null != var3 && var3.field684 <= var1; var3 = (CombatInfo1)this.combatInfo1.method2433()) {
+         for(CombatInfo1 var3 = (CombatInfo1)this.combatInfo1.method2433(); var3 != null && var3.field684 <= var1; var3 = (CombatInfo1)this.combatInfo1.method2433()) {
             var2.unlink();
             var2 = var3;
          }
@@ -529,7 +529,7 @@ public class CombatInfoListHolder extends Node {
       garbageValue = "10"
    )
    static Font method728(byte[] var0) {
-      if(null == var0) {
+      if(var0 == null) {
          return null;
       } else {
          Font var1 = new Font(var0, class225.field3230, ItemComposition.field3003, class225.field3232, ChatLineBuffer.field994, class225.field3234, BufferProvider.field3199);

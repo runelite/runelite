@@ -105,7 +105,7 @@ public class Frames extends CacheableNode {
          }
       }
 
-      var6 = 192 * var5;
+      var6 = var5 * 192;
       if(var6 > 98048) {
          var6 = 98048;
       }
@@ -137,14 +137,14 @@ public class Frames extends CacheableNode {
          FrameMap var10 = null;
          int var11 = (var9[0] & 255) << 8 | var9[1] & 255;
 
-         for(FrameMap var12 = (FrameMap)var5.method2464(); null != var12; var12 = (FrameMap)var5.method2472()) {
+         for(FrameMap var12 = (FrameMap)var5.method2464(); var12 != null; var12 = (FrameMap)var5.method2472()) {
             if(var11 == var12.field1494) {
                var10 = var12;
                break;
             }
          }
 
-         if(null == var10) {
+         if(var10 == null) {
             byte[] var13 = var2.method3371(var11, 0);
             var10 = new FrameMap(var11, var13);
             var5.method2459(var10);

@@ -17,10 +17,6 @@ public class class148 {
       throw new Error();
    }
 
-   static {
-      new HashMap();
-   }
-
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "([Ljava/lang/String;[SI)V",
@@ -39,5 +35,10 @@ public class class148 {
       if(Ignore.method178(var0)) {
          class9.method97(Widget.widgets[var0], -1);
       }
+
+   }
+
+   static {
+      new HashMap();
    }
 }

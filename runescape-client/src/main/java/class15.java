@@ -45,7 +45,7 @@ public class class15 {
          var1[var3] = var7;
 
          for(int var8 = var2; var8 < var3; ++var8) {
-            if(null == var6 || null != var0[var8] && var0[var8].compareTo(var6) < (var8 & 1)) {
+            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
                String var9 = var0[var8];
                var0[var8] = var0[var5];
                var0[var5] = var9;
@@ -73,7 +73,7 @@ public class class15 {
    @Export("getNpcDefinition")
    public static NPCComposition getNpcDefinition(int var0) {
       NPCComposition var1 = (NPCComposition)NPCComposition.field3026.get((long)var0);
-      if(null != var1) {
+      if(var1 != null) {
          return var1;
       } else {
          byte[] var2 = NPCComposition.field3022.getConfigData(9, var0);
@@ -142,7 +142,7 @@ public class class15 {
       } else {
          class30.field713 -= 2;
          int var4 = class32.field743[class30.field713];
-         int var5 = class32.field743[1 + class30.field713];
+         int var5 = class32.field743[class30.field713 + 1];
          var3.item = var4;
          var3.stackSize = var5;
          ItemComposition var6 = class196.getItemDefinition(var4);

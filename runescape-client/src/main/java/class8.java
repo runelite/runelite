@@ -31,9 +31,11 @@ public class class8 {
       if(var3 == 0) {
          if(var2) {
             var4.field259 = false;
-         } else if(var1 == Client.localInteractingIndex) {
-            throw new RuntimeException();
          } else {
+            if(var1 == Client.localInteractingIndex) {
+               throw new RuntimeException();
+            }
+
             class45.field927[var1] = (class119.baseX + var4.pathX[0] >> 13 << 14) + (var4.field276 << 28) + (var4.pathY[0] + class187.baseY >> 13);
             if(var4.field646 != -1) {
                class45.field928[var1] = var4.field646;
@@ -46,7 +48,6 @@ public class class8 {
             if(var0.method3111(1) != 0) {
                class60.method1182(var0, var1);
             }
-
          }
       } else {
          int var5;
@@ -78,18 +79,19 @@ public class class8 {
                ++var7;
             }
 
-            if(var1 == Client.localInteractingIndex && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
+            if(var1 != Client.localInteractingIndex || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
+               if(var2) {
+                  var4.field259 = true;
+                  var4.field263 = var6;
+                  var4.field255 = var7;
+               } else {
+                  var4.field259 = false;
+                  var4.method209(var6, var7, class45.field921[var1]);
+               }
+            } else {
                var4.method216(var6, var7);
                var4.field259 = false;
-            } else if(var2) {
-               var4.field259 = true;
-               var4.field263 = var6;
-               var4.field255 = var7;
-            } else {
-               var4.field259 = false;
-               var4.method209(var6, var7, class45.field921[var1]);
             }
-
          } else if(var3 == 2) {
             var5 = var0.method3111(4);
             var6 = var4.pathX[0];
@@ -153,7 +155,6 @@ public class class8 {
                var4.method216(var6, var7);
                var4.field259 = false;
             }
-
          } else {
             var5 = var0.method3111(1);
             int var8;
@@ -193,7 +194,6 @@ public class class8 {
                if(Client.localInteractingIndex == var1) {
                   Sequence.plane = var4.field276;
                }
-
             } else {
                var6 = var0.method3111(30);
                var7 = var6 >> 28;
@@ -217,10 +217,10 @@ public class class8 {
                if(Client.localInteractingIndex == var1) {
                   Sequence.plane = var4.field276;
                }
-
             }
          }
       }
+
    }
 
    @ObfuscatedName("l")

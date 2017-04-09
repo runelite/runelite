@@ -63,8 +63,8 @@ public class class97 implements class158 {
          class30.field713 -= 4;
          var4.originalWidth = class32.field743[class30.field713];
          var4.field2231 = class32.field743[class30.field713 + 1];
-         var4.field2226 = class32.field743[2 + class30.field713];
-         var4.field2227 = class32.field743[3 + class30.field713];
+         var4.field2226 = class32.field743[class30.field713 + 2];
+         var4.field2227 = class32.field743[class30.field713 + 3];
          class22.method197(var4);
          XGrandExchangeOffer.method54(var4);
          if(var3 != -1 && var4.type == 0) {

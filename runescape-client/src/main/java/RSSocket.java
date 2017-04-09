@@ -64,7 +64,7 @@ public final class RSSocket implements Runnable {
       var2.pathY[0] = var6 - class187.baseY;
       var2.y = (var2.pathY[0] << 7) + (var2.method207() << 6);
       Sequence.plane = var2.field276 = var4;
-      if(null != class45.field919[var1]) {
+      if(class45.field919[var1] != null) {
          var2.method206(class45.field919[var1]);
       }
 
@@ -115,8 +115,8 @@ public final class RSSocket implements Runnable {
             var2 += var4;
             var3 -= var4;
          }
-
       }
+
    }
 
    @ObfuscatedName("m")
@@ -130,28 +130,29 @@ public final class RSSocket implements Runnable {
          if(this.field1771) {
             this.field1771 = false;
             throw new IOException();
-         } else {
-            if(this.outbuffer == null) {
-               this.outbuffer = new byte[5000];
+         }
+
+         if(this.outbuffer == null) {
+            this.outbuffer = new byte[5000];
+         }
+
+         synchronized(this) {
+            for(int var5 = 0; var5 < var3; ++var5) {
+               this.outbuffer[this.outbufLen] = var1[var2 + var5];
+               this.outbufLen = (this.outbufLen + 1) % 5000;
+               if(this.outbufLen == (this.field1769 + 4900) % 5000) {
+                  throw new IOException();
+               }
             }
 
-            synchronized(this) {
-               for(int var5 = 0; var5 < var3; ++var5) {
-                  this.outbuffer[this.outbufLen] = var1[var2 + var5];
-                  this.outbufLen = (1 + this.outbufLen) % 5000;
-                  if(this.outbufLen == (4900 + this.field1769) % 5000) {
-                     throw new IOException();
-                  }
-               }
-
-               if(null == this.field1767) {
-                  this.field1767 = this.field1764.method2004(this, 3);
-               }
-
-               this.notifyAll();
+            if(this.field1767 == null) {
+               this.field1767 = this.field1764.method2004(this, 3);
             }
+
+            this.notifyAll();
          }
       }
+
    }
 
    public void run() {
@@ -168,7 +169,7 @@ public final class RSSocket implements Runnable {
 
                      try {
                         this.wait();
-                     } catch (InterruptedException var10) {
+                     } catch (InterruptedException var9) {
                         ;
                      }
                   }
@@ -187,7 +188,7 @@ public final class RSSocket implements Runnable {
 
                try {
                   this.outputStream.write(this.outbuffer, var2, var1);
-               } catch (IOException var9) {
+               } catch (IOException var8) {
                   this.field1771 = true;
                }
 
@@ -197,33 +198,33 @@ public final class RSSocket implements Runnable {
                   if(this.outbufLen == this.field1769) {
                      this.outputStream.flush();
                   }
-               } catch (IOException var8) {
+               } catch (IOException var7) {
                   this.field1771 = true;
                }
                continue;
             }
 
             try {
-               if(null != this.inputStream) {
+               if(this.inputStream != null) {
                   this.inputStream.close();
                }
 
-               if(null != this.outputStream) {
+               if(this.outputStream != null) {
                   this.outputStream.close();
                }
 
-               if(null != this.socket) {
+               if(this.socket != null) {
                   this.socket.close();
                }
-            } catch (IOException var7) {
+            } catch (IOException var6) {
                ;
             }
 
             this.outbuffer = null;
             break;
          }
-      } catch (Exception var12) {
-         GameObject.method1958((String)null, var12);
+      } catch (Exception var11) {
+         GameObject.method1958((String)null, var11);
       }
 
    }
@@ -249,7 +250,7 @@ public final class RSSocket implements Runnable {
             this.notifyAll();
          }
 
-         if(null != this.field1767) {
+         if(this.field1767 != null) {
             while(this.field1767.field1686 == 0) {
                class115.method2300(1L);
             }
@@ -265,6 +266,7 @@ public final class RSSocket implements Runnable {
 
          this.field1767 = null;
       }
+
    }
 
    public RSSocket(Socket var1, class103 var2) throws IOException {
@@ -312,20 +314,20 @@ public final class RSSocket implements Runnable {
             var4.field1064 = new int[256 * (class57.field1078?2:1)];
             var4.field1069 = var3;
             var4.vmethod1150(var1);
-            var4.field1084 = 1024 + (var3 & -1024);
+            var4.field1084 = (var3 & -1024) + 1024;
             if(var4.field1084 > 16384) {
                var4.field1084 = 16384;
             }
 
             var4.vmethod1149(var4.field1084);
-            if(class217.field3186 > 0 && null == Item.field907) {
+            if(class217.field3186 > 0 && Item.field907 == null) {
                Item.field907 = new class63();
                Item.field907.field1115 = var0;
                var0.method2004(Item.field907, class217.field3186);
             }
 
             if(Item.field907 != null) {
-               if(null != Item.field907.field1114[var2]) {
+               if(Item.field907.field1114[var2] != null) {
                   throw new IllegalArgumentException();
                }
 

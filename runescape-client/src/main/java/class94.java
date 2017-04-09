@@ -115,7 +115,7 @@ public final class class94 {
       garbageValue = "783134109"
    )
    static boolean method1951(String var0) {
-      if(null == var0) {
+      if(var0 == null) {
          return false;
       } else {
          String var1 = class187.method3483(var0, Ignore.field214);
@@ -143,8 +143,8 @@ public final class class94 {
    static final void method1952(boolean var0) {
       for(int var1 = 0; var1 < Client.field402; ++var1) {
          NPC var2 = Client.cachedNPCs[Client.field342[var1]];
-         int var3 = 536870912 + (Client.field342[var1] << 14);
-         if(null != var2 && var2.vmethod738() && var0 == var2.composition.isVisible && var2.composition.method3742()) {
+         int var3 = (Client.field342[var1] << 14) + 536870912;
+         if(var2 != null && var2.vmethod738() && var0 == var2.composition.isVisible && var2.composition.method3742()) {
             int var4 = var2.x >> 7;
             int var5 = var2.y >> 7;
             if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
@@ -160,7 +160,7 @@ public final class class94 {
                   var3 -= Integer.MIN_VALUE;
                }
 
-               CombatInfo1.region.method1747(Sequence.plane, var2.x, var2.y, class103.method2025(var2.field622 * 64 - 64 + var2.x, var2.field622 * 64 - 64 + var2.y, Sequence.plane), 60 + (var2.field622 * 64 - 64), var2, var2.angle, var3, var2.field621);
+               CombatInfo1.region.method1747(Sequence.plane, var2.x, var2.y, class103.method2025(var2.field622 * 64 - 64 + var2.x, var2.field622 * 64 - 64 + var2.y, Sequence.plane), var2.field622 * 64 - 64 + 60, var2, var2.angle, var3, var2.field621);
             }
          }
       }

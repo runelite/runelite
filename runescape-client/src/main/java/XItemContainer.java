@@ -115,7 +115,7 @@ public class XItemContainer extends Node {
          ISAACCipher.method3132(Client.widgetRoot);
       }
 
-      for(WidgetNode var4 = (WidgetNode)Client.componentTable.method2420(); null != var4; var4 = (WidgetNode)Client.componentTable.method2422()) {
+      for(WidgetNode var4 = (WidgetNode)Client.componentTable.method2420(); var4 != null; var4 = (WidgetNode)Client.componentTable.method2422()) {
          Item.method828(var4, true);
       }
 
@@ -203,7 +203,7 @@ public class XItemContainer extends Node {
             }
 
             var0 = class20.field233.method2102();
-            if(null != class2.field23) {
+            if(class2.field23 != null) {
                class2.field23.method1083();
             }
 
@@ -243,14 +243,14 @@ public class XItemContainer extends Node {
          int var1;
          int var2;
          if(Client.field406 == 5) {
-            int[] var5 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(ChatMessages.field946 >> 32), (int)(ChatMessages.field946 & -1L)};
+            int[] var3 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(ChatMessages.field946 >> 32), (int)(ChatMessages.field946 & -1L)};
             Client.secretCipherBuffer1.offset = 0;
             Client.secretCipherBuffer1.putByte(1);
             Client.secretCipherBuffer1.putByte(class41.field858.vmethod4085());
-            Client.secretCipherBuffer1.putInt(var5[0]);
-            Client.secretCipherBuffer1.putInt(var5[1]);
-            Client.secretCipherBuffer1.putInt(var5[2]);
-            Client.secretCipherBuffer1.putInt(var5[3]);
+            Client.secretCipherBuffer1.putInt(var3[0]);
+            Client.secretCipherBuffer1.putInt(var3[1]);
+            Client.secretCipherBuffer1.putInt(var3[2]);
+            Client.secretCipherBuffer1.putInt(var3[3]);
             switch(class41.field858.field1653) {
             case 0:
             case 2:
@@ -286,9 +286,9 @@ public class XItemContainer extends Node {
             Actor.method571(Client.field346);
             Client.field346.method2931(class156.field2133);
             Client.field346.putInt(Client.field377);
-            Buffer var3 = new Buffer(WallObject.field1573.method4271());
-            WallObject.field1573.method4270(var3);
-            Client.field346.putBytes(var3.payload, 0, var3.payload.length);
+            Buffer var4 = new Buffer(WallObject.field1573.method4271());
+            WallObject.field1573.method4270(var4);
+            Client.field346.putBytes(var4.payload, 0, var4.payload.length);
             Client.field346.putByte(ScriptState.field113);
             Client.field346.putInt(0);
             Client.field346.putInt(class157.field2137.field2737);
@@ -307,16 +307,16 @@ public class XItemContainer extends Node {
             Client.field346.putInt(class5.field56.field2737);
             Client.field346.putInt(class57.field1083.field2737);
             Client.field346.putInt(Ignore.field215.field2737);
-            Client.field346.encryptXtea(var5, var2, Client.field346.offset);
+            Client.field346.encryptXtea(var3, var2, Client.field346.offset);
             Client.field346.method3048(Client.field346.offset - var1);
             class20.field233.queueForWrite(Client.field346.payload, 0, Client.field346.offset);
-            Client.secretCipherBuffer1.seed(var5);
+            Client.secretCipherBuffer1.seed(var3);
 
-            for(int var4 = 0; var4 < 4; ++var4) {
-               var5[var4] += 50;
+            for(int var5 = 0; var5 < 4; ++var5) {
+               var3[var5] += 50;
             }
 
-            Client.secretCipherBuffer2.seed(var5);
+            Client.secretCipherBuffer2.seed(var3);
             Client.field406 = 6;
          }
 
@@ -353,23 +353,22 @@ public class XItemContainer extends Node {
             if(--Client.field409 <= 0) {
                Client.field406 = 0;
             }
-
          } else {
             if(Client.field406 == 9 && class20.field233.method2108() >= 13) {
-               boolean var11 = class20.field233.method2102() == 1;
+               boolean var8 = class20.field233.method2102() == 1;
                class20.field233.method2104(Client.secretCipherBuffer2.payload, 0, 4);
                Client.secretCipherBuffer2.offset = 0;
-               boolean var10 = false;
-               if(var11) {
+               boolean var11 = false;
+               if(var8) {
                   var1 = Client.secretCipherBuffer2.readOpcode() << 24;
                   var1 |= Client.secretCipherBuffer2.readOpcode() << 16;
                   var1 |= Client.secretCipherBuffer2.readOpcode() << 8;
                   var1 |= Client.secretCipherBuffer2.readOpcode();
                   var2 = class108.method2088(class41.username);
                   if(class148.field2058.field715.size() >= 10 && !class148.field2058.field715.containsKey(Integer.valueOf(var2))) {
-                     Iterator var12 = class148.field2058.field715.entrySet().iterator();
-                     var12.next();
-                     var12.remove();
+                     Iterator var13 = class148.field2058.field715.entrySet().iterator();
+                     var13.next();
+                     var13.remove();
                   }
 
                   class148.field2058.field715.put(Integer.valueOf(var2), Integer.valueOf(var1));
@@ -391,7 +390,7 @@ public class XItemContainer extends Node {
 
                try {
                   class100.method1988(Client.field433, "zap");
-               } catch (Throwable var8) {
+               } catch (Throwable var6) {
                   ;
                }
 
@@ -408,7 +407,6 @@ public class XItemContainer extends Node {
                   IndexDataBase.xteaChanged(false);
                   Client.packetOpcode = -1;
                }
-
             } else {
                if(Client.field406 == 11 && class20.field233.method2108() >= 2) {
                   Client.secretCipherBuffer2.offset = 0;
@@ -422,10 +420,10 @@ public class XItemContainer extends Node {
                   Client.secretCipherBuffer2.offset = 0;
                   class20.field233.method2104(Client.secretCipherBuffer2.payload, 0, class33.field773);
                   Client.secretCipherBuffer2.offset = 0;
-                  String var13 = Client.secretCipherBuffer2.readString();
-                  String var7 = Client.secretCipherBuffer2.readString();
-                  String var6 = Client.secretCipherBuffer2.readString();
-                  class65.method1204(var13, var7, var6);
+                  String var9 = Client.secretCipherBuffer2.readString();
+                  String var12 = Client.secretCipherBuffer2.readString();
+                  String var14 = Client.secretCipherBuffer2.readString();
+                  class65.method1204(var9, var12, var14);
                   GameObject.setGameState(10);
                }
 
@@ -480,10 +478,10 @@ public class XItemContainer extends Node {
                      Projectile.localPlayer = null;
 
                      for(var1 = 0; var1 < Client.cachedNPCs.length; ++var1) {
-                        NPC var14 = Client.cachedNPCs[var1];
-                        if(null != var14) {
-                           var14.interacting = -1;
-                           var14.field677 = false;
+                        NPC var10 = Client.cachedNPCs[var1];
+                        if(var10 != null) {
+                           var10.interacting = -1;
+                           var10.field677 = false;
                         }
                      }
 
@@ -503,7 +501,7 @@ public class XItemContainer extends Node {
                }
             }
          }
-      } catch (IOException var9) {
+      } catch (IOException var7) {
          if(Client.field336 < 1) {
             if(class99.field1671 == Client.field431) {
                Client.field431 = class0.field4;
@@ -517,6 +515,7 @@ public class XItemContainer extends Node {
             class36.method755(-2);
          }
       }
+
    }
 
    @ObfuscatedName("x")
@@ -564,16 +563,16 @@ public class XItemContainer extends Node {
       }
 
       int var6 = var5 * (Client.field558 - Client.field325) / 100 + Client.field325;
-      int var7 = var3 * var6 * 512 / (334 * var2);
+      int var7 = var3 * var6 * 512 / (var2 * 334);
       int var8;
       int var9;
-      short var15;
+      short var10;
       if(var7 < Client.field563) {
-         var15 = Client.field563;
-         var6 = 334 * var2 * var15 / (var3 * 512);
+         var10 = Client.field563;
+         var6 = var2 * 334 * var10 / (var3 * 512);
          if(var6 > Client.field562) {
             var6 = Client.field562;
-            var8 = var6 * var3 * 512 / (334 * var15);
+            var8 = var6 * var3 * 512 / (var10 * 334);
             var9 = (var2 - var8) / 2;
             if(var4) {
                Rasterizer2D.method4000();
@@ -585,11 +584,11 @@ public class XItemContainer extends Node {
             var2 -= var9 * 2;
          }
       } else if(var7 > Client.field564) {
-         var15 = Client.field564;
-         var6 = 334 * var15 * var2 / (var3 * 512);
+         var10 = Client.field564;
+         var6 = var10 * 334 * var2 / (var3 * 512);
          if(var6 < Client.field505) {
             var6 = Client.field505;
-            var8 = 334 * var15 * var2 / (512 * var6);
+            var8 = var10 * 334 * var2 / (var6 * 512);
             var9 = (var3 - var8) / 2;
             if(var4) {
                Rasterizer2D.method4000();
@@ -598,23 +597,23 @@ public class XItemContainer extends Node {
             }
 
             var1 += var9;
-            var3 -= 2 * var9;
+            var3 -= var9 * 2;
          }
       }
 
       var8 = var5 * (Client.field560 - Client.field559) / 100 + Client.field559;
       Client.scale = var8 * var3 * var6 / 85504 << 1;
       if(Client.camera2 != var2 || var3 != Client.camera3) {
-         int[] var14 = new int[9];
+         int[] var11 = new int[9];
 
-         for(int var10 = 0; var10 < 9; ++var10) {
-            int var11 = 15 + 32 * var10 + 128;
-            int var12 = 600 + 3 * var11;
-            int var13 = class84.field1475[var11];
-            var14[var10] = var12 * var13 >> 16;
+         for(int var12 = 0; var12 < 9; ++var12) {
+            int var13 = var12 * 32 + 15 + 128;
+            int var14 = var13 * 3 + 600;
+            int var15 = class84.field1475[var13];
+            var11[var12] = var14 * var15 >> 16;
          }
 
-         Region.method1810(var14, 500, 800, var2, var3);
+         Region.method1810(var11, 500, 800, var2, var3);
       }
 
       Client.field565 = var0;

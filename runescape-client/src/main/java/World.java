@@ -75,7 +75,7 @@ public class World {
       garbageValue = "-64"
    )
    static final void method596() {
-      if(null != class137.field1927) {
+      if(class137.field1927 != null) {
          class137.field1927.method1082();
       }
 
@@ -133,7 +133,7 @@ public class World {
       var0 |= var0 >>> 4;
       var0 |= var0 >>> 8;
       var0 |= var0 >>> 16;
-      return 1 + var0;
+      return var0 + 1;
    }
 
    @ObfuscatedName("f")

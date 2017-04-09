@@ -59,7 +59,7 @@ public final class GroundObject {
       }
 
       var2 = 0;
-      int var3 = 128 * var0;
+      int var3 = var0 * 128;
       int var4 = (var1 - var0) * 128;
 
       int var5;
@@ -89,7 +89,7 @@ public final class GroundObject {
       }
 
       if(class41.field845 > 0) {
-         class41.field845 -= 4 * var0;
+         class41.field845 -= var0 * 4;
       }
 
       if(class41.field846 > 0) {
@@ -130,7 +130,7 @@ public final class GroundObject {
          int var9;
          for(var6 = 0; var6 < var1; ++var6) {
             var7 = 0;
-            var8 = 128 * var6;
+            var8 = var6 * 128;
 
             for(var9 = -var5; var9 < 128; ++var9) {
                if(var5 + var9 < 128) {
@@ -153,15 +153,15 @@ public final class GroundObject {
             for(var8 = -var5; var8 < var1; ++var8) {
                var9 = var8 * 128;
                if(var5 + var8 < var1) {
-                  var7 += MessageNode.field249[128 * var5 + var9 + var6];
+                  var7 += MessageNode.field249[var5 * 128 + var9 + var6];
                }
 
-               if(var8 - (1 + var5) >= 0) {
-                  var7 -= MessageNode.field249[var9 + var6 - 128 * (var5 + 1)];
+               if(var8 - (var5 + 1) >= 0) {
+                  var7 -= MessageNode.field249[var9 + var6 - (var5 + 1) * 128];
                }
 
                if(var8 >= 0) {
-                  class25.field603[var9 + var6] = var7 / (1 + 2 * var5);
+                  class25.field603[var9 + var6] = var7 / (var5 * 2 + 1);
                }
             }
          }
@@ -195,24 +195,23 @@ public final class GroundObject {
       garbageValue = "-1377566805"
    )
    static void method1567(Sequence var0, int var1, int var2, int var3) {
-      if(Client.field545 < 50 && Client.field544 != 0) {
-         if(null != var0.field3063 && var1 < var0.field3063.length) {
-            int var4 = var0.field3063[var1];
-            if(var4 != 0) {
-               int var5 = var4 >> 8;
-               int var6 = var4 >> 4 & 7;
-               int var7 = var4 & 15;
-               Client.field546[Client.field545] = var5;
-               Client.field547[Client.field545] = var6;
-               Client.field334[Client.field545] = 0;
-               Client.field550[Client.field545] = null;
-               int var8 = (var2 - 64) / 128;
-               int var9 = (var3 - 64) / 128;
-               Client.field464[Client.field545] = var7 + (var9 << 8) + (var8 << 16);
-               ++Client.field545;
-            }
+      if(Client.field545 < 50 && Client.field544 != 0 && var0.field3063 != null && var1 < var0.field3063.length) {
+         int var4 = var0.field3063[var1];
+         if(var4 != 0) {
+            int var5 = var4 >> 8;
+            int var6 = var4 >> 4 & 7;
+            int var7 = var4 & 15;
+            Client.field546[Client.field545] = var5;
+            Client.field547[Client.field545] = var6;
+            Client.field334[Client.field545] = 0;
+            Client.field550[Client.field545] = null;
+            int var8 = (var2 - 64) / 128;
+            int var9 = (var3 - 64) / 128;
+            Client.field464[Client.field545] = var7 + (var9 << 8) + (var8 << 16);
+            ++Client.field545;
          }
       }
+
    }
 
    @ObfuscatedName("dn")
@@ -269,40 +268,40 @@ public final class GroundObject {
       if(var1 != null) {
          return var1;
       } else {
-         IndexDataBase var3 = Sequence.field3078;
-         IndexDataBase var4 = class5.field55;
-         boolean var5 = true;
-         int[] var6 = var3.method3345(var0);
+         IndexDataBase var2 = Sequence.field3078;
+         IndexDataBase var3 = class5.field55;
+         boolean var4 = true;
+         int[] var5 = var2.method3345(var0);
 
-         for(int var7 = 0; var7 < var6.length; ++var7) {
-            byte[] var8 = var3.method3371(var0, var6[var7]);
-            if(var8 == null) {
-               var5 = false;
+         for(int var6 = 0; var6 < var5.length; ++var6) {
+            byte[] var7 = var2.method3371(var0, var5[var6]);
+            if(var7 == null) {
+               var4 = false;
             } else {
-               int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
-               byte[] var10 = var4.method3371(var9, 0);
-               if(null == var10) {
-                  var5 = false;
+               int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
+               byte[] var9 = var3.method3371(var8, 0);
+               if(var9 == null) {
+                  var4 = false;
                }
             }
          }
 
-         Frames var2;
-         if(!var5) {
-            var2 = null;
+         Frames var11;
+         if(!var4) {
+            var11 = null;
          } else {
             try {
-               var2 = new Frames(var3, var4, var0, false);
-            } catch (Exception var12) {
-               var2 = null;
+               var11 = new Frames(var2, var3, var0, false);
+            } catch (Exception var10) {
+               var11 = null;
             }
          }
 
-         if(null != var2) {
-            Sequence.field3071.put(var2, (long)var0);
+         if(var11 != null) {
+            Sequence.field3071.put(var11, (long)var0);
          }
 
-         return var2;
+         return var11;
       }
    }
 }

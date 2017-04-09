@@ -66,11 +66,11 @@ public class CombatInfo1 extends Node {
    )
    static Script method593(int var0) {
       Script var1 = (Script)Script.field968.get((long)var0);
-      if(null != var1) {
+      if(var1 != null) {
          return var1;
       } else {
          byte[] var2 = Projectile.indexScripts.getConfigData(var0, 0);
-         if(null == var2) {
+         if(var2 == null) {
             return null;
          } else {
             var1 = new Script();
@@ -87,15 +87,15 @@ public class CombatInfo1 extends Node {
             var1.intOperands = new int[var4];
             var1.stringOperands = new String[var4];
 
-            int var6;
-            for(int var5 = 0; var3.offset < var3.payload.length - 12; var1.instructions[var5++] = var6) {
-               var6 = var3.readUnsignedShort();
-               if(var6 == 3) {
-                  var1.stringOperands[var5] = var3.readString();
-               } else if(var6 < 100 && var6 != 21 && var6 != 38 && var6 != 39) {
-                  var1.intOperands[var5] = var3.readInt();
+            int var5;
+            for(int var6 = 0; var3.offset < var3.payload.length - 12; var1.instructions[var6++] = var5) {
+               var5 = var3.readUnsignedShort();
+               if(var5 == 3) {
+                  var1.stringOperands[var6] = var3.readString();
+               } else if(var5 < 100 && var5 != 21 && var5 != 38 && var5 != 39) {
+                  var1.intOperands[var6] = var3.readInt();
                } else {
-                  var1.intOperands[var5] = var3.readUnsignedByte();
+                  var1.intOperands[var6] = var3.readUnsignedByte();
                }
             }
 

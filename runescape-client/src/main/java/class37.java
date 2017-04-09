@@ -37,10 +37,10 @@ public class class37 {
       garbageValue = "-1469028888"
    )
    public static byte[] method763(Object var0, boolean var1) {
-      if(null == var0) {
+      if(var0 == null) {
          return null;
       } else if(var0 instanceof byte[]) {
-         byte[] var3 = (byte[])((byte[])var0);
+         byte[] var3 = (byte[])((byte[])((byte[])((byte[])var0)));
          return var1?class41.method814(var3):var3;
       } else if(var0 instanceof class156) {
          class156 var2 = (class156)var0;

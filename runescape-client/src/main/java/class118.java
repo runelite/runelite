@@ -36,6 +36,6 @@ public class class118 {
    )
    public static Widget method2354(int var0, int var1) {
       Widget var2 = FaceNormal.method1932(var0);
-      return var1 == -1?var2:(null != var2 && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
+      return var1 == -1?var2:(var2 != null && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
    }
 }

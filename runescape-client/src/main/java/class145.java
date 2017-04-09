@@ -128,7 +128,7 @@ public class class145 {
                }
 
                if(var10 >= this.field2032.length) {
-                  int[] var13 = new int[2 * this.field2032.length];
+                  int[] var13 = new int[this.field2032.length * 2];
 
                   for(int var14 = 0; var14 < this.field2032.length; ++var14) {
                      var13[var14] = this.field2032[var14];
@@ -288,7 +288,7 @@ public class class145 {
             ++var7;
          }
 
-         return 1 + var7 - var2;
+         return var7 + 1 - var2;
       }
    }
 
@@ -299,7 +299,7 @@ public class class145 {
    )
    public static Spotanim method2800(int var0) {
       Spotanim var1 = (Spotanim)Spotanim.field2804.get((long)var0);
-      if(null != var1) {
+      if(var1 != null) {
          return var1;
       } else {
          byte[] var2 = Spotanim.field2805.getConfigData(13, var0);
@@ -320,7 +320,7 @@ public class class145 {
       garbageValue = "-122"
    )
    static final int method2801(class228 var0) {
-      if(null == var0) {
+      if(var0 == null) {
          return 12;
       } else {
          switch(var0.field3256) {

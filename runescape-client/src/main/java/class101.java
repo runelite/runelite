@@ -38,12 +38,12 @@ public class class101 extends RuntimeException {
 
          return 1;
       } else {
-         int var11;
+         int var3;
          if(var0 == 3601) {
-            var11 = class32.field743[--class30.field713];
-            if(Client.field571 == 2 && var11 < Client.friendCount) {
-               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.friends[var11].name;
-               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.friends[var11].previousName;
+            var3 = class32.field743[--class30.field713];
+            if(Client.field571 == 2 && var3 < Client.friendCount) {
+               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.friends[var3].name;
+               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.friends[var3].previousName;
             } else {
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
@@ -51,94 +51,94 @@ public class class101 extends RuntimeException {
 
             return 1;
          } else if(var0 == 3602) {
-            var11 = class32.field743[--class30.field713];
-            if(Client.field571 == 2 && var11 < Client.friendCount) {
-               class32.field743[++class30.field713 - 1] = Client.friends[var11].world;
+            var3 = class32.field743[--class30.field713];
+            if(Client.field571 == 2 && var3 < Client.friendCount) {
+               class32.field743[++class30.field713 - 1] = Client.friends[var3].world;
             } else {
                class32.field743[++class30.field713 - 1] = 0;
             }
 
             return 1;
          } else if(var0 == 3603) {
-            var11 = class32.field743[--class30.field713];
-            if(Client.field571 == 2 && var11 < Client.friendCount) {
-               class32.field743[++class30.field713 - 1] = Client.friends[var11].rank;
+            var3 = class32.field743[--class30.field713];
+            if(Client.field571 == 2 && var3 < Client.friendCount) {
+               class32.field743[++class30.field713 - 1] = Client.friends[var3].rank;
             } else {
                class32.field743[++class30.field713 - 1] = 0;
             }
 
             return 1;
          } else {
-            int var12;
-            String var14;
+            int var4;
+            String var5;
             if(var0 == 3604) {
-               var14 = class32.scriptStringStack[--class32.scriptStringStackSize];
-               var12 = class32.field743[--class30.field713];
+               var5 = class32.scriptStringStack[--class32.scriptStringStackSize];
+               var4 = class32.field743[--class30.field713];
                Client.secretCipherBuffer1.putOpcode(32);
-               Client.secretCipherBuffer1.putByte(class72.method1439(var14) + 1);
-               Client.secretCipherBuffer1.method2931(var14);
-               Client.secretCipherBuffer1.method2892(var12);
+               Client.secretCipherBuffer1.putByte(class72.method1439(var5) + 1);
+               Client.secretCipherBuffer1.method2931(var5);
+               Client.secretCipherBuffer1.method2892(var4);
                return 1;
             } else {
-               int var5;
+               int var6;
                String var7;
                String var8;
-               String var15;
-               Ignore var17;
-               Friend var18;
+               String var9;
+               Ignore var10;
+               Friend var11;
                if(var0 == 3605) {
-                  var14 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                  if(null != var14) {
+                  var5 = class32.scriptStringStack[--class32.scriptStringStackSize];
+                  if(var5 != null) {
                      if((Client.friendCount < 200 || Client.field313 == 1) && Client.friendCount < 400) {
-                        var15 = class187.method3483(var14, Ignore.field214);
-                        if(null != var15) {
-                           var5 = 0;
+                        var9 = class187.method3483(var5, Ignore.field214);
+                        if(var9 != null) {
+                           var6 = 0;
 
                            while(true) {
-                              if(var5 >= Client.friendCount) {
-                                 for(var5 = 0; var5 < Client.ignoreCount; ++var5) {
-                                    var17 = Client.ignores[var5];
-                                    var7 = class187.method3483(var17.name, Ignore.field214);
-                                    if(var7 != null && var7.equals(var15)) {
-                                       Player.sendGameMessage(30, "", "Please remove " + var14 + " from your ignore list first");
+                              if(var6 >= Client.friendCount) {
+                                 for(var6 = 0; var6 < Client.ignoreCount; ++var6) {
+                                    var10 = Client.ignores[var6];
+                                    var7 = class187.method3483(var10.name, Ignore.field214);
+                                    if(var7 != null && var7.equals(var9)) {
+                                       Player.sendGameMessage(30, "", "Please remove " + var5 + " from your ignore list first");
                                        return 1;
                                     }
 
-                                    if(null != var17.previousName) {
-                                       var8 = class187.method3483(var17.previousName, Ignore.field214);
-                                       if(var8 != null && var8.equals(var15)) {
-                                          Player.sendGameMessage(30, "", "Please remove " + var14 + " from your ignore list first");
+                                    if(var10.previousName != null) {
+                                       var8 = class187.method3483(var10.previousName, Ignore.field214);
+                                       if(var8 != null && var8.equals(var9)) {
+                                          Player.sendGameMessage(30, "", "Please remove " + var5 + " from your ignore list first");
                                           return 1;
                                        }
                                     }
                                  }
 
-                                 if(class187.method3483(Projectile.localPlayer.name, Ignore.field214).equals(var15)) {
+                                 if(class187.method3483(Projectile.localPlayer.name, Ignore.field214).equals(var9)) {
                                     Player.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
                                  } else {
                                     Client.secretCipherBuffer1.putOpcode(228);
-                                    Client.secretCipherBuffer1.putByte(class72.method1439(var14));
-                                    Client.secretCipherBuffer1.method2931(var14);
+                                    Client.secretCipherBuffer1.putByte(class72.method1439(var5));
+                                    Client.secretCipherBuffer1.method2931(var5);
                                  }
                                  break;
                               }
 
-                              var18 = Client.friends[var5];
-                              var7 = class187.method3483(var18.name, Ignore.field214);
-                              if(null != var7 && var7.equals(var15)) {
-                                 Player.sendGameMessage(30, "", var14 + " is already on your friend list");
+                              var11 = Client.friends[var6];
+                              var7 = class187.method3483(var11.name, Ignore.field214);
+                              if(var7 != null && var7.equals(var9)) {
+                                 Player.sendGameMessage(30, "", var5 + " is already on your friend list");
                                  break;
                               }
 
-                              if(null != var18.previousName) {
-                                 var8 = class187.method3483(var18.previousName, Ignore.field214);
-                                 if(null != var8 && var8.equals(var15)) {
-                                    Player.sendGameMessage(30, "", var14 + " is already on your friend list");
+                              if(var11.previousName != null) {
+                                 var8 = class187.method3483(var11.previousName, Ignore.field214);
+                                 if(var8 != null && var8.equals(var9)) {
+                                    Player.sendGameMessage(30, "", var5 + " is already on your friend list");
                                     break;
                                  }
                               }
 
-                              ++var5;
+                              ++var6;
                            }
                         }
                      } else {
@@ -148,38 +148,38 @@ public class class101 extends RuntimeException {
 
                   return 1;
                } else {
-                  boolean var9;
-                  int var10;
+                  boolean var12;
+                  int var13;
                   if(var0 == 3606) {
-                     var14 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                     if(var14 != null) {
-                        var15 = class187.method3483(var14, Ignore.field214);
-                        if(null != var15) {
-                           for(var5 = 0; var5 < Client.friendCount; ++var5) {
-                              var18 = Client.friends[var5];
-                              var7 = var18.name;
+                     var5 = class32.scriptStringStack[--class32.scriptStringStackSize];
+                     if(var5 != null) {
+                        var9 = class187.method3483(var5, Ignore.field214);
+                        if(var9 != null) {
+                           for(var6 = 0; var6 < Client.friendCount; ++var6) {
+                              var11 = Client.friends[var6];
+                              var7 = var11.name;
                               var8 = class187.method3483(var7, Ignore.field214);
-                              if(var14 != null && null != var7) {
-                                 if(!var14.startsWith("#") && !var7.startsWith("#")) {
-                                    var9 = var15.equals(var8);
+                              if(var5 != null && var7 != null) {
+                                 if(!var5.startsWith("#") && !var7.startsWith("#")) {
+                                    var12 = var9.equals(var8);
                                  } else {
-                                    var9 = var14.equals(var7);
+                                    var12 = var5.equals(var7);
                                  }
                               } else {
-                                 var9 = false;
+                                 var12 = false;
                               }
 
-                              if(var9) {
+                              if(var12) {
                                  --Client.friendCount;
 
-                                 for(var10 = var5; var10 < Client.friendCount; ++var10) {
-                                    Client.friends[var10] = Client.friends[var10 + 1];
+                                 for(var13 = var6; var13 < Client.friendCount; ++var13) {
+                                    Client.friends[var13] = Client.friends[var13 + 1];
                                  }
 
                                  Client.field496 = Client.field561;
                                  Client.secretCipherBuffer1.putOpcode(89);
-                                 Client.secretCipherBuffer1.putByte(class72.method1439(var14));
-                                 Client.secretCipherBuffer1.method2931(var14);
+                                 Client.secretCipherBuffer1.putByte(class72.method1439(var5));
+                                 Client.secretCipherBuffer1.method2931(var5);
                                  break;
                               }
                            }
@@ -188,58 +188,58 @@ public class class101 extends RuntimeException {
 
                      return 1;
                   } else if(var0 == 3607) {
-                     var14 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                     if(null != var14) {
+                     var5 = class32.scriptStringStack[--class32.scriptStringStackSize];
+                     if(var5 != null) {
                         if((Client.ignoreCount < 100 || Client.field313 == 1) && Client.ignoreCount < 400) {
-                           var15 = class187.method3483(var14, Ignore.field214);
-                           if(null != var15) {
-                              var5 = 0;
+                           var9 = class187.method3483(var5, Ignore.field214);
+                           if(var9 != null) {
+                              var6 = 0;
 
                               while(true) {
-                                 if(var5 >= Client.ignoreCount) {
-                                    for(var5 = 0; var5 < Client.friendCount; ++var5) {
-                                       var18 = Client.friends[var5];
-                                       var7 = class187.method3483(var18.name, Ignore.field214);
-                                       if(var7 != null && var7.equals(var15)) {
-                                          Player.sendGameMessage(31, "", "Please remove " + var14 + " from your friend list first");
+                                 if(var6 >= Client.ignoreCount) {
+                                    for(var6 = 0; var6 < Client.friendCount; ++var6) {
+                                       var11 = Client.friends[var6];
+                                       var7 = class187.method3483(var11.name, Ignore.field214);
+                                       if(var7 != null && var7.equals(var9)) {
+                                          Player.sendGameMessage(31, "", "Please remove " + var5 + " from your friend list first");
                                           return 1;
                                        }
 
-                                       if(var18.previousName != null) {
-                                          var8 = class187.method3483(var18.previousName, Ignore.field214);
-                                          if(var8 != null && var8.equals(var15)) {
-                                             Player.sendGameMessage(31, "", "Please remove " + var14 + " from your friend list first");
+                                       if(var11.previousName != null) {
+                                          var8 = class187.method3483(var11.previousName, Ignore.field214);
+                                          if(var8 != null && var8.equals(var9)) {
+                                             Player.sendGameMessage(31, "", "Please remove " + var5 + " from your friend list first");
                                              return 1;
                                           }
                                        }
                                     }
 
-                                    if(class187.method3483(Projectile.localPlayer.name, Ignore.field214).equals(var15)) {
+                                    if(class187.method3483(Projectile.localPlayer.name, Ignore.field214).equals(var9)) {
                                        Player.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
                                     } else {
                                        Client.secretCipherBuffer1.putOpcode(95);
-                                       Client.secretCipherBuffer1.putByte(class72.method1439(var14));
-                                       Client.secretCipherBuffer1.method2931(var14);
+                                       Client.secretCipherBuffer1.putByte(class72.method1439(var5));
+                                       Client.secretCipherBuffer1.method2931(var5);
                                     }
                                     break;
                                  }
 
-                                 var17 = Client.ignores[var5];
-                                 var7 = class187.method3483(var17.name, Ignore.field214);
-                                 if(var7 != null && var7.equals(var15)) {
-                                    Player.sendGameMessage(31, "", var14 + " is already on your ignore list");
+                                 var10 = Client.ignores[var6];
+                                 var7 = class187.method3483(var10.name, Ignore.field214);
+                                 if(var7 != null && var7.equals(var9)) {
+                                    Player.sendGameMessage(31, "", var5 + " is already on your ignore list");
                                     break;
                                  }
 
-                                 if(var17.previousName != null) {
-                                    var8 = class187.method3483(var17.previousName, Ignore.field214);
-                                    if(null != var8 && var8.equals(var15)) {
-                                       Player.sendGameMessage(31, "", var14 + " is already on your ignore list");
+                                 if(var10.previousName != null) {
+                                    var8 = class187.method3483(var10.previousName, Ignore.field214);
+                                    if(var8 != null && var8.equals(var9)) {
+                                       Player.sendGameMessage(31, "", var5 + " is already on your ignore list");
                                        break;
                                     }
                                  }
 
-                                 ++var5;
+                                 ++var6;
                               }
                            }
                         } else {
@@ -249,35 +249,35 @@ public class class101 extends RuntimeException {
 
                      return 1;
                   } else if(var0 == 3608) {
-                     var14 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                     if(var14 != null) {
-                        var15 = class187.method3483(var14, Ignore.field214);
-                        if(null != var15) {
-                           for(var5 = 0; var5 < Client.ignoreCount; ++var5) {
-                              var17 = Client.ignores[var5];
-                              var7 = var17.name;
+                     var5 = class32.scriptStringStack[--class32.scriptStringStackSize];
+                     if(var5 != null) {
+                        var9 = class187.method3483(var5, Ignore.field214);
+                        if(var9 != null) {
+                           for(var6 = 0; var6 < Client.ignoreCount; ++var6) {
+                              var10 = Client.ignores[var6];
+                              var7 = var10.name;
                               var8 = class187.method3483(var7, Ignore.field214);
-                              if(null != var14 && var7 != null) {
-                                 if(!var14.startsWith("#") && !var7.startsWith("#")) {
-                                    var9 = var15.equals(var8);
+                              if(var5 != null && var7 != null) {
+                                 if(!var5.startsWith("#") && !var7.startsWith("#")) {
+                                    var12 = var9.equals(var8);
                                  } else {
-                                    var9 = var14.equals(var7);
+                                    var12 = var5.equals(var7);
                                  }
                               } else {
-                                 var9 = false;
+                                 var12 = false;
                               }
 
-                              if(var9) {
+                              if(var12) {
                                  --Client.ignoreCount;
 
-                                 for(var10 = var5; var10 < Client.ignoreCount; ++var10) {
-                                    Client.ignores[var10] = Client.ignores[1 + var10];
+                                 for(var13 = var6; var13 < Client.ignoreCount; ++var13) {
+                                    Client.ignores[var13] = Client.ignores[var13 + 1];
                                  }
 
                                  Client.field496 = Client.field561;
                                  Client.secretCipherBuffer1.putOpcode(64);
-                                 Client.secretCipherBuffer1.putByte(class72.method1439(var14));
-                                 Client.secretCipherBuffer1.method2931(var14);
+                                 Client.secretCipherBuffer1.putByte(class72.method1439(var5));
+                                 Client.secretCipherBuffer1.method2931(var5);
                                  break;
                               }
                            }
@@ -286,33 +286,33 @@ public class class101 extends RuntimeException {
 
                      return 1;
                   } else if(var0 == 3609) {
-                     var14 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                     class177[] var4 = class3.method23();
+                     var5 = class32.scriptStringStack[--class32.scriptStringStackSize];
+                     class177[] var16 = class3.method23();
 
-                     for(var5 = 0; var5 < var4.length; ++var5) {
-                        class177 var16 = var4[var5];
-                        if(var16.field2695 != -1 && var14.startsWith(class30.method648(var16.field2695))) {
-                           var14 = var14.substring(6 + Integer.toString(var16.field2695).length());
+                     for(var6 = 0; var6 < var16.length; ++var6) {
+                        class177 var17 = var16[var6];
+                        if(var17.field2695 != -1 && var5.startsWith(class30.method648(var17.field2695))) {
+                           var5 = var5.substring(Integer.toString(var17.field2695).length() + 6);
                            break;
                         }
                      }
 
-                     class32.field743[++class30.field713 - 1] = class10.method137(var14, false)?1:0;
+                     class32.field743[++class30.field713 - 1] = class10.method137(var5, false)?1:0;
                      return 1;
                   } else {
-                     String[] var3;
-                     String var6;
+                     String[] var14;
+                     String var15;
                      if(var0 == 3611) {
-                        if(null != Client.field530) {
-                           var3 = class32.scriptStringStack;
-                           var12 = ++class32.scriptStringStackSize - 1;
-                           var6 = Client.field530;
-                           var7 = class7.method80(class38.method765(var6));
-                           if(null == var7) {
+                        if(Client.field530 != null) {
+                           var14 = class32.scriptStringStack;
+                           var4 = ++class32.scriptStringStackSize - 1;
+                           var15 = Client.field530;
+                           var7 = class7.method80(class38.method765(var15));
+                           if(var7 == null) {
                               var7 = "";
                            }
 
-                           var3[var12] = var7;
+                           var14[var4] = var7;
                         } else {
                            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                         }
@@ -327,27 +327,27 @@ public class class101 extends RuntimeException {
 
                         return 1;
                      } else if(var0 == 3613) {
-                        var11 = class32.field743[--class30.field713];
-                        if(Client.field530 != null && var11 < VertexNormal.clanChatCount) {
-                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class156.clanMembers[var11].username;
+                        var3 = class32.field743[--class30.field713];
+                        if(Client.field530 != null && var3 < VertexNormal.clanChatCount) {
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class156.clanMembers[var3].username;
                         } else {
                            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                         }
 
                         return 1;
                      } else if(var0 == 3614) {
-                        var11 = class32.field743[--class30.field713];
-                        if(Client.field530 != null && var11 < VertexNormal.clanChatCount) {
-                           class32.field743[++class30.field713 - 1] = class156.clanMembers[var11].world;
+                        var3 = class32.field743[--class30.field713];
+                        if(Client.field530 != null && var3 < VertexNormal.clanChatCount) {
+                           class32.field743[++class30.field713 - 1] = class156.clanMembers[var3].world;
                         } else {
                            class32.field743[++class30.field713 - 1] = 0;
                         }
 
                         return 1;
                      } else if(var0 == 3615) {
-                        var11 = class32.field743[--class30.field713];
-                        if(Client.field530 != null && var11 < VertexNormal.clanChatCount) {
-                           class32.field743[++class30.field713 - 1] = class156.clanMembers[var11].rank;
+                        var3 = class32.field743[--class30.field713];
+                        if(Client.field530 != null && var3 < VertexNormal.clanChatCount) {
+                           class32.field743[++class30.field713 - 1] = class156.clanMembers[var3].rank;
                         } else {
                            class32.field743[++class30.field713 - 1] = 0;
                         }
@@ -357,15 +357,15 @@ public class class101 extends RuntimeException {
                         class32.field743[++class30.field713 - 1] = class47.field959;
                         return 1;
                      } else if(var0 == 3617) {
-                        var14 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                        class181.method3331(var14);
+                        var5 = class32.scriptStringStack[--class32.scriptStringStackSize];
+                        class181.method3331(var5);
                         return 1;
                      } else if(var0 == 3618) {
                         class32.field743[++class30.field713 - 1] = class9.field75;
                         return 1;
                      } else if(var0 == 3619) {
-                        var14 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                        class39.method769(var14);
+                        var5 = class32.scriptStringStack[--class32.scriptStringStackSize];
+                        class39.method769(var5);
                         return 1;
                      } else if(var0 == 3620) {
                         Buffer.method3066();
@@ -379,10 +379,10 @@ public class class101 extends RuntimeException {
 
                         return 1;
                      } else if(var0 == 3622) {
-                        var11 = class32.field743[--class30.field713];
-                        if(Client.field571 != 0 && var11 < Client.ignoreCount) {
-                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.ignores[var11].name;
-                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.ignores[var11].previousName;
+                        var3 = class32.field743[--class30.field713];
+                        if(Client.field571 != 0 && var3 < Client.ignoreCount) {
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.ignores[var3].name;
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.ignores[var3].previousName;
                         } else {
                            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
@@ -390,25 +390,25 @@ public class class101 extends RuntimeException {
 
                         return 1;
                      } else if(var0 == 3623) {
-                        var14 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                        if(var14.startsWith(class30.method648(0)) || var14.startsWith(class30.method648(1))) {
-                           var14 = var14.substring(7);
+                        var5 = class32.scriptStringStack[--class32.scriptStringStackSize];
+                        if(var5.startsWith(class30.method648(0)) || var5.startsWith(class30.method648(1))) {
+                           var5 = var5.substring(7);
                         }
 
-                        class32.field743[++class30.field713 - 1] = class94.method1951(var14)?1:0;
+                        class32.field743[++class30.field713 - 1] = class94.method1951(var5)?1:0;
                         return 1;
                      } else if(var0 != 3624) {
                         if(var0 == 3625) {
                            if(Client.clanChatOwner != null) {
-                              var3 = class32.scriptStringStack;
-                              var12 = ++class32.scriptStringStackSize - 1;
-                              var6 = Client.clanChatOwner;
-                              var7 = class7.method80(class38.method765(var6));
-                              if(null == var7) {
+                              var14 = class32.scriptStringStack;
+                              var4 = ++class32.scriptStringStackSize - 1;
+                              var15 = Client.clanChatOwner;
+                              var7 = class7.method80(class38.method765(var15));
+                              if(var7 == null) {
                                  var7 = "";
                               }
 
-                              var3[var12] = var7;
+                              var14[var4] = var7;
                            } else {
                               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                            }
@@ -418,8 +418,8 @@ public class class101 extends RuntimeException {
                            return 2;
                         }
                      } else {
-                        var11 = class32.field743[--class30.field713];
-                        if(null != class156.clanMembers && var11 < VertexNormal.clanChatCount && class156.clanMembers[var11].username.equalsIgnoreCase(Projectile.localPlayer.name)) {
+                        var3 = class32.field743[--class30.field713];
+                        if(class156.clanMembers != null && var3 < VertexNormal.clanChatCount && class156.clanMembers[var3].username.equalsIgnoreCase(Projectile.localPlayer.name)) {
                            class32.field743[++class30.field713 - 1] = 1;
                         } else {
                            class32.field743[++class30.field713 - 1] = 0;

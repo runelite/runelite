@@ -76,7 +76,6 @@ public final class class31 extends Node {
          if(var4 == 4) {
             class41.loginIndex = 4;
          }
-
       } else {
          class41.loginIndex = var4;
          Rasterizer2D.method4057();
@@ -107,7 +106,7 @@ public final class class31 extends Node {
          }
 
          for(var6 = 0; var6 < 64; ++var6) {
-            class63.field1122[128 + var6] = 16776960 + var6 * 4;
+            class63.field1122[var6 + 128] = var6 * 4 + 16776960;
          }
 
          for(var6 = 0; var6 < 64; ++var6) {
@@ -117,7 +116,7 @@ public final class class31 extends Node {
          Friend.field158 = new int[256];
 
          for(var6 = 0; var6 < 64; ++var6) {
-            Friend.field158[var6] = 1024 * var6;
+            Friend.field158[var6] = var6 * 1024;
          }
 
          for(var6 = 0; var6 < 64; ++var6) {
@@ -125,7 +124,7 @@ public final class class31 extends Node {
          }
 
          for(var6 = 0; var6 < 64; ++var6) {
-            Friend.field158[128 + var6] = 262144 * var6 + '\uffff';
+            Friend.field158[var6 + 128] = var6 * 262144 + '\uffff';
          }
 
          for(var6 = 0; var6 < 64; ++var6) {
@@ -139,15 +138,15 @@ public final class class31 extends Node {
          }
 
          for(var6 = 0; var6 < 64; ++var6) {
-            class41.field867[64 + var6] = var6 * 262144 + 255;
+            class41.field867[var6 + 64] = var6 * 262144 + 255;
          }
 
          for(var6 = 0; var6 < 64; ++var6) {
-            class41.field867[128 + var6] = var6 * 1024 + 16711935;
+            class41.field867[var6 + 128] = var6 * 1024 + 16711935;
          }
 
          for(var6 = 0; var6 < 64; ++var6) {
-            class41.field867[192 + var6] = 16777215;
+            class41.field867[var6 + 192] = 16777215;
          }
 
          class137.field1933 = new int[256];
@@ -166,13 +165,13 @@ public final class class31 extends Node {
          class41.field861 = true;
          class41.worldSelectShown = false;
          if(!class148.field2058.field719) {
-            IndexData var9 = Client.indexTrack1;
-            int var7 = var9.method3351("scape main");
-            int var8 = var9.method3352(var7, "");
+            IndexData var7 = Client.indexTrack1;
+            int var8 = var7.method3351("scape main");
+            int var9 = var7.method3352(var8, "");
             class138.field1940 = 1;
-            class149.field2061 = var9;
-            class138.field1941 = var7;
-            RSCanvas.field1777 = var8;
+            class149.field2061 = var7;
+            class138.field1941 = var8;
+            RSCanvas.field1777 = var9;
             NPC.field783 = 255;
             class138.field1938 = false;
             class138.field1937 = 2;
@@ -186,8 +185,9 @@ public final class class31 extends Node {
          class41.loginWindowX = class41.field859 + 202;
          class41.field838.method4141(class41.field859, 0);
          class1.field7.method4141(class41.field859 + 382, 0);
-         class41.field839.method4088(382 + class41.field859 - class41.field839.originalWidth / 2, 18);
+         class41.field839.method4088(class41.field859 + 382 - class41.field839.originalWidth / 2, 18);
       }
+
    }
 
    @ObfuscatedName("f")
@@ -196,28 +196,28 @@ public final class class31 extends Node {
       garbageValue = "1375471995"
    )
    public static String method655(byte[] var0) {
-      int var2 = var0.length;
-      StringBuilder var3 = new StringBuilder();
+      int var1 = var0.length;
+      StringBuilder var2 = new StringBuilder();
 
-      for(int var4 = 0; var4 < var2 + 0; var4 += 3) {
-         int var5 = var0[var4] & 255;
-         var3.append(class206.field3100[var5 >>> 2]);
-         if(var4 < var2 - 1) {
-            int var6 = var0[1 + var4] & 255;
-            var3.append(class206.field3100[(var5 & 3) << 4 | var6 >>> 4]);
-            if(var4 < var2 - 2) {
-               int var7 = var0[2 + var4] & 255;
-               var3.append(class206.field3100[(var6 & 15) << 2 | var7 >>> 6]).append(class206.field3100[var7 & 63]);
+      for(int var3 = 0; var3 < var1 + 0; var3 += 3) {
+         int var4 = var0[var3] & 255;
+         var2.append(class206.field3100[var4 >>> 2]);
+         if(var3 < var1 - 1) {
+            int var5 = var0[var3 + 1] & 255;
+            var2.append(class206.field3100[(var4 & 3) << 4 | var5 >>> 4]);
+            if(var3 < var1 - 2) {
+               int var6 = var0[var3 + 2] & 255;
+               var2.append(class206.field3100[(var5 & 15) << 2 | var6 >>> 6]).append(class206.field3100[var6 & 63]);
             } else {
-               var3.append(class206.field3100[(var6 & 15) << 2]).append("=");
+               var2.append(class206.field3100[(var5 & 15) << 2]).append("=");
             }
          } else {
-            var3.append(class206.field3100[(var5 & 3) << 4]).append("==");
+            var2.append(class206.field3100[(var4 & 3) << 4]).append("==");
          }
       }
 
-      String var1 = var3.toString();
-      return var1;
+      String var7 = var2.toString();
+      return var7;
    }
 
    @ObfuscatedName("dh")
@@ -263,15 +263,15 @@ public final class class31 extends Node {
             var3.method206(var8);
          }
 
-         int var16;
+         int var17;
          if((var4 & 2) != 0) {
             var6 = var0.readUnsignedShort();
             if(var6 == '\uffff') {
                var6 = -1;
             }
 
-            var16 = var0.readUnsignedByte();
-            Friend.method165(var3, var6, var16);
+            var17 = var0.readUnsignedByte();
+            Friend.method165(var3, var6, var17);
          }
 
          if((var4 & 32) != 0) {
@@ -297,44 +297,44 @@ public final class class31 extends Node {
          }
 
          int var9;
-         int var10;
+         int var18;
          if((var4 & 16) != 0) {
             var6 = var0.readUnsignedByte();
+            int var10;
             int var11;
-            int var17;
-            int var18;
+            int var12;
             if(var6 > 0) {
-               for(var16 = 0; var16 < var6; ++var16) {
+               for(var17 = 0; var17 < var6; ++var17) {
                   var9 = -1;
+                  var18 = -1;
                   var10 = -1;
-                  var11 = -1;
-                  var17 = var0.method2880();
-                  if(var17 == 32767) {
-                     var17 = var0.method2880();
-                     var10 = var0.method2880();
-                     var9 = var0.method2880();
+                  var11 = var0.method2880();
+                  if(var11 == 32767) {
                      var11 = var0.method2880();
-                  } else if(var17 != 32766) {
+                     var18 = var0.method2880();
+                     var9 = var0.method2880();
                      var10 = var0.method2880();
+                  } else if(var11 != 32766) {
+                     var18 = var0.method2880();
                   } else {
-                     var17 = -1;
+                     var11 = -1;
                   }
 
-                  var18 = var0.method2880();
-                  var3.method585(var17, var10, var9, var11, Client.gameCycle, var18);
+                  var12 = var0.method2880();
+                  var3.method585(var11, var18, var9, var10, Client.gameCycle, var12);
                }
             }
 
-            var16 = var0.readUnsignedByte();
-            if(var16 > 0) {
-               for(var17 = 0; var17 < var16; ++var17) {
+            var17 = var0.readUnsignedByte();
+            if(var17 > 0) {
+               for(var11 = 0; var11 < var17; ++var11) {
                   var9 = var0.method2880();
-                  var10 = var0.method2880();
-                  if(var10 != 32767) {
-                     var11 = var0.method2880();
-                     var18 = var0.readUnsignedByte();
-                     int var19 = var10 > 0?var0.readUnsignedByte():var18;
-                     var3.method570(var9, Client.gameCycle, var10, var11, var18, var19);
+                  var18 = var0.method2880();
+                  if(var18 != 32767) {
+                     var10 = var0.method2880();
+                     var12 = var0.readUnsignedByte();
+                     int var13 = var18 > 0?var0.readUnsignedByte():var12;
+                     var3.method570(var9, Client.gameCycle, var18, var10, var12, var13);
                   } else {
                      var3.method569(var9);
                   }
@@ -352,45 +352,45 @@ public final class class31 extends Node {
 
          if((var4 & 8) != 0) {
             var6 = var0.readUnsignedShort();
-            class177 var20 = (class177)Client.method556(class3.method23(), var0.readUnsignedByte());
-            boolean var23 = var0.readUnsignedByte() == 1;
+            class177 var19 = (class177)Client.method556(class3.method23(), var0.readUnsignedByte());
+            boolean var22 = var0.readUnsignedByte() == 1;
             var9 = var0.readUnsignedByte();
-            var10 = var0.offset;
+            var18 = var0.offset;
             if(var3.name != null && var3.composition != null) {
-               boolean var22 = false;
-               if(var20.field2688 && class94.method1951(var3.name)) {
-                  var22 = true;
+               boolean var21 = false;
+               if(var19.field2688 && class94.method1951(var3.name)) {
+                  var21 = true;
                }
 
-               if(!var22 && Client.field421 == 0 && !var3.field265) {
+               if(!var21 && Client.field421 == 0 && !var3.field265) {
                   class45.field932.offset = 0;
                   var0.readBytes(class45.field932.payload, 0, var9);
                   class45.field932.offset = 0;
-                  Buffer var13 = class45.field932;
-                  String var12 = IndexFile.method2305(var13, 32767);
-                  String var14 = FontTypeFace.method3900(class94.method1954(var12));
-                  var3.overhead = var14.trim();
+                  Buffer var23 = class45.field932;
+                  String var14 = IndexFile.method2305(var23, 32767);
+                  String var15 = FontTypeFace.method3900(class94.method1954(var14));
+                  var3.overhead = var15.trim();
                   var3.field635 = var6 >> 8;
                   var3.field618 = var6 & 255;
                   var3.field656 = 150;
-                  var3.field632 = var23;
-                  var3.inSequence = var3 != Projectile.localPlayer && var20.field2688 && Client.field472 != "" && var14.toLowerCase().indexOf(Client.field472) == -1;
-                  int var15;
-                  if(var20.field2690) {
-                     var15 = var23?91:1;
+                  var3.field632 = var22;
+                  var3.inSequence = var3 != Projectile.localPlayer && var19.field2688 && Client.field472 != "" && var15.toLowerCase().indexOf(Client.field472) == -1;
+                  int var16;
+                  if(var19.field2690) {
+                     var16 = var22?91:1;
                   } else {
-                     var15 = var23?90:2;
+                     var16 = var22?90:2;
                   }
 
-                  if(var20.field2695 != -1) {
-                     Player.sendGameMessage(var15, class30.method648(var20.field2695) + var3.name, var14);
+                  if(var19.field2695 != -1) {
+                     Player.sendGameMessage(var16, class30.method648(var19.field2695) + var3.name, var15);
                   } else {
-                     Player.sendGameMessage(var15, var3.name, var14);
+                     Player.sendGameMessage(var16, var3.name, var15);
                   }
                }
             }
 
-            var0.offset = var9 + var10;
+            var0.offset = var9 + var18;
          }
 
          if((var4 & 4096) != 0) {
@@ -452,14 +452,14 @@ public final class class31 extends Node {
             if(var5 == 127) {
                var3.method216(var3.field263, var3.field255);
             } else {
-               byte var21;
+               byte var20;
                if(var5 != -1) {
-                  var21 = var5;
+                  var20 = var5;
                } else {
-                  var21 = class45.field921[var2];
+                  var20 = class45.field921[var2];
                }
 
-               var3.method209(var3.field263, var3.field255, var21);
+               var3.method209(var3.field263, var3.field255, var20);
             }
          }
       }
@@ -474,7 +474,7 @@ public final class class31 extends Node {
    void method665() {
       int var1 = this.field734;
       ObjectComposition var2 = this.field729.getImpostor();
-      if(null != var2) {
+      if(var2 != null) {
          this.field734 = var2.ambientSoundId;
          this.field728 = var2.field2909 * 128;
          this.field731 = var2.field2943;
@@ -488,7 +488,7 @@ public final class class31 extends Node {
          this.field733 = null;
       }
 
-      if(this.field734 != var1 && null != this.field736) {
+      if(this.field734 != var1 && this.field736 != null) {
          Ignore.field224.method943(this.field736);
          this.field736 = null;
       }

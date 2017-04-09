@@ -103,7 +103,7 @@ public final class FileOnDisk {
       garbageValue = "65"
    )
    public final void method1448() throws IOException {
-      if(null != this.file) {
+      if(this.file != null) {
          this.file.close();
          this.file = null;
       }

@@ -133,7 +133,7 @@ public class Sequence extends CacheableNode {
          this.frameStep = var1.readUnsignedShort();
       } else if(var2 == 3) {
          var3 = var1.readUnsignedByte();
-         this.interleaveLeave = new int[1 + var3];
+         this.interleaveLeave = new int[var3 + 1];
 
          for(var4 = 0; var4 < var3; ++var4) {
             this.interleaveLeave[var4] = var1.readUnsignedByte();
@@ -254,7 +254,7 @@ public class Sequence extends CacheableNode {
          Frames var6 = GroundObject.getFrames(var4 >> 16);
          var4 &= '\uffff';
          Model var7;
-         if(null == var6) {
+         if(var6 == null) {
             var7 = var1.method1584(!var5.method1935(var2));
             var7.method1588(var5, var2);
             return var7;
@@ -275,7 +275,7 @@ public class Sequence extends CacheableNode {
       var2 = this.frameIDs[var2];
       Frames var4 = GroundObject.getFrames(var2 >> 16);
       var2 &= '\uffff';
-      if(null == var4) {
+      if(var4 == null) {
          return var1.method1584(true);
       } else {
          Model var5 = var1.method1584(!var4.method1935(var2));
@@ -310,7 +310,7 @@ public class Sequence extends CacheableNode {
       int var3 = this.frameIDs[var2];
       Frames var4 = GroundObject.getFrames(var3 >> 16);
       var3 &= '\uffff';
-      if(null == var4) {
+      if(var4 == null) {
          return var1.method1584(true);
       } else {
          Frames var5 = null;

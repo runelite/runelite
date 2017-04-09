@@ -52,7 +52,7 @@ public class FloorUnderlayDefinition extends CacheableNode {
    )
    static int method3533(Widget var0) {
       class133 var1 = (class133)Client.widgetFlags.method2417((long)var0.index + ((long)var0.id << 32));
-      return null != var1?var1.field1918:var0.field2291;
+      return var1 != null?var1.field1918:var0.field2291;
    }
 
    @ObfuscatedName("l")
@@ -199,33 +199,33 @@ public class FloorUnderlayDefinition extends CacheableNode {
                }
             }
 
-            int var10;
+            int var9;
             if(var8 >= 48 && var8 <= 57) {
-               var10 = var8 - 48;
+               var9 = var8 - 48;
             } else if(var8 >= 65 && var8 <= 90) {
-               var10 = var8 - 55;
+               var9 = var8 - 55;
             } else {
                if(var8 < 97 || var8 > 122) {
                   throw new NumberFormatException();
                }
 
-               var10 = var8 - 87;
+               var9 = var8 - 87;
             }
 
-            if(var10 >= var1) {
+            if(var9 >= var1) {
                throw new NumberFormatException();
             }
 
             if(var3) {
-               var10 = -var10;
+               var9 = -var9;
             }
 
-            int var9 = var10 + var1 * var5;
-            if(var5 != var9 / var1) {
+            int var10 = var9 + var1 * var5;
+            if(var5 != var10 / var1) {
                throw new NumberFormatException();
             }
 
-            var5 = var9;
+            var5 = var10;
             var4 = true;
          }
 

@@ -150,15 +150,15 @@ public final class DecorativeObject {
       garbageValue = "119936294"
    )
    static Widget method1956(Widget var0) {
-      int var2 = FloorUnderlayDefinition.method3533(var0);
-      int var1 = var2 >> 17 & 7;
-      int var3 = var1;
-      if(var1 == 0) {
+      int var1 = FloorUnderlayDefinition.method3533(var0);
+      int var2 = var1 >> 17 & 7;
+      int var3 = var2;
+      if(var2 == 0) {
          return null;
       } else {
          for(int var4 = 0; var4 < var3; ++var4) {
             var0 = FaceNormal.method1932(var0.parentId);
-            if(null == var0) {
+            if(var0 == null) {
                return null;
             }
          }

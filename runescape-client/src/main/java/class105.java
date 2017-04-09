@@ -62,7 +62,7 @@ public final class class105 implements KeyListener, FocusListener {
    public static volatile int keyboardIdleTicks = 0;
 
    public final synchronized void keyPressed(KeyEvent var1) {
-      if(null != keyboard) {
+      if(keyboard != null) {
          int var2 = var1.getKeyCode();
          if(var2 >= 0 && var2 < field1724.length) {
             var2 = field1724[var2];
@@ -75,7 +75,7 @@ public final class class105 implements KeyListener, FocusListener {
 
          if(field1743 >= 0 && var2 >= 0) {
             field1735[field1743] = var2;
-            field1743 = 1 + field1743 & 127;
+            field1743 = field1743 + 1 & 127;
             if(field1743 == field1736) {
                field1743 = -1;
             }
@@ -83,7 +83,7 @@ public final class class105 implements KeyListener, FocusListener {
 
          int var3;
          if(var2 >= 0) {
-            var3 = 1 + field1737 & 127;
+            var3 = field1737 + 1 & 127;
             if(field1742 != var3) {
                field1739[field1737] = var2;
                field1738[field1737] = 0;
@@ -110,7 +110,7 @@ public final class class105 implements KeyListener, FocusListener {
    }
 
    public final void keyTyped(KeyEvent var1) {
-      if(null != keyboard) {
+      if(keyboard != null) {
          char var2 = var1.getKeyChar();
          if(var2 != 0 && var2 != '\uffff' && class36.method757(var2)) {
             int var3 = field1737 + 1 & 127;
@@ -156,18 +156,18 @@ public final class class105 implements KeyListener, FocusListener {
 
       int var1;
       for(var1 = 0; var1 < class45.field923; ++var1) {
-         Player var4 = Client.cachedPlayers[var0[var1]];
-         if(var4 != null && var4.field656 > 0) {
-            --var4.field656;
-            if(var4.field656 == 0) {
-               var4.overhead = null;
+         Player var2 = Client.cachedPlayers[var0[var1]];
+         if(var2 != null && var2.field656 > 0) {
+            --var2.field656;
+            if(var2.field656 == 0) {
+               var2.overhead = null;
             }
          }
       }
 
       for(var1 = 0; var1 < Client.field402; ++var1) {
-         int var2 = Client.field342[var1];
-         NPC var3 = Client.cachedNPCs[var2];
+         int var4 = Client.field342[var1];
+         NPC var3 = Client.cachedNPCs[var4];
          if(var3 != null && var3.field656 > 0) {
             --var3.field656;
             if(var3.field656 == 0) {

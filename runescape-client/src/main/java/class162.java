@@ -15,12 +15,12 @@ public class class162 {
    @ObfuscatedName("kk")
    static Widget[] field2170;
 
+   class162() throws Throwable {
+      throw new Error();
+   }
+
    static {
       Calendar.getInstance(TimeZone.getTimeZone("Europe/London"));
       field2165 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-   }
-
-   class162() throws Throwable {
-      throw new Error();
    }
 }

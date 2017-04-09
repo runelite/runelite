@@ -93,7 +93,7 @@ public class CombatInfo2 extends CacheableNode {
          return null;
       } else {
          SpritePixels var1 = (SpritePixels)field2854.get((long)this.field2850);
-         if(null != var1) {
+         if(var1 != null) {
             return var1;
          } else {
             var1 = class26.method564(field2842, this.field2850, 0);

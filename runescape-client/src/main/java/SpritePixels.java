@@ -107,6 +107,7 @@ public final class SpritePixels extends Rasterizer2D {
          this.offsetX -= var2;
          this.offsetY -= var4;
       }
+
    }
 
    @ObfuscatedName("n")
@@ -196,6 +197,7 @@ public final class SpritePixels extends Rasterizer2D {
       if(var6 > 0 && var5 > 0) {
          method4142(Rasterizer2D.graphicsPixels, this.image, var4, var3, var6, var5, var7, var8);
       }
+
    }
 
    @ObfuscatedName("q")
@@ -261,6 +263,7 @@ public final class SpritePixels extends Rasterizer2D {
       if(var6 > 0 && var5 > 0) {
          method4144(Rasterizer2D.graphicsPixels, this.image, 0, var4, var3, var6, var5, var7, var8);
       }
+
    }
 
    @ObfuscatedName("p")
@@ -383,6 +386,7 @@ public final class SpritePixels extends Rasterizer2D {
       if(var7 > 0 && var6 > 0) {
          method4150(Rasterizer2D.graphicsPixels, this.image, 0, var5, var4, var7, var6, var8, var9, var3);
       }
+
    }
 
    @ObfuscatedName("g")
@@ -468,6 +472,7 @@ public final class SpritePixels extends Rasterizer2D {
 
          method4152(Rasterizer2D.graphicsPixels, this.image, 0, var8, var9, var14, var15, var3, var4, var12, var13, var6, var5);
       }
+
    }
 
    @ObfuscatedName("k")
@@ -544,6 +549,7 @@ public final class SpritePixels extends Rasterizer2D {
       if(var8 > 0 && var7 > 0) {
          method4164(Rasterizer2D.graphicsPixels, this.image, 0, var6, var5, var8, var7, var9, var10, var3, var4);
       }
+
    }
 
    @ObfuscatedName("c")
@@ -575,7 +581,7 @@ public final class SpritePixels extends Rasterizer2D {
             var16 += var14;
             var17 += Rasterizer2D.graphicsPixelsWidth;
          }
-      } catch (Exception var23) {
+      } catch (Exception var22) {
          ;
       }
 
@@ -769,7 +775,7 @@ public final class SpritePixels extends Rasterizer2D {
                               var34 = var23 + var32;
                            }
 
-                           if((var32 = (1 + var36 - (this.height << 12) - var26) / var26) > var37) {
+                           if((var32 = (var36 + 1 - (this.height << 12) - var26) / var26) > var37) {
                               var37 = var32;
                            }
 
@@ -898,7 +904,7 @@ public final class SpritePixels extends Rasterizer2D {
                            var34 += var32;
                         }
 
-                        if((var32 = (1 + var36 - (this.height << 12) - var26) / var26) > var37) {
+                        if((var32 = (var36 + 1 - (this.height << 12) - var26) / var26) > var37) {
                            var37 = var32;
                         }
 
@@ -934,7 +940,7 @@ public final class SpritePixels extends Rasterizer2D {
                            var34 = var23 + var32;
                         }
 
-                        if((var32 = (1 + var35 - (this.width << 12) - var27) / var27) > var37) {
+                        if((var32 = (var35 + 1 - (this.width << 12) - var27) / var27) > var37) {
                            var37 = var32;
                         }
 
@@ -968,7 +974,7 @@ public final class SpritePixels extends Rasterizer2D {
                         var34 = var23 + var32;
                      }
 
-                     if((var32 = (1 + var35 - (this.width << 12) - var27) / var27) > var37) {
+                     if((var32 = (var35 + 1 - (this.width << 12) - var27) / var27) > var37) {
                         var37 = var32;
                      }
 
@@ -1015,7 +1021,7 @@ public final class SpritePixels extends Rasterizer2D {
                         var34 = var23 + var32;
                      }
 
-                     if((var32 = (1 + var35 - (this.width << 12) - var27) / var27) > var37) {
+                     if((var32 = (var35 + 1 - (this.width << 12) - var27) / var27) > var37) {
                         var37 = var32;
                      }
 
@@ -1027,7 +1033,7 @@ public final class SpritePixels extends Rasterizer2D {
                         var34 += var32;
                      }
 
-                     if((var32 = (1 + var36 - (this.height << 12) - var26) / var26) > var37) {
+                     if((var32 = (var36 + 1 - (this.height << 12) - var26) / var26) > var37) {
                         var37 = var32;
                      }
 
@@ -1049,10 +1055,10 @@ public final class SpritePixels extends Rasterizer2D {
                      var31 += var27;
                   }
                }
-
             }
          }
       }
+
    }
 
    @ObfuscatedName("t")
@@ -1060,45 +1066,45 @@ public final class SpritePixels extends Rasterizer2D {
       int var9 = var2 < 0?-var2:0;
       int var10 = var2 + this.height <= var6?this.height:var6 - var2;
       int var11 = var1 < 0?-var1:0;
-      int var10000;
+      int var12;
       if(var1 + this.width <= var5) {
-         var10000 = this.width;
+         var12 = this.width;
       } else {
-         var10000 = var5 - var1;
+         int var10000 = var5 - var1;
       }
 
-      int var13 = var3 + var1 + var11 + (var4 + var2 + var9) * Rasterizer2D.graphicsPixelsWidth;
-      int var14 = var2 + var9;
+      var12 = var3 + var1 + var11 + (var4 + var2 + var9) * Rasterizer2D.graphicsPixelsWidth;
+      int var13 = var2 + var9;
 
-      for(int var15 = var9; var15 < var10; ++var15) {
-         int var16 = var7[var14];
-         int var17 = var8[var14++];
-         int var18 = var13;
+      for(int var14 = var9; var14 < var10; ++var14) {
+         int var15 = var7[var13];
+         int var16 = var8[var13++];
+         int var17 = var12;
+         int var18;
+         if(var1 < var15) {
+            var18 = var15 - var1;
+            var17 = var12 + (var18 - var11);
+         } else {
+            var18 = var11;
+         }
+
          int var19;
-         if(var1 < var16) {
-            var19 = var16 - var1;
-            var18 = var13 + (var19 - var11);
+         if(var1 + this.width <= var15 + var16) {
+            var19 = this.width;
          } else {
-            var19 = var11;
+            var19 = var15 + var16 - var1;
          }
 
-         int var12;
-         if(var1 + this.width <= var16 + var17) {
-            var12 = this.width;
-         } else {
-            var12 = var16 + var17 - var1;
-         }
-
-         for(int var20 = var19; var20 < var12; ++var20) {
-            int var21 = this.image[var20 + var15 * this.width];
+         for(int var20 = var18; var20 < var19; ++var20) {
+            int var21 = this.image[var20 + var14 * this.width];
             if(var21 != 0) {
-               Rasterizer2D.graphicsPixels[var18++] = var21;
+               Rasterizer2D.graphicsPixels[var17++] = var21;
             } else {
-               ++var18;
+               ++var17;
             }
          }
 
-         var13 += Rasterizer2D.graphicsPixelsWidth;
+         var12 += Rasterizer2D.graphicsPixelsWidth;
       }
 
    }
@@ -1166,7 +1172,7 @@ public final class SpritePixels extends Rasterizer2D {
             var15 += var13;
             var16 += Rasterizer2D.graphicsPixelsWidth;
          }
-      } catch (Exception var22) {
+      } catch (Exception var21) {
          ;
       }
 
@@ -1224,6 +1230,7 @@ public final class SpritePixels extends Rasterizer2D {
          this.offsetX = 0;
          this.offsetY = 0;
       }
+
    }
 
    public SpritePixels(byte[] var1, Component var2) {
@@ -1309,6 +1316,7 @@ public final class SpritePixels extends Rasterizer2D {
 
          method4146(Rasterizer2D.graphicsPixels, this.image, 0, var7, var8, var13, var14, var3, var4, var11, var12, var5);
       }
+
    }
 
    SpritePixels() {
