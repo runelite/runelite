@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,59 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.client.ui.overlay;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.boosts.Boosts;
-import net.runelite.client.plugins.bosstimer.BossTimers;
-import net.runelite.client.plugins.debug.Debug;
-import net.runelite.client.plugins.fpsinfo.FPS;
-import net.runelite.client.plugins.gronditems.GroundItems;
-import net.runelite.client.plugins.hiscore.Hiscore;
-import net.runelite.client.plugins.opponentinfo.OpponentInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class PluginManager
+public class DynamicRenderer implements Renderer
 {
-	private static final Logger logger = LoggerFactory.getLogger(PluginManager.class);
+	private final List<Overlay> overlays = new ArrayList<>();
 
-	private final RuneLite runelite;
-	private final List<Plugin> plugins = new ArrayList<>();
-
-	public PluginManager(RuneLite runelite)
+	public void add(Overlay overlay)
 	{
-		this.runelite = runelite;
+		overlays.add(overlay);
 	}
 
-	public void loadAll()
+	@Override
+	public void render(BufferedImage clientBuffer)
 	{
-		load(new Boosts());
-		load(new OpponentInfo());
-		load(new FPS());
-		load(new Hiscore());
-		load(new BossTimers());
-
-		if (RuneLite.getOptions().has("developer-mode"))
+		for (Overlay overlay : overlays)
 		{
-			logger.info("Loading developer plugins");
-
-			load(new Debug());
-			load(new GroundItems());
+			Graphics2D graphics = clientBuffer.createGraphics();
+			overlay.render(graphics);
+			graphics.dispose();
 		}
 	}
 
-	private void load(Plugin plugin)
-	{
-		plugins.add(plugin);
-		runelite.getEventBus().register(plugin);
-	}
-
-	public Collection<Plugin> getPlugins()
-	{
-		return plugins;
-	}
 }

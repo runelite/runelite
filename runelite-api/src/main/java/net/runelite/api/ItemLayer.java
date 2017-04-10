@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.mapping.Import;
-
-public interface Tile
+public class ItemLayer extends TileObject
 {
-	@Import("objects")
-	GameObject[] getObjects();
+	private final net.runelite.rs.api.ItemLayer itemLayer;
 
-	@Import("itemLayer")
-	ItemLayer getItemLayer();
+	public ItemLayer(Client client, net.runelite.rs.api.ItemLayer itemLayer)
+	{
+		super(client);
+		this.itemLayer = itemLayer;
+	}
 
-	@Import("decorativeObject")
-	DecorativeObject getDecorativeObject();
+	@Override
+	protected int getHash()
+	{
+		return itemLayer.getHash();
+	}
 
-	@Import("groundObject")
-	GroundObject getGroundObject();
+	@Override
+	protected int getLocalX()
+	{
+		return itemLayer.getX();
+	}
 
-	@Import("wallObject")
-	WallObject getWallObject();
+	@Override
+	protected int getLocalY()
+	{
+		return itemLayer.getY();
+	}
 
-	@Import("x")
-	int getX();
+	public Renderable getBottom()
+	{
+		return Renderable.of(itemLayer.getBottom());
+	}
 
-	@Import("y")
-	int getY();
+	public Renderable getMiddle()
+	{
+		return Renderable.of(itemLayer.getMiddle());
+	}
 
-	@Import("plane")
-	int getPlane();
+	public Renderable getTop()
+	{
+		return Renderable.of(itemLayer.getTop());
+	}
 }

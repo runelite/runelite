@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.mapping.Import;
+import java.util.Arrays;
 
-public interface Tile
+public class Region
 {
-	@Import("objects")
-	GameObject[] getObjects();
+	private final Client client;
+	private final net.runelite.rs.api.Region region;
 
-	@Import("itemLayer")
-	ItemLayer getItemLayer();
+	public Region(Client client, net.runelite.rs.api.Region region)
+	{
+		this.client = client;
+		this.region = region;
+	}
 
-	@Import("decorativeObject")
-	DecorativeObject getDecorativeObject();
-
-	@Import("groundObject")
-	GroundObject getGroundObject();
-
-	@Import("wallObject")
-	WallObject getWallObject();
-
-	@Import("x")
-	int getX();
-
-	@Import("y")
-	int getY();
-
-	@Import("plane")
-	int getPlane();
+	public Tile[][][] getTiles()
+	{
+		return Arrays.stream(region.getTiles())
+			.map(tile1 -> Arrays.stream(tile1)
+				.map(tile2 -> Arrays.stream(tile2)
+					.map(tile3 -> new Tile(client, tile3))
+					.toArray(i -> new Tile[i])
+				)
+				.toArray(i -> new Tile[i][])
+			).toArray(i -> new Tile[i][][]);
+	}
 }

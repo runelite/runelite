@@ -22,59 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.api;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.boosts.Boosts;
-import net.runelite.client.plugins.bosstimer.BossTimers;
-import net.runelite.client.plugins.debug.Debug;
-import net.runelite.client.plugins.fpsinfo.FPS;
-import net.runelite.client.plugins.gronditems.GroundItems;
-import net.runelite.client.plugins.hiscore.Hiscore;
-import net.runelite.client.plugins.opponentinfo.OpponentInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class PluginManager
+public class Item extends Renderable
 {
-	private static final Logger logger = LoggerFactory.getLogger(PluginManager.class);
+	private final net.runelite.rs.api.Item item;
 
-	private final RuneLite runelite;
-	private final List<Plugin> plugins = new ArrayList<>();
-
-	public PluginManager(RuneLite runelite)
+	public Item(net.runelite.rs.api.Item item)
 	{
-		this.runelite = runelite;
+		super(item);
+		this.item = item;
 	}
 
-	public void loadAll()
+	public int getId()
 	{
-		load(new Boosts());
-		load(new OpponentInfo());
-		load(new FPS());
-		load(new Hiscore());
-		load(new BossTimers());
-
-		if (RuneLite.getOptions().has("developer-mode"))
-		{
-			logger.info("Loading developer plugins");
-
-			load(new Debug());
-			load(new GroundItems());
-		}
+		return item.getId();
 	}
 
-	private void load(Plugin plugin)
+	public int getQuantity()
 	{
-		plugins.add(plugin);
-		runelite.getEventBus().register(plugin);
-	}
-
-	public Collection<Plugin> getPlugins()
-	{
-		return plugins;
+		return item.getQuantity();
 	}
 }

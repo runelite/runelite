@@ -22,11 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.ui.overlay;
 
 public enum OverlayPosition
 {
+	/**
+	 * Place overlay in the top left most area possible
+	 */
 	TOP_LEFT,
-	TOP_RIGHT;
+	/**
+	 * Place overlay in the top right most area possible
+	 */
+	TOP_RIGHT,
+	/**
+	 * Overlay places itself where it wants
+	 */
+	DYNAMIC;
 }

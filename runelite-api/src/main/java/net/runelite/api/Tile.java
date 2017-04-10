@@ -24,79 +24,83 @@
  */
 package net.runelite.api;
 
-public class Point
+import java.util.Arrays;
+
+public class Tile
 {
-	private final int x;
-	private final int y;
+	private final Client client;
+	private final net.runelite.rs.api.Tile tile;
 
-	public Point(int x, int y)
+	public Tile(Client client, net.runelite.rs.api.Tile tile)
 	{
-		this.x = x;
-		this.y = y;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "Point{" + "x=" + x + ", y=" + y + '}';
-	}
-
-	public int getX()
-	{
-		return x;
-	}
-
-	public int getY()
-	{
-		return y;
+		this.client = client;
+		this.tile = tile;
 	}
 
 	/**
-	 * Find the distance from this point to another point
+	 * Get the decorative object for this tile.
 	 *
-	 * @param other
 	 * @return
 	 */
-	public int distanceTo(Point other)
+	public DecorativeObject getDecorativeObject()
 	{
-		int dx = x - other.x;
-		int dy = y - other.y;
-		return (int) Math.sqrt(dx * dx + dy * dy);
+		net.runelite.rs.api.DecorativeObject decorativeObject = tile.getDecorativeObject();
+
+		if (decorativeObject == null)
+		{
+			return null;
+		}
+
+		return new DecorativeObject(client, decorativeObject);
 	}
 
-	@Override
-	public int hashCode()
+	public GameObject[] getGameObjects()
 	{
-		int hash = 3;
-		hash = 23 * hash + this.x;
-		hash = 23 * hash + this.y;
-		return hash;
+		net.runelite.rs.api.GameObject[] objects = tile.getObjects();
+
+		if (objects == null)
+		{
+			return null;
+		}
+
+		return Arrays.stream(tile.getObjects())
+			.map(go -> go != null ? new GameObject(client, go) : null)
+			.toArray(i -> new GameObject[i]);
 	}
 
-	@Override
-	public boolean equals(Object obj)
+	public ItemLayer getItemLayer()
 	{
-		if (this == obj)
+		net.runelite.rs.api.ItemLayer itemLayer = tile.getItemLayer();
+
+		if (itemLayer == null)
 		{
-			return true;
+			return null;
 		}
-		if (obj == null)
+
+		return new ItemLayer(client, itemLayer);
+	}
+
+	public GroundObject getGroundObject()
+	{
+		net.runelite.rs.api.GroundObject groundObject = tile.getGroundObject();
+
+		if (groundObject == null)
 		{
-			return false;
+			return null;
 		}
-		if (getClass() != obj.getClass())
+
+		return new GroundObject(client, groundObject);
+	}
+
+	public WallObject getWallObject()
+	{
+		net.runelite.rs.api.WallObject wallObject = tile.getWallObject();
+
+		if (wallObject == null)
 		{
-			return false;
+			return null;
 		}
-		final Point other = (Point) obj;
-		if (this.x != other.x)
-		{
-			return false;
-		}
-		if (this.y != other.y)
-		{
-			return false;
-		}
-		return true;
+
+		return new WallObject(client, wallObject);
 	}
 }
