@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.mapping.Import;
-
-public interface Tile
+/**
+ * Decorative object, such as objects on walls
+ *
+ * @author Adam
+ */
+public class DecorativeObject extends TileObject
 {
-	@Import("objects")
-	GameObject[] getObjects();
+	private final net.runelite.rs.api.DecorativeObject decorativeObject;
 
-	@Import("itemLayer")
-	ItemLayer getItemLayer();
+	public DecorativeObject(Client client, net.runelite.rs.api.DecorativeObject decorativeObject)
+	{
+		super(client);
+		this.decorativeObject = decorativeObject;
+	}
 
-	@Import("decorativeObject")
-	DecorativeObject getDecorativeObject();
+	@Override
+	protected int getHash()
+	{
+		return decorativeObject.getHash();
+	}
 
-	@Import("groundObject")
-	GroundObject getGroundObject();
+	@Override
+	protected int getLocalX()
+	{
+		return decorativeObject.getX();
+	}
 
-	@Import("wallObject")
-	WallObject getWallObject();
-
-	@Import("x")
-	int getX();
-
-	@Import("y")
-	int getY();
-
-	@Import("plane")
-	int getPlane();
+	@Override
+	protected int getLocalY()
+	{
+		return decorativeObject.getY();
+	}
 }

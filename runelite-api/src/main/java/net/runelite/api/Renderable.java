@@ -22,15 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.api;
 
-public class Renderable
+public class Renderable extends Node
 {
-	private net.runelite.rs.api.Renderable renderable;
+	private final net.runelite.rs.api.Renderable renderable;
 
 	public Renderable(net.runelite.rs.api.Renderable renderable)
 	{
+		super(renderable);
 		this.renderable = renderable;
+	}
+
+	public static Renderable of(net.runelite.rs.api.Renderable renderable)
+	{
+		return (Renderable) Node.of(renderable);
 	}
 }

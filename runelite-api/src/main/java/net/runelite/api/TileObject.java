@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.mapping.Import;
-
-public interface Tile
+public abstract class TileObject
 {
-	@Import("objects")
-	GameObject[] getObjects();
+	protected final Client client;
 
-	@Import("itemLayer")
-	ItemLayer getItemLayer();
+	public TileObject(Client client)
+	{
+		this.client = client;
+	}
 
-	@Import("decorativeObject")
-	DecorativeObject getDecorativeObject();
+	protected abstract int getHash();
 
-	@Import("groundObject")
-	GroundObject getGroundObject();
+	protected abstract int getLocalX();
 
-	@Import("wallObject")
-	WallObject getWallObject();
+	protected abstract int getLocalY();
 
-	@Import("x")
-	int getX();
+	public int getId()
+	{
+		int hash = getHash();
+		return hash >> 14 & 32767;
+	}
 
-	@Import("y")
-	int getY();
+	public Point getWorldLocation()
+	{
+		Point localLocation = getLocalLocation();
+		return Perspective.localToWorld(client, localLocation);
+	}
 
-	@Import("plane")
-	int getPlane();
+	public Point getLocalLocation()
+	{
+		return new Point(getLocalX(), getLocalY());
+	}
+
+	public Point getCanvasLocation()
+	{
+		Point locaLocation = getLocalLocation();
+		return Perspective.worldToCanvas(client, locaLocation.getX(), locaLocation.getY(), 0);
+	}
 }

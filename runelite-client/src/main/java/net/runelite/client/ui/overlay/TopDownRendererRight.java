@@ -25,15 +25,15 @@
 
 package net.runelite.client.ui.overlay;
 
-import net.runelite.api.Client;
-import net.runelite.client.RuneLite;
-
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.api.Client;
+import net.runelite.client.RuneLite;
 
-public class TopDownRendererRight
+public class TopDownRendererRight implements Renderer
 {
 	private static final int BORDER_TOP = 0;
 	private static final int BORDER_RIGHT = 0;
@@ -46,6 +46,7 @@ public class TopDownRendererRight
 		overlays.add(overlay);
 	}
 
+	@Override
 	public void render(BufferedImage clientBuffer)
 	{
 		Client client = RuneLite.getClient();

@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.api;
 
 import java.awt.Canvas;
@@ -40,7 +39,9 @@ public class Client
 	public Player getLocalPlayer()
 	{
 		if (client.getLocalPlayer() == null)
+		{
 			return null;
+		}
 
 		return new Player(this, client.getLocalPlayer());
 	}
@@ -48,15 +49,15 @@ public class Client
 	public NPC[] getNpcs()
 	{
 		return Arrays.stream(client.getCachedNPCs())
-				.map(npc -> npc != null ? new NPC(this, npc) : null)
-				.toArray(size -> new NPC[size]);
+			.map(npc -> npc != null ? new NPC(this, npc) : null)
+			.toArray(size -> new NPC[size]);
 	}
 
 	public Player[] getPlayers()
 	{
 		return Arrays.stream(client.getCachedPlayers())
-				.map(player -> player != null ? new Player(this, player) : null)
-				.toArray(size -> new Player[size]);
+			.map(player -> player != null ? new Player(this, player) : null)
+			.toArray(size -> new Player[size]);
 	}
 
 	public int[] getBoostedSkillLevels()
@@ -157,5 +158,20 @@ public class Client
 	public int getPlane()
 	{
 		return client.getPlane();
+	}
+
+	public Region getRegion()
+	{
+		return new Region(this, client.getRegion());
+	}
+
+	public int getBaseX()
+	{
+		return client.getBaseX();
+	}
+
+	public int getBaseY()
+	{
+		return client.getBaseY();
 	}
 }
