@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,29 +26,14 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
-public interface Tile
+public interface GroundObject
 {
-	@Import("objects")
-	GameObject[] getObjects();
-
-	@Import("itemLayer")
-	ItemLayer getItemLayer();
-
-	@Import("decorativeObject")
-	DecorativeObject getDecorativeObject();
-
-	@Import("groundObject")
-	GroundObject getGroundObject();
-
-	@Import("wallObject")
-	WallObject getWallObject();
+	@Import("hash")
+	int getHash();
 
 	@Import("x")
 	int getX();
 
 	@Import("y")
 	int getY();
-
-	@Import("plane")
-	int getPlane();
 }

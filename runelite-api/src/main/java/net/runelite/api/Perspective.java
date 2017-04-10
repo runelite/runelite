@@ -27,6 +27,10 @@ package net.runelite.api;
 public class Perspective
 {
 	private static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
+
+	private static final int LOCAL_COORD_BITS = 7;
+	private static final int LOCAL_TILE_SIZE = 1 << LOCAL_COORD_BITS; // 128 - size of a tile in local coordinates
+
 	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
 	public static final int[] COSINE = new int[2048]; // cosine
 
@@ -117,6 +121,24 @@ public class Perspective
 		}
 
 		return 0;
+	}
+
+	public static Point worldToLocal(Client client, Point point)
+	{
+		int baseX = client.getBaseX();
+		int baseY = client.getBaseY();
+
+		int x = (point.getX() - baseX) << LOCAL_COORD_BITS;
+		int y = (point.getY() - baseY) << LOCAL_COORD_BITS;
+
+		return new Point(x, y);
+	}
+
+	public static Point localToWorld(Client client, Point point)
+	{
+		int x = (point.getX() >>> LOCAL_COORD_BITS) + client.getBaseX();
+		int y = (point.getY() >>> LOCAL_COORD_BITS) + client.getBaseY();
+		return new Point(x, y);
 	}
 
 }

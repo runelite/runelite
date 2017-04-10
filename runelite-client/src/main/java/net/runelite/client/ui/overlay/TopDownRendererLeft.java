@@ -31,7 +31,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TopDownRendererLeft
+public class TopDownRendererLeft implements Renderer
 {
 	private static final int BORDER_TOP = 25;
 	private static final int BORDER_LEFT = 10;
@@ -44,6 +44,7 @@ public class TopDownRendererLeft
 		overlays.add(overlay);
 	}
 
+	@Override
 	public void render(BufferedImage clientBuffer)
 	{
 		overlays.sort((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));

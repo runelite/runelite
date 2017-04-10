@@ -33,6 +33,11 @@ public abstract class Overlay
 	private OverlayPosition position; // where to draw it
 	private OverlayPriority priority; // if multiple overlays exist in the same position, who wins
 
+	public Overlay(OverlayPosition position)
+	{
+		this(position, OverlayPriority.NONE);
+	}
+
 	public Overlay(OverlayPosition position, OverlayPriority priority)
 	{
 		this.position = position;

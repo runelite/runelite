@@ -22,59 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.api;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.boosts.Boosts;
-import net.runelite.client.plugins.bosstimer.BossTimers;
-import net.runelite.client.plugins.debug.Debug;
-import net.runelite.client.plugins.fpsinfo.FPS;
-import net.runelite.client.plugins.gronditems.GroundItems;
-import net.runelite.client.plugins.hiscore.Hiscore;
-import net.runelite.client.plugins.opponentinfo.OpponentInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class PluginManager
+public class Node
 {
-	private static final Logger logger = LoggerFactory.getLogger(PluginManager.class);
+	private final net.runelite.rs.api.Node node;
 
-	private final RuneLite runelite;
-	private final List<Plugin> plugins = new ArrayList<>();
-
-	public PluginManager(RuneLite runelite)
+	public Node(net.runelite.rs.api.Node node)
 	{
-		this.runelite = runelite;
+		this.node = node;
 	}
 
-	public void loadAll()
+	@Override
+	public String toString()
 	{
-		load(new Boosts());
-		load(new OpponentInfo());
-		load(new FPS());
-		load(new Hiscore());
-		load(new BossTimers());
+		return "Node{" + "node=" + node + '}';
+	}
 
-		if (RuneLite.getOptions().has("developer-mode"))
+	public Node getNext()
+	{
+		return of(node.getNext());
+	}
+
+	public Node getPrev()
+	{
+		return of(node.getPrevious());
+	}
+
+	public static final Node of(net.runelite.rs.api.Node node)
+	{
+		if (node == null)
 		{
-			logger.info("Loading developer plugins");
-
-			load(new Debug());
-			load(new GroundItems());
+			return null;
 		}
-	}
 
-	private void load(Plugin plugin)
-	{
-		plugins.add(plugin);
-		runelite.getEventBus().register(plugin);
-	}
+		if (node instanceof net.runelite.rs.api.Item)
+		{
+			return new Item((net.runelite.rs.api.Item) node);
+		}
 
-	public Collection<Plugin> getPlugins()
-	{
-		return plugins;
+		if (node instanceof net.runelite.rs.api.Renderable)
+		{
+			return new Renderable((net.runelite.rs.api.Renderable) node);
+		}
+
+		return new Node(node);
 	}
 }

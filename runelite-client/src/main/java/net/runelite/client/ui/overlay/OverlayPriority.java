@@ -27,6 +27,7 @@ package net.runelite.client.ui.overlay;
 
 public enum OverlayPriority
 {
+	NONE,
 	LOW,
 	MED,
 	HIGH;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.mapping.Import;
-
-public interface Tile
+public class GroundObject extends TileObject
 {
-	@Import("objects")
-	GameObject[] getObjects();
+	private final net.runelite.rs.api.GroundObject groundObject;
 
-	@Import("itemLayer")
-	ItemLayer getItemLayer();
+	public GroundObject(Client client, net.runelite.rs.api.GroundObject groundObject)
+	{
+		super(client);
+		this.groundObject = groundObject;
+	}
 
-	@Import("decorativeObject")
-	DecorativeObject getDecorativeObject();
+	@Override
+	protected int getHash()
+	{
+		return groundObject.getHash();
+	}
 
-	@Import("groundObject")
-	GroundObject getGroundObject();
+	@Override
+	protected int getLocalX()
+	{
+		return groundObject.getX();
+	}
 
-	@Import("wallObject")
-	WallObject getWallObject();
-
-	@Import("x")
-	int getX();
-
-	@Import("y")
-	int getY();
-
-	@Import("plane")
-	int getPlane();
+	@Override
+	protected int getLocalY()
+	{
+		return groundObject.getY();
+	}
 }
