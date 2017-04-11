@@ -140,11 +140,12 @@ public abstract class Actor extends Renderable
 	public Polygon getCanvasTilePoly()
 	{
 		int plane = client.getPlane();
+		int halfTile = Perspective.LOCAL_TILE_SIZE / 2;
 
-		Point p1 = Perspective.worldToCanvas(client, getX() - 64, getY() - 64, plane);
-		Point p2 = Perspective.worldToCanvas(client, getX() - 64, getY() + 64, plane);
-		Point p3 = Perspective.worldToCanvas(client, getX() + 64, getY() + 64, plane);
-		Point p4 = Perspective.worldToCanvas(client, getX() + 64, getY() - 64, plane);
+		Point p1 = Perspective.worldToCanvas(client, getX() - halfTile, getY() - halfTile, plane);
+		Point p2 = Perspective.worldToCanvas(client, getX() - halfTile, getY() + halfTile, plane);
+		Point p3 = Perspective.worldToCanvas(client, getX() + halfTile, getY() + halfTile, plane);
+		Point p4 = Perspective.worldToCanvas(client, getX() + halfTile, getY() - halfTile, plane);
 
 		if (p1 == null || p2 == null || p3 == null || p4 == null)
 		{
