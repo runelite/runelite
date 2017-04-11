@@ -50,18 +50,36 @@ public class Perspective
 	 * @param client
 	 * @param x ground coordinate on the x axis
 	 * @param y ground coordinate on the y axis
-	 * @param var2
+	 * @param plane ground plane on the z axis
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
-	public static Point worldToCanvas(Client client, int x, int y, int var2)
+	public static Point worldToCanvas(Client client, int x, int y, int plane)
+	{
+		return worldToCanvas(client, x, y, plane, 0);
+	}
+
+	/**
+	 * Translates two-dimensional ground coordinates within the 3D world to
+	 * their corresponding coordinates on the game screen.
+	 *
+	 * @param client
+	 * @param x ground coordinate on the x axis
+	 * @param y ground coordinate on the y axis
+	 * @param plane ground plane on the z axis
+	 * @param zOffset distance from ground on the z axis
+	 * @return a {@link Point} on screen corresponding to the position in
+	 * 3D-space
+	 */
+	public static Point worldToCanvas(Client client, int x, int y, int plane, int zOffset)
 	{
 		if (x >= 128 && y >= 128 && x <= 13056 && y <= 13056)
 		{
-			int z = getTileHeight(client, x, y, client.getPlane()) - var2;
+			int z = getTileHeight(client, x, y, client.getPlane()) - plane;
 			x -= client.getCameraX();
-			z -= client.getCameraZ();
 			y -= client.getCameraY();
+			z -= client.getCameraZ();
+			z -= zOffset;
 
 			int cameraPitch = client.getCameraPitch();
 			int cameraYaw = client.getCameraYaw();

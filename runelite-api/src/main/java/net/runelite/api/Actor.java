@@ -22,9 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.api;
 
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.geom.Rectangle2D;
 import net.runelite.rs.api.CombatInfo1;
 import net.runelite.rs.api.CombatInfo2;
 import net.runelite.rs.api.CombatInfoList;
@@ -33,6 +36,7 @@ import net.runelite.rs.api.Node;
 
 public abstract class Actor extends Renderable
 {
+
 	private Client client;
 	private net.runelite.rs.api.Actor actor;
 
@@ -106,5 +110,71 @@ public abstract class Actor extends Renderable
 			}
 		}
 		return -1;
+	}
+
+	public Point getLocalLocation()
+	{
+		return new Point(getX(), getY());
+	}
+
+	private int getX()
+	{
+		return actor.getX();
+	}
+
+	private int getY()
+	{
+		return actor.getY();
+	}
+
+	public int getAnimation()
+	{
+		return actor.getAnimation();
+	}
+
+	public int getModelHeight()
+	{
+		return actor.getModelHeight();
+	}
+
+	public Polygon getCanvasTilePoly()
+	{
+		int plane = client.getPlane();
+
+		Point p1 = Perspective.worldToCanvas(client, getX() - 64, getY() - 64, plane);
+		Point p2 = Perspective.worldToCanvas(client, getX() - 64, getY() + 64, plane);
+		Point p3 = Perspective.worldToCanvas(client, getX() + 64, getY() + 64, plane);
+		Point p4 = Perspective.worldToCanvas(client, getX() + 64, getY() - 64, plane);
+
+		if (p1 == null || p2 == null || p3 == null || p4 == null)
+		{
+			return null;
+		}
+
+		Polygon poly = new Polygon();
+		poly.addPoint(p1.getX(), p1.getY());
+		poly.addPoint(p2.getX(), p2.getY());
+		poly.addPoint(p3.getX(), p3.getY());
+		poly.addPoint(p4.getX(), p4.getY());
+
+		return poly;
+	}
+
+	public Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset)
+	{
+		int plane = client.getPlane();
+
+		Point p = Perspective.worldToCanvas(client, getLocalLocation().getX(), getLocalLocation().getY(), plane, zOffset);
+
+		if (p == null)
+		{
+			return null;
+		}
+
+		FontMetrics fm = graphics.getFontMetrics();
+		Rectangle2D bounds = fm.getStringBounds(text, graphics);
+		int xOffset = p.getX() - (int) (bounds.getWidth() / 2);
+
+		return new Point(xOffset, p.getY());
 	}
 }
