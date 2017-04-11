@@ -107,4 +107,24 @@ public abstract class Actor extends Renderable
 		}
 		return -1;
 	}
+        
+        public Point getLocation() {
+            return new Point(actor.getX(), actor.getY());
+        }
+        
+        public int getX() {
+            return actor.getX();
+        }
+        
+        public int getY() {
+            return actor.getY();
+        }
+        
+        public int getAnimation() {
+            return actor.getAnimation();
+        }
+        
+        public int getModelHeight() {
+            return actor.getModelHeight();
+        }
 }
