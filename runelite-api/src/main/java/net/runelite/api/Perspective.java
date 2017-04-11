@@ -42,8 +42,8 @@ public class Perspective
 			COSINE[i] = (int) (65536.0D * Math.cos((double) i * UNIT));
 		}
 	}
-        
-        /**
+
+	/**
 	 * Translates two-dimensional ground coordinates within the 3D world to
 	 * their corresponding coordinates on the game screen.
 	 *
@@ -56,8 +56,8 @@ public class Perspective
 	 */
 	public static Point worldToCanvas(Client client, int x, int y, int plane)
 	{
-                return worldToCanvas(client, x, y, plane, 0);
-        }
+		return worldToCanvas(client, x, y, plane, 0);
+	}
 
 	/**
 	 * Translates two-dimensional ground coordinates within the 3D world to
@@ -67,7 +67,7 @@ public class Perspective
 	 * @param x ground coordinate on the x axis
 	 * @param y ground coordinate on the y axis
 	 * @param plane ground plane on the z axis
-         * @param zOffset distance from ground on the z axis
+	 * @param zOffset distance from ground on the z axis
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
@@ -78,8 +78,8 @@ public class Perspective
 			int z = getTileHeight(client, x, y, client.getPlane()) - plane;
 			x -= client.getCameraX();
 			y -= client.getCameraY();
-                        z -= client.getCameraZ();
-                        z -= zOffset;
+			z -= client.getCameraZ();
+			z -= zOffset;
 
 			int cameraPitch = client.getCameraPitch();
 			int cameraYaw = client.getCameraYaw();
