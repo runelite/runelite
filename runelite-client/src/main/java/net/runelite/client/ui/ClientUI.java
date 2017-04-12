@@ -37,8 +37,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public final class ClientUI extends JFrame
 {
-	private static final int COLLAPSED_WIDTH = ClientPanel.PANEL_WIDTH + NavigationPanel.PANEL_WIDTH;
-	private static final int EXPANDED_WIDTH = COLLAPSED_WIDTH + PluginPanel.PANEL_WIDTH;
+	private static final int PANEL_WIDTH = 805;
+	private static final int PANEL_HEIGHT = 541;
+	private static final int EXPANDED_WIDTH = PANEL_WIDTH + PluginPanel.PANEL_WIDTH;
 
 	private JPanel container;
 	private JPanel navContainer;
@@ -101,15 +102,18 @@ public final class ClientUI extends JFrame
 		{
 			navContainer.add(pluginPanel, BorderLayout.WEST);
 			navContainer.revalidate();
-			this.setMinimumSize(new Dimension(EXPANDED_WIDTH, ClientPanel.PANEL_HEIGHT));
+			this.setMinimumSize(new Dimension(EXPANDED_WIDTH, PANEL_HEIGHT));
 			expanded = true;
 		}
 		else
 		{
 			navContainer.remove(1);
 			navContainer.revalidate();
-			this.setMinimumSize(new Dimension(COLLAPSED_WIDTH, ClientPanel.PANEL_HEIGHT));
-			this.setSize(COLLAPSED_WIDTH, this.getHeight());
+			this.setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+			if (this.getWidth() == EXPANDED_WIDTH)
+			{
+				this.setSize(PANEL_WIDTH, PANEL_HEIGHT);
+			}
 			expanded = false;
 		}
 	}
