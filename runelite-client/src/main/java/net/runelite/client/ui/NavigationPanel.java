@@ -35,7 +35,7 @@ public class NavigationPanel extends JPanel
 {
 	private static final Logger logger = LoggerFactory.getLogger(NavigationPanel.class);
 
-	public static final int PANEL_WIDTH = 20, PANEL_HEIGHT = 503;
+	public static final int PANEL_WIDTH = 24, PANEL_HEIGHT = 503;
 
 	private final List<NavigationButton> buttons = new ArrayList<>();
 

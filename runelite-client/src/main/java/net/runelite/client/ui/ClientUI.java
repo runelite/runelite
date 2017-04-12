@@ -43,8 +43,9 @@ public final class ClientUI extends JFrame
 	private NavigationPanel navigationPanel;
 	private PluginPanel pluginPanel;
 	private boolean expanded;
-	private int collapsedWidth = ClientPanel.PANEL_WIDTH + NavigationPanel.PANEL_WIDTH;
-	private int expandedWidth = collapsedWidth + PluginPanel.PANEL_WIDTH;
+
+	private static final int collapsedWidth = ClientPanel.PANEL_WIDTH + NavigationPanel.PANEL_WIDTH;
+	private static final int expandedWidth = collapsedWidth + PluginPanel.PANEL_WIDTH;
 
 	public ClientUI() throws Exception
 	{
@@ -89,7 +90,7 @@ public final class ClientUI extends JFrame
 		container.add(navContainer, BorderLayout.EAST);
 
 		navigationPanel = new NavigationPanel();
-		navContainer.add(navigationPanel, BorderLayout.WEST);
+		navContainer.add(navigationPanel, BorderLayout.EAST);
 
 		add(container);
 	}
@@ -98,7 +99,7 @@ public final class ClientUI extends JFrame
 	{
 		if (!expanded)
 		{
-			navContainer.add(pluginPanel, BorderLayout.EAST);
+			navContainer.add(pluginPanel, BorderLayout.WEST);
 			navContainer.revalidate();
 			this.setMinimumSize(new Dimension(expandedWidth, ClientPanel.PANEL_HEIGHT));
 			expanded = true;
