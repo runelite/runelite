@@ -78,6 +78,7 @@ final class ClientPanel extends JPanel implements ComponentListener
 	@Override
 	public void componentResized(ComponentEvent e)
 	{
+		rs.setLocation(0, 0);
 		rs.setSize(this.getSize());
 		this.setPreferredSize(this.getSize());
 		rs.setPreferredSize(this.getPreferredSize());
