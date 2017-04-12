@@ -24,7 +24,8 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
@@ -36,7 +37,11 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public final class ClientUI extends JFrame
 {
+	private static final int COLLAPSED_WIDTH = ClientPanel.PANEL_WIDTH + NavigationPanel.PANEL_WIDTH;
+	private static final int EXPANDED_WIDTH = COLLAPSED_WIDTH + PluginPanel.PANEL_WIDTH;
+
 	private JPanel container;
+	private JPanel navContainer;
 	private ClientPanel panel;
 	private NavigationPanel navigationPanel;
 	private PluginPanel pluginPanel;
@@ -75,13 +80,17 @@ public final class ClientUI extends JFrame
 		}
 
 		container = new JPanel();
-		container.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		container.setLayout(new BorderLayout(0, 0));
 
 		panel = new ClientPanel();
-		container.add(panel);
+		container.add(panel, BorderLayout.CENTER);
+
+		navContainer = new JPanel();
+		navContainer.setLayout(new BorderLayout(0, 0));
+		container.add(navContainer, BorderLayout.EAST);
 
 		navigationPanel = new NavigationPanel();
-		container.add(navigationPanel);
+		navContainer.add(navigationPanel, BorderLayout.EAST);
 
 		add(container);
 	}
@@ -90,18 +99,17 @@ public final class ClientUI extends JFrame
 	{
 		if (!expanded)
 		{
-			container.add(pluginPanel, null, 1);
-
-			container.revalidate();
-
-			this.setSize(this.getWidth() + PluginPanel.PANEL_WIDTH, this.getHeight());
+			navContainer.add(pluginPanel, BorderLayout.WEST);
+			navContainer.revalidate();
+			this.setMinimumSize(new Dimension(EXPANDED_WIDTH, ClientPanel.PANEL_HEIGHT));
 			expanded = true;
 		}
 		else
 		{
-			container.remove(1);
-			container.revalidate();
-			this.setSize(this.getWidth() - PluginPanel.PANEL_WIDTH, this.getHeight());
+			navContainer.remove(1);
+			navContainer.revalidate();
+			this.setMinimumSize(new Dimension(COLLAPSED_WIDTH, ClientPanel.PANEL_HEIGHT));
+			this.setSize(COLLAPSED_WIDTH, this.getHeight());
 			expanded = false;
 		}
 	}
