@@ -122,9 +122,9 @@ public interface Widget
 	@Import("itemQuantity")
 	int getItemQuantity();
 
-	@Import("x")
-	int getX();
+	@Import("originalX")
+	int getOriginalX();
 
-	@Import("y")
-	int getY();
+	@Import("originalY")
+	int getOriginalY();
 }

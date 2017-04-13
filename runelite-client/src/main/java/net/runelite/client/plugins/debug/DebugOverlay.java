@@ -27,6 +27,7 @@ package net.runelite.client.plugins.debug;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
@@ -37,6 +38,9 @@ import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -60,6 +64,14 @@ public class DebugOverlay extends Overlay
 			return null;
 		}
 
+		renderTiles(graphics);
+		renderInventory(graphics);
+
+		return null;
+	}
+
+	private void renderTiles(Graphics2D graphics)
+	{
 		Region region = client.getRegion();
 		Tile[][][] tiles = region.getTiles();
 
@@ -79,8 +91,30 @@ public class DebugOverlay extends Overlay
 				render(graphics, tile);
 			}
 		}
+	}
 
-		return null;
+	private void renderInventory(Graphics2D graphics)
+	{
+		Widget inventoryWidget = client.getWidget(WidgetID.INVENTORY_GROUP_ID, WidgetID.INVENTORY_CHILD_ID);
+		if (inventoryWidget == null)
+		{
+			return;
+		}
+
+		for (WidgetItem item : inventoryWidget.getWidgetItems())
+		{
+			Rectangle bounds = item.getCanvasBounds();
+
+			Color[] colors = new Color[]
+			{
+				Color.RED, Color.GREEN, Color.BLUE
+			};
+			graphics.setColor(colors[item.getIndex() % 3]);
+			if (bounds != null)
+			{
+				graphics.draw(bounds);
+			}
+		}
 	}
 
 	private void render(Graphics2D graphics, Tile tile)
