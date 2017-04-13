@@ -25,9 +25,8 @@
 
 package net.runelite.rs.api;
 
+import java.awt.Canvas;
 import net.runelite.mapping.Import;
-
-import java.awt.*;
 
 public interface Client extends GameEngine
 {

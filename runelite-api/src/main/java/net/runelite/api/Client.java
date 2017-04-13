@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import java.awt.Canvas;
 import java.util.Arrays;
+import net.runelite.api.widgets.Widget;
 
 public class Client
 {
@@ -173,5 +174,33 @@ public class Client
 	public int getBaseY()
 	{
 		return client.getBaseY();
+	}
+
+	public Widget getWidget(int groupId, int childId)
+	{
+		net.runelite.rs.api.Widget[][] widgets = client.getWidgets();
+
+		if (widgets == null || widgets.length <= groupId)
+		{
+			return null;
+		}
+
+		net.runelite.rs.api.Widget[] childWidgets = widgets[groupId];
+		if (childWidgets == null || childWidgets.length <= childId)
+		{
+			return null;
+		}
+
+		return new Widget(this, childWidgets[childId]);
+	}
+
+	public int[] getWidgetPositionsX()
+	{
+		return client.getWidgetPositionsX();
+	}
+
+	public int[] getWidgetPositionsY()
+	{
+		return client.getWidgetPositionsY();
 	}
 }
