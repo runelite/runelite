@@ -30,7 +30,7 @@ import net.runelite.api.widgets.Widget;
 
 public class Client
 {
-	private net.runelite.rs.api.Client client;
+	private final net.runelite.rs.api.Client client;
 
 	public Client(net.runelite.rs.api.Client client)
 	{
@@ -202,5 +202,20 @@ public class Client
 	public int[] getWidgetPositionsY()
 	{
 		return client.getWidgetPositionsY();
+	}
+
+	public int getRevision()
+	{
+		return client.getRevision();
+	}
+
+	public int[] getMapRegions()
+	{
+		return client.getMapRegions();
+	}
+
+	public int[][] getXteaKeys()
+	{
+		return client.getXteaKeys();
 	}
 }
