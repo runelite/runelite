@@ -139,43 +139,16 @@ public abstract class Actor extends Renderable
 
 	public Polygon getCanvasTilePoly()
 	{
-		int plane = client.getPlane();
-		int halfTile = Perspective.LOCAL_TILE_SIZE / 2;
-
-		Point p1 = Perspective.worldToCanvas(client, getX() - halfTile, getY() - halfTile, plane);
-		Point p2 = Perspective.worldToCanvas(client, getX() - halfTile, getY() + halfTile, plane);
-		Point p3 = Perspective.worldToCanvas(client, getX() + halfTile, getY() + halfTile, plane);
-		Point p4 = Perspective.worldToCanvas(client, getX() + halfTile, getY() - halfTile, plane);
-
-		if (p1 == null || p2 == null || p3 == null || p4 == null)
-		{
-			return null;
-		}
-
-		Polygon poly = new Polygon();
-		poly.addPoint(p1.getX(), p1.getY());
-		poly.addPoint(p2.getX(), p2.getY());
-		poly.addPoint(p3.getX(), p3.getY());
-		poly.addPoint(p4.getX(), p4.getY());
-
-		return poly;
+		return Perspective.getCanvasTilePoly(client, getLocalLocation());
 	}
 
 	public Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset)
 	{
-		int plane = client.getPlane();
-
-		Point p = Perspective.worldToCanvas(client, getLocalLocation().getX(), getLocalLocation().getY(), plane, zOffset);
-
-		if (p == null)
-		{
-			return null;
-		}
-
-		FontMetrics fm = graphics.getFontMetrics();
-		Rectangle2D bounds = fm.getStringBounds(text, graphics);
-		int xOffset = p.getX() - (int) (bounds.getWidth() / 2);
-
-		return new Point(xOffset, p.getY());
+		return Perspective.getCanvasTextLocation(client, graphics, getLocalLocation(), text, zOffset);
 	}
+
+    public Point getMinimapLocation()
+    {
+        return Perspective.worldToMiniMap(client, getX(), getY());
+    }
 }

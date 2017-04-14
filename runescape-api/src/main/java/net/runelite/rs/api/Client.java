@@ -60,6 +60,9 @@ public interface Client extends GameEngine
 	@Import("mapAngle")
 	int getMapAngle();
 
+	@Import("mapOffset")
+    int getMapOffset();
+
 	@Import("tileHeights")
 	int[][][] getTileHeights();
 

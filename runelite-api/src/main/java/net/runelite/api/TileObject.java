@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import java.awt.*;
+
 public abstract class TileObject
 {
 	protected final Client client;
@@ -61,4 +63,19 @@ public abstract class TileObject
 		Point locaLocation = getLocalLocation();
 		return Perspective.worldToCanvas(client, locaLocation.getX(), locaLocation.getY(), 0);
 	}
+
+    public Polygon getCanvasTilePoly()
+    {
+        return Perspective.getCanvasTilePoly(client, getLocalLocation());
+    }
+
+    public Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset)
+    {
+        return Perspective.getCanvasTextLocation(client, graphics, getLocalLocation(), text, zOffset);
+    }
+
+    public Point getMinimapLocation()
+    {
+	    return Perspective.worldToMiniMap(client, getLocalX(), getLocalY());
+    }
 }
