@@ -30,8 +30,7 @@ import com.google.common.eventbus.SubscriberExceptionContext;
 import java.io.File;
 import java.awt.TrayIcon;
 import java.awt.SystemTray;
-import java.awt.Image;
-import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
@@ -55,7 +54,7 @@ public class RuneLite
 
 	private TrayIcon icon;
 	private SystemTray tray;
-	private Image trayIconImage;
+	private ImageIcon trayIconImage;
 
 	private ClientUI gui;
 	private PluginManager pluginManager;
@@ -78,9 +77,9 @@ public class RuneLite
 
 		if(SystemTray.isSupported())
 		{
-			trayIconImage = Toolkit.getDefaultToolkit().getImage("trayIcon.jpg");
+			trayIconImage = new ImageIcon(getClass().getClassLoader().getResource("trayIcon.jpg"));
 			tray = SystemTray.getSystemTray();
-			icon = new TrayIcon(trayIconImage, "RuneLite");
+			icon = new TrayIcon(trayIconImage.getImage(), "RuneLite");
 			icon.setImageAutoSize(true);
 			tray.add(icon);
 		}
