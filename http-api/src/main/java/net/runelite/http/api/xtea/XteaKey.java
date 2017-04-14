@@ -22,52 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.inject.callbacks;
+package net.runelite.http.api.xtea;
 
-import net.runelite.client.RuneLite;
-import net.runelite.client.events.ExperienceChanged;
-import net.runelite.client.events.MapRegionChanged;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class Hooks
+public class XteaKey
 {
-	private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
+	private int region;
+	private int keys[];
 
-	private static final RuneLite runelite = RuneLite.getRunelite();
-
-	public static void callHook(String name, int idx, Object object)
+	public int getRegion()
 	{
-		if (RuneLite.getClient() == null)
-		{
-			logger.warn("Event {} triggered prior to client being ready", name);
-			return;
-		}
+		return region;
+	}
 
-		switch (name)
-		{
-			case "experienceChanged":
-			{
-				ExperienceChanged experienceChanged = new ExperienceChanged();
-				experienceChanged.setIndex(idx);
-				runelite.getEventBus().post(experienceChanged);
-				break;
-			}
-			case "mapRegionsChanged":
-			{
-				MapRegionChanged regionChanged = new MapRegionChanged();
-				regionChanged.setIndex(idx);
-				runelite.getEventBus().post(regionChanged);
-				break;
-			}
-			default:
-				logger.warn("Unknown event {} triggered on {}", name, object);
-				return;
-		}
+	public void setRegion(int region)
+	{
+		this.region = region;
+	}
 
-		if (object != null)
-			logger.trace("Event {} (idx {}) triggered on {}", name, idx, object);
-		else
-			logger.trace("Event {} (idx {}) triggered", name, idx);
+	public int[] getKeys()
+	{
+		return keys;
+	}
+
+	public void setKeys(int[] keys)
+	{
+		this.keys = keys;
 	}
 }

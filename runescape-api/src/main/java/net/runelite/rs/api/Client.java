@@ -213,4 +213,13 @@ public interface Client extends GameEngine
 
 	@Import("canvas")
 	Canvas getCanvas();
+
+	@Import("revision")
+	int getRevision();
+
+	@Import("mapRegions")
+	int[] getMapRegions();
+
+	@Import("xteaKeys")
+	int[][] getXteaKeys();
 }

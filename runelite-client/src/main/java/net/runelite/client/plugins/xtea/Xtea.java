@@ -1,0 +1,99 @@
+/*
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package net.runelite.client.plugins.xtea;
+
+import com.google.common.eventbus.Subscribe;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.logging.Level;
+import net.runelite.api.Client;
+import net.runelite.client.RuneLite;
+import net.runelite.client.events.MapRegionChanged;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.http.api.xtea.XteaClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Xtea extends Plugin
+{
+	private static final Logger logger = LoggerFactory.getLogger(Xtea.class);
+
+	private final RuneLite runeLite = RuneLite.getRunelite();
+	private final Client client = RuneLite.getClient();
+	private final XteaClient xteaClient = new XteaClient();
+
+	private final Set<Integer> sentRegions = new HashSet<>();
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return null;
+	}
+
+	@Subscribe
+	public void onMapRegionChanged(MapRegionChanged event)
+	{
+		int idx = event.getIndex();
+
+		if (idx == -1)
+		{
+			return; // this is the new array being assigned to the field
+		}
+
+		int revision = client.getRevision();
+		int[] regions = client.getMapRegions();
+		int[][] xteaKeys = client.getXteaKeys();
+
+		int region = regions[idx];
+		int[] keys = xteaKeys[idx];
+
+		logger.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
+
+		// No need to ever send more than once
+		if (sentRegions.contains(region))
+		{
+			return;
+		}
+
+		sentRegions.add(region);
+
+		ScheduledExecutorService executor = runeLite.getExecutor();
+		executor.execute(() ->
+		{
+			try
+			{
+				xteaClient.submut(revision, region, keys);
+			}
+			catch (URISyntaxException | IOException ex)
+			{
+				logger.debug("unable to submit xtea keys", ex);
+			}
+		});
+	}
+}
