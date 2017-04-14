@@ -528,7 +528,8 @@ public final class Client extends GameEngine {
    @ObfuscatedName("mx")
    static int[] field419;
    @ObfuscatedName("hz")
-   static final int[] field420;
+   @Export("playerMenuTypes")
+   static final int[] playerMenuTypes;
    @ObfuscatedName("gd")
    @ObfuscatedGetter(
       intValue = 1031671611
@@ -558,7 +559,7 @@ public final class Client extends GameEngine {
    @Export("playerOptions")
    static String[] playerOptions;
    @ObfuscatedName("hk")
-   @Export("playerOptionsPriority")
+   @Export("playerOptionsPriorities")
    static boolean[] playerOptionsPriority;
    @ObfuscatedName("hn")
    static int[] field430;
@@ -3799,7 +3800,7 @@ public final class Client extends GameEngine {
       field313 = 0;
       field310 = 0;
       field426 = new int[1000];
-      field420 = new int[]{44, 45, 46, 47, 48, 49, 50, 51};
+      playerMenuTypes = new int[]{44, 45, 46, 47, 48, 49, 50, 51};
       playerOptions = new String[8];
       playerOptionsPriority = new boolean[8];
       field430 = new int[]{768, 1024, 1280, 512, 1536, 256, 0, 1792};

@@ -24,8 +24,13 @@
  */
 package net.runelite.inject.callbacks;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.hiscore.Hiscore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,4 +67,29 @@ public class Hooks
 		else
 			logger.trace("Event {} (idx {}) triggered", name, idx);
 	}
+        
+        public static void menuActionHook(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7){
+                if(var2 >= 2000) 
+                {
+                        var2 -= 2000;
+                }
+                
+                if(var2 == Hiscore.lookupMenuType)
+                {
+                        for(Plugin plugin : runelite.getPluginManager().getPlugins())
+                        {
+                                if(plugin instanceof Hiscore)
+                                {
+                                        String username = var5.split(">")[1].split("<")[0];
+                                        System.out.println(username);
+                                        // lookup is synchronous, so in order not to stall the client, I've put it in a seperatie thread.
+                                        new Thread(){ 
+                                            public void run(){
+                                                ((Hiscore)plugin).lookup(username);
+                                            }
+                                        }.start();
+                                }
+                        }
+                }
+        }
 }

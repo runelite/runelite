@@ -29,6 +29,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
@@ -45,6 +46,9 @@ public class Hiscore extends Plugin implements ActionListener
 	private final HiscorePanel hiscorePanel = new HiscorePanel();
 
 	private final ClientUI ui = RuneLite.getRunelite().getGui();
+        
+        private static final Client client = RuneLite.getClient();
+        public static final int lookupMenuType = 999;
 
 	public Hiscore()
 	{
@@ -61,6 +65,8 @@ public class Hiscore extends Plugin implements ActionListener
 		}
 
 		ui.getNavigationPanel().addNavigation(navButton);
+                
+                addLookupOption();
 	}
 
 	@Override
@@ -75,5 +81,34 @@ public class Hiscore extends Plugin implements ActionListener
 		ui.setPluginPanel(hiscorePanel);
 		ui.expand();
 	}
+        
+        private void addLookupOption(){
+                /*
+                * Wait until the client gets packets that set the playerOptions. 
+                * playerOption[2]="Follow"
+                * playerOption[3]="Trade With"
+                * These two always get set eventually. 
+                * 
+                * If the option to right-click report someone is toggled on.
+                * playerOption[7] = "Report"
+                * 
+                * Since I cant make the playerOptions array longer (its a final list),
+                * I overwrite the "Report" option. Simply because i dont know what the others are
+                * and i dont want to break something.
+                */
+                int menuType = 7;
+                
+                while(client == null || client.getPlayerOptions() == null || client.getPlayerOptions()[2] == null) 
+                        try{Thread.sleep(250);} catch(Exception e){}
+
+                client.getPlayerOptions()[menuType] = "Lookup";
+                client.getPlayerOptionsPriorities()[menuType] = true;
+                client.getPlayerMenuType()[menuType] = lookupMenuType;
+                
+        }
+        
+        public void lookup(String username){
+                hiscorePanel.lookup(username);
+        }
 
 }
