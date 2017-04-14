@@ -1,4 +1,5 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -62,6 +63,7 @@ public final class class25 extends Node {
    int field599;
    @ObfuscatedName("dc")
    @Export("mapRegions")
+   @Hook("mapRegionsChanged")
    static int[] mapRegions;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
