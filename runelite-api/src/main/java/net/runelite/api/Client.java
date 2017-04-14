@@ -30,7 +30,7 @@ import net.runelite.api.widgets.Widget;
 
 public class Client
 {
-	private net.runelite.rs.api.Client client;
+	private final net.runelite.rs.api.Client client;
 
 	public Client(net.runelite.rs.api.Client client)
 	{
@@ -205,20 +205,33 @@ public class Client
 		return client.getWidgetPositionsY();
 	}
         
-        public String[] getPlayerOptions()
-        {
-                return client.getPlayerOptions();
-        }
+    public String[] getPlayerOptions()
+    {
+            return client.getPlayerOptions();
+    }
 
-        public boolean[] getPlayerOptionsPriorities()
-        {
-                return client.getPlayerOptionsPriorities();
-        }
+    public boolean[] getPlayerOptionsPriorities()
+    {
+            return client.getPlayerOptionsPriorities();
+    }
 
-        public int[] getPlayerMenuType()
-        {
-                return client.getPlayerMenuTypes();
-        }
-        
+    public int[] getPlayerMenuType()
+    {
+            return client.getPlayerMenuTypes();
+    }
 
+	public int getRevision()
+	{
+		return client.getRevision();
+	}
+
+	public int[] getMapRegions()
+	{
+		return client.getMapRegions();
+	}
+
+	public int[][] getXteaKeys()
+	{
+		return client.getXteaKeys();
+	}
 }

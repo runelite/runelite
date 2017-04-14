@@ -31,6 +31,7 @@ import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.hiscore.Hiscore;
+import net.runelite.client.events.MapRegionChanged;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,6 +56,13 @@ public class Hooks
 				ExperienceChanged experienceChanged = new ExperienceChanged();
 				experienceChanged.setIndex(idx);
 				runelite.getEventBus().post(experienceChanged);
+				break;
+			}
+			case "mapRegionsChanged":
+			{
+				MapRegionChanged regionChanged = new MapRegionChanged();
+				regionChanged.setIndex(idx);
+				runelite.getEventBus().post(regionChanged);
 				break;
 			}
 			default:
