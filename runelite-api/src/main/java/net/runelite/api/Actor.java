@@ -147,8 +147,8 @@ public abstract class Actor extends Renderable
 		return Perspective.getCanvasTextLocation(client, graphics, getLocalLocation(), text, zOffset);
 	}
 
-    public Point getMinimapLocation()
-    {
-        return Perspective.worldToMiniMap(client, getX(), getY());
-    }
+	public Point getMinimapLocation()
+	{
+		return Perspective.worldToMiniMap(client, getX(), getY());
+	}
 }

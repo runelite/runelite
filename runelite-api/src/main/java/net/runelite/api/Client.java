@@ -205,22 +205,22 @@ public class Client
 	}
 
 	public int getMapScale()
-    {
-        return client.getMapScale();
-    }
+	{
+		return client.getMapScale();
+	}
 
-    public int getMapAngle()
-    {
-        return client.getMapAngle();
-    }
+	public int getMapAngle()
+	{
+		return client.getMapAngle();
+	}
 
-    public int getMapOffset()
-    {
-        return client.getMapOffset();
-    }
+	public int getMapOffset()
+	{
+		return client.getMapOffset();
+	}
 
-    public boolean isResized()
-    {
-        return client.isResized();
-    }
+	public boolean isResized()
+	{
+		return client.isResized();
+	}
 }

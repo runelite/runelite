@@ -64,18 +64,18 @@ public abstract class TileObject
 		return Perspective.worldToCanvas(client, locaLocation.getX(), locaLocation.getY(), 0);
 	}
 
-    public Polygon getCanvasTilePoly()
-    {
-        return Perspective.getCanvasTilePoly(client, getLocalLocation());
-    }
+	public Polygon getCanvasTilePoly()
+	{
+		return Perspective.getCanvasTilePoly(client, getLocalLocation());
+	}
 
-    public Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset)
-    {
-        return Perspective.getCanvasTextLocation(client, graphics, getLocalLocation(), text, zOffset);
-    }
+	public Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset)
+	{
+		return Perspective.getCanvasTextLocation(client, graphics, getLocalLocation(), text, zOffset);
+	}
 
-    public Point getMinimapLocation()
-    {
-	    return Perspective.worldToMiniMap(client, getLocalX(), getLocalY());
-    }
+	public Point getMinimapLocation()
+	{
+		return Perspective.worldToMiniMap(client, getLocalX(), getLocalY());
+	}
 }

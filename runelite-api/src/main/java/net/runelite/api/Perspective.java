@@ -110,59 +110,60 @@ public class Perspective
 
 	}
 
-    /**
-     * Translates two-dimensional ground coordinates within the 3D world to
-     * their corresponding coordinates on the Minimap.
-     *
-     * @param client
-     * @param x ground coordinate on the x axis
-     * @param y ground coordinate on the y axis
-     * @return a {@link Point} on screen corresponding to the position in
-     * 3D-space
-     */
-    public static Point worldToMiniMap(Client client, int x, int y)
-    {
-        return worldToMiniMap(client, x, y, 6400);
-    }
+	/**
+	 * Translates two-dimensional ground coordinates within the 3D world to
+	 * their corresponding coordinates on the Minimap.
+	 *
+	 * @param client
+	 * @param x ground coordinate on the x axis
+	 * @param y ground coordinate on the y axis
+	 * @return a {@link Point} on screen corresponding to the position in
+	 * 3D-space
+	 */
+	public static Point worldToMiniMap(Client client, int x, int y)
+	{
+		return worldToMiniMap(client, x, y, 6400);
+	}
 
-    /**
-     * Translates two-dimensional ground coordinates within the 3D world to
-     * their corresponding coordinates on the Minimap.
-     *
-     * @param client
-     * @param x ground coordinate on the x axis
-     * @param y ground coordinate on the y axis
-     * @param distance max distance from local player to minimap point
-     * @return a {@link Point} on screen corresponding to the position in
-     * 3D-space
-     */
-    public static Point worldToMiniMap(Client client, int x, int y, int distance)
-    {
-        int angle = client.getMapScale() + client.getMapAngle() & 0x7FF;
+	/**
+	 * Translates two-dimensional ground coordinates within the 3D world to
+	 * their corresponding coordinates on the Minimap.
+	 *
+	 * @param client
+	 * @param x ground coordinate on the x axis
+	 * @param y ground coordinate on the y axis
+	 * @param distance max distance from local player to minimap point
+	 * @return a {@link Point} on screen corresponding to the position in
+	 * 3D-space
+	 */
+	public static Point worldToMiniMap(Client client, int x, int y, int distance)
+	{
+		int angle = client.getMapScale() + client.getMapAngle() & 0x7FF;
 
-        Point localLocation = client.getLocalPlayer().getLocalLocation();
-        x = x / 32 - localLocation.getX() / 32;
-        y = y / 32 - localLocation.getY() / 32;
+		Point localLocation = client.getLocalPlayer().getLocalLocation();
+		x = x / 32 - localLocation.getX() / 32;
+		y = y / 32 - localLocation.getY() / 32;
 
-        int dist = x * x + y * y;
-        if (dist < distance) {
-            int sin = SINE[angle];
-            int cos = COSINE[angle];
+		int dist = x * x + y * y;
+		if (dist < distance)
+		{
+			int sin = SINE[angle];
+			int cos = COSINE[angle];
 
-            sin = sin * 256 / (client.getMapOffset() + 256);
-            cos = cos * 256 / (client.getMapOffset() + 256);
+			sin = sin * 256 / (client.getMapOffset() + 256);
+			cos = cos * 256 / (client.getMapOffset() + 256);
 
-            int xx = y * sin + cos * x >> 16;
-            int yy = sin * x - y * cos >> 16;
+			int xx = y * sin + cos * x >> 16;
+			int yy = sin * x - y * cos >> 16;
 
-            int miniMapX = client.getClientWidth() - (!client.isResized() ? 208 : 167);
+			int miniMapX = client.getClientWidth() - (!client.isResized() ? 208 : 167);
 
-            x = (miniMapX + 167 / 2) + xx;
-            y = (167 / 2 - 1) + yy;
-            return new Point(x, y);
-        }
-        return new Point(-1, -1);
-    }
+			x = (miniMapX + 167 / 2) + xx;
+			y = (167 / 2 - 1) + yy;
+			return new Point(x, y);
+		}
+		return new Point(-1, -1);
+	}
 
 	/**
 	 * Calculates the above ground height of a tile point.
@@ -216,63 +217,65 @@ public class Perspective
 		return new Point(x, y);
 	}
 
-    /**
-     * Calculates a tile polygon from offset worldToScreen() points.
-     *
-     * @param client
-     * @param localLocation local location of the tile
-     * @return a {@link Polygon} on screen corresponding to the given localLocation.
-     */
-    public static Polygon getCanvasTilePoly(Client client, Point localLocation)
-    {
-        int plane = client.getPlane();
-        int halfTile = Perspective.LOCAL_TILE_SIZE / 2;
+	/**
+	 * Calculates a tile polygon from offset worldToScreen() points.
+	 *
+	 * @param client
+	 * @param localLocation local location of the tile
+	 * @return a {@link Polygon} on screen corresponding to the given
+	 * localLocation.
+	 */
+	public static Polygon getCanvasTilePoly(Client client, Point localLocation)
+	{
+		int plane = client.getPlane();
+		int halfTile = Perspective.LOCAL_TILE_SIZE / 2;
 
-        Point p1 = Perspective.worldToCanvas(client, localLocation.getX() - halfTile, localLocation.getY() - halfTile, plane);
-        Point p2 = Perspective.worldToCanvas(client, localLocation.getX() - halfTile, localLocation.getY() + halfTile, plane);
-        Point p3 = Perspective.worldToCanvas(client, localLocation.getX() + halfTile, localLocation.getY() + halfTile, plane);
-        Point p4 = Perspective.worldToCanvas(client, localLocation.getX() + halfTile, localLocation.getY() - halfTile, plane);
+		Point p1 = Perspective.worldToCanvas(client, localLocation.getX() - halfTile, localLocation.getY() - halfTile, plane);
+		Point p2 = Perspective.worldToCanvas(client, localLocation.getX() - halfTile, localLocation.getY() + halfTile, plane);
+		Point p3 = Perspective.worldToCanvas(client, localLocation.getX() + halfTile, localLocation.getY() + halfTile, plane);
+		Point p4 = Perspective.worldToCanvas(client, localLocation.getX() + halfTile, localLocation.getY() - halfTile, plane);
 
-        if (p1 == null || p2 == null || p3 == null || p4 == null)
-        {
-            return null;
-        }
+		if (p1 == null || p2 == null || p3 == null || p4 == null)
+		{
+			return null;
+		}
 
-        Polygon poly = new Polygon();
-        poly.addPoint(p1.getX(), p1.getY());
-        poly.addPoint(p2.getX(), p2.getY());
-        poly.addPoint(p3.getX(), p3.getY());
-        poly.addPoint(p4.getX(), p4.getY());
+		Polygon poly = new Polygon();
+		poly.addPoint(p1.getX(), p1.getY());
+		poly.addPoint(p2.getX(), p2.getY());
+		poly.addPoint(p3.getX(), p3.getY());
+		poly.addPoint(p4.getX(), p4.getY());
 
-        return poly;
-    }
+		return poly;
+	}
 
-    /**
-     * Calculates text position and centers depending on string length.
-     *
-     * @param client
-     * @param graphics
-     * @param localLocation local location of the tile
-     * @param text string for width measurement
-     * @param zOffset offset from ground plane
-     * @return a {@link Point} on screen corresponding to the given localLocation.
-     */
-    public static Point getCanvasTextLocation(Client client, Graphics2D graphics, Point localLocation, String text, int zOffset)
-    {
-        int plane = client.getPlane();
+	/**
+	 * Calculates text position and centers depending on string length.
+	 *
+	 * @param client
+	 * @param graphics
+	 * @param localLocation local location of the tile
+	 * @param text string for width measurement
+	 * @param zOffset offset from ground plane
+	 * @return a {@link Point} on screen corresponding to the given
+	 * localLocation.
+	 */
+	public static Point getCanvasTextLocation(Client client, Graphics2D graphics, Point localLocation, String text, int zOffset)
+	{
+		int plane = client.getPlane();
 
-        Point p = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
+		Point p = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
 
-        if (p == null)
-        {
-            return null;
-        }
+		if (p == null)
+		{
+			return null;
+		}
 
-        FontMetrics fm = graphics.getFontMetrics();
-        Rectangle2D bounds = fm.getStringBounds(text, graphics);
-        int xOffset = p.getX() - (int) (bounds.getWidth() / 2);
+		FontMetrics fm = graphics.getFontMetrics();
+		Rectangle2D bounds = fm.getStringBounds(text, graphics);
+		int xOffset = p.getX() - (int) (bounds.getWidth() / 2);
 
-        return new Point(xOffset, p.getY());
-    }
+		return new Point(xOffset, p.getY());
+	}
 
 }
