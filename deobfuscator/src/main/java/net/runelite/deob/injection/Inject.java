@@ -166,14 +166,28 @@ public class Inject
 				case "byte":
 					s = "B";
 					break;
+				case "void":
+					s = "V";
+					break;
 				default:
-					throw new RuntimeException("unknown primitive type");
+					throw new RuntimeException("unknown primitive type " + c.getName());
 			}
 
 			return new Type(s, dimms);
 		}
 
 		return new Type("L" + c.getName().replace('.', '/') + ";", dimms);
+	}
+
+	private Signature javaMethodToSignature(java.lang.reflect.Method method)
+	{
+		Signature signature = new Signature();
+		signature.setTypeOfReturnValue(classToType(method.getReturnType()));
+		for (java.lang.Class<?> clazz : method.getParameterTypes())
+		{
+			signature.addArg(classToType(clazz));
+		}
+		return signature;
 	}
 	
 	public void run()
@@ -485,7 +499,9 @@ public class Inject
 			lastGarbageArgumentType = arguments.get(arguments.size() - 1);
 		}
 
-		Method invokerMethodSignature = new Method(clazz.getMethods(), method.getName(), deobfuscatedMethod.getDescriptor());
+		// Injected method signature is always the same as the API
+		Signature apiSignature = javaMethodToSignature(method);
+		Method invokerMethodSignature = new Method(clazz.getMethods(), method.getName(), apiSignature);
 		invokerMethodSignature.setAccessFlags(Method.ACC_PUBLIC);
 
 		// create code attribute
