@@ -28,6 +28,10 @@ package net.runelite.client;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import java.io.File;
+import java.awt.TrayIcon;
+import java.awt.SystemTray;
+import java.awt.Image;
+import java.awt.Toolkit;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
@@ -49,6 +53,10 @@ public class RuneLite
 	private static Client client;
 	private static RuneLite runelite;
 
+	private TrayIcon icon;
+	private SystemTray tray;
+	private Image trayIconImage;
+
 	private ClientUI gui;
 	private PluginManager pluginManager;
 	private OverlayRenderer renderer;
@@ -68,6 +76,14 @@ public class RuneLite
 	{
 		gui = new ClientUI();
 
+		if(SystemTray.isSupported())
+		{
+			trayIconImage = Toolkit.getDefaultToolkit().getImage("trayIcon.jpg");
+			tray = SystemTray.getSystemTray();
+			icon = new TrayIcon(trayIconImage, "RuneLite");
+			icon.setImageAutoSize(true);
+			tray.add(icon);
+		}
 		pluginManager = new PluginManager(this);
 		pluginManager.loadAll();
 
@@ -117,5 +133,10 @@ public class RuneLite
 	public static OptionSet getOptions()
 	{
 		return options;
+	}
+
+	public TrayIcon getIcon()
+	{
+		return icon;
 	}
 }
