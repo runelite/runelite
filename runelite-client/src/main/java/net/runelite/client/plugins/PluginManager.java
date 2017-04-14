@@ -36,6 +36,7 @@ import net.runelite.client.plugins.fpsinfo.FPS;
 import net.runelite.client.plugins.gronditems.GroundItems;
 import net.runelite.client.plugins.hiscore.Hiscore;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
+import net.runelite.client.plugins.xtea.Xtea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,6 +59,7 @@ public class PluginManager
 		load(new FPS());
 		load(new Hiscore());
 		load(new BossTimers());
+		load(new Xtea());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
