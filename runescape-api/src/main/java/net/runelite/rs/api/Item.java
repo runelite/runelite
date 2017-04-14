@@ -33,5 +33,5 @@ public interface Item extends Renderable
 	int getId();
 
 	@Import("quantity")
-	int getQuantity();        
+	int getQuantity();
 }
