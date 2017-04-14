@@ -24,9 +24,14 @@
  */
 package net.runelite.http.service;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.service.hiscore.HiscoreService;
 import net.runelite.http.service.worlds.WorldsService;
+import net.runelite.http.service.xtea.XteaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.servlet.SparkApplication;
@@ -36,19 +41,44 @@ public class Service implements SparkApplication
 {
 	private static final Logger logger = LoggerFactory.getLogger(Service.class);
 
+	private DataSource dataSource;
+
 	private final JsonTransformer transformer = new JsonTransformer();
 
 	private HiscoreService hiscores = new HiscoreService();
 	private WorldsService worlds = new WorldsService();
+	private XteaService xtea = new XteaService(this);
 
 	@Override
 	public void init()
 	{
+		loadDatasource();
+
+		xtea.init();
+
 		get("/version", (request, response) -> RuneliteAPI.getVersion());
 		get("/hiscore", (request, response) -> hiscores.lookup(request.queryParams("username")), transformer);
 		get("/worlds", (request, response) -> worlds.listWorlds(), transformer);
+		post("/xtea", xtea::submit);
+		get("/xtea/:rev", xtea::get, transformer);
 
 		exception(Exception.class, (exception, request, response) -> logger.warn(null, exception));
+	}
+
+	private void loadDatasource()
+	{
+		try
+		{
+			// It is difficult to inject things into Spark
+			Context initCtx = new InitialContext();
+			Context envCtx = (Context) initCtx.lookup("java:comp/env");
+
+			dataSource = (DataSource) envCtx.lookup("jdbc/runelite");
+		}
+		catch (NamingException ex)
+		{
+			throw new RuntimeException(ex);
+		}
 	}
 
 	public HiscoreService getHiscores()
@@ -59,6 +89,16 @@ public class Service implements SparkApplication
 	public void setHiscores(HiscoreService hiscores)
 	{
 		this.hiscores = hiscores;
+	}
+
+	public DataSource getDataSource()
+	{
+		return dataSource;
+	}
+
+	public void setDataSource(DataSource dataSource)
+	{
+		this.dataSource = dataSource;
 	}
 
 }
