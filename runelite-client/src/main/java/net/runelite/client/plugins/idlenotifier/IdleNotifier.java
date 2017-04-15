@@ -25,18 +25,81 @@
 
 package net.runelite.client.plugins.idlenotifier;
 
+import net.runelite.client.events.AnimationChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import static net.runelite.api.AnimationID.*;
+import net.runelite.client.RuneLite;
+import com.google.common.eventbus.Subscribe;
+
+import java.awt.*;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 
 
 public class IdleNotifier extends Plugin
 {
-   private final Overlay idleOverlay = new IdleOverlay();
-
-   @Override
+   private Client client = RuneLite.getClient();
+   private RuneLite runeLite = RuneLite.getRunelite();
+   ScheduledExecutorService executor = runeLite.getExecutor();
+   ScheduledFuture<?> checkIdleFuture = null;
+   boolean notifyIdle = false;
    public Overlay getOverlay()
    {
-      return this.idleOverlay;
+      return null;
+   }
+
+   @Subscribe
+   public void onAnimationChanged(AnimationChanged event)
+   {
+
+      if (client.getGameState() != GameState.LOGGED_IN)
+         return;
+
+      switch (client.getLocalPlayer().getAnimation())
+      {
+         //these values from from net.runelite.api.AnimationID
+         case WOODCUTTING:
+         case COOKING_FIRE:
+         case COOKING_RANGE:
+         case FLETCHING_BOW_CUTTING:
+         case FLETCHING_BOW_STRINGING:
+         case CRAFTING_GEM_CUTTING:
+         case CRAFTING_LEATHER:
+         case SMITHING_ANVIL:
+         case SMITHING_SMELTING:
+         case FISHING_NET:
+         case FISHING_HARPOON:
+         case FISHING_CAGE:
+         case FISHING_POLE_CAST:
+         case MINING_NORMAL_VEIN:
+         case MINING_MOTHERLODE_VEIN:
+         case HERBLORE_POTIONMAKING:
+         case MAGIC_CHARGING_ORBS:
+            notifyIdle = true;
+            break;
+      }
+
+      if(notifyIdle && client.getLocalPlayer().getAnimation() == IDLE)
+      {
+         runeLite.getIcon().displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
+         notifyIdle = false;
+      }
+      return;
+   }
+
+   private Runnable checkIdle()
+   {
+      return new Runnable()
+      {
+         @Override
+         public void run()
+         {
+               runeLite.getIcon().displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
+         }
+      };
    }
 
 }

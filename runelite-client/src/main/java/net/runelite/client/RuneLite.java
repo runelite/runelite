@@ -32,6 +32,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.awt.TrayIcon;
 import java.awt.SystemTray;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import javax.swing.ImageIcon;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -62,6 +63,8 @@ public class RuneLite
 	private PluginManager pluginManager;
 	private OverlayRenderer renderer;
 	private EventBus eventBus = new EventBus(this::eventExceptionHandler);
+	//private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(2);
+
 	private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
 	public static void main(String[] args) throws Exception
@@ -141,6 +144,11 @@ public class RuneLite
 	{
 		return executor;
 	}
+
+	//public ScheduledThreadPoolExecutor getExecutor()
+	//{
+	//	return executor;
+	//}
 
 	public TrayIcon getIcon()
 	{

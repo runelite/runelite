@@ -27,6 +27,7 @@ package net.runelite.inject.callbacks;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.events.MapRegionChanged;
+import net.runelite.client.events.AnimationChanged;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,6 +59,13 @@ public class Hooks
 				MapRegionChanged regionChanged = new MapRegionChanged();
 				regionChanged.setIndex(idx);
 				runelite.getEventBus().post(regionChanged);
+				break;
+			}
+			case "animationChanged":
+			{
+				AnimationChanged animationChange = new AnimationChanged();
+				animationChange.setIndex(idx);
+				runelite.getEventBus().post(animationChange);
 				break;
 			}
 			default:
