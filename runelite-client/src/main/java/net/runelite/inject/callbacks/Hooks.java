@@ -32,6 +32,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.hiscore.Hiscore;
 import net.runelite.client.events.MapRegionChanged;
+import net.runelite.client.events.PlayerMenuOptionsChanged;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,6 +66,13 @@ public class Hooks
 				runelite.getEventBus().post(regionChanged);
 				break;
 			}
+                        case "playerMenuOptionsChanged":
+                        {
+                                PlayerMenuOptionsChanged optionsChanged = new PlayerMenuOptionsChanged();
+                                optionsChanged.setIndex(idx);
+                                runelite.getEventBus().post(optionsChanged);
+                                break;
+                        }
 			default:
 				logger.warn("Unknown event {} triggered on {}", name, object);
 				return;

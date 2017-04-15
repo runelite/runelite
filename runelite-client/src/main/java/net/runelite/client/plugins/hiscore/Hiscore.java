@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.hiscore;
 
+import com.google.common.eventbus.Subscribe;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -31,6 +32,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
+import net.runelite.client.events.PlayerMenuOptionsChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
@@ -81,6 +83,12 @@ public class Hiscore extends Plugin implements ActionListener
 		ui.setPluginPanel(hiscorePanel);
 		ui.expand();
 	}
+        
+        @Subscribe
+        public void onPlayerMenuOptionsChanged(PlayerMenuOptionsChanged optionsChanged){
+                int idx = optionsChanged.getIndex();
+                System.out.println(idx);
+        }
         
         private void addLookupOption(){
                 /*
