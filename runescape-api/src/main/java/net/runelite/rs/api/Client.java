@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.rs.api;
 
 import java.awt.Canvas;
@@ -59,6 +58,9 @@ public interface Client extends GameEngine
 
 	@Import("mapAngle")
 	int getMapAngle();
+
+	@Import("mapOffset")
+	int getMapOffset();
 
 	@Import("tileHeights")
 	int[][][] getTileHeights();
@@ -156,12 +158,8 @@ public interface Client extends GameEngine
 	@Import("sendGameMessage")
 	void sendGameMessage(int var1, String var2, String var3);
 
-	//void hopToWorld(String var1, int var2, int var3);
-
 	@Import("objectDefinition")
 	ObjectComposition getObjectDefinition(int var1);
-
-	//void setScale(int var1);
 
 	@Import("scale")
 	int getScale();
@@ -213,4 +211,13 @@ public interface Client extends GameEngine
 
 	@Import("canvas")
 	Canvas getCanvas();
+
+	@Import("revision")
+	int getRevision();
+
+	@Import("mapRegions")
+	int[] getMapRegions();
+
+	@Import("xteaKeys")
+	int[][] getXteaKeys();
 }
