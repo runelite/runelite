@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm;
 
 import java.util.ArrayList;
@@ -32,6 +31,8 @@ import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.Exceptions;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Label;
+import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.signature.Signature;
 import org.objectweb.asm.AnnotationVisitor;
@@ -48,7 +49,7 @@ public class Method
 	public static final short ACC_ABSTRACT = 0x400;
 
 	public static final short ACCESS_MODIFIERS = ACC_PUBLIC | ACC_PRIVATE | ACC_PROTECTED;
-	
+
 	private Methods methods;
 
 	private int accessFlags;
@@ -66,7 +67,7 @@ public class Method
 		exceptions = new Exceptions();
 		annotations = new Annotations();
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -80,9 +81,11 @@ public class Method
 			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().getFullType(), true);
 			annotation.accept(av);
 		}
-		
+
 		if (code != null)
 		{
+			code.getInstructions().rebuildLabels();
+
 			visitor.visitCode();
 
 			net.runelite.asm.attributes.code.Exceptions exceptions = code.getExceptions();
@@ -120,7 +123,7 @@ public class Method
 	{
 		return methods;
 	}
-	
+
 	public void setMethods(Methods methods)
 	{
 		this.methods = methods;
@@ -135,12 +138,12 @@ public class Method
 	{
 		this.accessFlags = accessFlags;
 	}
-	
+
 	public String getName()
 	{
 		return name;
 	}
-	
+
 	public void setName(String name)
 	{
 		this.name = name;
@@ -155,17 +158,17 @@ public class Method
 	{
 		this.arguments = signature;
 	}
-	
+
 	public boolean isStatic()
 	{
 		return (accessFlags & ACC_STATIC) != 0;
 	}
-	
+
 	public void setStatic()
 	{
 		accessFlags |= ACC_STATIC;
 	}
-	
+
 	public boolean isSynchronized()
 	{
 		return (accessFlags & ACC_SYNCHRONIZED) != 0;
@@ -179,9 +182,13 @@ public class Method
 	public void setFinal(boolean f)
 	{
 		if (f)
+		{
 			accessFlags |= ACC_FINAL;
+		}
 		else
+		{
 			accessFlags &= ~ACC_FINAL;
+		}
 	}
 
 	public boolean isPrivate()
@@ -198,7 +205,7 @@ public class Method
 	{
 		accessFlags = (short) ((accessFlags & ~ACCESS_MODIFIERS) | ACC_PUBLIC);
 	}
-	
+
 	public Exceptions getExceptions()
 	{
 		return exceptions;
@@ -213,34 +220,40 @@ public class Method
 	{
 		this.code = code;
 	}
-	
+
 	public Annotations getAnnotations()
 	{
 		return annotations;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public <T extends Instruction & LVTInstruction> List<T> findLVTInstructionsForVariable(int index)
 	{
 		List<T> list = new ArrayList<>();
-		
+
 		if (getCode() == null)
+		{
 			return null;
-		
+		}
+
 		for (Instruction ins : getCode().getInstructions().getInstructions())
+		{
 			if (ins instanceof LVTInstruction)
 			{
 				LVTInstruction lv = (LVTInstruction) ins;
-				
+
 				if (lv.getVariableIndex() != index)
+				{
 					continue;
-				
+				}
+
 				list.add((T) ins);
 			}
-		
+		}
+
 		return list;
 	}
-	
+
 	public net.runelite.asm.pool.Method getPoolMethod()
 	{
 		return new net.runelite.asm.pool.Method(
