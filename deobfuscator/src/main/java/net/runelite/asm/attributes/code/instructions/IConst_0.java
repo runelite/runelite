@@ -49,12 +49,6 @@ public class IConst_0 extends Instruction implements PushConstantInstruction
 	}
 
 	@Override
-	public void accept(MethodVisitor visitor)
-	{
-		visitor.visitInsn(this.getType().getCode());
-	}
-
-	@Override
 	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
