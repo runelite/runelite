@@ -42,6 +42,12 @@ public class Field
 	}
 
 	@Override
+	public String toString()
+	{
+		return "Field{" + "clazz=" + clazz + ", name=" + name + ", type=" + type + '}';
+	}
+
+	@Override
 	public int hashCode()
 	{
 		int hash = 3;
