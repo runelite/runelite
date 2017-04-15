@@ -30,21 +30,21 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+
+import static java.lang.Thread.sleep;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.client.RuneLite;
 import com.google.common.eventbus.Subscribe;
 
 import java.awt.*;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 
 
 public class IdleNotifier extends Plugin
 {
    private Client client = RuneLite.getClient();
    private RuneLite runeLite = RuneLite.getRunelite();
-   ScheduledExecutorService executor = runeLite.getExecutor();
-   ScheduledFuture<?> checkIdleFuture = null;
+   private ScheduledExecutorService executor = runeLite.getExecutor();
    boolean notifyIdle = false;
    public Overlay getOverlay()
    {
@@ -52,12 +52,11 @@ public class IdleNotifier extends Plugin
    }
 
    @Subscribe
-   public void onAnimationChanged(AnimationChanged event)
+   public void onAnimationChanged(AnimationChanged event) throws InterruptedException
    {
 
-      if (client.getGameState() != GameState.LOGGED_IN)
+      if(client.getGameState() != GameState.LOGGED_IN)
          return;
-
       switch (client.getLocalPlayer().getAnimation())
       {
          //these values from from net.runelite.api.AnimationID
@@ -74,21 +73,19 @@ public class IdleNotifier extends Plugin
          case FISHING_HARPOON:
          case FISHING_CAGE:
          case FISHING_POLE_CAST:
-         case MINING_NORMAL_VEIN:
+         case MINING_NORMAL_VEIN_1:
+         case MINING_NORMAL_VEIN_2:
          case MINING_MOTHERLODE_VEIN:
          case HERBLORE_POTIONMAKING:
          case MAGIC_CHARGING_ORBS:
             notifyIdle = true;
             break;
       }
-
-      if(notifyIdle && client.getLocalPlayer().getAnimation() == IDLE)
-      {
-         runeLite.getIcon().displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
-         notifyIdle = false;
-      }
+      executor.execute(checkIdle());
       return;
    }
+
+
 
    private Runnable checkIdle()
    {
@@ -97,7 +94,16 @@ public class IdleNotifier extends Plugin
          @Override
          public void run()
          {
+            try
+            {
+               sleep(3000);
+            }
+            catch(InterruptedException e) { }
+            if(notifyIdle && client.getLocalPlayer().getAnimation() == IDLE)
+            {
                runeLite.getIcon().displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
+               notifyIdle = false;
+            }
          }
       };
    }

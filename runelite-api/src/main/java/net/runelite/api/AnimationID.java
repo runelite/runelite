@@ -23,7 +23,8 @@ public final class AnimationID
    public static final int FISHING_POLE_CAST = 623; // pole is in the water
    public static final int FISHING_CAGE = 619;
    public static final int FISHING_HARPOON = 618;
-   public static final int MINING_NORMAL_VEIN = 624;
+   public static final int MINING_NORMAL_VEIN_1 = 624;
+   public static final int MINING_NORMAL_VEIN_2 = 625;
    public static final int MINING_MOTHERLODE_VEIN = 6752;
    public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
    public static final int MAGIC_CHARGING_ORBS = 726;
