@@ -63,7 +63,7 @@ public class RuneLite
 	private PluginManager pluginManager;
 	private OverlayRenderer renderer;
 	private EventBus eventBus = new EventBus(this::eventExceptionHandler);
-	private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+	private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(4);
 
 	public static void main(String[] args) throws Exception
 	{
@@ -138,7 +138,7 @@ public class RuneLite
 		return options;
 	}
 
-	public ScheduledExecutorService getExecutor()
+	public ScheduledThreadPoolExecutor getExecutor()
 	{
 		return executor;
 	}

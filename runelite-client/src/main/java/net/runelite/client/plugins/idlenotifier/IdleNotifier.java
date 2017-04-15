@@ -46,14 +46,19 @@ public class IdleNotifier extends Plugin
    private Client client = RuneLite.getClient();
    private RuneLite runeLite = RuneLite.getRunelite();
    private ScheduledExecutorService executor = runeLite.getExecutor();
-   boolean notifyIdle = false;
+   private boolean notifyIdle = false;
    public Overlay getOverlay()
    {
       return null;
    }
 
+   public IdleNotifier()
+   {
+      executor.scheduleAtFixedRate(this.checkIdle(), 3, 3, TimeUnit.SECONDS);
+   }
+
    @Subscribe
-   public void onAnimationChanged(AnimationChanged event) throws InterruptedException
+   public void onAnimationChanged(AnimationChanged event)
    {
 
       if(client.getGameState() != GameState.LOGGED_IN)
@@ -82,7 +87,6 @@ public class IdleNotifier extends Plugin
             notifyIdle = true;
             break;
       }
-      executor.schedule(checkIdle(), 3, TimeUnit.SECONDS);
       return;
    }
 
@@ -90,17 +94,19 @@ public class IdleNotifier extends Plugin
 
    private Runnable checkIdle()
    {
+
       return new Runnable()
       {
          @Override
          public void run()
          {
-            if(notifyIdle && client.getLocalPlayer().getAnimation() == IDLE)
-            {
-               runeLite.getIcon().displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
-               notifyIdle = false;
-            }
+               if (notifyIdle && client.getLocalPlayer().getAnimation() == IDLE)
+               {
+                  runeLite.getIcon().displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
+                  notifyIdle = false;
+               }
          }
+
       };
    }
 
