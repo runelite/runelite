@@ -22,52 +22,75 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.inject.callbacks;
+package net.runelite.http.service.xtea;
 
-import net.runelite.client.RuneLite;
-import net.runelite.client.events.ExperienceChanged;
-import net.runelite.client.events.MapRegionChanged;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class Hooks
+public class XteaEntry
 {
-	private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
+	private int rev;
+	private int region;
+	private int key1;
+	private int key2;
+	private int key3;
+	private int key4;
 
-	private static final RuneLite runelite = RuneLite.getRunelite();
-
-	public static void callHook(String name, int idx, Object object)
+	public int getRev()
 	{
-		if (RuneLite.getClient() == null)
-		{
-			logger.warn("Event {} triggered prior to client being ready", name);
-			return;
-		}
-
-		switch (name)
-		{
-			case "experienceChanged":
-			{
-				ExperienceChanged experienceChanged = new ExperienceChanged();
-				experienceChanged.setIndex(idx);
-				runelite.getEventBus().post(experienceChanged);
-				break;
-			}
-			case "mapRegionsChanged":
-			{
-				MapRegionChanged regionChanged = new MapRegionChanged();
-				regionChanged.setIndex(idx);
-				runelite.getEventBus().post(regionChanged);
-				break;
-			}
-			default:
-				logger.warn("Unknown event {} triggered on {}", name, object);
-				return;
-		}
-
-		if (object != null)
-			logger.trace("Event {} (idx {}) triggered on {}", name, idx, object);
-		else
-			logger.trace("Event {} (idx {}) triggered", name, idx);
+		return rev;
 	}
+
+	public void setRev(int rev)
+	{
+		this.rev = rev;
+	}
+
+	public int getRegion()
+	{
+		return region;
+	}
+
+	public void setRegion(int region)
+	{
+		this.region = region;
+	}
+
+	public int getKey1()
+	{
+		return key1;
+	}
+
+	public void setKey1(int key1)
+	{
+		this.key1 = key1;
+	}
+
+	public int getKey2()
+	{
+		return key2;
+	}
+
+	public void setKey2(int key2)
+	{
+		this.key2 = key2;
+	}
+
+	public int getKey3()
+	{
+		return key3;
+	}
+
+	public void setKey3(int key3)
+	{
+		this.key3 = key3;
+	}
+
+	public int getKey4()
+	{
+		return key4;
+	}
+
+	public void setKey4(int key4)
+	{
+		this.key4 = key4;
+	}
+
 }

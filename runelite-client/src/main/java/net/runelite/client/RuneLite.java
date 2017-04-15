@@ -28,6 +28,8 @@ package net.runelite.client;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import java.io.File;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.awt.TrayIcon;
 import java.awt.SystemTray;
 import javax.swing.ImageIcon;
@@ -60,6 +62,7 @@ public class RuneLite
 	private PluginManager pluginManager;
 	private OverlayRenderer renderer;
 	private EventBus eventBus = new EventBus(this::eventExceptionHandler);
+	private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
 	public static void main(String[] args) throws Exception
 	{
@@ -132,6 +135,11 @@ public class RuneLite
 	public static OptionSet getOptions()
 	{
 		return options;
+	}
+
+	public ScheduledExecutorService getExecutor()
+	{
+		return executor;
 	}
 
 	public TrayIcon getIcon()
