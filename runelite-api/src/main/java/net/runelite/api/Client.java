@@ -220,6 +220,26 @@ public class Client
             return client.getPlayerMenuTypes();
     }
 
+	public int getMapScale()
+	{
+		return client.getMapScale();
+	}
+
+	public int getMapAngle()
+	{
+		return client.getMapAngle();
+	}
+
+	public int getMapOffset()
+	{
+		return client.getMapOffset();
+	}
+
+	public boolean isResized()
+	{
+		return client.isResized();
+	}
+
 	public int getRevision()
 	{
 		return client.getRevision();

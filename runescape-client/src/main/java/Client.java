@@ -354,7 +354,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -502197487
    )
-   static int field374;
+   @Export("mapOffset")
+   static int mapOffset;
    @ObfuscatedName("eq")
    @ObfuscatedGetter(
       intValue = -314507465
@@ -3131,7 +3132,7 @@ public final class Client extends GameEngine {
                                                                field548 = 0;
                                                                var12 = (int)(Math.random() * 8.0D);
                                                                if((var12 & 1) == 1) {
-                                                                  mapScale += field374;
+                                                                  mapScale += mapOffset;
                                                                }
 
                                                                if((var12 & 2) == 2) {
@@ -3140,11 +3141,11 @@ public final class Client extends GameEngine {
                                                             }
 
                                                             if(mapScale < -60) {
-                                                               field374 = 2;
+                                                               mapOffset = 2;
                                                             }
 
                                                             if(mapScale > 60) {
-                                                               field374 = -2;
+                                                               mapOffset = -2;
                                                             }
 
                                                             if(mapScaleDelta < -20) {
@@ -3747,7 +3748,7 @@ public final class Client extends GameEngine {
       field371 = 1;
       field372 = 0;
       mapScale = 0;
-      field374 = 2;
+      mapOffset = 2;
       mapScaleDelta = 0;
       field376 = 1;
       field548 = 0;

@@ -67,6 +67,11 @@ public class Service implements SparkApplication
 
 	private void loadDatasource()
 	{
+		if (dataSource != null)
+		{
+			return; // unit test?
+		}
+
 		try
 		{
 			// It is difficult to inject things into Spark
