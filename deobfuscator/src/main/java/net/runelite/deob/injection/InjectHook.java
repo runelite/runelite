@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
@@ -119,7 +120,10 @@ public class InjectHook
 			}
 
 			FieldInstruction fi = (FieldInstruction) i;
-			if (!isField(field, fi.getField()))
+
+			Field fieldBeingSet = fi.getMyField();
+
+			if (fieldBeingSet == null || !isField(field, fieldBeingSet))
 			{
 				continue;
 			}
@@ -143,15 +147,21 @@ public class InjectHook
 		}
 	}
 
-	private boolean isField(Field field, net.runelite.asm.pool.Field fieldBeingSet)
+	private boolean isField(Field field, Field fieldBeingSet)
 	{
 		String obfuscatedClassName = field.getFields().getClassFile().getAnnotations().find(OBFUSCATED_NAME).getElement().getString();
 		String obfuscatedFieldName = field.getAnnotations().find(OBFUSCATED_NAME).getElement().getString(); // obfuscated name of field
 		Type type = inject.toObType(field.getType());
 
-		return fieldBeingSet.getClazz().getName().equals(obfuscatedClassName)
-			&& fieldBeingSet.getName().equals(obfuscatedFieldName)
-			&& fieldBeingSet.getType().equals(type);
+		ClassGroup vanilla = inject.getVanilla();
+
+		ClassFile obfuscatedClass = vanilla.findClass(obfuscatedClassName);
+		assert obfuscatedClass != null;
+
+		Field obfuscatedField = obfuscatedClass.findFieldDeep(obfuscatedFieldName, type);
+		assert obfuscatedField != null;
+
+		return fieldBeingSet == obfuscatedField;
 	}
 
 	private void injectSetField(Field field, String hookName, Method method, SetFieldInstruction sfi)
@@ -204,7 +214,7 @@ public class InjectHook
 				ArrayStore as = (ArrayStore) i;
 
 				Field f = as.getMyField(ic);
-				if (f == null || !isField(field, f.getPoolField()))
+				if (f == null || !isField(field, f))
 				{
 					return; // not the correct field
 				}
