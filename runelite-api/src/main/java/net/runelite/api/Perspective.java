@@ -24,7 +24,9 @@
  */
 package net.runelite.api;
 
-import java.awt.*;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
 
 public class Perspective
@@ -162,6 +164,7 @@ public class Perspective
 			y = (167 / 2 - 1) + yy;
 			return new Point(x, y);
 		}
+
 		return new Point(-1, -1);
 	}
 
