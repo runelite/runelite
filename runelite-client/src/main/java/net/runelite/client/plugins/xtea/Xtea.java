@@ -88,7 +88,7 @@ public class Xtea extends Plugin
 		{
 			try
 			{
-				xteaClient.submut(revision, region, keys);
+				xteaClient.submit(revision, region, keys);
 			}
 			catch (URISyntaxException | IOException ex)
 			{
