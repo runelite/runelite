@@ -34,7 +34,6 @@ import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Value;
-import org.objectweb.asm.MethodVisitor;
 
 public class IConst_3 extends Instruction implements PushConstantInstruction
 {
@@ -46,12 +45,6 @@ public class IConst_3 extends Instruction implements PushConstantInstruction
 	public IConst_3(Instructions instructions)
 	{
 		super(instructions, InstructionType.ICONST_3);
-	}
-
-	@Override
-	public void accept(MethodVisitor visitor)
-	{
-		visitor.visitInsn(this.getType().getCode());
 	}
 
 	@Override
