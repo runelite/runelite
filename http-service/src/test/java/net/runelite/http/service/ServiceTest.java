@@ -28,6 +28,8 @@ import com.google.gson.Gson;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.SQLException;
+import javax.sql.DataSource;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.service.hiscore.HiscoreService;
@@ -35,6 +37,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import spark.Spark;
@@ -46,9 +49,12 @@ public class ServiceTest
 	private static Service service;
 
 	@BeforeClass
-	public static void before()
+	public static void before() throws SQLException
 	{
+		DataSource dataSource = mock(DataSource.class, RETURNS_DEEP_STUBS);
+
 		service = new Service();
+		service.setDataSource(dataSource);
 		service.init();
 
 		Spark.awaitInitialization();
