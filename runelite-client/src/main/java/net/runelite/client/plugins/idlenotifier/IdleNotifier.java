@@ -38,6 +38,7 @@ import com.google.common.eventbus.Subscribe;
 
 import java.awt.*;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class IdleNotifier extends Plugin
@@ -81,7 +82,7 @@ public class IdleNotifier extends Plugin
             notifyIdle = true;
             break;
       }
-      executor.execute(checkIdle());
+      executor.schedule(checkIdle(), 3, TimeUnit.SECONDS);
       return;
    }
 
@@ -94,11 +95,6 @@ public class IdleNotifier extends Plugin
          @Override
          public void run()
          {
-            try
-            {
-               sleep(3000);
-            }
-            catch(InterruptedException e) { }
             if(notifyIdle && client.getLocalPlayer().getAnimation() == IDLE)
             {
                runeLite.getIcon().displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
