@@ -47,7 +47,7 @@ public class XteaClient
 
 	private final Gson gson = new Gson();
 
-	public void submut(int revision, int region, int[] keys) throws URISyntaxException, UnsupportedEncodingException, IOException
+	public void submit(int revision, int region, int[] keys) throws URISyntaxException, UnsupportedEncodingException, IOException
 	{
 		URIBuilder builder = new URIBuilder(URL);
 
