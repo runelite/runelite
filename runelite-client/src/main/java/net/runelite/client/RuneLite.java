@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;

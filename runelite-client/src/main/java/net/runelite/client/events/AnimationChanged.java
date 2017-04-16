@@ -22,20 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.events;
 
 public class AnimationChanged
 {
-   private int index;
+	private int index;
 
-   public int getIndex()
-   {
-      return this.index;
-   }
+	public int getIndex()
+	{
+		return this.index;
+	}
 
-   public void setIndex(int idx)
-   {
-      this.index = idx;
-   }
+	public void setIndex(int idx)
+	{
+		this.index = idx;
+	}
 }
