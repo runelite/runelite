@@ -43,12 +43,12 @@ public class IdleNotifier extends Plugin
 {
 	private static final String OPERATING_SYSTEM = System.getProperty("os.name");
 	private static final int CHECK_INTERVAL = 2;
+	private static final Duration waitDuration = Duration.ofMillis(2500L);
 
 	private final Client client = RuneLite.getClient();
 	private final TrayIcon trayIcon = RuneLite.getTrayIcon();
-	private final Duration waitDuration = Duration.ofMillis(2500L);
-	private Instant lastAnimating;
 
+	private Instant lastAnimating;
 	private boolean notifyIdle = false;
 
 	@Override
@@ -71,7 +71,6 @@ public class IdleNotifier extends Plugin
 			return;
 		}
 		int animation = client.getLocalPlayer().getAnimation();
-		System.out.println(animation);
 
 		switch (animation)
 		{
