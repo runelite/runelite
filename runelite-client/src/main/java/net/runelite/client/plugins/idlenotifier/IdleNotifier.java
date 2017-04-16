@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Abel Briggs
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,7 +65,7 @@ public class IdleNotifier extends Plugin
          return;
       switch (client.getLocalPlayer().getAnimation())
       {
-         //these values from from net.runelite.api.AnimationID
+         //these values are from net.runelite.api.AnimationID
          case WOODCUTTING:
          case COOKING_FIRE:
          case COOKING_RANGE:
