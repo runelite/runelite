@@ -43,7 +43,7 @@ public class IdleNotifier extends Plugin
 {
 	private static final String OPERATING_SYSTEM = System.getProperty("os.name");
 	private static final int CHECK_INTERVAL = 2;
-	private static final Duration waitDuration = Duration.ofMillis(2500L);
+	private static final Duration WAIT_DURATION = Duration.ofMillis(2500L);
 
 	private final Client client = RuneLite.getClient();
 	private final TrayIcon trayIcon = RuneLite.getTrayIcon();
@@ -124,7 +124,7 @@ public class IdleNotifier extends Plugin
 	private void checkIdle()
 	{
 		if (notifyIdle && client.getLocalPlayer().getAnimation() == IDLE
-				&& Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
+				&& Instant.now().compareTo(lastAnimating.plus(WAIT_DURATION)) >= 0)
 		{
 			trayIcon.displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
 
