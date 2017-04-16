@@ -134,10 +134,7 @@ public interface Client extends GameEngine
         @Import("playerMenuTypes")
         int[] getPlayerMenuTypes();
 
-	@Import("menuActions")
-	String[] getMenuActions();
-
-	@Import("menuTargets")
+        @Import("menuTargets")
 	String[] getMenuTargets();
 
 	@Import("menuOptions")

@@ -72,7 +72,7 @@ public class Hiscore extends Plugin implements ActionListener
 
 		ui.getNavigationPanel().addNavigation(navButton);
                 
-                addLookupOption();
+                RuneLite.getRunelite().getMenuManager().addPlayerMenuItem("Lookup", (username) -> hiscorePanel.lookup(username));
 	}
 
 	@Override
@@ -86,63 +86,6 @@ public class Hiscore extends Plugin implements ActionListener
 	{
 		ui.setPluginPanel(hiscorePanel);
 		ui.expand();
-	}
+	}        
         
-        @Subscribe
-        public void onPlayerMenuOptionsChanged(PlayerMenuOptionsChanged optionsChanged){
-                int idx = optionsChanged.getIndex();
-                /*
-                 * If the lookup option is going to be overwritten and there is an empty spot available, change it to the new index.
-                 * When no option is available, it does not add the lookup option.
-                 *
-                 */
-                if( lookupMenuIndex == idx )
-                {
-                        int emptySpot = findEmptySpot();
-                        if( emptySpot != -1 )
-                        {
-                                lookupMenuIndex = emptySpot;
-                                addLookupOption();
-                        }
-                }
-        }
-        
-        private void addLookupOption(){
-                client.getPlayerOptions()[lookupMenuIndex] = lookupMenuText;
-                client.getPlayerOptionsPriorities()[lookupMenuIndex] = true;
-                client.getPlayerMenuType()[lookupMenuIndex] = lookupMenuType;
-        }
-        
-        /* This method finds an empty spot between 4 and 7.
-         * The lookup function should always be underneath "Follow" (index 2) and "Trade with" (index 3).
-         * Thats why I start with index 4.
-         *
-         * Returns -1 if no spot is available
-         */
-        private int findEmptySpot(){
-                
-                int index = 4;
-                /*
-                 * The index needs to be between 4 and 7,
-                 * It can't be the same as the one it's in right now
-                 * It has to be a free spot
-                 */
-                while(index < 8 && ( index == lookupMenuIndex || client.getPlayerOptions()[index] != null ) )
-                {
-                        index++;
-                }
-                
-                //If an empty spot was found, return the index, otherwise return -1;
-                return index != 8 ? index : -1;
-                    
-        }
-        
-        @Subscribe
-        public void onLookupMenuClicked(PlayerMenuOptionClicked event)
-        {
-                if(event.getMenuOption().equals(lookupMenuText))
-                {
-                        hiscorePanel.lookup(event.getMenuTarget());
-                }
-        }
 }

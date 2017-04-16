@@ -24,12 +24,9 @@
  */
 package net.runelite.inject.callbacks;
 
-import java.util.Arrays;
 import java.util.stream.IntStream;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.hiscore.Hiscore;
 import net.runelite.client.events.MapRegionChanged;
 import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionsChanged;
@@ -103,6 +100,8 @@ public class Hooks
                         PlayerMenuOptionClicked playerMenuOptionClicked = new PlayerMenuOptionClicked();
                         playerMenuOptionClicked.setMenuOption(var4);
                         playerMenuOptionClicked.setMenuTarget(username);
+                        playerMenuOptionClicked.setMenuAction(menuAction);
+                        
                         runelite.getEventBus().post(playerMenuOptionClicked);
                 }
         }
