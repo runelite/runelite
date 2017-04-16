@@ -26,15 +26,15 @@ package net.runelite.client.events;
 
 public class AnimationChanged
 {
-	private int index;
+	private Object object;
 
-	public int getIndex()
+	public Object getObject()
 	{
-		return this.index;
+		return object;
 	}
 
-	public void setIndex(int idx)
+	public void setObject(Object object)
 	{
-		this.index = idx;
+		this.object = object;
 	}
 }

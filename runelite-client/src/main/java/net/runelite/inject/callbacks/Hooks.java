@@ -64,7 +64,7 @@ public class Hooks
 			case "animationChanged":
 			{
 				AnimationChanged animationChange = new AnimationChanged();
-				animationChange.setIndex(idx);
+				animationChange.setObject(object);
 				runelite.getEventBus().post(animationChange);
 				break;
 			}
