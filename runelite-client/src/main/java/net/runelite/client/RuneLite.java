@@ -61,7 +61,7 @@ public class RuneLite
 	private PluginManager pluginManager;
 	private OverlayRenderer renderer;
 	private EventBus eventBus = new EventBus(this::eventExceptionHandler);
-	private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+	private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
 
 	static
 	{
