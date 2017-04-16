@@ -64,13 +64,13 @@ public class Hooks
 				runelite.getEventBus().post(regionChanged);
 				break;
 			}
-            case "playerMenuOptionsChanged":
-            {
-                    PlayerMenuOptionsChanged optionsChanged = new PlayerMenuOptionsChanged();
-                    optionsChanged.setIndex(idx);
-                    runelite.getEventBus().post(optionsChanged);
-                    break;
-            }
+                        case "playerMenuOptionsChanged":
+                        {
+                                PlayerMenuOptionsChanged optionsChanged = new PlayerMenuOptionsChanged();
+                                optionsChanged.setIndex(idx);
+                                runelite.getEventBus().post(optionsChanged);
+                                break;
+                        }
 			case "animationChanged":
 			{
 				AnimationChanged animationChange = new AnimationChanged();
@@ -89,28 +89,28 @@ public class Hooks
 			logger.trace("Event {} (idx {}) triggered", name, idx);
 	}
         
-    public static void menuActionHook(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7)
-    {
-        /* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
-         * I have no idea why, but it does. Their code contains the same conditional statement.
-         */
-        if(var2 >= 2000) 
+        public static void menuActionHook(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7)
         {
-            var2 -= 2000;
+                /* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
+                 * I have no idea why, but it does. Their code contains the same conditional statement.
+                 */
+                if(var2 >= 2000) 
+                {
+                        var2 -= 2000;
+                }
+
+                /** If the menuAction is a playerMenuAction */
+                final int menuAction = var2;
+                if( IntStream.of(RuneLite.getClient().getPlayerMenuType()).anyMatch(x -> x == menuAction) )
+                {
+                        String username = var5.split(">")[1].split("<")[0];
+
+                        PlayerMenuOptionClicked playerMenuOptionClicked = new PlayerMenuOptionClicked();
+                        playerMenuOptionClicked.setMenuOption(var4);
+                        playerMenuOptionClicked.setMenuTarget(username);
+                        playerMenuOptionClicked.setMenuAction(menuAction);
+
+                        runelite.getEventBus().post(playerMenuOptionClicked);
+                }
         }
-        
-        /** If the menuAction is a playerMenuAction */
-        final int menuAction = var2;
-        if( IntStream.of(RuneLite.getClient().getPlayerMenuType()).anyMatch(x -> x == menuAction) )
-        {
-            String username = var5.split(">")[1].split("<")[0];
-            
-            PlayerMenuOptionClicked playerMenuOptionClicked = new PlayerMenuOptionClicked();
-            playerMenuOptionClicked.setMenuOption(var4);
-            playerMenuOptionClicked.setMenuTarget(username);
-            playerMenuOptionClicked.setMenuAction(menuAction);
-            
-            runelite.getEventBus().post(playerMenuOptionClicked);
-        }
-    }
 }

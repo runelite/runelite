@@ -139,10 +139,10 @@ public class RuneLite
 		return pluginManager;
 	}
         
-    public MenuManager getMenuManager()
-    {
-            return menuManager;
-    }
+        public MenuManager getMenuManager()
+        {
+                return menuManager;
+        }
 
 	public OverlayRenderer getRenderer()
 	{
