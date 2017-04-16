@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import net.runelite.client.RuneLite;
 
 public final class ClientUI extends JFrame
 {
@@ -53,6 +54,7 @@ public final class ClientUI extends JFrame
 		init();
 		pack();
 		setTitle("RuneLite");
+		setIconImage(RuneLite.ICON);
 		setLocationRelativeTo(getOwner());
 		setResizable(true);
 		setVisible(true);
