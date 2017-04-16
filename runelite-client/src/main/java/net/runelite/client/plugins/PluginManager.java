@@ -35,6 +35,7 @@ import net.runelite.client.plugins.devtools.DevTools;
 import net.runelite.client.plugins.fpsinfo.FPS;
 import net.runelite.client.plugins.gronditems.GroundItems;
 import net.runelite.client.plugins.hiscore.Hiscore;
+import net.runelite.client.plugins.idlenotifier.IdleNotifier;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 import net.runelite.client.plugins.xtea.Xtea;
 import org.slf4j.Logger;
@@ -60,7 +61,7 @@ public class PluginManager
 		load(new Hiscore());
 		load(new BossTimers());
 		load(new Xtea());
-
+		load(new IdleNotifier());
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
 			logger.info("Loading developer plugins");

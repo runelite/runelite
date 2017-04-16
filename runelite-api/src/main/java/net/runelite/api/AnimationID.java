@@ -1,0 +1,31 @@
+package net.runelite.api;
+
+// Note: This class is not complete: these animations were manually gathered
+// through getAnimation(). Please add animations as you happen to use them.
+
+public final class AnimationID
+{
+   public static final int IDLE = -1;
+   public static final int WOODCUTTING = 879;
+   public static final int CONSUMING = 829; // consuming consumables
+   public static final int FIREMAKING = 733;
+   public static final int COOKING_FIRE = 897;
+   public static final int COOKING_RANGE = 896;
+   public static final int FLETCHING_BOW_CUTTING = 1248;
+   public static final int FLETCHING_BOW_STRINGING = 6684;
+   public static final int CRAFTING_GEM_CUTTING = 888;
+   public static final int CRAFTING_LEATHER = 1249;
+   public static final int SMITHING_SMELTING = 899;
+   public static final int SMITHING_CANNONBALL = 827; //cball smithing uses this and SMITHING_SMELTING
+   public static final int SMITHING_ANVIL = 898;
+   public static final int FISHING_NET = 621;
+   public static final int FISHING_POLE_INITIAL = 622; //initial swing of pole
+   public static final int FISHING_POLE_CAST = 623; // pole is in the water
+   public static final int FISHING_CAGE = 619;
+   public static final int FISHING_HARPOON = 618;
+   public static final int MINING_NORMAL_VEIN = 624;
+   public static final int MINING_MOTHERLODE_VEIN = 6752;
+   public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
+   public static final int MAGIC_CHARGING_ORBS = 726;
+
+}

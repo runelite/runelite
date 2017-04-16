@@ -30,6 +30,9 @@ import com.google.common.eventbus.SubscriberExceptionContext;
 import java.io.File;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.awt.TrayIcon;
+import java.awt.SystemTray;
+import javax.swing.ImageIcon;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
@@ -51,6 +54,10 @@ public class RuneLite
 	private static Client client;
 	private static RuneLite runelite;
 
+	private TrayIcon icon;
+	private SystemTray tray;
+	private ImageIcon trayIconImage;
+
 	private ClientUI gui;
 	private PluginManager pluginManager;
 	private OverlayRenderer renderer;
@@ -71,6 +78,14 @@ public class RuneLite
 	{
 		gui = new ClientUI();
 
+		if(SystemTray.isSupported())
+		{
+			trayIconImage = new ImageIcon(getClass().getClassLoader().getResource("trayIcon.jpg"));
+			tray = SystemTray.getSystemTray();
+			icon = new TrayIcon(trayIconImage.getImage(), "RuneLite");
+			icon.setImageAutoSize(true);
+			tray.add(icon);
+		}
 		pluginManager = new PluginManager(this);
 		pluginManager.loadAll();
 
@@ -125,5 +140,10 @@ public class RuneLite
 	public ScheduledExecutorService getExecutor()
 	{
 		return executor;
+	}
+
+	public TrayIcon getIcon()
+	{
+		return icon;
 	}
 }
