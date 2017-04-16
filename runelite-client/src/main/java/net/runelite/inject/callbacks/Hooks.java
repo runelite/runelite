@@ -24,12 +24,9 @@
  */
 package net.runelite.inject.callbacks;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.hiscore.Hiscore;
 import net.runelite.client.events.MapRegionChanged;
 import net.runelite.client.events.PlayerMenuOptionsChanged;
@@ -84,7 +81,11 @@ public class Hooks
 			logger.trace("Event {} (idx {}) triggered", name, idx);
 	}
         
-        public static void menuActionHook(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7){
+        public static void menuActionHook(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7)
+        {
+                /* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
+                 * I have no idea why, but it does. Their code contains the same conditional statement.
+                 */
                 if(var2 >= 2000) 
                 {
                         var2 -= 2000;

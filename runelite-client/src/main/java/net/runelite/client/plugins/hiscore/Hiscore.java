@@ -50,6 +50,7 @@ public class Hiscore extends Plugin implements ActionListener
 	private final ClientUI ui = RuneLite.getRunelite().getGui();
         
         private static final Client client = RuneLite.getClient();
+        private int lookupMenuIndex = 4;
         public static final int lookupMenuType = 999;
 
 	public Hiscore()
@@ -87,32 +88,50 @@ public class Hiscore extends Plugin implements ActionListener
         @Subscribe
         public void onPlayerMenuOptionsChanged(PlayerMenuOptionsChanged optionsChanged){
                 int idx = optionsChanged.getIndex();
-                System.out.println(idx);
+                /*
+                 * If the lookup option is going to be overwritten and there is an empty spot available, change it to the new index.
+                 * When no option is available, it does not add the lookup option.
+                 *
+                 */
+                if( lookupMenuIndex == idx )
+                {
+                        int emptySpot = findEmptySpot();
+                        if( emptySpot != -1 )
+                        {
+                                lookupMenuIndex = emptySpot;
+                                addLookupOption();
+                        }
+                }
         }
         
         private void addLookupOption(){
+                client.getPlayerOptions()[lookupMenuIndex] = "Lookup";
+                client.getPlayerOptionsPriorities()[lookupMenuIndex] = true;
+                client.getPlayerMenuType()[lookupMenuIndex] = lookupMenuType;
+        }
+        
+        /* This method finds an empty spot between 4 and 7.
+         * The lookup function should always be underneath "Follow" (index 2) and "Trade with" (index 3).
+         * Thats why I start with index 4.
+         *
+         * Returns -1 if no spot is available
+         */
+        private int findEmptySpot(){
+                
+                int index = 4;
                 /*
-                * Wait until the client gets packets that set the playerOptions. 
-                * playerOption[2]="Follow"
-                * playerOption[3]="Trade With"
-                * These two always get set eventually. 
-                * 
-                * If the option to right-click report someone is toggled on.
-                * playerOption[7] = "Report"
-                * 
-                * Since I cant make the playerOptions array longer (its a final list),
-                * I overwrite the "Report" option. Simply because i dont know what the others are
-                * and i dont want to break something.
-                */
-                int menuType = 7;
+                 * The index needs to be between 4 and 7,
+                 * It can't be the same as the one it's in right now
+                 * It has to be a free spot
+                 */
+                while(index < 8 && ( index == lookupMenuIndex || client.getPlayerOptions()[index] != null ) )
+                {
+                        index++;
+                }
                 
-                while(client == null || client.getPlayerOptions() == null || client.getPlayerOptions()[2] == null) 
-                        try{Thread.sleep(250);} catch(Exception e){}
-
-                client.getPlayerOptions()[menuType] = "Lookup";
-                client.getPlayerOptionsPriorities()[menuType] = true;
-                client.getPlayerMenuType()[menuType] = lookupMenuType;
-                
+                //If an empty spot was found, return the index, otherwise return -1;
+                return index != 8 ? index : -1;
+                    
         }
         
         public void lookup(String username){
