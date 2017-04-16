@@ -24,6 +24,7 @@
  */
 package net.runelite.deob.injection;
 
+import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -232,7 +233,7 @@ public class InjectHook
 			assert idx != -1;
 
 			// idx + 1 to insert after the set
-			injectCallback(method, ins, idx + 1, hookName, new IConst_M1(ins), objectInstruction);
+			injectCallback(method, ins, idx + 1, hookName, null, objectInstruction);
 		});
 
 		e.run();
@@ -284,12 +285,6 @@ public class InjectHook
 			StackContext index = ic.getPops().get(1);
 			InstructionContext indexIc = index.getPushed(); // what pushed the index
 
-			if (indexIc.getPops().isEmpty() == false)
-			{
-				logger.warn("Array index uses instruction {} which pops from the stack, unable to inject hook {}", indexIc, hookName);
-				return;
-			}
-
 			// inject hook after 'i'
 			logger.info("Found array injection location for hook {} at instruction {}", hookName, i);
 
@@ -297,13 +292,24 @@ public class InjectHook
 			assert idx != -1;
 
 			// it's annoying to get the object of the field of this array, so passing null for now
-			injectCallback(method, ins, idx + 1, hookName, indexIc.getInstruction().clone(), new AConstNull(ins));
+			injectCallback(method, ins, idx + 1, hookName, indexIc, new AConstNull(ins));
 		});
 
 		e.run();
 	}
 
-	private void injectCallback(Method method, Instructions ins, int idx, String hookName, Instruction indexPusher, Instruction objectPusher)
+	private int recursivelyPush(Instructions ins, int idx, InstructionContext ctx)
+	{
+		for (StackContext sctx : Lists.reverse(ctx.getPops()))
+		{
+			idx = recursivelyPush(ins, idx, sctx.getPushed());
+		}
+
+		ins.getInstructions().add(idx++, ctx.getInstruction().clone());
+		return idx;
+	}
+
+	private void injectCallback(Method method, Instructions ins, int idx, String hookName, InstructionContext indexPusher, Instruction objectPusher)
 	{
 		// Insert:
 		// ldc hookName
@@ -323,7 +329,14 @@ public class InjectHook
 		);
 
 		ins.getInstructions().add(idx++, ldc);
-		ins.getInstructions().add(idx++, indexPusher);
+		if (indexPusher != null)
+		{
+			idx = recursivelyPush(ins, idx, indexPusher);
+		}
+		else
+		{
+			ins.getInstructions().add(idx++, new IConst_M1(ins));
+		}
 		ins.getInstructions().add(idx++, objectPusher);
 		ins.getInstructions().add(idx++, invoke);
 	}
