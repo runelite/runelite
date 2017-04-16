@@ -25,52 +25,37 @@
 package net.runelite.client.menus;
 
 import com.google.common.eventbus.Subscribe;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import net.runelite.client.RuneLite;
-import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionsChanged;
 
 public class MenuManager {
     
         private final RuneLite runeLite;
-
-        private final Map<Integer, PlayerMenuItem> playerMenuItemMap; //Key: menuAction, Value: MenuItem.
-        private final List<Integer> usedPlayerMenuIndices;
         
+        //Maps the indexes that are being used to the menu option.
+        private final Map<Integer, String> playerMenuIndexMap;
         
         /* 1007 is the highest number the rs client uses for actions. There is no way to see which ones are used, 
          * so im starting from 1500. Its just a number well over their maximum, so if a new action gets added, chances are little
-         * it interferes with the actions the MenuManager uses.
+         * it interferes with the action the MenuManager uses.
          */
-        private int menuActionCounter = 1500;
+        private static final int MENU_ACTION = 1500;
 
         public MenuManager(RuneLite runeLite)
         {
                 this.runeLite = runeLite;
-                this.playerMenuItemMap = new HashMap<>();
-                this.usedPlayerMenuIndices = new ArrayList<>();
+                this.playerMenuIndexMap = new HashMap<>();
         }
 
-        public boolean addPlayerMenuItem(String menuText, Consumer<String> menuActionCallback)
+        public boolean addPlayerMenuItem(String menuText)
         {
                 int playerMenuIndex = findEmptyPlayerMenuIndex();
                 if(playerMenuIndex != 8)
-                {
-                        int menuAction = menuActionCounter++;
-                        
-                        PlayerMenuItem menuItem = new PlayerMenuItem();
-                        menuItem.setMenuAction(menuActionCallback);
-                        menuItem.setPlayerMenuIndex(playerMenuIndex);
-                        menuItem.setPlayerMenuName(menuText);
-                        menuItem.setMenuType(menuAction);
-                        
-                        addPlayerMenuItem(playerMenuIndex, menuItem);
-                        playerMenuItemMap.put(menuAction, menuItem);
-                        usedPlayerMenuIndices.add(playerMenuIndex);
+                {       
+                        addPlayerMenuItem(playerMenuIndex, menuText);
+                        playerMenuIndexMap.put(playerMenuIndex, menuText);
                         
                         return true;
                 }
@@ -84,40 +69,24 @@ public class MenuManager {
         public void onPlayerMenuOptionsChanged(PlayerMenuOptionsChanged event)
         {
                 int idx = event.getIndex();
-                if( usedPlayerMenuIndices.contains(idx) )
+                if( playerMenuIndexMap.containsKey(idx) )
                 {
-                        /** Find the playerMenuItem that was on this index */
-                        PlayerMenuItem menuItem = playerMenuItemMap.values().stream().filter(item-> item.getPlayerMenuIndex() == idx).findFirst().get();
-                        
+                        String menuText = playerMenuIndexMap.get(idx);
                         int newIdx = findEmptyPlayerMenuIndex();
                         if( newIdx != 8 )
                         {
-                                menuItem.setPlayerMenuIndex(newIdx);
-                                addPlayerMenuItem(newIdx, menuItem);
+                                addPlayerMenuItem(newIdx, menuText);
+                                playerMenuIndexMap.put(newIdx, menuText);
                         }
-                        
-                        usedPlayerMenuIndices.add((Integer)newIdx);
-                        usedPlayerMenuIndices.remove((Integer)idx);
+                        playerMenuIndexMap.remove((Integer)idx);
                 }
         }
         
-        @Subscribe
-        public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
+        private void addPlayerMenuItem( int playerOptionIndex, String menuText )
         {
-                /* Only handle this PlayerMenuOptionClick if it was added by the MenuManager. */
-                PlayerMenuItem menuItem = playerMenuItemMap.get(event.getMenuAction());
-                if( menuItem != null && usedPlayerMenuIndices.contains(menuItem.getPlayerMenuIndex()) )
-                {
-                        int menuAction = event.getMenuAction();
-                        playerMenuItemMap.get(menuAction).getMenuAction().accept(event.getMenuTarget());
-                }
-        }
-        
-        private void addPlayerMenuItem( int playerOptionIndex, PlayerMenuItem menuItem )
-        {
-                RuneLite.getClient().getPlayerOptions()[playerOptionIndex] = menuItem.getPlayerMenuName();
+                RuneLite.getClient().getPlayerOptions()[playerOptionIndex] = menuText;
                 RuneLite.getClient().getPlayerOptionsPriorities()[playerOptionIndex] = true;
-                RuneLite.getClient().getPlayerMenuType()[playerOptionIndex] = menuItem.getMenuType();
+                RuneLite.getClient().getPlayerMenuType()[playerOptionIndex] = MENU_ACTION;
         }
 
         private int findEmptyPlayerMenuIndex()
@@ -129,7 +98,7 @@ public class MenuManager {
                  * It has to be a free spot
                  */
                 
-                while( index < 8 && ( RuneLite.getClient().getPlayerOptions()[index] != null || usedPlayerMenuIndices.contains(index) ) )
+                while( index < 8 && ( RuneLite.getClient().getPlayerOptions()[index] != null || playerMenuIndexMap.containsKey(index) ) )
                 {
                         index ++;
                 }

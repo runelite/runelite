@@ -33,7 +33,6 @@ import javax.swing.ImageIcon;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.PlayerMenuOptionClicked;
-import net.runelite.client.events.PlayerMenuOptionsChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
@@ -72,7 +71,7 @@ public class Hiscore extends Plugin implements ActionListener
 
 		ui.getNavigationPanel().addNavigation(navButton);
                 
-                RuneLite.getRunelite().getMenuManager().addPlayerMenuItem("Lookup", (username) -> hiscorePanel.lookup(username));
+                RuneLite.getRunelite().getMenuManager().addPlayerMenuItem("Lookup");
 	}
 
 	@Override
@@ -86,6 +85,16 @@ public class Hiscore extends Plugin implements ActionListener
 	{
 		ui.setPluginPanel(hiscorePanel);
 		ui.expand();
-	}        
+	}
+        
+        @Subscribe
+        public void onLookupMenuClicked(PlayerMenuOptionClicked event)
+        {
+                if(event.getMenuOption().equals("Lookup"))
+                {
+                        hiscorePanel.lookup(event.getMenuTarget());
+                }
+        }
+                
         
 }
