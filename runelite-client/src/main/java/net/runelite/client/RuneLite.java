@@ -22,14 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
+import java.awt.Image;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.imageio.ImageIO;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
@@ -39,7 +43,6 @@ import net.runelite.client.ui.overlay.OverlayRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class RuneLite
 {
 	private static final Logger logger = LoggerFactory.getLogger(RuneLite.class);
@@ -47,9 +50,12 @@ public class RuneLite
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File REPO_DIR = new File(RUNELITE_DIR, "repository");
 
+	public static Image ICON;
+
 	private static OptionSet options;
 	private static Client client;
 	private static RuneLite runelite;
+	private static TrayIcon trayIcon;
 
 	private ClientUI gui;
 	private PluginManager pluginManager;
@@ -57,12 +63,24 @@ public class RuneLite
 	private EventBus eventBus = new EventBus(this::eventExceptionHandler);
 	private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
+	static
+	{
+		try
+		{
+			ICON = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
+		}
+		catch (IOException ex)
+		{
+			logger.warn(null, ex);
+		}
+	}
+
 	public static void main(String[] args) throws Exception
 	{
 		OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode");
 		options = parser.parse(args);
-		
+
 		runelite = new RuneLite();
 		runelite.start();
 	}
@@ -70,6 +88,15 @@ public class RuneLite
 	public void start() throws Exception
 	{
 		gui = new ClientUI();
+
+		if (SystemTray.isSupported())
+		{
+			SystemTray systemTray = SystemTray.getSystemTray();
+
+			trayIcon = new TrayIcon(ICON, "RuneLite");
+			trayIcon.setImageAutoSize(true);
+			systemTray.add(trayIcon);
+		}
 
 		pluginManager = new PluginManager(this);
 		pluginManager.loadAll();
@@ -125,5 +152,10 @@ public class RuneLite
 	public ScheduledExecutorService getExecutor()
 	{
 		return executor;
+	}
+
+	public static TrayIcon getTrayIcon()
+	{
+		return trayIcon;
 	}
 }
