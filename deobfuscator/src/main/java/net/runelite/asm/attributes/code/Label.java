@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code;
 
 import net.runelite.asm.attributes.code.instructions.NOP;
@@ -31,7 +30,7 @@ import org.objectweb.asm.MethodVisitor;
 public class Label extends NOP
 {
 	private org.objectweb.asm.Label label;
-	
+
 	public Label(Instructions instructions)
 	{
 		super(instructions);
@@ -47,6 +46,12 @@ public class Label extends NOP
 	public String toString()
 	{
 		return "label " + next().toString();
+	}
+
+	@Override
+	public Instruction clone()
+	{
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

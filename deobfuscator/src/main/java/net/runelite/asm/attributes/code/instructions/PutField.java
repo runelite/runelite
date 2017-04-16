@@ -65,7 +65,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 	public String toString()
 	{
 		Method m = this.getInstructions().getCode().getMethod();
-		return "putfield " + myField + " in " + m;
+		return "putfield " + field + " in " + m;
 	}
 
 	@Override

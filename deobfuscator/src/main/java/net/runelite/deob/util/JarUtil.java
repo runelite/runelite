@@ -96,7 +96,7 @@ public class JarUtil
 		}
 	}
 
-	public static byte[] writeClass(ClassGroup group, ClassFile cf) throws IOException
+	public static byte[] writeClass(ClassGroup group, ClassFile cf)
 	{
 		ClassWriter writer = new NonloadingClassWriter(group, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
 		CheckClassAdapter cca = new CheckClassAdapter(writer, false);

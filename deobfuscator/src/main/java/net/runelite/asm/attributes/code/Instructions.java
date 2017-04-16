@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code;
 
 import java.util.ArrayList;
@@ -33,8 +32,9 @@ import net.runelite.asm.attributes.Code;
 
 public class Instructions
 {
-	private Code code;
-	private List<Instruction> instructions = new ArrayList<>();
+	private final Code code;
+	private final List<Instruction> instructions = new ArrayList<>();
+	private final Map<org.objectweb.asm.Label, Label> labelMap = new HashMap<>();
 
 	public Instructions(Code code)
 	{
@@ -65,10 +65,9 @@ public class Instructions
 		Label label = new Label(this);
 		label.setLabel(new org.objectweb.asm.Label());
 		instructions.add(i, label);
+		labelMap.put(label.getLabel(), label);
 		return label;
 	}
-
-	private Map<org.objectweb.asm.Label, Label> labelMap = new HashMap<>();
 
 	public Label findLabel(org.objectweb.asm.Label l)
 	{
@@ -81,7 +80,9 @@ public class Instructions
 	{
 		Label label = labelMap.get(l);
 		if (label != null)
+		{
 			return label;
+		}
 
 		label = new Label(this, l);
 		labelMap.put(l, label);
@@ -89,11 +90,29 @@ public class Instructions
 		return label;
 	}
 
+	public void rebuildLabels()
+	{
+		labelMap.clear();
+
+		// ow2 asm requires new Labels each time you write out a class
+		// with ClassWriter, or else it crytpically fails
+		for (Instruction i : instructions)
+		{
+			if (i instanceof Label)
+			{
+				org.objectweb.asm.Label label = new org.objectweb.asm.Label();
+				((Label) i).setLabel(label);
+
+				labelMap.put(label, (Label) i);
+			}
+		}
+	}
+
 	public List<Instruction> getInstructions()
 	{
 		return instructions;
 	}
-	
+
 	public void addInstruction(Instruction i)
 	{
 		assert i.getInstructions() == this;
@@ -105,7 +124,7 @@ public class Instructions
 		assert i.getInstructions() == this;
 		instructions.add(idx, i);
 	}
-	
+
 	public void remove(Instruction ins)
 	{
 		assert ins.getInstructions() == this;
@@ -123,34 +142,38 @@ public class Instructions
 		}
 		instructions.clear();
 	}
-	
+
 	public Code getCode()
 	{
 		return code;
 	}
-	
+
 	public void lookup()
 	{
 		for (Instruction i : instructions)
+		{
 			i.lookup();
+		}
 	}
-	
+
 	public void regeneratePool()
 	{
 		for (Instruction i : instructions)
+		{
 			i.regeneratePool();
+		}
 	}
 
 	public int replace(Instruction oldi, Instruction newi)
 	{
 		assert oldi != newi;
-		
+
 		assert oldi.getInstructions() == this;
 		assert newi.getInstructions() == this;
-		
+
 		assert instructions.contains(oldi);
 		assert !instructions.contains(newi);
-		
+
 		int i = instructions.indexOf(oldi);
 		instructions.remove(oldi);
 		oldi.setInstructions(null);

@@ -25,6 +25,7 @@
 package net.runelite.asm.annotations;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
@@ -36,13 +37,14 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.signature.Type;
+import net.runelite.deob.util.JarUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class AnnotationTest
 {
 	@Test
-	public void testAnnotation() throws Exception
+	public void testAnnotation() throws IOException
 	{
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream("net/runelite/asm/annotations/TestClass.class");
 		Assert.assertNotNull(in);
@@ -52,7 +54,7 @@ public class AnnotationTest
 		ClassFile cf = ClassUtil.loadClass(in);
 		group.addClass(cf);
 
-		byte[] out = ClassUtil.saveClass(group, cf);
+		byte[] out = JarUtil.writeClass(group, cf);
 
 		// parse it again
 		cf = ClassUtil.loadClass(new ByteArrayInputStream(out));

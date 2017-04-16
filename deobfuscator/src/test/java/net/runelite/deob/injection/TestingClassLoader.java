@@ -22,38 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.injection;
 
-import java.security.SecureClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.asm.ClassUtil;
+import net.runelite.deob.util.JarUtil;
 
-public class TestingClassLoader extends SecureClassLoader
+public class TestingClassLoader extends ClassLoader
 {
 	private ClassGroup group;
-	private Map<String, Class<?> > classes = new HashMap<>();
+	private Map<String, Class<?>> classes = new HashMap<>();
 
 	public TestingClassLoader(ClassGroup group)
 	{
 		this.group = group;
 	}
-	
+
 	@Override
 	public Class<?> findClass(String name) throws ClassNotFoundException
 	{
 		ClassFile cf = group.findClass(name);
 		if (cf == null)
+		{
 			return super.findClass(name);
+		}
 
 		Class<?> c = classes.get(name);
 		if (c != null)
+		{
 			return c;
+		}
 
-		return defineClass(name, ClassUtil.saveClass(group, cf));
+		byte[] clazz = JarUtil.writeClass(group, cf);
+		return defineClass(name, clazz);
 	}
 
 	private Class<?> defineClass(String name, byte[] b)
