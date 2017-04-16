@@ -24,6 +24,7 @@
  */
 package net.runelite.deob.injection;
 
+import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,13 +38,14 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.asm.attributes.code.instructions.AConstNull;
-import net.runelite.asm.attributes.code.instructions.ALoad_0;
 import net.runelite.asm.attributes.code.instructions.ArrayStore;
 import net.runelite.asm.attributes.code.instructions.IConst_M1;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.PutField;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
@@ -110,6 +112,7 @@ public class InjectHook
 	{
 		Code code = method.getCode();
 
+		boolean set = false;
 		boolean get = false;
 
 		for (Instruction i : new ArrayList<>(code.getInstructions().getInstructions()))
@@ -130,13 +133,17 @@ public class InjectHook
 
 			if (i instanceof SetFieldInstruction)
 			{
-				SetFieldInstruction sfi = (SetFieldInstruction) i;
-				injectSetField(field, hookName, method, sfi);
+				set = true;
 			}
 			if (i instanceof GetFieldInstruction)
 			{
 				get = true;
 			}
+		}
+
+		if (set)
+		{
+			injectSetField(field, hookName, method);
 		}
 
 		// getting an array places the array reference on the stack,
@@ -164,18 +171,72 @@ public class InjectHook
 		return fieldBeingSet == obfuscatedField;
 	}
 
-	private void injectSetField(Field field, String hookName, Method method, SetFieldInstruction sfi)
+	private void injectSetField(Field field, String hookName, Method method)
 	{
-		logger.info("Found injection location for hook {} at instruction {}", hookName, sfi);
-
 		Code code = method.getCode();
 		Instructions ins = code.getInstructions();
 
-		int idx = ins.getInstructions().indexOf(sfi);
-		assert idx != -1;
+		Execution e = new Execution(inject.getVanilla());
+		e.noInvoke = true;
+		e.addMethod(method);
 
-		// idx + 1 to insert after the set
-		injectCallback(method, ins, idx + 1, hookName, new IConst_M1(ins));
+		Set<Instruction> done = new HashSet<>();
+
+		e.addExecutionVisitor((InstructionContext ic) ->
+		{
+			Instruction i = ic.getInstruction();
+
+			if (!(i instanceof SetFieldInstruction))
+			{
+				return;
+			}
+
+			if (done.contains(i))
+			{
+				// already done?
+				return;
+			}
+
+			done.add(i);
+
+			SetFieldInstruction sfi = (SetFieldInstruction) i;
+			Field fieldBeingSet = sfi.getMyField();
+
+			if (fieldBeingSet == null || !isField(field, fieldBeingSet))
+			{
+				return;
+			}
+
+			logger.info("Found injection location for hook {} at instruction {}", hookName, sfi);
+
+			Instruction objectInstruction = new AConstNull(ins);
+			if (sfi instanceof PutField)
+			{
+				StackContext objectStack = ic.getPops().get(1); // Object being set on
+
+				// Intsruction to load object
+				Instruction obji = objectStack.getPushed().getInstruction();
+
+				if (obji instanceof LVTInstruction)
+				{
+					assert objectStack.getPushed().getPops().isEmpty();
+					objectInstruction = obji.clone();
+				}
+				else
+				{
+					// This happens now mostly with array loads: array[index].field = value;
+					logger.debug("Unable to pass object to injected hook for {}, pushing instruction: {}", hookName, obji);
+				}
+			}
+
+			int idx = ins.getInstructions().indexOf(sfi);
+			assert idx != -1;
+
+			// idx + 1 to insert after the set
+			injectCallback(method, ins, idx + 1, hookName, null, objectInstruction);
+		});
+
+		e.run();
 	}
 
 	private void injectArrayStore(Field field, String hookName, Method method)
@@ -192,56 +253,63 @@ public class InjectHook
 		Execution e = new Execution(inject.getVanilla());
 		e.noInvoke = true;
 		e.addMethod(method);
-		
+
 		Set<Instruction> done = new HashSet<>();
 
-		e.addExecutionVisitor((InstructionContext ic) -> {
-				Instruction i = ic.getInstruction();
+		e.addExecutionVisitor((InstructionContext ic) ->
+		{
+			Instruction i = ic.getInstruction();
 
-				if (!(i instanceof ArrayStore))
-				{
-					return;
-				}
-				
-				if (done.contains(i))
-				{
-					// already done?
-					return;
-				}
-				
-				done.add(i);
+			if (!(i instanceof ArrayStore))
+			{
+				return;
+			}
 
-				ArrayStore as = (ArrayStore) i;
+			if (done.contains(i))
+			{
+				// already done?
+				return;
+			}
 
-				Field f = as.getMyField(ic);
-				if (f == null || !isField(field, f))
-				{
-					return; // not the correct field
-				}
-				
-				// assume this is always at index 1
-				StackContext index = ic.getPops().get(1);
-				InstructionContext indexIc = index.getPushed(); // what pushed the index
-				
-				if (indexIc.getPops().isEmpty() == false)
-				{
-					logger.warn("Array index uses instruction {} which pops from the stack, unable to inject hook {}", indexIc, hookName);
-					return;
-				}
+			done.add(i);
 
-				// inject hook after 'i'
-				logger.info("Found array injection location for hook {} at instruction {}", hookName, i);
+			ArrayStore as = (ArrayStore) i;
 
-				int idx = ins.getInstructions().indexOf(i);
-				assert idx != -1;
+			Field f = as.getMyField(ic);
+			if (f == null || !isField(field, f))
+			{
+				return; // not the correct field
+			}
 
-				injectCallback(method, ins, idx + 1, hookName, indexIc.getInstruction().clone());
+			// assume this is always at index 1
+			StackContext index = ic.getPops().get(1);
+			InstructionContext indexIc = index.getPushed(); // what pushed the index
+
+			// inject hook after 'i'
+			logger.info("Found array injection location for hook {} at instruction {}", hookName, i);
+
+			int idx = ins.getInstructions().indexOf(i);
+			assert idx != -1;
+
+			// it's annoying to get the object of the field of this array, so passing null for now
+			injectCallback(method, ins, idx + 1, hookName, indexIc, new AConstNull(ins));
 		});
 
 		e.run();
 	}
 
-	private void injectCallback(Method method, Instructions ins, int idx, String hookName, Instruction indexPusher)
+	private int recursivelyPush(Instructions ins, int idx, InstructionContext ctx)
+	{
+		for (StackContext sctx : Lists.reverse(ctx.getPops()))
+		{
+			idx = recursivelyPush(ins, idx, sctx.getPushed());
+		}
+
+		ins.getInstructions().add(idx++, ctx.getInstruction().clone());
+		return idx;
+	}
+
+	private void injectCallback(Method method, Instructions ins, int idx, String hookName, InstructionContext indexPusher, Instruction objectPusher)
 	{
 		// Insert:
 		// ldc hookName
@@ -252,17 +320,6 @@ public class InjectHook
 		// hook name
 		LDC_W ldc = new LDC_W(ins, hookName);
 
-		// object the field is being set on
-		Instruction loadThis;
-		if (method.isStatic())
-		{
-			loadThis = new AConstNull(ins);
-		}
-		else
-		{
-			loadThis = new ALoad_0(ins);
-		}
-
 		InvokeStatic invoke = new InvokeStatic(ins,
 			new net.runelite.asm.pool.Method(
 				new net.runelite.asm.pool.Class(HOOKS),
@@ -272,8 +329,15 @@ public class InjectHook
 		);
 
 		ins.getInstructions().add(idx++, ldc);
-		ins.getInstructions().add(idx++, indexPusher);
-		ins.getInstructions().add(idx++, loadThis);
+		if (indexPusher != null)
+		{
+			idx = recursivelyPush(ins, idx, indexPusher);
+		}
+		else
+		{
+			ins.getInstructions().add(idx++, new IConst_M1(ins));
+		}
+		ins.getInstructions().add(idx++, objectPusher);
 		ins.getInstructions().add(idx++, invoke);
 	}
 }
