@@ -62,6 +62,7 @@ public class PluginManager
 		load(new BossTimers());
 		load(new Xtea());
 		load(new IdleNotifier());
+
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
 			logger.info("Loading developer plugins");

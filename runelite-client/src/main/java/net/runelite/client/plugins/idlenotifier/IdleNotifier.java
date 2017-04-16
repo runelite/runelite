@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.idlenotifier;
 
 import net.runelite.client.events.AnimationChanged;
@@ -39,76 +38,78 @@ import java.awt.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
 public class IdleNotifier extends Plugin
 {
-   private Client client = RuneLite.getClient();
-   private RuneLite runeLite = RuneLite.getRunelite();
-   private ScheduledExecutorService executor = runeLite.getExecutor();
-   private boolean notifyIdle = false;
-   private static String operatingSystem = System.getProperty("os.name");
-   public Overlay getOverlay()
-   {
-      return null;
-   }
+	private Client client = RuneLite.getClient();
+	private RuneLite runeLite = RuneLite.getRunelite();
+	private ScheduledExecutorService executor = runeLite.getExecutor();
+	private boolean notifyIdle = false;
+	private static String operatingSystem = System.getProperty("os.name");
 
-   public IdleNotifier()
-   {
-      executor.scheduleAtFixedRate(this.checkIdle(), 3, 3, TimeUnit.SECONDS);
-   }
+	public Overlay getOverlay()
+	{
+		return null;
+	}
 
-   @Subscribe
-   public void onAnimationChanged(AnimationChanged event)
-   {
+	public IdleNotifier()
+	{
+		executor.scheduleAtFixedRate(this.checkIdle(), 3, 3, TimeUnit.SECONDS);
+	}
 
-      if(client.getGameState() != GameState.LOGGED_IN)
-         return;
-      switch (client.getLocalPlayer().getAnimation())
-      {
-         //these values are from net.runelite.api.AnimationID
-         case WOODCUTTING:
-         case COOKING_FIRE:
-         case COOKING_RANGE:
-         case FLETCHING_BOW_CUTTING:
-         case FLETCHING_BOW_STRINGING:
-         case CRAFTING_GEM_CUTTING:
-         case CRAFTING_LEATHER:
-         case SMITHING_ANVIL:
-         case SMITHING_SMELTING:
-         case FISHING_NET:
-         case FISHING_HARPOON:
-         case FISHING_CAGE:
-         case FISHING_POLE_CAST:
-         case MINING_NORMAL_VEIN_1:
-         case MINING_NORMAL_VEIN_2:
-         case MINING_MOTHERLODE_VEIN:
-         case HERBLORE_POTIONMAKING:
-         case MAGIC_CHARGING_ORBS:
-            notifyIdle = true;
-            break;
-      }
-      return;
-   }
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged event)
+	{
 
-   private Runnable checkIdle()
-   {
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+		switch (client.getLocalPlayer().getAnimation())
+		{
+			//these values are from net.runelite.api.AnimationID
+			case WOODCUTTING:
+			case COOKING_FIRE:
+			case COOKING_RANGE:
+			case FLETCHING_BOW_CUTTING:
+			case FLETCHING_BOW_STRINGING:
+			case CRAFTING_GEM_CUTTING:
+			case CRAFTING_LEATHER:
+			case SMITHING_ANVIL:
+			case SMITHING_SMELTING:
+			case FISHING_NET:
+			case FISHING_HARPOON:
+			case FISHING_CAGE:
+			case FISHING_POLE_CAST:
+			case MINING_NORMAL_VEIN_1:
+			case MINING_NORMAL_VEIN_2:
+			case MINING_MOTHERLODE_VEIN:
+			case HERBLORE_POTIONMAKING:
+			case MAGIC_CHARGING_ORBS:
+				notifyIdle = true;
+				break;
+		}
+		return;
+	}
 
-      return new Runnable()
-      {
-         @Override
-         public void run()
-         {
-               if (notifyIdle && client.getLocalPlayer().getAnimation() == IDLE)
-               {
-                  runeLite.getTrayIcon().displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.WARNING);
-                  if(operatingSystem.startsWith("Windows"))
-                  {
-                     Toolkit.getDefaultToolkit().beep();
-                  }
-                  notifyIdle = false;
-               }
-         }
-      };
-   }
+	private Runnable checkIdle()
+	{
+
+		return new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				if (notifyIdle && client.getLocalPlayer().getAnimation() == IDLE)
+				{
+					runeLite.getTrayIcon().displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.WARNING);
+					if (operatingSystem.startsWith("Windows"))
+					{
+						Toolkit.getDefaultToolkit().beep();
+					}
+					notifyIdle = false;
+				}
+			}
+		};
+	}
 
 }
