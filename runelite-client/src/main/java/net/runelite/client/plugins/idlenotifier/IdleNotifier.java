@@ -27,6 +27,7 @@ package net.runelite.client.plugins.idlenotifier;
 import com.google.common.eventbus.Subscribe;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +46,7 @@ public class IdleNotifier extends Plugin
 
 	private final Client client = RuneLite.getClient();
 	private final TrayIcon trayIcon = RuneLite.getTrayIcon();
+	private final Duration waitDuration = Duration.ofMillis(2500L);
 	private Instant lastAnimating;
 
 	private boolean notifyIdle = false;
@@ -123,7 +125,7 @@ public class IdleNotifier extends Plugin
 	private void checkIdle()
 	{
 		if (notifyIdle && client.getLocalPlayer().getAnimation() == IDLE
-				&& Instant.now().compareTo(lastAnimating.plusMillis(3000L)) >= 0)
+				&& Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
 		{
 			trayIcon.displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
 
