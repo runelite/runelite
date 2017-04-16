@@ -27,6 +27,7 @@ package net.runelite.client.plugins.idlenotifier;
 import com.google.common.eventbus.Subscribe;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import static net.runelite.api.AnimationID.*;
@@ -40,10 +41,11 @@ import net.runelite.client.ui.overlay.Overlay;
 public class IdleNotifier extends Plugin
 {
 	private static final String OPERATING_SYSTEM = System.getProperty("os.name");
-	private static final int CHECK_INTERVAL = 3;
+	private static final int CHECK_INTERVAL = 2;
 
 	private final Client client = RuneLite.getClient();
 	private final TrayIcon trayIcon = RuneLite.getTrayIcon();
+	private Instant lastAnimating;
 
 	private boolean notifyIdle = false;
 
@@ -66,37 +68,64 @@ public class IdleNotifier extends Plugin
 		{
 			return;
 		}
+		int animation = client.getLocalPlayer().getAnimation();
+		System.out.println(animation);
 
-		switch (client.getLocalPlayer().getAnimation())
+		switch (animation)
 		{
-			case WOODCUTTING:
+			case WOODCUTTING_BRONZE:
+			case WOODCUTTING_IRON:
+			case WOODCUTTING_STEEL:
+			case WOODCUTTING_BLACK:
+			case WOODCUTTING_MITHRIL:
+			case WOODCUTTING_ADAMANT:
+			case WOODCUTTING_RUNE:
+			case WOODCUTTING_DRAGON:
 			case COOKING_FIRE:
 			case COOKING_RANGE:
-			case FLETCHING_BOW_CUTTING:
-			case FLETCHING_BOW_STRINGING:
-			case CRAFTING_GEM_CUTTING:
-			case CRAFTING_LEATHER:
+			case GEM_CUTTING_OPAL:
+			case GEM_CUTTING_JADE:
+			case GEM_CUTTING_REDTOPAZ:
+			case GEM_CUTTING_SAPPHIRE:
+			case GEM_CUTTING_EMERALD:
+			case GEM_CUTTING_RUBY:
+			case GEM_CUTTING_DIAMOND:
 			case SMITHING_ANVIL:
 			case SMITHING_SMELTING:
 			case FISHING_NET:
 			case FISHING_HARPOON:
 			case FISHING_CAGE:
 			case FISHING_POLE_CAST:
-			case MINING_NORMAL_VEIN_1:
-			case MINING_NORMAL_VEIN_2:
-			case MINING_MOTHERLODE_VEIN:
+			case MINING_BRONZE_PICKAXE:
+			case MINING_IRON_PICKAXE:
+			case MINING_STEEL_PICKAXE:
+			case MINING_BLACK_PICKAXE:
+			case MINING_MITHRIL_PICKAXE:
+			case MINING_ADAMANT_PICKAXE:
+			case MINING_RUNE_PICKAXE:
+			case MINING_DRAGON_PICKAXE:
+			case MINING_MOTHERLODE_BRONZE:
+			case MINING_MOTHERLODE_IRON:
+			case MINING_MOTHERLODE_STEEL:
+			case MINING_MOTHERLODE_BLACK:
+			case MINING_MOTHERLODE_MITHRIL:
+			case MINING_MOTHERLODE_ADAMANT:
+			case MINING_MOTHERLODE_RUNE:
+			case MINING_MOTHERLODE_DRAGON:
 			case HERBLORE_POTIONMAKING:
 			case MAGIC_CHARGING_ORBS:
 				notifyIdle = true;
+				lastAnimating = Instant.now();
 				break;
 		}
 	}
 
 	private void checkIdle()
 	{
-		if (notifyIdle && client.getLocalPlayer().getAnimation() == IDLE)
+		if (notifyIdle && client.getLocalPlayer().getAnimation() == IDLE
+				&& Instant.now().compareTo(lastAnimating.plusMillis(3000L)) >= 0)
 		{
-			trayIcon.displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.WARNING);
+			trayIcon.displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
 
 			if (OPERATING_SYSTEM.startsWith("Windows"))
 			{

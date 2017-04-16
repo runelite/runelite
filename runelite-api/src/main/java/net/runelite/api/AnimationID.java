@@ -29,15 +29,29 @@ package net.runelite.api;
 public final class AnimationID
 {
 	public static final int IDLE = -1;
-	public static final int WOODCUTTING = 879;
+	public static final int WOODCUTTING_BRONZE = 879;
+	public static final int WOODCUTTING_IRON = 877;
+	public static final int WOODCUTTING_STEEL = 875;
+	public static final int WOODCUTTING_BLACK = 873;
+	public static final int WOODCUTTING_MITHRIL = 871;
+	public static final int WOODCUTTING_ADAMANT = 869;
+	public static final int WOODCUTTING_RUNE = 867;
+	public static final int WOODCUTTING_DRAGON = 2846;
+	public static final int WOODCUTTING_INFERNAL = 0; // unknown - placeholder
 	public static final int CONSUMING = 829; // consuming consumables
 	public static final int FIREMAKING = 733;
 	public static final int COOKING_FIRE = 897;
 	public static final int COOKING_RANGE = 896;
 	public static final int FLETCHING_BOW_CUTTING = 1248;
-	public static final int FLETCHING_BOW_STRINGING = 6684;
-	public static final int CRAFTING_GEM_CUTTING = 888;
-	public static final int CRAFTING_LEATHER = 1249;
+	public static final int FLETCHING_BOW_STRINGING = 6684; // ids are based on bow - incomplete!
+	public static final int GEM_CUTTING_OPAL = 890;
+	public static final int GEM_CUTTING_JADE = 891;
+	public static final int GEM_CUTTING_REDTOPAZ = 892;
+	public static final int GEM_CUTTING_SAPPHIRE = 888;
+	public static final int GEM_CUTTING_EMERALD = 889;
+	public static final int GEM_CUTTING_RUBY = 887;
+	public static final int GEM_CUTTING_DIAMOND = 886;
+	public static final int CRAFTING_LEATHER = 1249; // unknown if the anim is the same for all leathers
 	public static final int SMITHING_SMELTING = 899;
 	public static final int SMITHING_CANNONBALL = 827; //cball smithing uses this and SMITHING_SMELTING
 	public static final int SMITHING_ANVIL = 898;
@@ -46,10 +60,24 @@ public final class AnimationID
 	public static final int FISHING_POLE_CAST = 623; // pole is in the water
 	public static final int FISHING_CAGE = 619;
 	public static final int FISHING_HARPOON = 618;
-	public static final int MINING_NORMAL_VEIN_1 = 624;
-	public static final int MINING_NORMAL_VEIN_2 = 625;
-	public static final int MINING_MOTHERLODE_VEIN = 6752;
+	public static final int MINING_BRONZE_PICKAXE = 625;
+	public static final int MINING_IRON_PICKAXE = 626;
+	public static final int MINING_STEEL_PICKAXE = 627;
+	public static final int MINING_BLACK_PICKAXE = 3873;
+	public static final int MINING_MITHRIL_PICKAXE = 629;
+	public static final int MINING_ADAMANT_PICKAXE = 628;
+	public static final int MINING_RUNE_PICKAXE = 624;
+	public static final int MINING_DRAGON_PICKAXE = 7139;
+	public static final int MINING_INFERNAL_PICKAXE = 0; //placeholder, unknown
+	public static final int MINING_MOTHERLODE_BRONZE = 6753;
+	public static final int MINING_MOTHERLODE_IRON = 6754;
+	public static final int MINING_MOTHERLODE_STEEL = 6755;
+	public static final int MINING_MOTHERLODE_BLACK = 3866;
+	public static final int MINING_MOTHERLODE_MITHRIL = 6757;
+	public static final int MINING_MOTHERLODE_ADAMANT = 6756;
+	public static final int MINING_MOTHERLODE_RUNE = 6752;
+	public static final int MINING_MOTHERLODE_DRAGON = 6758;
+	public static final int MINING_MOTHERLODE_INFERNAL = 0; // placeholder, unknown
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
-
 }
