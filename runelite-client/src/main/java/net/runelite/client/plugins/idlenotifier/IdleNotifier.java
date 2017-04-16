@@ -31,7 +31,6 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 
-import static java.lang.Thread.sleep;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.client.RuneLite;
 import com.google.common.eventbus.Subscribe;
@@ -47,6 +46,7 @@ public class IdleNotifier extends Plugin
    private RuneLite runeLite = RuneLite.getRunelite();
    private ScheduledExecutorService executor = runeLite.getExecutor();
    private boolean notifyIdle = false;
+   private static String operatingSystem = System.getProperty("os.name");
    public Overlay getOverlay()
    {
       return null;
@@ -90,8 +90,6 @@ public class IdleNotifier extends Plugin
       return;
    }
 
-
-
    private Runnable checkIdle()
    {
 
@@ -102,11 +100,14 @@ public class IdleNotifier extends Plugin
          {
                if (notifyIdle && client.getLocalPlayer().getAnimation() == IDLE)
                {
-                  runeLite.getIcon().displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
+                  runeLite.getTrayIcon().displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.WARNING);
+                  if(operatingSystem.startsWith("Windows"))
+                  {
+                     Toolkit.getDefaultToolkit().beep();
+                  }
                   notifyIdle = false;
                }
          }
-
       };
    }
 

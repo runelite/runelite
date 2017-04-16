@@ -58,10 +58,6 @@ public class RuneLite
 	private static RuneLite runelite;
 	private static TrayIcon trayIcon;
 
-	private TrayIcon icon;
-	private SystemTray tray;
-	private ImageIcon trayIconImage;
-
 	private ClientUI gui;
 	private PluginManager pluginManager;
 	private OverlayRenderer renderer;
