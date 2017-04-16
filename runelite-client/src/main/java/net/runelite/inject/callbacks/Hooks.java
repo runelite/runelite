@@ -24,11 +24,14 @@
  */
 package net.runelite.inject.callbacks;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.hiscore.Hiscore;
 import net.runelite.client.events.MapRegionChanged;
+import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionsChanged;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,22 +94,16 @@ public class Hooks
                         var2 -= 2000;
                 }
                 
-                if(var2 == Hiscore.lookupMenuType)
+                /** If the menuAction is a playerMenuAction */
+                final int menuAction = var2;
+                if( IntStream.of(RuneLite.getClient().getPlayerMenuType()).anyMatch(x -> x == menuAction) )
                 {
-                        for(Plugin plugin : runelite.getPluginManager().getPlugins())
-                        {
-                                if(plugin instanceof Hiscore)
-                                {
-                                        String username = var5.split(">")[1].split("<")[0];
-                                        System.out.println(username);
-                                        // lookup is synchronous, so in order not to stall the client, I've put it in a seperatie thread.
-                                        new Thread(){ 
-                                            public void run(){
-                                                ((Hiscore)plugin).lookup(username);
-                                            }
-                                        }.start();
-                                }
-                        }
+                        String username = var5.split(">")[1].split("<")[0];
+                        
+                        PlayerMenuOptionClicked playerMenuOptionClicked = new PlayerMenuOptionClicked();
+                        playerMenuOptionClicked.setMenuOption(var4);
+                        playerMenuOptionClicked.setMenuTarget(username);
+                        runelite.getEventBus().post(playerMenuOptionClicked);
                 }
         }
 }

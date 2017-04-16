@@ -32,6 +32,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
+import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionsChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
@@ -50,8 +51,10 @@ public class Hiscore extends Plugin implements ActionListener
 	private final ClientUI ui = RuneLite.getRunelite().getGui();
         
         private static final Client client = RuneLite.getClient();
+        
+        private static final int lookupMenuType = 999;
+        private static final String lookupMenuText = "Lookup";
         private int lookupMenuIndex = 4;
-        public static final int lookupMenuType = 999;
 
 	public Hiscore()
 	{
@@ -105,7 +108,7 @@ public class Hiscore extends Plugin implements ActionListener
         }
         
         private void addLookupOption(){
-                client.getPlayerOptions()[lookupMenuIndex] = "Lookup";
+                client.getPlayerOptions()[lookupMenuIndex] = lookupMenuText;
                 client.getPlayerOptionsPriorities()[lookupMenuIndex] = true;
                 client.getPlayerMenuType()[lookupMenuIndex] = lookupMenuType;
         }
@@ -134,8 +137,12 @@ public class Hiscore extends Plugin implements ActionListener
                     
         }
         
-        public void lookup(String username){
-                hiscorePanel.lookup(username);
+        @Subscribe
+        public void onLookupMenuClicked(PlayerMenuOptionClicked event)
+        {
+                if(event.getMenuOption().equals(lookupMenuText))
+                {
+                        hiscorePanel.lookup(event.getMenuTarget());
+                }
         }
-
 }
