@@ -81,7 +81,7 @@ public class RuneLite
 
 		if(SystemTray.isSupported())
 		{
-			trayIconImage = new ImageIcon(getClass().getClassLoader().getResource("trayIcon.jpg"));
+			trayIconImage = new ImageIcon(getClass().getClassLoader().getResource("trayIcon.png"));
 			tray = SystemTray.getSystemTray();
 			icon = new TrayIcon(trayIconImage.getImage(), "RuneLite");
 			icon.setImageAutoSize(true);
