@@ -62,7 +62,7 @@ public class RuneLite
 	private PluginManager pluginManager;
 	private OverlayRenderer renderer;
 	private EventBus eventBus = new EventBus(this::eventExceptionHandler);
-	private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(4);
+	private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
 
 	static
 	{
@@ -150,7 +150,7 @@ public class RuneLite
 		return options;
 	}
 
-	public ScheduledThreadPoolExecutor getExecutor()
+	public ScheduledExecutorService getExecutor()
 	{
 		return executor;
 	}
