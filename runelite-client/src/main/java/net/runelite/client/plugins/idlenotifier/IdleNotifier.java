@@ -24,28 +24,30 @@
  */
 package net.runelite.client.plugins.idlenotifier;
 
+import com.google.common.eventbus.Subscribe;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import static net.runelite.api.AnimationID.*;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.client.RuneLite;
 import net.runelite.client.events.AnimationChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-
-import static net.runelite.api.AnimationID.*;
-import net.runelite.client.RuneLite;
-import com.google.common.eventbus.Subscribe;
-
-import java.awt.*;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class IdleNotifier extends Plugin
 {
-	private Client client = RuneLite.getClient();
-	private RuneLite runeLite = RuneLite.getRunelite();
-	private ScheduledExecutorService executor = runeLite.getExecutor();
-	private boolean notifyIdle = false;
-	private static String operatingSystem = System.getProperty("os.name");
+	private static final String OPERATING_SYSTEM = System.getProperty("os.name");
+	private static final int CHECK_INTERVAL = 3;
 
+	private final Client client = RuneLite.getClient();
+	private final TrayIcon trayIcon = RuneLite.getTrayIcon();
+
+	private boolean notifyIdle = false;
+
+	@Override
 	public Overlay getOverlay()
 	{
 		return null;
@@ -53,20 +55,20 @@ public class IdleNotifier extends Plugin
 
 	public IdleNotifier()
 	{
-		executor.scheduleAtFixedRate(this.checkIdle(), 3, 3, TimeUnit.SECONDS);
+		ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
+		executor.scheduleAtFixedRate(this::checkIdle, CHECK_INTERVAL, CHECK_INTERVAL, TimeUnit.SECONDS);
 	}
 
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
-
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
+
 		switch (client.getLocalPlayer().getAnimation())
 		{
-			//these values are from net.runelite.api.AnimationID
 			case WOODCUTTING:
 			case COOKING_FIRE:
 			case COOKING_RANGE:
@@ -88,28 +90,21 @@ public class IdleNotifier extends Plugin
 				notifyIdle = true;
 				break;
 		}
-		return;
 	}
 
-	private Runnable checkIdle()
+	private void checkIdle()
 	{
-
-		return new Runnable()
+		if (notifyIdle && client.getLocalPlayer().getAnimation() == IDLE)
 		{
-			@Override
-			public void run()
+			trayIcon.displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.WARNING);
+
+			if (OPERATING_SYSTEM.startsWith("Windows"))
 			{
-				if (notifyIdle && client.getLocalPlayer().getAnimation() == IDLE)
-				{
-					runeLite.getTrayIcon().displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.WARNING);
-					if (operatingSystem.startsWith("Windows"))
-					{
-						Toolkit.getDefaultToolkit().beep();
-					}
-					notifyIdle = false;
-				}
+				Toolkit.getDefaultToolkit().beep();
 			}
-		};
+
+			notifyIdle = false;
+		}
 	}
 
 }
