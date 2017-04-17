@@ -60,7 +60,7 @@ public class RuneLite
 
 	private ClientUI gui;
 	private PluginManager pluginManager;
-	private MenuManager menuManager;
+	private MenuManager menuManager = new MenuManager(this);
 	private OverlayRenderer renderer;
 	private EventBus eventBus = new EventBus(this::eventExceptionHandler);
 	private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
@@ -90,8 +90,7 @@ public class RuneLite
 	public void start() throws Exception
 	{
 		gui = new ClientUI();
-                
-		menuManager = new MenuManager(this);
+
 		eventBus.register(menuManager);
 
 		if (SystemTray.isSupported())
@@ -138,11 +137,11 @@ public class RuneLite
 	{
 		return pluginManager;
 	}
-        
-        public MenuManager getMenuManager()
-        {
-                return menuManager;
-        }
+
+	public MenuManager getMenuManager()
+	{
+		return menuManager;
+	}
 
 	public OverlayRenderer getRenderer()
 	{

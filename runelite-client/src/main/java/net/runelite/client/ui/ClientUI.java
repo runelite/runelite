@@ -144,9 +144,4 @@ public final class ClientUI extends JFrame
 	{
 		this.pluginPanel = pluginPanel;
 	}
-        
-        public JPanel getGamePanel()
-        {
-                return container;
-        }
 }

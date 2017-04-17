@@ -149,10 +149,12 @@ public class HiscorePanel extends PluginPanel
 
 		return iconLevel;
 	}
-        public void lookup(String username){
-                input.setText(username);
-                lookup();
-        }
+
+	public void lookup(String username)
+	{
+		input.setText(username);
+		lookup();
+	}
 
 	private void lookup()
 	{

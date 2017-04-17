@@ -24,11 +24,13 @@
  */
 package net.runelite.client.events;
 
-public class PlayerMenuOptionsChanged 
+public class PlayerMenuOptionsChanged
 {
-        /**Index in playerOptions which changed */
-        private int index;
-        
+	/**
+	 * Index in playerOptions which changed
+	 */
+	private int index;
+
 	public int getIndex()
 	{
 		return index;
@@ -38,5 +40,5 @@ public class PlayerMenuOptionsChanged
 	{
 		this.index = index;
 	}
-        
+
 }

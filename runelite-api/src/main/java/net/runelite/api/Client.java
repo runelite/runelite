@@ -176,7 +176,6 @@ public class Client
 		return client.getBaseY();
 	}
 
-
 	public Widget getWidget(int groupId, int childId)
 	{
 		net.runelite.rs.api.Widget[][] widgets = client.getWidgets();
@@ -204,26 +203,26 @@ public class Client
 	{
 		return client.getWidgetPositionsY();
 	}
-        
-        public String[] getPlayerOptions()
-        {
-                return client.getPlayerOptions();
-        }
 
-        public boolean[] getPlayerOptionsPriorities()
-        {
-                return client.getPlayerOptionsPriorities();
-        }
+	public String[] getPlayerOptions()
+	{
+		return client.getPlayerOptions();
+	}
 
-        public int[] getPlayerMenuType()
-        {
-                return client.getPlayerMenuTypes();
-        }
-        
-        public String[] getMenuOptions()
-        {
-                return client.getMenuOptions();
-        }
+	public boolean[] getPlayerOptionsPriorities()
+	{
+		return client.getPlayerOptionsPriorities();
+	}
+
+	public int[] getPlayerMenuType()
+	{
+		return client.getPlayerMenuTypes();
+	}
+
+	public String[] getMenuOptions()
+	{
+		return client.getMenuOptions();
+	}
 
 	public int getMapScale()
 	{

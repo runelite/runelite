@@ -124,25 +124,25 @@ public interface Client extends GameEngine
 
 	@Import(value = "username", setter = true)
 	void setUsername(String username);
-        
-        @Import("playerOptions")
-        String[] getPlayerOptions();
-        
-        @Import("playerOptionsPriorities")
-        boolean[] getPlayerOptionsPriorities();
-        
-        @Import("playerMenuTypes")
-        int[] getPlayerMenuTypes();
 
-        @Import("menuTargets")
+	@Import("playerOptions")
+	String[] getPlayerOptions();
+
+	@Import("playerOptionsPriorities")
+	boolean[] getPlayerOptionsPriorities();
+
+	@Import("playerMenuTypes")
+	int[] getPlayerMenuTypes();
+
+	@Import("menuTargets")
 	String[] getMenuTargets();
 
 	@Import("menuOptions")
 	String[] getMenuOptions();
-        
+
 	@Import("menuOptionCount")
 	int getMenuOptionCount();
-        
+
 	@Import("menuTypes")
 	int[] getMenuTypes();
 

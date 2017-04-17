@@ -32,7 +32,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import net.runelite.client.RuneLite;
-import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
