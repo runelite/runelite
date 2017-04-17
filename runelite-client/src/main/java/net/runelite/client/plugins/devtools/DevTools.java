@@ -24,17 +24,75 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.hiscore.HiscorePanel;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.Overlay;
 
-public class DevTools extends Plugin
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+
+public class DevTools extends Plugin implements ActionListener
 {
 	private final DevToolsOverlay overlay = new DevToolsOverlay();
+	private final DevToolsPanel panel = new DevToolsPanel();
+	private final NavigationButton navButton = new NavigationButton("DevTools");
+	private final ClientUI ui = RuneLite.getRunelite().getGui();
+
+	static Font font = null;
+
+	public DevTools()
+	{
+		navButton.getButton().addActionListener(this);
+		try
+		{
+			ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("devtools_icon.png")));
+			navButton.getButton().setIcon(icon);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		ui.getNavigationPanel().addNavigation(navButton);
+
+		URL fontUrl = getClass().getResource("runescape.ttf");
+		try
+		{
+			font = Font.createFont(Font.TRUETYPE_FONT, fontUrl.openStream());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		if (font != null)
+		{
+			font = font.deriveFont(Font.PLAIN, 16);
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(font);
+		}
+	}
 
 	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		ui.setPluginPanel(panel);
+		ui.expand();
 	}
 
 }
