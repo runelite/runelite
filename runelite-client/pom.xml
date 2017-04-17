@@ -38,6 +38,8 @@
 
 	<properties>
 		<slf4j.version>1.7.12</slf4j.version>
+
+		<jarsigner.skip>true</jarsigner.skip>
 	</properties>
 
 	<dependencies>
@@ -131,6 +133,27 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jarsigner-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<skip>${jarsigner.skip}</skip>
+					<verbose>true</verbose>
+					<keystore>${jarsigner.keystore}</keystore>
+					<alias>${jarsigner.alias}</alias>
+					<storepass>${jarsigner.storepass}</storepass>
+					<keypass>${jarsigner.keypass}</keypass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
