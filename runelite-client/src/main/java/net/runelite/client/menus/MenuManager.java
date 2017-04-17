@@ -24,88 +24,80 @@
  */
 package net.runelite.client.menus;
 
+import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionsChanged;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MenuManager
 {
+	private static final Logger logger = LoggerFactory.getLogger(MenuManager.class);
+
 	/* 1007 is the highest number the rs client uses for actions. There is no way to see which ones are used,
          * so im starting from 1500. Its just a number well over their maximum, so if a new action gets added, chances are little
          * it interferes with the action the MenuManager uses.
 	 */
 	private static final int MENU_ACTION = 1500;
 
+	/*
+	 * The index needs to be between 4 and 7,
+	 */
+	private static final int IDX_LOWER = 4;
+	private static final int IDX_UPPER = 8;
+
 	private final RuneLite runeLite;
 
 	//Maps the indexes that are being used to the menu option.
-	private final Map<Integer, String> playerMenuIndexMap;
+	private final Map<Integer, String> playerMenuIndexMap = new HashMap<>();
 
 	public MenuManager(RuneLite runeLite)
 	{
 		this.runeLite = runeLite;
-		this.playerMenuIndexMap = new HashMap<>();
 	}
 
-	public boolean addPlayerMenuItem(String menuText)
+	public void addPlayerMenuItem(String menuText)
 	{
-		int playerMenuIndex = findEmptyPlayerMenuIndex();
-		if (playerMenuIndex != 8)
-		{
-			addPlayerMenuItem(playerMenuIndex, menuText);
-			playerMenuIndexMap.put(playerMenuIndex, menuText);
+		Preconditions.checkNotNull(menuText);
 
-			return true;
-		}
-		else
+		int playerMenuIndex = findEmptyPlayerMenuIndex();
+		if (playerMenuIndex == IDX_UPPER)
 		{
-			return false; //The playerMenuOptions are full, so no option was added
+			return; // no more slots
 		}
+
+		addPlayerMenuItem(playerMenuIndex, menuText);
 	}
 
 	@Subscribe
 	public void onPlayerMenuOptionsChanged(PlayerMenuOptionsChanged event)
 	{
 		int idx = event.getIndex();
-		if (playerMenuIndexMap.containsKey(idx))
+
+		String menuText = playerMenuIndexMap.get(idx);
+		if (menuText == null)
 		{
-			String menuText = playerMenuIndexMap.get(idx);
-			int newIdx = findEmptyPlayerMenuIndex();
-			if (newIdx != 8)
-			{
-				addPlayerMenuItem(newIdx, menuText);
-				playerMenuIndexMap.put(newIdx, menuText);
-			}
-			playerMenuIndexMap.remove((Integer) idx);
-		}
-	}
-
-	private void addPlayerMenuItem(int playerOptionIndex, String menuText)
-	{
-		RuneLite.getClient().getPlayerOptions()[playerOptionIndex] = menuText;
-		RuneLite.getClient().getPlayerOptionsPriorities()[playerOptionIndex] = true;
-		RuneLite.getClient().getPlayerMenuType()[playerOptionIndex] = MENU_ACTION;
-	}
-
-	private int findEmptyPlayerMenuIndex()
-	{
-		int index = 4;
-		/*
-                 * The index needs to be between 4 and 7,
-                 * It can't be the same as the one it's in right now
-                 * It has to be a free spot
-		 */
-
-		while (index < 8 && (RuneLite.getClient().getPlayerOptions()[index] != null || playerMenuIndexMap.containsKey(index)))
-		{
-			index++;
+			return; // not our menu
 		}
 
-		return index;
+		// find new index for this option
+		int newIdx = findEmptyPlayerMenuIndex();
+		if (newIdx == IDX_UPPER)
+		{
+			logger.debug("Client has updated player menu index {} where option {} was, and there are no more free slots available", idx, menuText);
+			return;
+		}
+
+		logger.debug("Client has updated player menu index {} where option {} was, moving to index {}", idx, menuText, newIdx);
+
+		playerMenuIndexMap.remove(idx);
+		addPlayerMenuItem(newIdx, menuText);
 	}
 
 	@Subscribe
@@ -117,7 +109,7 @@ public class MenuManager
 		}
 
 		String target = event.getMenuTarget();
-		String username = target.split(">")[1].split("<")[0]; // <col=ffffff>username<col=40ff00>  (level-42)
+		String username = target.split("[<>]")[2]; // <col=ffffff>username<col=40ff00>  (level-42)
 
 		PlayerMenuOptionClicked playerMenuOptionClicked = new PlayerMenuOptionClicked();
 		playerMenuOptionClicked.setMenuOption(event.getMenuOption());
@@ -126,4 +118,32 @@ public class MenuManager
 		runeLite.getEventBus().post(playerMenuOptionClicked);
 	}
 
+	private void addPlayerMenuItem(int playerOptionIndex, String menuText)
+	{
+		Client client = RuneLite.getClient();
+
+		client.getPlayerOptions()[playerOptionIndex] = menuText;
+		client.getPlayerOptionsPriorities()[playerOptionIndex] = true;
+		client.getPlayerMenuType()[playerOptionIndex] = MENU_ACTION;
+
+		playerMenuIndexMap.put(playerOptionIndex, menuText);
+	}
+
+	/**
+	 * Find the next empty player menu slot index
+	 *
+	 * @return
+	 */
+	private int findEmptyPlayerMenuIndex()
+	{
+		int index = IDX_LOWER;
+
+		String[] playerOptions = RuneLite.getClient().getPlayerOptions();
+		while (index < IDX_UPPER && playerOptions[index] != null)
+		{
+			index++;
+		}
+
+		return index;
+	}
 }
