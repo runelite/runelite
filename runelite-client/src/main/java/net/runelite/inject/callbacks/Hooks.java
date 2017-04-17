@@ -24,11 +24,10 @@
  */
 package net.runelite.inject.callbacks;
 
-import java.util.stream.IntStream;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.events.MapRegionChanged;
-import net.runelite.client.events.PlayerMenuOptionClicked;
+import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionsChanged;
 import net.runelite.client.events.AnimationChanged;
 import org.slf4j.Logger;
@@ -64,13 +63,13 @@ public class Hooks
 				runelite.getEventBus().post(regionChanged);
 				break;
 			}
-                        case "playerMenuOptionsChanged":
-                        {
-                                PlayerMenuOptionsChanged optionsChanged = new PlayerMenuOptionsChanged();
-                                optionsChanged.setIndex(idx);
-                                runelite.getEventBus().post(optionsChanged);
-                                break;
-                        }
+			case "playerMenuOptionsChanged":
+			{
+				PlayerMenuOptionsChanged optionsChanged = new PlayerMenuOptionsChanged();
+				optionsChanged.setIndex(idx);
+				runelite.getEventBus().post(optionsChanged);
+				break;
+			}
 			case "animationChanged":
 			{
 				AnimationChanged animationChange = new AnimationChanged();
@@ -84,33 +83,32 @@ public class Hooks
 		}
 
 		if (object != null)
+		{
 			logger.trace("Event {} (idx {}) triggered on {}", name, idx, object);
+		}
 		else
+		{
 			logger.trace("Event {} (idx {}) triggered", name, idx);
+		}
 	}
-        
-        public static void menuActionHook(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7)
-        {
-                /* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
+
+	public static void menuActionHook(int var0, int var1, int menuAction, int var3, String menuOption, String menuTarget, int var6, int var7)
+	{
+		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
                  * I have no idea why, but it does. Their code contains the same conditional statement.
-                 */
-                if(var2 >= 2000) 
-                {
-                        var2 -= 2000;
-                }
+		 */
+		if (menuAction >= 2000)
+		{
+			menuAction -= 2000;
+		}
 
-                /** If the menuAction is a playerMenuAction */
-                final int menuAction = var2;
-                if( IntStream.of(RuneLite.getClient().getPlayerMenuType()).anyMatch(x -> x == menuAction) )
-                {
-                        String username = var5.split(">")[1].split("<")[0];
+		logger.debug("Menu action clicked: {} ({}) on {}", menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget);
 
-                        PlayerMenuOptionClicked playerMenuOptionClicked = new PlayerMenuOptionClicked();
-                        playerMenuOptionClicked.setMenuOption(var4);
-                        playerMenuOptionClicked.setMenuTarget(username);
-                        playerMenuOptionClicked.setMenuAction(menuAction);
+		MenuOptionClicked playerMenuOptionClicked = new MenuOptionClicked();
+		playerMenuOptionClicked.setMenuOption(menuOption);
+		playerMenuOptionClicked.setMenuTarget(menuTarget);
+		playerMenuOptionClicked.setMenuAction(menuAction);
 
-                        runelite.getEventBus().post(playerMenuOptionClicked);
-                }
-        }
+		runelite.getEventBus().post(playerMenuOptionClicked);
+	}
 }
