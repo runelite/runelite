@@ -54,72 +54,56 @@ public class DevToolsPanel extends PluginPanel
 		add(container);
 
 		renderPlayersBtn = new JButton("Players");
-		renderPlayersBtn.addActionListener(e
-			-> 
-			{
+		renderPlayersBtn.addActionListener(e -> {
 				highlightButton(renderPlayersBtn);
 				tools.togglePlayers();
 		});
 		container.add(renderPlayersBtn);
 
 		renderNpcsBtn = new JButton("NPCs");
-		renderNpcsBtn.addActionListener(e
-			-> 
-			{
+		renderNpcsBtn.addActionListener(e -> {
 				highlightButton(renderNpcsBtn);
 				tools.toggleNpcs();
 		});
 		container.add(renderNpcsBtn);
 
 		renderGroundItemsBtn = new JButton("Ground Items");
-		renderGroundItemsBtn.addActionListener(e
-			-> 
-			{
+		renderGroundItemsBtn.addActionListener(e -> {
 				highlightButton(renderGroundItemsBtn);
 				tools.toggleGroundItems();
 		});
 		container.add(renderGroundItemsBtn);
 
 		renderGroundObjectsBtn = new JButton("Ground Objects");
-		renderGroundObjectsBtn.addActionListener(e
-			-> 
-			{
+		renderGroundObjectsBtn.addActionListener(e -> {
 				highlightButton(renderGroundObjectsBtn);
 				tools.toggleGroundObjects();
 		});
 		container.add(renderGroundObjectsBtn);
 
 		renderGameObjectsBtn = new JButton("Game Objects");
-		renderGameObjectsBtn.addActionListener(e
-			-> 
-			{
+		renderGameObjectsBtn.addActionListener(e -> {
 				highlightButton(renderGameObjectsBtn);
 				tools.toggleGameObjects();
 		});
 		container.add(renderGameObjectsBtn);
 
 		renderWallsBtn = new JButton("Walls");
-		renderWallsBtn.addActionListener(e
-			-> 
-			{
+		renderWallsBtn.addActionListener(e -> {
 				highlightButton(renderWallsBtn);
 				tools.toggleWalls();
 		});
 		container.add(renderWallsBtn);
 
 		renderDecorBtn = new JButton("Decorations");
-		renderDecorBtn.addActionListener(e
-			-> 
-			{
+		renderDecorBtn.addActionListener(e -> {
 				highlightButton(renderDecorBtn);
 				tools.toggleDecor();
 		});
 		container.add(renderDecorBtn);
 
 		renderInventoryBtn = new JButton("Inventory");
-		renderInventoryBtn.addActionListener(e
-			-> 
-			{
+		renderInventoryBtn.addActionListener(e -> {
 				highlightButton(renderInventoryBtn);
 				tools.toggleInventory();
 		});
