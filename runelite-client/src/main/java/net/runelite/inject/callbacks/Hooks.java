@@ -27,6 +27,8 @@ package net.runelite.inject.callbacks;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.events.MapRegionChanged;
+import net.runelite.client.events.MenuOptionClicked;
+import net.runelite.client.events.PlayerMenuOptionsChanged;
 import net.runelite.client.events.AnimationChanged;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +63,13 @@ public class Hooks
 				runelite.getEventBus().post(regionChanged);
 				break;
 			}
+			case "playerMenuOptionsChanged":
+			{
+				PlayerMenuOptionsChanged optionsChanged = new PlayerMenuOptionsChanged();
+				optionsChanged.setIndex(idx);
+				runelite.getEventBus().post(optionsChanged);
+				break;
+			}
 			case "animationChanged":
 			{
 				AnimationChanged animationChange = new AnimationChanged();
@@ -74,8 +83,32 @@ public class Hooks
 		}
 
 		if (object != null)
+		{
 			logger.trace("Event {} (idx {}) triggered on {}", name, idx, object);
+		}
 		else
+		{
 			logger.trace("Event {} (idx {}) triggered", name, idx);
+		}
+	}
+
+	public static void menuActionHook(int var0, int var1, int menuAction, int var3, String menuOption, String menuTarget, int var6, int var7)
+	{
+		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
+                 * I have no idea why, but it does. Their code contains the same conditional statement.
+		 */
+		if (menuAction >= 2000)
+		{
+			menuAction -= 2000;
+		}
+
+		logger.debug("Menu action clicked: {} ({}) on {}", menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget);
+
+		MenuOptionClicked playerMenuOptionClicked = new MenuOptionClicked();
+		playerMenuOptionClicked.setMenuOption(menuOption);
+		playerMenuOptionClicked.setMenuTarget(menuTarget);
+		playerMenuOptionClicked.setMenuAction(menuAction);
+
+		runelite.getEventBus().post(playerMenuOptionClicked);
 	}
 }

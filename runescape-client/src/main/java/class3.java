@@ -224,7 +224,7 @@ final class class3 implements Comparator {
                   }
 
                   boolean var7 = false;
-                  int var8 = Client.field420[var5] + var6;
+                  int var8 = Client.playerMenuTypes[var5] + var6;
                   class119.addMenuEntry(Client.playerOptions[var5], XItemContainer.method153(16777215) + var4, var8, var1, var2, var3);
                }
             }

@@ -1,4 +1,5 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -119,13 +120,14 @@ public final class Item extends Renderable {
          }
       }
    }
-
+   
    @ObfuscatedName("bs")
    @ObfuscatedSignature(
       signature = "(IIIILjava/lang/String;Ljava/lang/String;III)V",
       garbageValue = "454040044"
    )
    @Export("menuAction")
+   @Hook("menuActionHook")
    static final void menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7) {
       if(var2 >= 2000) {
          var2 -= 2000;
