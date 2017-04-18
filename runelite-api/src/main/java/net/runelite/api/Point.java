@@ -59,9 +59,7 @@ public class Point
 	 */
 	public int distanceTo(Point other)
 	{
-		int dx = x - other.x;
-		int dy = y - other.y;
-		return (int) Math.sqrt(dx * dx + dy * dy);
+		return (int) Math.hypot(getX() - other.getX(), getY() - other.getY());
 	}
 
 	@Override
