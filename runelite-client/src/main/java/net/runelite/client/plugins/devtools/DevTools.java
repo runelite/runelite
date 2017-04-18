@@ -61,7 +61,7 @@ public class DevTools extends Plugin
 
 	public DevTools()
 	{
-		navButton.getButton().addActionListener(this::expandPanel);
+		navButton.getButton().addActionListener(this::setPluginPanel);
 
 		try
 		{
@@ -95,10 +95,9 @@ public class DevTools extends Plugin
 		return overlay;
 	}
 
-	private void expandPanel(ActionEvent e)
+	private void setPluginPanel(ActionEvent e)
 	{
-		ui.setPluginPanel(panel);
-		ui.expand();
+		ui.expand(panel);
 	}
 
 	public Font getFont()
