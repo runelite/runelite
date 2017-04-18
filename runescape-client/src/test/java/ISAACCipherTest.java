@@ -44,7 +44,7 @@ public class ISAACCipherTest
 
 		ISAACCipher is = new ISAACCipher(keyInts);
 
-		BCISAACCipher cipher = new BCISAACCipher(keyInts);
+		RLISAACCipher cipher = new RLISAACCipher(keyInts);
 
 		for (int i = 0; i < TEST_SIZE; ++i)
 		{
