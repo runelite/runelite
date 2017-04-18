@@ -24,12 +24,15 @@
  */
 package net.runelite.client.plugins.hiscore;
 
+import com.google.common.eventbus.Subscribe;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import net.runelite.client.RuneLite;
+import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
@@ -41,10 +44,13 @@ public class Hiscore extends Plugin implements ActionListener
 {
 	private static final Logger logger = LoggerFactory.getLogger(Hiscore.class);
 
+	private static final String LOOKUP = "Lookup";
+
 	private final NavigationButton navButton = new NavigationButton("Hiscore");
 	private final HiscorePanel hiscorePanel = new HiscorePanel();
 
-	private final ClientUI ui = RuneLite.getRunelite().getGui();
+	private final RuneLite runeLite = RuneLite.getRunelite();
+	private final ClientUI ui = runeLite.getGui();
 
 	public Hiscore()
 	{
@@ -61,6 +67,8 @@ public class Hiscore extends Plugin implements ActionListener
 		}
 
 		ui.getNavigationPanel().addNavigation(navButton);
+
+		runeLite.getMenuManager().addPlayerMenuItem(LOOKUP);
 	}
 
 	@Override
@@ -74,6 +82,16 @@ public class Hiscore extends Plugin implements ActionListener
 	{
 		ui.setPluginPanel(hiscorePanel);
 		ui.expand();
+	}
+
+	@Subscribe
+	public void onLookupMenuClicked(PlayerMenuOptionClicked event)
+	{
+		if (event.getMenuOption().equals(LOOKUP))
+		{
+			ScheduledExecutorService executor = runeLite.getExecutor();
+			executor.execute(() -> hiscorePanel.lookup(event.getMenuTarget()));
+		}
 	}
 
 }

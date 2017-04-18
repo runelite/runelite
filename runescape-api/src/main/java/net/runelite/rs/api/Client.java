@@ -125,8 +125,14 @@ public interface Client extends GameEngine
 	@Import(value = "username", setter = true)
 	void setUsername(String username);
 
-	@Import("menuActions")
-	String[] getMenuActions();
+	@Import("playerOptions")
+	String[] getPlayerOptions();
+
+	@Import("playerOptionsPriorities")
+	boolean[] getPlayerOptionsPriorities();
+
+	@Import("playerMenuTypes")
+	int[] getPlayerMenuTypes();
 
 	@Import("menuTargets")
 	String[] getMenuTargets();

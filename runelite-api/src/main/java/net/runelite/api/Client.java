@@ -204,6 +204,26 @@ public class Client
 		return client.getWidgetPositionsY();
 	}
 
+	public String[] getPlayerOptions()
+	{
+		return client.getPlayerOptions();
+	}
+
+	public boolean[] getPlayerOptionsPriorities()
+	{
+		return client.getPlayerOptionsPriorities();
+	}
+
+	public int[] getPlayerMenuType()
+	{
+		return client.getPlayerMenuTypes();
+	}
+
+	public String[] getMenuOptions()
+	{
+		return client.getMenuOptions();
+	}
+
 	public int getMapScale()
 	{
 		return client.getMapScale();

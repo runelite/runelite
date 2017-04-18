@@ -37,6 +37,7 @@ import javax.imageio.ImageIO;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
+import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayRenderer;
@@ -59,6 +60,7 @@ public class RuneLite
 
 	private ClientUI gui;
 	private PluginManager pluginManager;
+	private MenuManager menuManager = new MenuManager(this);
 	private OverlayRenderer renderer;
 	private EventBus eventBus = new EventBus(this::eventExceptionHandler);
 	private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
@@ -88,6 +90,8 @@ public class RuneLite
 	public void start() throws Exception
 	{
 		gui = new ClientUI();
+
+		eventBus.register(menuManager);
 
 		if (SystemTray.isSupported())
 		{
@@ -132,6 +136,11 @@ public class RuneLite
 	public PluginManager getPluginManager()
 	{
 		return pluginManager;
+	}
+
+	public MenuManager getMenuManager()
+	{
+		return menuManager;
 	}
 
 	public OverlayRenderer getRenderer()
