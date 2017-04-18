@@ -47,7 +47,6 @@ public final class ClientUI extends JFrame
 	private ClientPanel panel;
 	private NavigationPanel navigationPanel;
 	private PluginPanel pluginPanel;
-	private boolean expanded;
 
 	public ClientUI() throws Exception
 	{
@@ -98,25 +97,31 @@ public final class ClientUI extends JFrame
 		add(container);
 	}
 
-	public void expand()
+	public void expand(PluginPanel panel)
 	{
-		if (!expanded)
-		{
-			navContainer.add(pluginPanel, BorderLayout.WEST);
-			navContainer.revalidate();
-			this.setMinimumSize(new Dimension(EXPANDED_WIDTH, PANEL_HEIGHT));
-			expanded = true;
-		}
-		else
+		if (pluginPanel == panel)
 		{
 			navContainer.remove(1);
-			navContainer.revalidate();
+			container.validate();
 			this.setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 			if (this.getWidth() == EXPANDED_WIDTH)
 			{
 				this.setSize(PANEL_WIDTH, PANEL_HEIGHT);
 			}
-			expanded = false;
+			pluginPanel = null;
+		}
+		else
+		{
+			if (pluginPanel != null)
+			{
+				navContainer.remove(1);
+				container.validate();
+			}
+
+			pluginPanel = panel;
+			navContainer.add(pluginPanel, BorderLayout.WEST);
+			container.validate();
+			this.setMinimumSize(new Dimension(EXPANDED_WIDTH, PANEL_HEIGHT));
 		}
 	}
 
@@ -138,10 +143,5 @@ public final class ClientUI extends JFrame
 	public PluginPanel getPluginPanel()
 	{
 		return pluginPanel;
-	}
-
-	public void setPluginPanel(PluginPanel pluginPanel)
-	{
-		this.pluginPanel = pluginPanel;
 	}
 }

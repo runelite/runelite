@@ -26,7 +26,6 @@ package net.runelite.client.plugins.hiscore;
 
 import com.google.common.eventbus.Subscribe;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
@@ -40,7 +39,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Hiscore extends Plugin implements ActionListener
+public class Hiscore extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(Hiscore.class);
 
@@ -54,7 +53,7 @@ public class Hiscore extends Plugin implements ActionListener
 
 	public Hiscore()
 	{
-		navButton.getButton().addActionListener(this);
+		navButton.getButton().addActionListener(this::setPluginPanel);
 
 		try
 		{
@@ -77,11 +76,9 @@ public class Hiscore extends Plugin implements ActionListener
 		return null;
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e)
+	private void setPluginPanel(ActionEvent e)
 	{
-		ui.setPluginPanel(hiscorePanel);
-		ui.expand();
+		ui.expand(hiscorePanel);
 	}
 
 	@Subscribe
