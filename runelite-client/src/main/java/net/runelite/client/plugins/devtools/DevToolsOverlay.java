@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Kronos <https://github.com/KronosDesign>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,10 +25,29 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import java.awt.*;
-
-import net.runelite.api.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import net.runelite.api.Actor;
+import net.runelite.api.Client;
+import net.runelite.api.DecorativeObject;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
+import net.runelite.api.GroundObject;
+import net.runelite.api.Item;
+import net.runelite.api.ItemLayer;
+import net.runelite.api.NPC;
+import net.runelite.api.Node;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.Region;
+import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
+import net.runelite.api.WallObject;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetItem;
@@ -37,18 +57,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class DevToolsOverlay extends Overlay
 {
-
-	private static final Client client = RuneLite.getClient();
-
-	private static boolean togglePlayers;
-	private static boolean toggleNpcs;
-	private static boolean toggleGroundItems;
-	private static boolean toggleGroundObjects;
-	private static boolean toggleGameObjects;
-	private static boolean toggleWalls;
-	private static boolean toggleDecor;
-	private static boolean toggleInventory;
-
 	private static final Color RED = new Color(221, 44, 0);
 	private static final Color GREEN = new Color(0, 200, 83);
 	private static final Color ORANGE = new Color(255, 109, 0);
@@ -59,9 +67,16 @@ public class DevToolsOverlay extends Overlay
 	private static final Color PURPLE = new Color(170, 0, 255);
 	private static final Color GRAY = new Color(158, 158, 158);
 
-	public DevToolsOverlay()
+	private static final int REGION_SIZE = 104;
+	private static final int MAX_DISTANCE = 2400;
+
+	private final DevTools tools;
+	private final Client client = RuneLite.getClient();
+
+	public DevToolsOverlay(DevTools tools)
 	{
 		super(OverlayPosition.DYNAMIC);
+		this.tools = tools;
 	}
 
 	@Override
@@ -72,19 +87,22 @@ public class DevToolsOverlay extends Overlay
 			return null;
 		}
 
-		if (togglePlayers)
+		if (tools.isTogglePlayers())
 		{
 			renderPlayers(graphics);
 		}
-		if (toggleNpcs)
+
+		if (tools.isToggleNpcs())
 		{
 			renderNpcs(graphics);
 		}
-		if (toggleGroundItems || toggleGroundObjects || toggleGameObjects || toggleWalls || toggleDecor)
+
+		if (tools.isToggleGroundItems() || tools.isToggleGroundObjects() || tools.isToggleGameObjects() || tools.isToggleWalls() || tools.isToggleDecor())
 		{
 			renderTileObjects(graphics);
 		}
-		if (toggleInventory)
+
+		if (tools.isToggleInventory())
 		{
 			renderInventory(graphics);
 		}
@@ -120,9 +138,10 @@ public class DevToolsOverlay extends Overlay
 			int x = textLocation.getX();
 			int y = textLocation.getY();
 
-			if (DevTools.font != null)
+			Font font = tools.getFont();
+			if (font != null)
 			{
-				graphics.setFont(DevTools.font);
+				graphics.setFont(font);
 			}
 
 			graphics.setColor(Color.BLACK);
@@ -161,9 +180,10 @@ public class DevToolsOverlay extends Overlay
 			int x = textLocation.getX();
 			int y = textLocation.getY();
 
-			if (DevTools.font != null)
+			Font font = tools.getFont();
+			if (font != null)
 			{
-				graphics.setFont(DevTools.font);
+				graphics.setFont(font);
 			}
 
 			graphics.setColor(Color.BLACK);
@@ -228,9 +248,9 @@ public class DevToolsOverlay extends Overlay
 
 		int z = client.getPlane();
 
-		for (int x = 0; x < 104; ++x)
+		for (int x = 0; x < REGION_SIZE; ++x)
 		{
-			for (int y = 0; y < 104; ++y)
+			for (int y = 0; y < REGION_SIZE; ++y)
 			{
 				Tile tile = tiles[z][x][y];
 
@@ -245,23 +265,27 @@ public class DevToolsOverlay extends Overlay
 					continue;
 				}
 
-				if (toggleGroundItems)
+				if (tools.isToggleGroundItems())
 				{
 					renderGroundItems(graphics, tile, player);
 				}
-				if (toggleGroundObjects)
+
+				if (tools.isToggleGroundObjects())
 				{
 					renderGroundObject(graphics, tile, player);
 				}
-				if (toggleGameObjects)
+
+				if (tools.isToggleGameObjects())
 				{
 					renderGameObjects(graphics, tile, player);
 				}
-				if (toggleWalls)
+
+				if (tools.isToggleWalls())
 				{
 					renderWallObject(graphics, tile, player);
 				}
-				if (toggleDecor)
+
+				if (tools.isToggleDecor())
 				{
 					renderDecorObject(graphics, tile, player);
 				}
@@ -274,7 +298,7 @@ public class DevToolsOverlay extends Overlay
 		ItemLayer itemLayer = tile.getItemLayer();
 		if (itemLayer != null)
 		{
-			if (distance(player.getLocalLocation(), itemLayer.getLocalLocation()) <= MAX_DISTANCE)
+			if (player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) <= MAX_DISTANCE)
 			{
 				Node current = itemLayer.getBottom();
 				while (current instanceof Item)
@@ -296,7 +320,7 @@ public class DevToolsOverlay extends Overlay
 			{
 				if (gameObject != null)
 				{
-					if (distance(player.getLocalLocation(), gameObject.getLocalLocation()) <= MAX_DISTANCE)
+					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
 					{
 						renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
 					}
@@ -310,7 +334,7 @@ public class DevToolsOverlay extends Overlay
 		GroundObject groundObject = tile.getGroundObject();
 		if (groundObject != null)
 		{
-			if (distance(player.getLocalLocation(), groundObject.getLocalLocation()) <= MAX_DISTANCE)
+			if (player.getLocalLocation().distanceTo(groundObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
 				renderTileOverlay(graphics, groundObject, "ID: " + groundObject.getId(), PURPLE);
 			}
@@ -322,7 +346,7 @@ public class DevToolsOverlay extends Overlay
 		WallObject wallObject = tile.getWallObject();
 		if (wallObject != null)
 		{
-			if (distance(player.getLocalLocation(), wallObject.getLocalLocation()) <= MAX_DISTANCE)
+			if (player.getLocalLocation().distanceTo(wallObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
 				renderTileOverlay(graphics, wallObject, "ID: " + wallObject.getId(), GRAY);
 			}
@@ -334,7 +358,7 @@ public class DevToolsOverlay extends Overlay
 		DecorativeObject decorObject = tile.getDecorativeObject();
 		if (decorObject != null)
 		{
-			if (distance(player.getLocalLocation(), decorObject.getLocalLocation()) <= MAX_DISTANCE)
+			if (player.getLocalLocation().distanceTo(decorObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
 				renderTileOverlay(graphics, decorObject, "ID: " + decorObject.getId(), DEEP_PURPLE);
 			}
@@ -363,53 +387,6 @@ public class DevToolsOverlay extends Overlay
 				graphics.draw(bounds);
 			}
 		}
-	}
-
-	public static void togglePlayers()
-	{
-		togglePlayers = !togglePlayers;
-	}
-
-	public static void toggleNpcs()
-	{
-		toggleNpcs = !toggleNpcs;
-	}
-
-	public static void toggleGroundItems()
-	{
-		toggleGroundItems = !toggleGroundItems;
-	}
-
-	public static void toggleGroundObjects()
-	{
-		toggleGroundObjects = !toggleGroundObjects;
-	}
-
-	public static void toggleGameObjects()
-	{
-		toggleGameObjects = !toggleGameObjects;
-	}
-
-	public static void toggleWalls()
-	{
-		toggleWalls = !toggleWalls;
-	}
-
-	public static void toggleDecor()
-	{
-		toggleDecor = !toggleDecor;
-	}
-
-	public static void toggleInventory()
-	{
-		toggleInventory = !toggleInventory;
-	}
-
-	private final int MAX_DISTANCE = 2400;
-
-	private double distance(Point p1, Point p2)
-	{
-		return Math.hypot(p1.getX() - p2.getX(), p1.getY() - p2.getY());
 	}
 
 }

@@ -24,15 +24,15 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import net.runelite.client.ui.PluginPanel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class DevToolsPanel extends PluginPanel
 {
-
 	private JButton renderPlayersBtn = new JButton();
 	private JButton renderNpcsBtn = new JButton();
 	private JButton renderGroundItemsBtn = new JButton();
@@ -42,7 +42,7 @@ public class DevToolsPanel extends PluginPanel
 	private JButton renderDecorBtn = new JButton();
 	private JButton renderInventoryBtn = new JButton();
 
-	public DevToolsPanel()
+	public DevToolsPanel(DevTools tools)
 	{
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -54,66 +54,74 @@ public class DevToolsPanel extends PluginPanel
 		add(container);
 
 		renderPlayersBtn = new JButton("Players");
-		renderPlayersBtn.addActionListener((ActionEvent e) ->
-		{
-			highlightButton(renderPlayersBtn);
-			DevToolsOverlay.togglePlayers();
+		renderPlayersBtn.addActionListener(e
+			-> 
+			{
+				highlightButton(renderPlayersBtn);
+				tools.togglePlayers();
 		});
 		container.add(renderPlayersBtn);
 
 		renderNpcsBtn = new JButton("NPCs");
-		renderNpcsBtn.addActionListener((ActionEvent e) ->
-		{
-			highlightButton(renderNpcsBtn);
-			DevToolsOverlay.toggleNpcs();
+		renderNpcsBtn.addActionListener(e
+			-> 
+			{
+				highlightButton(renderNpcsBtn);
+				tools.toggleNpcs();
 		});
 		container.add(renderNpcsBtn);
 
 		renderGroundItemsBtn = new JButton("Ground Items");
-		renderGroundItemsBtn.addActionListener((ActionEvent e) ->
-		{
-			highlightButton(renderGroundItemsBtn);
-			DevToolsOverlay.toggleGroundItems();
+		renderGroundItemsBtn.addActionListener(e
+			-> 
+			{
+				highlightButton(renderGroundItemsBtn);
+				tools.toggleGroundItems();
 		});
 		container.add(renderGroundItemsBtn);
 
 		renderGroundObjectsBtn = new JButton("Ground Objects");
-		renderGroundObjectsBtn.addActionListener((ActionEvent e) ->
-		{
-			highlightButton(renderGroundObjectsBtn);
-			DevToolsOverlay.toggleGroundObjects();
+		renderGroundObjectsBtn.addActionListener(e
+			-> 
+			{
+				highlightButton(renderGroundObjectsBtn);
+				tools.toggleGroundObjects();
 		});
 		container.add(renderGroundObjectsBtn);
 
 		renderGameObjectsBtn = new JButton("Game Objects");
-		renderGameObjectsBtn.addActionListener((ActionEvent e) ->
-		{
-			highlightButton(renderGameObjectsBtn);
-			DevToolsOverlay.toggleGameObjects();
+		renderGameObjectsBtn.addActionListener(e
+			-> 
+			{
+				highlightButton(renderGameObjectsBtn);
+				tools.toggleGameObjects();
 		});
 		container.add(renderGameObjectsBtn);
 
 		renderWallsBtn = new JButton("Walls");
-		renderWallsBtn.addActionListener((ActionEvent e) ->
-		{
-			highlightButton(renderWallsBtn);
-			DevToolsOverlay.toggleWalls();
+		renderWallsBtn.addActionListener(e
+			-> 
+			{
+				highlightButton(renderWallsBtn);
+				tools.toggleWalls();
 		});
 		container.add(renderWallsBtn);
 
 		renderDecorBtn = new JButton("Decorations");
-		renderDecorBtn.addActionListener((ActionEvent e) ->
-		{
-			highlightButton(renderDecorBtn);
-			DevToolsOverlay.toggleDecor();
+		renderDecorBtn.addActionListener(e
+			-> 
+			{
+				highlightButton(renderDecorBtn);
+				tools.toggleDecor();
 		});
 		container.add(renderDecorBtn);
 
 		renderInventoryBtn = new JButton("Inventory");
-		renderInventoryBtn.addActionListener((ActionEvent e) ->
-		{
-			highlightButton(renderInventoryBtn);
-			DevToolsOverlay.toggleInventory();
+		renderInventoryBtn.addActionListener(e
+			-> 
+			{
+				highlightButton(renderInventoryBtn);
+				tools.toggleInventory();
 		});
 		container.add(renderInventoryBtn);
 	}

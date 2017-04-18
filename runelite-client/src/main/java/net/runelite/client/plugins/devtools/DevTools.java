@@ -24,61 +24,68 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.hiscore.HiscorePanel;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.Overlay;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
-public class DevTools extends Plugin implements ActionListener
+public class DevTools extends Plugin
 {
-	private final DevToolsOverlay overlay = new DevToolsOverlay();
-	private final DevToolsPanel panel = new DevToolsPanel();
+	private static final Logger logger = LoggerFactory.getLogger(DevTools.class);
+
+	private final DevToolsOverlay overlay = new DevToolsOverlay(this);
+	private final DevToolsPanel panel = new DevToolsPanel(this);
 	private final NavigationButton navButton = new NavigationButton("DevTools");
 	private final ClientUI ui = RuneLite.getRunelite().getGui();
 
-	static Font font = null;
+	private boolean togglePlayers;
+	private boolean toggleNpcs;
+	private boolean toggleGroundItems;
+	private boolean toggleGroundObjects;
+	private boolean toggleGameObjects;
+	private boolean toggleWalls;
+	private boolean toggleDecor;
+	private boolean toggleInventory;
+
+	private Font font;
 
 	public DevTools()
 	{
-		navButton.getButton().addActionListener(this);
+		navButton.getButton().addActionListener(this::expandPanel);
+
 		try
 		{
 			ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("devtools_icon.png")));
 			navButton.getButton().setIcon(icon);
 		}
-		catch (Exception e)
+		catch (IOException ex)
 		{
-			e.printStackTrace();
+			logger.warn("Unable to load devtools icon", ex);
 		}
 
 		ui.getNavigationPanel().addNavigation(navButton);
 
-		URL fontUrl = getClass().getResource("runescape.ttf");
 		try
 		{
-			font = Font.createFont(Font.TRUETYPE_FONT, fontUrl.openStream());
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+			font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("runescape.ttf"));
 
-		if (font != null)
-		{
 			font = font.deriveFont(Font.PLAIN, 16);
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(font);
+		}
+		catch (FontFormatException | IOException ex)
+		{
+			logger.warn("Unable to load font", ex);
 		}
 	}
 
@@ -88,11 +95,94 @@ public class DevTools extends Plugin implements ActionListener
 		return overlay;
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e)
+	private void expandPanel(ActionEvent e)
 	{
 		ui.setPluginPanel(panel);
 		ui.expand();
 	}
 
+	public Font getFont()
+	{
+		return font;
+	}
+
+	public void togglePlayers()
+	{
+		togglePlayers = !togglePlayers;
+	}
+
+	public void toggleNpcs()
+	{
+		toggleNpcs = !toggleNpcs;
+	}
+
+	public void toggleGroundItems()
+	{
+		toggleGroundItems = !toggleGroundItems;
+	}
+
+	public void toggleGroundObjects()
+	{
+		toggleGroundObjects = !toggleGroundObjects;
+	}
+
+	public void toggleGameObjects()
+	{
+		toggleGameObjects = !toggleGameObjects;
+	}
+
+	public void toggleWalls()
+	{
+		toggleWalls = !toggleWalls;
+	}
+
+	public void toggleDecor()
+	{
+		toggleDecor = !toggleDecor;
+	}
+
+	public void toggleInventory()
+	{
+		toggleInventory = !toggleInventory;
+	}
+
+	public boolean isTogglePlayers()
+	{
+		return togglePlayers;
+	}
+
+	public boolean isToggleNpcs()
+	{
+		return toggleNpcs;
+	}
+
+	public boolean isToggleGroundItems()
+	{
+		return toggleGroundItems;
+	}
+
+	public boolean isToggleGroundObjects()
+	{
+		return toggleGroundObjects;
+	}
+
+	public boolean isToggleGameObjects()
+	{
+		return toggleGameObjects;
+	}
+
+	public boolean isToggleWalls()
+	{
+		return toggleWalls;
+	}
+
+	public boolean isToggleDecor()
+	{
+		return toggleDecor;
+	}
+
+	public boolean isToggleInventory()
+	{
+		return toggleInventory;
+	}
 }
