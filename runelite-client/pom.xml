@@ -38,6 +38,8 @@
 
 	<properties>
 		<slf4j.version>1.7.12</slf4j.version>
+
+		<jarsigner.skip>true</jarsigner.skip>
 	</properties>
 
 	<dependencies>
@@ -95,26 +97,63 @@
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>net.runelite.client.RuneLite</mainClass>
-						</manifest>
-					</archive>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-				</configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.0.0</version>
 				<executions>
 					<execution>
-						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>package</phase> <!--  bind to the packaging phase -->
+						<phase>package</phase>
 						<goals>
-							<goal>single</goal>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<minimizeJar>true</minimizeJar>
+
+							<shadedArtifactAttached>true</shadedArtifactAttached>
+							<shadedClassifierName>shaded</shadedClassifierName>
+
+							<filters>
+								<!--
+								Do not filter anything under net.runelite.
+								net.runelite.rs:client gets automatically filtered otherwise because it is runtime scoped
+								and only accessed with reflection. Also the classes under net.runelite.inject.* get removed, too.
+								-->
+								<filter>
+									<artifact>net.runelite.*:*</artifact>
+									<includes>
+										<include>**</include>
+									</includes>
+								</filter>
+							</filters>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>net.runelite.client.RuneLite</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jarsigner-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign</id>
+						<goals>
+							<goal>sign</goal>
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<skip>${jarsigner.skip}</skip>
+					<verbose>true</verbose>
+					<keystore>${jarsigner.keystore}</keystore>
+					<alias>${jarsigner.alias}</alias>
+					<storepass>${jarsigner.storepass}</storepass>
+					<keypass>${jarsigner.keypass}</keypass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
