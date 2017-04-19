@@ -44,6 +44,7 @@ public class DynamicRenderer implements Renderer
 		for (Overlay overlay : overlays)
 		{
 			Graphics2D graphics = clientBuffer.createGraphics();
+			Renderer.setAntiAliasing(graphics);
 			overlay.render(graphics);
 			graphics.dispose();
 		}
