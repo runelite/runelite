@@ -34,14 +34,13 @@
 
 	<groupId>net.runelite.rs</groupId>
 	<artifactId>client</artifactId>
-	<version>139.2-SNAPSHOT</version> <!-- rs version -->
 	<name>Injector</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>rs-client</artifactId>
-			<version>139.2-SNAPSHOT</version> <!-- rs version -->
+			<version>${project.version}</version>
 			<scope>provided</scope> <!-- to prevent the dependency on this from runelite-client -->
 		</dependency>
 		<dependency>
