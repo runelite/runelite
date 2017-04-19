@@ -1,4 +1,4 @@
-![](https://puu.sh/vpxc1/5fe318e5b1.png)
+![](http://runelite.net/images/runelite_logo_border.png)
 # runelite
 
 runelite is a RuneScape 2 client and reverse engineering project
