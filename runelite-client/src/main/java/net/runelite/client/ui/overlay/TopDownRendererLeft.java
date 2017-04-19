@@ -54,6 +54,7 @@ public class TopDownRendererLeft implements Renderer
 		{
 			BufferedImage image = clientBuffer.getSubimage(BORDER_LEFT, y, clientBuffer.getWidth() - BORDER_LEFT, clientBuffer.getHeight() - y);//(int) dimension.getWidth(), (int) dimension.getHeight());
 			Graphics2D graphics = image.createGraphics();
+			Renderer.setAntiAliasing(graphics);
 			Dimension dimension = overlay.render(graphics);
 			graphics.dispose();
 
