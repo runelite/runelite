@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>vanilla</artifactId>
-			<version>139</version>
+			<version>${rs.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
