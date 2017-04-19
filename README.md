@@ -2,7 +2,7 @@
 
 runelite is a RuneScape 2 client and reverse engineering project
 
-Our IRC channel is on [irc.rizon.net #runelite](http://qchat.rizon.net/?channels=runelite&uio=d4)
+If you have any questions please join our IRC channel on [irc.rizon.net #runelite](http://qchat.rizon.net/?channels=runelite&uio=d4) or alternatively our [Discord](https://discord.gg/mePCs8U) server.
 
 ## Project Layout
 
@@ -18,7 +18,8 @@ Our IRC channel is on [irc.rizon.net #runelite](http://qchat.rizon.net/?channels
 
 ## Usage
 
-Open the project in your IDE as a Maven project and run the RuneLite class in runelite-client.
+Open the project in your IDE as a Maven project, build the root module and then run the RuneLite class in runelite-client.  
+For more information visit the [RuneLite Wiki](https://github.com/runelite/runelite/wiki).
 
 ### License
 
