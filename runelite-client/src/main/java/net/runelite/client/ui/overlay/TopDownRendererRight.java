@@ -56,8 +56,8 @@ public class TopDownRendererRight implements Renderer
 		for (Overlay overlay : overlays)
 		{
 			BufferedImage image = clientBuffer.getSubimage(BORDER_RIGHT, y, client.getClientWidth(), 25);
-
 			Graphics2D graphics = image.createGraphics();
+			Renderer.setAntiAliasing(graphics);
 			Dimension dimension = overlay.render(graphics);
 			graphics.dispose();
 

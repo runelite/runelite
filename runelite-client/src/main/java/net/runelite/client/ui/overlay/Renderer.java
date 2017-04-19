@@ -24,9 +24,16 @@
  */
 package net.runelite.client.ui.overlay;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 public interface Renderer
 {
 	void render(BufferedImage clientBuffer);
+
+	static void setAntiAliasing(Graphics2D graphics)
+	{
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	}
 }
