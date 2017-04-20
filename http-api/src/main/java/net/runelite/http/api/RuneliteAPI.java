@@ -37,6 +37,7 @@ public class RuneliteAPI
 	private static final String BASE = "https://api.runelite.net/runelite-";
 	private static final Properties properties = new Properties();
 	private static String version;
+	private static int rsVersion;
 
 	static
 	{
@@ -46,6 +47,7 @@ public class RuneliteAPI
 			properties.load(in);
 
 			version = properties.getProperty("runelite.version");
+			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
 		}
 		catch (IOException ex)
 		{
@@ -66,6 +68,11 @@ public class RuneliteAPI
 	public static void setVersion(String version)
 	{
 		RuneliteAPI.version = version;
+	}
+
+	public static int getRsVersion()
+	{
+		return rsVersion;
 	}
 
 }
