@@ -78,6 +78,7 @@
 			<groupId>com.commongroundpublishing</groupId>
 			<artifactId>slf4j-servletcontext</artifactId>
 			<version>1.0.0</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
