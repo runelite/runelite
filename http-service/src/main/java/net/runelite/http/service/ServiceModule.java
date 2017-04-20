@@ -24,55 +24,53 @@
  */
 package net.runelite.http.service;
 
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import net.runelite.http.api.RuneliteAPI;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import net.runelite.http.service.hiscore.HiscoreService;
 import net.runelite.http.service.updatecheck.UpdateCheckService;
 import net.runelite.http.service.worlds.WorldsService;
 import net.runelite.http.service.xtea.XteaService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import spark.servlet.SparkApplication;
-import static spark.Spark.*;
 
-public class Service implements SparkApplication
+public class ServiceModule extends AbstractModule
 {
-	private static final Logger logger = LoggerFactory.getLogger(Service.class);
+	private final Service service;
 
-	private final JsonTransformer transformer = new JsonTransformer();
+	public ServiceModule(Service service)
+	{
+		this.service = service;
+	}
 
-	@Inject
-	private HiscoreService hiscores;
+	@Provides
+	@Named("Runelite JDBC")
+	DataSource provideDataSource()
+	{
+		try
+		{
+			// It is difficult to inject things into Spark
+			Context initCtx = new InitialContext();
+			Context envCtx = (Context) initCtx.lookup("java:comp/env");
 
-	@Inject
-	private UpdateCheckService updateCheck;
-
-	@Inject
-	private WorldsService worlds;
-
-	@Inject
-	private XteaService xtea;
+			return (DataSource) envCtx.lookup("jdbc/runelite");
+		}
+		catch (NamingException ex)
+		{
+			throw new RuntimeException(ex);
+		}
+	}
 
 	@Override
-	public void init()
+	protected void configure()
 	{
-		Guice.createInjector(new ServiceModule(this));
-		setupRoutes();
+		bind(Service.class).toInstance(service);
+
+		bind(HiscoreService.class);
+		bind(UpdateCheckService.class);
+		bind(WorldsService.class);
+		bind(XteaService.class);
 	}
-
-	public void setupRoutes()
-	{
-		xtea.init();
-
-		get("/version", (request, response) -> RuneliteAPI.getVersion());
-		get("/update-check", updateCheck::check, transformer);
-		get("/hiscore", (request, response) -> hiscores.lookup(request.queryParams("username")), transformer);
-		get("/worlds", (request, response) -> worlds.listWorlds(), transformer);
-		post("/xtea", xtea::submit);
-		get("/xtea/:rev", xtea::get, transformer);
-
-		exception(Exception.class, (exception, request, response) -> logger.warn(null, exception));
-	}
-
 }
