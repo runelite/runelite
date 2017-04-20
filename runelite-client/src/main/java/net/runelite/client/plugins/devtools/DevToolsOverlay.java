@@ -107,6 +107,11 @@ public class DevToolsOverlay extends Overlay
 			renderInventory(graphics);
 		}
 
+		if (tools.isToggleWidgets())
+		{
+			renderWidgets(graphics);
+		}
+
 		return null;
 	}
 
@@ -385,6 +390,47 @@ public class DevToolsOverlay extends Overlay
 			if (bounds != null)
 			{
 				graphics.draw(bounds);
+			}
+		}
+	}
+
+	private void renderWidgets(Graphics2D graphics)
+	{
+		Widget[][] widgets = client.getWidgets();
+		boolean[] validInterfaces = client.getValidInterfaces();
+
+		int idx = -1;
+
+		for (Widget[] children : widgets)
+		{
+			++idx;
+
+			if (!validInterfaces[idx])
+			{
+				continue;
+			}
+
+			if (children == null)
+			{
+				continue;
+			}
+
+			for (Widget child : children)
+			{
+				if (child == null)
+				{
+					continue;
+				}
+
+				if (child.getText() == null)
+				{
+					continue;
+				}
+
+				Rectangle rectangle = child.getBounds();
+				//graphics.draw(rectangle);
+
+				graphics.drawString(child.getText(), (int) rectangle.getX(), (int) rectangle.getY());
 			}
 		}
 	}
