@@ -176,6 +176,15 @@ public class Client
 		return client.getBaseY();
 	}
 
+	public Widget[][] getWidgets()
+	{
+		return Arrays.stream(client.getWidgets())
+			.map(parent -> parent != null ? Arrays.stream(parent)
+			.map(child -> child != null ? new Widget(this, child) : null)
+			.toArray(Widget[]::new) : null
+			).toArray(Widget[][]::new);
+	}
+
 	public Widget getWidget(int groupId, int childId)
 	{
 		net.runelite.rs.api.Widget[][] widgets = client.getWidgets();
@@ -202,6 +211,11 @@ public class Client
 	public int[] getWidgetPositionsY()
 	{
 		return client.getWidgetPositionsY();
+	}
+
+	public boolean[] getValidInterfaces()
+	{
+		return client.getValidInterfaces();
 	}
 
 	public String[] getPlayerOptions()

@@ -56,6 +56,7 @@ public class DevTools extends Plugin
 	private boolean toggleWalls;
 	private boolean toggleDecor;
 	private boolean toggleInventory;
+	private boolean toggleWidgets;
 
 	private Font font;
 
@@ -145,6 +146,11 @@ public class DevTools extends Plugin
 		toggleInventory = !toggleInventory;
 	}
 
+	public void toggleWidgets()
+	{
+		toggleWidgets = !toggleWidgets;
+	}
+
 	public boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -183,5 +189,10 @@ public class DevTools extends Plugin
 	public boolean isToggleInventory()
 	{
 		return toggleInventory;
+	}
+
+	public boolean isToggleWidgets()
+	{
+		return toggleWidgets;
 	}
 }

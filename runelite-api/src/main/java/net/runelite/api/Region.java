@@ -43,9 +43,8 @@ public class Region
 			.map(tile1 -> Arrays.stream(tile1)
 				.map(tile2 -> Arrays.stream(tile2)
 					.map(tile3 -> new Tile(client, tile3))
-					.toArray(i -> new Tile[i])
-				)
-				.toArray(i -> new Tile[i][])
-			).toArray(i -> new Tile[i][][]);
+					.toArray(Tile[]::new)
+				).toArray(Tile[][]::new)
+			).toArray(Tile[][][]::new);
 	}
 }

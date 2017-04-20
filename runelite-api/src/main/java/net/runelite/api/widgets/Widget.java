@@ -45,6 +45,16 @@ public class Widget
 		this.widget = widget;
 	}
 
+	public int getId()
+	{
+		return widget.getId();
+	}
+
+	public int getType()
+	{
+		return widget.getType();
+	}
+
 	public Widget getParent()
 	{
 		net.runelite.rs.api.Widget parent = widget.getParent();
@@ -67,22 +77,45 @@ public class Widget
 		return widget.getRelativeY();
 	}
 
+	public String getText()
+	{
+		return widget.getText();
+	}
+
+	public boolean isHidden()
+	{
+		return widget.isHidden();
+	}
+
 	public Point getCanvasLocation()
 	{
 		int x = 0;
 		int y = 0;
+		Widget cur;
 
-		int boundsIndex = widget.getBoundsIndex();
-		if (boundsIndex != -1)
+		for (cur = this; cur.getParent() != null; cur = cur.getParent())
 		{
-			int[] widgetBoundsWidth = client.getWidgetPositionsX();
-			int[] widgetBoundsHeight = client.getWidgetPositionsY();
-
-			x += widgetBoundsWidth[boundsIndex];
-			y += widgetBoundsHeight[boundsIndex];
+			x += cur.getRelativeX();
+			y += cur.getRelativeY();
 		}
 
-		for (Widget cur = this; cur != null; cur = cur.getParent())
+		// cur is now the root
+		int[] widgetBoundsWidth = client.getWidgetPositionsX();
+		int[] widgetBoundsHeight = client.getWidgetPositionsY();
+
+		int boundsIndex = cur.widget.getBoundsIndex();
+		if (boundsIndex != -1)
+		{
+			x += widgetBoundsWidth[boundsIndex];
+			y += widgetBoundsHeight[boundsIndex];
+
+			if (cur.getType() > 0)
+			{
+				x += cur.getRelativeX();
+				y += cur.getRelativeY();
+			}
+		}
+		else
 		{
 			x += cur.getRelativeX();
 			y += cur.getRelativeY();
@@ -99,6 +132,12 @@ public class Widget
 	public int getHeight()
 	{
 		return widget.getHeight();
+	}
+
+	public Rectangle getBounds()
+	{
+		Point canvasLocation = getCanvasLocation();
+		return new Rectangle(canvasLocation.getX(), canvasLocation.getY(), getWidth(), getHeight());
 	}
 
 	public Collection<WidgetItem> getWidgetItems()
