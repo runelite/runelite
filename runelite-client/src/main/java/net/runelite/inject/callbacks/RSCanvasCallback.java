@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.inject.callbacks;
 
 import java.awt.Canvas;
@@ -30,14 +29,18 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RSCanvasCallback
 {
+	private static final Logger logger = LoggerFactory.getLogger(RSCanvasCallback.class);
+
 	private static final int WIDTH = 765, HEIGHT = 503;
-	
+
 	private BufferedImage clientBuffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private BufferedImage gameBuffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-	
+
 	public Graphics getGraphics(Canvas canvas, Graphics superGraphics)
 	{
 		if (canvas.getHeight() != clientBuffer.getHeight() || canvas.getWidth() != clientBuffer.getWidth())
@@ -56,7 +59,14 @@ public class RSCanvasCallback
 			OverlayRenderer renderer = runelite.getRenderer();
 			if (renderer != null)
 			{
-				renderer.render(clientBuffer);
+				try
+				{
+					renderer.render(clientBuffer);
+				}
+				catch (Exception ex)
+				{
+					logger.warn("Error during overlay rendering", ex);
+				}
 			}
 		}
 
