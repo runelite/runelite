@@ -30,6 +30,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.service.hiscore.HiscoreService;
+import net.runelite.http.service.updatecheck.UpdateCheckService;
 import net.runelite.http.service.worlds.WorldsService;
 import net.runelite.http.service.xtea.XteaService;
 import org.slf4j.Logger;
@@ -46,6 +47,7 @@ public class Service implements SparkApplication
 	private final JsonTransformer transformer = new JsonTransformer();
 
 	private HiscoreService hiscores = new HiscoreService();
+	private UpdateCheckService updateCheck = new UpdateCheckService(this);
 	private WorldsService worlds = new WorldsService();
 	private XteaService xtea = new XteaService(this);
 
@@ -57,6 +59,7 @@ public class Service implements SparkApplication
 		xtea.init();
 
 		get("/version", (request, response) -> RuneliteAPI.getVersion());
+		get("/update-check", updateCheck::check, transformer);
 		get("/hiscore", (request, response) -> hiscores.lookup(request.queryParams("username")), transformer);
 		get("/worlds", (request, response) -> worlds.listWorlds(), transformer);
 		post("/xtea", xtea::submit);
@@ -94,6 +97,36 @@ public class Service implements SparkApplication
 	public void setHiscores(HiscoreService hiscores)
 	{
 		this.hiscores = hiscores;
+	}
+
+	public UpdateCheckService getUpdateCheck()
+	{
+		return updateCheck;
+	}
+
+	public void setUpdateCheck(UpdateCheckService updateCheck)
+	{
+		this.updateCheck = updateCheck;
+	}
+
+	public WorldsService getWorlds()
+	{
+		return worlds;
+	}
+
+	public void setWorlds(WorldsService worlds)
+	{
+		this.worlds = worlds;
+	}
+
+	public XteaService getXtea()
+	{
+		return xtea;
+	}
+
+	public void setXtea(XteaService xtea)
+	{
+		this.xtea = xtea;
 	}
 
 	public DataSource getDataSource()
