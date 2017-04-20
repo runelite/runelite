@@ -24,6 +24,7 @@
  */
 package net.runelite.http.service;
 
+import com.commongroundpublishing.slf4j.impl.ServletContextLogger;
 import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -33,6 +34,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.Skill;
@@ -43,6 +45,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Answers;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import spark.Spark;
@@ -50,18 +53,18 @@ import spark.Spark;
 public class ServiceTest
 {
 	private static final String URL_BASE = "http://localhost:4567";
-
+	
 	private Service service;
-
+	
 	@Bind
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	@Named("Runelite JDBC")
 	private DataSource dataSource;
-
+	
 	@Bind
 	@Mock
 	private HiscoreService hiscoreService;
-
+	
 	@Before
 	public void before()
 	{
@@ -70,36 +73,38 @@ public class ServiceTest
 		// Inject everything in the test object
 		Injector injector = Guice.createInjector(BoundFieldModule.of(this));
 		injector.injectMembers(this);
-
+		
+		ServletContextLogger.setServletContext(mock(ServletContext.class));
+		
 		service = injector.getInstance(Service.class);
 		service.setupRoutes();
-
+		
 		Spark.awaitInitialization();
 	}
-
+	
 	@After
 	public void after()
 	{
 		Spark.stop();
 	}
-
+	
 	@Test
 	public void testInit() throws Exception
 	{
 		HiscoreResult result = new HiscoreResult();
 		result.setAttack(new Skill(1, 99, 42));
-
+		
 		when(hiscoreService.lookup("zezima")).thenReturn(result);
-
+		
 		URL url = new URL(URL_BASE + "/hiscore?username=zezima");
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestMethod("GET");
 		connection.connect();
-
+		
 		Gson gson = new Gson();
 		HiscoreResult res = gson.fromJson(new InputStreamReader(connection.getInputStream()), HiscoreResult.class);
-
+		
 		Assert.assertEquals(result, res);
 	}
-
+	
 }
