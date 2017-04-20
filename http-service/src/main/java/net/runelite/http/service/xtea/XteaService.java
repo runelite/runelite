@@ -25,11 +25,13 @@
 package net.runelite.http.service.xtea;
 
 import com.google.gson.Gson;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.sql.DataSource;
 import net.runelite.http.api.xtea.XteaKey;
 import net.runelite.http.api.xtea.XteaRequest;
-import net.runelite.http.service.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sql2o.Connection;
@@ -52,17 +54,19 @@ public class XteaService
 		+ "  PRIMARY KEY (`rev`,`region`,`key1`,`key2`,`key3`,`key4`)\n"
 		+ ") ENGINE=InnoDB;";
 
-	private final Service service;
+	
+	private final DataSource datasource;
 	private final Gson gson = new Gson();
 
-	public XteaService(Service service)
+	@Inject
+	public XteaService(@Named("Runelite JDBC") DataSource datasource)
 	{
-		this.service = service;
+		this.datasource = datasource;
 	}
 
 	public void init()
 	{
-		Sql2o sql2o = new Sql2o(service.getDataSource());
+		Sql2o sql2o = new Sql2o(datasource);
 
 		try (Connection con = sql2o.beginTransaction())
 		{
@@ -75,7 +79,7 @@ public class XteaService
 	{
 		XteaRequest xteaRequest = gson.fromJson(request.body(), XteaRequest.class);
 
-		Sql2o sql2o = new Sql2o(service.getDataSource());
+		Sql2o sql2o = new Sql2o(datasource);
 
 		try (Connection con = sql2o.beginTransaction())
 		{
@@ -104,7 +108,7 @@ public class XteaService
 		String revStr = request.params("rev");
 		int revision = Integer.parseInt(revStr);
 
-		Sql2o sql2o = new Sql2o(service.getDataSource());
+		Sql2o sql2o = new Sql2o(datasource);
 
 		try (Connection con = sql2o.open())
 		{
