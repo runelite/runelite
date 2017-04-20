@@ -58,14 +58,12 @@ public abstract class Actor extends Renderable
 			return null;
 		}
 
-		// logic taken from runeloader.
-		if (i < 32767)
+		if (i < 0x8000)
 		{
 			return client.getNpcs()[i];
 		}
 
-		// XXX is this correct for i = 32767 ?
-		i = i - 32767 - 1;
+		i -= 0x8000;
 		return client.getPlayers()[i];
 	}
 
