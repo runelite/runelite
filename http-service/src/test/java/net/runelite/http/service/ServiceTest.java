@@ -25,43 +25,60 @@
 package net.runelite.http.service;
 
 import com.google.gson.Gson;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.name.Named;
+import com.google.inject.testing.fieldbinder.Bind;
+import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.SQLException;
 import javax.sql.DataSource;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.service.hiscore.HiscoreService;
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
-import static org.mockito.Mockito.mock;
+import org.mockito.Answers;
+import org.mockito.Mock;
 import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
 import spark.Spark;
 
 public class ServiceTest
 {
 	private static final String URL_BASE = "http://localhost:4567";
 
-	private static Service service;
+	private Service service;
 
-	@BeforeClass
-	public static void before() throws SQLException
+	@Bind
+	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
+	@Named("Runelite JDBC")
+	private DataSource dataSource;
+
+	@Bind
+	@Mock
+	private HiscoreService hiscoreService;
+
+	@Before
+	public void before()
 	{
-		DataSource dataSource = mock(DataSource.class, RETURNS_DEEP_STUBS);
+		// Init mocks first, else we're binding null objects
+		MockitoAnnotations.initMocks(this);
+		// Inject everything in the test object
+		Injector injector = Guice.createInjector(BoundFieldModule.of(this));
+		injector.injectMembers(this);
 
-		service = new Service();
-		service.setDataSource(dataSource);
-		service.init();
+		service = injector.getInstance(Service.class);
+		service.setupRoutes();
 
 		Spark.awaitInitialization();
 	}
 
-	@AfterClass
-	public static void after()
+	@After
+	public void after()
 	{
 		Spark.stop();
 	}
@@ -69,9 +86,6 @@ public class ServiceTest
 	@Test
 	public void testInit() throws Exception
 	{
-		HiscoreService hiscoreService = mock(HiscoreService.class);
-		service.setHiscores(hiscoreService);
-
 		HiscoreResult result = new HiscoreResult();
 		result.setAttack(new Skill(1, 99, 42));
 
@@ -86,8 +100,6 @@ public class ServiceTest
 		HiscoreResult res = gson.fromJson(new InputStreamReader(connection.getInputStream()), HiscoreResult.class);
 
 		Assert.assertEquals(result, res);
-
-		Spark.stop();
 	}
 
 }

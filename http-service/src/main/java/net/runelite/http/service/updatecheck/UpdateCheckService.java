@@ -25,6 +25,7 @@
 package net.runelite.http.service.updatecheck;
 
 import com.google.common.base.Suppliers;
+import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -38,7 +39,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.worlds.WorldResult;
-import net.runelite.http.service.Service;
 import net.runelite.http.service.worlds.WorldsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,12 +56,13 @@ public class UpdateCheckService
 	private static final int RESPONSE_OK = 0;
 	private static final int RESPONSE_OUTDATED = 6;
 
-	private final Service service;
+	private final WorldsService worldsService;
 	private final Supplier<Boolean> updateAvailable = Suppliers.memoizeWithExpiration(this::checkUpdate, 1, TimeUnit.MINUTES);
 
-	public UpdateCheckService(Service service)
+	@Inject
+	public UpdateCheckService(WorldsService worldsService)
 	{
-		this.service = service;
+		this.worldsService = worldsService;
 	}
 
 	public Boolean check(Request request, Response response)
@@ -121,8 +122,6 @@ public class UpdateCheckService
 
 	private int randomWorld()
 	{
-		WorldsService worldsService = service.getWorlds();
-
 		try
 		{
 			WorldResult worlds = worldsService.listWorlds();
