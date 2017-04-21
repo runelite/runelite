@@ -22,55 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.widgets;
+package net.runelite.client.plugins.runecraft;
 
-import java.awt.Rectangle;
-import net.runelite.api.Point;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.Overlay;
 
-public class WidgetItem
+public class Runecraft extends Plugin
 {
-	private final int id;
-	private final int quantity;
-	private final int index;
-	private final Rectangle canvasBounds;
-
-	public WidgetItem(int id, int quantity, int index, Rectangle canvasBounds)
-	{
-		this.id = id;
-		this.quantity = quantity;
-		this.index = index;
-		this.canvasBounds = canvasBounds;
-	}
+	private static final RunecraftOverlay overlay = new RunecraftOverlay();
 
 	@Override
-	public String toString()
+	public Overlay getOverlay()
 	{
-		return "WidgetItem{" + "id=" + id + ", quantity=" + quantity + ", index=" + index + ", canvasBounds=" + canvasBounds + '}';
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public int getQuantity()
-	{
-		return quantity;
-	}
-
-	public int getIndex()
-	{
-		return index;
-	}
-
-	public Rectangle getCanvasBounds()
-	{
-		return canvasBounds;
-	}
-
-	public Point getCanvasLocation()
-	{
-		return new Point((int) canvasBounds.getX(), (int) canvasBounds.getY());
+		return overlay;
 	}
 
 }
