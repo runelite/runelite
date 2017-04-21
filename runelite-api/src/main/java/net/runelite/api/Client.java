@@ -272,4 +272,11 @@ public class Client
 	{
 		return client.getXteaKeys();
 	}
+	
+	public int getSetting(Varbits varbit)
+	{
+		int[] settings = client.getSettings();
+		int value = settings[varbit.getIndex()];
+		return varbit.get(value);
+	}
 }
