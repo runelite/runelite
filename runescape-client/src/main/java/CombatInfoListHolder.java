@@ -285,8 +285,8 @@ public class CombatInfoListHolder extends Node {
                                                                                                                                  var12 = var7[var5];
                                                                                                                                  var15 = class32.field743[--class30.field713];
                                                                                                                                  Varbit var17 = class22.method201(var12);
-                                                                                                                                 int var18 = var17.leastSignificantBit;
-                                                                                                                                 var24 = var17.configId;
+                                                                                                                                 int var18 = var17.configId;
+                                                                                                                                 var24 = var17.leastSignificantBit;
                                                                                                                                  int var19 = var17.mostSignificantBit;
                                                                                                                                  int var20 = class165.field2182[var19 - var24];
                                                                                                                                  if(var15 < 0 || var15 > var20) {

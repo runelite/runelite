@@ -21,14 +21,14 @@ public class Varbit extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 883867267
    )
-   @Export("configId")
-   public int configId;
+   @Export("leastSignificantBit")
+   public int leastSignificantBit;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1658770173
    )
-   @Export("leastSignificantBit")
-   public int leastSignificantBit;
+   @Export("configId")
+   public int configId;
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
@@ -37,8 +37,8 @@ public class Varbit extends CacheableNode {
    )
    void method3591(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.leastSignificantBit = var1.readUnsignedShort();
-         this.configId = var1.readUnsignedByte();
+         this.configId = var1.readUnsignedShort();
+         this.leastSignificantBit = var1.readUnsignedByte();
          this.mostSignificantBit = var1.readUnsignedByte();
       }
 

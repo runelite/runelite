@@ -919,8 +919,8 @@ public final class class25 extends Node {
    )
    public static int method560(int var0) {
       Varbit var1 = class22.method201(var0);
-      int var2 = var1.leastSignificantBit;
-      int var3 = var1.configId;
+      int var2 = var1.configId;
+      int var3 = var1.leastSignificantBit;
       int var4 = var1.mostSignificantBit;
       int var5 = class165.field2182[var4 - var3];
       return class165.widgetSettings[var2] >> var3 & var5;
