@@ -35,6 +35,7 @@ import net.runelite.client.plugins.fpsinfo.FPS;
 import net.runelite.client.plugins.hiscore.Hiscore;
 import net.runelite.client.plugins.idlenotifier.IdleNotifier;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
+import net.runelite.client.plugins.runecraft.Runecraft;
 import net.runelite.client.plugins.xtea.Xtea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,7 @@ public class PluginManager
 		load(new BossTimers());
 		load(new Xtea());
 		load(new IdleNotifier());
+		load(new Runecraft());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
