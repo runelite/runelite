@@ -24,9 +24,13 @@
  */
 package net.runelite.client.plugins;
 
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.Service;
+import com.google.common.util.concurrent.ServiceManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.boosts.Boosts;
 import net.runelite.client.plugins.bosstimer.BossTimers;
@@ -45,7 +49,7 @@ public class PluginManager
 	private static final Logger logger = LoggerFactory.getLogger(PluginManager.class);
 
 	private final RuneLite runelite;
-	private final List<Plugin> plugins = new ArrayList<>();
+	private ServiceManager manager;
 
 	public PluginManager(RuneLite runelite)
 	{
@@ -54,30 +58,67 @@ public class PluginManager
 
 	public void loadAll()
 	{
-		load(new Boosts());
-		load(new OpponentInfo());
-		load(new FPS());
-		load(new Hiscore());
-		load(new BossTimers());
-		load(new Xtea());
-		load(new IdleNotifier());
-		load(new Runecraft());
+		List<Plugin> plugins = new ArrayList<>();
+		plugins.add(new Boosts());
+		plugins.add(new OpponentInfo());
+		plugins.add(new FPS());
+		plugins.add(new Hiscore());
+		plugins.add(new BossTimers());
+		plugins.add(new Xtea());
+		plugins.add(new IdleNotifier());
+		plugins.add(new Runecraft());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
 			logger.info("Loading developer plugins");
-			load(new DevTools());
+			plugins.add(new DevTools());
 		}
-	}
 
-	private void load(Plugin plugin)
-	{
-		plugins.add(plugin);
-		runelite.getEventBus().register(plugin);
+		// Add plugin listeners
+		for (Plugin plugin : plugins)
+		{
+			Service.Listener listener = new Service.Listener()
+			{
+				@Override
+				public void running()
+				{
+					logger.debug("Plugin {} is now running", plugin);
+					runelite.getEventBus().register(plugin);
+				}
+
+				@Override
+				public void stopping(Service.State from)
+				{
+					logger.debug("Plugin {} is stopping", plugin);
+					runelite.getEventBus().unregister(logger);
+				}
+
+				@Override
+				public void failed(Service.State from, Throwable failure)
+				{
+					logger.warn("Plugin {} has failed", plugin, failure);
+
+					if (from == Service.State.RUNNING)
+					{
+						runelite.getEventBus().unregister(logger);
+					}
+				}
+			};
+
+			plugin.addListener(listener, MoreExecutors.directExecutor());
+		}
+
+		manager = new ServiceManager(plugins);
+
+		logger.debug("Starting plugins...");
+		manager.startAsync();
 	}
 
 	public Collection<Plugin> getPlugins()
 	{
-		return plugins;
+		return manager.servicesByState().get(Service.State.RUNNING)
+			.stream()
+			.map(s -> (Plugin) s)
+			.collect(Collectors.toList());
 	}
 }
