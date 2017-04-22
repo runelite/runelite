@@ -185,7 +185,7 @@ public class ChatMessages {
       garbageValue = "0"
    )
    FileOnDisk method883(boolean var1) {
-      return class45.method868("2", Client.field304.field2709, var1);
+      return class45.getPreferencesFile("2", Client.field304.name, var1);
    }
 
    @ObfuscatedName("o")

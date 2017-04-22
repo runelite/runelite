@@ -117,7 +117,7 @@ public class class107 {
 
          for(var8 = 0; var8 < 104; ++var8) {
             class10.field94[var8] = 0;
-            class30.field712[var8] = 0;
+            Preferences.field712[var8] = 0;
             class1.field9[var8] = 0;
             class0.field2[var8] = 0;
             ClassInfo.field3243[var8] = 0;
@@ -132,7 +132,7 @@ public class class107 {
                   if(var11 > 0) {
                      var19 = ISAACCipher.method3133(var11 - 1);
                      class10.field94[var9] += var19.field2823;
-                     class30.field712[var9] += var19.field2820;
+                     Preferences.field712[var9] += var19.field2820;
                      class1.field9[var9] += var19.field2825;
                      class0.field2[var9] += var19.field2826;
                      ++ClassInfo.field3243[var9];
@@ -145,7 +145,7 @@ public class class107 {
                   if(var12 > 0) {
                      var19 = ISAACCipher.method3133(var12 - 1);
                      class10.field94[var9] -= var19.field2823;
-                     class30.field712[var9] -= var19.field2820;
+                     Preferences.field712[var9] -= var19.field2820;
                      class1.field9[var9] -= var19.field2825;
                      class0.field2[var9] -= var19.field2826;
                      --ClassInfo.field3243[var9];
@@ -164,7 +164,7 @@ public class class107 {
                   var15 = var14 + 5;
                   if(var15 >= 0 && var15 < 104) {
                      var9 += class10.field94[var15];
-                     var10 += class30.field712[var15];
+                     var10 += Preferences.field712[var15];
                      var11 += class1.field9[var15];
                      var12 += class0.field2[var15];
                      var13 += ClassInfo.field3243[var15];
@@ -173,7 +173,7 @@ public class class107 {
                   var16 = var14 - 5;
                   if(var16 >= 0 && var16 < 104) {
                      var9 -= class10.field94[var16];
-                     var10 -= class30.field712[var16];
+                     var10 -= Preferences.field712[var16];
                      var11 -= class1.field9[var16];
                      var12 -= class0.field2[var16];
                      var13 -= ClassInfo.field3243[var16];
@@ -501,8 +501,8 @@ public class class107 {
          WallObject.method1930();
       } else {
          GameObject.setGameState(40);
-         class157.field2139 = class20.field233;
-         class20.field233 = null;
+         class157.field2139 = class20.rssocket;
+         class20.rssocket = null;
       }
 
    }

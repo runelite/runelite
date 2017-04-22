@@ -65,7 +65,7 @@ public class class165 {
                }
 
                for(int var5 = 0; var5 < 100; ++var5) {
-                  int var6 = class185.field2770.method2108();
+                  int var6 = class185.field2770.available();
                   if(var6 < 0) {
                      throw new IOException();
                   }
@@ -92,7 +92,7 @@ public class class165 {
                         var8 = var6;
                      }
 
-                     class185.field2770.method2104(class185.field2773.payload, class185.field2773.offset, var8);
+                     class185.field2770.read(class185.field2773.payload, class185.field2773.offset, var8);
                      if(class185.field2780 != 0) {
                         for(var9 = 0; var9 < var8; ++var9) {
                            class185.field2773.payload[class185.field2773.offset + var9] ^= class185.field2780;
@@ -148,7 +148,7 @@ public class class165 {
                         var9 = var6;
                      }
 
-                     class185.field2770.method2104(class185.field2775.payload, class185.field2775.offset, var9);
+                     class185.field2770.read(class185.field2775.payload, class185.field2775.offset, var9);
                      if(class185.field2780 != 0) {
                         for(var10 = 0; var10 < var9; ++var10) {
                            class185.field2775.payload[var10 + class185.field2775.offset] ^= class185.field2780;
@@ -264,7 +264,7 @@ public class class165 {
          class172.field2373 = null;
          class47.field951 = null;
          class8.field73 = null;
-         class30.field718 = null;
+         Preferences.field718 = null;
          class36.field789 = null;
          XGrandExchangeOffer.field45 = null;
          CollisionData.field1858 = null;

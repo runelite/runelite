@@ -83,10 +83,10 @@ public final class CipherBuffer extends Buffer {
       int var4;
       Widget var5;
       if(var0 == 100) {
-         class30.field713 -= 3;
-         var4 = class32.field743[class30.field713];
-         var3 = class32.field743[class30.field713 + 1];
-         int var9 = class32.field743[class30.field713 + 2];
+         Preferences.field713 -= 3;
+         var4 = class32.field743[Preferences.field713];
+         var3 = class32.field743[Preferences.field713 + 1];
+         int var9 = class32.field743[Preferences.field713 + 2];
          if(var3 == 0) {
             throw new RuntimeException();
          } else {
@@ -133,22 +133,22 @@ public final class CipherBuffer extends Buffer {
             class22.method197(var5);
             return 1;
          } else if(var0 == 102) {
-            var6 = FaceNormal.method1932(class32.field743[--class30.field713]);
+            var6 = FaceNormal.method1932(class32.field743[--Preferences.field713]);
             var6.children = null;
             class22.method197(var6);
             return 1;
          } else if(var0 != 200) {
             if(var0 == 201) {
-               var6 = FaceNormal.method1932(class32.field743[--class30.field713]);
+               var6 = FaceNormal.method1932(class32.field743[--Preferences.field713]);
                if(var6 != null) {
-                  class32.field743[++class30.field713 - 1] = 1;
+                  class32.field743[++Preferences.field713 - 1] = 1;
                   if(var2) {
                      class154.field2123 = var6;
                   } else {
                      class32.field746 = var6;
                   }
                } else {
-                  class32.field743[++class30.field713 - 1] = 0;
+                  class32.field743[++Preferences.field713 - 1] = 0;
                }
 
                return 1;
@@ -156,19 +156,19 @@ public final class CipherBuffer extends Buffer {
                return 2;
             }
          } else {
-            class30.field713 -= 2;
-            var4 = class32.field743[class30.field713];
-            var3 = class32.field743[class30.field713 + 1];
+            Preferences.field713 -= 2;
+            var4 = class32.field743[Preferences.field713];
+            var3 = class32.field743[Preferences.field713 + 1];
             var5 = class118.method2354(var4, var3);
             if(var5 != null && var3 != -1) {
-               class32.field743[++class30.field713 - 1] = 1;
+               class32.field743[++Preferences.field713 - 1] = 1;
                if(var2) {
                   class154.field2123 = var5;
                } else {
                   class32.field746 = var5;
                }
             } else {
-               class32.field743[++class30.field713 - 1] = 0;
+               class32.field743[++Preferences.field713 - 1] = 0;
             }
 
             return 1;

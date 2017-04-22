@@ -65,9 +65,9 @@ public final class WallObject {
       garbageValue = "4"
    )
    static final void method1930() {
-      if(class20.field233 != null) {
-         class20.field233.method2113();
-         class20.field233 = null;
+      if(class20.rssocket != null) {
+         class20.rssocket.method2113();
+         class20.rssocket = null;
       }
 
       class20.method189();

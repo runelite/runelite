@@ -160,7 +160,7 @@ public final class class31 extends Node {
             class41.password = "";
          }
 
-         CombatInfo1.field683 = 0;
+         CombatInfo1.authCodeForLogin = 0;
          Ignore.authCode = "";
          class41.field861 = true;
          class41.worldSelectShown = false;
@@ -383,7 +383,7 @@ public final class class31 extends Node {
                   }
 
                   if(var19.field2695 != -1) {
-                     Player.sendGameMessage(var16, class30.method648(var19.field2695) + var3.name, var15);
+                     Player.sendGameMessage(var16, Preferences.method648(var19.field2695) + var3.name, var15);
                   } else {
                      Player.sendGameMessage(var16, var3.name, var15);
                   }

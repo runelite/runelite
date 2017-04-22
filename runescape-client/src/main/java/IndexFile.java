@@ -47,8 +47,8 @@ public final class IndexFile {
          Player.sendGameMessage(0, "", var3);
          return 1;
       } else if(var0 == 3101) {
-         class30.field713 -= 2;
-         Friend.method165(Projectile.localPlayer, class32.field743[class30.field713], class32.field743[class30.field713 + 1]);
+         Preferences.field713 -= 2;
+         Friend.method165(Projectile.localPlayer, class32.field743[Preferences.field713], class32.field743[Preferences.field713 + 1]);
          return 1;
       } else if(var0 == 3103) {
          class183.method3413();
@@ -86,42 +86,42 @@ public final class IndexFile {
             if(var0 != 3107) {
                Widget var12;
                if(var0 == 3108) {
-                  class30.field713 -= 3;
-                  var6 = class32.field743[class30.field713];
-                  var5 = class32.field743[class30.field713 + 1];
-                  var4 = class32.field743[class30.field713 + 2];
+                  Preferences.field713 -= 3;
+                  var6 = class32.field743[Preferences.field713];
+                  var5 = class32.field743[Preferences.field713 + 1];
+                  var4 = class32.field743[Preferences.field713 + 2];
                   var12 = FaceNormal.method1932(var4);
                   class20.method187(var12, var6, var5);
                   return 1;
                } else if(var0 == 3109) {
-                  class30.field713 -= 2;
-                  var6 = class32.field743[class30.field713];
-                  var5 = class32.field743[class30.field713 + 1];
+                  Preferences.field713 -= 2;
+                  var6 = class32.field743[Preferences.field713];
+                  var5 = class32.field743[Preferences.field713 + 1];
                   var12 = var2?class154.field2123:class32.field746;
                   class20.method187(var12, var6, var5);
                   return 1;
                } else if(var0 == 3110) {
-                  class177.field2687 = class32.field743[--class30.field713] == 1;
+                  class177.field2687 = class32.field743[--Preferences.field713] == 1;
                   return 1;
                } else if(var0 == 3111) {
-                  class32.field743[++class30.field713 - 1] = class148.field2058.field716?1:0;
+                  class32.field743[++Preferences.field713 - 1] = class148.field2058.field716?1:0;
                   return 1;
                } else if(var0 == 3112) {
-                  class148.field2058.field716 = class32.field743[--class30.field713] == 1;
+                  class148.field2058.field716 = class32.field743[--Preferences.field713] == 1;
                   class150.method2839();
                   return 1;
                } else if(var0 == 3113) {
                   var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                  var9 = class32.field743[--class30.field713] == 1;
+                  var9 = class32.field743[--Preferences.field713] == 1;
                   World.method612(var3, var9, false);
                   return 1;
                } else if(var0 == 3115) {
-                  var6 = class32.field743[--class30.field713];
+                  var6 = class32.field743[--Preferences.field713];
                   Client.secretCipherBuffer1.putOpcode(121);
                   Client.secretCipherBuffer1.putShort(var6);
                   return 1;
                } else if(var0 == 3116) {
-                  var6 = class32.field743[--class30.field713];
+                  var6 = class32.field743[--Preferences.field713];
                   class32.scriptStringStackSize -= 2;
                   var7 = class32.scriptStringStack[class32.scriptStringStackSize];
                   String var13 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
@@ -138,13 +138,13 @@ public final class IndexFile {
                      return 1;
                   }
                } else if(var0 == 3117) {
-                  Client.field417 = class32.field743[--class30.field713] == 1;
+                  Client.field417 = class32.field743[--Preferences.field713] == 1;
                   return 1;
                } else {
                   return 2;
                }
             } else {
-               var6 = class32.field743[--class30.field713];
+               var6 = class32.field743[--Preferences.field713];
                var7 = class32.scriptStringStack[--class32.scriptStringStackSize];
                var4 = class45.field923;
                int[] var8 = class45.field918;

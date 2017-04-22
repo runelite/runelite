@@ -1000,7 +1000,7 @@ public class Buffer extends Node {
                            }
 
                            class65.method1204("", "Connecting to server...", "");
-                           class41.field858 = class148.field2058.field715.containsKey(Integer.valueOf(class108.method2088(class41.username)))?class97.field1655:class97.field1651;
+                           class41.field858 = class148.field2058.preferences.containsKey(Integer.valueOf(class108.method2088(class41.username)))?class97.field1655:class97.field1651;
                            GameObject.setGameState(20);
                            return;
                         }
@@ -1010,7 +1010,7 @@ public class Buffer extends Node {
                            class41.loginIndex = 0;
                            class41.username = "";
                            class41.password = "";
-                           CombatInfo1.field683 = 0;
+                           CombatInfo1.authCodeForLogin = 0;
                            Ignore.authCode = "";
                            class41.field861 = true;
                         }
@@ -1030,7 +1030,7 @@ public class Buffer extends Node {
                                  class41.loginIndex = 0;
                                  class41.username = "";
                                  class41.password = "";
-                                 CombatInfo1.field683 = 0;
+                                 CombatInfo1.authCodeForLogin = 0;
                                  Ignore.authCode = "";
                                  class41.field861 = true;
                               } else if(class41.loginIndex2 == 0) {
@@ -1067,7 +1067,7 @@ public class Buffer extends Node {
                                     }
 
                                     class65.method1204("", "Connecting to server...", "");
-                                    class41.field858 = class148.field2058.field715.containsKey(Integer.valueOf(class108.method2088(class41.username)))?class97.field1655:class97.field1651;
+                                    class41.field858 = class148.field2058.preferences.containsKey(Integer.valueOf(class108.method2088(class41.username)))?class97.field1655:class97.field1651;
                                     GameObject.setGameState(20);
                                     return;
                                  }
@@ -1110,7 +1110,7 @@ public class Buffer extends Node {
                               return;
                            }
 
-                           CombatInfo1.field683 = Integer.parseInt(Ignore.authCode);
+                           CombatInfo1.authCodeForLogin = Integer.parseInt(Ignore.authCode);
                            Ignore.authCode = "";
                            class41.field858 = class41.field861?class97.field1650:class97.field1649;
                            class65.method1204("", "Connecting to server...", "");
@@ -1131,7 +1131,7 @@ public class Buffer extends Node {
                            class41.loginIndex = 0;
                            class41.username = "";
                            class41.password = "";
-                           CombatInfo1.field683 = 0;
+                           CombatInfo1.authCodeForLogin = 0;
                            Ignore.authCode = "";
                         }
 
@@ -1149,7 +1149,7 @@ public class Buffer extends Node {
                               class41.loginIndex = 0;
                               class41.username = "";
                               class41.password = "";
-                              CombatInfo1.field683 = 0;
+                              CombatInfo1.authCodeForLogin = 0;
                               Ignore.authCode = "";
                            } else {
                               if(class203.field3084 == 85 && Ignore.authCode.length() > 0) {
@@ -1163,7 +1163,7 @@ public class Buffer extends Node {
                                     return;
                                  }
 
-                                 CombatInfo1.field683 = Integer.parseInt(Ignore.authCode);
+                                 CombatInfo1.authCodeForLogin = Integer.parseInt(Ignore.authCode);
                                  Ignore.authCode = "";
                                  class41.field858 = class41.field861?class97.field1650:class97.field1649;
                                  class65.method1204("", "Connecting to server...", "");

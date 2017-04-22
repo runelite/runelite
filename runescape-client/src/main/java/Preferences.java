@@ -2,12 +2,14 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ag")
-public class class30 {
+@Implements("Preferences")
+public class Preferences {
    @ObfuscatedName("aa")
    @Export("rssocket")
    static RSSocket rssocket;
@@ -24,7 +26,8 @@ public class class30 {
    )
    int field714 = 1;
    @ObfuscatedName("o")
-   LinkedHashMap field715 = new LinkedHashMap();
+   @Export("preferences")
+   LinkedHashMap preferences = new LinkedHashMap();
    @ObfuscatedName("u")
    boolean field716;
    @ObfuscatedName("af")
@@ -37,7 +40,7 @@ public class class30 {
    )
    static int field720 = 4;
 
-   class30(Buffer var1) {
+   Preferences(Buffer var1) {
       if(var1 != null && var1.payload != null) {
          int var2 = var1.readUnsignedByte();
          if(var2 >= 0 && var2 <= field720) {
@@ -59,7 +62,7 @@ public class class30 {
                for(int var4 = 0; var4 < var3; ++var4) {
                   int var5 = var1.readInt();
                   int var6 = var1.readInt();
-                  this.field715.put(Integer.valueOf(var5), Integer.valueOf(var6));
+                  this.preferences.put(Integer.valueOf(var5), Integer.valueOf(var6));
                }
             }
          } else {
@@ -79,7 +82,7 @@ public class class30 {
    void method639(boolean var1) {
    }
 
-   class30() {
+   Preferences() {
       this.method639(true);
    }
 
@@ -200,8 +203,8 @@ public class class30 {
       var1.putByte(this.field716?1:0);
       var1.putByte(this.field719?1:0);
       var1.putByte(this.field714);
-      var1.putByte(this.field715.size());
-      Iterator var2 = this.field715.entrySet().iterator();
+      var1.putByte(this.preferences.size());
+      Iterator var2 = this.preferences.entrySet().iterator();
 
       while(var2.hasNext()) {
          Entry var3 = (Entry)var2.next();

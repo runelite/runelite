@@ -453,15 +453,15 @@ public abstract class Actor extends Renderable {
       Widget var4;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class32.field743[--class30.field713];
+         var3 = class32.field743[--Preferences.field713];
          var4 = FaceNormal.method1932(var3);
       } else {
          var4 = var2?class154.field2123:class32.field746;
       }
 
       if(var0 == 1100) {
-         class30.field713 -= 2;
-         var4.scrollX = class32.field743[class30.field713];
+         Preferences.field713 -= 2;
+         var4.scrollX = class32.field743[Preferences.field713];
          if(var4.scrollX > var4.scrollWidth - var4.width) {
             var4.scrollX = var4.scrollWidth - var4.width;
          }
@@ -470,7 +470,7 @@ public abstract class Actor extends Renderable {
             var4.scrollX = 0;
          }
 
-         var4.scrollY = class32.field743[class30.field713 + 1];
+         var4.scrollY = class32.field743[Preferences.field713 + 1];
          if(var4.scrollY > var4.scrollHeight - var4.height) {
             var4.scrollY = var4.scrollHeight - var4.height;
          }
@@ -482,52 +482,52 @@ public abstract class Actor extends Renderable {
          class22.method197(var4);
          return 1;
       } else if(var0 == 1101) {
-         var4.textColor = class32.field743[--class30.field713];
+         var4.textColor = class32.field743[--Preferences.field713];
          class22.method197(var4);
          return 1;
       } else if(var0 == 1102) {
-         var4.field2267 = class32.field743[--class30.field713] == 1;
+         var4.field2267 = class32.field743[--Preferences.field713] == 1;
          class22.method197(var4);
          return 1;
       } else if(var0 == 1103) {
-         var4.opacity = class32.field743[--class30.field713];
+         var4.opacity = class32.field743[--Preferences.field713];
          class22.method197(var4);
          return 1;
       } else if(var0 == 1104) {
-         var4.field2218 = class32.field743[--class30.field713];
+         var4.field2218 = class32.field743[--Preferences.field713];
          class22.method197(var4);
          return 1;
       } else if(var0 == 1105) {
-         var4.textureId = class32.field743[--class30.field713];
+         var4.textureId = class32.field743[--Preferences.field713];
          class22.method197(var4);
          return 1;
       } else if(var0 == 1106) {
-         var4.field2294 = class32.field743[--class30.field713];
+         var4.field2294 = class32.field743[--Preferences.field713];
          class22.method197(var4);
          return 1;
       } else if(var0 == 1107) {
-         var4.field2257 = class32.field743[--class30.field713] == 1;
+         var4.field2257 = class32.field743[--Preferences.field713] == 1;
          class22.method197(var4);
          return 1;
       } else if(var0 == 1108) {
          var4.modelType = 1;
-         var4.modelId = class32.field743[--class30.field713];
+         var4.modelId = class32.field743[--Preferences.field713];
          class22.method197(var4);
          return 1;
       } else if(var0 == 1109) {
-         class30.field713 -= 6;
-         var4.field2268 = class32.field743[class30.field713];
-         var4.field2269 = class32.field743[class30.field713 + 1];
-         var4.rotationX = class32.field743[class30.field713 + 2];
-         var4.rotationZ = class32.field743[class30.field713 + 3];
-         var4.rotationY = class32.field743[class30.field713 + 4];
-         var4.field2320 = class32.field743[class30.field713 + 5];
+         Preferences.field713 -= 6;
+         var4.field2268 = class32.field743[Preferences.field713];
+         var4.field2269 = class32.field743[Preferences.field713 + 1];
+         var4.rotationX = class32.field743[Preferences.field713 + 2];
+         var4.rotationZ = class32.field743[Preferences.field713 + 3];
+         var4.rotationY = class32.field743[Preferences.field713 + 4];
+         var4.field2320 = class32.field743[Preferences.field713 + 5];
          class22.method197(var4);
          return 1;
       } else {
          int var5;
          if(var0 == 1110) {
-            var5 = class32.field743[--class30.field713];
+            var5 = class32.field743[--Preferences.field713];
             if(var5 != var4.field2266) {
                var4.field2266 = var5;
                var4.field2344 = 0;
@@ -537,7 +537,7 @@ public abstract class Actor extends Renderable {
 
             return 1;
          } else if(var0 == 1111) {
-            var4.field2296 = class32.field743[--class30.field713] == 1;
+            var4.field2296 = class32.field743[--Preferences.field713] == 1;
             class22.method197(var4);
             return 1;
          } else if(var0 == 1112) {
@@ -549,40 +549,40 @@ public abstract class Actor extends Renderable {
 
             return 1;
          } else if(var0 == 1113) {
-            var4.fontId = class32.field743[--class30.field713];
+            var4.fontId = class32.field743[--Preferences.field713];
             class22.method197(var4);
             return 1;
          } else if(var0 == 1114) {
-            class30.field713 -= 3;
-            var4.field2219 = class32.field743[class30.field713];
-            var4.field2283 = class32.field743[class30.field713 + 1];
-            var4.field2212 = class32.field743[class30.field713 + 2];
+            Preferences.field713 -= 3;
+            var4.field2219 = class32.field743[Preferences.field713];
+            var4.field2283 = class32.field743[Preferences.field713 + 1];
+            var4.field2212 = class32.field743[Preferences.field713 + 2];
             class22.method197(var4);
             return 1;
          } else if(var0 == 1115) {
-            var4.field2298 = class32.field743[--class30.field713] == 1;
+            var4.field2298 = class32.field743[--Preferences.field713] == 1;
             class22.method197(var4);
             return 1;
          } else if(var0 == 1116) {
-            var4.borderThickness = class32.field743[--class30.field713];
+            var4.borderThickness = class32.field743[--Preferences.field713];
             class22.method197(var4);
             return 1;
          } else if(var0 == 1117) {
-            var4.sprite2 = class32.field743[--class30.field713];
+            var4.sprite2 = class32.field743[--Preferences.field713];
             class22.method197(var4);
             return 1;
          } else if(var0 == 1118) {
-            var4.flippedVertically = class32.field743[--class30.field713] == 1;
+            var4.flippedVertically = class32.field743[--Preferences.field713] == 1;
             class22.method197(var4);
             return 1;
          } else if(var0 == 1119) {
-            var4.flippedHorizontally = class32.field743[--class30.field713] == 1;
+            var4.flippedHorizontally = class32.field743[--Preferences.field713] == 1;
             class22.method197(var4);
             return 1;
          } else if(var0 == 1120) {
-            class30.field713 -= 2;
-            var4.scrollWidth = class32.field743[class30.field713];
-            var4.scrollHeight = class32.field743[class30.field713 + 1];
+            Preferences.field713 -= 2;
+            var4.scrollWidth = class32.field743[Preferences.field713];
+            var4.scrollHeight = class32.field743[Preferences.field713 + 1];
             class22.method197(var4);
             if(var3 != -1 && var4.type == 0) {
                class2.method16(Widget.widgets[var3 >> 16], var4, false);
@@ -599,19 +599,19 @@ public abstract class Actor extends Renderable {
             class22.method197(var4);
             return 1;
          } else if(var0 == 1122) {
-            var4.field2332 = class32.field743[--class30.field713];
+            var4.field2332 = class32.field743[--Preferences.field713];
             class22.method197(var4);
             return 1;
          } else if(var0 == 1123) {
-            var4.field2245 = class32.field743[--class30.field713];
+            var4.field2245 = class32.field743[--Preferences.field713];
             class22.method197(var4);
             return 1;
          } else if(var0 == 1124) {
-            var4.field2251 = class32.field743[--class30.field713];
+            var4.field2251 = class32.field743[--Preferences.field713];
             class22.method197(var4);
             return 1;
          } else if(var0 == 1125) {
-            var5 = class32.field743[--class30.field713];
+            var5 = class32.field743[--Preferences.field713];
             class221[] var6 = new class221[]{class221.field3200, class221.field3201, class221.field3203, class221.field3202, class221.field3206};
             class221 var7 = (class221)Client.method556(var6, var5);
             if(var7 != null) {

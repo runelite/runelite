@@ -53,9 +53,9 @@ public class class18 extends Node {
    static int method173(int var0, Script var1, boolean var2) {
       int var3;
       if(var0 == 5504) {
-         class30.field713 -= 2;
-         var3 = class32.field743[class30.field713];
-         int var4 = class32.field743[class30.field713 + 1];
+         Preferences.field713 -= 2;
+         var3 = class32.field743[Preferences.field713];
+         int var4 = class32.field743[Preferences.field713 + 1];
          if(!Client.field446) {
             Client.field398 = var3;
             Client.mapAngle = var4;
@@ -63,13 +63,13 @@ public class class18 extends Node {
 
          return 1;
       } else if(var0 == 5505) {
-         class32.field743[++class30.field713 - 1] = Client.field398;
+         class32.field743[++Preferences.field713 - 1] = Client.field398;
          return 1;
       } else if(var0 == 5506) {
-         class32.field743[++class30.field713 - 1] = Client.mapAngle;
+         class32.field743[++Preferences.field713 - 1] = Client.mapAngle;
          return 1;
       } else if(var0 == 5530) {
-         var3 = class32.field743[--class30.field713];
+         var3 = class32.field743[--Preferences.field713];
          if(var3 < 0) {
             var3 = 0;
          }
@@ -77,7 +77,7 @@ public class class18 extends Node {
          Client.field572 = var3;
          return 1;
       } else if(var0 == 5531) {
-         class32.field743[++class30.field713 - 1] = Client.field572;
+         class32.field743[++Preferences.field713 - 1] = Client.field572;
          return 1;
       } else {
          return 2;

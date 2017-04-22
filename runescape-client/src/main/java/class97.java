@@ -40,18 +40,18 @@ public class class97 implements class158 {
       Widget var4;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class32.field743[--class30.field713];
+         var3 = class32.field743[--Preferences.field713];
          var4 = FaceNormal.method1932(var3);
       } else {
          var4 = var2?class154.field2123:class32.field746;
       }
 
       if(var0 == 1000) {
-         class30.field713 -= 4;
-         var4.originalX = class32.field743[class30.field713];
-         var4.originalY = class32.field743[class30.field713 + 1];
-         var4.field2351 = class32.field743[class30.field713 + 2];
-         var4.field2217 = class32.field743[class30.field713 + 3];
+         Preferences.field713 -= 4;
+         var4.originalX = class32.field743[Preferences.field713];
+         var4.originalY = class32.field743[Preferences.field713 + 1];
+         var4.field2351 = class32.field743[Preferences.field713 + 2];
+         var4.field2217 = class32.field743[Preferences.field713 + 3];
          class22.method197(var4);
          XGrandExchangeOffer.method54(var4);
          if(var3 != -1 && var4.type == 0) {
@@ -60,11 +60,11 @@ public class class97 implements class158 {
 
          return 1;
       } else if(var0 == 1001) {
-         class30.field713 -= 4;
-         var4.originalWidth = class32.field743[class30.field713];
-         var4.field2231 = class32.field743[class30.field713 + 1];
-         var4.field2226 = class32.field743[class30.field713 + 2];
-         var4.field2227 = class32.field743[class30.field713 + 3];
+         Preferences.field713 -= 4;
+         var4.originalWidth = class32.field743[Preferences.field713];
+         var4.field2231 = class32.field743[Preferences.field713 + 1];
+         var4.field2226 = class32.field743[Preferences.field713 + 2];
+         var4.field2227 = class32.field743[Preferences.field713 + 3];
          class22.method197(var4);
          XGrandExchangeOffer.method54(var4);
          if(var3 != -1 && var4.type == 0) {
@@ -73,7 +73,7 @@ public class class97 implements class158 {
 
          return 1;
       } else if(var0 == 1003) {
-         boolean var5 = class32.field743[--class30.field713] == 1;
+         boolean var5 = class32.field743[--Preferences.field713] == 1;
          if(var5 != var4.isHidden) {
             var4.isHidden = var5;
             class22.method197(var4);
@@ -81,10 +81,10 @@ public class class97 implements class158 {
 
          return 1;
       } else if(var0 == 1005) {
-         var4.field2210 = class32.field743[--class30.field713] == 1;
+         var4.field2210 = class32.field743[--Preferences.field713] == 1;
          return 1;
       } else if(var0 == 1006) {
-         var4.field2353 = class32.field743[--class30.field713] == 1;
+         var4.field2353 = class32.field743[--Preferences.field713] == 1;
          return 1;
       } else {
          return 2;

@@ -382,17 +382,17 @@ public class IndexData extends IndexDataBase {
    )
    static int method3450(int var0, Script var1, boolean var2) {
       if(var0 == 5000) {
-         class32.field743[++class30.field713 - 1] = Client.field521;
+         class32.field743[++Preferences.field713 - 1] = Client.field521;
          return 1;
       } else if(var0 == 5001) {
-         class30.field713 -= 3;
-         Client.field521 = class32.field743[class30.field713];
-         class146.field2041 = ItemLayer.method1493(class32.field743[class30.field713 + 1]);
+         Preferences.field713 -= 3;
+         Client.field521 = class32.field743[Preferences.field713];
+         class146.field2041 = ItemLayer.method1493(class32.field743[Preferences.field713 + 1]);
          if(class146.field2041 == null) {
             class146.field2041 = class216.field3182;
          }
 
-         Client.field522 = class32.field743[class30.field713 + 2];
+         Client.field522 = class32.field743[Preferences.field713 + 2];
          Client.secretCipherBuffer1.putOpcode(77);
          Client.secretCipherBuffer1.putByte(Client.field521);
          Client.secretCipherBuffer1.putByte(class146.field2041.field3181);
@@ -404,9 +404,9 @@ public class IndexData extends IndexDataBase {
          int var5;
          if(var0 == 5002) {
             var4 = class32.scriptStringStack[--class32.scriptStringStackSize];
-            class30.field713 -= 2;
-            var3 = class32.field743[class30.field713];
-            var5 = class32.field743[class30.field713 + 1];
+            Preferences.field713 -= 2;
+            var3 = class32.field743[Preferences.field713];
+            var5 = class32.field743[Preferences.field713 + 1];
             Client.secretCipherBuffer1.putOpcode(208);
             Client.secretCipherBuffer1.putByte(class72.method1439(var4) + 2);
             Client.secretCipherBuffer1.method2931(var4);
@@ -417,19 +417,19 @@ public class IndexData extends IndexDataBase {
             int var6;
             MessageNode var7;
             if(var0 == 5003) {
-               class30.field713 -= 2;
-               var6 = class32.field743[class30.field713];
-               var3 = class32.field743[class30.field713 + 1];
+               Preferences.field713 -= 2;
+               var6 = class32.field743[Preferences.field713];
+               var3 = class32.field743[Preferences.field713 + 1];
                var7 = class18.method174(var6, var3);
                if(var7 != null) {
-                  class32.field743[++class30.field713 - 1] = var7.id;
-                  class32.field743[++class30.field713 - 1] = var7.tick;
+                  class32.field743[++Preferences.field713 - 1] = var7.id;
+                  class32.field743[++Preferences.field713 - 1] = var7.tick;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var7.name != null?var7.name:"";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var7.sender != null?var7.sender:"";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var7.value != null?var7.value:"";
                } else {
-                  class32.field743[++class30.field713 - 1] = -1;
-                  class32.field743[++class30.field713 - 1] = 0;
+                  class32.field743[++Preferences.field713 - 1] = -1;
+                  class32.field743[++Preferences.field713 - 1] = 0;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
@@ -437,17 +437,17 @@ public class IndexData extends IndexDataBase {
 
                return 1;
             } else if(var0 == 5004) {
-               var6 = class32.field743[--class30.field713];
+               var6 = class32.field743[--Preferences.field713];
                var7 = (MessageNode)class47.field949.method2380((long)var6);
                if(var7 != null) {
-                  class32.field743[++class30.field713 - 1] = var7.type;
-                  class32.field743[++class30.field713 - 1] = var7.tick;
+                  class32.field743[++Preferences.field713 - 1] = var7.type;
+                  class32.field743[++Preferences.field713 - 1] = var7.tick;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var7.name != null?var7.name:"";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var7.sender != null?var7.sender:"";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var7.value != null?var7.value:"";
                } else {
-                  class32.field743[++class30.field713 - 1] = -1;
-                  class32.field743[++class30.field713 - 1] = 0;
+                  class32.field743[++Preferences.field713 - 1] = -1;
+                  class32.field743[++Preferences.field713 - 1] = 0;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
@@ -456,9 +456,9 @@ public class IndexData extends IndexDataBase {
                return 1;
             } else if(var0 == 5005) {
                if(class146.field2041 == null) {
-                  class32.field743[++class30.field713 - 1] = -1;
+                  class32.field743[++Preferences.field713 - 1] = -1;
                } else {
-                  class32.field743[++class30.field713 - 1] = class146.field2041.field3181;
+                  class32.field743[++Preferences.field713 - 1] = class146.field2041.field3181;
                }
 
                return 1;
@@ -468,7 +468,7 @@ public class IndexData extends IndexDataBase {
                String var10;
                if(var0 == 5008) {
                   var4 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                  var3 = class32.field743[--class30.field713];
+                  var3 = class32.field743[--Preferences.field713];
                   var10 = var4.toLowerCase();
                   byte var19 = 0;
                   if(var10.startsWith("yellow:")) {
@@ -747,20 +747,20 @@ public class IndexData extends IndexDataBase {
                      return 1;
                   } else if(var0 != 5015) {
                      if(var0 == 5016) {
-                        class32.field743[++class30.field713 - 1] = Client.field522;
+                        class32.field743[++Preferences.field713 - 1] = Client.field522;
                         return 1;
                      } else if(var0 == 5017) {
-                        var6 = class32.field743[--class30.field713];
-                        class32.field743[++class30.field713 - 1] = MessageNode.method194(var6);
+                        var6 = class32.field743[--Preferences.field713];
+                        class32.field743[++Preferences.field713 - 1] = MessageNode.method194(var6);
                         return 1;
                      } else if(var0 == 5018) {
-                        var6 = class32.field743[--class30.field713];
-                        class32.field743[++class30.field713 - 1] = NPC.method749(var6);
+                        var6 = class32.field743[--Preferences.field713];
+                        class32.field743[++Preferences.field713 - 1] = NPC.method749(var6);
                         return 1;
                      } else if(var0 == 5019) {
-                        var6 = class32.field743[--class30.field713];
+                        var6 = class32.field743[--Preferences.field713];
                         int[] var12 = class32.field743;
-                        var5 = ++class30.field713 - 1;
+                        var5 = ++Preferences.field713 - 1;
                         MessageNode var13 = (MessageNode)class47.field949.method2380((long)var6);
                         if(var13 == null) {
                            var11 = -1;

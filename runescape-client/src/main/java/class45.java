@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -100,7 +101,8 @@ public class class45 {
       signature = "(Ljava/lang/String;Ljava/lang/String;ZI)LFileOnDisk;",
       garbageValue = "-2048483772"
    )
-   public static FileOnDisk method868(String var0, String var1, boolean var2) {
+   @Export("getPreferencesFile")
+   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
       File var3 = new File(class167.field2200, "preferences" + var0 + ".dat");
       if(var3.exists()) {
          try {

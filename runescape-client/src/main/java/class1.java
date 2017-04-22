@@ -33,7 +33,7 @@ public class class1 {
       Widget var3 = var2?class154.field2123:class32.field746;
       if(var0 == 1800) {
          int[] var8 = class32.field743;
-         int var5 = ++class30.field713 - 1;
+         int var5 = ++Preferences.field713 - 1;
          int var6 = FloorUnderlayDefinition.method3533(var3);
          int var7 = var6 >> 11 & 63;
          var8[var5] = var7;
@@ -51,7 +51,7 @@ public class class1 {
             return 2;
          }
       } else {
-         int var4 = class32.field743[--class30.field713];
+         int var4 = class32.field743[--Preferences.field713];
          --var4;
          if(var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
             class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.actions[var4];

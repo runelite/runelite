@@ -29,18 +29,18 @@ public class class101 extends RuntimeException {
    static int method1998(int var0, Script var1, boolean var2) {
       if(var0 == 3600) {
          if(Client.field571 == 0) {
-            class32.field743[++class30.field713 - 1] = -2;
+            class32.field743[++Preferences.field713 - 1] = -2;
          } else if(Client.field571 == 1) {
-            class32.field743[++class30.field713 - 1] = -1;
+            class32.field743[++Preferences.field713 - 1] = -1;
          } else {
-            class32.field743[++class30.field713 - 1] = Client.friendCount;
+            class32.field743[++Preferences.field713 - 1] = Client.friendCount;
          }
 
          return 1;
       } else {
          int var3;
          if(var0 == 3601) {
-            var3 = class32.field743[--class30.field713];
+            var3 = class32.field743[--Preferences.field713];
             if(Client.field571 == 2 && var3 < Client.friendCount) {
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.friends[var3].name;
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.friends[var3].previousName;
@@ -51,20 +51,20 @@ public class class101 extends RuntimeException {
 
             return 1;
          } else if(var0 == 3602) {
-            var3 = class32.field743[--class30.field713];
+            var3 = class32.field743[--Preferences.field713];
             if(Client.field571 == 2 && var3 < Client.friendCount) {
-               class32.field743[++class30.field713 - 1] = Client.friends[var3].world;
+               class32.field743[++Preferences.field713 - 1] = Client.friends[var3].world;
             } else {
-               class32.field743[++class30.field713 - 1] = 0;
+               class32.field743[++Preferences.field713 - 1] = 0;
             }
 
             return 1;
          } else if(var0 == 3603) {
-            var3 = class32.field743[--class30.field713];
+            var3 = class32.field743[--Preferences.field713];
             if(Client.field571 == 2 && var3 < Client.friendCount) {
-               class32.field743[++class30.field713 - 1] = Client.friends[var3].rank;
+               class32.field743[++Preferences.field713 - 1] = Client.friends[var3].rank;
             } else {
-               class32.field743[++class30.field713 - 1] = 0;
+               class32.field743[++Preferences.field713 - 1] = 0;
             }
 
             return 1;
@@ -73,7 +73,7 @@ public class class101 extends RuntimeException {
             String var5;
             if(var0 == 3604) {
                var5 = class32.scriptStringStack[--class32.scriptStringStackSize];
-               var4 = class32.field743[--class30.field713];
+               var4 = class32.field743[--Preferences.field713];
                Client.secretCipherBuffer1.putOpcode(32);
                Client.secretCipherBuffer1.putByte(class72.method1439(var5) + 1);
                Client.secretCipherBuffer1.method2931(var5);
@@ -291,13 +291,13 @@ public class class101 extends RuntimeException {
 
                      for(var6 = 0; var6 < var16.length; ++var6) {
                         class177 var17 = var16[var6];
-                        if(var17.field2695 != -1 && var5.startsWith(class30.method648(var17.field2695))) {
+                        if(var17.field2695 != -1 && var5.startsWith(Preferences.method648(var17.field2695))) {
                            var5 = var5.substring(Integer.toString(var17.field2695).length() + 6);
                            break;
                         }
                      }
 
-                     class32.field743[++class30.field713 - 1] = class10.method137(var5, false)?1:0;
+                     class32.field743[++Preferences.field713 - 1] = class10.method137(var5, false)?1:0;
                      return 1;
                   } else {
                      String[] var14;
@@ -320,14 +320,14 @@ public class class101 extends RuntimeException {
                         return 1;
                      } else if(var0 == 3612) {
                         if(Client.field530 != null) {
-                           class32.field743[++class30.field713 - 1] = VertexNormal.clanChatCount;
+                           class32.field743[++Preferences.field713 - 1] = VertexNormal.clanChatCount;
                         } else {
-                           class32.field743[++class30.field713 - 1] = 0;
+                           class32.field743[++Preferences.field713 - 1] = 0;
                         }
 
                         return 1;
                      } else if(var0 == 3613) {
-                        var3 = class32.field743[--class30.field713];
+                        var3 = class32.field743[--Preferences.field713];
                         if(Client.field530 != null && var3 < VertexNormal.clanChatCount) {
                            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class156.clanMembers[var3].username;
                         } else {
@@ -336,32 +336,32 @@ public class class101 extends RuntimeException {
 
                         return 1;
                      } else if(var0 == 3614) {
-                        var3 = class32.field743[--class30.field713];
+                        var3 = class32.field743[--Preferences.field713];
                         if(Client.field530 != null && var3 < VertexNormal.clanChatCount) {
-                           class32.field743[++class30.field713 - 1] = class156.clanMembers[var3].world;
+                           class32.field743[++Preferences.field713 - 1] = class156.clanMembers[var3].world;
                         } else {
-                           class32.field743[++class30.field713 - 1] = 0;
+                           class32.field743[++Preferences.field713 - 1] = 0;
                         }
 
                         return 1;
                      } else if(var0 == 3615) {
-                        var3 = class32.field743[--class30.field713];
+                        var3 = class32.field743[--Preferences.field713];
                         if(Client.field530 != null && var3 < VertexNormal.clanChatCount) {
-                           class32.field743[++class30.field713 - 1] = class156.clanMembers[var3].rank;
+                           class32.field743[++Preferences.field713 - 1] = class156.clanMembers[var3].rank;
                         } else {
-                           class32.field743[++class30.field713 - 1] = 0;
+                           class32.field743[++Preferences.field713 - 1] = 0;
                         }
 
                         return 1;
                      } else if(var0 == 3616) {
-                        class32.field743[++class30.field713 - 1] = class47.field959;
+                        class32.field743[++Preferences.field713 - 1] = class47.field959;
                         return 1;
                      } else if(var0 == 3617) {
                         var5 = class32.scriptStringStack[--class32.scriptStringStackSize];
                         class181.method3331(var5);
                         return 1;
                      } else if(var0 == 3618) {
-                        class32.field743[++class30.field713 - 1] = class9.field75;
+                        class32.field743[++Preferences.field713 - 1] = class9.field75;
                         return 1;
                      } else if(var0 == 3619) {
                         var5 = class32.scriptStringStack[--class32.scriptStringStackSize];
@@ -372,14 +372,14 @@ public class class101 extends RuntimeException {
                         return 1;
                      } else if(var0 == 3621) {
                         if(Client.field571 == 0) {
-                           class32.field743[++class30.field713 - 1] = -1;
+                           class32.field743[++Preferences.field713 - 1] = -1;
                         } else {
-                           class32.field743[++class30.field713 - 1] = Client.ignoreCount;
+                           class32.field743[++Preferences.field713 - 1] = Client.ignoreCount;
                         }
 
                         return 1;
                      } else if(var0 == 3622) {
-                        var3 = class32.field743[--class30.field713];
+                        var3 = class32.field743[--Preferences.field713];
                         if(Client.field571 != 0 && var3 < Client.ignoreCount) {
                            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.ignores[var3].name;
                            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.ignores[var3].previousName;
@@ -391,11 +391,11 @@ public class class101 extends RuntimeException {
                         return 1;
                      } else if(var0 == 3623) {
                         var5 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                        if(var5.startsWith(class30.method648(0)) || var5.startsWith(class30.method648(1))) {
+                        if(var5.startsWith(Preferences.method648(0)) || var5.startsWith(Preferences.method648(1))) {
                            var5 = var5.substring(7);
                         }
 
-                        class32.field743[++class30.field713 - 1] = class94.method1951(var5)?1:0;
+                        class32.field743[++Preferences.field713 - 1] = class94.method1951(var5)?1:0;
                         return 1;
                      } else if(var0 != 3624) {
                         if(var0 == 3625) {
@@ -418,11 +418,11 @@ public class class101 extends RuntimeException {
                            return 2;
                         }
                      } else {
-                        var3 = class32.field743[--class30.field713];
+                        var3 = class32.field743[--Preferences.field713];
                         if(class156.clanMembers != null && var3 < VertexNormal.clanChatCount && class156.clanMembers[var3].username.equalsIgnoreCase(Projectile.localPlayer.name)) {
-                           class32.field743[++class30.field713 - 1] = 1;
+                           class32.field743[++Preferences.field713 - 1] = 1;
                         } else {
-                           class32.field743[++class30.field713 - 1] = 0;
+                           class32.field743[++Preferences.field713 - 1] = 0;
                         }
 
                         return 1;

@@ -104,7 +104,8 @@ public final class RSSocket implements Runnable {
       signature = "([BIII)V",
       garbageValue = "-426581949"
    )
-   public void method2104(byte[] var1, int var2, int var3) throws IOException {
+   @Export("read")
+   public void read(byte[] var1, int var2, int var3) throws IOException {
       if(!this.field1765) {
          while(var3 > 0) {
             int var4 = this.inputStream.read(var1, var2, var3);
@@ -234,7 +235,8 @@ public final class RSSocket implements Runnable {
       signature = "(I)I",
       garbageValue = "640884711"
    )
-   public int method2108() throws IOException {
+   @Export("available")
+   public int available() throws IOException {
       return this.field1765?0:this.inputStream.available();
    }
 
