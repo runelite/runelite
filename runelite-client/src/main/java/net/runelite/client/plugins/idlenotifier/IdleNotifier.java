@@ -30,6 +30,7 @@ import java.awt.TrayIcon;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
@@ -37,7 +38,6 @@ import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.AnimationChanged;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
 
 public class IdleNotifier extends Plugin
 {
@@ -48,19 +48,21 @@ public class IdleNotifier extends Plugin
 	private final Client client = RuneLite.getClient();
 	private final TrayIcon trayIcon = RuneLite.getTrayIcon();
 
+	private ScheduledFuture<?> future;
 	private Instant lastAnimating;
 	private boolean notifyIdle = false;
 
 	@Override
-	public Overlay getOverlay()
-	{
-		return null;
-	}
-
-	public IdleNotifier()
+	protected void startUp() throws Exception
 	{
 		ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
-		executor.scheduleAtFixedRate(this::checkIdle, CHECK_INTERVAL, CHECK_INTERVAL, TimeUnit.SECONDS);
+		future = executor.scheduleAtFixedRate(this::checkIdle, CHECK_INTERVAL, CHECK_INTERVAL, TimeUnit.SECONDS);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		future.cancel(true);
 	}
 
 	@Subscribe
@@ -124,7 +126,7 @@ public class IdleNotifier extends Plugin
 	private void checkIdle()
 	{
 		if (notifyIdle && client.getLocalPlayer().getAnimation() == IDLE
-				&& Instant.now().compareTo(lastAnimating.plus(WAIT_DURATION)) >= 0)
+			&& Instant.now().compareTo(lastAnimating.plus(WAIT_DURATION)) >= 0)
 		{
 			trayIcon.displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
 

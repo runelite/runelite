@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.opponentinfo;
 
 import com.google.common.reflect.TypeToken;
@@ -42,6 +41,16 @@ public class OpponentInfo extends Plugin
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
 	}
 
 	public static Map<String, Integer> loadNpcHealth()

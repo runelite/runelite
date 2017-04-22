@@ -37,4 +37,14 @@ public class Boosts extends Plugin
 	{
 		return overlay;
 	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+	}
 }
