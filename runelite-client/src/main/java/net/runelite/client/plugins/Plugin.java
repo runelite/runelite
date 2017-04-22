@@ -25,9 +25,13 @@
 
 package net.runelite.client.plugins;
 
+import com.google.common.util.concurrent.AbstractIdleService;
 import net.runelite.client.ui.overlay.Overlay;
 
-public abstract class Plugin
+public abstract class Plugin extends AbstractIdleService
 {
-	public abstract Overlay getOverlay();
+	public Overlay getOverlay()
+	{
+		return null;
+	}
 }

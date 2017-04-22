@@ -51,9 +51,13 @@ public class Xtea extends Plugin
 	private final Set<Integer> sentRegions = new HashSet<>();
 
 	@Override
-	public Overlay getOverlay()
+	protected void startUp() throws Exception
 	{
-		return null;
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
 	}
 
 	@Subscribe

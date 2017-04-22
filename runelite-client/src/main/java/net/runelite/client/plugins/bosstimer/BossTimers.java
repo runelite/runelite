@@ -47,6 +47,16 @@ public class BossTimers extends Plugin
 	private final List<Boss> bosses = loadBossData();
 
 	@Override
+	protected void startUp() throws Exception
+	{
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+	}
+
+	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;

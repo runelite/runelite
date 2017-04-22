@@ -26,7 +26,6 @@ package net.runelite.client.plugins.hiscore;
 
 import com.google.common.eventbus.Subscribe;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -35,7 +34,6 @@ import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.overlay.Overlay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,19 +49,13 @@ public class Hiscore extends Plugin
 	private final RuneLite runeLite = RuneLite.getRunelite();
 	private final ClientUI ui = runeLite.getGui();
 
-	public Hiscore()
+	@Override
+	protected void startUp() throws Exception
 	{
 		navButton.getButton().addActionListener(this::setPluginPanel);
 
-		try
-		{
-			ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("hiscore.gif")));
-			navButton.getButton().setIcon(icon);
-		}
-		catch (IOException ex)
-		{
-			logger.warn(null, ex);
-		}
+		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("hiscore.gif")));
+		navButton.getButton().setIcon(icon);
 
 		ui.getNavigationPanel().addNavigation(navButton);
 
@@ -71,9 +63,8 @@ public class Hiscore extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	protected void shutDown() throws Exception
 	{
-		return null;
 	}
 
 	private void setPluginPanel(ActionEvent e)

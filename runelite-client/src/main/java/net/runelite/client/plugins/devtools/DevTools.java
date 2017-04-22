@@ -25,10 +25,8 @@
 package net.runelite.client.plugins.devtools;
 
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import net.runelite.client.RuneLite;
@@ -60,34 +58,26 @@ public class DevTools extends Plugin
 
 	private Font font;
 
-	public DevTools()
+	@Override
+	protected void startUp() throws Exception
 	{
 		navButton.getButton().addActionListener(this::setPluginPanel);
 
-		try
-		{
-			ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("devtools_icon.png")));
-			navButton.getButton().setIcon(icon);
-		}
-		catch (IOException ex)
-		{
-			logger.warn("Unable to load devtools icon", ex);
-		}
+		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("devtools_icon.png")));
+		navButton.getButton().setIcon(icon);
 
 		ui.getNavigationPanel().addNavigation(navButton);
 
-		try
-		{
-			font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("runescape.ttf"));
+		font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("runescape.ttf"));
 
-			font = font.deriveFont(Font.PLAIN, 16);
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(font);
-		}
-		catch (FontFormatException | IOException ex)
-		{
-			logger.warn("Unable to load font", ex);
-		}
+		font = font.deriveFont(Font.PLAIN, 16);
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		ge.registerFont(font);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
 	}
 
 	@Override
