@@ -545,14 +545,14 @@ public final class class10 {
    static int method140(int var0, Script var1, boolean var2) {
       if(var0 == 5306) {
          int[] var6 = class32.field743;
-         int var4 = ++class30.field713 - 1;
+         int var4 = ++Preferences.field713 - 1;
          int var5 = Client.isResized?2:1;
          var6[var4] = var5;
          return 1;
       } else {
          int var3;
          if(var0 == 5307) {
-            var3 = class32.field743[--class30.field713];
+            var3 = class32.field743[--Preferences.field713];
             if(var3 == 1 || var3 == 2) {
                Client.field516 = 0L;
                if(var3 >= 2) {
@@ -571,12 +571,12 @@ public final class class10 {
 
             return 1;
          } else if(var0 == 5308) {
-            class32.field743[++class30.field713 - 1] = class148.field2058.field714;
+            class32.field743[++Preferences.field713 - 1] = class148.field2058.field714;
             return 1;
          } else if(var0 != 5309) {
             return 2;
          } else {
-            var3 = class32.field743[--class30.field713];
+            var3 = class32.field743[--Preferences.field713];
             if(var3 == 1 || var3 == 2) {
                class148.field2058.field714 = var3;
                class150.method2839();

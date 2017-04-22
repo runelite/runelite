@@ -1,13 +1,16 @@
 import java.math.BigInteger;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aj")
 public class class39 {
    @ObfuscatedName("i")
-   static final BigInteger field822 = new BigInteger("a0211b55eb8010fd56feae6b163a67945b2ffcb6b3cd976a477f2d88e4cafefebd7174268fa9708acf26dbb44a772d4781f41ecb812f9ae459cf23fd7dc76bd70ac5b9ddaee2c1f6de8f8a8a39750f5f4a5c784079d6e7ba39a8915a6336cd681f3ce8083a344072adf5eec02a7221a05b8fda1e4ff4cf117ea89d290ed6fb7d", 16);
+   @Export("rsaKeyModulus")
+   static final BigInteger rsaKeyModulus = new BigInteger("a0211b55eb8010fd56feae6b163a67945b2ffcb6b3cd976a477f2d88e4cafefebd7174268fa9708acf26dbb44a772d4781f41ecb812f9ae459cf23fd7dc76bd70ac5b9ddaee2c1f6de8f8a8a39750f5f4a5c784079d6e7ba39a8915a6336cd681f3ce8083a344072adf5eec02a7221a05b8fda1e4ff4cf117ea89d290ed6fb7d", 16);
    @ObfuscatedName("f")
-   static final BigInteger field825 = new BigInteger("10001", 16);
+   @Export("rsaKeyExponent")
+   static final BigInteger rsaKeyExponent = new BigInteger("10001", 16);
 
    class39() throws Throwable {
       throw new Error();

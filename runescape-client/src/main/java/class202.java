@@ -34,7 +34,7 @@ public class class202 {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = FaceNormal.method1932(class32.field743[--class30.field713]);
+         var3 = FaceNormal.method1932(class32.field743[--Preferences.field713]);
       } else {
          var3 = var2?class154.field2123:class32.field746;
       }

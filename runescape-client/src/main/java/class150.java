@@ -20,7 +20,7 @@ public class class150 {
       FileOnDisk var0 = null;
 
       try {
-         var0 = class45.method868("", Client.field304.field2709, true);
+         var0 = class45.getPreferencesFile("", Client.field304.name, true);
          Buffer var1 = class148.field2058.method650();
          var0.method1447(var1.payload, 0, var1.offset);
       } catch (Exception var3) {

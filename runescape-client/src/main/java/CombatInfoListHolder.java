@@ -24,7 +24,7 @@ public class CombatInfoListHolder extends Node {
       int var3 = ((Integer)var2[0]).intValue();
       Script var4 = CombatInfo1.method593(var3);
       if(var4 != null) {
-         class30.field713 = 0;
+         Preferences.field713 = 0;
          class32.scriptStringStackSize = 0;
          int var5 = -1;
          int[] var6 = var4.instructions;
@@ -158,7 +158,7 @@ public class CombatInfoListHolder extends Node {
                                                                                                                                                                      if(var14 == 44) {
                                                                                                                                                                         var12 = var7[var5] >> 16;
                                                                                                                                                                         var15 = var7[var5] & '\uffff';
-                                                                                                                                                                        int var27 = class32.field743[--class30.field713];
+                                                                                                                                                                        int var27 = class32.field743[--Preferences.field713];
                                                                                                                                                                         if(var27 >= 0 && var27 <= 5000) {
                                                                                                                                                                            class32.field741[var12] = var27;
                                                                                                                                                                            byte var29 = -1;
@@ -181,21 +181,21 @@ public class CombatInfoListHolder extends Node {
                                                                                                                                                                         throw new RuntimeException();
                                                                                                                                                                      } else if(var14 == 45) {
                                                                                                                                                                         var12 = var7[var5];
-                                                                                                                                                                        var15 = class32.field743[--class30.field713];
+                                                                                                                                                                        var15 = class32.field743[--Preferences.field713];
                                                                                                                                                                         if(var15 < 0 || var15 >= class32.field741[var12]) {
                                                                                                                                                                            throw new RuntimeException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class32.field743[++class30.field713 - 1] = class32.field742[var12][var15];
+                                                                                                                                                                        class32.field743[++Preferences.field713 - 1] = class32.field742[var12][var15];
                                                                                                                                                                      } else if(var14 == 46) {
                                                                                                                                                                         var12 = var7[var5];
-                                                                                                                                                                        class30.field713 -= 2;
-                                                                                                                                                                        var15 = class32.field743[class30.field713];
+                                                                                                                                                                        Preferences.field713 -= 2;
+                                                                                                                                                                        var15 = class32.field743[Preferences.field713];
                                                                                                                                                                         if(var15 < 0 || var15 >= class32.field741[var12]) {
                                                                                                                                                                            throw new RuntimeException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class32.field742[var12][var15] = class32.field743[class30.field713 + 1];
+                                                                                                                                                                        class32.field742[var12][var15] = class32.field743[Preferences.field713 + 1];
                                                                                                                                                                      } else if(var14 == 47) {
                                                                                                                                                                         var13 = class9.chatMessages.method873(var7[var5]);
                                                                                                                                                                         if(var13 == null) {
@@ -211,10 +211,10 @@ public class CombatInfoListHolder extends Node {
                                                                                                                                                                         class9.chatMessages.method897(var7[var5], class32.scriptStringStack[--class32.scriptStringStackSize]);
                                                                                                                                                                      }
                                                                                                                                                                   } else {
-                                                                                                                                                                     class9.chatMessages.method870(var7[var5], class32.field743[--class30.field713]);
+                                                                                                                                                                     class9.chatMessages.method870(var7[var5], class32.field743[--Preferences.field713]);
                                                                                                                                                                   }
                                                                                                                                                                } else {
-                                                                                                                                                                  class32.field743[++class30.field713 - 1] = class9.chatMessages.method871(var7[var5]);
+                                                                                                                                                                  class32.field743[++Preferences.field713 - 1] = class9.chatMessages.method871(var7[var5]);
                                                                                                                                                                }
                                                                                                                                                             } else {
                                                                                                                                                                var12 = var7[var5];
@@ -223,14 +223,14 @@ public class CombatInfoListHolder extends Node {
                                                                                                                                                                String[] var30 = new String[var26.localStringCount];
 
                                                                                                                                                                for(var24 = 0; var24 < var26.intStackCount; ++var24) {
-                                                                                                                                                                  var28[var24] = class32.field743[var24 + (class30.field713 - var26.intStackCount)];
+                                                                                                                                                                  var28[var24] = class32.field743[var24 + (Preferences.field713 - var26.intStackCount)];
                                                                                                                                                                }
 
                                                                                                                                                                for(var24 = 0; var24 < var26.stringStackCount; ++var24) {
                                                                                                                                                                   var30[var24] = class32.scriptStringStack[var24 + (class32.scriptStringStackSize - var26.stringStackCount)];
                                                                                                                                                                }
 
-                                                                                                                                                               class30.field713 -= var26.intStackCount;
+                                                                                                                                                               Preferences.field713 -= var26.intStackCount;
                                                                                                                                                                class32.scriptStringStackSize -= var26.stringStackCount;
                                                                                                                                                                ScriptState var31 = new ScriptState();
                                                                                                                                                                var31.field111 = var4;
@@ -249,7 +249,7 @@ public class CombatInfoListHolder extends Node {
                                                                                                                                                             --class32.scriptStringStackSize;
                                                                                                                                                          }
                                                                                                                                                       } else {
-                                                                                                                                                         --class30.field713;
+                                                                                                                                                         --Preferences.field713;
                                                                                                                                                       }
                                                                                                                                                    } else {
                                                                                                                                                       var12 = var7[var5];
@@ -264,26 +264,26 @@ public class CombatInfoListHolder extends Node {
                                                                                                                                                 class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class32.field740[var7[var5]];
                                                                                                                                              }
                                                                                                                                           } else {
-                                                                                                                                             class32.field739[var7[var5]] = class32.field743[--class30.field713];
+                                                                                                                                             class32.field739[var7[var5]] = class32.field743[--Preferences.field713];
                                                                                                                                           }
                                                                                                                                        } else {
-                                                                                                                                          class32.field743[++class30.field713 - 1] = class32.field739[var7[var5]];
+                                                                                                                                          class32.field743[++Preferences.field713 - 1] = class32.field739[var7[var5]];
                                                                                                                                        }
                                                                                                                                     } else {
-                                                                                                                                       class30.field713 -= 2;
-                                                                                                                                       if(class32.field743[class30.field713] >= class32.field743[class30.field713 + 1]) {
+                                                                                                                                       Preferences.field713 -= 2;
+                                                                                                                                       if(class32.field743[Preferences.field713] >= class32.field743[Preferences.field713 + 1]) {
                                                                                                                                           var5 += var7[var5];
                                                                                                                                        }
                                                                                                                                     }
                                                                                                                                  } else {
-                                                                                                                                    class30.field713 -= 2;
-                                                                                                                                    if(class32.field743[class30.field713] <= class32.field743[class30.field713 + 1]) {
+                                                                                                                                    Preferences.field713 -= 2;
+                                                                                                                                    if(class32.field743[Preferences.field713] <= class32.field743[Preferences.field713 + 1]) {
                                                                                                                                        var5 += var7[var5];
                                                                                                                                     }
                                                                                                                                  }
                                                                                                                               } else {
                                                                                                                                  var12 = var7[var5];
-                                                                                                                                 var15 = class32.field743[--class30.field713];
+                                                                                                                                 var15 = class32.field743[--Preferences.field713];
                                                                                                                                  Varbit var17 = class22.method201(var12);
                                                                                                                                  int var18 = var17.configId;
                                                                                                                                  var24 = var17.leastSignificantBit;
@@ -298,7 +298,7 @@ public class CombatInfoListHolder extends Node {
                                                                                                                               }
                                                                                                                            } else {
                                                                                                                               var12 = var7[var5];
-                                                                                                                              class32.field743[++class30.field713 - 1] = class25.method560(var12);
+                                                                                                                              class32.field743[++Preferences.field713 - 1] = class25.method560(var12);
                                                                                                                            }
                                                                                                                         } else {
                                                                                                                            if(class32.scriptStackCount == 0) {
@@ -314,26 +314,26 @@ public class CombatInfoListHolder extends Node {
                                                                                                                            class32.field740 = var23.field112;
                                                                                                                         }
                                                                                                                      } else {
-                                                                                                                        class30.field713 -= 2;
-                                                                                                                        if(class32.field743[class30.field713] > class32.field743[class30.field713 + 1]) {
+                                                                                                                        Preferences.field713 -= 2;
+                                                                                                                        if(class32.field743[Preferences.field713] > class32.field743[Preferences.field713 + 1]) {
                                                                                                                            var5 += var7[var5];
                                                                                                                         }
                                                                                                                      }
                                                                                                                   } else {
-                                                                                                                     class30.field713 -= 2;
-                                                                                                                     if(class32.field743[class30.field713] < class32.field743[class30.field713 + 1]) {
+                                                                                                                     Preferences.field713 -= 2;
+                                                                                                                     if(class32.field743[Preferences.field713] < class32.field743[Preferences.field713 + 1]) {
                                                                                                                         var5 += var7[var5];
                                                                                                                      }
                                                                                                                   }
                                                                                                                } else {
-                                                                                                                  class30.field713 -= 2;
-                                                                                                                  if(class32.field743[class30.field713 + 1] == class32.field743[class30.field713]) {
+                                                                                                                  Preferences.field713 -= 2;
+                                                                                                                  if(class32.field743[Preferences.field713 + 1] == class32.field743[Preferences.field713]) {
                                                                                                                      var5 += var7[var5];
                                                                                                                   }
                                                                                                                }
                                                                                                             } else {
-                                                                                                               class30.field713 -= 2;
-                                                                                                               if(class32.field743[class30.field713 + 1] != class32.field743[class30.field713]) {
+                                                                                                               Preferences.field713 -= 2;
+                                                                                                               if(class32.field743[Preferences.field713 + 1] != class32.field743[Preferences.field713]) {
                                                                                                                   var5 += var7[var5];
                                                                                                                }
                                                                                                             }
@@ -345,15 +345,15 @@ public class CombatInfoListHolder extends Node {
                                                                                                       }
                                                                                                    } else {
                                                                                                       var12 = var7[var5];
-                                                                                                      class165.widgetSettings[var12] = class32.field743[--class30.field713];
+                                                                                                      class165.widgetSettings[var12] = class32.field743[--Preferences.field713];
                                                                                                       Client.method550(var12);
                                                                                                    }
                                                                                                 } else {
                                                                                                    var12 = var7[var5];
-                                                                                                   class32.field743[++class30.field713 - 1] = class165.widgetSettings[var12];
+                                                                                                   class32.field743[++Preferences.field713 - 1] = class165.widgetSettings[var12];
                                                                                                 }
                                                                                              } else {
-                                                                                                class32.field743[++class30.field713 - 1] = var7[var5];
+                                                                                                class32.field743[++Preferences.field713 - 1] = var7[var5];
                                                                                              }
                                                                                           } else {
                                                                                              boolean var16;

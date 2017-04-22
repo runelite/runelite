@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -13,7 +14,8 @@ public class class20 implements Runnable {
    @ObfuscatedName("h")
    int[] field229 = new int[500];
    @ObfuscatedName("cf")
-   static RSSocket field233;
+   @Export("rssocket")
+   static RSSocket rssocket;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1278901

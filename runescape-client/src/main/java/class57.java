@@ -430,25 +430,25 @@ public class class57 {
    )
    static int method1118(int var0, Script var1, boolean var2) {
       if(var0 == 6500) {
-         class32.field743[++class30.field713 - 1] = CombatInfoListHolder.loadWorlds()?1:0;
+         class32.field743[++Preferences.field713 - 1] = CombatInfoListHolder.loadWorlds()?1:0;
          return 1;
       } else {
          World var3;
          if(var0 == 6501) {
             var3 = class2.method17();
             if(var3 != null) {
-               class32.field743[++class30.field713 - 1] = var3.id;
-               class32.field743[++class30.field713 - 1] = var3.mask;
+               class32.field743[++Preferences.field713 - 1] = var3.id;
+               class32.field743[++Preferences.field713 - 1] = var3.mask;
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.activity;
-               class32.field743[++class30.field713 - 1] = var3.location;
-               class32.field743[++class30.field713 - 1] = var3.playerCount;
+               class32.field743[++Preferences.field713 - 1] = var3.location;
+               class32.field743[++Preferences.field713 - 1] = var3.playerCount;
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.address;
             } else {
-               class32.field743[++class30.field713 - 1] = -1;
-               class32.field743[++class30.field713 - 1] = 0;
+               class32.field743[++Preferences.field713 - 1] = -1;
+               class32.field743[++Preferences.field713 - 1] = 0;
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
-               class32.field743[++class30.field713 - 1] = 0;
-               class32.field743[++class30.field713 - 1] = 0;
+               class32.field743[++Preferences.field713 - 1] = 0;
+               class32.field743[++Preferences.field713 - 1] = 0;
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
             }
 
@@ -456,18 +456,18 @@ public class class57 {
          } else if(var0 == 6502) {
             var3 = TextureProvider.method1482();
             if(var3 != null) {
-               class32.field743[++class30.field713 - 1] = var3.id;
-               class32.field743[++class30.field713 - 1] = var3.mask;
+               class32.field743[++Preferences.field713 - 1] = var3.id;
+               class32.field743[++Preferences.field713 - 1] = var3.mask;
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.activity;
-               class32.field743[++class30.field713 - 1] = var3.location;
-               class32.field743[++class30.field713 - 1] = var3.playerCount;
+               class32.field743[++Preferences.field713 - 1] = var3.location;
+               class32.field743[++Preferences.field713 - 1] = var3.playerCount;
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.address;
             } else {
-               class32.field743[++class30.field713 - 1] = -1;
-               class32.field743[++class30.field713 - 1] = 0;
+               class32.field743[++Preferences.field713 - 1] = -1;
+               class32.field743[++Preferences.field713 - 1] = 0;
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
-               class32.field743[++class30.field713 - 1] = 0;
-               class32.field743[++class30.field713 - 1] = 0;
+               class32.field743[++Preferences.field713 - 1] = 0;
+               class32.field743[++Preferences.field713 - 1] = 0;
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
             }
 
@@ -477,7 +477,7 @@ public class class57 {
             int var5;
             int var6;
             if(var0 == 6506) {
-               var6 = class32.field743[--class30.field713];
+               var6 = class32.field743[--Preferences.field713];
                var4 = null;
 
                for(var5 = 0; var5 < World.field708; ++var5) {
@@ -488,53 +488,53 @@ public class class57 {
                }
 
                if(var4 != null) {
-                  class32.field743[++class30.field713 - 1] = var4.id;
-                  class32.field743[++class30.field713 - 1] = var4.mask;
+                  class32.field743[++Preferences.field713 - 1] = var4.id;
+                  class32.field743[++Preferences.field713 - 1] = var4.mask;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var4.activity;
-                  class32.field743[++class30.field713 - 1] = var4.location;
-                  class32.field743[++class30.field713 - 1] = var4.playerCount;
+                  class32.field743[++Preferences.field713 - 1] = var4.location;
+                  class32.field743[++Preferences.field713 - 1] = var4.playerCount;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var4.address;
                } else {
-                  class32.field743[++class30.field713 - 1] = -1;
-                  class32.field743[++class30.field713 - 1] = 0;
+                  class32.field743[++Preferences.field713 - 1] = -1;
+                  class32.field743[++Preferences.field713 - 1] = 0;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
-                  class32.field743[++class30.field713 - 1] = 0;
-                  class32.field743[++class30.field713 - 1] = 0;
+                  class32.field743[++Preferences.field713 - 1] = 0;
+                  class32.field743[++Preferences.field713 - 1] = 0;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                }
 
                return 1;
             } else if(var0 == 6507) {
-               class30.field713 -= 4;
-               var6 = class32.field743[class30.field713];
-               boolean var7 = class32.field743[class30.field713 + 1] == 1;
-               var5 = class32.field743[class30.field713 + 2];
-               boolean var8 = class32.field743[class30.field713 + 3] == 1;
+               Preferences.field713 -= 4;
+               var6 = class32.field743[Preferences.field713];
+               boolean var7 = class32.field743[Preferences.field713 + 1] == 1;
+               var5 = class32.field743[Preferences.field713 + 2];
+               boolean var8 = class32.field743[Preferences.field713 + 3] == 1;
                Friend.method164(var6, var7, var5, var8);
                return 1;
             } else if(var0 != 6511) {
                if(var0 == 6512) {
-                  Client.field448 = class32.field743[--class30.field713] == 1;
+                  Client.field448 = class32.field743[--Preferences.field713] == 1;
                   return 1;
                } else {
                   return 2;
                }
             } else {
-               var6 = class32.field743[--class30.field713];
+               var6 = class32.field743[--Preferences.field713];
                if(var6 >= 0 && var6 < World.field708) {
                   var4 = World.worldList[var6];
-                  class32.field743[++class30.field713 - 1] = var4.id;
-                  class32.field743[++class30.field713 - 1] = var4.mask;
+                  class32.field743[++Preferences.field713 - 1] = var4.id;
+                  class32.field743[++Preferences.field713 - 1] = var4.mask;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var4.activity;
-                  class32.field743[++class30.field713 - 1] = var4.location;
-                  class32.field743[++class30.field713 - 1] = var4.playerCount;
+                  class32.field743[++Preferences.field713 - 1] = var4.location;
+                  class32.field743[++Preferences.field713 - 1] = var4.playerCount;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var4.address;
                } else {
-                  class32.field743[++class30.field713 - 1] = -1;
-                  class32.field743[++class30.field713 - 1] = 0;
+                  class32.field743[++Preferences.field713 - 1] = -1;
+                  class32.field743[++Preferences.field713 - 1] = 0;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
-                  class32.field743[++class30.field713 - 1] = 0;
-                  class32.field743[++class30.field713 - 1] = 0;
+                  class32.field743[++Preferences.field713 - 1] = 0;
+                  class32.field743[++Preferences.field713 - 1] = 0;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                }
 

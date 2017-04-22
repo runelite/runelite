@@ -167,24 +167,24 @@ public class Ignore {
       garbageValue = "1659233389"
    )
    static int method180(int var0, Script var1, boolean var2) {
-      Widget var3 = FaceNormal.method1932(class32.field743[--class30.field713]);
+      Widget var3 = FaceNormal.method1932(class32.field743[--Preferences.field713]);
       if(var0 == 2500) {
-         class32.field743[++class30.field713 - 1] = var3.relativeX;
+         class32.field743[++Preferences.field713 - 1] = var3.relativeX;
          return 1;
       } else if(var0 == 2501) {
-         class32.field743[++class30.field713 - 1] = var3.relativeY;
+         class32.field743[++Preferences.field713 - 1] = var3.relativeY;
          return 1;
       } else if(var0 == 2502) {
-         class32.field743[++class30.field713 - 1] = var3.width;
+         class32.field743[++Preferences.field713 - 1] = var3.width;
          return 1;
       } else if(var0 == 2503) {
-         class32.field743[++class30.field713 - 1] = var3.height;
+         class32.field743[++Preferences.field713 - 1] = var3.height;
          return 1;
       } else if(var0 == 2504) {
-         class32.field743[++class30.field713 - 1] = var3.isHidden?1:0;
+         class32.field743[++Preferences.field713 - 1] = var3.isHidden?1:0;
          return 1;
       } else if(var0 == 2505) {
-         class32.field743[++class30.field713 - 1] = var3.parentId;
+         class32.field743[++Preferences.field713 - 1] = var3.parentId;
          return 1;
       } else {
          return 2;

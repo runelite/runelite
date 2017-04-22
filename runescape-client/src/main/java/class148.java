@@ -11,7 +11,7 @@ public class class148 {
    )
    static int field2056;
    @ObfuscatedName("pl")
-   static class30 field2058;
+   static Preferences field2058;
 
    class148() throws Throwable {
       throw new Error();

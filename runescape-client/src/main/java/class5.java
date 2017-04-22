@@ -298,7 +298,7 @@ final class class5 implements Comparator {
                }
             } else if(Client.field330 == 60) {
                var0 = FileOnDisk.method1445(WallObject.field1581, FileOnDisk.indexSprites);
-               var1 = class30.method652();
+               var1 = Preferences.method652();
                if(var0 < var1) {
                   class41.field852 = "Loading title screen - " + var0 * 100 / var1 + "%";
                   class41.field851 = 50;
@@ -353,7 +353,7 @@ final class class5 implements Comparator {
                   class20.field235 = var20;
                   Widget.widgets = new Widget[Widget.field2301.method3357()][];
                   class6.validInterfaces = new boolean[Widget.field2301.method3357()];
-                  class30.method644(ChatLineBuffer.field990);
+                  Preferences.method644(ChatLineBuffer.field990);
                   IndexData var21 = ChatLineBuffer.field990;
                   class195.field2867 = var21;
                   IndexData var22 = ChatLineBuffer.field990;

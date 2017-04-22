@@ -48,8 +48,8 @@ public class class174 {
             class8.field73 = class99.method1981(FileOnDisk.indexSprites, "sl_back", "");
          }
 
-         if(class30.field718 == null) {
-            class30.field718 = ItemComposition.method3719(FileOnDisk.indexSprites, "sl_flags", "");
+         if(Preferences.field718 == null) {
+            Preferences.field718 = ItemComposition.method3719(FileOnDisk.indexSprites, "sl_flags", "");
          }
 
          if(class36.field789 == null) {
@@ -220,8 +220,8 @@ public class class174 {
                         class8.field73[var24].method4141(var16, var10);
                      }
 
-                     if(class30.field718 != null) {
-                        class30.field718[(var21.method632()?8:0) + var21.location].method4088(var16 + 29, var10);
+                     if(Preferences.field718 != null) {
+                        Preferences.field718[(var21.method632()?8:0) + var21.location].method4088(var16 + 29, var10);
                      }
 
                      var0.method3963(Integer.toString(var21.id), var16 + 15, var10 + 5 + var18 / 2, var23, -1);

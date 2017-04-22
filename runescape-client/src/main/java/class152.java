@@ -161,7 +161,7 @@ public final class class152 {
       int var4;
       if(var0 == 4100) {
          var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
-         var4 = class32.field743[--class30.field713];
+         var4 = class32.field743[--Preferences.field713];
          class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3 + var4;
          return 1;
       } else {
@@ -179,7 +179,7 @@ public final class class152 {
             int var21;
             if(var0 == 4102) {
                var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
-               var4 = class32.field743[--class30.field713];
+               var4 = class32.field743[--Preferences.field713];
                String[] var18 = class32.scriptStringStack;
                var6 = ++class32.scriptStringStackSize - 1;
                String var19;
@@ -226,7 +226,7 @@ public final class class152 {
             } else {
                int var9;
                if(var0 == 4104) {
-                  var9 = class32.field743[--class30.field713];
+                  var9 = class32.field743[--Preferences.field713];
                   long var17 = 86400000L * ((long)var9 + 11745L);
                   class32.field752.setTime(new Date(var17));
                   var6 = class32.field752.get(5);
@@ -246,39 +246,39 @@ public final class class152 {
 
                   return 1;
                } else if(var0 == 4106) {
-                  var9 = class32.field743[--class30.field713];
+                  var9 = class32.field743[--Preferences.field713];
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Integer.toString(var9);
                   return 1;
                } else if(var0 == 4107) {
                   class32.scriptStringStackSize -= 2;
-                  class32.field743[++class30.field713 - 1] = class8.method89(ChatLineBuffer.method939(class32.scriptStringStack[class32.scriptStringStackSize], class32.scriptStringStack[class32.scriptStringStackSize + 1], Client.field308));
+                  class32.field743[++Preferences.field713 - 1] = class8.method89(ChatLineBuffer.method939(class32.scriptStringStack[class32.scriptStringStackSize], class32.scriptStringStack[class32.scriptStringStackSize + 1], Client.field308));
                   return 1;
                } else {
                   Font var10;
                   byte[] var11;
                   if(var0 == 4108) {
                      var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                     class30.field713 -= 2;
-                     var4 = class32.field743[class30.field713];
-                     var7 = class32.field743[class30.field713 + 1];
+                     Preferences.field713 -= 2;
+                     var4 = class32.field743[Preferences.field713];
+                     var7 = class32.field743[Preferences.field713 + 1];
                      var11 = class5.field56.getConfigData(var7, 0);
                      var10 = new Font(var11);
-                     class32.field743[++class30.field713 - 1] = var10.method3921(var3, var4);
+                     class32.field743[++Preferences.field713 - 1] = var10.method3921(var3, var4);
                      return 1;
                   } else if(var0 == 4109) {
                      var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                     class30.field713 -= 2;
-                     var4 = class32.field743[class30.field713];
-                     var7 = class32.field743[class30.field713 + 1];
+                     Preferences.field713 -= 2;
+                     var4 = class32.field743[Preferences.field713];
+                     var7 = class32.field743[Preferences.field713 + 1];
                      var11 = class5.field56.getConfigData(var7, 0);
                      var10 = new Font(var11);
-                     class32.field743[++class30.field713 - 1] = var10.method3908(var3, var4);
+                     class32.field743[++Preferences.field713 - 1] = var10.method3908(var3, var4);
                      return 1;
                   } else if(var0 == 4110) {
                      class32.scriptStringStackSize -= 2;
                      var3 = class32.scriptStringStack[class32.scriptStringStackSize];
                      var5 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
-                     if(class32.field743[--class30.field713] == 1) {
+                     if(class32.field743[--Preferences.field713] == 1) {
                         class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3;
                      } else {
                         class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var5;
@@ -291,7 +291,7 @@ public final class class152 {
                      return 1;
                   } else if(var0 == 4112) {
                      var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                     var4 = class32.field743[--class30.field713];
+                     var4 = class32.field743[--Preferences.field713];
                      class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3 + (char)var4;
                      return 1;
                   } else {
@@ -299,9 +299,9 @@ public final class class152 {
                      char var13;
                      int[] var14;
                      if(var0 == 4113) {
-                        var9 = class32.field743[--class30.field713];
+                        var9 = class32.field743[--Preferences.field713];
                         var14 = class32.field743;
-                        var7 = ++class30.field713 - 1;
+                        var7 = ++Preferences.field713 - 1;
                         var13 = (char)var9;
                         if(var13 >= 32 && var13 <= 126) {
                            var12 = true;
@@ -317,27 +317,27 @@ public final class class152 {
                         return 1;
                      } else if(var0 != 4114) {
                         if(var0 == 4115) {
-                           var9 = class32.field743[--class30.field713];
-                           class32.field743[++class30.field713 - 1] = FrameMap.method1734((char)var9)?1:0;
+                           var9 = class32.field743[--Preferences.field713];
+                           class32.field743[++Preferences.field713 - 1] = FrameMap.method1734((char)var9)?1:0;
                            return 1;
                         } else if(var0 == 4116) {
-                           var9 = class32.field743[--class30.field713];
-                           class32.field743[++class30.field713 - 1] = class204.method3835((char)var9)?1:0;
+                           var9 = class32.field743[--Preferences.field713];
+                           class32.field743[++Preferences.field713 - 1] = class204.method3835((char)var9)?1:0;
                            return 1;
                         } else if(var0 == 4117) {
                            var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
                            if(var3 != null) {
-                              class32.field743[++class30.field713 - 1] = var3.length();
+                              class32.field743[++Preferences.field713 - 1] = var3.length();
                            } else {
-                              class32.field743[++class30.field713 - 1] = 0;
+                              class32.field743[++Preferences.field713 - 1] = 0;
                            }
 
                            return 1;
                         } else if(var0 == 4118) {
                            var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                           class30.field713 -= 2;
-                           var4 = class32.field743[class30.field713];
-                           var7 = class32.field743[class30.field713 + 1];
+                           Preferences.field713 -= 2;
+                           var4 = class32.field743[Preferences.field713];
+                           var7 = class32.field743[Preferences.field713 + 1];
                            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.substring(var4, var7);
                            return 1;
                         } else if(var0 == 4119) {
@@ -360,23 +360,23 @@ public final class class152 {
                            return 1;
                         } else if(var0 == 4120) {
                            var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                           var4 = class32.field743[--class30.field713];
-                           class32.field743[++class30.field713 - 1] = var3.indexOf(var4);
+                           var4 = class32.field743[--Preferences.field713];
+                           class32.field743[++Preferences.field713 - 1] = var3.indexOf(var4);
                            return 1;
                         } else if(var0 == 4121) {
                            class32.scriptStringStackSize -= 2;
                            var3 = class32.scriptStringStack[class32.scriptStringStackSize];
                            var5 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
-                           var7 = class32.field743[--class30.field713];
-                           class32.field743[++class30.field713 - 1] = var3.indexOf(var5, var7);
+                           var7 = class32.field743[--Preferences.field713];
+                           class32.field743[++Preferences.field713 - 1] = var3.indexOf(var5, var7);
                            return 1;
                         } else {
                            return 2;
                         }
                      } else {
-                        var9 = class32.field743[--class30.field713];
+                        var9 = class32.field743[--Preferences.field713];
                         var14 = class32.field743;
-                        var7 = ++class30.field713 - 1;
+                        var7 = ++Preferences.field713 - 1;
                         var13 = (char)var9;
                         var12 = var13 >= 48 && var13 <= 57 || var13 >= 65 && var13 <= 90 || var13 >= 97 && var13 <= 122;
                         var14[var7] = var12?1:0;

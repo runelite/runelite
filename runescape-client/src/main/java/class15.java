@@ -121,7 +121,7 @@ public class class15 {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = FaceNormal.method1932(class32.field743[--class30.field713]);
+         var3 = FaceNormal.method1932(class32.field743[--Preferences.field713]);
       } else {
          var3 = var2?class154.field2123:class32.field746;
       }
@@ -130,7 +130,7 @@ public class class15 {
       if(var0 != 1200 && var0 != 1205 && var0 != 1212) {
          if(var0 == 1201) {
             var3.modelType = 2;
-            var3.modelId = class32.field743[--class30.field713];
+            var3.modelId = class32.field743[--Preferences.field713];
             return 1;
          } else if(var0 == 1202) {
             var3.modelType = 3;
@@ -140,9 +140,9 @@ public class class15 {
             return 2;
          }
       } else {
-         class30.field713 -= 2;
-         int var4 = class32.field743[class30.field713];
-         int var5 = class32.field743[class30.field713 + 1];
+         Preferences.field713 -= 2;
+         int var4 = class32.field743[Preferences.field713];
+         int var5 = class32.field743[Preferences.field713 + 1];
          var3.item = var4;
          var3.stackSize = var5;
          ItemComposition var6 = class196.getItemDefinition(var4);

@@ -200,14 +200,14 @@ public class class49 extends Renderable {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = FaceNormal.method1932(class32.field743[--class30.field713]);
+         var3 = FaceNormal.method1932(class32.field743[--Preferences.field713]);
       } else {
          var3 = var2?class154.field2123:class32.field746;
       }
 
       int var4;
       if(var0 == 1300) {
-         var4 = class32.field743[--class30.field713] - 1;
+         var4 = class32.field743[--Preferences.field713] - 1;
          if(var4 >= 0 && var4 <= 9) {
             var3.method3261(var4, class32.scriptStringStack[--class32.scriptStringStackSize]);
             return 1;
@@ -216,19 +216,19 @@ public class class49 extends Renderable {
             return 1;
          }
       } else if(var0 == 1301) {
-         class30.field713 -= 2;
-         var4 = class32.field743[class30.field713];
-         int var5 = class32.field743[class30.field713 + 1];
+         Preferences.field713 -= 2;
+         var4 = class32.field743[Preferences.field713];
+         int var5 = class32.field743[Preferences.field713 + 1];
          var3.parent = class118.method2354(var4, var5);
          return 1;
       } else if(var0 == 1302) {
-         var3.field2297 = class32.field743[--class30.field713] == 1;
+         var3.field2297 = class32.field743[--Preferences.field713] == 1;
          return 1;
       } else if(var0 == 1303) {
-         var3.field2295 = class32.field743[--class30.field713];
+         var3.field2295 = class32.field743[--Preferences.field713];
          return 1;
       } else if(var0 == 1304) {
-         var3.field2223 = class32.field743[--class30.field713];
+         var3.field2223 = class32.field743[--Preferences.field713];
          return 1;
       } else if(var0 == 1305) {
          var3.name = class32.scriptStringStack[--class32.scriptStringStackSize];

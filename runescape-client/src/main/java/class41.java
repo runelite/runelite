@@ -137,11 +137,11 @@ public class class41 {
       ++Client.field436;
       if(Client.field436 >= 50 || var0) {
          Client.field436 = 0;
-         if(!Client.field517 && class20.field233 != null) {
+         if(!Client.field517 && class20.rssocket != null) {
             Client.secretCipherBuffer1.putOpcode(210);
 
             try {
-               class20.field233.queueForWrite(Client.secretCipherBuffer1.payload, 0, Client.secretCipherBuffer1.offset);
+               class20.rssocket.queueForWrite(Client.secretCipherBuffer1.payload, 0, Client.secretCipherBuffer1.offset);
                Client.secretCipherBuffer1.offset = 0;
             } catch (IOException var2) {
                Client.field517 = true;

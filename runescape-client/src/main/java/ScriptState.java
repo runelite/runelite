@@ -193,52 +193,52 @@ public class ScriptState {
       garbageValue = "96"
    )
    static final boolean method145() {
-      if(class20.field233 == null) {
+      if(class20.rssocket == null) {
          return false;
       } else {
          int var0;
          String var1;
          try {
-            int var2 = class20.field233.method2108();
-            if(var2 == 0) {
+            int available = class20.rssocket.available();
+            if(available == 0) {
                return false;
             }
 
             if(Client.packetOpcode == -1) {
-               class20.field233.method2104(Client.secretCipherBuffer2.payload, 0, 1);
+               class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, 1);
                Client.secretCipherBuffer2.offset = 0;
                Client.packetOpcode = Client.secretCipherBuffer2.readOpcode();
-               Client.field348 = class212.field3154[Client.packetOpcode];
-               --var2;
+               Client.field348 = class212.packetLenghts[Client.packetOpcode];
+               --available;
             }
 
             if(Client.field348 == -1) {
-               if(var2 <= 0) {
+               if(available <= 0) {
                   return false;
                }
 
-               class20.field233.method2104(Client.secretCipherBuffer2.payload, 0, 1);
+               class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, 1);
                Client.field348 = Client.secretCipherBuffer2.payload[0] & 255;
-               --var2;
+               --available;
             }
 
             if(Client.field348 == -2) {
-               if(var2 <= 1) {
+               if(available <= 1) {
                   return false;
                }
 
-               class20.field233.method2104(Client.secretCipherBuffer2.payload, 0, 2);
+               class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, 2);
                Client.secretCipherBuffer2.offset = 0;
                Client.field348 = Client.secretCipherBuffer2.readUnsignedShort();
-               var2 -= 2;
+               available -= 2;
             }
 
-            if(var2 < Client.field348) {
+            if(available < Client.field348) {
                return false;
             }
 
             Client.secretCipherBuffer2.offset = 0;
-            class20.field233.method2104(Client.secretCipherBuffer2.payload, 0, Client.field348);
+            class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, Client.field348);
             Client.field350 = 0;
             Client.field354 = Client.field424;
             Client.field424 = Client.field352 * -1;
@@ -276,7 +276,7 @@ public class ScriptState {
             }
 
             if(Client.packetOpcode == 238) {
-               class30.method640();
+               Preferences.method640();
                Client.energy = Client.secretCipherBuffer2.readUnsignedByte();
                Client.field500 = Client.field561;
                Client.packetOpcode = -1;
@@ -445,7 +445,7 @@ public class ScriptState {
             }
 
             if(Client.packetOpcode == 178) {
-               class30.method640();
+               Preferences.method640();
                Client.weight = Client.secretCipherBuffer2.readShort();
                Client.field500 = Client.field561;
                Client.packetOpcode = -1;
@@ -575,7 +575,7 @@ public class ScriptState {
                   class22.method197(var6);
                }
 
-               class30.method640();
+               Preferences.method640();
                Client.interfaceItemTriggers[++Client.field492 - 1 & 31] = var0 & 32767;
                Client.packetOpcode = -1;
                return true;
@@ -687,8 +687,8 @@ public class ScriptState {
                var0 = Client.secretCipherBuffer2.readInt();
                var59.mask = var0;
                GameObject.setGameState(45);
-               class20.field233.method2113();
-               class20.field233 = null;
+               class20.rssocket.method2113();
+               class20.rssocket = null;
                class142.method2750(var59);
                Client.packetOpcode = -1;
                return false;
@@ -1291,7 +1291,7 @@ public class ScriptState {
                   }
                }
 
-               class30.method640();
+               Preferences.method640();
                Client.field490 += 32;
                Client.packetOpcode = -1;
                return true;
@@ -1403,7 +1403,7 @@ public class ScriptState {
             }
 
             if(Client.packetOpcode == 126) {
-               class30.method640();
+               Preferences.method640();
                var3 = Client.secretCipherBuffer2.method3051();
                var0 = Client.secretCipherBuffer2.method2912();
                var17 = Client.secretCipherBuffer2.method3051();
@@ -1525,7 +1525,7 @@ public class ScriptState {
                   }
 
                   if(var95.field2695 != -1) {
-                     Player.sendGameMessage(var88, class30.method648(var95.field2695) + var1, var37);
+                     Player.sendGameMessage(var88, Preferences.method648(var95.field2695) + var1, var37);
                   } else {
                      Player.sendGameMessage(var88, var1, var37);
                   }
@@ -1761,7 +1761,7 @@ public class ScriptState {
                   class22.method197(var6);
                }
 
-               class30.method640();
+               Preferences.method640();
                Client.interfaceItemTriggers[++Client.field492 - 1 & 31] = var0 & 32767;
                Client.packetOpcode = -1;
                return true;
@@ -1925,7 +1925,7 @@ public class ScriptState {
                   var37 = IndexFile.method2305(var40, 32767);
                   String var44 = FontTypeFace.method3900(class94.method1954(var37));
                   if(var43.field2695 != -1) {
-                     class216.addChatMessage(9, class30.method648(var43.field2695) + var1, var44, class7.method80(var38));
+                     class216.addChatMessage(9, Preferences.method648(var43.field2695) + var1, var44, class7.method80(var38));
                   } else {
                      class216.addChatMessage(9, var1, var44, class7.method80(var38));
                   }

@@ -463,7 +463,7 @@ public final class Player extends Actor {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = FaceNormal.method1932(class32.field743[--class30.field713]);
+         var3 = FaceNormal.method1932(class32.field743[--Preferences.field713]);
       } else {
          var3 = var2?class154.field2123:class32.field746;
       }
@@ -471,9 +471,9 @@ public final class Player extends Actor {
       String var4 = class32.scriptStringStack[--class32.scriptStringStackSize];
       int[] var5 = null;
       if(var4.length() > 0 && var4.charAt(var4.length() - 1) == 89) {
-         int var6 = class32.field743[--class30.field713];
+         int var6 = class32.field743[--Preferences.field713];
          if(var6 > 0) {
-            for(var5 = new int[var6]; var6-- > 0; var5[var6] = class32.field743[--class30.field713]) {
+            for(var5 = new int[var6]; var6-- > 0; var5[var6] = class32.field743[--Preferences.field713]) {
                ;
             }
          }
@@ -488,11 +488,11 @@ public final class Player extends Actor {
          if(var4.charAt(var7 - 1) == 115) {
             var8[var7] = class32.scriptStringStack[--class32.scriptStringStackSize];
          } else {
-            var8[var7] = new Integer(class32.field743[--class30.field713]);
+            var8[var7] = new Integer(class32.field743[--Preferences.field713]);
          }
       }
 
-      var7 = class32.field743[--class30.field713];
+      var7 = class32.field743[--Preferences.field713];
       if(var7 != -1) {
          var8[0] = new Integer(var7);
       } else {

@@ -48,7 +48,7 @@ public final class Client extends GameEngine {
    )
    static int field303;
    @ObfuscatedName("n")
-   static class179 field304;
+   static Game field304;
    @ObfuscatedName("j")
    @Export("isMembers")
    static boolean isMembers = false;
@@ -1375,9 +1375,9 @@ public final class Client extends GameEngine {
       }
 
       field400 = null;
-      if(class20.field233 != null) {
-         class20.field233.method2113();
-         class20.field233 = null;
+      if(class20.rssocket != null) {
+         class20.rssocket.method2113();
+         class20.rssocket = null;
       }
 
       if(class105.keyboard != null) {
@@ -1458,23 +1458,23 @@ public final class Client extends GameEngine {
                }
 
                if(field303 == 2) {
-                  class30.rssocket = new RSSocket((Socket)class175.field2662.field1690, class108.field1755);
+                  Preferences.rssocket = new RSSocket((Socket)class175.field2662.field1690, class108.field1755);
                   Buffer var1 = new Buffer(5);
                   var1.putByte(15);
                   var1.putInt(139);
-                  class30.rssocket.queueForWrite(var1.payload, 0, 5);
+                  Preferences.rssocket.queueForWrite(var1.payload, 0, 5);
                   ++field303;
                   XGrandExchangeOffer.field40 = class45.method867();
                }
 
                if(field303 == 3) {
-                  if(gameState > 5 && class30.rssocket.method2108() <= 0) {
+                  if(gameState > 5 && Preferences.rssocket.available() <= 0) {
                      if(class45.method867() - XGrandExchangeOffer.field40 > 30000L) {
                         this.method246(-2);
                         return;
                      }
                   } else {
-                     int var3 = class30.rssocket.method2102();
+                     int var3 = Preferences.rssocket.method2102();
                      if(var3 != 0) {
                         this.method246(var3);
                         return;
@@ -1485,9 +1485,9 @@ public final class Client extends GameEngine {
                }
 
                if(field303 == 4) {
-                  class171.method3304(class30.rssocket, gameState > 20);
+                  class171.method3304(Preferences.rssocket, gameState > 20);
                   class175.field2662 = null;
-                  class30.rssocket = null;
+                  Preferences.rssocket = null;
                   field303 = 0;
                   field333 = 0;
                }
@@ -1506,7 +1506,7 @@ public final class Client extends GameEngine {
    )
    void method246(int var1) {
       class175.field2662 = null;
-      class30.rssocket = null;
+      Preferences.rssocket = null;
       field303 = 0;
       if(class99.field1671 == field431) {
          field431 = class0.field4;
@@ -1624,7 +1624,7 @@ public final class Client extends GameEngine {
             Ignore.field219 = new byte[4][105][105];
             CombatInfo1.field688 = new int[105][105];
             class10.field94 = new int[104];
-            class30.field712 = new int[104];
+            Preferences.field712 = new int[104];
             class1.field9 = new int[104];
             class0.field2 = new int[104];
             ClassInfo.field3243 = new int[104];
@@ -1939,7 +1939,7 @@ public final class Client extends GameEngine {
             Ignore.field219 = (byte[][][])((byte[][][])null);
             CombatInfo1.field688 = (int[][])((int[][])null);
             class10.field94 = null;
-            class30.field712 = null;
+            Preferences.field712 = null;
             class1.field9 = null;
             class0.field2 = null;
             ClassInfo.field3243 = null;
@@ -2217,9 +2217,9 @@ public final class Client extends GameEngine {
                   }
                   break;
                case 10:
-                  class179[] var6 = new class179[]{class179.field2704, class179.field2708, class179.field2705, class179.field2713, class179.field2711, class179.field2706};
-                  field304 = (class179)method556(var6, Integer.parseInt(var5));
-                  if(field304 == class179.field2708) {
+                  Game[] var6 = new Game[]{Game.field2704, Game.runescape2007, Game.field2705, Game.field2713, Game.field2711, Game.field2706};
+                  field304 = (Game)method556(var6, Integer.parseInt(var5));
+                  if(field304 == Game.runescape2007) {
                      Ignore.field214 = class228.field3257;
                   } else {
                      Ignore.field214 = class228.field3250;
@@ -2710,7 +2710,7 @@ public final class Client extends GameEngine {
                                                       do {
                                                          var49 = (class18)field502.method2487();
                                                          if(var49 == null) {
-                                                            class30.method643();
+                                                            Preferences.method643();
                                                             int var26;
                                                             int var27;
                                                             int var28;
@@ -3178,8 +3178,8 @@ public final class Client extends GameEngine {
                                                             }
 
                                                             try {
-                                                               if(class20.field233 != null && secretCipherBuffer1.offset > 0) {
-                                                                  class20.field233.queueForWrite(secretCipherBuffer1.payload, 0, secretCipherBuffer1.offset);
+                                                               if(class20.rssocket != null && secretCipherBuffer1.offset > 0) {
+                                                                  class20.rssocket.queueForWrite(secretCipherBuffer1.payload, 0, secretCipherBuffer1.offset);
                                                                   secretCipherBuffer1.offset = 0;
                                                                   field436 = 0;
                                                                   return;
@@ -3257,7 +3257,7 @@ public final class Client extends GameEngine {
       garbageValue = "-81"
    )
    static final void method550(int var0) {
-      class30.method640();
+      Preferences.method640();
 
       for(class31 var1 = (class31)class31.field732.method2464(); var1 != null; var1 = (class31)class31.field732.method2472()) {
          if(var1.field729 != null) {

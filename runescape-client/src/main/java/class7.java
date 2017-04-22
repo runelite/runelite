@@ -61,12 +61,12 @@ final class class7 implements Comparator {
       signature = "(B)Lclass30;",
       garbageValue = "42"
    )
-   static class30 method86() {
+   static Preferences method86() {
       FileOnDisk var0 = null;
-      class30 var1 = new class30();
+      Preferences var1 = new Preferences();
 
       try {
-         var0 = class45.method868("", Client.field304.field2709, false);
+         var0 = class45.getPreferencesFile("", Client.field304.name, false);
          byte[] var2 = new byte[(int)var0.method1449()];
 
          int var3;
@@ -77,7 +77,7 @@ final class class7 implements Comparator {
             }
          }
 
-         var1 = new class30(new Buffer(var2));
+         var1 = new Preferences(new Buffer(var2));
       } catch (Exception var6) {
          ;
       }

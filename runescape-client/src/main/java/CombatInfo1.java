@@ -28,7 +28,8 @@ public class CombatInfo1 extends Node {
    @ObfuscatedGetter(
       intValue = 1395825023
    )
-   static int field683;
+   @Export("authCodeForLogin")
+   static int authCodeForLogin;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1626461009
