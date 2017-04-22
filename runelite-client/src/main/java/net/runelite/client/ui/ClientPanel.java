@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.ui;
 
 import java.applet.Applet;
@@ -40,9 +39,9 @@ import org.slf4j.LoggerFactory;
 final class ClientPanel extends JPanel implements ComponentListener
 {
 	private static final Logger logger = LoggerFactory.getLogger(ClientPanel.class);
-	
+
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503;
-	
+
 	private Applet rs;
 
 	public ClientPanel() throws Exception
@@ -78,10 +77,13 @@ final class ClientPanel extends JPanel implements ComponentListener
 	@Override
 	public void componentResized(ComponentEvent e)
 	{
-		rs.setLocation(0, 0);
-		rs.setSize(this.getSize());
+		if (rs != null)
+		{
+			rs.setLocation(0, 0);
+			rs.setSize(this.getSize());
+			rs.setPreferredSize(this.getPreferredSize());
+		}
 		this.setPreferredSize(this.getSize());
-		rs.setPreferredSize(this.getPreferredSize());
 	}
 
 	@Override
