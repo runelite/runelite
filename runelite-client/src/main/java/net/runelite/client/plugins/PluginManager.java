@@ -90,7 +90,7 @@ public class PluginManager
 				public void stopping(Service.State from)
 				{
 					logger.debug("Plugin {} is stopping", plugin);
-					runelite.getEventBus().unregister(logger);
+					runelite.getEventBus().unregister(plugin);
 				}
 
 				@Override
@@ -100,7 +100,7 @@ public class PluginManager
 
 					if (from == Service.State.RUNNING)
 					{
-						runelite.getEventBus().unregister(logger);
+						runelite.getEventBus().unregister(plugin);
 					}
 				}
 			};
