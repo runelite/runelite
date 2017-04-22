@@ -138,7 +138,13 @@ public class MenuManager
 	{
 		int index = IDX_LOWER;
 
-		String[] playerOptions = RuneLite.getClient().getPlayerOptions();
+		Client client = RuneLite.getClient();
+		if (client == null)
+		{
+			return IDX_UPPER;
+		}
+
+		String[] playerOptions = client.getPlayerOptions();
 		while (index < IDX_UPPER && playerOptions[index] != null)
 		{
 			index++;
