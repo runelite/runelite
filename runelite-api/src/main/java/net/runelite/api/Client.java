@@ -279,4 +279,9 @@ public class Client
 		int value = settings[varbit.getIndex()];
 		return varbit.get(value);
 	}
+
+	public XHashTable getComponentTable()
+	{
+		return new XHashTable(client.getComponentTable());
+	}
 }

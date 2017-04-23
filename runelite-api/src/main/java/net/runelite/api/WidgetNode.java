@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,58 +24,18 @@
  */
 package net.runelite.api;
 
-public class Node
+public class WidgetNode extends Node
 {
-	private final net.runelite.rs.api.Node node;
+	private final net.runelite.rs.api.WidgetNode widgetNode;
 
-	public Node(net.runelite.rs.api.Node node)
+	public WidgetNode(net.runelite.rs.api.WidgetNode widgetNode)
 	{
-		this.node = node;
+		super(widgetNode);
+		this.widgetNode = widgetNode;
 	}
 
-	@Override
-	public String toString()
+	public int getId()
 	{
-		return "Node{" + "node=" + node + '}';
-	}
-
-	public Node getNext()
-	{
-		return of(node.getNext());
-	}
-
-	public Node getPrev()
-	{
-		return of(node.getPrevious());
-	}
-
-	public long getHash()
-	{
-		return node.getHash();
-	}
-
-	public static final Node of(net.runelite.rs.api.Node node)
-	{
-		if (node == null)
-		{
-			return null;
-		}
-
-		if (node instanceof net.runelite.rs.api.Item)
-		{
-			return new Item((net.runelite.rs.api.Item) node);
-		}
-
-		if (node instanceof net.runelite.rs.api.Renderable)
-		{
-			return new Renderable((net.runelite.rs.api.Renderable) node);
-		}
-
-		if (node instanceof net.runelite.rs.api.WidgetNode)
-		{
-			return new WidgetNode((net.runelite.rs.api.WidgetNode) node);
-		}
-
-		return new Node(node);
+		return widgetNode.getId();
 	}
 }
