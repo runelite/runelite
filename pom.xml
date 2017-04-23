@@ -76,6 +76,7 @@
 		<module>runescape-client-injector-plugin</module>
 		<module>http-api</module>
 		<module>http-service</module>
+		<module>runelite-proxy</module>
 	</modules>
 
 	<build>
