@@ -56,16 +56,11 @@ import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.asm.visitors.ClassFileVisitor;
+import net.runelite.deob.DeobAnnotations;
 import org.objectweb.asm.ClassReader;
 
 public class InjectReplace
 {
-	private static final Type REPLACE = new Type("Lnet/runelite/mapping/Replace;");
-	private static final Type OBFUSCATED_OVERRIDE = new Type("Lnet/runelite/mapping/ObfuscatedOverride;");
-	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
-	private static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
-	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
-
 	private ClassFile cf, vanilla;
 
 	public InjectReplace(ClassFile cf, ClassFile vanilla)
@@ -80,7 +75,7 @@ public class InjectReplace
 		if (an == null)
 			return;
 
-		Annotation a = an.find(REPLACE);
+		Annotation a = an.find(DeobAnnotations.REPLACE);
 		if (a == null)
 			return;
 
@@ -254,10 +249,10 @@ public class InjectReplace
 		{
 			Annotations annotations = m.getAnnotations();
 
-			if (annotations == null || annotations.find(OBFUSCATED_OVERRIDE) == null)
+			if (annotations == null || annotations.find(DeobAnnotations.OBFUSCATED_OVERRIDE) == null)
 				continue;
 
-			Annotation annotation = annotations.find(OBFUSCATED_OVERRIDE);
+			Annotation annotation = annotations.find(DeobAnnotations.OBFUSCATED_OVERRIDE);
 			String overridenMethod = annotation.getElement().getString(); // name of @Exported method to override
 
 			// Find method with exported name on 'cf'
@@ -378,16 +373,11 @@ public class InjectReplace
 	{
 		for (Method m : cf.getMethods().getMethods())
 		{
-			Annotations annotations = m.getAnnotations();
-
-			if (annotations == null || annotations.find(EXPORT) == null)
-				continue;
-
-			Annotation annotation = annotations.find(EXPORT);
-			String exportedName = annotation.getElement().getString();
-
+			String exportedName = DeobAnnotations.getExportedName(m.getAnnotations());
 			if (name.equals(exportedName))
+			{
 				return m;
+			}
 		}
 
 		return null;
@@ -395,39 +385,9 @@ public class InjectReplace
 
 	private Method findVanillaMethodFromDeobfuscatedMethod(Method method)
 	{
-		String name = getObfuscatedName(method);
-		Signature sig = getObfuscatedSignature(method);
+		String name = DeobAnnotations.getObfuscatedName(method.getAnnotations());
+		Signature sig = DeobAnnotations.getObfuscatedSignature(method);
 		return vanilla.findMethod(name, sig);
-	}
-
-	private String getObfuscatedName(Method method)
-	{
-		Annotations an = method.getAnnotations();
-		if (an == null)
-			return method.getName();
-
-		Annotation a = an.find(OBFUSCATED_NAME);
-		if (a == null)
-			return method.getName();
-		
-		return a.getElement().getString();
-	}
-
-	private Signature getObfuscatedSignature(Method method)
-	{
-		Annotations an = method.getAnnotations();
-		if (an == null)
-		{
-			return method.getDescriptor();
-		}
-
-		Annotation obSig = an.find(OBFUSCATED_SIGNATURE);
-		if (obSig == null)
-		{
-			return method.getDescriptor();
-		}
-
-		return new Signature(obSig.getElement().getString());
 	}
 
 	private String getGarbage(Method method)
@@ -438,7 +398,7 @@ public class InjectReplace
 			return null;
 		}
 
-		Annotation obSig = an.find(OBFUSCATED_SIGNATURE);
+		Annotation obSig = an.find(DeobAnnotations.OBFUSCATED_SIGNATURE);
 		if (obSig == null || obSig.getElements().size() < 2)
 		{
 			return null;

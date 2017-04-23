@@ -32,19 +32,13 @@ import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
-import net.runelite.asm.signature.Type;
+import net.runelite.deob.DeobAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AnnotationMapper
 {
 	private static final Logger logger = LoggerFactory.getLogger(AnnotationMapper.class);
-	
-	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
-	private static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
-	private static final Type REPLACE = new Type("Lnet/runelite/mapping/Replace;");
-	private static final Type OBFUSCATED_OVERRIDE = new Type("Lnet/runelite/mapping/ObfuscatedOverride;");
-	private static final Type HOOK = new Type("Lnet/runelite/mapping/Hook;");
 	
 	private final ClassGroup source, target;
 	private final ParallelExecutorMapping mapping;
@@ -67,7 +61,7 @@ public class AnnotationMapper
 			count += run(c, other);
 		}
 
-		System.out.println("Copied " + count + " annotations");
+		logger.info("Copied {} annotations", count);
 	}
 
 	private int run(ClassFile from, ClassFile to)
@@ -94,7 +88,7 @@ public class AnnotationMapper
 			Field other = (Field) mapping.get(f);
 			if (other == null)
 			{
-				logger.warn("Unable to map annotated field {} named {}", f, getExport(f.getAnnotations()));
+				logger.warn("Unable to map annotated field {} named {}", f, DeobAnnotations.getExportedName(f.getAnnotations()));
 				continue;
 			}
 
@@ -109,7 +103,7 @@ public class AnnotationMapper
 			Method other = (Method) mapping.get(m);
 			if (other == null)
 			{
-				logger.warn("Unable to map annotated method {} named {}", m, getExport(m.getAnnotations()));
+				logger.warn("Unable to map annotated method {} named {}", m, DeobAnnotations.getExportedName(m.getAnnotations()));
 				continue;
 			}
 
@@ -160,22 +154,10 @@ public class AnnotationMapper
 
 	private boolean isCopyable(Annotation a)
 	{
-		return a.getType().equals(EXPORT)
-			|| a.getType().equals(IMPLEMENTS)
-			|| a.getType().equals(REPLACE)
-			|| a.getType().equals(OBFUSCATED_OVERRIDE)
-			|| a.getType().equals(HOOK);
-	}
-
-	private String getExport(Annotations an)
-	{
-		if (an == null)
-			return null;
-
-		Annotation a = an.find(EXPORT);
-		if (a == null)
-			return null;
-
-		return a.getElement().getString();
+		return a.getType().equals(DeobAnnotations.EXPORT)
+			|| a.getType().equals(DeobAnnotations.IMPLEMENTS)
+			|| a.getType().equals(DeobAnnotations.REPLACE)
+			|| a.getType().equals(DeobAnnotations.OBFUSCATED_OVERRIDE)
+			|| a.getType().equals(DeobAnnotations.HOOK);
 	}
 }

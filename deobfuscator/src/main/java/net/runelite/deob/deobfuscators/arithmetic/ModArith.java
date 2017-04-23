@@ -63,6 +63,7 @@ import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.signature.Type;
+import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.map.MultiValueMap;
@@ -757,8 +758,6 @@ public class ModArith implements Deobfuscator
 		return i;
 	}
 	
-	private static final Type OBFUSCATED_GETTER = new Type("Lnet/runelite/mapping/ObfuscatedGetter;");
-	
 	public void annotateEncryption()
 	{
 		for (ClassFile cf : group.getClasses())
@@ -772,7 +771,7 @@ public class ModArith implements Deobfuscator
 				String ename = pair.getType() == Long.class ?
 					"longValue" :
 					"intValue";
-				f.getAnnotations().addAnnotation(OBFUSCATED_GETTER, ename, pair.getter);
+				f.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_GETTER, ename, pair.getter);
 			}
 		}
 	}
