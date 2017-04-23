@@ -51,8 +51,7 @@ import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
-import static net.runelite.deob.injection.Inject.HOOK;
-import static net.runelite.deob.injection.Inject.OBFUSCATED_NAME;
+import net.runelite.deob.DeobAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,13 +76,13 @@ public class InjectHook
 	public void process(Field field)
 	{
 		Annotations an = field.getAnnotations();
-		if (an == null || an.find(HOOK) == null)
+		if (an == null || an.find(DeobAnnotations.HOOK) == null)
 		{
 			return;
 		}
 
 		// Field is hooked
-		String hookname = an.find(HOOK).getElement().getString(); // hook name
+		String hookname = DeobAnnotations.getHookName(an); // hook name
 
 		// Find where the field is set
 		injectHook(field, hookname);
@@ -156,8 +155,8 @@ public class InjectHook
 
 	private boolean isField(Field field, Field fieldBeingSet)
 	{
-		String obfuscatedClassName = field.getFields().getClassFile().getAnnotations().find(OBFUSCATED_NAME).getElement().getString();
-		String obfuscatedFieldName = field.getAnnotations().find(OBFUSCATED_NAME).getElement().getString(); // obfuscated name of field
+		String obfuscatedClassName = DeobAnnotations.getObfuscatedName(field.getFields().getClassFile().getAnnotations());
+		String obfuscatedFieldName = DeobAnnotations.getObfuscatedName(field.getAnnotations()); // obfuscated name of field
 		Type type = inject.toObType(field.getType());
 
 		ClassGroup vanilla = inject.getVanilla();

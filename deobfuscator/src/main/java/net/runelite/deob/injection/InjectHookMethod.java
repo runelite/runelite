@@ -34,8 +34,7 @@ import net.runelite.asm.attributes.code.instructions.ALoad_0;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
-import static net.runelite.deob.injection.Inject.HOOK;
-import static net.runelite.deob.injection.Inject.OBFUSCATED_NAME;
+import net.runelite.deob.DeobAnnotations;
 import static net.runelite.deob.injection.InjectHook.HOOKS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,18 +53,18 @@ public class InjectHookMethod
 	public void process(Method method)
 	{
 		Annotations an = method.getAnnotations();
-		if (an == null || an.find(HOOK) == null)
+		if (an == null || an.find(DeobAnnotations.HOOK) == null)
 		{
 			return;
 		}
 
 		// Method is hooked
-		String hookName = an.find(HOOK).getElement().getString(); // hook name
+		String hookName = DeobAnnotations.getHookName(an); // hook name
 
 		// Find equivalent method in vanilla, and insert callback at the beginning
 		ClassFile cf = method.getMethods().getClassFile();
-		String obfuscatedMethodName = an.find(OBFUSCATED_NAME).getElement().getString(),
-			obfuscatedClassName = cf.getAnnotations().find(OBFUSCATED_NAME).getElement().getString();
+		String obfuscatedMethodName = DeobAnnotations.getObfuscatedName(an),
+			obfuscatedClassName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 
 		Signature obfuscatedSignature = inject.getObfuscatedSignature(method);
 
