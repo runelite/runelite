@@ -1207,7 +1207,7 @@ public class class13 {
 
          NPC var13;
          int var14;
-         while(Client.secretCipherBuffer2.method3098(Client.field348) >= 27) {
+         while(Client.secretCipherBuffer2.method3098(Client.packetLength) >= 27) {
             var1 = Client.secretCipherBuffer2.method3111(15);
             if(var1 == 32767) {
                break;
@@ -1412,8 +1412,8 @@ public class class13 {
             }
          }
 
-         if(Client.secretCipherBuffer2.offset != Client.field348) {
-            throw new RuntimeException(Client.secretCipherBuffer2.offset + "," + Client.field348);
+         if(Client.secretCipherBuffer2.offset != Client.packetLength) {
+            throw new RuntimeException(Client.secretCipherBuffer2.offset + "," + Client.packetLength);
          } else {
             for(var1 = 0; var1 < Client.field402; ++var1) {
                if(Client.cachedNPCs[Client.field342[var1]] == null) {

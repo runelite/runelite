@@ -208,37 +208,38 @@ public class ScriptState {
                class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, 1);
                Client.secretCipherBuffer2.offset = 0;
                Client.packetOpcode = Client.secretCipherBuffer2.readOpcode();
-               Client.field348 = class212.packetLenghts[Client.packetOpcode];
+               Client.packetLength = class212.packetLenghts[Client.packetOpcode];
                --available;
+	       System.out.println("READ " + Client.packetOpcode);
             }
 
-            if(Client.field348 == -1) {
+            if(Client.packetLength == -1) {
                if(available <= 0) {
                   return false;
                }
 
                class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, 1);
-               Client.field348 = Client.secretCipherBuffer2.payload[0] & 255;
+               Client.packetLength = Client.secretCipherBuffer2.payload[0] & 255;
                --available;
             }
 
-            if(Client.field348 == -2) {
+            if(Client.packetLength == -2) {
                if(available <= 1) {
                   return false;
                }
 
                class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, 2);
                Client.secretCipherBuffer2.offset = 0;
-               Client.field348 = Client.secretCipherBuffer2.readUnsignedShort();
+               Client.packetLength = Client.secretCipherBuffer2.readUnsignedShort();
                available -= 2;
             }
 
-            if(available < Client.field348) {
+            if(available < Client.packetLength) {
                return false;
             }
 
             Client.secretCipherBuffer2.offset = 0;
-            class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, Client.field348);
+            class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, Client.packetLength);
             Client.field350 = 0;
             Client.field354 = Client.field424;
             Client.field424 = Client.field352 * -1;
@@ -266,7 +267,7 @@ public class ScriptState {
                MessageNode.field250 = Client.secretCipherBuffer2.readUnsignedByte();
                class119.field1880 = Client.secretCipherBuffer2.method3051();
 
-               while(Client.secretCipherBuffer2.offset < Client.field348) {
+               while(Client.secretCipherBuffer2.offset < Client.packetLength) {
                   Client.packetOpcode = Client.secretCipherBuffer2.readUnsignedByte();
                   class60.method1179();
                }
@@ -320,7 +321,7 @@ public class ScriptState {
             int var16;
             if(Client.packetOpcode == 213) {
                Client.field497 = Client.field561;
-               if(Client.field348 == 0) {
+               if(Client.packetLength == 0) {
                   Client.field530 = null;
                   Client.clanChatOwner = null;
                   VertexNormal.clanChatCount = 0;
@@ -439,7 +440,7 @@ public class ScriptState {
             }
 
             if(Client.packetOpcode == 239) {
-               Actor.method572(Client.secretCipherBuffer2, Client.field348);
+               Actor.method572(Client.secretCipherBuffer2, Client.packetLength);
                Client.packetOpcode = -1;
                return true;
             }
@@ -554,7 +555,7 @@ public class ScriptState {
                   var6 = null;
                }
 
-               for(; Client.secretCipherBuffer2.offset < Client.field348; FaceNormal.method1931(var0, var18, var21 - 1, var9)) {
+               for(; Client.secretCipherBuffer2.offset < Client.packetLength; FaceNormal.method1931(var0, var18, var21 - 1, var9)) {
                   var18 = Client.secretCipherBuffer2.method2880();
                   var21 = Client.secretCipherBuffer2.readUnsignedShort();
                   var9 = 0;
@@ -697,7 +698,7 @@ public class ScriptState {
             WidgetNode var26;
             int var27;
             if(Client.packetOpcode == 158) {
-               var3 = Client.field348 + Client.secretCipherBuffer2.offset;
+               var3 = Client.packetLength + Client.secretCipherBuffer2.offset;
                var0 = Client.secretCipherBuffer2.readUnsignedShort();
                var17 = Client.secretCipherBuffer2.readUnsignedShort();
                if(var0 != Client.widgetRoot) {
@@ -825,7 +826,7 @@ public class ScriptState {
             int var32;
             if(Client.packetOpcode == 193) {
                var29 = Client.secretCipherBuffer2;
-               var0 = Client.field348;
+               var0 = Client.packetLength;
                ClassInfo var69 = new ClassInfo();
                var69.field3240 = var29.readUnsignedByte();
                var69.field3236 = var29.readInt();
@@ -1149,7 +1150,7 @@ public class ScriptState {
             }
 
             if(Client.packetOpcode == 161) {
-               while(Client.secretCipherBuffer2.offset < Client.field348) {
+               while(Client.secretCipherBuffer2.offset < Client.packetLength) {
                   var3 = Client.secretCipherBuffer2.readUnsignedByte();
                   var33 = (var3 & 1) == 1;
                   var4 = Client.secretCipherBuffer2.readString();
@@ -1771,7 +1772,7 @@ public class ScriptState {
             if(Client.packetOpcode == 198) {
                Friend var87;
                Friend var90;
-               while(Client.secretCipherBuffer2.offset < Client.field348) {
+               while(Client.secretCipherBuffer2.offset < Client.packetLength) {
                   var5 = Client.secretCipherBuffer2.readUnsignedByte() == 1;
                   var36 = Client.secretCipherBuffer2.readString();
                   var4 = Client.secretCipherBuffer2.readString();
@@ -1942,14 +1943,14 @@ public class ScriptState {
                return true;
             }
 
-            GameObject.method1958("" + Client.packetOpcode + "," + Client.field424 + "," + Client.field354 + "," + Client.field348, (Throwable)null);
+            GameObject.method1958("" + Client.packetOpcode + "," + Client.field424 + "," + Client.field354 + "," + Client.packetLength, (Throwable)null);
             WallObject.method1930();
          } catch (IOException var53) {
             class107.method2083();
          } catch (Exception var54) {
-            var1 = "" + Client.packetOpcode + "," + Client.field424 + "," + Client.field354 + "," + Client.field348 + "," + (class119.baseX + Projectile.localPlayer.pathX[0]) + "," + (class187.baseY + Projectile.localPlayer.pathY[0]) + ",";
+            var1 = "" + Client.packetOpcode + "," + Client.field424 + "," + Client.field354 + "," + Client.packetLength + "," + (class119.baseX + Projectile.localPlayer.pathX[0]) + "," + (class187.baseY + Projectile.localPlayer.pathY[0]) + ",";
 
-            for(var0 = 0; var0 < Client.field348 && var0 < 50; ++var0) {
+            for(var0 = 0; var0 < Client.packetLength && var0 < 50; ++var0) {
                var1 = var1 + Client.secretCipherBuffer2.payload[var0] + ",";
             }
 

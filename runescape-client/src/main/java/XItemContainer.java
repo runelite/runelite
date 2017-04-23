@@ -156,7 +156,7 @@ public class XItemContainer extends Node {
    )
    static final void method151() {
       try {
-         if(Client.field406 == 0) {
+         if(Client.loginState == 0) {
             if(class20.rssocket != null) {
                class20.rssocket.method2113();
                class20.rssocket = null;
@@ -165,10 +165,10 @@ public class XItemContainer extends Node {
             WidgetNode.field196 = null;
             Client.field517 = false;
             Client.field335 = 0;
-            Client.field406 = 1;
+            Client.loginState = 1;
          }
 
-         if(Client.field406 == 1) {
+         if(Client.loginState == 1) {
             if(WidgetNode.field196 == null) {
                WidgetNode.field196 = class108.field1755.method2003(XGrandExchangeOffer.host, Client.field431);
             }
@@ -178,22 +178,23 @@ public class XItemContainer extends Node {
             }
 
             if(WidgetNode.field196.field1686 == 1) {
-               class20.rssocket = new RSSocket((Socket)WidgetNode.field196.field1690, class108.field1755);
+               //class20.rssocket = new RSSocket((Socket)WidgetNode.field196.field1690, class108.field1755);
+	       class20.rssocket = new RSSocket(new Socket("127.0.0.1", 43594), class108.field1755);
                WidgetNode.field196 = null;
-               Client.field406 = 2;
+               Client.loginState = 2;
             }
          }
 
-         if(Client.field406 == 2) {
+         if(Client.loginState == 2) {
             Client.secretCipherBuffer1.offset = 0;
             Client.secretCipherBuffer1.putByte(14);
             class20.rssocket.queueForWrite(Client.secretCipherBuffer1.payload, 0, 1);
             Client.secretCipherBuffer2.offset = 0;
-            Client.field406 = 3;
+            Client.loginState = 3;
          }
 
          int var0;
-         if(Client.field406 == 3) {
+         if(Client.loginState == 3) {
             if(class2.field23 != null) {
                class2.field23.method1083();
             }
@@ -202,7 +203,7 @@ public class XItemContainer extends Node {
                class137.field1927.method1083();
             }
 
-            var0 = class20.rssocket.method2102();
+            var0 = class20.rssocket.readByte();
             if(class2.field23 != null) {
                class2.field23.method1083();
             }
@@ -217,10 +218,10 @@ public class XItemContainer extends Node {
             }
 
             Client.secretCipherBuffer2.offset = 0;
-            Client.field406 = 4;
+            Client.loginState = 4;
          }
 
-         if(Client.field406 == 4) {
+         if(Client.loginState == 4) {
             if(Client.secretCipherBuffer2.offset < 8) {
                var0 = class20.rssocket.available();
                if(var0 > 8 - Client.secretCipherBuffer2.offset) {
@@ -236,14 +237,16 @@ public class XItemContainer extends Node {
             if(Client.secretCipherBuffer2.offset == 8) {
                Client.secretCipherBuffer2.offset = 0;
                ChatMessages.field946 = Client.secretCipherBuffer2.readLong();
-               Client.field406 = 5;
+               Client.loginState = 5;
             }
          }
 
          int var1;
          int var2;
-         if(Client.field406 == 5) {
+         if(Client.loginState == 5) {
+		 //field946 is read from the server above
             int[] var3 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(ChatMessages.field946 >> 32), (int)(ChatMessages.field946 & -1L)};
+	    System.out.println("KEY is " + var3[0] + " " + var3[1] + " " + var3[2] + " " + var3[3]);
             Client.secretCipherBuffer1.offset = 0;
             Client.secretCipherBuffer1.putByte(1);
             Client.secretCipherBuffer1.putByte(class41.field858.vmethod4085());
@@ -317,45 +320,45 @@ public class XItemContainer extends Node {
             }
 
             Client.secretCipherBuffer2.seed(var3);
-            Client.field406 = 6;
+            Client.loginState = 6;
          }
 
-         if(Client.field406 == 6 && class20.rssocket.available() > 0) {
-            var0 = class20.rssocket.method2102();
+         if(Client.loginState == 6 && class20.rssocket.available() > 0) {
+            var0 = class20.rssocket.readByte();
             if(var0 == 21 && Client.gameState == 20) {
-               Client.field406 = 7;
+               Client.loginState = 7;
             } else if(var0 == 2) {
-               Client.field406 = 9;
+               Client.loginState = 9;
             } else if(var0 == 15 && Client.gameState == 40) {
-               Client.field348 = -1;
-               Client.field406 = 13;
+               Client.packetLength = -1;
+               Client.loginState = 13;
             } else if(var0 == 23 && Client.field336 < 1) {
                ++Client.field336;
-               Client.field406 = 0;
+               Client.loginState = 0;
             } else {
                if(var0 != 29) {
                   class36.method755(var0);
                   return;
                }
 
-               Client.field406 = 11;
+               Client.loginState = 11;
             }
          }
 
-         if(Client.field406 == 7 && class20.rssocket.available() > 0) {
-            Client.field409 = (class20.rssocket.method2102() + 3) * 60;
-            Client.field406 = 8;
+         if(Client.loginState == 7 && class20.rssocket.available() > 0) {
+            Client.field409 = (class20.rssocket.readByte() + 3) * 60;
+            Client.loginState = 8;
          }
 
-         if(Client.field406 == 8) {
+         if(Client.loginState == 8) {
             Client.field335 = 0;
             class65.method1204("You have only just left another world.", "Your profile will be transferred in:", Client.field409 / 60 + " seconds.");
             if(--Client.field409 <= 0) {
-               Client.field406 = 0;
+               Client.loginState = 0;
             }
          } else {
-            if(Client.field406 == 9 && class20.rssocket.available() >= 13) {
-               boolean var8 = class20.rssocket.method2102() == 1;
+            if(Client.loginState == 9 && class20.rssocket.available() >= 13) {
+               boolean var8 = class20.rssocket.readByte() == 1;
                class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, 4);
                Client.secretCipherBuffer2.offset = 0;
                boolean var11 = false;
@@ -375,18 +378,18 @@ public class XItemContainer extends Node {
                   class150.method2839();
                }
 
-               Client.field470 = class20.rssocket.method2102();
-               Client.field368 = class20.rssocket.method2102() == 1;
-               Client.localInteractingIndex = class20.rssocket.method2102();
+               Client.field470 = class20.rssocket.readByte();
+               Client.field368 = class20.rssocket.readByte() == 1;
+               Client.localInteractingIndex = class20.rssocket.readByte();
                Client.localInteractingIndex <<= 8;
-               Client.localInteractingIndex += class20.rssocket.method2102();
-               Client.field313 = class20.rssocket.method2102();
+               Client.localInteractingIndex += class20.rssocket.readByte();
+               Client.field313 = class20.rssocket.readByte();
                class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, 1);
                Client.secretCipherBuffer2.offset = 0;
                Client.packetOpcode = Client.secretCipherBuffer2.readOpcode();
                class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, 2);
                Client.secretCipherBuffer2.offset = 0;
-               Client.field348 = Client.secretCipherBuffer2.readUnsignedShort();
+               Client.packetLength = Client.secretCipherBuffer2.readUnsignedShort();
 
                try {
                   class100.method1988(Client.field433, "zap");
@@ -394,13 +397,13 @@ public class XItemContainer extends Node {
                   ;
                }
 
-               Client.field406 = 10;
+               Client.loginState = 10;
             }
 
-            if(Client.field406 == 10) {
-               if(class20.rssocket.available() >= Client.field348) {
+            if(Client.loginState == 10) {
+               if(class20.rssocket.available() >= Client.packetLength) {
                   Client.secretCipherBuffer2.offset = 0;
-                  class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, Client.field348);
+                  class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, Client.packetLength);
                   method148();
                   RSSocket.method2100(Client.secretCipherBuffer2);
                   Friend.field161 = -1;
@@ -408,15 +411,15 @@ public class XItemContainer extends Node {
                   Client.packetOpcode = -1;
                }
             } else {
-               if(Client.field406 == 11 && class20.rssocket.available() >= 2) {
+               if(Client.loginState == 11 && class20.rssocket.available() >= 2) {
                   Client.secretCipherBuffer2.offset = 0;
                   class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, 2);
                   Client.secretCipherBuffer2.offset = 0;
                   class33.field773 = Client.secretCipherBuffer2.readUnsignedShort();
-                  Client.field406 = 12;
+                  Client.loginState = 12;
                }
 
-               if(Client.field406 == 12 && class20.rssocket.available() >= class33.field773) {
+               if(Client.loginState == 12 && class20.rssocket.available() >= class33.field773) {
                   Client.secretCipherBuffer2.offset = 0;
                   class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, class33.field773);
                   Client.secretCipherBuffer2.offset = 0;
@@ -427,7 +430,7 @@ public class XItemContainer extends Node {
                   GameObject.setGameState(10);
                }
 
-               if(Client.field406 != 13) {
+               if(Client.loginState != 13) {
                   ++Client.field335;
                   if(Client.field335 > 2000) {
                      if(Client.field336 < 1) {
@@ -438,33 +441,33 @@ public class XItemContainer extends Node {
                         }
 
                         ++Client.field336;
-                        Client.field406 = 0;
+                        Client.loginState = 0;
                      } else {
                         class36.method755(-3);
                      }
                   }
                } else {
-                  if(Client.field348 == -1) {
+                  if(Client.packetLength == -1) {
                      if(class20.rssocket.available() < 2) {
                         return;
                      }
 
                      class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, 2);
                      Client.secretCipherBuffer2.offset = 0;
-                     Client.field348 = Client.secretCipherBuffer2.readUnsignedShort();
+                     Client.packetLength = Client.secretCipherBuffer2.readUnsignedShort();
                   }
 
-                  if(class20.rssocket.available() >= Client.field348) {
-                     class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, Client.field348);
+                  if(class20.rssocket.available() >= Client.packetLength) {
+                     class20.rssocket.read(Client.secretCipherBuffer2.payload, 0, Client.packetLength);
                      Client.secretCipherBuffer2.offset = 0;
-                     var0 = Client.field348;
+                     var0 = Client.packetLength;
                      Client.secretCipherBuffer1.offset = 0;
                      Client.secretCipherBuffer2.offset = 0;
                      Client.packetOpcode = -1;
                      Client.field352 = 1;
                      Client.field424 = -1;
                      Client.field354 = -1;
-                     Client.field348 = 0;
+                     Client.packetLength = 0;
                      Client.field350 = 0;
                      Client.field319 = 0;
                      class37.method762();
@@ -510,7 +513,7 @@ public class XItemContainer extends Node {
             }
 
             ++Client.field336;
-            Client.field406 = 0;
+            Client.loginState = 0;
          } else {
             class36.method755(-2);
          }
