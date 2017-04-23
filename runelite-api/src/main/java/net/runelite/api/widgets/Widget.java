@@ -29,7 +29,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import net.runelite.api.Client;
+import net.runelite.api.Node;
 import net.runelite.api.Point;
+import net.runelite.api.WidgetNode;
+import net.runelite.api.XHashTable;
 
 public class Widget
 {
@@ -67,6 +70,40 @@ public class Widget
 		return new Widget(client, parent);
 	}
 
+	public Widget getParentFromId()
+	{
+		int id = getParentId();
+		if (id == -1)
+		{
+			return null;
+		}
+
+		return client.getWidget(id >>> 16, id & 0xFFFF);
+	}
+
+	public int getParentId()
+	{
+		int parentId = widget.getParentId();
+		if (parentId != -1)
+		{
+			return parentId;
+		}
+
+		int i = getId() >>> 16;
+		XHashTable componentTable = client.getComponentTable();
+		for (Node node : componentTable.getNodes())
+		{
+			WidgetNode wn = (WidgetNode) node;
+
+			if (i == wn.getId())
+			{
+				return (int) wn.getHash();
+			}
+		}
+
+		return -1;
+	}
+
 	private int getRelativeX()
 	{
 		return widget.getRelativeX();
@@ -84,7 +121,8 @@ public class Widget
 
 	public boolean isHidden()
 	{
-		return widget.isHidden();
+		Widget parent = getParentFromId();
+		return (parent != null && parent.isHidden()) || widget.isHidden();
 	}
 
 	public Point getCanvasLocation()

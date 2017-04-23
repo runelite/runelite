@@ -27,7 +27,7 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
-public interface WidgetNode
+public interface WidgetNode extends Node
 {
 	@Import("id")
 	int getId();
