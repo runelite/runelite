@@ -30,7 +30,6 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Code;
-import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -46,8 +45,8 @@ import net.runelite.asm.attributes.code.instructions.Return;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
-import static net.runelite.deob.injection.Inject.EXPORT;
-import static net.runelite.deob.injection.Inject.OBFUSCATED_NAME;
+import net.runelite.deob.DeobAnnotations;
+import static net.runelite.deob.DeobAnnotations.EXPORT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,15 +76,10 @@ public class InjectInvoker
 			return; // not an exported method
 		}
 
-		String exportedName = an.find(EXPORT).getElement().getString();
-		String obfuscatedName;
+		String exportedName = DeobAnnotations.getExportedName(an);
+		String obfuscatedName = DeobAnnotations.getObfuscatedName(an);
 
-		Annotation obAn = an.find(OBFUSCATED_NAME);
-		if (obAn != null)
-		{
-			obfuscatedName = obAn.getElement().getString();
-		}
-		else
+		if (obfuscatedName == null)
 		{
 			obfuscatedName = m.getName();
 		}
