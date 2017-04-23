@@ -7,7 +7,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class class39 {
    @ObfuscatedName("i")
    @Export("rsaKeyModulus")
-   static final BigInteger rsaKeyModulus = new BigInteger("60944c46cf05ef4704129f650bc2334941622845bb983b49c30d1df3f1363ae64666ce663a602c9fb6af1ebd868ca415db9c75801760b6a24627971e723392b08705359f5313c800d2a061e70978f1ccaadf1be39acfc4beedaade993c79ae2815d53b008d3a7d8f003481414bd94018e5bce26151c6e2cc966a5bd26ba0304f", 16);
+   static final BigInteger rsaKeyModulus = new BigInteger("a0211b55eb8010fd56feae6b163a67945b2ffcb6b3cd976a477f2d88e4cafefebd7174268fa9708acf26dbb44a772d4781f41ecb812f9ae459cf23fd7dc76bd70ac5b9ddaee2c1f6de8f8a8a39750f5f4a5c784079d6e7ba39a8915a6336cd681f3ce8083a344072adf5eec02a7221a05b8fda1e4ff4cf117ea89d290ed6fb7d", 16);
    @ObfuscatedName("f")
    @Export("rsaKeyExponent")
    static final BigInteger rsaKeyExponent = new BigInteger("10001", 16);

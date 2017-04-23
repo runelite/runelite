@@ -178,8 +178,7 @@ public class XItemContainer extends Node {
             }
 
             if(WidgetNode.field196.field1686 == 1) {
-               //class20.rssocket = new RSSocket((Socket)WidgetNode.field196.field1690, class108.field1755);
-	       class20.rssocket = new RSSocket(new Socket("127.0.0.1", 43594), class108.field1755);
+               class20.rssocket = new RSSocket((Socket)WidgetNode.field196.field1690, class108.field1755);
                WidgetNode.field196 = null;
                Client.loginState = 2;
             }
@@ -244,9 +243,7 @@ public class XItemContainer extends Node {
          int var1;
          int var2;
          if(Client.loginState == 5) {
-		 //field946 is read from the server above
             int[] var3 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(ChatMessages.field946 >> 32), (int)(ChatMessages.field946 & -1L)};
-	    System.out.println("KEY is " + var3[0] + " " + var3[1] + " " + var3[2] + " " + var3[3]);
             Client.secretCipherBuffer1.offset = 0;
             Client.secretCipherBuffer1.putByte(1);
             Client.secretCipherBuffer1.putByte(class41.field858.vmethod4085());
