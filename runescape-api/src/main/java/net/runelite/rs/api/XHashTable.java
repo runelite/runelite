@@ -25,7 +25,13 @@
 
 package net.runelite.rs.api;
 
+import net.runelite.mapping.Import;
+
 public interface XHashTable
 {
-	//Node get(long var1);
+	@Import("size")
+	int getSize();
+
+	@Import("buckets")
+	Node[] getBuckets();
 }

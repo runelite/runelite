@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,58 +24,38 @@
  */
 package net.runelite.api;
 
-public class Node
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class XHashTable
 {
-	private final net.runelite.rs.api.Node node;
+	private final net.runelite.rs.api.XHashTable hashtable;
 
-	public Node(net.runelite.rs.api.Node node)
+	public XHashTable(net.runelite.rs.api.XHashTable hashtable)
 	{
-		this.node = node;
+		this.hashtable = hashtable;
 	}
 
-	@Override
-	public String toString()
+	public Collection<Node> getNodes()
 	{
-		return "Node{" + "node=" + node + '}';
-	}
+		List<Node> nodes = new ArrayList<>();
 
-	public Node getNext()
-	{
-		return of(node.getNext());
-	}
-
-	public Node getPrev()
-	{
-		return of(node.getPrevious());
-	}
-
-	public long getHash()
-	{
-		return node.getHash();
-	}
-
-	public static final Node of(net.runelite.rs.api.Node node)
-	{
-		if (node == null)
+		net.runelite.rs.api.Node[] buckets = hashtable.getBuckets();
+		for (int i = 0; i < buckets.length; ++i)
 		{
-			return null;
+			net.runelite.rs.api.Node node = buckets[i];
+
+			// It looks like the first node in the bucket is always
+			// a sentinel
+			net.runelite.rs.api.Node cur = node.getNext();
+			while (cur != node)
+			{
+				nodes.add(Node.of(cur));
+				cur = cur.getNext();
+			}
 		}
 
-		if (node instanceof net.runelite.rs.api.Item)
-		{
-			return new Item((net.runelite.rs.api.Item) node);
-		}
-
-		if (node instanceof net.runelite.rs.api.Renderable)
-		{
-			return new Renderable((net.runelite.rs.api.Renderable) node);
-		}
-
-		if (node instanceof net.runelite.rs.api.WidgetNode)
-		{
-			return new WidgetNode((net.runelite.rs.api.WidgetNode) node);
-		}
-
-		return new Node(node);
+		return nodes;
 	}
 }
