@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.updater;
 
 import java.io.File;
@@ -42,8 +41,8 @@ import org.junit.Test;
 
 public class UpdateMappingsTest
 {
-	private static final String JAR1 = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\116.2-SNAPSHOT\\rs-client-116.2-SNAPSHOT.jar",
-		JAR2 = "d:/rs/07/gamepack_117_deobfuscated.jar",
+	private static final String JAR1 = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\1.1.26-SNAPSHOT\\rs-client-1.1.26-SNAPSHOT.jar",
+		JAR2 = "d:/rs/07/gamepack_139_deobfuscated.jar",
 		OUT = "d:/rs/07/adamout.jar";
 
 	@Test
@@ -70,6 +69,11 @@ public class UpdateMappingsTest
 
 		AnnotationIntegrityChecker aic = new AnnotationIntegrityChecker(group1, group2, mapping);
 		aic.run();
+
+		if (aic.getErrors() > 0)
+		{
+			//Assert.fail("Errors in AIC");
+		}
 
 		AnnotationRenamer an = new AnnotationRenamer(group2);
 		an.run();
@@ -109,12 +113,18 @@ public class UpdateMappingsTest
 				assert m.getMethods().getClassFile().getGroup() == in;
 
 				if (m.isStatic())
+				{
 					++staticMethod;
+				}
 				else
+				{
 					++method;
+				}
 			}
 			else if (o instanceof ClassFile)
+			{
 				++classes;
+			}
 
 			++total;
 		}

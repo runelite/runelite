@@ -67,7 +67,7 @@ public class Inject
 
 	public static final java.lang.Class<?> CLIENT_CLASS = Client.class;
 
-	private static final String API_PACKAGE_BASE = "net.runelite.rs.api.";
+	public static final String API_PACKAGE_BASE = "net.runelite.rs.api.";
 	
 	private final InjectHook hooks = new InjectHook(this);
 	private final InjectHookMethod hookMethod = new InjectHookMethod(this);
