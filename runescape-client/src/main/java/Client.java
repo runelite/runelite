@@ -235,7 +235,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1711436239
    )
-   static int field348;
+   @Export("packetLength")
+   static int packetLength;
    @ObfuscatedName("cq")
    @ObfuscatedGetter(
       intValue = -2029415455
@@ -479,7 +480,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 110813355
    )
-   static int field406;
+   @Export("loginState")
+   static int loginState;
    @ObfuscatedName("ga")
    @ObfuscatedGetter(
       intValue = 1211297111
@@ -1474,7 +1476,7 @@ public final class Client extends GameEngine {
                         return;
                      }
                   } else {
-                     int var3 = Preferences.rssocket.method2102();
+                     int var3 = Preferences.rssocket.readByte();
                      if(var3 != 0) {
                         this.method246(var3);
                         return;
@@ -3711,7 +3713,7 @@ public final class Client extends GameEngine {
       field303 = 0;
       field332 = 0;
       field333 = 0;
-      field406 = 0;
+      loginState = 0;
       field335 = 0;
       field336 = 0;
       field409 = 0;
@@ -3724,7 +3726,7 @@ public final class Client extends GameEngine {
       secretCipherBuffer1 = new CipherBuffer(5000);
       field346 = new CipherBuffer(5000);
       secretCipherBuffer2 = new CipherBuffer(15000);
-      field348 = 0;
+      packetLength = 0;
       packetOpcode = 0;
       field350 = 0;
       field436 = 0;

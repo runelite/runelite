@@ -104,7 +104,7 @@ public final class GameObject {
          }
 
          if(var0 == 20 || var0 == 40 || var0 == 45) {
-            Client.field406 = 0;
+            Client.loginState = 0;
             Client.field335 = 0;
             Client.field336 = 0;
          }

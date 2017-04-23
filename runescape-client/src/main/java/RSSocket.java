@@ -95,7 +95,8 @@ public final class RSSocket implements Runnable {
       signature = "(S)I",
       garbageValue = "-2847"
    )
-   public int method2102() throws IOException {
+   @Export("readByte")
+   public int readByte() throws IOException {
       return this.field1765?0:this.inputStream.read();
    }
 
