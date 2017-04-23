@@ -84,7 +84,8 @@ public class Widget
 
 	public boolean isHidden()
 	{
-		return widget.isHidden();
+		Widget parent = getParent();
+		return (parent != null && parent.isHidden()) || widget.isHidden();
 	}
 
 	public Point getCanvasLocation()
