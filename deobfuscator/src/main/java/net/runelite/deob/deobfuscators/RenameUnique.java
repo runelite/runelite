@@ -25,7 +25,6 @@
 
 package net.runelite.deob.deobfuscators;
 
-import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
@@ -34,6 +33,8 @@ import net.runelite.asm.signature.util.VirtualMethods;
 import net.runelite.deob.Deob;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.util.NameMappings;
+
+import java.util.List;
 
 public class RenameUnique implements Deobfuscator
 {
@@ -52,7 +53,7 @@ public class RenameUnique implements Deobfuscator
 		}
 	}
 		
-	private void generatFieldNames(NameMappings map, ClassGroup group)
+	private void generateFieldNames(NameMappings map, ClassGroup group)
 	{
 		int i = 0;
 		
@@ -99,7 +100,7 @@ public class RenameUnique implements Deobfuscator
 		NameMappings mappings = new NameMappings();
 		
 		this.generateClassNames(mappings, group);
-		this.generatFieldNames(mappings, group);
+		this.generateFieldNames(mappings, group);
 		this.generateMethodNames(mappings, group);
 		
 		renamer = new Renamer(mappings);
