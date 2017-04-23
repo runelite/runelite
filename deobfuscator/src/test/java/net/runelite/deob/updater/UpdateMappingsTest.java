@@ -36,6 +36,7 @@ import net.runelite.deob.deobfuscators.mapping.AnnotationMapper;
 import net.runelite.deob.deobfuscators.mapping.Mapper;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 import net.runelite.deob.util.JarUtil;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -72,7 +73,7 @@ public class UpdateMappingsTest
 
 		if (aic.getErrors() > 0)
 		{
-			//Assert.fail("Errors in AIC");
+			Assert.fail("Errors in annotation integrity checker");
 		}
 
 		AnnotationRenamer an = new AnnotationRenamer(group2);
