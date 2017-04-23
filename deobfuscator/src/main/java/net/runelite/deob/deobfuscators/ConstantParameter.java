@@ -49,7 +49,7 @@ import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.signature.Type;
+import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
 import org.apache.commons.collections4.map.MultiValueMap;
 
@@ -441,8 +441,6 @@ public class ConstantParameter implements Deobfuscator
 		return count;
 	}
 
-	private static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
-
 	private void annotateObfuscatedSignature(ConstantMethodParameter parameter)
 	{
 		for (Method m : parameter.methods)
@@ -451,12 +449,12 @@ public class ConstantParameter implements Deobfuscator
 
 			Annotations annotations = m.getAnnotations();
 
-			if (annotations != null && annotations.find(OBFUSCATED_SIGNATURE) != null)
+			if (annotations != null && annotations.find(DeobAnnotations.OBFUSCATED_SIGNATURE) != null)
 			{
 				return;
 			}
 
-			Annotation annotation = annotations.addAnnotation(OBFUSCATED_SIGNATURE, "signature", m.getDescriptor().toString());
+			Annotation annotation = annotations.addAnnotation(DeobAnnotations.OBFUSCATED_SIGNATURE, "signature", m.getDescriptor().toString());
 
 			Element element = new Element(annotation);
 			element.setName("garbageValue");

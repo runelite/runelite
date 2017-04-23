@@ -37,7 +37,6 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
-import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
@@ -45,9 +44,9 @@ import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.asm.signature.util.VirtualMethods;
 import net.runelite.deob.Deob;
+import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -85,20 +84,9 @@ public class UnusedParameters implements Deobfuscator
 			}
 	}
 
-	private static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
-	
-	private Signature getObfuscatedSignature(Method m)
-	{
-		Annotation a = m.getAnnotations().find(OBFUSCATED_SIGNATURE);
-		if (a == null)
-			return null;
-
-		return new Signature(a.getElement().getString());
-	}
-
 	private boolean shouldRemove(Method m, int parameter)
 	{
-		Signature obSig = getObfuscatedSignature(m);
+		Signature obSig = DeobAnnotations.getObfuscatedSignature(m);
 		if (obSig == null)
 			return false;
 

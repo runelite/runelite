@@ -38,6 +38,7 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.asm.signature.util.VirtualMethods;
+import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.util.NameMappings;
 import org.slf4j.Logger;
@@ -46,9 +47,6 @@ import org.slf4j.LoggerFactory;
 public class Renamer implements Deobfuscator
 {
 	private static final Logger logger = LoggerFactory.getLogger(Renamer.class);
-
-	private static final Type OBFUSCATED_NAME_TYPE = new Type("Lnet/runelite/mapping/ObfuscatedName;");
-	private static final Type OBFUSCATED_SIGNATURE_TYPE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
 
 	private final NameMappings mappings;
 
@@ -122,9 +120,9 @@ public class Renamer implements Deobfuscator
 					field.setType(new Type("L" + name + ";", field.getType().getArrayDims()));
 		}
 
-		if (cf.getAnnotations().find(OBFUSCATED_NAME_TYPE) == null)
+		if (cf.getAnnotations().find(DeobAnnotations.OBFUSCATED_NAME) == null)
 		{
-			cf.getAnnotations().addAnnotation(OBFUSCATED_NAME_TYPE, "value", cf.getName());
+			cf.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_NAME, "value", cf.getName());
 		}
 
 		cf.setName(name);
@@ -159,9 +157,9 @@ public class Renamer implements Deobfuscator
 				if (newName == null)
 					continue;
 
-				if (field.getAnnotations().find(OBFUSCATED_NAME_TYPE) == null)
+				if (field.getAnnotations().find(DeobAnnotations.OBFUSCATED_NAME) == null)
 				{
-					field.getAnnotations().addAnnotation(OBFUSCATED_NAME_TYPE, "value", field.getName());
+					field.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_NAME, "value", field.getName());
 				}
 
 				field.setName(newName);
@@ -175,7 +173,7 @@ public class Renamer implements Deobfuscator
 				String newName = mappings.get(method.getPoolMethod());
 
 				// rename on obfuscated signature
-				Annotation an = method.getAnnotations().find(OBFUSCATED_SIGNATURE_TYPE);
+				Annotation an = method.getAnnotations().find(DeobAnnotations.OBFUSCATED_SIGNATURE);
 				if (an != null)
 				{
 					Signature obfuscatedSig = new Signature(an.getElement().getString());
@@ -191,9 +189,9 @@ public class Renamer implements Deobfuscator
 
 				for (Method m : virtualMethods)
 				{
-					if (m.getAnnotations().find(OBFUSCATED_NAME_TYPE) == null)
+					if (m.getAnnotations().find(DeobAnnotations.OBFUSCATED_NAME) == null)
 					{
-						m.getAnnotations().addAnnotation(OBFUSCATED_NAME_TYPE, "value", m.getName());
+						m.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_NAME, "value", m.getName());
 					}
 					
 					m.setName(newName);

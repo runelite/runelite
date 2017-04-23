@@ -22,71 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.deob;
 
-package net.runelite.deob.updater;
-
-import net.runelite.asm.ClassFile;
-import net.runelite.asm.ClassGroup;
-import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
-import net.runelite.deob.DeobAnnotations;
-import net.runelite.deob.deobfuscators.Renamer;
-import net.runelite.deob.util.NameMappings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.runelite.asm.signature.Signature;
+import net.runelite.asm.signature.Type;
 
-public class AnnotationRenamer
+public class DeobAnnotations
 {
-	private static final Logger logger = LoggerFactory.getLogger(AnnotationRenamer.class);
+	public static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
+	public static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
+	public static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
+	public static final Type OBFUSCATED_GETTER = new Type("Lnet/runelite/mapping/ObfuscatedGetter;");
+	public static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
+	public static final Type HOOK = new Type("Lnet/runelite/mapping/Hook;");
+	public static final Type REPLACE = new Type("Lnet/runelite/mapping/Replace;");
+	public static final Type OBFUSCATED_OVERRIDE = new Type("Lnet/runelite/mapping/ObfuscatedOverride;");
 
-	private ClassGroup group;
-
-	public AnnotationRenamer(ClassGroup group)
+	public static Signature getObfuscatedSignature(Method m)
 	{
-		this.group = group;
-	}
-
-	public void run()
-	{
-		NameMappings mappings = buildMappings();
-
-		Renamer renamer = new Renamer(mappings);
-		renamer.run(group);
-	}
-
-	private NameMappings buildMappings()
-	{
-		NameMappings mappings = new NameMappings();
-
-		for (ClassFile cf : group.getClasses())
+		Annotation a = m.getAnnotations().find(OBFUSCATED_SIGNATURE);
+		if (a == null)
 		{
-			String name = getImplements(cf.getAnnotations());
-			if (name != null)
-				mappings.map(cf.getPoolClass(), name);
-
-			for (Field f : cf.getFields().getFields())
-			{
-				name = DeobAnnotations.getExportedName(f.getAnnotations());
-				if (name != null)
-					mappings.map(f.getPoolField(), name);
-			}
-
-			for (Method m : cf.getMethods().getMethods())
-			{
-				name = DeobAnnotations.getExportedName(m.getAnnotations());
-				if (name != null)
-					mappings.map(m.getPoolMethod(), name);
-			}
+			return null;
 		}
 
-		return mappings;
+		return new Signature(a.getElement().getString());
 	}
 
-	private String getImplements(Annotations annotations)
+	public static String getObfuscatedName(Annotations an)
 	{
-		Annotation an = annotations.find(DeobAnnotations.IMPLEMENTS);
-		return an != null ? an.getElement().getString() : null;
+		Annotation a = an.find(OBFUSCATED_NAME);
+		if (a == null)
+		{
+			return null;
+		}
+
+		return a.getElement().getString();
+	}
+
+	public static String getExportedName(Annotations an)
+	{
+		if (an == null)
+		{
+			return null;
+		}
+
+		Annotation a = an.find(EXPORT);
+		if (a == null)
+		{
+			return null;
+		}
+
+		return a.getElement().getString();
 	}
 }

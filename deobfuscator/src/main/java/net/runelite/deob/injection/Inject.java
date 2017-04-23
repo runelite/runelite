@@ -54,6 +54,7 @@ import net.runelite.asm.attributes.code.instructions.Return;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
+import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import net.runelite.mapping.Import;
 import net.runelite.rs.api.Client;
@@ -63,13 +64,6 @@ import org.slf4j.LoggerFactory;
 public class Inject
 {
 	private static final Logger logger = LoggerFactory.getLogger(Inject.class);
-	
-	public static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
-	public static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
-	public static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
-	public static final Type OBFUSCATED_GETTER = new Type("Lnet/runelite/mapping/ObfuscatedGetter;");
-	public static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
-	public static final Type HOOK = new Type("Lnet/runelite/mapping/Hook;");
 
 	public static final java.lang.Class<?> CLIENT_CLASS = Client.class;
 
@@ -106,7 +100,7 @@ public class Inject
 			return t;
 		
 		Annotations an = cf.getAnnotations();
-		String obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
+		String obfuscatedName = DeobAnnotations.getObfuscatedName(an);
 		return new Type("L" + obfuscatedName + ";", t.getArrayDims());
 	}
 	
@@ -200,10 +194,9 @@ public class Inject
 			if (an == null || an.size() == 0)
 				continue;
 
-			String obfuscatedName = cf.getName();
-			Annotation obfuscatedNameAnnotation = an.find(OBFUSCATED_NAME);
-			if (obfuscatedNameAnnotation != null)
-				obfuscatedName = obfuscatedNameAnnotation.getElement().getString();
+			String obfuscatedName = DeobAnnotations.getObfuscatedName(an);
+			if (obfuscatedName == null)
+				obfuscatedName = cf.getName();
 			
 			ClassFile other = vanilla.findClass(obfuscatedName);
 			assert other != null : "unable to find vanilla class from obfuscated name: " + obfuscatedName;
@@ -229,19 +222,19 @@ public class Inject
 				
 				hooks.process(f);
 
-				if (an == null || an.find(EXPORT) == null)
+				if (an == null || an.find(DeobAnnotations.EXPORT) == null)
 					continue; // not an exported field
 
-				Annotation exportAnnotation = an.find(EXPORT);
+				Annotation exportAnnotation = an.find(DeobAnnotations.EXPORT);
 				String exportedName = exportAnnotation.getElement().getString();
 
 				boolean isSetter = false;
 				if (exportAnnotation.getElements().size() == 2)
 					isSetter = (boolean) exportAnnotation.getElements().get(1).getValue();
 
-				obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
+				obfuscatedName = DeobAnnotations.getObfuscatedName(an);
 				
-				Annotation getterAnnotation = an.find(OBFUSCATED_GETTER);
+				Annotation getterAnnotation = an.find(DeobAnnotations.OBFUSCATED_GETTER);
 				Number getter = null;
 				if (getterAnnotation != null)
 					getter = (Number) getterAnnotation.getElement().getValue();
@@ -303,7 +296,7 @@ public class Inject
 		if (an == null)
 			return null;
 		
-		Annotation a = an.find(IMPLEMENTS);
+		Annotation a = an.find(DeobAnnotations.IMPLEMENTS);
 		if (a == null)
 			return null;
 		
@@ -477,19 +470,13 @@ public class Inject
 	 */
 	public Signature getObfuscatedSignature(Method method)
 	{
-		Annotations an = method.getAnnotations();
-		Annotation obfuscatedSignature = an.find(OBFUSCATED_SIGNATURE);
+		Signature obfuscatedSignature = DeobAnnotations.getObfuscatedSignature(method);
 
 		if (obfuscatedSignature != null)
 		{
-			List<Element> elements = obfuscatedSignature.getElements();
-			String signatureString = elements.get(0).getString();
-
-			Signature signature = new Signature(signatureString); // parse signature
-
 			// The obfuscated signature annotation is generated post rename unique, so class
 			// names in the signature match our class names and not theirs, so we toObSignature() it
-			return toObSignature(signature);
+			return toObSignature(obfuscatedSignature);
 		}
 		else
 		{
@@ -507,7 +494,7 @@ public class Inject
 	public String getGarbage(Method method)
 	{
 		Annotations an = method.getAnnotations();
-		Annotation obfuscatedSignature = an.find(OBFUSCATED_SIGNATURE);
+		Annotation obfuscatedSignature = an.find(DeobAnnotations.OBFUSCATED_SIGNATURE);
 
 		if (obfuscatedSignature != null)
 		{
