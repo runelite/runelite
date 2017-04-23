@@ -210,7 +210,6 @@ public class ScriptState {
                Client.packetOpcode = Client.secretCipherBuffer2.readOpcode();
                Client.packetLength = class212.packetLenghts[Client.packetOpcode];
                --available;
-	       System.out.println("READ " + Client.packetOpcode);
             }
 
             if(Client.packetLength == -1) {
