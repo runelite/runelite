@@ -417,7 +417,7 @@ public class DevToolsOverlay extends Overlay
 
 			for (Widget child : children)
 			{
-				if (child == null)
+				if (child == null || child.isHidden())
 				{
 					continue;
 				}
