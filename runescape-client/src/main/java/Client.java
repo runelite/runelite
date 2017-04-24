@@ -565,7 +565,7 @@ public final class Client extends GameEngine {
    static String[] playerOptions;
    @ObfuscatedName("hk")
    @Export("playerOptionsPriorities")
-   static boolean[] playerOptionsPriority;
+   static boolean[] playerOptionsPriorities;
    @ObfuscatedName("hn")
    static int[] field430;
    @ObfuscatedName("bs")
@@ -3807,7 +3807,7 @@ public final class Client extends GameEngine {
       field426 = new int[1000];
       playerMenuTypes = new int[]{44, 45, 46, 47, 48, 49, 50, 51};
       playerOptions = new String[8];
-      playerOptionsPriority = new boolean[8];
+      playerOptionsPriorities = new boolean[8];
       field430 = new int[]{768, 1024, 1280, 512, 1536, 256, 0, 1792};
       field340 = -1;
       groundItemDeque = new Deque[4][104][104];

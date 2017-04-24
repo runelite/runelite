@@ -127,7 +127,7 @@ public class XItemContainer extends Node {
 
       for(var0 = 0; var0 < 8; ++var0) {
          Client.playerOptions[var0] = null;
-         Client.playerOptionsPriority[var0] = false;
+         Client.playerOptionsPriorities[var0] = false;
       }
 
       Ignore.method179();
