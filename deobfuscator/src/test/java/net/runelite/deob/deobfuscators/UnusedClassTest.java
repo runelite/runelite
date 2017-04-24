@@ -38,7 +38,7 @@ import org.junit.rules.TemporaryFolder;
 
 public class UnusedClassTest
 {
-	private static final File GAMEPACK = new File(RenameUniqueTest.class.getResource("/gamepack_v16.jar").getFile());
+	private static final File GAMEPACK = new File(UnusedClassTest.class.getResource("/gamepack_v16.jar").getFile());
 
 	@Rule
 	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
