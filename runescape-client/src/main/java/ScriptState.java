@@ -255,7 +255,7 @@ public class ScriptState {
                   }
 
                   Client.playerOptions[var3 - 1] = var4;
-                  Client.playerOptionsPriority[var3 - 1] = var0 == 0;
+                  Client.playerOptionsPriorities[var3 - 1] = var0 == 0;
                }
 
                Client.packetOpcode = -1;

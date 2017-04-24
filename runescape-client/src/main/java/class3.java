@@ -219,7 +219,7 @@ final class class3 implements Comparator {
                            var6 = 0;
                         }
                      }
-                  } else if(Client.playerOptionsPriority[var5]) {
+                  } else if(Client.playerOptionsPriorities[var5]) {
                      var6 = 2000;
                   }
 

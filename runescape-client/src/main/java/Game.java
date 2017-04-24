@@ -14,7 +14,7 @@ public class Game implements class158 {
    @ObfuscatedName("h")
    public static final Game field2706 = new Game("game4", "Game 4", 3);
    @ObfuscatedName("o")
-   @Export("runescape2007")
+   //@Export("runescape2007")
    public static final Game runescape2007 = new Game("oldscape", "RuneScape 2007", 5);
    @ObfuscatedName("l")
    @Export("name")

@@ -26,11 +26,14 @@ package net.runelite.deob.updater;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
+import java.util.Properties;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.mapping.AnnotationIntegrityChecker;
 import net.runelite.deob.deobfuscators.mapping.AnnotationMapper;
 import net.runelite.deob.deobfuscators.mapping.Mapper;
@@ -39,31 +42,122 @@ import net.runelite.deob.util.JarUtil;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UpdateMappingsTest
 {
-	private static final String JAR1 = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\1.1.26-SNAPSHOT\\rs-client-1.1.26-SNAPSHOT.jar",
-		JAR2 = "d:/rs/07/gamepack_139_deobfuscated.jar",
+	private static final Logger logger = LoggerFactory.getLogger(UpdateMappingsTest.class);
+
+	private static final String
+		JAR = "d:/rs/07/gamepack_139_deobfuscated.jar",
 		OUT = "d:/rs/07/adamout.jar";
 
+	private File getClient() throws IOException
+	{
+		Properties properties = new Properties();
+		InputStream resourceAsStream = getClass().getResourceAsStream("/deob.properties");
+		properties.load(resourceAsStream);
+
+		String jar = (String) properties.get("rs.client");
+		return new File(jar);
+	}
+	
 	@Test
 	@Ignore
+	public void testManual() throws IOException
+	{
+		File client = getClient();
+
+		ClassGroup group1 = JarUtil.loadJar(client);
+		ClassGroup group2 = JarUtil.loadJar(new File(JAR));
+		
+		map(group1, group2);
+		
+		JarUtil.saveJar(group2, new File(OUT));
+	}
+
+	@Test
 	public void testRun() throws IOException
 	{
-		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
-		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
+		File client = getClient();
+
+		ClassGroup group1 = JarUtil.loadJar(client);
+		ClassGroup group2 = JarUtil.loadJar(client);
+
+		// Remove existing annotations
+		unannotate(group2);
+
+		// Map the client against itself
+		map(group1, group2);
+
+		check(group1, group2);
+	}
+
+	private void unannotate(ClassGroup group)
+	{
+		for (ClassFile cf : group.getClasses())
+		{
+			cf.getAnnotations().clearAnnotations();
+
+			for (Field f : cf.getFields().getFields())
+			{
+				f.getAnnotations().clearAnnotations();
+			}
+
+			for (Method m : cf.getMethods().getMethods())
+			{
+				m.getAnnotations().clearAnnotations();
+			}
+		}
+	}
+
+	private void check(ClassGroup group1, ClassGroup group2)
+	{
+		for (ClassFile cf : group1.getClasses())
+		{
+			ClassFile other = group2.findClass(cf.getName());
+			
+			String implname = DeobAnnotations.getImplements(cf);
+			String otherimplname = DeobAnnotations.getImplements(other);
+			
+			Assert.assertEquals(implname, otherimplname);
+
+			for (Field f : cf.getFields().getFields())
+			{
+				Field otherf = other.findField(f.getName(), f.getType());
+
+				assert otherf != null : "unable to find " + f;
+
+				String name = DeobAnnotations.getExportedName(f.getAnnotations());
+				String otherName = DeobAnnotations.getExportedName(otherf.getAnnotations());
+
+				Assert.assertEquals(name + " <-> " + otherName, name, otherName);
+			}
+
+			for (Method m : cf.getMethods().getMethods())
+			{
+				Method otherm = other.findMethod(m.getName(), m.getDescriptor());
+
+				assert otherm != null : "unable to find " + m;
+
+				String name = DeobAnnotations.getExportedName(m.getAnnotations());
+				String otherName = DeobAnnotations.getExportedName(otherm.getAnnotations());
+
+				Assert.assertEquals(name + " <-> " + otherName, name, otherName);
+			}
+		}
+	}
+
+	private void map(ClassGroup group1, ClassGroup group2)
+	{
+		logger.info("Mapping group1 ({}) vs group2 ({})", desc(group1), desc(group2));
 
 		Mapper mapper = new Mapper(group1, group2);
 		mapper.run();
 		ParallelExecutorMapping mapping = mapper.getMapping();
 
 		summary(mapping, group1);
-
-		String sg1 = print(group1),
-			sg2 = print(group2);
-
-		System.out.println("GROUP 1 " + sg1);
-		System.out.println("GROUP 2 " + sg2);
 
 		AnnotationMapper amapper = new AnnotationMapper(group1, group2, mapping);
 		amapper.run();
@@ -78,11 +172,9 @@ public class UpdateMappingsTest
 
 		AnnotationRenamer an = new AnnotationRenamer(group2);
 		an.run();
-
-		JarUtil.saveJar(group2, new File(OUT));
 	}
 
-	public static String print(ClassGroup cg)
+	private static String desc(ClassGroup cg)
 	{
 		int methods = 0, fields = 0, classes = 0;
 		for (ClassFile cf : cg.getClasses())
@@ -129,7 +221,9 @@ public class UpdateMappingsTest
 
 			++total;
 		}
-		System.out.println("Total " + total + ". " + fields + " fields, " + staticMethod + " static methods, " + method + " non-static methods, " + classes + " classes");
+
+		logger.info("Total mapped: {}. {} fields, {} static methods, {} member methods, {} classes",
+			total, fields, staticMethod, method, classes);
 	}
 
 }
