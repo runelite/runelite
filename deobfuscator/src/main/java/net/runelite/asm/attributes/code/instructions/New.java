@@ -50,6 +50,12 @@ public class New extends Instruction implements TypeInstruction
 		super(instructions, type);
 	}
 
+	public New(Instructions instructions, Class clazz)
+	{
+		super(instructions, InstructionType.NEW);
+		this.clazz = clazz;
+	}
+
 	@Override
 	public void accept(MethodVisitor visitor)
 	{

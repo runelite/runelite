@@ -49,6 +49,7 @@ import net.runelite.deob.deobfuscators.arithmetic.MultiplicationDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
 import net.runelite.deob.deobfuscators.transformers.ClientErrorTransformer;
+import net.runelite.deob.deobfuscators.transformers.MaxMemoryTransformer;
 import net.runelite.deob.deobfuscators.transformers.ReflectionTransformer;
 import net.runelite.deob.util.JarUtil;
 import org.slf4j.Logger;
@@ -125,6 +126,7 @@ public class Deob
 		new GetPathTransformer().transform(group);
 		new ClientErrorTransformer().transform(group);
 		new ReflectionTransformer().transform(group);
+		new MaxMemoryTransformer().transform(group);
 
 		JarUtil.saveJar(group, new File(args[1]));
 		
