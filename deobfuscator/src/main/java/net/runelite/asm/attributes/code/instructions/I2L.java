@@ -42,6 +42,11 @@ public class I2L extends Instruction implements ConversionInstruction
 		super(instructions, type);
 	}
 
+	public I2L(Instructions instructions)
+	{
+		super(instructions, InstructionType.I2L);
+	}
+
 	@Override
 	public InstructionContext execute(Frame frame)
 	{

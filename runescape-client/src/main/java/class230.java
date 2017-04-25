@@ -1,3 +1,4 @@
+import java.util.Random;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -340,7 +341,7 @@ public class class230 extends Node {
 
       this.field3276 = var7;
       this.field3282 = false;
-      this.field3295 = (int)(Runtime.getRuntime().maxMemory() / 1048576L) + 1;
+      this.field3295 = (int)((long)((new Random()).nextInt(31457280) + 230686720) / 1048576L) + 1;
       if(this.field3279 > 3) {
          this.field3284 = Runtime.getRuntime().availableProcessors();
       } else {
