@@ -42,7 +42,7 @@ public class Region
 		return Arrays.stream(region.getTiles())
 			.map(tile1 -> Arrays.stream(tile1)
 				.map(tile2 -> Arrays.stream(tile2)
-					.map(tile3 -> new Tile(client, tile3))
+					.map(tile3 -> tile3 != null ? new Tile(client, tile3) : null)
 					.toArray(Tile[]::new)
 				).toArray(Tile[][]::new)
 			).toArray(Tile[][][]::new);
