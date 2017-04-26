@@ -392,8 +392,8 @@ public class Widget extends Node {
    @ObfuscatedName("u")
    public static IndexDataBase field2301;
    @ObfuscatedName("cf")
-   @Export("parent")
-   public Widget parent;
+   @Export("dragParent")
+   public Widget dragParent;
    @ObfuscatedName("cy")
    public Object[] field2303;
    @ObfuscatedName("cj")
@@ -1146,7 +1146,7 @@ public class Widget extends Node {
       this.field2286 = 0;
       this.field2291 = 0;
       this.name = "";
-      this.parent = null;
+      this.dragParent = null;
       this.field2295 = 0;
       this.field2223 = 0;
       this.field2297 = false;

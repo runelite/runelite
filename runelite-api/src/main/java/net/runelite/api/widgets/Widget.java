@@ -60,18 +60,6 @@ public class Widget
 
 	public Widget getParent()
 	{
-		net.runelite.rs.api.Widget parent = widget.getParent();
-
-		if (parent == null)
-		{
-			return null;
-		}
-
-		return new Widget(client, parent);
-	}
-
-	public Widget getParentFromId()
-	{
 		int id = getParentId();
 		if (id == -1)
 		{
@@ -121,7 +109,7 @@ public class Widget
 
 	public boolean isHidden()
 	{
-		Widget parent = getParentFromId();
+		Widget parent = getParent();
 		return (parent != null && parent.isHidden()) || widget.isHidden();
 	}
 
