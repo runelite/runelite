@@ -113,7 +113,7 @@ public class Instructions
 		add(1212, 2, 0);
 		// and 1300-1400 and 2300-2400
 		add(1300, 1, 0, 1, 0);
-		add(1301, 2, 0);
+		add(Opcodes.WIDGET_PUT_DRAG_PARENT, "widget_put_drag_parent", 2, 0);
 		add(1302, 1, 0);
 		add(1303, 1, 0);
 		add(1304, 1, 0);
@@ -193,7 +193,7 @@ public class Instructions
 		add(2212, 3, 0);
 		// 2300-2400
 		add(2300, 2, 0, 1, 0);
-		add(2301, 3, 0);
+		add(Opcodes.WIDGET_PUT_DRAG_PARENT_WIDGET, "widget_put_drag_parent_widget", 3, 0);
 		add(2302, 2, 0);
 		add(2303, 2, 0);
 		add(2304, 2, 0);
