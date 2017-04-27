@@ -1,26 +1,45 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hu")
-public class class225 {
-   @ObfuscatedName("h")
-   static int[] field3230;
-   @ObfuscatedName("i")
+@ObfuscatedName("hk")
+public class class225 implements class134 {
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 2046289243
+      intValue = -477517981
    )
-   static int field3231;
-   @ObfuscatedName("o")
-   static int[] field3232;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -744812619
-   )
-   static int field3233;
+   public final int field3219;
+   @ObfuscatedName("c")
+   public static final class225 field3220 = new class225(1, 1);
    @ObfuscatedName("n")
-   static int[] field3234;
+   public static final class225 field3221 = new class225(2, 2);
+   @ObfuscatedName("q")
+   public static final class225 field3222 = new class225(3, 3);
+   @ObfuscatedName("t")
+   public static final class225 field3223 = new class225(4, 4);
+   @ObfuscatedName("d")
+   public static final class225 field3224 = new class225(0, 0);
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 2042424991
+   )
+   final int field3225;
 
-   class225() throws Throwable {
-      throw new Error();
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1946751124"
+   )
+   public int vmethod4163() {
+      return this.field3225;
+   }
+
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "0"
+   )
+   class225(int var1, int var2) {
+      this.field3219 = var1;
+      this.field3225 = var2;
    }
 }

@@ -2,40 +2,40 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("di")
+@ObfuscatedName("ed")
 @Implements("XHashTable")
 public final class XHashTable {
-   @ObfuscatedName("r")
-   int field1896 = 0;
-   @ObfuscatedName("i")
-   @Export("buckets")
-   Node[] buckets;
-   @ObfuscatedName("f")
+   @ObfuscatedName("n")
+   Node field2024;
+   @ObfuscatedName("d")
    @Export("size")
    int size;
-   @ObfuscatedName("h")
-   Node field1899;
-   @ObfuscatedName("u")
-   Node field1900;
+   @ObfuscatedName("q")
+   Node field2026;
+   @ObfuscatedName("c")
+   @Export("buckets")
+   Node[] buckets;
+   @ObfuscatedName("t")
+   int field2028 = 0;
 
-   @ObfuscatedName("f")
-   public Node method2417(long var1) {
+   @ObfuscatedName("d")
+   public Node method2773(long var1) {
       Node var3 = this.buckets[(int)(var1 & (long)(this.size - 1))];
 
-      for(this.field1900 = var3.next; this.field1900 != var3; this.field1900 = this.field1900.next) {
-         if(this.field1900.hash == var1) {
-            Node var4 = this.field1900;
-            this.field1900 = this.field1900.next;
+      for(this.field2024 = var3.next; this.field2024 != var3; this.field2024 = this.field2024.next) {
+         if(this.field2024.hash == var1) {
+            Node var4 = this.field2024;
+            this.field2024 = this.field2024.next;
             return var4;
          }
       }
 
-      this.field1900 = null;
+      this.field2024 = null;
       return null;
    }
 
-   @ObfuscatedName("i")
-   public void method2418(Node var1, long var2) {
+   @ObfuscatedName("c")
+   public void method2774(Node var1, long var2) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -48,8 +48,8 @@ public final class XHashTable {
       var1.hash = var2;
    }
 
-   @ObfuscatedName("u")
-   void method2419() {
+   @ObfuscatedName("n")
+   void method2775() {
       for(int var1 = 0; var1 < this.size; ++var1) {
          Node var2 = this.buckets[var1];
 
@@ -63,14 +63,35 @@ public final class XHashTable {
          }
       }
 
-      this.field1900 = null;
-      this.field1899 = null;
+      this.field2024 = null;
+      this.field2026 = null;
    }
 
-   @ObfuscatedName("r")
-   public Node method2420() {
-      this.field1896 = 0;
-      return this.method2422();
+   @ObfuscatedName("q")
+   public Node method2776() {
+      this.field2028 = 0;
+      return this.method2777();
+   }
+
+   @ObfuscatedName("t")
+   public Node method2777() {
+      Node var1;
+      if(this.field2028 > 0 && this.field2026 != this.buckets[this.field2028 - 1]) {
+         var1 = this.field2026;
+         this.field2026 = var1.next;
+         return var1;
+      } else {
+         do {
+            if(this.field2028 >= this.size) {
+               return null;
+            }
+
+            var1 = this.buckets[this.field2028++].next;
+         } while(var1 == this.buckets[this.field2028 - 1]);
+
+         this.field2026 = var1.next;
+         return var1;
+      }
    }
 
    public XHashTable(int var1) {
@@ -83,26 +104,5 @@ public final class XHashTable {
          var3.previous = var3;
       }
 
-   }
-
-   @ObfuscatedName("o")
-   public Node method2422() {
-      Node var1;
-      if(this.field1896 > 0 && this.field1899 != this.buckets[this.field1896 - 1]) {
-         var1 = this.field1899;
-         this.field1899 = var1.next;
-         return var1;
-      } else {
-         do {
-            if(this.field1896 >= this.size) {
-               return null;
-            }
-
-            var1 = this.buckets[this.field1896++].next;
-         } while(var1 == this.buckets[this.field1896 - 1]);
-
-         this.field1899 = var1.next;
-         return var1;
-      }
    }
 }

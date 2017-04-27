@@ -1,31 +1,18 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fp")
-public class class178 {
-   @ObfuscatedName("f")
-   static final class178 field2696 = new class178("LIVE", 0);
-   @ObfuscatedName("i")
-   static final class178 field2697 = new class178("BUILDLIVE", 3);
-   @ObfuscatedName("u")
-   static final class178 field2698 = new class178("RC", 1);
-   @ObfuscatedName("h")
-   static final class178 field2699 = new class178("WIP", 2);
-   @ObfuscatedName("r")
-   public final String field2700;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1552418823
-   )
-   final int field2701;
-
+@ObfuscatedName("ff")
+public final class class178 {
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "0"
+      signature = "(CI)Z",
+      garbageValue = "-379833969"
    )
-   class178(String var1, int var2) {
-      this.field2700 = var1;
-      this.field2701 = var2;
+   public static boolean method3265(char var0) {
+      return var0 >= 48 && var0 <= 57 || var0 >= 65 && var0 <= 90 || var0 >= 97 && var0 <= 122;
+   }
+
+   class178() throws Throwable {
+      throw new Error();
    }
 }

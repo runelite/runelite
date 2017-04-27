@@ -1,18 +1,195 @@
-import java.io.File;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fo")
+@ObfuscatedName("fj")
 public class class167 {
-   @ObfuscatedName("r")
-   static File field2200;
-   @ObfuscatedName("i")
-   public static final short[][] field2201 = new short[][]{{(short)6798, (short)107, (short)10283, (short)16, (short)4797, (short)7744, (short)5799, (short)4634, (short)-31839, (short)22433, (short)2983, (short)-11343, (short)8, (short)5281, (short)10438, (short)3650, (short)-27322, (short)-21845, (short)200, (short)571, (short)908, (short)21830, (short)28946, (short)-15701, (short)-14010}, {(short)8741, (short)12, (short)-1506, (short)-22374, (short)7735, (short)8404, (short)1701, (short)-27106, (short)24094, (short)10153, (short)-8915, (short)4783, (short)1341, (short)16578, (short)-30533, (short)25239, (short)8, (short)5281, (short)10438, (short)3650, (short)-27322, (short)-21845, (short)200, (short)571, (short)908, (short)21830, (short)28946, (short)-15701, (short)-14010}, {(short)25238, (short)8742, (short)12, (short)-1506, (short)-22374, (short)7735, (short)8404, (short)1701, (short)-27106, (short)24094, (short)10153, (short)-8915, (short)4783, (short)1341, (short)16578, (short)-30533, (short)8, (short)5281, (short)10438, (short)3650, (short)-27322, (short)-21845, (short)200, (short)571, (short)908, (short)21830, (short)28946, (short)-15701, (short)-14010}, {(short)4626, (short)11146, (short)6439, (short)12, (short)4758, (short)10270}, {(short)4550, (short)4537, (short)5681, (short)5673, (short)5790, (short)6806, (short)8076, (short)4574, (short)17050, (short)0, (short)127}};
-   @ObfuscatedName("u")
-   public static final short[] field2202 = new short[]{(short)-10304, (short)9104, (short)-1, (short)-1, (short)-1};
-   @ObfuscatedName("h")
-   public static final short[][] field2203 = new short[][]{{(short)6554, (short)115, (short)10304, (short)28, (short)5702, (short)7756, (short)5681, (short)4510, (short)-31835, (short)22437, (short)2859, (short)-11339, (short)16, (short)5157, (short)10446, (short)3658, (short)-27314, (short)-21965, (short)472, (short)580, (short)784, (short)21966, (short)28950, (short)-15697, (short)-14002}, {(short)9104, (short)10275, (short)7595, (short)3610, (short)7975, (short)8526, (short)918, (short)-26734, (short)24466, (short)10145, (short)-6882, (short)5027, (short)1457, (short)16565, (short)-30545, (short)25486, (short)24, (short)5392, (short)10429, (short)3673, (short)-27335, (short)-21957, (short)192, (short)687, (short)412, (short)21821, (short)28835, (short)-15460, (short)-14019}, new short[0], new short[0], new short[0]};
-   @ObfuscatedName("f")
-   public static final short[] field2205 = new short[]{(short)6798, (short)8741, (short)25238, (short)4626, (short)4550};
+   @ObfuscatedName("c")
+   @Export("settings")
+   public static int[] settings;
+   @ObfuscatedName("n")
+   @Export("widgetSettings")
+   public static int[] widgetSettings;
+   @ObfuscatedName("d")
+   static int[] field2175 = new int[32];
+
+   static {
+      int var0 = 2;
+
+      for(int var1 = 0; var1 < 32; ++var1) {
+         field2175[var1] = var0 - 1;
+         var0 += var0;
+      }
+
+      settings = new int[2000];
+      widgetSettings = new int[2000];
+   }
+
+   @ObfuscatedName("de")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1683600458"
+   )
+   static final void method3139(int var0) {
+      class130.method2606();
+
+      for(class31 var1 = (class31)class31.field709.method2828(); var1 != null; var1 = (class31)class31.field709.method2830()) {
+         if(var1.field711 != null) {
+            var1.method653();
+         }
+      }
+
+      int var4 = RSSocket.method2096(var0).field2785;
+      if(var4 != 0) {
+         int var2 = widgetSettings[var0];
+         if(var4 == 1) {
+            if(var2 == 1) {
+               class84.method1651(0.9D);
+               ((TextureProvider)class84.field1437).method1446(0.9D);
+            }
+
+            if(var2 == 2) {
+               class84.method1651(0.8D);
+               ((TextureProvider)class84.field1437).method1446(0.8D);
+            }
+
+            if(var2 == 3) {
+               class84.method1651(0.7D);
+               ((TextureProvider)class84.field1437).method1446(0.7D);
+            }
+
+            if(var2 == 4) {
+               class84.method1651(0.6D);
+               ((TextureProvider)class84.field1437).method1446(0.6D);
+            }
+
+            MessageNode.method222();
+         }
+
+         if(var4 == 3) {
+            short var3 = 0;
+            if(var2 == 0) {
+               var3 = 255;
+            }
+
+            if(var2 == 1) {
+               var3 = 192;
+            }
+
+            if(var2 == 2) {
+               var3 = 128;
+            }
+
+            if(var2 == 3) {
+               var3 = 64;
+            }
+
+            if(var2 == 4) {
+               var3 = 0;
+            }
+
+            if(var3 != Client.field501) {
+               if(Client.field501 == 0 && Client.field524 != -1) {
+                  Script.method911(class18.indexTrack1, Client.field524, 0, var3, false);
+                  Client.field525 = false;
+               } else if(var3 == 0) {
+                  MessageNode.method218();
+                  Client.field525 = false;
+               } else {
+                  FloorUnderlayDefinition.method3492(var3);
+               }
+
+               Client.field501 = var3;
+            }
+         }
+
+         if(var4 == 4) {
+            if(var2 == 0) {
+               Client.field551 = 127;
+            }
+
+            if(var2 == 1) {
+               Client.field551 = 96;
+            }
+
+            if(var2 == 2) {
+               Client.field551 = 64;
+            }
+
+            if(var2 == 3) {
+               Client.field551 = 32;
+            }
+
+            if(var2 == 4) {
+               Client.field551 = 0;
+            }
+         }
+
+         if(var4 == 5) {
+            Client.field421 = var2;
+         }
+
+         if(var4 == 6) {
+            Client.field447 = var2;
+         }
+
+         if(var4 == 9) {
+            Client.field448 = var2;
+         }
+
+         if(var4 == 10) {
+            if(var2 == 0) {
+               Client.field527 = 127;
+            }
+
+            if(var2 == 1) {
+               Client.field527 = 96;
+            }
+
+            if(var2 == 2) {
+               Client.field527 = 64;
+            }
+
+            if(var2 == 3) {
+               Client.field527 = 32;
+            }
+
+            if(var2 == 4) {
+               Client.field527 = 0;
+            }
+         }
+
+         if(var4 == 17) {
+            Client.field310 = var2 & '\uffff';
+         }
+
+         class40[] var5;
+         if(var4 == 18) {
+            var5 = new class40[]{class40.field809, class40.field807, class40.field805, class40.field806};
+            Client.field306 = (class40)class32.method708(var5, var2);
+            if(Client.field306 == null) {
+               Client.field306 = class40.field809;
+            }
+         }
+
+         if(var4 == 19) {
+            if(var2 == -1) {
+               Client.field472 = -1;
+            } else {
+               Client.field472 = var2 & 2047;
+            }
+         }
+
+         if(var4 == 22) {
+            var5 = new class40[]{class40.field809, class40.field807, class40.field805, class40.field806};
+            Client.field307 = (class40)class32.method708(var5, var2);
+            if(Client.field307 == null) {
+               Client.field307 = class40.field809;
+            }
+         }
+
+      }
+   }
 
    class167() throws Throwable {
       throw new Error();

@@ -1,60 +1,90 @@
 import java.math.BigInteger;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aj")
+@ObfuscatedName("ag")
 public class class39 {
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @Export("rsaKeyModulus")
-   static final BigInteger rsaKeyModulus = new BigInteger("a0211b55eb8010fd56feae6b163a67945b2ffcb6b3cd976a477f2d88e4cafefebd7174268fa9708acf26dbb44a772d4781f41ecb812f9ae459cf23fd7dc76bd70ac5b9ddaee2c1f6de8f8a8a39750f5f4a5c784079d6e7ba39a8915a6336cd681f3ce8083a344072adf5eec02a7221a05b8fda1e4ff4cf117ea89d290ed6fb7d", 16);
-   @ObfuscatedName("f")
+   static final BigInteger rsaKeyModulus = new BigInteger("9cb954af0865fabe3fcee77d0a91524f62b18e71b550fa614215edb36424cc57718697e30a7f074ed8bf30c15bb2fca615790d6b322606e48445c2b3393680f56874e5ae8a9f89cd7bbab8c2dd8d2b233b3731f5bb00e9ddb3eddc7a46db157ba848e3ba5fe1e71edde7e36d0976b7ba8dd2ad6c9712ccc9c788212347c3a517", 16);
+   @ObfuscatedName("v")
+   static ModIcon field797;
+   @ObfuscatedName("d")
    @Export("rsaKeyExponent")
    static final BigInteger rsaKeyExponent = new BigInteger("10001", 16);
+   @ObfuscatedName("dz")
+   @ObfuscatedGetter(
+      intValue = 1722949959
+   )
+   static int field802;
+
+   @ObfuscatedName("dd")
+   @ObfuscatedSignature(
+      signature = "(IIIILSpritePixels;Lclass166;I)V",
+      garbageValue = "65535"
+   )
+   static final void method772(int var0, int var1, int var2, int var3, SpritePixels var4, class166 var5) {
+      if(var4 != null) {
+         int var6 = Client.mapAngle + Client.mapScale & 2047;
+         int var7 = var2 * var2 + var3 * var3;
+         if(var7 <= 6400) {
+            int var8 = class84.field1433[var6];
+            int var9 = class84.field1441[var6];
+            var8 = var8 * 256 / (Client.mapScaleDelta + 256);
+            var9 = var9 * 256 / (Client.mapScaleDelta + 256);
+            int var10 = var8 * var3 + var2 * var9 >> 16;
+            int var11 = var3 * var9 - var8 * var2 >> 16;
+            if(var7 > 2500) {
+               var4.method4287(var5.field2167 / 2 + var10 - var4.maxWidth / 2, var5.field2165 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2167, var5.field2165, var5.field2166, var5.field2164);
+            } else {
+               var4.method4230(var0 + var5.field2167 / 2 + var10 - var4.maxWidth / 2, var1 + var5.field2165 / 2 - var11 - var4.maxHeight / 2);
+            }
+
+         }
+      }
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "6"
+   )
+   static final int method773(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
+      }
+
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
+      return var3;
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1791918581"
+   )
+   public static void method774() {
+      ObjectComposition.field2926.reset();
+      ObjectComposition.field2927.reset();
+      ObjectComposition.field2928.reset();
+      ObjectComposition.field2948.reset();
+   }
 
    class39() throws Throwable {
       throw new Error();
-   }
-
-   @ObfuscatedName("au")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "113"
-   )
-   static void method768() {
-      int var0 = class32.field755;
-      int var1 = class168.field2207;
-      if(CombatInfo1.field682 < var0) {
-         var0 = CombatInfo1.field682;
-      }
-
-      if(class33.field758 < var1) {
-         var1 = class33.field758;
-      }
-
-      if(class148.field2058 != null) {
-         try {
-            Client var2 = Client.field433;
-            int var3 = Client.isResized?2:1;
-            class100.method1985(var2, "resize", new Object[]{Integer.valueOf(var3)});
-         } catch (Throwable var4) {
-            ;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("dw")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)V",
-      garbageValue = "1"
-   )
-   static final void method769(String var0) {
-      if(!var0.equals("")) {
-         Client.secretCipherBuffer1.putOpcode(253);
-         Client.secretCipherBuffer1.putByte(class72.method1439(var0));
-         Client.secretCipherBuffer1.method2931(var0);
-      }
-
    }
 }

@@ -4,84 +4,87 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ch")
+@ObfuscatedName("cl")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("i")
+   @ObfuscatedName("bi")
+   @Export("indexSprites")
+   static IndexData indexSprites;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1727123557
+      intValue = -1834799053
    )
    @Export("x")
    int x;
-   @ObfuscatedName("u")
+   @ObfuscatedName("p")
+   @Export("renderable1")
+   public Renderable renderable1;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1892917663
+      intValue = -1922798305
+   )
+   int field1536;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -2145554239
+   )
+   int field1537;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -1124172865
    )
    @Export("y")
    int y;
-   @ObfuscatedName("h")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -834189223
-   )
-   int field1567;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -791089787
-   )
-   int field1568;
-   @ObfuscatedName("l")
-   @Export("renderable2")
-   public Renderable renderable2;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1883861491
+      intValue = 143809805
    )
    @Export("hash")
    public int hash = 0;
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -938804493
+      intValue = -1714412415
    )
-   int field1572 = 0;
-   @ObfuscatedName("pn")
-   static class230 field1573;
-   @ObfuscatedName("kp")
-   static class112 field1574;
-   @ObfuscatedName("o")
-   @Export("renderable1")
-   public Renderable renderable1;
-   @ObfuscatedName("f")
+   int field1541 = 0;
+   @ObfuscatedName("cw")
+   static Font field1542;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 47385849
+      intValue = 321206561
+   )
+   public static int field1543;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1509029749
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("bl")
-   static IndexData field1581;
+   @ObfuscatedName("u")
+   @Export("renderable2")
+   public Renderable renderable2;
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "4"
+      signature = "(IIIIIII)I",
+      garbageValue = "1390816580"
    )
-   static final void method1930() {
-      if(class20.rssocket != null) {
-         class20.rssocket.method2113();
-         class20.rssocket = null;
+   public static int method1904(int var0, int var1, int var2, int var3, int var4, int var5) {
+      if((var5 & 1) == 1) {
+         int var6 = var3;
+         var3 = var4;
+         var4 = var6;
       }
 
-      class20.method189();
-      CombatInfo1.region.method1736();
+      var2 &= 3;
+      return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
+   }
 
-      for(int var0 = 0; var0 < 4; ++var0) {
-         Client.collisionMaps[var0].method2346();
-      }
-
-      System.gc();
-      CollisionData.method2347(2);
-      Client.field541 = -1;
-      Client.field542 = false;
-      class7.method88();
-      GameObject.setGameState(10);
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;B)V",
+      garbageValue = "1"
+   )
+   public static void method1905(IndexDataBase var0) {
+      class191.field2797 = var0;
    }
 }

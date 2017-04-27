@@ -1,101 +1,13 @@
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ed")
+@ObfuscatedName("ft")
 @Implements("Track1")
 public class Track1 extends Node {
-   @ObfuscatedName("i")
-   byte[] field2028;
-   @ObfuscatedName("f")
-   XHashTable field2029;
-   static int count;
-
-   @ObfuscatedName("i")
-   void method2785() {
-      if(this.field2029 == null) {
-         this.field2029 = new XHashTable(16);
-         int[] var1 = new int[16];
-         int[] var2 = new int[16];
-         var2[9] = 128;
-         var1[9] = 128;
-         class141 var3 = new class141(this.field2028);
-         int var4 = var3.method2725();
-
-         int var5;
-         for(var5 = 0; var5 < var4; ++var5) {
-            var3.method2728(var5);
-            var3.method2694(var5);
-            var3.method2692(var5);
-         }
-
-         label56:
-         do {
-            while(true) {
-               var5 = var3.method2699();
-               int var6 = var3.field1997[var5];
-
-               while(var3.field1997[var5] == var6) {
-                  var3.method2728(var5);
-                  int var7 = var3.method2695(var5);
-                  if(var7 == 1) {
-                     var3.method2721();
-                     var3.method2692(var5);
-                     continue label56;
-                  }
-
-                  int var8 = var7 & 240;
-                  int var9;
-                  int var10;
-                  int var11;
-                  if(var8 == 176) {
-                     var9 = var7 & 15;
-                     var10 = var7 >> 8 & 127;
-                     var11 = var7 >> 16 & 127;
-                     if(var10 == 0) {
-                        var1[var9] = (var1[var9] & -2080769) + (var11 << 14);
-                     }
-
-                     if(var10 == 32) {
-                        var1[var9] = (var1[var9] & -16257) + (var11 << 7);
-                     }
-                  }
-
-                  if(var8 == 192) {
-                     var9 = var7 & 15;
-                     var10 = var7 >> 8 & 127;
-                     var2[var9] = var1[var9] + var10;
-                  }
-
-                  if(var8 == 144) {
-                     var9 = var7 & 15;
-                     var10 = var7 >> 8 & 127;
-                     var11 = var7 >> 16 & 127;
-                     if(var11 > 0) {
-                        int var12 = var2[var9];
-                        class134 var13 = (class134)this.field2029.method2417((long)var12);
-                        if(var13 == null) {
-                           var13 = new class134(new byte[128]);
-                           this.field2029.method2418(var13, (long)var12);
-                        }
-
-                        var13.field1919[var10] = 1;
-                     }
-                  }
-
-                  var3.method2694(var5);
-                  var3.method2692(var5);
-               }
-            }
-         } while(!var3.method2704());
-      }
-
-   }
+   @ObfuscatedName("c")
+   byte[] field2162;
+   @ObfuscatedName("d")
+   XHashTable field2163;
 
    Track1(Buffer var1) {
       var1.offset = var1.payload.length - 3;
@@ -256,8 +168,8 @@ public class Track1 extends Node {
       var1.offset += var25;
       int var50 = var1.offset;
       var1.offset += var5 * 3;
-      this.field2028 = new byte[var4];
-      Buffer var51 = new Buffer(this.field2028);
+      this.field2162 = new byte[var4];
+      Buffer var51 = new Buffer(this.field2162);
       var51.putInt(1297377380);
       var51.putInt(6);
       var51.putShort(var2 > 1?1:0);
@@ -274,7 +186,7 @@ public class Track1 extends Node {
       int[] var59 = new int[128];
       var28 = 0;
 
-      label229:
+      label357:
       for(int var60 = 0; var60 < var2; ++var60) {
          var51.putInt(1297379947);
          var51.offset += 4;
@@ -295,8 +207,8 @@ public class Track1 extends Node {
 
                   var51.putByte(47);
                   var51.putByte(0);
-                  var51.method3046(var51.offset - var61);
-                  continue label229;
+                  var51.method2378(var51.offset - var61);
+                  continue label357;
                }
 
                if(var64 == 23) {
@@ -411,21 +323,96 @@ public class Track1 extends Node {
          }
       }
 
-      try {
-         Files.write((new File("D:\\rs\\07\\cache\\track1\\LIVE", count++ + ".midi")).toPath(), this.field2028, new OpenOption[0]);
-      } catch (IOException var68) {
-         Logger.getLogger(Track1.class.getName()).log(Level.SEVERE, (String)null, var68);
+   }
+
+   @ObfuscatedName("c")
+   void method3119() {
+      if(this.field2163 == null) {
+         this.field2163 = new XHashTable(16);
+         int[] var1 = new int[16];
+         int[] var2 = new int[16];
+         var2[9] = 128;
+         var1[9] = 128;
+         class162 var4 = new class162(this.field2162);
+         int var5 = var4.method3031();
+
+         int var6;
+         for(var6 = 0; var6 < var5; ++var6) {
+            var4.method3033(var6);
+            var4.method3036(var6);
+            var4.method3034(var6);
+         }
+
+         label83:
+         do {
+            while(true) {
+               var6 = var4.method3049();
+               int var7 = var4.field2136[var6];
+
+               while(var4.field2136[var6] == var7) {
+                  var4.method3033(var6);
+                  int var8 = var4.method3037(var6);
+                  if(var8 == 1) {
+                     var4.method3035();
+                     var4.method3034(var6);
+                     continue label83;
+                  }
+
+                  int var9 = var8 & 240;
+                  int var10;
+                  int var11;
+                  int var12;
+                  if(var9 == 176) {
+                     var10 = var8 & 15;
+                     var11 = var8 >> 8 & 127;
+                     var12 = var8 >> 16 & 127;
+                     if(var11 == 0) {
+                        var1[var10] = (var1[var10] & -2080769) + (var12 << 14);
+                     }
+
+                     if(var11 == 32) {
+                        var1[var10] = (var1[var10] & -16257) + (var12 << 7);
+                     }
+                  }
+
+                  if(var9 == 192) {
+                     var10 = var8 & 15;
+                     var11 = var8 >> 8 & 127;
+                     var2[var10] = var1[var10] + var11;
+                  }
+
+                  if(var9 == 144) {
+                     var10 = var8 & 15;
+                     var11 = var8 >> 8 & 127;
+                     var12 = var8 >> 16 & 127;
+                     if(var12 > 0) {
+                        int var13 = var2[var10];
+                        class155 var14 = (class155)this.field2163.method2773((long)var13);
+                        if(var14 == null) {
+                           var14 = new class155(new byte[128]);
+                           this.field2163.method2774(var14, (long)var13);
+                        }
+
+                        var14.field2047[var11] = 1;
+                     }
+                  }
+
+                  var4.method3036(var6);
+                  var4.method3034(var6);
+               }
+            }
+         } while(!var4.method3064());
+
       }
-
    }
 
-   @ObfuscatedName("u")
-   void method2789() {
-      this.field2029 = null;
+   @ObfuscatedName("n")
+   void method3120() {
+      this.field2163 = null;
    }
 
-   @ObfuscatedName("f")
-   static Track1 method2790(IndexDataBase var0, int var1, int var2) {
+   @ObfuscatedName("d")
+   public static Track1 method3124(IndexDataBase var0, int var1, int var2) {
       byte[] var3 = var0.getConfigData(var1, var2);
       return var3 == null?null:new Track1(new Buffer(var3));
    }

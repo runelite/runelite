@@ -1,60 +1,69 @@
 import java.applet.Applet;
+import java.io.IOException;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dp")
+@ObfuscatedName("dw")
 public class class114 {
-   @ObfuscatedName("rw")
-   protected static boolean field1803;
-   @ObfuscatedName("f")
-   public static Applet field1804 = null;
-   @ObfuscatedName("i")
-   public static String field1810 = null;
+   @ObfuscatedName("c")
+   static String field1788 = null;
+   @ObfuscatedName("nm")
+   static class51 field1791;
+   @ObfuscatedName("d")
+   static Applet field1793 = null;
+   @ObfuscatedName("l")
+   public static short[] field1794;
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;B)I",
+      garbageValue = "-34"
+   )
+   public static int method2208(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + class180.method3276(var0.charAt(var3));
+      }
+
+      return var2;
+   }
 
    class114() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("be")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-44"
+      signature = "(ZB)V",
+      garbageValue = "104"
    )
-   static void method2257(int var0) {
-      if(var0 != -1 && Ignore.method178(var0)) {
-         Widget[] var1 = Widget.widgets[var0];
+   static final void method2211(boolean var0) {
+      GameEngine.method2201();
+      ++Client.field331;
+      if(Client.field331 >= 50 || var0) {
+         Client.field331 = 0;
+         if(!Client.field336 && Friend.rssocket != null) {
+            Client.secretCipherBuffer1.putOpcode(102);
 
-         for(int var2 = 0; var2 < var1.length; ++var2) {
-            Widget var3 = var1[var2];
-            if(var3.field2225 != null) {
-               class18 var4 = new class18();
-               var4.field207 = var3;
-               var4.field199 = var3.field2225;
-               CombatInfoListHolder.method719(var4, 2000000);
+            try {
+               Friend.rssocket.queueForWrite(Client.secretCipherBuffer1.payload, 0, Client.secretCipherBuffer1.offset);
+               Client.secretCipherBuffer1.offset = 0;
+            } catch (IOException var2) {
+               Client.field336 = true;
             }
          }
-      }
 
+      }
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("cq")
    @ObfuscatedSignature(
-      signature = "(II)Lclass196;",
-      garbageValue = "1238247119"
+      signature = "(I)I",
+      garbageValue = "1539634550"
    )
-   public static class196 method2258(int var0) {
-      class196 var1 = (class196)class196.field2875.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class196.field2885.getConfigData(32, var0);
-         var1 = new class196();
-         if(var2 != null) {
-            var1.method3618(new Buffer(var2));
-         }
-
-         class196.field2875.put(var1, (long)var0);
-         return var1;
-      }
+   static final int method2212() {
+      return Client.menuOptionCount <= 0?-1:(Client.field432 && class105.field1695[81] && Client.field431 != -1?Client.field431:Client.menuOptionCount - 1);
    }
 }

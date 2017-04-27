@@ -1,55 +1,61 @@
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bh")
+@ObfuscatedName("br")
 @Implements("SoundEffect")
 public class SoundEffect {
-   @ObfuscatedName("u")
-   int field1006;
-   @ObfuscatedName("i")
-   SoundEffect1[] field1008 = new SoundEffect1[10];
-   @ObfuscatedName("h")
-   int field1009;
+   @ObfuscatedName("q")
+   int field973;
+   @ObfuscatedName("c")
+   SoundEffect1[] field974 = new SoundEffect1[10];
+   @ObfuscatedName("n")
+   int field975;
+
+   @ObfuscatedName("c")
+   public class55 method991() {
+      byte[] var1 = this.method997();
+      return new class55(22050, var1, this.field975 * 22050 / 1000, this.field973 * 22050 / 1000);
+   }
 
    SoundEffect(Buffer var1) {
       for(int var2 = 0; var2 < 10; ++var2) {
          int var3 = var1.readUnsignedByte();
          if(var3 != 0) {
             --var1.offset;
-            this.field1008[var2] = new SoundEffect1();
-            this.field1008[var2].method1408(var1);
+            this.field974[var2] = new SoundEffect1();
+            this.field974[var2].method1386(var1);
          }
       }
 
-      this.field1006 = var1.readUnsignedShort();
-      this.field1009 = var1.readUnsignedShort();
+      this.field975 = var1.readUnsignedShort();
+      this.field973 = var1.readUnsignedShort();
    }
 
-   @ObfuscatedName("u")
-   public final int method1003() {
+   @ObfuscatedName("n")
+   public final int method992() {
       int var1 = 9999999;
 
       int var2;
       for(var2 = 0; var2 < 10; ++var2) {
-         if(this.field1008[var2] != null && this.field1008[var2].field1188 / 20 < var1) {
-            var1 = this.field1008[var2].field1188 / 20;
+         if(this.field974[var2] != null && this.field974[var2].field1133 / 20 < var1) {
+            var1 = this.field974[var2].field1133 / 20;
          }
       }
 
-      if(this.field1006 < this.field1009 && this.field1006 / 20 < var1) {
-         var1 = this.field1006 / 20;
+      if(this.field975 < this.field973 && this.field975 / 20 < var1) {
+         var1 = this.field975 / 20;
       }
 
       if(var1 != 9999999 && var1 != 0) {
          for(var2 = 0; var2 < 10; ++var2) {
-            if(this.field1008[var2] != null) {
-               this.field1008[var2].field1188 -= var1 * 20;
+            if(this.field974[var2] != null) {
+               this.field974[var2].field1133 -= var1 * 20;
             }
          }
 
-         if(this.field1006 < this.field1009) {
-            this.field1006 -= var1 * 20;
-            this.field1009 -= var1 * 20;
+         if(this.field975 < this.field973) {
+            this.field975 -= var1 * 20;
+            this.field973 -= var1 * 20;
          }
 
          return var1;
@@ -58,14 +64,20 @@ public class SoundEffect {
       }
    }
 
-   @ObfuscatedName("r")
-   final byte[] method1007() {
+   @ObfuscatedName("d")
+   public static SoundEffect method993(IndexDataBase var0, int var1, int var2) {
+      byte[] var3 = var0.getConfigData(var1, var2);
+      return var3 == null?null:new SoundEffect(new Buffer(var3));
+   }
+
+   @ObfuscatedName("q")
+   final byte[] method997() {
       int var1 = 0;
 
       int var2;
       for(var2 = 0; var2 < 10; ++var2) {
-         if(this.field1008[var2] != null && this.field1008[var2].field1176 + this.field1008[var2].field1188 > var1) {
-            var1 = this.field1008[var2].field1176 + this.field1008[var2].field1188;
+         if(this.field974[var2] != null && this.field974[var2].field1145 + this.field974[var2].field1133 > var1) {
+            var1 = this.field974[var2].field1145 + this.field974[var2].field1133;
          }
       }
 
@@ -76,10 +88,10 @@ public class SoundEffect {
          byte[] var3 = new byte[var2];
 
          for(int var4 = 0; var4 < 10; ++var4) {
-            if(this.field1008[var4] != null) {
-               int var5 = this.field1008[var4].field1176 * 22050 / 1000;
-               int var6 = this.field1008[var4].field1188 * 22050 / 1000;
-               int[] var7 = this.field1008[var4].method1402(var5, this.field1008[var4].field1176);
+            if(this.field974[var4] != null) {
+               int var5 = this.field974[var4].field1145 * 22050 / 1000;
+               int var6 = this.field974[var4].field1133 * 22050 / 1000;
+               int[] var7 = this.field974[var4].method1385(var5, this.field974[var4].field1145);
 
                for(int var8 = 0; var8 < var5; ++var8) {
                   int var9 = var3[var8 + var6] + (var7[var8] >> 8);
@@ -94,17 +106,5 @@ public class SoundEffect {
 
          return var3;
       }
-   }
-
-   @ObfuscatedName("i")
-   public class55 method1008() {
-      byte[] var1 = this.method1007();
-      return new class55(22050, var1, this.field1006 * 22050 / 1000, this.field1009 * 22050 / 1000);
-   }
-
-   @ObfuscatedName("f")
-   public static SoundEffect method1013(IndexDataBase var0, int var1, int var2) {
-      byte[] var3 = var0.getConfigData(var1, var2);
-      return var3 == null?null:new SoundEffect(new Buffer(var3));
    }
 }

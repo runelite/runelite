@@ -1,40 +1,51 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gx")
+@ObfuscatedName("gm")
 public class class189 extends CacheableNode {
-   @ObfuscatedName("i")
-   static NodeCache field2799 = new NodeCache(64);
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -343280687
+   )
+   public static int field2783;
+   @ObfuscatedName("n")
+   static NodeCache field2784 = new NodeCache(64);
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1898999377
+   )
+   public int field2785 = 0;
+   @ObfuscatedName("d")
+   static IndexDataBase field2786;
    @ObfuscatedName("u")
-   public boolean field2800 = false;
-   @ObfuscatedName("f")
-   static IndexDataBase field2801;
+   public static IndexDataBase field2787;
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;II)V",
+      garbageValue = "-2029379553"
+   )
+   void method3434(Buffer var1, int var2) {
+      if(var2 == 5) {
+         this.field2785 = var1.readUnsignedShort();
+      }
+
+   }
+
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
-      garbageValue = "-1619247527"
+      garbageValue = "977486337"
    )
-   void method3503(Buffer var1) {
+   void method3437(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method3510(var1, var2);
+         this.method3434(var1, var2);
       }
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "-1449961102"
-   )
-   void method3510(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.field2800 = true;
-      }
-
    }
 }
