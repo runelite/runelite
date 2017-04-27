@@ -54,6 +54,7 @@ public class Opcodes
 	public static final int WIDGET_PUT_SCROLLWIDTHHEIGHT = 1120;
 	public static final int WIDGET_PUT_MODELID_2 = 1201;
 	public static final int WIDGET_PUT_MODELID_3 = 1202;
+	public static final int WIDGET_PUT_DRAG_PARENT = 1301;
 	public static final int WIDGET_PUT_NAME = 1305;
 	public static final int WIDGET_PUT_ACTIONS_NULL = 1307;
 	public static final int WIDGET_GET_RELATIVEX = 1500;
@@ -88,6 +89,7 @@ public class Opcodes
 	public static final int WIDGET_PUT_SCROLLWIDTHHEIGHT_WIDGET = WIDGET_PUT_SCROLLWIDTHHEIGHT + 1000;
 	public static final int WIDGET_PUT_MODELID_2_WIDGET = WIDGET_PUT_MODELID_2 + 1000;
 	public static final int WIDGET_PUT_MODELID_3_WIDGET = WIDGET_PUT_MODELID_3 + 1000;
+	public static final int WIDGET_PUT_DRAG_PARENT_WIDGET = WIDGET_PUT_DRAG_PARENT + 1000;
 	public static final int WIDGET_PUT_NAME_WIDGET = WIDGET_PUT_NAME + 1000;
 	public static final int WIDGET_PUT_ACTIONS_NULL_WIDGET = WIDGET_PUT_ACTIONS_NULL + 1000;
 	public static final int WIDGET_GET_RELATIVEX_WIDGET = WIDGET_GET_RELATIVEX + 1000;
