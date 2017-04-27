@@ -1,39 +1,27 @@
 import java.util.Comparator;
-import java.util.Date;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ae")
+@ObfuscatedName("ai")
 final class class44 implements Comparator {
-   final boolean val$preferOwnWorld;
-   @ObfuscatedName("kh")
+   @ObfuscatedName("z")
+   static byte[][][] field882;
+   @ObfuscatedName("oq")
    @ObfuscatedGetter(
-      intValue = 1145880725
+      intValue = 717140167
    )
-   static int field912;
-   @ObfuscatedName("db")
-   static int[] field915;
+   static int field884;
+   // $FF: synthetic field
+   final boolean val$preferOwnWorld;
 
-   public int compare(Object var1, Object var2) {
-      return this.method839((class2)var1, (class2)var2);
-   }
-
-   public boolean equals(Object var1) {
-      return super.equals(var1);
-   }
-
-   class44(boolean var1) {
-      this.val$preferOwnWorld = var1;
-   }
-
-   @ObfuscatedName("f")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(Lclass2;Lclass2;I)I",
-      garbageValue = "1690366699"
+      garbageValue = "617378814"
    )
-   int method839(class2 var1, class2 var2) {
-      if(var2.field22 == var1.field22) {
+   int method825(class2 var1, class2 var2) {
+      if(var1.field22 == var2.field22) {
          return 0;
       } else {
          if(this.val$preferOwnWorld) {
@@ -41,7 +29,7 @@ final class class44 implements Comparator {
                return -1;
             }
 
-            if(Client.world == var2.field22) {
+            if(var2.field22 == Client.world) {
                return 1;
             }
          }
@@ -50,16 +38,69 @@ final class class44 implements Comparator {
       }
    }
 
-   @ObfuscatedName("f")
-   public static String method840(long var0) {
-      class162.field2165.setTime(new Date(var0));
-      int var2 = class162.field2165.get(7);
-      int var3 = class162.field2165.get(5);
-      int var4 = class162.field2165.get(2);
-      int var5 = class162.field2165.get(1);
-      int var6 = class162.field2165.get(11);
-      int var7 = class162.field2165.get(12);
-      int var8 = class162.field2165.get(13);
-      return class162.field2164[var2 - 1] + ", " + var3 / 10 + var3 % 10 + "-" + class162.field2168[0][var4] + "-" + var5 + " " + var6 / 10 + var6 % 10 + ":" + var7 / 10 + var7 % 10 + ":" + var8 / 10 + var8 % 10 + " GMT";
+   public boolean equals(Object var1) {
+      return super.equals(var1);
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method825((class2)var1, (class2)var2);
+   }
+
+   class44(boolean var1) {
+      this.val$preferOwnWorld = var1;
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(ILScript;ZI)I",
+      garbageValue = "889878050"
+   )
+   static int method834(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class200.field2894:Script.field942;
+      if(var0 == 1600) {
+         class32.field720[++class32.field715 - 1] = var3.scrollX;
+         return 1;
+      } else if(var0 == 1601) {
+         class32.field720[++class32.field715 - 1] = var3.scrollY;
+         return 1;
+      } else if(var0 == 1602) {
+         class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.text;
+         return 1;
+      } else if(var0 == 1603) {
+         class32.field720[++class32.field715 - 1] = var3.scrollWidth;
+         return 1;
+      } else if(var0 == 1604) {
+         class32.field720[++class32.field715 - 1] = var3.scrollHeight;
+         return 1;
+      } else if(var0 == 1605) {
+         class32.field720[++class32.field715 - 1] = var3.field2244;
+         return 1;
+      } else if(var0 == 1606) {
+         class32.field720[++class32.field715 - 1] = var3.rotationX;
+         return 1;
+      } else if(var0 == 1607) {
+         class32.field720[++class32.field715 - 1] = var3.rotationY;
+         return 1;
+      } else if(var0 == 1608) {
+         class32.field720[++class32.field715 - 1] = var3.rotationZ;
+         return 1;
+      } else if(var0 == 1609) {
+         class32.field720[++class32.field715 - 1] = var3.opacity;
+         return 1;
+      } else if(var0 == 1610) {
+         class32.field720[++class32.field715 - 1] = var3.field2248;
+         return 1;
+      } else if(var0 == 1611) {
+         class32.field720[++class32.field715 - 1] = var3.textColor;
+         return 1;
+      } else if(var0 == 1612) {
+         class32.field720[++class32.field715 - 1] = var3.field2279;
+         return 1;
+      } else if(var0 == 1613) {
+         class32.field720[++class32.field715 - 1] = var3.field2238.vmethod4163();
+         return 1;
+      } else {
+         return 2;
+      }
    }
 }

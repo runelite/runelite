@@ -1,78 +1,62 @@
-import java.io.File;
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aa")
+@ObfuscatedName("ad")
 public class class45 {
    @ObfuscatedName("l")
-   static int[] field918 = new int[2048];
-   @ObfuscatedName("r")
-   static Buffer[] field919 = new Buffer[2048];
-   @ObfuscatedName("h")
-   static byte[] field921 = new byte[2048];
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1357906951
-   )
-   static int field923 = 0;
+   static int[] field886 = new int[2048];
    @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1955327049
-   )
-   static int field925 = 0;
-   @ObfuscatedName("u")
-   static byte[] field926 = new byte[2048];
-   @ObfuscatedName("w")
-   static int[] field927 = new int[2048];
-   @ObfuscatedName("j")
-   static int[] field928 = new int[2048];
-   @ObfuscatedName("s")
-   static int[] field929 = new int[2048];
+   static byte[] field888 = new byte[2048];
    @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1068987721
-   )
-   static int field930 = 0;
-   @ObfuscatedName("d")
-   static int[] field931 = new int[2048];
+   static byte[] field889 = new byte[2048];
+   @ObfuscatedName("t")
+   static Buffer[] field890 = new Buffer[2048];
    @ObfuscatedName("p")
-   static Buffer field932 = new Buffer(new byte[5000]);
-   @ObfuscatedName("m")
-   static int[] field934 = new int[2048];
-
+   @ObfuscatedGetter(
+      intValue = 1877472863
+   )
+   static int field891 = 0;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1976076969
+   )
+   static int field893 = 0;
    @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1270322947"
-   )
-   public static void method864() {
-      if(class115.mouse != null) {
-         class115 var0 = class115.mouse;
-         class115 var1 = class115.mouse;
-         class115 var2 = class115.mouse;
-         synchronized(class115.mouse) {
-            class115.mouse = null;
-         }
-      }
-
-   }
-
+   static int[] field894 = new int[2048];
+   @ObfuscatedName("v")
+   static int[] field895 = new int[2048];
+   @ObfuscatedName("pi")
+   public static class103 field896;
    @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Lclass68;B)V",
-      garbageValue = "-24"
+   static int[] field897 = new int[2048];
+   @ObfuscatedName("s")
+   static int[] field899 = new int[2048];
+   @ObfuscatedName("g")
+   static int[] field900 = new int[2048];
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -555243237
    )
-   static final void method866(class68 var0) {
-      var0.field1167 = false;
-      if(var0.field1164 != null) {
-         var0.field1164.field1198 = 0;
-      }
+   static int field902 = 0;
+   @ObfuscatedName("bw")
+   @Export("indexModels")
+   static IndexData indexModels;
+   @ObfuscatedName("k")
+   static Buffer field904 = new Buffer(new byte[5000]);
 
-      for(class68 var1 = var0.vmethod2768(); var1 != null; var1 = var0.vmethod2753()) {
-         method866(var1);
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "1540176824"
+   )
+   public static void method838(boolean var0) {
+      if(ItemComposition.isMembersWorld != var0) {
+         ItemComposition.field2982.reset();
+         ItemComposition.itemModelCache.reset();
+         ItemComposition.itemSpriteCache.reset();
+         ItemComposition.isMembersWorld = var0;
       }
 
    }
@@ -81,61 +65,75 @@ public class class45 {
       throw new Error();
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "1295864826"
+      signature = "(ILScript;ZI)I",
+      garbageValue = "510962208"
    )
-   public static synchronized long method867() {
-      long var0 = System.currentTimeMillis();
-      if(var0 < class155.field2130) {
-         class155.field2129 += class155.field2130 - var0;
+   static int method850(int var0, Script var1, boolean var2) {
+      int var3 = -1;
+      Widget var4;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = class32.field720[--class32.field715];
+         var4 = class128.method2364(var3);
+      } else {
+         var4 = var2?class200.field2894:Script.field942;
       }
 
-      class155.field2130 = var0;
-      return var0 + class155.field2129;
+      if(var0 == 1000) {
+         class32.field715 -= 4;
+         var4.originalX = class32.field720[class32.field715];
+         var4.originalY = class32.field720[class32.field715 + 1];
+         var4.field2212 = class32.field720[class32.field715 + 2];
+         var4.field2206 = class32.field720[class32.field715 + 3];
+         class124.method2350(var4);
+         FileOnDisk.method1441(var4);
+         if(var3 != -1 && var4.type == 0) {
+            class164.method3116(class133.widgets[var3 >> 16], var4, false);
+         }
+
+         return 1;
+      } else if(var0 == 1001) {
+         class32.field715 -= 4;
+         var4.originalWidth = class32.field720[class32.field715];
+         var4.field2219 = class32.field720[class32.field715 + 1];
+         var4.field2280 = class32.field720[class32.field715 + 2];
+         var4.field2215 = class32.field720[class32.field715 + 3];
+         class124.method2350(var4);
+         FileOnDisk.method1441(var4);
+         if(var3 != -1 && var4.type == 0) {
+            class164.method3116(class133.widgets[var3 >> 16], var4, false);
+         }
+
+         return 1;
+      } else if(var0 == 1003) {
+         boolean var5 = class32.field720[--class32.field715] == 1;
+         if(var4.isHidden != var5) {
+            var4.isHidden = var5;
+            class124.method2350(var4);
+         }
+
+         return 1;
+      } else if(var0 == 1005) {
+         var4.field2275 = class32.field720[--class32.field715] == 1;
+         return 1;
+      } else if(var0 == 1006) {
+         var4.field2203 = class32.field720[--class32.field715] == 1;
+         return 1;
+      } else {
+         return 2;
+      }
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)LFileOnDisk;",
-      garbageValue = "-2048483772"
+      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "-1621163061"
    )
-   @Export("getPreferencesFile")
-   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
-      File var3 = new File(class167.field2200, "preferences" + var0 + ".dat");
-      if(var3.exists()) {
-         try {
-            FileOnDisk var11 = new FileOnDisk(var3, "rw", 10000L);
-            return var11;
-         } catch (IOException var10) {
-            ;
-         }
-      }
-
-      String var4 = "";
-      if(class104.field1715 == 33) {
-         var4 = "_rc";
-      } else if(class104.field1715 == 34) {
-         var4 = "_wip";
-      }
-
-      File var5 = new File(Sequence.field3074, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-      FileOnDisk var6;
-      if(!var2 && var5.exists()) {
-         try {
-            var6 = new FileOnDisk(var5, "rw", 10000L);
-            return var6;
-         } catch (IOException var9) {
-            ;
-         }
-      }
-
-      try {
-         var6 = new FileOnDisk(var3, "rw", 10000L);
-         return var6;
-      } catch (IOException var8) {
-         throw new RuntimeException();
-      }
+   static void method854(String var0, String var1, String var2) {
+      class41.loginMessage1 = var0;
+      class41.loginMessage2 = var1;
+      class41.loginMessage3 = var2;
    }
 }

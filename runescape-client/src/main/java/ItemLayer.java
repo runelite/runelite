@@ -4,95 +4,103 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bt")
+@ObfuscatedName("bz")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("i")
+   @ObfuscatedName("p")
+   @Export("top")
+   Renderable top;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -366104387
+      intValue = 128792277
    )
    @Export("x")
    int x;
-   @ObfuscatedName("u")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1189537009
+      intValue = 2101326953
    )
    @Export("y")
    int y;
-   @ObfuscatedName("h")
+   @ObfuscatedName("q")
    @Export("bottom")
    Renderable bottom;
-   @ObfuscatedName("n")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 399561179
-   )
-   @Export("height")
-   int height;
-   @ObfuscatedName("o")
-   @Export("top")
-   Renderable top;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1842905521
-   )
-   @Export("flags")
-   int flags;
-   @ObfuscatedName("r")
-   @Export("middle")
-   Renderable middle;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1506530959
+      intValue = 1117902831
    )
    @Export("hash")
    int hash;
-
+   @ObfuscatedName("l")
+   static int[][] field1199;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 2075021049
+   )
+   @Export("height")
+   int height;
+   @ObfuscatedName("ef")
+   static SpritePixels field1204;
+   @ObfuscatedName("t")
+   @Export("middle")
+   Renderable middle;
    @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "-10"
+   @ObfuscatedGetter(
+      intValue = 2084235863
    )
-   public static final boolean method1491() {
-      class105 var0 = class105.keyboard;
-      class105 var1 = class105.keyboard;
-      class105 var2 = class105.keyboard;
-      synchronized(class105.keyboard) {
-         if(class105.field1726 == class105.field1742) {
-            return false;
-         } else {
-            class203.field3084 = class105.field1739[class105.field1742];
-            class37.field810 = class105.field1738[class105.field1742];
-            class105.field1742 = class105.field1742 + 1 & 127;
-            return true;
-         }
-      }
+   @Export("flags")
+   int flags;
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(I)[Lclass179;",
+      garbageValue = "74329661"
+   )
+   public static class179[] method1475() {
+      return new class179[]{class179.field2665, class179.field2664, class179.field2666, class179.field2667, class179.field2662, class179.field2663};
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("cd")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "959481574"
+      signature = "([LWidget;IIIZB)V",
+      garbageValue = "0"
    )
-   public static void method1492() {
-      PlayerComposition.field2193.reset();
-   }
+   static void method1476(Widget[] var0, int var1, int var2, int var3, boolean var4) {
+      for(int var5 = 0; var5 < var0.length; ++var5) {
+         Widget var6 = var0[var5];
+         if(var6 != null && var1 == var6.parentId) {
+            class5.method63(var6, var2, var3, var4);
+            class161.method3028(var6, var2, var3);
+            if(var6.scrollX > var6.scrollWidth - var6.width) {
+               var6.scrollX = var6.scrollWidth - var6.width;
+            }
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(IB)Lclass216;",
-      garbageValue = "1"
-   )
-   public static class216 method1493(int var0) {
-      class216[] var1 = new class216[]{class216.field3182, class216.field3184, class216.field3183};
-      class216[] var2 = var1;
+            if(var6.scrollX < 0) {
+               var6.scrollX = 0;
+            }
 
-      for(int var3 = 0; var3 < var2.length; ++var3) {
-         class216 var4 = var2[var3];
-         if(var4.field3181 == var0) {
-            return var4;
+            if(var6.scrollY > var6.scrollHeight - var6.height) {
+               var6.scrollY = var6.scrollHeight - var6.height;
+            }
+
+            if(var6.scrollY < 0) {
+               var6.scrollY = 0;
+            }
+
+            if(var6.type == 0) {
+               class164.method3116(var0, var6, var4);
+            }
          }
       }
 
-      return null;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-81"
+   )
+   public static void method1477() {
+      class231.field3265 = new CombatInfoList();
    }
 }

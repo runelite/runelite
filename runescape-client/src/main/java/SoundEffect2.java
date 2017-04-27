@@ -1,85 +1,85 @@
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("by")
+@ObfuscatedName("bl")
 @Implements("SoundEffect2")
 public class SoundEffect2 {
-   @ObfuscatedName("n")
-   int field1085;
-   @ObfuscatedName("i")
-   int[] field1086 = new int[2];
-   @ObfuscatedName("o")
-   int field1087;
-   @ObfuscatedName("h")
-   int field1088;
-   @ObfuscatedName("r")
-   int field1089;
-   @ObfuscatedName("u")
-   int[] field1090 = new int[2];
    @ObfuscatedName("l")
-   int field1091;
-   @ObfuscatedName("f")
-   int field1092 = 2;
-   @ObfuscatedName("m")
-   int field1093;
-   @ObfuscatedName("w")
-   int field1094;
-   @ObfuscatedName("j")
-   int field1095;
-
-   @ObfuscatedName("f")
-   final void method1138(Buffer var1) {
-      this.field1087 = var1.readUnsignedByte();
-      this.field1088 = var1.readInt();
-      this.field1089 = var1.readInt();
-      this.method1144(var1);
-   }
-
+   int field1050;
+   @ObfuscatedName("z")
+   int field1051;
+   @ObfuscatedName("n")
+   int[] field1052 = new int[2];
+   @ObfuscatedName("q")
+   int field1053;
+   @ObfuscatedName("t")
+   int field1054;
+   @ObfuscatedName("d")
+   int field1055 = 2;
+   @ObfuscatedName("c")
+   int[] field1056 = new int[2];
    @ObfuscatedName("u")
-   final void method1140() {
-      this.field1091 = 0;
-      this.field1085 = 0;
-      this.field1093 = 0;
-      this.field1094 = 0;
-      this.field1095 = 0;
+   int field1057;
+   @ObfuscatedName("p")
+   int field1058;
+   @ObfuscatedName("v")
+   int field1059;
+   @ObfuscatedName("g")
+   int field1060;
+
+   @ObfuscatedName("d")
+   final void method1120(Buffer var1) {
+      this.field1058 = var1.readUnsignedByte();
+      this.field1053 = var1.readInt();
+      this.field1054 = var1.readInt();
+      this.method1121(var1);
    }
 
-   @ObfuscatedName("r")
-   final int method1141(int var1) {
-      if(this.field1095 >= this.field1091) {
-         this.field1094 = this.field1090[this.field1085++] << 15;
-         if(this.field1085 >= this.field1092) {
-            this.field1085 = this.field1092 - 1;
+   @ObfuscatedName("c")
+   final void method1121(Buffer var1) {
+      this.field1055 = var1.readUnsignedByte();
+      this.field1056 = new int[this.field1055];
+      this.field1052 = new int[this.field1055];
+
+      for(int var2 = 0; var2 < this.field1055; ++var2) {
+         this.field1056[var2] = var1.readUnsignedShort();
+         this.field1052[var2] = var1.readUnsignedShort();
+      }
+
+   }
+
+   @ObfuscatedName("n")
+   final void method1122() {
+      this.field1057 = 0;
+      this.field1051 = 0;
+      this.field1050 = 0;
+      this.field1059 = 0;
+      this.field1060 = 0;
+   }
+
+   @ObfuscatedName("q")
+   final int method1123(int var1) {
+      if(this.field1060 >= this.field1057) {
+         this.field1059 = this.field1052[this.field1051++] << 15;
+         if(this.field1051 >= this.field1055) {
+            this.field1051 = this.field1055 - 1;
          }
 
-         this.field1091 = (int)((double)this.field1086[this.field1085] / 65536.0D * (double)var1);
-         if(this.field1091 > this.field1095) {
-            this.field1093 = ((this.field1090[this.field1085] << 15) - this.field1094) / (this.field1091 - this.field1095);
+         this.field1057 = (int)((double)this.field1056[this.field1051] / 65536.0D * (double)var1);
+         if(this.field1057 > this.field1060) {
+            this.field1050 = ((this.field1052[this.field1051] << 15) - this.field1059) / (this.field1057 - this.field1060);
          }
       }
 
-      this.field1094 += this.field1093;
-      ++this.field1095;
-      return this.field1094 - this.field1093 >> 15;
-   }
-
-   @ObfuscatedName("i")
-   final void method1144(Buffer var1) {
-      this.field1092 = var1.readUnsignedByte();
-      this.field1086 = new int[this.field1092];
-      this.field1090 = new int[this.field1092];
-
-      for(int var2 = 0; var2 < this.field1092; ++var2) {
-         this.field1086[var2] = var1.readUnsignedShort();
-         this.field1090[var2] = var1.readUnsignedShort();
-      }
-
+      this.field1059 += this.field1050;
+      ++this.field1060;
+      return this.field1059 - this.field1050 >> 15;
    }
 
    SoundEffect2() {
-      this.field1086[0] = 0;
-      this.field1086[1] = '\uffff';
-      this.field1090[0] = 0;
-      this.field1090[1] = '\uffff';
+      this.field1056[0] = 0;
+      this.field1056[1] = '\uffff';
+      this.field1052[0] = 0;
+      this.field1052[1] = '\uffff';
    }
 }

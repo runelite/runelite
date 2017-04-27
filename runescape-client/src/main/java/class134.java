@@ -1,11 +1,12 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("el")
-public class class134 extends Node {
-   @ObfuscatedName("f")
-   public byte[] field1919;
-
-   public class134(byte[] var1) {
-      this.field1919 = var1;
-   }
+@ObfuscatedName("es")
+public interface class134 {
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1946751124"
+   )
+   int vmethod4163();
 }

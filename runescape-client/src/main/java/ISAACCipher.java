@@ -1,52 +1,51 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fd")
+@ObfuscatedName("er")
 @Implements("ISAACCipher")
 public final class ISAACCipher {
-   @ObfuscatedName("n")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1423426933
+      intValue = 810455027
    )
-   int field2148;
-   @ObfuscatedName("h")
+   int field1990;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -99773029
+      intValue = -77385527
    )
    @Export("valuesRemaining")
    int valuesRemaining;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 269153233
-   )
-   int field2150;
-   @ObfuscatedName("o")
-   @Export("mm")
-   int[] mm = new int[256];
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 2098241399
-   )
-   int field2154;
-   @ObfuscatedName("r")
+   @ObfuscatedName("t")
    @Export("randResult")
    int[] randResult = new int[256];
+   @ObfuscatedName("p")
+   @Export("mm")
+   int[] mm = new int[256];
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 1751688471
+   )
+   int field1995;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -265025177
+   )
+   int field1996;
+   @ObfuscatedName("md")
+   static SpritePixels field2000;
 
-   ISAACCipher(int[] var1) {
-      for(int var2 = 0; var2 < var1.length; ++var2) {
-         this.randResult[var2] = var1[var2];
-      }
-
-      this.method3125();
-   }
-
-   @ObfuscatedName("f")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "691252922"
+      garbageValue = "842309143"
    )
    @Export("nextInt")
    final int nextInt() {
@@ -58,271 +57,239 @@ public final class ISAACCipher {
       return this.randResult[this.valuesRemaining];
    }
 
-   @ObfuscatedName("dg")
-   @ObfuscatedSignature(
-      signature = "(LWidget;I)Z",
-      garbageValue = "-1853999680"
-   )
-   static boolean method3124(Widget var0) {
-      if(Client.field473) {
-         if(FloorUnderlayDefinition.method3533(var0) != 0) {
-            return false;
-         }
-
-         if(var0.type == 0) {
-            return false;
-         }
+   ISAACCipher(int[] var1) {
+      for(int var2 = 0; var2 < var1.length; ++var2) {
+         this.randResult[var2] = var1[var2];
       }
 
-      return var0.isHidden;
+      this.method2660();
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-145574593"
+      garbageValue = "1490056447"
    )
-   final void method3125() {
-      int var1 = -1640531527;
-      int var2 = -1640531527;
-      int var3 = -1640531527;
-      int var4 = -1640531527;
-      int var5 = -1640531527;
-      int var6 = -1640531527;
-      int var7 = -1640531527;
+   final void method2660() {
+      int var9 = -1640531527;
       int var8 = -1640531527;
+      int var7 = -1640531527;
+      int var6 = -1640531527;
+      int var5 = -1640531527;
+      int var4 = -1640531527;
+      int var3 = -1640531527;
+      int var2 = -1640531527;
 
-      int var9;
-      for(var9 = 0; var9 < 4; ++var9) {
-         var8 ^= var7 << 11;
-         var5 += var8;
-         var7 += var6;
-         var7 ^= var6 >>> 2;
-         var4 += var7;
-         var6 += var5;
-         var6 ^= var5 << 8;
-         var3 += var6;
-         var5 += var4;
-         var5 ^= var4 >>> 16;
-         var2 += var5;
-         var4 += var3;
-         var4 ^= var3 << 10;
-         var1 += var4;
-         var3 += var2;
-         var3 ^= var2 >>> 4;
-         var8 += var3;
-         var2 += var1;
-         var2 ^= var1 << 8;
-         var7 += var2;
-         var1 += var8;
-         var1 ^= var8 >>> 9;
-         var6 += var1;
-         var8 += var7;
+      int var1;
+      for(var1 = 0; var1 < 4; ++var1) {
+         var2 ^= var3 << 11;
+         var5 += var2;
+         var3 += var4;
+         var3 ^= var4 >>> 2;
+         var6 += var3;
+         var4 += var5;
+         var4 ^= var5 << 8;
+         var7 += var4;
+         var5 += var6;
+         var5 ^= var6 >>> 16;
+         var8 += var5;
+         var6 += var7;
+         var6 ^= var7 << 10;
+         var9 += var6;
+         var7 += var8;
+         var7 ^= var8 >>> 4;
+         var2 += var7;
+         var8 += var9;
+         var8 ^= var9 << 8;
+         var3 += var8;
+         var9 += var2;
+         var9 ^= var2 >>> 9;
+         var4 += var9;
+         var2 += var3;
       }
 
-      for(var9 = 0; var9 < 256; var9 += 8) {
-         var8 += this.randResult[var9];
-         var7 += this.randResult[var9 + 1];
-         var6 += this.randResult[var9 + 2];
-         var5 += this.randResult[var9 + 3];
-         var4 += this.randResult[var9 + 4];
-         var3 += this.randResult[var9 + 5];
-         var2 += this.randResult[var9 + 6];
-         var1 += this.randResult[var9 + 7];
-         var8 ^= var7 << 11;
-         var5 += var8;
-         var7 += var6;
-         var7 ^= var6 >>> 2;
-         var4 += var7;
-         var6 += var5;
-         var6 ^= var5 << 8;
-         var3 += var6;
-         var5 += var4;
-         var5 ^= var4 >>> 16;
-         var2 += var5;
-         var4 += var3;
-         var4 ^= var3 << 10;
-         var1 += var4;
-         var3 += var2;
-         var3 ^= var2 >>> 4;
-         var8 += var3;
-         var2 += var1;
-         var2 ^= var1 << 8;
-         var7 += var2;
-         var1 += var8;
-         var1 ^= var8 >>> 9;
-         var6 += var1;
-         var8 += var7;
-         this.mm[var9] = var8;
-         this.mm[var9 + 1] = var7;
-         this.mm[var9 + 2] = var6;
-         this.mm[var9 + 3] = var5;
-         this.mm[var9 + 4] = var4;
-         this.mm[var9 + 5] = var3;
-         this.mm[var9 + 6] = var2;
-         this.mm[var9 + 7] = var1;
+      for(var1 = 0; var1 < 256; var1 += 8) {
+         var2 += this.randResult[var1];
+         var3 += this.randResult[var1 + 1];
+         var4 += this.randResult[var1 + 2];
+         var5 += this.randResult[var1 + 3];
+         var6 += this.randResult[var1 + 4];
+         var7 += this.randResult[var1 + 5];
+         var8 += this.randResult[var1 + 6];
+         var9 += this.randResult[var1 + 7];
+         var2 ^= var3 << 11;
+         var5 += var2;
+         var3 += var4;
+         var3 ^= var4 >>> 2;
+         var6 += var3;
+         var4 += var5;
+         var4 ^= var5 << 8;
+         var7 += var4;
+         var5 += var6;
+         var5 ^= var6 >>> 16;
+         var8 += var5;
+         var6 += var7;
+         var6 ^= var7 << 10;
+         var9 += var6;
+         var7 += var8;
+         var7 ^= var8 >>> 4;
+         var2 += var7;
+         var8 += var9;
+         var8 ^= var9 << 8;
+         var3 += var8;
+         var9 += var2;
+         var9 ^= var2 >>> 9;
+         var4 += var9;
+         var2 += var3;
+         this.mm[var1] = var2;
+         this.mm[var1 + 1] = var3;
+         this.mm[var1 + 2] = var4;
+         this.mm[var1 + 3] = var5;
+         this.mm[var1 + 4] = var6;
+         this.mm[var1 + 5] = var7;
+         this.mm[var1 + 6] = var8;
+         this.mm[var1 + 7] = var9;
       }
 
-      for(var9 = 0; var9 < 256; var9 += 8) {
-         var8 += this.mm[var9];
-         var7 += this.mm[var9 + 1];
-         var6 += this.mm[var9 + 2];
-         var5 += this.mm[var9 + 3];
-         var4 += this.mm[var9 + 4];
-         var3 += this.mm[var9 + 5];
-         var2 += this.mm[var9 + 6];
-         var1 += this.mm[var9 + 7];
-         var8 ^= var7 << 11;
-         var5 += var8;
-         var7 += var6;
-         var7 ^= var6 >>> 2;
-         var4 += var7;
-         var6 += var5;
-         var6 ^= var5 << 8;
-         var3 += var6;
-         var5 += var4;
-         var5 ^= var4 >>> 16;
-         var2 += var5;
-         var4 += var3;
-         var4 ^= var3 << 10;
-         var1 += var4;
-         var3 += var2;
-         var3 ^= var2 >>> 4;
-         var8 += var3;
-         var2 += var1;
-         var2 ^= var1 << 8;
-         var7 += var2;
-         var1 += var8;
-         var1 ^= var8 >>> 9;
-         var6 += var1;
-         var8 += var7;
-         this.mm[var9] = var8;
-         this.mm[var9 + 1] = var7;
-         this.mm[var9 + 2] = var6;
-         this.mm[var9 + 3] = var5;
-         this.mm[var9 + 4] = var4;
-         this.mm[var9 + 5] = var3;
-         this.mm[var9 + 6] = var2;
-         this.mm[var9 + 7] = var1;
+      for(var1 = 0; var1 < 256; var1 += 8) {
+         var2 += this.mm[var1];
+         var3 += this.mm[var1 + 1];
+         var4 += this.mm[var1 + 2];
+         var5 += this.mm[var1 + 3];
+         var6 += this.mm[var1 + 4];
+         var7 += this.mm[var1 + 5];
+         var8 += this.mm[var1 + 6];
+         var9 += this.mm[var1 + 7];
+         var2 ^= var3 << 11;
+         var5 += var2;
+         var3 += var4;
+         var3 ^= var4 >>> 2;
+         var6 += var3;
+         var4 += var5;
+         var4 ^= var5 << 8;
+         var7 += var4;
+         var5 += var6;
+         var5 ^= var6 >>> 16;
+         var8 += var5;
+         var6 += var7;
+         var6 ^= var7 << 10;
+         var9 += var6;
+         var7 += var8;
+         var7 ^= var8 >>> 4;
+         var2 += var7;
+         var8 += var9;
+         var8 ^= var9 << 8;
+         var3 += var8;
+         var9 += var2;
+         var9 ^= var2 >>> 9;
+         var4 += var9;
+         var2 += var3;
+         this.mm[var1] = var2;
+         this.mm[var1 + 1] = var3;
+         this.mm[var1 + 2] = var4;
+         this.mm[var1 + 3] = var5;
+         this.mm[var1 + 4] = var6;
+         this.mm[var1 + 5] = var7;
+         this.mm[var1 + 6] = var8;
+         this.mm[var1 + 7] = var9;
       }
 
       this.generateMoreResults();
       this.valuesRemaining = 256;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;IZI)V",
+      garbageValue = "-471033253"
+   )
+   public static void method2662(IndexDataBase var0, String var1, String var2, int var3, boolean var4) {
+      int var5 = var0.method3296(var1);
+      int var6 = var0.method3310(var5, var2);
+      Script.method911(var0, var5, var6, var3, var4);
+   }
+
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1788072440"
+      garbageValue = "1568188956"
    )
    @Export("generateMoreResults")
    final void generateMoreResults() {
-      this.field2148 += ++this.field2154;
+      this.field1996 += ++this.field1990;
 
       for(int var1 = 0; var1 < 256; ++var1) {
          int var2 = this.mm[var1];
          if((var1 & 2) == 0) {
             if((var1 & 1) == 0) {
-               this.field2150 ^= this.field2150 << 13;
+               this.field1995 ^= this.field1995 << 13;
             } else {
-               this.field2150 ^= this.field2150 >>> 6;
+               this.field1995 ^= this.field1995 >>> 6;
             }
          } else if((var1 & 1) == 0) {
-            this.field2150 ^= this.field2150 << 2;
+            this.field1995 ^= this.field1995 << 2;
          } else {
-            this.field2150 ^= this.field2150 >>> 16;
+            this.field1995 ^= this.field1995 >>> 16;
          }
 
-         this.field2150 += this.mm[var1 + 128 & 255];
+         this.field1995 += this.mm[var1 + 128 & 255];
          int var3;
-         this.mm[var1] = var3 = this.field2148 + this.field2150 + this.mm[(var2 & 1020) >> 2];
-         this.randResult[var1] = this.field2148 = var2 + this.mm[(var3 >> 8 & 1020) >> 2];
+         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field1995 + this.field1996;
+         this.randResult[var1] = this.field1996 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-4"
+      signature = "(Ljava/lang/Throwable;I)Ljava/lang/String;",
+      garbageValue = "-1957813225"
    )
-   public static void method3132(int var0) {
-      if(var0 != -1 && class6.validInterfaces[var0]) {
-         Widget.field2301.method3348(var0);
-         if(Widget.widgets[var0] != null) {
-            boolean var1 = true;
-
-            for(int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
-               if(Widget.widgets[var0][var2] != null) {
-                  if(Widget.widgets[var0][var2].type != 2) {
-                     Widget.widgets[var0][var2] = null;
-                  } else {
-                     var1 = false;
-                  }
-               }
-            }
-
-            if(var1) {
-               Widget.widgets[var0] = null;
-            }
-
-            class6.validInterfaces[var0] = false;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(II)LFloorUnderlayDefinition;",
-      garbageValue = "-1418896148"
-   )
-   public static FloorUnderlayDefinition method3133(int var0) {
-      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.field2821.get((long)var0);
-      if(var1 != null) {
-         return var1;
+   static String method2666(Throwable var0) throws IOException {
+      String var1;
+      if(var0 instanceof class101) {
+         class101 var2 = (class101)var0;
+         var1 = var2.field1642 + " | ";
+         var0 = var2.field1640;
       } else {
-         byte[] var2 = FloorUnderlayDefinition.field2822.getConfigData(1, var0);
-         var1 = new FloorUnderlayDefinition();
-         if(var2 != null) {
-            var1.method3544(new Buffer(var2), var0);
+         var1 = "";
+      }
+
+      StringWriter var12 = new StringWriter();
+      PrintWriter var3 = new PrintWriter(var12);
+      var0.printStackTrace(var3);
+      var3.close();
+      String var4 = var12.toString();
+      BufferedReader var5 = new BufferedReader(new StringReader(var4));
+      String var6 = var5.readLine();
+
+      while(true) {
+         while(true) {
+            String var7 = var5.readLine();
+            if(var7 == null) {
+               var1 = var1 + "| " + var6;
+               return var1;
+            }
+
+            int var8 = var7.indexOf(40);
+            int var9 = var7.indexOf(41, var8 + 1);
+            if(var8 >= 0 && var9 >= 0) {
+               String var10 = var7.substring(var8 + 1, var9);
+               int var11 = var10.indexOf(".java:");
+               if(var11 >= 0) {
+                  var10 = var10.substring(0, var11) + var10.substring(var11 + 5);
+                  var1 = var1 + var10 + ' ';
+                  continue;
+               }
+
+               var7 = var7.substring(0, var8);
+            }
+
+            var7 = var7.trim();
+            var7 = var7.substring(var7.lastIndexOf(32) + 1);
+            var7 = var7.substring(var7.lastIndexOf(9) + 1);
+            var1 = var1 + var7 + ' ';
          }
-
-         var1.method3532();
-         FloorUnderlayDefinition.field2821.put(var1, (long)var0);
-         return var1;
       }
-   }
-
-   @ObfuscatedName("bb")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIIII)V",
-      garbageValue = "-1441576506"
-   )
-   static final void method3134(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-      class25 var9 = null;
-
-      for(class25 var10 = (class25)Client.field461.method2464(); var10 != null; var10 = (class25)Client.field461.method2472()) {
-         if(var10.field601 == var0 && var10.field599 == var1 && var10.field597 == var2 && var10.field588 == var3) {
-            var9 = var10;
-            break;
-         }
-      }
-
-      if(var9 == null) {
-         var9 = new class25();
-         var9.field601 = var0;
-         var9.field588 = var3;
-         var9.field599 = var1;
-         var9.field597 = var2;
-         Client.method552(var9);
-         Client.field461.method2459(var9);
-      }
-
-      var9.field594 = var4;
-      var9.field596 = var5;
-      var9.field587 = var6;
-      var9.field589 = var7;
-      var9.field598 = var8;
    }
 }

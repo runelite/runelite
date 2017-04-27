@@ -1,40 +1,44 @@
-import net.runelite.mapping.Export;
+import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fx")
-public abstract class class156 {
-   @ObfuscatedName("i")
-   static boolean field2132 = false;
-   @ObfuscatedName("p")
-   static String field2133;
-   @ObfuscatedName("mf")
-   @Export("clanMembers")
-   static XClanMember[] clanMembers;
+public class class156 implements Iterator {
+   @ObfuscatedName("n")
+   CacheableNode field2048 = null;
+   @ObfuscatedName("d")
+   class157 field2049;
+   @ObfuscatedName("c")
+   CacheableNode field2050;
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(B)[B",
-      garbageValue = "-57"
-   )
-   abstract byte[] vmethod3076();
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "([BI)V",
-      garbageValue = "-932194466"
-   )
-   abstract void vmethod3077(byte[] var1);
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-161548112"
-   )
-   static void method3086() {
-      if(CombatInfoListHolder.loadWorlds()) {
-         class41.worldSelectShown = true;
+   public Object next() {
+      CacheableNode var1 = this.field2050;
+      if(var1 == this.field2049.field2051) {
+         var1 = null;
+         this.field2050 = null;
+      } else {
+         this.field2050 = var1.previous;
       }
 
+      this.field2048 = var1;
+      return var1;
+   }
+
+   public boolean hasNext() {
+      return this.field2050 != this.field2049.field2051;
+   }
+
+   public void remove() {
+      if(this.field2048 == null) {
+         throw new IllegalStateException();
+      } else {
+         this.field2048.method2851();
+         this.field2048 = null;
+      }
+   }
+
+   class156(class157 var1) {
+      this.field2049 = var1;
+      this.field2050 = this.field2049.field2051.previous;
+      this.field2048 = null;
    }
 }

@@ -1,140 +1,146 @@
+import java.net.MalformedURLException;
+import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aq")
+@ObfuscatedName("ac")
 @Implements("CombatInfo1")
 public class CombatInfo1 extends Node {
-   @ObfuscatedName("i")
+   @ObfuscatedName("ag")
+   static boolean field662;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 165766523
-   )
-   @Export("healthRatio")
-   int healthRatio;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 1394771333
+      intValue = -1620858907
    )
    @Export("health")
    int health;
-   @ObfuscatedName("qx")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1543925975
+      intValue = -744825579
    )
-   protected static int field682;
-   @ObfuscatedName("av")
+   int field665;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1395825023
+      intValue = 548752529
    )
-   @Export("authCodeForLogin")
-   static int authCodeForLogin;
-   @ObfuscatedName("f")
+   int field666;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1626461009
+      intValue = 1752400569
    )
-   int field684;
-   @ObfuscatedName("mb")
-   static SpritePixels field686;
-   @ObfuscatedName("dx")
-   @Export("region")
-   static Region region;
-   @ObfuscatedName("m")
-   static int[][] field688;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1430906969
-   )
-   int field690;
+   @Export("healthRatio")
+   int healthRatio;
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-1462660177"
+      signature = "(II)I",
+      garbageValue = "1351626222"
    )
-   void method591(int var1, int var2, int var3, int var4) {
-      this.field684 = var1;
-      this.healthRatio = var2;
-      this.health = var3;
-      this.field690 = var4;
+   public static int method596(int var0) {
+      --var0;
+      var0 |= var0 >>> 1;
+      var0 |= var0 >>> 2;
+      var0 |= var0 >>> 4;
+      var0 |= var0 >>> 8;
+      var0 |= var0 >>> 16;
+      return var0 + 1;
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(II)LScript;",
-      garbageValue = "1031029287"
+      signature = "(IIIII)V",
+      garbageValue = "-893627548"
    )
-   static Script method593(int var0) {
-      Script var1 = (Script)Script.field968.get((long)var0);
-      if(var1 != null) {
-         return var1;
+   void method597(int var1, int var2, int var3, int var4) {
+      this.field666 = var1;
+      this.healthRatio = var2;
+      this.health = var3;
+      this.field665 = var4;
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)Z",
+      garbageValue = "1582648353"
+   )
+   static boolean method599(String var0) {
+      if(var0 == null) {
+         return false;
       } else {
-         byte[] var2 = Projectile.indexScripts.getConfigData(var0, 0);
-         if(var2 == null) {
-            return null;
-         } else {
-            var1 = new Script();
-            Buffer var3 = new Buffer(var2);
-            var3.offset = var3.payload.length - 12;
-            int var4 = var3.readInt();
-            var1.localIntCount = var3.readUnsignedShort();
-            var1.localStringCount = var3.readUnsignedShort();
-            var1.intStackCount = var3.readUnsignedShort();
-            var1.stringStackCount = var3.readUnsignedShort();
-            var3.offset = 0;
-            var3.method2922();
-            var1.instructions = new int[var4];
-            var1.intOperands = new int[var4];
-            var1.stringOperands = new String[var4];
-
-            int var5;
-            for(int var6 = 0; var3.offset < var3.payload.length - 12; var1.instructions[var6++] = var5) {
-               var5 = var3.readUnsignedShort();
-               if(var5 == 3) {
-                  var1.stringOperands[var6] = var3.readString();
-               } else if(var5 < 100 && var5 != 21 && var5 != 38 && var5 != 39) {
-                  var1.intOperands[var6] = var3.readInt();
-               } else {
-                  var1.intOperands[var6] = var3.readUnsignedByte();
-               }
-            }
-
-            Script.field968.put(var1, (long)var0);
-            return var1;
+         try {
+            new URL(var0);
+            return true;
+         } catch (MalformedURLException var2) {
+            return false;
          }
       }
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("by")
    @ObfuscatedSignature(
-      signature = "(LWorld;LWorld;IZI)I",
-      garbageValue = "682289264"
+      signature = "(IIII)I",
+      garbageValue = "-1602416127"
    )
-   static int method594(World var0, World var1, int var2, boolean var3) {
-      if(var2 == 1) {
-         int var4 = var0.playerCount;
-         int var5 = var1.playerCount;
-         if(!var3) {
-            if(var4 == -1) {
-               var4 = 2001;
-            }
-
-            if(var5 == -1) {
-               var5 = 2001;
-            }
+   static final int method600(int var0, int var1, int var2) {
+      int var3 = var0 >> 7;
+      int var4 = var1 >> 7;
+      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
+         int var5 = var2;
+         if(var2 < 3 && (class10.tileSettings[1][var3][var4] & 2) == 2) {
+            var5 = var2 + 1;
          }
 
-         return var4 - var5;
+         int var6 = var0 & 127;
+         int var7 = var1 & 127;
+         int var8 = (128 - var6) * class10.tileHeights[var5][var3][var4] + class10.tileHeights[var5][var3 + 1][var4] * var6 >> 7;
+         int var9 = var6 * class10.tileHeights[var5][var3 + 1][var4 + 1] + class10.tileHeights[var5][var3][var4 + 1] * (128 - var6) >> 7;
+         return var9 * var7 + (128 - var7) * var8 >> 7;
       } else {
-         return var2 == 2?var0.location - var1.location:(var2 == 3?(var0.activity.equals("-")?(var1.activity.equals("-")?0:(var3?-1:1)):(var1.activity.equals("-")?(var3?1:-1):var0.activity.compareTo(var1.activity))):(var2 == 4?(var0.method599()?(var1.method599()?0:1):(var1.method599()?-1:0)):(var2 == 5?(var0.method597()?(var1.method597()?0:1):(var1.method597()?-1:0)):(var2 == 6?(var0.method598()?(var1.method598()?0:1):(var1.method598()?-1:0)):(var2 == 7?(var0.method632()?(var1.method632()?0:1):(var1.method632()?-1:0)):var0.id - var1.id)))));
+         return 0;
       }
    }
 
    CombatInfo1(int var1, int var2, int var3, int var4) {
-      this.field684 = var1;
+      this.field666 = var1;
       this.healthRatio = var2;
       this.health = var3;
-      this.field690 = var4;
+      this.field665 = var4;
+   }
+
+   @ObfuscatedName("bl")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "925587630"
+   )
+   static final void method601(int var0, int var1, int var2) {
+      if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
+         int var3 = method600(var0, var1, Client.plane) - var2;
+         var0 -= class22.cameraX;
+         var3 -= class1.cameraZ;
+         var1 -= class13.cameraY;
+         int var4 = class84.field1433[class108.cameraPitch];
+         int var5 = class84.field1441[class108.cameraPitch];
+         int var6 = class84.field1433[class13.cameraYaw];
+         int var7 = class84.field1441[class13.cameraYaw];
+         int var8 = var6 * var1 + var0 * var7 >> 16;
+         var1 = var7 * var1 - var0 * var6 >> 16;
+         var0 = var8;
+         var8 = var3 * var5 - var1 * var4 >> 16;
+         var1 = var4 * var3 + var5 * var1 >> 16;
+         if(var1 >= 50) {
+            Client.field388 = Client.camera2 / 2 + var0 * Client.scale / var1;
+            Client.field389 = Client.camera3 / 2 + Client.scale * var8 / var1;
+         } else {
+            Client.field388 = -1;
+            Client.field389 = -1;
+         }
+
+      } else {
+         Client.field388 = -1;
+         Client.field389 = -1;
+      }
    }
 }

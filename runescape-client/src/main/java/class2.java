@@ -2,144 +2,85 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("u")
+@ObfuscatedName("n")
 public class class2 {
-   @ObfuscatedName("i")
+   @ObfuscatedName("q")
+   String field19;
+   @ObfuscatedName("n")
+   public final XGrandExchangeOffer field21;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      longValue = -8957303264739180699L
-   )
-   public final long field18;
-   @ObfuscatedName("u")
-   public final XGrandExchangeOffer field19;
-   @ObfuscatedName("r")
-   String field21;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1465916163
+      intValue = -764767103
    )
    public final int field22;
-   @ObfuscatedName("nq")
-   static class57 field23;
-   @ObfuscatedName("h")
-   String field26;
-
-   @ObfuscatedName("an")
-   @ObfuscatedSignature(
-      signature = "(LWidget;III)V",
-      garbageValue = "-1719204386"
+   @ObfuscatedName("t")
+   String field23;
+   @ObfuscatedName("am")
+   static int[] field24;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      longValue = -3354601879741057549L
    )
-   static final void method9(Widget var0, int var1, int var2) {
-      if((Client.field539 == 0 || Client.field539 == 3) && (class115.field1823 == 1 || !class177.field2687 && class115.field1823 == 4)) {
-         class164 var3 = var0.method3288(true);
-         if(var3 == null) {
-            return;
-         }
+   public final long field25;
 
-         int var4 = class115.field1825 - var1;
-         int var5 = class115.field1813 - var2;
-         if(var3.method3189(var4, var5)) {
-            var4 -= var3.field2174 / 2;
-            var5 -= var3.field2172 / 2;
-            int var6 = Client.mapAngle + Client.mapScale & 2047;
-            int var7 = class84.field1475[var6];
-            int var8 = class84.field1469[var6];
-            var7 = (Client.mapScaleDelta + 256) * var7 >> 8;
-            var8 = (Client.mapScaleDelta + 256) * var8 >> 8;
-            int var9 = var5 * var7 + var8 * var4 >> 11;
-            int var10 = var5 * var8 - var4 * var7 >> 11;
-            int var11 = Projectile.localPlayer.x + var9 >> 7;
-            int var12 = Projectile.localPlayer.y - var10 >> 7;
-            Client.secretCipherBuffer1.putOpcode(229);
-            Client.secretCipherBuffer1.putByte(18);
-            Client.secretCipherBuffer1.method2893(class105.field1734[82]?(class105.field1734[81]?2:1):0);
-            Client.secretCipherBuffer1.method2900(class187.baseY + var12);
-            Client.secretCipherBuffer1.method2895(var11 + class119.baseX);
-            Client.secretCipherBuffer1.putByte(var4);
-            Client.secretCipherBuffer1.putByte(var5);
-            Client.secretCipherBuffer1.putShort(Client.mapAngle);
-            Client.secretCipherBuffer1.putByte(57);
-            Client.secretCipherBuffer1.putByte(Client.mapScale);
-            Client.secretCipherBuffer1.putByte(Client.mapScaleDelta);
-            Client.secretCipherBuffer1.putByte(89);
-            Client.secretCipherBuffer1.putShort(Projectile.localPlayer.x);
-            Client.secretCipherBuffer1.putShort(Projectile.localPlayer.y);
-            Client.secretCipherBuffer1.putByte(63);
-            Client.flagX = var11;
-            Client.flagY = var12;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("f")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "199023248"
+      garbageValue = "695139454"
    )
-   public String method10() {
-      return this.field26;
+   public String method20() {
+      return this.field23;
    }
 
    class2(Buffer var1, byte var2, int var3) {
-      this.field26 = var1.readString();
-      this.field21 = var1.readString();
+      this.field19 = var1.readString();
+      this.field23 = var1.readString();
       this.field22 = var1.readUnsignedShort();
-      this.field18 = var1.readLong();
+      this.field25 = var1.readLong();
       int var4 = var1.readInt();
       int var5 = var1.readInt();
-      this.field19 = new XGrandExchangeOffer();
-      this.field19.method33(2);
-      this.field19.method34(var2);
-      this.field19.price = var4;
-      this.field19.totalQuantity = var5;
-      this.field19.quantitySold = 0;
-      this.field19.spent = 0;
-      this.field19.itemId = var3;
+      this.field21 = new XGrandExchangeOffer();
+      this.field21.method46(2);
+      this.field21.method47(var2);
+      this.field21.price = var4;
+      this.field21.totalQuantity = var5;
+      this.field21.quantitySold = 0;
+      this.field21.spent = 0;
+      this.field21.itemId = var3;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(S)Ljava/lang/String;",
-      garbageValue = "31447"
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "-531186240"
    )
-   public String method15() {
-      return this.field21;
+   public String method25() {
+      return this.field19;
    }
 
-   @ObfuscatedName("ca")
+   @ObfuscatedName("eg")
    @ObfuscatedSignature(
-      signature = "([LWidget;LWidget;ZI)V",
-      garbageValue = "-1922995505"
+      signature = "(Ljava/lang/String;I)Z",
+      garbageValue = "2044594720"
    )
-   static void method16(Widget[] var0, Widget var1, boolean var2) {
-      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
-      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
-      class65.method1205(var0, var1.id, var3, var4, var2);
-      if(var1.children != null) {
-         class65.method1205(var1.children, var1.id, var3, var4, var2);
-      }
+   static boolean method27(String var0) {
+      if(var0 == null) {
+         return false;
+      } else {
+         String var1 = class108.method2059(var0, NPC.field757);
 
-      WidgetNode var5 = (WidgetNode)Client.componentTable.method2417((long)var1.id);
-      if(var5 != null) {
-         int var6 = var5.id;
-         if(Ignore.method178(var6)) {
-            class65.method1205(Widget.widgets[var6], -1, var3, var4, var2);
+         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
+            Ignore var3 = Client.ignores[var2];
+            if(var1.equalsIgnoreCase(class108.method2059(var3.name, NPC.field757))) {
+               return true;
+            }
+
+            if(var1.equalsIgnoreCase(class108.method2059(var3.previousName, NPC.field757))) {
+               return true;
+            }
          }
+
+         return false;
       }
-
-      if(var1.contentType == 1337) {
-         ;
-      }
-
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(I)LWorld;",
-      garbageValue = "-799896479"
-   )
-   static World method17() {
-      World.field697 = 0;
-      return TextureProvider.method1482();
    }
 }

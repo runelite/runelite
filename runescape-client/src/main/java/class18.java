@@ -1,105 +1,76 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("z")
+@ObfuscatedName("a")
 public class class18 extends Node {
-   @ObfuscatedName("i")
-   boolean field197;
-   @ObfuscatedName("h")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -2053021253
+      intValue = -698563905
+   )
+   int field187;
+   @ObfuscatedName("c")
+   boolean field188;
+   @ObfuscatedName("n")
+   Widget field189;
+   @ObfuscatedName("v")
+   String field190;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1757052415
+   )
+   int field191;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -322143939
+   )
+   int field192;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -934453075
+   )
+   int field193;
+   @ObfuscatedName("bg")
+   @ObfuscatedGetter(
+      intValue = -1821722553
+   )
+   static int field194;
+   @ObfuscatedName("u")
+   Widget field195;
+   @ObfuscatedName("d")
+   Object[] field196;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -757020121
+   )
+   int field197;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -218613445
    )
    int field198;
-   @ObfuscatedName("f")
-   Object[] field199;
-   @ObfuscatedName("w")
-   String field200;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1630244669
-   )
-   int field201;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 2021597433
-   )
-   int field202;
-   @ObfuscatedName("l")
-   Widget field203;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -497123871
-   )
-   int field204;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1788866729
-   )
-   int field205;
-   @ObfuscatedName("u")
-   Widget field207;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1023619441
-   )
-   int field208;
+   @ObfuscatedName("bo")
+   @Export("indexTrack1")
+   static IndexData indexTrack1;
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZB)I",
-      garbageValue = "116"
+      signature = "(LIndexDataBase;I)V",
+      garbageValue = "-732125067"
    )
-   static int method173(int var0, Script var1, boolean var2) {
-      int var3;
-      if(var0 == 5504) {
-         Preferences.field713 -= 2;
-         var3 = class32.field743[Preferences.field713];
-         int var4 = class32.field743[Preferences.field713 + 1];
-         if(!Client.field446) {
-            Client.field398 = var3;
-            Client.mapAngle = var4;
-         }
-
-         return 1;
-      } else if(var0 == 5505) {
-         class32.field743[++Preferences.field713 - 1] = Client.field398;
-         return 1;
-      } else if(var0 == 5506) {
-         class32.field743[++Preferences.field713 - 1] = Client.mapAngle;
-         return 1;
-      } else if(var0 == 5530) {
-         var3 = class32.field743[--Preferences.field713];
-         if(var3 < 0) {
-            var3 = 0;
-         }
-
-         Client.field572 = var3;
-         return 1;
-      } else if(var0 == 5531) {
-         class32.field743[++Preferences.field713 - 1] = Client.field572;
-         return 1;
-      } else {
-         return 2;
-      }
+   public static void method201(IndexDataBase var0) {
+      class189.field2786 = var0;
+      class189.field2783 = class189.field2786.method3305(16);
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(IIB)LMessageNode;",
-      garbageValue = "108"
+      signature = "(IIII)I",
+      garbageValue = "1724054196"
    )
-   static MessageNode method174(int var0, int var1) {
-      ChatLineBuffer var2 = (ChatLineBuffer)class47.chatLineMap.get(Integer.valueOf(var0));
-      return var2.method934(var1);
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-27"
-   )
-   public static int method175() {
-      return class105.keyboardIdleTicks;
+   public static int method202(int var0, int var1, int var2) {
+      var2 &= 3;
+      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0:7 - var1));
    }
 }

@@ -7,68 +7,111 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("al")
 public class class47 {
-   @ObfuscatedName("i")
-   static final class121 field949 = new class121(1024);
-   @ObfuscatedName("j")
-   static ModIcon field951;
-   @ObfuscatedName("u")
-   static final class136 field952 = new class136();
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1539242675
-   )
-   static int field953 = 0;
-   @ObfuscatedName("l")
-   public static IndexDataBase field956;
-   @ObfuscatedName("is")
-   @ObfuscatedGetter(
-      intValue = -792964549
-   )
-   static int field957;
-   @ObfuscatedName("f")
+   @ObfuscatedName("c")
+   static final class142 field924 = new class142(1024);
+   @ObfuscatedName("d")
    @Export("chatLineMap")
    static final Map chatLineMap = new HashMap();
-   @ObfuscatedName("mc")
-   static byte field959;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -216656953
+   )
+   static int field926 = 0;
+   @ObfuscatedName("n")
+   static final class157 field927 = new class157();
+   @ObfuscatedName("bk")
+   static ModIcon field928;
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(II)LItemComposition;",
+      garbageValue = "2037884848"
+   )
+   @Export("getItemDefinition")
+   public static ItemComposition getItemDefinition(int var0) {
+      ItemComposition var1 = (ItemComposition)ItemComposition.field2982.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = ItemComposition.field2979.getConfigData(10, var0);
+         var1 = new ItemComposition();
+         var1.id = var0;
+         if(var2 != null) {
+            var1.loadBuffer(new Buffer(var2));
+         }
+
+         var1.method3736();
+         if(var1.notedTemplate != -1) {
+            var1.method3739(getItemDefinition(var1.notedTemplate), getItemDefinition(var1.note));
+         }
+
+         if(var1.field3030 != -1) {
+            var1.method3767(getItemDefinition(var1.field3030), getItemDefinition(var1.field3029));
+         }
+
+         if(var1.field3000 != -1) {
+            var1.method3745(getItemDefinition(var1.field3000), getItemDefinition(var1.field3016));
+         }
+
+         if(!ItemComposition.isMembersWorld && var1.isMembers) {
+            var1.name = "Members object";
+            var1.field3017 = false;
+            var1.groundActions = null;
+            var1.inventoryActions = null;
+            var1.team = -1;
+            var1.field2995 = 0;
+            if(var1.field2988 != null) {
+               boolean var3 = false;
+
+               for(Node var4 = var1.field2988.method2730(); var4 != null; var4 = var1.field2988.method2732()) {
+                  class198 var5 = class183.method3292((int)var4.hash);
+                  if(var5.field2875) {
+                     var4.unlink();
+                  } else {
+                     var3 = true;
+                  }
+               }
+
+               if(!var3) {
+                  var1.field2988 = null;
+               }
+            }
+         }
+
+         ItemComposition.field2982.put(var1, (long)var0);
+         return var1;
+      }
+   }
 
    class47() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("ae")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1701645463"
+      garbageValue = "78239739"
    )
-   public static void method919() {
-      class196.field2875.reset();
-      class196.spriteCache.reset();
-      class196.field2877.reset();
-   }
-
-   @ObfuscatedName("bg")
-   @ObfuscatedSignature(
-      signature = "(LPlayer;IIBI)V",
-      garbageValue = "-467594523"
-   )
-   static final void method920(Player var0, int var1, int var2, byte var3) {
-      int var4 = var0.pathX[0];
-      int var5 = var0.pathY[0];
-      int var6 = var0.method207();
-      if(var4 >= var6 && var4 < 104 - var6 && var5 >= var6 && var5 < 104 - var6 && var1 >= var6 && var1 < 104 - var6 && var2 >= var6 && var2 < 104 - var6) {
-         int var7 = var0.method207();
-         Client.field582.field1874 = var1;
-         Client.field582.field1882 = var2;
-         Client.field582.field1876 = 1;
-         Client.field582.field1875 = 1;
-         class22 var8 = Client.field582;
-         int var9 = class109.method2098(var4, var5, var7, var8, Client.collisionMaps[var0.field276], true, Client.field583, Client.field584);
-         if(var9 >= 1) {
-            for(int var10 = 0; var10 < var9 - 1; ++var10) {
-               var0.method211(Client.field583[var10], Client.field584[var10], var3);
-            }
+   static final void method901() {
+      for(int var0 = 0; var0 < Client.field321; ++var0) {
+         int var1 = Client.field350[var0];
+         NPC var2 = Client.cachedNPCs[var1];
+         if(var2 != null) {
+            WidgetNode.method198(var2, var2.composition.field3042);
          }
       }
 
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-90"
+   )
+   static void method902() {
+      chatLineMap.clear();
+      field924.method2746();
+      field927.method2884();
+      field926 = 0;
    }
 }
