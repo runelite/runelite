@@ -45,11 +45,11 @@ public class class114 {
       if(Client.field331 >= 50 || var0) {
          Client.field331 = 0;
          if(!Client.field336 && Friend.rssocket != null) {
-            Client.secretCipherBuffer1.putOpcode(102);
+            Client.egressBuffer.putOpcode(102);
 
             try {
-               Friend.rssocket.queueForWrite(Client.secretCipherBuffer1.payload, 0, Client.secretCipherBuffer1.offset);
-               Client.secretCipherBuffer1.offset = 0;
+               Friend.rssocket.queueForWrite(Client.egressBuffer.payload, 0, Client.egressBuffer.offset);
+               Client.egressBuffer.offset = 0;
             } catch (IOException var2) {
                Client.field336 = true;
             }

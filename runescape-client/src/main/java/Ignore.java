@@ -68,7 +68,7 @@ public class Ignore {
       signature = "(LCipherBuffer;I)V",
       garbageValue = "-579843349"
    )
-   public static void method204(CipherBuffer var0) {
+   public static void method204(PacketBuffer var0) {
       ClassInfo var1 = (ClassInfo)class231.field3265.method2790();
       if(var1 != null) {
          int var2 = var0.offset;

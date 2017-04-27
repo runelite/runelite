@@ -77,8 +77,8 @@ public final class DecorativeObject {
    )
    static final void method1928(boolean var0) {
       while(true) {
-         if(Client.secretCipherBuffer2.method2657(Client.packetLength) >= 27) {
-            int var1 = Client.secretCipherBuffer2.method2645(15);
+         if(Client.ingressBuffer.method2657(Client.packetLength) >= 27) {
+            int var1 = Client.ingressBuffer.readBits(15);
             if(var1 != 32767) {
                boolean var2 = false;
                if(Client.cachedNPCs[var1] == null) {
@@ -89,39 +89,39 @@ public final class DecorativeObject {
                NPC var3 = Client.cachedNPCs[var1];
                Client.field350[++Client.field321 - 1] = var1;
                var3.field648 = Client.gameCycle;
-               int var4 = Client.secretCipherBuffer2.method2645(1);
+               int var4 = Client.ingressBuffer.readBits(1);
                int var5;
                if(var0) {
-                  var5 = Client.secretCipherBuffer2.method2645(8);
+                  var5 = Client.ingressBuffer.readBits(8);
                   if(var5 > 127) {
                      var5 -= 256;
                   }
                } else {
-                  var5 = Client.secretCipherBuffer2.method2645(5);
+                  var5 = Client.ingressBuffer.readBits(5);
                   if(var5 > 15) {
                      var5 -= 32;
                   }
                }
 
-               int var6 = Client.field412[Client.secretCipherBuffer2.method2645(3)];
+               int var6 = Client.field412[Client.ingressBuffer.readBits(3)];
                if(var2) {
                   var3.field650 = var3.angle = var6;
                }
 
-               var3.composition = Widget.getNpcDefinition(Client.secretCipherBuffer2.method2645(14));
-               int var7 = Client.secretCipherBuffer2.method2645(1);
+               var3.composition = Widget.getNpcDefinition(Client.ingressBuffer.readBits(14));
+               int var7 = Client.ingressBuffer.readBits(1);
                if(var7 == 1) {
                   Client.field324[++Client.field292 - 1] = var1;
                }
 
                int var8;
                if(var0) {
-                  var8 = Client.secretCipherBuffer2.method2645(8);
+                  var8 = Client.ingressBuffer.readBits(8);
                   if(var8 > 127) {
                      var8 -= 256;
                   }
                } else {
-                  var8 = Client.secretCipherBuffer2.method2645(5);
+                  var8 = Client.ingressBuffer.readBits(5);
                   if(var8 > 15) {
                      var8 -= 32;
                   }
@@ -145,7 +145,7 @@ public final class DecorativeObject {
             }
          }
 
-         Client.secretCipherBuffer2.method2647();
+         Client.ingressBuffer.method2647();
          return;
       }
    }

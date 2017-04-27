@@ -564,10 +564,10 @@ public class class57 {
          }
 
          Client.field468 = class32.field720[class32.field715 + 2];
-         Client.secretCipherBuffer1.putOpcode(202);
-         Client.secretCipherBuffer1.putByte(Client.field323);
-         Client.secretCipherBuffer1.putByte(Friend.field157.field3201);
-         Client.secretCipherBuffer1.putByte(Client.field468);
+         Client.egressBuffer.putOpcode(202);
+         Client.egressBuffer.putByte(Client.field323);
+         Client.egressBuffer.putByte(Friend.field157.field3201);
+         Client.egressBuffer.putByte(Client.field468);
          return 1;
       } else {
          String var3;
@@ -578,11 +578,11 @@ public class class57 {
             class32.field715 -= 2;
             var4 = class32.field720[class32.field715];
             var5 = class32.field720[class32.field715 + 1];
-            Client.secretCipherBuffer1.putOpcode(168);
-            Client.secretCipherBuffer1.putByte(class36.method753(var3) + 2);
-            Client.secretCipherBuffer1.method2504(var3);
-            Client.secretCipherBuffer1.putByte(var4 - 1);
-            Client.secretCipherBuffer1.putByte(var5);
+            Client.egressBuffer.putOpcode(168);
+            Client.egressBuffer.putByte(class36.method753(var3) + 2);
+            Client.egressBuffer.method2504(var3);
+            Client.egressBuffer.putByte(var4 - 1);
+            Client.egressBuffer.putByte(var5);
             return 1;
          } else {
             int var11;
@@ -750,25 +750,25 @@ public class class57 {
                   }
                }
 
-               Client.secretCipherBuffer1.putOpcode(56);
-               Client.secretCipherBuffer1.putByte(0);
-               int var8 = Client.secretCipherBuffer1.offset;
-               Client.secretCipherBuffer1.putByte(var4);
-               Client.secretCipherBuffer1.putByte(var14);
-               Client.secretCipherBuffer1.putByte(var7);
-               class38.method767(Client.secretCipherBuffer1, var3);
-               Client.secretCipherBuffer1.method2380(Client.secretCipherBuffer1.offset - var8);
+               Client.egressBuffer.putOpcode(56);
+               Client.egressBuffer.putByte(0);
+               int var8 = Client.egressBuffer.offset;
+               Client.egressBuffer.putByte(var4);
+               Client.egressBuffer.putByte(var14);
+               Client.egressBuffer.putByte(var7);
+               class38.method767(Client.egressBuffer, var3);
+               Client.egressBuffer.method2380(Client.egressBuffer.offset - var8);
                return 1;
             } else if(var0 == 5009) {
                class32.scriptStringStackSize -= 2;
                var3 = class32.scriptStringStack[class32.scriptStringStackSize];
                String var17 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
-               Client.secretCipherBuffer1.putOpcode(83);
-               Client.secretCipherBuffer1.putShort(0);
-               var5 = Client.secretCipherBuffer1.offset;
-               Client.secretCipherBuffer1.method2504(var3);
-               class38.method767(Client.secretCipherBuffer1, var17);
-               Client.secretCipherBuffer1.method2379(Client.secretCipherBuffer1.offset - var5);
+               Client.egressBuffer.putOpcode(83);
+               Client.egressBuffer.putShort(0);
+               var5 = Client.egressBuffer.offset;
+               Client.egressBuffer.method2504(var3);
+               class38.method767(Client.egressBuffer, var17);
+               Client.egressBuffer.method2379(Client.egressBuffer.offset - var5);
                return 1;
             } else if(var0 != 5015) {
                if(var0 == 5016) {
@@ -860,9 +860,9 @@ public class class57 {
                            }
                         }
 
-                        Client.secretCipherBuffer1.putOpcode(161);
-                        Client.secretCipherBuffer1.putByte(var3.length() + 1);
-                        Client.secretCipherBuffer1.method2504(var3);
+                        Client.egressBuffer.putOpcode(161);
+                        Client.egressBuffer.putByte(var3.length() + 1);
+                        Client.egressBuffer.method2504(var3);
                         return 1;
                      } else if(var0 == 5021) {
                         Client.field460 = class32.scriptStringStack[--class32.scriptStringStackSize].toLowerCase().trim();
