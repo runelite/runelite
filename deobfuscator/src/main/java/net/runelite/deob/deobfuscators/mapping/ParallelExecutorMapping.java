@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators.mapping;
 
 import com.google.common.collect.HashMultimap;
@@ -46,7 +45,7 @@ import org.slf4j.LoggerFactory;
 public class ParallelExecutorMapping
 {
 	private static final Logger logger = LoggerFactory.getLogger(ParallelExecutorMapping.class);
-	
+
 	private ClassGroup group, group2;
 	private Multimap<Object, Mapping> map = HashMultimap.create();
 	public Method m1, m2;
@@ -54,7 +53,7 @@ public class ParallelExecutorMapping
 	public List<PacketHandler> packetHandler1 = new ArrayList<>();
 	public List<PacketHandler> packetHandler2 = new ArrayList<>();
 	public int same;
-	
+
 	public ParallelExecutorMapping(ClassGroup group, ClassGroup group2)
 	{
 		this.group = group;
@@ -71,8 +70,12 @@ public class ParallelExecutorMapping
 	private Mapping getMapping(Object from, Object to)
 	{
 		for (Mapping m : map.get(from))
+		{
 			if (m.getObject() == to)
+			{
 				return m;
+			}
+		}
 
 		Mapping m = new Mapping(from, to);
 		map.put(from, m);
@@ -83,11 +86,15 @@ public class ParallelExecutorMapping
 	{
 		Mapping highest = null;
 		for (Mapping m : map.get(from))
+		{
 			if (highest == null || m.getCount() > highest.getCount())
+			{
 				highest = m;
+			}
+		}
 		return highest != null ? highest.getObject() : null;
 	}
-	
+
 	public void merge(ParallelExecutorMapping other)
 	{
 		assert this != other;
@@ -101,31 +108,33 @@ public class ParallelExecutorMapping
 			m.merge(v);
 		}
 	}
-	
+
 	public Mapping map(Instruction mapper, Object one, Object two)
 	{
 		Mapping m = getMapping(one, two);
-		
+
 		if (mapper != null)
+		{
 			m.addInstruction(mapper);
-		
+		}
+
 		belongs(one, group);
 		belongs(two, group2);
-		
+
 		sanityCheck(one, two);
 
 		m.inc();
 
 		return m;
 	}
-	
+
 	private void sanityCheck(Object one, Object two)
 	{
 		if (one instanceof Field && two instanceof Field)
 		{
 			Field f1 = (Field) one;
 			Field f2 = (Field) two;
-			
+
 			assert f1.isStatic() == f2.isStatic();
 		}
 	}
@@ -141,11 +150,13 @@ public class ParallelExecutorMapping
 
 			Field f1 = (Field) one;
 			Field f2 = (Field) two;
-			
+
 			assert f1.isStatic() == f2.isStatic();
-			
+
 			if (f1.isStatic() || f2.isStatic())
+			{
 				return;
+			}
 
 			cf1 = f1.getFields().getClassFile();
 			cf2 = f2.getFields().getClassFile();
@@ -157,11 +168,13 @@ public class ParallelExecutorMapping
 
 			Method m1 = (Method) one;
 			Method m2 = (Method) two;
-			
+
 			assert m1.isStatic() == m1.isStatic();
-			
+
 			if (m1.isStatic() || m2.isStatic())
+			{
 				return;
+			}
 
 			cf1 = m1.getMethods().getClassFile();
 			cf2 = m2.getMethods().getClassFile();
@@ -179,25 +192,39 @@ public class ParallelExecutorMapping
 
 		m.inc();
 	}
-	
+
 	/**
-	 * makes the map one to one based on the weight of each mapping. If a mapping
-	 * is mapped from the same object multiple places, the highest is used, and the
-	 * other mappings are not considered when deducing the mappings of the other objects.
+	 * makes the map one to one based on the weight of each mapping. If a
+	 * mapping is mapped from the same object multiple places, the highest
+	 * is used, and the other mappings are not considered when deducing the
+	 * mappings of the other objects.
 	 */
 	public void reduce()
 	{
 		List<Mapping> sorted = new ArrayList<>(map.values());
+
+		// Sort indepdent of the map's order, which is undefined
+		Collections.sort(sorted, (m1, m2) -> getName(m1.getFrom()).compareTo(getName(m2.getFrom())));
 		
-		// sort by strength
-		Collections.sort(sorted, (m1, m2) -> Integer.compare(m1.getCount(), m2.getCount()));
-		
+		Collections.sort(sorted, (m1, m2) -> {
+
+				// Number of times mapped
+				int i = Integer.compare(m1.getCount(), m2.getCount());
+				if (i != 0)
+				{
+					return i;
+				}
+
+				// If equal, number of ins equal in the mapping
+				return Integer.compare(m1.weight, m2.weight);
+		});
+
 		// reverse so highest is first
 		Collections.reverse(sorted);
-		
+
 		Multimap<Object, Mapping> reducedMap = HashMultimap.create();
 		Map<Object, Object> reverse = new HashMap<>();
-		
+
 		for (Mapping m : sorted)
 		{
 			if (reducedMap.containsKey(m.getFrom()))
@@ -205,32 +232,36 @@ public class ParallelExecutorMapping
 				logger.debug("Reduced out mapping {} because of {}", m, reducedMap.get(m.getFrom()).iterator().next());
 				continue;
 			}
-			
+
 			if (reverse.containsKey(m.getObject()))
 			{
 				logger.debug("Redudced out mapping {} because of {}", m, reducedMap.get(reverse.get(m.getObject())).iterator().next());
 				continue;
 			}
-			
+
 			reducedMap.put(m.getFrom(), m);
 			reverse.put(m.getObject(), m.getFrom());
 		}
-		
+
 		map = reducedMap;
 		// map is now one to one
 	}
-	
+
 	public void buildClasses()
 	{
 		for (Object o : new HashSet<>(map.keySet()))
+		{
 			if (o instanceof ClassFile)
+			{
 				map.removeAll(o);
-		
+			}
+		}
+
 		Map<Object, Object> map = getMap();
 		for (Object key : map.keySet())
 		{
 			Object value = map.get(key);
-			
+
 			mapClass(key, value);
 		}
 
@@ -238,11 +269,12 @@ public class ParallelExecutorMapping
 
 		/* get leftover classes, they usually contain exclusively static
 		 * fields and methods so they're hard to pinpoint
-		*/
+		 */
 		ClassGroupMapper m = new ClassGroupMapper(group, group2);
 		m.map();
 
 		for (ClassFile cf : group.getClasses())
+		{
 			if (!map.containsKey(cf))
 			{
 				ClassFile other = m.get(cf);
@@ -263,18 +295,19 @@ public class ParallelExecutorMapping
 					ma.inc();
 				}
 			}
+		}
 	}
-	
+
 	public Object get(Object o)
 	{
 		return highest(o);
 	}
-	
+
 	public Collection<Mapping> getMappings(Object o)
 	{
 		return map.get(o);
 	}
-	
+
 	public Map<Object, Object> getMap()
 	{
 		Map<Object, Object> m = new HashMap<>();
@@ -286,7 +319,7 @@ public class ParallelExecutorMapping
 
 		return m;
 	}
-	
+
 	private void belongs(Object o, ClassGroup to)
 	{
 		if (o instanceof Field)
@@ -305,22 +338,32 @@ public class ParallelExecutorMapping
 			assert c.getGroup() == to;
 		}
 		else
+		{
 			assert false;
+		}
 	}
 
 	public PacketHandler findPacketHandler1(int id)
 	{
 		for (PacketHandler p : this.packetHandler1)
+		{
 			if (p.getPacketId() == id)
+			{
 				return p;
+			}
+		}
 		return null;
 	}
 
 	public PacketHandler findPacketHandler2(int id)
 	{
 		for (PacketHandler p : this.packetHandler2)
+		{
 			if (p.getPacketId() == id)
+			{
 				return p;
+			}
+		}
 		return null;
 	}
 
@@ -336,7 +379,9 @@ public class ParallelExecutorMapping
 			Object highest = highest(key);
 
 			if (highest != null && highest != value.getObject())
+			{
 				++count;
+			}
 		}
 
 		return count;
@@ -345,8 +390,36 @@ public class ParallelExecutorMapping
 	public boolean hasAnyMultiples()
 	{
 		for (Object o : map.keySet())
+		{
 			if (map.get(o).size() > 1)
+			{
 				return true;
+			}
+		}
 		return false;
+	}
+
+	private String getName(Object o)
+	{
+		if (o instanceof Field)
+		{
+			Field f = (Field) o;
+			return f.getName();
+		}
+		else if (o instanceof Method)
+		{
+			Method m = (Method) o;
+			return m.getName();
+		}
+		else if (o instanceof ClassFile)
+		{
+			ClassFile c = (ClassFile) o;
+			return c.getName();
+		}
+		else
+		{
+			assert false;
+			return null;
+		}
 	}
 }

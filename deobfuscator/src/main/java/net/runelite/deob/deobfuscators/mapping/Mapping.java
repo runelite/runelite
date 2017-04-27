@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators.mapping;
 
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ public class Mapping
 	private int count;
 	private List<Instruction> ins = new ArrayList<>();
 	public boolean wasExecuted;
+	public int weight; // weight of mapping, based on same instruction count
 
 	public Mapping(Object from, Object object)
 	{
@@ -74,13 +74,26 @@ public class Mapping
 		assert object == other.object;
 		count += other.count;
 		for (Instruction i : other.ins)
+		{
 			addInstruction(i);
+		}
 		wasExecuted |= other.wasExecuted;
+		weight = Math.max(weight, other.weight);
 	}
-	
+
 	public void addInstruction(Instruction i)
 	{
 		if (!ins.contains(i))
+		{
 			ins.add(i);
+		}
+	}
+
+	public void setWeight(int w)
+	{
+		if (w > weight)
+		{
+			weight = w;
+		}
 	}
 }

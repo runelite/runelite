@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators.mapping;
 
 import java.util.ArrayList;
@@ -38,10 +37,10 @@ import org.slf4j.LoggerFactory;
 public class Mapper
 {
 	private static final Logger logger = LoggerFactory.getLogger(Mapper.class);
-	
+
 	private final ClassGroup source, target;
 	private ParallelExecutorMapping mapping;
-	
+
 	public Mapper(ClassGroup source, ClassGroup target)
 	{
 		this.source = source;
@@ -52,21 +51,21 @@ public class Mapper
 	{
 		return mapping;
 	}
-	
+
 	public void run()
-	{		
+	{
 		ParallelExecutorMapping finalm = new ParallelExecutorMapping(source, target);
 
 		finalm.merge(mapStaticMethods());
 		finalm.merge(mapMethods());
-		
-		finalm.reduce();
 
+		finalm.reduce();
+		
 		// map unexecuted methods
 		mapUnexecutedMethods(finalm);
-		
+
 		finalm.buildClasses();
-		
+
 		mapMemberMethods(finalm);
 
 		new ConstructorMapper(source, target, finalm).mapConstructors();
@@ -89,7 +88,9 @@ public class Mapper
 
 			ParallelExecutorMapping mapping = em.run();
 			if (mapping == null)
+			{
 				continue;
+			}
 
 			mapping.map(null, mapping.m1, mapping.m2).wasExecuted = true;
 
@@ -100,18 +101,20 @@ public class Mapper
 
 		ParallelExecutorMapping finalm = new ParallelExecutorMapping(source, target);
 		for (ParallelExecutorMapping pme : pmes)
+		{
 			finalm.merge(pme);
+		}
 
 		return finalm;
 	}
-	
+
 	private ParallelExecutorMapping mapStaticMethods()
 	{
 		StaticMethodSignatureMapper smsm = new StaticMethodSignatureMapper();
 		smsm.map(source, target);
-		
+
 		List<ParallelExecutorMapping> pmes = new ArrayList<>();
-		
+
 		for (Method m : smsm.getMap().keySet())
 		{
 			Collection<Method> methods = smsm.getMap().get(m);
@@ -120,63 +123,75 @@ public class Mapper
 
 			ParallelExecutorMapping mapping = em.run();
 			if (mapping == null)
+			{
 				continue;
-			
-			mapping.map(null, mapping.m1, mapping.m2).wasExecuted = true;
+			}
+
+			Mapping map = mapping.map(null, mapping.m1, mapping.m2);
+			map.wasExecuted = true;
+			map.setWeight(mapping.same);
 
 			logger.debug("map static methods mapped {} -> {}", mapping.m1, mapping.m2);
 
 			pmes.add(mapping);
 		}
-		
+
 		ParallelExecutorMapping finalm = new ParallelExecutorMapping(source, target);
 		for (ParallelExecutorMapping pme : pmes)
+		{
 			finalm.merge(pme);
+		}
 
 		return finalm;
 	}
-	
+
 	private void mapMemberMethods(ParallelExecutorMapping mapping)
 	{
 		// pass #2 at method mapping, can use class file mappings learned
-		
+
 		for (ClassFile cf : source.getClasses())
 		{
 			ClassFile other = (ClassFile) mapping.get(cf);
 			if (other == null)
+			{
 				continue;
-			
+			}
+
 			List<Method> methods1 = cf.getMethods().getMethods().stream()
 				.filter(m -> !m.isStatic())
 				.filter(m -> !m.getName().equals("<init>"))
 				.filter(m -> m.getCode() != null)
 				.collect(Collectors.toList());
-			
+
 			List<Method> methods2 = other.getMethods().getMethods().stream()
 				.filter(m -> !m.isStatic())
 				.filter(m -> !m.getName().equals("<init>"))
 				.filter(m -> m.getCode() != null)
 				.collect(Collectors.toList());
-			
+
 			for (Method method : methods1)
 			{
 				if (mapping.get(method) != null) // already mapped
+				{
 					continue;
-				
+				}
+
 				List<Method> possible = methods2.stream()
 					.filter(m -> MappingExecutorUtil.isMaybeEqual(m.getDescriptor(), method.getDescriptor()))
 					.collect(Collectors.toList());
-				
+
 				// Run over execution mapper
 				ExecutionMapper em = new ExecutionMapper(method, possible);
 				ParallelExecutorMapping map = em.run();
 				if (map == null)
+				{
 					continue;
-				
+				}
+
 				map.map(null, map.m1, map.m2);
-				
+
 				logger.debug("Mapped {} -> {} based on exiting class mapping and method signatures", map.m1, map.m2);
-				
+
 				mapping.merge(map);
 			}
 		}
@@ -185,18 +200,22 @@ public class Mapper
 	private void mapUnexecutedMethods(ParallelExecutorMapping mapping)
 	{
 		// map has already been reduced
-		
+
 		for (Object o : mapping.getMap().keySet())
 		{
 			Mapping m = mapping.getMappings(o).iterator().next();
 
 			if (m.wasExecuted || !(m.getFrom() instanceof Method))
+			{
 				continue;
+			}
 
 			Method m1 = (Method) m.getFrom(), m2 = (Method) m.getObject();
 
 			if (m1.getCode() == null || m2.getCode() == null)
+			{
 				continue;
+			}
 
 			// m was picked up as an invoke instruction when mapping
 			// something else, but wasn't executed itself
