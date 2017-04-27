@@ -166,12 +166,12 @@ public class class99 extends class109 {
       }
 
       if(var2 == 32) {
-         Client.secretCipherBuffer1.putOpcode(27);
-         Client.secretCipherBuffer1.method2526(var3);
-         Client.secretCipherBuffer1.method2526(var0);
-         Client.secretCipherBuffer1.method2427(XClanMember.field269);
-         Client.secretCipherBuffer1.method2427(var1);
-         Client.secretCipherBuffer1.method2375(Client.field441);
+         Client.egressBuffer.putOpcode(27);
+         Client.egressBuffer.method2526(var3);
+         Client.egressBuffer.method2526(var0);
+         Client.egressBuffer.method2427(XClanMember.field269);
+         Client.egressBuffer.method2427(var1);
+         Client.egressBuffer.method2375(Client.field441);
          Client.field394 = 0;
          class32.field732 = class128.method2364(var1);
          Client.field395 = var0;
@@ -207,20 +207,20 @@ public class class99 extends class109 {
 
       } else {
          if(var2 == 39) {
-            Client.secretCipherBuffer1.putOpcode(101);
-            Client.secretCipherBuffer1.method2526(var3);
-            Client.secretCipherBuffer1.method2526(var0);
-            Client.secretCipherBuffer1.method2426(var1);
+            Client.egressBuffer.putOpcode(101);
+            Client.egressBuffer.method2526(var3);
+            Client.egressBuffer.method2526(var0);
+            Client.egressBuffer.method2426(var1);
             Client.field394 = 0;
             class32.field732 = class128.method2364(var1);
             Client.field395 = var0;
          }
 
          if(var2 == 43) {
-            Client.secretCipherBuffer1.putOpcode(116);
-            Client.secretCipherBuffer1.method2427(var1);
-            Client.secretCipherBuffer1.method2526(var3);
-            Client.secretCipherBuffer1.putShort(var0);
+            Client.egressBuffer.putOpcode(116);
+            Client.egressBuffer.method2427(var1);
+            Client.egressBuffer.method2526(var3);
+            Client.egressBuffer.putShort(var0);
             Client.field394 = 0;
             class32.field732 = class128.method2364(var1);
             Client.field395 = var0;
@@ -233,14 +233,14 @@ public class class99 extends class109 {
             Client.field333 = 0;
             Client.flagX = var0;
             Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(224);
-            Client.secretCipherBuffer1.method2375(var0 + class108.baseX);
-            Client.secretCipherBuffer1.method2427(class72.field1171);
-            Client.secretCipherBuffer1.putShort(Player.field264);
-            Client.secretCipherBuffer1.putShort(class182.field2701);
-            Client.secretCipherBuffer1.method2526(GameEngine.baseY + var1);
-            Client.secretCipherBuffer1.method2406(class105.field1695[82]?1:0);
-            Client.secretCipherBuffer1.putShort(var3 >> 14 & 32767);
+            Client.egressBuffer.putOpcode(224);
+            Client.egressBuffer.method2375(var0 + class108.baseX);
+            Client.egressBuffer.method2427(class72.field1171);
+            Client.egressBuffer.putShort(Player.field264);
+            Client.egressBuffer.putShort(class182.field2701);
+            Client.egressBuffer.method2526(GameEngine.baseY + var1);
+            Client.egressBuffer.method2406(class105.field1695[82]?1:0);
+            Client.egressBuffer.putShort(var3 >> 14 & 32767);
          }
 
          int var15;
@@ -270,73 +270,73 @@ public class class99 extends class109 {
                      boolean var12 = (var13 >> var14 + 1 & 1) != 0;
                      if(var12) {
                         if(var3 == 1) {
-                           Client.secretCipherBuffer1.putOpcode(190);
-                           Client.secretCipherBuffer1.putInt(var1);
-                           Client.secretCipherBuffer1.putShort(var0);
-                           Client.secretCipherBuffer1.putShort(var15);
+                           Client.egressBuffer.putOpcode(190);
+                           Client.egressBuffer.putInt(var1);
+                           Client.egressBuffer.putShort(var0);
+                           Client.egressBuffer.putShort(var15);
                         }
 
                         if(var3 == 2) {
-                           Client.secretCipherBuffer1.putOpcode(52);
-                           Client.secretCipherBuffer1.putInt(var1);
-                           Client.secretCipherBuffer1.putShort(var0);
-                           Client.secretCipherBuffer1.putShort(var15);
+                           Client.egressBuffer.putOpcode(52);
+                           Client.egressBuffer.putInt(var1);
+                           Client.egressBuffer.putShort(var0);
+                           Client.egressBuffer.putShort(var15);
                         }
 
                         if(var3 == 3) {
-                           Client.secretCipherBuffer1.putOpcode(87);
-                           Client.secretCipherBuffer1.putInt(var1);
-                           Client.secretCipherBuffer1.putShort(var0);
-                           Client.secretCipherBuffer1.putShort(var15);
+                           Client.egressBuffer.putOpcode(87);
+                           Client.egressBuffer.putInt(var1);
+                           Client.egressBuffer.putShort(var0);
+                           Client.egressBuffer.putShort(var15);
                         }
 
                         if(var3 == 4) {
-                           Client.secretCipherBuffer1.putOpcode(205);
-                           Client.secretCipherBuffer1.putInt(var1);
-                           Client.secretCipherBuffer1.putShort(var0);
-                           Client.secretCipherBuffer1.putShort(var15);
+                           Client.egressBuffer.putOpcode(205);
+                           Client.egressBuffer.putInt(var1);
+                           Client.egressBuffer.putShort(var0);
+                           Client.egressBuffer.putShort(var15);
                         }
 
                         if(var3 == 5) {
-                           Client.secretCipherBuffer1.putOpcode(200);
-                           Client.secretCipherBuffer1.putInt(var1);
-                           Client.secretCipherBuffer1.putShort(var0);
-                           Client.secretCipherBuffer1.putShort(var15);
+                           Client.egressBuffer.putOpcode(200);
+                           Client.egressBuffer.putInt(var1);
+                           Client.egressBuffer.putShort(var0);
+                           Client.egressBuffer.putShort(var15);
                         }
 
                         if(var3 == 6) {
-                           Client.secretCipherBuffer1.putOpcode(187);
-                           Client.secretCipherBuffer1.putInt(var1);
-                           Client.secretCipherBuffer1.putShort(var0);
-                           Client.secretCipherBuffer1.putShort(var15);
+                           Client.egressBuffer.putOpcode(187);
+                           Client.egressBuffer.putInt(var1);
+                           Client.egressBuffer.putShort(var0);
+                           Client.egressBuffer.putShort(var15);
                         }
 
                         if(var3 == 7) {
-                           Client.secretCipherBuffer1.putOpcode(131);
-                           Client.secretCipherBuffer1.putInt(var1);
-                           Client.secretCipherBuffer1.putShort(var0);
-                           Client.secretCipherBuffer1.putShort(var15);
+                           Client.egressBuffer.putOpcode(131);
+                           Client.egressBuffer.putInt(var1);
+                           Client.egressBuffer.putShort(var0);
+                           Client.egressBuffer.putShort(var15);
                         }
 
                         if(var3 == 8) {
-                           Client.secretCipherBuffer1.putOpcode(248);
-                           Client.secretCipherBuffer1.putInt(var1);
-                           Client.secretCipherBuffer1.putShort(var0);
-                           Client.secretCipherBuffer1.putShort(var15);
+                           Client.egressBuffer.putOpcode(248);
+                           Client.egressBuffer.putInt(var1);
+                           Client.egressBuffer.putShort(var0);
+                           Client.egressBuffer.putShort(var15);
                         }
 
                         if(var3 == 9) {
-                           Client.secretCipherBuffer1.putOpcode(244);
-                           Client.secretCipherBuffer1.putInt(var1);
-                           Client.secretCipherBuffer1.putShort(var0);
-                           Client.secretCipherBuffer1.putShort(var15);
+                           Client.egressBuffer.putOpcode(244);
+                           Client.egressBuffer.putInt(var1);
+                           Client.egressBuffer.putShort(var0);
+                           Client.egressBuffer.putShort(var15);
                         }
 
                         if(var3 == 10) {
-                           Client.secretCipherBuffer1.putOpcode(88);
-                           Client.secretCipherBuffer1.putInt(var1);
-                           Client.secretCipherBuffer1.putShort(var0);
-                           Client.secretCipherBuffer1.putShort(var15);
+                           Client.egressBuffer.putOpcode(88);
+                           Client.egressBuffer.putInt(var1);
+                           Client.egressBuffer.putShort(var0);
+                           Client.egressBuffer.putShort(var15);
                         }
                      }
                   }
@@ -354,9 +354,9 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(40);
-               Client.secretCipherBuffer1.method2499(class105.field1695[82]?1:0);
-               Client.secretCipherBuffer1.method2375(var3);
+               Client.egressBuffer.putOpcode(40);
+               Client.egressBuffer.method2499(class105.field1695[82]?1:0);
+               Client.egressBuffer.method2375(var3);
             }
          }
 
@@ -371,15 +371,15 @@ public class class99 extends class109 {
             Client.field391 = var7;
             Client.field393 = 2;
             Client.field333 = 0;
-            Client.secretCipherBuffer1.putOpcode(81);
-            Client.secretCipherBuffer1.putShort(var3);
+            Client.egressBuffer.putOpcode(81);
+            Client.egressBuffer.putShort(var3);
          }
 
          if(var2 == 37) {
-            Client.secretCipherBuffer1.putOpcode(150);
-            Client.secretCipherBuffer1.method2427(var1);
-            Client.secretCipherBuffer1.method2375(var3);
-            Client.secretCipherBuffer1.putShort(var0);
+            Client.egressBuffer.putOpcode(150);
+            Client.egressBuffer.method2427(var1);
+            Client.egressBuffer.method2375(var3);
+            Client.egressBuffer.putShort(var0);
             Client.field394 = 0;
             class32.field732 = class128.method2364(var1);
             Client.field395 = var0;
@@ -399,8 +399,8 @@ public class class99 extends class109 {
                }
 
                if(var9 != null) {
-                  Client.secretCipherBuffer1.putOpcode(105);
-                  Client.secretCipherBuffer1.method2375(var9.id);
+                  Client.egressBuffer.putOpcode(105);
+                  Client.egressBuffer.method2375(var9.id);
                }
             }
          }
@@ -413,29 +413,29 @@ public class class99 extends class109 {
             }
 
             if(var21) {
-               Client.secretCipherBuffer1.putOpcode(229);
-               Client.secretCipherBuffer1.putInt(var1);
+               Client.egressBuffer.putOpcode(229);
+               Client.egressBuffer.putInt(var1);
             }
          }
 
          if(var2 == 58) {
             var8 = class0.method13(var1, var0);
             if(var8 != null) {
-               Client.secretCipherBuffer1.putOpcode(44);
-               Client.secretCipherBuffer1.method2375(var8.item);
-               Client.secretCipherBuffer1.method2427(var1);
-               Client.secretCipherBuffer1.putShort(Client.field537);
-               Client.secretCipherBuffer1.putShort(Client.field441);
-               Client.secretCipherBuffer1.method2526(var0);
-               Client.secretCipherBuffer1.putInt(XClanMember.field269);
+               Client.egressBuffer.putOpcode(44);
+               Client.egressBuffer.method2375(var8.item);
+               Client.egressBuffer.method2427(var1);
+               Client.egressBuffer.putShort(Client.field537);
+               Client.egressBuffer.putShort(Client.field441);
+               Client.egressBuffer.method2526(var0);
+               Client.egressBuffer.putInt(XClanMember.field269);
             }
          }
 
          if(var2 == 35) {
-            Client.secretCipherBuffer1.putOpcode(69);
-            Client.secretCipherBuffer1.putShort(var0);
-            Client.secretCipherBuffer1.putInt(var1);
-            Client.secretCipherBuffer1.method2416(var3);
+            Client.egressBuffer.putOpcode(69);
+            Client.egressBuffer.putShort(var0);
+            Client.egressBuffer.putInt(var1);
+            Client.egressBuffer.method2416(var3);
             Client.field394 = 0;
             class32.field732 = class128.method2364(var1);
             Client.field395 = var0;
@@ -448,14 +448,14 @@ public class class99 extends class109 {
             Client.field333 = 0;
             Client.flagX = var0;
             Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(211);
-            Client.secretCipherBuffer1.method2429(class105.field1695[82]?1:0);
-            Client.secretCipherBuffer1.method2375(class182.field2701);
-            Client.secretCipherBuffer1.method2526(Player.field264);
-            Client.secretCipherBuffer1.method2526(var3);
-            Client.secretCipherBuffer1.method2526(GameEngine.baseY + var1);
-            Client.secretCipherBuffer1.method2375(class108.baseX + var0);
-            Client.secretCipherBuffer1.method2426(class72.field1171);
+            Client.egressBuffer.putOpcode(211);
+            Client.egressBuffer.method2429(class105.field1695[82]?1:0);
+            Client.egressBuffer.method2375(class182.field2701);
+            Client.egressBuffer.method2526(Player.field264);
+            Client.egressBuffer.method2526(var3);
+            Client.egressBuffer.method2526(GameEngine.baseY + var1);
+            Client.egressBuffer.method2375(class108.baseX + var0);
+            Client.egressBuffer.method2426(class72.field1171);
          }
 
          if(var2 == 46) {
@@ -467,9 +467,9 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(119);
-               Client.secretCipherBuffer1.method2416(var3);
-               Client.secretCipherBuffer1.method2429(class105.field1695[82]?1:0);
+               Client.egressBuffer.putOpcode(119);
+               Client.egressBuffer.method2416(var3);
+               Client.egressBuffer.method2429(class105.field1695[82]?1:0);
             }
          }
 
@@ -482,12 +482,12 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(103);
-               Client.secretCipherBuffer1.method2375(Player.field264);
-               Client.secretCipherBuffer1.method2416(var3);
-               Client.secretCipherBuffer1.method2426(class72.field1171);
-               Client.secretCipherBuffer1.method2429(class105.field1695[82]?1:0);
-               Client.secretCipherBuffer1.method2526(class182.field2701);
+               Client.egressBuffer.putOpcode(103);
+               Client.egressBuffer.method2375(Player.field264);
+               Client.egressBuffer.method2416(var3);
+               Client.egressBuffer.method2426(class72.field1171);
+               Client.egressBuffer.method2429(class105.field1695[82]?1:0);
+               Client.egressBuffer.method2526(class182.field2701);
             }
          }
 
@@ -498,11 +498,11 @@ public class class99 extends class109 {
             Client.field333 = 0;
             Client.flagX = var0;
             Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(30);
-            Client.secretCipherBuffer1.method2526(var3 >> 14 & 32767);
-            Client.secretCipherBuffer1.method2375(class108.baseX + var0);
-            Client.secretCipherBuffer1.method2375(GameEngine.baseY + var1);
-            Client.secretCipherBuffer1.method2406(class105.field1695[82]?1:0);
+            Client.egressBuffer.putOpcode(30);
+            Client.egressBuffer.method2526(var3 >> 14 & 32767);
+            Client.egressBuffer.method2375(class108.baseX + var0);
+            Client.egressBuffer.method2375(GameEngine.baseY + var1);
+            Client.egressBuffer.method2406(class105.field1695[82]?1:0);
          }
 
          if(var2 == 9) {
@@ -514,9 +514,9 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(198);
-               Client.secretCipherBuffer1.method2406(class105.field1695[82]?1:0);
-               Client.secretCipherBuffer1.putShort(var3);
+               Client.egressBuffer.putOpcode(198);
+               Client.egressBuffer.method2406(class105.field1695[82]?1:0);
+               Client.egressBuffer.putShort(var3);
             }
          }
 
@@ -529,9 +529,9 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(185);
-               Client.secretCipherBuffer1.method2499(class105.field1695[82]?1:0);
-               Client.secretCipherBuffer1.method2526(var3);
+               Client.egressBuffer.putOpcode(185);
+               Client.egressBuffer.method2499(class105.field1695[82]?1:0);
+               Client.egressBuffer.method2526(var3);
             }
          }
 
@@ -552,14 +552,14 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(125);
-               Client.secretCipherBuffer1.method2406(class105.field1695[82]?1:0);
-               Client.secretCipherBuffer1.method2375(var3);
+               Client.egressBuffer.putOpcode(125);
+               Client.egressBuffer.method2406(class105.field1695[82]?1:0);
+               Client.egressBuffer.method2375(var3);
             }
          }
 
          if(var2 == 26) {
-            Client.secretCipherBuffer1.putOpcode(197);
+            Client.egressBuffer.putOpcode(197);
 
             for(WidgetNode var20 = (WidgetNode)Client.componentTable.method2776(); var20 != null; var20 = (WidgetNode)Client.componentTable.method2777()) {
                if(var20.field179 == 0 || var20.field179 == 3) {
@@ -582,9 +582,9 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(96);
-               Client.secretCipherBuffer1.method2406(class105.field1695[82]?1:0);
-               Client.secretCipherBuffer1.method2375(var3);
+               Client.egressBuffer.putOpcode(96);
+               Client.egressBuffer.method2406(class105.field1695[82]?1:0);
+               Client.egressBuffer.method2375(var3);
             }
          }
 
@@ -593,8 +593,8 @@ public class class99 extends class109 {
             if(var8 != null && var8.itemQuantities[var0] >= 100000) {
                WidgetNode.sendGameMessage(27, "", var8.itemQuantities[var0] + " x " + class47.getItemDefinition(var3).name);
             } else {
-               Client.secretCipherBuffer1.putOpcode(81);
-               Client.secretCipherBuffer1.putShort(var3);
+               Client.egressBuffer.putOpcode(81);
+               Client.egressBuffer.putShort(var3);
             }
 
             Client.field394 = 0;
@@ -603,10 +603,10 @@ public class class99 extends class109 {
          }
 
          if(var2 == 36) {
-            Client.secretCipherBuffer1.putOpcode(99);
-            Client.secretCipherBuffer1.putInt(var1);
-            Client.secretCipherBuffer1.method2416(var0);
-            Client.secretCipherBuffer1.method2416(var3);
+            Client.egressBuffer.putOpcode(99);
+            Client.egressBuffer.putInt(var1);
+            Client.egressBuffer.method2416(var0);
+            Client.egressBuffer.method2416(var3);
             Client.field394 = 0;
             class32.field732 = class128.method2364(var1);
             Client.field395 = var0;
@@ -619,18 +619,18 @@ public class class99 extends class109 {
             Client.field333 = 0;
             Client.flagX = var0;
             Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(239);
-            Client.secretCipherBuffer1.method2416(var1 + GameEngine.baseY);
-            Client.secretCipherBuffer1.method2416(var3);
-            Client.secretCipherBuffer1.method2499(class105.field1695[82]?1:0);
-            Client.secretCipherBuffer1.putShort(class108.baseX + var0);
+            Client.egressBuffer.putOpcode(239);
+            Client.egressBuffer.method2416(var1 + GameEngine.baseY);
+            Client.egressBuffer.method2416(var3);
+            Client.egressBuffer.method2499(class105.field1695[82]?1:0);
+            Client.egressBuffer.putShort(class108.baseX + var0);
          }
 
          if(var2 == 34) {
-            Client.secretCipherBuffer1.putOpcode(152);
-            Client.secretCipherBuffer1.method2526(var3);
-            Client.secretCipherBuffer1.method2411(var1);
-            Client.secretCipherBuffer1.method2526(var0);
+            Client.egressBuffer.putOpcode(152);
+            Client.egressBuffer.method2526(var3);
+            Client.egressBuffer.method2411(var1);
+            Client.egressBuffer.method2526(var0);
             Client.field394 = 0;
             class32.field732 = class128.method2364(var1);
             Client.field395 = var0;
@@ -643,18 +643,18 @@ public class class99 extends class109 {
             Client.field333 = 0;
             Client.flagX = var0;
             Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(247);
-            Client.secretCipherBuffer1.method2526(var3 >> 14 & 32767);
-            Client.secretCipherBuffer1.method2429(class105.field1695[82]?1:0);
-            Client.secretCipherBuffer1.method2526(var0 + class108.baseX);
-            Client.secretCipherBuffer1.method2375(var1 + GameEngine.baseY);
+            Client.egressBuffer.putOpcode(247);
+            Client.egressBuffer.method2526(var3 >> 14 & 32767);
+            Client.egressBuffer.method2429(class105.field1695[82]?1:0);
+            Client.egressBuffer.method2526(var0 + class108.baseX);
+            Client.egressBuffer.method2375(var1 + GameEngine.baseY);
          }
 
          if(var2 == 42) {
-            Client.secretCipherBuffer1.putOpcode(160);
-            Client.secretCipherBuffer1.method2375(var0);
-            Client.secretCipherBuffer1.putShort(var3);
-            Client.secretCipherBuffer1.putInt(var1);
+            Client.egressBuffer.putOpcode(160);
+            Client.egressBuffer.method2375(var0);
+            Client.egressBuffer.putShort(var3);
+            Client.egressBuffer.putInt(var1);
             Client.field394 = 0;
             class32.field732 = class128.method2364(var1);
             Client.field395 = var0;
@@ -669,12 +669,12 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(6);
-               Client.secretCipherBuffer1.method2416(Player.field264);
-               Client.secretCipherBuffer1.method2416(var3);
-               Client.secretCipherBuffer1.method2426(class72.field1171);
-               Client.secretCipherBuffer1.method2416(class182.field2701);
-               Client.secretCipherBuffer1.method2429(class105.field1695[82]?1:0);
+               Client.egressBuffer.putOpcode(6);
+               Client.egressBuffer.method2416(Player.field264);
+               Client.egressBuffer.method2416(var3);
+               Client.egressBuffer.method2426(class72.field1171);
+               Client.egressBuffer.method2416(class182.field2701);
+               Client.egressBuffer.method2429(class105.field1695[82]?1:0);
             }
          }
 
@@ -685,13 +685,13 @@ public class class99 extends class109 {
             Client.field333 = 0;
             Client.flagX = var0;
             Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(115);
-            Client.secretCipherBuffer1.method2375(var0 + class108.baseX);
-            Client.secretCipherBuffer1.method2416(var3 >> 14 & 32767);
-            Client.secretCipherBuffer1.method2526(GameEngine.baseY + var1);
-            Client.secretCipherBuffer1.method2375(Client.field441);
-            Client.secretCipherBuffer1.putInt(XClanMember.field269);
-            Client.secretCipherBuffer1.putByte(class105.field1695[82]?1:0);
+            Client.egressBuffer.putOpcode(115);
+            Client.egressBuffer.method2375(var0 + class108.baseX);
+            Client.egressBuffer.method2416(var3 >> 14 & 32767);
+            Client.egressBuffer.method2526(GameEngine.baseY + var1);
+            Client.egressBuffer.method2375(Client.field441);
+            Client.egressBuffer.putInt(XClanMember.field269);
+            Client.egressBuffer.putByte(class105.field1695[82]?1:0);
          }
 
          if(var2 == 18) {
@@ -701,11 +701,11 @@ public class class99 extends class109 {
             Client.field333 = 0;
             Client.flagX = var0;
             Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(136);
-            Client.secretCipherBuffer1.putShort(var3);
-            Client.secretCipherBuffer1.method2429(class105.field1695[82]?1:0);
-            Client.secretCipherBuffer1.method2526(class108.baseX + var0);
-            Client.secretCipherBuffer1.method2526(GameEngine.baseY + var1);
+            Client.egressBuffer.putOpcode(136);
+            Client.egressBuffer.putShort(var3);
+            Client.egressBuffer.method2429(class105.field1695[82]?1:0);
+            Client.egressBuffer.method2526(class108.baseX + var0);
+            Client.egressBuffer.method2526(GameEngine.baseY + var1);
          }
 
          if(var2 == 38) {
@@ -727,8 +727,8 @@ public class class99 extends class109 {
                Client.field391 = var7;
                Client.field393 = 2;
                Client.field333 = 0;
-               Client.secretCipherBuffer1.putOpcode(174);
-               Client.secretCipherBuffer1.method2375(var3 >> 14 & 32767);
+               Client.egressBuffer.putOpcode(174);
+               Client.egressBuffer.method2375(var3 >> 14 & 32767);
             }
 
             if(var2 == 13) {
@@ -740,17 +740,17 @@ public class class99 extends class109 {
                   Client.field333 = 0;
                   Client.flagX = var0;
                   Client.flagY = var1;
-                  Client.secretCipherBuffer1.putOpcode(49);
-                  Client.secretCipherBuffer1.method2406(class105.field1695[82]?1:0);
-                  Client.secretCipherBuffer1.method2526(var3);
+                  Client.egressBuffer.putOpcode(49);
+                  Client.egressBuffer.method2406(class105.field1695[82]?1:0);
+                  Client.egressBuffer.method2526(var3);
                }
             }
 
             if(var2 == 41) {
-               Client.secretCipherBuffer1.putOpcode(217);
-               Client.secretCipherBuffer1.method2427(var1);
-               Client.secretCipherBuffer1.method2375(var0);
-               Client.secretCipherBuffer1.method2416(var3);
+               Client.egressBuffer.putOpcode(217);
+               Client.egressBuffer.method2427(var1);
+               Client.egressBuffer.method2375(var0);
+               Client.egressBuffer.method2416(var3);
                Client.field394 = 0;
                class32.field732 = class128.method2364(var1);
                Client.field395 = var0;
@@ -765,15 +765,15 @@ public class class99 extends class109 {
                   Client.field333 = 0;
                   Client.flagX = var0;
                   Client.flagY = var1;
-                  Client.secretCipherBuffer1.putOpcode(73);
-                  Client.secretCipherBuffer1.method2526(var3);
-                  Client.secretCipherBuffer1.putByte(class105.field1695[82]?1:0);
+                  Client.egressBuffer.putOpcode(73);
+                  Client.egressBuffer.method2526(var3);
+                  Client.egressBuffer.putByte(class105.field1695[82]?1:0);
                }
             }
 
             if(var2 == 28) {
-               Client.secretCipherBuffer1.putOpcode(229);
-               Client.secretCipherBuffer1.putInt(var1);
+               Client.egressBuffer.putOpcode(229);
+               Client.egressBuffer.putInt(var1);
                var8 = class128.method2364(var1);
                if(var8.dynamicValues != null && var8.dynamicValues[0][0] == 5) {
                   var15 = var8.dynamicValues[0][1];
@@ -783,10 +783,10 @@ public class class99 extends class109 {
             }
 
             if(var2 == 33) {
-               Client.secretCipherBuffer1.putOpcode(201);
-               Client.secretCipherBuffer1.putShort(var0);
-               Client.secretCipherBuffer1.method2426(var1);
-               Client.secretCipherBuffer1.putShort(var3);
+               Client.egressBuffer.putOpcode(201);
+               Client.egressBuffer.putShort(var0);
+               Client.egressBuffer.method2426(var1);
+               Client.egressBuffer.putShort(var3);
                Client.field394 = 0;
                class32.field732 = class128.method2364(var1);
                Client.field395 = var0;
@@ -799,11 +799,11 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(4);
-               Client.secretCipherBuffer1.putShort(var3);
-               Client.secretCipherBuffer1.method2526(GameEngine.baseY + var1);
-               Client.secretCipherBuffer1.method2499(class105.field1695[82]?1:0);
-               Client.secretCipherBuffer1.putShort(class108.baseX + var0);
+               Client.egressBuffer.putOpcode(4);
+               Client.egressBuffer.putShort(var3);
+               Client.egressBuffer.method2526(GameEngine.baseY + var1);
+               Client.egressBuffer.method2499(class105.field1695[82]?1:0);
+               Client.egressBuffer.putShort(class108.baseX + var0);
             }
 
             if(var2 == 3) {
@@ -813,11 +813,11 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(203);
-               Client.secretCipherBuffer1.method2416(var1 + GameEngine.baseY);
-               Client.secretCipherBuffer1.method2375(class108.baseX + var0);
-               Client.secretCipherBuffer1.method2499(class105.field1695[82]?1:0);
-               Client.secretCipherBuffer1.method2375(var3 >> 14 & 32767);
+               Client.egressBuffer.putOpcode(203);
+               Client.egressBuffer.method2416(var1 + GameEngine.baseY);
+               Client.egressBuffer.method2375(class108.baseX + var0);
+               Client.egressBuffer.method2499(class105.field1695[82]?1:0);
+               Client.egressBuffer.method2375(var3 >> 14 & 32767);
             }
 
             if(var2 == 21) {
@@ -827,18 +827,18 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(158);
-               Client.secretCipherBuffer1.method2429(class105.field1695[82]?1:0);
-               Client.secretCipherBuffer1.method2375(var3);
-               Client.secretCipherBuffer1.method2526(GameEngine.baseY + var1);
-               Client.secretCipherBuffer1.method2375(class108.baseX + var0);
+               Client.egressBuffer.putOpcode(158);
+               Client.egressBuffer.method2429(class105.field1695[82]?1:0);
+               Client.egressBuffer.method2375(var3);
+               Client.egressBuffer.method2526(GameEngine.baseY + var1);
+               Client.egressBuffer.method2375(class108.baseX + var0);
             }
 
             if(var2 == 40) {
-               Client.secretCipherBuffer1.putOpcode(3);
-               Client.secretCipherBuffer1.method2416(var0);
-               Client.secretCipherBuffer1.method2427(var1);
-               Client.secretCipherBuffer1.putShort(var3);
+               Client.egressBuffer.putOpcode(3);
+               Client.egressBuffer.method2416(var0);
+               Client.egressBuffer.method2427(var1);
+               Client.egressBuffer.putShort(var3);
                Client.field394 = 0;
                class32.field732 = class128.method2364(var1);
                Client.field395 = var0;
@@ -853,11 +853,11 @@ public class class99 extends class109 {
                   Client.field333 = 0;
                   Client.flagX = var0;
                   Client.flagY = var1;
-                  Client.secretCipherBuffer1.putOpcode(48);
-                  Client.secretCipherBuffer1.method2526(Client.field441);
-                  Client.secretCipherBuffer1.method2406(class105.field1695[82]?1:0);
-                  Client.secretCipherBuffer1.method2526(var3);
-                  Client.secretCipherBuffer1.putInt(XClanMember.field269);
+                  Client.egressBuffer.putOpcode(48);
+                  Client.egressBuffer.method2526(Client.field441);
+                  Client.egressBuffer.method2406(class105.field1695[82]?1:0);
+                  Client.egressBuffer.method2526(var3);
+                  Client.egressBuffer.putInt(XClanMember.field269);
                }
             }
 
@@ -868,11 +868,11 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(252);
-               Client.secretCipherBuffer1.method2375(GameEngine.baseY + var1);
-               Client.secretCipherBuffer1.putShort(var3 >> 14 & 32767);
-               Client.secretCipherBuffer1.putByte(class105.field1695[82]?1:0);
-               Client.secretCipherBuffer1.method2375(var0 + class108.baseX);
+               Client.egressBuffer.putOpcode(252);
+               Client.egressBuffer.method2375(GameEngine.baseY + var1);
+               Client.egressBuffer.putShort(var3 >> 14 & 32767);
+               Client.egressBuffer.putByte(class105.field1695[82]?1:0);
+               Client.egressBuffer.method2375(var0 + class108.baseX);
             }
 
             if(var2 == 20) {
@@ -882,11 +882,11 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(137);
-               Client.secretCipherBuffer1.method2416(var1 + GameEngine.baseY);
-               Client.secretCipherBuffer1.putShort(var0 + class108.baseX);
-               Client.secretCipherBuffer1.method2416(var3);
-               Client.secretCipherBuffer1.method2499(class105.field1695[82]?1:0);
+               Client.egressBuffer.putOpcode(137);
+               Client.egressBuffer.method2416(var1 + GameEngine.baseY);
+               Client.egressBuffer.putShort(var0 + class108.baseX);
+               Client.egressBuffer.method2416(var3);
+               Client.egressBuffer.method2499(class105.field1695[82]?1:0);
             }
 
             if(var2 == 10) {
@@ -898,9 +898,9 @@ public class class99 extends class109 {
                   Client.field333 = 0;
                   Client.flagX = var0;
                   Client.flagY = var1;
-                  Client.secretCipherBuffer1.putOpcode(53);
-                  Client.secretCipherBuffer1.putByte(class105.field1695[82]?1:0);
-                  Client.secretCipherBuffer1.method2375(var3);
+                  Client.egressBuffer.putOpcode(53);
+                  Client.egressBuffer.putByte(class105.field1695[82]?1:0);
+                  Client.egressBuffer.method2375(var3);
                }
             }
 
@@ -911,18 +911,18 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(140);
-               Client.secretCipherBuffer1.putShort(var1 + GameEngine.baseY);
-               Client.secretCipherBuffer1.method2375(var0 + class108.baseX);
-               Client.secretCipherBuffer1.putShort(Client.field441);
-               Client.secretCipherBuffer1.method2429(class105.field1695[82]?1:0);
-               Client.secretCipherBuffer1.method2416(var3);
-               Client.secretCipherBuffer1.method2411(XClanMember.field269);
+               Client.egressBuffer.putOpcode(140);
+               Client.egressBuffer.putShort(var1 + GameEngine.baseY);
+               Client.egressBuffer.method2375(var0 + class108.baseX);
+               Client.egressBuffer.putShort(Client.field441);
+               Client.egressBuffer.method2429(class105.field1695[82]?1:0);
+               Client.egressBuffer.method2416(var3);
+               Client.egressBuffer.method2411(XClanMember.field269);
             }
 
             if(var2 == 29) {
-               Client.secretCipherBuffer1.putOpcode(229);
-               Client.secretCipherBuffer1.putInt(var1);
+               Client.egressBuffer.putOpcode(229);
+               Client.egressBuffer.putInt(var1);
                var8 = class128.method2364(var1);
                if(var8.dynamicValues != null && var8.dynamicValues[0][0] == 5) {
                   var15 = var8.dynamicValues[0][1];
@@ -934,13 +934,13 @@ public class class99 extends class109 {
             }
 
             if(var2 == 31) {
-               Client.secretCipherBuffer1.putOpcode(28);
-               Client.secretCipherBuffer1.putInt(var1);
-               Client.secretCipherBuffer1.method2426(class72.field1171);
-               Client.secretCipherBuffer1.method2416(Player.field264);
-               Client.secretCipherBuffer1.method2526(class182.field2701);
-               Client.secretCipherBuffer1.method2416(var3);
-               Client.secretCipherBuffer1.putShort(var0);
+               Client.egressBuffer.putOpcode(28);
+               Client.egressBuffer.putInt(var1);
+               Client.egressBuffer.method2426(class72.field1171);
+               Client.egressBuffer.method2416(Player.field264);
+               Client.egressBuffer.method2526(class182.field2701);
+               Client.egressBuffer.method2416(var3);
+               Client.egressBuffer.putShort(var0);
                Client.field394 = 0;
                class32.field732 = class128.method2364(var1);
                Client.field395 = var0;
@@ -955,9 +955,9 @@ public class class99 extends class109 {
                   Client.field333 = 0;
                   Client.flagX = var0;
                   Client.flagY = var1;
-                  Client.secretCipherBuffer1.putOpcode(90);
-                  Client.secretCipherBuffer1.method2406(class105.field1695[82]?1:0);
-                  Client.secretCipherBuffer1.method2526(var3);
+                  Client.egressBuffer.putOpcode(90);
+                  Client.egressBuffer.method2406(class105.field1695[82]?1:0);
+                  Client.egressBuffer.method2526(var3);
                }
             }
 
@@ -970,9 +970,9 @@ public class class99 extends class109 {
                   Client.field333 = 0;
                   Client.flagX = var0;
                   Client.flagY = var1;
-                  Client.secretCipherBuffer1.putOpcode(32);
-                  Client.secretCipherBuffer1.method2526(var3);
-                  Client.secretCipherBuffer1.method2499(class105.field1695[82]?1:0);
+                  Client.egressBuffer.putOpcode(32);
+                  Client.egressBuffer.method2526(var3);
+                  Client.egressBuffer.method2499(class105.field1695[82]?1:0);
                }
             }
 
@@ -985,11 +985,11 @@ public class class99 extends class109 {
                   Client.field333 = 0;
                   Client.flagX = var0;
                   Client.flagY = var1;
-                  Client.secretCipherBuffer1.putOpcode(65);
-                  Client.secretCipherBuffer1.method2375(Client.field441);
-                  Client.secretCipherBuffer1.method2416(var3);
-                  Client.secretCipherBuffer1.method2426(XClanMember.field269);
-                  Client.secretCipherBuffer1.method2406(class105.field1695[82]?1:0);
+                  Client.egressBuffer.putOpcode(65);
+                  Client.egressBuffer.method2375(Client.field441);
+                  Client.egressBuffer.method2416(var3);
+                  Client.egressBuffer.method2426(XClanMember.field269);
+                  Client.egressBuffer.method2406(class105.field1695[82]?1:0);
                }
             }
 
@@ -1000,11 +1000,11 @@ public class class99 extends class109 {
                Client.field333 = 0;
                Client.flagX = var0;
                Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(234);
-               Client.secretCipherBuffer1.putByte(class105.field1695[82]?1:0);
-               Client.secretCipherBuffer1.putShort(var1 + GameEngine.baseY);
-               Client.secretCipherBuffer1.method2375(var3 >> 14 & 32767);
-               Client.secretCipherBuffer1.putShort(var0 + class108.baseX);
+               Client.egressBuffer.putOpcode(234);
+               Client.egressBuffer.putByte(class105.field1695[82]?1:0);
+               Client.egressBuffer.putShort(var1 + GameEngine.baseY);
+               Client.egressBuffer.method2375(var3 >> 14 & 32767);
+               Client.egressBuffer.putShort(var0 + class108.baseX);
             }
 
             if(var2 == 44) {
@@ -1016,9 +1016,9 @@ public class class99 extends class109 {
                   Client.field333 = 0;
                   Client.flagX = var0;
                   Client.flagY = var1;
-                  Client.secretCipherBuffer1.putOpcode(164);
-                  Client.secretCipherBuffer1.putShort(var3);
-                  Client.secretCipherBuffer1.method2429(class105.field1695[82]?1:0);
+                  Client.egressBuffer.putOpcode(164);
+                  Client.egressBuffer.putShort(var3);
+                  Client.egressBuffer.method2429(class105.field1695[82]?1:0);
                }
             }
 
@@ -1031,9 +1031,9 @@ public class class99 extends class109 {
                   Client.field333 = 0;
                   Client.flagX = var0;
                   Client.flagY = var1;
-                  Client.secretCipherBuffer1.putOpcode(78);
-                  Client.secretCipherBuffer1.method2526(var3);
-                  Client.secretCipherBuffer1.method2499(class105.field1695[82]?1:0);
+                  Client.egressBuffer.putOpcode(78);
+                  Client.egressBuffer.method2526(var3);
+                  Client.egressBuffer.method2499(class105.field1695[82]?1:0);
                }
             }
 

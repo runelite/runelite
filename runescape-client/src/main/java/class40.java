@@ -97,8 +97,8 @@ public class class40 implements class134 {
       garbageValue = "-59"
    )
    static void method780(int var0, int var1) {
-      Client.secretCipherBuffer1.putOpcode(192);
-      Client.secretCipherBuffer1.method2416(var1);
-      Client.secretCipherBuffer1.putInt(var0);
+      Client.egressBuffer.putOpcode(192);
+      Client.egressBuffer.method2416(var1);
+      Client.egressBuffer.putInt(var0);
    }
 }

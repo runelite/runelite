@@ -587,7 +587,7 @@ public class Script extends CacheableNode {
                                                                                                             Player.method250(class22.localPlayer, class32.field720[class32.field715], class32.field720[class32.field715 + 1]);
                                                                                                             var38 = 1;
                                                                                                          } else if(var54 == 3103) {
-                                                                                                            Client.secretCipherBuffer1.putOpcode(197);
+                                                                                                            Client.egressBuffer.putOpcode(197);
                                                                                                             WidgetNode var87 = (WidgetNode)Client.componentTable.method2776();
 
                                                                                                             while(true) {
@@ -615,20 +615,20 @@ public class Script extends CacheableNode {
                                                                                                                var33 = var17;
                                                                                                             }
 
-                                                                                                            Client.secretCipherBuffer1.putOpcode(74);
-                                                                                                            Client.secretCipherBuffer1.putInt(var33);
+                                                                                                            Client.egressBuffer.putOpcode(74);
+                                                                                                            Client.egressBuffer.putInt(var33);
                                                                                                             var38 = 1;
                                                                                                          } else if(var54 == 3105) {
                                                                                                             var86 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                                                                                                            Client.secretCipherBuffer1.putOpcode(109);
-                                                                                                            Client.secretCipherBuffer1.putByte(var86.length() + 1);
-                                                                                                            Client.secretCipherBuffer1.method2504(var86);
+                                                                                                            Client.egressBuffer.putOpcode(109);
+                                                                                                            Client.egressBuffer.putByte(var86.length() + 1);
+                                                                                                            Client.egressBuffer.method2504(var86);
                                                                                                             var38 = 1;
                                                                                                          } else if(var54 == 3106) {
                                                                                                             var86 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                                                                                                            Client.secretCipherBuffer1.putOpcode(162);
-                                                                                                            Client.secretCipherBuffer1.putByte(var86.length() + 1);
-                                                                                                            Client.secretCipherBuffer1.method2504(var86);
+                                                                                                            Client.egressBuffer.putOpcode(162);
+                                                                                                            Client.egressBuffer.putByte(var86.length() + 1);
+                                                                                                            Client.egressBuffer.method2504(var86);
                                                                                                             var38 = 1;
                                                                                                          } else if(var54 != 3107) {
                                                                                                             if(var54 == 3108) {
@@ -663,8 +663,8 @@ public class Script extends CacheableNode {
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3115) {
                                                                                                                var15 = class32.field720[--class32.field715];
-                                                                                                               Client.secretCipherBuffer1.putOpcode(50);
-                                                                                                               Client.secretCipherBuffer1.putShort(var15);
+                                                                                                               Client.egressBuffer.putOpcode(50);
+                                                                                                               Client.egressBuffer.putShort(var15);
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3116) {
                                                                                                                var15 = class32.field720[--class32.field715];
@@ -676,11 +676,11 @@ public class Script extends CacheableNode {
                                                                                                                } else if(var88.length() > 500) {
                                                                                                                   var38 = 1;
                                                                                                                } else {
-                                                                                                                  Client.secretCipherBuffer1.putOpcode(173);
-                                                                                                                  Client.secretCipherBuffer1.putShort(class36.method753(var58) + 1 + class36.method753(var88));
-                                                                                                                  Client.secretCipherBuffer1.method2499(var15);
-                                                                                                                  Client.secretCipherBuffer1.method2504(var58);
-                                                                                                                  Client.secretCipherBuffer1.method2504(var88);
+                                                                                                                  Client.egressBuffer.putOpcode(173);
+                                                                                                                  Client.egressBuffer.putShort(class36.method753(var58) + 1 + class36.method753(var88));
+                                                                                                                  Client.egressBuffer.method2499(var15);
+                                                                                                                  Client.egressBuffer.method2504(var58);
+                                                                                                                  Client.egressBuffer.method2504(var88);
                                                                                                                   var38 = 1;
                                                                                                                }
                                                                                                             } else if(var54 == 3117) {
@@ -700,21 +700,21 @@ public class Script extends CacheableNode {
                                                                                                                Player var21 = Client.cachedPlayers[var79[var39]];
                                                                                                                if(var21 != null && class22.localPlayer != var21 && var21.name != null && var21.name.equalsIgnoreCase(var58)) {
                                                                                                                   if(var15 == 1) {
-                                                                                                                     Client.secretCipherBuffer1.putOpcode(164);
-                                                                                                                     Client.secretCipherBuffer1.putShort(var79[var39]);
-                                                                                                                     Client.secretCipherBuffer1.method2429(0);
+                                                                                                                     Client.egressBuffer.putOpcode(164);
+                                                                                                                     Client.egressBuffer.putShort(var79[var39]);
+                                                                                                                     Client.egressBuffer.method2429(0);
                                                                                                                   } else if(var15 == 4) {
-                                                                                                                     Client.secretCipherBuffer1.putOpcode(73);
-                                                                                                                     Client.secretCipherBuffer1.method2526(var79[var39]);
-                                                                                                                     Client.secretCipherBuffer1.putByte(0);
+                                                                                                                     Client.egressBuffer.putOpcode(73);
+                                                                                                                     Client.egressBuffer.method2526(var79[var39]);
+                                                                                                                     Client.egressBuffer.putByte(0);
                                                                                                                   } else if(var15 == 6) {
-                                                                                                                     Client.secretCipherBuffer1.putOpcode(32);
-                                                                                                                     Client.secretCipherBuffer1.method2526(var79[var39]);
-                                                                                                                     Client.secretCipherBuffer1.method2499(0);
+                                                                                                                     Client.egressBuffer.putOpcode(32);
+                                                                                                                     Client.egressBuffer.method2526(var79[var39]);
+                                                                                                                     Client.egressBuffer.method2499(0);
                                                                                                                   } else if(var15 == 7) {
-                                                                                                                     Client.secretCipherBuffer1.putOpcode(40);
-                                                                                                                     Client.secretCipherBuffer1.method2499(0);
-                                                                                                                     Client.secretCipherBuffer1.method2375(var79[var39]);
+                                                                                                                     Client.egressBuffer.putOpcode(40);
+                                                                                                                     Client.egressBuffer.method2499(0);
+                                                                                                                     Client.egressBuffer.method2375(var79[var39]);
                                                                                                                   }
 
                                                                                                                   var35 = true;
@@ -763,7 +763,7 @@ public class Script extends CacheableNode {
                                                                                                                var17 = Client.field501;
                                                                                                                class159.field2063 = 1;
                                                                                                                class159.field2067 = var59;
-                                                                                                               CipherBuffer.field1989 = var15;
+                                                                                                               PacketBuffer.field1989 = var15;
                                                                                                                class190.field2791 = 0;
                                                                                                                class159.field2069 = var17;
                                                                                                                class15.field164 = false;
@@ -1461,7 +1461,7 @@ public class Script extends CacheableNode {
    public static void method911(IndexDataBase var0, int var1, int var2, int var3, boolean var4) {
       class159.field2063 = 1;
       class159.field2067 = var0;
-      CipherBuffer.field1989 = var1;
+      PacketBuffer.field1989 = var1;
       class190.field2791 = var2;
       class159.field2069 = var3;
       class15.field164 = var4;

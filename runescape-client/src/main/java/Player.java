@@ -465,8 +465,8 @@ public final class Player extends Actor {
          }
 
          if(var1 == 326) {
-            Client.secretCipherBuffer1.putOpcode(141);
-            Client.field559.method3147(Client.secretCipherBuffer1);
+            Client.egressBuffer.putOpcode(141);
+            Client.field559.method3147(Client.egressBuffer);
             return true;
          } else {
             return false;

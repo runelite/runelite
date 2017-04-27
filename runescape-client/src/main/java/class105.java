@@ -581,9 +581,9 @@ public final class class105 implements KeyListener, FocusListener {
                if(class108.method2059(class22.localPlayer.name, NPC.field757).equals(var1)) {
                   WidgetNode.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
                } else {
-                  Client.secretCipherBuffer1.putOpcode(209);
-                  Client.secretCipherBuffer1.putByte(class36.method753(var0));
-                  Client.secretCipherBuffer1.method2504(var0);
+                  Client.egressBuffer.putOpcode(209);
+                  Client.egressBuffer.putByte(class36.method753(var0));
+                  Client.egressBuffer.method2504(var0);
                }
             }
          } else {
