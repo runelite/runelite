@@ -219,7 +219,7 @@ public class class49 extends Renderable {
          Preferences.field713 -= 2;
          var4 = class32.field743[Preferences.field713];
          int var5 = class32.field743[Preferences.field713 + 1];
-         var3.parent = class118.method2354(var4, var5);
+         var3.dragParent = class118.method2354(var4, var5);
          return 1;
       } else if(var0 == 1302) {
          var3.field2297 = class32.field743[--Preferences.field713] == 1;
