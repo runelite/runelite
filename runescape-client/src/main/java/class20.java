@@ -130,14 +130,14 @@ public class class20 implements Runnable {
       if(Client.field476 == null && !Client.isMenuOpen && var0 != null) {
          Widget var3 = DecorativeObject.method1956(var0);
          if(var3 == null) {
-            var3 = var0.parent;
+            var3 = var0.dragParent;
          }
 
          if(var3 != null) {
             Client.field476 = var0;
             var3 = DecorativeObject.method1956(var0);
             if(var3 == null) {
-               var3 = var0.parent;
+               var3 = var0.dragParent;
             }
 
             Client.field477 = var3;
