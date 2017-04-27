@@ -33,11 +33,11 @@ public class class174 {
       int var4;
       Item var5;
       if(Client.packetOpcode == 193) {
-         var0 = Client.secretCipherBuffer2.readUnsignedByte();
+         var0 = Client.ingressBuffer.readUnsignedByte();
          var1 = class215.field3157 + (var0 >> 4 & 7);
          var2 = class39.field802 + (var0 & 7);
-         var3 = Client.secretCipherBuffer2.method2419();
-         var4 = Client.secretCipherBuffer2.readUnsignedShort();
+         var3 = Client.ingressBuffer.method2419();
+         var4 = Client.ingressBuffer.readUnsignedShort();
          if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
             var5 = new Item();
             var5.id = var4;
@@ -56,14 +56,14 @@ public class class174 {
          int var9;
          int var29;
          if(Client.packetOpcode == 85) {
-            var0 = Client.secretCipherBuffer2.method2409();
+            var0 = Client.ingressBuffer.method2409();
             var1 = var0 >> 2;
             var2 = var0 & 3;
             var3 = Client.field345[var1];
-            var4 = Client.secretCipherBuffer2.method2410();
+            var4 = Client.ingressBuffer.method2410();
             var29 = (var4 >> 4 & 7) + class215.field3157;
             var6 = (var4 & 7) + class39.field802;
-            var7 = Client.secretCipherBuffer2.method2420();
+            var7 = Client.ingressBuffer.method2420();
             if(var29 >= 0 && var6 >= 0 && var29 < 103 && var6 < 103) {
                if(var3 == 0) {
                   WallObject var8 = class172.region.method1743(Client.plane, var29, var6);
@@ -117,12 +117,12 @@ public class class174 {
             }
 
          } else if(Client.packetOpcode == 158) {
-            var0 = Client.secretCipherBuffer2.readUnsignedByte();
+            var0 = Client.ingressBuffer.readUnsignedByte();
             var1 = (var0 >> 4 & 7) + class215.field3157;
             var2 = (var0 & 7) + class39.field802;
-            var3 = Client.secretCipherBuffer2.readUnsignedShort();
-            var4 = Client.secretCipherBuffer2.readUnsignedByte();
-            var29 = Client.secretCipherBuffer2.readUnsignedShort();
+            var3 = Client.ingressBuffer.readUnsignedShort();
+            var4 = Client.ingressBuffer.readUnsignedByte();
+            var29 = Client.ingressBuffer.readUnsignedShort();
             if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                var1 = var1 * 128 + 64;
                var2 = var2 * 128 + 64;
@@ -131,14 +131,14 @@ public class class174 {
             }
 
          } else if(Client.packetOpcode == 119) {
-            var0 = Client.secretCipherBuffer2.method2558();
+            var0 = Client.ingressBuffer.method2558();
             var1 = var0 >> 2;
             var2 = var0 & 3;
             var3 = Client.field345[var1];
-            var4 = Client.secretCipherBuffer2.readUnsignedByte();
+            var4 = Client.ingressBuffer.readUnsignedByte();
             var29 = (var4 >> 4 & 7) + class215.field3157;
             var6 = (var4 & 7) + class39.field802;
-            var7 = Client.secretCipherBuffer2.method2420();
+            var7 = Client.ingressBuffer.method2420();
             if(var29 >= 0 && var6 >= 0 && var29 < 104 && var6 < 104) {
                class20.method212(Client.plane, var29, var6, var3, var7, var1, var2, 0, -1);
             }
@@ -149,19 +149,19 @@ public class class174 {
             int var12;
             int var30;
             if(Client.packetOpcode == 102) {
-               var0 = Client.secretCipherBuffer2.readUnsignedByte();
+               var0 = Client.ingressBuffer.readUnsignedByte();
                var1 = class215.field3157 + (var0 >> 4 & 7);
                var2 = (var0 & 7) + class39.field802;
-               var3 = var1 + Client.secretCipherBuffer2.readByte();
-               var4 = var2 + Client.secretCipherBuffer2.readByte();
-               var29 = Client.secretCipherBuffer2.readShort();
-               var6 = Client.secretCipherBuffer2.readUnsignedShort();
-               var7 = Client.secretCipherBuffer2.readUnsignedByte() * 4;
-               var30 = Client.secretCipherBuffer2.readUnsignedByte() * 4;
-               var9 = Client.secretCipherBuffer2.readUnsignedShort();
-               var10 = Client.secretCipherBuffer2.readUnsignedShort();
-               var11 = Client.secretCipherBuffer2.readUnsignedByte();
-               var12 = Client.secretCipherBuffer2.readUnsignedByte();
+               var3 = var1 + Client.ingressBuffer.readByte();
+               var4 = var2 + Client.ingressBuffer.readByte();
+               var29 = Client.ingressBuffer.readShort();
+               var6 = Client.ingressBuffer.readUnsignedShort();
+               var7 = Client.ingressBuffer.readUnsignedByte() * 4;
+               var30 = Client.ingressBuffer.readUnsignedByte() * 4;
+               var9 = Client.ingressBuffer.readUnsignedShort();
+               var10 = Client.ingressBuffer.readUnsignedShort();
+               var11 = Client.ingressBuffer.readUnsignedByte();
+               var12 = Client.ingressBuffer.readUnsignedByte();
                if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104 && var3 >= 0 && var4 >= 0 && var3 < 104 && var4 < 104 && var6 != '\uffff') {
                   var1 = var1 * 128 + 64;
                   var2 = var2 * 128 + 64;
@@ -173,11 +173,11 @@ public class class174 {
                }
 
             } else if(Client.packetOpcode == 151) {
-               var0 = Client.secretCipherBuffer2.method2409();
+               var0 = Client.ingressBuffer.method2409();
                var1 = var0 >> 2;
                var2 = var0 & 3;
                var3 = Client.field345[var1];
-               var4 = Client.secretCipherBuffer2.readUnsignedByte();
+               var4 = Client.ingressBuffer.readUnsignedByte();
                var29 = class215.field3157 + (var4 >> 4 & 7);
                var6 = (var4 & 7) + class39.field802;
                if(var29 >= 0 && var6 >= 0 && var29 < 104 && var6 < 104) {
@@ -186,14 +186,14 @@ public class class174 {
 
             } else {
                if(Client.packetOpcode == 86) {
-                  var0 = Client.secretCipherBuffer2.readUnsignedByte();
+                  var0 = Client.ingressBuffer.readUnsignedByte();
                   var1 = (var0 >> 4 & 7) + class215.field3157;
                   var2 = (var0 & 7) + class39.field802;
-                  var3 = Client.secretCipherBuffer2.readUnsignedShort();
-                  var4 = Client.secretCipherBuffer2.readUnsignedByte();
+                  var3 = Client.ingressBuffer.readUnsignedShort();
+                  var4 = Client.ingressBuffer.readUnsignedByte();
                   var29 = var4 >> 4 & 15;
                   var6 = var4 & 7;
-                  var7 = Client.secretCipherBuffer2.readUnsignedByte();
+                  var7 = Client.ingressBuffer.readUnsignedByte();
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                      var30 = var29 + 1;
                      if(class22.localPlayer.pathX[0] >= var1 - var30 && class22.localPlayer.pathX[0] <= var1 + var30 && class22.localPlayer.pathY[0] >= var2 - var30 && class22.localPlayer.pathY[0] <= var2 + var30 && Client.field527 != 0 && var6 > 0 && Client.field528 < 50) {
@@ -208,10 +208,10 @@ public class class174 {
                }
 
                if(Client.packetOpcode == 97) {
-                  var0 = Client.secretCipherBuffer2.readUnsignedByte();
+                  var0 = Client.ingressBuffer.readUnsignedByte();
                   var1 = class215.field3157 + (var0 >> 4 & 7);
                   var2 = (var0 & 7) + class39.field802;
-                  var3 = Client.secretCipherBuffer2.method2418();
+                  var3 = Client.ingressBuffer.method2418();
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                      Deque var31 = Client.groundItemDeque[Client.plane][var1][var2];
                      if(var31 != null) {
@@ -232,21 +232,21 @@ public class class174 {
 
                } else {
                   if(Client.packetOpcode == 232) {
-                     var0 = Client.secretCipherBuffer2.readUnsignedShort();
-                     byte var35 = Client.secretCipherBuffer2.method2515();
-                     byte var36 = Client.secretCipherBuffer2.readByte();
-                     var3 = Client.secretCipherBuffer2.method2558();
+                     var0 = Client.ingressBuffer.readUnsignedShort();
+                     byte var35 = Client.ingressBuffer.method2515();
+                     byte var36 = Client.ingressBuffer.readByte();
+                     var3 = Client.ingressBuffer.method2558();
                      var4 = var3 >> 2;
                      var29 = var3 & 3;
                      var6 = Client.field345[var4];
-                     var7 = Client.secretCipherBuffer2.readUnsignedShort();
-                     byte var40 = Client.secretCipherBuffer2.method2412();
-                     var9 = Client.secretCipherBuffer2.method2419();
-                     var10 = Client.secretCipherBuffer2.method2409();
+                     var7 = Client.ingressBuffer.readUnsignedShort();
+                     byte var40 = Client.ingressBuffer.method2412();
+                     var9 = Client.ingressBuffer.method2419();
+                     var10 = Client.ingressBuffer.method2409();
                      var11 = class215.field3157 + (var10 >> 4 & 7);
                      var12 = class39.field802 + (var10 & 7);
-                     byte var13 = Client.secretCipherBuffer2.method2501();
-                     int var14 = Client.secretCipherBuffer2.method2418();
+                     byte var13 = Client.ingressBuffer.method2501();
+                     int var14 = Client.ingressBuffer.method2418();
                      Player var15;
                      if(var7 == Client.localInteractingIndex) {
                         var15 = class22.localPlayer;
@@ -305,12 +305,12 @@ public class class174 {
                   }
 
                   if(Client.packetOpcode == 87) {
-                     var0 = Client.secretCipherBuffer2.readUnsignedByte();
+                     var0 = Client.ingressBuffer.readUnsignedByte();
                      var1 = class215.field3157 + (var0 >> 4 & 7);
                      var2 = (var0 & 7) + class39.field802;
-                     var3 = Client.secretCipherBuffer2.readUnsignedShort();
-                     var4 = Client.secretCipherBuffer2.readUnsignedShort();
-                     var29 = Client.secretCipherBuffer2.readUnsignedShort();
+                     var3 = Client.ingressBuffer.readUnsignedShort();
+                     var4 = Client.ingressBuffer.readUnsignedShort();
+                     var29 = Client.ingressBuffer.readUnsignedShort();
                      if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                         Deque var32 = Client.groundItemDeque[Client.plane][var1][var2];
                         if(var32 != null) {

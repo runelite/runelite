@@ -375,14 +375,14 @@ public final class class9 {
       int var6;
       int var7;
       if(!Client.isDynamicRegion) {
-         var1 = Client.secretCipherBuffer2.method2419();
-         int var2 = Client.secretCipherBuffer2.method2419();
-         var3 = Client.secretCipherBuffer2.readUnsignedShort();
+         var1 = Client.ingressBuffer.method2419();
+         int var2 = Client.ingressBuffer.method2419();
+         var3 = Client.ingressBuffer.readUnsignedShort();
          class118.xteaKeys = new int[var3][4];
 
          for(var4 = 0; var4 < var3; ++var4) {
             for(var5 = 0; var5 < 4; ++var5) {
-               class118.xteaKeys[var4][var5] = Client.secretCipherBuffer2.readInt();
+               class118.xteaKeys[var4][var5] = Client.ingressBuffer.readInt();
             }
          }
 
@@ -416,19 +416,19 @@ public final class class9 {
 
          class131.method2613(var1, var2, true);
       } else {
-         var1 = Client.secretCipherBuffer2.method2419();
-         boolean var14 = Client.secretCipherBuffer2.method2410() == 1;
-         var3 = Client.secretCipherBuffer2.method2420();
-         var4 = Client.secretCipherBuffer2.readUnsignedShort();
-         Client.secretCipherBuffer2.method2644();
+         var1 = Client.ingressBuffer.method2419();
+         boolean var14 = Client.ingressBuffer.method2410() == 1;
+         var3 = Client.ingressBuffer.method2420();
+         var4 = Client.ingressBuffer.readUnsignedShort();
+         Client.ingressBuffer.method2644();
 
          int var8;
          for(var5 = 0; var5 < 4; ++var5) {
             for(var6 = 0; var6 < 13; ++var6) {
                for(var7 = 0; var7 < 13; ++var7) {
-                  var8 = Client.secretCipherBuffer2.method2645(1);
+                  var8 = Client.ingressBuffer.readBits(1);
                   if(var8 == 1) {
-                     Client.field344[var5][var6][var7] = Client.secretCipherBuffer2.method2645(26);
+                     Client.field344[var5][var6][var7] = Client.ingressBuffer.readBits(26);
                   } else {
                      Client.field344[var5][var6][var7] = -1;
                   }
@@ -436,12 +436,12 @@ public final class class9 {
             }
          }
 
-         Client.secretCipherBuffer2.method2647();
+         Client.ingressBuffer.method2647();
          class118.xteaKeys = new int[var4][4];
 
          for(var5 = 0; var5 < var4; ++var5) {
             for(var6 = 0; var6 < 4; ++var6) {
-               class118.xteaKeys[var5][var6] = Client.secretCipherBuffer2.readInt();
+               class118.xteaKeys[var5][var6] = Client.ingressBuffer.readInt();
             }
          }
 

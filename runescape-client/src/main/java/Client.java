@@ -198,13 +198,14 @@ public final class Client extends GameEngine {
    @ObfuscatedName("cu")
    static int[] field324;
    @ObfuscatedName("cy")
-   @Export("secretCipherBuffer1")
-   static CipherBuffer secretCipherBuffer1;
+   @Export("egressBuffer")
+   static PacketBuffer egressBuffer;
    @ObfuscatedName("cl")
-   static CipherBuffer field326;
+   @Export("loginBuffer")
+   static PacketBuffer loginBuffer;
    @ObfuscatedName("cg")
-   @Export("secretCipherBuffer2")
-   static CipherBuffer secretCipherBuffer2;
+   @Export("ingressBuffer")
+   static PacketBuffer ingressBuffer;
    @ObfuscatedName("cn")
    @ObfuscatedGetter(
       intValue = 1452082135
@@ -1771,9 +1772,9 @@ public final class Client extends GameEngine {
       field350 = new int['耀'];
       field292 = 0;
       field324 = new int[250];
-      secretCipherBuffer1 = new CipherBuffer(5000);
-      field326 = new CipherBuffer(5000);
-      secretCipherBuffer2 = new CipherBuffer(15000);
+      egressBuffer = new PacketBuffer(5000);
+      loginBuffer = new PacketBuffer(5000);
+      ingressBuffer = new PacketBuffer(15000);
       packetLength = 0;
       packetOpcode = 0;
       field330 = 0;
@@ -2150,7 +2151,7 @@ public final class Client extends GameEngine {
          try {
             if(class159.field2063 == 2) {
                if(class13.field145 == null) {
-                  class13.field145 = Track1.method3124(class159.field2067, CipherBuffer.field1989, class190.field2791);
+                  class13.field145 = Track1.method3124(class159.field2067, PacketBuffer.field1989, class190.field2791);
                   if(class13.field145 == null) {
                      var1 = false;
                      break label231;

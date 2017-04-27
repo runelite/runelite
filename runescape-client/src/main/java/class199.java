@@ -207,7 +207,7 @@ public class class199 extends CacheableNode {
             int var8 = var9.method3310(var7, "");
             class159.field2063 = 1;
             class159.field2067 = var9;
-            CipherBuffer.field1989 = var7;
+            PacketBuffer.field1989 = var7;
             class190.field2791 = var8;
             class159.field2069 = 255;
             class15.field164 = false;
