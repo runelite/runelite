@@ -58,7 +58,7 @@ public class class38 {
       signature = "(LCipherBuffer;II)V",
       garbageValue = "-156080913"
    )
-   static final void method766(CipherBuffer var0, int var1) {
+   static final void method766(PacketBuffer var0, int var1) {
       int var2 = var0.offset;
       class45.field902 = 0;
       class126.method2358(var0);

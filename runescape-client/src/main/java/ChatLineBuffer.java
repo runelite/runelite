@@ -993,8 +993,8 @@ public class ChatLineBuffer {
             class200.method3626();
             ObjectComposition.field2927.reset();
             if(class3.field26 != null) {
-               Client.secretCipherBuffer1.putOpcode(60);
-               Client.secretCipherBuffer1.putInt(1057001181);
+               Client.egressBuffer.putOpcode(60);
+               Client.egressBuffer.putInt(1057001181);
             }
 
             if(!Client.isDynamicRegion) {
@@ -1027,7 +1027,7 @@ public class ChatLineBuffer {
             class10.field96 = null;
             class138.field2005 = null;
             class10.field91 = null;
-            Client.secretCipherBuffer1.putOpcode(54);
+            Client.egressBuffer.putOpcode(54);
             ChatMessages.field916.vmethod2062();
 
             for(var5 = 0; var5 < 32; ++var5) {

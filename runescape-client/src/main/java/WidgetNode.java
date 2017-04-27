@@ -495,8 +495,8 @@ public class WidgetNode extends Node {
    static final void method200(boolean var0) {
       Client.field407 = 0;
       Client.field292 = 0;
-      Client.secretCipherBuffer2.method2644();
-      int var1 = Client.secretCipherBuffer2.method2645(8);
+      Client.ingressBuffer.method2644();
+      int var1 = Client.ingressBuffer.readBits(8);
       int var2;
       if(var1 < Client.field321) {
          for(var2 = var1; var2 < Client.field321; ++var2) {
@@ -517,12 +517,12 @@ public class WidgetNode extends Node {
          for(var2 = 0; var2 < var1; ++var2) {
             int var3 = Client.field350[var2];
             NPC var4 = Client.cachedNPCs[var3];
-            var5 = Client.secretCipherBuffer2.method2645(1);
+            var5 = Client.ingressBuffer.readBits(1);
             if(var5 == 0) {
                Client.field350[++Client.field321 - 1] = var3;
                var4.field648 = Client.gameCycle;
             } else {
-               var6 = Client.secretCipherBuffer2.method2645(2);
+               var6 = Client.ingressBuffer.readBits(2);
                if(var6 == 0) {
                   Client.field350[++Client.field321 - 1] = var3;
                   var4.field648 = Client.gameCycle;
@@ -530,20 +530,20 @@ public class WidgetNode extends Node {
                } else if(var6 == 1) {
                   Client.field350[++Client.field321 - 1] = var3;
                   var4.field648 = Client.gameCycle;
-                  var7 = Client.secretCipherBuffer2.method2645(3);
+                  var7 = Client.ingressBuffer.readBits(3);
                   var4.method735(var7, (byte)1);
-                  var8 = Client.secretCipherBuffer2.method2645(1);
+                  var8 = Client.ingressBuffer.readBits(1);
                   if(var8 == 1) {
                      Client.field324[++Client.field292 - 1] = var3;
                   }
                } else if(var6 == 2) {
                   Client.field350[++Client.field321 - 1] = var3;
                   var4.field648 = Client.gameCycle;
-                  var7 = Client.secretCipherBuffer2.method2645(3);
+                  var7 = Client.ingressBuffer.readBits(3);
                   var4.method735(var7, (byte)2);
-                  var8 = Client.secretCipherBuffer2.method2645(3);
+                  var8 = Client.ingressBuffer.readBits(3);
                   var4.method735(var8, (byte)2);
-                  var9 = Client.secretCipherBuffer2.method2645(1);
+                  var9 = Client.ingressBuffer.readBits(1);
                   if(var9 == 1) {
                      Client.field324[++Client.field292 - 1] = var3;
                   }
@@ -558,16 +558,16 @@ public class WidgetNode extends Node {
          for(var1 = 0; var1 < Client.field292; ++var1) {
             var2 = Client.field324[var1];
             NPC var13 = Client.cachedNPCs[var2];
-            int var14 = Client.secretCipherBuffer2.readUnsignedByte();
+            int var14 = Client.ingressBuffer.readUnsignedByte();
             if((var14 & 2) != 0) {
-               var13.interacting = Client.secretCipherBuffer2.method2418();
+               var13.interacting = Client.ingressBuffer.method2418();
                if(var13.interacting == '\uffff') {
                   var13.interacting = -1;
                }
             }
 
             if((var14 & 32) != 0) {
-               var5 = Client.secretCipherBuffer2.method2409();
+               var5 = Client.ingressBuffer.method2409();
                int var10;
                int var11;
                if(var5 > 0) {
@@ -575,32 +575,32 @@ public class WidgetNode extends Node {
                      var8 = -1;
                      var9 = -1;
                      var10 = -1;
-                     var7 = Client.secretCipherBuffer2.method2395();
+                     var7 = Client.ingressBuffer.method2395();
                      if(var7 == 32767) {
-                        var7 = Client.secretCipherBuffer2.method2395();
-                        var9 = Client.secretCipherBuffer2.method2395();
-                        var8 = Client.secretCipherBuffer2.method2395();
-                        var10 = Client.secretCipherBuffer2.method2395();
+                        var7 = Client.ingressBuffer.method2395();
+                        var9 = Client.ingressBuffer.method2395();
+                        var8 = Client.ingressBuffer.method2395();
+                        var10 = Client.ingressBuffer.method2395();
                      } else if(var7 != 32766) {
-                        var9 = Client.secretCipherBuffer2.method2395();
+                        var9 = Client.ingressBuffer.method2395();
                      } else {
                         var7 = -1;
                      }
 
-                     var11 = Client.secretCipherBuffer2.method2395();
+                     var11 = Client.ingressBuffer.method2395();
                      var13.method583(var7, var9, var8, var10, Client.gameCycle, var11);
                   }
                }
 
-               var6 = Client.secretCipherBuffer2.readUnsignedByte();
+               var6 = Client.ingressBuffer.readUnsignedByte();
                if(var6 > 0) {
                   for(var7 = 0; var7 < var6; ++var7) {
-                     var8 = Client.secretCipherBuffer2.method2395();
-                     var9 = Client.secretCipherBuffer2.method2395();
+                     var8 = Client.ingressBuffer.method2395();
+                     var9 = Client.ingressBuffer.method2395();
                      if(var9 != 32767) {
-                        var10 = Client.secretCipherBuffer2.method2395();
-                        var11 = Client.secretCipherBuffer2.method2409();
-                        int var12 = var9 > 0?Client.secretCipherBuffer2.method2409():var11;
+                        var10 = Client.ingressBuffer.method2395();
+                        var11 = Client.ingressBuffer.method2409();
+                        int var12 = var9 > 0?Client.ingressBuffer.method2409():var11;
                         var13.method580(var8, Client.gameCycle, var9, var10, var11, var12);
                      } else {
                         var13.method587(var8);
@@ -610,8 +610,8 @@ public class WidgetNode extends Node {
             }
 
             if((var14 & 4) != 0) {
-               var5 = Client.secretCipherBuffer2.method2420();
-               var6 = Client.secretCipherBuffer2.method2419();
+               var5 = Client.ingressBuffer.method2420();
+               var6 = Client.ingressBuffer.method2419();
                var7 = var13.x - (var5 - class108.baseX - class108.baseX) * 64;
                var8 = var13.y - (var6 - GameEngine.baseY - GameEngine.baseY) * 64;
                if(var7 != 0 || var8 != 0) {
@@ -620,7 +620,7 @@ public class WidgetNode extends Node {
             }
 
             if((var14 & 64) != 0) {
-               var13.composition = Widget.getNpcDefinition(Client.secretCipherBuffer2.method2418());
+               var13.composition = Widget.getNpcDefinition(Client.ingressBuffer.method2418());
                var13.field603 = var13.composition.field3042;
                var13.field652 = var13.composition.field3048;
                var13.field659 = var13.composition.field3065;
@@ -633,8 +633,8 @@ public class WidgetNode extends Node {
             }
 
             if((var14 & 1) != 0) {
-               var13.graphic = Client.secretCipherBuffer2.method2420();
-               var5 = Client.secretCipherBuffer2.readInt();
+               var13.graphic = Client.ingressBuffer.method2420();
+               var5 = Client.ingressBuffer.readInt();
                var13.field622 = var5 >> 16;
                var13.field639 = Client.gameCycle + (var5 & '\uffff');
                var13.field637 = 0;
@@ -649,12 +649,12 @@ public class WidgetNode extends Node {
             }
 
             if((var14 & 8) != 0) {
-               var5 = Client.secretCipherBuffer2.readUnsignedShort();
+               var5 = Client.ingressBuffer.readUnsignedShort();
                if(var5 == '\uffff') {
                   var5 = -1;
                }
 
-               var6 = Client.secretCipherBuffer2.method2558();
+               var6 = Client.ingressBuffer.method2558();
                if(var5 == var13.animation && var5 != -1) {
                   var7 = NPCComposition.getAnimation(var5).replyMode;
                   if(var7 == 1) {
@@ -678,7 +678,7 @@ public class WidgetNode extends Node {
             }
 
             if((var14 & 16) != 0) {
-               var13.overhead = Client.secretCipherBuffer2.readString();
+               var13.overhead = Client.ingressBuffer.readString();
                var13.field615 = 100;
             }
          }
@@ -691,8 +691,8 @@ public class WidgetNode extends Node {
             }
          }
 
-         if(Client.secretCipherBuffer2.offset != Client.packetLength) {
-            throw new RuntimeException(Client.secretCipherBuffer2.offset + "," + Client.packetLength);
+         if(Client.ingressBuffer.offset != Client.packetLength) {
+            throw new RuntimeException(Client.ingressBuffer.offset + "," + Client.packetLength);
          } else {
             for(var1 = 0; var1 < Client.field321; ++var1) {
                if(Client.cachedNPCs[Client.field350[var1]] == null) {

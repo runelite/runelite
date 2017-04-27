@@ -4,7 +4,7 @@ BufferProvider
 CacheableNode
 ChatLineBuffer
 ChatMessages
-CipherBuffer
+PacketBuffer
 class0
 class100
 class101

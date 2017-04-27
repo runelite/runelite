@@ -10,9 +10,9 @@ public class class125 {
    )
    static final void method2354(String var0) {
       if(Client.clanMembers != null) {
-         Client.secretCipherBuffer1.putOpcode(124);
-         Client.secretCipherBuffer1.putByte(class36.method753(var0));
-         Client.secretCipherBuffer1.method2504(var0);
+         Client.egressBuffer.putOpcode(124);
+         Client.egressBuffer.putByte(class36.method753(var0));
+         Client.egressBuffer.method2504(var0);
       }
    }
 

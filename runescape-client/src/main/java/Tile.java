@@ -173,9 +173,9 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == -1) {
-                        Friend.rssocket.read(Client.secretCipherBuffer2.payload, 0, 1);
-                        Client.secretCipherBuffer2.offset = 0;
-                        Client.packetOpcode = Client.secretCipherBuffer2.readOpcode();
+                        Friend.rssocket.read(Client.ingressBuffer.payload, 0, 1);
+                        Client.ingressBuffer.offset = 0;
+                        Client.packetOpcode = Client.ingressBuffer.readOpcode();
                         Client.packetLength = class216.packetLenghts[Client.packetOpcode];
                         --var2;
                      }
@@ -186,8 +186,8 @@ public final class Tile extends Node {
                            break label3199;
                         }
 
-                        Friend.rssocket.read(Client.secretCipherBuffer2.payload, 0, 1);
-                        Client.packetLength = Client.secretCipherBuffer2.payload[0] & 255;
+                        Friend.rssocket.read(Client.ingressBuffer.payload, 0, 1);
+                        Client.packetLength = Client.ingressBuffer.payload[0] & 255;
                         --var2;
                      }
 
@@ -197,9 +197,9 @@ public final class Tile extends Node {
                            break label3199;
                         }
 
-                        Friend.rssocket.read(Client.secretCipherBuffer2.payload, 0, 2);
-                        Client.secretCipherBuffer2.offset = 0;
-                        Client.packetLength = Client.secretCipherBuffer2.readUnsignedShort();
+                        Friend.rssocket.read(Client.ingressBuffer.payload, 0, 2);
+                        Client.ingressBuffer.offset = 0;
+                        Client.packetLength = Client.ingressBuffer.readUnsignedShort();
                         var2 -= 2;
                      }
 
@@ -208,15 +208,15 @@ public final class Tile extends Node {
                         break label3199;
                      }
 
-                     Client.secretCipherBuffer2.offset = 0;
-                     Friend.rssocket.read(Client.secretCipherBuffer2.payload, 0, Client.packetLength);
+                     Client.ingressBuffer.offset = 0;
+                     Friend.rssocket.read(Client.ingressBuffer.payload, 0, Client.packetLength);
                      Client.field330 = 0;
                      Client.field466 = Client.field417;
                      Client.field417 = Client.field538;
                      Client.field538 = Client.packetOpcode;
                      if(Client.packetOpcode == 172) {
-                        Client.field323 = Client.secretCipherBuffer2.readUnsignedByte();
-                        Client.field468 = Client.secretCipherBuffer2.readUnsignedByte();
+                        Client.field323 = Client.ingressBuffer.readUnsignedByte();
+                        Client.field468 = Client.ingressBuffer.readUnsignedByte();
                         Client.packetOpcode = -1;
                         var1 = true;
                         break label3199;
@@ -224,9 +224,9 @@ public final class Tile extends Node {
 
                      if(Client.packetOpcode == 2) {
                         World var72 = new World();
-                        var72.address = Client.secretCipherBuffer2.readString();
-                        var72.id = Client.secretCipherBuffer2.readUnsignedShort();
-                        var4 = Client.secretCipherBuffer2.readInt();
+                        var72.address = Client.ingressBuffer.readString();
+                        var72.id = Client.ingressBuffer.readUnsignedShort();
+                        var4 = Client.ingressBuffer.readInt();
                         var72.mask = var4;
                         class9.setGameState(45);
                         Friend.rssocket.method2093();
@@ -238,7 +238,7 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 77) {
-                        var21 = Client.secretCipherBuffer2.method2577();
+                        var21 = Client.ingressBuffer.method2577();
                         var95 = class128.method2364(var21);
                         var95.modelType = 3;
                         var95.modelId = class22.localPlayer.composition.method3170();
@@ -253,22 +253,22 @@ public final class Tile extends Node {
                      boolean var13;
                      String var91;
                      if(Client.packetOpcode == 76) {
-                        while(Client.secretCipherBuffer2.offset < Client.packetLength) {
-                           var121 = Client.secretCipherBuffer2.readUnsignedByte() == 1;
-                           var91 = Client.secretCipherBuffer2.readString();
-                           var5 = Client.secretCipherBuffer2.readString();
-                           var74 = Client.secretCipherBuffer2.readUnsignedShort();
-                           var7 = Client.secretCipherBuffer2.readUnsignedByte();
-                           var8 = Client.secretCipherBuffer2.readUnsignedByte();
+                        while(Client.ingressBuffer.offset < Client.packetLength) {
+                           var121 = Client.ingressBuffer.readUnsignedByte() == 1;
+                           var91 = Client.ingressBuffer.readString();
+                           var5 = Client.ingressBuffer.readString();
+                           var74 = Client.ingressBuffer.readUnsignedShort();
+                           var7 = Client.ingressBuffer.readUnsignedByte();
+                           var8 = Client.ingressBuffer.readUnsignedByte();
                            boolean var83 = (var8 & 2) != 0;
                            var79 = (var8 & 1) != 0;
                            if(var74 > 0) {
-                              Client.secretCipherBuffer2.readString();
-                              Client.secretCipherBuffer2.readUnsignedByte();
-                              Client.secretCipherBuffer2.readInt();
+                              Client.ingressBuffer.readString();
+                              Client.ingressBuffer.readUnsignedByte();
+                              Client.ingressBuffer.readInt();
                            }
 
-                           Client.secretCipherBuffer2.readString();
+                           Client.ingressBuffer.readString();
 
                            for(var80 = 0; var80 < Client.friendCount; ++var80) {
                               Friend var81 = Client.friends[var80];
@@ -372,7 +372,7 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 53) {
-                        var21 = Client.secretCipherBuffer2.readUnsignedShort();
+                        var21 = Client.ingressBuffer.readUnsignedShort();
                         Client.widgetRoot = var21;
                         class15.method188(false);
                         class99.method1946(var21);
@@ -389,11 +389,11 @@ public final class Tile extends Node {
 
                      if(Client.packetOpcode == 189) {
                         Client.field534 = true;
-                        class3.field36 = Client.secretCipherBuffer2.readUnsignedByte();
-                        GameObject.field1597 = Client.secretCipherBuffer2.readUnsignedByte();
-                        Frames.field1554 = Client.secretCipherBuffer2.readUnsignedShort();
-                        class7.field60 = Client.secretCipherBuffer2.readUnsignedByte();
-                        class130.field1969 = Client.secretCipherBuffer2.readUnsignedByte();
+                        class3.field36 = Client.ingressBuffer.readUnsignedByte();
+                        GameObject.field1597 = Client.ingressBuffer.readUnsignedByte();
+                        Frames.field1554 = Client.ingressBuffer.readUnsignedShort();
+                        class7.field60 = Client.ingressBuffer.readUnsignedByte();
+                        class130.field1969 = Client.ingressBuffer.readUnsignedByte();
                         if(class130.field1969 >= 100) {
                            class22.cameraX = class3.field36 * 128 + 64;
                            class13.cameraY = GameObject.field1597 * 128 + 64;
@@ -406,10 +406,10 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 69) {
-                        var21 = Client.secretCipherBuffer2.readUnsignedByte();
-                        var4 = Client.secretCipherBuffer2.readUnsignedByte();
-                        var24 = Client.secretCipherBuffer2.readUnsignedByte();
-                        var74 = Client.secretCipherBuffer2.readUnsignedByte();
+                        var21 = Client.ingressBuffer.readUnsignedByte();
+                        var4 = Client.ingressBuffer.readUnsignedByte();
+                        var24 = Client.ingressBuffer.readUnsignedByte();
+                        var74 = Client.ingressBuffer.readUnsignedByte();
                         Client.field535[var21] = true;
                         Client.field536[var21] = var4;
                         Client.field401[var21] = var24;
@@ -423,8 +423,8 @@ public final class Tile extends Node {
                      Widget var105;
                      WidgetNode var118;
                      if(Client.packetOpcode == 190) {
-                        var21 = Client.secretCipherBuffer2.method2487();
-                        var4 = Client.secretCipherBuffer2.method2577();
+                        var21 = Client.ingressBuffer.method2487();
+                        var4 = Client.ingressBuffer.method2577();
                         WidgetNode var85 = (WidgetNode)Client.componentTable.method2773((long)var4);
                         var118 = (WidgetNode)Client.componentTable.method2773((long)var21);
                         if(var118 != null) {
@@ -458,11 +458,11 @@ public final class Tile extends Node {
 
                      if(Client.packetOpcode == 249) {
                         Client.field534 = true;
-                        class7.field63 = Client.secretCipherBuffer2.readUnsignedByte();
-                        class131.field1974 = Client.secretCipherBuffer2.readUnsignedByte();
-                        class10.field95 = Client.secretCipherBuffer2.readUnsignedShort();
-                        class44.field884 = Client.secretCipherBuffer2.readUnsignedByte();
-                        Buffer.field1961 = Client.secretCipherBuffer2.readUnsignedByte();
+                        class7.field63 = Client.ingressBuffer.readUnsignedByte();
+                        class131.field1974 = Client.ingressBuffer.readUnsignedByte();
+                        class10.field95 = Client.ingressBuffer.readUnsignedShort();
+                        class44.field884 = Client.ingressBuffer.readUnsignedByte();
+                        Buffer.field1961 = Client.ingressBuffer.readUnsignedByte();
                         if(Buffer.field1961 >= 100) {
                            var21 = class7.field63 * 128 + 64;
                            var4 = class131.field1974 * 128 + 64;
@@ -501,7 +501,7 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 52) {
-                        Friend.field157 = class211.method4013(Client.secretCipherBuffer2.readUnsignedByte());
+                        Friend.field157 = class211.method4013(Client.ingressBuffer.readUnsignedByte());
                         Client.packetOpcode = -1;
                         var1 = true;
                         break label3199;
@@ -509,8 +509,8 @@ public final class Tile extends Node {
 
                      long var31;
                      if(Client.packetOpcode == 200) {
-                        var21 = Client.secretCipherBuffer2.readInt();
-                        var4 = Client.secretCipherBuffer2.readInt();
+                        var21 = Client.ingressBuffer.readInt();
+                        var4 = Client.ingressBuffer.readInt();
                         if(Player.field266 == null || !Player.field266.isValid()) {
                            try {
                               Iterator var84 = ManagementFactory.getGarbageCollectorMXBeans().iterator();
@@ -544,11 +544,11 @@ public final class Tile extends Node {
                            Client.field564 = var29;
                         }
 
-                        Client.secretCipherBuffer1.putOpcode(193);
-                        Client.secretCipherBuffer1.method2411(var21);
-                        Client.secretCipherBuffer1.method2426(var4);
-                        Client.secretCipherBuffer1.method2429(GameEngine.FPS);
-                        Client.secretCipherBuffer1.putByte(var7);
+                        Client.egressBuffer.putOpcode(193);
+                        Client.egressBuffer.method2411(var21);
+                        Client.egressBuffer.method2426(var4);
+                        Client.egressBuffer.method2429(GameEngine.FPS);
+                        Client.egressBuffer.putByte(var7);
                         Client.packetOpcode = -1;
                         var1 = true;
                         break label3199;
@@ -556,8 +556,8 @@ public final class Tile extends Node {
 
                      Widget var75;
                      if(Client.packetOpcode == 78) {
-                        var21 = Client.secretCipherBuffer2.method2419();
-                        var4 = Client.secretCipherBuffer2.method2485();
+                        var21 = Client.ingressBuffer.method2419();
+                        var4 = Client.ingressBuffer.method2485();
                         var75 = class128.method2364(var4);
                         if(var75.modelType != 1 || var75.modelId != var21) {
                            var75.modelType = 1;
@@ -571,18 +571,18 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 163) {
-                        var3 = Client.secretCipherBuffer2.readString();
+                        var3 = Client.ingressBuffer.readString();
                         Object[] var96 = new Object[var3.length() + 1];
 
                         for(var24 = var3.length() - 1; var24 >= 0; --var24) {
                            if(var3.charAt(var24) == 115) {
-                              var96[var24 + 1] = Client.secretCipherBuffer2.readString();
+                              var96[var24 + 1] = Client.ingressBuffer.readString();
                            } else {
-                              var96[var24 + 1] = new Integer(Client.secretCipherBuffer2.readInt());
+                              var96[var24 + 1] = new Integer(Client.ingressBuffer.readInt());
                            }
                         }
 
-                        var96[0] = new Integer(Client.secretCipherBuffer2.readInt());
+                        var96[0] = new Integer(Client.ingressBuffer.readInt());
                         class18 var82 = new class18();
                         var82.field196 = var96;
                         Script.method910(var82, 200000);
@@ -592,7 +592,7 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 219) {
-                        class38.method766(Client.secretCipherBuffer2, Client.packetLength);
+                        class38.method766(Client.ingressBuffer, Client.packetLength);
                         Client.packetOpcode = -1;
                         var1 = true;
                         break label3199;
@@ -600,9 +600,9 @@ public final class Tile extends Node {
 
                      long var38;
                      if(Client.packetOpcode == 80) {
-                        var21 = Client.packetLength + Client.secretCipherBuffer2.offset;
-                        var4 = Client.secretCipherBuffer2.readUnsignedShort();
-                        var24 = Client.secretCipherBuffer2.readUnsignedShort();
+                        var21 = Client.packetLength + Client.ingressBuffer.offset;
+                        var4 = Client.ingressBuffer.readUnsignedShort();
+                        var24 = Client.ingressBuffer.readUnsignedShort();
                         if(var4 != Client.widgetRoot) {
                            Client.widgetRoot = var4;
                            class15.method188(false);
@@ -616,9 +616,9 @@ public final class Tile extends Node {
 
                         WidgetNode var111;
                         for(; var24-- > 0; var111.field180 = true) {
-                           var74 = Client.secretCipherBuffer2.readInt();
-                           var7 = Client.secretCipherBuffer2.readUnsignedShort();
-                           var8 = Client.secretCipherBuffer2.readUnsignedByte();
+                           var74 = Client.ingressBuffer.readInt();
+                           var7 = Client.ingressBuffer.readUnsignedShort();
+                           var8 = Client.ingressBuffer.readUnsignedByte();
                            var111 = (WidgetNode)Client.componentTable.method2773((long)var74);
                            if(var111 != null && var7 != var111.id) {
                               FrameMap.method1718(var111, true);
@@ -662,11 +662,11 @@ public final class Tile extends Node {
 
                         Client.widgetFlags = new XHashTable(512);
 
-                        while(Client.secretCipherBuffer2.offset < var21) {
-                           var74 = Client.secretCipherBuffer2.readInt();
-                           var7 = Client.secretCipherBuffer2.readUnsignedShort();
-                           var8 = Client.secretCipherBuffer2.readUnsignedShort();
-                           var9 = Client.secretCipherBuffer2.readInt();
+                        while(Client.ingressBuffer.offset < var21) {
+                           var74 = Client.ingressBuffer.readInt();
+                           var7 = Client.ingressBuffer.readUnsignedShort();
+                           var8 = Client.ingressBuffer.readUnsignedShort();
+                           var9 = Client.ingressBuffer.readInt();
 
                            for(var10 = var7; var10 <= var8; ++var10) {
                               var38 = ((long)var74 << 32) + (long)var10;
@@ -680,7 +680,7 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 16) {
-                        var21 = Client.secretCipherBuffer2.method2577();
+                        var21 = Client.ingressBuffer.method2577();
                         class0.field1 = class45.field896.method1969(var21);
                         Client.packetOpcode = -1;
                         var1 = true;
@@ -688,10 +688,10 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 231) {
-                        var21 = Client.secretCipherBuffer2.method2419();
-                        var4 = Client.secretCipherBuffer2.readInt();
-                        var24 = Client.secretCipherBuffer2.method2419();
-                        var74 = Client.secretCipherBuffer2.method2418();
+                        var21 = Client.ingressBuffer.method2419();
+                        var4 = Client.ingressBuffer.readInt();
+                        var24 = Client.ingressBuffer.method2419();
+                        var74 = Client.ingressBuffer.method2418();
                         var105 = class128.method2364(var4);
                         if(var105.rotationX != var74 || var105.rotationZ != var21 || var105.field2244 != var24) {
                            var105.rotationX = var74;
@@ -706,16 +706,16 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 51) {
-                        class215.field3157 = Client.secretCipherBuffer2.method2409();
-                        class39.field802 = Client.secretCipherBuffer2.method2410();
+                        class215.field3157 = Client.ingressBuffer.method2409();
+                        class39.field802 = Client.ingressBuffer.method2410();
                         Client.packetOpcode = -1;
                         var1 = true;
                         break label3199;
                      }
 
                      if(Client.packetOpcode == 59) {
-                        var21 = Client.secretCipherBuffer2.method2577();
-                        var4 = Client.secretCipherBuffer2.readUnsignedShort();
+                        var21 = Client.ingressBuffer.method2577();
+                        var4 = Client.ingressBuffer.readUnsignedShort();
                         var75 = class128.method2364(var21);
                         if(var75 != null && var75.type == 0) {
                            if(var4 > var75.scrollHeight - var75.height) {
@@ -749,15 +749,15 @@ public final class Tile extends Node {
                            Client.cachedPlayers[var21] = null;
                         }
 
-                        class5.method76(Client.secretCipherBuffer2);
+                        class5.method76(Client.ingressBuffer);
                         Client.packetOpcode = -1;
                         var1 = true;
                         break label3199;
                      }
 
                      if(Client.packetOpcode == 140) {
-                        var21 = Client.secretCipherBuffer2.readInt();
-                        var4 = Client.secretCipherBuffer2.readUnsignedShort();
+                        var21 = Client.ingressBuffer.readInt();
+                        var4 = Client.ingressBuffer.readUnsignedShort();
                         if(var21 < -70000) {
                            var4 += '耀';
                         }
@@ -776,13 +776,13 @@ public final class Tile extends Node {
                         }
 
                         class13.method178(var4);
-                        var74 = Client.secretCipherBuffer2.readUnsignedShort();
+                        var74 = Client.ingressBuffer.readUnsignedShort();
 
                         for(var7 = 0; var7 < var74; ++var7) {
-                           var8 = Client.secretCipherBuffer2.readUnsignedShort();
-                           var9 = Client.secretCipherBuffer2.method2410();
+                           var8 = Client.ingressBuffer.readUnsignedShort();
+                           var9 = Client.ingressBuffer.method2410();
                            if(var9 == 255) {
-                              var9 = Client.secretCipherBuffer2.readInt();
+                              var9 = Client.ingressBuffer.readInt();
                            }
 
                            if(var75 != null && var7 < var75.itemIds.length) {
@@ -805,8 +805,8 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 4) {
-                        var21 = Client.secretCipherBuffer2.method2418();
-                        var4 = Client.secretCipherBuffer2.method2485();
+                        var21 = Client.ingressBuffer.method2418();
+                        var4 = Client.ingressBuffer.method2485();
                         var75 = class128.method2364(var4);
                         if(var75.modelType != 2 || var75.modelId != var21) {
                            var75.modelType = 2;
@@ -820,7 +820,7 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 47) {
-                        var21 = Client.secretCipherBuffer2.method2577();
+                        var21 = Client.ingressBuffer.method2577();
                         var95 = class128.method2364(var21);
 
                         for(var24 = 0; var24 < var95.itemIds.length; ++var24) {
@@ -835,12 +835,12 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 108) {
-                        Client.flagX = Client.secretCipherBuffer2.readUnsignedByte();
+                        Client.flagX = Client.ingressBuffer.readUnsignedByte();
                         if(Client.flagX == 255) {
                            Client.flagX = 0;
                         }
 
-                        Client.flagY = Client.secretCipherBuffer2.readUnsignedByte();
+                        Client.flagY = Client.ingressBuffer.readUnsignedByte();
                         if(Client.flagY == 255) {
                            Client.flagY = 0;
                         }
@@ -851,7 +851,7 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 167) {
-                        Client.field495 = Client.secretCipherBuffer2.method2418() * 30;
+                        Client.field495 = Client.ingressBuffer.method2418() * 30;
                         Client.field482 = Client.field311;
                         Client.packetOpcode = -1;
                         var1 = true;
@@ -859,9 +859,9 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 22) {
-                        var21 = Client.secretCipherBuffer2.method2577();
-                        var4 = Client.secretCipherBuffer2.method2420();
-                        var24 = Client.secretCipherBuffer2.method2409();
+                        var21 = Client.ingressBuffer.method2577();
+                        var4 = Client.ingressBuffer.method2420();
+                        var24 = Client.ingressBuffer.method2409();
                         var118 = (WidgetNode)Client.componentTable.method2773((long)var21);
                         if(var118 != null) {
                            FrameMap.method1718(var118, var118.id != var4);
@@ -895,10 +895,10 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 226) {
-                        var121 = Client.secretCipherBuffer2.readUnsignedByte() == 1;
+                        var121 = Client.ingressBuffer.readUnsignedByte() == 1;
                         if(var121) {
-                           Projectile.field872 = class72.method1421() - Client.secretCipherBuffer2.readLong();
-                           IndexData.field2745 = new class1(Client.secretCipherBuffer2, true);
+                           Projectile.field872 = class72.method1421() - Client.ingressBuffer.readLong();
+                           IndexData.field2745 = new class1(Client.ingressBuffer, true);
                         } else {
                            IndexData.field2745 = null;
                         }
@@ -910,9 +910,9 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 157) {
-                        Client.field298 = Client.secretCipherBuffer2.readUnsignedByte();
+                        Client.field298 = Client.ingressBuffer.readUnsignedByte();
                         if(Client.field298 == 1) {
-                           Client.field299 = Client.secretCipherBuffer2.readUnsignedShort();
+                           Client.field299 = Client.ingressBuffer.readUnsignedShort();
                         }
 
                         if(Client.field298 >= 2 && Client.field298 <= 6) {
@@ -942,13 +942,13 @@ public final class Tile extends Node {
                            }
 
                            Client.field298 = 2;
-                           Client.field301 = Client.secretCipherBuffer2.readUnsignedShort();
-                           Client.field302 = Client.secretCipherBuffer2.readUnsignedShort();
-                           Client.field303 = Client.secretCipherBuffer2.readUnsignedByte();
+                           Client.field301 = Client.ingressBuffer.readUnsignedShort();
+                           Client.field302 = Client.ingressBuffer.readUnsignedShort();
+                           Client.field303 = Client.ingressBuffer.readUnsignedByte();
                         }
 
                         if(Client.field298 == 10) {
-                           Client.field300 = Client.secretCipherBuffer2.readUnsignedShort();
+                           Client.field300 = Client.ingressBuffer.readUnsignedShort();
                         }
 
                         Client.packetOpcode = -1;
@@ -957,8 +957,8 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 245) {
-                        var21 = Client.secretCipherBuffer2.readInt();
-                        var4 = Client.secretCipherBuffer2.readUnsignedShort();
+                        var21 = Client.ingressBuffer.readInt();
+                        var4 = Client.ingressBuffer.readUnsignedShort();
                         if(var21 < -70000) {
                            var4 += '耀';
                         }
@@ -969,14 +969,14 @@ public final class Tile extends Node {
                            var75 = null;
                         }
 
-                        for(; Client.secretCipherBuffer2.offset < Client.packetLength; FrameMap.method1717(var4, var74, var7 - 1, var8)) {
-                           var74 = Client.secretCipherBuffer2.method2395();
-                           var7 = Client.secretCipherBuffer2.readUnsignedShort();
+                        for(; Client.ingressBuffer.offset < Client.packetLength; FrameMap.method1717(var4, var74, var7 - 1, var8)) {
+                           var74 = Client.ingressBuffer.method2395();
+                           var7 = Client.ingressBuffer.readUnsignedShort();
                            var8 = 0;
                            if(var7 != 0) {
-                              var8 = Client.secretCipherBuffer2.readUnsignedByte();
+                              var8 = Client.ingressBuffer.readUnsignedByte();
                               if(var8 == 255) {
-                                 var8 = Client.secretCipherBuffer2.readInt();
+                                 var8 = Client.ingressBuffer.readInt();
                               }
                            }
 
@@ -999,8 +999,8 @@ public final class Tile extends Node {
 
                      String var114;
                      if(Client.packetOpcode == 184) {
-                        var3 = Client.secretCipherBuffer2.readString();
-                        CipherBuffer var78 = Client.secretCipherBuffer2;
+                        var3 = Client.ingressBuffer.readString();
+                        PacketBuffer var78 = Client.ingressBuffer;
 
                         try {
                            var7 = var78.method2395();
@@ -1025,9 +1025,9 @@ public final class Tile extends Node {
 
                      Widget var28;
                      if(Client.packetOpcode == 175) {
-                        var21 = Client.secretCipherBuffer2.method2419();
-                        var4 = Client.secretCipherBuffer2.method2420();
-                        var24 = Client.secretCipherBuffer2.method2577();
+                        var21 = Client.ingressBuffer.method2419();
+                        var4 = Client.ingressBuffer.method2420();
+                        var24 = Client.ingressBuffer.method2577();
                         var28 = class128.method2364(var24);
                         var28.field2260 = var21 + (var4 << 16);
                         Client.packetOpcode = -1;
@@ -1055,9 +1055,9 @@ public final class Tile extends Node {
 
                      if(Client.packetOpcode == 11) {
                         class130.method2606();
-                        var21 = Client.secretCipherBuffer2.method2487();
-                        var4 = Client.secretCipherBuffer2.method2558();
-                        var24 = Client.secretCipherBuffer2.readUnsignedByte();
+                        var21 = Client.ingressBuffer.method2487();
+                        var4 = Client.ingressBuffer.method2558();
+                        var24 = Client.ingressBuffer.readUnsignedByte();
                         Client.skillExperiences[var24] = var21;
                         Client.boostedSkillLevels[var24] = var4;
                         Client.realSkillLevels[var24] = 1;
@@ -1075,8 +1075,8 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 121) {
-                        byte var120 = Client.secretCipherBuffer2.method2501();
-                        var4 = Client.secretCipherBuffer2.method2420();
+                        byte var120 = Client.ingressBuffer.method2501();
+                        var4 = Client.ingressBuffer.method2420();
                         class167.settings[var4] = var120;
                         if(var120 != class167.widgetSettings[var4]) {
                            class167.widgetSettings[var4] = var120;
@@ -1090,8 +1090,8 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 15) {
-                        var21 = Client.secretCipherBuffer2.method2485();
-                        var4 = Client.secretCipherBuffer2.method2374();
+                        var21 = Client.ingressBuffer.method2485();
+                        var4 = Client.ingressBuffer.method2374();
                         var75 = class128.method2364(var21);
                         if(var4 != var75.field2254 || var4 == -1) {
                            var75.field2254 = var4;
@@ -1114,11 +1114,11 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 191) {
-                        class215.field3157 = Client.secretCipherBuffer2.method2409();
-                        class39.field802 = Client.secretCipherBuffer2.method2409();
+                        class215.field3157 = Client.ingressBuffer.method2409();
+                        class39.field802 = Client.ingressBuffer.method2409();
 
-                        while(Client.secretCipherBuffer2.offset < Client.packetLength) {
-                           Client.packetOpcode = Client.secretCipherBuffer2.readUnsignedByte();
+                        while(Client.ingressBuffer.offset < Client.packetLength) {
+                           Client.packetOpcode = Client.ingressBuffer.readUnsignedByte();
                            class174.method3260();
                         }
 
@@ -1128,13 +1128,13 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 199) {
-                        var21 = Client.secretCipherBuffer2.method2420();
+                        var21 = Client.ingressBuffer.method2420();
                         if(var21 == '\uffff') {
                            var21 = -1;
                         }
 
-                        var4 = Client.secretCipherBuffer2.method2577();
-                        var24 = Client.secretCipherBuffer2.readInt();
+                        var4 = Client.ingressBuffer.method2577();
+                        var24 = Client.ingressBuffer.readInt();
                         var28 = class128.method2364(var24);
                         ItemComposition var101;
                         if(!var28.hasScript) {
@@ -1191,9 +1191,9 @@ public final class Tile extends Node {
 
                      if(Client.packetOpcode == 116) {
                         class9.xteaChanged(true);
-                        Client.secretCipherBuffer2.readOpcode();
-                        var21 = Client.secretCipherBuffer2.readUnsignedShort();
-                        class38.method766(Client.secretCipherBuffer2, var21);
+                        Client.ingressBuffer.readOpcode();
+                        var21 = Client.ingressBuffer.readUnsignedShort();
+                        class38.method766(Client.ingressBuffer, var21);
                         Client.packetOpcode = -1;
                         var1 = true;
                         break label3199;
@@ -1213,10 +1213,10 @@ public final class Tile extends Node {
 
                      long var42;
                      if(Client.packetOpcode == 75) {
-                        var3 = Client.secretCipherBuffer2.readString();
-                        var40 = (long)Client.secretCipherBuffer2.readUnsignedShort();
-                        var42 = (long)Client.secretCipherBuffer2.read24BitInt();
-                        class179 var104 = (class179)class32.method708(ItemLayer.method1475(), Client.secretCipherBuffer2.readUnsignedByte());
+                        var3 = Client.ingressBuffer.readString();
+                        var40 = (long)Client.ingressBuffer.readUnsignedShort();
+                        var42 = (long)Client.ingressBuffer.read24BitInt();
+                        class179 var104 = (class179)class32.method708(ItemLayer.method1475(), Client.ingressBuffer.readUnsignedByte());
                         long var44 = var42 + (var40 << 32);
                         boolean var11 = false;
 
@@ -1234,7 +1234,7 @@ public final class Tile extends Node {
                         if(!var11 && Client.field402 == 0) {
                            Client.field506[Client.field348] = var44;
                            Client.field348 = (Client.field348 + 1) % 100;
-                           CipherBuffer var47 = Client.secretCipherBuffer2;
+                           PacketBuffer var47 = Client.ingressBuffer;
 
                            String var14;
                            try {
@@ -1272,7 +1272,7 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 138) {
-                        var21 = Client.secretCipherBuffer2.method2420();
+                        var21 = Client.ingressBuffer.method2420();
                         if(var21 == '\uffff') {
                            var21 = -1;
                         }
@@ -1284,7 +1284,7 @@ public final class Tile extends Node {
                            var24 = Client.field501;
                            class159.field2063 = 1;
                            class159.field2067 = var93;
-                           CipherBuffer.field1989 = var21;
+                           PacketBuffer.field1989 = var21;
                            class190.field2791 = 0;
                            class159.field2069 = var24;
                            class15.field164 = false;
@@ -1298,12 +1298,12 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 54) {
-                        var21 = Client.secretCipherBuffer2.method2418();
+                        var21 = Client.ingressBuffer.method2418();
                         if(var21 == '\uffff') {
                            var21 = -1;
                         }
 
-                        var4 = Client.secretCipherBuffer2.method2597();
+                        var4 = Client.ingressBuffer.method2597();
                         class183.method3291(var21, var4);
                         Client.packetOpcode = -1;
                         var1 = true;
@@ -1312,9 +1312,9 @@ public final class Tile extends Node {
 
                      boolean var77;
                      if(Client.packetOpcode == 239) {
-                        var3 = Client.secretCipherBuffer2.readString();
-                        var4 = Client.secretCipherBuffer2.readUnsignedShort();
-                        byte var99 = Client.secretCipherBuffer2.readByte();
+                        var3 = Client.ingressBuffer.readString();
+                        var4 = Client.ingressBuffer.readUnsignedShort();
+                        byte var99 = Client.ingressBuffer.readByte();
                         var6 = false;
                         if(var99 == -128) {
                            var6 = true;
@@ -1343,7 +1343,7 @@ public final class Tile extends Node {
                               Client.clanMembers[class85.clanChatCount] = null;
                            }
                         } else {
-                           Client.secretCipherBuffer2.readString();
+                           Client.ingressBuffer.readString();
                            XClanMember var100 = new XClanMember();
                            var100.username = var3;
                            var100.field276 = class108.method2059(var100.username, NPC.field757);
@@ -1398,8 +1398,8 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 244) {
-                        var21 = Client.secretCipherBuffer2.method2419();
-                        var4 = Client.secretCipherBuffer2.method2577();
+                        var21 = Client.ingressBuffer.method2419();
+                        var4 = Client.ingressBuffer.method2577();
                         var24 = var21 >> 10 & 31;
                         var74 = var21 >> 5 & 31;
                         var7 = var21 & 31;
@@ -1423,14 +1423,14 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 60) {
-                        class173.method3256(Client.secretCipherBuffer2.readString());
+                        class173.method3256(Client.ingressBuffer.readString());
                         Client.packetOpcode = -1;
                         var1 = true;
                         break label3199;
                      }
 
                      if(Client.packetOpcode == 0) {
-                        var21 = Client.secretCipherBuffer2.readInt();
+                        var21 = Client.ingressBuffer.readInt();
                         WidgetNode var92 = (WidgetNode)Client.componentTable.method2773((long)var21);
                         if(var92 != null) {
                            FrameMap.method1718(var92, true);
@@ -1447,15 +1447,15 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 160) {
-                        Client.field522 = Client.secretCipherBuffer2.readUnsignedByte();
+                        Client.field522 = Client.ingressBuffer.readUnsignedByte();
                         Client.packetOpcode = -1;
                         var1 = true;
                         break label3199;
                      }
 
                      if(Client.packetOpcode == 73) {
-                        var21 = Client.secretCipherBuffer2.readInt();
-                        var91 = Client.secretCipherBuffer2.readString();
+                        var21 = Client.ingressBuffer.readInt();
+                        var91 = Client.ingressBuffer.readString();
                         var75 = class128.method2364(var21);
                         if(!var91.equals(var75.text)) {
                            var75.text = var91;
@@ -1468,7 +1468,7 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 196) {
-                        class200.method3641(Client.secretCipherBuffer2, Client.packetLength);
+                        class200.method3641(Client.ingressBuffer, Client.packetLength);
                         Client.packetOpcode = -1;
                         var1 = true;
                         break label3199;
@@ -1491,9 +1491,9 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 44) {
-                        var21 = Client.secretCipherBuffer2.readUnsignedShort();
-                        var4 = Client.secretCipherBuffer2.readUnsignedByte();
-                        var24 = Client.secretCipherBuffer2.readUnsignedShort();
+                        var21 = Client.ingressBuffer.readUnsignedShort();
+                        var4 = Client.ingressBuffer.readUnsignedByte();
+                        var24 = Client.ingressBuffer.readUnsignedShort();
                         if(Client.field551 != 0 && var4 != 0 && Client.field528 < 50) {
                            Client.field529[Client.field528] = var21;
                            Client.field530[Client.field528] = var4;
@@ -1509,14 +1509,14 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 187) {
-                        var21 = Client.secretCipherBuffer2.method2418();
+                        var21 = Client.ingressBuffer.method2418();
                         if(var21 == '\uffff') {
                            var21 = -1;
                         }
 
-                        var4 = Client.secretCipherBuffer2.method2485();
-                        var24 = Client.secretCipherBuffer2.method2487();
-                        var74 = Client.secretCipherBuffer2.method2419();
+                        var4 = Client.ingressBuffer.method2485();
+                        var24 = Client.ingressBuffer.method2487();
+                        var74 = Client.ingressBuffer.method2419();
                         if(var74 == '\uffff') {
                            var74 = -1;
                         }
@@ -1538,7 +1538,7 @@ public final class Tile extends Node {
 
                      if(Client.packetOpcode == 211) {
                         class130.method2606();
-                        Client.weight = Client.secretCipherBuffer2.readShort();
+                        Client.weight = Client.ingressBuffer.readShort();
                         Client.field482 = Client.field311;
                         Client.packetOpcode = -1;
                         var1 = true;
@@ -1547,7 +1547,7 @@ public final class Tile extends Node {
 
                      if(Client.packetOpcode == 95) {
                         class130.method2606();
-                        Client.energy = Client.secretCipherBuffer2.readUnsignedByte();
+                        Client.energy = Client.ingressBuffer.readUnsignedByte();
                         Client.field482 = Client.field311;
                         Client.packetOpcode = -1;
                         var1 = true;
@@ -1555,8 +1555,8 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 198) {
-                        var21 = Client.secretCipherBuffer2.method2419();
-                        var4 = Client.secretCipherBuffer2.method2485();
+                        var21 = Client.ingressBuffer.method2419();
+                        var4 = Client.ingressBuffer.method2485();
                         class167.settings[var21] = var4;
                         if(var4 != class167.widgetSettings[var21]) {
                            class167.widgetSettings[var21] = var4;
@@ -1570,7 +1570,7 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 110) {
-                        var21 = Client.secretCipherBuffer2.readUnsignedShort();
+                        var21 = Client.ingressBuffer.readUnsignedShort();
                         ChatMessages.method890(var21);
                         Client.interfaceItemTriggers[++Client.field474 - 1 & 31] = var21 & 32767;
                         Client.packetOpcode = -1;
@@ -1580,9 +1580,9 @@ public final class Tile extends Node {
 
                      if(Client.packetOpcode == 65) {
                         class9.xteaChanged(false);
-                        Client.secretCipherBuffer2.readOpcode();
-                        var21 = Client.secretCipherBuffer2.readUnsignedShort();
-                        class38.method766(Client.secretCipherBuffer2, var21);
+                        Client.ingressBuffer.readOpcode();
+                        var21 = Client.ingressBuffer.readUnsignedShort();
+                        class38.method766(Client.ingressBuffer, var21);
                         Client.packetOpcode = -1;
                         var1 = true;
                         break label3199;
@@ -1603,13 +1603,13 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 144) {
-                        var21 = Client.secretCipherBuffer2.readUnsignedByte();
-                        if(Client.secretCipherBuffer2.readUnsignedByte() == 0) {
+                        var21 = Client.ingressBuffer.readUnsignedByte();
+                        if(Client.ingressBuffer.readUnsignedByte() == 0) {
                            Client.grandExchangeOffers[var21] = new XGrandExchangeOffer();
-                           Client.secretCipherBuffer2.offset += 18;
+                           Client.ingressBuffer.offset += 18;
                         } else {
-                           --Client.secretCipherBuffer2.offset;
-                           Client.grandExchangeOffers[var21] = new XGrandExchangeOffer(Client.secretCipherBuffer2, false);
+                           --Client.ingressBuffer.offset;
+                           Client.grandExchangeOffers[var21] = new XGrandExchangeOffer(Client.ingressBuffer, false);
                         }
 
                         Client.field480 = Client.field311;
@@ -1626,11 +1626,11 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 31) {
-                        var3 = Client.secretCipherBuffer2.readString();
-                        var40 = Client.secretCipherBuffer2.readLong();
-                        var42 = (long)Client.secretCipherBuffer2.readUnsignedShort();
-                        var31 = (long)Client.secretCipherBuffer2.read24BitInt();
-                        class179 var37 = (class179)class32.method708(ItemLayer.method1475(), Client.secretCipherBuffer2.readUnsignedByte());
+                        var3 = Client.ingressBuffer.readString();
+                        var40 = Client.ingressBuffer.readLong();
+                        var42 = (long)Client.ingressBuffer.readUnsignedShort();
+                        var31 = (long)Client.ingressBuffer.read24BitInt();
+                        class179 var37 = (class179)class32.method708(ItemLayer.method1475(), Client.ingressBuffer.readUnsignedByte());
                         var38 = var31 + (var42 << 32);
                         var13 = false;
 
@@ -1648,7 +1648,7 @@ public final class Tile extends Node {
                         if(!var13 && Client.field402 == 0) {
                            Client.field506[Client.field348] = var38;
                            Client.field348 = (Client.field348 + 1) % 100;
-                           CipherBuffer var48 = Client.secretCipherBuffer2;
+                           PacketBuffer var48 = Client.ingressBuffer;
 
                            String var16;
                            try {
@@ -1679,18 +1679,18 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 159) {
-                        var21 = Client.secretCipherBuffer2.method2395();
-                        var71 = Client.secretCipherBuffer2.readUnsignedByte() == 1;
+                        var21 = Client.ingressBuffer.method2395();
+                        var71 = Client.ingressBuffer.readUnsignedByte() == 1;
                         var5 = "";
                         var6 = false;
                         if(var71) {
-                           var5 = Client.secretCipherBuffer2.readString();
+                           var5 = Client.ingressBuffer.readString();
                            if(class2.method27(var5)) {
                               var6 = true;
                            }
                         }
 
-                        String var97 = Client.secretCipherBuffer2.readString();
+                        String var97 = Client.ingressBuffer.readString();
                         if(!var6) {
                            WidgetNode.sendGameMessage(var21, var5, var97);
                         }
@@ -1701,8 +1701,8 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 124) {
-                        class215.field3157 = Client.secretCipherBuffer2.method2410();
-                        class39.field802 = Client.secretCipherBuffer2.method2410();
+                        class215.field3157 = Client.ingressBuffer.method2410();
+                        class39.field802 = Client.ingressBuffer.method2410();
 
                         for(var21 = class215.field3157; var21 < class215.field3157 + 8; ++var21) {
                            for(var4 = class39.field802; var4 < class39.field802 + 8; ++var4) {
@@ -1725,8 +1725,8 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 99) {
-                        var21 = Client.secretCipherBuffer2.readInt();
-                        var71 = Client.secretCipherBuffer2.method2558() == 1;
+                        var21 = Client.ingressBuffer.readInt();
+                        var71 = Client.ingressBuffer.method2558() == 1;
                         var75 = class128.method2364(var21);
                         if(var75.isHidden != var71) {
                            var75.isHidden = var71;
@@ -1739,9 +1739,9 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 34) {
-                        var21 = Client.secretCipherBuffer2.method2410();
-                        var4 = Client.secretCipherBuffer2.readUnsignedByte();
-                        var5 = Client.secretCipherBuffer2.readString();
+                        var21 = Client.ingressBuffer.method2410();
+                        var4 = Client.ingressBuffer.readUnsignedByte();
+                        var5 = Client.ingressBuffer.readString();
                         if(var4 >= 1 && var4 <= 8) {
                            if(var5.equalsIgnoreCase("null")) {
                               var5 = null;
@@ -1757,12 +1757,12 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 71) {
-                        while(Client.secretCipherBuffer2.offset < Client.packetLength) {
-                           var21 = Client.secretCipherBuffer2.readUnsignedByte();
+                        while(Client.ingressBuffer.offset < Client.packetLength) {
+                           var21 = Client.ingressBuffer.readUnsignedByte();
                            var71 = (var21 & 1) == 1;
-                           var5 = Client.secretCipherBuffer2.readString();
-                           var114 = Client.secretCipherBuffer2.readString();
-                           Client.secretCipherBuffer2.readString();
+                           var5 = Client.ingressBuffer.readString();
+                           var114 = Client.ingressBuffer.readString();
+                           Client.ingressBuffer.readString();
 
                            for(var7 = 0; var7 < Client.ignoreCount; ++var7) {
                               Ignore var102 = Client.ignores[var7];
@@ -1806,11 +1806,11 @@ public final class Tile extends Node {
                            Client.packetOpcode = -1;
                            var1 = true;
                         } else {
-                           Client.clanChatOwner = Client.secretCipherBuffer2.readString();
-                           long var51 = Client.secretCipherBuffer2.readLong();
+                           Client.clanChatOwner = Client.ingressBuffer.readString();
+                           long var51 = Client.ingressBuffer.readLong();
                            Client.field485 = XItemContainer.method174(var51);
-                           Client.field332 = Client.secretCipherBuffer2.readByte();
-                           var24 = Client.secretCipherBuffer2.readUnsignedByte();
+                           Client.field332 = Client.ingressBuffer.readByte();
+                           var24 = Client.ingressBuffer.readUnsignedByte();
                            if(var24 == 255) {
                               Client.packetOpcode = -1;
                               var1 = true;
@@ -1820,11 +1820,11 @@ public final class Tile extends Node {
 
                               for(var7 = 0; var7 < class85.clanChatCount; ++var7) {
                                  var113[var7] = new XClanMember();
-                                 var113[var7].username = Client.secretCipherBuffer2.readString();
+                                 var113[var7].username = Client.ingressBuffer.readString();
                                  var113[var7].field276 = class108.method2059(var113[var7].username, NPC.field757);
-                                 var113[var7].world = Client.secretCipherBuffer2.readUnsignedShort();
-                                 var113[var7].rank = Client.secretCipherBuffer2.readByte();
-                                 Client.secretCipherBuffer2.readString();
+                                 var113[var7].world = Client.ingressBuffer.readUnsignedShort();
+                                 var113[var7].rank = Client.ingressBuffer.readByte();
+                                 Client.ingressBuffer.readString();
                                  if(var113[var7].username.equals(class22.localPlayer.name)) {
                                     Player.field242 = var113[var7].rank;
                                  }
@@ -1860,10 +1860,10 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 17) {
-                        Client.secretCipherBuffer2.offset += 28;
-                        if(Client.secretCipherBuffer2.method2527()) {
-                           CipherBuffer var69 = Client.secretCipherBuffer2;
-                           var4 = Client.secretCipherBuffer2.offset - 28;
+                        Client.ingressBuffer.offset += 28;
+                        if(Client.ingressBuffer.method2527()) {
+                           PacketBuffer var69 = Client.ingressBuffer;
+                           var4 = Client.ingressBuffer.offset - 28;
                            class7.method98(var69.payload, var4);
                            class107.method2056(var69, var4);
                         }
@@ -1874,9 +1874,9 @@ public final class Tile extends Node {
                      }
 
                      if(Client.packetOpcode == 98) {
-                        var21 = Client.secretCipherBuffer2.method2577();
-                        var4 = Client.secretCipherBuffer2.method2374();
-                        var24 = Client.secretCipherBuffer2.method2421();
+                        var21 = Client.ingressBuffer.method2577();
+                        var4 = Client.ingressBuffer.method2374();
+                        var24 = Client.ingressBuffer.method2421();
                         var28 = class128.method2364(var21);
                         if(var24 != var28.originalX || var28.originalY != var4 || var28.field2212 != 0 || var28.field2206 != 0) {
                            var28.originalX = var24;
@@ -1910,7 +1910,7 @@ public final class Tile extends Node {
                      var3 = "" + Client.packetOpcode + "," + Client.field417 + "," + Client.field466 + "," + Client.packetLength + "," + (class22.localPlayer.pathX[0] + class108.baseX) + "," + (GameEngine.baseY + class22.localPlayer.pathY[0]) + ",";
 
                      for(var4 = 0; var4 < Client.packetLength && var4 < 50; ++var4) {
-                        var3 = var3 + Client.secretCipherBuffer2.payload[var4] + ",";
+                        var3 = var3 + Client.ingressBuffer.payload[var4] + ",";
                      }
 
                      class173.method3259(var3, var67);
@@ -1943,12 +1943,12 @@ public final class Tile extends Node {
                      if(!Client.field280) {
                         class180.field2678.field217 = 0;
                      } else if(class115.field1811 != 0 || class180.field2678.field217 >= 40) {
-                        Client.secretCipherBuffer1.putOpcode(249);
-                        Client.secretCipherBuffer1.putByte(0);
-                        var117 = Client.secretCipherBuffer1.offset;
+                        Client.egressBuffer.putOpcode(249);
+                        Client.egressBuffer.putByte(0);
+                        var117 = Client.egressBuffer.offset;
                         var2 = 0;
 
-                        for(var21 = 0; var21 < class180.field2678.field217 && Client.secretCipherBuffer1.offset - var117 < 240; ++var21) {
+                        for(var21 = 0; var21 < class180.field2678.field217 && Client.egressBuffer.offset - var117 < 240; ++var21) {
                            ++var2;
                            var4 = class180.field2678.field218[var21];
                            if(var4 < 0) {
@@ -1983,19 +1983,19 @@ public final class Tile extends Node {
                               if(Client.field555 < 8 && var7 >= -32 && var7 <= 31 && var8 >= -32 && var8 <= 31) {
                                  var7 += 32;
                                  var8 += 32;
-                                 Client.secretCipherBuffer1.putShort(var8 + (var7 << 6) + (Client.field555 << 12));
+                                 Client.egressBuffer.putShort(var8 + (var7 << 6) + (Client.field555 << 12));
                                  Client.field555 = 0;
                               } else if(Client.field555 < 8) {
-                                 Client.secretCipherBuffer1.put24bitInt(var74 + (Client.field555 << 19) + 8388608);
+                                 Client.egressBuffer.put24bitInt(var74 + (Client.field555 << 19) + 8388608);
                                  Client.field555 = 0;
                               } else {
-                                 Client.secretCipherBuffer1.putInt(var74 + (Client.field555 << 19) + -1073741824);
+                                 Client.egressBuffer.putInt(var74 + (Client.field555 << 19) + -1073741824);
                                  Client.field555 = 0;
                               }
                            }
                         }
 
-                        Client.secretCipherBuffer1.method2380(Client.secretCipherBuffer1.offset - var117);
+                        Client.egressBuffer.method2380(Client.egressBuffer.offset - var117);
                         if(var2 >= class180.field2678.field217) {
                            class180.field2678.field217 = 0;
                         } else {
@@ -2031,16 +2031,16 @@ public final class Tile extends Node {
                      }
 
                      var4 = (int)var56;
-                     Client.secretCipherBuffer1.putOpcode(170);
-                     Client.secretCipherBuffer1.putShort((var4 << 1) + (class115.field1811 == 2?1:0));
-                     Client.secretCipherBuffer1.putShort(var21);
-                     Client.secretCipherBuffer1.putShort(var2);
+                     Client.egressBuffer.putOpcode(170);
+                     Client.egressBuffer.putShort((var4 << 1) + (class115.field1811 == 2?1:0));
+                     Client.egressBuffer.putShort(var21);
+                     Client.egressBuffer.putShort(var2);
                   }
 
                   if(class105.field1707 > 0) {
-                     Client.secretCipherBuffer1.putOpcode(55);
-                     Client.secretCipherBuffer1.putShort(0);
-                     var0 = Client.secretCipherBuffer1.offset;
+                     Client.egressBuffer.putOpcode(55);
+                     Client.egressBuffer.putShort(0);
+                     var0 = Client.egressBuffer.offset;
                      long var58 = class72.method1421();
 
                      for(var21 = 0; var21 < class105.field1707; ++var21) {
@@ -2050,11 +2050,11 @@ public final class Tile extends Node {
                         }
 
                         Client.field511 = var58;
-                        Client.secretCipherBuffer1.method2499(class105.field1700[var21]);
-                        Client.secretCipherBuffer1.method2451((int)var40);
+                        Client.egressBuffer.method2499(class105.field1700[var21]);
+                        Client.egressBuffer.method2451((int)var40);
                      }
 
-                     Client.secretCipherBuffer1.method2379(Client.secretCipherBuffer1.offset - var0);
+                     Client.egressBuffer.method2379(Client.egressBuffer.offset - var0);
                   }
 
                   if(Client.field383 > 0) {
@@ -2068,21 +2068,21 @@ public final class Tile extends Node {
                   if(Client.field374 && Client.field383 <= 0) {
                      Client.field383 = 20;
                      Client.field374 = false;
-                     Client.secretCipherBuffer1.putOpcode(237);
-                     Client.secretCipherBuffer1.putShort(Client.mapAngle);
-                     Client.secretCipherBuffer1.method2375(Client.field366);
+                     Client.egressBuffer.putOpcode(237);
+                     Client.egressBuffer.putShort(Client.mapAngle);
+                     Client.egressBuffer.method2375(Client.field366);
                   }
 
                   if(KitDefinition.field2831 && !Client.field295) {
                      Client.field295 = true;
-                     Client.secretCipherBuffer1.putOpcode(189);
-                     Client.secretCipherBuffer1.putByte(1);
+                     Client.egressBuffer.putOpcode(189);
+                     Client.egressBuffer.putByte(1);
                   }
 
                   if(!KitDefinition.field2831 && Client.field295) {
                      Client.field295 = false;
-                     Client.secretCipherBuffer1.putOpcode(189);
-                     Client.secretCipherBuffer1.putByte(0);
+                     Client.egressBuffer.putOpcode(189);
+                     Client.egressBuffer.putByte(0);
                   }
 
                   int[] var126;
@@ -2324,13 +2324,13 @@ public final class Tile extends Node {
                                                          }
 
                                                          if(Client.field462 != null && class105.method2027(Client.field458) != null) {
-                                                            Client.secretCipherBuffer1.putOpcode(43);
-                                                            Client.secretCipherBuffer1.method2375(Client.field462.index);
-                                                            Client.secretCipherBuffer1.putShort(Client.field458.item);
-                                                            Client.secretCipherBuffer1.method2416(Client.field462.item);
-                                                            Client.secretCipherBuffer1.method2411(Client.field458.id);
-                                                            Client.secretCipherBuffer1.method2411(Client.field462.id);
-                                                            Client.secretCipherBuffer1.putShort(Client.field458.index);
+                                                            Client.egressBuffer.putOpcode(43);
+                                                            Client.egressBuffer.method2375(Client.field462.index);
+                                                            Client.egressBuffer.putShort(Client.field458.item);
+                                                            Client.egressBuffer.method2416(Client.field462.item);
+                                                            Client.egressBuffer.method2411(Client.field458.id);
+                                                            Client.egressBuffer.method2411(Client.field462.id);
+                                                            Client.egressBuffer.putShort(Client.field458.index);
                                                          }
                                                       } else {
                                                          label3383: {
@@ -2432,11 +2432,11 @@ public final class Tile extends Node {
                                                             var125.method3192(Client.field399, Client.field488);
                                                          }
 
-                                                         Client.secretCipherBuffer1.putOpcode(245);
-                                                         Client.secretCipherBuffer1.method2499(var124);
-                                                         Client.secretCipherBuffer1.method2375(Client.field488);
-                                                         Client.secretCipherBuffer1.method2411(class97.field1627.id);
-                                                         Client.secretCipherBuffer1.method2375(Client.field399);
+                                                         Client.egressBuffer.putOpcode(245);
+                                                         Client.egressBuffer.method2499(var124);
+                                                         Client.egressBuffer.method2375(Client.field488);
+                                                         Client.egressBuffer.method2411(class97.field1627.id);
+                                                         Client.egressBuffer.method2375(Client.field399);
                                                       }
                                                    } else {
                                                       label3362: {
@@ -2498,11 +2498,11 @@ public final class Tile extends Node {
                                              if(Region.method1788()) {
                                                 var2 = Region.field1482;
                                                 var21 = Region.field1498;
-                                                Client.secretCipherBuffer1.putOpcode(149);
-                                                Client.secretCipherBuffer1.putByte(5);
-                                                Client.secretCipherBuffer1.method2499(class105.field1695[82]?(class105.field1695[81]?2:1):0);
-                                                Client.secretCipherBuffer1.method2526(var2 + class108.baseX);
-                                                Client.secretCipherBuffer1.method2416(GameEngine.baseY + var21);
+                                                Client.egressBuffer.putOpcode(149);
+                                                Client.egressBuffer.putByte(5);
+                                                Client.egressBuffer.method2499(class105.field1695[82]?(class105.field1695[81]?2:1):0);
+                                                Client.egressBuffer.method2526(var2 + class108.baseX);
+                                                Client.egressBuffer.method2416(GameEngine.baseY + var21);
                                                 Region.method1761();
                                                 Client.field550 = class115.field1802;
                                                 Client.field391 = class115.field1813;
@@ -2664,7 +2664,7 @@ public final class Tile extends Node {
                                              if(var2 > 15000 && var21 > 15000) {
                                                 Client.field489 = 250;
                                                 class49.method915(14500);
-                                                Client.secretCipherBuffer1.putOpcode(147);
+                                                Client.egressBuffer.putOpcode(147);
                                              }
 
                                              ++Client.field352;
@@ -2753,13 +2753,13 @@ public final class Tile extends Node {
 
                                              ++Client.field331;
                                              if(Client.field331 > 50) {
-                                                Client.secretCipherBuffer1.putOpcode(102);
+                                                Client.egressBuffer.putOpcode(102);
                                              }
 
                                              try {
-                                                if(Friend.rssocket != null && Client.secretCipherBuffer1.offset > 0) {
-                                                   Friend.rssocket.queueForWrite(Client.secretCipherBuffer1.payload, 0, Client.secretCipherBuffer1.offset);
-                                                   Client.secretCipherBuffer1.offset = 0;
+                                                if(Friend.rssocket != null && Client.egressBuffer.offset > 0) {
+                                                   Friend.rssocket.queueForWrite(Client.egressBuffer.payload, 0, Client.egressBuffer.offset);
+                                                   Client.egressBuffer.offset = 0;
                                                    Client.field331 = 0;
                                                 }
                                              } catch (IOException var63) {
@@ -2811,11 +2811,11 @@ public final class Tile extends Node {
                   }
                }
 
-               Client.secretCipherBuffer1.putOpcode(33);
-               Client.secretCipherBuffer1.putByte(0);
-               var117 = Client.secretCipherBuffer1.offset;
-               Ignore.method204(Client.secretCipherBuffer1);
-               Client.secretCipherBuffer1.method2380(Client.secretCipherBuffer1.offset - var117);
+               Client.egressBuffer.putOpcode(33);
+               Client.egressBuffer.putByte(0);
+               var117 = Client.egressBuffer.offset;
+               Ignore.method204(Client.egressBuffer);
+               Client.egressBuffer.method2380(Client.egressBuffer.offset - var117);
             }
          }
       }

@@ -27,7 +27,7 @@ public class class15 {
          World var3;
          if(var0 == 6501) {
             World.field674 = 0;
-            var3 = CipherBuffer.method2649();
+            var3 = PacketBuffer.method2649();
             if(var3 != null) {
                class32.field720[++class32.field715 - 1] = var3.id;
                class32.field720[++class32.field715 - 1] = var3.mask;
@@ -46,7 +46,7 @@ public class class15 {
 
             return 1;
          } else if(var0 == 6502) {
-            var3 = CipherBuffer.method2649();
+            var3 = PacketBuffer.method2649();
             if(var3 != null) {
                class32.field720[++class32.field715 - 1] = var3.id;
                class32.field720[++class32.field715 - 1] = var3.mask;

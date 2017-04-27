@@ -122,9 +122,9 @@ public class World {
    )
    static final void method640(String var0) {
       if(!var0.equals("")) {
-         Client.secretCipherBuffer1.putOpcode(117);
-         Client.secretCipherBuffer1.putByte(class36.method753(var0));
-         Client.secretCipherBuffer1.method2504(var0);
+         Client.egressBuffer.putOpcode(117);
+         Client.egressBuffer.putByte(class36.method753(var0));
+         Client.egressBuffer.method2504(var0);
       }
    }
 
