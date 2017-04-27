@@ -21,7 +21,8 @@ public class Script extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -789168359
    )
-   int field933;
+   @Export("localIntCount")
+   int localIntCount;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -1993481445
@@ -47,7 +48,8 @@ public class Script extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 564632501
    )
-   int field943;
+   @Export("localStringCount")
+   int localStringCount;
    @ObfuscatedName("d")
    static NodeCache field944 = new NodeCache(128);
 
@@ -80,9 +82,9 @@ public class Script extends CacheableNode {
 
          int var11;
          try {
-            class32.field718 = new int[var4.field933];
+            class32.field718 = new int[var4.localIntCount];
             int var9 = 0;
-            class32.field717 = new String[var4.field943];
+            class32.field717 = new String[var4.localStringCount];
             int var10 = 0;
 
             int var12;
@@ -278,8 +280,8 @@ public class Script extends CacheableNode {
                                                                                                                                                             } else {
                                                                                                                                                                var12 = var7[var5];
                                                                                                                                                                Script var56 = class49.method918(var12);
-                                                                                                                                                               int[] var55 = new int[var56.field933];
-                                                                                                                                                               String[] var91 = new String[var56.field943];
+                                                                                                                                                               int[] var55 = new int[var56.localIntCount];
+                                                                                                                                                               String[] var91 = new String[var56.localStringCount];
 
                                                                                                                                                                for(var33 = 0; var33 < var56.intStackCount; ++var33) {
                                                                                                                                                                   var55[var33] = class32.field720[var33 + (class32.field715 - var56.intStackCount)];
