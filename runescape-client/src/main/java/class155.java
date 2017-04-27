@@ -1,20 +1,11 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ex")
-public class class155 {
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      longValue = -1821595190660858833L
-   )
-   static long field2129;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      longValue = -1539226506075316765L
-   )
-   static long field2130;
+@ObfuscatedName("eu")
+public class class155 extends Node {
+   @ObfuscatedName("d")
+   public byte[] field2047;
 
-   class155() throws Throwable {
-      throw new Error();
+   public class155(byte[] var1) {
+      this.field2047 = var1;
    }
 }

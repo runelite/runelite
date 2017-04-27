@@ -7,57 +7,55 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hj")
+@ObfuscatedName("hs")
 @Implements("BufferProvider")
 public abstract class BufferProvider {
-   @ObfuscatedName("r")
+   @ObfuscatedName("t")
    @Export("image")
    public Image image;
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @Export("pixels")
    public int[] pixels;
-   @ObfuscatedName("h")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -247355405
+      intValue = 794665399
    )
    @Export("height")
    int height;
-   @ObfuscatedName("u")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -911386969
+      intValue = -273697131
    )
    @Export("width")
    public int width;
-   @ObfuscatedName("m")
-   static byte[][] field3199;
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(IILjava/awt/Component;B)V",
-      garbageValue = "-15"
-   )
-   abstract void init(int var1, int var2, Component var3);
-
-   @ObfuscatedName("q")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1744897673"
+      garbageValue = "-1468205805"
    )
-   public final void method4072() {
+   public final void method4147() {
       Rasterizer2D.setRasterBuffer(this.pixels, this.width, this.height);
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Ljava/awt/Graphics;III)V",
+      garbageValue = "760519699"
+   )
+   public abstract void draw(Graphics var1, int var2, int var3);
+
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Graphics;IIIII)V",
-      garbageValue = "6166627"
+      garbageValue = "617664203"
    )
    public abstract void drawSub(Graphics var1, int var2, int var3, int var4, int var5);
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIB)V",
-      garbageValue = "106"
+      signature = "(IILjava/awt/Component;B)V",
+      garbageValue = "23"
    )
-   public abstract void draw(Graphics var1, int var2, int var3);
+   abstract void init(int var1, int var2, Component var3);
 }

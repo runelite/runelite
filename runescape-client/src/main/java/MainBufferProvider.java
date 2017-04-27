@@ -13,16 +13,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hs")
+@ObfuscatedName("hv")
 @Implements("MainBufferProvider")
 public final class MainBufferProvider extends BufferProvider {
-   @ObfuscatedName("f")
-   Component field3187;
+   @ObfuscatedName("d")
+   Component field3207;
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(IILjava/awt/Component;B)V",
-      garbageValue = "-15"
+      garbageValue = "23"
    )
    @Export("init")
    final void init(int var1, int var2, Component var3) {
@@ -33,30 +33,30 @@ public final class MainBufferProvider extends BufferProvider {
       DirectColorModel var5 = new DirectColorModel(32, 16711680, '\uff00', 255);
       WritableRaster var6 = Raster.createWritableRaster(var5.createCompatibleSampleModel(super.width, super.height), var4, (Point)null);
       super.image = new BufferedImage(var5, var6, false, new Hashtable());
-      this.field3187 = var3;
-      this.method4072();
+      this.field3207 = var3;
+      this.method4147();
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIB)V",
-      garbageValue = "106"
+      signature = "(Ljava/awt/Graphics;III)V",
+      garbageValue = "760519699"
    )
    @Export("draw")
    public final void draw(Graphics var1, int var2, int var3) {
-      var1.drawImage(super.image, var2, var3, this.field3187);
+      var1.drawImage(super.image, var2, var3, this.field3207);
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Graphics;IIIII)V",
-      garbageValue = "6166627"
+      garbageValue = "617664203"
    )
    @Export("drawSub")
    public final void drawSub(Graphics var1, int var2, int var3, int var4, int var5) {
       Shape var6 = var1.getClip();
       var1.clipRect(var2, var3, var4, var5);
-      var1.drawImage(super.image, 0, 0, this.field3187);
+      var1.drawImage(super.image, 0, 0, this.field3207);
       var1.setClip(var6);
    }
 }

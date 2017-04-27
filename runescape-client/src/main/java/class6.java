@@ -1,147 +1,152 @@
-import java.io.File;
-import java.io.RandomAccessFile;
 import java.util.Comparator;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("l")
+@ObfuscatedName("u")
 final class class6 implements Comparator {
-   @ObfuscatedName("i")
-   @Export("validInterfaces")
-   public static boolean[] validInterfaces;
+   @ObfuscatedName("ns")
+   static class57 field56;
+   @ObfuscatedName("d")
+   static IndexDataBase field57;
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("bh")
    @ObfuscatedSignature(
-      signature = "(Lclass2;Lclass2;I)I",
-      garbageValue = "-1293632173"
+      signature = "(I)V",
+      garbageValue = "2082807321"
    )
-   int method71(class2 var1, class2 var2) {
-      return var1.method10().compareTo(var2.method10());
+   static final void method78() {
+      for(class25 var0 = (class25)Client.field415.method2828(); var0 != null; var0 = (class25)Client.field415.method2830()) {
+         if(var0.field582 > 0) {
+            --var0.field582;
+         }
+
+         if(var0.field582 == 0) {
+            if(var0.field575 < 0 || class15.method189(var0.field575, var0.field576)) {
+               class166.method3137(var0.field579, var0.field572, var0.field573, var0.field574, var0.field575, var0.field585, var0.field576);
+               var0.unlink();
+            }
+         } else {
+            if(var0.field581 > 0) {
+               --var0.field581;
+            }
+
+            if(var0.field581 == 0 && var0.field573 >= 1 && var0.field574 >= 1 && var0.field573 <= 102 && var0.field574 <= 102 && (var0.field577 < 0 || class15.method189(var0.field577, var0.field580))) {
+               class166.method3137(var0.field579, var0.field572, var0.field573, var0.field574, var0.field577, var0.field578, var0.field580);
+               var0.field581 = -1;
+               if(var0.field577 == var0.field575 && var0.field575 == -1) {
+                  var0.unlink();
+               } else if(var0.field577 == var0.field575 && var0.field585 == var0.field578 && var0.field576 == var0.field580) {
+                  var0.unlink();
+               }
+            }
+         }
+      }
+
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method83((class2)var1, (class2)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "([BIILRegion;[LCollisionData;I)V",
-      garbageValue = "-1116344329"
+      signature = "(Lclass2;Lclass2;I)I",
+      garbageValue = "2025575360"
    )
-   static final void method75(byte[] var0, int var1, int var2, Region var3, CollisionData[] var4) {
-      Buffer var5 = new Buffer(var0);
-      int var6 = -1;
+   int method83(class2 var1, class2 var2) {
+      return var1.method25().compareTo(var2.method25());
+   }
 
-      while(true) {
-         int var7 = var5.method2880();
-         if(var7 == 0) {
-            return;
-         }
-
-         var6 += var7;
-         int var8 = 0;
-
-         while(true) {
-            int var9 = var5.method2880();
-            if(var9 == 0) {
-               break;
-            }
-
-            var8 += var9 - 1;
-            int var10 = var8 & 63;
-            int var11 = var8 >> 6 & 63;
-            int var12 = var8 >> 12;
-            int var13 = var5.readUnsignedByte();
-            int var14 = var13 >> 2;
-            int var15 = var13 & 3;
-            int var16 = var11 + var1;
-            int var17 = var2 + var10;
-            if(var16 > 0 && var17 > 0 && var16 < 103 && var17 < 103) {
-               int var18 = var12;
-               if((class10.tileSettings[1][var16][var17] & 2) == 2) {
-                  var18 = var12 - 1;
-               }
-
-               CollisionData var19 = null;
-               if(var18 >= 0) {
-                  var19 = var4[var18];
-               }
-
-               class173.method3308(var12, var16, var17, var6, var15, var14, var3, var19);
-            }
+   @ObfuscatedName("an")
+   @ObfuscatedSignature(
+      signature = "(S)V",
+      garbageValue = "1003"
+   )
+   static final void method88() {
+      int var0;
+      if(Client.widgetRoot != -1) {
+         var0 = Client.widgetRoot;
+         if(class112.method2112(var0)) {
+            class85.method1715(class133.widgets[var0], -1);
          }
       }
-   }
 
-   @ObfuscatedName("bt")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "2"
-   )
-   static void method77() {
-      if(Client.field458) {
-         Widget var0 = class118.method2354(XClanMember.field284, Client.field414);
-         if(var0 != null && var0.field2311 != null) {
-            class18 var1 = new class18();
-            var1.field207 = var0;
-            var1.field199 = var0.field2311;
-            class26.method565(var1);
+      for(var0 = 0; var0 < Client.field490; ++var0) {
+         if(Client.field368[var0]) {
+            Client.field491[var0] = true;
          }
 
-         Client.field458 = false;
-         class22.method197(var0);
+         Client.field452[var0] = Client.field368[var0];
+         Client.field368[var0] = false;
       }
 
-   }
+      Client.field385 = Client.gameCycle;
+      Client.field433 = -1;
+      Client.field546 = -1;
+      class9.field83 = null;
+      if(Client.widgetRoot != -1) {
+         Client.field490 = 0;
+         class210.method4010(Client.widgetRoot, 0, 0, class187.field2760, IndexDataBase.field2726, 0, 0, -1);
+      }
 
-   public int compare(Object var1, Object var2) {
-      return this.method71((class2)var1, (class2)var2);
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;S)Ljava/io/File;",
-      garbageValue = "23918"
-   )
-   static File method78(String var0) {
-      if(!class107.field1753) {
-         throw new RuntimeException("");
+      Rasterizer2D.method4082();
+      if(!Client.isMenuOpen) {
+         if(Client.field433 != -1) {
+            Frames.method1911(Client.field433, Client.field546);
+         }
       } else {
-         File var1 = (File)class107.field1754.get(var0);
-         if(var1 != null) {
-            return var1;
-         } else {
-            File var2 = new File(class107.field1752, var0);
-            RandomAccessFile var3 = null;
+         var0 = Player.menuX;
+         int var1 = class1.menuY;
+         int var2 = MessageNode.menuWidth;
+         int var3 = class201.menuHeight;
+         int var4 = 6116423;
+         Rasterizer2D.method4089(var0, var1, var2, var3, var4);
+         Rasterizer2D.method4089(var0 + 1, var1 + 1, var2 - 2, 16, 0);
+         Rasterizer2D.method4095(var0 + 1, var1 + 18, var2 - 2, var3 - 19, 0);
+         TextureProvider.field1192.method3914("Choose Option", var0 + 3, var1 + 14, var4, -1);
+         int var5 = class115.field1805;
+         int var6 = class115.field1806;
 
-            try {
-               File var4 = new File(var2.getParent());
-               if(!var4.exists()) {
-                  throw new RuntimeException("");
-               } else {
-                  var3 = new RandomAccessFile(var2, "rw");
-                  int var5 = var3.read();
-                  var3.seek(0L);
-                  var3.write(var5);
-                  var3.seek(0L);
-                  var3.close();
-                  class107.field1754.put(var0, var2);
-                  return var2;
-               }
-            } catch (Exception var7) {
-               try {
-                  if(var3 != null) {
-                     var3.close();
-                     var3 = null;
-                  }
-               } catch (Exception var6) {
-                  ;
-               }
+         int var7;
+         int var8;
+         int var9;
+         for(var7 = 0; var7 < Client.menuOptionCount; ++var7) {
+            var8 = var1 + 31 + (Client.menuOptionCount - 1 - var7) * 15;
+            var9 = 16777215;
+            if(var5 > var0 && var5 < var0 + var2 && var6 > var8 - 13 && var6 < var8 + 3) {
+               var9 = 16776960;
+            }
 
-               throw new RuntimeException();
+            TextureProvider.field1192.method3914(class13.method179(var7), var0 + 3, var8, var9, 0);
+         }
+
+         var7 = Player.menuX;
+         var8 = class1.menuY;
+         var9 = MessageNode.menuWidth;
+         int var10 = class201.menuHeight;
+
+         for(int var11 = 0; var11 < Client.field490; ++var11) {
+            if(Client.widgetPositionX[var11] + Client.widgetBoundsWidth[var11] > var7 && Client.widgetPositionX[var11] < var7 + var9 && Client.widgetPositionY[var11] + Client.widgetBoundsHeight[var11] > var8 && Client.widgetPositionY[var11] < var8 + var10) {
+               Client.field491[var11] = true;
             }
          }
       }
+
+      if(Client.field382 == 3) {
+         for(var0 = 0; var0 < Client.field490; ++var0) {
+            if(Client.field452[var0]) {
+               Rasterizer2D.method4101(Client.widgetPositionX[var0], Client.widgetPositionY[var0], Client.widgetBoundsWidth[var0], Client.widgetBoundsHeight[var0], 16711935, 128);
+            } else if(Client.field491[var0]) {
+               Rasterizer2D.method4101(Client.widgetPositionX[var0], Client.widgetPositionY[var0], Client.widgetBoundsWidth[var0], Client.widgetBoundsHeight[var0], 16711680, 128);
+            }
+         }
+      }
+
+      class172.method3254(Client.plane, class22.localPlayer.x, class22.localPlayer.y, Client.field358);
+      Client.field358 = 0;
    }
 }

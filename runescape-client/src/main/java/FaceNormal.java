@@ -4,100 +4,80 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ca")
+@ObfuscatedName("cg")
 @Implements("FaceNormal")
 public class FaceNormal {
-   @ObfuscatedName("qg")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1169588033
-   )
-   static int field1583;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 448217247
+      intValue = 457884979
    )
    @Export("z")
    int z;
-   @ObfuscatedName("f")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 754299569
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1047901595
+      intValue = -744396141
    )
    @Export("y")
    int y;
-   @ObfuscatedName("qi")
-   static class109 field1590;
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "1969238286"
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 65656505
    )
-   static void method1931(int var0, int var1, int var2, int var3) {
-      XItemContainer var4 = (XItemContainer)XItemContainer.itemContainers.method2417((long)var0);
-      if(var4 == null) {
-         var4 = new XItemContainer();
-         XItemContainer.itemContainers.method2418(var4, (long)var0);
+   @Export("x")
+   int x;
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/Object;ZB)[B",
+      garbageValue = "8"
+   )
+   public static byte[] method1906(Object var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else if(var0 instanceof byte[]) {
+         byte[] var3 = (byte[])((byte[])var0);
+         return var1?class130.method2605(var3):var3;
+      } else if(var0 instanceof class132) {
+         class132 var2 = (class132)var0;
+         return var2.vmethod2615();
+      } else {
+         throw new IllegalArgumentException();
       }
-
-      if(var4.itemIds.length <= var1) {
-         int[] var5 = new int[var1 + 1];
-         int[] var6 = new int[var1 + 1];
-
-         int var7;
-         for(var7 = 0; var7 < var4.itemIds.length; ++var7) {
-            var5[var7] = var4.itemIds[var7];
-            var6[var7] = var4.stackSizes[var7];
-         }
-
-         for(var7 = var4.itemIds.length; var7 < var1; ++var7) {
-            var5[var7] = -1;
-            var6[var7] = 0;
-         }
-
-         var4.itemIds = var5;
-         var4.stackSizes = var6;
-      }
-
-      var4.itemIds[var1] = var2;
-      var4.stackSizes[var1] = var3;
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(II)LWidget;",
-      garbageValue = "224315095"
+      signature = "(IIILObjectComposition;II)V",
+      garbageValue = "-356794397"
    )
-   public static Widget method1932(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & '\uffff';
-      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
-         boolean var3 = Ignore.method178(var1);
-         if(!var3) {
-            return null;
-         }
+   static void method1907(int var0, int var1, int var2, ObjectComposition var3, int var4) {
+      class31 var5 = new class31();
+      var5.field698 = var0;
+      var5.field699 = var1 * 128;
+      var5.field700 = var2 * 128;
+      int var6 = var3.sizeX;
+      int var7 = var3.sizeY;
+      if(var4 == 1 || var4 == 3) {
+         var6 = var3.sizeY;
+         var7 = var3.sizeX;
       }
 
-      return Widget.widgets[var1][var2];
-   }
-
-   @ObfuscatedName("cp")
-   @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "-723041870"
-   )
-   static final String method1933(int var0) {
-      String var1 = Integer.toString(var0);
-
-      for(int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
-         var1 = var1.substring(0, var2) + "," + var1.substring(var2);
+      var5.field701 = (var6 + var1) * 128;
+      var5.field702 = (var2 + var7) * 128;
+      var5.field704 = var3.ambientSoundId;
+      var5.field703 = var3.field2969 * 128;
+      var5.field713 = var3.field2923;
+      var5.field707 = var3.field2971;
+      var5.field708 = var3.field2959;
+      if(var3.impostorIds != null) {
+         var5.field711 = var3;
+         var5.method653();
       }
 
-      return var1.length() > 9?" " + XItemContainer.method153('ﾀ') + var1.substring(0, var1.length() - 8) + "M  (" + var1 + ")</col>":(var1.length() > 6?" " + XItemContainer.method153(16777215) + var1.substring(0, var1.length() - 4) + "K  (" + var1 + ")</col>":" " + XItemContainer.method153(16776960) + var1 + "</col>");
+      class31.field709.method2824(var5);
+      if(var5.field708 != null) {
+         var5.field712 = var5.field713 + (int)(Math.random() * (double)(var5.field707 - var5.field713));
+      }
+
    }
 }

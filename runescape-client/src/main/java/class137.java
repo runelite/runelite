@@ -1,64 +1,58 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("ex")
 public class class137 {
-   @ObfuscatedName("f")
-   byte[] field1924;
-   @ObfuscatedName("i")
-   byte[] field1925;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 452405767
-   )
-   int field1926;
-   @ObfuscatedName("nk")
-   static class57 field1927;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1531869561
-   )
-   int field1928;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -2035069465
-   )
-   int field1929;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 237927359
-   )
-   int field1930;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -766460095
-   )
-   int field1931;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1045772107
-   )
-   int field1932;
-   @ObfuscatedName("z")
-   static int[] field1933;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1964326491
-   )
-   int field1934;
+   class137() throws Throwable {
+      throw new Error();
+   }
 
-   @ObfuscatedName("bd")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "0"
+      signature = "(II)LFrames;",
+      garbageValue = "-457726988"
    )
-   static final void method2541(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.field506; ++var4) {
-         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var1 + var3) {
-            Client.field508[var4] = true;
-         }
-      }
+   @Export("getFrames")
+   static Frames getFrames(int var0) {
+      Frames var1 = (Frames)Sequence.field3088.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         IndexDataBase var3 = Sequence.field3085;
+         IndexDataBase var4 = Sequence.field3086;
+         boolean var5 = true;
+         int[] var6 = var3.method3304(var0);
 
+         for(int var7 = 0; var7 < var6.length; ++var7) {
+            byte[] var8 = var3.method3301(var0, var6[var7]);
+            if(var8 == null) {
+               var5 = false;
+            } else {
+               int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
+               byte[] var10 = var4.method3301(var9, 0);
+               if(var10 == null) {
+                  var5 = false;
+               }
+            }
+         }
+
+         Frames var2;
+         if(!var5) {
+            var2 = null;
+         } else {
+            try {
+               var2 = new Frames(var3, var4, var0, false);
+            } catch (Exception var12) {
+               var2 = null;
+            }
+         }
+
+         if(var2 != null) {
+            Sequence.field3088.put(var2, (long)var0);
+         }
+
+         return var2;
+      }
    }
 }

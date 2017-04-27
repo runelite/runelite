@@ -1,41 +1,50 @@
+import java.awt.Canvas;
+import java.awt.Color;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hz")
-public class class214 {
-   @ObfuscatedName("y")
-   public final String field3161;
-   @ObfuscatedName("o")
-   public static final class214 field3162 = new class214("8", "8");
-   @ObfuscatedName("i")
-   public static final class214 field3163 = new class214("2", "2");
-   @ObfuscatedName("j")
-   public static final class214 field3164 = new class214("6", "6");
-   @ObfuscatedName("m")
-   public static final class214 field3165 = new class214("7", "7");
-   @ObfuscatedName("r")
-   public static final class214 field3166 = new class214("3", "3");
-   @ObfuscatedName("l")
-   public static final class214 field3167 = new class214("12", "12");
-   @ObfuscatedName("n")
-   public static final class214 field3168 = new class214("15", "15");
-   @ObfuscatedName("u")
-   public static final class214 field3169 = new class214("11", "11");
-   @ObfuscatedName("w")
-   public static final class214 field3170 = new class214("13", "13");
-   @ObfuscatedName("f")
-   public static final class214 field3171 = new class214("9", "9");
-   @ObfuscatedName("s")
-   public static final class214 field3172 = new class214("1", "1");
-   @ObfuscatedName("q")
-   public static final class214 field3173 = new class214("5", "5");
-   @ObfuscatedName("d")
-   public static final class214 field3174 = new class214("14", "14");
-   @ObfuscatedName("p")
-   public static final class214 field3175 = new class214("4", "4");
-   @ObfuscatedName("h")
-   public static final class214 field3176 = new class214("10", "10");
+@ObfuscatedName("ht")
+public final class class214 {
+   @ObfuscatedName("bl")
+   @Export("indexTextures")
+   static IndexData indexTextures;
 
-   class214(String var1, String var2) {
-      this.field3161 = var2;
+   class214() throws Throwable {
+      throw new Error();
+   }
+
+   @ObfuscatedName("ar")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-2137688012"
+   )
+   static void method4050() {
+      XItemContainer.method169(class65.canvas);
+      Canvas var0 = class65.canvas;
+      var0.removeMouseListener(class115.mouse);
+      var0.removeMouseMotionListener(class115.mouse);
+      var0.removeFocusListener(class115.mouse);
+      class115.field1801 = 0;
+      if(FloorUnderlayDefinition.field2828 != null) {
+         FloorUnderlayDefinition.field2828.vmethod2103(class65.canvas);
+      }
+
+      Client.field279.method2117();
+      class65.canvas.setBackground(Color.black);
+      class20.method214(class65.canvas);
+      Canvas var1 = class65.canvas;
+      var1.addMouseListener(class115.mouse);
+      var1.addMouseMotionListener(class115.mouse);
+      var1.addFocusListener(class115.mouse);
+      if(FloorUnderlayDefinition.field2828 != null) {
+         FloorUnderlayDefinition.field2828.vmethod2102(class65.canvas);
+      }
+
+      if(Client.widgetRoot != -1) {
+         class15.method188(false);
+      }
+
+      GameEngine.field1779 = true;
    }
 }
