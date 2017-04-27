@@ -29,9 +29,6 @@ import net.runelite.mapping.Import;
 
 public interface Widget
 {
-	@Import("parent")
-	Widget getParent();
-
 	@Import("dynamicValues")
 	int[][] getDynamicValues();
 
