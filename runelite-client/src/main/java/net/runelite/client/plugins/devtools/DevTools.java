@@ -29,6 +29,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
@@ -39,8 +40,6 @@ import org.slf4j.LoggerFactory;
 
 public class DevTools extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(DevTools.class);
-
 	private final DevToolsOverlay overlay = new DevToolsOverlay(this);
 	private final DevToolsPanel panel = new DevToolsPanel(this);
 	private final NavigationButton navButton = new NavigationButton("DevTools");
@@ -54,7 +53,9 @@ public class DevTools extends Plugin
 	private boolean toggleWalls;
 	private boolean toggleDecor;
 	private boolean toggleInventory;
-	private boolean toggleWidgets;
+
+	private int widgetParent = -1;
+	private int widgetChild = -1;
 
 	private Font font;
 
@@ -91,98 +92,109 @@ public class DevTools extends Plugin
 		ui.expand(panel);
 	}
 
-	public Font getFont()
+	Font getFont()
 	{
 		return font;
 	}
 
-	public void togglePlayers()
+	void togglePlayers()
 	{
 		togglePlayers = !togglePlayers;
 	}
 
-	public void toggleNpcs()
+	void toggleNpcs()
 	{
 		toggleNpcs = !toggleNpcs;
 	}
 
-	public void toggleGroundItems()
+	void toggleGroundItems()
 	{
 		toggleGroundItems = !toggleGroundItems;
 	}
 
-	public void toggleGroundObjects()
+	void toggleGroundObjects()
 	{
 		toggleGroundObjects = !toggleGroundObjects;
 	}
 
-	public void toggleGameObjects()
+	void toggleGameObjects()
 	{
 		toggleGameObjects = !toggleGameObjects;
 	}
 
-	public void toggleWalls()
+	void toggleWalls()
 	{
 		toggleWalls = !toggleWalls;
 	}
 
-	public void toggleDecor()
+	void toggleDecor()
 	{
 		toggleDecor = !toggleDecor;
 	}
 
-	public void toggleInventory()
+	void toggleInventory()
 	{
 		toggleInventory = !toggleInventory;
 	}
 
-	public void toggleWidgets()
-	{
-		toggleWidgets = !toggleWidgets;
-	}
-
-	public boolean isTogglePlayers()
+	boolean isTogglePlayers()
 	{
 		return togglePlayers;
 	}
 
-	public boolean isToggleNpcs()
+	boolean isToggleNpcs()
 	{
 		return toggleNpcs;
 	}
 
-	public boolean isToggleGroundItems()
+	boolean isToggleGroundItems()
 	{
 		return toggleGroundItems;
 	}
 
-	public boolean isToggleGroundObjects()
+	boolean isToggleGroundObjects()
 	{
 		return toggleGroundObjects;
 	}
 
-	public boolean isToggleGameObjects()
+	boolean isToggleGameObjects()
 	{
 		return toggleGameObjects;
 	}
 
-	public boolean isToggleWalls()
+	boolean isToggleWalls()
 	{
 		return toggleWalls;
 	}
 
-	public boolean isToggleDecor()
+	boolean isToggleDecor()
 	{
 		return toggleDecor;
 	}
 
-	public boolean isToggleInventory()
+	boolean isToggleInventory()
 	{
 		return toggleInventory;
 	}
 
-	public boolean isToggleWidgets()
+	void setWidgetParent(int id)
 	{
-		return toggleWidgets;
+		widgetParent = id;
 	}
+
+	void setWidgetChild(int id)
+	{
+		widgetChild = id;
+	}
+
+	int getWidgetParent()
+	{
+		return widgetParent;
+	}
+
+	int getWidgetChild()
+	{
+		return widgetChild;
+	}
+
 }

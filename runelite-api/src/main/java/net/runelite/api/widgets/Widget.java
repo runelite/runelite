@@ -58,6 +58,11 @@ public class Widget
 		return widget.getType();
 	}
 
+	public int getContentType()
+	{
+		return widget.getContentType();
+	}
+
 	public Widget getParent()
 	{
 		int id = getParentId();
@@ -105,6 +110,26 @@ public class Widget
 	public String getText()
 	{
 		return widget.getText();
+	}
+
+	public int getTextColor()
+	{
+		return widget.getTextColor();
+	}
+
+	public String getName()
+	{
+		return widget.getName();
+	}
+
+	public int getModelId()
+	{
+		return widget.getModelId();
+	}
+
+	public int getTextureId()
+	{
+		return widget.getTextureId();
 	}
 
 	public boolean isHidden()
