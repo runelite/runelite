@@ -69,7 +69,7 @@ public class MouseHighlightOverlay extends Overlay
 		int option_width = fm.stringWidth(options[count] + " ");
 		int total_width = option_width + fm.stringWidth(target);
 		int height = fm.getHeight();
-		Color gray = new Color(Color.lightGray.getRed(), Color.lightGray.getGreen(), Color.lightGray.getBlue(), 125);
+		Color gray = new Color(Color.darkGray.getRed(), Color.darkGray.getGreen(), Color.darkGray.getBlue(), 190);
 		graphics.setColor(gray);
 		graphics.fillRect(x, y - (height / 2), total_width + 6, height);
 		graphics.setColor(Color.cyan);
