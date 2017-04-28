@@ -146,6 +146,11 @@ public class Client
 		return client.getScale();
 	}
 
+	public Point getMouseCanvasPosition()
+	{
+		return new Point(client.getMouseX(), client.getMouseY());
+	}
+
 	public int[][][] getTileHeights()
 	{
 		return client.getTileHeights();
@@ -236,6 +241,16 @@ public class Client
 	public String[] getMenuOptions()
 	{
 		return client.getMenuOptions();
+	}
+
+	public String[] getMenuTargets()
+	{
+		return client.getMenuTargets();
+	}
+
+	public int getMenuCount()
+	{
+		return client.getMenuOptionCount();
 	}
 
 	public int getMapScale()

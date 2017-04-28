@@ -140,6 +140,12 @@ public interface Client extends GameEngine
 	@Import("menuOptions")
 	String[] getMenuOptions();
 
+	@Import("mouseX")
+	int getMouseX();
+
+	@Import("mouseY")
+	int getMouseY();
+
 	@Import("menuOptionCount")
 	int getMenuOptionCount();
 
