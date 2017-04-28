@@ -36,7 +36,7 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
       intValue = 585714265
    )
    @Export("mouseY")
-   public static volatile int field1803 = -1;
+   public static volatile int mouseY = -1;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -291560687
@@ -75,7 +75,7 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
       intValue = -726765429
    )
    @Export("mouseX")
-   public static volatile int field1812 = -1;
+   public static volatile int mouseX = -1;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = -1978892205
@@ -114,8 +114,8 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
    public final synchronized void mouseExited(MouseEvent var1) {
       if(mouse != null) {
          mouseIdleTicks = 0;
-         field1812 = -1;
-         field1803 = -1;
+         mouseX = -1;
+         mouseY = -1;
       }
 
    }
@@ -123,8 +123,8 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
    public final synchronized void mouseMoved(MouseEvent var1) {
       if(mouse != null) {
          mouseIdleTicks = 0;
-         field1812 = var1.getX();
-         field1803 = var1.getY();
+         mouseX = var1.getX();
+         mouseY = var1.getY();
       }
 
    }
@@ -142,8 +142,8 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
    public final synchronized void mouseDragged(MouseEvent var1) {
       if(mouse != null) {
          mouseIdleTicks = 0;
-         field1812 = var1.getX();
-         field1803 = var1.getY();
+         mouseX = var1.getX();
+         mouseY = var1.getY();
       }
 
    }
@@ -151,8 +151,8 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
    public final synchronized void mouseEntered(MouseEvent var1) {
       if(mouse != null) {
          mouseIdleTicks = 0;
-         field1812 = var1.getX();
-         field1803 = var1.getY();
+         mouseX = var1.getX();
+         mouseY = var1.getY();
       }
 
    }
