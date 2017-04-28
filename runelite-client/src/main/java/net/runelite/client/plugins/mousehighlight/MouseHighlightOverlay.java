@@ -36,23 +36,23 @@ import net.runelite.api.Point;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 
 public class MouseHighlightOverlay extends Overlay
 {
-	public MouseHighlightOverlay()
-	{
-		super(OverlayPosition.DYNAMIC, OverlayPriority.MED);
-	}
-
 	// Grabs the colour and name from a target string
 	// <col=ffffff>Player1
 	private final Pattern p = Pattern.compile("^<col=([^>]+)>([^<]*)");
+
+	public MouseHighlightOverlay()
+	{
+		super(OverlayPosition.DYNAMIC);
+	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		Client client = RuneLite.getClient();
+
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return null;
@@ -62,27 +62,36 @@ public class MouseHighlightOverlay extends Overlay
 		String[] options = client.getMenuOptions();
 		int count = client.getMenuCount() - 1;
 
-		String colour = "ff0000";
-		String target = "";
-		if (!targets[count].equals(""))
+		if (count < 0 || count >= targets.length || count >= options.length)
 		{
-			Matcher m = p.matcher(targets[count]);
-			if (m.find())
-			{
-				colour = m.group(1);
-				target = m.group(2);
-			}
+			return null;
 		}
-		else
+
+		String target = targets[count];
+		String option = options[count];
+
+		if (target.isEmpty())
 		{
 			return null;
 		}
 
 		// Trivial options that don't need to be highlighted, add more as they appear.
-		if (options[count].equals("Walk here") || options[count].equals("Cancel") || options[count].equals("Continue"))
+		switch (option)
+		{
+			case "Walk here":
+			case "Cancel":
+			case "Continue":
+				return null;
+		}
+
+		Matcher m = p.matcher(target);
+		if (!m.find())
 		{
 			return null;
 		}
+
+		String colour = m.group(1);
+		String matchedTarget = m.group(2);
 
 		Point mouse = client.getMouseCanvasPosition();
 		int x = mouse.getX();
@@ -90,25 +99,42 @@ public class MouseHighlightOverlay extends Overlay
 
 		FontMetrics fm = graphics.getFontMetrics();
 		// Gets the widths of the various strings we will be displaying
-		int option_width = fm.stringWidth(options[count] + " ");
-		int total_width = option_width + fm.stringWidth(target);
+		int option_width = fm.stringWidth(option + " ");
+		int total_width = option_width + fm.stringWidth(matchedTarget);
 		int height = fm.getHeight();
+
+		x -= total_width + 6; // Draw to the left of the mouse
+		y -= height / 2; // Draw slightly above the mouse
+
+		// Don't draw off of the screen
+		if (x < 0)
+		{
+			x = 0;
+		}
+		if (y < 0)
+		{
+			y = 0;
+		}
+
 		Color gray = new Color(Color.darkGray.getRed(), Color.darkGray.getGreen(), Color.darkGray.getBlue(), 190);
 		graphics.setColor(gray);
+
 		// Draws the background rect
 		graphics.fillRect(x, y - (height / 2), total_width + 6, height);
-		graphics.setColor(Color.cyan);
+
 		// Draws the outline of the rect
+		graphics.setColor(Color.cyan);
 		graphics.drawRect(x, y - (height / 2), total_width + 6, height);
 		x += 3;
 		y += 5;
+
 		graphics.setColor(Color.white);
 		// Draws the option (Use, Walk here, Wield)
-		graphics.drawString(options[count] + " ", x, y);
+		graphics.drawString(option + " ", x, y);
 		// Sets the string colour to the colour the game uses.
 		graphics.setColor(hex2rgb(colour));
 		// Draws the target (Player, item)
-		graphics.drawString(target, x + option_width, y);
+		graphics.drawString(matchedTarget, x + option_width, y);
 
 		return null;
 	}
