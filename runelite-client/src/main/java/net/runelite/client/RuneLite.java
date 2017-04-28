@@ -26,6 +26,7 @@ package net.runelite.client;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
+import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
@@ -91,21 +92,36 @@ public class RuneLite
 	{
 		gui = new ClientUI();
 
+		setupTrayIcon();
+
 		eventBus.register(menuManager);
-
-		if (SystemTray.isSupported())
-		{
-			SystemTray systemTray = SystemTray.getSystemTray();
-
-			trayIcon = new TrayIcon(ICON, "RuneLite");
-			trayIcon.setImageAutoSize(true);
-			systemTray.add(trayIcon);
-		}
 
 		pluginManager = new PluginManager(this);
 		pluginManager.loadAll();
 
 		renderer = new OverlayRenderer();
+	}
+
+	private void setupTrayIcon()
+	{
+		if (!SystemTray.isSupported())
+		{
+			return;
+		}
+
+		SystemTray systemTray = SystemTray.getSystemTray();
+
+		trayIcon = new TrayIcon(ICON, "RuneLite");
+		trayIcon.setImageAutoSize(true);
+
+		try
+		{
+			systemTray.add(trayIcon);
+		}
+		catch (AWTException ex)
+		{
+			logger.debug("Unable to add system tray icon", ex);
+		}
 	}
 
 	private void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
