@@ -101,7 +101,7 @@ public class MouseHighlightOverlay extends Overlay
 		// Draws the outline of the rect
 		graphics.drawRect(x, y - (height / 2), total_width + 6, height);
 		x += 3;
-		y += 3;
+		y += 5;
 		graphics.setColor(Color.white);
 		// Draws the option (Use, Walk here, Wield)
 		graphics.drawString(options[count] + " ", x, y);
@@ -117,7 +117,7 @@ public class MouseHighlightOverlay extends Overlay
 	{
 		if (col.length() < 6)
 		{
-			return new Color(255, 255, 255);
+			return new Color(0, 255, 255);
 		}
 
 		return new Color(
