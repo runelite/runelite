@@ -64,7 +64,7 @@ public class MouseHighlightOverlay extends Overlay
 
 		String colour = "ff0000";
 		String target = "";
-		if (targets[count].equals(""))
+		if (!targets[count].equals(""))
 		{
 			Matcher m = p.matcher(targets[count]);
 			if (m.find())
