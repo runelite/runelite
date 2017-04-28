@@ -167,7 +167,7 @@ public abstract class class112 {
             }
 
             var7.putLong(var5.nextLong());
-            var7.method2372(var5.nextLong());
+            var7.put48bitLong(var5.nextLong());
             class65.method1195(var7);
             var7.putLong(var5.nextLong());
             var7.method2483(class36.field764, class36.field765);

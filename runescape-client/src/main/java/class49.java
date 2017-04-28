@@ -132,8 +132,8 @@ public class class49 extends Renderable {
             int var5 = var3.payload.length - 2 - var4 - 12;
             var3.offset = var5;
             int var6 = var3.readInt();
-            var1.field933 = var3.readUnsignedShort();
-            var1.field943 = var3.readUnsignedShort();
+            var1.localIntCount = var3.readUnsignedShort();
+            var1.localStringCount = var3.readUnsignedShort();
             var1.intStackCount = var3.readUnsignedShort();
             var1.stringStackCount = var3.readUnsignedShort();
             int var7 = var3.readUnsignedByte();

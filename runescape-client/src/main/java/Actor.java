@@ -498,12 +498,12 @@ public abstract class Actor extends Renderable {
       garbageValue = "-605471780"
    )
    static void method593() {
-      Client.secretCipherBuffer1.putOpcode(111);
-      CipherBuffer var0 = Client.secretCipherBuffer1;
+      Client.egressBuffer.putOpcode(111);
+      PacketBuffer var0 = Client.egressBuffer;
       int var1 = Client.isResized?2:1;
       var0.putByte(var1);
-      Client.secretCipherBuffer1.putShort(class187.field2760);
-      Client.secretCipherBuffer1.putShort(IndexDataBase.field2726);
+      Client.egressBuffer.putShort(class187.field2760);
+      Client.egressBuffer.putShort(IndexDataBase.field2726);
    }
 
    @ObfuscatedName("t")

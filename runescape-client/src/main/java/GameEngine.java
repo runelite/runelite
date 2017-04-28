@@ -538,21 +538,21 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                int var10 = var8 * var5 - var7 * var4 >> 11;
                int var11 = var9 + class22.localPlayer.x >> 7;
                int var12 = class22.localPlayer.y - var10 >> 7;
-               Client.secretCipherBuffer1.putOpcode(196);
-               Client.secretCipherBuffer1.putByte(18);
-               Client.secretCipherBuffer1.method2499(class105.field1695[82]?(class105.field1695[81]?2:1):0);
-               Client.secretCipherBuffer1.method2526(class108.baseX + var11);
-               Client.secretCipherBuffer1.method2416(var12 + baseY);
-               Client.secretCipherBuffer1.putByte(var4);
-               Client.secretCipherBuffer1.putByte(var5);
-               Client.secretCipherBuffer1.putShort(Client.mapAngle);
-               Client.secretCipherBuffer1.putByte(57);
-               Client.secretCipherBuffer1.putByte(Client.mapScale);
-               Client.secretCipherBuffer1.putByte(Client.mapScaleDelta);
-               Client.secretCipherBuffer1.putByte(89);
-               Client.secretCipherBuffer1.putShort(class22.localPlayer.x);
-               Client.secretCipherBuffer1.putShort(class22.localPlayer.y);
-               Client.secretCipherBuffer1.putByte(63);
+               Client.egressBuffer.putOpcode(196);
+               Client.egressBuffer.putByte(18);
+               Client.egressBuffer.method2499(class105.field1695[82]?(class105.field1695[81]?2:1):0);
+               Client.egressBuffer.method2526(class108.baseX + var11);
+               Client.egressBuffer.method2416(var12 + baseY);
+               Client.egressBuffer.putByte(var4);
+               Client.egressBuffer.putByte(var5);
+               Client.egressBuffer.putShort(Client.mapAngle);
+               Client.egressBuffer.putByte(57);
+               Client.egressBuffer.putByte(Client.mapScale);
+               Client.egressBuffer.putByte(Client.mapScaleDelta);
+               Client.egressBuffer.putByte(89);
+               Client.egressBuffer.putShort(class22.localPlayer.x);
+               Client.egressBuffer.putShort(class22.localPlayer.y);
+               Client.egressBuffer.putByte(63);
                Client.flagX = var11;
                Client.flagY = var12;
             }
@@ -590,7 +590,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    public static void method2202(int var0) {
       class159.field2063 = 1;
       class159.field2067 = null;
-      CipherBuffer.field1989 = -1;
+      PacketBuffer.field1989 = -1;
       class190.field2791 = -1;
       class159.field2069 = 0;
       class15.field164 = false;

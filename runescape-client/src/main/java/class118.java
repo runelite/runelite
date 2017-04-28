@@ -148,9 +148,9 @@ public class class118 {
                   }
 
                   Client.field478 = Client.field311;
-                  Client.secretCipherBuffer1.putOpcode(11);
-                  Client.secretCipherBuffer1.putByte(class36.method753(var0));
-                  Client.secretCipherBuffer1.method2504(var0);
+                  Client.egressBuffer.putOpcode(11);
+                  Client.egressBuffer.putByte(class36.method753(var0));
+                  Client.egressBuffer.method2504(var0);
                   break;
                }
             }

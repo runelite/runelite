@@ -25,6 +25,7 @@
 package net.runelite.deob;
 
 import net.runelite.asm.ClassFile;
+import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
@@ -72,6 +73,22 @@ public class DeobAnnotations
 	public static String getHookName(Annotations an)
 	{
 		return getAnnotationValue(an, HOOK);
+	}
+
+	public static Number getObfuscatedGetter(Field field)
+	{
+		if (field == null || field.getAnnotations() == null)
+		{
+			return null;
+		}
+
+		Annotation an = field.getAnnotations().find(OBFUSCATED_GETTER);
+		if (an == null)
+		{
+			return null;
+		}
+		
+		return (Number) an.getElement().getValue();
 	}
 
 	private static String getAnnotationValue(Annotations an, Type type)
