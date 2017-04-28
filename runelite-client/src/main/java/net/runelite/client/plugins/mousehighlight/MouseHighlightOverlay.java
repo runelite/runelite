@@ -79,7 +79,7 @@ public class MouseHighlightOverlay extends Overlay
 		}
 
 		// Trivial options that don't need to be highlighted, add more as they appear.
-		if (options[count].equals("Walk here"))
+		if (options[count].equals("Walk here") || options[count].equals("Cancel") || options[count].equals("Continue"))
 		{
 			return null;
 		}
