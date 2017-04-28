@@ -1,10 +1,5 @@
-package net.runelite.client.plugins.mousehighlight;
-
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
-
 /*
- * Copyright (c) 2016-2017, Aria <aria@snorflake.com>
+ * Copyright (c) 2017, Aria <aria@snorflake.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,6 +22,11 @@ import net.runelite.client.ui.overlay.Overlay;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.mousehighlight;
+
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.Overlay;
+
 public class MouseHighlight extends Plugin
 {
 	private final Overlay overlay = new MouseHighlightOverlay();

@@ -1,21 +1,5 @@
-package net.runelite.client.plugins.mousehighlight;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.Point;
-import net.runelite.client.RuneLite;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-
 /*
- * Copyright (c) 2016-2017, Aria <aria@snorflake.com>
+ * Copyright (c) 2017, Aria <aria@snorflake.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,6 +22,22 @@ import net.runelite.client.ui.overlay.OverlayPriority;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.mousehighlight;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.Point;
+import net.runelite.client.RuneLite;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+
 public class MouseHighlightOverlay extends Overlay
 {
 	public MouseHighlightOverlay()
