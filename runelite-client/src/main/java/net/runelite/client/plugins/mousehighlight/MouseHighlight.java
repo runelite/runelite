@@ -6,20 +6,25 @@ import net.runelite.client.ui.overlay.Overlay;
 /**
  * Created by aria on 4/27/17.
  */
-public class MouseHighlight extends Plugin {
-    private final Overlay overlay = new MouseHighlightOverlay();
-    @Override
-    public Overlay getOverlay() {
-        return overlay;
-    }
+public class MouseHighlight extends Plugin
+{
+	private final Overlay overlay = new MouseHighlightOverlay();
 
-    @Override
-    protected void startUp() throws Exception {
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
 
-    }
+	@Override
+	protected void startUp() throws Exception
+	{
 
-    @Override
-    protected void shutDown() throws Exception {
+	}
 
-    }
+	@Override
+	protected void shutDown() throws Exception
+	{
+
+	}
 }
