@@ -99,7 +99,7 @@ public class Buffer extends Node {
    }
 
    @ObfuscatedName("p")
-   @Export("put48bitLong")
+   //@Export("put48bitLong")
    public void put48bitLong(long var1) {
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 40));
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 32));
