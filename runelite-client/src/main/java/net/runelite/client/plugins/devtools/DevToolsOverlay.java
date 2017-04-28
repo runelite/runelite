@@ -70,13 +70,13 @@ public class DevToolsOverlay extends Overlay
 	private static final int REGION_SIZE = 104;
 	private static final int MAX_DISTANCE = 2400;
 
-	private final DevTools tools;
+	private final DevTools plugin;
 	private final Client client = RuneLite.getClient();
 
-	public DevToolsOverlay(DevTools tools)
+	public DevToolsOverlay(DevTools plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
-		this.tools = tools;
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -87,30 +87,27 @@ public class DevToolsOverlay extends Overlay
 			return null;
 		}
 
-		if (tools.isTogglePlayers())
+		if (plugin.isTogglePlayers())
 		{
 			renderPlayers(graphics);
 		}
 
-		if (tools.isToggleNpcs())
+		if (plugin.isToggleNpcs())
 		{
 			renderNpcs(graphics);
 		}
 
-		if (tools.isToggleGroundItems() || tools.isToggleGroundObjects() || tools.isToggleGameObjects() || tools.isToggleWalls() || tools.isToggleDecor())
+		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor())
 		{
 			renderTileObjects(graphics);
 		}
 
-		if (tools.isToggleInventory())
+		if (plugin.isToggleInventory())
 		{
 			renderInventory(graphics);
 		}
 
-		if (tools.isToggleWidgets())
-		{
-			renderWidgets(graphics);
-		}
+		renderWidget(graphics);
 
 		return null;
 	}
@@ -143,7 +140,7 @@ public class DevToolsOverlay extends Overlay
 			int x = textLocation.getX();
 			int y = textLocation.getY();
 
-			Font font = tools.getFont();
+			Font font = plugin.getFont();
 			if (font != null)
 			{
 				graphics.setFont(font);
@@ -185,7 +182,7 @@ public class DevToolsOverlay extends Overlay
 			int x = textLocation.getX();
 			int y = textLocation.getY();
 
-			Font font = tools.getFont();
+			Font font = plugin.getFont();
 			if (font != null)
 			{
 				graphics.setFont(font);
@@ -270,27 +267,27 @@ public class DevToolsOverlay extends Overlay
 					continue;
 				}
 
-				if (tools.isToggleGroundItems())
+				if (plugin.isToggleGroundItems())
 				{
 					renderGroundItems(graphics, tile, player);
 				}
 
-				if (tools.isToggleGroundObjects())
+				if (plugin.isToggleGroundObjects())
 				{
 					renderGroundObject(graphics, tile, player);
 				}
 
-				if (tools.isToggleGameObjects())
+				if (plugin.isToggleGameObjects())
 				{
 					renderGameObjects(graphics, tile, player);
 				}
 
-				if (tools.isToggleWalls())
+				if (plugin.isToggleWalls())
 				{
 					renderWallObject(graphics, tile, player);
 				}
 
-				if (tools.isToggleDecor())
+				if (plugin.isToggleDecor())
 				{
 					renderDecorObject(graphics, tile, player);
 				}
@@ -394,44 +391,22 @@ public class DevToolsOverlay extends Overlay
 		}
 	}
 
-	private void renderWidgets(Graphics2D graphics)
+	public void renderWidget(Graphics2D graphics)
 	{
-		Widget[][] widgets = client.getWidgets();
-		boolean[] validInterfaces = client.getValidInterfaces();
+		int parentID = plugin.getWidgetParent();
+		int childID = plugin.getWidgetChild();
 
-		int idx = -1;
-
-		for (Widget[] children : widgets)
+		if (parentID == -1)
 		{
-			++idx;
+			return;
+		}
 
-			if (!validInterfaces[idx])
-			{
-				continue;
-			}
-
-			if (children == null)
-			{
-				continue;
-			}
-
-			for (Widget child : children)
-			{
-				if (child == null || child.isHidden())
-				{
-					continue;
-				}
-
-				if (child.getText() == null)
-				{
-					continue;
-				}
-
-				Rectangle rectangle = child.getBounds();
-				//graphics.draw(rectangle);
-
-				graphics.drawString(child.getText(), (int) rectangle.getX(), (int) rectangle.getY());
-			}
+		Widget widget = client.getWidget(parentID, (childID == -1) ? 0 : childID);
+		if (widget != null && !widget.isHidden())
+		{
+			Rectangle bounds = widget.getBounds();
+			graphics.setColor(CYAN);
+			graphics.draw(bounds);
 		}
 	}
 
