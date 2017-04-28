@@ -2074,8 +2074,8 @@ public final class Client extends GameEngine {
             class115 var8 = class115.mouse;
             synchronized(class115.mouse) {
                class115.field1799 = class115.field1801;
-               class115.field1805 = class115.field1812;
-               class115.field1806 = class115.field1803;
+               class115.field1805 = class115.mouseX;
+               class115.field1806 = class115.mouseY;
                class115.field1811 = class115.field1807;
                class115.field1802 = class115.field1810;
                class115.field1813 = class115.field1809;

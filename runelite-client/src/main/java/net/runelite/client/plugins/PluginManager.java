@@ -38,6 +38,7 @@ import net.runelite.client.plugins.devtools.DevTools;
 import net.runelite.client.plugins.fpsinfo.FPS;
 import net.runelite.client.plugins.hiscore.Hiscore;
 import net.runelite.client.plugins.idlenotifier.IdleNotifier;
+import net.runelite.client.plugins.mousehighlight.MouseHighlight;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 import net.runelite.client.plugins.runecraft.Runecraft;
 import net.runelite.client.plugins.xtea.Xtea;
@@ -67,6 +68,7 @@ public class PluginManager
 		plugins.add(new Xtea());
 		plugins.add(new IdleNotifier());
 		plugins.add(new Runecraft());
+		plugins.add(new MouseHighlight());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
