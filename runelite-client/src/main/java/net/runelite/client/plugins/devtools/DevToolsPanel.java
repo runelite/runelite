@@ -24,15 +24,23 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import javax.swing.JButton;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+
+import net.runelite.api.Client;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.RuneLite;
 import net.runelite.client.ui.PluginPanel;
 
 public class DevToolsPanel extends PluginPanel
 {
+	private final EmptyBorder PADDING_BORDER = new EmptyBorder(3, 3, 3, 3);
+
+	private final Client client = RuneLite.getClient();
+
 	private JButton renderPlayersBtn = new JButton();
 	private JButton renderNpcsBtn = new JButton();
 	private JButton renderGroundItemsBtn = new JButton();
@@ -41,24 +49,44 @@ public class DevToolsPanel extends PluginPanel
 	private JButton renderWallsBtn = new JButton();
 	private JButton renderDecorBtn = new JButton();
 	private JButton renderInventoryBtn = new JButton();
-	private JButton renderWidgetsBtn = new JButton();
 
-	public DevToolsPanel(DevTools tools)
+	private JLabel textLbl = new JLabel();
+	private JLabel textColorLbl = new JLabel();
+	private JLabel nameLbl = new JLabel();
+	private JLabel modelLbl = new JLabel();
+	private JLabel textureLbl = new JLabel();
+	private JLabel typeLbl = new JLabel();
+	private JLabel contentTypeLbl = new JLabel();
+
+	private DevTools plugin;
+
+	private DefaultMutableTreeNode widgetListRoot = new DefaultMutableTreeNode();
+
+	public DevToolsPanel(DevTools plugin)
 	{
+		this.plugin = plugin;
+
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
+		setLayout(new BorderLayout());
 		setVisible(true);
 
+		add(createOptionsPanel(), BorderLayout.NORTH);
+		add(createWidgetTreePanel(), BorderLayout.CENTER);
+	}
+
+	private JPanel createOptionsPanel()
+	{
 		JPanel container = new JPanel();
-		container.setLayout(new GridLayout(5, 2, 3, 3));
-		add(container);
+		container.setLayout(new GridLayout(4, 2, 3, 3));
+		container.setBorder(PADDING_BORDER);
 
 		renderPlayersBtn = new JButton("Players");
 		renderPlayersBtn.addActionListener(e ->
 		{
 			highlightButton(renderPlayersBtn);
-			tools.togglePlayers();
+			plugin.togglePlayers();
 		});
 		container.add(renderPlayersBtn);
 
@@ -66,7 +94,7 @@ public class DevToolsPanel extends PluginPanel
 		renderNpcsBtn.addActionListener(e ->
 		{
 			highlightButton(renderNpcsBtn);
-			tools.toggleNpcs();
+			plugin.toggleNpcs();
 		});
 		container.add(renderNpcsBtn);
 
@@ -74,7 +102,7 @@ public class DevToolsPanel extends PluginPanel
 		renderGroundItemsBtn.addActionListener(e ->
 		{
 			highlightButton(renderGroundItemsBtn);
-			tools.toggleGroundItems();
+			plugin.toggleGroundItems();
 		});
 		container.add(renderGroundItemsBtn);
 
@@ -82,7 +110,7 @@ public class DevToolsPanel extends PluginPanel
 		renderGroundObjectsBtn.addActionListener(e ->
 		{
 			highlightButton(renderGroundObjectsBtn);
-			tools.toggleGroundObjects();
+			plugin.toggleGroundObjects();
 		});
 		container.add(renderGroundObjectsBtn);
 
@@ -90,7 +118,7 @@ public class DevToolsPanel extends PluginPanel
 		renderGameObjectsBtn.addActionListener(e ->
 		{
 			highlightButton(renderGameObjectsBtn);
-			tools.toggleGameObjects();
+			plugin.toggleGameObjects();
 		});
 		container.add(renderGameObjectsBtn);
 
@@ -98,7 +126,7 @@ public class DevToolsPanel extends PluginPanel
 		renderWallsBtn.addActionListener(e ->
 		{
 			highlightButton(renderWallsBtn);
-			tools.toggleWalls();
+			plugin.toggleWalls();
 		});
 		container.add(renderWallsBtn);
 
@@ -106,7 +134,7 @@ public class DevToolsPanel extends PluginPanel
 		renderDecorBtn.addActionListener(e ->
 		{
 			highlightButton(renderDecorBtn);
-			tools.toggleDecor();
+			plugin.toggleDecor();
 		});
 		container.add(renderDecorBtn);
 
@@ -114,17 +142,96 @@ public class DevToolsPanel extends PluginPanel
 		renderInventoryBtn.addActionListener(e ->
 		{
 			highlightButton(renderInventoryBtn);
-			tools.toggleInventory();
+			plugin.toggleInventory();
 		});
 		container.add(renderInventoryBtn);
 
-		renderWidgetsBtn = new JButton("Widgets");
-		renderWidgetsBtn.addActionListener(e ->
+		return container;
+	}
+
+	private JPanel createWidgetTreePanel()
+	{
+		JPanel container = new JPanel();
+		container.setLayout(new BorderLayout());
+
+		JTree tree = new JTree(widgetListRoot);
+		tree.setRootVisible(false);
+		tree.setShowsRootHandles(true);
+		tree.getSelectionModel().addTreeSelectionListener(e ->
 		{
-			highlightButton(renderWidgetsBtn);
-			tools.toggleWidgets();
+			Object[] path = e.getPath().getPath();
+			plugin.setWidgetParent(Integer.parseInt(path[1].toString()));
+			plugin.setWidgetChild((path.length > 2) ? Integer.parseInt(path[2].toString()) : -1);
+			setWidgetInfo();
 		});
-		container.add(renderWidgetsBtn);
+
+		JScrollPane scrollPane = new JScrollPane(tree);
+		scrollPane.setBorder(PADDING_BORDER);
+		container.add(scrollPane, BorderLayout.CENTER);
+
+		JButton refreshWidgetsBtn = new JButton("Refresh Widgets");
+		refreshWidgetsBtn.addActionListener(e ->
+		{
+			refreshWidgets();
+			tree.setModel(new DefaultTreeModel(widgetListRoot));
+		});
+
+		JPanel btnContainer = new JPanel();
+		btnContainer.setLayout(new BorderLayout());
+		btnContainer.setBorder(PADDING_BORDER);
+		btnContainer.add(refreshWidgetsBtn);
+		container.add(btnContainer, BorderLayout.NORTH);
+
+		JPanel infoContainer = new JPanel();
+		infoContainer.setLayout(new GridLayout(0, 1));
+
+		textLbl = new JLabel("Text: ");
+		textColorLbl = new JLabel("Text Color: ");
+		nameLbl = new JLabel("Name: ");
+		modelLbl = new JLabel("Model ID: ");
+		textureLbl = new JLabel("Texture ID: ");
+		typeLbl = new JLabel("Type: ");
+		contentTypeLbl = new JLabel("Content Type: ");
+
+		infoContainer.add(textLbl);
+		infoContainer.add(textColorLbl);
+		infoContainer.add(nameLbl);
+		infoContainer.add(modelLbl);
+		infoContainer.add(textureLbl);
+		infoContainer.add(typeLbl);
+		infoContainer.add(contentTypeLbl);
+
+		JScrollPane infoScrollPane = new JScrollPane(infoContainer);
+		infoScrollPane.setBorder(new EmptyBorder(6, 6, 6, 6));
+		container.add(infoScrollPane, BorderLayout.SOUTH);
+
+		return container;
+	}
+
+	private void setWidgetInfo()
+	{
+		int parent = plugin.getWidgetParent();
+		int child = plugin.getWidgetChild();
+
+		if (parent == -1)
+		{
+			return;
+		}
+
+		Widget widget = client.getWidget(parent, (child == -1) ? 0 : child);
+
+		if (widget == null)
+		{
+			return;
+		}
+
+		textLbl.setText("Text: " + widget.getText().trim());
+		textColorLbl.setText("Text Color: " + widget.getTextColor());
+		nameLbl.setText("Name: " + widget.getName().trim());
+		modelLbl.setText("Model ID: " + widget.getModelId());
+		textureLbl.setText("Texture ID: " + widget.getTextureId());
+		typeLbl.setText("Type: " + widget.getType());
+		contentTypeLbl.setText("Content Type: " + widget.getContentType());
 	}
 
 	private void highlightButton(JButton button)
@@ -137,6 +244,48 @@ public class DevToolsPanel extends PluginPanel
 		{
 			button.setBackground(Color.GREEN);
 		}
+	}
+
+	private void refreshWidgets()
+	{
+		Widget[][] widgets = client.getWidgets();
+		boolean[] validInterfaces = client.getValidInterfaces();
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+
+		plugin.setWidgetParent(-1);
+		plugin.setWidgetChild(-1);
+
+		int idx = -1;
+
+		for (Widget[] children : widgets)
+		{
+			++idx;
+
+			if (!validInterfaces[idx])
+			{
+				continue;
+			}
+
+			if (children == null)
+			{
+				continue;
+			}
+
+			DefaultMutableTreeNode parent = new DefaultMutableTreeNode(idx);
+			root.add(parent);
+
+			for (Widget child : children)
+			{
+				if (child == null || child.isHidden())
+				{
+					continue;
+				}
+
+				parent.add(new DefaultMutableTreeNode(child.getId() & 0xFFFF));
+			}
+		}
+
+		widgetListRoot = root;
 	}
 
 }
