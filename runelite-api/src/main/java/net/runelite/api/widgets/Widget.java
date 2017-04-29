@@ -127,9 +127,9 @@ public class Widget
 		return widget.getModelId();
 	}
 
-	public int getTextureId()
+	public int getSpriteId()
 	{
-		return widget.getTextureId();
+		return widget.getSpriteId();
 	}
 
 	public boolean isHidden()

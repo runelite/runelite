@@ -110,8 +110,8 @@ public interface Widget
 	@Import("scrollY")
 	int getScrollY();
 
-	@Import("textureId")
-	int getTextureId();
+	@Import("spriteId")
+	int getSpriteId();
 
 	@Import("borderThickness")
 	int getBorderThickness();
