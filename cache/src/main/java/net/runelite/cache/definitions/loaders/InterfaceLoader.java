@@ -224,7 +224,7 @@ public class InterfaceLoader
 
 		if (iface.type == 5)
 		{
-			iface.textureId = var1.readInt();
+			iface.spriteId = var1.readInt();
 			iface.field2332 = var1.readInt();
 		}
 
@@ -389,7 +389,7 @@ public class InterfaceLoader
 
 		if (iface.type == 5)
 		{
-			iface.textureId = var1.readInt();
+			iface.spriteId = var1.readInt();
 			iface.field2294 = var1.readUnsignedShort();
 			iface.field2257 = var1.readUnsignedByte() == 1;
 			iface.opacity = var1.readUnsignedByte();

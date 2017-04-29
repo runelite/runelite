@@ -42,26 +42,26 @@ public class class131 {
       int var1 = var0.contentType;
       if(var1 == 324) {
          if(Client.field560 == -1) {
-            Client.field560 = var0.textureId;
+            Client.field560 = var0.spriteId;
             Client.field561 = var0.field2243;
          }
 
          if(Client.field559.isFemale) {
-            var0.textureId = Client.field560;
+            var0.spriteId = Client.field560;
          } else {
-            var0.textureId = Client.field561;
+            var0.spriteId = Client.field561;
          }
 
       } else if(var1 == 325) {
          if(Client.field560 == -1) {
-            Client.field560 = var0.textureId;
+            Client.field560 = var0.spriteId;
             Client.field561 = var0.field2243;
          }
 
          if(Client.field559.isFemale) {
-            var0.textureId = Client.field561;
+            var0.spriteId = Client.field561;
          } else {
-            var0.textureId = Client.field560;
+            var0.spriteId = Client.field560;
          }
 
       } else if(var1 == 327) {

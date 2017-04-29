@@ -200,8 +200,8 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -307750191
    )
-   @Export("textureId")
-   public int textureId;
+   @Export("spriteId")
+   public int spriteId;
    @ObfuscatedName("at")
    @ObfuscatedGetter(
       intValue = 1324992533
@@ -597,7 +597,7 @@ public class Widget extends Node {
       }
 
       if(this.type == 5) {
-         this.textureId = var1.readInt();
+         this.spriteId = var1.readInt();
          this.field2196 = var1.readUnsignedShort();
          this.field2245 = var1.readUnsignedByte() == 1;
          this.opacity = var1.readUnsignedByte();
@@ -751,7 +751,7 @@ public class Widget extends Node {
       if(var1) {
          var2 = this.field2243;
       } else {
-         var2 = this.textureId;
+         var2 = this.spriteId;
       }
 
       if(var2 == -1) {
@@ -946,7 +946,7 @@ public class Widget extends Node {
          var1 = false;
       }
 
-      int var2 = var1?this.field2243:this.textureId;
+      int var2 = var1?this.field2243:this.spriteId;
       if(var2 == -1) {
          return null;
       } else {
@@ -1147,7 +1147,7 @@ public class Widget extends Node {
       }
 
       if(this.type == 5) {
-         this.textureId = var1.readInt();
+         this.spriteId = var1.readInt();
          this.field2243 = var1.readInt();
       }
 
@@ -1353,7 +1353,7 @@ public class Widget extends Node {
       this.field2248 = 0;
       this.field2282 = 1;
       this.field2225 = false;
-      this.textureId = -1;
+      this.spriteId = -1;
       this.field2243 = -1;
       this.field2196 = 0;
       this.field2245 = false;
