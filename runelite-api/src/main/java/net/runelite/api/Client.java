@@ -253,6 +253,11 @@ public class Client
 		return client.getMenuOptionCount();
 	}
 
+	public boolean isMenuOpen()
+	{
+		return client.isMenuOpen();
+	}
+
 	public int getMapScale()
 	{
 		return client.getMapScale();
