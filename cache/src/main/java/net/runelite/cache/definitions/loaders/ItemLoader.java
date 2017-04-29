@@ -30,6 +30,8 @@ import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+
 public class ItemLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(ItemLoader.class);
@@ -253,6 +255,30 @@ public class ItemLoader
 		else if (opcode == 149)
 		{
 			def.placeholderTemplateId = stream.readUnsignedShort();
+		}
+		else if (opcode == 249)
+		{
+			int length = stream.readUnsignedByte();
+			def.params = new HashMap<>(length);
+
+			for (int i = 0; i < length; i++)
+			{
+				boolean asString = stream.readUnsignedByte() == 1;
+
+				int key = stream.read24BitInt();
+				Object value;
+
+				if (asString)
+				{
+					value = stream.readString();
+				}
+				else
+				{
+					value = stream.readInt();
+				}
+
+				def.params.put(key, value);
+			}
 		}
 		else
 		{

@@ -29,6 +29,9 @@ import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ObjectLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(ObjectLoader.class);
@@ -339,6 +342,32 @@ public class ObjectLoader
 			configChangeDest[length + 1] = var;
 
 			def.setConfigChangeDest(configChangeDest);
+		}
+		else if (opcode == 249)
+		{
+			int length = is.readUnsignedByte();
+			Map<Integer, Object> params = new HashMap<>(length);
+
+			for (int i = 0; i < length; i++)
+			{
+				boolean asString = is.readUnsignedByte() == 1;
+
+				int key = is.read24BitInt();
+				Object value;
+
+				if (asString)
+				{
+					value = is.readString();
+				}
+				else
+				{
+					value = is.readInt();
+				}
+
+				params.put(key, value);
+			}
+
+			def.setParams(params);
 		}
 		else
 		{

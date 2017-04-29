@@ -25,6 +25,8 @@
 
 package net.runelite.cache.definitions;
 
+import java.util.Map;
+
 public class NpcDefinition
 {
 
@@ -61,6 +63,8 @@ public class NpcDefinition
 	public boolean isClickable = true;
 	public int anInt2189 = -1;
 	public boolean aBool2190 = false;
+
+	public Map<Integer, Object> params = null;
 
 	public NpcDefinition(int definitionID)
 	{

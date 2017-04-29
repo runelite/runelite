@@ -25,6 +25,8 @@
 
 package net.runelite.cache.definitions;
 
+import java.util.Map;
+
 public class ObjectDefinition
 {
 	private int id;
@@ -70,6 +72,8 @@ public class ObjectDefinition
 	private int anInt2112 = 0;
 	private int anInt2113 = 0;
 	private boolean aBool2114 = true;
+
+	private Map<Integer, Object> params = null;
 
 	public int getId()
 	{
@@ -499,5 +503,15 @@ public class ObjectDefinition
 	public void setaBool2114(boolean aBool2114)
 	{
 		this.aBool2114 = aBool2114;
+	}
+
+	public Map<Integer, Object> getParams()
+	{
+		return params;
+	}
+
+	public void setParams(final Map<Integer, Object> params)
+	{
+		this.params = params;
 	}
 }
