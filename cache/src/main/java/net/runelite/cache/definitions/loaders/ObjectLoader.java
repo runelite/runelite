@@ -263,7 +263,7 @@ public class ObjectLoader
 			def.setConfigId(configId);
 
 			int length = is.readUnsignedByte();
-			int[] configChangeDest = new int[length + 1];
+			int[] configChangeDest = new int[length + 2];
 
 			for (int index = 0; index <= length; ++index)
 			{
@@ -273,6 +273,8 @@ public class ObjectLoader
 					configChangeDest[index] = -1;
 				}
 			}
+
+			configChangeDest[length + 1] = -1;
 
 			def.setConfigChangeDest(configChangeDest);
 		}
@@ -299,6 +301,44 @@ public class ObjectLoader
 		else if (opcode == 81)
 		{
 			def.setAnInt2105(is.readUnsignedByte());
+		}
+		else if (opcode == 92)
+		{
+			int varpID = is.readUnsignedShort();
+			if (varpID == 0xFFFF)
+			{
+				varpID = -1;
+			}
+			def.setVarpID(varpID);
+
+			int configId = is.readUnsignedShort();
+			if (configId == 0xFFFF)
+			{
+				configId = -1;
+			}
+			def.setConfigId(configId);
+
+			int var = is.readUnsignedShort();
+			if (var == 0xFFFF)
+			{
+				var = -1;
+			}
+
+			int length = is.readUnsignedByte();
+			int[] configChangeDest = new int[length + 2];
+
+			for (int index = 0; index <= length; ++index)
+			{
+				configChangeDest[index] = is.readUnsignedShort();
+				if (0xFFFF == configChangeDest[index])
+				{
+					configChangeDest[index] = -1;
+				}
+			}
+
+			configChangeDest[length + 1] = var;
+
+			def.setConfigChangeDest(configChangeDest);
 		}
 		else
 		{
