@@ -43,7 +43,7 @@ public class InterfaceDefinition
 	public int scrollWidth;
 	public int scrollHeight;
 	public boolean field2210;
-	public int textureId;
+	public int spriteId;
 	public int field2294;
 	public boolean field2257;
 	public int opacity;

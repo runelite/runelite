@@ -100,7 +100,7 @@ public class class107 {
          class124.method2350(var3);
          return 1;
       } else if(var0 == 1105) {
-         var3.textureId = class32.field720[--class32.field715];
+         var3.spriteId = class32.field720[--class32.field715];
          class124.method2350(var3);
          return 1;
       } else if(var0 == 1106) {
