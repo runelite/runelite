@@ -49,7 +49,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
@@ -369,7 +369,7 @@ public class DevToolsOverlay extends Overlay
 
 	private void renderInventory(Graphics2D graphics)
 	{
-		Widget inventoryWidget = client.getWidget(WidgetID.INVENTORY_GROUP_ID, WidgetID.INVENTORY_CHILD_ID);
+		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 		if (inventoryWidget == null)
 		{
 			return;

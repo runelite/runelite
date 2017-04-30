@@ -27,6 +27,7 @@ package net.runelite.api;
 import java.awt.Canvas;
 import java.util.Arrays;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 
 public class Client
 {
@@ -190,6 +191,14 @@ public class Client
 			).toArray(Widget[][]::new);
 	}
 
+	public Widget getWidget(WidgetInfo widget)
+	{
+		int groupId = widget.getGroupId();
+		int childId = widget.getChildId();
+
+		return getWidget(groupId, childId);
+	}
+
 	public Widget getWidget(int groupId, int childId)
 	{
 		net.runelite.rs.api.Widget[][] widgets = client.getWidgets();
@@ -292,7 +301,7 @@ public class Client
 	{
 		return client.getXteaKeys();
 	}
-	
+
 	public int getSetting(Varbits varbit)
 	{
 		int[] settings = client.getSettings();
