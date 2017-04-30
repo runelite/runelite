@@ -26,6 +26,8 @@ package net.runelite.inject.callbacks;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.OverlayRenderer;
@@ -45,8 +47,8 @@ public class RSCanvasCallback
 	{
 		if (canvas.getHeight() != clientBuffer.getHeight() || canvas.getWidth() != clientBuffer.getWidth())
 		{
-			clientBuffer = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
-			gameBuffer = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
+			clientBuffer = resize(clientBuffer, canvas.getWidth(), canvas.getHeight());
+			gameBuffer = resize(gameBuffer, canvas.getWidth(), canvas.getHeight());
 		}
 
 		Graphics clientGraphics = clientBuffer.getGraphics();
@@ -73,5 +75,17 @@ public class RSCanvasCallback
 		superGraphics.drawImage(clientBuffer, 0, 0, null);
 
 		return gameBuffer.getGraphics();
+	}
+
+	private static BufferedImage resize(BufferedImage img, int newWidth, int newHeight)
+	{
+		Image tmp = img.getScaledInstance(newWidth, newHeight, Image.SCALE_FAST);
+		BufferedImage bufferedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+
+		Graphics2D graphics = bufferedImage.createGraphics();
+		graphics.drawImage(tmp, 0, 0, null);
+		graphics.dispose();
+
+		return bufferedImage;
 	}
 }
