@@ -80,7 +80,10 @@ public class RuneLite
 
 	public static void main(String[] args) throws Exception
 	{
+		// Do not fill in background on repaint. Reduces flickering when
+		// the applet is resized.
 		System.setProperty("sun.awt.noerasebackground", "true");
+
 		OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode");
 		options = parser.parse(args);

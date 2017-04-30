@@ -77,14 +77,15 @@ public class RSCanvasCallback
 		return gameBuffer.getGraphics();
 	}
 
-    public static BufferedImage resize(BufferedImage img, int newWidth, int newHeight) {
-        Image tmp = img.getScaledInstance(newWidth, newHeight, Image.SCALE_FAST);
-        BufferedImage bufferedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+	private static BufferedImage resize(BufferedImage img, int newWidth, int newHeight)
+	{
+		Image tmp = img.getScaledInstance(newWidth, newHeight, Image.SCALE_FAST);
+		BufferedImage bufferedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
 
-        Graphics2D graphics = bufferedImage.createGraphics();
-        graphics.drawImage(tmp, 0, 0, null);
-        graphics.dispose();
+		Graphics2D graphics = bufferedImage.createGraphics();
+		graphics.drawImage(tmp, 0, 0, null);
+		graphics.dispose();
 
-        return bufferedImage;
-    }
+		return bufferedImage;
+	}
 }
