@@ -34,12 +34,19 @@ public class ScriptLoader
 		ScriptDefinition def = new ScriptDefinition();
 		InputStream in = new InputStream(b);
 
-		in.setOffset(in.getLength() - 12);
+		in.setOffset(in.getLength() - 2);
+		int scriptEndOffset = in.readUnsignedShort();
+
+		// 2 for scriptEndOffset + the k/v data + 12 for the param/vars/stack data
+		int endIdx = in.getLength() - 2 - scriptEndOffset - 12;
+		in.setOffset(endIdx);
 		int paramCount = in.readInt();
 		int localIntCount = in.readUnsignedShort();
 		int localStringCount = in.readUnsignedShort();
 		int intStackCount = in.readUnsignedShort();
 		int stringStackCount = in.readUnsignedShort();
+
+		// XXX There are key/value pairs here
 
 		def.setLocalIntCount(localIntCount);
 		def.setLocalStringCount(localStringCount);
@@ -58,7 +65,7 @@ public class ScriptLoader
 		def.setStringOperands(stringOperands);
 
 		int var3;
-		for (int var6 = 0; in.getOffset() < in.getLength() - 12; instructions[var6++] = var3)
+		for (int var6 = 0; in.getOffset() < endIdx; instructions[var6++] = var3)
 		{
 			var3 = in.readUnsignedShort();
 			if (var3 == 3)
