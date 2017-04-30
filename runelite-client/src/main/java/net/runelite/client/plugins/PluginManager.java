@@ -40,6 +40,7 @@ import net.runelite.client.plugins.hiscore.Hiscore;
 import net.runelite.client.plugins.idlenotifier.IdleNotifier;
 import net.runelite.client.plugins.mousehighlight.MouseHighlight;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
+import net.runelite.client.plugins.pestcontrol.PestControl;
 import net.runelite.client.plugins.runecraft.Runecraft;
 import net.runelite.client.plugins.xtea.Xtea;
 import org.slf4j.Logger;
@@ -69,6 +70,7 @@ public class PluginManager
 		plugins.add(new IdleNotifier());
 		plugins.add(new Runecraft());
 		plugins.add(new MouseHighlight());
+		plugins.add(new PestControl());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
