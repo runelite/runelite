@@ -27,8 +27,7 @@ package net.runelite.client.ui;
 import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
 import net.runelite.client.ClientLoader;
@@ -36,7 +35,7 @@ import net.runelite.client.RuneLite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-final class ClientPanel extends JPanel implements ComponentListener
+final class ClientPanel extends JPanel
 {
 	private static final Logger logger = LoggerFactory.getLogger(ClientPanel.class);
 
@@ -49,16 +48,16 @@ final class ClientPanel extends JPanel implements ComponentListener
 		setSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		setLayout(new BorderLayout());
 		setBackground(Color.black);
-		this.addComponentListener(this);
 
 		ClientLoader loader = new ClientLoader();
 
 		rs = loader.load();
-		rs.setSize(this.getSize());
+		rs.setLayout(null);
 		rs.init();
 		rs.start();
-		this.add(rs);
+		add(rs, BorderLayout.CENTER);
 
 		Client client = null;
 		try
@@ -74,30 +73,4 @@ final class ClientPanel extends JPanel implements ComponentListener
 		RuneLite.setClient(client);
 	}
 
-	@Override
-	public void componentResized(ComponentEvent e)
-	{
-		if (rs != null)
-		{
-			rs.setLocation(0, 0);
-			rs.setSize(this.getSize());
-			rs.setPreferredSize(this.getPreferredSize());
-		}
-		this.setPreferredSize(this.getSize());
-	}
-
-	@Override
-	public void componentMoved(ComponentEvent e)
-	{
-	}
-
-	@Override
-	public void componentShown(ComponentEvent e)
-	{
-	}
-
-	@Override
-	public void componentHidden(ComponentEvent e)
-	{
-	}
 }
