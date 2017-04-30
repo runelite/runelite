@@ -22,11 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache;
 
 import java.io.File;
-import java.net.URISyntaxException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,7 @@ public class StoreLocation
 {
 	private static final Logger logger = LoggerFactory.getLogger(StoreLocation.class);
 
+	private static final int NUM_INDEXES = 15;
 	private static final String TMP_DIR = "d:/temp";
 
 	public static File LOCATION;
@@ -42,21 +44,48 @@ public class StoreLocation
 
 	static
 	{
-		try
-		{
-			LOCATION = new File(StoreLocation.class.getResource("/cache").toURI());
-		}
-		catch (URISyntaxException ex)
-		{
-			logger.error(null, ex);
-		}
-
 		File tmp = new File(TMP_DIR);
 		if (tmp.exists() || tmp.mkdir())
 		{
 			System.setProperty("java.io.tmpdir", TMP_DIR);
 			TMP = tmp;
 		}
+
+		try
+		{
+			LOCATION = setupCacheDir();
+		}
+		catch (IOException ex)
+		{
+			logger.warn("unable to initialize cache tmp area", ex);
+		}
+	}
+
+	private static File setupCacheDir() throws IOException
+	{
+		File file = new File(System.getProperty("java.io.tmpdir"), "cache-work");
+
+		if (file.exists())
+		{
+			logger.info("Using preexisting cache working directory {}", file);
+			return file;
+		}
+
+		file.mkdir();
+
+		// Copy over files
+		InputStream in = StoreLocation.class.getResourceAsStream("/main_file_cache.dat2");
+		Files.copy(in, new File(file, "main_file_cache.dat2").toPath());
+
+		for (int i = 0; i <= NUM_INDEXES; ++i)
+		{
+			in = StoreLocation.class.getResourceAsStream("/main_file_cache.idx" + i);
+			Files.copy(in, new File(file, "main_file_cache.idx" + i).toPath());
+		}
+
+		logger.info("Set up cache working directory to {}", file);
+
+		return file;
 	}
 
 	public static TemporaryFolder getTemporaryFolder()
@@ -68,7 +97,9 @@ public class StoreLocation
 			{
 				// don't cleanup if using local tmpdir
 				if (TMP == null)
+				{
 					super.after();
+				}
 			}
 		};
 	}
