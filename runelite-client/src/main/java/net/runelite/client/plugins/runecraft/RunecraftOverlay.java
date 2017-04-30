@@ -31,7 +31,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
@@ -49,7 +49,7 @@ public class RunecraftOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Widget inventoryWidget = client.getWidget(WidgetID.INVENTORY_GROUP_ID, WidgetID.INVENTORY_CHILD_ID);
+		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 		if (inventoryWidget == null)
 		{
 			return null;
