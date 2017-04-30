@@ -8,7 +8,7 @@ public class class159 {
    @ObfuscatedGetter(
       intValue = -1626092593
    )
-   public static int field2063 = 0;
+   public static int field2063;
    @ObfuscatedName("c")
    public static IndexDataBase field2064;
    @ObfuscatedName("q")
@@ -29,6 +29,10 @@ public class class159 {
       intValue = 182014711
    )
    static int field2071;
+
+   static {
+      field2063 = 0;
+   }
 
    class159() throws Throwable {
       throw new Error();

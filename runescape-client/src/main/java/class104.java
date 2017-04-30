@@ -15,15 +15,21 @@ public class class104 {
    @ObfuscatedName("j")
    public static String[] field1678;
    @ObfuscatedName("w")
-   public static class72 field1679 = null;
+   public static class72 field1679;
    @ObfuscatedName("r")
-   public static class72 field1680 = null;
+   public static class72 field1680;
    @ObfuscatedName("s")
-   public static class72 field1681 = null;
+   public static class72 field1681;
    @ObfuscatedName("k")
    public static class72[] field1683;
    @ObfuscatedName("q")
    static File field1684;
+
+   static {
+      field1679 = null;
+      field1680 = null;
+      field1681 = null;
+   }
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(

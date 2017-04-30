@@ -7,7 +7,7 @@ import net.runelite.mapping.ObfuscatedName;
 public final class Node2LinkedList {
    @ObfuscatedName("d")
    @Export("sentinel")
-   CacheableNode sentinel = new CacheableNode();
+   CacheableNode sentinel;
 
    @ObfuscatedName("d")
    public void method2712(CacheableNode var1) {
@@ -63,6 +63,7 @@ public final class Node2LinkedList {
    }
 
    public Node2LinkedList() {
+      this.sentinel = new CacheableNode();
       this.sentinel.previous = this.sentinel;
       this.sentinel.next = this.sentinel;
    }

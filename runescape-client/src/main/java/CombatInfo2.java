@@ -11,40 +11,40 @@ public class CombatInfo2 extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 1970694945
    )
-   int field2846 = -1;
+   int field2846;
    @ObfuscatedName("c")
    static IndexDataBase field2847;
    @ObfuscatedName("n")
-   public static NodeCache field2848 = new NodeCache(64);
+   public static NodeCache field2848;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -900232287
    )
-   public int field2849 = -1;
+   public int field2849;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1209223443
    )
-   public int field2850 = 70;
+   public int field2850;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = 368312965
    )
-   public int field2851 = 255;
+   public int field2851;
    @ObfuscatedName("d")
    public static IndexDataBase field2852;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 695511145
    )
-   public int field2853 = 255;
+   public int field2853;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -397132229
    )
-   public int field2854 = 1;
+   public int field2854;
    @ObfuscatedName("q")
-   static NodeCache field2855 = new NodeCache(64);
+   static NodeCache field2855;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -550239511
@@ -54,18 +54,18 @@ public class CombatInfo2 extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 66869819
    )
-   int field2857 = -1;
+   int field2857;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = -401156867
    )
    @Export("healthScale")
-   public int healthScale = 30;
+   public int healthScale;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 31903217
    )
-   public int field2859 = 0;
+   public int field2859;
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
@@ -74,6 +74,18 @@ public class CombatInfo2 extends CacheableNode {
    )
    public static int method3540(int var0) {
       return var0 >> 11 & 63;
+   }
+
+   public CombatInfo2() {
+      this.field2851 = 255;
+      this.field2853 = 255;
+      this.field2849 = -1;
+      this.field2854 = 1;
+      this.field2850 = 70;
+      this.field2846 = -1;
+      this.field2857 = -1;
+      this.healthScale = 30;
+      this.field2859 = 0;
    }
 
    @ObfuscatedName("n")
@@ -129,6 +141,11 @@ public class CombatInfo2 extends CacheableNode {
             return var1;
          }
       }
+   }
+
+   static {
+      field2848 = new NodeCache(64);
+      field2855 = new NodeCache(64);
    }
 
    @ObfuscatedName("c")

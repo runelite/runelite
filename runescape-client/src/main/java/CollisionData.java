@@ -12,7 +12,7 @@ public class CollisionData {
       intValue = 4163295
    )
    @Export("x")
-   public int x = 0;
+   public int x;
    @ObfuscatedName("aq")
    @ObfuscatedGetter(
       intValue = -1441084061
@@ -33,7 +33,7 @@ public class CollisionData {
       intValue = 1820762623
    )
    @Export("y")
-   public int y = 0;
+   public int y;
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
@@ -124,6 +124,8 @@ public class CollisionData {
       garbageValue = "104"
    )
    public CollisionData(int var1, int var2) {
+      this.x = 0;
+      this.y = 0;
       this.width = var1;
       this.height = var2;
       this.flags = new int[this.width][this.height];

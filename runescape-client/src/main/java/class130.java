@@ -6,26 +6,26 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("eg")
 public class class130 {
    @ObfuscatedName("t")
-   static byte[][] field1963 = new byte[250][];
+   static byte[][] field1963;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 875539095
    )
-   static int field1964 = 0;
+   static int field1964;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -2021576253
    )
-   static int field1965 = 0;
+   static int field1965;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = -880219777
    )
-   static int field1966 = 0;
+   static int field1966;
    @ObfuscatedName("q")
-   static byte[][] field1967 = new byte[1000][];
+   static byte[][] field1967;
    @ObfuscatedName("p")
-   static byte[][] field1968 = new byte[50][];
+   static byte[][] field1968;
    @ObfuscatedName("nj")
    @ObfuscatedGetter(
       intValue = -37038109
@@ -58,6 +58,15 @@ public class class130 {
       } else {
          return new byte[var0];
       }
+   }
+
+   static {
+      field1964 = 0;
+      field1966 = 0;
+      field1965 = 0;
+      field1967 = new byte[1000][];
+      field1963 = new byte[250][];
+      field1968 = new byte[50][];
    }
 
    @ObfuscatedName("r")

@@ -12,14 +12,14 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 1507919085
    )
-   public int field3033 = -1;
+   public int field3033;
    @ObfuscatedName("c")
    public static IndexDataBase field3034;
    @ObfuscatedName("n")
-   public static NodeCache field3035 = new NodeCache(64);
+   public static NodeCache field3035;
    @ObfuscatedName("q")
    @Export("npcModelCache")
-   public static NodeCache npcModelCache = new NodeCache(50);
+   public static NodeCache npcModelCache;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -1405080953
@@ -40,37 +40,37 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -424976029
    )
-   public int field3042 = 1;
+   public int field3042;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 1894280515
    )
-   public int field3043 = -1;
+   public int field3043;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -543115347
    )
-   int field3044 = 128;
+   int field3044;
    @ObfuscatedName("ac")
    @ObfuscatedGetter(
       intValue = 1147105331
    )
-   public int field3045 = -1;
+   public int field3045;
    @ObfuscatedName("aa")
    @ObfuscatedGetter(
       intValue = -1114695449
    )
-   int field3046 = -1;
+   int field3046;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 798432575
    )
-   public int field3047 = -1;
+   public int field3047;
    @ObfuscatedName("az")
    @ObfuscatedGetter(
       intValue = 1986049793
    )
-   public int field3048 = 32;
+   public int field3048;
    @ObfuscatedName("j")
    short[] field3049;
    @ObfuscatedName("i")
@@ -81,69 +81,69 @@ public class NPCComposition extends CacheableNode {
    short[] field3052;
    @ObfuscatedName("h")
    @Export("actions")
-   public String[] actions = new String[5];
+   public String[] actions;
    @ObfuscatedName("b")
    @Export("isMinimapVisible")
-   public boolean isMinimapVisible = true;
+   public boolean isMinimapVisible;
    @ObfuscatedName("p")
    @Export("name")
-   public String name = "null";
+   public String name;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 1927872857
    )
-   int field3056 = 128;
+   int field3056;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -1537175821
    )
-   public int field3057 = -1;
+   public int field3057;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -1897348339
    )
    @Export("combatLevel")
-   public int combatLevel = -1;
+   public int combatLevel;
    @ObfuscatedName("am")
    @ObfuscatedGetter(
       intValue = 526120715
    )
-   int field3059 = 0;
+   int field3059;
    @ObfuscatedName("ax")
    @ObfuscatedGetter(
       intValue = -1840141441
    )
-   int field3060 = 0;
+   int field3060;
    @ObfuscatedName("aj")
-   public boolean field3061 = true;
+   public boolean field3061;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 292706655
    )
-   public int field3062 = -1;
+   public int field3062;
    @ObfuscatedName("ak")
    @ObfuscatedGetter(
       intValue = -1676715729
    )
-   int field3063 = -1;
+   int field3063;
    @ObfuscatedName("y")
    @Export("isVisible")
-   public boolean isVisible = false;
+   public boolean isVisible;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -1908612155
    )
-   public int field3065 = -1;
+   public int field3065;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -391605143
    )
-   public int field3066 = -1;
+   public int field3066;
    @ObfuscatedName("ay")
    @Export("isClickable")
-   public boolean isClickable = true;
+   public boolean isClickable;
    @ObfuscatedName("ae")
-   public boolean field3068 = false;
+   public boolean field3068;
    @ObfuscatedName("aq")
    class142 field3069;
 
@@ -153,6 +153,33 @@ public class NPCComposition extends CacheableNode {
       garbageValue = "0"
    )
    void method3800() {
+   }
+
+   NPCComposition() {
+      this.name = "null";
+      this.field3042 = 1;
+      this.field3047 = -1;
+      this.field3043 = -1;
+      this.field3066 = -1;
+      this.field3065 = -1;
+      this.field3033 = -1;
+      this.field3062 = -1;
+      this.field3057 = -1;
+      this.actions = new String[5];
+      this.isMinimapVisible = true;
+      this.combatLevel = -1;
+      this.field3056 = 128;
+      this.field3044 = 128;
+      this.isVisible = false;
+      this.field3059 = 0;
+      this.field3060 = 0;
+      this.field3045 = -1;
+      this.field3048 = 32;
+      this.field3063 = -1;
+      this.field3046 = -1;
+      this.field3061 = true;
+      this.isClickable = true;
+      this.field3068 = false;
    }
 
    @ObfuscatedName("w")
@@ -222,6 +249,11 @@ public class NPCComposition extends CacheableNode {
    )
    public int method3806(int var1, int var2) {
       return IndexData.method3408(this.field3069, var1, var2);
+   }
+
+   static {
+      field3035 = new NodeCache(64);
+      npcModelCache = new NodeCache(50);
    }
 
    @ObfuscatedName("t")

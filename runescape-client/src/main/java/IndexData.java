@@ -19,7 +19,7 @@ public class IndexData extends IndexDataBase {
    @Export("index")
    int index;
    @ObfuscatedName("y")
-   static CRC32 field2738 = new CRC32();
+   static CRC32 field2738;
    @ObfuscatedName("x")
    IndexFile field2739;
    @ObfuscatedName("m")
@@ -33,13 +33,13 @@ public class IndexData extends IndexDataBase {
    @ObfuscatedGetter(
       intValue = 903446291
    )
-   int field2744 = -1;
+   int field2744;
    @ObfuscatedName("pe")
    static class1 field2745;
    @ObfuscatedName("f")
-   volatile boolean field2746 = false;
+   volatile boolean field2746;
    @ObfuscatedName("o")
-   boolean field2748 = false;
+   boolean field2748;
    @ObfuscatedName("am")
    @ObfuscatedGetter(
       intValue = -111710757
@@ -229,6 +229,9 @@ public class IndexData extends IndexDataBase {
 
    public IndexData(IndexFile var1, IndexFile var2, int var3, boolean var4, boolean var5, boolean var6) {
       super(var4, var5);
+      this.field2746 = false;
+      this.field2748 = false;
+      this.field2744 = -1;
       this.field2739 = var1;
       this.field2736 = var2;
       this.index = var3;
@@ -258,6 +261,10 @@ public class IndexData extends IndexDataBase {
 
          return var2;
       }
+   }
+
+   static {
+      field2738 = new CRC32();
    }
 
    @ObfuscatedName("cg")

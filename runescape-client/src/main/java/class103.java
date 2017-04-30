@@ -12,13 +12,13 @@ public class class103 implements Runnable {
    @ObfuscatedName("d")
    static String field1659;
    @ObfuscatedName("n")
-   class102 field1660 = null;
+   class102 field1660;
    @ObfuscatedName("q")
-   class102 field1661 = null;
+   class102 field1661;
    @ObfuscatedName("t")
    Thread field1662;
    @ObfuscatedName("p")
-   boolean field1663 = false;
+   boolean field1663;
    @ObfuscatedName("u")
    EventQueue field1664;
    @ObfuscatedName("c")
@@ -133,6 +133,9 @@ public class class103 implements Runnable {
    }
 
    class103() {
+      this.field1660 = null;
+      this.field1661 = null;
+      this.field1663 = false;
       field1659 = "Unknown";
       field1668 = "1.1";
 

@@ -12,7 +12,7 @@ public class class126 {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LCipherBuffer;I)V",
+      signature = "(LPacketBuffer;I)V",
       garbageValue = "-1495237127"
    )
    static final void method2358(PacketBuffer var0) {
@@ -29,7 +29,7 @@ public class class126 {
                --var1;
                class45.field888[var3] = (byte)(class45.field888[var3] | 2);
             } else {
-               var4 = var0.readBits(1);
+               var4 = var0.method2645(1);
                if(var4 == 0) {
                   var1 = VertexNormal.method1647(var0);
                   class45.field888[var3] = (byte)(class45.field888[var3] | 2);
@@ -53,7 +53,7 @@ public class class126 {
                   --var1;
                   class45.field888[var3] = (byte)(class45.field888[var3] | 2);
                } else {
-                  var4 = var0.readBits(1);
+                  var4 = var0.method2645(1);
                   if(var4 == 0) {
                      var1 = VertexNormal.method1647(var0);
                      class45.field888[var3] = (byte)(class45.field888[var3] | 2);
@@ -77,7 +77,7 @@ public class class126 {
                      --var1;
                      class45.field888[var3] = (byte)(class45.field888[var3] | 2);
                   } else {
-                     var4 = var0.readBits(1);
+                     var4 = var0.method2645(1);
                      if(var4 == 0) {
                         var1 = VertexNormal.method1647(var0);
                         class45.field888[var3] = (byte)(class45.field888[var3] | 2);
@@ -101,7 +101,7 @@ public class class126 {
                         --var1;
                         class45.field888[var3] = (byte)(class45.field888[var3] | 2);
                      } else {
-                        var4 = var0.readBits(1);
+                        var4 = var0.method2645(1);
                         if(var4 == 0) {
                            var1 = VertexNormal.method1647(var0);
                            class45.field888[var3] = (byte)(class45.field888[var3] | 2);

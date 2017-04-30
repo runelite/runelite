@@ -16,7 +16,7 @@ public final class XHashTable {
    @Export("buckets")
    Node[] buckets;
    @ObfuscatedName("t")
-   int field2028 = 0;
+   int field2028;
 
    @ObfuscatedName("d")
    public Node method2773(long var1) {
@@ -95,6 +95,7 @@ public final class XHashTable {
    }
 
    public XHashTable(int var1) {
+      this.field2028 = 0;
       this.size = var1;
       this.buckets = new Node[var1];
 

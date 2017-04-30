@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fi")
 public class class164 extends class68 {
    @ObfuscatedName("c")
-   Deque field2152 = new Deque();
+   Deque field2152;
    @ObfuscatedName("dh")
    @Export("mapRegions")
    @Hook("mapRegionsChanged")
@@ -16,7 +16,7 @@ public class class164 extends class68 {
    @ObfuscatedName("k")
    static int[][][] field2160;
    @ObfuscatedName("n")
-   class51 field2161 = new class51();
+   class51 field2161;
 
    @ObfuscatedName("cc")
    @ObfuscatedSignature(
@@ -847,6 +847,8 @@ public class class164 extends class68 {
    }
 
    class164(class160 var1) {
+      this.field2152 = new Deque();
+      this.field2161 = new class51();
       this.field2158 = var1;
    }
 

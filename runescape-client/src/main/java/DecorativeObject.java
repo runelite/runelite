@@ -14,7 +14,7 @@ public final class DecorativeObject {
       intValue = 12523779
    )
    @Export("renderInfoBitPacked")
-   int renderInfoBitPacked = 0;
+   int renderInfoBitPacked;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 891200355
@@ -53,7 +53,7 @@ public final class DecorativeObject {
       intValue = -1185050127
    )
    @Export("hash")
-   public int hash = 0;
+   public int hash;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -1958805439
@@ -70,6 +70,11 @@ public final class DecorativeObject {
    @Export("renderable2")
    public Renderable renderable2;
 
+   DecorativeObject() {
+      this.hash = 0;
+      this.renderInfoBitPacked = 0;
+   }
+
    @ObfuscatedName("ba")
    @ObfuscatedSignature(
       signature = "(ZI)V",
@@ -77,8 +82,8 @@ public final class DecorativeObject {
    )
    static final void method1928(boolean var0) {
       while(true) {
-         if(Client.ingressBuffer.method2657(Client.packetLength) >= 27) {
-            int var1 = Client.ingressBuffer.readBits(15);
+         if(Client.secretPacketBuffer2.method2657(Client.packetLength) >= 27) {
+            int var1 = Client.secretPacketBuffer2.method2645(15);
             if(var1 != 32767) {
                boolean var2 = false;
                if(Client.cachedNPCs[var1] == null) {
@@ -89,39 +94,39 @@ public final class DecorativeObject {
                NPC var3 = Client.cachedNPCs[var1];
                Client.field350[++Client.field321 - 1] = var1;
                var3.field648 = Client.gameCycle;
-               int var4 = Client.ingressBuffer.readBits(1);
+               int var4 = Client.secretPacketBuffer2.method2645(1);
                int var5;
                if(var0) {
-                  var5 = Client.ingressBuffer.readBits(8);
+                  var5 = Client.secretPacketBuffer2.method2645(8);
                   if(var5 > 127) {
                      var5 -= 256;
                   }
                } else {
-                  var5 = Client.ingressBuffer.readBits(5);
+                  var5 = Client.secretPacketBuffer2.method2645(5);
                   if(var5 > 15) {
                      var5 -= 32;
                   }
                }
 
-               int var6 = Client.field412[Client.ingressBuffer.readBits(3)];
+               int var6 = Client.field412[Client.secretPacketBuffer2.method2645(3)];
                if(var2) {
                   var3.field650 = var3.angle = var6;
                }
 
-               var3.composition = Widget.getNpcDefinition(Client.ingressBuffer.readBits(14));
-               int var7 = Client.ingressBuffer.readBits(1);
+               var3.composition = Widget.getNpcDefinition(Client.secretPacketBuffer2.method2645(14));
+               int var7 = Client.secretPacketBuffer2.method2645(1);
                if(var7 == 1) {
                   Client.field324[++Client.field292 - 1] = var1;
                }
 
                int var8;
                if(var0) {
-                  var8 = Client.ingressBuffer.readBits(8);
+                  var8 = Client.secretPacketBuffer2.method2645(8);
                   if(var8 > 127) {
                      var8 -= 256;
                   }
                } else {
-                  var8 = Client.ingressBuffer.readBits(5);
+                  var8 = Client.secretPacketBuffer2.method2645(5);
                   if(var8 > 15) {
                      var8 -= 32;
                   }
@@ -145,7 +150,7 @@ public final class DecorativeObject {
             }
          }
 
-         Client.ingressBuffer.method2647();
+         Client.secretPacketBuffer2.method2647();
          return;
       }
    }

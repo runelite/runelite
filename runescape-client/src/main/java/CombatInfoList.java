@@ -10,7 +10,7 @@ public class CombatInfoList implements Iterable {
    Node field2029;
    @ObfuscatedName("d")
    @Export("node")
-   Node node = new Node();
+   Node node;
 
    @ObfuscatedName("d")
    public void method2787(Node var1) {
@@ -89,6 +89,7 @@ public class CombatInfoList implements Iterable {
    }
 
    public CombatInfoList() {
+      this.node = new Node();
       this.node.next = this.node;
       this.node.previous = this.node;
    }

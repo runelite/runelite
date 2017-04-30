@@ -11,13 +11,13 @@ public class class198 extends CacheableNode {
    )
    public int field2870;
    @ObfuscatedName("c")
-   static NodeCache field2871 = new NodeCache(64);
+   static NodeCache field2871;
    @ObfuscatedName("d")
    public static IndexDataBase field2872;
    @ObfuscatedName("n")
    char field2874;
    @ObfuscatedName("p")
-   boolean field2875 = true;
+   boolean field2875;
    @ObfuscatedName("t")
    public String field2876;
 
@@ -45,6 +45,10 @@ public class class198 extends CacheableNode {
       }
    }
 
+   class198() {
+      this.field2875 = true;
+   }
+
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(I)Z",
@@ -52,6 +56,10 @@ public class class198 extends CacheableNode {
    )
    public boolean method3586() {
       return this.field2874 == 115;
+   }
+
+   static {
+      field2871 = new NodeCache(64);
    }
 
    @ObfuscatedName("q")

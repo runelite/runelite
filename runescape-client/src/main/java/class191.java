@@ -4,9 +4,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("gr")
 public class class191 extends CacheableNode {
    @ObfuscatedName("c")
-   public static NodeCache field2795 = new NodeCache(64);
+   public static NodeCache field2795;
    @ObfuscatedName("n")
-   public boolean field2796 = false;
+   public boolean field2796;
    @ObfuscatedName("d")
    public static IndexDataBase field2797;
 
@@ -24,6 +24,14 @@ public class class191 extends CacheableNode {
 
          this.method3469(var1, var2);
       }
+   }
+
+   static {
+      field2795 = new NodeCache(64);
+   }
+
+   public class191() {
+      this.field2796 = false;
    }
 
    @ObfuscatedName("n")

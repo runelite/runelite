@@ -8,7 +8,7 @@ public class class153 implements Iterator {
    @ObfuscatedName("c")
    Node field2043;
    @ObfuscatedName("q")
-   Node field2044 = null;
+   Node field2044;
    @ObfuscatedName("n")
    int field2045;
 
@@ -68,6 +68,7 @@ public class class153 implements Iterator {
    }
 
    class153(class142 var1) {
+      this.field2044 = null;
       this.field2042 = var1;
       this.method2867();
    }

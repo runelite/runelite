@@ -11,12 +11,12 @@ public class Spotanim extends CacheableNode {
    @ObfuscatedName("c")
    static IndexDataBase field2800;
    @ObfuscatedName("n")
-   public static NodeCache field2801 = new NodeCache(64);
+   public static NodeCache field2801;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -1087348251
    )
-   int field2802 = 128;
+   int field2802;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -438447953
@@ -29,34 +29,34 @@ public class Spotanim extends CacheableNode {
    @ObfuscatedName("l")
    short[] field2807;
    @ObfuscatedName("q")
-   public static NodeCache field2808 = new NodeCache(30);
+   public static NodeCache field2808;
    @ObfuscatedName("g")
    short[] field2809;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -220036409
    )
-   int field2810 = 128;
+   int field2810;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1000244325
    )
-   public int field2811 = -1;
+   public int field2811;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -723128553
    )
-   int field2812 = 0;
+   int field2812;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 1666787275
    )
-   int field2813 = 0;
+   int field2813;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 1518442913
    )
-   int field2814 = 0;
+   int field2814;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = 225598885
@@ -184,5 +184,19 @@ public class Spotanim extends CacheableNode {
       }
 
       return var5;
+   }
+
+   Spotanim() {
+      this.field2811 = -1;
+      this.field2810 = 128;
+      this.field2802 = 128;
+      this.field2812 = 0;
+      this.field2813 = 0;
+      this.field2814 = 0;
+   }
+
+   static {
+      field2801 = new NodeCache(64);
+      field2808 = new NodeCache(30);
    }
 }

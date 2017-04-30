@@ -7,7 +7,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("by")
 public class class59 implements Runnable {
    @ObfuscatedName("d")
-   volatile class57[] field1061 = new class57[2];
+   volatile class57[] field1061;
 
    public void run() {
       try {
@@ -205,5 +205,9 @@ public class class59 implements Runnable {
          ++class187.field2755;
          --class187.field2768;
       }
+   }
+
+   class59() {
+      this.field1061 = new class57[2];
    }
 }

@@ -10,13 +10,13 @@ public final class NodeCache {
    XHashTable table;
    @ObfuscatedName("t")
    @Export("list")
-   Node2LinkedList list = new Node2LinkedList();
+   Node2LinkedList list;
    @ObfuscatedName("n")
    int field2021;
    @ObfuscatedName("c")
    int field2022;
    @ObfuscatedName("d")
-   CacheableNode field2023 = new CacheableNode();
+   CacheableNode field2023;
 
    @ObfuscatedName("d")
    @Export("get")
@@ -59,6 +59,8 @@ public final class NodeCache {
    }
 
    public NodeCache(int var1) {
+      this.field2023 = new CacheableNode();
+      this.list = new Node2LinkedList();
       this.field2022 = var1;
       this.field2021 = var1;
 

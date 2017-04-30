@@ -11,29 +11,29 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -139621155
    )
-   public int field2923 = 0;
+   public int field2923;
    @ObfuscatedName("ay")
    @ObfuscatedGetter(
       intValue = -1888621547
    )
    @Export("modelSizeHeight")
-   int modelSizeHeight = 128;
+   int modelSizeHeight;
    @ObfuscatedName("n")
    static IndexDataBase field2925;
    @ObfuscatedName("q")
-   static NodeCache field2926 = new NodeCache(64);
+   static NodeCache field2926;
    @ObfuscatedName("t")
-   public static NodeCache field2927 = new NodeCache(500);
+   public static NodeCache field2927;
    @ObfuscatedName("p")
-   static NodeCache field2928 = new NodeCache(30);
+   static NodeCache field2928;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -1802258465
    )
    @Export("animationId")
-   public int animationId = -1;
+   public int animationId;
    @ObfuscatedName("z")
-   static ModelData[] field2930 = new ModelData[4];
+   static ModelData[] field2930;
    @ObfuscatedName("s")
    @Export("recolorToReplace")
    short[] recolorToReplace;
@@ -45,7 +45,7 @@ public class ObjectComposition extends CacheableNode {
    int[] objectTypes;
    @ObfuscatedName("w")
    @Export("name")
-   public String name = "null";
+   public String name;
    @ObfuscatedName("r")
    @Export("recolorToFind")
    short[] recolorToFind;
@@ -53,7 +53,7 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -581467505
    )
-   public int field2936 = 2;
+   public int field2936;
    @ObfuscatedName("k")
    @Export("textureToFind")
    short[] textureToFind;
@@ -61,87 +61,87 @@ public class ObjectComposition extends CacheableNode {
    @Export("textureToReplace")
    short[] textureToReplace;
    @ObfuscatedName("o")
-   public boolean field2939 = false;
+   public boolean field2939;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -709520491
    )
    @Export("sizeY")
-   public int sizeY = 1;
+   public int sizeY;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -792867907
    )
    public int field2941;
    @ObfuscatedName("x")
-   public boolean field2942 = true;
+   public boolean field2942;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = -349730473
    )
-   public int field2943 = -1;
+   public int field2943;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = -1910892287
    )
-   int field2944 = -1;
+   int field2944;
    @ObfuscatedName("f")
    @Export("nonFlatShading")
-   boolean nonFlatShading = false;
+   boolean nonFlatShading;
    @ObfuscatedName("ap")
    class142 field2946;
    @ObfuscatedName("d")
-   static boolean field2947 = false;
+   static boolean field2947;
    @ObfuscatedName("u")
-   static NodeCache field2948 = new NodeCache(30);
+   static NodeCache field2948;
    @ObfuscatedName("ak")
-   boolean field2949 = false;
+   boolean field2949;
    @ObfuscatedName("ax")
    @ObfuscatedGetter(
       intValue = 1335897451
    )
    @Export("contrast")
-   int contrast = 0;
+   int contrast;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -1192523269
    )
-   public int field2951 = 16;
+   public int field2951;
    @ObfuscatedName("az")
    @ObfuscatedGetter(
       intValue = 1482670155
    )
    @Export("mapIconId")
-   public int mapIconId = -1;
+   public int mapIconId;
    @ObfuscatedName("ao")
    @ObfuscatedGetter(
       intValue = -779502249
    )
    @Export("mapSceneId")
-   public int mapSceneId = -1;
+   public int mapSceneId;
    @ObfuscatedName("af")
    @Export("isSolid")
-   boolean isSolid = false;
+   boolean isSolid;
    @ObfuscatedName("aa")
-   public boolean field2955 = true;
+   public boolean field2955;
    @ObfuscatedName("aj")
    @ObfuscatedGetter(
       intValue = 2024080329
    )
    @Export("modelSizeX")
-   int modelSizeX = 128;
+   int modelSizeX;
    @ObfuscatedName("aq")
    @ObfuscatedGetter(
       intValue = 867993677
    )
    @Export("offsetX")
-   int offsetX = 0;
+   int offsetX;
    @ObfuscatedName("ae")
    @ObfuscatedGetter(
       intValue = 273842089
    )
    @Export("modelSizeY")
-   int modelSizeY = 128;
+   int modelSizeY;
    @ObfuscatedName("ah")
    public int[] field2959;
    @ObfuscatedName("am")
@@ -149,26 +149,26 @@ public class ObjectComposition extends CacheableNode {
       intValue = 1185666657
    )
    @Export("ambient")
-   int ambient = 0;
+   int ambient;
    @ObfuscatedName("aw")
    @ObfuscatedGetter(
       intValue = 728774063
    )
    @Export("offsetY")
-   int offsetY = 0;
+   int offsetY;
    @ObfuscatedName("ag")
-   public boolean field2962 = false;
+   public boolean field2962;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 1539337409
    )
    @Export("sizeX")
-   public int sizeX = 1;
+   public int sizeX;
    @ObfuscatedName("ar")
    @ObfuscatedGetter(
       intValue = -1498955559
    )
-   public int field2964 = -1;
+   public int field2964;
    @ObfuscatedName("ab")
    @Export("impostorIds")
    public int[] impostorIds;
@@ -177,7 +177,7 @@ public class ObjectComposition extends CacheableNode {
       intValue = 2114700095
    )
    @Export("varpId")
-   int varpId = -1;
+   int varpId;
    @ObfuscatedName("c")
    static IndexDataBase field2967;
    @ObfuscatedName("ad")
@@ -185,32 +185,68 @@ public class ObjectComposition extends CacheableNode {
       intValue = 754381823
    )
    @Export("ambientSoundId")
-   public int ambientSoundId = -1;
+   public int ambientSoundId;
    @ObfuscatedName("an")
    @ObfuscatedGetter(
       intValue = -434749511
    )
-   public int field2969 = 0;
+   public int field2969;
    @ObfuscatedName("ai")
    @ObfuscatedGetter(
       intValue = -355146077
    )
    @Export("configId")
-   int configId = -1;
+   int configId;
    @ObfuscatedName("at")
    @ObfuscatedGetter(
       intValue = -325210007
    )
-   public int field2971 = 0;
+   public int field2971;
    @ObfuscatedName("av")
    @ObfuscatedGetter(
       intValue = -717421611
    )
    @Export("offsetHeight")
-   int offsetHeight = 0;
+   int offsetHeight;
    @ObfuscatedName("ac")
    @Export("actions")
-   public String[] actions = new String[5];
+   public String[] actions;
+
+   ObjectComposition() {
+      this.name = "null";
+      this.sizeX = 1;
+      this.sizeY = 1;
+      this.field2936 = 2;
+      this.field2942 = true;
+      this.field2943 = -1;
+      this.field2944 = -1;
+      this.nonFlatShading = false;
+      this.field2939 = false;
+      this.animationId = -1;
+      this.field2951 = 16;
+      this.ambient = 0;
+      this.contrast = 0;
+      this.actions = new String[5];
+      this.mapIconId = -1;
+      this.mapSceneId = -1;
+      this.field2949 = false;
+      this.field2955 = true;
+      this.modelSizeX = 128;
+      this.modelSizeHeight = 128;
+      this.modelSizeY = 128;
+      this.offsetX = 0;
+      this.offsetHeight = 0;
+      this.offsetY = 0;
+      this.field2962 = false;
+      this.isSolid = false;
+      this.field2964 = -1;
+      this.varpId = -1;
+      this.configId = -1;
+      this.ambientSoundId = -1;
+      this.field2969 = 0;
+      this.field2923 = 0;
+      this.field2971 = 0;
+   }
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(
@@ -796,6 +832,15 @@ public class ObjectComposition extends CacheableNode {
 
          return var2;
       }
+   }
+
+   static {
+      field2947 = false;
+      field2926 = new NodeCache(64);
+      field2927 = new NodeCache(500);
+      field2928 = new NodeCache(30);
+      field2948 = new NodeCache(30);
+      field2930 = new ModelData[4];
    }
 
    @ObfuscatedName("d")

@@ -21,37 +21,37 @@ public abstract class FontTypeFace extends Rasterizer2D {
    @ObfuscatedName("p")
    int[] field3110;
    @ObfuscatedName("u")
-   public int field3111 = 0;
+   public int field3111;
    @ObfuscatedName("h")
-   static Random field3112 = new Random();
+   static Random field3112;
    @ObfuscatedName("l")
    public int field3113;
    @ObfuscatedName("a")
-   static int field3114 = 0;
+   static int field3114;
    @ObfuscatedName("g")
    byte[] field3115;
    @ObfuscatedName("w")
-   static int field3116 = -1;
+   static int field3116;
    @ObfuscatedName("r")
-   static int field3117 = -1;
+   static int field3117;
    @ObfuscatedName("s")
-   static int field3118 = -1;
+   static int field3118;
    @ObfuscatedName("k")
-   static int field3119 = -1;
+   static int field3119;
    @ObfuscatedName("e")
-   static int field3120 = 0;
+   static int field3120;
    @ObfuscatedName("j")
-   static int field3121 = 0;
+   static int field3121;
    @ObfuscatedName("z")
    public int field3122;
    @ObfuscatedName("b")
-   static String[] field3123 = new String[100];
+   static String[] field3123;
    @ObfuscatedName("x")
-   static int field3124 = 0;
+   static int field3124;
    @ObfuscatedName("i")
-   static int field3125 = 256;
+   static int field3125;
    @ObfuscatedName("d")
-   byte[][] field3126 = new byte[256][];
+   byte[][] field3126;
 
    @ObfuscatedName("i")
    public int method3904(String var1) {
@@ -857,6 +857,8 @@ public abstract class FontTypeFace extends Rasterizer2D {
    abstract void vmethod3933(byte[] var1, int var2, int var3, int var4, int var5, int var6);
 
    FontTypeFace(byte[] var1) {
+      this.field3126 = new byte[256][];
+      this.field3111 = 0;
       this.method3906(var1);
    }
 
@@ -892,6 +894,20 @@ public abstract class FontTypeFace extends Rasterizer2D {
          this.method3923(var4, var5);
          this.method3926(var1, var2 - this.method3904(var1) / 2, var3);
       }
+   }
+
+   static {
+      field3116 = -1;
+      field3117 = -1;
+      field3118 = -1;
+      field3119 = -1;
+      field3120 = 0;
+      field3121 = 0;
+      field3125 = 256;
+      field3114 = 0;
+      field3124 = 0;
+      field3112 = new Random();
+      field3123 = new String[100];
    }
 
    @ObfuscatedName("ao")
@@ -930,6 +946,8 @@ public abstract class FontTypeFace extends Rasterizer2D {
    }
 
    FontTypeFace(byte[] var1, int[] var2, int[] var3, int[] var4, int[] var5, int[] var6, byte[][] var7) {
+      this.field3126 = new byte[256][];
+      this.field3111 = 0;
       this.field3109 = var2;
       this.field3110 = var3;
       this.field3107 = var4;

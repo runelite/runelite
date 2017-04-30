@@ -17,13 +17,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("RSSocket")
 public final class RSSocket implements Runnable {
    @ObfuscatedName("q")
-   boolean field1739 = false;
+   boolean field1739;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 359273835
    )
    @Export("outbufLen")
-   int outbufLen = 0;
+   int outbufLen;
    @ObfuscatedName("n")
    @Export("socket")
    Socket socket;
@@ -39,7 +39,7 @@ public final class RSSocket implements Runnable {
    @ObfuscatedGetter(
       intValue = -1907040309
    )
-   int field1746 = 0;
+   int field1746;
    @ObfuscatedName("ba")
    @ObfuscatedGetter(
       intValue = -701752941
@@ -49,7 +49,7 @@ public final class RSSocket implements Runnable {
    @Export("inputStream")
    InputStream inputStream;
    @ObfuscatedName("v")
-   boolean field1749 = false;
+   boolean field1749;
    @ObfuscatedName("p")
    class102 field1751;
 
@@ -188,6 +188,10 @@ public final class RSSocket implements Runnable {
    }
 
    public RSSocket(Socket var1, class103 var2) throws IOException {
+      this.field1739 = false;
+      this.field1746 = 0;
+      this.outbufLen = 0;
+      this.field1749 = false;
       this.field1743 = var2;
       this.socket = var1;
       this.socket.setSoTimeout(30000);

@@ -12,15 +12,15 @@ public class Sequence extends CacheableNode {
       intValue = -519687951
    )
    @Export("rightHandItem")
-   public int rightHandItem = -1;
+   public int rightHandItem;
    @ObfuscatedName("c")
    static IndexDataBase field3085;
    @ObfuscatedName("n")
    static IndexDataBase field3086;
    @ObfuscatedName("q")
-   static NodeCache field3087 = new NodeCache(64);
+   static NodeCache field3087;
    @ObfuscatedName("t")
-   static NodeCache field3088 = new NodeCache(100);
+   static NodeCache field3088;
    @ObfuscatedName("g")
    @Export("interleaveLeave")
    int[] interleaveLeave;
@@ -37,10 +37,10 @@ public class Sequence extends CacheableNode {
       intValue = -931800789
    )
    @Export("frameStep")
-   public int frameStep = -1;
+   public int frameStep;
    @ObfuscatedName("w")
    @Export("stretches")
-   public boolean stretches = false;
+   public boolean stretches;
    @ObfuscatedName("l")
    public int[] field3095;
    @ObfuscatedName("r")
@@ -48,13 +48,13 @@ public class Sequence extends CacheableNode {
       intValue = -962377335
    )
    @Export("forcedPriority")
-   public int forcedPriority = 5;
+   public int forcedPriority;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 49393981
    )
    @Export("leftHandItem")
-   public int leftHandItem = -1;
+   public int leftHandItem;
    @ObfuscatedName("d")
    static IndexDataBase field3098;
    @ObfuscatedName("e")
@@ -62,25 +62,25 @@ public class Sequence extends CacheableNode {
       intValue = 1456214883
    )
    @Export("maxLoops")
-   public int maxLoops = 99;
+   public int maxLoops;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -1385195869
    )
    @Export("precedenceAnimating")
-   public int precedenceAnimating = -1;
+   public int precedenceAnimating;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -691365987
    )
    @Export("priority")
-   public int priority = -1;
+   public int priority;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 1623667613
    )
    @Export("replyMode")
-   public int replyMode = 2;
+   public int replyMode;
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
@@ -208,6 +208,18 @@ public class Sequence extends CacheableNode {
       }
    }
 
+   Sequence() {
+      this.frameStep = -1;
+      this.stretches = false;
+      this.forcedPriority = 5;
+      this.leftHandItem = -1;
+      this.rightHandItem = -1;
+      this.maxLoops = 99;
+      this.precedenceAnimating = -1;
+      this.priority = -1;
+      this.replyMode = 2;
+   }
+
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(LModel;II)LModel;",
@@ -240,6 +252,11 @@ public class Sequence extends CacheableNode {
             return var7;
          }
       }
+   }
+
+   static {
+      field3087 = new NodeCache(64);
+      field3088 = new NodeCache(100);
    }
 
    @ObfuscatedName("t")

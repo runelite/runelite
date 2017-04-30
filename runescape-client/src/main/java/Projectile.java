@@ -65,7 +65,7 @@ public final class Projectile extends Renderable {
    int interacting;
    @ObfuscatedName("w")
    @Export("isMoving")
-   boolean isMoving = false;
+   boolean isMoving;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = -534615289
@@ -114,12 +114,12 @@ public final class Projectile extends Renderable {
    @ObfuscatedGetter(
       intValue = 1296823433
    )
-   int field870 = 0;
+   int field870;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -1353304391
    )
-   int field871 = 0;
+   int field871;
    @ObfuscatedName("py")
    @ObfuscatedGetter(
       longValue = 1311412687536399997L
@@ -178,6 +178,9 @@ public final class Projectile extends Renderable {
    }
 
    Projectile(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11) {
+      this.isMoving = false;
+      this.field870 = 0;
+      this.field871 = 0;
       this.id = var1;
       this.floor = var2;
       this.x1 = var3;

@@ -4,9 +4,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("hy")
 public class class211 {
    @ObfuscatedName("n")
-   static final char[] field3136 = new char[]{' ', ' ', '_', '-', 'à', 'á', 'â', 'ä', 'ã', 'À', 'Á', 'Â', 'Ä', 'Ã', 'è', 'é', 'ê', 'ë', 'È', 'É', 'Ê', 'Ë', 'í', 'î', 'ï', 'Í', 'Î', 'Ï', 'ò', 'ó', 'ô', 'ö', 'õ', 'Ò', 'Ó', 'Ô', 'Ö', 'Õ', 'ù', 'ú', 'û', 'ü', 'Ù', 'Ú', 'Û', 'Ü', 'ç', 'Ç', 'ÿ', 'Ÿ', 'ñ', 'Ñ', 'ß'};
+   static final char[] field3136;
    @ObfuscatedName("q")
-   static final char[] field3138 = new char[]{'[', ']', '#'};
+   static final char[] field3138;
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
@@ -24,6 +24,11 @@ public class class211 {
       }
 
       return null;
+   }
+
+   static {
+      field3136 = new char[]{' ', ' ', '_', '-', 'à', 'á', 'â', 'ä', 'ã', 'À', 'Á', 'Â', 'Ä', 'Ã', 'è', 'é', 'ê', 'ë', 'È', 'É', 'Ê', 'Ë', 'í', 'î', 'ï', 'Í', 'Î', 'Ï', 'ò', 'ó', 'ô', 'ö', 'õ', 'Ò', 'Ó', 'Ô', 'Ö', 'Õ', 'ù', 'ú', 'û', 'ü', 'Ù', 'Ú', 'Û', 'Ü', 'ç', 'Ç', 'ÿ', 'Ÿ', 'ñ', 'Ñ', 'ß'};
+      field3138 = new char[]{'[', ']', '#'};
    }
 
    class211() throws Throwable {

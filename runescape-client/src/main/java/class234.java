@@ -92,7 +92,7 @@ public class class234 extends Node {
    @ObfuscatedName("ap")
    String field3310;
    @ObfuscatedName("au")
-   int[] field3311 = new int[3];
+   int[] field3311;
    @ObfuscatedName("av")
    @ObfuscatedGetter(
       intValue = -1715044749
@@ -181,6 +181,7 @@ public class class234 extends Node {
       garbageValue = "1"
    )
    public class234(boolean var1) {
+      this.field3311 = new int[3];
       if(Frames.field1553.startsWith("win")) {
          this.field3284 = 1;
       } else if(Frames.field1553.startsWith("mac")) {

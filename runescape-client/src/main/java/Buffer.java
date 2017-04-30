@@ -18,7 +18,7 @@ public class Buffer extends Node {
    @Export("offset")
    public int offset;
    @ObfuscatedName("n")
-   static int[] field1956 = new int[256];
+   static int[] field1956;
    @ObfuscatedName("t")
    static long[] field1958;
    @ObfuscatedName("ot")
@@ -99,8 +99,7 @@ public class Buffer extends Node {
    }
 
    @ObfuscatedName("p")
-   //@Export("put48bitLong")
-   public void put48bitLong(long var1) {
+   public void method2372(long var1) {
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 40));
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 32));
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 24));
@@ -543,6 +542,8 @@ public class Buffer extends Node {
    }
 
    static {
+      field1956 = new int[256];
+
       int var2;
       for(int var1 = 0; var1 < 256; ++var1) {
          int var0 = var1;

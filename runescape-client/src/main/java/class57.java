@@ -9,12 +9,12 @@ public class class57 {
    @ObfuscatedGetter(
       longValue = -7965052317868388777L
    )
-   long field1028 = 0L;
+   long field1028;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       longValue = -570699994732564715L
    )
-   long field1029 = class72.method1421();
+   long field1029;
    @ObfuscatedName("p")
    static class59 field1030;
    @ObfuscatedName("l")
@@ -28,12 +28,12 @@ public class class57 {
    @ObfuscatedGetter(
       intValue = 1489086505
    )
-   int field1033 = 32;
+   int field1033;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       longValue = -8109436352898789245L
    )
-   long field1034 = 0L;
+   long field1034;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -913283765
@@ -50,33 +50,33 @@ public class class57 {
    )
    int field1037;
    @ObfuscatedName("ax")
-   class68[] field1038 = new class68[8];
+   class68[] field1038;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -210158377
    )
-   int field1039 = 0;
+   int field1039;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -1343011991
    )
-   int field1040 = 0;
+   int field1040;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 2087858389
    )
-   int field1041 = 0;
+   int field1041;
    @ObfuscatedName("v")
    class68 field1042;
    @ObfuscatedName("h")
-   boolean field1043 = true;
+   boolean field1043;
    @ObfuscatedName("am")
    @ObfuscatedGetter(
       intValue = -178157749
    )
-   int field1045 = 0;
+   int field1045;
    @ObfuscatedName("ac")
-   class68[] field1046 = new class68[8];
+   class68[] field1046;
    @ObfuscatedName("c")
    public static boolean field1047;
 
@@ -126,6 +126,20 @@ public class class57 {
 
       this.vmethod1147();
       this.field1031 = null;
+   }
+
+   class57() {
+      this.field1033 = 32;
+      this.field1029 = class72.method1421();
+      this.field1034 = 0L;
+      this.field1039 = 0;
+      this.field1040 = 0;
+      this.field1041 = 0;
+      this.field1028 = 0L;
+      this.field1043 = true;
+      this.field1045 = 0;
+      this.field1038 = new class68[8];
+      this.field1046 = new class68[8];
    }
 
    @ObfuscatedName("s")
@@ -564,10 +578,10 @@ public class class57 {
          }
 
          Client.field468 = class32.field720[class32.field715 + 2];
-         Client.egressBuffer.putOpcode(202);
-         Client.egressBuffer.putByte(Client.field323);
-         Client.egressBuffer.putByte(Friend.field157.field3201);
-         Client.egressBuffer.putByte(Client.field468);
+         Client.secretPacketBuffer1.putOpcode(202);
+         Client.secretPacketBuffer1.putByte(Client.field323);
+         Client.secretPacketBuffer1.putByte(Friend.field157.field3201);
+         Client.secretPacketBuffer1.putByte(Client.field468);
          return 1;
       } else {
          String var3;
@@ -578,11 +592,11 @@ public class class57 {
             class32.field715 -= 2;
             var4 = class32.field720[class32.field715];
             var5 = class32.field720[class32.field715 + 1];
-            Client.egressBuffer.putOpcode(168);
-            Client.egressBuffer.putByte(class36.method753(var3) + 2);
-            Client.egressBuffer.method2504(var3);
-            Client.egressBuffer.putByte(var4 - 1);
-            Client.egressBuffer.putByte(var5);
+            Client.secretPacketBuffer1.putOpcode(168);
+            Client.secretPacketBuffer1.putByte(class36.method753(var3) + 2);
+            Client.secretPacketBuffer1.method2504(var3);
+            Client.secretPacketBuffer1.putByte(var4 - 1);
+            Client.secretPacketBuffer1.putByte(var5);
             return 1;
          } else {
             int var11;
@@ -750,25 +764,25 @@ public class class57 {
                   }
                }
 
-               Client.egressBuffer.putOpcode(56);
-               Client.egressBuffer.putByte(0);
-               int var8 = Client.egressBuffer.offset;
-               Client.egressBuffer.putByte(var4);
-               Client.egressBuffer.putByte(var14);
-               Client.egressBuffer.putByte(var7);
-               class38.method767(Client.egressBuffer, var3);
-               Client.egressBuffer.method2380(Client.egressBuffer.offset - var8);
+               Client.secretPacketBuffer1.putOpcode(56);
+               Client.secretPacketBuffer1.putByte(0);
+               int var8 = Client.secretPacketBuffer1.offset;
+               Client.secretPacketBuffer1.putByte(var4);
+               Client.secretPacketBuffer1.putByte(var14);
+               Client.secretPacketBuffer1.putByte(var7);
+               class38.method767(Client.secretPacketBuffer1, var3);
+               Client.secretPacketBuffer1.method2380(Client.secretPacketBuffer1.offset - var8);
                return 1;
             } else if(var0 == 5009) {
                class32.scriptStringStackSize -= 2;
                var3 = class32.scriptStringStack[class32.scriptStringStackSize];
                String var17 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
-               Client.egressBuffer.putOpcode(83);
-               Client.egressBuffer.putShort(0);
-               var5 = Client.egressBuffer.offset;
-               Client.egressBuffer.method2504(var3);
-               class38.method767(Client.egressBuffer, var17);
-               Client.egressBuffer.method2379(Client.egressBuffer.offset - var5);
+               Client.secretPacketBuffer1.putOpcode(83);
+               Client.secretPacketBuffer1.putShort(0);
+               var5 = Client.secretPacketBuffer1.offset;
+               Client.secretPacketBuffer1.method2504(var3);
+               class38.method767(Client.secretPacketBuffer1, var17);
+               Client.secretPacketBuffer1.method2379(Client.secretPacketBuffer1.offset - var5);
                return 1;
             } else if(var0 != 5015) {
                if(var0 == 5016) {
@@ -860,9 +874,9 @@ public class class57 {
                            }
                         }
 
-                        Client.egressBuffer.putOpcode(161);
-                        Client.egressBuffer.putByte(var3.length() + 1);
-                        Client.egressBuffer.method2504(var3);
+                        Client.secretPacketBuffer1.putOpcode(161);
+                        Client.secretPacketBuffer1.putByte(var3.length() + 1);
+                        Client.secretPacketBuffer1.method2504(var3);
                         return 1;
                      } else if(var0 == 5021) {
                         Client.field460 = class32.scriptStringStack[--class32.scriptStringStackSize].toLowerCase().trim();

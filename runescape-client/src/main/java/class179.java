@@ -10,17 +10,17 @@ public class class179 implements class134 {
    )
    public final int field2661;
    @ObfuscatedName("c")
-   static final class179 field2662 = new class179(1, 0, true, true, true);
+   static final class179 field2662;
    @ObfuscatedName("n")
-   static final class179 field2663 = new class179(2, 1, true, true, false);
+   static final class179 field2663;
    @ObfuscatedName("d")
-   static final class179 field2664 = new class179(0, -1, true, false, true);
+   static final class179 field2664;
    @ObfuscatedName("t")
-   static final class179 field2665 = new class179(4, 3, false, false, true);
+   static final class179 field2665;
    @ObfuscatedName("p")
-   static final class179 field2666 = new class179(5, 10, false, false, true);
+   static final class179 field2666;
    @ObfuscatedName("q")
-   static final class179 field2667 = new class179(3, 2, false, false, true);
+   static final class179 field2667;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -1567231149
@@ -58,6 +58,15 @@ public class class179 implements class134 {
    )
    public static void method3272(IndexDataBase var0) {
       CombatInfoListHolder.field753 = var0;
+   }
+
+   static {
+      field2664 = new class179(0, -1, true, false, true);
+      field2662 = new class179(1, 0, true, true, true);
+      field2663 = new class179(2, 1, true, true, false);
+      field2667 = new class179(3, 2, false, false, true);
+      field2665 = new class179(4, 3, false, false, true);
+      field2666 = new class179(5, 10, false, false, true);
    }
 
    @ObfuscatedName("e")

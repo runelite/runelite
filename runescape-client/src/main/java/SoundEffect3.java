@@ -5,17 +5,17 @@ import net.runelite.mapping.ObfuscatedName;
 @Implements("SoundEffect3")
 public class SoundEffect3 {
    @ObfuscatedName("u")
-   static int[][] field1111 = new int[2][8];
+   static int[][] field1111;
    @ObfuscatedName("t")
-   int[] field1112 = new int[2];
+   int[] field1112;
    @ObfuscatedName("q")
-   int[][][] field1113 = new int[2][2][4];
+   int[][][] field1113;
    @ObfuscatedName("d")
-   int[] field1114 = new int[2];
+   int[] field1114;
    @ObfuscatedName("p")
-   static float[][] field1115 = new float[2][8];
+   static float[][] field1115;
    @ObfuscatedName("n")
-   int[][][] field1116 = new int[2][2][4];
+   int[][][] field1116;
    @ObfuscatedName("z")
    static float field1117;
    @ObfuscatedName("l")
@@ -26,6 +26,13 @@ public class SoundEffect3 {
       float var4 = (float)this.field1116[var1][0][var2] + var3 * (float)(this.field1116[var1][1][var2] - this.field1116[var1][0][var2]);
       var4 *= 1.2207031E-4F;
       return method1346(var4);
+   }
+
+   SoundEffect3() {
+      this.field1114 = new int[2];
+      this.field1116 = new int[2][2][4];
+      this.field1113 = new int[2][2][4];
+      this.field1112 = new int[2];
    }
 
    @ObfuscatedName("c")
@@ -86,6 +93,11 @@ public class SoundEffect3 {
       float var4 = (float)this.field1113[var1][0][var2] + var3 * (float)(this.field1113[var1][1][var2] - this.field1113[var1][0][var2]);
       var4 *= 0.0015258789F;
       return 1.0F - (float)Math.pow(10.0D, (double)(-var4 / 20.0F));
+   }
+
+   static {
+      field1115 = new float[2][8];
+      field1111 = new int[2][8];
    }
 
    @ObfuscatedName("t")

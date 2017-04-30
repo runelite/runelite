@@ -42,7 +42,7 @@ public class class54 extends Node {
    @ObfuscatedName("a")
    float[] field995;
    @ObfuscatedName("i")
-   static boolean field996 = false;
+   static boolean field996;
    @ObfuscatedName("h")
    int field997;
    @ObfuscatedName("x")
@@ -572,6 +572,10 @@ public class class54 extends Node {
          this.field1008 = null;
          return new class55(this.field978, var7, this.field1004, this.field981, this.field982);
       }
+   }
+
+   static {
+      field996 = false;
    }
 
    @ObfuscatedName("c")

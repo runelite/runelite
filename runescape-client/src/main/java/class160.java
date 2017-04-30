@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fg")
 public class class160 extends class68 {
    @ObfuscatedName("v")
-   int[] field2074 = new int[16];
+   int[] field2074;
    @ObfuscatedName("ao")
    @ObfuscatedGetter(
       intValue = -147102079
@@ -14,49 +14,49 @@ public class class160 extends class68 {
    @ObfuscatedName("ac")
    boolean field2076;
    @ObfuscatedName("q")
-   int[] field2077 = new int[16];
+   int[] field2077;
    @ObfuscatedName("t")
-   int[] field2078 = new int[16];
+   int[] field2078;
    @ObfuscatedName("p")
-   int[] field2079 = new int[16];
+   int[] field2079;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 664819445
    )
-   int field2080 = 1000000;
+   int field2080;
    @ObfuscatedName("z")
-   int[] field2081 = new int[16];
+   int[] field2081;
    @ObfuscatedName("l")
-   int[] field2082 = new int[16];
+   int[] field2082;
    @ObfuscatedName("u")
-   int[] field2083 = new int[16];
+   int[] field2083;
    @ObfuscatedName("g")
-   int[] field2084 = new int[16];
+   int[] field2084;
    @ObfuscatedName("r")
-   int[] field2085 = new int[16];
+   int[] field2085;
    @ObfuscatedName("x")
-   int[] field2086 = new int[16];
+   int[] field2086;
    @ObfuscatedName("d")
-   XHashTable field2087 = new XHashTable(128);
+   XHashTable field2087;
    @ObfuscatedName("b")
-   int[] field2088 = new int[16];
+   int[] field2088;
    @ObfuscatedName("f")
-   int[] field2089 = new int[16];
+   int[] field2089;
    @ObfuscatedName("o")
-   int[] field2090 = new int[16];
+   int[] field2090;
    @ObfuscatedName("m")
-   int[] field2091 = new int[16];
+   int[] field2091;
    @ObfuscatedName("y")
-   class161[][] field2092 = new class161[16][128];
+   class161[][] field2092;
    @ObfuscatedName("am")
-   class161[][] field2093 = new class161[16][128];
+   class161[][] field2093;
    @ObfuscatedName("h")
-   int[] field2094 = new int[16];
+   int[] field2094;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = -1325400723
    )
-   int field2095 = 256;
+   int field2095;
    @ObfuscatedName("ak")
    @ObfuscatedGetter(
       longValue = 4243518081566754383L
@@ -68,9 +68,9 @@ public class class160 extends class68 {
    )
    long field2098;
    @ObfuscatedName("ax")
-   class162 field2099 = new class162();
+   class162 field2099;
    @ObfuscatedName("aj")
-   class164 field2100 = new class164(this);
+   class164 field2100;
    @ObfuscatedName("az")
    @ObfuscatedGetter(
       intValue = 356453369
@@ -122,6 +122,28 @@ public class class160 extends class68 {
    }
 
    public class160() {
+      this.field2095 = 256;
+      this.field2080 = 1000000;
+      this.field2077 = new int[16];
+      this.field2078 = new int[16];
+      this.field2079 = new int[16];
+      this.field2083 = new int[16];
+      this.field2081 = new int[16];
+      this.field2082 = new int[16];
+      this.field2074 = new int[16];
+      this.field2084 = new int[16];
+      this.field2085 = new int[16];
+      this.field2086 = new int[16];
+      this.field2094 = new int[16];
+      this.field2088 = new int[16];
+      this.field2089 = new int[16];
+      this.field2090 = new int[16];
+      this.field2091 = new int[16];
+      this.field2092 = new class161[16][128];
+      this.field2093 = new class161[16][128];
+      this.field2099 = new class162();
+      this.field2100 = new class164(this);
+      this.field2087 = new XHashTable(128);
       this.method2926();
    }
 

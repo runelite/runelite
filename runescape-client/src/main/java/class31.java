@@ -51,7 +51,7 @@ public final class class31 extends Node {
    @ObfuscatedName("w")
    int[] field708;
    @ObfuscatedName("d")
-   static Deque field709 = new Deque();
+   static Deque field709;
    @ObfuscatedName("k")
    class66 field710;
    @ObfuscatedName("r")
@@ -104,5 +104,9 @@ public final class class31 extends Node {
          this.field705 = null;
       }
 
+   }
+
+   static {
+      field709 = new Deque();
    }
 }

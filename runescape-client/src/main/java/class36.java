@@ -5,9 +5,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("aq")
 public class class36 {
    @ObfuscatedName("t")
-   static final BigInteger field764 = new BigInteger("80782894952180643741752986186714059433953886149239752893425047584684715842049");
+   static final BigInteger field764;
    @ObfuscatedName("p")
-   static final BigInteger field765 = new BigInteger("7237300117305667488707183861728052766358166655052137727439795191253340127955075499635575104901523446809299097934591732635674173519120047404024393881551683");
+   static final BigInteger field765;
    @ObfuscatedName("cd")
    static Font field766;
    @ObfuscatedName("u")
@@ -132,6 +132,11 @@ public class class36 {
       class118.field1844 = var4;
       class118.field1842 = var5;
       return false;
+   }
+
+   static {
+      field764 = new BigInteger("80782894952180643741752986186714059433953886149239752893425047584684715842049");
+      field765 = new BigInteger("7237300117305667488707183861728052766358166655052137727439795191253340127955075499635575104901523446809299097934591732635674173519120047404024393881551683");
    }
 
    @ObfuscatedName("ct")

@@ -9,16 +9,16 @@ public class class37 {
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(LCipherBuffer;II)V",
+      signature = "(LPacketBuffer;II)V",
       garbageValue = "-1309667964"
    )
    static void method762(PacketBuffer var0, int var1) {
-      boolean var2 = var0.readBits(1) == 1;
+      boolean var2 = var0.method2645(1) == 1;
       if(var2) {
          class45.field899[++class45.field902 - 1] = var1;
       }
 
-      int var3 = var0.readBits(2);
+      int var3 = var0.method2645(2);
       Player var4 = Client.cachedPlayers[var1];
       if(var3 == 0) {
          if(var2) {
@@ -35,7 +35,7 @@ public class class37 {
 
             class45.field897[var1] = var4.interacting;
             Client.cachedPlayers[var1] = null;
-            if(var0.readBits(1) != 0) {
+            if(var0.method2645(1) != 0) {
                IndexFile.method2245(var0, var1);
             }
 
@@ -45,7 +45,7 @@ public class class37 {
          int var6;
          int var7;
          if(var3 == 1) {
-            var5 = var0.readBits(3);
+            var5 = var0.method2645(3);
             var6 = var4.pathX[0];
             var7 = var4.pathY[0];
             if(var5 == 0) {
@@ -85,7 +85,7 @@ public class class37 {
             }
 
          } else if(var3 == 2) {
-            var5 = var0.readBits(4);
+            var5 = var0.method2645(4);
             var6 = var4.pathX[0];
             var7 = var4.pathY[0];
             if(var5 == 0) {
@@ -147,13 +147,13 @@ public class class37 {
             }
 
          } else {
-            var5 = var0.readBits(1);
+            var5 = var0.method2645(1);
             int var8;
             int var9;
             int var10;
             int var11;
             if(var5 == 0) {
-               var6 = var0.readBits(12);
+               var6 = var0.method2645(12);
                var7 = var6 >> 10;
                var8 = var6 >> 5 & 31;
                if(var8 > 15) {
@@ -187,7 +187,7 @@ public class class37 {
                }
 
             } else {
-               var6 = var0.readBits(30);
+               var6 = var0.method2645(30);
                var7 = var6 >> 28;
                var8 = var6 >> 14 & 16383;
                var9 = var6 & 16383;

@@ -10,7 +10,7 @@ public abstract class class132 {
    @ObfuscatedName("cs")
    static RSSocket field1979;
    @ObfuscatedName("c")
-   static boolean field1981 = false;
+   static boolean field1981;
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
@@ -25,6 +25,10 @@ public abstract class class132 {
       garbageValue = "339528659"
    )
    abstract void vmethod2616(byte[] var1);
+
+   static {
+      field1981 = false;
+   }
 
    @ObfuscatedName("dx")
    @ObfuscatedSignature(

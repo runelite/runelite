@@ -22,19 +22,19 @@ public class class72 {
    @ObfuscatedGetter(
       longValue = -8706966226618319547L
    )
-   long field1160 = -1L;
+   long field1160;
    @ObfuscatedName("t")
    byte[] field1161;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       longValue = 3971750956421509091L
    )
-   long field1162 = -1L;
+   long field1162;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1607317327
    )
-   int field1163 = 0;
+   int field1163;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       longValue = 4475516050392417715L
@@ -124,6 +124,9 @@ public class class72 {
       garbageValue = "0"
    )
    public class72(FileOnDisk var1, int var2, int var3) throws IOException {
+      this.field1160 = -1L;
+      this.field1162 = -1L;
+      this.field1163 = 0;
       this.field1166 = var1;
       this.field1157 = this.field1165 = var1.method1438();
       this.field1158 = new byte[var2];

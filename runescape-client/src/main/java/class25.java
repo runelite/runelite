@@ -55,12 +55,12 @@ public final class class25 extends Node {
    @ObfuscatedGetter(
       intValue = 537339127
    )
-   int field581 = 0;
+   int field581;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 1170290131
    )
-   int field582 = -1;
+   int field582;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 412647969
@@ -94,5 +94,10 @@ public final class class25 extends Node {
 
          class185.field2729 = 600;
       }
+   }
+
+   class25() {
+      this.field581 = 0;
+      this.field582 = -1;
    }
 }

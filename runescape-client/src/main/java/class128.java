@@ -18,13 +18,13 @@ public final class class128 {
    )
    int field1914;
    @ObfuscatedName("n")
-   final int field1915 = 258;
+   final int field1915;
    @ObfuscatedName("q")
-   final int field1916 = 6;
+   final int field1916;
    @ObfuscatedName("t")
-   final int field1917 = 50;
+   final int field1917;
    @ObfuscatedName("p")
-   final int field1918 = 18002;
+   final int field1918;
    @ObfuscatedName("v")
    byte[] field1919;
    @ObfuscatedName("aw")
@@ -38,24 +38,24 @@ public final class class128 {
    )
    int field1921;
    @ObfuscatedName("c")
-   final int field1922 = 16;
+   final int field1922;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 785139229
    )
-   int field1923 = 0;
+   int field1923;
    @ObfuscatedName("ay")
-   int[][] field1924 = new int[6][258];
+   int[][] field1924;
    @ObfuscatedName("av")
-   int[] field1925 = new int[6];
+   int[] field1925;
    @ObfuscatedName("s")
    byte field1926;
    @ObfuscatedName("aq")
-   int[][] field1927 = new int[6][258];
+   int[][] field1927;
    @ObfuscatedName("ak")
-   byte[] field1928 = new byte[18002];
+   byte[] field1928;
    @ObfuscatedName("ae")
-   int[][] field1929 = new int[6][258];
+   int[][] field1929;
    @ObfuscatedName("u")
    byte[] field1930;
    @ObfuscatedName("a")
@@ -74,32 +74,32 @@ public final class class128 {
    )
    int field1933;
    @ObfuscatedName("b")
-   int[] field1934 = new int[256];
+   int[] field1934;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -264950253
    )
    int field1935;
    @ObfuscatedName("o")
-   int[] field1936 = new int[257];
+   int[] field1936;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1344810201
    )
-   int field1937 = 0;
+   int field1937;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -581720111
    )
    int field1938;
    @ObfuscatedName("am")
-   boolean[] field1939 = new boolean[256];
+   boolean[] field1939;
    @ObfuscatedName("ax")
-   boolean[] field1940 = new boolean[16];
+   boolean[] field1940;
    @ObfuscatedName("ac")
-   byte[] field1941 = new byte[256];
+   byte[] field1941;
    @ObfuscatedName("az")
-   byte[] field1942 = new byte[4096];
+   byte[] field1942;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1219872247
@@ -111,18 +111,18 @@ public final class class128 {
    )
    int field1944;
    @ObfuscatedName("aa")
-   byte[] field1945 = new byte[18002];
+   byte[] field1945;
    @ObfuscatedName("aj")
-   byte[][] field1946 = new byte[6][258];
+   byte[][] field1946;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 2036138579
    )
    int field1947;
    @ObfuscatedName("d")
-   final int field1948 = 4096;
+   final int field1948;
    @ObfuscatedName("ao")
-   int[] field1949 = new int[16];
+   int[] field1949;
    @ObfuscatedName("m")
    static int[] field1950;
    @ObfuscatedName("j")
@@ -149,6 +149,31 @@ public final class class128 {
       }
 
       return class133.widgets[var1][var2];
+   }
+
+   class128() {
+      this.field1948 = 4096;
+      this.field1922 = 16;
+      this.field1915 = 258;
+      this.field1916 = 6;
+      this.field1917 = 50;
+      this.field1918 = 18002;
+      this.field1937 = 0;
+      this.field1923 = 0;
+      this.field1934 = new int[256];
+      this.field1936 = new int[257];
+      this.field1939 = new boolean[256];
+      this.field1940 = new boolean[16];
+      this.field1941 = new byte[256];
+      this.field1942 = new byte[4096];
+      this.field1949 = new int[16];
+      this.field1928 = new byte[18002];
+      this.field1945 = new byte[18002];
+      this.field1946 = new byte[6][258];
+      this.field1924 = new int[6][258];
+      this.field1929 = new int[6][258];
+      this.field1927 = new int[6][258];
+      this.field1925 = new int[6];
    }
 
    @ObfuscatedName("do")

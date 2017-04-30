@@ -12,7 +12,7 @@ public class ItemComposition extends CacheableNode {
       intValue = -658544611
    )
    @Export("femaleHeadModel2")
-   int femaleHeadModel2 = -1;
+   int femaleHeadModel2;
    @ObfuscatedName("p")
    public static IndexDataBase field2979;
    @ObfuscatedName("z")
@@ -24,19 +24,19 @@ public class ItemComposition extends CacheableNode {
    )
    public static int field2981;
    @ObfuscatedName("v")
-   public static NodeCache field2982 = new NodeCache(64);
+   public static NodeCache field2982;
    @ObfuscatedName("g")
    @Export("itemModelCache")
-   public static NodeCache itemModelCache = new NodeCache(50);
+   public static NodeCache itemModelCache;
    @ObfuscatedName("w")
    @Export("itemSpriteCache")
-   public static NodeCache itemSpriteCache = new NodeCache(200);
+   public static NodeCache itemSpriteCache;
    @ObfuscatedName("ap")
    @ObfuscatedGetter(
       intValue = 1999916325
    )
    @Export("resizeY")
-   int resizeY = 128;
+   int resizeY;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = -1250621039
@@ -62,62 +62,62 @@ public class ItemComposition extends CacheableNode {
       intValue = 1566189951
    )
    @Export("zoom2d")
-   public int zoom2d = 2000;
+   public int zoom2d;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = 1966871349
    )
    @Export("xan2d")
-   public int xan2d = 0;
+   public int xan2d;
    @ObfuscatedName("bk")
    @ObfuscatedGetter(
       intValue = -1940472447
    )
-   public int field2995 = 0;
+   public int field2995;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 190991875
    )
    @Export("zan2d")
-   public int zan2d = 0;
+   public int zan2d;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -2085370987
    )
    @Export("offsetX2d")
-   public int offsetX2d = 0;
+   public int offsetX2d;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -1619102915
    )
    @Export("offsetY2d")
-   public int offsetY2d = 0;
+   public int offsetY2d;
    @ObfuscatedName("am")
    @ObfuscatedGetter(
       intValue = 1931864799
    )
    @Export("isStackable")
-   public int isStackable = 0;
+   public int isStackable;
    @ObfuscatedName("bv")
    @ObfuscatedGetter(
       intValue = -1320705365
    )
-   public int field3000 = -1;
+   public int field3000;
    @ObfuscatedName("ac")
    @Export("isMembers")
-   public boolean isMembers = false;
+   public boolean isMembers;
    @ObfuscatedName("az")
    @Export("groundActions")
-   public String[] groundActions = new String[]{null, null, "Take", null, null};
+   public String[] groundActions;
    @ObfuscatedName("ao")
    @Export("inventoryActions")
-   public String[] inventoryActions = new String[]{null, null, null, null, "Drop"};
+   public String[] inventoryActions;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1951256663
    )
    @Export("yan2d")
-   public int yan2d = 0;
+   public int yan2d;
    @ObfuscatedName("r")
    public static Font field3005;
    @ObfuscatedName("ay")
@@ -125,55 +125,55 @@ public class ItemComposition extends CacheableNode {
       intValue = -656119679
    )
    @Export("maleModel1")
-   int maleModel1 = -1;
+   int maleModel1;
    @ObfuscatedName("ae")
    @ObfuscatedGetter(
       intValue = -772723903
    )
    @Export("maleOffset")
-   int maleOffset = 0;
+   int maleOffset;
    @ObfuscatedName("aq")
    @ObfuscatedGetter(
       intValue = 397378321
    )
    @Export("femaleModel")
-   int femaleModel = -1;
+   int femaleModel;
    @ObfuscatedName("aj")
    @ObfuscatedGetter(
       intValue = -1100156955
    )
    @Export("maleModel")
-   int maleModel = -1;
+   int maleModel;
    @ObfuscatedName("aw")
    @ObfuscatedGetter(
       intValue = 932711687
    )
    @Export("femaleOffset")
-   int femaleOffset = 0;
+   int femaleOffset;
    @ObfuscatedName("as")
    @ObfuscatedGetter(
       intValue = 691998327
    )
    @Export("femaleHeadModel")
-   int femaleHeadModel = -1;
+   int femaleHeadModel;
    @ObfuscatedName("af")
    @ObfuscatedGetter(
       intValue = -1152741527
    )
    @Export("femaleModel2")
-   int femaleModel2 = -1;
+   int femaleModel2;
    @ObfuscatedName("ar")
    @ObfuscatedGetter(
       intValue = -1350915877
    )
    @Export("maleHeadModel")
-   int maleHeadModel = -1;
+   int maleHeadModel;
    @ObfuscatedName("ab")
    @ObfuscatedGetter(
       intValue = 1810200819
    )
    @Export("maleHeadModel2")
-   int maleHeadModel2 = -1;
+   int maleHeadModel2;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 121909049
@@ -184,9 +184,9 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -631814961
    )
-   public int field3016 = -1;
+   public int field3016;
    @ObfuscatedName("bw")
-   public boolean field3017 = false;
+   public boolean field3017;
    @ObfuscatedName("an")
    @Export("countCo")
    int[] countCo;
@@ -195,52 +195,52 @@ public class ItemComposition extends CacheableNode {
       intValue = 1634987737
    )
    @Export("note")
-   public int note = -1;
+   public int note;
    @ObfuscatedName("at")
    @ObfuscatedGetter(
       intValue = -1958307169
    )
    @Export("notedTemplate")
-   public int notedTemplate = -1;
+   public int notedTemplate;
    @ObfuscatedName("e")
    @Export("name")
-   public String name = "null";
+   public String name;
    @ObfuscatedName("ax")
    @ObfuscatedGetter(
       intValue = -2006336729
    )
    @Export("price")
-   public int price = 1;
+   public int price;
    @ObfuscatedName("au")
    @ObfuscatedGetter(
       intValue = 85685947
    )
    @Export("resizeZ")
-   int resizeZ = 128;
+   int resizeZ;
    @ObfuscatedName("bu")
    @ObfuscatedGetter(
       intValue = 1500457707
    )
    @Export("ambient")
-   public int ambient = 0;
+   public int ambient;
    @ObfuscatedName("ag")
    @ObfuscatedGetter(
       intValue = -792647933
    )
    @Export("maleModel2")
-   int maleModel2 = -1;
+   int maleModel2;
    @ObfuscatedName("av")
    @ObfuscatedGetter(
       intValue = -162473569
    )
    @Export("femaleModel1")
-   int femaleModel1 = -1;
+   int femaleModel1;
    @ObfuscatedName("ah")
    @ObfuscatedGetter(
       intValue = -1838048127
    )
    @Export("resizeX")
-   int resizeX = 128;
+   int resizeX;
    @ObfuscatedName("ad")
    @Export("countObj")
    int[] countObj;
@@ -248,24 +248,24 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -361805239
    )
-   int field3029 = -1;
+   int field3029;
    @ObfuscatedName("bl")
    @ObfuscatedGetter(
       intValue = 664743969
    )
-   int field3030 = -1;
+   int field3030;
    @ObfuscatedName("aa")
    @ObfuscatedGetter(
       intValue = 1963962969
    )
    @Export("team")
-   int team = -2;
+   int team;
    @ObfuscatedName("br")
    @ObfuscatedGetter(
       intValue = 21095035
    )
    @Export("contrast")
-   public int contrast = 0;
+   public int contrast;
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
@@ -669,6 +669,53 @@ public class ItemComposition extends CacheableNode {
    )
    public String method3750(int var1, String var2) {
       return class164.method3100(this.field2988, var1, var2);
+   }
+
+   ItemComposition() {
+      this.name = "null";
+      this.zoom2d = 2000;
+      this.xan2d = 0;
+      this.yan2d = 0;
+      this.zan2d = 0;
+      this.offsetX2d = 0;
+      this.offsetY2d = 0;
+      this.isStackable = 0;
+      this.price = 1;
+      this.isMembers = false;
+      this.groundActions = new String[]{null, null, "Take", null, null};
+      this.inventoryActions = new String[]{null, null, null, null, "Drop"};
+      this.team = -2;
+      this.maleModel = -1;
+      this.maleModel1 = -1;
+      this.maleOffset = 0;
+      this.femaleModel = -1;
+      this.femaleModel1 = -1;
+      this.femaleOffset = 0;
+      this.maleModel2 = -1;
+      this.femaleModel2 = -1;
+      this.maleHeadModel = -1;
+      this.maleHeadModel2 = -1;
+      this.femaleHeadModel = -1;
+      this.femaleHeadModel2 = -1;
+      this.note = -1;
+      this.notedTemplate = -1;
+      this.resizeX = 128;
+      this.resizeY = 128;
+      this.resizeZ = 128;
+      this.ambient = 0;
+      this.contrast = 0;
+      this.field2995 = 0;
+      this.field3017 = false;
+      this.field3029 = -1;
+      this.field3030 = -1;
+      this.field3016 = -1;
+      this.field3000 = -1;
+   }
+
+   static {
+      field2982 = new NodeCache(64);
+      itemModelCache = new NodeCache(50);
+      itemSpriteCache = new NodeCache(200);
    }
 
    @ObfuscatedName("e")

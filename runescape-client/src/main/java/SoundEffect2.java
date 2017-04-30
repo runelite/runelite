@@ -9,15 +9,15 @@ public class SoundEffect2 {
    @ObfuscatedName("z")
    int field1051;
    @ObfuscatedName("n")
-   int[] field1052 = new int[2];
+   int[] field1052;
    @ObfuscatedName("q")
    int field1053;
    @ObfuscatedName("t")
    int field1054;
    @ObfuscatedName("d")
-   int field1055 = 2;
+   int field1055;
    @ObfuscatedName("c")
-   int[] field1056 = new int[2];
+   int[] field1056;
    @ObfuscatedName("u")
    int field1057;
    @ObfuscatedName("p")
@@ -77,6 +77,9 @@ public class SoundEffect2 {
    }
 
    SoundEffect2() {
+      this.field1055 = 2;
+      this.field1056 = new int[2];
+      this.field1052 = new int[2];
       this.field1056[0] = 0;
       this.field1056[1] = '\uffff';
       this.field1052[0] = 0;

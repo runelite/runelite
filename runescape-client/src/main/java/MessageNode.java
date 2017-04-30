@@ -39,7 +39,7 @@ public class MessageNode extends CacheableNode {
       intValue = -1814730153
    )
    @Export("id")
-   int id = class122.method2318();
+   int id;
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
@@ -68,6 +68,7 @@ public class MessageNode extends CacheableNode {
    }
 
    MessageNode(int var1, String var2, String var3, String var4) {
+      this.id = class122.method2318();
       this.tick = Client.gameCycle;
       this.type = var1;
       this.name = var2;

@@ -3,19 +3,19 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("bx")
 public class class64 {
    @ObfuscatedName("n")
-   int field1076 = class54.method1004(24);
+   int field1076;
    @ObfuscatedName("c")
-   int field1077 = class54.method1004(24);
+   int field1077;
    @ObfuscatedName("u")
    int[] field1078;
    @ObfuscatedName("q")
-   int field1079 = class54.method1004(24) + 1;
+   int field1079;
    @ObfuscatedName("t")
-   int field1080 = class54.method1004(6) + 1;
+   int field1080;
    @ObfuscatedName("p")
-   int field1081 = class54.method1004(8);
+   int field1081;
    @ObfuscatedName("d")
-   int field1082 = class54.method1004(16);
+   int field1082;
 
    @ObfuscatedName("d")
    void method1181(float[] var1, int var2, boolean var3) {
@@ -91,6 +91,12 @@ public class class64 {
    }
 
    class64() {
+      this.field1082 = class54.method1004(16);
+      this.field1077 = class54.method1004(24);
+      this.field1076 = class54.method1004(24);
+      this.field1079 = class54.method1004(24) + 1;
+      this.field1080 = class54.method1004(6) + 1;
+      this.field1081 = class54.method1004(8);
       int[] var1 = new int[this.field1080];
 
       int var2;

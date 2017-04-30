@@ -6,13 +6,13 @@ public class class15 {
    @ObfuscatedName("g")
    public static boolean field164;
    @ObfuscatedName("c")
-   static final class15 field165 = new class15();
+   static final class15 field165;
    @ObfuscatedName("n")
-   static final class15 field166 = new class15();
+   static final class15 field166;
    @ObfuscatedName("q")
-   static final class15 field167 = new class15();
+   static final class15 field167;
    @ObfuscatedName("d")
-   static final class15 field168 = new class15();
+   static final class15 field168;
 
    @ObfuscatedName("y")
    @ObfuscatedSignature(
@@ -204,6 +204,13 @@ public class class15 {
             }
          }
       }
+   }
+
+   static {
+      field168 = new class15();
+      field165 = new class15();
+      field166 = new class15();
+      field167 = new class15();
    }
 
    @ObfuscatedName("k")

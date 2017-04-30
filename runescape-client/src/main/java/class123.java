@@ -4,7 +4,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("dn")
 public final class class123 {
    @ObfuscatedName("z")
-   static class128 field1891 = new class128();
+   static class128 field1891;
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
@@ -442,6 +442,10 @@ public final class class123 {
          }
       }
 
+   }
+
+   static {
+      field1891 = new class128();
    }
 
    @ObfuscatedName("w")

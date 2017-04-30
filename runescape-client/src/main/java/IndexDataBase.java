@@ -18,7 +18,7 @@ public abstract class IndexDataBase {
    @ObfuscatedName("t")
    int[] field2712;
    @ObfuscatedName("r")
-   static class122 field2713 = new class122();
+   static class122 field2713;
    @ObfuscatedName("p")
    int[] field2714;
    @ObfuscatedName("z")
@@ -47,7 +47,7 @@ public abstract class IndexDataBase {
    @ObfuscatedGetter(
       intValue = -659346695
    )
-   static int field2724 = 0;
+   static int field2724;
    @ObfuscatedName("w")
    Object[][] field2725;
    @ObfuscatedName("qe")
@@ -55,6 +55,11 @@ public abstract class IndexDataBase {
       intValue = -1051945291
    )
    protected static int field2726;
+
+   static {
+      field2713 = new class122();
+      field2724 = 0;
+   }
 
    @ObfuscatedName("b")
    @ObfuscatedSignature(

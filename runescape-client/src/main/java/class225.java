@@ -10,15 +10,15 @@ public class class225 implements class134 {
    )
    public final int field3219;
    @ObfuscatedName("c")
-   public static final class225 field3220 = new class225(1, 1);
+   public static final class225 field3220;
    @ObfuscatedName("n")
-   public static final class225 field3221 = new class225(2, 2);
+   public static final class225 field3221;
    @ObfuscatedName("q")
-   public static final class225 field3222 = new class225(3, 3);
+   public static final class225 field3222;
    @ObfuscatedName("t")
-   public static final class225 field3223 = new class225(4, 4);
+   public static final class225 field3223;
    @ObfuscatedName("d")
-   public static final class225 field3224 = new class225(0, 0);
+   public static final class225 field3224;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 2042424991
@@ -32,6 +32,14 @@ public class class225 implements class134 {
    )
    public int vmethod4163() {
       return this.field3225;
+   }
+
+   static {
+      field3224 = new class225(0, 0);
+      field3220 = new class225(1, 1);
+      field3221 = new class225(2, 2);
+      field3222 = new class225(3, 3);
+      field3223 = new class225(4, 4);
    }
 
    @ObfuscatedSignature(

@@ -7,7 +7,7 @@ public class class190 extends CacheableNode {
    @ObfuscatedName("d")
    public static IndexDataBase field2789;
    @ObfuscatedName("n")
-   public boolean field2790 = false;
+   public boolean field2790;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -66975277
@@ -16,7 +16,7 @@ public class class190 extends CacheableNode {
    @ObfuscatedName("i")
    public static String[] field2792;
    @ObfuscatedName("c")
-   static NodeCache field2793 = new NodeCache(64);
+   static NodeCache field2793;
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
@@ -46,6 +46,10 @@ public class class190 extends CacheableNode {
 
    }
 
+   static {
+      field2793 = new NodeCache(64);
+   }
+
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(II)LSpotanim;",
@@ -66,6 +70,10 @@ public class class190 extends CacheableNode {
          Spotanim.field2801.put(var1, (long)var0);
          return var1;
       }
+   }
+
+   class190() {
+      this.field2790 = false;
    }
 
    @ObfuscatedName("bw")

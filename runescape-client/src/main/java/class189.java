@@ -10,12 +10,12 @@ public class class189 extends CacheableNode {
    )
    public static int field2783;
    @ObfuscatedName("n")
-   static NodeCache field2784 = new NodeCache(64);
+   static NodeCache field2784;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1898999377
    )
-   public int field2785 = 0;
+   public int field2785;
    @ObfuscatedName("d")
    static IndexDataBase field2786;
    @ObfuscatedName("u")
@@ -47,5 +47,13 @@ public class class189 extends CacheableNode {
 
          this.method3434(var1, var2);
       }
+   }
+
+   class189() {
+      this.field2785 = 0;
+   }
+
+   static {
+      field2784 = new NodeCache(64);
    }
 }

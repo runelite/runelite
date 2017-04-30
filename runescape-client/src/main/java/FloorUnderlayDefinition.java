@@ -17,9 +17,9 @@ public class FloorUnderlayDefinition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -2066705291
    )
-   int field2821 = 0;
+   int field2821;
    @ObfuscatedName("c")
-   public static NodeCache field2822 = new NodeCache(64);
+   public static NodeCache field2822;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = 1953708393
@@ -54,6 +54,10 @@ public class FloorUnderlayDefinition extends CacheableNode {
       }
    }
 
+   public FloorUnderlayDefinition() {
+      this.field2821 = 0;
+   }
+
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -61,6 +65,10 @@ public class FloorUnderlayDefinition extends CacheableNode {
    )
    public void method3490() {
       this.method3493(this.field2821);
+   }
+
+   static {
+      field2822 = new NodeCache(64);
    }
 
    @ObfuscatedName("n")

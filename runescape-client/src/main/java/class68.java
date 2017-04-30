@@ -9,7 +9,7 @@ public abstract class class68 extends Node {
    @ObfuscatedName("j")
    class68 field1124;
    @ObfuscatedName("w")
-   volatile boolean field1125 = true;
+   volatile boolean field1125;
 
    @ObfuscatedName("ei")
    final void method1360(int[] var1, int var2, int var3) {
@@ -37,6 +37,10 @@ public abstract class class68 extends Node {
 
    @ObfuscatedName("k")
    protected abstract void vmethod3094(int var1);
+
+   protected class68() {
+      this.field1125 = true;
+   }
 
    @ObfuscatedName("p")
    protected abstract class68 vmethod3102();

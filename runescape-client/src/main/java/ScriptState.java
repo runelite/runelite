@@ -19,7 +19,7 @@ public class ScriptState {
    @ObfuscatedGetter(
       intValue = -380192045
    )
-   int field118 = -1;
+   int field118;
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
@@ -154,5 +154,9 @@ public class ScriptState {
       } else {
          throw new IllegalArgumentException("");
       }
+   }
+
+   ScriptState() {
+      this.field118 = -1;
    }
 }

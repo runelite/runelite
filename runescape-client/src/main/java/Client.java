@@ -22,30 +22,30 @@ public final class Client extends GameEngine {
    @ObfuscatedName("c")
    static Client field279;
    @ObfuscatedName("n")
-   static boolean field280 = true;
+   static boolean field280;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1816947923
    )
    @Export("world")
-   static int world = 1;
+   static int world;
    @ObfuscatedName("fx")
    static boolean field282;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1924016183
    )
-   static int field283 = 0;
+   static int field283;
    @ObfuscatedName("v")
    @Export("isMembers")
-   static boolean isMembers = false;
+   static boolean isMembers;
    @ObfuscatedName("g")
-   static boolean field285 = false;
+   static boolean field285;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -1956331919
    )
-   static int field286 = 0;
+   static int field286;
    @ObfuscatedName("k")
    static String field287;
    @ObfuscatedName("i")
@@ -53,15 +53,15 @@ public final class Client extends GameEngine {
       intValue = 866888665
    )
    @Export("gameState")
-   static int gameState = 0;
+   static int gameState;
    @ObfuscatedName("a")
-   static boolean field289 = true;
+   static boolean field289;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = -1396766197
    )
    @Export("gameCycle")
-   static int gameCycle = 0;
+   static int gameCycle;
    @ObfuscatedName("cj")
    @ObfuscatedGetter(
       intValue = -406057445
@@ -76,7 +76,7 @@ public final class Client extends GameEngine {
    @Export("clanMembers")
    static XClanMember[] clanMembers;
    @ObfuscatedName("ax")
-   static boolean field295 = true;
+   static boolean field295;
    @ObfuscatedName("lx")
    @ObfuscatedGetter(
       longValue = -5668015000734699877L
@@ -88,42 +88,42 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 359047565
    )
-   static int field298 = 0;
+   static int field298;
    @ObfuscatedName("ak")
    @ObfuscatedGetter(
       intValue = -783659701
    )
-   static int field299 = 0;
+   static int field299;
    @ObfuscatedName("aa")
    @ObfuscatedGetter(
       intValue = -359221685
    )
-   static int field300 = 0;
+   static int field300;
    @ObfuscatedName("aj")
    @ObfuscatedGetter(
       intValue = 1926662735
    )
-   static int field301 = 0;
+   static int field301;
    @ObfuscatedName("ay")
    @ObfuscatedGetter(
       intValue = 806008629
    )
-   static int field302 = 0;
+   static int field302;
    @ObfuscatedName("ae")
    @ObfuscatedGetter(
       intValue = -1614107269
    )
-   static int field303 = 0;
+   static int field303;
    @ObfuscatedName("aq")
    @ObfuscatedGetter(
       intValue = -326035417
    )
-   static int field304 = 0;
+   static int field304;
    @ObfuscatedName("av")
    @ObfuscatedGetter(
       intValue = -1594135925
    )
-   static int field305 = 0;
+   static int field305;
    @ObfuscatedName("af")
    static class40 field306;
    @ObfuscatedName("ar")
@@ -198,14 +198,13 @@ public final class Client extends GameEngine {
    @ObfuscatedName("cu")
    static int[] field324;
    @ObfuscatedName("cy")
-   @Export("egressBuffer")
-   static PacketBuffer egressBuffer;
+   @Export("secretPacketBuffer1")
+   static PacketBuffer secretPacketBuffer1;
    @ObfuscatedName("cl")
-   @Export("loginBuffer")
-   static PacketBuffer loginBuffer;
+   static PacketBuffer field326;
    @ObfuscatedName("cg")
-   @Export("ingressBuffer")
-   static PacketBuffer ingressBuffer;
+   @Export("secretPacketBuffer2")
+   static PacketBuffer secretPacketBuffer2;
    @ObfuscatedName("cn")
    @ObfuscatedGetter(
       intValue = 1452082135
@@ -532,7 +531,7 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       longValue = 3937000523909092665L
    )
-   static long field405 = -1L;
+   static long field405;
    @ObfuscatedName("hg")
    @ObfuscatedGetter(
       intValue = 93724565
@@ -645,7 +644,7 @@ public final class Client extends GameEngine {
       intValue = -1318334875
    )
    @Export("flags")
-   static int flags = 0;
+   static int flags;
    @ObfuscatedName("if")
    @ObfuscatedGetter(
       intValue = -1213795697
@@ -860,7 +859,7 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1171060333
    )
-   static int field495 = 0;
+   static int field495;
    @ObfuscatedName("jt")
    static Widget field496;
    @ObfuscatedName("gk")
@@ -869,7 +868,7 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1876333521
    )
-   static int field498 = -1;
+   static int field498;
    @ObfuscatedName("lz")
    @Export("isResized")
    static boolean isResized;
@@ -941,7 +940,7 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 2030936517
    )
-   static int field519 = -1;
+   static int field519;
    @ObfuscatedName("ms")
    @ObfuscatedGetter(
       intValue = -1458248867
@@ -1084,7 +1083,7 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 95200599
    )
-   static int field555 = -1;
+   static int field555;
    @ObfuscatedName("pw")
    static class151 field556;
    @ObfuscatedName("pm")
@@ -1094,7 +1093,7 @@ public final class Client extends GameEngine {
    @Export("ignoreCount")
    static int ignoreCount;
    @ObfuscatedName("ac")
-   static boolean field558 = false;
+   static boolean field558;
    @ObfuscatedName("px")
    static PlayerComposition field559;
    @ObfuscatedName("pa")
@@ -1756,6 +1755,31 @@ public final class Client extends GameEngine {
    }
 
    static {
+      field280 = true;
+      world = 1;
+      flags = 0;
+      field283 = 0;
+      isMembers = false;
+      field285 = false;
+      field286 = 0;
+      gameState = 0;
+      field289 = true;
+      gameCycle = 0;
+      field405 = -1L;
+      field498 = -1;
+      field519 = -1;
+      field555 = -1;
+      field295 = true;
+      field558 = false;
+      field495 = 0;
+      field298 = 0;
+      field299 = 0;
+      field300 = 0;
+      field301 = 0;
+      field302 = 0;
+      field303 = 0;
+      field304 = 0;
+      field305 = 0;
       field306 = class40.field807;
       field307 = class40.field807;
       field308 = 0;
@@ -1772,9 +1796,9 @@ public final class Client extends GameEngine {
       field350 = new int['耀'];
       field292 = 0;
       field324 = new int[250];
-      egressBuffer = new PacketBuffer(5000);
-      loginBuffer = new PacketBuffer(5000);
-      ingressBuffer = new PacketBuffer(15000);
+      secretPacketBuffer1 = new PacketBuffer(5000);
+      field326 = new PacketBuffer(5000);
+      secretPacketBuffer2 = new PacketBuffer(15000);
       packetLength = 0;
       packetOpcode = 0;
       field330 = 0;

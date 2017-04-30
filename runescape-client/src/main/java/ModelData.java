@@ -18,7 +18,7 @@ public class ModelData extends Renderable {
    static int[] field1211;
    @ObfuscatedName("t")
    @Export("triangleFaceCount")
-   int triangleFaceCount = 0;
+   int triangleFaceCount;
    @ObfuscatedName("w")
    @Export("textureCoords")
    byte[] textureCoords;
@@ -47,7 +47,7 @@ public class ModelData extends Renderable {
    byte[] faceRenderPriorities;
    @ObfuscatedName("k")
    @Export("priority")
-   byte priority = 0;
+   byte priority;
    @ObfuscatedName("aj")
    VertexNormal[] field1223;
    @ObfuscatedName("j")
@@ -100,7 +100,7 @@ public class ModelData extends Renderable {
    @ObfuscatedName("az")
    int[][] field1243;
    @ObfuscatedName("ab")
-   static int[] field1244 = new int[10000];
+   static int[] field1244;
    @ObfuscatedName("av")
    int field1245;
    @ObfuscatedName("ak")
@@ -108,7 +108,7 @@ public class ModelData extends Renderable {
    FaceNormal[] faceNormals;
    @ObfuscatedName("d")
    @Export("vertexCount")
-   int vertexCount = 0;
+   int vertexCount;
    @ObfuscatedName("af")
    int field1248;
    @ObfuscatedName("ar")
@@ -117,11 +117,11 @@ public class ModelData extends Renderable {
    @Export("faceAlphas")
    byte[] faceAlphas;
    @ObfuscatedName("as")
-   static int[] field1251 = new int[10000];
+   static int[] field1251;
    @ObfuscatedName("ai")
-   static int field1252 = 0;
+   static int field1252;
    @ObfuscatedName("aq")
-   boolean field1253 = false;
+   boolean field1253;
    @ObfuscatedName("an")
    static int[] field1254;
 
@@ -212,6 +212,10 @@ public class ModelData extends Renderable {
    }
 
    ModelData(byte[] var1) {
+      this.vertexCount = 0;
+      this.triangleFaceCount = 0;
+      this.priority = 0;
+      this.field1253 = false;
       if(var1[var1.length - 1] == -1 && var1[var1.length - 2] == -1) {
          this.method1480(var1);
       } else {
@@ -576,6 +580,10 @@ public class ModelData extends Renderable {
    }
 
    public ModelData(ModelData[] var1, int var2) {
+      this.vertexCount = 0;
+      this.triangleFaceCount = 0;
+      this.priority = 0;
+      this.field1253 = false;
       boolean var3 = false;
       boolean var4 = false;
       boolean var5 = false;
@@ -749,6 +757,10 @@ public class ModelData extends Renderable {
       garbageValue = "1"
    )
    public ModelData(ModelData var1, boolean var2, boolean var3, boolean var4, boolean var5) {
+      this.vertexCount = 0;
+      this.triangleFaceCount = 0;
+      this.priority = 0;
+      this.field1253 = false;
       this.vertexCount = var1.vertexCount;
       this.triangleFaceCount = var1.triangleFaceCount;
       this.field1239 = var1.field1239;
@@ -1080,6 +1092,9 @@ public class ModelData extends Renderable {
    }
 
    static {
+      field1244 = new int[10000];
+      field1251 = new int[10000];
+      field1252 = 0;
       field1211 = class84.field1433;
       field1254 = class84.field1441;
    }
@@ -1706,6 +1721,10 @@ public class ModelData extends Renderable {
    }
 
    ModelData() {
+      this.vertexCount = 0;
+      this.triangleFaceCount = 0;
+      this.priority = 0;
+      this.field1253 = false;
    }
 
    @ObfuscatedName("w")

@@ -13,7 +13,7 @@ public class class26 {
    @ObfuscatedName("pl")
    static short[] field589;
    @ObfuscatedName("q")
-   byte[] field590 = new byte[4];
+   byte[] field590;
    @ObfuscatedName("p")
    byte[] field591;
    @ObfuscatedName("u")
@@ -191,6 +191,7 @@ public class class26 {
    }
 
    class26(class103 var1, URL var2) {
+      this.field590 = new byte[4];
       this.field587 = var1.method1991(var2);
       this.field597 = 0;
       this.field593 = class72.method1421() + 30000L;

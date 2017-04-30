@@ -6,45 +6,61 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ad")
 public class class45 {
    @ObfuscatedName("l")
-   static int[] field886 = new int[2048];
+   static int[] field886;
    @ObfuscatedName("n")
-   static byte[] field888 = new byte[2048];
+   static byte[] field888;
    @ObfuscatedName("q")
-   static byte[] field889 = new byte[2048];
+   static byte[] field889;
    @ObfuscatedName("t")
-   static Buffer[] field890 = new Buffer[2048];
+   static Buffer[] field890;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 1877472863
    )
-   static int field891 = 0;
+   static int field891;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = 1976076969
    )
-   static int field893 = 0;
+   static int field893;
    @ObfuscatedName("u")
-   static int[] field894 = new int[2048];
+   static int[] field894;
    @ObfuscatedName("v")
-   static int[] field895 = new int[2048];
+   static int[] field895;
    @ObfuscatedName("pi")
    public static class103 field896;
    @ObfuscatedName("w")
-   static int[] field897 = new int[2048];
+   static int[] field897;
    @ObfuscatedName("s")
-   static int[] field899 = new int[2048];
+   static int[] field899;
    @ObfuscatedName("g")
-   static int[] field900 = new int[2048];
+   static int[] field900;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -555243237
    )
-   static int field902 = 0;
+   static int field902;
    @ObfuscatedName("bw")
    @Export("indexModels")
    static IndexData indexModels;
    @ObfuscatedName("k")
-   static Buffer field904 = new Buffer(new byte[5000]);
+   static Buffer field904;
+
+   static {
+      field888 = new byte[2048];
+      field889 = new byte[2048];
+      field890 = new Buffer[2048];
+      field891 = 0;
+      field894 = new int[2048];
+      field893 = 0;
+      field886 = new int[2048];
+      field895 = new int[2048];
+      field900 = new int[2048];
+      field897 = new int[2048];
+      field902 = 0;
+      field899 = new int[2048];
+      field904 = new Buffer(new byte[5000]);
+   }
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(

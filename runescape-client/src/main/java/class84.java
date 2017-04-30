@@ -5,53 +5,53 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("cu")
 public class class84 extends Rasterizer2D {
    @ObfuscatedName("n")
-   static boolean field1417 = false;
+   static boolean field1417;
    @ObfuscatedName("c")
-   static boolean field1418 = false;
+   static boolean field1418;
    @ObfuscatedName("k")
    static int field1419;
    @ObfuscatedName("w")
    static int field1420;
    @ObfuscatedName("t")
    @Export("rasterAlpha")
-   static int rasterAlpha = 0;
+   static int rasterAlpha;
    @ObfuscatedName("j")
    static int field1424;
    @ObfuscatedName("v")
-   public static int field1426 = 512;
+   public static int field1426;
    @ObfuscatedName("g")
    static int field1427;
    @ObfuscatedName("x")
    @Export("colorPalette")
-   public static int[] colorPalette = new int[65536];
+   public static int[] colorPalette;
    @ObfuscatedName("r")
    @Export("rasterClipX")
    static int rasterClipX;
    @ObfuscatedName("s")
    static int field1430;
    @ObfuscatedName("b")
-   static int[] field1431 = new int[512];
+   static int[] field1431;
    @ObfuscatedName("e")
    static int field1432;
    @ObfuscatedName("o")
-   public static int[] field1433 = new int[2048];
+   public static int[] field1433;
    @ObfuscatedName("i")
    static int field1434;
    @ObfuscatedName("a")
    @Export("rasterClipY")
-   static int[] rasterClipY = new int[1024];
+   static int[] rasterClipY;
    @ObfuscatedName("h")
    public static class93 field1437;
    @ObfuscatedName("d")
    @Export("rasterClipEnable")
-   static boolean rasterClipEnable = false;
+   static boolean rasterClipEnable;
    @ObfuscatedName("f")
-   static int[] field1439 = new int[2048];
+   static int[] field1439;
    @ObfuscatedName("q")
    @Export("rasterGouraudLowRes")
-   public static boolean rasterGouraudLowRes = true;
+   public static boolean rasterGouraudLowRes;
    @ObfuscatedName("m")
-   public static int[] field1441 = new int[2048];
+   public static int[] field1441;
 
    @ObfuscatedName("d")
    public static final void method1649() {
@@ -3348,6 +3348,19 @@ public class class84 extends Rasterizer2D {
    }
 
    static {
+      rasterClipEnable = false;
+      field1418 = false;
+      field1417 = false;
+      rasterGouraudLowRes = true;
+      rasterAlpha = 0;
+      field1426 = 512;
+      rasterClipY = new int[1024];
+      colorPalette = new int[65536];
+      field1431 = new int[512];
+      field1439 = new int[2048];
+      field1433 = new int[2048];
+      field1441 = new int[2048];
+
       int var0;
       for(var0 = 1; var0 < 512; ++var0) {
          field1431[var0] = '耀' / var0;
