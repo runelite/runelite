@@ -28,6 +28,7 @@ package net.runelite.deob.deobfuscators;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
+import net.runelite.deob.DeobProperties;
 import net.runelite.deob.TemporyFolderLocation;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
@@ -38,7 +39,8 @@ import org.junit.rules.TemporaryFolder;
 
 public class UnusedParametersTest
 {
-	private static final File GAMEPACK = new File(RenameUniqueTest.class.getResource("/gamepack_v16.jar").getFile());
+	@Rule
+	public DeobProperties properties = new DeobProperties();
 
 	@Rule
 	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
@@ -48,7 +50,7 @@ public class UnusedParametersTest
 	@Before
 	public void before() throws IOException
 	{
-		group = JarUtil.loadJar(GAMEPACK);
+		group = JarUtil.loadJar(new File(properties.getVanillaClient()));
 	}
 
 	@After

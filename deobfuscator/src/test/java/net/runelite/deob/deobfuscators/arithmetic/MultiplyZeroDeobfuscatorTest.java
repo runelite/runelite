@@ -28,8 +28,8 @@ package net.runelite.deob.deobfuscators.arithmetic;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
+import net.runelite.deob.DeobProperties;
 import net.runelite.deob.TemporyFolderLocation;
-import net.runelite.deob.deobfuscators.RenameUniqueTest;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -40,7 +40,8 @@ import org.junit.rules.TemporaryFolder;
 
 public class MultiplyZeroDeobfuscatorTest
 {
-	private static final File GAMEPACK = new File(RenameUniqueTest.class.getResource("/gamepack_v16.jar").getFile());
+	@Rule
+	public DeobProperties properties = new DeobProperties();
 
 	@Rule
 	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
@@ -50,7 +51,7 @@ public class MultiplyZeroDeobfuscatorTest
 	@Before
 	public void before() throws IOException
 	{
-		group = JarUtil.loadJar(GAMEPACK);
+		group = JarUtil.loadJar(new File(properties.getVanillaClient()));
 	}
 
 	@After
