@@ -27,40 +27,28 @@ package net.runelite.deob.deobfuscators.mapping;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.time.Instant;
-import java.util.Properties;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.signature.Signature;
 import net.runelite.deob.DeobAnnotations;
+import net.runelite.deob.DeobProperties;
 import net.runelite.deob.util.JarUtil;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class MappingDumper
 {
-	private String client;
-	private int rsVersion;
-
-	@Before
-	public void loadProperties() throws IOException
-	{
-		Properties properties = new Properties();
-		InputStream resourceAsStream = getClass().getResourceAsStream("/deob.properties");
-		properties.load(resourceAsStream);
-
-		client = (String) properties.get("rs.client");
-		rsVersion = Integer.parseInt((String) properties.get("rs.version"));
-	}
+	@Rule
+	public DeobProperties properties = new DeobProperties();
 
 	@Test
 	public void dump() throws IOException
 	{
-		ClassGroup group = JarUtil.loadJar(new File(client));
+		ClassGroup group = JarUtil.loadJar(new File(properties.getRsClient()));
 
 		int classes = 0, methods = 0, fields = 0;
 
@@ -136,7 +124,7 @@ public class MappingDumper
 		System.out.println("Runelite http://github.com/runelite");
 		System.out.println("Run " + Instant.now());
 		System.out.println("Classes: " + classes + ", methods: " + methods + ", fields: " + fields);
-		System.out.println("Gamepack " + rsVersion);
+		System.out.println("Gamepack " + properties.getRsVersion());
 		System.out.println("");
 		System.out.println(new String(bout.toByteArray()));
 	}

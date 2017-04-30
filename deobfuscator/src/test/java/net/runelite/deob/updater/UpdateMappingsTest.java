@@ -26,14 +26,13 @@ package net.runelite.deob.updater;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
-import java.util.Properties;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.deob.DeobAnnotations;
+import net.runelite.deob.DeobProperties;
 import net.runelite.deob.deobfuscators.mapping.AnnotationIntegrityChecker;
 import net.runelite.deob.deobfuscators.mapping.AnnotationMapper;
 import net.runelite.deob.deobfuscators.mapping.Mapper;
@@ -41,6 +40,7 @@ import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 import net.runelite.deob.util.JarUtil;
 import org.junit.Assert;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,38 +49,30 @@ public class UpdateMappingsTest
 {
 	private static final Logger logger = LoggerFactory.getLogger(UpdateMappingsTest.class);
 
-	private static final String
-		JAR = "d:/rs/07/gamepack_139_deobfuscated.jar",
+	private static final String JAR = "d:/rs/07/gamepack_139_deobfuscated.jar",
 		OUT = "d:/rs/07/adamout.jar";
 
-	private File getClient() throws IOException
-	{
-		Properties properties = new Properties();
-		InputStream resourceAsStream = getClass().getResourceAsStream("/deob.properties");
-		properties.load(resourceAsStream);
+	@Rule
+	public DeobProperties properties = new DeobProperties();
 
-		String jar = (String) properties.get("rs.client");
-		return new File(jar);
-	}
-	
 	@Test
 	@Ignore
 	public void testManual() throws IOException
 	{
-		File client = getClient();
+		File client = new File(properties.getRsClient());
 
 		ClassGroup group1 = JarUtil.loadJar(client);
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR));
-		
+
 		map(group1, group2);
-		
+
 		JarUtil.saveJar(group2, new File(OUT));
 	}
 
 	@Test
 	public void testRun() throws IOException
 	{
-		File client = getClient();
+		File client = new File(properties.getRsClient());
 
 		ClassGroup group1 = JarUtil.loadJar(client);
 		ClassGroup group2 = JarUtil.loadJar(client);
@@ -117,10 +109,10 @@ public class UpdateMappingsTest
 		for (ClassFile cf : group1.getClasses())
 		{
 			ClassFile other = group2.findClass(cf.getName());
-			
+
 			String implname = DeobAnnotations.getImplements(cf);
 			String otherimplname = DeobAnnotations.getImplements(other);
-			
+
 			Assert.assertEquals(implname, otherimplname);
 
 			for (Field f : cf.getFields().getFields())
