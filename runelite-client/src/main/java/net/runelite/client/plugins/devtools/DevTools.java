@@ -69,7 +69,7 @@ public class DevTools extends Plugin
 
 		ui.getNavigationPanel().addNavigation(navButton);
 
-		font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("runescape.ttf"));
+		font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape.ttf"));
 
 		font = font.deriveFont(Font.PLAIN, 16);
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
