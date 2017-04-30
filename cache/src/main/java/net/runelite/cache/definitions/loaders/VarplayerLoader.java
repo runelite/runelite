@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions.loaders;
 
-package net.runelite.cache.definitions;
+import net.runelite.cache.definitions.VarplayerDefinition;
+import net.runelite.cache.io.InputStream;
 
-import java.util.Map;
-
-public class NpcDefinition
+public class VarplayerLoader
 {
-
-	public int id;
-	public short[] recolorToFind;
-	public int anInt2156 = 32;
-	public String name = "null";
-	public short[] recolorToReplace;
-	public int[] models;
-	public int[] models_2;
-	public int stanceAnimation = -1;
-	public int anInt2165 = -1;
-	public int tileSpacesOccupied = 1;
-	public int walkAnimation = -1;
-	public short[] retextureToReplace;
-	public int rotate90RightAnimation = -1;
-	public boolean aBool2170 = true;
-	public int resizeX = 128;
-	public int contrast = 0;
-	public int rotate180Animation = -1;
-	public int anInt2174 = -1;
-	public String[] options = new String[5];
-	public boolean renderOnMinimap = true;
-	public int combatLevel = -1;
-	public int rotate90LeftAnimation = -1;
-	public int resizeY = 128;
-	public boolean hasRenderPriority = false;
-	public int ambient = 0;
-	public int headIcon = -1;
-	public int anInt2184 = 30;
-	public int[] anIntArray2185;
-	public short[] retextureToFind;
-	public int anInt2187 = -1;
-	public boolean isClickable = true;
-	public int anInt2189 = -1;
-	public boolean aBool2190 = false;
-
-	public Map<Integer, Object> params = null;
-
-	public NpcDefinition(int definitionID)
+	public VarplayerDefinition load(int id, byte[] b)
 	{
-		this.id = definitionID;
+		VarplayerDefinition def = new VarplayerDefinition();
+		InputStream is = new InputStream(b);
+
+		def.setId(id);
+
+		for (;;)
+		{
+			int opcode = is.readUnsignedByte();
+			if (opcode == 0)
+			{
+				break;
+			}
+
+			if (opcode == 5)
+			{
+				def.setType(is.readUnsignedShort());
+			}
+		}
+
+		return def;
 	}
 }
