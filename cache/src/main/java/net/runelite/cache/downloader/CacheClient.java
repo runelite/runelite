@@ -118,12 +118,13 @@ public class CacheClient implements AutoCloseable
 		message.writeInt(msg.getRevision()); // client revision
 
 		state = ClientState.HANDSHAKING;
-		channel.writeAndFlush(message);
-
-		logger.info("Sent handshake with revision {}", msg.getRevision());
 
 		assert handshakeFuture == null;
 		handshakeFuture = new CompletableFuture<>();
+
+		channel.writeAndFlush(message);
+
+		logger.info("Sent handshake with revision {}", msg.getRevision());
 
 		return handshakeFuture;
 	}
