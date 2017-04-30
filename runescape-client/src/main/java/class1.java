@@ -10,7 +10,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("c")
 public class class1 {
    @ObfuscatedName("c")
-   public static Comparator field11 = new class7();
+   public static Comparator field11;
    @ObfuscatedName("n")
    public static Comparator field12;
    @ObfuscatedName("q")
@@ -60,6 +60,7 @@ public class class1 {
    }
 
    static {
+      field11 = new class7();
       new class0();
       field12 = new class5();
       field13 = new class6();

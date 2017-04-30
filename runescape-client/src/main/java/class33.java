@@ -34,12 +34,12 @@ public final class class33 extends Renderable {
    )
    int field739;
    @ObfuscatedName("v")
-   boolean field740 = false;
+   boolean field740;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -943936889
    )
-   int field741 = 0;
+   int field741;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -212983011
@@ -53,12 +53,15 @@ public final class class33 extends Renderable {
    @ObfuscatedGetter(
       intValue = 289493473
    )
-   int field745 = 0;
+   int field745;
    @ObfuscatedName("ap")
    @Export("indexSoundEffects")
    static IndexData indexSoundEffects;
 
    class33(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+      this.field745 = 0;
+      this.field741 = 0;
+      this.field740 = false;
       this.field739 = var1;
       this.field735 = var2;
       this.field736 = var3;

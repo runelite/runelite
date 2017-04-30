@@ -19,44 +19,44 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("GameEngine")
 public abstract class GameEngine extends Applet implements Runnable, FocusListener, WindowListener {
    @ObfuscatedName("ru")
-   static volatile boolean field1765 = true;
+   static volatile boolean field1765;
    @ObfuscatedName("qs")
    @ObfuscatedGetter(
       intValue = 117828851
    )
-   protected static int field1766 = 0;
+   protected static int field1766;
    @ObfuscatedName("qj")
    @ObfuscatedGetter(
       longValue = 4561402566920761625L
    )
-   static long field1767 = 0L;
+   static long field1767;
    @ObfuscatedName("qx")
-   static boolean field1768 = false;
+   static boolean field1768;
    @ObfuscatedName("qn")
    @ObfuscatedGetter(
       intValue = 783407863
    )
-   static int field1769 = 20;
+   static int field1769;
    @ObfuscatedName("qd")
    @ObfuscatedGetter(
       intValue = -72920709
    )
-   static int field1770 = 0;
+   static int field1770;
    @ObfuscatedName("qf")
    @ObfuscatedGetter(
       intValue = 75817599
    )
-   static int field1771 = 1;
+   static int field1771;
    @ObfuscatedName("ql")
    @ObfuscatedGetter(
       intValue = -467669171
    )
    @Export("FPS")
-   protected static int FPS = 0;
+   protected static int FPS;
    @ObfuscatedName("qp")
-   protected static long[] field1773 = new long[32];
+   protected static long[] field1773;
    @ObfuscatedName("qo")
-   protected static long[] field1774 = new long[32];
+   protected static long[] field1774;
    @ObfuscatedName("dk")
    @ObfuscatedGetter(
       intValue = -781384431
@@ -64,30 +64,30 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    @Export("baseY")
    static int baseY;
    @ObfuscatedName("qi")
-   boolean field1776 = false;
+   boolean field1776;
    @ObfuscatedName("rc")
-   protected static volatile boolean field1777 = true;
+   protected static volatile boolean field1777;
    @ObfuscatedName("re")
    @ObfuscatedGetter(
       intValue = 1819339071
    )
-   static int field1778 = 500;
+   static int field1778;
    @ObfuscatedName("rz")
-   protected static boolean field1779 = false;
+   protected static boolean field1779;
    @ObfuscatedName("rt")
-   protected static volatile boolean field1780 = false;
+   protected static volatile boolean field1780;
    @ObfuscatedName("rj")
    @ObfuscatedGetter(
       longValue = 5335836468379043549L
    )
-   static volatile long field1781 = 0L;
+   static volatile long field1781;
    @ObfuscatedName("pu")
-   static GameEngine field1782 = null;
+   static GameEngine field1782;
    @ObfuscatedName("qw")
    @ObfuscatedGetter(
       intValue = 523231493
    )
-   protected static int field1783 = 0;
+   protected static int field1783;
    @ObfuscatedName("cz")
    @ObfuscatedGetter(
       longValue = 1112876355748774285L
@@ -462,6 +462,26 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    )
    protected abstract void vmethod2132();
 
+   static {
+      field1782 = null;
+      field1770 = 0;
+      field1767 = 0L;
+      field1768 = false;
+      field1769 = 20;
+      field1771 = 1;
+      FPS = 0;
+      field1773 = new long[32];
+      field1774 = new long[32];
+      field1766 = 0;
+      field1783 = 0;
+      field1777 = true;
+      field1778 = 500;
+      field1779 = false;
+      field1780 = false;
+      field1781 = 0L;
+      field1765 = true;
+   }
+
    public final void windowIconified(WindowEvent var1) {
    }
 
@@ -507,6 +527,10 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    )
    protected abstract void vmethod2154();
 
+   protected GameEngine() {
+      this.field1776 = false;
+   }
+
    public final void update(Graphics var1) {
       this.paint(var1);
    }
@@ -538,21 +562,21 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                int var10 = var8 * var5 - var7 * var4 >> 11;
                int var11 = var9 + class22.localPlayer.x >> 7;
                int var12 = class22.localPlayer.y - var10 >> 7;
-               Client.egressBuffer.putOpcode(196);
-               Client.egressBuffer.putByte(18);
-               Client.egressBuffer.method2499(class105.field1695[82]?(class105.field1695[81]?2:1):0);
-               Client.egressBuffer.method2526(class108.baseX + var11);
-               Client.egressBuffer.method2416(var12 + baseY);
-               Client.egressBuffer.putByte(var4);
-               Client.egressBuffer.putByte(var5);
-               Client.egressBuffer.putShort(Client.mapAngle);
-               Client.egressBuffer.putByte(57);
-               Client.egressBuffer.putByte(Client.mapScale);
-               Client.egressBuffer.putByte(Client.mapScaleDelta);
-               Client.egressBuffer.putByte(89);
-               Client.egressBuffer.putShort(class22.localPlayer.x);
-               Client.egressBuffer.putShort(class22.localPlayer.y);
-               Client.egressBuffer.putByte(63);
+               Client.secretPacketBuffer1.putOpcode(196);
+               Client.secretPacketBuffer1.putByte(18);
+               Client.secretPacketBuffer1.method2499(class105.field1695[82]?(class105.field1695[81]?2:1):0);
+               Client.secretPacketBuffer1.method2526(class108.baseX + var11);
+               Client.secretPacketBuffer1.method2416(var12 + baseY);
+               Client.secretPacketBuffer1.putByte(var4);
+               Client.secretPacketBuffer1.putByte(var5);
+               Client.secretPacketBuffer1.putShort(Client.mapAngle);
+               Client.secretPacketBuffer1.putByte(57);
+               Client.secretPacketBuffer1.putByte(Client.mapScale);
+               Client.secretPacketBuffer1.putByte(Client.mapScaleDelta);
+               Client.secretPacketBuffer1.putByte(89);
+               Client.secretPacketBuffer1.putShort(class22.localPlayer.x);
+               Client.secretPacketBuffer1.putShort(class22.localPlayer.y);
+               Client.secretPacketBuffer1.putByte(63);
                Client.flagX = var11;
                Client.flagY = var12;
             }

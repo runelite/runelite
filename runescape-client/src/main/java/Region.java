@@ -13,17 +13,17 @@ public class Region {
    @ObfuscatedName("q")
    int field1464;
    @ObfuscatedName("av")
-   static boolean field1465 = false;
+   static boolean field1465;
    @ObfuscatedName("ay")
-   static int field1466 = 0;
+   static int field1466;
    @ObfuscatedName("p")
    @Export("tiles")
    Tile[][][] tiles;
    @ObfuscatedName("d")
-   public static boolean field1469 = true;
+   public static boolean field1469;
    @ObfuscatedName("l")
    @Export("objects")
-   GameObject[] objects = new GameObject[5000];
+   GameObject[] objects;
    @ObfuscatedName("v")
    int[][][] field1471;
    @ObfuscatedName("t")
@@ -31,7 +31,7 @@ public class Region {
    @ObfuscatedName("az")
    static int field1475;
    @ObfuscatedName("k")
-   static int field1476 = 0;
+   static int field1476;
    @ObfuscatedName("y")
    static int field1477;
    @ObfuscatedName("j")
@@ -43,11 +43,11 @@ public class Region {
    @ObfuscatedName("x")
    static int field1481;
    @ObfuscatedName("ae")
-   public static int field1482 = -1;
+   public static int field1482;
    @ObfuscatedName("b")
    static int field1483;
    @ObfuscatedName("bk")
-   int[][] field1484 = new int[][]{{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}, {12, 8, 4, 0, 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3}, {15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0}, {3, 7, 11, 15, 2, 6, 10, 14, 1, 5, 9, 13, 0, 4, 8, 12}};
+   int[][] field1484;
    @ObfuscatedName("o")
    static int field1485;
    @ObfuscatedName("m")
@@ -59,25 +59,25 @@ public class Region {
    @ObfuscatedName("ax")
    static int field1489;
    @ObfuscatedName("br")
-   int[][] field1490 = new int[][]{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1}, {1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0}, {0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1}, {0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0}, {1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1}, {1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1}};
+   int[][] field1490;
    @ObfuscatedName("ac")
    static int field1491;
    @ObfuscatedName("ao")
-   static GameObject[] field1492 = new GameObject[100];
+   static GameObject[] field1492;
    @ObfuscatedName("ak")
-   static boolean field1493 = false;
+   static boolean field1493;
    @ObfuscatedName("aa")
-   static int field1494 = 0;
+   static int field1494;
    @ObfuscatedName("aj")
-   static int field1495 = 0;
+   static int field1495;
    @ObfuscatedName("al")
    static final int[] field1497;
    @ObfuscatedName("aq")
-   public static int field1498 = -1;
+   public static int field1498;
    @ObfuscatedName("f")
    static int field1499;
    @ObfuscatedName("af")
-   static int field1502 = 4;
+   static int field1502;
    @ObfuscatedName("ar")
    static int[] field1503;
    @ObfuscatedName("ab")
@@ -95,7 +95,7 @@ public class Region {
    @ObfuscatedName("at")
    static final int[] field1510;
    @ObfuscatedName("u")
-   int field1511 = 0;
+   int field1511;
    @ObfuscatedName("ai")
    static class94[] field1512;
    @ObfuscatedName("au")
@@ -103,11 +103,11 @@ public class Region {
    @ObfuscatedName("bo")
    static boolean[][][][] field1514;
    @ObfuscatedName("z")
-   int field1515 = 0;
+   int field1515;
    @ObfuscatedName("an")
    static final int[] field1516;
    @ObfuscatedName("e")
-   static int field1517 = 0;
+   static int field1517;
    @ObfuscatedName("bw")
    @Export("renderArea")
    static boolean[][] renderArea;
@@ -1625,6 +1625,18 @@ public class Region {
    }
 
    static {
+      field1469 = true;
+      field1476 = 0;
+      field1517 = 0;
+      field1492 = new GameObject[100];
+      field1493 = false;
+      field1494 = 0;
+      field1495 = 0;
+      field1466 = 0;
+      field1482 = -1;
+      field1498 = -1;
+      field1465 = false;
+      field1502 = 4;
       field1503 = new int[field1502];
       field1504 = new class94[field1502][500];
       field1505 = 0;
@@ -1836,6 +1848,11 @@ public class Region {
    }
 
    public Region(int var1, int var2, int var3, int[][][] var4) {
+      this.field1511 = 0;
+      this.field1515 = 0;
+      this.objects = new GameObject[5000];
+      this.field1490 = new int[][]{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1}, {1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0}, {0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1}, {0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0}, {1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1}, {1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1}};
+      this.field1484 = new int[][]{{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}, {12, 8, 4, 0, 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3}, {15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0}, {3, 7, 11, 15, 2, 6, 10, 14, 1, 5, 9, 13, 0, 4, 8, 12}};
       this.field1463 = var1;
       this.field1509 = var2;
       this.field1464 = var3;

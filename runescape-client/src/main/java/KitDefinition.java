@@ -10,13 +10,13 @@ public class KitDefinition extends CacheableNode {
    @ObfuscatedName("rk")
    protected static boolean field2831;
    @ObfuscatedName("q")
-   static NodeCache field2833 = new NodeCache(64);
+   static NodeCache field2833;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = 1768276501
    )
    @Export("bodyPartId")
-   public int bodyPartId = -1;
+   public int bodyPartId;
    @ObfuscatedName("p")
    @Export("modelIds")
    int[] modelIds;
@@ -39,10 +39,10 @@ public class KitDefinition extends CacheableNode {
    public static int field2840;
    @ObfuscatedName("w")
    @Export("nonSelectable")
-   public boolean nonSelectable = false;
+   public boolean nonSelectable;
    @ObfuscatedName("g")
    @Export("models")
-   int[] models = new int[]{-1, -1, -1, -1, -1};
+   int[] models;
    @ObfuscatedName("c")
    static IndexDataBase field2844;
    @ObfuscatedName("bv")
@@ -150,6 +150,10 @@ public class KitDefinition extends CacheableNode {
 
    }
 
+   static {
+      field2833 = new NodeCache(64);
+   }
+
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(B)Z",
@@ -219,5 +223,11 @@ public class KitDefinition extends CacheableNode {
       }
 
       return var5;
+   }
+
+   KitDefinition() {
+      this.bodyPartId = -1;
+      this.models = new int[]{-1, -1, -1, -1, -1};
+      this.nonSelectable = false;
    }
 }

@@ -3,13 +3,13 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("au")
 public class class51 extends class68 {
    @ObfuscatedName("q")
-   int field963 = -1;
+   int field963;
    @ObfuscatedName("c")
-   Deque field964 = new Deque();
+   Deque field964;
    @ObfuscatedName("n")
-   int field965 = 0;
+   int field965;
    @ObfuscatedName("d")
-   Deque field966 = new Deque();
+   Deque field966;
 
    @ObfuscatedName("d")
    public final synchronized void method935(class68 var1) {
@@ -145,6 +145,13 @@ public class class51 extends class68 {
          }
       } while(var1 != 0);
 
+   }
+
+   public class51() {
+      this.field966 = new Deque();
+      this.field964 = new Deque();
+      this.field965 = 0;
+      this.field963 = -1;
    }
 
    @ObfuscatedName("q")

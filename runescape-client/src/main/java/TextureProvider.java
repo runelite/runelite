@@ -18,18 +18,18 @@ public class TextureProvider implements class93 {
    @ObfuscatedGetter(
       intValue = -1404873405
    )
-   int field1184 = 0;
+   int field1184;
    @ObfuscatedName("t")
-   double field1185 = 1.0D;
+   double field1185;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 1051252599
    )
-   int field1186 = 128;
+   int field1186;
    @ObfuscatedName("u")
    IndexDataBase field1187;
    @ObfuscatedName("c")
-   Deque field1189 = new Deque();
+   Deque field1189;
    @ObfuscatedName("ch")
    static Font field1192;
 
@@ -115,6 +115,10 @@ public class TextureProvider implements class93 {
       garbageValue = "64"
    )
    public TextureProvider(IndexDataBase var1, IndexDataBase var2, int var3, double var4, int var6) {
+      this.field1189 = new Deque();
+      this.field1184 = 0;
+      this.field1185 = 1.0D;
+      this.field1186 = 128;
       this.field1187 = var2;
       this.field1181 = var3;
       this.field1184 = this.field1181;

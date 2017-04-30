@@ -9,11 +9,16 @@ public class class107 {
    @Export("indexScripts")
    static IndexData indexScripts;
    @ObfuscatedName("n")
-   static Hashtable field1715 = new Hashtable(16);
+   static Hashtable field1715;
    @ObfuscatedName("ec")
    static SpritePixels[] field1719;
    @ObfuscatedName("d")
-   static boolean field1721 = false;
+   static boolean field1721;
+
+   static {
+      field1721 = false;
+      field1715 = new Hashtable(16);
+   }
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(

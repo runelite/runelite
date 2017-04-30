@@ -12,7 +12,7 @@ public final class class142 implements Iterable {
    @ObfuscatedName("q")
    Node field2013;
    @ObfuscatedName("t")
-   int field2014 = 0;
+   int field2014;
 
    @ObfuscatedName("d")
    public Node method2728(long var1) {
@@ -76,6 +76,7 @@ public final class class142 implements Iterable {
    }
 
    public class142(int var1) {
+      this.field2014 = 0;
       this.field2010 = var1;
       this.field2011 = new Node[var1];
 

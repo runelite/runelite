@@ -66,7 +66,7 @@ public final class GameObject {
       intValue = 603394919
    )
    @Export("flags")
-   int flags = 0;
+   int flags;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 757781661
@@ -83,11 +83,16 @@ public final class GameObject {
       intValue = -1016134539
    )
    @Export("hash")
-   public int hash = 0;
+   public int hash;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 1437069007
    )
    @Export("relativeY")
    int relativeY;
+
+   GameObject() {
+      this.hash = 0;
+      this.flags = 0;
+   }
 }

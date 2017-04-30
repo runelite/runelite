@@ -4,7 +4,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ha")
 public class class213 {
    @ObfuscatedName("d")
-   public static char[] field3144 = new char[64];
+   public static char[] field3144;
    @ObfuscatedName("c")
    static char[] field3145;
    @ObfuscatedName("n")
@@ -13,6 +13,8 @@ public class class213 {
    static IndexData field3150;
 
    static {
+      field3144 = new char[64];
+
       int var0;
       for(var0 = 0; var0 < 26; ++var0) {
          field3144[var0] = (char)(var0 + 65);

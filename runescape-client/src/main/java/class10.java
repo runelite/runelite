@@ -9,12 +9,12 @@ public final class class10 {
    static int[] field91;
    @ObfuscatedName("c")
    @Export("tileSettings")
-   static byte[][][] tileSettings = new byte[4][104][104];
+   static byte[][][] tileSettings;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 1266720679
    )
-   static int field93 = 99;
+   static int field93;
    @ObfuscatedName("p")
    @Export("overlayPaths")
    static byte[][][] overlayPaths;
@@ -33,40 +33,54 @@ public final class class10 {
    @ObfuscatedName("g")
    static int[] field98;
    @ObfuscatedName("a")
-   static final int[] field99 = new int[]{1, 2, 4, 8};
+   static final int[] field99;
    @ObfuscatedName("h")
-   static final int[] field100 = new int[]{1, 0, -1, 0};
+   static final int[] field100;
    @ObfuscatedName("x")
-   static final int[] field101 = new int[]{16, 32, 64, 128};
+   static final int[] field101;
    @ObfuscatedName("d")
    @Export("tileHeights")
-   static int[][][] tileHeights = new int[4][105][105];
+   static int[][][] tileHeights;
    @ObfuscatedName("o")
-   static final int[] field103 = new int[]{-1, -1, 1, 1};
+   static final int[] field103;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -81851943
    )
-   static int field104 = (int)(Math.random() * 17.0D) - 8;
+   static int field104;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -1186614485
    )
-   static int field105 = (int)(Math.random() * 33.0D) - 16;
+   static int field105;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -1963323273
    )
    static int field106;
    @ObfuscatedName("b")
-   static final int[] field107 = new int[]{0, -1, 0, 1};
+   static final int[] field107;
    @ObfuscatedName("f")
-   static final int[] field110 = new int[]{1, -1, -1, 1};
+   static final int[] field110;
    @ObfuscatedName("bz")
    @ObfuscatedGetter(
       intValue = 1368130663
    )
    static int field111;
+
+   static {
+      tileHeights = new int[4][105][105];
+      tileSettings = new byte[4][104][104];
+      field93 = 99;
+      field99 = new int[]{1, 2, 4, 8};
+      field101 = new int[]{16, 32, 64, 128};
+      field100 = new int[]{1, 0, -1, 0};
+      field107 = new int[]{0, -1, 0, 1};
+      field110 = new int[]{1, -1, -1, 1};
+      field103 = new int[]{-1, -1, 1, 1};
+      field104 = (int)(Math.random() * 17.0D) - 8;
+      field105 = (int)(Math.random() * 33.0D) - 16;
+   }
 
    class10() throws Throwable {
       throw new Error();

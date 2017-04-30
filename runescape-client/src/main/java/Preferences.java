@@ -16,7 +16,7 @@ public class Preferences {
    @ObfuscatedGetter(
       intValue = -1839616837
    )
-   static int field689 = 4;
+   static int field689;
    @ObfuscatedName("n")
    boolean field690;
    @ObfuscatedName("q")
@@ -25,10 +25,10 @@ public class Preferences {
    @ObfuscatedGetter(
       intValue = 1023255843
    )
-   int field692 = 1;
+   int field692;
    @ObfuscatedName("p")
    @Export("preferences")
-   LinkedHashMap preferences = new LinkedHashMap();
+   LinkedHashMap preferences;
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
@@ -54,6 +54,8 @@ public class Preferences {
    }
 
    Preferences(Buffer var1) {
+      this.field692 = 1;
+      this.preferences = new LinkedHashMap();
       if(var1 != null && var1.payload != null) {
          int var2 = var1.readUnsignedByte();
          if(var2 >= 0 && var2 <= field689) {
@@ -96,7 +98,13 @@ public class Preferences {
    }
 
    Preferences() {
+      this.field692 = 1;
+      this.preferences = new LinkedHashMap();
       this.method643(true);
+   }
+
+   static {
+      field689 = 4;
    }
 
    @ObfuscatedName("a")

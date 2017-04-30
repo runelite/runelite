@@ -6,13 +6,13 @@ import net.runelite.mapping.ObfuscatedName;
 @Implements("SoundEffect1")
 public class SoundEffect1 {
    @ObfuscatedName("l")
-   int[] field1130 = new int[]{0, 0, 0, 0, 0};
+   int[] field1130;
    @ObfuscatedName("c")
    SoundEffect2 field1131;
    @ObfuscatedName("y")
    static int[] field1132;
    @ObfuscatedName("j")
-   int field1133 = 0;
+   int field1133;
    @ObfuscatedName("t")
    SoundEffect2 field1134;
    @ObfuscatedName("p")
@@ -26,23 +26,23 @@ public class SoundEffect1 {
    @ObfuscatedName("n")
    SoundEffect2 field1139;
    @ObfuscatedName("g")
-   int[] field1140 = new int[]{0, 0, 0, 0, 0};
+   int[] field1140;
    @ObfuscatedName("w")
-   int field1141 = 0;
+   int field1141;
    @ObfuscatedName("r")
-   int field1142 = 100;
+   int field1142;
    @ObfuscatedName("q")
    SoundEffect2 field1143;
    @ObfuscatedName("k")
    SoundEffect2 field1144;
    @ObfuscatedName("e")
-   int field1145 = 500;
+   int field1145;
    @ObfuscatedName("v")
-   int[] field1146 = new int[]{0, 0, 0, 0, 0};
+   int[] field1146;
    @ObfuscatedName("s")
    SoundEffect3 field1147;
    @ObfuscatedName("a")
-   static int[] field1149 = new int['耀'];
+   static int[] field1149;
    @ObfuscatedName("b")
    static int[] field1150;
    @ObfuscatedName("x")
@@ -317,6 +317,7 @@ public class SoundEffect1 {
    }
 
    static {
+      field1149 = new int['耀'];
       Random var0 = new Random(0L);
 
       int var1;
@@ -336,5 +337,15 @@ public class SoundEffect1 {
       field1153 = new int[5];
       field1154 = new int[5];
       field1132 = new int[5];
+   }
+
+   SoundEffect1() {
+      this.field1130 = new int[]{0, 0, 0, 0, 0};
+      this.field1146 = new int[]{0, 0, 0, 0, 0};
+      this.field1140 = new int[]{0, 0, 0, 0, 0};
+      this.field1141 = 0;
+      this.field1142 = 100;
+      this.field1145 = 500;
+      this.field1133 = 0;
    }
 }

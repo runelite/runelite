@@ -5,24 +5,24 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fk")
 public class class163 extends Node {
    @ObfuscatedName("q")
-   byte[] field2141 = new byte[128];
+   byte[] field2141;
    @ObfuscatedName("c")
-   class55[] field2142 = new class55[128];
+   class55[] field2142;
    @ObfuscatedName("p")
-   class158[] field2143 = new class158[128];
+   class158[] field2143;
    @ObfuscatedName("n")
-   short[] field2144 = new short[128];
+   short[] field2144;
    @ObfuscatedName("t")
-   byte[] field2145 = new byte[128];
+   byte[] field2145;
    @ObfuscatedName("u")
-   byte[] field2146 = new byte[128];
+   byte[] field2146;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 1162605653
    )
    int field2147;
    @ObfuscatedName("z")
-   int[] field2148 = new int[128];
+   int[] field2148;
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
@@ -72,6 +72,13 @@ public class class163 extends Node {
    }
 
    class163(byte[] var1) {
+      this.field2142 = new class55[128];
+      this.field2144 = new short[128];
+      this.field2141 = new byte[128];
+      this.field2145 = new byte[128];
+      this.field2143 = new class158[128];
+      this.field2146 = new byte[128];
+      this.field2148 = new int[128];
       Buffer var2 = new Buffer(var1);
 
       int var3;

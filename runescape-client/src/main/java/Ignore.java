@@ -65,7 +65,7 @@ public class Ignore {
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(LCipherBuffer;I)V",
+      signature = "(LPacketBuffer;I)V",
       garbageValue = "-579843349"
    )
    public static void method204(PacketBuffer var0) {

@@ -17,16 +17,16 @@ public final class IndexFile {
    @Export("index")
    int index;
    @ObfuscatedName("c")
-   static byte[] field1819 = new byte[520];
+   static byte[] field1819;
    @ObfuscatedName("d")
-   class72 field1820 = null;
+   class72 field1820;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = 1856765907
    )
-   int field1822 = '\ufde8';
+   int field1822;
    @ObfuscatedName("n")
-   class72 field1825 = null;
+   class72 field1825;
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
@@ -168,6 +168,10 @@ public final class IndexFile {
       }
    }
 
+   static {
+      field1819 = new byte[520];
+   }
+
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(II)[B",
@@ -245,11 +249,11 @@ public final class IndexFile {
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(LCipherBuffer;II)Z",
+      signature = "(LPacketBuffer;II)Z",
       garbageValue = "-119979071"
    )
    static boolean method2245(PacketBuffer var0, int var1) {
-      int var2 = var0.readBits(2);
+      int var2 = var0.method2645(2);
       int var3;
       int var4;
       int var7;
@@ -257,13 +261,13 @@ public final class IndexFile {
       int var9;
       int var10;
       if(var2 == 0) {
-         if(var0.readBits(1) != 0) {
+         if(var0.method2645(1) != 0) {
             method2245(var0, var1);
          }
 
-         var3 = var0.readBits(13);
-         var4 = var0.readBits(13);
-         boolean var12 = var0.readBits(1) == 1;
+         var3 = var0.method2645(13);
+         var4 = var0.method2645(13);
+         boolean var12 = var0.method2645(1) == 1;
          if(var12) {
             class45.field899[++class45.field902 - 1] = var1;
          }
@@ -290,7 +294,7 @@ public final class IndexFile {
             return true;
          }
       } else if(var2 == 1) {
-         var3 = var0.readBits(2);
+         var3 = var0.method2645(2);
          var4 = class45.field895[var1];
          class45.field895[var1] = ((var3 + (var4 >> 28) & 3) << 28) + (var4 & 268435455);
          return false;
@@ -298,7 +302,7 @@ public final class IndexFile {
          int var5;
          int var11;
          if(var2 == 2) {
-            var3 = var0.readBits(5);
+            var3 = var0.method2645(5);
             var4 = var3 >> 3;
             var5 = var3 & 7;
             var11 = class45.field895[var1];
@@ -344,7 +348,7 @@ public final class IndexFile {
             class45.field895[var1] = (var8 << 14) + (var7 << 28) + var9;
             return false;
          } else {
-            var3 = var0.readBits(18);
+            var3 = var0.method2645(18);
             var4 = var3 >> 16;
             var5 = var3 >> 8 & 255;
             var11 = var3 & 255;
@@ -363,6 +367,9 @@ public final class IndexFile {
       garbageValue = "500000"
    )
    public IndexFile(int var1, class72 var2, class72 var3, int var4) {
+      this.field1825 = null;
+      this.field1820 = null;
+      this.field1822 = '\ufde8';
       this.index = var1;
       this.field1825 = var2;
       this.field1820 = var3;

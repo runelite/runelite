@@ -6,22 +6,22 @@ import net.runelite.mapping.ObfuscatedName;
 @Implements("Frame")
 public class Frame {
    @ObfuscatedName("c")
-   static int[] field1305 = new int[500];
+   static int[] field1305;
    @ObfuscatedName("q")
-   static int[] field1306 = new int[500];
+   static int[] field1306;
    @ObfuscatedName("n")
-   static int[] field1307 = new int[500];
+   static int[] field1307;
    @ObfuscatedName("z")
    @Export("translator_x")
    int[] translator_x;
    @ObfuscatedName("t")
-   FrameMap field1309 = null;
+   FrameMap field1309;
    @ObfuscatedName("p")
-   int field1310 = -1;
+   int field1310;
    @ObfuscatedName("u")
    int[] field1311;
    @ObfuscatedName("d")
-   static int[] field1312 = new int[500];
+   static int[] field1312;
    @ObfuscatedName("l")
    @Export("translator_y")
    int[] translator_y;
@@ -29,9 +29,12 @@ public class Frame {
    @Export("translator_z")
    int[] translator_z;
    @ObfuscatedName("g")
-   boolean field1315 = false;
+   boolean field1315;
 
    Frame(byte[] var1, FrameMap var2) {
+      this.field1309 = null;
+      this.field1310 = -1;
+      this.field1315 = false;
       this.field1309 = var2;
       Buffer var3 = new Buffer(var1);
       Buffer var4 = new Buffer(var1);
@@ -107,5 +110,12 @@ public class Frame {
          }
 
       }
+   }
+
+   static {
+      field1312 = new int[500];
+      field1305 = new int[500];
+      field1307 = new int[500];
+      field1306 = new int[500];
    }
 }

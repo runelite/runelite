@@ -9,20 +9,20 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("h")
 public class class20 implements Runnable {
    @ObfuscatedName("q")
-   int[] field214 = new int[500];
+   int[] field214;
    @ObfuscatedName("c")
-   Object field215 = new Object();
+   Object field215;
    @ObfuscatedName("f")
    public static String field216;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 631976301
    )
-   int field217 = 0;
+   int field217;
    @ObfuscatedName("t")
-   int[] field218 = new int[500];
+   int[] field218;
    @ObfuscatedName("d")
-   boolean field219 = true;
+   boolean field219;
    @ObfuscatedName("qg")
    @ObfuscatedGetter(
       intValue = 1887149107
@@ -126,6 +126,14 @@ public class class20 implements Runnable {
 
    }
 
+   class20() {
+      this.field219 = true;
+      this.field215 = new Object();
+      this.field217 = 0;
+      this.field214 = new int[500];
+      this.field218 = new int[500];
+   }
+
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(B)V",
@@ -162,10 +170,10 @@ public class class20 implements Runnable {
          }
 
          if(Client.loginState == 2) {
-            Client.egressBuffer.offset = 0;
-            Client.egressBuffer.putByte(14);
-            Friend.rssocket.queueForWrite(Client.egressBuffer.payload, 0, 1);
-            Client.ingressBuffer.offset = 0;
+            Client.secretPacketBuffer1.offset = 0;
+            Client.secretPacketBuffer1.putByte(14);
+            Friend.rssocket.queueForWrite(Client.secretPacketBuffer1.payload, 0, 1);
+            Client.secretPacketBuffer2.offset = 0;
             Client.loginState = 3;
          }
 
@@ -193,26 +201,26 @@ public class class20 implements Runnable {
                return;
             }
 
-            Client.ingressBuffer.offset = 0;
+            Client.secretPacketBuffer2.offset = 0;
             Client.loginState = 4;
          }
 
          if(Client.loginState == 4) {
-            if(Client.ingressBuffer.offset < 8) {
+            if(Client.secretPacketBuffer2.offset < 8) {
                var0 = Friend.rssocket.available();
-               if(var0 > 8 - Client.ingressBuffer.offset) {
-                  var0 = 8 - Client.ingressBuffer.offset;
+               if(var0 > 8 - Client.secretPacketBuffer2.offset) {
+                  var0 = 8 - Client.secretPacketBuffer2.offset;
                }
 
                if(var0 > 0) {
-                  Friend.rssocket.read(Client.ingressBuffer.payload, Client.ingressBuffer.offset, var0);
-                  Client.ingressBuffer.offset += var0;
+                  Friend.rssocket.read(Client.secretPacketBuffer2.payload, Client.secretPacketBuffer2.offset, var0);
+                  Client.secretPacketBuffer2.offset += var0;
                }
             }
 
-            if(Client.ingressBuffer.offset == 8) {
-               Client.ingressBuffer.offset = 0;
-               GameEngine.field1784 = Client.ingressBuffer.readLong();
+            if(Client.secretPacketBuffer2.offset == 8) {
+               Client.secretPacketBuffer2.offset = 0;
+               GameEngine.field1784 = Client.secretPacketBuffer2.readLong();
                Client.loginState = 5;
             }
          }
@@ -221,79 +229,79 @@ public class class20 implements Runnable {
          int var2;
          if(Client.loginState == 5) {
             int[] var5 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(GameEngine.field1784 >> 32), (int)(GameEngine.field1784 & -1L)};
-            Client.egressBuffer.offset = 0;
-            Client.egressBuffer.putByte(1);
-            Client.egressBuffer.putByte(class41.field837.vmethod4163());
-            Client.egressBuffer.putInt(var5[0]);
-            Client.egressBuffer.putInt(var5[1]);
-            Client.egressBuffer.putInt(var5[2]);
-            Client.egressBuffer.putInt(var5[3]);
+            Client.secretPacketBuffer1.offset = 0;
+            Client.secretPacketBuffer1.putByte(1);
+            Client.secretPacketBuffer1.putByte(class41.field837.vmethod4163());
+            Client.secretPacketBuffer1.putInt(var5[0]);
+            Client.secretPacketBuffer1.putInt(var5[1]);
+            Client.secretPacketBuffer1.putInt(var5[2]);
+            Client.secretPacketBuffer1.putInt(var5[3]);
             switch(class41.field837.field1622) {
             case 0:
             case 2:
-               Client.egressBuffer.put24bitInt(class122.authCodeForLogin);
-               Client.egressBuffer.offset += 5;
+               Client.secretPacketBuffer1.put24bitInt(class122.authCodeForLogin);
+               Client.secretPacketBuffer1.offset += 5;
                break;
             case 1:
-               Client.egressBuffer.putInt(((Integer)Actor.field656.preferences.get(Integer.valueOf(class36.method755(class41.username)))).intValue());
-               Client.egressBuffer.offset += 4;
+               Client.secretPacketBuffer1.putInt(((Integer)Actor.field656.preferences.get(Integer.valueOf(class36.method755(class41.username)))).intValue());
+               Client.secretPacketBuffer1.offset += 4;
                break;
             case 3:
-               Client.egressBuffer.offset += 8;
+               Client.secretPacketBuffer1.offset += 8;
             }
 
-            Client.egressBuffer.method2504(class41.password);
-            Client.egressBuffer.method2483(class39.rsaKeyExponent, class39.rsaKeyModulus);
-            Client.loginBuffer.offset = 0;
+            Client.secretPacketBuffer1.method2504(class41.password);
+            Client.secretPacketBuffer1.method2483(class39.rsaKeyExponent, class39.rsaKeyModulus);
+            Client.field326.offset = 0;
             if(Client.gameState == 40) {
-               Client.loginBuffer.putByte(18);
+               Client.field326.putByte(18);
             } else {
-               Client.loginBuffer.putByte(16);
+               Client.field326.putByte(16);
             }
 
-            Client.loginBuffer.putShort(0);
-            var1 = Client.loginBuffer.offset;
-            Client.loginBuffer.putInt(140);
-            Client.loginBuffer.putBytes(Client.egressBuffer.payload, 0, Client.egressBuffer.offset);
-            var2 = Client.loginBuffer.offset;
-            Client.loginBuffer.method2504(class41.username);
-            Client.loginBuffer.putByte((Client.isResized?1:0) << 1 | (Client.field285?1:0));
-            Client.loginBuffer.putShort(class187.field2760);
-            Client.loginBuffer.putShort(IndexDataBase.field2726);
-            class65.method1195(Client.loginBuffer);
-            Client.loginBuffer.method2504(Client.field287);
-            Client.loginBuffer.putInt(class10.field97);
+            Client.field326.putShort(0);
+            var1 = Client.field326.offset;
+            Client.field326.putInt(140);
+            Client.field326.putBytes(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);
+            var2 = Client.field326.offset;
+            Client.field326.method2504(class41.username);
+            Client.field326.putByte((Client.isResized?1:0) << 1 | (Client.field285?1:0));
+            Client.field326.putShort(class187.field2760);
+            Client.field326.putShort(IndexDataBase.field2726);
+            class65.method1195(Client.field326);
+            Client.field326.method2504(Client.field287);
+            Client.field326.putInt(class10.field97);
             Buffer var3 = new Buffer(class5.field49.method4344());
             class5.field49.method4341(var3);
-            Client.loginBuffer.putBytes(var3.payload, 0, var3.payload.length);
-            Client.loginBuffer.putByte(class10.field106);
-            Client.loginBuffer.putInt(0);
-            Client.loginBuffer.putInt(class122.indexInterfaces.field2721);
-            Client.loginBuffer.putInt(class33.indexSoundEffects.field2721);
-            Client.loginBuffer.putInt(class213.field3150.field2721);
-            Client.loginBuffer.putInt(class8.field78.field2721);
-            Client.loginBuffer.putInt(class199.field2882.field2721);
-            Client.loginBuffer.putInt(FileOnDisk.indexMaps.field2721);
-            Client.loginBuffer.putInt(class18.indexTrack1.field2721);
-            Client.loginBuffer.putInt(class45.indexModels.field2721);
-            Client.loginBuffer.putInt(WallObject.indexSprites.field2721);
-            Client.loginBuffer.putInt(class214.indexTextures.field2721);
-            Client.loginBuffer.putInt(Client.field312.field2721);
-            Client.loginBuffer.putInt(KitDefinition.indexTrack2.field2721);
-            Client.loginBuffer.putInt(class107.indexScripts.field2721);
-            Client.loginBuffer.putInt(DecorativeObject.field1584.field2721);
-            Client.loginBuffer.putInt(class9.field84.field2721);
-            Client.loginBuffer.putInt(class16.field177.field2721);
-            Client.loginBuffer.encryptXtea(var5, var2, Client.loginBuffer.offset);
-            Client.loginBuffer.method2379(Client.loginBuffer.offset - var1);
-            Friend.rssocket.queueForWrite(Client.loginBuffer.payload, 0, Client.loginBuffer.offset);
-            Client.egressBuffer.seed(var5);
+            Client.field326.putBytes(var3.payload, 0, var3.payload.length);
+            Client.field326.putByte(class10.field106);
+            Client.field326.putInt(0);
+            Client.field326.putInt(class122.indexInterfaces.field2721);
+            Client.field326.putInt(class33.indexSoundEffects.field2721);
+            Client.field326.putInt(class213.field3150.field2721);
+            Client.field326.putInt(class8.field78.field2721);
+            Client.field326.putInt(class199.field2882.field2721);
+            Client.field326.putInt(FileOnDisk.indexMaps.field2721);
+            Client.field326.putInt(class18.indexTrack1.field2721);
+            Client.field326.putInt(class45.indexModels.field2721);
+            Client.field326.putInt(WallObject.indexSprites.field2721);
+            Client.field326.putInt(class214.indexTextures.field2721);
+            Client.field326.putInt(Client.field312.field2721);
+            Client.field326.putInt(KitDefinition.indexTrack2.field2721);
+            Client.field326.putInt(class107.indexScripts.field2721);
+            Client.field326.putInt(DecorativeObject.field1584.field2721);
+            Client.field326.putInt(class9.field84.field2721);
+            Client.field326.putInt(class16.field177.field2721);
+            Client.field326.encryptXtea(var5, var2, Client.field326.offset);
+            Client.field326.method2379(Client.field326.offset - var1);
+            Friend.rssocket.queueForWrite(Client.field326.payload, 0, Client.field326.offset);
+            Client.secretPacketBuffer1.seed(var5);
 
             for(int var4 = 0; var4 < 4; ++var4) {
                var5[var4] += 50;
             }
 
-            Client.ingressBuffer.seed(var5);
+            Client.secretPacketBuffer2.seed(var5);
             Client.loginState = 6;
          }
 
@@ -334,14 +342,14 @@ public class class20 implements Runnable {
          } else {
             if(Client.loginState == 9 && Friend.rssocket.available() >= 13) {
                boolean var11 = Friend.rssocket.readByte() == 1;
-               Friend.rssocket.read(Client.ingressBuffer.payload, 0, 4);
-               Client.ingressBuffer.offset = 0;
+               Friend.rssocket.read(Client.secretPacketBuffer2.payload, 0, 4);
+               Client.secretPacketBuffer2.offset = 0;
                boolean var10 = false;
                if(var11) {
-                  var1 = Client.ingressBuffer.readOpcode() << 24;
-                  var1 |= Client.ingressBuffer.readOpcode() << 16;
-                  var1 |= Client.ingressBuffer.readOpcode() << 8;
-                  var1 |= Client.ingressBuffer.readOpcode();
+                  var1 = Client.secretPacketBuffer2.readOpcode() << 24;
+                  var1 |= Client.secretPacketBuffer2.readOpcode() << 16;
+                  var1 |= Client.secretPacketBuffer2.readOpcode() << 8;
+                  var1 |= Client.secretPacketBuffer2.readOpcode();
                   var2 = class36.method755(class41.username);
                   if(Actor.field656.preferences.size() >= 10 && !Actor.field656.preferences.containsKey(Integer.valueOf(var2))) {
                      Iterator var12 = Actor.field656.preferences.entrySet().iterator();
@@ -359,12 +367,12 @@ public class class20 implements Runnable {
                Client.localInteractingIndex <<= 8;
                Client.localInteractingIndex += Friend.rssocket.readByte();
                Client.field406 = Friend.rssocket.readByte();
-               Friend.rssocket.read(Client.ingressBuffer.payload, 0, 1);
-               Client.ingressBuffer.offset = 0;
-               Client.packetOpcode = Client.ingressBuffer.readOpcode();
-               Friend.rssocket.read(Client.ingressBuffer.payload, 0, 2);
-               Client.ingressBuffer.offset = 0;
-               Client.packetLength = Client.ingressBuffer.readUnsignedShort();
+               Friend.rssocket.read(Client.secretPacketBuffer2.payload, 0, 1);
+               Client.secretPacketBuffer2.offset = 0;
+               Client.packetOpcode = Client.secretPacketBuffer2.readOpcode();
+               Friend.rssocket.read(Client.secretPacketBuffer2.payload, 0, 2);
+               Client.secretPacketBuffer2.offset = 0;
+               Client.packetLength = Client.secretPacketBuffer2.readUnsignedShort();
 
                try {
                   class100.method1950(Client.field279, "zap");
@@ -377,8 +385,8 @@ public class class20 implements Runnable {
 
             if(Client.loginState == 10) {
                if(Friend.rssocket.available() >= Client.packetLength) {
-                  Client.ingressBuffer.offset = 0;
-                  Friend.rssocket.read(Client.ingressBuffer.payload, 0, Client.packetLength);
+                  Client.secretPacketBuffer2.offset = 0;
+                  Friend.rssocket.read(Client.secretPacketBuffer2.payload, 0, Client.packetLength);
                   Client.field405 = -1L;
                   Client.field555 = -1;
                   class180.field2678.field217 = 0;
@@ -386,8 +394,8 @@ public class class20 implements Runnable {
                   Client.field295 = true;
                   Client.field511 = -1L;
                   ItemLayer.method1477();
-                  Client.egressBuffer.offset = 0;
-                  Client.ingressBuffer.offset = 0;
+                  Client.secretPacketBuffer1.offset = 0;
+                  Client.secretPacketBuffer2.offset = 0;
                   Client.packetOpcode = -1;
                   Client.field538 = -1;
                   Client.field417 = -1;
@@ -497,7 +505,7 @@ public class class20 implements Runnable {
                   }
 
                   IndexData.field2745 = null;
-                  class5.method76(Client.ingressBuffer);
+                  class5.method76(Client.secretPacketBuffer2);
                   Actor.field619 = -1;
                   class9.xteaChanged(false);
                   Client.packetOpcode = -1;
@@ -505,20 +513,20 @@ public class class20 implements Runnable {
 
             } else {
                if(Client.loginState == 11 && Friend.rssocket.available() >= 2) {
-                  Client.ingressBuffer.offset = 0;
-                  Friend.rssocket.read(Client.ingressBuffer.payload, 0, 2);
-                  Client.ingressBuffer.offset = 0;
-                  class10.field111 = Client.ingressBuffer.readUnsignedShort();
+                  Client.secretPacketBuffer2.offset = 0;
+                  Friend.rssocket.read(Client.secretPacketBuffer2.payload, 0, 2);
+                  Client.secretPacketBuffer2.offset = 0;
+                  class10.field111 = Client.secretPacketBuffer2.readUnsignedShort();
                   Client.loginState = 12;
                }
 
                if(Client.loginState == 12 && Friend.rssocket.available() >= class10.field111) {
-                  Client.ingressBuffer.offset = 0;
-                  Friend.rssocket.read(Client.ingressBuffer.payload, 0, class10.field111);
-                  Client.ingressBuffer.offset = 0;
-                  String var13 = Client.ingressBuffer.readString();
-                  String var7 = Client.ingressBuffer.readString();
-                  String var6 = Client.ingressBuffer.readString();
+                  Client.secretPacketBuffer2.offset = 0;
+                  Friend.rssocket.read(Client.secretPacketBuffer2.payload, 0, class10.field111);
+                  Client.secretPacketBuffer2.offset = 0;
+                  String var13 = Client.secretPacketBuffer2.readString();
+                  String var7 = Client.secretPacketBuffer2.readString();
+                  String var6 = Client.secretPacketBuffer2.readString();
                   class45.method854(var13, var7, var6);
                   class9.setGameState(10);
                }
@@ -545,17 +553,17 @@ public class class20 implements Runnable {
                         return;
                      }
 
-                     Friend.rssocket.read(Client.ingressBuffer.payload, 0, 2);
-                     Client.ingressBuffer.offset = 0;
-                     Client.packetLength = Client.ingressBuffer.readUnsignedShort();
+                     Friend.rssocket.read(Client.secretPacketBuffer2.payload, 0, 2);
+                     Client.secretPacketBuffer2.offset = 0;
+                     Client.packetLength = Client.secretPacketBuffer2.readUnsignedShort();
                   }
 
                   if(Friend.rssocket.available() >= Client.packetLength) {
-                     Friend.rssocket.read(Client.ingressBuffer.payload, 0, Client.packetLength);
-                     Client.ingressBuffer.offset = 0;
+                     Friend.rssocket.read(Client.secretPacketBuffer2.payload, 0, Client.packetLength);
+                     Client.secretPacketBuffer2.offset = 0;
                      var0 = Client.packetLength;
-                     Client.egressBuffer.offset = 0;
-                     Client.ingressBuffer.offset = 0;
+                     Client.secretPacketBuffer1.offset = 0;
+                     Client.secretPacketBuffer2.offset = 0;
                      Client.packetOpcode = -1;
                      Client.field538 = -1;
                      Client.field417 = -1;
@@ -591,8 +599,8 @@ public class class20 implements Runnable {
                      }
 
                      Actor.method593();
-                     class5.method76(Client.ingressBuffer);
-                     if(var0 != Client.ingressBuffer.offset) {
+                     class5.method76(Client.secretPacketBuffer2);
+                     if(var0 != Client.secretPacketBuffer2.offset) {
                         throw new RuntimeException();
                      }
                   }

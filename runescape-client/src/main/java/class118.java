@@ -19,18 +19,18 @@ public class class118 {
    )
    public static int field1842;
    @ObfuscatedName("q")
-   public static int[][] field1843 = new int[128][128];
+   public static int[][] field1843;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -720767597
    )
    public static int field1844;
    @ObfuscatedName("n")
-   public static int[][] field1845 = new int[128][128];
+   public static int[][] field1845;
    @ObfuscatedName("z")
-   public static int[] field1846 = new int[4096];
+   public static int[] field1846;
    @ObfuscatedName("l")
-   public static int[] field1847 = new int[4096];
+   public static int[] field1847;
    @ObfuscatedName("nk")
    static class65 field1848;
    @ObfuscatedName("di")
@@ -91,6 +91,13 @@ public class class118 {
 
    }
 
+   static {
+      field1845 = new int[128][128];
+      field1843 = new int[128][128];
+      field1846 = new int[4096];
+      field1847 = new int[4096];
+   }
+
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(B)J",
@@ -148,9 +155,9 @@ public class class118 {
                   }
 
                   Client.field478 = Client.field311;
-                  Client.egressBuffer.putOpcode(11);
-                  Client.egressBuffer.putByte(class36.method753(var0));
-                  Client.egressBuffer.method2504(var0);
+                  Client.secretPacketBuffer1.putOpcode(11);
+                  Client.secretPacketBuffer1.putByte(class36.method753(var0));
+                  Client.secretPacketBuffer1.method2504(var0);
                   break;
                }
             }

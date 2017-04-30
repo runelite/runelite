@@ -37,7 +37,7 @@ public class class41 {
    @ObfuscatedGetter(
       intValue = -277340277
    )
-   static int field821 = 0;
+   static int field821;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -1634086827
@@ -117,6 +117,7 @@ public class class41 {
    static int field845;
 
    static {
+      field821 = 0;
       loginWindowX = field821 + 202;
       field820 = new int[256];
       field822 = 0;

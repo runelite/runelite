@@ -6,11 +6,11 @@ public class class61 {
    @ObfuscatedName("c")
    IndexDataBase field1068;
    @ObfuscatedName("n")
-   XHashTable field1069 = new XHashTable(256);
+   XHashTable field1069;
    @ObfuscatedName("d")
    IndexDataBase field1070;
    @ObfuscatedName("q")
-   XHashTable field1071 = new XHashTable(256);
+   XHashTable field1071;
    @ObfuscatedName("a")
    static int[] field1072;
 
@@ -111,6 +111,8 @@ public class class61 {
    }
 
    public class61(IndexDataBase var1, IndexDataBase var2) {
+      this.field1069 = new XHashTable(256);
+      this.field1071 = new XHashTable(256);
       this.field1070 = var1;
       this.field1068 = var2;
    }

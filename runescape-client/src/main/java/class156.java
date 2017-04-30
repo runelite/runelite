@@ -4,7 +4,7 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("fx")
 public class class156 implements Iterator {
    @ObfuscatedName("n")
-   CacheableNode field2048 = null;
+   CacheableNode field2048;
    @ObfuscatedName("d")
    class157 field2049;
    @ObfuscatedName("c")
@@ -37,6 +37,7 @@ public class class156 implements Iterator {
    }
 
    class156(class157 var1) {
+      this.field2048 = null;
       this.field2049 = var1;
       this.field2050 = this.field2049.field2051.previous;
       this.field2048 = null;

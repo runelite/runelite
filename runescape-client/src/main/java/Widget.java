@@ -29,48 +29,48 @@ public class Widget extends Node {
    @Export("validInterfaces")
    static boolean[] validInterfaces;
    @ObfuscatedName("z")
-   public static NodeCache field2202 = new NodeCache(50);
+   public static NodeCache field2202;
    @ObfuscatedName("ej")
    public boolean field2203;
    @ObfuscatedName("v")
-   public static NodeCache field2204 = new NodeCache(8);
+   public static NodeCache field2204;
    @ObfuscatedName("g")
-   public static boolean field2205 = false;
+   public static boolean field2205;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 1581772209
    )
-   public int field2206 = 0;
+   public int field2206;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -521365795
    )
    @Export("id")
-   public int id = -1;
+   public int id;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -1995904041
    )
    @Export("index")
-   public int index = -1;
+   public int index;
    @ObfuscatedName("cv")
    public Object[] field2209;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 2107442863
    )
-   public int field2210 = 0;
+   public int field2210;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -1909504737
    )
    @Export("contentType")
-   public int contentType = 0;
+   public int contentType;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -883602349
    )
-   public int field2212 = 0;
+   public int field2212;
    @ObfuscatedName("en")
    public String field2213;
    @ObfuscatedName("el")
@@ -82,30 +82,30 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -1511403033
    )
-   public int field2215 = 0;
+   public int field2215;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = -1548897025
    )
    @Export("originalX")
-   public int originalX = 0;
+   public int originalX;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1765191697
    )
    @Export("originalY")
-   public int originalY = 0;
+   public int originalY;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 368253995
    )
    @Export("originalWidth")
-   public int originalWidth = 0;
+   public int originalWidth;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 1962510781
    )
-   public int field2219 = 0;
+   public int field2219;
    @ObfuscatedName("dc")
    public Object[] field2220;
    @ObfuscatedName("am")
@@ -113,7 +113,7 @@ public class Widget extends Node {
       intValue = 1381872461
    )
    @Export("relativeY")
-   public int relativeY = 0;
+   public int relativeY;
    @ObfuscatedName("dr")
    public Object[] field2222;
    @ObfuscatedName("cm")
@@ -128,16 +128,16 @@ public class Widget extends Node {
       intValue = -1722293023
    )
    @Export("parentId")
-   public int parentId = -1;
+   public int parentId;
    @ObfuscatedName("aa")
    @Export("isHidden")
-   public boolean isHidden = false;
+   public boolean isHidden;
    @ObfuscatedName("aj")
    @ObfuscatedGetter(
       intValue = -875368155
    )
    @Export("scrollX")
-   public int scrollX = 0;
+   public int scrollX;
    @ObfuscatedName("ec")
    @ObfuscatedGetter(
       intValue = -48015137
@@ -156,25 +156,25 @@ public class Widget extends Node {
       intValue = 1409189791
    )
    @Export("textColor")
-   public int textColor = 0;
+   public int textColor;
    @ObfuscatedName("ay")
    @ObfuscatedGetter(
       intValue = 1989543145
    )
    @Export("scrollY")
-   public int scrollY = 0;
+   public int scrollY;
    @ObfuscatedName("ag")
    @ObfuscatedGetter(
       intValue = -645853793
    )
-   public int field2234 = 0;
+   public int field2234;
    @ObfuscatedName("af")
    @ObfuscatedGetter(
       intValue = -1196715691
    )
-   public int field2235 = 0;
+   public int field2235;
    @ObfuscatedName("ar")
-   public boolean field2236 = false;
+   public boolean field2236;
    @ObfuscatedName("cu")
    @ObfuscatedGetter(
       intValue = 649935261
@@ -183,13 +183,13 @@ public class Widget extends Node {
    @ObfuscatedName("ab")
    public class225 field2238;
    @ObfuscatedName("l")
-   public static NodeCache field2239 = new NodeCache(20);
+   public static NodeCache field2239;
    @ObfuscatedName("ae")
    @ObfuscatedGetter(
       intValue = 1593959261
    )
    @Export("scrollWidth")
-   public int scrollWidth = 0;
+   public int scrollWidth;
    @ObfuscatedName("as")
    @ObfuscatedGetter(
       intValue = 1463367757
@@ -271,7 +271,7 @@ public class Widget extends Node {
    )
    public int field2257;
    @ObfuscatedName("u")
-   public static NodeCache field2258 = new NodeCache(200);
+   public static NodeCache field2258;
    @ObfuscatedName("cz")
    @Export("name")
    public String name;
@@ -287,7 +287,7 @@ public class Widget extends Node {
       intValue = -1509976927
    )
    @Export("scrollHeight")
-   public int scrollHeight = 0;
+   public int scrollHeight;
    @ObfuscatedName("bm")
    @ObfuscatedGetter(
       intValue = 1607778841
@@ -348,12 +348,12 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -365137369
    )
-   public int field2279 = 0;
+   public int field2279;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -406228719
    )
-   public int field2280 = 0;
+   public int field2280;
    @ObfuscatedName("ct")
    @Export("actions")
    public String[] actions;
@@ -467,7 +467,7 @@ public class Widget extends Node {
       intValue = 1416143611
    )
    @Export("relativeX")
-   public int relativeX = 0;
+   public int relativeX;
    @ObfuscatedName("dd")
    public int[] field2320;
    @ObfuscatedName("du")
@@ -479,7 +479,7 @@ public class Widget extends Node {
    public int field2322;
    @ObfuscatedName("w")
    @Export("hasScript")
-   public boolean hasScript = false;
+   public boolean hasScript;
    @ObfuscatedName("db")
    @Export("dynamicValues")
    public int[][] dynamicValues;
@@ -526,7 +526,7 @@ public class Widget extends Node {
       intValue = -1846735173
    )
    @Export("width")
-   public int width = 0;
+   public int width;
    @ObfuscatedName("ea")
    @ObfuscatedGetter(
       intValue = 1412992169
@@ -541,7 +541,7 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 724396741
    )
-   public int field2338 = 1;
+   public int field2338;
    @ObfuscatedName("ey")
    @ObfuscatedGetter(
       intValue = 1195127585
@@ -552,12 +552,12 @@ public class Widget extends Node {
       intValue = 1573207255
    )
    @Export("height")
-   public int height = 0;
+   public int height;
    @ObfuscatedName("ao")
    @ObfuscatedGetter(
       intValue = 1508859163
    )
-   public int field2341 = 1;
+   public int field2341;
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
@@ -934,6 +934,14 @@ public class Widget extends Node {
 
          return var7;
       }
+   }
+
+   static {
+      field2258 = new NodeCache(200);
+      field2202 = new NodeCache(50);
+      field2239 = new NodeCache(20);
+      field2204 = new NodeCache(8);
+      field2205 = false;
    }
 
    @ObfuscatedName("a")
@@ -1348,6 +1356,36 @@ public class Widget extends Node {
    }
 
    public Widget() {
+      this.hasScript = false;
+      this.id = -1;
+      this.index = -1;
+      this.field2210 = 0;
+      this.contentType = 0;
+      this.field2212 = 0;
+      this.field2206 = 0;
+      this.field2280 = 0;
+      this.field2215 = 0;
+      this.originalX = 0;
+      this.originalY = 0;
+      this.originalWidth = 0;
+      this.field2219 = 0;
+      this.relativeX = 0;
+      this.relativeY = 0;
+      this.width = 0;
+      this.height = 0;
+      this.field2338 = 1;
+      this.field2341 = 1;
+      this.parentId = -1;
+      this.isHidden = false;
+      this.scrollX = 0;
+      this.scrollY = 0;
+      this.scrollWidth = 0;
+      this.scrollHeight = 0;
+      this.textColor = 0;
+      this.field2279 = 0;
+      this.field2234 = 0;
+      this.field2235 = 0;
+      this.field2236 = false;
       this.field2238 = class225.field3224;
       this.opacity = 0;
       this.field2248 = 0;

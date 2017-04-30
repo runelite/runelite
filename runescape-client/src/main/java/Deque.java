@@ -7,7 +7,7 @@ import net.runelite.mapping.ObfuscatedName;
 public class Deque {
    @ObfuscatedName("d")
    @Export("head")
-   public Node head = new Node();
+   public Node head;
    @ObfuscatedName("c")
    @Export("current")
    Node current;
@@ -50,6 +50,7 @@ public class Deque {
    }
 
    public Deque() {
+      this.head = new Node();
       this.head.next = this.head;
       this.head.previous = this.head;
    }

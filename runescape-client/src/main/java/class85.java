@@ -26,7 +26,7 @@ public final class class85 {
    )
    int field1446;
    @ObfuscatedName("p")
-   boolean field1447 = true;
+   boolean field1447;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = -1600556051
@@ -69,6 +69,7 @@ public final class class85 {
       garbageValue = "0"
    )
    class85(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
+      this.field1447 = true;
       this.field1448 = var1;
       this.field1443 = var2;
       this.field1446 = var3;

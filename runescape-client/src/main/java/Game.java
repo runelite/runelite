@@ -8,18 +8,18 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Game")
 public class Game implements class134 {
    @ObfuscatedName("t")
-   public static final Game field2681 = new Game("game5", "Game 5", 4);
+   public static final Game field2681;
    @ObfuscatedName("c")
-   public static final Game field2682 = new Game("stellardawn", "Stellar Dawn", 1);
+   public static final Game field2682;
    @ObfuscatedName("n")
-   public static final Game field2683 = new Game("game3", "Game 3", 2);
+   public static final Game field2683;
    @ObfuscatedName("q")
-   public static final Game field2684 = new Game("game4", "Game 4", 3);
+   public static final Game field2684;
    @ObfuscatedName("u")
    @Export("name")
    public final String name;
    @ObfuscatedName("d")
-   public static final Game field2688 = new Game("runescape", "RuneScape", 0);
+   public static final Game field2688;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = 247768237
@@ -27,7 +27,7 @@ public class Game implements class134 {
    @Export("number")
    final int number;
    @ObfuscatedName("p")
-   public static final Game field2694 = new Game("oldscape", "RuneScape 2007", 5);
+   public static final Game field2694;
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
@@ -36,6 +36,15 @@ public class Game implements class134 {
    )
    public int vmethod4163() {
       return this.number;
+   }
+
+   static {
+      field2688 = new Game("runescape", "RuneScape", 0);
+      field2682 = new Game("stellardawn", "Stellar Dawn", 1);
+      field2683 = new Game("game3", "Game 3", 2);
+      field2684 = new Game("game4", "Game 4", 3);
+      field2681 = new Game("game5", "Game 5", 4);
+      field2694 = new Game("oldscape", "RuneScape 2007", 5);
    }
 
    @ObfuscatedSignature(

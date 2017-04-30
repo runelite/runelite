@@ -15,7 +15,7 @@ public class class79 extends Node {
    @ObfuscatedName("l")
    int[] field1298;
    @ObfuscatedName("s")
-   boolean field1300 = false;
+   boolean field1300;
    @ObfuscatedName("w")
    int field1301;
    @ObfuscatedName("r")
@@ -26,6 +26,7 @@ public class class79 extends Node {
    static int[] field1304;
 
    class79(Buffer var1) {
+      this.field1300 = false;
       this.field1294 = var1.readUnsignedShort();
       this.field1303 = var1.readUnsignedByte() == 1;
       int var2 = var1.readUnsignedByte();

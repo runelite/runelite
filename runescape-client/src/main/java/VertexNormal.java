@@ -36,20 +36,20 @@ public class VertexNormal {
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(LCipherBuffer;B)I",
+      signature = "(LPacketBuffer;B)I",
       garbageValue = "112"
    )
    static int method1647(PacketBuffer var0) {
-      int var1 = var0.readBits(2);
+      int var1 = var0.method2645(2);
       int var2;
       if(var1 == 0) {
          var2 = 0;
       } else if(var1 == 1) {
-         var2 = var0.readBits(5);
+         var2 = var0.method2645(5);
       } else if(var1 == 2) {
-         var2 = var0.readBits(8);
+         var2 = var0.method2645(8);
       } else {
-         var2 = var0.readBits(11);
+         var2 = var0.method2645(11);
       }
 
       return var2;

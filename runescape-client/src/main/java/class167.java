@@ -11,9 +11,10 @@ public class class167 {
    @Export("widgetSettings")
    public static int[] widgetSettings;
    @ObfuscatedName("d")
-   static int[] field2175 = new int[32];
+   static int[] field2175;
 
    static {
+      field2175 = new int[32];
       int var0 = 2;
 
       for(int var1 = 0; var1 < 32; ++var1) {

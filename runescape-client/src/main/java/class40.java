@@ -8,18 +8,18 @@ public class class40 implements class134 {
    @ObfuscatedName("ek")
    static ModIcon[] field804;
    @ObfuscatedName("c")
-   static final class40 field805 = new class40(1);
+   static final class40 field805;
    @ObfuscatedName("n")
-   static final class40 field806 = new class40(2);
+   static final class40 field806;
    @ObfuscatedName("q")
-   static final class40 field807 = new class40(3);
+   static final class40 field807;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -1134393975
    )
    final int field808;
    @ObfuscatedName("d")
-   static final class40 field809 = new class40(0);
+   static final class40 field809;
 
    @ObfuscatedName("bq")
    @ObfuscatedSignature(
@@ -91,14 +91,21 @@ public class class40 implements class134 {
       this.field808 = var1;
    }
 
+   static {
+      field809 = new class40(0);
+      field805 = new class40(1);
+      field806 = new class40(2);
+      field807 = new class40(3);
+   }
+
    @ObfuscatedName("cj")
    @ObfuscatedSignature(
       signature = "(IIB)V",
       garbageValue = "-59"
    )
    static void method780(int var0, int var1) {
-      Client.egressBuffer.putOpcode(192);
-      Client.egressBuffer.method2416(var1);
-      Client.egressBuffer.putInt(var0);
+      Client.secretPacketBuffer1.putOpcode(192);
+      Client.secretPacketBuffer1.method2416(var1);
+      Client.secretPacketBuffer1.putInt(var0);
    }
 }

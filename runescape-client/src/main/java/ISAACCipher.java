@@ -25,10 +25,10 @@ public final class ISAACCipher {
    int valuesRemaining;
    @ObfuscatedName("t")
    @Export("randResult")
-   int[] randResult = new int[256];
+   int[] randResult;
    @ObfuscatedName("p")
    @Export("mm")
-   int[] mm = new int[256];
+   int[] mm;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1751688471
@@ -58,6 +58,9 @@ public final class ISAACCipher {
    }
 
    ISAACCipher(int[] var1) {
+      this.mm = new int[256];
+      this.randResult = new int[256];
+
       for(int var2 = 0; var2 < var1.length; ++var2) {
          this.randResult[var2] = var1[var2];
       }

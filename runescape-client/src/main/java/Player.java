@@ -16,13 +16,13 @@ public final class Player extends Actor {
       intValue = 1253957049
    )
    @Export("skullIcon")
-   int skullIcon = -1;
+   int skullIcon;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -145390117
    )
    @Export("overheadIcon")
-   int overheadIcon = -1;
+   int overheadIcon;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -327379025
@@ -43,7 +43,7 @@ public final class Player extends Actor {
    static byte field242;
    @ObfuscatedName("p")
    @Export("actions")
-   String[] actions = new String[3];
+   String[] actions;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 230420051
@@ -325,6 +325,10 @@ public final class Player extends Actor {
    }
 
    Player() {
+      this.skullIcon = -1;
+      this.overheadIcon = -1;
+      this.actions = new String[3];
+
       for(int var1 = 0; var1 < 3; ++var1) {
          this.actions[var1] = "";
       }
@@ -465,8 +469,8 @@ public final class Player extends Actor {
          }
 
          if(var1 == 326) {
-            Client.egressBuffer.putOpcode(141);
-            Client.field559.method3147(Client.egressBuffer);
+            Client.secretPacketBuffer1.putOpcode(141);
+            Client.field559.method3147(Client.secretPacketBuffer1);
             return true;
          } else {
             return false;

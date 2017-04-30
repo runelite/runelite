@@ -102,7 +102,7 @@ final class class5 implements Comparator {
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(LCipherBuffer;B)V",
+      signature = "(LPacketBuffer;B)V",
       garbageValue = "0"
    )
    static final void method76(PacketBuffer var0) {
@@ -110,7 +110,7 @@ final class class5 implements Comparator {
       int var1 = Client.localInteractingIndex;
       Player var2 = class22.localPlayer = Client.cachedPlayers[var1] = new Player();
       var2.field257 = var1;
-      int var3 = var0.readBits(30);
+      int var3 = var0.method2645(30);
       byte var4 = (byte)(var3 >> 28);
       int var5 = var3 >> 14 & 16383;
       int var6 = var3 & 16383;
@@ -130,7 +130,7 @@ final class class5 implements Comparator {
 
       for(int var7 = 1; var7 < 2048; ++var7) {
          if(var1 != var7) {
-            int var8 = var0.readBits(18);
+            int var8 = var0.method2645(18);
             int var9 = var8 >> 16;
             int var10 = var8 >> 8 & 597;
             int var11 = var8 & 597;

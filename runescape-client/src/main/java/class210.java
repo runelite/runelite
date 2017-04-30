@@ -4,7 +4,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("hb")
 public class class210 {
    @ObfuscatedName("d")
-   public static final char[] field3134 = new char[]{'€', '\u0000', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u0000', 'Ž', '\u0000', '\u0000', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u0000', 'ž', 'Ÿ'};
+   public static final char[] field3134;
+
+   static {
+      field3134 = new char[]{'€', '\u0000', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u0000', 'Ž', '\u0000', '\u0000', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u0000', 'ž', 'Ÿ'};
+   }
 
    class210() throws Throwable {
       throw new Error();

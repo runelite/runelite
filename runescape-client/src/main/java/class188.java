@@ -5,12 +5,12 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("gt")
 public class class188 extends CacheableNode {
    @ObfuscatedName("c")
-   static NodeCache field2775 = new NodeCache(64);
+   static NodeCache field2775;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 1151228391
    )
-   public int field2776 = 0;
+   public int field2776;
    @ObfuscatedName("z")
    static Game field2778;
    @ObfuscatedName("d")
@@ -42,6 +42,14 @@ public class class188 extends CacheableNode {
          this.field2776 = var1.readUnsignedShort();
       }
 
+   }
+
+   static {
+      field2775 = new NodeCache(64);
+   }
+
+   class188() {
+      this.field2776 = 0;
    }
 
    @ObfuscatedName("h")

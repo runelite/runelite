@@ -13,7 +13,7 @@ public class Overlay extends CacheableNode {
    )
    public int field3070;
    @ObfuscatedName("c")
-   public static NodeCache field3071 = new NodeCache(64);
+   public static NodeCache field3071;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -1065801847
@@ -24,16 +24,16 @@ public class Overlay extends CacheableNode {
       intValue = 490827921
    )
    @Export("color")
-   public int color = 0;
+   public int color;
    @ObfuscatedName("t")
    @Export("isHidden")
-   public boolean isHidden = true;
+   public boolean isHidden;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 903854521
    )
    @Export("texture")
-   public int texture = -1;
+   public int texture;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1331172309
@@ -56,7 +56,7 @@ public class Overlay extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 956550309
    )
-   public int field3079 = -1;
+   public int field3079;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 420245413
@@ -161,6 +161,17 @@ public class Overlay extends CacheableNode {
          this.lightness = 255;
       }
 
+   }
+
+   public Overlay() {
+      this.color = 0;
+      this.texture = -1;
+      this.isHidden = true;
+      this.field3079 = -1;
+   }
+
+   static {
+      field3071 = new NodeCache(64);
    }
 
    @ObfuscatedName("q")

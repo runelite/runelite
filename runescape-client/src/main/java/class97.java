@@ -5,11 +5,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("co")
 public class class97 implements class134 {
    @ObfuscatedName("c")
-   public static final class97 field1619 = new class97(0, 1);
+   public static final class97 field1619;
    @ObfuscatedName("n")
-   public static final class97 field1620 = new class97(3, 2);
+   public static final class97 field1620;
    @ObfuscatedName("d")
-   public static final class97 field1621 = new class97(1, 0);
+   public static final class97 field1621;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -871963227
@@ -21,7 +21,7 @@ public class class97 implements class134 {
    )
    final int field1623;
    @ObfuscatedName("q")
-   public static final class97 field1626 = new class97(2, 3);
+   public static final class97 field1626;
    @ObfuscatedName("gi")
    static Widget field1627;
 
@@ -32,6 +32,13 @@ public class class97 implements class134 {
    class97(int var1, int var2) {
       this.field1622 = var1;
       this.field1623 = var2;
+   }
+
+   static {
+      field1621 = new class97(1, 0);
+      field1619 = new class97(0, 1);
+      field1620 = new class97(3, 2);
+      field1626 = new class97(2, 3);
    }
 
    @ObfuscatedName("d")

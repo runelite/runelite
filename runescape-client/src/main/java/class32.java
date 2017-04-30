@@ -15,15 +15,15 @@ public class class32 {
    @ObfuscatedGetter(
       intValue = -2079097849
    )
-   static int field716 = 0;
+   static int field716;
    @ObfuscatedName("q")
    static String[] field717;
    @ObfuscatedName("n")
    static int[] field718;
    @ObfuscatedName("t")
-   static int[] field719 = new int[5];
+   static int[] field719;
    @ObfuscatedName("u")
-   static int[] field720 = new int[1000];
+   static int[] field720;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -402939849
@@ -32,26 +32,38 @@ public class class32 {
    static int scriptStringStackSize;
    @ObfuscatedName("l")
    @Export("scriptStringStack")
-   static String[] scriptStringStack = new String[1000];
+   static String[] scriptStringStack;
    @ObfuscatedName("w")
    @Export("scriptStack")
-   static ScriptState[] scriptStack = new ScriptState[50];
+   static ScriptState[] scriptStack;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 74981745
    )
    @Export("scriptStackCount")
-   static int scriptStackCount = 0;
+   static int scriptStackCount;
    @ObfuscatedName("k")
-   static Calendar field726 = Calendar.getInstance();
+   static Calendar field726;
    @ObfuscatedName("e")
-   static final String[] field727 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+   static final String[] field727;
    @ObfuscatedName("p")
-   static int[][] field728 = new int[5][5000];
+   static int[][] field728;
    @ObfuscatedName("y")
    static int[] field729;
    @ObfuscatedName("gn")
    static Widget field732;
+
+   static {
+      field719 = new int[5];
+      field728 = new int[5][5000];
+      field720 = new int[1000];
+      scriptStringStack = new String[1000];
+      scriptStackCount = 0;
+      scriptStack = new ScriptState[50];
+      field726 = Calendar.getInstance();
+      field727 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+      field716 = 0;
+   }
 
    class32() throws Throwable {
       throw new Error();

@@ -5,7 +5,7 @@ public class class151 {
    @ObfuscatedName("c")
    class152 field2038;
    @ObfuscatedName("d")
-   class152 field2039 = new class152();
+   class152 field2039;
 
    @ObfuscatedName("d")
    public void method2856(class152 var1) {
@@ -44,6 +44,7 @@ public class class151 {
    }
 
    public class151() {
+      this.field2039 = new class152();
       this.field2039.field2041 = this.field2039;
       this.field2039.field2040 = this.field2039;
    }

@@ -271,10 +271,10 @@ public class Friend {
             if(var0 == 3604) {
                var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
                int var4 = class32.field720[--class32.field715];
-               Client.egressBuffer.putOpcode(91);
-               Client.egressBuffer.putByte(class36.method753(var10) + 1);
-               Client.egressBuffer.method2504(var10);
-               Client.egressBuffer.method2499(var4);
+               Client.secretPacketBuffer1.putOpcode(91);
+               Client.secretPacketBuffer1.putByte(class36.method753(var10) + 1);
+               Client.secretPacketBuffer1.method2504(var10);
+               Client.secretPacketBuffer1.method2499(var4);
                return 1;
             } else if(var0 == 3605) {
                var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
@@ -303,9 +303,9 @@ public class Friend {
                               }
 
                               Client.field478 = Client.field311;
-                              Client.egressBuffer.putOpcode(22);
-                              Client.egressBuffer.putByte(class36.method753(var10));
-                              Client.egressBuffer.method2504(var10);
+                              Client.secretPacketBuffer1.putOpcode(22);
+                              Client.secretPacketBuffer1.putByte(class36.method753(var10));
+                              Client.secretPacketBuffer1.method2504(var10);
                               break;
                            }
                         }
@@ -343,9 +343,9 @@ public class Friend {
                                  if(class108.method2059(class22.localPlayer.name, NPC.field757).equals(var14)) {
                                     WidgetNode.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
                                  } else {
-                                    Client.egressBuffer.putOpcode(47);
-                                    Client.egressBuffer.putByte(class36.method753(var10));
-                                    Client.egressBuffer.method2504(var10);
+                                    Client.secretPacketBuffer1.putOpcode(47);
+                                    Client.secretPacketBuffer1.putByte(class36.method753(var10));
+                                    Client.secretPacketBuffer1.method2504(var10);
                                  }
                                  break;
                               }
@@ -450,8 +450,8 @@ public class Friend {
                   World.method640(var10);
                   return 1;
                } else if(var0 == 3620) {
-                  Client.egressBuffer.putOpcode(117);
-                  Client.egressBuffer.putByte(0);
+                  Client.secretPacketBuffer1.putOpcode(117);
+                  Client.secretPacketBuffer1.putByte(0);
                   return 1;
                } else if(var0 == 3621) {
                   if(Client.field554 == 0) {

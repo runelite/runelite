@@ -11,7 +11,7 @@ public class World {
    @ObfuscatedGetter(
       intValue = -1393644151
    )
-   static int field669 = 0;
+   static int field669;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 5525853
@@ -28,11 +28,11 @@ public class World {
    @ObfuscatedGetter(
       intValue = 1838249521
    )
-   static int field674 = 0;
+   static int field674;
    @ObfuscatedName("z")
-   static int[] field675 = new int[]{1, 1, 1, 1};
+   static int[] field675;
    @ObfuscatedName("l")
-   static int[] field676 = new int[]{0, 1, 2, 3};
+   static int[] field676;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 288236961
@@ -106,6 +106,13 @@ public class World {
       return (33554432 & this.mask) != 0;
    }
 
+   static {
+      field669 = 0;
+      field674 = 0;
+      field675 = new int[]{1, 1, 1, 1};
+      field676 = new int[]{0, 1, 2, 3};
+   }
+
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(B)Z",
@@ -122,9 +129,9 @@ public class World {
    )
    static final void method640(String var0) {
       if(!var0.equals("")) {
-         Client.egressBuffer.putOpcode(117);
-         Client.egressBuffer.putByte(class36.method753(var0));
-         Client.egressBuffer.method2504(var0);
+         Client.secretPacketBuffer1.putOpcode(117);
+         Client.secretPacketBuffer1.putByte(class36.method753(var0));
+         Client.secretPacketBuffer1.method2504(var0);
       }
    }
 

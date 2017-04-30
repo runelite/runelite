@@ -55,7 +55,7 @@ public class class38 {
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(LCipherBuffer;II)V",
+      signature = "(LPacketBuffer;II)V",
       garbageValue = "-156080913"
    )
    static final void method766(PacketBuffer var0, int var1) {

@@ -12,7 +12,7 @@ public class class16 extends class152 {
    @ObfuscatedGetter(
       intValue = -1995072713
    )
-   int field172 = (int)(class72.method1421() / 1000L);
+   int field172;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 154579537
@@ -22,6 +22,7 @@ public class class16 extends class152 {
    static IndexData field177;
 
    class16(String var1, int var2) {
+      this.field172 = (int)(class72.method1421() / 1000L);
       this.field170 = var1;
       this.field171 = (short)var2;
    }

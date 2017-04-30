@@ -11,7 +11,7 @@ public class class106 extends class112 implements MouseWheelListener {
    @ObfuscatedGetter(
       intValue = -958981141
    )
-   int field1713 = 0;
+   int field1713;
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
@@ -35,6 +35,10 @@ public class class106 extends class112 implements MouseWheelListener {
 
    public synchronized void mouseWheelMoved(MouseWheelEvent var1) {
       this.field1713 += var1.getWheelRotation();
+   }
+
+   public class106() {
+      this.field1713 = 0;
    }
 
    @ObfuscatedName("c")

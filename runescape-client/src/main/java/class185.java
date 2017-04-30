@@ -4,16 +4,16 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("gk")
 public class class185 implements Runnable {
    @ObfuscatedName("d")
-   public static Deque field2727 = new Deque();
+   public static Deque field2727;
    @ObfuscatedName("c")
-   public static Deque field2728 = new Deque();
+   public static Deque field2728;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -1635959413
    )
-   static int field2729 = 0;
+   static int field2729;
    @ObfuscatedName("q")
-   static Object field2730 = new Object();
+   static Object field2730;
    @ObfuscatedName("p")
    static Thread field2731;
 
@@ -69,5 +69,12 @@ public class class185 implements Runnable {
       } catch (Exception var13) {
          class173.method3259((String)null, var13);
       }
+   }
+
+   static {
+      field2727 = new Deque();
+      field2728 = new Deque();
+      field2729 = 0;
+      field2730 = new Object();
    }
 }

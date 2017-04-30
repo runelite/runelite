@@ -8,12 +8,12 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class class39 {
    @ObfuscatedName("c")
    @Export("rsaKeyModulus")
-   static final BigInteger rsaKeyModulus = new BigInteger("9cb954af0865fabe3fcee77d0a91524f62b18e71b550fa614215edb36424cc57718697e30a7f074ed8bf30c15bb2fca615790d6b322606e48445c2b3393680f56874e5ae8a9f89cd7bbab8c2dd8d2b233b3731f5bb00e9ddb3eddc7a46db157ba848e3ba5fe1e71edde7e36d0976b7ba8dd2ad6c9712ccc9c788212347c3a517", 16);
+   static final BigInteger rsaKeyModulus;
    @ObfuscatedName("v")
    static ModIcon field797;
    @ObfuscatedName("d")
    @Export("rsaKeyExponent")
-   static final BigInteger rsaKeyExponent = new BigInteger("10001", 16);
+   static final BigInteger rsaKeyExponent;
    @ObfuscatedName("dz")
    @ObfuscatedGetter(
       intValue = 1722949959
@@ -44,6 +44,11 @@ public class class39 {
 
          }
       }
+   }
+
+   static {
+      rsaKeyExponent = new BigInteger("10001", 16);
+      rsaKeyModulus = new BigInteger("9cb954af0865fabe3fcee77d0a91524f62b18e71b550fa614215edb36424cc57718697e30a7f074ed8bf30c15bb2fca615790d6b322606e48445c2b3393680f56874e5ae8a9f89cd7bbab8c2dd8d2b233b3731f5bb00e9ddb3eddc7a46db157ba848e3ba5fe1e71edde7e36d0976b7ba8dd2ad6c9712ccc9c788212347c3a517", 16);
    }
 
    @ObfuscatedName("e")

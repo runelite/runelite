@@ -6,71 +6,71 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("gb")
 public class class201 extends CacheableNode {
    @ObfuscatedName("b")
-   String field2896 = "";
+   String field2896;
    @ObfuscatedName("n")
    public static IndexDataBase field2897;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = 1156850301
    )
-   int field2898 = -1;
+   int field2898;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 797538569
    )
-   public int field2899 = 0;
+   public int field2899;
    @ObfuscatedName("am")
    @ObfuscatedGetter(
       intValue = -1904431751
    )
-   int field2900 = -1;
+   int field2900;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 1334026831
    )
-   int field2904 = -1;
+   int field2904;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 781196843
    )
-   public int field2905 = 16777215;
+   public int field2905;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1770272343
    )
-   public int field2906 = 70;
+   public int field2906;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 1023000147
    )
-   int field2907 = -1;
+   int field2907;
    @ObfuscatedName("p")
-   public static NodeCache field2908 = new NodeCache(20);
+   public static NodeCache field2908;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 1461561905
    )
-   int field2909 = -1;
+   int field2909;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 600132097
    )
-   int field2910 = -1;
+   int field2910;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -1632878871
    )
-   public int field2911 = 0;
+   public int field2911;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -1247301213
    )
-   public int field2912 = 0;
+   public int field2912;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 630683921
    )
-   public int field2913 = -1;
+   public int field2913;
    @ObfuscatedName("ho")
    @ObfuscatedGetter(
       intValue = -1506301171
@@ -81,7 +81,7 @@ public class class201 extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -1565782895
    )
-   public int field2915 = -1;
+   public int field2915;
    @ObfuscatedName("m")
    public int[] field2917;
    @ObfuscatedName("c")
@@ -90,14 +90,14 @@ public class class201 extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 682680369
    )
-   int field2919 = -1;
+   int field2919;
    @ObfuscatedName("d")
    public static IndexDataBase field2920;
    @ObfuscatedName("t")
    @Export("spriteCache")
-   public static NodeCache spriteCache = new NodeCache(64);
+   public static NodeCache spriteCache;
    @ObfuscatedName("q")
-   public static NodeCache field2922 = new NodeCache(64);
+   public static NodeCache field2922;
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
@@ -183,6 +183,24 @@ public class class201 extends CacheableNode {
 
    }
 
+   class201() {
+      this.field2904 = -1;
+      this.field2905 = 16777215;
+      this.field2906 = 70;
+      this.field2907 = -1;
+      this.field2919 = -1;
+      this.field2909 = -1;
+      this.field2910 = -1;
+      this.field2911 = 0;
+      this.field2912 = 0;
+      this.field2913 = -1;
+      this.field2896 = "";
+      this.field2915 = -1;
+      this.field2899 = 0;
+      this.field2898 = -1;
+      this.field2900 = -1;
+   }
+
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(B)LSpritePixels;",
@@ -227,6 +245,12 @@ public class class201 extends CacheableNode {
             return var1;
          }
       }
+   }
+
+   static {
+      field2922 = new NodeCache(64);
+      spriteCache = new NodeCache(64);
+      field2908 = new NodeCache(20);
    }
 
    @ObfuscatedName("t")

@@ -9,7 +9,7 @@ public class class102 {
    )
    int field1649;
    @ObfuscatedName("t")
-   public volatile int field1653 = 0;
+   public volatile int field1653;
    @ObfuscatedName("d")
    class102 field1654;
    @ObfuscatedName("u")
@@ -18,4 +18,8 @@ public class class102 {
    Object field1656;
    @ObfuscatedName("l")
    public volatile Object field1657;
+
+   class102() {
+      this.field1653 = 0;
+   }
 }

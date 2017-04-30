@@ -8,7 +8,11 @@ public class class98 extends class109 {
    @ObfuscatedGetter(
       longValue = -8045312740261136589L
    )
-   long field1629 = System.nanoTime();
+   long field1629;
+
+   class98() {
+      this.field1629 = System.nanoTime();
+   }
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(

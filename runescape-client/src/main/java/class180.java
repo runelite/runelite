@@ -5,11 +5,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fy")
 public class class180 {
    @ObfuscatedName("n")
-   static final class180 field2672 = new class180("RC", 1);
+   static final class180 field2672;
    @ObfuscatedName("c")
-   static final class180 field2673 = new class180("BUILDLIVE", 3);
+   static final class180 field2673;
    @ObfuscatedName("q")
-   static final class180 field2674 = new class180("WIP", 2);
+   static final class180 field2674;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 1429956435
@@ -18,7 +18,7 @@ public class class180 {
    @ObfuscatedName("t")
    public final String field2676;
    @ObfuscatedName("d")
-   static final class180 field2677 = new class180("LIVE", 0);
+   static final class180 field2677;
    @ObfuscatedName("f")
    static class20 field2678;
    @ObfuscatedName("dy")
@@ -26,6 +26,13 @@ public class class180 {
       intValue = 255309897
    )
    static int field2680;
+
+   static {
+      field2677 = new class180("LIVE", 0);
+      field2673 = new class180("BUILDLIVE", 3);
+      field2672 = new class180("RC", 1);
+      field2674 = new class180("WIP", 2);
+   }
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(

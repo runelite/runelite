@@ -34,9 +34,9 @@ public class PlayerComposition {
    @ObfuscatedName("v")
    public static short[][] field2183;
    @ObfuscatedName("g")
-   static final int[] field2184 = new int[]{8, 11, 4, 6, 9, 7, 10};
+   static final int[] field2184;
    @ObfuscatedName("w")
-   public static NodeCache field2185 = new NodeCache(260);
+   public static NodeCache field2185;
    @ObfuscatedName("d")
    @Export("equipmentIds")
    int[] equipmentIds;
@@ -237,6 +237,11 @@ public class PlayerComposition {
 
       this.bodyPartColours[var1] = var3;
       this.method3151();
+   }
+
+   static {
+      field2184 = new int[]{8, 11, 4, 6, 9, 7, 10};
+      field2185 = new NodeCache(260);
    }
 
    @ObfuscatedName("c")

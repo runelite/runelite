@@ -40,12 +40,12 @@ public final class WallObject {
       intValue = 143809805
    )
    @Export("hash")
-   public int hash = 0;
+   public int hash;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -1714412415
    )
-   int field1541 = 0;
+   int field1541;
    @ObfuscatedName("cw")
    static Font field1542;
    @ObfuscatedName("v")
@@ -86,5 +86,10 @@ public final class WallObject {
    )
    public static void method1905(IndexDataBase var0) {
       class191.field2797 = var0;
+   }
+
+   WallObject() {
+      this.hash = 0;
+      this.field1541 = 0;
    }
 }

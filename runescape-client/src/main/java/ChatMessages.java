@@ -15,7 +15,7 @@ public class ChatMessages {
    @ObfuscatedName("t")
    int[] field911;
    @ObfuscatedName("u")
-   boolean field913 = false;
+   boolean field913;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       longValue = 6724377469146054465L
@@ -73,6 +73,7 @@ public class ChatMessages {
    }
 
    ChatMessages() {
+      this.field913 = false;
       this.field911 = new int[class213.field3150.method3305(19)];
       this.messages = new String[class213.field3150.method3305(15)];
       this.field909 = new boolean[this.field911.length];
@@ -216,7 +217,7 @@ public class ChatMessages {
    void method864() {
       FileOnDisk var1 = this.method862(false);
 
-      label203: {
+      label188: {
          try {
             byte[] var2 = new byte[(int)var1.method1438()];
 
@@ -229,44 +230,44 @@ public class ChatMessages {
             }
 
             Buffer var13 = new Buffer(var2);
-            if(var13.payload.length - var13.offset >= 1) {
-               int var14 = var13.readUnsignedByte();
-               if(var14 >= 0 && var14 <= 1) {
-                  int var15 = var13.readUnsignedShort();
+            if(var13.payload.length - var13.offset < 1) {
+               return;
+            }
 
-                  int var7;
-                  int var8;
-                  int var9;
-                  for(var7 = 0; var7 < var15; ++var7) {
-                     var8 = var13.readUnsignedShort();
-                     var9 = var13.readInt();
-                     if(this.field909[var8]) {
-                        this.field911[var8] = var9;
-                     }
-                  }
+            int var14 = var13.readUnsignedByte();
+            if(var14 >= 0 && var14 <= 1) {
+               int var15 = var13.readUnsignedShort();
 
-                  var7 = var13.readUnsignedShort();
-                  var8 = 0;
-
-                  while(true) {
-                     if(var8 >= var7) {
-                        break label203;
-                     }
-
-                     var9 = var13.readUnsignedShort();
-                     String var10 = var13.readString();
-                     if(this.field910[var9]) {
-                        this.messages[var9] = var10;
-                     }
-
-                     ++var8;
+               int var7;
+               int var8;
+               int var9;
+               for(var7 = 0; var7 < var15; ++var7) {
+                  var8 = var13.readUnsignedShort();
+                  var9 = var13.readInt();
+                  if(this.field909[var8]) {
+                     this.field911[var8] = var9;
                   }
                }
 
-               return;
+               var7 = var13.readUnsignedShort();
+               var8 = 0;
+
+               while(true) {
+                  if(var8 >= var7) {
+                     break label188;
+                  }
+
+                  var9 = var13.readUnsignedShort();
+                  String var10 = var13.readString();
+                  if(this.field910[var9]) {
+                     this.messages[var9] = var10;
+                  }
+
+                  ++var8;
+               }
             }
          } catch (Exception var24) {
-            break label203;
+            break label188;
          } finally {
             try {
                var1.method1425();

@@ -7,7 +7,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Rasterizer2D")
 public class Rasterizer2D extends CacheableNode {
    @ObfuscatedName("ao")
-   protected static int field3208 = 0;
+   protected static int field3208;
    @ObfuscatedName("am")
    @Export("graphicsPixelsWidth")
    public static int graphicsPixelsWidth;
@@ -15,14 +15,14 @@ public class Rasterizer2D extends CacheableNode {
    @Export("graphicsPixelsHeight")
    public static int graphicsPixelsHeight;
    @ObfuscatedName("ac")
-   public static int field3211 = 0;
+   public static int field3211;
    @ObfuscatedName("y")
    @Export("graphicsPixels")
    public static int[] graphicsPixels;
    @ObfuscatedName("az")
-   public static int field3213 = 0;
+   public static int field3213;
    @ObfuscatedName("ak")
-   protected static int field3214 = 0;
+   protected static int field3214;
 
    @ObfuscatedName("dn")
    public static void method4080(int var0, int var1, int var2, int var3) {
@@ -697,6 +697,13 @@ public class Rasterizer2D extends CacheableNode {
          var8 += var7;
       }
 
+   }
+
+   static {
+      field3211 = 0;
+      field3213 = 0;
+      field3208 = 0;
+      field3214 = 0;
    }
 
    @ObfuscatedName("dq")

@@ -8,17 +8,17 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("al")
 public class class47 {
    @ObfuscatedName("c")
-   static final class142 field924 = new class142(1024);
+   static final class142 field924;
    @ObfuscatedName("d")
    @Export("chatLineMap")
-   static final Map chatLineMap = new HashMap();
+   static final Map chatLineMap;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -216656953
    )
-   static int field926 = 0;
+   static int field926;
    @ObfuscatedName("n")
-   static final class157 field927 = new class157();
+   static final class157 field927;
    @ObfuscatedName("bk")
    static ModIcon field928;
 
@@ -81,6 +81,13 @@ public class class47 {
          ItemComposition.field2982.put(var1, (long)var0);
          return var1;
       }
+   }
+
+   static {
+      chatLineMap = new HashMap();
+      field924 = new class142(1024);
+      field927 = new class157();
+      field926 = 0;
    }
 
    class47() throws Throwable {

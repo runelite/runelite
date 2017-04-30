@@ -15,10 +15,10 @@ public class XItemContainer extends Node {
    static int field120;
    @ObfuscatedName("c")
    @Export("itemIds")
-   int[] itemIds = new int[]{-1};
+   int[] itemIds;
    @ObfuscatedName("n")
    @Export("stackSizes")
-   int[] stackSizes = new int[]{0};
+   int[] stackSizes;
    @ObfuscatedName("qk")
    @ObfuscatedGetter(
       intValue = -500558161
@@ -26,7 +26,16 @@ public class XItemContainer extends Node {
    protected static int field130;
    @ObfuscatedName("d")
    @Export("itemContainers")
-   static XHashTable itemContainers = new XHashTable(32);
+   static XHashTable itemContainers;
+
+   XItemContainer() {
+      this.itemIds = new int[]{-1};
+      this.stackSizes = new int[]{0};
+   }
+
+   static {
+      itemContainers = new XHashTable(32);
+   }
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(

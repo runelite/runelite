@@ -12,7 +12,7 @@ public class CombatInfoListHolder extends Node {
    CombatInfo2 combatInfo2;
    @ObfuscatedName("q")
    @Export("combatInfo1")
-   CombatInfoList combatInfo1 = new CombatInfoList();
+   CombatInfoList combatInfo1;
    @ObfuscatedName("d")
    static IndexDataBase field753;
 
@@ -94,6 +94,7 @@ public class CombatInfoListHolder extends Node {
    }
 
    CombatInfoListHolder(CombatInfo2 var1) {
+      this.combatInfo1 = new CombatInfoList();
       this.combatInfo2 = var1;
    }
 

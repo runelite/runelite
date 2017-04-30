@@ -9,7 +9,7 @@ public class class199 extends CacheableNode {
    @ObfuscatedName("q")
    public static int[] field2877;
    @ObfuscatedName("c")
-   public static NodeCache field2878 = new NodeCache(64);
+   public static NodeCache field2878;
    @ObfuscatedName("n")
    class142 field2879;
    @ObfuscatedName("s")
@@ -100,6 +100,10 @@ public class class199 extends CacheableNode {
       }
 
       return false;
+   }
+
+   static {
+      field2878 = new NodeCache(64);
    }
 
    @ObfuscatedName("c")

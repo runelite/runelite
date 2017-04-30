@@ -7,7 +7,7 @@ public class SoundEffect {
    @ObfuscatedName("q")
    int field973;
    @ObfuscatedName("c")
-   SoundEffect1[] field974 = new SoundEffect1[10];
+   SoundEffect1[] field974;
    @ObfuscatedName("n")
    int field975;
 
@@ -18,6 +18,8 @@ public class SoundEffect {
    }
 
    SoundEffect(Buffer var1) {
+      this.field974 = new SoundEffect1[10];
+
       for(int var2 = 0; var2 < 10; ++var2) {
          int var3 = var1.readUnsignedByte();
          if(var3 != 0) {

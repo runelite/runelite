@@ -6,15 +6,15 @@ import net.runelite.mapping.ObfuscatedName;
 @Implements("Model")
 public class Model extends Renderable {
    @ObfuscatedName("ag")
-   static int[] field1344 = new int[4700];
+   static int[] field1344;
    @ObfuscatedName("a")
    short[] field1345;
    @ObfuscatedName("n")
-   static Model field1346 = new Model();
+   static Model field1346;
    @ObfuscatedName("q")
-   static byte[] field1347 = new byte[1];
+   static byte[] field1347;
    @ObfuscatedName("h")
-   int field1348 = 0;
+   int field1348;
    @ObfuscatedName("p")
    @Export("verticesX")
    int[] verticesX;
@@ -24,11 +24,11 @@ public class Model extends Renderable {
    @ObfuscatedName("ak")
    int field1351;
    @ObfuscatedName("l")
-   int field1352 = 0;
+   int field1352;
    @ObfuscatedName("bf")
    static int[] field1353;
    @ObfuscatedName("bw")
-   public static int field1354 = 0;
+   public static int field1354;
    @ObfuscatedName("w")
    @Export("indices3")
    int[] indices3;
@@ -45,15 +45,15 @@ public class Model extends Renderable {
    @ObfuscatedName("i")
    byte[] field1361;
    @ObfuscatedName("an")
-   static int[] field1362 = new int[2000];
+   static int[] field1362;
    @ObfuscatedName("c")
-   static byte[] field1363 = new byte[1];
+   static byte[] field1363;
    @ObfuscatedName("k")
    int[] field1364;
    @ObfuscatedName("bv")
    static int[] field1365;
    @ObfuscatedName("at")
-   static int[] field1366 = new int[12];
+   static int[] field1366;
    @ObfuscatedName("ac")
    int field1367;
    @ObfuscatedName("m")
@@ -61,9 +61,9 @@ public class Model extends Renderable {
    @ObfuscatedName("y")
    int[][] field1369;
    @ObfuscatedName("am")
-   public boolean field1370 = false;
+   public boolean field1370;
    @ObfuscatedName("ab")
-   static int[] field1371 = new int[1600];
+   static int[] field1371;
    @ObfuscatedName("o")
    int[] field1372;
    @ObfuscatedName("az")
@@ -71,46 +71,46 @@ public class Model extends Renderable {
    @ObfuscatedName("ao")
    int field1374;
    @ObfuscatedName("aj")
-   static boolean[] field1375 = new boolean[4700];
+   static boolean[] field1375;
    @ObfuscatedName("g")
    @Export("indices2")
    int[] indices2;
    @ObfuscatedName("d")
-   static Model field1377 = new Model();
+   static Model field1377;
    @ObfuscatedName("ay")
-   static boolean[] field1378 = new boolean[4700];
+   static boolean[] field1378;
    @ObfuscatedName("ae")
-   static int[] field1379 = new int[4700];
+   static int[] field1379;
    @ObfuscatedName("ax")
    int field1380;
    @ObfuscatedName("av")
-   static int[] field1381 = new int[4700];
+   static int[] field1381;
    @ObfuscatedName("aw")
-   static int[] field1382 = new int[4700];
+   static int[] field1382;
    @ObfuscatedName("b")
    int[] field1383;
    @ObfuscatedName("af")
-   static int[] field1384 = new int[4700];
+   static int[] field1384;
    @ObfuscatedName("aq")
-   static int[] field1386 = new int[4700];
+   static int[] field1386;
    @ObfuscatedName("v")
    @Export("indices1")
    int[] indices1;
    @ObfuscatedName("ai")
-   static int[] field1388 = new int[12];
+   static int[] field1388;
    @ObfuscatedName("ad")
-   static int[][] field1389 = new int[12][2000];
+   static int[][] field1389;
    @ObfuscatedName("z")
    @Export("verticesZ")
    int[] verticesZ;
    @ObfuscatedName("al")
-   static int[] field1391 = new int[2000];
+   static int[] field1391;
    @ObfuscatedName("ah")
-   static int[] field1393 = new int[10];
+   static int[] field1393;
    @ObfuscatedName("ap")
-   static int[] field1394 = new int[10];
+   static int[] field1394;
    @ObfuscatedName("au")
-   static int[] field1395 = new int[10];
+   static int[] field1395;
    @ObfuscatedName("bu")
    static int field1396;
    @ObfuscatedName("br")
@@ -118,25 +118,30 @@ public class Model extends Renderable {
    @ObfuscatedName("bk")
    static int field1398;
    @ObfuscatedName("bo")
-   public static boolean field1399 = false;
+   public static boolean field1399;
    @ObfuscatedName("t")
-   int field1400 = 0;
+   int field1400;
    @ObfuscatedName("bi")
-   public static int field1401 = 0;
+   public static int field1401;
    @ObfuscatedName("bl")
-   public static int field1402 = 0;
+   public static int field1402;
    @ObfuscatedName("by")
-   public static int[] field1403 = new int[1000];
+   public static int[] field1403;
    @ObfuscatedName("x")
-   byte field1404 = 0;
+   byte field1404;
    @ObfuscatedName("as")
-   static int[][] field1405 = new int[1600][512];
+   static int[][] field1405;
    @ObfuscatedName("be")
    static int[] field1406;
    @ObfuscatedName("bm")
    static int[] field1407;
 
    Model() {
+      this.field1400 = 0;
+      this.field1352 = 0;
+      this.field1404 = 0;
+      this.field1348 = 0;
+      this.field1370 = false;
    }
 
    @ObfuscatedName("c")
@@ -1114,6 +1119,33 @@ public class Model extends Renderable {
    }
 
    static {
+      field1377 = new Model();
+      field1363 = new byte[1];
+      field1346 = new Model();
+      field1347 = new byte[1];
+      field1375 = new boolean[4700];
+      field1378 = new boolean[4700];
+      field1379 = new int[4700];
+      field1386 = new int[4700];
+      field1381 = new int[4700];
+      field1382 = new int[4700];
+      field1344 = new int[4700];
+      field1384 = new int[4700];
+      field1371 = new int[1600];
+      field1405 = new int[1600][512];
+      field1388 = new int[12];
+      field1389 = new int[12][2000];
+      field1362 = new int[2000];
+      field1391 = new int[2000];
+      field1366 = new int[12];
+      field1393 = new int[10];
+      field1394 = new int[10];
+      field1395 = new int[10];
+      field1399 = false;
+      field1354 = 0;
+      field1401 = 0;
+      field1402 = 0;
+      field1403 = new int[1000];
       field1365 = class84.field1433;
       field1353 = class84.field1441;
       field1406 = class84.colorPalette;
@@ -1121,6 +1153,11 @@ public class Model extends Renderable {
    }
 
    public Model(Model[] var1, int var2) {
+      this.field1400 = 0;
+      this.field1352 = 0;
+      this.field1404 = 0;
+      this.field1348 = 0;
+      this.field1370 = false;
       boolean var3 = false;
       boolean var4 = false;
       boolean var5 = false;

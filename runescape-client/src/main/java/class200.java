@@ -12,11 +12,11 @@ public class class200 extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 121983771
    )
-   public int field2885 = 0;
+   public int field2885;
    @ObfuscatedName("q")
    public char field2886;
    @ObfuscatedName("t")
-   public String field2887 = "null";
+   public String field2887;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1517269343
@@ -29,7 +29,7 @@ public class class200 extends CacheableNode {
    @ObfuscatedName("l")
    public int[] field2891;
    @ObfuscatedName("c")
-   static NodeCache field2892 = new NodeCache(64);
+   static NodeCache field2892;
    @ObfuscatedName("n")
    public char field2893;
    @ObfuscatedName("s")
@@ -90,6 +90,10 @@ public class class200 extends CacheableNode {
 
    }
 
+   static {
+      field2892 = new NodeCache(64);
+   }
+
    @ObfuscatedName("bp")
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -105,6 +109,11 @@ public class class200 extends CacheableNode {
          }
       }
 
+   }
+
+   class200() {
+      this.field2887 = "null";
+      this.field2885 = 0;
    }
 
    @ObfuscatedName("c")

@@ -6,11 +6,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("dw")
 public class class114 {
    @ObfuscatedName("c")
-   static String field1788 = null;
+   static String field1788;
    @ObfuscatedName("nm")
    static class51 field1791;
    @ObfuscatedName("d")
-   static Applet field1793 = null;
+   static Applet field1793;
    @ObfuscatedName("l")
    public static short[] field1794;
 
@@ -45,11 +45,11 @@ public class class114 {
       if(Client.field331 >= 50 || var0) {
          Client.field331 = 0;
          if(!Client.field336 && Friend.rssocket != null) {
-            Client.egressBuffer.putOpcode(102);
+            Client.secretPacketBuffer1.putOpcode(102);
 
             try {
-               Friend.rssocket.queueForWrite(Client.egressBuffer.payload, 0, Client.egressBuffer.offset);
-               Client.egressBuffer.offset = 0;
+               Friend.rssocket.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);
+               Client.secretPacketBuffer1.offset = 0;
             } catch (IOException var2) {
                Client.field336 = true;
             }
@@ -65,5 +65,10 @@ public class class114 {
    )
    static final int method2212() {
       return Client.menuOptionCount <= 0?-1:(Client.field432 && class105.field1695[81] && Client.field431 != -1?Client.field431:Client.menuOptionCount - 1);
+   }
+
+   static {
+      field1793 = null;
+      field1788 = null;
    }
 }
