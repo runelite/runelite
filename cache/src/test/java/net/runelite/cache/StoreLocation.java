@@ -77,6 +77,9 @@ public class StoreLocation
 		InputStream in = StoreLocation.class.getResourceAsStream("/main_file_cache.dat2");
 		Files.copy(in, new File(file, "main_file_cache.dat2").toPath());
 
+		in = StoreLocation.class.getResourceAsStream("/main_file_cache.idx255");
+		Files.copy(in, new File(file, "main_file_cache.idx255").toPath());
+
 		for (int i = 0; i <= NUM_INDEXES; ++i)
 		{
 			in = StoreLocation.class.getResourceAsStream("/main_file_cache.idx" + i);
