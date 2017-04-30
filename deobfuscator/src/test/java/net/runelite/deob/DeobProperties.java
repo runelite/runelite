@@ -32,6 +32,7 @@ public class DeobProperties extends ExternalResource
 {
 	private String rsClient;
 	private int rsVersion;
+	private String vanillaClient;
 
 	@Override
 	protected void before() throws Throwable
@@ -42,6 +43,7 @@ public class DeobProperties extends ExternalResource
 
 		rsClient = (String) properties.get("rs.client");
 		rsVersion = Integer.parseInt((String) properties.get("rs.version"));
+		vanillaClient = (String) properties.get("vanilla.client");
 	}
 
 	public String getRsClient()
@@ -52,5 +54,10 @@ public class DeobProperties extends ExternalResource
 	public int getRsVersion()
 	{
 		return rsVersion;
+	}
+
+	public String getVanillaClient()
+	{
+		return vanillaClient;
 	}
 }

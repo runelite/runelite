@@ -35,6 +35,7 @@ import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.Deob;
+import net.runelite.deob.DeobProperties;
 import net.runelite.deob.TemporyFolderLocation;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
@@ -46,7 +47,8 @@ import org.junit.rules.TemporaryFolder;
 
 public class RenameUniqueTest
 {
-	private static final File GAMEPACK = new File(RenameUniqueTest.class.getResource("/gamepack_v16.jar").getFile());
+	@Rule
+	public DeobProperties properties = new DeobProperties();
 	
 	@Rule
 	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
@@ -56,7 +58,7 @@ public class RenameUniqueTest
 	@Before
 	public void before() throws IOException
 	{
-		group = JarUtil.loadJar(GAMEPACK);
+		group = JarUtil.loadJar(new File(properties.getVanillaClient()));
 	}
 	
 	@After

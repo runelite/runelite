@@ -22,22 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.clientver;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import net.runelite.deob.DeobProperties;
+import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class ClientVersionTest
 {
+	@Rule
+	public DeobProperties properties = new DeobProperties();
+
 	@Test
-	public void test() throws IOException, URISyntaxException
+	public void test() throws IOException
 	{
-		File f = new File(ClientVersionTest.class.getResource("/gamepack_v21.jar").toURI());
-		ClientVersion ver = new ClientVersion(f);
-		System.out.println(ver.getVersion());
+		ClientVersion ver = new ClientVersion(new File(properties.getVanillaClient()));
+		Assert.assertEquals(properties.getRsVersion(), ver.getVersion());
 	}
 
 }
