@@ -229,7 +229,7 @@ public class DevToolsPanel extends PluginPanel
 		textColorLbl.setText("Text Color: " + widget.getTextColor());
 		nameLbl.setText("Name: " + widget.getName().trim());
 		modelLbl.setText("Model ID: " + widget.getModelId());
-		textureLbl.setText("Texture ID: " + widget.getTextureId());
+		textureLbl.setText("Sprite ID: " + widget.getSpriteId());
 		typeLbl.setText("Type: " + widget.getType());
 		contentTypeLbl.setText("Content Type: " + widget.getContentType());
 	}
