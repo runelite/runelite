@@ -99,6 +99,12 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.runelite.rs</groupId>
+			<artifactId>cache</artifactId>
+			<version>140</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	
 	<build>
