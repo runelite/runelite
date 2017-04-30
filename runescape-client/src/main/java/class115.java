@@ -35,6 +35,7 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
    @ObfuscatedGetter(
       intValue = 585714265
    )
+   @Export("mouseY")
    public static volatile int mouseY;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
@@ -73,6 +74,7 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
    @ObfuscatedGetter(
       intValue = -726765429
    )
+   @Export("mouseX")
    public static volatile int mouseX;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
