@@ -80,6 +80,7 @@ public class RuneLite
 
 	public static void main(String[] args) throws Exception
 	{
+		System.setProperty("sun.awt.noerasebackground", "true");
 		OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode");
 		options = parser.parse(args);

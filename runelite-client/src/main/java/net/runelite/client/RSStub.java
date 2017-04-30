@@ -28,7 +28,6 @@ package net.runelite.client;
 import java.applet.Applet;
 import java.applet.AppletContext;
 import java.applet.AppletStub;
-import java.awt.Dimension;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -83,10 +82,7 @@ public class RSStub implements AppletStub
 	@Override
 	public void appletResize(int width, int height)
 	{
-		Dimension d = new Dimension(width, height);
 
-		app.setSize(d);
-		app.setPreferredSize(d);
 	}
 	
 }
