@@ -26,17 +26,15 @@ package net.runelite.client.plugins.xtea;
 
 import com.google.common.eventbus.Subscribe;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.logging.Level;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.MapRegionChanged;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.http.api.xtea.XteaClient;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,7 +92,7 @@ public class Xtea extends Plugin
 			{
 				xteaClient.submit(revision, region, keys);
 			}
-			catch (URISyntaxException | IOException ex)
+			catch (IOException ex)
 			{
 				logger.debug("unable to submit xtea keys", ex);
 			}
