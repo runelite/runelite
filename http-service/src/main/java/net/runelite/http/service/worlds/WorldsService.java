@@ -25,27 +25,36 @@
 package net.runelite.http.service.worlds;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
-import net.runelite.http.service.HttpClient;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class WorldsService
 {
-	private static final String WORLD_URL = "http://www.runescape.com/g=oldscape/slr.ws?order=LPWM";
+	private static final HttpUrl WORLD_URL = HttpUrl.parse("http://www.runescape.com/g=oldscape/slr.ws?order=LPWM");
 
-	private HttpClient client = new HttpClient();
+	private final OkHttpClient client = new OkHttpClient();
+	private HttpUrl url = WORLD_URL;
 
 	public WorldResult listWorlds() throws IOException, URISyntaxException
 	{
-		byte[] response = client.getBytes(new URI(WORLD_URL));
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		Response response = client.newCall(request).execute();
+
+		byte[] b = response.body().bytes();
 
 		List<World> worlds = new ArrayList<>();
-		ByteBuffer buf = ByteBuffer.wrap(response);
+		ByteBuffer buf = ByteBuffer.wrap(b);
 
 		int length = buf.getInt();
 		buf.limit(length + 4);
@@ -90,13 +99,13 @@ public class WorldsService
 		return sb.toString();
 	}
 
-	public HttpClient getClient()
+	public HttpUrl getUrl()
 	{
-		return client;
+		return url;
 	}
 
-	public void setClient(HttpClient client)
+	public void setUrl(HttpUrl url)
 	{
-		this.client = client;
+		this.url = url;
 	}
 }

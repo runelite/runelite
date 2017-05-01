@@ -26,37 +26,45 @@ package net.runelite.http.service.worlds;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import net.runelite.http.api.worlds.WorldResult;
-import net.runelite.http.service.HttpClient;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okio.Buffer;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import spark.utils.IOUtils;
 
 public class WorldsServiceTest
 {
-	private byte[] worldData;
+	private final MockWebServer server = new MockWebServer();
 
 	@Before
 	public void before() throws IOException
 	{
 		InputStream in = WorldsServiceTest.class.getResourceAsStream("worldlist");
-		worldData = IOUtils.toByteArray(in);
+		byte[] worldData = IOUtils.toByteArray(in);
+
+		Buffer buffer = new Buffer();
+		buffer.write(worldData);
+
+		server.enqueue(new MockResponse().setBody(buffer));
+
+		server.start();
+	}
+
+	@After
+	public void after() throws IOException
+	{
+		server.shutdown();
 	}
 
 	@Test
 	public void testListWorlds() throws Exception
 	{
-		HttpClient client = mock(HttpClient.class);
-		when(client.getBytes(Matchers.any(URI.class)))
-			.thenReturn(worldData);
-
 		WorldsService worlds = new WorldsService();
-		worlds.setClient(client);
+		worlds.setUrl(server.url("/"));
 
 		WorldResult worldResult = worlds.listWorlds();
 		Assert.assertEquals(82, worldResult.getWorlds().size());

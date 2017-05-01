@@ -27,6 +27,7 @@ package net.runelite.http.api;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import okhttp3.HttpUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,9 +56,9 @@ public class RuneliteAPI
 		}
 	}
 
-	public static String getApiBase()
+	public static HttpUrl getApiBase()
 	{
-		return BASE + getVersion();
+		return HttpUrl.parse(BASE + getVersion());
 	}
 
 	public static String getVersion()

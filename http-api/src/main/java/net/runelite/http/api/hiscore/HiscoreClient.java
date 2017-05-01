@@ -28,15 +28,12 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.net.URISyntaxException;
 import net.runelite.http.api.RuneliteAPI;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,26 +41,26 @@ public class HiscoreClient
 {
 	private static final Logger logger = LoggerFactory.getLogger(HiscoreClient.class);
 
-	private static final String URL = RuneliteAPI.getApiBase() + "/hiscore";
-
+	private final OkHttpClient client = new OkHttpClient();
 	private final Gson gson = new Gson();
 
 	public HiscoreResult lookup(String username) throws IOException, URISyntaxException
 	{
-		URIBuilder builder = new URIBuilder(URL)
-			.addParameter("username", username);
+		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
+			.addPathSegment("hiscore")
+			.addQueryParameter("username", username);
 
-		URI uri = builder.build();
+		HttpUrl url = builder.build();
 
-		logger.debug("Built URI: {}", uri);
+		logger.debug("Built URI: {}", url);
 
-		HttpUriRequest request = new HttpGet(uri);
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
 
-		try (CloseableHttpClient client = HttpClients.createDefault();
-			CloseableHttpResponse response = client.execute(request))
-		{
-			InputStream in = response.getEntity().getContent();
-			return gson.fromJson(new InputStreamReader(in), HiscoreResult.class);
-		}
+		Response response = client.newCall(request).execute();
+
+		InputStream in = response.body().byteStream();
+		return gson.fromJson(new InputStreamReader(in), HiscoreResult.class);
 	}
 }
