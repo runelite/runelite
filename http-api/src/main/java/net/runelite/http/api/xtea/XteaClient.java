@@ -26,35 +26,27 @@ package net.runelite.http.api.xtea;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import net.runelite.http.api.RuneliteAPI;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class XteaClient
 {
+	private static final MediaType JSON = MediaType.parse("application/json");
+
 	private static final Logger logger = LoggerFactory.getLogger(XteaClient.class);
 
-	private static final String URL = RuneliteAPI.getApiBase() + "/xtea";
-
+	private final OkHttpClient client = new OkHttpClient();
 	private final Gson gson = new Gson();
 
-	public void submit(int revision, int region, int[] keys) throws URISyntaxException, UnsupportedEncodingException, IOException
+	public Response submit(int revision, int region, int[] keys) throws IOException
 	{
-		URIBuilder builder = new URIBuilder(URL);
-
-		URI uri = builder.build();
-
-		logger.debug("Built URI: {}", uri);
-
 		XteaRequest xteaRequest = new XteaRequest();
 		xteaRequest.setRevision(revision);
 
@@ -66,13 +58,18 @@ public class XteaClient
 
 		String json = gson.toJson(xteaRequest);
 
-		HttpPost request = new HttpPost(uri);
-		request.setEntity(new StringEntity(json));
+		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
+			.addPathSegment("xtea");
 
-		try (CloseableHttpClient client = HttpClients.createDefault();
-			CloseableHttpResponse response = client.execute(request))
-		{
-			logger.debug("Submitted XTEA key for region {}", region);
-		}
+		HttpUrl url = builder.build();
+
+		logger.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+			.post(RequestBody.create(JSON, json))
+			.url(url)
+			.build();
+
+		return client.newCall(request).execute();
 	}
 }

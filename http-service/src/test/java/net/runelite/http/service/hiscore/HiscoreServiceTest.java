@@ -24,14 +24,14 @@
  */
 package net.runelite.http.service.hiscore;
 
-import java.net.URI;
+import java.io.IOException;
 import net.runelite.http.api.hiscore.HiscoreResult;
-import net.runelite.http.service.HttpClient;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class HiscoreServiceTest
 {
@@ -69,15 +69,27 @@ public class HiscoreServiceTest
 		+ "-1,-1\n"
 		+ "-1,-1";
 
+	private final MockWebServer server = new MockWebServer();
+
+	@Before
+	public void before() throws IOException
+	{
+		server.enqueue(new MockResponse().setBody(RESPONSE));
+
+		server.start();
+	}
+
+	@After
+	public void after() throws IOException
+	{
+		server.shutdown();
+	}
+
 	@Test
 	public void testLookup() throws Exception
 	{
-		HttpClient client = mock(HttpClient.class);
-		when(client.get(Matchers.any(URI.class)))
-			.thenReturn(RESPONSE);
-
 		HiscoreService hiscores = new HiscoreService();
-		hiscores.setClient(client);
+		hiscores.setUrl(server.url("/"));
 
 		HiscoreResult result = hiscores.lookup("zezima");
 

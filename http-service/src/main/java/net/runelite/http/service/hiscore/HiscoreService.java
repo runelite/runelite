@@ -28,25 +28,33 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.Skill;
-import net.runelite.http.service.HttpClient;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.http.client.utils.URIBuilder;
 
 public class HiscoreService
 {
-	private static final String RUNESCAPE_HISCORE_SERVICE = "http://services.runescape.com/m=hiscore_oldschool/index_lite.ws";
+	private static final HttpUrl RUNESCAPE_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool/index_lite.ws");
 
-	private HttpClient client = new HttpClient();
+	private final OkHttpClient client = new OkHttpClient();
+	private HttpUrl url = RUNESCAPE_HISCORE_SERVICE;
 
 	public HiscoreResult lookup(String username) throws IOException, URISyntaxException
 	{
-		URIBuilder builder = new URIBuilder(RUNESCAPE_HISCORE_SERVICE)
-			.addParameter("player", username);
+		HttpUrl.Builder builder = url.newBuilder()
+			.addQueryParameter("player", username);
 
-		String csv = client.get(builder.build());
-		CSVParser parser = CSVParser.parse(csv, CSVFormat.DEFAULT);
+		Request request = new Request.Builder()
+			.url(builder.build())
+			.build();
+
+		Response response = client.newCall(request).execute();
+
+		CSVParser parser = CSVParser.parse(response.body().string(), CSVFormat.DEFAULT);
 
 		HiscoreResultBuilder hiscoreBuilder = new HiscoreResultBuilder();
 		hiscoreBuilder.setPlayer(username);
@@ -72,13 +80,13 @@ public class HiscoreService
 		return hiscoreBuilder.build();
 	}
 
-	public HttpClient getClient()
+	public HttpUrl getUrl()
 	{
-		return client;
+		return url;
 	}
 
-	public void setClient(HttpClient client)
+	public void setUrl(HttpUrl url)
 	{
-		this.client = client;
+		this.url = url;
 	}
 }
