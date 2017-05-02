@@ -32,6 +32,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -53,8 +54,14 @@ public class HiscoreService
 			.build();
 
 		Response response = client.newCall(request).execute();
+		String responseStr;
+		
+		try (ResponseBody body = response.body())
+		{
+			responseStr = body.string();
+		}
 
-		CSVParser parser = CSVParser.parse(response.body().string(), CSVFormat.DEFAULT);
+		CSVParser parser = CSVParser.parse(responseStr, CSVFormat.DEFAULT);
 
 		HiscoreResultBuilder hiscoreBuilder = new HiscoreResultBuilder();
 		hiscoreBuilder.setPlayer(username);
