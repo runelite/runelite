@@ -34,6 +34,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +61,10 @@ public class HiscoreClient
 
 		Response response = client.newCall(request).execute();
 
-		InputStream in = response.body().byteStream();
-		return gson.fromJson(new InputStreamReader(in), HiscoreResult.class);
+		try (ResponseBody body = response.body())
+		{
+			InputStream in = body.byteStream();
+			return gson.fromJson(new InputStreamReader(in), HiscoreResult.class);
+		}
 	}
 }
