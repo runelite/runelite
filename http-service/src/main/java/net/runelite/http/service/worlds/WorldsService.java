@@ -35,6 +35,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class WorldsService
 {
@@ -50,8 +51,12 @@ public class WorldsService
 			.build();
 
 		Response response = client.newCall(request).execute();
+		byte[] b;
 
-		byte[] b = response.body().bytes();
+		try (ResponseBody body = response.body())
+		{
+			b = body.bytes();
+		}
 
 		List<World> worlds = new ArrayList<>();
 		ByteBuffer buf = ByteBuffer.wrap(b);
