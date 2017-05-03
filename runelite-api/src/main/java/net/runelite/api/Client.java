@@ -323,4 +323,9 @@ public class Client
 	{
 		return client.getWidgetSettings();
 	}
+
+	public boolean isPrayerActive(Prayer prayer)
+	{
+		return getSetting(prayer.getVarbit()) == 1;
+	}
 }
