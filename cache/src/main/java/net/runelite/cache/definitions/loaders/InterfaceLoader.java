@@ -150,8 +150,8 @@ public class InterfaceLoader
 				iface.field2291 |= 536870912;
 			}
 
-			iface.field2285 = var1.readUnsignedByte();
-			iface.field2286 = var1.readUnsignedByte();
+			iface.paddingX = var1.readUnsignedByte();
+			iface.paddingY = var1.readUnsignedByte();
 			iface.field2340 = new int[20];
 			iface.field2288 = new int[20];
 			iface.field2289 = new int[20];
@@ -274,8 +274,8 @@ public class InterfaceLoader
 
 			iface.field2298 = var1.readUnsignedByte() == 1;
 			iface.textColor = var1.readInt();
-			iface.field2285 = var1.readShort();
-			iface.field2286 = var1.readShort();
+			iface.paddingX = var1.readShort();
+			iface.paddingY = var1.readShort();
 			var4 = var1.readUnsignedByte();
 			if (var4 == 1)
 			{
