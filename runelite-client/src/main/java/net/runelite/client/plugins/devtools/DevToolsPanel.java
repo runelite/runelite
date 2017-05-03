@@ -49,6 +49,8 @@ public class DevToolsPanel extends PluginPanel
 	private JButton renderWallsBtn = new JButton();
 	private JButton renderDecorBtn = new JButton();
 	private JButton renderInventoryBtn = new JButton();
+	private JButton settingsSnapshotBtn = new JButton();
+	private JButton settingsClearBtn = new JButton();
 
 	private JLabel textLbl = new JLabel();
 	private JLabel textColorLbl = new JLabel();
@@ -61,6 +63,8 @@ public class DevToolsPanel extends PluginPanel
 	private DevTools plugin;
 
 	private DefaultMutableTreeNode widgetListRoot = new DefaultMutableTreeNode();
+
+	private final SettingsTracker settingsTracker = new SettingsTracker(client);
 
 	public DevToolsPanel(DevTools plugin)
 	{
@@ -79,7 +83,7 @@ public class DevToolsPanel extends PluginPanel
 	private JPanel createOptionsPanel()
 	{
 		JPanel container = new JPanel();
-		container.setLayout(new GridLayout(4, 2, 3, 3));
+		container.setLayout(new GridLayout(5, 2, 3, 3));
 		container.setBorder(PADDING_BORDER);
 
 		renderPlayersBtn = new JButton("Players");
@@ -145,6 +149,14 @@ public class DevToolsPanel extends PluginPanel
 			plugin.toggleInventory();
 		});
 		container.add(renderInventoryBtn);
+
+		settingsSnapshotBtn = new JButton("Get Settings");
+		settingsSnapshotBtn.addActionListener(settingsTracker::snapshot);
+		container.add(settingsSnapshotBtn);
+
+		settingsClearBtn = new JButton("Clear Settings");
+		settingsClearBtn.addActionListener(settingsTracker::clear);
+		container.add(settingsClearBtn);
 
 		return container;
 	}

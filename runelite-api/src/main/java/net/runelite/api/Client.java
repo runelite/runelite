@@ -313,4 +313,14 @@ public class Client
 	{
 		return new XHashTable(client.getComponentTable());
 	}
+
+	public int[] getSettings()
+	{
+		return client.getSettings();
+	}
+
+	public int[] getWidgetSettings()
+	{
+		return client.getWidgetSettings();
+	}
 }
