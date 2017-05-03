@@ -43,11 +43,11 @@ public class Hiscore extends Plugin
 
 	private static final String LOOKUP = "Lookup";
 
-	private final NavigationButton navButton = new NavigationButton("Hiscore");
-	private final HiscorePanel hiscorePanel = new HiscorePanel();
-
 	private final RuneLite runeLite = RuneLite.getRunelite();
 	private final ClientUI ui = runeLite.getGui();
+
+	private final NavigationButton navButton = new NavigationButton("Hiscore");
+	private final HiscorePanel hiscorePanel = new HiscorePanel(runeLite);
 
 	@Override
 	protected void startUp() throws Exception
