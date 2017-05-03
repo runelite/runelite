@@ -30,6 +30,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -37,6 +38,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import net.runelite.api.Skill;
+import net.runelite.client.RuneLite;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -46,6 +48,8 @@ import org.slf4j.LoggerFactory;
 public class HiscorePanel extends PluginPanel
 {
 	private static final Logger logger = LoggerFactory.getLogger(HiscorePanel.class);
+
+	private final RuneLite runelite;
 
 	private JTextField input;
 	private JButton lookupButton;
@@ -78,8 +82,10 @@ public class HiscorePanel extends PluginPanel
 
 	private final HiscoreClient client = new HiscoreClient();
 
-	public HiscorePanel()
+	public HiscorePanel(RuneLite runelite)
 	{
+		this.runelite = runelite;
+
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
@@ -94,7 +100,8 @@ public class HiscorePanel extends PluginPanel
 
 		lookupButton.addActionListener((ActionEvent e) ->
 		{
-			lookup();
+			ScheduledExecutorService executor = runelite.getExecutor();
+			executor.execute(this::lookup);
 		});
 
 		JPanel statsPanel = new JPanel();
@@ -160,6 +167,8 @@ public class HiscorePanel extends PluginPanel
 	{
 		String lookup = input.getText();
 
+		lookup = sanitize(lookup);
+
 		if (Strings.isNullOrEmpty(lookup))
 		{
 			return;
@@ -204,5 +213,10 @@ public class HiscorePanel extends PluginPanel
 	private void setLabel(JLabel label, net.runelite.http.api.hiscore.Skill skill)
 	{
 		label.setText("" + skill.getLevel());
+	}
+
+	private static String sanitize(String lookup)
+	{
+		return lookup.replace('\u00A0', ' ');
 	}
 }
