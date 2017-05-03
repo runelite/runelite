@@ -253,8 +253,8 @@ public class class164 extends class68 {
 
                            for(var20 = 0; var20 < var10.field2219; ++var20) {
                               for(var37 = 0; var37 < var10.originalWidth; ++var37) {
-                                 var22 = var37 * (var10.field2273 + 32) + var12;
-                                 var36 = var20 * (var10.field2274 + 32) + var13;
+                                 var22 = var37 * (var10.paddingX + 32) + var12;
+                                 var36 = var20 * (var10.paddingY + 32) + var13;
                                  if(var19 < 20) {
                                     var22 += var10.field2223[var19];
                                     var36 += var10.field2276[var19];
@@ -572,8 +572,8 @@ public class class164 extends class68 {
                                                 var40 = class213.method4037(16748608) + var23.name + "</col>" + " " + 'x' + XItemContainer.method168(var10.itemQuantities[var20]);
                                              }
 
-                                             var25 = var12 + var22 * (var10.field2273 + 115);
-                                             var26 = var37 * (var10.field2274 + 12) + var13;
+                                             var25 = var12 + var22 * (var10.paddingX + 115);
+                                             var26 = var37 * (var10.paddingY + 12) + var13;
                                              if(var10.field2270 == 0) {
                                                 var50.method3914(var40, var25, var26, var10.textColor, var10.field2272?0:-1);
                                              } else if(var10.field2270 == 1) {
