@@ -109,8 +109,8 @@ public class InterfaceDefinition
 	public int[][] dynamicValues;
 	public int[] itemIds;
 	public int[] itemQuantities;
-	public int field2285;
-	public int field2286;
+	public int paddingX;
+	public int paddingY;
 	public int[] field2340;
 	public int[] field2288;
 	public int[] field2289;

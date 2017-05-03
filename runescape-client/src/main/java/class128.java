@@ -225,8 +225,8 @@ public final class class128 {
 
          for(int var14 = 0; var14 < var0.height; ++var14) {
             for(var5 = 0; var5 < var0.width; ++var5) {
-               var6 = (var0.field2273 + 32) * var5;
-               int var7 = var14 * (var0.field2274 + 32);
+               var6 = (var0.paddingX + 32) * var5;
+               int var7 = var14 * (var0.paddingY + 32);
                if(var15 < 20) {
                   var6 += var0.field2223[var15];
                   var7 += var0.field2276[var15];
