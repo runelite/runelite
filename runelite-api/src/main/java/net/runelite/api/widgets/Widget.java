@@ -234,4 +234,14 @@ public class Widget
 
 		return items;
 	}
+
+	public int getPaddingX()
+	{
+		return widget.getPaddingX();
+	}
+
+	public int getPaddingY()
+	{
+		return widget.getPaddingY();
+	}
 }

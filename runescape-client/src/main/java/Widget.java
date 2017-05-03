@@ -330,12 +330,14 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 1918153715
    )
-   public int field2273;
+   @Export("paddingX")
+   public int paddingX;
    @ObfuscatedName("cb")
    @ObfuscatedGetter(
       intValue = 1593829579
    )
-   public int field2274;
+   @Export("paddingY")
+   public int paddingY;
    @ObfuscatedName("ew")
    public boolean field2275;
    @ObfuscatedName("ck")
@@ -1094,8 +1096,8 @@ public class Widget extends Node {
             this.field2237 |= 536870912;
          }
 
-         this.field2273 = var1.readUnsignedByte();
-         this.field2274 = var1.readUnsignedByte();
+         this.paddingX = var1.readUnsignedByte();
+         this.paddingY = var1.readUnsignedByte();
          this.field2223 = new int[20];
          this.field2276 = new int[20];
          this.field2277 = new int[20];
@@ -1198,8 +1200,8 @@ public class Widget extends Node {
 
          this.field2272 = var1.readUnsignedByte() == 1;
          this.textColor = var1.readInt();
-         this.field2273 = var1.readShort();
-         this.field2274 = var1.readShort();
+         this.paddingX = var1.readShort();
+         this.paddingY = var1.readShort();
          var4 = var1.readUnsignedByte();
          if(var4 == 1) {
             this.field2237 |= 1073741824;
@@ -1420,8 +1422,8 @@ public class Widget extends Node {
       this.field2270 = 0;
       this.field2271 = 0;
       this.field2272 = false;
-      this.field2273 = 0;
-      this.field2274 = 0;
+      this.paddingX = 0;
+      this.paddingY = 0;
       this.field2237 = 0;
       this.name = "";
       this.dragParent = null;
