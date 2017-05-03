@@ -29,20 +29,39 @@ public enum Varbits
 	/**
 	 * Runecraft pouches
 	 */
-	POUCH_SMALL(486, 0, 2),
-	POUCH_MEDIUM(486, 3, 8),
-	POUCH_LARGE(486, 9, 17),
-	POUCH_GIANT(486, 18, 29);
+	POUCH_SMALL(603, 486, 0, 2),
+	POUCH_MEDIUM(604, 486, 3, 8),
+	POUCH_LARGE(605, 486, 9, 17),
+	POUCH_GIANT(606, 486, 18, 29),
 
+	/**
+	 * Prayers
+	 */
+	PRAYER_THICK_SKIN(4104, 83, 0, 0);
+
+	/**
+	 * varbit id
+	 */
+	private final int id;
+
+	/**
+	 * index into settings
+	 */
 	private final int index;
 	private final int leastSignificantBit;
 	private final int mostSignificantBit;
 
-	private Varbits(int index, int leastSignificantBit, int mostSignificantBit)
+	private Varbits(int id, int index, int leastSignificantBit, int mostSignificantBit)
 	{
+		this.id = id;
 		this.index = index;
 		this.leastSignificantBit = leastSignificantBit;
 		this.mostSignificantBit = mostSignificantBit;
+	}
+
+	public int getId()
+	{
+		return id;
 	}
 
 	public int getIndex()
@@ -107,7 +126,8 @@ public enum Varbits
 
 	/**
 	 * Get the number of bits of storage in this varbit
-	 * @return 
+	 *
+	 * @return
 	 */
 	public int getNumberOfBits()
 	{
