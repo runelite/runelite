@@ -64,6 +64,9 @@ public interface Widget
 	@Import("name")
 	String getName();
 
+	@Import(value = "text", setter = true)
+	void setText(String text);
+
 	@Import("textColor")
 	int getTextColor();
 

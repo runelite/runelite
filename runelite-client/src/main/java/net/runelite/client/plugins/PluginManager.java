@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.boosts.Boosts;
 import net.runelite.client.plugins.bosstimer.BossTimers;
+import net.runelite.client.plugins.clanchat.ClanChat;
 import net.runelite.client.plugins.devtools.DevTools;
 import net.runelite.client.plugins.fpsinfo.FPS;
 import net.runelite.client.plugins.hiscore.Hiscore;
@@ -71,6 +72,7 @@ public class PluginManager
 		plugins.add(new Runecraft());
 		plugins.add(new MouseHighlight());
 		plugins.add(new PestControl());
+		plugins.add(new ClanChat());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
