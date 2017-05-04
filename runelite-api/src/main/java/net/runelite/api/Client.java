@@ -325,4 +325,9 @@ public class Client
 	{
 		return getSetting(prayer.getVarbit()) == 1;
 	}
+
+	public int getClanChatCount()
+	{
+		return client.getClanChatCount();
+	}
 }
