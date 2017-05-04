@@ -28,6 +28,7 @@ import java.awt.Canvas;
 import java.util.Arrays;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.rs.api.ItemComposition;
 
 public class Client
 {
@@ -167,6 +168,11 @@ public class Client
 	public Region getRegion()
 	{
 		return new Region(this, client.getRegion());
+	}
+
+	public ItemComposition getItemDefinition(int id)
+	{
+		return client.getItemDefinition(id);
 	}
 
 	public int getBaseX()

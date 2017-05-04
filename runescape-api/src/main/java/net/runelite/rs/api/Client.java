@@ -197,6 +197,9 @@ public interface Client extends GameEngine
 	@Import("itemContainers")
 	XHashTable getItemContainers();
 
+	@Import("getItemDefinition")
+	ItemComposition getItemDefinition(int itemId);
+
 	@Import("componentTable")
 	XHashTable getComponentTable();
 

@@ -22,30 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.mousehighlight;
+package net.runelite.client.plugins.grounditems;
 
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 
-public class MouseHighlight extends Plugin
-{
-	private final Overlay overlay = new MouseHighlightOverlay();
+public class GroundItems extends Plugin{
+    private final Overlay overlay = new GroundItemsOverlay();
+    @Override
+    protected void startUp() throws Exception {
 
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
+    }
 
-	@Override
-	protected void startUp() throws Exception
-	{
+    @Override
+    public Overlay getOverlay() {
+       return overlay;
+    }
 
-	}
+    @Override
+    protected void shutDown() throws Exception {
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-
-	}
+    }
 }
