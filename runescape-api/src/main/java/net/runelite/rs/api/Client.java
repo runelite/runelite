@@ -206,6 +206,9 @@ public interface Client extends GameEngine
 	@Import("activeInterface")
 	Widget getActiveInterface();
 
+	@Import("clanChatCount")
+	int getClanChatCount();
+
 	@Import("clanMembers")
 	XClanMember[] getClanMembers();
 

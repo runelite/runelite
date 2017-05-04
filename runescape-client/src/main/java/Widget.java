@@ -308,7 +308,7 @@ public class Widget extends Node {
    @Export("fontId")
    public int fontId;
    @ObfuscatedName("bg")
-   @Export("text")
+   @Export(value = "text", setter = true)
    public String text;
    @ObfuscatedName("ba")
    public String field2268;
