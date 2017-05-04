@@ -49,4 +49,11 @@ class WidgetID
 		static final int YELLOW_ICON = 12;
 		static final int RED_ICON = 13;
 	}
+
+	static class ClanChat
+	{
+		static final int TITLE = 1;
+		static final int NAME = 3;
+		static final int OWNER = 5;
+	}
 }
