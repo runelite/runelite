@@ -26,6 +26,7 @@ package net.runelite.client.plugins.clanchat;
 
 import net.runelite.api.GameState;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 
@@ -33,7 +34,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class ClanChat extends Plugin {
+public class ClanChat extends Plugin
+{
 
     private final long INTERVAL = 600;
     private ScheduledFuture<?> future;
@@ -42,7 +44,7 @@ public class ClanChat extends Plugin {
     protected void startUp() throws Exception
     {
         ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
-        future = executor.scheduleAtFixedRate(this::updateClanChatMembers, INTERVAL, INTERVAL, TimeUnit.MILLISECONDS);
+        future = executor.scheduleAtFixedRate(this::updateClanChatTitle, INTERVAL, INTERVAL, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -51,12 +53,12 @@ public class ClanChat extends Plugin {
         future.cancel(true);
     }
 
-    private void updateClanChatMembers()
+    private void updateClanChatTitle()
     {
         if (RuneLite.getClient().getGameState() != GameState.LOGGED_IN)
             return;
 
-        Widget clanChatTitleWidget = RuneLite.getClient().getWidget(7, 1);
+        Widget clanChatTitleWidget = RuneLite.getClient().getWidget(WidgetInfo.CLAN_CHAT_TITLE);
         if (clanChatTitleWidget != null)
         {
             clanChatTitleWidget.setText("Clan Chat (" + RuneLite.getClient().getClanChatCount() + "/100)");

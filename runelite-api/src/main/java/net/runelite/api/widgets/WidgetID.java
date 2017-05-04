@@ -30,6 +30,8 @@ class WidgetID
 
 	static final int PESTRCONTROL_GROUP_ID = 408;
 
+	static final int CLAN_CHAT_GROUP_ID = 7;
+
 	static class PestControl
 	{
 		static final int PURPLE_SHIELD = 18;
