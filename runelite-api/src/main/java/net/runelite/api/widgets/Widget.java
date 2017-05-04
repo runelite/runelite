@@ -112,6 +112,11 @@ public class Widget
 		return widget.getText();
 	}
 
+	public void setText(String text)
+	{
+		widget.setText(text);
+	}
+
 	public int getTextColor()
 	{
 		return widget.getTextColor();
