@@ -56,28 +56,30 @@ public abstract class ZulrahPattern  implements ZulrahPatternPaintListener{
     @Override
     public void render(Graphics2D graphics, net.runelite.api.Point startTile, int index) {
        ZulrahInstance current = get(index);
+       if(current == null) return;
         graphics.setColor(Color.WHITE);
         graphics.drawString("startTile: " + startTile, 270, 200);
         graphics.drawString("current: " + current, 200, 215);
-        if(current != null) {
 
-            //Point zulrahTilePoint = current.getZulrahLoc(startTile); //Perspective.localToWorld(client, zulrahTile);
-            //zulrahTilePoint = Perspective.worldToCanvas(client, zulrahTilePoint.getX(), zulrahTilePoint.getY(), client.getPlane());
-            //graphics.setColor(Color.BLACK);
-            //graphics.drawString("c: " + current.getType() + current.isJad(), zulrahTilePoint.getX(), zulrahTilePoint.getY());
-            renderTileOverlay(graphics, current.getStandLoc(startTile), Color.GREEN);
-        }
+        //Doesn't appear to be working
+        /*Point zulrah = current.getZulrahLoc(startTile);
+        zulrah = Perspective.worldToCanvas(client, zulrah.getX(), zulrah.getY(), client.getPlane());
+        if (zulrah == null) return;
+        graphics.setColor(new Color(41, 128, 185, 228));
+        graphics.drawString("c: " + current.getType() + current.isJad(), zulrah.getX(), zulrah.getY());*/
+        renderTileOverlay(graphics, current.getStandLoc(startTile), Color.GREEN);
 
         ZulrahInstance next = get(index + 1);
         graphics.setColor(Color.WHITE);
         graphics.drawString("next: " + next, 200, 230);
         if(next != null) {
-            /*Point nextZulrahTile = next.getZulrahLoc(startTile);
 
-            Point nextZulrahTilePoint = Perspective.localToWorld(client, nextZulrahTile);
-            nextZulrahTilePoint = Perspective.worldToCanvas(client, nextZulrahTilePoint.getX(), nextZulrahTilePoint.getY(), client.getPlane());
-            graphics.setColor(Color.BLACK);
-            graphics.drawString("c: " + next.getType() + next.isJad(), nextZulrahTilePoint.getX(), nextZulrahTilePoint.getY());*/
+            // Doesn't appear to be working
+            /*zulrah = next.getZulrahLoc(startTile);
+            zulrah = Perspective.worldToCanvas(client, zulrah.getX(), zulrah.getY(), client.getPlane());
+            if(current.getZulrahLoc(startTile).equals(next.getZulrahLoc(startTile))) zulrah = new Point(zulrah.getX(), zulrah.getY() + 15);
+            graphics.setColor(new Color(142, 68, 173, 160));
+            graphics.drawString("n: " + next.getType() + next.isJad(), zulrah.getX(), zulrah.getY());*/
             renderTileOverlay(graphics, next.getStandLoc(startTile), new Color(255,0,0,150));
 
         }

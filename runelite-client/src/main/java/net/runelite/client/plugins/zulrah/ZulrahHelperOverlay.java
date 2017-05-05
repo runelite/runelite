@@ -42,6 +42,7 @@ public class ZulrahHelperOverlay extends Overlay {
     public Dimension render(Graphics2D graphics) {
 
         if(client.getGameState() != GameState.LOGGED_IN || startTile == null || zulrah == null) return null;
+        //TODO: Add prayer checking and health warning
 
         graphics.setColor(Color.WHITE);
         graphics.drawString(hp + "/500", 5, 40);
