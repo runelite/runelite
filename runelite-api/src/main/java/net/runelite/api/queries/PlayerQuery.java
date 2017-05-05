@@ -35,12 +35,12 @@ public class PlayerQuery extends Query<Player>
 {
 	public PlayerQuery name(String... names)
 	{
-		filters.add(npc ->
+		predicate = and(player ->
 		{
 			for (String name : names)
 			{
-				String npcName = npc.getName();
-				if (npcName != null && npcName.equals(name))
+				String playerName = player.getName();
+				if (playerName != null && playerName.equals(name))
 				{
 					return true;
 				}
@@ -53,10 +53,9 @@ public class PlayerQuery extends Query<Player>
 	@Override
 	protected Player[] result(Client client)
 	{
-		Filter<Player> filter = build();
 		return Arrays.stream(client.getPlayers())
 				.filter(Objects::nonNull)
-				.filter(filter::accept)
+				.filter(predicate)
 				.toArray(Player[]::new);
 	}
 }

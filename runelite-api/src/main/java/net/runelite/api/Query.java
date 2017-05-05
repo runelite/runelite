@@ -24,34 +24,24 @@
  */
 package net.runelite.api;
 
-import net.runelite.api.queries.Filter;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Predicate;
 
 public abstract class Query<T>
 {
-	protected List<Filter<T>> filters;
+	protected Predicate<T> predicate;
 
 	protected Query()
 	{
-		filters = new ArrayList<>();
 	}
 
 	protected abstract T[] result(Client client);
 
-	protected Filter<T> build()
+	protected Predicate<T> and(Predicate<T> other)
 	{
-		return t ->
+		if (predicate == null)
 		{
-			for (Filter<T> filter : filters)
-			{
-				if (!filter.accept(t))
-				{
-					return false;
-				}
-			}
-			return true;
-		};
+			return other;
+		}
+		return predicate.and(other);
 	}
 }

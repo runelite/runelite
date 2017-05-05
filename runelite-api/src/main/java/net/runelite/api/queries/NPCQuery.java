@@ -35,7 +35,7 @@ public class NPCQuery extends Query<NPC>
 {
 	public NPCQuery name(String... names)
 	{
-		filters.add(npc ->
+		predicate = and(npc ->
 		{
 			for (String name : names)
 			{
@@ -53,10 +53,9 @@ public class NPCQuery extends Query<NPC>
 	@Override
 	protected NPC[] result(Client client)
 	{
-		Filter<NPC> filter = build();
 		return Arrays.stream(client.getNpcs())
 				.filter(Objects::nonNull)
-				.filter(filter::accept)
+				.filter(predicate)
 				.toArray(NPC[]::new);
 	}
 }
