@@ -36,7 +36,7 @@ public class ZulrahPatternA extends ZulrahPattern {
 
         pattern[0] = new ZulrahInstance(ZulrahInstance.LOCATION.NORTH, ZulrahInstance.TYPE.RANGE, false, ZulrahInstance.STAND_LOCATION.TOP_EAST);
 		pattern[1] = new ZulrahInstance(ZulrahInstance.LOCATION.NORTH, ZulrahInstance.TYPE.MELEE, false, ZulrahInstance.STAND_LOCATION.TOP_EAST);
-		pattern[2] = new ZulrahInstance(ZulrahInstance.LOCATION.NORTH, ZulrahInstance.TYPE.MAGIC, false, ZulrahInstance.STAND_LOCATION.TOP_EAST);
+		pattern[2] = new ZulrahInstance(ZulrahInstance.LOCATION.NORTH, ZulrahInstance.TYPE.MAGIC, false, ZulrahInstance.STAND_LOCATION.WEST);
 		pattern[3] = new ZulrahInstance(ZulrahInstance.LOCATION.SOUTH, ZulrahInstance.TYPE.RANGE, false, ZulrahInstance.STAND_LOCATION.WEST);
 		pattern[4] = new ZulrahInstance(ZulrahInstance.LOCATION.NORTH, ZulrahInstance.TYPE.MELEE, false, ZulrahInstance.STAND_LOCATION.PILLAR_WEST_OUTSIDE);
 		pattern[5] = new ZulrahInstance(ZulrahInstance.LOCATION.WEST, ZulrahInstance.TYPE.MAGIC, false, ZulrahInstance.STAND_LOCATION.WEST);

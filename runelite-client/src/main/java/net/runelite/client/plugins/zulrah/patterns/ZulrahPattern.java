@@ -86,13 +86,16 @@ public abstract class ZulrahPattern  implements ZulrahPatternPaintListener{
 
     private void renderTileOverlay(Graphics2D graphics, Point tile, Color color) {
 
-    Polygon poly =  Perspective.getCanvasTilePoly(client, Perspective.worldToLocal(client, tile));
-    if (poly != null) {
-        graphics.setColor(color);
-        graphics.setStroke(new BasicStroke(2));
-        graphics.drawPolygon(poly);
-        graphics.setColor(new Color(0, 0, 0, 50));
-        graphics.fillPolygon(poly);
+        Point adjusted = Perspective.worldToLocal(client, tile);
+        //+65 to make the centre of the tile on the point, rather than the tile the point resides in
+        adjusted = new Point(adjusted.getX() + 65, adjusted.getY() + 65);
+        Polygon poly = Perspective.getCanvasTilePoly(client, adjusted);
+        if (poly != null) {
+            graphics.setColor(color);
+            graphics.setStroke(new BasicStroke(2));
+            graphics.drawPolygon(poly);
+            graphics.setColor(new Color(0, 0, 0, 50));
+            graphics.fillPolygon(poly);
+        }
     }
-}
 }

@@ -37,9 +37,9 @@ public class ZulrahHelperOverlay extends Overlay {
         patterns[3] = new ZulrahPatternD(client);
     }
 
+
     @Override
     public Dimension render(Graphics2D graphics) {
-
 
         if(client.getGameState() != GameState.LOGGED_IN || startTile == null || zulrah == null) return null;
 
