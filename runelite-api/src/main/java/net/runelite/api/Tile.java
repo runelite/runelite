@@ -25,7 +25,6 @@
 package net.runelite.api;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 public class Tile
 {
@@ -65,9 +64,8 @@ public class Tile
 		}
 
 		return Arrays.stream(tile.getObjects())
-				.filter(Objects::nonNull)
-				.map(go -> new GameObject(client, go))
-				.toArray(GameObject[]::new);
+				.map(go -> go != null ? new GameObject(client, go) : null)
+				.toArray(i -> new GameObject[i]);
 	}
 
 	public ItemLayer getItemLayer()

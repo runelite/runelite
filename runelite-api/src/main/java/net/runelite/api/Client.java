@@ -53,32 +53,30 @@ public class Client
 
 	public NPC[] getNpcs()
 	{
-		net.runelite.rs.api.NPC[] npcs = client.getCachedNPCs();
-		return npcs != null ? Arrays.stream(npcs)
-				.filter(Objects::nonNull)
-				.map(npc -> new NPC(this, npc))
-				.toArray(NPC[]::new) : new NPC[0];
+		return Arrays.stream(client.getCachedNPCs())
+				.map(npc -> npc != null ? new NPC(this, npc) : null)
+				.toArray(NPC[]::new);
 	}
 
 	public NPC[] getNpcs(Filter<NPC> filter)
 	{
 		return Arrays.stream(getNpcs())
+				.filter(Objects::nonNull)
 				.filter(filter::accept)
 				.toArray(NPC[]::new);
 	}
 
 	public Player[] getPlayers()
 	{
-		net.runelite.rs.api.Player[] players = client.getCachedPlayers();
-		return players != null ? Arrays.stream(client.getCachedPlayers())
-				.filter(Objects::nonNull)
-				.map(player -> new Player(this, player))
-				.toArray(Player[]::new) : new Player[0];
+		return Arrays.stream(client.getCachedPlayers())
+				.map(player -> player != null ? new Player(this, player) : null)
+				.toArray(Player[]::new);
 	}
 
 	public Player[] getPlayers(Filter<Player> filter)
 	{
 		return Arrays.stream(getPlayers())
+				.filter(Objects::nonNull)
 				.filter(filter::accept)
 				.toArray(Player[]::new);
 	}
@@ -202,14 +200,11 @@ public class Client
 
 	public Widget[][] getWidgets()
 	{
-		net.runelite.rs.api.Widget[][] widgets = client.getWidgets();
-		return widgets != null ? Arrays.stream(widgets)
-				.filter(Objects::nonNull)
-				.map(parent -> Arrays.stream(parent)
-						.filter(Objects::nonNull)
-						.map(child -> new Widget(this, child))
-						.toArray(Widget[]::new)
-				).toArray(Widget[][]::new) : new Widget[0][0];
+		return Arrays.stream(client.getWidgets())
+				.map(parent -> parent != null ? Arrays.stream(parent)
+						.map(child -> child != null ? new Widget(this, child) : null)
+						.toArray(Widget[]::new) : null
+				).toArray(Widget[][]::new);
 	}
 
 	public Widget getWidget(WidgetInfo widget)
