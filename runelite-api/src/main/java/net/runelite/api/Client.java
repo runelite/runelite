@@ -26,308 +26,314 @@ package net.runelite.api;
 
 import java.awt.Canvas;
 import java.util.Arrays;
+import java.util.Objects;
+
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
 public class Client
 {
-	private final net.runelite.rs.api.Client client;
+    private final net.runelite.rs.api.Client client;
 
-	public Client(net.runelite.rs.api.Client client)
-	{
-		this.client = client;
-	}
+    public Client(net.runelite.rs.api.Client client)
+    {
+        this.client = client;
+    }
 
-	public Player getLocalPlayer()
-	{
-		if (client.getLocalPlayer() == null)
-		{
-			return null;
-		}
+    public Player getLocalPlayer()
+    {
+        if (client.getLocalPlayer() == null)
+        {
+            return null;
+        }
 
-		return new Player(this, client.getLocalPlayer());
-	}
+        return new Player(this, client.getLocalPlayer());
+    }
 
-	public NPC[] getNpcs()
-	{
-		return Arrays.stream(client.getCachedNPCs())
-			.map(npc -> npc != null ? new NPC(this, npc) : null)
-			.toArray(size -> new NPC[size]);
-	}
+    public NPC[] getNpcs()
+    {
+        return Arrays.stream(client.getCachedNPCs())
+                .filter(Objects::nonNull)
+                .map(npc -> new NPC(this, npc))
+                .toArray(NPC[]::new);
+    }
 
-	public Player[] getPlayers()
-	{
-		return Arrays.stream(client.getCachedPlayers())
-			.map(player -> player != null ? new Player(this, player) : null)
-			.toArray(size -> new Player[size]);
-	}
+    public Player[] getPlayers()
+    {
+        return Arrays.stream(client.getCachedPlayers())
+                .filter(Objects::nonNull)
+                .map(player -> new Player(this, player))
+                .toArray(Player[]::new);
+    }
 
-	public int getBoostedSkillLevel(Skill skill)
-	{
-		int[] boostedLevels = client.getBoostedSkillLevels();
-		return boostedLevels[skill.ordinal()];
-	}
+    public int getBoostedSkillLevel(Skill skill)
+    {
+        int[] boostedLevels = client.getBoostedSkillLevels();
+        return boostedLevels[skill.ordinal()];
+    }
 
-	public int getRealSkillLevel(Skill skill)
-	{
-		int[] realLevels = client.getRealSkillLevels();
-		return realLevels[skill.ordinal()];
-	}
+    public int getRealSkillLevel(Skill skill)
+    {
+        int[] realLevels = client.getRealSkillLevels();
+        return realLevels[skill.ordinal()];
+    }
 
-	public void sendGameMessage(String message)
-	{
-		client.sendGameMessage(99, "", message);
-	}
+    public void sendGameMessage(String message)
+    {
+        client.sendGameMessage(99, "", message);
+    }
 
-	public GameState getGameState()
-	{
-		return GameState.of(client.getGameState());
-	}
+    public GameState getGameState()
+    {
+        return GameState.of(client.getGameState());
+    }
 
-	public Canvas getCanvas()
-	{
-		return client.getCanvas();
-	}
+    public Canvas getCanvas()
+    {
+        return client.getCanvas();
+    }
 
-	public int getFPS()
-	{
-		return client.getFPS();
-	}
+    public int getFPS()
+    {
+        return client.getFPS();
+    }
 
-	public int getClientHeight()
-	{
-		return client.getCanvas().getHeight();
-	}
+    public int getClientHeight()
+    {
+        return client.getCanvas().getHeight();
+    }
 
-	public int getClientWidth()
-	{
-		return client.getCanvas().getWidth();
-	}
+    public int getClientWidth()
+    {
+        return client.getCanvas().getWidth();
+    }
 
-	public int getCameraX()
-	{
-		return client.getCameraX();
-	}
+    public int getCameraX()
+    {
+        return client.getCameraX();
+    }
 
-	public int getCameraY()
-	{
-		return client.getCameraY();
-	}
+    public int getCameraY()
+    {
+        return client.getCameraY();
+    }
 
-	public int getCameraZ()
-	{
-		return client.getCameraZ();
-	}
+    public int getCameraZ()
+    {
+        return client.getCameraZ();
+    }
 
-	public int getCameraPitch()
-	{
-		return client.getCameraPitch();
-	}
+    public int getCameraPitch()
+    {
+        return client.getCameraPitch();
+    }
 
-	public int getCameraYaw()
-	{
-		return client.getCameraYaw();
-	}
+    public int getCameraYaw()
+    {
+        return client.getCameraYaw();
+    }
 
-	public int getCamera2()
-	{
-		return client.getCamera2();
-	}
+    public int getCamera2()
+    {
+        return client.getCamera2();
+    }
 
-	public int getCamera3()
-	{
-		return client.getCamera3();
-	}
+    public int getCamera3()
+    {
+        return client.getCamera3();
+    }
 
-	public int getScale()
-	{
-		return client.getScale();
-	}
+    public int getScale()
+    {
+        return client.getScale();
+    }
 
-	public Point getMouseCanvasPosition()
-	{
-		return new Point(client.getMouseX(), client.getMouseY());
-	}
+    public Point getMouseCanvasPosition()
+    {
+        return new Point(client.getMouseX(), client.getMouseY());
+    }
 
-	public int[][][] getTileHeights()
-	{
-		return client.getTileHeights();
-	}
+    public int[][][] getTileHeights()
+    {
+        return client.getTileHeights();
+    }
 
-	public byte[][][] getTileSettings()
-	{
-		return client.getTileSettings();
-	}
+    public byte[][][] getTileSettings()
+    {
+        return client.getTileSettings();
+    }
 
-	public int getPlane()
-	{
-		return client.getPlane();
-	}
+    public int getPlane()
+    {
+        return client.getPlane();
+    }
 
-	public Region getRegion()
-	{
-		return new Region(this, client.getRegion());
-	}
+    public Region getRegion()
+    {
+        return new Region(this, client.getRegion());
+    }
 
-	public int getBaseX()
-	{
-		return client.getBaseX();
-	}
+    public int getBaseX()
+    {
+        return client.getBaseX();
+    }
 
-	public int getBaseY()
-	{
-		return client.getBaseY();
-	}
+    public int getBaseY()
+    {
+        return client.getBaseY();
+    }
 
-	public Widget[][] getWidgets()
-	{
-		return Arrays.stream(client.getWidgets())
-			.map(parent -> parent != null ? Arrays.stream(parent)
-			.map(child -> child != null ? new Widget(this, child) : null)
-			.toArray(Widget[]::new) : null
-			).toArray(Widget[][]::new);
-	}
+    public Widget[][] getWidgets()
+    {
+        return Arrays.stream(client.getWidgets())
+                .filter(Objects::nonNull)
+                .map(parent -> Arrays.stream(parent)
+                        .filter(Objects::nonNull)
+                        .map(child -> new Widget(this, child))
+                        .toArray(Widget[]::new)
+                ).toArray(Widget[][]::new);
+    }
 
-	public Widget getWidget(WidgetInfo widget)
-	{
-		int groupId = widget.getGroupId();
-		int childId = widget.getChildId();
+    public Widget getWidget(WidgetInfo widget)
+    {
+        int groupId = widget.getGroupId();
+        int childId = widget.getChildId();
 
-		return getWidget(groupId, childId);
-	}
+        return getWidget(groupId, childId);
+    }
 
-	public Widget getWidget(int groupId, int childId)
-	{
-		net.runelite.rs.api.Widget[][] widgets = client.getWidgets();
+    public Widget getWidget(int groupId, int childId)
+    {
+        net.runelite.rs.api.Widget[][] widgets = client.getWidgets();
 
-		if (widgets == null || widgets.length <= groupId)
-		{
-			return null;
-		}
+        if (widgets == null || widgets.length <= groupId)
+        {
+            return null;
+        }
 
-		net.runelite.rs.api.Widget[] childWidgets = widgets[groupId];
-		if (childWidgets == null || childWidgets.length <= childId)
-		{
-			return null;
-		}
+        net.runelite.rs.api.Widget[] childWidgets = widgets[groupId];
+        if (childWidgets == null || childWidgets.length <= childId)
+        {
+            return null;
+        }
 
-		return new Widget(this, childWidgets[childId]);
-	}
+        return new Widget(this, childWidgets[childId]);
+    }
 
-	public int[] getWidgetPositionsX()
-	{
-		return client.getWidgetPositionsX();
-	}
+    public int[] getWidgetPositionsX()
+    {
+        return client.getWidgetPositionsX();
+    }
 
-	public int[] getWidgetPositionsY()
-	{
-		return client.getWidgetPositionsY();
-	}
+    public int[] getWidgetPositionsY()
+    {
+        return client.getWidgetPositionsY();
+    }
 
-	public boolean[] getValidInterfaces()
-	{
-		return client.getValidInterfaces();
-	}
+    public boolean[] getValidInterfaces()
+    {
+        return client.getValidInterfaces();
+    }
 
-	public String[] getPlayerOptions()
-	{
-		return client.getPlayerOptions();
-	}
+    public String[] getPlayerOptions()
+    {
+        return client.getPlayerOptions();
+    }
 
-	public boolean[] getPlayerOptionsPriorities()
-	{
-		return client.getPlayerOptionsPriorities();
-	}
+    public boolean[] getPlayerOptionsPriorities()
+    {
+        return client.getPlayerOptionsPriorities();
+    }
 
-	public int[] getPlayerMenuType()
-	{
-		return client.getPlayerMenuTypes();
-	}
+    public int[] getPlayerMenuType()
+    {
+        return client.getPlayerMenuTypes();
+    }
 
-	public String[] getMenuOptions()
-	{
-		return client.getMenuOptions();
-	}
+    public String[] getMenuOptions()
+    {
+        return client.getMenuOptions();
+    }
 
-	public String[] getMenuTargets()
-	{
-		return client.getMenuTargets();
-	}
+    public String[] getMenuTargets()
+    {
+        return client.getMenuTargets();
+    }
 
-	public int getMenuCount()
-	{
-		return client.getMenuOptionCount();
-	}
+    public int getMenuCount()
+    {
+        return client.getMenuOptionCount();
+    }
 
-	public boolean isMenuOpen()
-	{
-		return client.isMenuOpen();
-	}
+    public boolean isMenuOpen()
+    {
+        return client.isMenuOpen();
+    }
 
-	public int getMapScale()
-	{
-		return client.getMapScale();
-	}
+    public int getMapScale()
+    {
+        return client.getMapScale();
+    }
 
-	public int getMapAngle()
-	{
-		return client.getMapAngle();
-	}
+    public int getMapAngle()
+    {
+        return client.getMapAngle();
+    }
 
-	public int getMapOffset()
-	{
-		return client.getMapOffset();
-	}
+    public int getMapOffset()
+    {
+        return client.getMapOffset();
+    }
 
-	public boolean isResized()
-	{
-		return client.isResized();
-	}
+    public boolean isResized()
+    {
+        return client.isResized();
+    }
 
-	public int getRevision()
-	{
-		return client.getRevision();
-	}
+    public int getRevision()
+    {
+        return client.getRevision();
+    }
 
-	public int[] getMapRegions()
-	{
-		return client.getMapRegions();
-	}
+    public int[] getMapRegions()
+    {
+        return client.getMapRegions();
+    }
 
-	public int[][] getXteaKeys()
-	{
-		return client.getXteaKeys();
-	}
+    public int[][] getXteaKeys()
+    {
+        return client.getXteaKeys();
+    }
 
-	public int getSetting(Varbits varbit)
-	{
-		int[] settings = client.getSettings();
-		int value = settings[varbit.getIndex()];
-		return varbit.get(value);
-	}
+    public int getSetting(Varbits varbit)
+    {
+        int[] settings = client.getSettings();
+        int value = settings[varbit.getIndex()];
+        return varbit.get(value);
+    }
 
-	public XHashTable getComponentTable()
-	{
-		return new XHashTable(client.getComponentTable());
-	}
+    public XHashTable getComponentTable()
+    {
+        return new XHashTable(client.getComponentTable());
+    }
 
-	public int[] getSettings()
-	{
-		return client.getSettings();
-	}
+    public int[] getSettings()
+    {
+        return client.getSettings();
+    }
 
-	public int[] getWidgetSettings()
-	{
-		return client.getWidgetSettings();
-	}
+    public int[] getWidgetSettings()
+    {
+        return client.getWidgetSettings();
+    }
 
-	public boolean isPrayerActive(Prayer prayer)
-	{
-		return getSetting(prayer.getVarbit()) == 1;
-	}
+    public boolean isPrayerActive(Prayer prayer)
+    {
+        return getSetting(prayer.getVarbit()) == 1;
+    }
 
-	public int getClanChatCount()
-	{
-		return client.getClanChatCount();
-	}
+    public int getClanChatCount()
+    {
+        return client.getClanChatCount();
+    }
 }

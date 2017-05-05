@@ -25,6 +25,7 @@
 package net.runelite.api;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Region
 {
@@ -40,11 +41,12 @@ public class Region
 	public Tile[][][] getTiles()
 	{
 		return Arrays.stream(region.getTiles())
-			.map(tile1 -> Arrays.stream(tile1)
-				.map(tile2 -> Arrays.stream(tile2)
-					.map(tile3 -> tile3 != null ? new Tile(client, tile3) : null)
-					.toArray(Tile[]::new)
-				).toArray(Tile[][]::new)
-			).toArray(Tile[][][]::new);
+				.map(tile1 -> Arrays.stream(tile1)
+						.map(tile2 -> Arrays.stream(tile2)
+								.filter(Objects::nonNull)
+								.map(tile3 -> new Tile(client, tile3))
+								.toArray(Tile[]::new)
+						).toArray(Tile[][]::new)
+				).toArray(Tile[][][]::new);
 	}
 }
