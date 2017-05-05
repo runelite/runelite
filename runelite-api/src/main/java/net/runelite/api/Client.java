@@ -62,6 +62,12 @@ public class Client
 			.toArray(size -> new Player[size]);
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> T[] runQuery(Query query)
+	{
+		return (T[]) query.result(this);
+	}
+
 	public int getBoostedSkillLevel(Skill skill)
 	{
 		int[] boostedLevels = client.getBoostedSkillLevels();
