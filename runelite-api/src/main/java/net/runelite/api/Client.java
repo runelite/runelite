@@ -28,6 +28,7 @@ import java.awt.Canvas;
 import java.util.Arrays;
 import java.util.Objects;
 
+import net.runelite.api.filters.Filter;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -59,6 +60,13 @@ public class Client
                 .toArray(NPC[]::new) : new NPC[0];
     }
 
+    public NPC[] getNpcs(Filter<NPC> filter)
+    {
+        return Arrays.stream(getNpcs())
+                .filter(filter::accept)
+                .toArray(NPC[]::new);
+    }
+
     public Player[] getPlayers()
     {
         net.runelite.rs.api.Player[] players = client.getCachedPlayers();
@@ -66,6 +74,13 @@ public class Client
                 .filter(Objects::nonNull)
                 .map(player -> new Player(this, player))
                 .toArray(Player[]::new) : new Player[0];
+    }
+
+    public Player[] getPlayers(Filter<Player> filter)
+    {
+        return Arrays.stream(getPlayers())
+                .filter(filter::accept)
+                .toArray(Player[]::new);
     }
 
     public int getBoostedSkillLevel(Skill skill)
