@@ -29,80 +29,80 @@ import java.util.Objects;
 
 public class Tile
 {
-    private final Client client;
-    private final net.runelite.rs.api.Tile tile;
+	private final Client client;
+	private final net.runelite.rs.api.Tile tile;
 
-    public Tile(Client client, net.runelite.rs.api.Tile tile)
-    {
-        this.client = client;
-        this.tile = tile;
-    }
+	public Tile(Client client, net.runelite.rs.api.Tile tile)
+	{
+		this.client = client;
+		this.tile = tile;
+	}
 
-    /**
-     * Get the decorative object for this tile.
-     *
-     * @return
-     */
-    public DecorativeObject getDecorativeObject()
-    {
-        net.runelite.rs.api.DecorativeObject decorativeObject = tile.getDecorativeObject();
+	/**
+	 * Get the decorative object for this tile.
+	 *
+	 * @return
+	 */
+	public DecorativeObject getDecorativeObject()
+	{
+		net.runelite.rs.api.DecorativeObject decorativeObject = tile.getDecorativeObject();
 
-        if (decorativeObject == null)
-        {
-            return null;
-        }
+		if (decorativeObject == null)
+		{
+			return null;
+		}
 
-        return new DecorativeObject(client, decorativeObject);
-    }
+		return new DecorativeObject(client, decorativeObject);
+	}
 
-    public GameObject[] getGameObjects()
-    {
-        net.runelite.rs.api.GameObject[] objects = tile.getObjects();
+	public GameObject[] getGameObjects()
+	{
+		net.runelite.rs.api.GameObject[] objects = tile.getObjects();
 
-        if (objects == null)
-        {
-            return null;
-        }
+		if (objects == null)
+		{
+			return null;
+		}
 
-        return Arrays.stream(tile.getObjects())
-                .filter(Objects::nonNull)
-                .map(go -> new GameObject(client, go))
-                .toArray(GameObject[]::new);
-    }
+		return Arrays.stream(tile.getObjects())
+				.filter(Objects::nonNull)
+				.map(go -> new GameObject(client, go))
+				.toArray(GameObject[]::new);
+	}
 
-    public ItemLayer getItemLayer()
-    {
-        net.runelite.rs.api.ItemLayer itemLayer = tile.getItemLayer();
+	public ItemLayer getItemLayer()
+	{
+		net.runelite.rs.api.ItemLayer itemLayer = tile.getItemLayer();
 
-        if (itemLayer == null)
-        {
-            return null;
-        }
+		if (itemLayer == null)
+		{
+			return null;
+		}
 
-        return new ItemLayer(client, itemLayer);
-    }
+		return new ItemLayer(client, itemLayer);
+	}
 
-    public GroundObject getGroundObject()
-    {
-        net.runelite.rs.api.GroundObject groundObject = tile.getGroundObject();
+	public GroundObject getGroundObject()
+	{
+		net.runelite.rs.api.GroundObject groundObject = tile.getGroundObject();
 
-        if (groundObject == null)
-        {
-            return null;
-        }
+		if (groundObject == null)
+		{
+			return null;
+		}
 
-        return new GroundObject(client, groundObject);
-    }
+		return new GroundObject(client, groundObject);
+	}
 
-    public WallObject getWallObject()
-    {
-        net.runelite.rs.api.WallObject wallObject = tile.getWallObject();
+	public WallObject getWallObject()
+	{
+		net.runelite.rs.api.WallObject wallObject = tile.getWallObject();
 
-        if (wallObject == null)
-        {
-            return null;
-        }
+		if (wallObject == null)
+		{
+			return null;
+		}
 
-        return new WallObject(client, wallObject);
-    }
+		return new WallObject(client, wallObject);
+	}
 }
