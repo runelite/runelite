@@ -43,6 +43,11 @@ public class ZulrahHelperOverlay extends Overlay {
 
         if(client.getGameState() != GameState.LOGGED_IN || startTile == null || zulrah == null) return null;
         //TODO: Add prayer checking and health warning
+        if(client.getLocalPlayer().getHealth() <= 41)
+        {
+            graphics.setColor(Color.RED);
+            graphics.drawString("!!!EAT FOOD!!!", client.getCanvas().getWidth() / 2 - 15, 300);
+        }
 
         graphics.setColor(Color.WHITE);
         graphics.drawString(hp + "/500", 5, 40);
@@ -130,6 +135,7 @@ public class ZulrahHelperOverlay extends Overlay {
                     if (currentInstance.equals(patterns[currentPattern].get(0))) {
                         currentPattern = -1;
                         index = 0;
+                        currentInstance = null;
                     }
                 }
             }
