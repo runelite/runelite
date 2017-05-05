@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+package net.runelite.client.plugins.zulrah.patterns;/*
+ * Copyright (c) 2017, Aria <aria@ar1as.space>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,33 +23,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.api;
+import net.runelite.api.*;
 
-public class NPC extends Actor
-{
-	private net.runelite.rs.api.NPC npc;
+import java.awt.*;
 
-	public NPC(Client client, net.runelite.rs.api.NPC npc)
-	{
-		super(client, npc);
-		this.npc = npc;
-	}
-
-	public int getId()
-	{
-		return npc.getComposition().getId();
-	}
-
-	@Override
-	public String getName()
-	{
-		return npc.getComposition().getName();
-	}
-
-	@Override
-	public int getCombatLevel()
-	{
-		return npc.getComposition().getCombatLevel();
-	}
-
+public interface ZulrahPatternPaintListener {
+    public void render(Graphics2D graphics, net.runelite.api.Point startTile, int index);
 }

@@ -35,6 +35,12 @@ public class Point
 		this.y = y;
 	}
 
+	public Point(Point other)
+	{
+		this.x = other.getX();
+		this.y = other.getY();
+	}
+
 	@Override
 	public String toString()
 	{
