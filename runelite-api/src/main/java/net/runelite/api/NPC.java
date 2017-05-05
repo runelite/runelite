@@ -25,6 +25,8 @@
 
 package net.runelite.api;
 
+import net.runelite.rs.api.NPCComposition;
+
 public class NPC extends Actor
 {
 	private net.runelite.rs.api.NPC npc;
@@ -38,13 +40,27 @@ public class NPC extends Actor
 	@Override
 	public String getName()
 	{
-		return npc.getComposition().getName();
+		NPCComposition composition = npc.getComposition();
+		if (composition != null)
+		{
+			String name = composition.getName();
+			if (name != null)
+			{
+				return name.replace('\u00A0', ' ');
+			}
+		}
+		return null;
 	}
 
 	@Override
 	public int getCombatLevel()
 	{
-		return npc.getComposition().getCombatLevel();
+		NPCComposition composition = npc.getComposition();
+		if (composition != null)
+		{
+			return composition.getCombatLevel();
+		}
+		return 0;
 	}
 
 }

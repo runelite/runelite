@@ -41,7 +41,12 @@ public class Player extends Actor
 	@Override
 	public String getName()
 	{
-		return player.getName();
+		String name = player.getName();
+		if (name != null)
+		{
+			name = name.replace('\u00A0', ' ');
+		}
+		return name;
 	}
 
 	@Override
