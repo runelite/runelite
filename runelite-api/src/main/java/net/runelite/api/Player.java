@@ -41,7 +41,7 @@ public class Player extends Actor
 	@Override
 	public String getName()
 	{
-		return player.getName();
+		return player.getName().replace('\u00A0', ' ');
 	}
 
 	@Override

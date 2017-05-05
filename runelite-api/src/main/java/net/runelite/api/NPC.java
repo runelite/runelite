@@ -38,7 +38,7 @@ public class NPC extends Actor
 	@Override
 	public String getName()
 	{
-		return npc.getComposition().getName();
+		return npc.getComposition().getName().replace('\u00A0', ' ');
 	}
 
 	@Override
