@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.ui.overlay;
 
 import java.awt.Dimension;
@@ -51,18 +50,29 @@ public class TopDownRendererRight implements Renderer
 	{
 		Client client = RuneLite.getClient();
 		overlays.sort((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));
+
 		int y = BORDER_TOP;
+		int clientWidth = client.getClientWidth();
+		int clientHeight = client.getClientHeight();
 
 		for (Overlay overlay : overlays)
 		{
-			BufferedImage image = clientBuffer.getSubimage(BORDER_RIGHT, y, client.getClientWidth(), 25);
+			BufferedImage image = new BufferedImage(clientWidth, clientHeight, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics = image.createGraphics();
 			Renderer.setAntiAliasing(graphics);
 			Dimension dimension = overlay.render(graphics);
 			graphics.dispose();
 
 			if (dimension == null)
+			{
 				continue;
+			}
+
+			image = image.getSubimage(0, 0, (int) dimension.getWidth(), (int) dimension.getHeight());
+
+			graphics = clientBuffer.createGraphics();
+			graphics.drawImage(image, clientWidth - BORDER_RIGHT - (int) dimension.getWidth(), y, null);
+			graphics.dispose();
 
 			y += dimension.getHeight() + PADDING;
 		}
