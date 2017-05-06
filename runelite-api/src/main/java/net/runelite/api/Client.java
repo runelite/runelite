@@ -26,6 +26,9 @@ package net.runelite.api;
 
 import java.awt.Canvas;
 import java.util.Arrays;
+import java.util.Objects;
+
+import net.runelite.api.filters.Filter;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -51,15 +54,31 @@ public class Client
 	public NPC[] getNpcs()
 	{
 		return Arrays.stream(client.getCachedNPCs())
-			.map(npc -> npc != null ? new NPC(this, npc) : null)
-			.toArray(size -> new NPC[size]);
+				.map(npc -> npc != null ? new NPC(this, npc) : null)
+				.toArray(NPC[]::new);
+	}
+
+	public NPC[] getNpcs(Filter<NPC> filter)
+	{
+		return Arrays.stream(getNpcs())
+				.filter(Objects::nonNull)
+				.filter(filter::accept)
+				.toArray(NPC[]::new);
 	}
 
 	public Player[] getPlayers()
 	{
 		return Arrays.stream(client.getCachedPlayers())
-			.map(player -> player != null ? new Player(this, player) : null)
-			.toArray(size -> new Player[size]);
+				.map(player -> player != null ? new Player(this, player) : null)
+				.toArray(Player[]::new);
+	}
+
+	public Player[] getPlayers(Filter<Player> filter)
+	{
+		return Arrays.stream(getPlayers())
+				.filter(Objects::nonNull)
+				.filter(filter::accept)
+				.toArray(Player[]::new);
 	}
 
 	public int getBoostedSkillLevel(Skill skill)
@@ -182,10 +201,10 @@ public class Client
 	public Widget[][] getWidgets()
 	{
 		return Arrays.stream(client.getWidgets())
-			.map(parent -> parent != null ? Arrays.stream(parent)
-			.map(child -> child != null ? new Widget(this, child) : null)
-			.toArray(Widget[]::new) : null
-			).toArray(Widget[][]::new);
+				.map(parent -> parent != null ? Arrays.stream(parent)
+						.map(child -> child != null ? new Widget(this, child) : null)
+						.toArray(Widget[]::new) : null
+				).toArray(Widget[][]::new);
 	}
 
 	public Widget getWidget(WidgetInfo widget)

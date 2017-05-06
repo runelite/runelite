@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.filters;
 
-import java.util.Arrays;
-
-public class Region
+public interface Filter<T>
 {
-	private final Client client;
-	private final net.runelite.rs.api.Region region;
-
-	public Region(Client client, net.runelite.rs.api.Region region)
-	{
-		this.client = client;
-		this.region = region;
-	}
-
-	public Tile[][][] getTiles()
-	{
-		return Arrays.stream(region.getTiles())
-				.map(tile1 -> Arrays.stream(tile1)
-						.map(tile2 -> Arrays.stream(tile2)
-								.map(tile3 -> tile3 != null ? new Tile(client, tile3) : null)
-								.toArray(Tile[]::new)
-						).toArray(Tile[][]::new)
-				).toArray(Tile[][][]::new);
-	}
+    boolean accept(T t);
 }

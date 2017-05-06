@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.filters;
 
-import java.util.Arrays;
+import net.runelite.api.Item;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
+import net.runelite.api.TileObject;
 
-public class Region
+public class Filters
 {
-	private final Client client;
-	private final net.runelite.rs.api.Region region;
+    public static class Npcs
+    {
+        public static Filter<NPC> nameEquals(String name)
+        {
+            return npc -> {
+                String npcName = npc.getName();
+                return npcName != null && npc.equals(name);
+            };
+        }
+    }
 
-	public Region(Client client, net.runelite.rs.api.Region region)
-	{
-		this.client = client;
-		this.region = region;
-	}
+    public static class Players
+    {
+        public static Filter<Player> nameEquals(String name)
+        {
+            return player -> {
+                String playerName = player.getName();
+                return playerName != null && playerName.equals(name);
+            };
+        }
+    }
 
-	public Tile[][][] getTiles()
-	{
-		return Arrays.stream(region.getTiles())
-				.map(tile1 -> Arrays.stream(tile1)
-						.map(tile2 -> Arrays.stream(tile2)
-								.map(tile3 -> tile3 != null ? new Tile(client, tile3) : null)
-								.toArray(Tile[]::new)
-						).toArray(Tile[][]::new)
-				).toArray(Tile[][][]::new);
-	}
+    public static class TileObjects
+    {
+        public static Filter<TileObject> idEquals(int id)
+        {
+            return tileObject -> tileObject.getId() == id;
+        }
+    }
+
+    public static class Items
+    {
+        public static Filter<Item> idEquals(int id)
+        {
+            return item -> item.getId() == id;
+        }
+    }
 }

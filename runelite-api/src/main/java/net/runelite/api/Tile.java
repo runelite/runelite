@@ -64,8 +64,8 @@ public class Tile
 		}
 
 		return Arrays.stream(tile.getObjects())
-			.map(go -> go != null ? new GameObject(client, go) : null)
-			.toArray(i -> new GameObject[i]);
+				.map(go -> go != null ? new GameObject(client, go) : null)
+				.toArray(i -> new GameObject[i]);
 	}
 
 	public ItemLayer getItemLayer()
