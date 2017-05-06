@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,9 +51,6 @@ class ZulrahHelperOverlay extends Overlay
 	private final Client client = RuneLite.getClient();
 
 	private Fight fight;
-//	private Point startTile;
-	private int index = 0;
-	private int currentPattern = -1;
 	private ZulrahInstance previousInstance;
 	private ZulrahInstance currentInstance;
 	private final ZulrahPattern[] patterns;
@@ -80,16 +78,18 @@ class ZulrahHelperOverlay extends Overlay
 
 		graphics.setColor(Color.WHITE);
 
-		if (currentPattern == -1)
+		// XXX race on fight here
+		ZulrahPattern pattern = fight.getPattern();
+		if (pattern == null)
 		{
 			graphics.drawString("Unknown", 200, 200);
 			graphics.drawString("current: " + currentInstance, 200, 215);
 			graphics.drawString("Previous:" + previousInstance, 200, 230);
-			graphics.drawString("index: " + index, 200, 245);
+			graphics.drawString("index: " + fight.getStage(), 200, 245);
 		}
 		else
 		{
-			patterns[currentPattern].render(client, graphics, fight.getStartLocationWorld(), index);
+			pattern.render(client, graphics, fight.getStartLocationWorld(), fight.getStage());
 		}
 
 		return null;
@@ -99,20 +99,7 @@ class ZulrahHelperOverlay extends Overlay
 	{
 		try
 		{
-			NPC[] npcs = client.getNpcs();
-			NPC zulrah = null;
-			for (NPC npc : npcs)
-			{
-				if (npc == null)
-				{
-					continue;
-				}
-				if (npc.getName().equals("Zulrah"))
-				{
-					zulrah = npc;
-					break;
-				}
-			}
+			NPC zulrah = findZulrah();
 
 			if (zulrah == null)
 			{
@@ -129,13 +116,13 @@ class ZulrahHelperOverlay extends Overlay
 			{
 				Point startTile = zulrah.getLocalLocation();
 				startTile = Perspective.localToWorld(client, startTile);
-				fight = new Fight(startTile);
 
-				index = 0;
-				currentPattern = -1;
 				System.out.println("Start Tile: " + startTile.toString());
 				previousInstance = null;
 				currentInstance = null;
+
+				// Render thread starts once this is assigned
+				fight = new Fight(startTile);
 
 				logger.debug("Fight has begun!");
 			}
@@ -152,39 +139,39 @@ class ZulrahHelperOverlay extends Overlay
 			{
 				previousInstance = currentInstance;
 				currentInstance = temp;
-				++index;
+				fight.nextStage();
 
 				logger.debug("Zulrah has moved from {} -> {}, index now {}",
-					previousInstance, currentInstance, index);
+					previousInstance, currentInstance, fight.getStage());
 			}
 
-			if (currentPattern == -1)
+			ZulrahPattern pattern = fight.getPattern();
+			if (pattern == null)
 			{
 				int potential = 0;
-				int potentialPattern = -1;
+				ZulrahPattern potentialPattern = null;
 
 				for (int i = 0; i < patterns.length; ++i)
 				{
-					if (patterns[i].accept(index, currentInstance))
+					if (patterns[i].accept(fight.getStage(), currentInstance))
 					{
 						//System.out.println("PATTERN POTENTIAL: " + i);
 						potential++;
-						potentialPattern = i;
+						potentialPattern = patterns[i];
 					}
 				}
 				if (potential == 1)
 				{
-					currentPattern = potentialPattern;
+					fight.setPattern(potentialPattern);
 				}
 			}
 			else
 			{
-				if (patterns[currentPattern].canReset(index))
+				if (pattern.canReset(fight.getStage()))
 				{
-					if (currentInstance.equals(patterns[currentPattern].get(0)))
+					if (currentInstance.equals(pattern.get(0)))
 					{
-						currentPattern = -1;
-						index = 0;
+						fight.reset();
 						currentInstance = null;
 					}
 				}
@@ -197,5 +184,23 @@ class ZulrahHelperOverlay extends Overlay
 			e.printStackTrace();
 		}
 
+	}
+
+	private NPC findZulrah()
+	{
+		NPC[] npcs = client.getNpcs();
+
+		for (NPC npc : npcs)
+		{
+			if (npc == null)
+			{
+				continue;
+			}
+			if (npc.getName().equals("Zulrah"))
+			{
+				return npc;
+			}
+		}
+		return null;
 	}
 }

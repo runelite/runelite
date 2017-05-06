@@ -26,11 +26,14 @@ package net.runelite.client.plugins.zulrah;
 
 import java.time.Instant;
 import net.runelite.api.Point;
+import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
 
 public class Fight
 {
 	private final Point startLocationWorld;
 	private final Instant startTime = Instant.now();
+	private ZulrahPattern pattern;
+	private int stage;
 
 	public Fight(Point startLocationWorld)
 	{
@@ -45,5 +48,31 @@ public class Fight
 	public Instant getStartTime()
 	{
 		return startTime;
+	}
+
+	public ZulrahPattern getPattern()
+	{
+		return pattern;
+	}
+
+	public void setPattern(ZulrahPattern pattern)
+	{
+		this.pattern = pattern;
+	}
+
+	public int getStage()
+	{
+		return stage;
+	}
+
+	public void nextStage()
+	{
+		++stage;
+	}
+
+	public void reset()
+	{
+		pattern = null;
+		stage = 0;
 	}
 }
