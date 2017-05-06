@@ -24,8 +24,6 @@
  */
 package net.runelite.client.plugins.zulrah.patterns;
 
-import java.awt.Graphics2D;
-import net.runelite.api.Client;
 import net.runelite.client.plugins.zulrah.StandLocation;
 import net.runelite.client.plugins.zulrah.ZulrahLocation;
 import net.runelite.client.plugins.zulrah.ZulrahType;
@@ -46,12 +44,5 @@ public class ZulrahPatternD extends ZulrahPattern
 		add(ZulrahLocation.NORTH, ZulrahType.MAGIC, StandLocation.TOP_EAST);
 		addJad(ZulrahLocation.EAST, ZulrahType.MAGIC, StandLocation.TOP_EAST);
 		add(ZulrahLocation.NORTH, ZulrahType.MAGIC, StandLocation.TOP_EAST);
-	}
-
-	@Override
-	public void render(Client client, Graphics2D graphics, net.runelite.api.Point startTile, int index)
-	{
-		super.render(client, graphics, startTile, index);
-		graphics.drawString("Pattern D", 200, 200);
 	}
 }

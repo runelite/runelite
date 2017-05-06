@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2017, Aria <aria@ar1as.space>
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -24,10 +25,14 @@
  */
 package net.runelite.client.plugins.zulrah;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
@@ -71,8 +76,62 @@ public class TileOverlay extends Overlay
 			stage = fight.getStage();
 		}
 
-		pattern.render(client, graphics, startLocationWorld, stage);
+		ZulrahInstance current = pattern.get(stage);
+		if (current == null)
+		{
+			return null;
+		}
+
+		renderTileOverlay(graphics, current.getStandLoc(startLocationWorld), Color.GREEN);
+
+		ZulrahInstance next = pattern.get(stage + 1);
+		if (next == null)
+		{
+			return null;
+		}
+
+		String str;
+
+		if (next.isJad())
+		{
+			str = "Next is JAD: " + next.getType();
+		}
+		else
+		{
+			str = "Next: " + next.getType();
+		}
+
+		Point location = next.getZulrahLoc(startLocationWorld);
+		location = Perspective.worldToLocal(client, location);
+		location = Perspective.getCanvasTextLocation(client, graphics, location, str, 0);
+
+		if (location != null)
+		{
+			graphics.setColor(Color.WHITE);
+			graphics.drawString(str, location.getX(), location.getY());
+		}
+
+		renderTileOverlay(graphics, next.getStandLoc(startLocationWorld), new Color(255, 0, 0, 150));
+
 		return null;
+	}
+
+	private void renderTileOverlay(Graphics2D graphics, Point tile, Color outlineColor)
+	{
+		Point localTile = Perspective.worldToLocal(client, tile);
+
+		//to make the centre of the tile on the point, rather than the tile the point resides in
+		localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
+		
+		Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
+		if (poly != null)
+		{
+			graphics.setColor(outlineColor);
+			graphics.setStroke(new BasicStroke(2));
+			graphics.drawPolygon(poly);
+			graphics.setColor(new Color(0, 0, 0, 50));
+			graphics.fillPolygon(poly);
+		}
 	}
 
 }

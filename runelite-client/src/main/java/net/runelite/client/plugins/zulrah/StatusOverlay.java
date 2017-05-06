@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2017, Aria <aria@ar1as.space>
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -88,7 +89,7 @@ class StatusOverlay extends Overlay
 		{
 			jadStr = "JAD: YES";
 		}
-		else if (next.isJad())
+		else if (next != null && next.isJad())
 		{
 			jadStr = "JAD: NEXT";
 		}

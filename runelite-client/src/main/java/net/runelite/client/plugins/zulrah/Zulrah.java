@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,7 +49,7 @@ public class Zulrah extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(Zulrah.class);
 
-	private static final String ZULRAH = "Father Urhney";
+	private static final String ZULRAH = "Zulrah";
 
 	private final Client client = RuneLite.getClient();
 
