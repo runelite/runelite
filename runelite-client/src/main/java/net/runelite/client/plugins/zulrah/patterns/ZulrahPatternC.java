@@ -45,6 +45,7 @@ public class ZulrahPatternC extends ZulrahPattern
 		add(ZulrahLocation.WEST, ZulrahType.RANGE, StandLocation.PILLAR_WEST_OUTSIDE);
 		add(ZulrahLocation.NORTH, ZulrahType.MAGIC, StandLocation.PILLAR_EAST_OUTSIDE);
 		addJad(ZulrahLocation.EAST, ZulrahType.MAGIC, StandLocation.PILLAR_EAST_OUTSIDE);
+		add(ZulrahLocation.NORTH, ZulrahType.MAGIC, StandLocation.EAST);
 	}
 
 	@Override
@@ -52,11 +53,5 @@ public class ZulrahPatternC extends ZulrahPattern
 	{
 		super.render(client, graphics, startTile, index);
 		graphics.drawString("Pattern C", 200, 200);
-	}
-
-	@Override
-	public boolean canReset(int index)
-	{
-		return index >= 7;
 	}
 }

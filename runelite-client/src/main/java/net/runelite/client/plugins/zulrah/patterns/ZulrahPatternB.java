@@ -40,19 +40,13 @@ public class ZulrahPatternB extends ZulrahPattern
 		add(ZulrahLocation.NORTH, ZulrahType.MELEE, StandLocation.TOP_EAST);
 		add(ZulrahLocation.NORTH, ZulrahType.MAGIC, StandLocation.WEST);
 		add(ZulrahLocation.WEST, ZulrahType.RANGE, StandLocation.PILLAR_WEST_OUTSIDE);
+		// there is an optional phase here?
 		add(ZulrahLocation.SOUTH, ZulrahType.MAGIC, StandLocation.PILLAR_WEST_INSIDE);
 		add(ZulrahLocation.NORTH, ZulrahType.MELEE, StandLocation.TOP_EAST);
 		add(ZulrahLocation.EAST, ZulrahType.RANGE, StandLocation.EAST);
 		add(ZulrahLocation.SOUTH, ZulrahType.MAGIC, StandLocation.PILLAR_WEST_INSIDE);
 		addJad(ZulrahLocation.WEST, ZulrahType.RANGE, StandLocation.TOP_WEST);
 		add(ZulrahLocation.NORTH, ZulrahType.MELEE, StandLocation.TOP_WEST);
-		add(ZulrahLocation.NORTH, ZulrahType.RANGE, StandLocation.TOP_WEST);
-	}
-
-	@Override
-	public boolean canReset(int index)
-	{
-		return index >= 10;
 	}
 
 	@Override

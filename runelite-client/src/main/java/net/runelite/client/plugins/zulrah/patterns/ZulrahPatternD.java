@@ -54,10 +54,4 @@ public class ZulrahPatternD extends ZulrahPattern
 		super.render(client, graphics, startTile, index);
 		graphics.drawString("Pattern D", 200, 200);
 	}
-
-	@Override
-	public boolean canReset(int index)
-	{
-		return index >= 9;
-	}
 }

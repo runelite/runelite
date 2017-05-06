@@ -45,13 +45,6 @@ public class ZulrahPatternA extends ZulrahPattern
 		add(ZulrahLocation.SOUTH, ZulrahType.MAGIC, StandLocation.EAST);
 		addJad(ZulrahLocation.WEST, ZulrahType.RANGE, StandLocation.TOP_WEST);
 		add(ZulrahLocation.NORTH, ZulrahType.MELEE, StandLocation.TOP_WEST);
-		add(ZulrahLocation.NORTH, ZulrahType.RANGE, StandLocation.TOP_WEST);
-	}
-
-	@Override
-	public boolean canReset(int index)
-	{
-		return index >= 10;
 	}
 
 	@Override

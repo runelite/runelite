@@ -73,7 +73,10 @@ public abstract class ZulrahPattern implements ZulrahPatternPaintListener
 		return patternInstance != null && patternInstance.equals(instance);
 	}
 
-	public abstract boolean canReset(int index);
+	public boolean canReset(int index)
+	{
+		return index >= pattern.size();
+	}
 
 	@Override
 	public void render(Client client, Graphics2D graphics, Point startTile, int index)
