@@ -125,9 +125,8 @@ public class ConstantParameter implements Deobfuscator
 		ConstantMethodParameter exists = parameters.get(cmp);
 		if (exists != null)
 		{
-			for (Method m : methods)
-				for (ConstantMethodParameter cmp2 : mparams.getCollection(m))
-					assert cmp2.methods.equals(methods);
+			// existing mparams for each method of methods can have different 'methods'
+			// due to invokespecial on virtual methods.
 			return exists;
 		}
 
