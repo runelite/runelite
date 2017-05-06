@@ -1,14 +1,3 @@
-package net.runelite.client.plugins.zulrah;
-
-
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
-
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
  * All rights reserved.
@@ -33,26 +22,36 @@ import java.util.concurrent.TimeUnit;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-public class ZulrahHelper extends Plugin {
+package net.runelite.client.plugins.zulrah;
 
-    private ScheduledFuture<?> future = null;
-    private final ZulrahHelperOverlay overlay = new ZulrahHelperOverlay();
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import net.runelite.client.RuneLite;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.Overlay;
 
-    @Override
-    public Overlay getOverlay() {
-        return overlay;
-    }
+public class ZulrahHelper extends Plugin
+{
+	private ScheduledFuture<?> future;
+	private final ZulrahHelperOverlay overlay = new ZulrahHelperOverlay();
 
-    @Override
-    protected void startUp() throws Exception {
-        ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
-        future = executor.scheduleAtFixedRate(overlay::update, 100, 100, TimeUnit.MILLISECONDS);
-    }
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
 
-    @Override
-    protected void shutDown() throws Exception {
-        System.out.println("FUTURE CANCELLED");
+	@Override
+	protected void startUp() throws Exception
+	{
+		ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
+		future = executor.scheduleAtFixedRate(overlay::update, 100, 100, TimeUnit.MILLISECONDS);
+	}
 
-        future.cancel(true);
-    }
+	@Override
+	protected void shutDown() throws Exception
+	{
+		future.cancel(true);
+	}
 }

@@ -1,10 +1,3 @@
-package net.runelite.client.plugins.zulrah;
-
-import net.runelite.api.NPC;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
-import net.runelite.client.RuneLite;
-
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
  * All rights reserved.
@@ -29,156 +22,185 @@ import net.runelite.client.RuneLite;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.zulrah;
+
+import net.runelite.api.NPC;
+import net.runelite.api.Perspective;
+import net.runelite.api.Point;
+import net.runelite.client.RuneLite;
 
 /*
     Original code: https://github.com/LoveLeAnon/OSLoader
  */
-public class ZulrahInstance {
+public class ZulrahInstance
+{
 
-    @Override
-    public String toString() {
-        return "ZulrahInstance [loc=" + loc + ", id=" + id + ", type=" + type + ", jad=" + jad + ", standLoc=" + standLoc + "]";
-    }
+	@Override
+	public String toString()
+	{
+		return "ZulrahInstance [loc=" + loc + ", id=" + id + ", type=" + type + ", jad=" + jad + ", standLoc=" + standLoc + "]";
+	}
 
-    private LOCATION loc;
-    private int id;
-    private TYPE type;
-    private final boolean jad;
-    private STAND_LOCATION standLoc;
+	private LOCATION loc;
+	private int id;
+	private TYPE type;
+	private final boolean jad;
+	private STAND_LOCATION standLoc;
 
-    public enum TYPE {
-        RANGE,
-        MAGIC,
-        MELEE
-    }
+	public enum TYPE
+	{
+		RANGE,
+		MAGIC,
+		MELEE
+	}
 
-    public enum LOCATION {
-        NORTH,
-        SOUTH,
-        EAST,
-        WEST
-    }
+	public enum LOCATION
+	{
+		NORTH,
+		SOUTH,
+		EAST,
+		WEST
+	}
 
-    public enum STAND_LOCATION {
-        WEST,
-        EAST,
-        SOUTH,
-        TOP_EAST,
-        TOP_WEST,
-        PILLAR_WEST_INSIDE,
-        PILLAR_WEST_OUTSIDE,
-        PILLAR_EAST_INSIDE,
-        PILLAR_EAST_OUTSIDE
-    }
+	public enum STAND_LOCATION
+	{
+		WEST,
+		EAST,
+		SOUTH,
+		TOP_EAST,
+		TOP_WEST,
+		PILLAR_WEST_INSIDE,
+		PILLAR_WEST_OUTSIDE,
+		PILLAR_EAST_INSIDE,
+		PILLAR_EAST_OUTSIDE
+	}
 
-    public ZulrahInstance(LOCATION loc, TYPE type, boolean jad, STAND_LOCATION standLoc)
-    {
-        this.loc = loc;
-        this.type = type;
-        this.jad = jad;
-        this.standLoc = standLoc;
-    }
+	public ZulrahInstance(LOCATION loc, TYPE type, boolean jad, STAND_LOCATION standLoc)
+	{
+		this.loc = loc;
+		this.type = type;
+		this.jad = jad;
+		this.standLoc = standLoc;
+	}
 
-    public Point getZulrahLoc(Point startLoc)
-    {
-        //NORTH doesn't need changing
-        switch(loc)
-        {
-            case SOUTH:
-                return new Point(startLoc.getX(), startLoc.getY() - 11);
-            case EAST:
-                return new Point(startLoc.getX() + 10, startLoc.getY() - 2);
-            case WEST:
-                return new Point(startLoc.getX() - 10, startLoc.getY() - 2);
-        }
-        return startLoc;
-    }
+	public Point getZulrahLoc(Point startLoc)
+	{
+		//NORTH doesn't need changing
+		switch (loc)
+		{
+			case SOUTH:
+				return new Point(startLoc.getX(), startLoc.getY() - 11);
+			case EAST:
+				return new Point(startLoc.getX() + 10, startLoc.getY() - 2);
+			case WEST:
+				return new Point(startLoc.getX() - 10, startLoc.getY() - 2);
+		}
+		return startLoc;
+	}
 
-    public Point getStandLoc(Point startLoc)
-    {
-        switch(standLoc) {
-            case WEST:
-                return new Point(startLoc.getX() - 5, startLoc.getY() - 2);
-            case EAST:
-                return new Point(startLoc.getX() + 5, startLoc.getY() - 2);
-            case SOUTH:
-                return new Point(startLoc.getX(), startLoc.getY() - 6);
-            case TOP_EAST:
-                return new Point(startLoc.getX() + 6, startLoc.getY() + 2);
-            case TOP_WEST:
-                return new Point(startLoc.getX() - 4, startLoc.getY() + 3);
-            case PILLAR_WEST_INSIDE:
-                return new Point(startLoc.getX() - 3, startLoc.getY() - 5);
-            case PILLAR_WEST_OUTSIDE:
-                return new Point(startLoc.getX() - 4, startLoc.getY() - 3);
-            case PILLAR_EAST_INSIDE:
-                return new Point(startLoc.getX() + 3, startLoc.getY() - 5);
-            case PILLAR_EAST_OUTSIDE:
-                return new Point(startLoc.getX() + 4, startLoc.getY() - 3);
-        }
-        return startLoc;
-    }
+	public Point getStandLoc(Point startLoc)
+	{
+		switch (standLoc)
+		{
+			case WEST:
+				return new Point(startLoc.getX() - 5, startLoc.getY() - 2);
+			case EAST:
+				return new Point(startLoc.getX() + 5, startLoc.getY() - 2);
+			case SOUTH:
+				return new Point(startLoc.getX(), startLoc.getY() - 6);
+			case TOP_EAST:
+				return new Point(startLoc.getX() + 6, startLoc.getY() + 2);
+			case TOP_WEST:
+				return new Point(startLoc.getX() - 4, startLoc.getY() + 3);
+			case PILLAR_WEST_INSIDE:
+				return new Point(startLoc.getX() - 3, startLoc.getY() - 5);
+			case PILLAR_WEST_OUTSIDE:
+				return new Point(startLoc.getX() - 4, startLoc.getY() - 3);
+			case PILLAR_EAST_INSIDE:
+				return new Point(startLoc.getX() + 3, startLoc.getY() - 5);
+			case PILLAR_EAST_OUTSIDE:
+				return new Point(startLoc.getX() + 4, startLoc.getY() - 3);
+		}
+		return startLoc;
+	}
 
-    public LOCATION getLoc() {
-        return loc;
-    }
+	public LOCATION getLoc()
+	{
+		return loc;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public int getId()
+	{
+		return id;
+	}
 
-    public TYPE getType() {
-        return type;
-    }
+	public TYPE getType()
+	{
+		return type;
+	}
 
-    public boolean isJad() {
-        return jad;
-    }
+	public boolean isJad()
+	{
+		return jad;
+	}
 
-    public STAND_LOCATION getStandLoc() {
-        return standLoc;
-    }
+	public STAND_LOCATION getStandLoc()
+	{
+		return standLoc;
+	}
 
-    ZulrahInstance(NPC npc, Point start)
-    {
-        Point t = npc.getLocalLocation();
-        t = Perspective.localToWorld(RuneLite.getClient(), t);
-        int dx = start.getX() - t.getX();
-        int dy = start.getY() - t.getY();
+	ZulrahInstance(NPC npc, Point start)
+	{
+		Point t = npc.getLocalLocation();
+		t = Perspective.localToWorld(RuneLite.getClient(), t);
+		int dx = start.getX() - t.getX();
+		int dy = start.getY() - t.getY();
 
-        if (dx == -10 && dy == 2) {
-            this.loc = LOCATION.EAST;
-        } else if(dx == 10 && dy == 2) {
-            this.loc = LOCATION.WEST;
-        } else if (dx == 0 && dy == 11) {
-            this.loc = LOCATION.SOUTH;
-        } else if(dx == 0 && dy == 0) {
-            this.loc = LOCATION.NORTH;
-        } else {
-           System.out.printf("dx: %d dy: %d", dx, dy);
-        }
+		if (dx == -10 && dy == 2)
+		{
+			this.loc = LOCATION.EAST;
+		}
+		else if (dx == 10 && dy == 2)
+		{
+			this.loc = LOCATION.WEST;
+		}
+		else if (dx == 0 && dy == 11)
+		{
+			this.loc = LOCATION.SOUTH;
+		}
+		else if (dx == 0 && dy == 0)
+		{
+			this.loc = LOCATION.NORTH;
+		}
+		else
+		{
+			System.out.printf("dx: %d dy: %d", dx, dy);
+		}
 
-        this.id = npc.getId();
-        switch(id)
-        {
-            case 2042:
-                type = TYPE.RANGE;
-                break;
-            case 2043:
-                type = TYPE.MELEE;
-                break;
-            case 2044:
-                type = TYPE.MAGIC;
-                break;
-        }
+		this.id = npc.getId();
+		switch (id)
+		{
+			case 2042:
+				type = TYPE.RANGE;
+				break;
+			case 2043:
+				type = TYPE.MELEE;
+				break;
+			case 2044:
+				type = TYPE.MAGIC;
+				break;
+		}
 
-        jad = false;
-    }
+		jad = false;
+	}
 
-    public boolean equals(Object o) {
-        if(!(o instanceof ZulrahInstance)) return false;
-        ZulrahInstance i = (ZulrahInstance) o;
-        return loc.equals(i.loc) && type.equals(i.type) && jad == i.jad;
-    }
+	public boolean equals(Object o)
+	{
+		if (!(o instanceof ZulrahInstance))
+		{
+			return false;
+		}
+		ZulrahInstance i = (ZulrahInstance) o;
+		return loc.equals(i.loc) && type.equals(i.type) && jad == i.jad;
+	}
 }
-
