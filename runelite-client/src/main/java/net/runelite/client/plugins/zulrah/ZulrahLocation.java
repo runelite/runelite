@@ -24,9 +24,10 @@
  */
 package net.runelite.client.plugins.zulrah;
 
-public enum ZulrahType
+public enum ZulrahLocation
 {
-	RANGE,
-	MAGIC,
-	MELEE
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST
 }

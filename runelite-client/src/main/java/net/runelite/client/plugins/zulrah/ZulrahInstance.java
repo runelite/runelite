@@ -41,34 +41,13 @@ public class ZulrahInstance
 		return "ZulrahInstance [loc=" + loc + ", id=" + id + ", type=" + type + ", jad=" + jad + ", standLoc=" + standLoc + "]";
 	}
 
-	private LOCATION loc;
+	private ZulrahLocation loc;
 	private int id;
 	private ZulrahType type;
 	private final boolean jad;
-	private STAND_LOCATION standLoc;
+	private StandLocation standLoc;
 
-	public enum LOCATION
-	{
-		NORTH,
-		SOUTH,
-		EAST,
-		WEST
-	}
-
-	public enum STAND_LOCATION
-	{
-		WEST,
-		EAST,
-		SOUTH,
-		TOP_EAST,
-		TOP_WEST,
-		PILLAR_WEST_INSIDE,
-		PILLAR_WEST_OUTSIDE,
-		PILLAR_EAST_INSIDE,
-		PILLAR_EAST_OUTSIDE
-	}
-
-	public ZulrahInstance(LOCATION loc, ZulrahType type, boolean jad, STAND_LOCATION standLoc)
+	public ZulrahInstance(ZulrahLocation loc, ZulrahType type, boolean jad, StandLocation standLoc)
 	{
 		this.loc = loc;
 		this.type = type;
@@ -117,7 +96,7 @@ public class ZulrahInstance
 		return startLoc;
 	}
 
-	public LOCATION getLoc()
+	public ZulrahLocation getLoc()
 	{
 		return loc;
 	}
@@ -137,7 +116,7 @@ public class ZulrahInstance
 		return jad;
 	}
 
-	public STAND_LOCATION getStandLoc()
+	public StandLocation getStandLoc()
 	{
 		return standLoc;
 	}
@@ -151,19 +130,19 @@ public class ZulrahInstance
 
 		if (dx == -10 && dy == 2)
 		{
-			this.loc = LOCATION.EAST;
+			this.loc = ZulrahLocation.EAST;
 		}
 		else if (dx == 10 && dy == 2)
 		{
-			this.loc = LOCATION.WEST;
+			this.loc = ZulrahLocation.WEST;
 		}
 		else if (dx == 0 && dy == 11)
 		{
-			this.loc = LOCATION.SOUTH;
+			this.loc = ZulrahLocation.SOUTH;
 		}
 		else if (dx == 0 && dy == 0)
 		{
-			this.loc = LOCATION.NORTH;
+			this.loc = ZulrahLocation.NORTH;
 		}
 		else
 		{

@@ -24,9 +24,15 @@
  */
 package net.runelite.client.plugins.zulrah;
 
-public enum ZulrahType
+public enum StandLocation
 {
-	RANGE,
-	MAGIC,
-	MELEE
+	WEST,
+	EAST,
+	SOUTH,
+	TOP_EAST,
+	TOP_WEST,
+	PILLAR_WEST_INSIDE,
+	PILLAR_WEST_OUTSIDE,
+	PILLAR_EAST_INSIDE,
+	PILLAR_EAST_OUTSIDE;
 }
