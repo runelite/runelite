@@ -53,11 +53,11 @@ public class AccountService
 	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
 	private static final String CREATE_SESSIONS = "CREATE TABLE IF NOT EXISTS `sessions` (\n"
-		+ "  `user` int(11) NOT NULL,\n"
+		+ "  `user` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,\n"
 		+ "  `uuid` varchar(36) NOT NULL,\n"
 		+ "  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
 		+ "  `last_used` timestamp NOT NULL,\n"
-		+ "  UNIQUE KEY `user_2` (`user`,`uuid`),\n"
+		+ "  UNIQUE KEY `uuid` (`uuid`),\n"
 		+ "  KEY `user` (`user`)\n"
 		+ ") ENGINE=InnoDB";
 
@@ -195,6 +195,7 @@ public class AccountService
 
 			if (user == null)
 			{
+				logger.warn("Unable to find newly created user session");
 				return null; // that's weird
 			}
 
