@@ -26,30 +26,12 @@ package net.runelite.api.queries;
 
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.Query;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-public class NPCQuery extends Query<NPC>
+public class NPCQuery extends ActorQuery<NPC>
 {
-	public NPCQuery name(String... names)
-	{
-		predicate = and(npc ->
-		{
-			for (String name : names)
-			{
-				String npcName = npc.getName();
-				if (npcName != null && npcName.equals(name))
-				{
-					return true;
-				}
-			}
-			return false;
-		});
-		return this;
-	}
-
 	@Override
 	protected NPC[] result(Client client)
 	{

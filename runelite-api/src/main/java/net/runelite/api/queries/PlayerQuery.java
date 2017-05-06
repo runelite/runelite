@@ -26,30 +26,12 @@ package net.runelite.api.queries;
 
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.api.Query;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-public class PlayerQuery extends Query<Player>
+public class PlayerQuery extends ActorQuery<Player>
 {
-	public PlayerQuery name(String... names)
-	{
-		predicate = and(player ->
-		{
-			for (String name : names)
-			{
-				String playerName = player.getName();
-				if (playerName != null && playerName.equals(name))
-				{
-					return true;
-				}
-			}
-			return false;
-		});
-		return this;
-	}
-
 	@Override
 	protected Player[] result(Client client)
 	{
