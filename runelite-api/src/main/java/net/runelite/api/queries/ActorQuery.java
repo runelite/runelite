@@ -30,7 +30,7 @@ import net.runelite.api.Query;
 
 public abstract class ActorQuery<T extends Actor> extends Query<T>
 {
-	public ActorQuery names(String... names)
+	public ActorQuery nameEquals(String... names)
 	{
 		predicate = and(actor ->
 		{
@@ -47,25 +47,42 @@ public abstract class ActorQuery<T extends Actor> extends Query<T>
 		return this;
 	}
 
-	public ActorQuery location(Point location)
+	public ActorQuery nameContains(String... names)
+	{
+		predicate = and(actor ->
+		{
+			for (String name : names)
+			{
+				String actorName = actor.getName();
+				if (actorName != null && actorName.contains(name))
+				{
+					return true;
+				}
+			}
+			return false;
+		});
+		return this;
+	}
+
+	public ActorQuery atLocalLocation(Point location)
 	{
 		predicate = and(actor -> actor.getLocalLocation().equals(location));
 		return this;
 	}
 
-	public ActorQuery level(int level)
+	public ActorQuery isLevel(int level)
 	{
 		predicate = and(actor -> actor.getCombatLevel() == level);
 		return this;
 	}
 
-	public ActorQuery animation(int animation)
+	public ActorQuery animationEquals(int animation)
 	{
 		predicate = and(actor -> actor.getAnimation() == animation);
 		return this;
 	}
 
-	public ActorQuery interacting(Actor actor)
+	public ActorQuery isInteractingWith(Actor actor)
 	{
 		predicate = and(a -> a.getInteracting().equals(a));
 		return this;
