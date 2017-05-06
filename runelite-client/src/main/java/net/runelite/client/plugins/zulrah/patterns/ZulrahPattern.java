@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.zulrah.patterns;/*
+/*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
  * All rights reserved.
  *
@@ -22,80 +22,103 @@ package net.runelite.client.plugins.zulrah.patterns;/*
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.zulrah.patterns;
 
-import net.runelite.api.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import net.runelite.api.Client;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.client.plugins.zulrah.ZulrahInstance;
 
-import java.awt.*;
+public abstract class ZulrahPattern implements ZulrahPatternPaintListener
+{
 
-public abstract class ZulrahPattern  implements ZulrahPatternPaintListener{
+	ZulrahInstance[] pattern;
+	Client client;
 
-    ZulrahInstance[] pattern;
-    Client client;
+	public ZulrahInstance get(int index)
+	{
+		if (index >= pattern.length)
+		{
+			return null;
+		}
 
-    public ZulrahInstance get(int index) {
-        if (index >= pattern.length) {
-            return null;
-        }
+		return pattern[index];
+	}
 
-        return pattern[index];
-    }
+	public boolean accept(int index, ZulrahInstance instance)
+	{
+		ZulrahInstance patternInstance = get(index);
+		return patternInstance != null && patternInstance.equals(instance);
+	}
 
-    public boolean accept(int index, ZulrahInstance instance) {
-        ZulrahInstance patternInstance = get(index);
-        return patternInstance != null && patternInstance.equals(instance);
-    }
+	public abstract boolean canReset(int index);
 
-    public abstract boolean canReset(int index);
+	@Override
+	public void render(Graphics2D graphics, net.runelite.api.Point startTile, int index)
+	{
+		ZulrahInstance current = get(index);
+		if (current == null)
+		{
+			return;
+		}
+		graphics.setColor(Color.WHITE);
+		graphics.drawString("startTile: " + startTile, 270, 200);
+		graphics.drawString("current: " + current, 200, 215);
 
+		renderTileOverlay(graphics, current.getStandLoc(startTile), Color.GREEN);
 
-    @Override
-    public void render(Graphics2D graphics, net.runelite.api.Point startTile, int index) {
-       ZulrahInstance current = get(index);
-       if(current == null) return;
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("startTile: " + startTile, 270, 200);
-        graphics.drawString("current: " + current, 200, 215);
+		Point zulrah = current.getZulrahLoc(startTile);
+		ZulrahInstance next = get(index + 1);
+		graphics.setColor(Color.WHITE);
+		graphics.drawString("next: " + next, 200, 230);
+		String c = "c: " + current.getType() + " JAD: " + current.isJad();
+		zulrah = Perspective.worldToLocal(client, zulrah);
+		zulrah = Perspective.getCanvasTextLocation(client, graphics, zulrah, c, 0);
+		if (zulrah == null)
+		{
+			return;
+		}
+		graphics.drawString(c, zulrah.getX(), zulrah.getY());
+		if (next != null)
+		{
+			zulrah = next.getZulrahLoc(startTile);
+			c = "n: " + next.getType() + " JAD: " + next.isJad();
+			zulrah = Perspective.worldToLocal(client, zulrah);
+			zulrah = Perspective.getCanvasTextLocation(client, graphics, zulrah, c, 0);
+			if (zulrah == null)
+			{
+				return;
+			}
+			if (next.getLoc().equals(current.getLoc()))
+			{
+				zulrah = new Point(zulrah.getX(), zulrah.getY() + 15);
+			}
+			graphics.drawString(c, zulrah.getX(), zulrah.getY());
 
-        renderTileOverlay(graphics, current.getStandLoc(startTile), Color.GREEN);
+			renderTileOverlay(graphics, next.getStandLoc(startTile), new Color(255, 0, 0, 150));
 
-        Point zulrah = current.getZulrahLoc(startTile);
-        ZulrahInstance next = get(index + 1);
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("next: " + next, 200, 230);
-        String c = "c: " + current.getType() + " JAD: " + current.isJad();
-        zulrah = Perspective.worldToLocal(client, zulrah);
-        zulrah = Perspective.getCanvasTextLocation(client, graphics, zulrah, c, 0);
-        if(zulrah == null) return;
-        graphics.drawString(c, zulrah.getX(), zulrah.getY());
-        if(next != null) {
-            zulrah = next.getZulrahLoc(startTile);
-            c = "n: " + next.getType() + " JAD: " + next.isJad();
-            zulrah = Perspective.worldToLocal(client, zulrah);
-            zulrah = Perspective.getCanvasTextLocation(client, graphics, zulrah, c, 0);
-            if(zulrah == null) return;
-            if(next.getLoc().equals(current.getLoc())) zulrah = new Point(zulrah.getX(), zulrah.getY() + 15);
-            graphics.drawString(c, zulrah.getX(), zulrah.getY());
+		}
+		graphics.setColor(Color.WHITE);
+	}
 
-            renderTileOverlay(graphics, next.getStandLoc(startTile), new Color(255,0,0,150));
+	private void renderTileOverlay(Graphics2D graphics, Point tile, Color color)
+	{
 
-        }
-        graphics.setColor(Color.WHITE);
-    }
-
-    private void renderTileOverlay(Graphics2D graphics, Point tile, Color color) {
-
-        Point adjusted = Perspective.worldToLocal(client, tile);
-        //+65 to make the centre of the tile on the point, rather than the tile the point resides in
-        adjusted = new Point(adjusted.getX() + 65, adjusted.getY() + 65);
-        Polygon poly = Perspective.getCanvasTilePoly(client, adjusted);
-        if (poly != null) {
-            graphics.setColor(color);
-            graphics.setStroke(new BasicStroke(2));
-            graphics.drawPolygon(poly);
-            graphics.setColor(new Color(0, 0, 0, 50));
-            graphics.fillPolygon(poly);
-        }
-    }
+		Point adjusted = Perspective.worldToLocal(client, tile);
+		//+65 to make the centre of the tile on the point, rather than the tile the point resides in
+		adjusted = new Point(adjusted.getX() + 65, adjusted.getY() + 65);
+		Polygon poly = Perspective.getCanvasTilePoly(client, adjusted);
+		if (poly != null)
+		{
+			graphics.setColor(color);
+			graphics.setStroke(new BasicStroke(2));
+			graphics.drawPolygon(poly);
+			graphics.setColor(new Color(0, 0, 0, 50));
+			graphics.fillPolygon(poly);
+		}
+	}
 }

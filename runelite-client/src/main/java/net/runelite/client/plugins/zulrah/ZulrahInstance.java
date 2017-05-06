@@ -43,16 +43,9 @@ public class ZulrahInstance
 
 	private LOCATION loc;
 	private int id;
-	private TYPE type;
+	private ZulrahType type;
 	private final boolean jad;
 	private STAND_LOCATION standLoc;
-
-	public enum TYPE
-	{
-		RANGE,
-		MAGIC,
-		MELEE
-	}
 
 	public enum LOCATION
 	{
@@ -75,7 +68,7 @@ public class ZulrahInstance
 		PILLAR_EAST_OUTSIDE
 	}
 
-	public ZulrahInstance(LOCATION loc, TYPE type, boolean jad, STAND_LOCATION standLoc)
+	public ZulrahInstance(LOCATION loc, ZulrahType type, boolean jad, STAND_LOCATION standLoc)
 	{
 		this.loc = loc;
 		this.type = type;
@@ -134,7 +127,7 @@ public class ZulrahInstance
 		return id;
 	}
 
-	public TYPE getType()
+	public ZulrahType getType()
 	{
 		return type;
 	}
@@ -181,13 +174,13 @@ public class ZulrahInstance
 		switch (id)
 		{
 			case 2042:
-				type = TYPE.RANGE;
+				type = ZulrahType.RANGE;
 				break;
 			case 2043:
-				type = TYPE.MELEE;
+				type = ZulrahType.MELEE;
 				break;
 			case 2044:
-				type = TYPE.MAGIC;
+				type = ZulrahType.MAGIC;
 				break;
 		}
 
