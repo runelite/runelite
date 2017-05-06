@@ -40,18 +40,22 @@ import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternC;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternD;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class ZulrahHelperOverlay extends Overlay
 {
+	private static final Logger logger = LoggerFactory.getLogger(ZulrahHelperOverlay.class);
+
 	private final Client client = RuneLite.getClient();
 
-	private Point startTile;
+	private Fight fight;
+//	private Point startTile;
 	private int index = 0;
 	private int currentPattern = -1;
 	private ZulrahInstance previousInstance;
 	private ZulrahInstance currentInstance;
 	private final ZulrahPattern[] patterns;
-	private NPC zulrah = null; //Potential race condition, symptoms might be flickering overlay
 
 	ZulrahHelperOverlay()
 	{
@@ -68,7 +72,7 @@ class ZulrahHelperOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 
-		if (client.getGameState() != GameState.LOGGED_IN || startTile == null || zulrah == null)
+		if (client.getGameState() != GameState.LOGGED_IN || fight == null)
 		{
 			return null;
 		}
@@ -85,7 +89,7 @@ class ZulrahHelperOverlay extends Overlay
 		}
 		else
 		{
-			patterns[currentPattern].render(client, graphics, startTile, index);
+			patterns[currentPattern].render(client, graphics, fight.getStartLocationWorld(), index);
 		}
 
 		return null;
@@ -96,7 +100,7 @@ class ZulrahHelperOverlay extends Overlay
 		try
 		{
 			NPC[] npcs = client.getNpcs();
-			zulrah = null;
+			NPC zulrah = null;
 			for (NPC npc : npcs)
 			{
 				if (npc == null)
@@ -112,31 +116,31 @@ class ZulrahHelperOverlay extends Overlay
 
 			if (zulrah == null)
 			{
-				if (startTile != null)
+				if (fight != null)
 				{
-					startTile = null;
-					System.out.println("SET START TILE TO NULL");
+					logger.debug("Fight has ended!");
+
+					fight = null;
 				}
 				return;
 			}
 
-			// Just entered
-			if (startTile == null || zulrah.getLocalLocation().distanceTo(startTile) > 17000)
+			if (fight == null)
 			{
-				if (startTile != null)
-				{
-					System.out.println("ZULRAH DISATANCE: " + zulrah.getLocalLocation().distanceTo(startTile));
-				}
-				startTile = zulrah.getLocalLocation();
+				Point startTile = zulrah.getLocalLocation();
 				startTile = Perspective.localToWorld(client, startTile);
+				fight = new Fight(startTile);
+
 				index = 0;
 				currentPattern = -1;
 				System.out.println("Start Tile: " + startTile.toString());
 				previousInstance = null;
 				currentInstance = null;
+
+				logger.debug("Fight has begun!");
 			}
 
-			ZulrahInstance temp = new ZulrahInstance(zulrah, startTile);
+			ZulrahInstance temp = new ZulrahInstance(zulrah, fight.getStartLocationWorld());
 
 			if (currentInstance == null)
 			{
@@ -149,6 +153,9 @@ class ZulrahHelperOverlay extends Overlay
 				previousInstance = currentInstance;
 				currentInstance = temp;
 				++index;
+
+				logger.debug("Zulrah has moved from {} -> {}, index now {}",
+					previousInstance, currentInstance, index);
 			}
 
 			if (currentPattern == -1)

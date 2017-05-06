@@ -24,7 +24,9 @@
  */
 package net.runelite.client.plugins.zulrah;
 
+import java.util.Objects;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.client.RuneLite;
@@ -34,15 +36,12 @@ import net.runelite.client.RuneLite;
  */
 public class ZulrahInstance
 {
+	private static final int ZULRAH_RANGE = NpcID.ZULRAH;
+	private static final int ZULRAH_MELEE = NpcID.ZULRAH_2;
+	private static final int ZULRAH_MAGIC = NpcID.ZULRAH_3;
 
-	@Override
-	public String toString()
-	{
-		return "ZulrahInstance [loc=" + loc + ", id=" + id + ", type=" + type + ", jad=" + jad + ", standLoc=" + standLoc + "]";
-	}
-
-	private ZulrahLocation loc;
-	private int id;
+	private final ZulrahLocation loc;
+	//private int id;
 	private ZulrahType type;
 	private final boolean jad;
 	private StandLocation standLoc;
@@ -55,9 +54,61 @@ public class ZulrahInstance
 		this.standLoc = standLoc;
 	}
 
+	ZulrahInstance(NPC npc, Point start)
+	{
+		Point t = npc.getLocalLocation();
+		t = Perspective.localToWorld(RuneLite.getClient(), t);
+		int dx = start.getX() - t.getX();
+		int dy = start.getY() - t.getY();
+
+		if (dx == -10 && dy == 2)
+		{
+			this.loc = ZulrahLocation.EAST;
+		}
+		else if (dx == 10 && dy == 2)
+		{
+			this.loc = ZulrahLocation.WEST;
+		}
+		else if (dx == 0 && dy == 11)
+		{
+			this.loc = ZulrahLocation.SOUTH;
+		}
+		else if (dx == 0 && dy == 0)
+		{
+			this.loc = ZulrahLocation.NORTH;
+		}
+		else
+		{
+			this.loc = null;
+			System.out.printf("dx: %d dy: %d", dx, dy);
+		}
+
+		int id = npc.getId();
+		switch (id)
+		{
+			case ZULRAH_RANGE:
+				type = ZulrahType.RANGE;
+				break;
+			case ZULRAH_MELEE:
+				type = ZulrahType.MELEE;
+				break;
+			case ZULRAH_MAGIC:
+				type = ZulrahType.MAGIC;
+				break;
+		}
+
+		jad = false;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "ZulrahInstance{" + "loc=" + loc + ", type=" + type + '}';
+	}
+
 	public Point getZulrahLoc(Point startLoc)
 	{
-		//NORTH doesn't need changing
+		// NORTH doesn't need changing because it is the start
 		switch (loc)
 		{
 			case SOUTH:
@@ -101,11 +152,6 @@ public class ZulrahInstance
 		return loc;
 	}
 
-	public int getId()
-	{
-		return id;
-	}
-
 	public ZulrahType getType()
 	{
 		return type;
@@ -121,58 +167,46 @@ public class ZulrahInstance
 		return standLoc;
 	}
 
-	ZulrahInstance(NPC npc, Point start)
+	@Override
+	public int hashCode()
 	{
-		Point t = npc.getLocalLocation();
-		t = Perspective.localToWorld(RuneLite.getClient(), t);
-		int dx = start.getX() - t.getX();
-		int dy = start.getY() - t.getY();
-
-		if (dx == -10 && dy == 2)
-		{
-			this.loc = ZulrahLocation.EAST;
-		}
-		else if (dx == 10 && dy == 2)
-		{
-			this.loc = ZulrahLocation.WEST;
-		}
-		else if (dx == 0 && dy == 11)
-		{
-			this.loc = ZulrahLocation.SOUTH;
-		}
-		else if (dx == 0 && dy == 0)
-		{
-			this.loc = ZulrahLocation.NORTH;
-		}
-		else
-		{
-			System.out.printf("dx: %d dy: %d", dx, dy);
-		}
-
-		this.id = npc.getId();
-		switch (id)
-		{
-			case 2042:
-				type = ZulrahType.RANGE;
-				break;
-			case 2043:
-				type = ZulrahType.MELEE;
-				break;
-			case 2044:
-				type = ZulrahType.MAGIC;
-				break;
-		}
-
-		jad = false;
+		int hash = 3;
+		hash = 17 * hash + Objects.hashCode(this.loc);
+		hash = 17 * hash + Objects.hashCode(this.type);
+		hash = 17 * hash + (this.jad ? 1 : 0);
+		return hash;
 	}
 
-	public boolean equals(Object o)
+	@Override
+	public boolean equals(Object obj)
 	{
-		if (!(o instanceof ZulrahInstance))
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
 		{
 			return false;
 		}
-		ZulrahInstance i = (ZulrahInstance) o;
-		return loc.equals(i.loc) && type.equals(i.type) && jad == i.jad;
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final ZulrahInstance other = (ZulrahInstance) obj;
+		if (this.jad != other.jad)
+		{
+			return false;
+		}
+		if (this.loc != other.loc)
+		{
+			return false;
+		}
+		if (this.type != other.type)
+		{
+			return false;
+		}
+		return true;
 	}
+
+
 }

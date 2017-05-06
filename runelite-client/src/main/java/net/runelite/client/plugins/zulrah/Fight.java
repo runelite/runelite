@@ -22,79 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.zulrah;
 
-public class Point
+import java.time.Instant;
+import net.runelite.api.Point;
+
+public class Fight
 {
-	private final int x;
-	private final int y;
+	private final Point startLocationWorld;
+	private final Instant startTime = Instant.now();
 
-	public Point(int x, int y)
+	public Fight(Point startLocationWorld)
 	{
-		this.x = x;
-		this.y = y;
+		this.startLocationWorld = startLocationWorld;
 	}
 
-	@Override
-	public String toString()
+	public Point getStartLocationWorld()
 	{
-		return "Point{" + "x=" + x + ", y=" + y + '}';
+		return startLocationWorld;
 	}
 
-	public int getX()
+	public Instant getStartTime()
 	{
-		return x;
-	}
-
-	public int getY()
-	{
-		return y;
-	}
-
-	/**
-	 * Find the distance from this point to another point
-	 *
-	 * @param other
-	 * @return
-	 */
-	public int distanceTo(Point other)
-	{
-		return (int) Math.hypot(getX() - other.getX(), getY() - other.getY());
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 3;
-		hash = 23 * hash + this.x;
-		hash = 23 * hash + this.y;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Point other = (Point) obj;
-		if (this.x != other.x)
-		{
-			return false;
-		}
-		if (this.y != other.y)
-		{
-			return false;
-		}
-		return true;
+		return startTime;
 	}
 }
