@@ -130,12 +130,16 @@ public class ExprArgOrder implements Deobfuscator
 			assert ins.getInstructions().contains(i1);
 			assert ins.getInstructions().contains(i2);
 
+			assert two.getPushed().getPops().isEmpty();
 			ins.remove(i2);
 
-			int idx = ins.getInstructions().indexOf(i1);
+			// Insert right before i.
+			// Don't insert after i2, since it is not guarenteed
+			// i will pop that.
+			int idx = ins.getInstructions().indexOf(i);
 			assert idx != -1;
 
-			ins.getInstructions().add(idx + 1, i2);
+			ins.getInstructions().add(idx, i2);
 			i2.setInstructions(ins);
 
 			++count;
