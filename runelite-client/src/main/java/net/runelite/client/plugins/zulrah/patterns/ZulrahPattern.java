@@ -28,24 +28,43 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.client.plugins.zulrah.StandLocation;
 import net.runelite.client.plugins.zulrah.ZulrahInstance;
+import net.runelite.client.plugins.zulrah.ZulrahLocation;
+import net.runelite.client.plugins.zulrah.ZulrahType;
 
 public abstract class ZulrahPattern implements ZulrahPatternPaintListener
 {
+	private final List<ZulrahInstance> pattern = new ArrayList<>();
 
-	ZulrahInstance[] pattern;
+	protected final void add(ZulrahLocation loc, ZulrahType type, StandLocation standLoc)
+	{
+		add(loc, type, standLoc, false);
+	}
+
+	protected final void addJad(ZulrahLocation loc, ZulrahType type, StandLocation standLoc)
+	{
+		add(loc, type, standLoc, true);
+	}
+
+	private void add(ZulrahLocation loc, ZulrahType type, StandLocation standLoc, boolean jad)
+	{
+		pattern.add(new ZulrahInstance(loc, type, jad, standLoc));
+	}
 
 	public ZulrahInstance get(int index)
 	{
-		if (index >= pattern.length)
+		if (index >= pattern.size())
 		{
 			return null;
 		}
 
-		return pattern[index];
+		return pattern.get(index);
 	}
 
 	public boolean accept(int index, ZulrahInstance instance)

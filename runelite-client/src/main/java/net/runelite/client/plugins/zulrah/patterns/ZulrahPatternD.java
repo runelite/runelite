@@ -27,7 +27,6 @@ package net.runelite.client.plugins.zulrah.patterns;
 import java.awt.Graphics2D;
 import net.runelite.api.Client;
 import net.runelite.client.plugins.zulrah.StandLocation;
-import net.runelite.client.plugins.zulrah.ZulrahInstance;
 import net.runelite.client.plugins.zulrah.ZulrahLocation;
 import net.runelite.client.plugins.zulrah.ZulrahType;
 
@@ -35,20 +34,18 @@ public class ZulrahPatternD extends ZulrahPattern
 {
 	public ZulrahPatternD()
 	{
-		pattern = new ZulrahInstance[12];
-
-		pattern[0] = new ZulrahInstance(ZulrahLocation.NORTH, ZulrahType.RANGE, false, StandLocation.TOP_EAST);
-		pattern[1] = new ZulrahInstance(ZulrahLocation.EAST, ZulrahType.MAGIC, false, StandLocation.TOP_EAST);
-		pattern[2] = new ZulrahInstance(ZulrahLocation.SOUTH, ZulrahType.RANGE, false, StandLocation.PILLAR_WEST_INSIDE);
-		pattern[3] = new ZulrahInstance(ZulrahLocation.WEST, ZulrahType.MAGIC, false, StandLocation.WEST);
-		pattern[4] = new ZulrahInstance(ZulrahLocation.NORTH, ZulrahType.MELEE, false, StandLocation.PILLAR_EAST_OUTSIDE);
-		pattern[5] = new ZulrahInstance(ZulrahLocation.EAST, ZulrahType.RANGE, false, StandLocation.PILLAR_EAST_OUTSIDE);
-		pattern[6] = new ZulrahInstance(ZulrahLocation.SOUTH, ZulrahType.RANGE, false, StandLocation.PILLAR_EAST_OUTSIDE);
-		pattern[7] = new ZulrahInstance(ZulrahLocation.WEST, ZulrahType.MAGIC, false, StandLocation.PILLAR_WEST_OUTSIDE);
-		pattern[8] = new ZulrahInstance(ZulrahLocation.NORTH, ZulrahType.RANGE, false, StandLocation.TOP_EAST);
-		pattern[9] = new ZulrahInstance(ZulrahLocation.NORTH, ZulrahType.MAGIC, false, StandLocation.TOP_EAST);
-		pattern[10] = new ZulrahInstance(ZulrahLocation.EAST, ZulrahType.MAGIC, true, StandLocation.TOP_EAST);
-		pattern[11] = new ZulrahInstance(ZulrahLocation.NORTH, ZulrahType.MAGIC, false, StandLocation.TOP_EAST);
+		add(ZulrahLocation.NORTH, ZulrahType.RANGE, StandLocation.TOP_EAST);
+		add(ZulrahLocation.EAST, ZulrahType.MAGIC, StandLocation.TOP_EAST);
+		add(ZulrahLocation.SOUTH, ZulrahType.RANGE, StandLocation.PILLAR_WEST_INSIDE);
+		add(ZulrahLocation.WEST, ZulrahType.MAGIC, StandLocation.WEST);
+		add(ZulrahLocation.NORTH, ZulrahType.MELEE, StandLocation.PILLAR_EAST_OUTSIDE);
+		add(ZulrahLocation.EAST, ZulrahType.RANGE, StandLocation.PILLAR_EAST_OUTSIDE);
+		add(ZulrahLocation.SOUTH, ZulrahType.RANGE, StandLocation.PILLAR_EAST_OUTSIDE);
+		add(ZulrahLocation.WEST, ZulrahType.MAGIC, StandLocation.PILLAR_WEST_OUTSIDE);
+		add(ZulrahLocation.NORTH, ZulrahType.RANGE, StandLocation.TOP_EAST);
+		add(ZulrahLocation.NORTH, ZulrahType.MAGIC, StandLocation.TOP_EAST);
+		addJad(ZulrahLocation.EAST, ZulrahType.MAGIC, StandLocation.TOP_EAST);
+		add(ZulrahLocation.NORTH, ZulrahType.MAGIC, StandLocation.TOP_EAST);
 	}
 
 	@Override
