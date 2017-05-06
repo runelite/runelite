@@ -34,6 +34,7 @@ public class Fight
 	private final Instant startTime = Instant.now();
 	private ZulrahPattern pattern;
 	private int stage;
+	private ZulrahInstance zulrah;
 
 	public Fight(Point startLocationWorld)
 	{
@@ -58,6 +59,16 @@ public class Fight
 	public void setPattern(ZulrahPattern pattern)
 	{
 		this.pattern = pattern;
+	}
+
+	public ZulrahInstance getZulrah()
+	{
+		return zulrah;
+	}
+
+	public void setZulrah(ZulrahInstance zulrah)
+	{
+		this.zulrah = zulrah;
 	}
 
 	public int getStage()
