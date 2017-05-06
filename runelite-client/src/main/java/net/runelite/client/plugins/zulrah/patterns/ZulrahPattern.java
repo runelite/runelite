@@ -31,8 +31,8 @@ import java.awt.*;
 
 public abstract class ZulrahPattern  implements ZulrahPatternPaintListener{
 
-    protected ZulrahInstance[] pattern;
-    protected Client client;
+    ZulrahInstance[] pattern;
+    Client client;
 
     public ZulrahInstance get(int index) {
         if (index >= pattern.length) {
@@ -44,10 +44,7 @@ public abstract class ZulrahPattern  implements ZulrahPatternPaintListener{
 
     public boolean accept(int index, ZulrahInstance instance) {
         ZulrahInstance patternInstance = get(index);
-        if(patternInstance == null) {
-            return false;
-        }
-        return patternInstance.equals(instance);
+        return patternInstance != null && patternInstance.equals(instance);
     }
 
     public abstract boolean canReset(int index);

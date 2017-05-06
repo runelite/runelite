@@ -23,10 +23,8 @@ package net.runelite.client.plugins.zulrah.patterns;/*
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import net.runelite.api.*;
-
 import java.awt.*;
 
-public interface ZulrahPatternPaintListener {
-    public void render(Graphics2D graphics, net.runelite.api.Point startTile, int index);
+interface ZulrahPatternPaintListener {
+    void render(Graphics2D graphics, net.runelite.api.Point startTile, int index);
 }

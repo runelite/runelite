@@ -43,7 +43,7 @@ public class ZulrahInstance {
     private LOCATION loc;
     private int id;
     private TYPE type;
-    private boolean jad;
+    private final boolean jad;
     private STAND_LOCATION standLoc;
 
     public enum TYPE {
@@ -139,7 +139,7 @@ public class ZulrahInstance {
         return standLoc;
     }
 
-    public ZulrahInstance(NPC npc, Point start)
+    ZulrahInstance(NPC npc, Point start)
     {
         Point t = npc.getLocalLocation();
         t = Perspective.localToWorld(RuneLite.getClient(), t);
