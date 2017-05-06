@@ -39,9 +39,9 @@ public class ZulrahPatternB  extends ZulrahPattern{
 		pattern[1] = new ZulrahInstance(ZulrahInstance.LOCATION.NORTH, ZulrahInstance.TYPE.MELEE, false, ZulrahInstance.STAND_LOCATION.TOP_EAST);
 		pattern[2] = new ZulrahInstance(ZulrahInstance.LOCATION.NORTH, ZulrahInstance.TYPE.MAGIC, false, ZulrahInstance.STAND_LOCATION.WEST);
 		pattern[3] = new ZulrahInstance(ZulrahInstance.LOCATION.WEST, ZulrahInstance.TYPE.RANGE, false, ZulrahInstance.STAND_LOCATION.PILLAR_WEST_OUTSIDE);
-		pattern[4] = new ZulrahInstance(ZulrahInstance.LOCATION.SOUTH, ZulrahInstance.TYPE.MAGIC, false, ZulrahInstance.STAND_LOCATION.PILLAR_WEST_INSIDE);
-		pattern[5] = new ZulrahInstance(ZulrahInstance.LOCATION.NORTH, ZulrahInstance.TYPE.MELEE, false, ZulrahInstance.STAND_LOCATION.PILLAR_WEST_INSIDE);
-		pattern[6] = new ZulrahInstance(ZulrahInstance.LOCATION.EAST, ZulrahInstance.TYPE.RANGE, false, ZulrahInstance.STAND_LOCATION.SOUTH);
+		pattern[4] = new ZulrahInstance(ZulrahInstance.LOCATION.SOUTH, ZulrahInstance.TYPE.MAGIC, false, ZulrahInstance.STAND_LOCATION.PILLAR_EAST_INSIDE);
+		pattern[5] = new ZulrahInstance(ZulrahInstance.LOCATION.NORTH, ZulrahInstance.TYPE.MELEE, false, ZulrahInstance.STAND_LOCATION.TOP_EAST);
+		pattern[6] = new ZulrahInstance(ZulrahInstance.LOCATION.EAST, ZulrahInstance.TYPE.RANGE, false, ZulrahInstance.STAND_LOCATION.EAST);
 		pattern[7] = new ZulrahInstance(ZulrahInstance.LOCATION.SOUTH, ZulrahInstance.TYPE.MAGIC, false, ZulrahInstance.STAND_LOCATION.PILLAR_WEST_INSIDE);
 		pattern[8] = new ZulrahInstance(ZulrahInstance.LOCATION.WEST, ZulrahInstance.TYPE.RANGE, true, ZulrahInstance.STAND_LOCATION.TOP_WEST);
 		pattern[9] = new ZulrahInstance(ZulrahInstance.LOCATION.NORTH, ZulrahInstance.TYPE.MELEE, false, ZulrahInstance.STAND_LOCATION.TOP_WEST);

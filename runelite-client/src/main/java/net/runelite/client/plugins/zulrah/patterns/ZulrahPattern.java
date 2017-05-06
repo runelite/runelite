@@ -61,25 +61,26 @@ public abstract class ZulrahPattern  implements ZulrahPatternPaintListener{
         graphics.drawString("startTile: " + startTile, 270, 200);
         graphics.drawString("current: " + current, 200, 215);
 
-        //Doesn't appear to be working
-        /*Point zulrah = current.getZulrahLoc(startTile);
-        zulrah = Perspective.worldToCanvas(client, zulrah.getX(), zulrah.getY(), client.getPlane());
-        if (zulrah == null) return;
-        graphics.setColor(new Color(41, 128, 185, 228));
-        graphics.drawString("c: " + current.getType() + current.isJad(), zulrah.getX(), zulrah.getY());*/
         renderTileOverlay(graphics, current.getStandLoc(startTile), Color.GREEN);
 
+        Point zulrah = current.getZulrahLoc(startTile);
         ZulrahInstance next = get(index + 1);
         graphics.setColor(Color.WHITE);
         graphics.drawString("next: " + next, 200, 230);
+        String c = "c: " + current.getType() + " JAD: " + current.isJad();
+        zulrah = Perspective.worldToLocal(client, zulrah);
+        zulrah = Perspective.getCanvasTextLocation(client, graphics, zulrah, c, 0);
+        if(zulrah == null) return;
+        graphics.drawString(c, zulrah.getX(), zulrah.getY());
         if(next != null) {
+            zulrah = next.getZulrahLoc(startTile);
+            c = "n: " + next.getType() + " JAD: " + next.isJad();
+            zulrah = Perspective.worldToLocal(client, zulrah);
+            zulrah = Perspective.getCanvasTextLocation(client, graphics, zulrah, c, 0);
+            if(zulrah == null) return;
+            if(next.getLoc().equals(current.getLoc())) zulrah = new Point(zulrah.getX(), zulrah.getY() - 15);
+            graphics.drawString(c, zulrah.getX(), zulrah.getY());
 
-            // Doesn't appear to be working
-            /*zulrah = next.getZulrahLoc(startTile);
-            zulrah = Perspective.worldToCanvas(client, zulrah.getX(), zulrah.getY(), client.getPlane());
-            if(current.getZulrahLoc(startTile).equals(next.getZulrahLoc(startTile))) zulrah = new Point(zulrah.getX(), zulrah.getY() + 15);
-            graphics.setColor(new Color(142, 68, 173, 160));
-            graphics.drawString("n: " + next.getType() + next.isJad(), zulrah.getX(), zulrah.getY());*/
             renderTileOverlay(graphics, next.getStandLoc(startTile), new Color(255,0,0,150));
 
         }

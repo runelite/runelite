@@ -112,7 +112,7 @@ public class ZulrahInstance {
                 adjusted = new Point(adjusted.getX(), adjusted.getY() - 6);
                 break;
             case TOP_EAST:
-                adjusted = new Point(adjusted.getX() + 4, adjusted.getY() + 3);
+                adjusted = new Point(adjusted.getX() + 6, adjusted.getY() + 2);
                 break;
             case TOP_WEST:
                 adjusted = new Point(adjusted.getX() - 4, adjusted.getY() + 3);
@@ -124,7 +124,7 @@ public class ZulrahInstance {
                 adjusted = new Point(adjusted.getX() - 4, adjusted.getY() - 3);
                 break;
             case PILLAR_EAST_INSIDE:
-                adjusted = new Point(adjusted.getX() + 2, adjusted.getY() - 5);
+                adjusted = new Point(adjusted.getX() + 3, adjusted.getY() - 5);
                 break;
             case PILLAR_EAST_OUTSIDE:
                 adjusted = new Point(adjusted.getX() + 4, adjusted.getY() - 3);
