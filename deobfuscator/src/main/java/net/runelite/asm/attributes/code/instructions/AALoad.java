@@ -33,6 +33,7 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
+import net.runelite.asm.execution.Type;
 
 public class AALoad extends Instruction implements ArrayLoad
 {
@@ -51,8 +52,20 @@ public class AALoad extends Instruction implements ArrayLoad
 		StackContext array = stack.pop();
 		
 		ins.pop(index, array);
+
+		Type subtype;
+
+		if (array.getType().isArray())
+		{
+			subtype = array.getType().getSubtype();
+		}
+		else
+		{
+			// This will happen from aaloading from a aconst_null
+			subtype = array.getType();
+		}
 		
-		StackContext ctx = new StackContext(ins, array.getType().getSubtype(), array.getValue().arrayGet(index.getValue()));
+		StackContext ctx = new StackContext(ins, subtype, array.getValue().arrayGet(index.getValue()));
 		stack.push(ctx);
 		
 		ins.push(ctx);

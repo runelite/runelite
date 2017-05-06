@@ -66,22 +66,6 @@ public class Frame
 		nonStatic = method;
 	}
 
-	public Frame(Execution execution, Method method, Instruction i)
-	{
-		this.execution = execution;
-		this.method = method;
-
-		Code code = method.getCode();
-
-		stack = new Stack(code.getMaxStack());
-		variables = new Variables(code.getMaxLocals());
-
-		ctx = new MethodContext(execution, method);
-		nonStatic = method;
-
-		cur = i;
-	}
-
 	@Override
 	public String toString()
 	{
@@ -95,7 +79,6 @@ public class Frame
 		if (!method.isStatic())
 			variables.set(pos++, new VariableContext(new Type(method.getMethods().getClassFile().getName())).markParameter());
 		
-		//NameAndType nat = method.getNameAndType();
 		for (int i = 0; i < method.getDescriptor().size(); ++i)
 		{
 			variables.set(pos, new VariableContext(new Type(method.getDescriptor().getTypeOfArg(i))).markParameter());
@@ -143,7 +126,8 @@ public class Frame
 		{
 			StackContext argument = pops.remove(0);
 
-			VariableContext vctx = new VariableContext(ctx, argument);
+			// Set variable type to the methods,  not the objects on the stack.
+			VariableContext vctx = new VariableContext(ctx, new Type(method.getDescriptor().getTypeOfArg(i)), argument.getValue());
 			vctx.markParameter();
 
 			variables.set(lvtOffset, vctx);
