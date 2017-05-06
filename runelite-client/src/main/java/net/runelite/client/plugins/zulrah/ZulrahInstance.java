@@ -81,56 +81,42 @@ public class ZulrahInstance {
 
     public Point getZulrahLoc(Point startLoc)
     {
-        Point adjusted = new Point(startLoc);
         //NORTH doesn't need changing
         switch(loc)
         {
             case SOUTH:
-                adjusted = new Point(adjusted.getX(), adjusted.getY() - 11);
-                break;
+                return new Point(startLoc.getX(), startLoc.getY() - 11);
             case EAST:
-                adjusted = new Point(adjusted.getX() + 10, adjusted.getY() - 2);
-                break;
+                return new Point(startLoc.getX() + 10, startLoc.getY() - 2);
             case WEST:
-                adjusted = new Point(adjusted.getX() - 10, adjusted.getY() - 2);
-                break;
+                return new Point(startLoc.getX() - 10, startLoc.getY() - 2);
         }
-        return adjusted;
+        return startLoc;
     }
 
     public Point getStandLoc(Point startLoc)
     {
-        Point adjusted = new Point(startLoc);
         switch(standLoc) {
             case WEST:
-                adjusted = new Point(adjusted.getX() - 5, adjusted.getY() - 2);
-                break;
+                return new Point(startLoc.getX() - 5, startLoc.getY() - 2);
             case EAST:
-                adjusted = new Point(adjusted.getX() + 5, adjusted.getY() - 2);
-                break;
+                return new Point(startLoc.getX() + 5, startLoc.getY() - 2);
             case SOUTH:
-                adjusted = new Point(adjusted.getX(), adjusted.getY() - 6);
-                break;
+                return new Point(startLoc.getX(), startLoc.getY() - 6);
             case TOP_EAST:
-                adjusted = new Point(adjusted.getX() + 6, adjusted.getY() + 2);
-                break;
+                return new Point(startLoc.getX() + 6, startLoc.getY() + 2);
             case TOP_WEST:
-                adjusted = new Point(adjusted.getX() - 4, adjusted.getY() + 3);
-                break;
+                return new Point(startLoc.getX() - 4, startLoc.getY() + 3);
             case PILLAR_WEST_INSIDE:
-                adjusted = new Point(adjusted.getX() - 3, adjusted.getY() - 5);
-                break;
+                return new Point(startLoc.getX() - 3, startLoc.getY() - 5);
             case PILLAR_WEST_OUTSIDE:
-                adjusted = new Point(adjusted.getX() - 4, adjusted.getY() - 3);
-                break;
+                return new Point(startLoc.getX() - 4, startLoc.getY() - 3);
             case PILLAR_EAST_INSIDE:
-                adjusted = new Point(adjusted.getX() + 3, adjusted.getY() - 5);
-                break;
+                return new Point(startLoc.getX() + 3, startLoc.getY() - 5);
             case PILLAR_EAST_OUTSIDE:
-                adjusted = new Point(adjusted.getX() + 4, adjusted.getY() - 3);
-                break;
+                return new Point(startLoc.getX() + 4, startLoc.getY() - 3);
         }
-        return adjusted;
+        return startLoc;
     }
 
     public LOCATION getLoc() {
