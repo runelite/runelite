@@ -27,6 +27,8 @@ package net.runelite.http.service;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.service.account.AccountService;
+import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.hiscore.HiscoreService;
 import net.runelite.http.service.updatecheck.UpdateCheckService;
 import net.runelite.http.service.worlds.WorldsService;
@@ -41,6 +43,12 @@ public class Service implements SparkApplication
 	private static final Logger logger = LoggerFactory.getLogger(Service.class);
 
 	private final JsonTransformer transformer = new JsonTransformer();
+
+	@Inject
+	private AuthFilter authFilter;
+
+	@Inject
+	private AccountService accounts;
 
 	@Inject
 	private HiscoreService hiscores;
@@ -64,6 +72,7 @@ public class Service implements SparkApplication
 	public void setupRoutes()
 	{
 		xtea.init();
+		accounts.init();
 
 		get("/version", (request, response) -> RuneliteAPI.getVersion());
 		get("/update-check", updateCheck::check, transformer);
@@ -71,6 +80,14 @@ public class Service implements SparkApplication
 		get("/worlds", (request, response) -> worlds.listWorlds(), transformer);
 		post("/xtea", xtea::submit);
 		get("/xtea/:rev", xtea::get, transformer);
+		path("/account", () ->
+		{
+			get("/login", accounts::login, transformer);
+			get("/callback", accounts::callback);
+
+			before("/logout", authFilter);
+			get("/logout", accounts::logout);
+		});
 
 		exception(Exception.class, (exception, request, response) -> logger.warn(null, exception));
 	}
