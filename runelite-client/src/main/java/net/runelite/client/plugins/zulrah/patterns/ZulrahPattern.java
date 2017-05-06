@@ -86,10 +86,10 @@ public abstract class ZulrahPattern implements ZulrahPatternPaintListener
 		{
 			return;
 		}
-
-		graphics.setColor(Color.WHITE);
-		graphics.drawString("startTile: " + startTile, 270, 200);
-		graphics.drawString("current: " + current, 200, 215);
+//
+//		graphics.setColor(Color.WHITE);
+//		graphics.drawString("startTile: " + startTile, 270, 200);
+//		graphics.drawString("current: " + current, 200, 215);
 
 		renderTileOverlay(client, graphics, current.getStandLoc(startTile), Color.GREEN);
 
@@ -129,7 +129,6 @@ public abstract class ZulrahPattern implements ZulrahPatternPaintListener
 
 	private void renderTileOverlay(Client client, Graphics2D graphics, Point tile, Color color)
 	{
-
 		Point adjusted = Perspective.worldToLocal(client, tile);
 		//+65 to make the centre of the tile on the point, rather than the tile the point resides in
 		adjusted = new Point(adjusted.getX() + 65, adjusted.getY() + 65);

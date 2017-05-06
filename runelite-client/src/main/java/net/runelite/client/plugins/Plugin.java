@@ -22,10 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins;
 
 import com.google.common.util.concurrent.AbstractIdleService;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import net.runelite.client.ui.overlay.Overlay;
 
 public abstract class Plugin extends AbstractIdleService
@@ -33,5 +35,11 @@ public abstract class Plugin extends AbstractIdleService
 	public Overlay getOverlay()
 	{
 		return null;
+	}
+
+	public Collection<Overlay> getOverlays()
+	{
+		Overlay overlay = getOverlay();
+		return overlay != null ? Arrays.asList(overlay) : Collections.EMPTY_LIST;
 	}
 }

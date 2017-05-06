@@ -30,6 +30,8 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.client.RuneLite;
+import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
+import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternD;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -193,27 +195,47 @@ public class ZulrahInstance
 		}
 		else
 		{
-			logger.debug("Unknown zulrah location! dx: {}, dy: {}", dx, dy);
-			return null;
+			loc = null;
+			//logger.debug("Unknown zulrah location! dx: {}, dy: {}", dx, dy);
+			//return null;
 		}
 
 		int id = npc.getId();
 		switch (id)
 		{
-			case ZULRAH_RANGE:
-				type = ZulrahType.RANGE;
-				break;
-			case ZULRAH_MELEE:
-				type = ZulrahType.MELEE;
-				break;
-			case ZULRAH_MAGIC:
-				type = ZulrahType.MAGIC;
-				break;
+//			case ZULRAH_RANGE:
+//				type = ZulrahType.RANGE;
+//				break;
+//			case ZULRAH_MELEE:
+//				type = ZulrahType.MELEE;
+//				break;
+//			case ZULRAH_MAGIC:
+//				type = ZulrahType.MAGIC;
+//				break;
 			default:
-				logger.debug("Unknown Zulrah npc! {}", id);
-				return null;
+				long now = System.currentTimeMillis();
+				long diff = now - last;
+				if (diff > 15000)
+				{
+					++i;
+					if (pat.get(i) == null)
+						i = 0;
+					//type = ZulrahType.values()[i++ % 3];
+					//loc = ZulrahLocation.values()[i++ % 4];
+					last = now;
+				}
+
+				ZulrahInstance get = pat.get(i);
+				return get;
+//				logger.debug("Unknown Zulrah npc! {}", id);
+//				return null;
 		}
 
-		return new ZulrahInstance(loc, type, false, null);
+		//return (lr = new ZulrahInstance(loc, type, false, null));
 	}
+	static int i = -1;
+	static long last;
+	static ZulrahInstance lr = null;
+
+	static ZulrahPattern pat = new ZulrahPatternD();
 }

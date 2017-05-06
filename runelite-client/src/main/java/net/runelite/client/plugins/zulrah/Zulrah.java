@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,30 +24,36 @@
  */
 package net.runelite.client.plugins.zulrah;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.client.RuneLite;
+import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternA;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternB;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternC;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternD;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class ZulrahHelperOverlay extends Overlay
+public class Zulrah extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(ZulrahHelperOverlay.class);
+	private static final Logger logger = LoggerFactory.getLogger(Zulrah.class);
+
+	private static final String ZULRAH = "Father Urhney";
 
 	private final Client client = RuneLite.getClient();
+
+	private final StatusOverlay overlay = new StatusOverlay(this);
+	private final TileOverlay tileOverlay = new TileOverlay(this);
 
 	private final ZulrahPattern[] patterns = new ZulrahPattern[]
 	{
@@ -60,38 +65,28 @@ class ZulrahHelperOverlay extends Overlay
 
 	private Fight fight;
 
-	ZulrahHelperOverlay()
+	private ScheduledFuture<?> future;
+
+	@Override
+	public Collection<Overlay> getOverlays()
 	{
-		super(OverlayPosition.DYNAMIC);
+		return Arrays.asList(overlay, tileOverlay);
 	}
 
 	@Override
-	public synchronized Dimension render(Graphics2D graphics)
+	protected void startUp() throws Exception
 	{
-
-		if (client.getGameState() != GameState.LOGGED_IN || fight == null)
-		{
-			return null;
-		}
-
-		//TODO: Add prayer checking and health warning
-		graphics.setColor(Color.WHITE);
-
-		ZulrahPattern pattern = fight.getPattern();
-		if (pattern == null)
-		{
-			// can draw at least the starting place here?
-			graphics.drawString("Unknown Pattern", 200, 200);
-		}
-		else
-		{
-			pattern.render(client, graphics, fight.getStartLocationWorld(), fight.getStage());
-		}
-
-		return null;
+		ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
+		future = executor.scheduleAtFixedRate(this::update, 100, 100, TimeUnit.MILLISECONDS);
 	}
 
-	synchronized void update()
+	@Override
+	protected void shutDown() throws Exception
+	{
+		future.cancel(true);
+	}
+
+	private synchronized void update()
 	{
 		try
 		{
@@ -113,7 +108,6 @@ class ZulrahHelperOverlay extends Overlay
 				Point startTile = zulrah.getLocalLocation();
 				startTile = Perspective.localToWorld(client, startTile);
 
-				// Render thread starts once this is assigned
 				fight = new Fight(startTile);
 
 				logger.debug("Fight has begun!");
@@ -184,15 +178,21 @@ class ZulrahHelperOverlay extends Overlay
 
 		for (NPC npc : npcs)
 		{
-			if (npc == null)
+			if (npc == null || npc.getName() == null)
 			{
 				continue;
 			}
-			if (npc.getName().equals("Zulrah"))
+
+			if (npc.getName().equals(ZULRAH))
 			{
 				return npc;
 			}
 		}
 		return null;
+	}
+
+	public Fight getFight()
+	{
+		return fight;
 	}
 }

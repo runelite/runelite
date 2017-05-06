@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,34 +24,55 @@
  */
 package net.runelite.client.plugins.zulrah;
 
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.Point;
 import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
 
-public class ZulrahHelper extends Plugin
+public class TileOverlay extends Overlay
 {
-	private ScheduledFuture<?> future;
-	private final ZulrahHelperOverlay overlay = new ZulrahHelperOverlay();
+	private final Zulrah plugin;
+	private final Client client = RuneLite.getClient();
 
-	@Override
-	public Overlay getOverlay()
+	public TileOverlay(Zulrah plugin)
 	{
-		return overlay;
+		super(OverlayPosition.DYNAMIC);
+		this.plugin = plugin;
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	public Dimension render(Graphics2D graphics)
 	{
-		ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
-		future = executor.scheduleAtFixedRate(overlay::update, 100, 100, TimeUnit.MILLISECONDS);
+		ZulrahPattern pattern;
+		Point startLocationWorld;
+		int stage;
+
+		synchronized (plugin)
+		{
+			Fight fight = plugin.getFight();
+
+			if (client.getGameState() != GameState.LOGGED_IN || fight == null)
+			{
+				return null;
+			}
+
+			pattern = fight.getPattern();
+			if (pattern == null)
+			{
+				return null;
+			}
+
+			startLocationWorld = fight.getStartLocationWorld();
+			stage = fight.getStage();
+		}
+
+		pattern.render(client, graphics, startLocationWorld, stage);
+		return null;
 	}
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-		future.cancel(true);
-	}
 }
