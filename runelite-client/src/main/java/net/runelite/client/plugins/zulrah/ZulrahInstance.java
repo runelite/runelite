@@ -30,21 +30,24 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.client.RuneLite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
     Original code: https://github.com/LoveLeAnon/OSLoader
  */
 public class ZulrahInstance
 {
+	private static final Logger logger = LoggerFactory.getLogger(ZulrahInstance.class);
+
 	private static final int ZULRAH_RANGE = NpcID.ZULRAH;
 	private static final int ZULRAH_MELEE = NpcID.ZULRAH_2;
 	private static final int ZULRAH_MAGIC = NpcID.ZULRAH_3;
 
 	private final ZulrahLocation loc;
-	//private int id;
-	private ZulrahType type;
+	private final ZulrahType type;
 	private final boolean jad;
-	private StandLocation standLoc;
+	private final StandLocation standLoc;
 
 	public ZulrahInstance(ZulrahLocation loc, ZulrahType type, boolean jad, StandLocation standLoc)
 	{
@@ -52,52 +55,6 @@ public class ZulrahInstance
 		this.type = type;
 		this.jad = jad;
 		this.standLoc = standLoc;
-	}
-
-	ZulrahInstance(NPC npc, Point start)
-	{
-		Point t = npc.getLocalLocation();
-		t = Perspective.localToWorld(RuneLite.getClient(), t);
-		int dx = start.getX() - t.getX();
-		int dy = start.getY() - t.getY();
-
-		if (dx == -10 && dy == 2)
-		{
-			this.loc = ZulrahLocation.EAST;
-		}
-		else if (dx == 10 && dy == 2)
-		{
-			this.loc = ZulrahLocation.WEST;
-		}
-		else if (dx == 0 && dy == 11)
-		{
-			this.loc = ZulrahLocation.SOUTH;
-		}
-		else if (dx == 0 && dy == 0)
-		{
-			this.loc = ZulrahLocation.NORTH;
-		}
-		else
-		{
-			this.loc = null;
-			System.out.printf("dx: %d dy: %d", dx, dy);
-		}
-
-		int id = npc.getId();
-		switch (id)
-		{
-			case ZULRAH_RANGE:
-				type = ZulrahType.RANGE;
-				break;
-			case ZULRAH_MELEE:
-				type = ZulrahType.MELEE;
-				break;
-			case ZULRAH_MAGIC:
-				type = ZulrahType.MAGIC;
-				break;
-		}
-
-		jad = false;
 	}
 
 	@Override
@@ -208,5 +165,55 @@ public class ZulrahInstance
 		return true;
 	}
 
+	public static ZulrahInstance of(NPC npc, Point start)
+	{
+		Point t = npc.getLocalLocation();
+		t = Perspective.localToWorld(RuneLite.getClient(), t);
+		int dx = start.getX() - t.getX();
+		int dy = start.getY() - t.getY();
 
+		ZulrahLocation loc;
+		ZulrahType type;
+
+		if (dx == -10 && dy == 2)
+		{
+			loc = ZulrahLocation.EAST;
+		}
+		else if (dx == 10 && dy == 2)
+		{
+			loc = ZulrahLocation.WEST;
+		}
+		else if (dx == 0 && dy == 11)
+		{
+			loc = ZulrahLocation.SOUTH;
+		}
+		else if (dx == 0 && dy == 0)
+		{
+			loc = ZulrahLocation.NORTH;
+		}
+		else
+		{
+			logger.debug("Unknown zulrah location! dx: {}, dy: {}", dx, dy);
+			return null;
+		}
+
+		int id = npc.getId();
+		switch (id)
+		{
+			case ZULRAH_RANGE:
+				type = ZulrahType.RANGE;
+				break;
+			case ZULRAH_MELEE:
+				type = ZulrahType.MELEE;
+				break;
+			case ZULRAH_MAGIC:
+				type = ZulrahType.MAGIC;
+				break;
+			default:
+				logger.debug("Unknown Zulrah npc! {}", id);
+				return null;
+		}
+
+		return new ZulrahInstance(loc, type, false, null);
+	}
 }

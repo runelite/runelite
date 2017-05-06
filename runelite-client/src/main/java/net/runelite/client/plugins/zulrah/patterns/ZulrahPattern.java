@@ -67,7 +67,7 @@ public abstract class ZulrahPattern implements ZulrahPatternPaintListener
 		return pattern.get(index);
 	}
 
-	public boolean accept(int index, ZulrahInstance instance)
+	public boolean stageMatches(int index, ZulrahInstance instance)
 	{
 		ZulrahInstance patternInstance = get(index);
 		return patternInstance != null && patternInstance.equals(instance);
@@ -86,6 +86,7 @@ public abstract class ZulrahPattern implements ZulrahPatternPaintListener
 		{
 			return;
 		}
+
 		graphics.setColor(Color.WHITE);
 		graphics.drawString("startTile: " + startTile, 270, 200);
 		graphics.drawString("current: " + current, 200, 215);

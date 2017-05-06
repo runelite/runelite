@@ -50,33 +50,33 @@ class ZulrahHelperOverlay extends Overlay
 
 	private final Client client = RuneLite.getClient();
 
+	private final ZulrahPattern[] patterns = new ZulrahPattern[]
+	{
+		new ZulrahPatternA(),
+		new ZulrahPatternB(),
+		new ZulrahPatternC(),
+		new ZulrahPatternD()
+	};
+
 	private Fight fight;
-	private final ZulrahPattern[] patterns;
 
 	ZulrahHelperOverlay()
 	{
 		super(OverlayPosition.DYNAMIC);
-
-		patterns = new ZulrahPattern[4];
-		patterns[0] = new ZulrahPatternA();
-		patterns[1] = new ZulrahPatternB();
-		patterns[2] = new ZulrahPatternC();
-		patterns[3] = new ZulrahPatternD();
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public synchronized Dimension render(Graphics2D graphics)
 	{
 
 		if (client.getGameState() != GameState.LOGGED_IN || fight == null)
 		{
 			return null;
 		}
-		//TODO: Add prayer checking and health warning
 
+		//TODO: Add prayer checking and health warning
 		graphics.setColor(Color.WHITE);
 
-		// XXX race on fight here
 		ZulrahPattern pattern = fight.getPattern();
 		if (pattern == null)
 		{
@@ -91,7 +91,7 @@ class ZulrahHelperOverlay extends Overlay
 		return null;
 	}
 
-	void update()
+	synchronized void update()
 	{
 		try
 		{
@@ -119,22 +119,20 @@ class ZulrahHelperOverlay extends Overlay
 				logger.debug("Fight has begun!");
 			}
 
-			ZulrahInstance temp = new ZulrahInstance(zulrah, fight.getStartLocationWorld());
+			ZulrahInstance currentZulrah = ZulrahInstance.of(zulrah, fight.getStartLocationWorld());
 
 			if (fight.getZulrah() == null)
 			{
-				System.out.println("currentInstance set to temp");
-				fight.setZulrah(temp);
+				fight.setZulrah(currentZulrah);
 			}
-
-			if (!fight.getZulrah().equals(temp))
+			else if (!fight.getZulrah().equals(currentZulrah))
 			{
 				ZulrahInstance previousInstance = fight.getZulrah();
-				fight.setZulrah(temp);
+				fight.setZulrah(currentZulrah);
 				fight.nextStage();
 
 				logger.debug("Zulrah has moved from {} -> {}, index now {}",
-					previousInstance, temp, fight.getStage());
+					previousInstance, currentZulrah, fight.getStage());
 			}
 
 			ZulrahPattern pattern = fight.getPattern();
@@ -143,17 +141,19 @@ class ZulrahHelperOverlay extends Overlay
 				int potential = 0;
 				ZulrahPattern potentialPattern = null;
 
-				for (int i = 0; i < patterns.length; ++i)
+				for (ZulrahPattern p : patterns)
 				{
-					if (patterns[i].accept(fight.getStage(), fight.getZulrah()))
+					if (p.stageMatches(fight.getStage(), fight.getZulrah()))
 					{
-						//System.out.println("PATTERN POTENTIAL: " + i);
 						potential++;
-						potentialPattern = patterns[i];
+						potentialPattern = p;
 					}
 				}
+
 				if (potential == 1)
 				{
+					logger.debug("Zulrah pattern identified: {}", potentialPattern);
+
 					fight.setPattern(potentialPattern);
 				}
 			}
@@ -163,17 +163,17 @@ class ZulrahHelperOverlay extends Overlay
 				{
 					if (fight.getZulrah().equals(pattern.get(0)))
 					{
+						logger.debug("Fight has reset");
+
 						fight.reset();
-						fight.setZulrah(null);//?
 					}
 				}
 			}
 
 		}
-		catch (NullPointerException e)
+		catch (Exception ex)
 		{
-			//I'm so sorry
-			e.printStackTrace();
+			logger.debug(null, ex);
 		}
 
 	}
