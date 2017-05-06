@@ -78,7 +78,7 @@ public abstract class ZulrahPattern  implements ZulrahPatternPaintListener{
             zulrah = Perspective.worldToLocal(client, zulrah);
             zulrah = Perspective.getCanvasTextLocation(client, graphics, zulrah, c, 0);
             if(zulrah == null) return;
-            if(next.getLoc().equals(current.getLoc())) zulrah = new Point(zulrah.getX(), zulrah.getY() - 15);
+            if(next.getLoc().equals(current.getLoc())) zulrah = new Point(zulrah.getX(), zulrah.getY() + 15);
             graphics.drawString(c, zulrah.getX(), zulrah.getY());
 
             renderTileOverlay(graphics, next.getStandLoc(startTile), new Color(255,0,0,150));

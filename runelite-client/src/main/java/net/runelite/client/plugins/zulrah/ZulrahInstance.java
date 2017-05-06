@@ -118,7 +118,7 @@ public class ZulrahInstance {
                 adjusted = new Point(adjusted.getX() - 4, adjusted.getY() + 3);
                 break;
             case PILLAR_WEST_INSIDE:
-                adjusted = new Point(adjusted.getX() - 2, adjusted.getY() - 5);
+                adjusted = new Point(adjusted.getX() - 3, adjusted.getY() - 5);
                 break;
             case PILLAR_WEST_OUTSIDE:
                 adjusted = new Point(adjusted.getX() - 4, adjusted.getY() - 3);
