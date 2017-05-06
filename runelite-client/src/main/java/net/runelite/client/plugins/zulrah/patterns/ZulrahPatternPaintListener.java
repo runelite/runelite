@@ -25,9 +25,10 @@
 package net.runelite.client.plugins.zulrah.patterns;
 
 import java.awt.Graphics2D;
+import net.runelite.api.Client;
 import net.runelite.api.Point;
 
 interface ZulrahPatternPaintListener
 {
-	void render(Graphics2D graphics, Point startTile, int index);
+	void render(Client client, Graphics2D graphics, Point startTile, int index);
 }

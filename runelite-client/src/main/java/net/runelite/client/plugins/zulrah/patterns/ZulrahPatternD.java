@@ -33,9 +33,8 @@ import net.runelite.client.plugins.zulrah.ZulrahType;
 
 public class ZulrahPatternD extends ZulrahPattern
 {
-	public ZulrahPatternD(Client client)
+	public ZulrahPatternD()
 	{
-		this.client = client;
 		pattern = new ZulrahInstance[12];
 
 		pattern[0] = new ZulrahInstance(ZulrahLocation.NORTH, ZulrahType.RANGE, false, StandLocation.TOP_EAST);
@@ -53,9 +52,9 @@ public class ZulrahPatternD extends ZulrahPattern
 	}
 
 	@Override
-	public void render(Graphics2D graphics, net.runelite.api.Point startTile, int index)
+	public void render(Client client, Graphics2D graphics, net.runelite.api.Point startTile, int index)
 	{
-		super.render(graphics, startTile, index);
+		super.render(client, graphics, startTile, index);
 		graphics.drawString("Pattern D", 200, 200);
 	}
 

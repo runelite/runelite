@@ -37,7 +37,6 @@ public abstract class ZulrahPattern implements ZulrahPatternPaintListener
 {
 
 	ZulrahInstance[] pattern;
-	Client client;
 
 	public ZulrahInstance get(int index)
 	{
@@ -58,7 +57,7 @@ public abstract class ZulrahPattern implements ZulrahPatternPaintListener
 	public abstract boolean canReset(int index);
 
 	@Override
-	public void render(Graphics2D graphics, net.runelite.api.Point startTile, int index)
+	public void render(Client client, Graphics2D graphics, Point startTile, int index)
 	{
 		ZulrahInstance current = get(index);
 		if (current == null)
@@ -69,7 +68,7 @@ public abstract class ZulrahPattern implements ZulrahPatternPaintListener
 		graphics.drawString("startTile: " + startTile, 270, 200);
 		graphics.drawString("current: " + current, 200, 215);
 
-		renderTileOverlay(graphics, current.getStandLoc(startTile), Color.GREEN);
+		renderTileOverlay(client, graphics, current.getStandLoc(startTile), Color.GREEN);
 
 		Point zulrah = current.getZulrahLoc(startTile);
 		ZulrahInstance next = get(index + 1);
@@ -99,13 +98,13 @@ public abstract class ZulrahPattern implements ZulrahPatternPaintListener
 			}
 			graphics.drawString(c, zulrah.getX(), zulrah.getY());
 
-			renderTileOverlay(graphics, next.getStandLoc(startTile), new Color(255, 0, 0, 150));
+			renderTileOverlay(client, graphics, next.getStandLoc(startTile), new Color(255, 0, 0, 150));
 
 		}
 		graphics.setColor(Color.WHITE);
 	}
 
-	private void renderTileOverlay(Graphics2D graphics, Point tile, Color color)
+	private void renderTileOverlay(Client client, Graphics2D graphics, Point tile, Color color)
 	{
 
 		Point adjusted = Perspective.worldToLocal(client, tile);

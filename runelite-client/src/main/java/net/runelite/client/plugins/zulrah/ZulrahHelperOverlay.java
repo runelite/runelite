@@ -33,130 +33,162 @@ import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.zulrah.patterns.*;
+import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
+import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternA;
+import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternB;
+import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternC;
+import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternD;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-class ZulrahHelperOverlay extends Overlay {
-    private final Client client = RuneLite.getClient();
+class ZulrahHelperOverlay extends Overlay
+{
+	private final Client client = RuneLite.getClient();
 
-   private Point startTile;
-   private int index = 0;
-   private int currentPattern = -1;
-   private ZulrahInstance previousInstance;
-   private ZulrahInstance currentInstance;
-   private final ZulrahPattern[] patterns;
-   private NPC zulrah = null; //Potential race condition, symptoms might be flickering overlay
+	private Point startTile;
+	private int index = 0;
+	private int currentPattern = -1;
+	private ZulrahInstance previousInstance;
+	private ZulrahInstance currentInstance;
+	private final ZulrahPattern[] patterns;
+	private NPC zulrah = null; //Potential race condition, symptoms might be flickering overlay
 
-    ZulrahHelperOverlay() {
-        super(OverlayPosition.DYNAMIC);
+	ZulrahHelperOverlay()
+	{
+		super(OverlayPosition.DYNAMIC);
 
-        patterns = new ZulrahPattern[4];
-        patterns[0] = new ZulrahPatternA(client);
-        patterns[1] = new ZulrahPatternB(client);
-        patterns[2] = new ZulrahPatternC(client);
-        patterns[3] = new ZulrahPatternD(client);
-    }
+		patterns = new ZulrahPattern[4];
+		patterns[0] = new ZulrahPatternA();
+		patterns[1] = new ZulrahPatternB();
+		patterns[2] = new ZulrahPatternC();
+		patterns[3] = new ZulrahPatternD();
+	}
 
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
 
-    @Override
-    public Dimension render(Graphics2D graphics) {
+		if (client.getGameState() != GameState.LOGGED_IN || startTile == null || zulrah == null)
+		{
+			return null;
+		}
+		//TODO: Add prayer checking and health warning
 
-        if(client.getGameState() != GameState.LOGGED_IN || startTile == null || zulrah == null) return null;
-        //TODO: Add prayer checking and health warning
+		graphics.setColor(Color.WHITE);
 
-        graphics.setColor(Color.WHITE);
+		if (currentPattern == -1)
+		{
+			graphics.drawString("Unknown", 200, 200);
+			graphics.drawString("current: " + currentInstance, 200, 215);
+			graphics.drawString("Previous:" + previousInstance, 200, 230);
+			graphics.drawString("index: " + index, 200, 245);
+		}
+		else
+		{
+			patterns[currentPattern].render(client, graphics, startTile, index);
+		}
 
-        if(currentPattern == -1) {
-            graphics.drawString("Unknown", 200, 200);
-            graphics.drawString("current: " + currentInstance, 200, 215);
-            graphics.drawString("Previous:" + previousInstance, 200, 230);
-            graphics.drawString("index: " + index, 200, 245);
-        } else {
-            patterns[currentPattern].render(graphics, startTile, index);
-        }
+		return null;
+	}
 
+	void update()
+	{
+		try
+		{
+			NPC[] npcs = client.getNpcs();
+			zulrah = null;
+			for (NPC npc : npcs)
+			{
+				if (npc == null)
+				{
+					continue;
+				}
+				if (npc.getName().equals("Zulrah"))
+				{
+					zulrah = npc;
+					break;
+				}
+			}
 
-        return null;
-    }
+			if (zulrah == null)
+			{
+				if (startTile != null)
+				{
+					startTile = null;
+					System.out.println("SET START TILE TO NULL");
+				}
+				return;
+			}
 
-    void update()
-    {
-        try {
-            NPC[] npcs = client.getNpcs();
-            zulrah = null;
-            for (NPC npc : npcs) {
-                if (npc == null) continue;
-                if (npc.getName().equals("Zulrah")) {
-                    zulrah = npc;
-                    break;
-                }
-            }
+			// Just entered
+			if (startTile == null || zulrah.getLocalLocation().distanceTo(startTile) > 17000)
+			{
+				if (startTile != null)
+				{
+					System.out.println("ZULRAH DISATANCE: " + zulrah.getLocalLocation().distanceTo(startTile));
+				}
+				startTile = zulrah.getLocalLocation();
+				startTile = Perspective.localToWorld(client, startTile);
+				index = 0;
+				currentPattern = -1;
+				System.out.println("Start Tile: " + startTile.toString());
+				previousInstance = null;
+				currentInstance = null;
+			}
 
-            if (zulrah == null)
-            {
-                if(startTile != null) {
-                    startTile = null;
-                    System.out.println("SET START TILE TO NULL");
-                }
-                return;
-            }
+			ZulrahInstance temp = new ZulrahInstance(zulrah, startTile);
 
-            // Just entered
-            if (startTile == null || zulrah.getLocalLocation().distanceTo(startTile) > 17000) {
-                if(startTile != null) {
-                    System.out.println("ZULRAH DISATANCE: " + zulrah.getLocalLocation().distanceTo(startTile));
-                }
-                startTile = zulrah.getLocalLocation();
-                startTile = Perspective.localToWorld(client, startTile);
-                index = 0;
-                currentPattern = -1;
-                System.out.println("Start Tile: " + startTile.toString());
-                previousInstance = null;
-                currentInstance = null;
-            }
+			if (currentInstance == null)
+			{
+				System.out.println("currentInstance set to temp");
+				currentInstance = temp;
+			}
 
-            ZulrahInstance temp = new ZulrahInstance(zulrah, startTile);
+			if (!currentInstance.equals(temp))
+			{
+				previousInstance = currentInstance;
+				currentInstance = temp;
+				++index;
+			}
 
-            if (currentInstance == null) {
-                System.out.println("currentInstance set to temp");
-                currentInstance = temp;
-            }
+			if (currentPattern == -1)
+			{
+				int potential = 0;
+				int potentialPattern = -1;
 
-            if (!currentInstance.equals(temp)) {
-                previousInstance = currentInstance;
-                currentInstance = temp;
-                ++index;
-            }
+				for (int i = 0; i < patterns.length; ++i)
+				{
+					if (patterns[i].accept(index, currentInstance))
+					{
+						//System.out.println("PATTERN POTENTIAL: " + i);
+						potential++;
+						potentialPattern = i;
+					}
+				}
+				if (potential == 1)
+				{
+					currentPattern = potentialPattern;
+				}
+			}
+			else
+			{
+				if (patterns[currentPattern].canReset(index))
+				{
+					if (currentInstance.equals(patterns[currentPattern].get(0)))
+					{
+						currentPattern = -1;
+						index = 0;
+						currentInstance = null;
+					}
+				}
+			}
 
-            if (currentPattern == -1) {
-                int potential = 0;
-                int potentialPattern = -1;
+		}
+		catch (NullPointerException e)
+		{
+			//I'm so sorry
+			e.printStackTrace();
+		}
 
-                for (int i = 0; i < patterns.length; ++i) {
-                    if (patterns[i].accept(index, currentInstance)) {
-                        //System.out.println("PATTERN POTENTIAL: " + i);
-                        potential++;
-                        potentialPattern = i;
-                    }
-                }
-                if (potential == 1) {
-                    currentPattern = potentialPattern;
-                }
-            } else {
-                if (patterns[currentPattern].canReset(index)) {
-                    if (currentInstance.equals(patterns[currentPattern].get(0))) {
-                        currentPattern = -1;
-                        index = 0;
-                        currentInstance = null;
-                    }
-                }
-            }
-
-        } catch(NullPointerException e) {
-            //I'm so sorry
-            e.printStackTrace();
-        }
-
-    }
+	}
 }
