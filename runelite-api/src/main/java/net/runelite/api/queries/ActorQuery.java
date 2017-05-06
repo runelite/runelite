@@ -25,11 +25,12 @@
 package net.runelite.api.queries;
 
 import net.runelite.api.Actor;
+import net.runelite.api.Point;
 import net.runelite.api.Query;
 
 public abstract class ActorQuery<T extends Actor> extends Query<T>
 {
-	public ActorQuery name(String... names)
+	public ActorQuery names(String... names)
 	{
 		predicate = and(actor ->
 		{
@@ -43,6 +44,30 @@ public abstract class ActorQuery<T extends Actor> extends Query<T>
 			}
 			return false;
 		});
+		return this;
+	}
+
+	public ActorQuery location(Point location)
+	{
+		predicate = and(actor -> actor.getLocalLocation().equals(location));
+		return this;
+	}
+
+	public ActorQuery level(int level)
+	{
+		predicate = and(actor -> actor.getCombatLevel() == level);
+		return this;
+	}
+
+	public ActorQuery animation(int animation)
+	{
+		predicate = and(actor -> actor.getAnimation() == animation);
+		return this;
+	}
+
+	public ActorQuery interacting(Actor actor)
+	{
+		predicate = and(a -> a.getInteracting().equals(a));
 		return this;
 	}
 }
