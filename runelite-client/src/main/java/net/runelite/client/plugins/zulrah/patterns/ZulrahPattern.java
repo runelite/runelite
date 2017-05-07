@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Aria <aria@ar1as.space>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.zulrah.patterns;
 
-package net.runelite.api;
+import java.util.ArrayList;
+import java.util.List;
+import net.runelite.client.plugins.zulrah.StandLocation;
+import net.runelite.client.plugins.zulrah.ZulrahInstance;
+import net.runelite.client.plugins.zulrah.ZulrahLocation;
+import net.runelite.client.plugins.zulrah.ZulrahType;
 
-public class NPC extends Actor
+public abstract class ZulrahPattern
 {
-	private net.runelite.rs.api.NPC npc;
+	private final List<ZulrahInstance> pattern = new ArrayList<>();
 
-	public NPC(Client client, net.runelite.rs.api.NPC npc)
+	protected final void add(ZulrahLocation loc, ZulrahType type, StandLocation standLoc)
 	{
-		super(client, npc);
-		this.npc = npc;
+		add(loc, type, standLoc, false);
 	}
 
-	public int getId()
+	protected final void addJad(ZulrahLocation loc, ZulrahType type, StandLocation standLoc)
 	{
-		return npc.getComposition().getId();
+		add(loc, type, standLoc, true);
 	}
 
-	@Override
-	public String getName()
+	private void add(ZulrahLocation loc, ZulrahType type, StandLocation standLoc, boolean jad)
 	{
-		return npc.getComposition().getName().replace('\u00A0', ' ');
+		pattern.add(new ZulrahInstance(loc, type, jad, standLoc));
 	}
 
-	@Override
-	public int getCombatLevel()
+	public ZulrahInstance get(int index)
 	{
-		return npc.getComposition().getCombatLevel();
+		if (index >= pattern.size())
+		{
+			return null;
+		}
+
+		return pattern.get(index);
 	}
 
+	public boolean stageMatches(int index, ZulrahInstance instance)
+	{
+		ZulrahInstance patternInstance = get(index);
+		return patternInstance != null && patternInstance.equals(instance);
+	}
+
+	public boolean canReset(int index)
+	{
+		return index >= pattern.size();
+	}
 }
