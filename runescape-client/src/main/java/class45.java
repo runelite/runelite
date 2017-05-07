@@ -91,18 +91,18 @@ public class class45 {
       Widget var4;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class32.field720[--class32.field715];
+         var3 = class32.intStack[--class32.intStackSize];
          var4 = class128.method2364(var3);
       } else {
          var4 = var2?class200.field2894:Script.field942;
       }
 
       if(var0 == 1000) {
-         class32.field715 -= 4;
-         var4.originalX = class32.field720[class32.field715];
-         var4.originalY = class32.field720[class32.field715 + 1];
-         var4.field2212 = class32.field720[class32.field715 + 2];
-         var4.field2206 = class32.field720[class32.field715 + 3];
+         class32.intStackSize -= 4;
+         var4.originalX = class32.intStack[class32.intStackSize];
+         var4.originalY = class32.intStack[class32.intStackSize + 1];
+         var4.field2212 = class32.intStack[class32.intStackSize + 2];
+         var4.field2206 = class32.intStack[class32.intStackSize + 3];
          class124.method2350(var4);
          FileOnDisk.method1441(var4);
          if(var3 != -1 && var4.type == 0) {
@@ -111,11 +111,11 @@ public class class45 {
 
          return 1;
       } else if(var0 == 1001) {
-         class32.field715 -= 4;
-         var4.originalWidth = class32.field720[class32.field715];
-         var4.field2219 = class32.field720[class32.field715 + 1];
-         var4.field2280 = class32.field720[class32.field715 + 2];
-         var4.field2215 = class32.field720[class32.field715 + 3];
+         class32.intStackSize -= 4;
+         var4.originalWidth = class32.intStack[class32.intStackSize];
+         var4.field2219 = class32.intStack[class32.intStackSize + 1];
+         var4.field2280 = class32.intStack[class32.intStackSize + 2];
+         var4.field2215 = class32.intStack[class32.intStackSize + 3];
          class124.method2350(var4);
          FileOnDisk.method1441(var4);
          if(var3 != -1 && var4.type == 0) {
@@ -124,7 +124,7 @@ public class class45 {
 
          return 1;
       } else if(var0 == 1003) {
-         boolean var5 = class32.field720[--class32.field715] == 1;
+         boolean var5 = class32.intStack[--class32.intStackSize] == 1;
          if(var4.isHidden != var5) {
             var4.isHidden = var5;
             class124.method2350(var4);
@@ -132,10 +132,10 @@ public class class45 {
 
          return 1;
       } else if(var0 == 1005) {
-         var4.field2275 = class32.field720[--class32.field715] == 1;
+         var4.field2275 = class32.intStack[--class32.intStackSize] == 1;
          return 1;
       } else if(var0 == 1006) {
-         var4.field2203 = class32.field720[--class32.field715] == 1;
+         var4.field2203 = class32.intStack[--class32.intStackSize] == 1;
          return 1;
       } else {
          return 2;

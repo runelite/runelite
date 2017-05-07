@@ -45,48 +45,48 @@ public class Friend {
       garbageValue = "8"
    )
    static int method180(int var0, Script var1, boolean var2) {
-      Widget var3 = class128.method2364(class32.field720[--class32.field715]);
+      Widget var3 = class128.method2364(class32.intStack[--class32.intStackSize]);
       if(var0 == 2600) {
-         class32.field720[++class32.field715 - 1] = var3.scrollX;
+         class32.intStack[++class32.intStackSize - 1] = var3.scrollX;
          return 1;
       } else if(var0 == 2601) {
-         class32.field720[++class32.field715 - 1] = var3.scrollY;
+         class32.intStack[++class32.intStackSize - 1] = var3.scrollY;
          return 1;
       } else if(var0 == 2602) {
          class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.text;
          return 1;
       } else if(var0 == 2603) {
-         class32.field720[++class32.field715 - 1] = var3.scrollWidth;
+         class32.intStack[++class32.intStackSize - 1] = var3.scrollWidth;
          return 1;
       } else if(var0 == 2604) {
-         class32.field720[++class32.field715 - 1] = var3.scrollHeight;
+         class32.intStack[++class32.intStackSize - 1] = var3.scrollHeight;
          return 1;
       } else if(var0 == 2605) {
-         class32.field720[++class32.field715 - 1] = var3.field2244;
+         class32.intStack[++class32.intStackSize - 1] = var3.field2244;
          return 1;
       } else if(var0 == 2606) {
-         class32.field720[++class32.field715 - 1] = var3.rotationX;
+         class32.intStack[++class32.intStackSize - 1] = var3.rotationX;
          return 1;
       } else if(var0 == 2607) {
-         class32.field720[++class32.field715 - 1] = var3.rotationY;
+         class32.intStack[++class32.intStackSize - 1] = var3.rotationY;
          return 1;
       } else if(var0 == 2608) {
-         class32.field720[++class32.field715 - 1] = var3.rotationZ;
+         class32.intStack[++class32.intStackSize - 1] = var3.rotationZ;
          return 1;
       } else if(var0 == 2609) {
-         class32.field720[++class32.field715 - 1] = var3.opacity;
+         class32.intStack[++class32.intStackSize - 1] = var3.opacity;
          return 1;
       } else if(var0 == 2610) {
-         class32.field720[++class32.field715 - 1] = var3.field2248;
+         class32.intStack[++class32.intStackSize - 1] = var3.field2248;
          return 1;
       } else if(var0 == 2611) {
-         class32.field720[++class32.field715 - 1] = var3.textColor;
+         class32.intStack[++class32.intStackSize - 1] = var3.textColor;
          return 1;
       } else if(var0 == 2612) {
-         class32.field720[++class32.field715 - 1] = var3.field2279;
+         class32.intStack[++class32.intStackSize - 1] = var3.field2279;
          return 1;
       } else if(var0 == 2613) {
-         class32.field720[++class32.field715 - 1] = var3.field2238.vmethod4163();
+         class32.intStack[++class32.intStackSize - 1] = var3.field2238.vmethod4163();
          return 1;
       } else {
          return 2;
@@ -227,18 +227,18 @@ public class Friend {
    static int method182(int var0, Script var1, boolean var2) {
       if(var0 == 3600) {
          if(Client.field554 == 0) {
-            class32.field720[++class32.field715 - 1] = -2;
+            class32.intStack[++class32.intStackSize - 1] = -2;
          } else if(Client.field554 == 1) {
-            class32.field720[++class32.field715 - 1] = -1;
+            class32.intStack[++class32.intStackSize - 1] = -1;
          } else {
-            class32.field720[++class32.field715 - 1] = Client.friendCount;
+            class32.intStack[++class32.intStackSize - 1] = Client.friendCount;
          }
 
          return 1;
       } else {
          int var3;
          if(var0 == 3601) {
-            var3 = class32.field720[--class32.field715];
+            var3 = class32.intStack[--class32.intStackSize];
             if(Client.field554 == 2 && var3 < Client.friendCount) {
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.friends[var3].name;
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.friends[var3].previousName;
@@ -249,20 +249,20 @@ public class Friend {
 
             return 1;
          } else if(var0 == 3602) {
-            var3 = class32.field720[--class32.field715];
+            var3 = class32.intStack[--class32.intStackSize];
             if(Client.field554 == 2 && var3 < Client.friendCount) {
-               class32.field720[++class32.field715 - 1] = Client.friends[var3].world;
+               class32.intStack[++class32.intStackSize - 1] = Client.friends[var3].world;
             } else {
-               class32.field720[++class32.field715 - 1] = 0;
+               class32.intStack[++class32.intStackSize - 1] = 0;
             }
 
             return 1;
          } else if(var0 == 3603) {
-            var3 = class32.field720[--class32.field715];
+            var3 = class32.intStack[--class32.intStackSize];
             if(Client.field554 == 2 && var3 < Client.friendCount) {
-               class32.field720[++class32.field715 - 1] = Client.friends[var3].rank;
+               class32.intStack[++class32.intStackSize - 1] = Client.friends[var3].rank;
             } else {
-               class32.field720[++class32.field715 - 1] = 0;
+               class32.intStack[++class32.intStackSize - 1] = 0;
             }
 
             return 1;
@@ -270,7 +270,7 @@ public class Friend {
             String var10;
             if(var0 == 3604) {
                var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
-               int var4 = class32.field720[--class32.field715];
+               int var4 = class32.intStack[--class32.intStackSize];
                Client.secretPacketBuffer1.putOpcode(91);
                Client.secretPacketBuffer1.putByte(class36.method753(var10) + 1);
                Client.secretPacketBuffer1.method2504(var10);
@@ -390,7 +390,7 @@ public class Friend {
                      }
                   }
 
-                  class32.field720[++class32.field715 - 1] = WidgetNode.method199(var10, false)?1:0;
+                  class32.intStack[++class32.intStackSize - 1] = WidgetNode.method199(var10, false)?1:0;
                   return 1;
                } else if(var0 == 3611) {
                   if(Client.field485 != null) {
@@ -402,14 +402,14 @@ public class Friend {
                   return 1;
                } else if(var0 == 3612) {
                   if(Client.field485 != null) {
-                     class32.field720[++class32.field715 - 1] = class85.clanChatCount;
+                     class32.intStack[++class32.intStackSize - 1] = class85.clanChatCount;
                   } else {
-                     class32.field720[++class32.field715 - 1] = 0;
+                     class32.intStack[++class32.intStackSize - 1] = 0;
                   }
 
                   return 1;
                } else if(var0 == 3613) {
-                  var3 = class32.field720[--class32.field715];
+                  var3 = class32.intStack[--class32.intStackSize];
                   if(Client.field485 != null && var3 < class85.clanChatCount) {
                      class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.clanMembers[var3].username;
                   } else {
@@ -418,32 +418,32 @@ public class Friend {
 
                   return 1;
                } else if(var0 == 3614) {
-                  var3 = class32.field720[--class32.field715];
+                  var3 = class32.intStack[--class32.intStackSize];
                   if(Client.field485 != null && var3 < class85.clanChatCount) {
-                     class32.field720[++class32.field715 - 1] = Client.clanMembers[var3].world;
+                     class32.intStack[++class32.intStackSize - 1] = Client.clanMembers[var3].world;
                   } else {
-                     class32.field720[++class32.field715 - 1] = 0;
+                     class32.intStack[++class32.intStackSize - 1] = 0;
                   }
 
                   return 1;
                } else if(var0 == 3615) {
-                  var3 = class32.field720[--class32.field715];
+                  var3 = class32.intStack[--class32.intStackSize];
                   if(Client.field485 != null && var3 < class85.clanChatCount) {
-                     class32.field720[++class32.field715 - 1] = Client.clanMembers[var3].rank;
+                     class32.intStack[++class32.intStackSize - 1] = Client.clanMembers[var3].rank;
                   } else {
-                     class32.field720[++class32.field715 - 1] = 0;
+                     class32.intStack[++class32.intStackSize - 1] = 0;
                   }
 
                   return 1;
                } else if(var0 == 3616) {
-                  class32.field720[++class32.field715 - 1] = Client.field332;
+                  class32.intStack[++class32.intStackSize - 1] = Client.field332;
                   return 1;
                } else if(var0 == 3617) {
                   var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
                   class125.method2354(var10);
                   return 1;
                } else if(var0 == 3618) {
-                  class32.field720[++class32.field715 - 1] = Player.field242;
+                  class32.intStack[++class32.intStackSize - 1] = Player.field242;
                   return 1;
                } else if(var0 == 3619) {
                   var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
@@ -455,14 +455,14 @@ public class Friend {
                   return 1;
                } else if(var0 == 3621) {
                   if(Client.field554 == 0) {
-                     class32.field720[++class32.field715 - 1] = -1;
+                     class32.intStack[++class32.intStackSize - 1] = -1;
                   } else {
-                     class32.field720[++class32.field715 - 1] = Client.ignoreCount;
+                     class32.intStack[++class32.intStackSize - 1] = Client.ignoreCount;
                   }
 
                   return 1;
                } else if(var0 == 3622) {
-                  var3 = class32.field720[--class32.field715];
+                  var3 = class32.intStack[--class32.intStackSize];
                   if(Client.field554 != 0 && var3 < Client.ignoreCount) {
                      class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.ignores[var3].name;
                      class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.ignores[var3].previousName;
@@ -478,7 +478,7 @@ public class Friend {
                      var10 = var10.substring(7);
                   }
 
-                  class32.field720[++class32.field715 - 1] = class2.method27(var10)?1:0;
+                  class32.intStack[++class32.intStackSize - 1] = class2.method27(var10)?1:0;
                   return 1;
                } else if(var0 != 3624) {
                   if(var0 == 3625) {
@@ -493,11 +493,11 @@ public class Friend {
                      return 2;
                   }
                } else {
-                  var3 = class32.field720[--class32.field715];
+                  var3 = class32.intStack[--class32.intStackSize];
                   if(Client.clanMembers != null && var3 < class85.clanChatCount && Client.clanMembers[var3].username.equalsIgnoreCase(class22.localPlayer.name)) {
-                     class32.field720[++class32.field715 - 1] = 1;
+                     class32.intStack[++class32.intStackSize - 1] = 1;
                   } else {
-                     class32.field720[++class32.field715 - 1] = 0;
+                     class32.intStack[++class32.intStackSize - 1] = 0;
                   }
 
                   return 1;

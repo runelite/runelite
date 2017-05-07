@@ -69,22 +69,22 @@ public class class103 implements Runnable {
    static int method1964(int var0, Script var1, boolean var2) {
       Widget var3 = var2?class200.field2894:Script.field942;
       if(var0 == 1500) {
-         class32.field720[++class32.field715 - 1] = var3.relativeX;
+         class32.intStack[++class32.intStackSize - 1] = var3.relativeX;
          return 1;
       } else if(var0 == 1501) {
-         class32.field720[++class32.field715 - 1] = var3.relativeY;
+         class32.intStack[++class32.intStackSize - 1] = var3.relativeY;
          return 1;
       } else if(var0 == 1502) {
-         class32.field720[++class32.field715 - 1] = var3.width;
+         class32.intStack[++class32.intStackSize - 1] = var3.width;
          return 1;
       } else if(var0 == 1503) {
-         class32.field720[++class32.field715 - 1] = var3.height;
+         class32.intStack[++class32.intStackSize - 1] = var3.height;
          return 1;
       } else if(var0 == 1504) {
-         class32.field720[++class32.field715 - 1] = var3.isHidden?1:0;
+         class32.intStack[++class32.intStackSize - 1] = var3.isHidden?1:0;
          return 1;
       } else if(var0 == 1505) {
-         class32.field720[++class32.field715 - 1] = var3.parentId;
+         class32.intStack[++class32.intStackSize - 1] = var3.parentId;
          return 1;
       } else {
          return 2;
@@ -257,9 +257,9 @@ public class class103 implements Runnable {
    static int method1990(int var0, Script var1, boolean var2) {
       int var3;
       if(var0 == 5504) {
-         class32.field715 -= 2;
-         var3 = class32.field720[class32.field715];
-         int var4 = class32.field720[class32.field715 + 1];
+         class32.intStackSize -= 2;
+         var3 = class32.intStack[class32.intStackSize];
+         int var4 = class32.intStack[class32.intStackSize + 1];
          if(!Client.field534) {
             Client.field366 = var3;
             Client.mapAngle = var4;
@@ -267,13 +267,13 @@ public class class103 implements Runnable {
 
          return 1;
       } else if(var0 == 5505) {
-         class32.field720[++class32.field715 - 1] = Client.field366;
+         class32.intStack[++class32.intStackSize - 1] = Client.field366;
          return 1;
       } else if(var0 == 5506) {
-         class32.field720[++class32.field715 - 1] = Client.mapAngle;
+         class32.intStack[++class32.intStackSize - 1] = Client.mapAngle;
          return 1;
       } else if(var0 == 5530) {
-         var3 = class32.field720[--class32.field715];
+         var3 = class32.intStack[--class32.intStackSize];
          if(var3 < 0) {
             var3 = 0;
          }
@@ -281,7 +281,7 @@ public class class103 implements Runnable {
          Client.field372 = var3;
          return 1;
       } else if(var0 == 5531) {
-         class32.field720[++class32.field715 - 1] = Client.field372;
+         class32.intStack[++class32.intStackSize - 1] = Client.field372;
          return 1;
       } else {
          return 2;

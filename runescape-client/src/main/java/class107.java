@@ -60,15 +60,15 @@ public class class107 {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var4 = class32.field720[--class32.field715];
+         var4 = class32.intStack[--class32.intStackSize];
          var3 = class128.method2364(var4);
       } else {
          var3 = var2?class200.field2894:Script.field942;
       }
 
       if(var0 == 1100) {
-         class32.field715 -= 2;
-         var3.scrollX = class32.field720[class32.field715];
+         class32.intStackSize -= 2;
+         var3.scrollX = class32.intStack[class32.intStackSize];
          if(var3.scrollX > var3.scrollWidth - var3.width) {
             var3.scrollX = var3.scrollWidth - var3.width;
          }
@@ -77,7 +77,7 @@ public class class107 {
             var3.scrollX = 0;
          }
 
-         var3.scrollY = class32.field720[class32.field715 + 1];
+         var3.scrollY = class32.intStack[class32.intStackSize + 1];
          if(var3.scrollY > var3.scrollHeight - var3.height) {
             var3.scrollY = var3.scrollHeight - var3.height;
          }
@@ -89,52 +89,52 @@ public class class107 {
          class124.method2350(var3);
          return 1;
       } else if(var0 == 1101) {
-         var3.textColor = class32.field720[--class32.field715];
+         var3.textColor = class32.intStack[--class32.intStackSize];
          class124.method2350(var3);
          return 1;
       } else if(var0 == 1102) {
-         var3.field2236 = class32.field720[--class32.field715] == 1;
+         var3.field2236 = class32.intStack[--class32.intStackSize] == 1;
          class124.method2350(var3);
          return 1;
       } else if(var0 == 1103) {
-         var3.opacity = class32.field720[--class32.field715];
+         var3.opacity = class32.intStack[--class32.intStackSize];
          class124.method2350(var3);
          return 1;
       } else if(var0 == 1104) {
-         var3.field2282 = class32.field720[--class32.field715];
+         var3.field2282 = class32.intStack[--class32.intStackSize];
          class124.method2350(var3);
          return 1;
       } else if(var0 == 1105) {
-         var3.spriteId = class32.field720[--class32.field715];
+         var3.spriteId = class32.intStack[--class32.intStackSize];
          class124.method2350(var3);
          return 1;
       } else if(var0 == 1106) {
-         var3.field2196 = class32.field720[--class32.field715];
+         var3.field2196 = class32.intStack[--class32.intStackSize];
          class124.method2350(var3);
          return 1;
       } else if(var0 == 1107) {
-         var3.field2245 = class32.field720[--class32.field715] == 1;
+         var3.field2245 = class32.intStack[--class32.intStackSize] == 1;
          class124.method2350(var3);
          return 1;
       } else if(var0 == 1108) {
          var3.modelType = 1;
-         var3.modelId = class32.field720[--class32.field715];
+         var3.modelId = class32.intStack[--class32.intStackSize];
          class124.method2350(var3);
          return 1;
       } else if(var0 == 1109) {
-         class32.field715 -= 6;
-         var3.field2256 = class32.field720[class32.field715];
-         var3.field2257 = class32.field720[class32.field715 + 1];
-         var3.rotationX = class32.field720[class32.field715 + 2];
-         var3.rotationZ = class32.field720[class32.field715 + 3];
-         var3.rotationY = class32.field720[class32.field715 + 4];
-         var3.field2244 = class32.field720[class32.field715 + 5];
+         class32.intStackSize -= 6;
+         var3.field2256 = class32.intStack[class32.intStackSize];
+         var3.field2257 = class32.intStack[class32.intStackSize + 1];
+         var3.rotationX = class32.intStack[class32.intStackSize + 2];
+         var3.rotationZ = class32.intStack[class32.intStackSize + 3];
+         var3.rotationY = class32.intStack[class32.intStackSize + 4];
+         var3.field2244 = class32.intStack[class32.intStackSize + 5];
          class124.method2350(var3);
          return 1;
       } else {
          int var5;
          if(var0 == 1110) {
-            var5 = class32.field720[--class32.field715];
+            var5 = class32.intStack[--class32.intStackSize];
             if(var5 != var3.field2254) {
                var3.field2254 = var5;
                var3.field2329 = 0;
@@ -144,7 +144,7 @@ public class class107 {
 
             return 1;
          } else if(var0 == 1111) {
-            var3.field2230 = class32.field720[--class32.field715] == 1;
+            var3.field2230 = class32.intStack[--class32.intStackSize] == 1;
             class124.method2350(var3);
             return 1;
          } else if(var0 == 1112) {
@@ -156,40 +156,40 @@ public class class107 {
 
             return 1;
          } else if(var0 == 1113) {
-            var3.fontId = class32.field720[--class32.field715];
+            var3.fontId = class32.intStack[--class32.intStackSize];
             class124.method2350(var3);
             return 1;
          } else if(var0 == 1114) {
-            class32.field715 -= 3;
-            var3.field2270 = class32.field720[class32.field715];
-            var3.field2271 = class32.field720[class32.field715 + 1];
-            var3.field2287 = class32.field720[class32.field715 + 2];
+            class32.intStackSize -= 3;
+            var3.field2270 = class32.intStack[class32.intStackSize];
+            var3.field2271 = class32.intStack[class32.intStackSize + 1];
+            var3.field2287 = class32.intStack[class32.intStackSize + 2];
             class124.method2350(var3);
             return 1;
          } else if(var0 == 1115) {
-            var3.field2272 = class32.field720[--class32.field715] == 1;
+            var3.field2272 = class32.intStack[--class32.intStackSize] == 1;
             class124.method2350(var3);
             return 1;
          } else if(var0 == 1116) {
-            var3.borderThickness = class32.field720[--class32.field715];
+            var3.borderThickness = class32.intStack[--class32.intStackSize];
             class124.method2350(var3);
             return 1;
          } else if(var0 == 1117) {
-            var3.sprite2 = class32.field720[--class32.field715];
+            var3.sprite2 = class32.intStack[--class32.intStackSize];
             class124.method2350(var3);
             return 1;
          } else if(var0 == 1118) {
-            var3.flippedVertically = class32.field720[--class32.field715] == 1;
+            var3.flippedVertically = class32.intStack[--class32.intStackSize] == 1;
             class124.method2350(var3);
             return 1;
          } else if(var0 == 1119) {
-            var3.flippedHorizontally = class32.field720[--class32.field715] == 1;
+            var3.flippedHorizontally = class32.intStack[--class32.intStackSize] == 1;
             class124.method2350(var3);
             return 1;
          } else if(var0 == 1120) {
-            class32.field715 -= 2;
-            var3.scrollWidth = class32.field720[class32.field715];
-            var3.scrollHeight = class32.field720[class32.field715 + 1];
+            class32.intStackSize -= 2;
+            var3.scrollWidth = class32.intStack[class32.intStackSize];
+            var3.scrollHeight = class32.intStack[class32.intStackSize + 1];
             class124.method2350(var3);
             if(var4 != -1 && var3.type == 0) {
                class164.method3116(class133.widgets[var4 >> 16], var3, false);
@@ -202,19 +202,19 @@ public class class107 {
             class124.method2350(var3);
             return 1;
          } else if(var0 == 1122) {
-            var3.field2243 = class32.field720[--class32.field715];
+            var3.field2243 = class32.intStack[--class32.intStackSize];
             class124.method2350(var3);
             return 1;
          } else if(var0 == 1123) {
-            var3.field2279 = class32.field720[--class32.field715];
+            var3.field2279 = class32.intStack[--class32.intStackSize];
             class124.method2350(var3);
             return 1;
          } else if(var0 == 1124) {
-            var3.field2248 = class32.field720[--class32.field715];
+            var3.field2248 = class32.intStack[--class32.intStackSize];
             class124.method2350(var3);
             return 1;
          } else if(var0 == 1125) {
-            var5 = class32.field720[--class32.field715];
+            var5 = class32.intStack[--class32.intStackSize];
             class225[] var6 = new class225[]{class225.field3224, class225.field3222, class225.field3223, class225.field3220, class225.field3221};
             class225 var7 = (class225)class32.method708(var6, var5);
             if(var7 != null) {

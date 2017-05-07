@@ -140,12 +140,12 @@ public class class49 extends Renderable {
             int var8;
             int var9;
             if(var7 > 0) {
-               var1.field937 = var1.method905(var7);
+               var1.switches = var1.method905(var7);
 
                for(var8 = 0; var8 < var7; ++var8) {
                   var9 = var3.readUnsignedShort();
                   class142 var10 = new class142(CombatInfo1.method596(var9));
-                  var1.field937[var8] = var10;
+                  var1.switches[var8] = var10;
 
                   while(var9-- > 0) {
                      int var11 = var3.readInt();

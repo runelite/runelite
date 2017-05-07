@@ -36,7 +36,8 @@ public class Script extends CacheableNode {
    @Export("stringStackCount")
    int stringStackCount;
    @ObfuscatedName("l")
-   class142[] field937;
+   @Export("switches")
+   class142[] switches;
    @ObfuscatedName("ea")
    static SpritePixels[] field938;
    @ObfuscatedName("bq")
@@ -74,21 +75,21 @@ public class Script extends CacheableNode {
    static void method910(class18 var0, int var1) {
       Object[] var2 = var0.field196;
       int var3 = ((Integer)var2[0]).intValue();
-      Script var4 = class49.method918(var3);
-      if(var4 != null) {
-         class32.field715 = 0;
+      Script script = class49.method918(var3);
+      if(script != null) {
+         class32.intStackSize = 0;
          class32.scriptStringStackSize = 0;
-         int var5 = -1;
-         int[] var6 = var4.instructions;
-         int[] var7 = var4.intOperands;
+         int pc = -1;
+         int[] instructions = script.instructions;
+         int[] intOperands = script.intOperands;
          byte var8 = -1;
          class32.scriptStackCount = 0;
 
          int var11;
          try {
-            class32.field718 = new int[var4.localIntCount];
+            class32.field718 = new int[script.localIntCount];
             int var9 = 0;
-            class32.field717 = new String[var4.localStringCount];
+            class32.field717 = new String[script.localStringCount];
             int var10 = 0;
 
             int var12;
@@ -178,8 +179,8 @@ public class Script extends CacheableNode {
                                                                                              throw new RuntimeException();
                                                                                           }
 
-                                                                                          ++var5;
-                                                                                          int var54 = var6[var5];
+                                                                                          ++pc;
+                                                                                          int var54 = instructions[pc];
                                                                                           int var15;
                                                                                           int var17;
                                                                                           int var18;
@@ -215,9 +216,9 @@ public class Script extends CacheableNode {
                                                                                                                                                                if(var54 != 42) {
                                                                                                                                                                   if(var54 != 43) {
                                                                                                                                                                      if(var54 == 44) {
-                                                                                                                                                                        var12 = var7[var5] >> 16;
-                                                                                                                                                                        var37 = var7[var5] & '\uffff';
-                                                                                                                                                                        int var92 = class32.field720[--class32.field715];
+                                                                                                                                                                        var12 = intOperands[pc] >> 16;
+                                                                                                                                                                        var37 = intOperands[pc] & '\uffff';
+                                                                                                                                                                        int var92 = class32.intStack[--class32.intStackSize];
                                                                                                                                                                         if(var92 >= 0 && var92 <= 5000) {
                                                                                                                                                                            class32.field719[var12] = var92;
                                                                                                                                                                            byte var77 = -1;
@@ -239,74 +240,74 @@ public class Script extends CacheableNode {
 
                                                                                                                                                                         throw new RuntimeException();
                                                                                                                                                                      } else if(var54 == 45) {
-                                                                                                                                                                        var12 = var7[var5];
-                                                                                                                                                                        var37 = class32.field720[--class32.field715];
+                                                                                                                                                                        var12 = intOperands[pc];
+                                                                                                                                                                        var37 = class32.intStack[--class32.intStackSize];
                                                                                                                                                                         if(var37 < 0 || var37 >= class32.field719[var12]) {
                                                                                                                                                                            throw new RuntimeException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class32.field720[++class32.field715 - 1] = class32.field728[var12][var37];
+                                                                                                                                                                        class32.intStack[++class32.intStackSize - 1] = class32.field728[var12][var37];
                                                                                                                                                                      } else if(var54 == 46) {
-                                                                                                                                                                        var12 = var7[var5];
-                                                                                                                                                                        class32.field715 -= 2;
-                                                                                                                                                                        var37 = class32.field720[class32.field715];
+                                                                                                                                                                        var12 = intOperands[pc];
+                                                                                                                                                                        class32.intStackSize -= 2;
+                                                                                                                                                                        var37 = class32.intStack[class32.intStackSize];
                                                                                                                                                                         if(var37 < 0 || var37 >= class32.field719[var12]) {
                                                                                                                                                                            throw new RuntimeException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class32.field728[var12][var37] = class32.field720[class32.field715 + 1];
+                                                                                                                                                                        class32.field728[var12][var37] = class32.intStack[class32.intStackSize + 1];
                                                                                                                                                                      } else if(var54 == 47) {
-                                                                                                                                                                        var32 = XClanMember.chatMessages.method886(var7[var5]);
+                                                                                                                                                                        var32 = XClanMember.chatMessages.method886(intOperands[pc]);
                                                                                                                                                                         if(var32 == null) {
                                                                                                                                                                            var32 = "null";
                                                                                                                                                                         }
 
                                                                                                                                                                         class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var32;
                                                                                                                                                                      } else if(var54 == 48) {
-                                                                                                                                                                        XClanMember.chatMessages.method875(var7[var5], class32.scriptStringStack[--class32.scriptStringStackSize]);
+                                                                                                                                                                        XClanMember.chatMessages.method875(intOperands[pc], class32.scriptStringStack[--class32.scriptStringStackSize]);
                                                                                                                                                                      } else {
                                                                                                                                                                         if(var54 != 60) {
                                                                                                                                                                            throw new IllegalStateException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class142 var78 = var4.field937[var7[var5]];
-                                                                                                                                                                        class154 var57 = (class154)var78.method2728((long)class32.field720[--class32.field715]);
+                                                                                                                                                                        class142 var78 = script.switches[intOperands[pc]];
+                                                                                                                                                                        class154 var57 = (class154)var78.method2728((long)class32.intStack[--class32.intStackSize]);
                                                                                                                                                                         if(var57 != null) {
-                                                                                                                                                                           var5 += var57.field2046;
+                                                                                                                                                                           pc += var57.field2046;
                                                                                                                                                                         }
                                                                                                                                                                      }
                                                                                                                                                                   } else {
-                                                                                                                                                                     XClanMember.chatMessages.method858(var7[var5], class32.field720[--class32.field715]);
+                                                                                                                                                                     XClanMember.chatMessages.method858(intOperands[pc], class32.intStack[--class32.intStackSize]);
                                                                                                                                                                   }
                                                                                                                                                                } else {
-                                                                                                                                                                  class32.field720[++class32.field715 - 1] = XClanMember.chatMessages.method859(var7[var5]);
+                                                                                                                                                                  class32.intStack[++class32.intStackSize - 1] = XClanMember.chatMessages.method859(intOperands[pc]);
                                                                                                                                                                }
                                                                                                                                                             } else {
-                                                                                                                                                               var12 = var7[var5];
+                                                                                                                                                               var12 = intOperands[pc];
                                                                                                                                                                Script var56 = class49.method918(var12);
                                                                                                                                                                int[] var55 = new int[var56.localIntCount];
                                                                                                                                                                String[] var91 = new String[var56.localStringCount];
 
                                                                                                                                                                for(var33 = 0; var33 < var56.intStackCount; ++var33) {
-                                                                                                                                                                  var55[var33] = class32.field720[var33 + (class32.field715 - var56.intStackCount)];
+                                                                                                                                                                  var55[var33] = class32.intStack[var33 + (class32.intStackSize - var56.intStackCount)];
                                                                                                                                                                }
 
                                                                                                                                                                for(var33 = 0; var33 < var56.stringStackCount; ++var33) {
                                                                                                                                                                   var91[var33] = class32.scriptStringStack[var33 + (class32.scriptStringStackSize - var56.stringStackCount)];
                                                                                                                                                                }
 
-                                                                                                                                                               class32.field715 -= var56.intStackCount;
+                                                                                                                                                               class32.intStackSize -= var56.intStackCount;
                                                                                                                                                                class32.scriptStringStackSize -= var56.stringStackCount;
                                                                                                                                                                ScriptState var68 = new ScriptState();
-                                                                                                                                                               var68.field113 = var4;
-                                                                                                                                                               var68.field118 = var5;
+                                                                                                                                                               var68.field113 = script;
+                                                                                                                                                               var68.field118 = pc;
                                                                                                                                                                var68.field114 = class32.field718;
                                                                                                                                                                var68.field115 = class32.field717;
                                                                                                                                                                class32.scriptStack[++class32.scriptStackCount - 1] = var68;
-                                                                                                                                                               var4 = var56;
-                                                                                                                                                               var6 = var56.instructions;
-                                                                                                                                                               var7 = var56.intOperands;
-                                                                                                                                                               var5 = -1;
+                                                                                                                                                               script = var56;
+                                                                                                                                                               instructions = var56.instructions;
+                                                                                                                                                               intOperands = var56.intOperands;
+                                                                                                                                                               pc = -1;
                                                                                                                                                                class32.field718 = var55;
                                                                                                                                                                class32.field717 = var91;
                                                                                                                                                             }
@@ -314,10 +315,10 @@ public class Script extends CacheableNode {
                                                                                                                                                             --class32.scriptStringStackSize;
                                                                                                                                                          }
                                                                                                                                                       } else {
-                                                                                                                                                         --class32.field715;
+                                                                                                                                                         --class32.intStackSize;
                                                                                                                                                       }
                                                                                                                                                    } else {
-                                                                                                                                                      var12 = var7[var5];
+                                                                                                                                                      var12 = intOperands[pc];
                                                                                                                                                       class32.scriptStringStackSize -= var12;
                                                                                                                                                       String[] var14 = class32.scriptStringStack;
                                                                                                                                                       var15 = class32.scriptStringStackSize;
@@ -361,36 +362,36 @@ public class Script extends CacheableNode {
                                                                                                                                                       class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var13;
                                                                                                                                                    }
                                                                                                                                                 } else {
-                                                                                                                                                   class32.field717[var7[var5]] = class32.scriptStringStack[--class32.scriptStringStackSize];
+                                                                                                                                                   class32.field717[intOperands[pc]] = class32.scriptStringStack[--class32.scriptStringStackSize];
                                                                                                                                                 }
                                                                                                                                              } else {
-                                                                                                                                                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class32.field717[var7[var5]];
+                                                                                                                                                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class32.field717[intOperands[pc]];
                                                                                                                                              }
                                                                                                                                           } else {
-                                                                                                                                             class32.field718[var7[var5]] = class32.field720[--class32.field715];
+                                                                                                                                             class32.field718[intOperands[pc]] = class32.intStack[--class32.intStackSize];
                                                                                                                                           }
                                                                                                                                        } else {
-                                                                                                                                          class32.field720[++class32.field715 - 1] = class32.field718[var7[var5]];
+                                                                                                                                          class32.intStack[++class32.intStackSize - 1] = class32.field718[intOperands[pc]];
                                                                                                                                        }
                                                                                                                                     } else {
-                                                                                                                                       class32.field715 -= 2;
-                                                                                                                                       if(class32.field720[class32.field715] >= class32.field720[class32.field715 + 1]) {
-                                                                                                                                          var5 += var7[var5];
+                                                                                                                                       class32.intStackSize -= 2;
+                                                                                                                                       if(class32.intStack[class32.intStackSize] >= class32.intStack[class32.intStackSize + 1]) {
+                                                                                                                                          pc += intOperands[pc];
                                                                                                                                        }
                                                                                                                                     }
                                                                                                                                  } else {
-                                                                                                                                    class32.field715 -= 2;
-                                                                                                                                    if(class32.field720[class32.field715] <= class32.field720[class32.field715 + 1]) {
-                                                                                                                                       var5 += var7[var5];
+                                                                                                                                    class32.intStackSize -= 2;
+                                                                                                                                    if(class32.intStack[class32.intStackSize] <= class32.intStack[class32.intStackSize + 1]) {
+                                                                                                                                       pc += intOperands[pc];
                                                                                                                                     }
                                                                                                                                  }
                                                                                                                               } else {
-                                                                                                                                 var12 = var7[var5];
-                                                                                                                                 class88.method1894(var12, class32.field720[--class32.field715]);
+                                                                                                                                 var12 = intOperands[pc];
+                                                                                                                                 class88.method1894(var12, class32.intStack[--class32.intStackSize]);
                                                                                                                               }
                                                                                                                            } else {
-                                                                                                                              var12 = var7[var5];
-                                                                                                                              class32.field720[++class32.field715 - 1] = class59.method1140(var12);
+                                                                                                                              var12 = intOperands[pc];
+                                                                                                                              class32.intStack[++class32.intStackSize - 1] = class59.method1140(var12);
                                                                                                                            }
                                                                                                                         } else {
                                                                                                                            if(class32.scriptStackCount == 0) {
@@ -398,97 +399,97 @@ public class Script extends CacheableNode {
                                                                                                                            }
 
                                                                                                                            ScriptState var76 = class32.scriptStack[--class32.scriptStackCount];
-                                                                                                                           var4 = var76.field113;
-                                                                                                                           var6 = var4.instructions;
-                                                                                                                           var7 = var4.intOperands;
-                                                                                                                           var5 = var76.field118;
+                                                                                                                           script = var76.field113;
+                                                                                                                           instructions = script.instructions;
+                                                                                                                           intOperands = script.intOperands;
+                                                                                                                           pc = var76.field118;
                                                                                                                            class32.field718 = var76.field114;
                                                                                                                            class32.field717 = var76.field115;
                                                                                                                         }
                                                                                                                      } else {
-                                                                                                                        class32.field715 -= 2;
-                                                                                                                        if(class32.field720[class32.field715] > class32.field720[class32.field715 + 1]) {
-                                                                                                                           var5 += var7[var5];
+                                                                                                                        class32.intStackSize -= 2;
+                                                                                                                        if(class32.intStack[class32.intStackSize] > class32.intStack[class32.intStackSize + 1]) {
+                                                                                                                           pc += intOperands[pc];
                                                                                                                         }
                                                                                                                      }
                                                                                                                   } else {
-                                                                                                                     class32.field715 -= 2;
-                                                                                                                     if(class32.field720[class32.field715] < class32.field720[class32.field715 + 1]) {
-                                                                                                                        var5 += var7[var5];
+                                                                                                                     class32.intStackSize -= 2;
+                                                                                                                     if(class32.intStack[class32.intStackSize] < class32.intStack[class32.intStackSize + 1]) {
+                                                                                                                        pc += intOperands[pc];
                                                                                                                      }
                                                                                                                   }
                                                                                                                } else {
-                                                                                                                  class32.field715 -= 2;
-                                                                                                                  if(class32.field720[class32.field715 + 1] == class32.field720[class32.field715]) {
-                                                                                                                     var5 += var7[var5];
+                                                                                                                  class32.intStackSize -= 2;
+                                                                                                                  if(class32.intStack[class32.intStackSize + 1] == class32.intStack[class32.intStackSize]) {
+                                                                                                                     pc += intOperands[pc];
                                                                                                                   }
                                                                                                                }
                                                                                                             } else {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               if(class32.field720[class32.field715 + 1] != class32.field720[class32.field715]) {
-                                                                                                                  var5 += var7[var5];
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               if(class32.intStack[class32.intStackSize + 1] != class32.intStack[class32.intStackSize]) {
+                                                                                                                  pc += intOperands[pc];
                                                                                                                }
                                                                                                             }
                                                                                                          } else {
-                                                                                                            var5 += var7[var5];
+                                                                                                            pc += intOperands[pc];
                                                                                                          }
                                                                                                       } else {
-                                                                                                         class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var4.stringOperands[var5];
+                                                                                                         class32.scriptStringStack[++class32.scriptStringStackSize - 1] = script.stringOperands[pc];
                                                                                                       }
                                                                                                    } else {
-                                                                                                      var12 = var7[var5];
-                                                                                                      class167.widgetSettings[var12] = class32.field720[--class32.field715];
+                                                                                                      var12 = intOperands[pc];
+                                                                                                      class167.widgetSettings[var12] = class32.intStack[--class32.intStackSize];
                                                                                                       class167.method3139(var12);
                                                                                                    }
                                                                                                 } else {
-                                                                                                   var12 = var7[var5];
-                                                                                                   class32.field720[++class32.field715 - 1] = class167.widgetSettings[var12];
+                                                                                                   var12 = intOperands[pc];
+                                                                                                   class32.intStack[++class32.intStackSize - 1] = class167.widgetSettings[var12];
                                                                                                 }
                                                                                              } else {
-                                                                                                class32.field720[++class32.field715 - 1] = var7[var5];
+                                                                                                class32.intStack[++class32.intStackSize - 1] = intOperands[pc];
                                                                                              }
                                                                                           } else {
                                                                                              boolean var61;
-                                                                                             if(var4.intOperands[var5] == 1) {
+                                                                                             if(script.intOperands[pc] == 1) {
                                                                                                 var61 = true;
                                                                                              } else {
                                                                                                 var61 = false;
                                                                                              }
 
                                                                                              if(var54 < 1000) {
-                                                                                                var37 = class179.method3274(var54, var4, var61);
+                                                                                                var37 = class179.method3274(var54, script, var61);
                                                                                              } else if(var54 < 1100) {
-                                                                                                var37 = class45.method850(var54, var4, var61);
+                                                                                                var37 = class45.method850(var54, script, var61);
                                                                                              } else if(var54 < 1200) {
-                                                                                                var37 = class107.method2057(var54, var4, var61);
+                                                                                                var37 = class107.method2057(var54, script, var61);
                                                                                              } else if(var54 < 1300) {
-                                                                                                var37 = XClanMember.method255(var54, var4, var61);
+                                                                                                var37 = XClanMember.method255(var54, script, var61);
                                                                                              } else if(var54 < 1400) {
-                                                                                                var37 = class125.method2355(var54, var4, var61);
+                                                                                                var37 = class125.method2355(var54, script, var61);
                                                                                              } else if(var54 < 1500) {
-                                                                                                var37 = class57.method1082(var54, var4, var61);
+                                                                                                var37 = class57.method1082(var54, script, var61);
                                                                                              } else if(var54 < 1600) {
-                                                                                                var37 = class103.method1964(var54, var4, var61);
+                                                                                                var37 = class103.method1964(var54, script, var61);
                                                                                              } else if(var54 < 1700) {
-                                                                                                var37 = class44.method834(var54, var4, var61);
+                                                                                                var37 = class44.method834(var54, script, var61);
                                                                                              } else {
                                                                                                 Widget var34;
                                                                                                 byte var38;
                                                                                                 if(var54 < 1800) {
                                                                                                    var34 = var61?class200.field2894:field942;
                                                                                                    if(var54 == 1700) {
-                                                                                                      class32.field720[++class32.field715 - 1] = var34.item;
+                                                                                                      class32.intStack[++class32.intStackSize - 1] = var34.item;
                                                                                                       var38 = 1;
                                                                                                    } else if(var54 == 1701) {
                                                                                                       if(var34.item != -1) {
-                                                                                                         class32.field720[++class32.field715 - 1] = var34.stackSize;
+                                                                                                         class32.intStack[++class32.intStackSize - 1] = var34.stackSize;
                                                                                                       } else {
-                                                                                                         class32.field720[++class32.field715 - 1] = 0;
+                                                                                                         class32.intStack[++class32.intStackSize - 1] = 0;
                                                                                                       }
 
                                                                                                       var38 = 1;
                                                                                                    } else if(var54 == 1702) {
-                                                                                                      class32.field720[++class32.field715 - 1] = var34.index;
+                                                                                                      class32.intStack[++class32.intStackSize - 1] = var34.index;
                                                                                                       var38 = 1;
                                                                                                    } else {
                                                                                                       var38 = 2;
@@ -496,51 +497,51 @@ public class Script extends CacheableNode {
 
                                                                                                    var37 = var38;
                                                                                                 } else if(var54 < 1900) {
-                                                                                                   var37 = class16.method191(var54, var4, var61);
+                                                                                                   var37 = class16.method191(var54, script, var61);
                                                                                                 } else if(var54 < 2000) {
-                                                                                                   var37 = CombatInfo2.method3560(var54, var4, var61);
+                                                                                                   var37 = CombatInfo2.method3560(var54, script, var61);
                                                                                                 } else if(var54 < 2100) {
-                                                                                                   var37 = class45.method850(var54, var4, var61);
+                                                                                                   var37 = class45.method850(var54, script, var61);
                                                                                                 } else if(var54 < 2200) {
-                                                                                                   var37 = class107.method2057(var54, var4, var61);
+                                                                                                   var37 = class107.method2057(var54, script, var61);
                                                                                                 } else if(var54 < 2300) {
-                                                                                                   var37 = XClanMember.method255(var54, var4, var61);
+                                                                                                   var37 = XClanMember.method255(var54, script, var61);
                                                                                                 } else if(var54 < 2400) {
-                                                                                                   var37 = class125.method2355(var54, var4, var61);
+                                                                                                   var37 = class125.method2355(var54, script, var61);
                                                                                                 } else if(var54 < 2500) {
-                                                                                                   var37 = class57.method1082(var54, var4, var61);
+                                                                                                   var37 = class57.method1082(var54, script, var61);
                                                                                                 } else if(var54 < 2600) {
-                                                                                                   var37 = FrameMap.method1719(var54, var4, var61);
+                                                                                                   var37 = FrameMap.method1719(var54, script, var61);
                                                                                                 } else if(var54 < 2700) {
-                                                                                                   var37 = Friend.method180(var54, var4, var61);
+                                                                                                   var37 = Friend.method180(var54, script, var61);
                                                                                                 } else {
                                                                                                    Widget var36;
                                                                                                    if(var54 < 2800) {
                                                                                                       if(var54 == 2700) {
-                                                                                                         var36 = class128.method2364(class32.field720[--class32.field715]);
-                                                                                                         class32.field720[++class32.field715 - 1] = var36.item;
+                                                                                                         var36 = class128.method2364(class32.intStack[--class32.intStackSize]);
+                                                                                                         class32.intStack[++class32.intStackSize - 1] = var36.item;
                                                                                                          var38 = 1;
                                                                                                       } else if(var54 == 2701) {
-                                                                                                         var36 = class128.method2364(class32.field720[--class32.field715]);
+                                                                                                         var36 = class128.method2364(class32.intStack[--class32.intStackSize]);
                                                                                                          if(var36.item != -1) {
-                                                                                                            class32.field720[++class32.field715 - 1] = var36.stackSize;
+                                                                                                            class32.intStack[++class32.intStackSize - 1] = var36.stackSize;
                                                                                                          } else {
-                                                                                                            class32.field720[++class32.field715 - 1] = 0;
+                                                                                                            class32.intStack[++class32.intStackSize - 1] = 0;
                                                                                                          }
 
                                                                                                          var38 = 1;
                                                                                                       } else if(var54 == 2702) {
-                                                                                                         var15 = class32.field720[--class32.field715];
+                                                                                                         var15 = class32.intStack[--class32.intStackSize];
                                                                                                          WidgetNode var16 = (WidgetNode)Client.componentTable.method2773((long)var15);
                                                                                                          if(var16 != null) {
-                                                                                                            class32.field720[++class32.field715 - 1] = 1;
+                                                                                                            class32.intStack[++class32.intStackSize - 1] = 1;
                                                                                                          } else {
-                                                                                                            class32.field720[++class32.field715 - 1] = 0;
+                                                                                                            class32.intStack[++class32.intStackSize - 1] = 0;
                                                                                                          }
 
                                                                                                          var38 = 1;
                                                                                                       } else if(var54 == 2706) {
-                                                                                                         class32.field720[++class32.field715 - 1] = Client.widgetRoot;
+                                                                                                         class32.intStack[++class32.intStackSize - 1] = Client.widgetRoot;
                                                                                                          var38 = 1;
                                                                                                       } else {
                                                                                                          var38 = 2;
@@ -548,9 +549,9 @@ public class Script extends CacheableNode {
 
                                                                                                       var37 = var38;
                                                                                                    } else if(var54 < 2900) {
-                                                                                                      var36 = class128.method2364(class32.field720[--class32.field715]);
+                                                                                                      var36 = class128.method2364(class32.intStack[--class32.intStackSize]);
                                                                                                       if(var54 == 2800) {
-                                                                                                         class32.field720[++class32.field715 - 1] = CombatInfo2.method3540(class103.method1988(var36));
+                                                                                                         class32.intStack[++class32.intStackSize - 1] = CombatInfo2.method3540(class103.method1988(var36));
                                                                                                          var38 = 1;
                                                                                                       } else if(var54 != 2801) {
                                                                                                          if(var54 == 2802) {
@@ -565,7 +566,7 @@ public class Script extends CacheableNode {
                                                                                                             var38 = 2;
                                                                                                          }
                                                                                                       } else {
-                                                                                                         var33 = class32.field720[--class32.field715];
+                                                                                                         var33 = class32.intStack[--class32.intStackSize];
                                                                                                          --var33;
                                                                                                          if(var36.actions != null && var33 < var36.actions.length && var36.actions[var33] != null) {
                                                                                                             class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var36.actions[var33];
@@ -578,7 +579,7 @@ public class Script extends CacheableNode {
 
                                                                                                       var37 = var38;
                                                                                                    } else if(var54 < 3000) {
-                                                                                                      var37 = CombatInfo2.method3560(var54, var4, var61);
+                                                                                                      var37 = CombatInfo2.method3560(var54, script, var61);
                                                                                                    } else {
                                                                                                       int var39;
                                                                                                       boolean var80;
@@ -589,8 +590,8 @@ public class Script extends CacheableNode {
                                                                                                             WidgetNode.sendGameMessage(0, "", var86);
                                                                                                             var38 = 1;
                                                                                                          } else if(var54 == 3101) {
-                                                                                                            class32.field715 -= 2;
-                                                                                                            Player.method250(class22.localPlayer, class32.field720[class32.field715], class32.field720[class32.field715 + 1]);
+                                                                                                            class32.intStackSize -= 2;
+                                                                                                            Player.method250(class22.localPlayer, class32.intStack[class32.intStackSize], class32.intStack[class32.intStackSize + 1]);
                                                                                                             var38 = 1;
                                                                                                          } else if(var54 == 3103) {
                                                                                                             Client.secretPacketBuffer1.putOpcode(197);
@@ -638,42 +639,42 @@ public class Script extends CacheableNode {
                                                                                                             var38 = 1;
                                                                                                          } else if(var54 != 3107) {
                                                                                                             if(var54 == 3108) {
-                                                                                                               class32.field715 -= 3;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
-                                                                                                               var17 = class32.field720[class32.field715 + 2];
+                                                                                                               class32.intStackSize -= 3;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                               var17 = class32.intStack[class32.intStackSize + 2];
                                                                                                                var34 = class128.method2364(var17);
                                                                                                                class49.method919(var34, var15, var33);
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3109) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
                                                                                                                Widget var40 = var61?class200.field2894:field942;
                                                                                                                class49.method919(var40, var15, var33);
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3110) {
-                                                                                                               CombatInfo1.field662 = class32.field720[--class32.field715] == 1;
+                                                                                                               CombatInfo1.field662 = class32.intStack[--class32.intStackSize] == 1;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3111) {
-                                                                                                               class32.field720[++class32.field715 - 1] = Actor.field656.field690?1:0;
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = Actor.field656.field690?1:0;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3112) {
-                                                                                                               Actor.field656.field690 = class32.field720[--class32.field715] == 1;
+                                                                                                               Actor.field656.field690 = class32.intStack[--class32.intStackSize] == 1;
                                                                                                                Renderable.method1896();
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3113) {
                                                                                                                var86 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                                                                                                               var80 = class32.field720[--class32.field715] == 1;
+                                                                                                               var80 = class32.intStack[--class32.intStackSize] == 1;
                                                                                                                class128.method2366(var86, var80, "openjs", false);
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3115) {
-                                                                                                               var15 = class32.field720[--class32.field715];
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
                                                                                                                Client.secretPacketBuffer1.putOpcode(50);
                                                                                                                Client.secretPacketBuffer1.putShort(var15);
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3116) {
-                                                                                                               var15 = class32.field720[--class32.field715];
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
                                                                                                                class32.scriptStringStackSize -= 2;
                                                                                                                var58 = class32.scriptStringStack[class32.scriptStringStackSize];
                                                                                                                String var88 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
@@ -690,13 +691,13 @@ public class Script extends CacheableNode {
                                                                                                                   var38 = 1;
                                                                                                                }
                                                                                                             } else if(var54 == 3117) {
-                                                                                                               Client.field432 = class32.field720[--class32.field715] == 1;
+                                                                                                               Client.field432 = class32.intStack[--class32.intStackSize] == 1;
                                                                                                                var38 = 1;
                                                                                                             } else {
                                                                                                                var38 = 2;
                                                                                                             }
                                                                                                          } else {
-                                                                                                            var15 = class32.field720[--class32.field715];
+                                                                                                            var15 = class32.intStack[--class32.intStackSize];
                                                                                                             var58 = class32.scriptStringStack[--class32.scriptStringStackSize];
                                                                                                             var17 = class45.field891;
                                                                                                             int[] var79 = class45.field894;
@@ -738,10 +739,10 @@ public class Script extends CacheableNode {
                                                                                                          var37 = var38;
                                                                                                       } else if(var54 < 3300) {
                                                                                                          if(var54 == 3200) {
-                                                                                                            class32.field715 -= 3;
-                                                                                                            var15 = class32.field720[class32.field715];
-                                                                                                            var33 = class32.field720[class32.field715 + 1];
-                                                                                                            var17 = class32.field720[class32.field715 + 2];
+                                                                                                            class32.intStackSize -= 3;
+                                                                                                            var15 = class32.intStack[class32.intStackSize];
+                                                                                                            var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                            var17 = class32.intStack[class32.intStackSize + 2];
                                                                                                             if(Client.field551 != 0 && var33 != 0 && Client.field528 < 50) {
                                                                                                                Client.field529[Client.field528] = var15;
                                                                                                                Client.field530[Client.field528] = var33;
@@ -754,14 +755,14 @@ public class Script extends CacheableNode {
                                                                                                             var38 = 1;
                                                                                                          } else if(var54 != 3201) {
                                                                                                             if(var54 == 3202) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               class183.method3291(class32.field720[class32.field715], class32.field720[class32.field715 + 1]);
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               class183.method3291(class32.intStack[class32.intStackSize], class32.intStack[class32.intStackSize + 1]);
                                                                                                                var38 = 1;
                                                                                                             } else {
                                                                                                                var38 = 2;
                                                                                                             }
                                                                                                          } else {
-                                                                                                            var15 = class32.field720[--class32.field715];
+                                                                                                            var15 = class32.intStack[--class32.intStackSize];
                                                                                                             if(var15 == -1 && !Client.field525) {
                                                                                                                MessageNode.method218();
                                                                                                             } else if(var15 != -1 && Client.field524 != var15 && Client.field501 != 0 && !Client.field525) {
@@ -782,120 +783,120 @@ public class Script extends CacheableNode {
 
                                                                                                          var37 = var38;
                                                                                                       } else if(var54 < 3400) {
-                                                                                                         var37 = XClanMember.method253(var54, var4, var61);
+                                                                                                         var37 = XClanMember.method253(var54, script, var61);
                                                                                                       } else if(var54 < 3500) {
-                                                                                                         var37 = Preferences.method648(var54, var4, var61);
+                                                                                                         var37 = Preferences.method648(var54, script, var61);
                                                                                                       } else if(var54 < 3700) {
-                                                                                                         var37 = Friend.method182(var54, var4, var61);
+                                                                                                         var37 = Friend.method182(var54, script, var61);
                                                                                                       } else {
                                                                                                          long var41;
                                                                                                          int var43;
                                                                                                          if(var54 < 4000) {
                                                                                                             if(var54 == 3903) {
-                                                                                                               var15 = class32.field720[--class32.field715];
-                                                                                                               class32.field720[++class32.field715 - 1] = Client.grandExchangeOffers[var15].method42();
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = Client.grandExchangeOffers[var15].method42();
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3904) {
-                                                                                                               var15 = class32.field720[--class32.field715];
-                                                                                                               class32.field720[++class32.field715 - 1] = Client.grandExchangeOffers[var15].itemId;
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = Client.grandExchangeOffers[var15].itemId;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3905) {
-                                                                                                               var15 = class32.field720[--class32.field715];
-                                                                                                               class32.field720[++class32.field715 - 1] = Client.grandExchangeOffers[var15].price;
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = Client.grandExchangeOffers[var15].price;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3906) {
-                                                                                                               var15 = class32.field720[--class32.field715];
-                                                                                                               class32.field720[++class32.field715 - 1] = Client.grandExchangeOffers[var15].totalQuantity;
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = Client.grandExchangeOffers[var15].totalQuantity;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3907) {
-                                                                                                               var15 = class32.field720[--class32.field715];
-                                                                                                               class32.field720[++class32.field715 - 1] = Client.grandExchangeOffers[var15].quantitySold;
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = Client.grandExchangeOffers[var15].quantitySold;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3908) {
-                                                                                                               var15 = class32.field720[--class32.field715];
-                                                                                                               class32.field720[++class32.field715 - 1] = Client.grandExchangeOffers[var15].spent;
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = Client.grandExchangeOffers[var15].spent;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3910) {
-                                                                                                               var15 = class32.field720[--class32.field715];
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
                                                                                                                var33 = Client.grandExchangeOffers[var15].method44();
-                                                                                                               class32.field720[++class32.field715 - 1] = var33 == 0?1:0;
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var33 == 0?1:0;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3911) {
-                                                                                                               var15 = class32.field720[--class32.field715];
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
                                                                                                                var33 = Client.grandExchangeOffers[var15].method44();
-                                                                                                               class32.field720[++class32.field715 - 1] = var33 == 2?1:0;
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var33 == 2?1:0;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3912) {
-                                                                                                               var15 = class32.field720[--class32.field715];
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
                                                                                                                var33 = Client.grandExchangeOffers[var15].method44();
-                                                                                                               class32.field720[++class32.field715 - 1] = var33 == 5?1:0;
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var33 == 5?1:0;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 3913) {
-                                                                                                               var15 = class32.field720[--class32.field715];
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
                                                                                                                var33 = Client.grandExchangeOffers[var15].method44();
-                                                                                                               class32.field720[++class32.field715 - 1] = var33 == 1?1:0;
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var33 == 1?1:0;
                                                                                                                var38 = 1;
                                                                                                             } else {
                                                                                                                boolean var67;
                                                                                                                if(var54 == 3914) {
-                                                                                                                  var67 = class32.field720[--class32.field715] == 1;
+                                                                                                                  var67 = class32.intStack[--class32.intStackSize] == 1;
                                                                                                                   if(IndexData.field2745 != null) {
                                                                                                                      IndexData.field2745.method16(class1.field13, var67);
                                                                                                                   }
 
                                                                                                                   var38 = 1;
                                                                                                                } else if(var54 == 3915) {
-                                                                                                                  var67 = class32.field720[--class32.field715] == 1;
+                                                                                                                  var67 = class32.intStack[--class32.intStackSize] == 1;
                                                                                                                   if(IndexData.field2745 != null) {
                                                                                                                      IndexData.field2745.method16(class1.field12, var67);
                                                                                                                   }
 
                                                                                                                   var38 = 1;
                                                                                                                } else if(var54 == 3916) {
-                                                                                                                  class32.field715 -= 2;
-                                                                                                                  var67 = class32.field720[class32.field715] == 1;
-                                                                                                                  var80 = class32.field720[class32.field715 + 1] == 1;
+                                                                                                                  class32.intStackSize -= 2;
+                                                                                                                  var67 = class32.intStack[class32.intStackSize] == 1;
+                                                                                                                  var80 = class32.intStack[class32.intStackSize + 1] == 1;
                                                                                                                   if(IndexData.field2745 != null) {
                                                                                                                      IndexData.field2745.method16(new class44(var80), var67);
                                                                                                                   }
 
                                                                                                                   var38 = 1;
                                                                                                                } else if(var54 == 3917) {
-                                                                                                                  var67 = class32.field720[--class32.field715] == 1;
+                                                                                                                  var67 = class32.intStack[--class32.intStackSize] == 1;
                                                                                                                   if(IndexData.field2745 != null) {
                                                                                                                      IndexData.field2745.method16(class1.field11, var67);
                                                                                                                   }
 
                                                                                                                   var38 = 1;
                                                                                                                } else if(var54 == 3918) {
-                                                                                                                  var67 = class32.field720[--class32.field715] == 1;
+                                                                                                                  var67 = class32.intStack[--class32.intStackSize] == 1;
                                                                                                                   if(IndexData.field2745 != null) {
                                                                                                                      IndexData.field2745.method16(class1.field14, var67);
                                                                                                                   }
 
                                                                                                                   var38 = 1;
                                                                                                                } else if(var54 == 3919) {
-                                                                                                                  class32.field720[++class32.field715 - 1] = IndexData.field2745 == null?0:IndexData.field2745.field15.size();
+                                                                                                                  class32.intStack[++class32.intStackSize - 1] = IndexData.field2745 == null?0:IndexData.field2745.field15.size();
                                                                                                                   var38 = 1;
                                                                                                                } else {
                                                                                                                   class2 var60;
                                                                                                                   if(var54 == 3920) {
-                                                                                                                     var15 = class32.field720[--class32.field715];
+                                                                                                                     var15 = class32.intStack[--class32.intStackSize];
                                                                                                                      var60 = (class2)IndexData.field2745.field15.get(var15);
-                                                                                                                     class32.field720[++class32.field715 - 1] = var60.field22;
+                                                                                                                     class32.intStack[++class32.intStackSize - 1] = var60.field22;
                                                                                                                      var38 = 1;
                                                                                                                   } else if(var54 == 3921) {
-                                                                                                                     var15 = class32.field720[--class32.field715];
+                                                                                                                     var15 = class32.intStack[--class32.intStackSize];
                                                                                                                      var60 = (class2)IndexData.field2745.field15.get(var15);
                                                                                                                      class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var60.method25();
                                                                                                                      var38 = 1;
                                                                                                                   } else if(var54 == 3922) {
-                                                                                                                     var15 = class32.field720[--class32.field715];
+                                                                                                                     var15 = class32.intStack[--class32.intStackSize];
                                                                                                                      var60 = (class2)IndexData.field2745.field15.get(var15);
                                                                                                                      class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var60.method20();
                                                                                                                      var38 = 1;
                                                                                                                   } else if(var54 == 3923) {
-                                                                                                                     var15 = class32.field720[--class32.field715];
+                                                                                                                     var15 = class32.intStack[--class32.intStackSize];
                                                                                                                      var60 = (class2)IndexData.field2745.field15.get(var15);
                                                                                                                      var41 = class72.method1421() - Projectile.field872 - var60.field25;
                                                                                                                      var84 = (int)(var41 / 3600000L);
@@ -905,19 +906,19 @@ public class Script extends CacheableNode {
                                                                                                                      class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var22;
                                                                                                                      var38 = 1;
                                                                                                                   } else if(var54 == 3924) {
-                                                                                                                     var15 = class32.field720[--class32.field715];
+                                                                                                                     var15 = class32.intStack[--class32.intStackSize];
                                                                                                                      var60 = (class2)IndexData.field2745.field15.get(var15);
-                                                                                                                     class32.field720[++class32.field715 - 1] = var60.field21.totalQuantity;
+                                                                                                                     class32.intStack[++class32.intStackSize - 1] = var60.field21.totalQuantity;
                                                                                                                      var38 = 1;
                                                                                                                   } else if(var54 == 3925) {
-                                                                                                                     var15 = class32.field720[--class32.field715];
+                                                                                                                     var15 = class32.intStack[--class32.intStackSize];
                                                                                                                      var60 = (class2)IndexData.field2745.field15.get(var15);
-                                                                                                                     class32.field720[++class32.field715 - 1] = var60.field21.price;
+                                                                                                                     class32.intStack[++class32.intStackSize - 1] = var60.field21.price;
                                                                                                                      var38 = 1;
                                                                                                                   } else if(var54 == 3926) {
-                                                                                                                     var15 = class32.field720[--class32.field715];
+                                                                                                                     var15 = class32.intStack[--class32.intStackSize];
                                                                                                                      var60 = (class2)IndexData.field2745.field15.get(var15);
-                                                                                                                     class32.field720[++class32.field715 - 1] = var60.field21.itemId;
+                                                                                                                     class32.intStack[++class32.intStackSize - 1] = var60.field21.itemId;
                                                                                                                      var38 = 1;
                                                                                                                   } else {
                                                                                                                      var38 = 2;
@@ -928,118 +929,118 @@ public class Script extends CacheableNode {
                                                                                                             var37 = var38;
                                                                                                          } else if(var54 < 4100) {
                                                                                                             if(var54 == 4000) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
-                                                                                                               class32.field720[++class32.field715 - 1] = var33 + var15;
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var33 + var15;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4001) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
-                                                                                                               class32.field720[++class32.field715 - 1] = var15 - var33;
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var15 - var33;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4002) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
-                                                                                                               class32.field720[++class32.field715 - 1] = var15 * var33;
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var15 * var33;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4003) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
-                                                                                                               class32.field720[++class32.field715 - 1] = var15 / var33;
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var15 / var33;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4004) {
-                                                                                                               var15 = class32.field720[--class32.field715];
-                                                                                                               class32.field720[++class32.field715 - 1] = (int)(Math.random() * (double)var15);
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = (int)(Math.random() * (double)var15);
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4005) {
-                                                                                                               var15 = class32.field720[--class32.field715];
-                                                                                                               class32.field720[++class32.field715 - 1] = (int)(Math.random() * (double)(var15 + 1));
+                                                                                                               var15 = class32.intStack[--class32.intStackSize];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = (int)(Math.random() * (double)(var15 + 1));
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4006) {
-                                                                                                               class32.field715 -= 5;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
-                                                                                                               var17 = class32.field720[class32.field715 + 2];
-                                                                                                               var18 = class32.field720[class32.field715 + 3];
-                                                                                                               var84 = class32.field720[class32.field715 + 4];
-                                                                                                               class32.field720[++class32.field715 - 1] = (var84 - var17) * (var33 - var15) / (var18 - var17) + var15;
+                                                                                                               class32.intStackSize -= 5;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                               var17 = class32.intStack[class32.intStackSize + 2];
+                                                                                                               var18 = class32.intStack[class32.intStackSize + 3];
+                                                                                                               var84 = class32.intStack[class32.intStackSize + 4];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = (var84 - var17) * (var33 - var15) / (var18 - var17) + var15;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4007) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
-                                                                                                               class32.field720[++class32.field715 - 1] = var33 * var15 / 100 + var15;
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var33 * var15 / 100 + var15;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4008) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
-                                                                                                               class32.field720[++class32.field715 - 1] = var15 | 1 << var33;
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var15 | 1 << var33;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4009) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
-                                                                                                               class32.field720[++class32.field715 - 1] = var15 & -1 - (1 << var33);
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var15 & -1 - (1 << var33);
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4010) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
-                                                                                                               class32.field720[++class32.field715 - 1] = (var15 & 1 << var33) != 0?1:0;
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = (var15 & 1 << var33) != 0?1:0;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4011) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
-                                                                                                               class32.field720[++class32.field715 - 1] = var15 % var33;
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var15 % var33;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4012) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
                                                                                                                if(var15 == 0) {
-                                                                                                                  class32.field720[++class32.field715 - 1] = 0;
+                                                                                                                  class32.intStack[++class32.intStackSize - 1] = 0;
                                                                                                                } else {
-                                                                                                                  class32.field720[++class32.field715 - 1] = (int)Math.pow((double)var15, (double)var33);
+                                                                                                                  class32.intStack[++class32.intStackSize - 1] = (int)Math.pow((double)var15, (double)var33);
                                                                                                                }
 
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4013) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
                                                                                                                if(var15 == 0) {
-                                                                                                                  class32.field720[++class32.field715 - 1] = 0;
+                                                                                                                  class32.intStack[++class32.intStackSize - 1] = 0;
                                                                                                                } else if(var33 == 0) {
-                                                                                                                  class32.field720[++class32.field715 - 1] = Integer.MAX_VALUE;
+                                                                                                                  class32.intStack[++class32.intStackSize - 1] = Integer.MAX_VALUE;
                                                                                                                } else {
-                                                                                                                  class32.field720[++class32.field715 - 1] = (int)Math.pow((double)var15, 1.0D / (double)var33);
+                                                                                                                  class32.intStack[++class32.intStackSize - 1] = (int)Math.pow((double)var15, 1.0D / (double)var33);
                                                                                                                }
 
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4014) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
-                                                                                                               class32.field720[++class32.field715 - 1] = var15 & var33;
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var15 & var33;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4015) {
-                                                                                                               class32.field715 -= 2;
-                                                                                                               var15 = class32.field720[class32.field715];
-                                                                                                               var33 = class32.field720[class32.field715 + 1];
-                                                                                                               class32.field720[++class32.field715 - 1] = var15 | var33;
+                                                                                                               class32.intStackSize -= 2;
+                                                                                                               var15 = class32.intStack[class32.intStackSize];
+                                                                                                               var33 = class32.intStack[class32.intStackSize + 1];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = var15 | var33;
                                                                                                                var38 = 1;
                                                                                                             } else if(var54 == 4018) {
-                                                                                                               class32.field715 -= 3;
-                                                                                                               long var44 = (long)class32.field720[class32.field715];
-                                                                                                               var41 = (long)class32.field720[class32.field715 + 1];
-                                                                                                               long var46 = (long)class32.field720[class32.field715 + 2];
-                                                                                                               class32.field720[++class32.field715 - 1] = (int)(var46 * var44 / var41);
+                                                                                                               class32.intStackSize -= 3;
+                                                                                                               long var44 = (long)class32.intStack[class32.intStackSize];
+                                                                                                               var41 = (long)class32.intStack[class32.intStackSize + 1];
+                                                                                                               long var46 = (long)class32.intStack[class32.intStackSize + 2];
+                                                                                                               class32.intStack[++class32.intStackSize - 1] = (int)(var46 * var44 / var41);
                                                                                                                var38 = 1;
                                                                                                             } else {
                                                                                                                var38 = 2;
@@ -1051,7 +1052,7 @@ public class Script extends CacheableNode {
                                                                                                             if(var54 < 4200) {
                                                                                                                if(var54 == 4100) {
                                                                                                                   var86 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                                                                                                                  var33 = class32.field720[--class32.field715];
+                                                                                                                  var33 = class32.intStack[--class32.intStackSize];
                                                                                                                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var86 + var33;
                                                                                                                   var38 = 1;
                                                                                                                } else if(var54 == 4101) {
@@ -1062,7 +1063,7 @@ public class Script extends CacheableNode {
                                                                                                                   var38 = 1;
                                                                                                                } else if(var54 == 4102) {
                                                                                                                   var86 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                                                                                                                  var33 = class32.field720[--class32.field715];
+                                                                                                                  var33 = class32.intStack[--class32.intStackSize];
                                                                                                                   String[] var89 = class32.scriptStringStack;
                                                                                                                   var18 = ++class32.scriptStringStackSize - 1;
                                                                                                                   if(var33 < 0) {
@@ -1078,7 +1079,7 @@ public class Script extends CacheableNode {
                                                                                                                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var86.toLowerCase();
                                                                                                                   var38 = 1;
                                                                                                                } else if(var54 == 4104) {
-                                                                                                                  var15 = class32.field720[--class32.field715];
+                                                                                                                  var15 = class32.intStack[--class32.intStackSize];
                                                                                                                   long var48 = ((long)var15 + 11745L) * 86400000L;
                                                                                                                   class32.field726.setTime(new Date(var48));
                                                                                                                   var18 = class32.field726.get(5);
@@ -1098,13 +1099,13 @@ public class Script extends CacheableNode {
 
                                                                                                                   var38 = 1;
                                                                                                                } else if(var54 == 4106) {
-                                                                                                                  var15 = class32.field720[--class32.field715];
+                                                                                                                  var15 = class32.intStack[--class32.intStackSize];
                                                                                                                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Integer.toString(var15);
                                                                                                                   var38 = 1;
                                                                                                                } else if(var54 == 4107) {
                                                                                                                   class32.scriptStringStackSize -= 2;
-                                                                                                                  var90 = class32.field720;
-                                                                                                                  var33 = ++class32.field715 - 1;
+                                                                                                                  var90 = class32.intStack;
+                                                                                                                  var33 = ++class32.intStackSize - 1;
                                                                                                                   String var82 = class32.scriptStringStack[class32.scriptStringStackSize];
                                                                                                                   var64 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
                                                                                                                   var39 = Client.field286;
@@ -1230,27 +1231,27 @@ public class Script extends CacheableNode {
                                                                                                                   byte[] var81;
                                                                                                                   if(var54 == 4108) {
                                                                                                                      var86 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                                                                                                                     class32.field715 -= 2;
-                                                                                                                     var33 = class32.field720[class32.field715];
-                                                                                                                     var17 = class32.field720[class32.field715 + 1];
+                                                                                                                     class32.intStackSize -= 2;
+                                                                                                                     var33 = class32.intStack[class32.intStackSize];
+                                                                                                                     var17 = class32.intStack[class32.intStackSize + 1];
                                                                                                                      var81 = DecorativeObject.field1584.getConfigData(var17, 0);
                                                                                                                      var19 = new Font(var81);
-                                                                                                                     class32.field720[++class32.field715 - 1] = var19.method3912(var86, var33);
+                                                                                                                     class32.intStack[++class32.intStackSize - 1] = var19.method3912(var86, var33);
                                                                                                                      var38 = 1;
                                                                                                                   } else if(var54 == 4109) {
                                                                                                                      var86 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                                                                                                                     class32.field715 -= 2;
-                                                                                                                     var33 = class32.field720[class32.field715];
-                                                                                                                     var17 = class32.field720[class32.field715 + 1];
+                                                                                                                     class32.intStackSize -= 2;
+                                                                                                                     var33 = class32.intStack[class32.intStackSize];
+                                                                                                                     var17 = class32.intStack[class32.intStackSize + 1];
                                                                                                                      var81 = DecorativeObject.field1584.getConfigData(var17, 0);
                                                                                                                      var19 = new Font(var81);
-                                                                                                                     class32.field720[++class32.field715 - 1] = var19.method3964(var86, var33);
+                                                                                                                     class32.intStack[++class32.intStackSize - 1] = var19.method3964(var86, var33);
                                                                                                                      var38 = 1;
                                                                                                                   } else if(var54 == 4110) {
                                                                                                                      class32.scriptStringStackSize -= 2;
                                                                                                                      var86 = class32.scriptStringStack[class32.scriptStringStackSize];
                                                                                                                      var58 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
-                                                                                                                     if(class32.field720[--class32.field715] == 1) {
+                                                                                                                     if(class32.intStack[--class32.intStackSize] == 1) {
                                                                                                                         class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var86;
                                                                                                                      } else {
                                                                                                                         class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var58;
@@ -1263,7 +1264,7 @@ public class Script extends CacheableNode {
                                                                                                                      var38 = 1;
                                                                                                                   } else if(var54 == 4112) {
                                                                                                                      var86 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                                                                                                                     var33 = class32.field720[--class32.field715];
+                                                                                                                     var33 = class32.intStack[--class32.intStackSize];
                                                                                                                      class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var86 + (char)var33;
                                                                                                                      var38 = 1;
                                                                                                                   } else {
@@ -1271,9 +1272,9 @@ public class Script extends CacheableNode {
                                                                                                                      int[] var66;
                                                                                                                      char var85;
                                                                                                                      if(var54 == 4113) {
-                                                                                                                        var15 = class32.field720[--class32.field715];
-                                                                                                                        var66 = class32.field720;
-                                                                                                                        var17 = ++class32.field715 - 1;
+                                                                                                                        var15 = class32.intStack[--class32.intStackSize];
+                                                                                                                        var66 = class32.intStack;
+                                                                                                                        var17 = ++class32.intStackSize - 1;
                                                                                                                         var85 = (char)var15;
                                                                                                                         if(var85 >= 32 && var85 <= 126) {
                                                                                                                            var62 = true;
@@ -1288,49 +1289,49 @@ public class Script extends CacheableNode {
                                                                                                                         var66[var17] = var62?1:0;
                                                                                                                         var38 = 1;
                                                                                                                      } else if(var54 == 4114) {
-                                                                                                                        var15 = class32.field720[--class32.field715];
-                                                                                                                        class32.field720[++class32.field715 - 1] = class178.method3265((char)var15)?1:0;
+                                                                                                                        var15 = class32.intStack[--class32.intStackSize];
+                                                                                                                        class32.intStack[++class32.intStackSize - 1] = class178.method3265((char)var15)?1:0;
                                                                                                                         var38 = 1;
                                                                                                                      } else if(var54 == 4115) {
-                                                                                                                        var15 = class32.field720[--class32.field715];
-                                                                                                                        var66 = class32.field720;
-                                                                                                                        var17 = ++class32.field715 - 1;
+                                                                                                                        var15 = class32.intStack[--class32.intStackSize];
+                                                                                                                        var66 = class32.intStack;
+                                                                                                                        var17 = ++class32.intStackSize - 1;
                                                                                                                         var85 = (char)var15;
                                                                                                                         var62 = var85 >= 65 && var85 <= 90 || var85 >= 97 && var85 <= 122;
                                                                                                                         var66[var17] = var62?1:0;
                                                                                                                         var38 = 1;
                                                                                                                      } else if(var54 == 4116) {
-                                                                                                                        var15 = class32.field720[--class32.field715];
-                                                                                                                        class32.field720[++class32.field715 - 1] = class131.method2609((char)var15)?1:0;
+                                                                                                                        var15 = class32.intStack[--class32.intStackSize];
+                                                                                                                        class32.intStack[++class32.intStackSize - 1] = class131.method2609((char)var15)?1:0;
                                                                                                                         var38 = 1;
                                                                                                                      } else if(var54 == 4117) {
                                                                                                                         var86 = class32.scriptStringStack[--class32.scriptStringStackSize];
                                                                                                                         if(var86 != null) {
-                                                                                                                           class32.field720[++class32.field715 - 1] = var86.length();
+                                                                                                                           class32.intStack[++class32.intStackSize - 1] = var86.length();
                                                                                                                         } else {
-                                                                                                                           class32.field720[++class32.field715 - 1] = 0;
+                                                                                                                           class32.intStack[++class32.intStackSize - 1] = 0;
                                                                                                                         }
 
                                                                                                                         var38 = 1;
                                                                                                                      } else if(var54 == 4118) {
                                                                                                                         var86 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                                                                                                                        class32.field715 -= 2;
-                                                                                                                        var33 = class32.field720[class32.field715];
-                                                                                                                        var17 = class32.field720[class32.field715 + 1];
+                                                                                                                        class32.intStackSize -= 2;
+                                                                                                                        var33 = class32.intStack[class32.intStackSize];
+                                                                                                                        var17 = class32.intStack[class32.intStackSize + 1];
                                                                                                                         class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var86.substring(var33, var17);
                                                                                                                         var38 = 1;
                                                                                                                      } else if(var54 != 4119) {
                                                                                                                         if(var54 == 4120) {
                                                                                                                            var86 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                                                                                                                           var33 = class32.field720[--class32.field715];
-                                                                                                                           class32.field720[++class32.field715 - 1] = var86.indexOf(var33);
+                                                                                                                           var33 = class32.intStack[--class32.intStackSize];
+                                                                                                                           class32.intStack[++class32.intStackSize - 1] = var86.indexOf(var33);
                                                                                                                            var38 = 1;
                                                                                                                         } else if(var54 == 4121) {
                                                                                                                            class32.scriptStringStackSize -= 2;
                                                                                                                            var86 = class32.scriptStringStack[class32.scriptStringStackSize];
                                                                                                                            var58 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
-                                                                                                                           var17 = class32.field720[--class32.field715];
-                                                                                                                           class32.field720[++class32.field715 - 1] = var86.indexOf(var58, var17);
+                                                                                                                           var17 = class32.intStack[--class32.intStackSize];
+                                                                                                                           class32.intStack[++class32.intStackSize - 1] = var86.indexOf(var58, var17);
                                                                                                                            var38 = 1;
                                                                                                                         } else {
                                                                                                                            var38 = 2;
@@ -1359,30 +1360,30 @@ public class Script extends CacheableNode {
 
                                                                                                                var37 = var38;
                                                                                                             } else if(var54 < 4300) {
-                                                                                                               var37 = Tile.method1567(var54, var4, var61);
+                                                                                                               var37 = Tile.method1567(var54, script, var61);
                                                                                                             } else if(var54 < 5100) {
-                                                                                                               var37 = class57.method1118(var54, var4, var61);
+                                                                                                               var37 = class57.method1118(var54, script, var61);
                                                                                                             } else if(var54 < 5400) {
                                                                                                                if(var54 == 5306) {
-                                                                                                                  var90 = class32.field720;
-                                                                                                                  var33 = ++class32.field715 - 1;
+                                                                                                                  var90 = class32.intStack;
+                                                                                                                  var33 = ++class32.intStackSize - 1;
                                                                                                                   var17 = Client.isResized?2:1;
                                                                                                                   var90[var33] = var17;
                                                                                                                   var38 = 1;
                                                                                                                } else if(var54 == 5307) {
-                                                                                                                  var15 = class32.field720[--class32.field715];
+                                                                                                                  var15 = class32.intStack[--class32.intStackSize];
                                                                                                                   if(var15 == 1 || var15 == 2) {
                                                                                                                      ItemComposition.method3798(var15);
                                                                                                                   }
 
                                                                                                                   var38 = 1;
                                                                                                                } else if(var54 == 5308) {
-                                                                                                                  class32.field720[++class32.field715 - 1] = Actor.field656.field692;
+                                                                                                                  class32.intStack[++class32.intStackSize - 1] = Actor.field656.field692;
                                                                                                                   var38 = 1;
                                                                                                                } else if(var54 != 5309) {
                                                                                                                   var38 = 2;
                                                                                                                } else {
-                                                                                                                  var15 = class32.field720[--class32.field715];
+                                                                                                                  var15 = class32.intStack[--class32.intStackSize];
                                                                                                                   if(var15 == 1 || var15 == 2) {
                                                                                                                      Actor.field656.field692 = var15;
                                                                                                                      Renderable.method1896();
@@ -1393,13 +1394,13 @@ public class Script extends CacheableNode {
 
                                                                                                                var37 = var38;
                                                                                                             } else if(var54 < 5600) {
-                                                                                                               var37 = class103.method1990(var54, var4, var61);
+                                                                                                               var37 = class103.method1990(var54, script, var61);
                                                                                                             } else if(var54 < 5700) {
-                                                                                                               var37 = class36.method747(var54, var4, var61);
+                                                                                                               var37 = class36.method747(var54, script, var61);
                                                                                                             } else if(var54 < 6300) {
-                                                                                                               var37 = Renderable.method1903(var54, var4, var61);
+                                                                                                               var37 = Renderable.method1903(var54, script, var61);
                                                                                                             } else if(var54 < 6600) {
-                                                                                                               var37 = class15.method185(var54, var4, var61);
+                                                                                                               var37 = class15.method185(var54, script, var61);
                                                                                                             } else {
                                                                                                                var37 = 2;
                                                                                                             }
@@ -1447,7 +1448,7 @@ public class Script extends CacheableNode {
             }
          } catch (Exception var53) {
             StringBuilder var52 = new StringBuilder(30);
-            var52.append("").append(var4.hash).append(" ");
+            var52.append("").append(script.hash).append(" ");
 
             for(var11 = class32.scriptStackCount - 1; var11 >= 0; --var11) {
                var52.append("").append(class32.scriptStack[var11].field113.hash).append(" ");

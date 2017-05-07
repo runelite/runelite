@@ -58,46 +58,46 @@ final class class44 implements Comparator {
    static int method834(int var0, Script var1, boolean var2) {
       Widget var3 = var2?class200.field2894:Script.field942;
       if(var0 == 1600) {
-         class32.field720[++class32.field715 - 1] = var3.scrollX;
+         class32.intStack[++class32.intStackSize - 1] = var3.scrollX;
          return 1;
       } else if(var0 == 1601) {
-         class32.field720[++class32.field715 - 1] = var3.scrollY;
+         class32.intStack[++class32.intStackSize - 1] = var3.scrollY;
          return 1;
       } else if(var0 == 1602) {
          class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.text;
          return 1;
       } else if(var0 == 1603) {
-         class32.field720[++class32.field715 - 1] = var3.scrollWidth;
+         class32.intStack[++class32.intStackSize - 1] = var3.scrollWidth;
          return 1;
       } else if(var0 == 1604) {
-         class32.field720[++class32.field715 - 1] = var3.scrollHeight;
+         class32.intStack[++class32.intStackSize - 1] = var3.scrollHeight;
          return 1;
       } else if(var0 == 1605) {
-         class32.field720[++class32.field715 - 1] = var3.field2244;
+         class32.intStack[++class32.intStackSize - 1] = var3.field2244;
          return 1;
       } else if(var0 == 1606) {
-         class32.field720[++class32.field715 - 1] = var3.rotationX;
+         class32.intStack[++class32.intStackSize - 1] = var3.rotationX;
          return 1;
       } else if(var0 == 1607) {
-         class32.field720[++class32.field715 - 1] = var3.rotationY;
+         class32.intStack[++class32.intStackSize - 1] = var3.rotationY;
          return 1;
       } else if(var0 == 1608) {
-         class32.field720[++class32.field715 - 1] = var3.rotationZ;
+         class32.intStack[++class32.intStackSize - 1] = var3.rotationZ;
          return 1;
       } else if(var0 == 1609) {
-         class32.field720[++class32.field715 - 1] = var3.opacity;
+         class32.intStack[++class32.intStackSize - 1] = var3.opacity;
          return 1;
       } else if(var0 == 1610) {
-         class32.field720[++class32.field715 - 1] = var3.field2248;
+         class32.intStack[++class32.intStackSize - 1] = var3.field2248;
          return 1;
       } else if(var0 == 1611) {
-         class32.field720[++class32.field715 - 1] = var3.textColor;
+         class32.intStack[++class32.intStackSize - 1] = var3.textColor;
          return 1;
       } else if(var0 == 1612) {
-         class32.field720[++class32.field715 - 1] = var3.field2279;
+         class32.intStack[++class32.intStackSize - 1] = var3.field2279;
          return 1;
       } else if(var0 == 1613) {
-         class32.field720[++class32.field715 - 1] = var3.field2238.vmethod4163();
+         class32.intStack[++class32.intStackSize - 1] = var3.field2238.vmethod4163();
          return 1;
       } else {
          return 2;

@@ -117,9 +117,9 @@ public class Preferences {
       int var4;
       int var6;
       if(var0 == 3400) {
-         class32.field715 -= 2;
-         var3 = class32.field720[class32.field715];
-         var4 = class32.field720[class32.field715 + 1];
+         class32.intStackSize -= 2;
+         var3 = class32.intStack[class32.intStackSize];
+         var4 = class32.intStack[class32.intStackSize + 1];
          class200 var5 = class105.method2038(var3);
          if(var5.field2886 != 115) {
             ;
@@ -141,11 +141,11 @@ public class Preferences {
       } else if(var0 != 3408) {
          return 2;
       } else {
-         class32.field715 -= 4;
-         var3 = class32.field720[class32.field715];
-         var4 = class32.field720[class32.field715 + 1];
-         int var9 = class32.field720[class32.field715 + 2];
-         var6 = class32.field720[class32.field715 + 3];
+         class32.intStackSize -= 4;
+         var3 = class32.intStack[class32.intStackSize];
+         var4 = class32.intStack[class32.intStackSize + 1];
+         int var9 = class32.intStack[class32.intStackSize + 2];
+         var6 = class32.intStack[class32.intStackSize + 3];
          class200 var7 = class105.method2038(var9);
          if(var3 == var7.field2893 && var4 == var7.field2886) {
             for(int var8 = 0; var8 < var7.field2885; ++var8) {
@@ -153,7 +153,7 @@ public class Preferences {
                   if(var4 == 115) {
                      class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var7.field2889[var8];
                   } else {
-                     class32.field720[++class32.field715 - 1] = var7.field2891[var8];
+                     class32.intStack[++class32.intStackSize - 1] = var7.field2891[var8];
                   }
 
                   var7 = null;
@@ -165,7 +165,7 @@ public class Preferences {
                if(var4 == 115) {
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var7.field2887;
                } else {
-                  class32.field720[++class32.field715 - 1] = var7.field2888;
+                  class32.intStack[++class32.intStackSize - 1] = var7.field2888;
                }
             }
 
@@ -174,7 +174,7 @@ public class Preferences {
             if(var4 == 115) {
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "null";
             } else {
-               class32.field720[++class32.field715 - 1] = 0;
+               class32.intStack[++class32.intStackSize - 1] = 0;
             }
 
             return 1;
