@@ -29,9 +29,12 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+
+import java.awt.geom.Rectangle2D;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
@@ -87,6 +90,12 @@ public class DevToolsOverlay extends Overlay
 			return null;
 		}
 
+		Font font = plugin.getFont();
+		if (font != null)
+		{
+			graphics.setFont(font);
+		}
+
 		if (plugin.isTogglePlayers())
 		{
 			renderPlayers(graphics);
@@ -140,12 +149,6 @@ public class DevToolsOverlay extends Overlay
 			int x = textLocation.getX();
 			int y = textLocation.getY();
 
-			Font font = plugin.getFont();
-			if (font != null)
-			{
-				graphics.setFont(font);
-			}
-
 			graphics.setColor(Color.BLACK);
 			graphics.drawString(text, x + 1, y + 1);
 
@@ -181,12 +184,6 @@ public class DevToolsOverlay extends Overlay
 		{
 			int x = textLocation.getX();
 			int y = textLocation.getY();
-
-			Font font = plugin.getFont();
-			if (font != null)
-			{
-				graphics.setFont(font);
-			}
 
 			graphics.setColor(Color.BLACK);
 			graphics.drawString(text, x + 1, y + 1);
@@ -370,24 +367,29 @@ public class DevToolsOverlay extends Overlay
 	private void renderInventory(Graphics2D graphics)
 	{
 		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-		if (inventoryWidget == null)
+		if (inventoryWidget == null || inventoryWidget.isHidden())
 		{
 			return;
 		}
 
 		for (WidgetItem item : inventoryWidget.getWidgetItems())
 		{
-			Rectangle bounds = item.getCanvasBounds();
+			Rectangle slotBounds = item.getCanvasBounds();
 
-			Color[] colors = new Color[]
-			{
-				Color.RED, Color.GREEN, Color.BLUE
-			};
-			graphics.setColor(colors[item.getIndex() % 3]);
-			if (bounds != null)
-			{
-				graphics.draw(bounds);
-			}
+			String idText = "" + item.getId();
+			FontMetrics fm = graphics.getFontMetrics();
+			Rectangle2D textBounds = fm.getStringBounds(idText, graphics);
+
+			int textX = (int) (slotBounds.getX() + (slotBounds.getWidth() / 2) - (textBounds.getWidth() / 2));
+			int textY = (int) (slotBounds.getY() + (slotBounds.getHeight() / 2) + (textBounds.getHeight() / 2));
+
+			graphics.setColor(new Color(255, 255, 255, 65));
+			graphics.fill(slotBounds);
+
+			graphics.setColor(Color.BLACK);
+			graphics.drawString(idText, textX + 1, textY + 1);
+			graphics.setColor(YELLOW);
+			graphics.drawString(idText, textX, textY);
 		}
 	}
 

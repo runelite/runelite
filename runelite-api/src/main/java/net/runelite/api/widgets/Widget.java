@@ -36,8 +36,7 @@ import net.runelite.api.XHashTable;
 
 public class Widget
 {
-	private static final int WIDGET_ITEM_WIDTH = 42;
-	private static final int WIDGET_ITEM_HEIGHT = 36;
+	private static final int ITEM_SLOT_SIZE = 32;
 
 	private final Client client;
 	private final net.runelite.rs.api.Widget widget;
@@ -210,7 +209,10 @@ public class Widget
 
 		assert itemIds.length == itemQuantities.length;
 
-		int itemsX = getWidth(); // this appears to be the number of items that fit in the width
+		int columns = getWidth(); // the number of item slot columns is stored here
+		int paddingX = getPaddingX();
+		int paddingY = getPaddingY();
+
 		Point widgetCanvasLocation = getCanvasLocation();
 
 		for (int i = 0; i < itemIds.length; ++i)
@@ -225,12 +227,14 @@ public class Widget
 
 			Rectangle bounds = null;
 
-			if (itemsX > 0)
+			if (columns > 0)
 			{
-				int itemX = widgetCanvasLocation.getX() + (i % itemsX) * WIDGET_ITEM_WIDTH;
-				int itemY = widgetCanvasLocation.getY() + (i / itemsX) * WIDGET_ITEM_HEIGHT;
+				int row = i / columns;
+				int col = i % columns;
+				int itemX = widgetCanvasLocation.getX() + ((ITEM_SLOT_SIZE + paddingX) * col);
+				int itemY = widgetCanvasLocation.getY() + ((ITEM_SLOT_SIZE + paddingY) * row);
 
-				bounds = new Rectangle(itemX + 1, itemY - 1, WIDGET_ITEM_WIDTH - 2, WIDGET_ITEM_HEIGHT - 2);
+				bounds = new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
 			}
 
 			WidgetItem item = new WidgetItem(itemId - 1, itemQuantity, i, bounds);
@@ -240,12 +244,12 @@ public class Widget
 		return items;
 	}
 
-	public int getPaddingX()
+	private int getPaddingX()
 	{
 		return widget.getPaddingX();
 	}
 
-	public int getPaddingY()
+	private int getPaddingY()
 	{
 		return widget.getPaddingY();
 	}
