@@ -22,9 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.fpsinfo;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
@@ -32,11 +35,9 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
-import java.awt.*;
-
 public class FPSOverlay extends Overlay
 {
-	private static Client client = RuneLite.getClient();
+	private static final Client client = RuneLite.getClient();
 
 	public FPSOverlay()
 	{
@@ -48,13 +49,15 @@ public class FPSOverlay extends Overlay
 	{
 
 		if (client.getGameState() != GameState.LOGGED_IN)
+		{
 			return null;
+		}
 
 		FontMetrics fm = graphics.getFontMetrics();
 		String str = String.valueOf(client.getFPS());
 
-		int x = (int) (client.getClientWidth() - fm.getStringBounds(str, graphics).getWidth());
-		int y = (fm.getHeight());
+		int x = 0;
+		int y = fm.getHeight();
 		//outline
 		graphics.setColor(Color.black);
 		graphics.drawString(str, x - 1, y + 1);
@@ -65,6 +68,6 @@ public class FPSOverlay extends Overlay
 		graphics.setColor(Color.white);
 		graphics.drawString(str, x, y);
 
-		return new Dimension((int) fm.getStringBounds(str, graphics).getWidth(), (int) (fm.getStringBounds(str, graphics).getHeight()));
+		return new Dimension(fm.stringWidth(str), y);
 	}
 }
