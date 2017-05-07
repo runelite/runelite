@@ -25,7 +25,9 @@
 package net.runelite.cache.script.assembler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.script.Instruction;
 import net.runelite.cache.script.Instructions;
@@ -42,10 +44,43 @@ public class ScriptWriter extends rs2asmBaseListener
 	private List<Integer> opcodes = new ArrayList<>();
 	private List<Integer> iops = new ArrayList<>();
 	private List<String> sops = new ArrayList<>();
+	private List<Attribute> attrs = new ArrayList<>();
 
 	public ScriptWriter(LabelVisitor labelVisitor)
 	{
 		this.labelVisitor = labelVisitor;
+	}
+
+	@Override
+	public void exitAttr_idx(rs2asmParser.Attr_idxContext ctx)
+	{
+		String text = ctx.getText();
+		int idx = Integer.parseInt(text);
+
+		Attribute attr = new Attribute();
+		attr.setIdx(idx);
+
+		attrs.add(attr);
+	}
+
+	@Override
+	public void exitAttr_key(rs2asmParser.Attr_keyContext ctx)
+	{
+		String text = ctx.getText();
+		int key = Integer.parseInt(text);
+
+		Attribute attr = attrs.get(attrs.size() - 1);
+		attr.setKey(key);
+	}
+
+	@Override
+	public void exitAttr_value(rs2asmParser.Attr_valueContext ctx)
+	{
+		String text = ctx.getText();
+		int value = Integer.parseInt(text);
+
+		Attribute attr = attrs.get(attrs.size() - 1);
+		attr.setValue(value);
 	}
 
 	@Override
@@ -127,6 +162,29 @@ public class ScriptWriter extends rs2asmBaseListener
 			.mapToInt(Integer::valueOf)
 			.toArray());
 		script.setStringOperands(sops.toArray(new String[0]));
+		script.setAttributes(buildAttributes());
 		return script;
+	}
+
+	private Map<Integer, Integer>[] buildAttributes()
+	{
+		if (attrs == null || attrs.isEmpty())
+		{
+			return null;
+		}
+
+		Map<Integer, Integer>[] maps = new Map[attrs.stream().map(attr -> attr.getIdx()).max(Integer::compare).get() + 1];
+		for (Attribute attr : attrs)
+		{
+			Map<Integer, Integer> map = maps[attr.getIdx()];
+			if (map == null)
+			{
+				map = new HashMap<>();
+				maps[attr.getIdx()] = map;
+			}
+
+			map.put(attr.getKey(), attr.getValue());
+		}
+		return maps;
 	}
 }

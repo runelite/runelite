@@ -22,31 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-grammar rs2asm;
+package net.runelite.cache.script.assembler;
 
-prog: (attr NEWLINE)* (line NEWLINE)+ ;
+public class Attribute
+{
+	private int idx;
+	private int key;
+	private int value;
 
-attr: '.attr ' attr_idx ' ' attr_key ' ' attr_value ;
-attr_idx: INT ;
-attr_key: INT ;
-attr_value: INT ;
+	public int getIdx()
+	{
+		return idx;
+	}
 
-line: instruction | label ;
-instruction: instruction_name instruction_operand ;
-label: 'LABEL' INT ':' ;
+	public void setIdx(int idx)
+	{
+		this.idx = idx;
+	}
 
-instruction_name: name_string | name_opcode ;
-name_string: INSTRUCTION ;
-name_opcode: INT ;
+	public int getKey()
+	{
+		return key;
+	}
 
-instruction_operand: operand_int | operand_qstring | operand_label | ;
-operand_int: INT ;
-operand_qstring: QSTRING ;
-operand_label: 'LABEL' INT ;
+	public void setKey(int key)
+	{
+		this.key = key;
+	}
 
-NEWLINE: '\n'+ ;
-INT: '-'? [0-9]+ ;
-QSTRING: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"' ;
-INSTRUCTION: [a-z0-9_]+ ;
+	public int getValue()
+	{
+		return value;
+	}
 
-WS: (' ' | '\t')+ -> channel(HIDDEN) ;
+	public void setValue(int value)
+	{
+		this.value = value;
+	}
+}

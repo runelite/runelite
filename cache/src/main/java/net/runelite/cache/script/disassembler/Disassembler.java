@@ -25,6 +25,8 @@
 package net.runelite.cache.script.disassembler;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Map.Entry;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.script.Instruction;
 import net.runelite.cache.script.Instructions;
@@ -83,6 +85,8 @@ public class Disassembler
 	public String disassemble(ScriptDefinition script) throws IOException
 	{
 		StringBuilder writer = new StringBuilder();
+
+		writeAttributes(script, writer);
 
 		int[] instructions = script.getInstructions();
 		int[] iops = script.getIntOperands();
@@ -143,5 +147,30 @@ public class Disassembler
 		}
 
 		return writer.toString();
+	}
+
+	private void writeAttributes(ScriptDefinition script, StringBuilder writer)
+	{
+		Map<Integer, Integer>[] attributes = script.getAttributes();
+		if (attributes == null)
+		{
+			return;
+		}
+
+		int index = -1;
+		for (Map<Integer, Integer> map : attributes)
+		{
+			++index;
+
+			if (map == null)
+			{
+				continue;
+			}
+
+			for (Entry<Integer, Integer> entry : map.entrySet())
+			{
+				writer.append(".attr ").append(index).append(" ").append(entry.getKey()).append(" ").append(entry.getValue()).append("\n");
+			}
+		}
 	}
 }

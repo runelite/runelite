@@ -1,3 +1,5 @@
+.attr 4 8 15
+.attr 16 23 42
    033                   
    get_boostedskilllevels
    int_to_string         
