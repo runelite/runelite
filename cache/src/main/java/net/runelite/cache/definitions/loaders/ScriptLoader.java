@@ -24,6 +24,8 @@
  */
 package net.runelite.cache.definitions.loaders;
 
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.io.InputStream;
 
@@ -46,7 +48,26 @@ public class ScriptLoader
 		int intStackCount = in.readUnsignedShort();
 		int stringStackCount = in.readUnsignedShort();
 
-		// XXX There are key/value pairs here
+		int attributeCount = in.readUnsignedByte();
+		if (attributeCount > 0)
+		{
+			Map<Integer, Integer>[] attributes = new Map[attributeCount];
+			def.setAttributes(attributes);
+
+			for (int i = 0; i < attributeCount; ++i)
+			{
+				attributes[i] = new HashMap<>();
+
+				int count = in.readUnsignedShort();
+				while (count-- > 0)
+				{
+					int key = in.readInt();
+					int value = in.readInt();
+
+					attributes[i].put(key, value);
+				}
+			}
+		}
 
 		def.setLocalIntCount(localIntCount);
 		def.setLocalStringCount(localStringCount);
