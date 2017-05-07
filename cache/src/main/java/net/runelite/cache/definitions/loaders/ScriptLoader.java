@@ -48,23 +48,23 @@ public class ScriptLoader
 		int intStackCount = in.readUnsignedShort();
 		int stringStackCount = in.readUnsignedShort();
 
-		int attributeCount = in.readUnsignedByte();
-		if (attributeCount > 0)
+		int numSwitches = in.readUnsignedByte();
+		if (numSwitches > 0)
 		{
-			Map<Integer, Integer>[] attributes = new Map[attributeCount];
-			def.setAttributes(attributes);
+			Map<Integer, Integer>[] switches = new Map[numSwitches];
+			def.setSwitches(switches);
 
-			for (int i = 0; i < attributeCount; ++i)
+			for (int i = 0; i < numSwitches; ++i)
 			{
-				attributes[i] = new HashMap<>();
+				switches[i] = new HashMap<>();
 
 				int count = in.readUnsignedShort();
 				while (count-- > 0)
 				{
-					int key = in.readInt();
-					int value = in.readInt();
+					int key = in.readInt(); // int from stack is compared to this
+					int pcOffset = in.readInt(); // pc jumps by this
 
-					attributes[i].put(key, value);
+					switches[i].put(key, pcOffset);
 				}
 			}
 		}

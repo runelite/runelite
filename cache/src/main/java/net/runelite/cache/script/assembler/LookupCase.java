@@ -24,31 +24,10 @@
  */
 package net.runelite.cache.script.assembler;
 
-public class Attribute
+public class LookupCase
 {
-	private int idx;
-	private int key;
 	private int value;
-
-	public int getIdx()
-	{
-		return idx;
-	}
-
-	public void setIdx(int idx)
-	{
-		this.idx = idx;
-	}
-
-	public int getKey()
-	{
-		return key;
-	}
-
-	public void setKey(int key)
-	{
-		this.key = key;
-	}
+	private int offset;
 
 	public int getValue()
 	{
@@ -58,5 +37,15 @@ public class Attribute
 	public void setValue(int value)
 	{
 		this.value = value;
+	}
+
+	public int getOffset()
+	{
+		return offset;
+	}
+
+	public void setOffset(int offset)
+	{
+		this.offset = offset;
 	}
 }

@@ -36,7 +36,7 @@ public class ScriptDefinition
 	private int localStringCount;
 	private int stringStackCount;
 	private int localIntCount;
-	private Map<Integer, Integer>[] attributes;
+	private Map<Integer, Integer>[] switches;
 
 	public int getId()
 	{
@@ -118,13 +118,13 @@ public class ScriptDefinition
 		this.localIntCount = localIntCount;
 	}
 
-	public Map<Integer, Integer>[] getAttributes()
+	public Map<Integer, Integer>[] getSwitches()
 	{
-		return attributes;
+		return switches;
 	}
 
-	public void setAttributes(Map<Integer, Integer>[] attributes)
+	public void setSwitches(Map<Integer, Integer>[] switches)
 	{
-		this.attributes = attributes;
+		this.switches = switches;
 	}
 }
