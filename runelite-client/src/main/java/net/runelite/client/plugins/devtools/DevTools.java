@@ -35,8 +35,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.Overlay;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DevTools extends Plugin
 {
@@ -71,7 +69,7 @@ public class DevTools extends Plugin
 
 		font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape.ttf"));
 
-		font = font.deriveFont(Font.PLAIN, 16);
+		font = font.deriveFont(Font.BOLD, 16);
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		ge.registerFont(font);
 	}
