@@ -109,7 +109,7 @@ public class Widget
 
 	public String getText()
 	{
-		return widget.getText();
+		return widget.getText().replace('\u00A0', ' ');
 	}
 
 	public void setText(String text)
@@ -124,7 +124,7 @@ public class Widget
 
 	public String getName()
 	{
-		return widget.getName();
+		return widget.getName().replace('\u00A0', ' ');
 	}
 
 	public int getModelId()
