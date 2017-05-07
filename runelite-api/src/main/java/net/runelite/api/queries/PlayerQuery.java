@@ -30,7 +30,7 @@ import net.runelite.api.Player;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class PlayerQuery extends ActorQuery<Player>
+public class PlayerQuery extends ActorQuery<Player, PlayerQuery>
 {
 	@Override
 	protected Player[] result(Client client)

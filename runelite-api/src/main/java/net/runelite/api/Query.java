@@ -25,8 +25,9 @@
 package net.runelite.api;
 
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
-public abstract class Query<T>
+public abstract class Query<T, S> implements Supplier<S>
 {
 	protected Predicate<T> predicate;
 
@@ -43,5 +44,11 @@ public abstract class Query<T>
 			return other;
 		}
 		return predicate.and(other);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public S get() {
+		return (S) this;
 	}
 }

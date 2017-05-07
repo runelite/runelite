@@ -30,7 +30,7 @@ import net.runelite.api.NPC;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class NPCQuery extends ActorQuery<NPC>
+public class NPCQuery extends ActorQuery<NPC, NPCQuery>
 {
 	@Override
 	protected NPC[] result(Client client)
