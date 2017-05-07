@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.api.queries;
 
-package net.runelite.api;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
 
-public class NPC extends Actor
+import java.util.Arrays;
+import java.util.Objects;
+
+public class NPCQuery extends ActorQuery<NPC, NPCQuery>
 {
-	private net.runelite.rs.api.NPC npc;
-
-	public NPC(Client client, net.runelite.rs.api.NPC npc)
-	{
-		super(client, npc);
-		this.npc = npc;
-	}
-
 	@Override
-	public String getName()
+	protected NPC[] result(Client client)
 	{
-		return npc.getComposition().getName().replace('\u00A0', ' ');
+		return Arrays.stream(client.getNpcs())
+				.filter(Objects::nonNull)
+				.filter(predicate)
+				.toArray(NPC[]::new);
 	}
-
-	@Override
-	public int getCombatLevel()
-	{
-		return npc.getComposition().getCombatLevel();
-	}
-
 }

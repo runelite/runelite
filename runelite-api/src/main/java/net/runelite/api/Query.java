@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.api;
 
-public class NPC extends Actor
+import java.util.function.Predicate;
+
+public abstract class Query<EntityType, QueryType>
 {
-	private net.runelite.rs.api.NPC npc;
+	protected Predicate<EntityType> predicate;
 
-	public NPC(Client client, net.runelite.rs.api.NPC npc)
+	protected Query()
 	{
-		super(client, npc);
-		this.npc = npc;
 	}
 
-	@Override
-	public String getName()
-	{
-		return npc.getComposition().getName().replace('\u00A0', ' ');
-	}
+	protected abstract EntityType[] result(Client client);
 
-	@Override
-	public int getCombatLevel()
+	protected Predicate<EntityType> and(Predicate<EntityType> other)
 	{
-		return npc.getComposition().getCombatLevel();
+		if (predicate == null)
+		{
+			return other;
+		}
+		return predicate.and(other);
 	}
-
 }
