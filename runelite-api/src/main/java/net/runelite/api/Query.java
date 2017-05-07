@@ -25,30 +25,23 @@
 package net.runelite.api;
 
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
-public abstract class Query<T, S> implements Supplier<S>
+public abstract class Query<EntityType, QueryType>
 {
-	protected Predicate<T> predicate;
+	protected Predicate<EntityType> predicate;
 
 	protected Query()
 	{
 	}
 
-	protected abstract T[] result(Client client);
+	protected abstract EntityType[] result(Client client);
 
-	protected Predicate<T> and(Predicate<T> other)
+	protected Predicate<EntityType> and(Predicate<EntityType> other)
 	{
 		if (predicate == null)
 		{
 			return other;
 		}
 		return predicate.and(other);
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public S get() {
-		return (S) this;
 	}
 }

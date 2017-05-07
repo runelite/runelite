@@ -28,10 +28,10 @@ import net.runelite.api.Actor;
 import net.runelite.api.Point;
 import net.runelite.api.Query;
 
-public abstract class ActorQuery<T extends Actor, S> extends Query<T, S>
+public abstract class ActorQuery<EntityType extends Actor, QueryType> extends Query<EntityType, QueryType>
 {
 	@SuppressWarnings("unchecked")
-	public S nameEquals(String... names)
+	public QueryType nameEquals(String... names)
 	{
 		predicate = and(actor ->
 		{
@@ -45,11 +45,11 @@ public abstract class ActorQuery<T extends Actor, S> extends Query<T, S>
 			}
 			return false;
 		});
-		return (S) this;
+		return (QueryType) this;
 	}
 
 	@SuppressWarnings("unchecked")
-	public S nameContains(String... names)
+	public QueryType nameContains(String... names)
 	{
 		predicate = and(actor ->
 		{
@@ -63,34 +63,34 @@ public abstract class ActorQuery<T extends Actor, S> extends Query<T, S>
 			}
 			return false;
 		});
-		return (S) this;
+		return (QueryType) this;
 	}
 
 	@SuppressWarnings("unchecked")
-	public S atLocalLocation(Point location)
+	public QueryType atLocalLocation(Point location)
 	{
 		predicate = and(actor -> actor.getLocalLocation().equals(location));
-		return (S) this;
+		return (QueryType) this;
 	}
 
 	@SuppressWarnings("unchecked")
-	public S isLevel(int level)
+	public QueryType isLevel(int level)
 	{
 		predicate = and(actor -> actor.getCombatLevel() == level);
-		return (S) this;
+		return (QueryType) this;
 	}
 
 	@SuppressWarnings("unchecked")
-	public S animationEquals(int animation)
+	public QueryType animationEquals(int animation)
 	{
 		predicate = and(actor -> actor.getAnimation() == animation);
-		return (S) this;
+		return (QueryType) this;
 	}
 
 	@SuppressWarnings("unchecked")
-	public S isInteractingWith(Actor actor)
+	public QueryType isInteractingWith(Actor actor)
 	{
 		predicate = and(a -> a.getInteracting().equals(a));
-		return (S) this;
+		return (QueryType) this;
 	}
 }
