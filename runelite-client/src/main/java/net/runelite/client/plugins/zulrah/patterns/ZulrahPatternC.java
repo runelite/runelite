@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Aria <aria@ar1as.space>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.zulrah.patterns;
 
-package net.runelite.api;
+import net.runelite.client.plugins.zulrah.StandLocation;
+import net.runelite.client.plugins.zulrah.ZulrahLocation;
+import net.runelite.client.plugins.zulrah.ZulrahType;
 
-public class NPC extends Actor
+public class ZulrahPatternC extends ZulrahPattern
 {
-	private net.runelite.rs.api.NPC npc;
-
-	public NPC(Client client, net.runelite.rs.api.NPC npc)
+	public ZulrahPatternC()
 	{
-		super(client, npc);
-		this.npc = npc;
+		add(ZulrahLocation.NORTH, ZulrahType.RANGE, StandLocation.TOP_EAST);
+		add(ZulrahLocation.EAST, ZulrahType.RANGE, StandLocation.TOP_EAST);
+		add(ZulrahLocation.NORTH, ZulrahType.MELEE, StandLocation.TOP_WEST);
+		add(ZulrahLocation.WEST, ZulrahType.MAGIC, StandLocation.TOP_WEST);
+		add(ZulrahLocation.SOUTH, ZulrahType.RANGE, StandLocation.EAST);
+		add(ZulrahLocation.EAST, ZulrahType.MAGIC, StandLocation.PILLAR_EAST_OUTSIDE);
+		add(ZulrahLocation.NORTH, ZulrahType.RANGE, StandLocation.WEST);
+		add(ZulrahLocation.WEST, ZulrahType.RANGE, StandLocation.PILLAR_WEST_OUTSIDE);
+		add(ZulrahLocation.NORTH, ZulrahType.MAGIC, StandLocation.PILLAR_EAST_OUTSIDE);
+		addJad(ZulrahLocation.EAST, ZulrahType.MAGIC, StandLocation.PILLAR_EAST_OUTSIDE);
+		add(ZulrahLocation.NORTH, ZulrahType.MAGIC, StandLocation.EAST);
 	}
-
-	public int getId()
-	{
-		return npc.getComposition().getId();
-	}
-
-	@Override
-	public String getName()
-	{
-		return npc.getComposition().getName().replace('\u00A0', ' ');
-	}
-
-	@Override
-	public int getCombatLevel()
-	{
-		return npc.getComposition().getCombatLevel();
-	}
-
 }
