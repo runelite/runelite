@@ -82,7 +82,8 @@ public class TileOverlay extends Overlay
 			return null;
 		}
 
-		renderTileOverlay(graphics, current.getStandLoc(startLocationWorld), Color.GREEN);
+		renderTileOverlay(graphics, current.getStandLoc(startLocationWorld), Color.GREEN); // Maybe change this to getZulrahColor too? It is current, might be pretty obvious.
+		renderTileOverlay(graphics, current.getZulrahLoc(startLocationWorld), current.getZulrahColor());
 
 		ZulrahInstance next = pattern.get(stage + 1);
 		if (next == null)
@@ -111,7 +112,8 @@ public class TileOverlay extends Overlay
 			graphics.drawString(str, location.getX(), location.getY());
 		}
 
-		renderTileOverlay(graphics, next.getStandLoc(startLocationWorld), new Color(255, 0, 0, 150));
+		renderTileOverlay(graphics, next.getStandLoc(startLocationWorld), next.getZulrahColor(true));
+		renderTileOverlay(graphics, next.getZulrahLoc(startLocationWorld), next.getZulrahColor(true));
 
 		return null;
 	}
