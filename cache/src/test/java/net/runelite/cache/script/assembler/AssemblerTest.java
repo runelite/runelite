@@ -30,20 +30,12 @@ import net.runelite.cache.script.disassembler.Disassembler;
 import org.apache.commons.compress.utils.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.impl.SimpleLogger;
 
 public class AssemblerTest
 {
 	private static final Logger logger = LoggerFactory.getLogger(AssemblerTest.class);
-
-	@Before
-	public void before()
-	{
-		System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "DEBUG");
-	}
 
 	@Test
 	public void testAssemble() throws Exception
@@ -63,9 +55,9 @@ public class AssemblerTest
 
 		String original = new String(IOUtils.toByteArray(in));
 
-		logger.debug(original);
-		logger.debug("-----------------------");
-		logger.debug(out);
+		logger.info(original);
+		logger.info("-----------------------");
+		logger.info(out);
 
 		Assert.assertEquals(original, out);
 	}
