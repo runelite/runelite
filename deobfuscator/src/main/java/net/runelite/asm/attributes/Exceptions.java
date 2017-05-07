@@ -46,7 +46,7 @@ public class Exceptions
 	
 	public void renameClass(ClassFile cf, String name)
 	{
-		for (Class c : classes)
+		for (Class c : new ArrayList<>(classes))
 		{
 			if (c.getName().equals(cf.getName()))
 			{
