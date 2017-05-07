@@ -74,7 +74,8 @@ public class Deob
 		// remove except RuntimeException
 		run(group, new RuntimeExceptions());
 
-		// remove unused methods
+		// remove unused methods - this leaves Code with no instructions,
+		// which is not valid, so unused methods is run after
 		run(group, new UnreachedCode());
 		run(group, new UnusedMethods());
 

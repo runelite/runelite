@@ -30,7 +30,6 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.ClassUtil;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Label;
-import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.deob.TemporyFolderLocation;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
@@ -76,12 +75,15 @@ public class UnreachedCodeTest
 		Assert.assertFalse(method.getCode().getInstructions().getInstructions().stream().filter(i -> !(i instanceof Label)).findAny().isPresent());
 		Assert.assertTrue(method.getCode().getExceptions().getExceptions().isEmpty());
 		
-		// Method is now invalid, prevent 
+		// Method is now invalid, remove so jar can be saved
 		cf.getMethods().removeMethod(method);
 
-		// constructor shouldn't have instructions removed
+		// constructor now has no instructions
 		method = cf.findMethod("<init>");
 		Assert.assertNotNull(method);
-		Assert.assertTrue(method.getCode().getInstructions().getInstructions().stream().filter(i -> i instanceof VReturn).findAny().isPresent());
+		Assert.assertFalse(method.getCode().getInstructions().getInstructions().stream().filter(i -> !(i instanceof Label)).findAny().isPresent());
+
+		// remove it too
+		cf.getMethods().removeMethod(method);
 	}
 }
