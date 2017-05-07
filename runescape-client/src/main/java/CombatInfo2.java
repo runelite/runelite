@@ -210,7 +210,7 @@ public class CombatInfo2 extends CacheableNode {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class128.method2364(class32.field720[--class32.field715]);
+         var3 = class128.method2364(class32.intStack[--class32.intStackSize]);
       } else {
          var3 = var2?class200.field2894:Script.field942;
       }

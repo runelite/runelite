@@ -88,10 +88,10 @@ public class class179 implements class134 {
       int var9;
       int var10;
       if(var0 == 100) {
-         class32.field715 -= 3;
-         var10 = class32.field720[class32.field715];
-         var9 = class32.field720[class32.field715 + 1];
-         int var5 = class32.field720[class32.field715 + 2];
+         class32.intStackSize -= 3;
+         var10 = class32.intStack[class32.intStackSize];
+         var9 = class32.intStack[class32.intStackSize + 1];
+         int var5 = class32.intStack[class32.intStackSize + 2];
          if(var9 == 0) {
             throw new RuntimeException();
          } else {
@@ -138,22 +138,22 @@ public class class179 implements class134 {
             class124.method2350(var4);
             return 1;
          } else if(var0 == 102) {
-            var3 = class128.method2364(class32.field720[--class32.field715]);
+            var3 = class128.method2364(class32.intStack[--class32.intStackSize]);
             var3.children = null;
             class124.method2350(var3);
             return 1;
          } else if(var0 != 200) {
             if(var0 == 201) {
-               var3 = class128.method2364(class32.field720[--class32.field715]);
+               var3 = class128.method2364(class32.intStack[--class32.intStackSize]);
                if(var3 != null) {
-                  class32.field720[++class32.field715 - 1] = 1;
+                  class32.intStack[++class32.intStackSize - 1] = 1;
                   if(var2) {
                      class200.field2894 = var3;
                   } else {
                      Script.field942 = var3;
                   }
                } else {
-                  class32.field720[++class32.field715 - 1] = 0;
+                  class32.intStack[++class32.intStackSize - 1] = 0;
                }
 
                return 1;
@@ -161,19 +161,19 @@ public class class179 implements class134 {
                return 2;
             }
          } else {
-            class32.field715 -= 2;
-            var10 = class32.field720[class32.field715];
-            var9 = class32.field720[class32.field715 + 1];
+            class32.intStackSize -= 2;
+            var10 = class32.intStack[class32.intStackSize];
+            var9 = class32.intStack[class32.intStackSize + 1];
             Widget var11 = class0.method13(var10, var9);
             if(var11 != null && var9 != -1) {
-               class32.field720[++class32.field715 - 1] = 1;
+               class32.intStack[++class32.intStackSize - 1] = 1;
                if(var2) {
                   class200.field2894 = var11;
                } else {
                   Script.field942 = var11;
                }
             } else {
-               class32.field720[++class32.field715 - 1] = 0;
+               class32.intStack[++class32.intStackSize - 1] = 0;
             }
 
             return 1;

@@ -22,30 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-grammar rs2asm;
+package net.runelite.cache.script.assembler;
 
-prog: (line NEWLINE)+ ;
+import java.util.ArrayList;
+import java.util.List;
 
-line: instruction | label | switch_lookup ;
-instruction: instruction_name instruction_operand ;
-label: 'LABEL' INT ':' ;
+public class LookupSwitch
+{
+	private final List<LookupCase> cases = new ArrayList<>();
 
-instruction_name: name_string | name_opcode ;
-name_string: INSTRUCTION ;
-name_opcode: INT ;
-
-instruction_operand: operand_int | operand_qstring | operand_label | ;
-operand_int: INT ;
-operand_qstring: QSTRING ;
-operand_label: 'LABEL' INT ;
-
-switch_lookup: switch_key ':' switch_value ;
-switch_key: INT ;
-switch_value: 'LABEL' INT ;
-
-NEWLINE: '\n'+ ;
-INT: '-'? [0-9]+ ;
-QSTRING: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"' ;
-INSTRUCTION: [a-z0-9_]+ ;
-
-WS: (' ' | '\t')+ -> channel(HIDDEN) ;
+	public List<LookupCase> getCases()
+	{
+		return cases;
+	}
+}

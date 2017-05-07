@@ -415,7 +415,7 @@ public class class57 {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class128.method2364(class32.field720[--class32.field715]);
+         var3 = class128.method2364(class32.intStack[--class32.intStackSize]);
       } else {
          var3 = var2?class200.field2894:Script.field942;
       }
@@ -423,9 +423,9 @@ public class class57 {
       String var4 = class32.scriptStringStack[--class32.scriptStringStackSize];
       int[] var5 = null;
       if(var4.length() > 0 && var4.charAt(var4.length() - 1) == 89) {
-         int var8 = class32.field720[--class32.field715];
+         int var8 = class32.intStack[--class32.intStackSize];
          if(var8 > 0) {
-            for(var5 = new int[var8]; var8-- > 0; var5[var8] = class32.field720[--class32.field715]) {
+            for(var5 = new int[var8]; var8-- > 0; var5[var8] = class32.intStack[--class32.intStackSize]) {
                ;
             }
          }
@@ -440,11 +440,11 @@ public class class57 {
          if(var4.charAt(var7 - 1) == 115) {
             var6[var7] = class32.scriptStringStack[--class32.scriptStringStackSize];
          } else {
-            var6[var7] = new Integer(class32.field720[--class32.field715]);
+            var6[var7] = new Integer(class32.intStack[--class32.intStackSize]);
          }
       }
 
-      var7 = class32.field720[--class32.field715];
+      var7 = class32.intStack[--class32.intStackSize];
       if(var7 != -1) {
          var6[0] = new Integer(var7);
       } else {
@@ -567,17 +567,17 @@ public class class57 {
    )
    static int method1118(int var0, Script var1, boolean var2) {
       if(var0 == 5000) {
-         class32.field720[++class32.field715 - 1] = Client.field323;
+         class32.intStack[++class32.intStackSize - 1] = Client.field323;
          return 1;
       } else if(var0 == 5001) {
-         class32.field715 -= 3;
-         Client.field323 = class32.field720[class32.field715];
-         Friend.field157 = class211.method4013(class32.field720[class32.field715 + 1]);
+         class32.intStackSize -= 3;
+         Client.field323 = class32.intStack[class32.intStackSize];
+         Friend.field157 = class211.method4013(class32.intStack[class32.intStackSize + 1]);
          if(Friend.field157 == null) {
             Friend.field157 = class220.field3199;
          }
 
-         Client.field468 = class32.field720[class32.field715 + 2];
+         Client.field468 = class32.intStack[class32.intStackSize + 2];
          Client.secretPacketBuffer1.putOpcode(202);
          Client.secretPacketBuffer1.putByte(Client.field323);
          Client.secretPacketBuffer1.putByte(Friend.field157.field3201);
@@ -589,9 +589,9 @@ public class class57 {
          int var5;
          if(var0 == 5002) {
             var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
-            class32.field715 -= 2;
-            var4 = class32.field720[class32.field715];
-            var5 = class32.field720[class32.field715 + 1];
+            class32.intStackSize -= 2;
+            var4 = class32.intStack[class32.intStackSize];
+            var5 = class32.intStack[class32.intStackSize + 1];
             Client.secretPacketBuffer1.putOpcode(168);
             Client.secretPacketBuffer1.putByte(class36.method753(var3) + 2);
             Client.secretPacketBuffer1.method2504(var3);
@@ -601,20 +601,20 @@ public class class57 {
          } else {
             int var11;
             if(var0 == 5003) {
-               class32.field715 -= 2;
-               var11 = class32.field720[class32.field715];
-               var4 = class32.field720[class32.field715 + 1];
+               class32.intStackSize -= 2;
+               var11 = class32.intStack[class32.intStackSize];
+               var4 = class32.intStack[class32.intStackSize + 1];
                ChatLineBuffer var12 = (ChatLineBuffer)class47.chatLineMap.get(Integer.valueOf(var11));
                MessageNode var16 = var12.method924(var4);
                if(var16 != null) {
-                  class32.field720[++class32.field715 - 1] = var16.id;
-                  class32.field720[++class32.field715 - 1] = var16.tick;
+                  class32.intStack[++class32.intStackSize - 1] = var16.id;
+                  class32.intStack[++class32.intStackSize - 1] = var16.tick;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var16.name != null?var16.name:"";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var16.sender != null?var16.sender:"";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var16.value != null?var16.value:"";
                } else {
-                  class32.field720[++class32.field715 - 1] = -1;
-                  class32.field720[++class32.field715 - 1] = 0;
+                  class32.intStack[++class32.intStackSize - 1] = -1;
+                  class32.intStack[++class32.intStackSize - 1] = 0;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
@@ -622,17 +622,17 @@ public class class57 {
 
                return 1;
             } else if(var0 == 5004) {
-               var11 = class32.field720[--class32.field715];
+               var11 = class32.intStack[--class32.intStackSize];
                MessageNode var18 = (MessageNode)class47.field924.method2728((long)var11);
                if(var18 != null) {
-                  class32.field720[++class32.field715 - 1] = var18.type;
-                  class32.field720[++class32.field715 - 1] = var18.tick;
+                  class32.intStack[++class32.intStackSize - 1] = var18.type;
+                  class32.intStack[++class32.intStackSize - 1] = var18.tick;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var18.name != null?var18.name:"";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var18.sender != null?var18.sender:"";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var18.value != null?var18.value:"";
                } else {
-                  class32.field720[++class32.field715 - 1] = -1;
-                  class32.field720[++class32.field715 - 1] = 0;
+                  class32.intStack[++class32.intStackSize - 1] = -1;
+                  class32.intStack[++class32.intStackSize - 1] = 0;
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                   class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
@@ -641,15 +641,15 @@ public class class57 {
                return 1;
             } else if(var0 == 5005) {
                if(Friend.field157 == null) {
-                  class32.field720[++class32.field715 - 1] = -1;
+                  class32.intStack[++class32.intStackSize - 1] = -1;
                } else {
-                  class32.field720[++class32.field715 - 1] = Friend.field157.field3201;
+                  class32.intStack[++class32.intStackSize - 1] = Friend.field157.field3201;
                }
 
                return 1;
             } else if(var0 == 5008) {
                var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
-               var4 = class32.field720[--class32.field715];
+               var4 = class32.intStack[--class32.intStackSize];
                String var10 = var3.toLowerCase();
                byte var14 = 0;
                if(var10.startsWith("yellow:")) {
@@ -786,15 +786,15 @@ public class class57 {
                return 1;
             } else if(var0 != 5015) {
                if(var0 == 5016) {
-                  class32.field720[++class32.field715 - 1] = Client.field468;
+                  class32.intStack[++class32.intStackSize - 1] = Client.field468;
                   return 1;
                } else {
                   int var6;
                   int[] var13;
                   if(var0 == 5017) {
-                     var11 = class32.field720[--class32.field715];
-                     var13 = class32.field720;
-                     var5 = ++class32.field715 - 1;
+                     var11 = class32.intStack[--class32.intStackSize];
+                     var13 = class32.intStack;
+                     var5 = ++class32.intStackSize - 1;
                      ChatLineBuffer var15 = (ChatLineBuffer)class47.chatLineMap.get(Integer.valueOf(var11));
                      if(var15 == null) {
                         var6 = 0;
@@ -807,9 +807,9 @@ public class class57 {
                   } else {
                      MessageNode var9;
                      if(var0 == 5018) {
-                        var11 = class32.field720[--class32.field715];
-                        var13 = class32.field720;
-                        var5 = ++class32.field715 - 1;
+                        var11 = class32.intStack[--class32.intStackSize];
+                        var13 = class32.intStack;
+                        var5 = ++class32.intStackSize - 1;
                         var9 = (MessageNode)class47.field924.method2728((long)var11);
                         if(var9 == null) {
                            var6 = -1;
@@ -822,9 +822,9 @@ public class class57 {
                         var13[var5] = var6;
                         return 1;
                      } else if(var0 == 5019) {
-                        var11 = class32.field720[--class32.field715];
-                        var13 = class32.field720;
-                        var5 = ++class32.field715 - 1;
+                        var11 = class32.intStack[--class32.intStackSize];
+                        var13 = class32.intStack;
+                        var5 = ++class32.intStackSize - 1;
                         var9 = (MessageNode)class47.field924.method2728((long)var11);
                         if(var9 == null) {
                            var6 = -1;

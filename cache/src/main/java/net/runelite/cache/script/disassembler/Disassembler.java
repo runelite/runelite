@@ -25,6 +25,8 @@
 package net.runelite.cache.script.disassembler;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Map.Entry;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.script.Instruction;
 import net.runelite.cache.script.Instructions;
@@ -56,12 +58,29 @@ public class Disassembler
 	private boolean[] needLabel(ScriptDefinition script)
 	{
 		int[] instructions = script.getInstructions();
-		int[] iop = script.getIntOperands();
+		int[] iops = script.getIntOperands();
+		Map<Integer, Integer>[] switches = script.getSwitches();
+
 		boolean[] jumped = new boolean[instructions.length];
 
 		for (int i = 0; i < instructions.length; ++i)
 		{
 			int opcode = instructions[i];
+			int iop = iops[i];
+
+			if (opcode == Opcodes.SWITCH)
+			{
+				Map<Integer, Integer> switchMap = switches[iop];
+
+				for (Entry<Integer, Integer> entry : switchMap.entrySet())
+				{
+					int offset = entry.getValue();
+
+					int to = i + offset + 1;
+					assert to >= 0 && to < instructions.length;
+					jumped[to] = true;
+				}
+			}
 
 			if (!isJump(opcode))
 			{
@@ -71,7 +90,7 @@ public class Disassembler
 			// + 1 because the jumps go to the instructions prior to the
 			// one you really want, because the pc is incremented on the
 			// next loop
-			int to = i + iop[i] + 1;
+			int to = i + iop + 1;
 			assert to >= 0 && to < instructions.length;
 
 			jumped[to] = true;
@@ -87,6 +106,7 @@ public class Disassembler
 		int[] instructions = script.getInstructions();
 		int[] iops = script.getIntOperands();
 		String[] sops = script.getStringOperands();
+		Map<Integer, Integer>[] switches = script.getSwitches();
 
 		assert iops.length == instructions.length;
 		assert sops.length == instructions.length;
@@ -123,7 +143,7 @@ public class Disassembler
 
 			writer.append(String.format("   %-22s", name));
 
-			if (iop != 0 || opcode == Opcodes.LOAD_INT)
+			if (shouldWriteIntOperand(opcode, iop))
 			{
 				if (isJump(opcode))
 				{
@@ -139,9 +159,36 @@ public class Disassembler
 			{
 				writer.append(" \"").append(sop).append("\"");
 			}
+
+			if (opcode == Opcodes.SWITCH)
+			{
+				Map<Integer, Integer> switchMap = switches[iop];
+
+				for (Entry<Integer, Integer> entry : switchMap.entrySet())
+				{
+					int value = entry.getKey();
+					int jump = entry.getValue();
+
+					writer.append("\n");
+					writer.append("      ").append(value).append(": LABEL").append(i + jump + 1);
+				}
+			}
+
 			writer.append("\n");
 		}
 
 		return writer.toString();
+	}
+
+	private boolean shouldWriteIntOperand(int opcode, int operand)
+	{
+		if (opcode == Opcodes.SWITCH)
+		{
+			// table follows instruction
+			return false;
+		}
+
+		// Write if operand != 0 or if the instruction is specifically to load int
+		return operand != 0 || opcode == Opcodes.LOAD_INT;
 	}
 }

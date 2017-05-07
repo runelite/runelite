@@ -95,24 +95,24 @@ public class FrameMap extends Node {
       garbageValue = "-1657707911"
    )
    static int method1719(int var0, Script var1, boolean var2) {
-      Widget var3 = class128.method2364(class32.field720[--class32.field715]);
+      Widget var3 = class128.method2364(class32.intStack[--class32.intStackSize]);
       if(var0 == 2500) {
-         class32.field720[++class32.field715 - 1] = var3.relativeX;
+         class32.intStack[++class32.intStackSize - 1] = var3.relativeX;
          return 1;
       } else if(var0 == 2501) {
-         class32.field720[++class32.field715 - 1] = var3.relativeY;
+         class32.intStack[++class32.intStackSize - 1] = var3.relativeY;
          return 1;
       } else if(var0 == 2502) {
-         class32.field720[++class32.field715 - 1] = var3.width;
+         class32.intStack[++class32.intStackSize - 1] = var3.width;
          return 1;
       } else if(var0 == 2503) {
-         class32.field720[++class32.field715 - 1] = var3.height;
+         class32.intStack[++class32.intStackSize - 1] = var3.height;
          return 1;
       } else if(var0 == 2504) {
-         class32.field720[++class32.field715 - 1] = var3.isHidden?1:0;
+         class32.intStack[++class32.intStackSize - 1] = var3.isHidden?1:0;
          return 1;
       } else if(var0 == 2505) {
-         class32.field720[++class32.field715 - 1] = var3.parentId;
+         class32.intStack[++class32.intStackSize - 1] = var3.parentId;
          return 1;
       } else {
          return 2;

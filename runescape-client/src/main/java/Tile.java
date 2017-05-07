@@ -2829,16 +2829,16 @@ public final class Tile extends Node {
    static int method1567(int var0, Script var1, boolean var2) {
       int var3;
       if(var0 == 4200) {
-         var3 = class32.field720[--class32.field715];
+         var3 = class32.intStack[--class32.intStackSize];
          class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class47.getItemDefinition(var3).name;
          return 1;
       } else {
          int var4;
          ItemComposition var17;
          if(var0 == 4201) {
-            class32.field715 -= 2;
-            var3 = class32.field720[class32.field715];
-            var4 = class32.field720[class32.field715 + 1];
+            class32.intStackSize -= 2;
+            var3 = class32.intStack[class32.intStackSize];
+            var4 = class32.intStack[class32.intStackSize + 1];
             var17 = class47.getItemDefinition(var3);
             if(var4 >= 1 && var4 <= 5 && var17.groundActions[var4 - 1] != null) {
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var17.groundActions[var4 - 1];
@@ -2848,9 +2848,9 @@ public final class Tile extends Node {
 
             return 1;
          } else if(var0 == 4202) {
-            class32.field715 -= 2;
-            var3 = class32.field720[class32.field715];
-            var4 = class32.field720[class32.field715 + 1];
+            class32.intStackSize -= 2;
+            var3 = class32.intStack[class32.intStackSize];
+            var4 = class32.intStack[class32.intStackSize + 1];
             var17 = class47.getItemDefinition(var3);
             if(var4 >= 1 && var4 <= 5 && var17.inventoryActions[var4 - 1] != null) {
                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var17.inventoryActions[var4 - 1];
@@ -2860,62 +2860,62 @@ public final class Tile extends Node {
 
             return 1;
          } else if(var0 == 4203) {
-            var3 = class32.field720[--class32.field715];
-            class32.field720[++class32.field715 - 1] = class47.getItemDefinition(var3).price;
+            var3 = class32.intStack[--class32.intStackSize];
+            class32.intStack[++class32.intStackSize - 1] = class47.getItemDefinition(var3).price;
             return 1;
          } else if(var0 == 4204) {
-            var3 = class32.field720[--class32.field715];
-            class32.field720[++class32.field715 - 1] = class47.getItemDefinition(var3).isStackable == 1?1:0;
+            var3 = class32.intStack[--class32.intStackSize];
+            class32.intStack[++class32.intStackSize - 1] = class47.getItemDefinition(var3).isStackable == 1?1:0;
             return 1;
          } else {
             ItemComposition var13;
             if(var0 == 4205) {
-               var3 = class32.field720[--class32.field715];
+               var3 = class32.intStack[--class32.intStackSize];
                var13 = class47.getItemDefinition(var3);
                if(var13.notedTemplate == -1 && var13.note >= 0) {
-                  class32.field720[++class32.field715 - 1] = var13.note;
+                  class32.intStack[++class32.intStackSize - 1] = var13.note;
                } else {
-                  class32.field720[++class32.field715 - 1] = var3;
+                  class32.intStack[++class32.intStackSize - 1] = var3;
                }
 
                return 1;
             } else if(var0 == 4206) {
-               var3 = class32.field720[--class32.field715];
+               var3 = class32.intStack[--class32.intStackSize];
                var13 = class47.getItemDefinition(var3);
                if(var13.notedTemplate >= 0 && var13.note >= 0) {
-                  class32.field720[++class32.field715 - 1] = var13.note;
+                  class32.intStack[++class32.intStackSize - 1] = var13.note;
                } else {
-                  class32.field720[++class32.field715 - 1] = var3;
+                  class32.intStack[++class32.intStackSize - 1] = var3;
                }
 
                return 1;
             } else if(var0 == 4207) {
-               var3 = class32.field720[--class32.field715];
-               class32.field720[++class32.field715 - 1] = class47.getItemDefinition(var3).isMembers?1:0;
+               var3 = class32.intStack[--class32.intStackSize];
+               class32.intStack[++class32.intStackSize - 1] = class47.getItemDefinition(var3).isMembers?1:0;
                return 1;
             } else if(var0 == 4208) {
-               var3 = class32.field720[--class32.field715];
+               var3 = class32.intStack[--class32.intStackSize];
                var13 = class47.getItemDefinition(var3);
                if(var13.field3000 == -1 && var13.field3016 >= 0) {
-                  class32.field720[++class32.field715 - 1] = var13.field3016;
+                  class32.intStack[++class32.intStackSize - 1] = var13.field3016;
                } else {
-                  class32.field720[++class32.field715 - 1] = var3;
+                  class32.intStack[++class32.intStackSize - 1] = var3;
                }
 
                return 1;
             } else if(var0 == 4209) {
-               var3 = class32.field720[--class32.field715];
+               var3 = class32.intStack[--class32.intStackSize];
                var13 = class47.getItemDefinition(var3);
                if(var13.field3000 >= 0 && var13.field3016 >= 0) {
-                  class32.field720[++class32.field715 - 1] = var13.field3016;
+                  class32.intStack[++class32.intStackSize - 1] = var13.field3016;
                } else {
-                  class32.field720[++class32.field715 - 1] = var3;
+                  class32.intStack[++class32.intStackSize - 1] = var3;
                }
 
                return 1;
             } else if(var0 == 4210) {
                String var15 = class32.scriptStringStack[--class32.scriptStringStackSize];
-               var4 = class32.field720[--class32.field715];
+               var4 = class32.intStack[--class32.intStackSize];
                boolean var6 = var4 == 1;
                String var5 = var15.toLowerCase();
                short[] var7 = new short[16];
@@ -2962,7 +2962,7 @@ public final class Tile extends Node {
                   ++var14;
                }
 
-               class32.field720[++class32.field715 - 1] = class105.field1691;
+               class32.intStack[++class32.intStackSize - 1] = class105.field1691;
                return 1;
             } else if(var0 != 4211) {
                if(var0 == 4212) {
@@ -2973,9 +2973,9 @@ public final class Tile extends Node {
                }
             } else {
                if(class26.field589 != null && class118.field1853 < class105.field1691) {
-                  class32.field720[++class32.field715 - 1] = class26.field589[++class118.field1853 - 1] & '\uffff';
+                  class32.intStack[++class32.intStackSize - 1] = class26.field589[++class118.field1853 - 1] & '\uffff';
                } else {
-                  class32.field720[++class32.field715 - 1] = -1;
+                  class32.intStack[++class32.intStackSize - 1] = -1;
                }
 
                return 1;

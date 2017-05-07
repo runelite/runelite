@@ -25,7 +25,10 @@
 package net.runelite.cache.script.assembler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.script.Instruction;
 import net.runelite.cache.script.Instructions;
@@ -42,6 +45,7 @@ public class ScriptWriter extends rs2asmBaseListener
 	private List<Integer> opcodes = new ArrayList<>();
 	private List<Integer> iops = new ArrayList<>();
 	private List<String> sops = new ArrayList<>();
+	private List<LookupSwitch> switches = new ArrayList<>();
 
 	public ScriptWriter(LabelVisitor labelVisitor)
 	{
@@ -82,10 +86,12 @@ public class ScriptWriter extends rs2asmBaseListener
 		assert opcodes.size() == pos;
 		assert iops.size() == pos;
 		assert sops.size() == pos;
+		assert switches.size() == pos;
 
 		opcodes.add(opcode);
 		iops.add(null);
 		sops.add(null);
+		switches.add(null);
 	}
 
 	@Override
@@ -118,6 +124,54 @@ public class ScriptWriter extends rs2asmBaseListener
 		iops.set(pos, target);
 	}
 
+	@Override
+	public void enterSwitch_lookup(rs2asmParser.Switch_lookupContext ctx)
+	{
+		if (switches.get(pos - 1) != null)
+		{
+			return;
+		}
+
+		LookupSwitch ls = new LookupSwitch();
+		switches.set(pos - 1, ls);
+	}
+
+	@Override
+	public void exitSwitch_key(rs2asmParser.Switch_keyContext ctx)
+	{
+		String text = ctx.getText();
+		int key = Integer.parseInt(text);
+
+		LookupSwitch ls = switches.get(pos - 1);
+		assert ls != null;
+
+		LookupCase scase = new LookupCase();
+		scase.setValue(key);
+
+		ls.getCases().add(scase);
+	}
+
+	@Override
+	public void exitSwitch_value(rs2asmParser.Switch_valueContext ctx)
+	{
+		String text = ctx.getText();
+		Integer instruction = labelVisitor.getInstructionForLabel(text);
+		if (instruction == null)
+		{
+			throw new RuntimeException("reference to unknown label " + text);
+		}
+
+		int target = instruction // target instruction index
+			- (pos - 1) // pos is already at the instruction after the switch, so - 1
+			- 1; // to go to the instruction prior to target
+
+		LookupSwitch ls = switches.get(pos - 1);
+		assert ls != null;
+
+		LookupCase scase = ls.getCases().get(ls.getCases().size() - 1);
+		scase.setOffset(target);
+	}
+
 	public ScriptDefinition buildScript()
 	{
 		ScriptDefinition script = new ScriptDefinition();
@@ -127,6 +181,35 @@ public class ScriptWriter extends rs2asmBaseListener
 			.mapToInt(Integer::valueOf)
 			.toArray());
 		script.setStringOperands(sops.toArray(new String[0]));
+		script.setSwitches(buildSwitches());
 		return script;
+	}
+
+	private Map<Integer, Integer>[] buildSwitches()
+	{
+		int count = (int) switches.stream().filter(Objects::nonNull).count();
+
+		if (count == 0)
+		{
+			return null;
+		}
+
+		int index = 0;
+		Map<Integer, Integer>[] maps = new Map[count];
+		for (LookupSwitch lswitch : switches)
+		{
+			if (lswitch == null)
+			{
+				continue;
+			}
+
+			Map<Integer, Integer> map = maps[index++] = new HashMap<>();
+
+			for (LookupCase scase : lswitch.getCases())
+			{
+				map.put(scase.getValue(), scase.getOffset());
+			}
+		}
+		return maps;
 	}
 }

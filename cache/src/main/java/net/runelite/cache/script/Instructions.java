@@ -66,6 +66,7 @@ public class Instructions
 		add(46, 2, 0);
 		add(47, 0, 0, 0, 1);
 		add(48, 0, 0, 1, 0);
+		add(Opcodes.SWITCH, "switch", 1, 0);
 		add(100, 3, 0);
 		add(101, 0, 0);
 		add(102, 1, 0);

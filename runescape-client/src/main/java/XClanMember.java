@@ -39,22 +39,22 @@ public class XClanMember extends Node {
    )
    static int method253(int var0, Script var1, boolean var2) {
       if(var0 == 3300) {
-         class32.field720[++class32.field715 - 1] = Client.gameCycle;
+         class32.intStack[++class32.intStackSize - 1] = Client.gameCycle;
          return 1;
       } else {
          int var3;
          int var4;
          if(var0 == 3301) {
-            class32.field715 -= 2;
-            var3 = class32.field720[class32.field715];
-            var4 = class32.field720[class32.field715 + 1];
-            class32.field720[++class32.field715 - 1] = class198.method3599(var3, var4);
+            class32.intStackSize -= 2;
+            var3 = class32.intStack[class32.intStackSize];
+            var4 = class32.intStack[class32.intStackSize + 1];
+            class32.intStack[++class32.intStackSize - 1] = class198.method3599(var3, var4);
             return 1;
          } else if(var0 == 3302) {
-            class32.field715 -= 2;
-            var3 = class32.field720[class32.field715];
-            var4 = class32.field720[class32.field715 + 1];
-            class32.field720[++class32.field715 - 1] = Actor.method592(var3, var4);
+            class32.intStackSize -= 2;
+            var3 = class32.intStack[class32.intStackSize];
+            var4 = class32.intStack[class32.intStackSize + 1];
+            class32.intStack[++class32.intStackSize - 1] = Actor.method592(var3, var4);
             return 1;
          } else {
             int[] var5;
@@ -64,11 +64,11 @@ public class XClanMember extends Node {
             int var9;
             int var10;
             if(var0 == 3303) {
-               class32.field715 -= 2;
-               var3 = class32.field720[class32.field715];
-               var4 = class32.field720[class32.field715 + 1];
-               var5 = class32.field720;
-               var6 = ++class32.field715 - 1;
+               class32.intStackSize -= 2;
+               var3 = class32.intStack[class32.intStackSize];
+               var4 = class32.intStack[class32.intStackSize + 1];
+               var5 = class32.intStack;
+               var6 = ++class32.intStackSize - 1;
                var8 = (XItemContainer)XItemContainer.itemContainers.method2773((long)var3);
                if(var8 == null) {
                   var7 = 0;
@@ -89,54 +89,54 @@ public class XClanMember extends Node {
                var5[var6] = var7;
                return 1;
             } else if(var0 == 3304) {
-               var3 = class32.field720[--class32.field715];
-               class32.field720[++class32.field715 - 1] = class97.method1933(var3).field2776;
+               var3 = class32.intStack[--class32.intStackSize];
+               class32.intStack[++class32.intStackSize - 1] = class97.method1933(var3).field2776;
                return 1;
             } else if(var0 == 3305) {
-               var3 = class32.field720[--class32.field715];
-               class32.field720[++class32.field715 - 1] = Client.boostedSkillLevels[var3];
+               var3 = class32.intStack[--class32.intStackSize];
+               class32.intStack[++class32.intStackSize - 1] = Client.boostedSkillLevels[var3];
                return 1;
             } else if(var0 == 3306) {
-               var3 = class32.field720[--class32.field715];
-               class32.field720[++class32.field715 - 1] = Client.realSkillLevels[var3];
+               var3 = class32.intStack[--class32.intStackSize];
+               class32.intStack[++class32.intStackSize - 1] = Client.realSkillLevels[var3];
                return 1;
             } else if(var0 == 3307) {
-               var3 = class32.field720[--class32.field715];
-               class32.field720[++class32.field715 - 1] = Client.skillExperiences[var3];
+               var3 = class32.intStack[--class32.intStackSize];
+               class32.intStack[++class32.intStackSize - 1] = Client.skillExperiences[var3];
                return 1;
             } else if(var0 == 3308) {
                var3 = Client.plane;
                var4 = class108.baseX + (class22.localPlayer.x >> 7);
                int var11 = (class22.localPlayer.y >> 7) + GameEngine.baseY;
-               class32.field720[++class32.field715 - 1] = (var4 << 14) + (var3 << 28) + var11;
+               class32.intStack[++class32.intStackSize - 1] = (var4 << 14) + (var3 << 28) + var11;
                return 1;
             } else if(var0 == 3309) {
-               var3 = class32.field720[--class32.field715];
-               class32.field720[++class32.field715 - 1] = var3 >> 14 & 16383;
+               var3 = class32.intStack[--class32.intStackSize];
+               class32.intStack[++class32.intStackSize - 1] = var3 >> 14 & 16383;
                return 1;
             } else if(var0 == 3310) {
-               var3 = class32.field720[--class32.field715];
-               class32.field720[++class32.field715 - 1] = var3 >> 28;
+               var3 = class32.intStack[--class32.intStackSize];
+               class32.intStack[++class32.intStackSize - 1] = var3 >> 28;
                return 1;
             } else if(var0 == 3311) {
-               var3 = class32.field720[--class32.field715];
-               class32.field720[++class32.field715 - 1] = var3 & 16383;
+               var3 = class32.intStack[--class32.intStackSize];
+               class32.intStack[++class32.intStackSize - 1] = var3 & 16383;
                return 1;
             } else if(var0 == 3312) {
-               class32.field720[++class32.field715 - 1] = Client.isMembers?1:0;
+               class32.intStack[++class32.intStackSize - 1] = Client.isMembers?1:0;
                return 1;
             } else if(var0 == 3313) {
-               class32.field715 -= 2;
-               var3 = class32.field720[class32.field715] + '耀';
-               var4 = class32.field720[class32.field715 + 1];
-               class32.field720[++class32.field715 - 1] = class198.method3599(var3, var4);
+               class32.intStackSize -= 2;
+               var3 = class32.intStack[class32.intStackSize] + '耀';
+               var4 = class32.intStack[class32.intStackSize + 1];
+               class32.intStack[++class32.intStackSize - 1] = class198.method3599(var3, var4);
                return 1;
             } else if(var0 == 3314) {
-               class32.field715 -= 2;
-               var3 = class32.field720[class32.field715] + '耀';
-               var4 = class32.field720[class32.field715 + 1];
-               var5 = class32.field720;
-               var6 = ++class32.field715 - 1;
+               class32.intStackSize -= 2;
+               var3 = class32.intStack[class32.intStackSize] + '耀';
+               var4 = class32.intStack[class32.intStackSize + 1];
+               var5 = class32.intStack;
+               var6 = ++class32.intStackSize - 1;
                var8 = (XItemContainer)XItemContainer.itemContainers.method2773((long)var3);
                if(var8 == null) {
                   var7 = 0;
@@ -151,44 +151,44 @@ public class XClanMember extends Node {
             } else if(var0 != 3315) {
                if(var0 == 3316) {
                   if(Client.field517 >= 2) {
-                     class32.field720[++class32.field715 - 1] = Client.field517;
+                     class32.intStack[++class32.intStackSize - 1] = Client.field517;
                   } else {
-                     class32.field720[++class32.field715 - 1] = 0;
+                     class32.intStack[++class32.intStackSize - 1] = 0;
                   }
 
                   return 1;
                } else if(var0 == 3317) {
-                  class32.field720[++class32.field715 - 1] = Client.field495;
+                  class32.intStack[++class32.intStackSize - 1] = Client.field495;
                   return 1;
                } else if(var0 == 3318) {
-                  class32.field720[++class32.field715 - 1] = Client.world;
+                  class32.intStack[++class32.intStackSize - 1] = Client.world;
                   return 1;
                } else if(var0 == 3321) {
-                  class32.field720[++class32.field715 - 1] = Client.energy;
+                  class32.intStack[++class32.intStackSize - 1] = Client.energy;
                   return 1;
                } else if(var0 == 3322) {
-                  class32.field720[++class32.field715 - 1] = Client.weight;
+                  class32.intStack[++class32.intStackSize - 1] = Client.weight;
                   return 1;
                } else if(var0 == 3323) {
                   if(Client.field278) {
-                     class32.field720[++class32.field715 - 1] = 1;
+                     class32.intStack[++class32.intStackSize - 1] = 1;
                   } else {
-                     class32.field720[++class32.field715 - 1] = 0;
+                     class32.intStack[++class32.intStackSize - 1] = 0;
                   }
 
                   return 1;
                } else if(var0 == 3324) {
-                  class32.field720[++class32.field715 - 1] = Client.flags;
+                  class32.intStack[++class32.intStackSize - 1] = Client.flags;
                   return 1;
                } else {
                   return 2;
                }
             } else {
-               class32.field715 -= 2;
-               var3 = class32.field720[class32.field715] + '耀';
-               var4 = class32.field720[class32.field715 + 1];
-               var5 = class32.field720;
-               var6 = ++class32.field715 - 1;
+               class32.intStackSize -= 2;
+               var3 = class32.intStack[class32.intStackSize] + '耀';
+               var4 = class32.intStack[class32.intStackSize + 1];
+               var5 = class32.intStack;
+               var6 = ++class32.intStackSize - 1;
                var8 = (XItemContainer)XItemContainer.itemContainers.method2773((long)var3);
                if(var8 == null) {
                   var7 = 0;
@@ -237,7 +237,7 @@ public class XClanMember extends Node {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class128.method2364(class32.field720[--class32.field715]);
+         var3 = class128.method2364(class32.intStack[--class32.intStackSize]);
       } else {
          var3 = var2?class200.field2894:Script.field942;
       }
@@ -246,7 +246,7 @@ public class XClanMember extends Node {
       if(var0 != 1200 && var0 != 1205 && var0 != 1212) {
          if(var0 == 1201) {
             var3.modelType = 2;
-            var3.modelId = class32.field720[--class32.field715];
+            var3.modelId = class32.intStack[--class32.intStackSize];
             return 1;
          } else if(var0 == 1202) {
             var3.modelType = 3;
@@ -256,9 +256,9 @@ public class XClanMember extends Node {
             return 2;
          }
       } else {
-         class32.field715 -= 2;
-         int var4 = class32.field720[class32.field715];
-         int var5 = class32.field720[class32.field715 + 1];
+         class32.intStackSize -= 2;
+         int var4 = class32.intStack[class32.intStackSize];
+         int var5 = class32.intStack[class32.intStackSize + 1];
          var3.item = var4;
          var3.stackSize = var5;
          ItemComposition var6 = class47.getItemDefinition(var4);

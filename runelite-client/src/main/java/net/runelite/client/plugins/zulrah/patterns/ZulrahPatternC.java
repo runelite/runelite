@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Aria <aria@ar1as.space>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-grammar rs2asm;
+package net.runelite.client.plugins.zulrah.patterns;
 
-prog: (line NEWLINE)+ ;
+import net.runelite.client.plugins.zulrah.StandLocation;
+import net.runelite.client.plugins.zulrah.ZulrahLocation;
+import net.runelite.client.plugins.zulrah.ZulrahType;
 
-line: instruction | label | switch_lookup ;
-instruction: instruction_name instruction_operand ;
-label: 'LABEL' INT ':' ;
-
-instruction_name: name_string | name_opcode ;
-name_string: INSTRUCTION ;
-name_opcode: INT ;
-
-instruction_operand: operand_int | operand_qstring | operand_label | ;
-operand_int: INT ;
-operand_qstring: QSTRING ;
-operand_label: 'LABEL' INT ;
-
-switch_lookup: switch_key ':' switch_value ;
-switch_key: INT ;
-switch_value: 'LABEL' INT ;
-
-NEWLINE: '\n'+ ;
-INT: '-'? [0-9]+ ;
-QSTRING: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"' ;
-INSTRUCTION: [a-z0-9_]+ ;
-
-WS: (' ' | '\t')+ -> channel(HIDDEN) ;
+public class ZulrahPatternC extends ZulrahPattern
+{
+	public ZulrahPatternC()
+	{
+		add(ZulrahLocation.NORTH, ZulrahType.RANGE, StandLocation.TOP_EAST);
+		add(ZulrahLocation.EAST, ZulrahType.RANGE, StandLocation.TOP_EAST);
+		add(ZulrahLocation.NORTH, ZulrahType.MELEE, StandLocation.TOP_WEST);
+		add(ZulrahLocation.WEST, ZulrahType.MAGIC, StandLocation.TOP_WEST);
+		add(ZulrahLocation.SOUTH, ZulrahType.RANGE, StandLocation.EAST);
+		add(ZulrahLocation.EAST, ZulrahType.MAGIC, StandLocation.PILLAR_EAST_OUTSIDE);
+		add(ZulrahLocation.NORTH, ZulrahType.RANGE, StandLocation.WEST);
+		add(ZulrahLocation.WEST, ZulrahType.RANGE, StandLocation.PILLAR_WEST_OUTSIDE);
+		add(ZulrahLocation.NORTH, ZulrahType.MAGIC, StandLocation.PILLAR_EAST_OUTSIDE);
+		addJad(ZulrahLocation.EAST, ZulrahType.MAGIC, StandLocation.PILLAR_EAST_OUTSIDE);
+		add(ZulrahLocation.NORTH, ZulrahType.MAGIC, StandLocation.EAST);
+	}
+}

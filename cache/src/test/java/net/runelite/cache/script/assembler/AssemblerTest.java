@@ -30,25 +30,34 @@ import net.runelite.cache.script.disassembler.Disassembler;
 import org.apache.commons.compress.utils.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.Before;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.impl.SimpleLogger;
 
+@RunWith(Parameterized.class)
 public class AssemblerTest
 {
 	private static final Logger logger = LoggerFactory.getLogger(AssemblerTest.class);
 
-	@Before
-	public void before()
+	@Parameter
+	public String script;
+
+	@Parameters
+	public static String[] scripts()
 	{
-		System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "DEBUG");
+		return new String[]
+		{
+			"395.rs2asm", "91.rs2asm"
+		};
 	}
 
 	@Test
 	public void testAssemble() throws Exception
 	{
-		InputStream in = AssemblerTest.class.getResourceAsStream("395.rs2asm");
+		InputStream in = AssemblerTest.class.getResourceAsStream(script);
 		Assert.assertNotNull(in);
 
 		Assembler assembler = new Assembler();
@@ -58,14 +67,14 @@ public class AssemblerTest
 		Disassembler disassembler = new Disassembler();
 		String out = disassembler.disassemble(script);
 
-		in = AssemblerTest.class.getResourceAsStream("395.rs2asm");
+		in = AssemblerTest.class.getResourceAsStream(this.script);
 		Assert.assertNotNull(in);
 
 		String original = new String(IOUtils.toByteArray(in));
 
-		logger.debug(original);
-		logger.debug("-----------------------");
-		logger.debug(out);
+		logger.info(original);
+		logger.info("-----------------------");
+		logger.info(out);
 
 		Assert.assertEquals(original, out);
 	}

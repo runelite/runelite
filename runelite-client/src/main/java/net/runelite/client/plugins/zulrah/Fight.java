@@ -22,30 +22,68 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-grammar rs2asm;
+package net.runelite.client.plugins.zulrah;
 
-prog: (line NEWLINE)+ ;
+import java.time.Instant;
+import net.runelite.api.Point;
+import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
 
-line: instruction | label | switch_lookup ;
-instruction: instruction_name instruction_operand ;
-label: 'LABEL' INT ':' ;
+public class Fight
+{
+	private final Point startLocationWorld;
+	private final Instant startTime = Instant.now();
+	private ZulrahPattern pattern;
+	private int stage;
+	private ZulrahInstance zulrah;
 
-instruction_name: name_string | name_opcode ;
-name_string: INSTRUCTION ;
-name_opcode: INT ;
+	public Fight(Point startLocationWorld)
+	{
+		this.startLocationWorld = startLocationWorld;
+	}
 
-instruction_operand: operand_int | operand_qstring | operand_label | ;
-operand_int: INT ;
-operand_qstring: QSTRING ;
-operand_label: 'LABEL' INT ;
+	public Point getStartLocationWorld()
+	{
+		return startLocationWorld;
+	}
 
-switch_lookup: switch_key ':' switch_value ;
-switch_key: INT ;
-switch_value: 'LABEL' INT ;
+	public Instant getStartTime()
+	{
+		return startTime;
+	}
 
-NEWLINE: '\n'+ ;
-INT: '-'? [0-9]+ ;
-QSTRING: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"' ;
-INSTRUCTION: [a-z0-9_]+ ;
+	public ZulrahPattern getPattern()
+	{
+		return pattern;
+	}
 
-WS: (' ' | '\t')+ -> channel(HIDDEN) ;
+	public void setPattern(ZulrahPattern pattern)
+	{
+		this.pattern = pattern;
+	}
+
+	public ZulrahInstance getZulrah()
+	{
+		return zulrah;
+	}
+
+	public void setZulrah(ZulrahInstance zulrah)
+	{
+		this.zulrah = zulrah;
+	}
+
+	public int getStage()
+	{
+		return stage;
+	}
+
+	public void nextStage()
+	{
+		++stage;
+	}
+
+	public void reset()
+	{
+		pattern = null;
+		stage = 0;
+	}
+}

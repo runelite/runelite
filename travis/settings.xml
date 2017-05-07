@@ -139,7 +139,7 @@ under the License.
     </server>
     <server>
       <id>runelite-tomcat</id>
-      <username>${env.TOMCAT_USERNAME}</username>
+      <username>runelite</username>
       <password>${env.TOMCAT_PASSWORD}</password>
     </server>
 

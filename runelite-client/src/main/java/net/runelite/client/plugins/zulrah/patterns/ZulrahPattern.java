@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Aria <aria@ar1as.space>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-grammar rs2asm;
+package net.runelite.client.plugins.zulrah.patterns;
 
-prog: (line NEWLINE)+ ;
+import java.util.ArrayList;
+import java.util.List;
+import net.runelite.client.plugins.zulrah.StandLocation;
+import net.runelite.client.plugins.zulrah.ZulrahInstance;
+import net.runelite.client.plugins.zulrah.ZulrahLocation;
+import net.runelite.client.plugins.zulrah.ZulrahType;
 
-line: instruction | label | switch_lookup ;
-instruction: instruction_name instruction_operand ;
-label: 'LABEL' INT ':' ;
+public abstract class ZulrahPattern
+{
+	private final List<ZulrahInstance> pattern = new ArrayList<>();
 
-instruction_name: name_string | name_opcode ;
-name_string: INSTRUCTION ;
-name_opcode: INT ;
+	protected final void add(ZulrahLocation loc, ZulrahType type, StandLocation standLoc)
+	{
+		add(loc, type, standLoc, false);
+	}
 
-instruction_operand: operand_int | operand_qstring | operand_label | ;
-operand_int: INT ;
-operand_qstring: QSTRING ;
-operand_label: 'LABEL' INT ;
+	protected final void addJad(ZulrahLocation loc, ZulrahType type, StandLocation standLoc)
+	{
+		add(loc, type, standLoc, true);
+	}
 
-switch_lookup: switch_key ':' switch_value ;
-switch_key: INT ;
-switch_value: 'LABEL' INT ;
+	private void add(ZulrahLocation loc, ZulrahType type, StandLocation standLoc, boolean jad)
+	{
+		pattern.add(new ZulrahInstance(loc, type, jad, standLoc));
+	}
 
-NEWLINE: '\n'+ ;
-INT: '-'? [0-9]+ ;
-QSTRING: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"' ;
-INSTRUCTION: [a-z0-9_]+ ;
+	public ZulrahInstance get(int index)
+	{
+		if (index >= pattern.size())
+		{
+			return null;
+		}
 
-WS: (' ' | '\t')+ -> channel(HIDDEN) ;
+		return pattern.get(index);
+	}
+
+	public boolean stageMatches(int index, ZulrahInstance instance)
+	{
+		ZulrahInstance patternInstance = get(index);
+		return patternInstance != null && patternInstance.equals(instance);
+	}
+
+	public boolean canReset(int index)
+	{
+		return index >= pattern.size();
+	}
+}

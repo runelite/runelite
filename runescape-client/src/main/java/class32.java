@@ -10,7 +10,8 @@ public class class32 {
    @ObfuscatedGetter(
       intValue = -356794397
    )
-   static int field715;
+   @Export("intStackSize")
+   static int intStackSize;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -2079097849
@@ -23,7 +24,8 @@ public class class32 {
    @ObfuscatedName("t")
    static int[] field719;
    @ObfuscatedName("u")
-   static int[] field720;
+   @Export("intStack")
+   static int[] intStack;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -402939849
@@ -56,7 +58,7 @@ public class class32 {
    static {
       field719 = new int[5];
       field728 = new int[5][5000];
-      field720 = new int[1000];
+      intStack = new int[1000];
       scriptStringStack = new String[1000];
       scriptStackCount = 0;
       scriptStack = new ScriptState[50];

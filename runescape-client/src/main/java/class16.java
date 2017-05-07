@@ -62,7 +62,7 @@ public class class16 extends class152 {
    static int method191(int var0, Script var1, boolean var2) {
       Widget var3 = var2?class200.field2894:Script.field942;
       if(var0 == 1800) {
-         class32.field720[++class32.field715 - 1] = CombatInfo2.method3540(class103.method1988(var3));
+         class32.intStack[++class32.intStackSize - 1] = CombatInfo2.method3540(class103.method1988(var3));
          return 1;
       } else if(var0 != 1801) {
          if(var0 == 1802) {
@@ -77,7 +77,7 @@ public class class16 extends class152 {
             return 2;
          }
       } else {
-         int var4 = class32.field720[--class32.field715];
+         int var4 = class32.intStack[--class32.intStackSize];
          --var4;
          if(var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
             class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.actions[var4];

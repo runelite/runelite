@@ -71,51 +71,51 @@ public abstract class Renderable extends CacheableNode {
    )
    static int method1903(int var0, Script var1, boolean var2) {
       if(var0 == 6200) {
-         class32.field715 -= 2;
-         Client.field500 = (short)class32.field720[class32.field715];
+         class32.intStackSize -= 2;
+         Client.field500 = (short)class32.intStack[class32.intStackSize];
          if(Client.field500 <= 0) {
             Client.field500 = 256;
          }
 
-         Client.field541 = (short)class32.field720[class32.field715 + 1];
+         Client.field541 = (short)class32.intStack[class32.intStackSize + 1];
          if(Client.field541 <= 0) {
             Client.field541 = 205;
          }
 
          return 1;
       } else if(var0 == 6201) {
-         class32.field715 -= 2;
-         Client.field542 = (short)class32.field720[class32.field715];
+         class32.intStackSize -= 2;
+         Client.field542 = (short)class32.intStack[class32.intStackSize];
          if(Client.field542 <= 0) {
             Client.field542 = 256;
          }
 
-         Client.field318 = (short)class32.field720[class32.field715 + 1];
+         Client.field318 = (short)class32.intStack[class32.intStackSize + 1];
          if(Client.field318 <= 0) {
             Client.field318 = 320;
          }
 
          return 1;
       } else if(var0 == 6202) {
-         class32.field715 -= 4;
-         Client.field509 = (short)class32.field720[class32.field715];
+         class32.intStackSize -= 4;
+         Client.field509 = (short)class32.intStack[class32.intStackSize];
          if(Client.field509 <= 0) {
             Client.field509 = 1;
          }
 
-         Client.field459 = (short)class32.field720[class32.field715 + 1];
+         Client.field459 = (short)class32.intStack[class32.intStackSize + 1];
          if(Client.field459 <= 0) {
             Client.field459 = 32767;
          } else if(Client.field459 < Client.field509) {
             Client.field459 = Client.field509;
          }
 
-         Client.field320 = (short)class32.field720[class32.field715 + 2];
+         Client.field320 = (short)class32.intStack[class32.intStackSize + 2];
          if(Client.field320 <= 0) {
             Client.field320 = 1;
          }
 
-         Client.field547 = (short)class32.field720[class32.field715 + 3];
+         Client.field547 = (short)class32.intStack[class32.intStackSize + 3];
          if(Client.field547 <= 0) {
             Client.field547 = 32767;
          } else if(Client.field547 < Client.field320) {
@@ -126,21 +126,21 @@ public abstract class Renderable extends CacheableNode {
       } else if(var0 == 6203) {
          if(Client.field457 != null) {
             class173.method3257(0, 0, Client.field457.width, Client.field457.height, false);
-            class32.field720[++class32.field715 - 1] = Client.camera2;
-            class32.field720[++class32.field715 - 1] = Client.camera3;
+            class32.intStack[++class32.intStackSize - 1] = Client.camera2;
+            class32.intStack[++class32.intStackSize - 1] = Client.camera3;
          } else {
-            class32.field720[++class32.field715 - 1] = -1;
-            class32.field720[++class32.field715 - 1] = -1;
+            class32.intStack[++class32.intStackSize - 1] = -1;
+            class32.intStack[++class32.intStackSize - 1] = -1;
          }
 
          return 1;
       } else if(var0 == 6204) {
-         class32.field720[++class32.field715 - 1] = Client.field542;
-         class32.field720[++class32.field715 - 1] = Client.field318;
+         class32.intStack[++class32.intStackSize - 1] = Client.field542;
+         class32.intStack[++class32.intStackSize - 1] = Client.field318;
          return 1;
       } else if(var0 == 6205) {
-         class32.field720[++class32.field715 - 1] = Client.field500;
-         class32.field720[++class32.field715 - 1] = Client.field541;
+         class32.intStack[++class32.intStackSize - 1] = Client.field500;
+         class32.intStack[++class32.intStackSize - 1] = Client.field541;
          return 1;
       } else {
          return 2;

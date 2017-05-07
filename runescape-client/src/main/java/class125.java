@@ -29,14 +29,14 @@ public class class125 {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class128.method2364(class32.field720[--class32.field715]);
+         var3 = class128.method2364(class32.intStack[--class32.intStackSize]);
       } else {
          var3 = var2?class200.field2894:Script.field942;
       }
 
       int var4;
       if(var0 == 1300) {
-         var4 = class32.field720[--class32.field715] - 1;
+         var4 = class32.intStack[--class32.intStackSize] - 1;
          if(var4 >= 0 && var4 <= 9) {
             var3.method3232(var4, class32.scriptStringStack[--class32.scriptStringStackSize]);
             return 1;
@@ -45,19 +45,19 @@ public class class125 {
             return 1;
          }
       } else if(var0 == 1301) {
-         class32.field715 -= 2;
-         var4 = class32.field720[class32.field715];
-         int var5 = class32.field720[class32.field715 + 1];
+         class32.intStackSize -= 2;
+         var4 = class32.intStack[class32.intStackSize];
+         int var5 = class32.intStack[class32.intStackSize + 1];
          var3.dragParent = class0.method13(var4, var5);
          return 1;
       } else if(var0 == 1302) {
-         var3.field2290 = class32.field720[--class32.field715] == 1;
+         var3.field2290 = class32.intStack[--class32.intStackSize] == 1;
          return 1;
       } else if(var0 == 1303) {
-         var3.field2283 = class32.field720[--class32.field715];
+         var3.field2283 = class32.intStack[--class32.intStackSize];
          return 1;
       } else if(var0 == 1304) {
-         var3.field2284 = class32.field720[--class32.field715];
+         var3.field2284 = class32.intStack[--class32.intStackSize];
          return 1;
       } else if(var0 == 1305) {
          var3.name = class32.scriptStringStack[--class32.scriptStringStackSize];
