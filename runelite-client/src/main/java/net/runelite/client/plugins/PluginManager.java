@@ -44,6 +44,7 @@ import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 import net.runelite.client.plugins.pestcontrol.PestControl;
 import net.runelite.client.plugins.runecraft.Runecraft;
 import net.runelite.client.plugins.xtea.Xtea;
+import net.runelite.client.plugins.zulrah.Zulrah;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,6 +74,7 @@ public class PluginManager
 		plugins.add(new MouseHighlight());
 		plugins.add(new PestControl());
 		plugins.add(new ClanChat());
+		plugins.add(new Zulrah());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{

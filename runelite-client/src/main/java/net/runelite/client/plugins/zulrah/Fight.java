@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,68 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.zulrah;
 
-package net.runelite.api;
+import java.time.Instant;
+import net.runelite.api.Point;
+import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
 
-public class NPC extends Actor
+public class Fight
 {
-	private net.runelite.rs.api.NPC npc;
+	private final Point startLocationWorld;
+	private final Instant startTime = Instant.now();
+	private ZulrahPattern pattern;
+	private int stage;
+	private ZulrahInstance zulrah;
 
-	public NPC(Client client, net.runelite.rs.api.NPC npc)
+	public Fight(Point startLocationWorld)
 	{
-		super(client, npc);
-		this.npc = npc;
+		this.startLocationWorld = startLocationWorld;
 	}
 
-	public int getId()
+	public Point getStartLocationWorld()
 	{
-		return npc.getComposition().getId();
+		return startLocationWorld;
 	}
 
-	@Override
-	public String getName()
+	public Instant getStartTime()
 	{
-		return npc.getComposition().getName().replace('\u00A0', ' ');
+		return startTime;
 	}
 
-	@Override
-	public int getCombatLevel()
+	public ZulrahPattern getPattern()
 	{
-		return npc.getComposition().getCombatLevel();
+		return pattern;
 	}
 
+	public void setPattern(ZulrahPattern pattern)
+	{
+		this.pattern = pattern;
+	}
+
+	public ZulrahInstance getZulrah()
+	{
+		return zulrah;
+	}
+
+	public void setZulrah(ZulrahInstance zulrah)
+	{
+		this.zulrah = zulrah;
+	}
+
+	public int getStage()
+	{
+		return stage;
+	}
+
+	public void nextStage()
+	{
+		++stage;
+	}
+
+	public void reset()
+	{
+		pattern = null;
+		stage = 0;
+	}
 }

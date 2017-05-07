@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Aria <aria@ar1as.space>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.zulrah;
 
-package net.runelite.api;
-
-public class NPC extends Actor
+public enum StandLocation
 {
-	private net.runelite.rs.api.NPC npc;
-
-	public NPC(Client client, net.runelite.rs.api.NPC npc)
-	{
-		super(client, npc);
-		this.npc = npc;
-	}
-
-	public int getId()
-	{
-		return npc.getComposition().getId();
-	}
-
-	@Override
-	public String getName()
-	{
-		return npc.getComposition().getName().replace('\u00A0', ' ');
-	}
-
-	@Override
-	public int getCombatLevel()
-	{
-		return npc.getComposition().getCombatLevel();
-	}
-
+	WEST,
+	EAST,
+	SOUTH,
+	TOP_EAST,
+	TOP_WEST,
+	PILLAR_WEST_INSIDE,
+	PILLAR_WEST_OUTSIDE,
+	PILLAR_EAST_INSIDE,
+	PILLAR_EAST_OUTSIDE;
 }
