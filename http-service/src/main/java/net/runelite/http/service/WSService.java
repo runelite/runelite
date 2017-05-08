@@ -22,64 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api;
+package net.runelite.http.service;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import okhttp3.HttpUrl;
+import javax.websocket.CloseReason;
+import javax.websocket.EndpointConfig;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RuneliteAPI
+@ServerEndpoint("/ws")
+public class WSService
 {
-	private static final Logger logger = LoggerFactory.getLogger(RuneliteAPI.class);
+	private static final Logger logger = LoggerFactory.getLogger(WSService.class);
 
-	private static final String BASE = "https://api.runelite.net/runelite-";
-	private static final String WSBASE = "wss://api.runelite.net/runelite-";
-	private static final Properties properties = new Properties();
-	private static String version;
-	private static int rsVersion;
-
-	static
+	@OnOpen
+	public void onOpen(Session session, EndpointConfig config)
 	{
-		try
-		{
-			InputStream in = RuneliteAPI.class.getResourceAsStream("/runelite.properties");
-			properties.load(in);
-
-			version = properties.getProperty("runelite.version");
-			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
-		}
-		catch (IOException ex)
-		{
-			logger.error(null, ex);
-		}
+		logger.info("New session {}", session);
 	}
 
-	public static HttpUrl getApiBase()
+	@OnClose
+	public void onClose(Session session, CloseReason resaon)
 	{
-		return HttpUrl.parse(BASE + getVersion());
+		logger.info("Close session {}", session);
 	}
 
-	public static String getWsEndpoint()
+	@OnError
+	public void onError(Session session, Throwable ex)
 	{
-		return WSBASE + getVersion() + "/ws";
+		logger.warn("Error in session {}", session, ex);
 	}
 
-	public static String getVersion()
+	@OnMessage
+	public void onMessage(Session session, String message)
 	{
-		return version;
+		logger.info("Got message: {}", message);
 	}
-
-	public static void setVersion(String version)
-	{
-		RuneliteAPI.version = version;
-	}
-
-	public static int getRsVersion()
-	{
-		return rsVersion;
-	}
-
 }

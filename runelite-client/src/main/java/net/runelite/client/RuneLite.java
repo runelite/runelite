@@ -65,6 +65,7 @@ public class RuneLite
 	private OverlayRenderer renderer;
 	private EventBus eventBus = new EventBus(this::eventExceptionHandler);
 	private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
+	private final WSClient wsclient = new WSClient();
 
 	static
 	{

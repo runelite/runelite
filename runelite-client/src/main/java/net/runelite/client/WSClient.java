@@ -22,64 +22,70 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api;
+package net.runelite.client;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import okhttp3.HttpUrl;
+import net.runelite.http.api.RuneliteAPI;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RuneliteAPI
+public class WSClient extends WebSocketListener implements AutoCloseable
 {
-	private static final Logger logger = LoggerFactory.getLogger(RuneliteAPI.class);
+	private static final Logger logger = LoggerFactory.getLogger(WSClient.class);
 
-	private static final String BASE = "https://api.runelite.net/runelite-";
-	private static final String WSBASE = "wss://api.runelite.net/runelite-";
-	private static final Properties properties = new Properties();
-	private static String version;
-	private static int rsVersion;
+	private final OkHttpClient client = new OkHttpClient();
 
-	static
+	private WebSocket webSocket;
+
+	public WSClient()
 	{
-		try
-		{
-			InputStream in = RuneliteAPI.class.getResourceAsStream("/runelite.properties");
-			properties.load(in);
-
-			version = properties.getProperty("runelite.version");
-			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
-		}
-		catch (IOException ex)
-		{
-			logger.error(null, ex);
-		}
+		connect();
 	}
 
-	public static HttpUrl getApiBase()
+	private void connect()
 	{
-		return HttpUrl.parse(BASE + getVersion());
+		Request request = new Request.Builder()
+			.url(RuneliteAPI.getWsEndpoint())
+			.build();
+
+		webSocket = client.newWebSocket(request, this);
 	}
 
-	public static String getWsEndpoint()
+	@Override
+	public void close()
 	{
-		return WSBASE + getVersion() + "/ws";
+		webSocket.close(0, null);
 	}
 
-	public static String getVersion()
+	@Override
+	public void onOpen(WebSocket webSocket, Response response)
 	{
-		return version;
+		logger.info("Websocket {} opened", webSocket);
+
+		webSocket.send("Hello");
 	}
 
-	public static void setVersion(String version)
+	@Override
+	public void onMessage(WebSocket webSocket, String text)
 	{
-		RuneliteAPI.version = version;
+		logger.debug("Got message: {}", text);
 	}
 
-	public static int getRsVersion()
+	@Override
+	public void onClosed(WebSocket webSocket, int code, String reason)
 	{
-		return rsVersion;
+		logger.info("Websocket {} closed: {}/{}", webSocket, code, reason);
+		this.webSocket = null;
 	}
 
+	@Override
+	public void onFailure(WebSocket webSocket, Throwable t, Response response)
+	{
+		logger.warn("Error in websocket", t);
+		this.webSocket = null;
+	}
 }
