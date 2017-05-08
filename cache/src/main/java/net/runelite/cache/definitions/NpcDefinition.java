@@ -56,7 +56,6 @@ public class NpcDefinition
 	public boolean hasRenderPriority = false;
 	public int ambient = 0;
 	public int headIcon = -1;
-	//public int anInt2184 = 30;
 	public int[] anIntArray2185;
 	public short[] retextureToFind;
 	public int anInt2187 = -1;
