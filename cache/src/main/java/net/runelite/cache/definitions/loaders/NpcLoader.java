@@ -222,10 +222,6 @@ public class NpcLoader
 		{
 			def.aBool2190 = true;
 		}
-		//else if (opcode == 112) // Appears to be removed from the client
-		//{
-		//	def.anInt2184 = stream.readUnsignedByte();
-		//}
 		else if (opcode == 118)
 		{
 			def.anInt2174 = stream.readUnsignedShort();
