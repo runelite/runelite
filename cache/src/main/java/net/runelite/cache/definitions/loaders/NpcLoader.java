@@ -29,6 +29,8 @@ import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+
 public class NpcLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(NpcLoader.class);
@@ -190,11 +192,11 @@ public class NpcLoader
 			def.anInt2187 = stream.readUnsignedShort();
 			if ('\uffff' == def.anInt2187)
 			{
-				def.anInt2187 = -40212193;
+				def.anInt2187 = -1;
 			}
 
 			length = stream.readUnsignedByte();
-			def.anIntArray2185 = new int[length + 1];
+			def.anIntArray2185 = new int[length + 2];
 
 			for (index = 0; index <= length; ++index)
 			{
@@ -204,6 +206,8 @@ public class NpcLoader
 					def.anIntArray2185[index] = -1;
 				}
 			}
+
+			def.anIntArray2185[length + 1] = -1;
 
 		}
 		else if (107 == opcode)
@@ -218,9 +222,68 @@ public class NpcLoader
 		{
 			def.aBool2190 = true;
 		}
-		else if (opcode == 112)
+		//else if (opcode == 112) // Appears to be removed from the client
+		//{
+		//	def.anInt2184 = stream.readUnsignedByte();
+		//}
+		else if (opcode == 118)
 		{
-			def.anInt2184 = stream.readUnsignedByte();
+			def.anInt2174 = stream.readUnsignedShort();
+			if ('\uffff' == def.anInt2174)
+			{
+				def.anInt2174 = -1;
+			}
+
+			def.anInt2187 = stream.readUnsignedShort();
+			if ('\uffff' == def.anInt2187)
+			{
+				def.anInt2187 = -1;
+			}
+
+			int var = stream.readUnsignedShort();
+			if (var == 0xFFFF)
+			{
+				var = -1;
+			}
+
+			length = stream.readUnsignedByte();
+			def.anIntArray2185 = new int[length + 2];
+
+			for (index = 0; index <= length; ++index)
+			{
+				def.anIntArray2185[index] = stream.readUnsignedShort();
+				if (def.anIntArray2185[index] == '\uffff')
+				{
+					def.anIntArray2185[index] = -1;
+				}
+			}
+
+			def.anIntArray2185[length + 1] = var;
+		}
+		else if (opcode == 249)
+		{
+			length = stream.readUnsignedByte();
+
+			def.params = new HashMap<>(length);
+
+			for (int i = 0; i < length; i++)
+			{
+				boolean isString = stream.readUnsignedByte() == 1;
+				int key = stream.read24BitInt();
+				Object value;
+
+				if (isString)
+				{
+					value = stream.readString();
+				}
+
+				else
+				{
+					value = stream.readInt();
+				}
+
+				def.params.put(key, value);
+			}
 		}
 		else
 		{

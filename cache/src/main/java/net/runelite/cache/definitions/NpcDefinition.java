@@ -25,6 +25,8 @@
 
 package net.runelite.cache.definitions;
 
+import java.util.Map;
+
 public class NpcDefinition
 {
 
@@ -54,13 +56,14 @@ public class NpcDefinition
 	public boolean hasRenderPriority = false;
 	public int ambient = 0;
 	public int headIcon = -1;
-	public int anInt2184 = 30;
+	//public int anInt2184 = 30;
 	public int[] anIntArray2185;
 	public short[] retextureToFind;
 	public int anInt2187 = -1;
 	public boolean isClickable = true;
 	public int anInt2189 = -1;
 	public boolean aBool2190 = false;
+	public Map<Integer, Object> params = null;
 
 	public NpcDefinition(int definitionID)
 	{

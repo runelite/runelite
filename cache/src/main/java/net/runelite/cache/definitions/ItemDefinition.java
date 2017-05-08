@@ -24,6 +24,8 @@
  */
 package net.runelite.cache.definitions;
 
+import java.util.Map;
+
 public class ItemDefinition
 {
 	public int id;
@@ -95,6 +97,8 @@ public class ItemDefinition
 	
 	public int placeholderId = -1;
 	public int placeholderTemplateId = -1;
+
+	public Map<Integer, Object> params = null;
 
 	public ItemDefinition(int definitionID)
 	{
