@@ -26,6 +26,7 @@ package net.runelite.client.plugins.zulrah;
 
 import java.awt.*;
 import java.util.Objects;
+
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Perspective;
@@ -127,22 +128,22 @@ public class ZulrahInstance
 
 	Color getZulrahColor(boolean isNext)
 	{
-		switch(type)
-        {
-            case MAGIC:
-                return new Color(155, 89, 182, isNext ? 100 : 230);
-            case MELEE:
-                return new Color(231, 76, 60, isNext ? 100 : 230);
-            case RANGE:
-                return new Color(46, 204, 113, isNext ? 100 : 230);
-        }
-        return Color.YELLOW; //Shouldn't happen
+		switch (type)
+		{
+			case MAGIC:
+				return new Color(155, 89, 182, isNext ? 100 : 230);
+			case MELEE:
+				return new Color(231, 76, 60, isNext ? 100 : 230);
+			case RANGE:
+				return new Color(46, 204, 113, isNext ? 100 : 230);
+		}
+		return Color.YELLOW; //Shouldn't happen
 	}
 
 	Color getZulrahColor()
-    {
-        return getZulrahColor(false);
-    }
+	{
+		return getZulrahColor(false);
+	}
 
 	@Override
 	public int hashCode()
@@ -198,20 +199,16 @@ public class ZulrahInstance
 		if (dx == -10 && dy == 2)
 		{
 			loc = ZulrahLocation.EAST;
-		}
-		else if (dx == 10 && dy == 2)
+		} else if (dx == 10 && dy == 2)
 		{
 			loc = ZulrahLocation.WEST;
-		}
-		else if (dx == 0 && dy == 11)
+		} else if (dx == 0 && dy == 11)
 		{
 			loc = ZulrahLocation.SOUTH;
-		}
-		else if (dx == 0 && dy == 0)
+		} else if (dx == 0 && dy == 0)
 		{
 			loc = ZulrahLocation.NORTH;
-		}
-		else
+		} else
 		{
 			logger.debug("Unknown zulrah location! dx: {}, dy: {}", dx, dy);
 			return null;
