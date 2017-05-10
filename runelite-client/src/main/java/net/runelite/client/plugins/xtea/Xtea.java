@@ -88,9 +88,12 @@ public class Xtea extends Plugin
 		ScheduledExecutorService executor = runeLite.getExecutor();
 		executor.execute(() ->
 		{
-			try
+			try (Response response = xteaClient.submit(revision, region, keys))
 			{
-				xteaClient.submit(revision, region, keys);
+				if (!response.isSuccessful())
+				{
+					logger.debug("unsuccessful xtea response");
+				}
 			}
 			catch (IOException ex)
 			{
