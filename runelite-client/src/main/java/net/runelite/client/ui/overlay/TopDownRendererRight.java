@@ -35,7 +35,7 @@ import net.runelite.client.RuneLite;
 public class TopDownRendererRight implements Renderer
 {
 	private static final int BORDER_TOP = 0;
-	private static final int BORDER_RIGHT = 0;
+	private static final int BORDER_RIGHT = 10;
 	private static final int PADDING = 10;
 
 	private final List<Overlay> overlays = new ArrayList<>();
