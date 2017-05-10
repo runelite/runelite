@@ -81,7 +81,7 @@ public class ModelViewer
 	private static final int NUM_MODELS = 31247;
 
 	/**
-	 * size of a tile in model coordinates
+	 * size of a tile in local coordinates
 	 */
 	private static final int TILE_SCALE = 128;
 	private static final int HEIGHT_MOD = 4;
@@ -249,10 +249,15 @@ public class ModelViewer
 	{
 		for (int i = 0; i < md.faceCount; ++i)
 		{
-			byte faceRenderType = md.faceRenderTypes[i];
+			if (md.faceRenderTypes != null)
+			{
+				byte faceRenderType = md.faceRenderTypes[i];
 
-			if ((faceRenderType & 2) != 0)
-				continue; // what is this?
+				if ((faceRenderType & 2) != 0)
+				{
+					continue; // what is this?
+				}
+			}
 
 			int vertexA = md.faceVertexIndices1[i];
 			int vertexB = md.faceVertexIndices2[i];
