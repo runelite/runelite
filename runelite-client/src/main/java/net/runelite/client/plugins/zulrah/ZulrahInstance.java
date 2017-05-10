@@ -199,16 +199,20 @@ public class ZulrahInstance
 		if (dx == -10 && dy == 2)
 		{
 			loc = ZulrahLocation.EAST;
-		} else if (dx == 10 && dy == 2)
+		} 
+		else if (dx == 10 && dy == 2)
 		{
 			loc = ZulrahLocation.WEST;
-		} else if (dx == 0 && dy == 11)
+		} 
+		else if (dx == 0 && dy == 11)
 		{
 			loc = ZulrahLocation.SOUTH;
-		} else if (dx == 0 && dy == 0)
+		} 
+		else if (dx == 0 && dy == 0)
 		{
 			loc = ZulrahLocation.NORTH;
-		} else
+		} 
+		else
 		{
 			logger.debug("Unknown zulrah location! dx: {}, dy: {}", dx, dy);
 			return null;
