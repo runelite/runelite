@@ -26,7 +26,7 @@ public class Model extends Renderable {
    @ObfuscatedName("l")
    int field1352;
    @ObfuscatedName("bf")
-   @Export("COSINE2")
+   //@Export("COSINE2")
    static int[] COSINE2;
    @ObfuscatedName("bw")
    public static int field1354;
@@ -52,7 +52,7 @@ public class Model extends Renderable {
    @ObfuscatedName("k")
    int[] field1364;
    @ObfuscatedName("bv")
-   @Export("SINE2")
+   //@Export("SINE2")
    static int[] SINE2;
    @ObfuscatedName("at")
    static int[] field1366;
