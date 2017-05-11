@@ -478,11 +478,11 @@ public class Script extends CacheableNode {
                                                                                                 if(var54 < 1800) {
                                                                                                    var34 = var61?class200.field2894:field942;
                                                                                                    if(var54 == 1700) {
-                                                                                                      class32.intStack[++class32.intStackSize - 1] = var34.item;
+                                                                                                      class32.intStack[++class32.intStackSize - 1] = var34.itemId;
                                                                                                       var38 = 1;
                                                                                                    } else if(var54 == 1701) {
-                                                                                                      if(var34.item != -1) {
-                                                                                                         class32.intStack[++class32.intStackSize - 1] = var34.stackSize;
+                                                                                                      if(var34.itemId != -1) {
+                                                                                                         class32.intStack[++class32.intStackSize - 1] = var34.itemQuantity;
                                                                                                       } else {
                                                                                                          class32.intStack[++class32.intStackSize - 1] = 0;
                                                                                                       }
@@ -519,12 +519,12 @@ public class Script extends CacheableNode {
                                                                                                    if(var54 < 2800) {
                                                                                                       if(var54 == 2700) {
                                                                                                          var36 = class128.method2364(class32.intStack[--class32.intStackSize]);
-                                                                                                         class32.intStack[++class32.intStackSize - 1] = var36.item;
+                                                                                                         class32.intStack[++class32.intStackSize - 1] = var36.itemId;
                                                                                                          var38 = 1;
                                                                                                       } else if(var54 == 2701) {
                                                                                                          var36 = class128.method2364(class32.intStack[--class32.intStackSize]);
-                                                                                                         if(var36.item != -1) {
-                                                                                                            class32.intStack[++class32.intStackSize - 1] = var36.stackSize;
+                                                                                                         if(var36.itemId != -1) {
+                                                                                                            class32.intStack[++class32.intStackSize - 1] = var36.itemQuantity;
                                                                                                          } else {
                                                                                                             class32.intStack[++class32.intStackSize - 1] = 0;
                                                                                                          }
