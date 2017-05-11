@@ -65,7 +65,7 @@ public class ObjectDefinition
 	private int anInt2105 = -1;
 	private int anInt2106 = -1;
 	private int[] configChangeDest;
-	private boolean aBool2108 = false;
+	private boolean isRotated = false;
 	private int configId = -1;
 	private int anInt2110 = -1;
 	private boolean aBool2111 = false;
@@ -434,14 +434,14 @@ public class ObjectDefinition
 		this.configChangeDest = configChangeDest;
 	}
 
-	public boolean isaBool2108()
+	public boolean isRotated()
 	{
-		return aBool2108;
+		return isRotated;
 	}
 
-	public void setaBool2108(boolean aBool2108)
+	public void setIsRotated(boolean isRotated)
 	{
-		this.aBool2108 = aBool2108;
+		this.isRotated = isRotated;
 	}
 
 	public int getConfigId()

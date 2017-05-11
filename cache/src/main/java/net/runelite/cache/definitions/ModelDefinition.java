@@ -1,5 +1,7 @@
 package net.runelite.cache.definitions;
 
+import java.util.Arrays;
+import net.runelite.cache.models.CircularAngle;
 import net.runelite.cache.models.FaceNormal;
 import net.runelite.cache.models.VertexNormal;
 
@@ -153,7 +155,8 @@ public class ModelDefinition
 	}
 
 	/**
-	 * Computes the UV coordinates for every three-vertex face that has a texture.
+	 * Computes the UV coordinates for every three-vertex face that has a
+	 * texture.
 	 */
 	public void computeTextureUVCoordinates()
 	{
@@ -265,5 +268,81 @@ public class ModelDefinition
 				this.faceTextureVCoordinates[i] = v;
 			}
 		}
+	}
+
+	public void rotate(int orientation)
+	{
+		int sin = CircularAngle.SINE[orientation];
+		int cos = CircularAngle.COSINE[orientation];
+
+		assert vertexPositionsX.length == vertexPositionsY.length;
+		assert vertexPositionsY.length == vertexPositionsZ.length;
+
+		for (int i = 0; i < vertexPositionsX.length; ++i)
+		{
+			vertexPositionsX[i] = vertexPositionsX[i] * cos + vertexPositionsZ[i] * sin >> 16;
+			vertexPositionsZ[i] = vertexPositionsZ[i] * cos - vertexPositionsX[i] * sin >> 16;
+		}
+
+		reset();
+	}
+
+	public void method1493()
+	{
+		int var1;
+		for (var1 = 0; var1 < this.vertexCount; ++var1)
+		{
+			this.vertexPositionsZ[var1] = -this.vertexPositionsZ[var1];
+		}
+
+		for (var1 = 0; var1 < this.faceCount; ++var1)
+		{
+			int var2 = this.faceVertexIndices1[var1];
+			this.faceVertexIndices1[var1] = this.faceVertexIndices3[var1];
+			this.faceVertexIndices3[var1] = var2;
+		}
+
+		reset();
+	}
+
+	public void rotate1()
+	{
+		for (int var1 = 0; var1 < this.vertexCount; ++var1)
+		{
+			int var2 = this.vertexPositionsX[var1];
+			this.vertexPositionsX[var1] = this.vertexPositionsZ[var1];
+			this.vertexPositionsZ[var1] = -var2;
+		}
+
+		reset();
+	}
+
+	public void rotate2()
+	{
+		for (int var1 = 0; var1 < this.vertexCount; ++var1)
+		{
+			this.vertexPositionsX[var1] = -this.vertexPositionsX[var1];
+			this.vertexPositionsZ[var1] = -this.vertexPositionsZ[var1];
+		}
+
+		reset();
+	}
+
+	public void rotate3()
+	{
+		for (int var1 = 0; var1 < this.vertexCount; ++var1)
+		{
+			int var2 = this.vertexPositionsZ[var1];
+			this.vertexPositionsZ[var1] = this.vertexPositionsX[var1];
+			this.vertexPositionsX[var1] = -var2;
+		}
+
+		reset();
+	}
+
+	private void reset()
+	{
+		faceNormals = null;
+		faceTextureUCoordinates = faceTextureVCoordinates = null;
 	}
 }

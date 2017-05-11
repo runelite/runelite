@@ -27,13 +27,11 @@ package net.runelite.modelviewer;
 import com.google.gson.Gson;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +43,6 @@ import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.OverlayDefinition;
 import net.runelite.cache.definitions.TextureDefinition;
 import net.runelite.cache.definitions.UnderlayDefinition;
-import net.runelite.cache.definitions.loaders.ModelLoader;
 import net.runelite.cache.models.Vector3f;
 import net.runelite.cache.models.VertexNormal;
 import net.runelite.cache.region.Location;
@@ -78,7 +75,6 @@ public class ModelViewer
 	private static final int NUM_OVERLAYS = 174;
 	private static final int NUM_TEXTURES = 61;
 	private static final int NUM_OBJECTS = 28598;
-	private static final int NUM_MODELS = 31247;
 
 	/**
 	 * size of a tile in local coordinates
@@ -91,7 +87,6 @@ public class ModelViewer
 
 	private static Map<Integer, Texture> textures = new HashMap<>();
 	private static ObjectDefinition[] objects = new ObjectDefinition[NUM_OBJECTS];
-	private static ModelDefinition[] models = new ModelDefinition[NUM_MODELS];
 
 	public static void main(String[] args) throws Exception
 	{
@@ -124,7 +119,7 @@ public class ModelViewer
 			// render model
 			String model = cmd.getOptionValue("model");
 
-			ModelDefinition md = getModel(Integer.parseInt(model));
+			ModelDefinition md = ModelManager.getModel(Integer.parseInt(model), null, null);
 			models.add(md);
 		}
 		if (cmd.hasOption("npc"))
@@ -138,7 +133,7 @@ public class ModelViewer
 
 			for (int model : npcdef.models)
 			{
-				ModelDefinition md = getModel(model);
+				ModelDefinition md = ModelManager.getModel(model, null, null);
 				models.add(md);
 			}
 		}
@@ -153,7 +148,7 @@ public class ModelViewer
 
 			for (int model : objdef.getObjectModels())
 			{
-				ModelDefinition md = getModel(model);
+				ModelDefinition md = ModelManager.getModel(model, null, null);
 				models.add(md);
 			}
 		}
@@ -300,6 +295,9 @@ public class ModelViewer
 
 				Texture texture = getTexture(textureId);
 				assert texture != null;
+
+				if (md.faceTextureUCoordinates == null || md.faceTextureVCoordinates == null)
+					md.computeTextureUVCoordinates();
 
 				u = md.faceTextureUCoordinates[i];
 				v = md.faceTextureVCoordinates[i];
@@ -529,7 +527,6 @@ public class ModelViewer
 			int regionY = objectPos.getY() - region.getBaseY();
 			int height = -region.getTileHeight(objectPos.getZ(), regionX, regionY) / HEIGHT_MOD;
 
-			//byte overlayRotation = region.getOverlayRotation(objectPos.getZ(), regionX, regionY);
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
 			// TILE_SCALE/2 to draw the object from the center of the tile it is on
@@ -537,14 +534,11 @@ public class ModelViewer
 
 			for (int i = 0; i < object.getObjectModels().length; ++i)
 			{
-				ModelDefinition md = getModel(object.getObjectModels()[i]);
+				ModelDefinition md = ModelManager.getModel(object.getObjectModels()[i], object, location);
 
-				if (object.getObjectTypes() != null)
+				if (object.getObjectTypes() != null && object.getObjectTypes()[i] != location.getType())
 				{
-					if (object.getObjectTypes()[i] != location.getType())
-					{
-						continue;
-					}
+					continue;
 				}
 
 				drawModel(md, object.getRecolorToFind(), object.getRecolorToReplace());
@@ -598,31 +592,6 @@ public class ModelViewer
 			object = new Gson().fromJson(new InputStreamReader(fin), ObjectDefinition.class);
 			objects[id] = object;
 			return object;
-		}
-		catch (IOException ex)
-		{
-			logger.warn(null, ex);
-			return null;
-		}
-	}
-
-	private static ModelDefinition getModel(int id)
-	{
-		ModelDefinition md = models[id];
-		if (md != null)
-		{
-			return md;
-		}
-
-		try
-		{
-			byte[] b = Files.readAllBytes(new File("models/" + id + ".model").toPath());
-
-			ModelLoader loader = new ModelLoader();
-			md = loader.load(id, b);
-
-			models[id] = md;
-			return md;
 		}
 		catch (IOException ex)
 		{
