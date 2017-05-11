@@ -60,11 +60,11 @@ public abstract class Actor extends Renderable
 
 		if (i < 0x8000)
 		{
-			return client.getNpcs()[i];
+			return client.getNpc(i);
 		}
 
 		i -= 0x8000;
-		return client.getPlayers()[i];
+		return client.getPlayer(i);
 	}
 
 	public int getHealthRatio()

@@ -55,11 +55,23 @@ public class Client
 			.toArray(size -> new NPC[size]);
 	}
 
+	NPC getNpc(int idx)
+	{
+		net.runelite.rs.api.NPC npc = client.getCachedNPCs()[idx];
+		return npc != null ? new NPC(this, npc) : null;
+	}
+
 	public Player[] getPlayers()
 	{
 		return Arrays.stream(client.getCachedPlayers())
 			.map(player -> player != null ? new Player(this, player) : null)
 			.toArray(size -> new Player[size]);
+	}
+
+	Player getPlayer(int idx)
+	{
+		net.runelite.rs.api.Player player = client.getCachedPlayers()[idx];
+		return player != null ? new Player(this, player) : null;
 	}
 
 	@SuppressWarnings("unchecked")
