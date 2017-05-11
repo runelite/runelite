@@ -533,8 +533,8 @@ public class class164 extends class68 {
                                  }
 
                                  class84.method1652(var10.width / 2 + var12, var10.height / 2 + var13);
-                                 var36 = class84.field1433[var10.rotationX] * var10.field2244 >> 16;
-                                 var24 = class84.field1441[var10.rotationX] * var10.field2244 >> 16;
+                                 var36 = class84.SINE[var10.rotationX] * var10.field2244 >> 16;
+                                 var24 = class84.COSINE[var10.rotationX] * var10.field2244 >> 16;
                                  if(var43 != null) {
                                     if(!var10.hasScript) {
                                        var43.method1586(0, var10.rotationZ, 0, var10.rotationX, 0, var36, var24);

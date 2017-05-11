@@ -170,11 +170,11 @@ public final class class10 {
       int var8 = class160.method3022(var3 + 1, var5);
       int var9 = class160.method3022(var3, var5 + 1);
       int var10 = class160.method3022(var3 + 1, var5 + 1);
-      int var12 = 65536 - class84.field1441[var4 * 1024 / var2] >> 1;
+      int var12 = 65536 - class84.COSINE[var4 * 1024 / var2] >> 1;
       int var11 = (var7 * (65536 - var12) >> 16) + (var12 * var8 >> 16);
-      int var14 = 65536 - class84.field1441[var4 * 1024 / var2] >> 1;
+      int var14 = 65536 - class84.COSINE[var4 * 1024 / var2] >> 1;
       int var13 = (var9 * (65536 - var14) >> 16) + (var14 * var10 >> 16);
-      int var16 = 65536 - class84.field1441[var6 * 1024 / var2] >> 1;
+      int var16 = 65536 - class84.COSINE[var6 * 1024 / var2] >> 1;
       int var15 = (var16 * var13 >> 16) + ((65536 - var16) * var11 >> 16);
       return var15;
    }

@@ -95,7 +95,8 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedName("u")
    static NodeCache field2948;
    @ObfuscatedName("ak")
-   boolean field2949;
+   @Export("isRotated")
+   boolean isRotated;
    @ObfuscatedName("ax")
    @ObfuscatedGetter(
       intValue = 1335897451
@@ -229,7 +230,7 @@ public class ObjectComposition extends CacheableNode {
       this.actions = new String[5];
       this.mapIconId = -1;
       this.mapSceneId = -1;
-      this.field2949 = false;
+      this.isRotated = false;
       this.field2955 = true;
       this.modelSizeX = 128;
       this.modelSizeHeight = 128;
@@ -344,7 +345,7 @@ public class ObjectComposition extends CacheableNode {
       } else if(var2 == 60) {
          this.mapIconId = var1.readUnsignedShort();
       } else if(var2 == 62) {
-         this.field2949 = true;
+         this.isRotated = true;
       } else if(var2 == 64) {
          this.field2955 = false;
       } else if(var2 == 65) {
@@ -446,17 +447,17 @@ public class ObjectComposition extends CacheableNode {
       signature = "(II[[IIIIB)LRenderable;",
       garbageValue = "9"
    )
-   public final Renderable method3684(int var1, int var2, int[][] var3, int var4, int var5, int var6) {
+   public final Renderable method3684(int type, int orientation, int[][] var3, int var4, int var5, int var6) {
       long var7;
       if(this.objectTypes == null) {
-         var7 = (long)((this.field2941 << 10) + var2);
+         var7 = (long)((this.field2941 << 10) + orientation);
       } else {
-         var7 = (long)(var2 + (var1 << 3) + (this.field2941 << 10));
+         var7 = (long)(orientation + (type << 3) + (this.field2941 << 10));
       }
 
       Object var9 = (Renderable)field2928.get(var7);
       if(var9 == null) {
-         ModelData var10 = this.method3697(var1, var2);
+         ModelData var10 = this.method3697(type, orientation);
          if(var10 == null) {
             return null;
          }
@@ -661,13 +662,13 @@ public class ObjectComposition extends CacheableNode {
       signature = "(III)LModelData;",
       garbageValue = "2109167621"
    )
-   final ModelData method3697(int var1, int var2) {
+   final ModelData method3697(int type, int orientation) {
       ModelData var3 = null;
       boolean var4;
       int var5;
       int var7;
       if(this.objectTypes == null) {
-         if(var1 != 10) {
+         if(type != 10) {
             return null;
          }
 
@@ -675,8 +676,8 @@ public class ObjectComposition extends CacheableNode {
             return null;
          }
 
-         var4 = this.field2949;
-         if(var1 == 2 && var2 > 3) {
+         var4 = this.isRotated;
+         if(type == 2 && orientation > 3) {
             var4 = !var4;
          }
 
@@ -714,7 +715,7 @@ public class ObjectComposition extends CacheableNode {
          int var9 = -1;
 
          for(var5 = 0; var5 < this.objectTypes.length; ++var5) {
-            if(this.objectTypes[var5] == var1) {
+            if(this.objectTypes[var5] == type) {
                var9 = var5;
                break;
             }
@@ -725,7 +726,7 @@ public class ObjectComposition extends CacheableNode {
          }
 
          var5 = this.objectModels[var9];
-         boolean var10 = this.field2949 ^ var2 > 3;
+         boolean var10 = this.isRotated ^ orientation > 3;
          if(var10) {
             var5 += 65536;
          }
@@ -758,18 +759,18 @@ public class ObjectComposition extends CacheableNode {
          var11 = true;
       }
 
-      ModelData var8 = new ModelData(var3, var2 == 0 && !var4 && !var11, this.recolorToFind == null, this.textureToFind == null, true);
-      if(var1 == 4 && var2 > 3) {
+      ModelData var8 = new ModelData(var3, orientation == 0 && !var4 && !var11, this.recolorToFind == null, this.textureToFind == null, true);
+      if(type == 4 && orientation > 3) {
          var8.method1489(256);
          var8.method1535(45, 0, -45);
       }
 
-      var2 &= 3;
-      if(var2 == 1) {
+      orientation &= 3;
+      if(orientation == 1) {
          var8.method1542();
-      } else if(var2 == 2) {
+      } else if(orientation == 2) {
          var8.method1487();
-      } else if(var2 == 3) {
+      } else if(orientation == 3) {
          var8.method1488();
       }
 

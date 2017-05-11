@@ -199,7 +199,7 @@ public class ObjectLoader
 		}
 		else if (62 == opcode)
 		{
-			def.setaBool2108(true);
+			def.setIsRotated(true);
 		}
 		else if (opcode == 64)
 		{

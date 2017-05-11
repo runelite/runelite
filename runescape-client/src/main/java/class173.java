@@ -108,7 +108,7 @@ public class class173 {
          for(int var10 = 0; var10 < 9; ++var10) {
             int var11 = var10 * 32 + 128 + 15;
             int var12 = var11 * 3 + 600;
-            int var13 = class84.field1433[var11];
+            int var13 = class84.SINE[var11];
             var14[var10] = var12 * var13 >> 16;
          }
 

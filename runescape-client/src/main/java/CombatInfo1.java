@@ -121,10 +121,10 @@ public class CombatInfo1 extends Node {
          var0 -= class22.cameraX;
          var3 -= class1.cameraZ;
          var1 -= class13.cameraY;
-         int var4 = class84.field1433[class108.cameraPitch];
-         int var5 = class84.field1441[class108.cameraPitch];
-         int var6 = class84.field1433[class13.cameraYaw];
-         int var7 = class84.field1441[class13.cameraYaw];
+         int var4 = class84.SINE[class108.cameraPitch];
+         int var5 = class84.COSINE[class108.cameraPitch];
+         int var6 = class84.SINE[class13.cameraYaw];
+         int var7 = class84.COSINE[class13.cameraYaw];
          int var8 = var6 * var1 + var0 * var7 >> 16;
          var1 = var7 * var1 - var0 * var6 >> 16;
          var0 = var8;
