@@ -201,47 +201,22 @@ public class Widget
 	public Collection<WidgetItem> getWidgetItems()
 	{
 		int[] itemIds = widget.getItemIds();
-		int[] itemQuantities = widget.getItemQuantities();
 
-		if (itemIds == null || itemQuantities == null)
+		if (itemIds == null)
 		{
 			return null;
 		}
 
 		List<WidgetItem> items = new ArrayList<>(itemIds.length);
 
-		assert itemIds.length == itemQuantities.length;
-
-		int columns = getWidth(); // the number of item slot columns is stored here
-		int paddingX = getPaddingX();
-		int paddingY = getPaddingY();
-
-		Point widgetCanvasLocation = getCanvasLocation();
-
 		for (int i = 0; i < itemIds.length; ++i)
 		{
-			int itemId = itemIds[i];
-			int itemQuantity = itemQuantities[i];
+			WidgetItem item = getWidgetItem(i);
 
-			if (itemId <= 0 || itemQuantity <= 0)
+			if (item != null)
 			{
-				continue;
+				items.add(item);
 			}
-
-			Rectangle bounds = null;
-
-			if (columns > 0)
-			{
-				int row = i / columns;
-				int col = i % columns;
-				int itemX = widgetCanvasLocation.getX() + ((ITEM_SLOT_SIZE + paddingX) * col);
-				int itemY = widgetCanvasLocation.getY() + ((ITEM_SLOT_SIZE + paddingY) * row);
-
-				bounds = new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
-			}
-
-			WidgetItem item = new WidgetItem(itemId - 1, itemQuantity, i, bounds);
-			items.add(item);
 		}
 
 		return items;
