@@ -275,17 +275,9 @@ public class Widget
 
 		Widget[] children = new Widget[widgets.length];
 
-		int idx = -1;
-		for (net.runelite.rs.api.Widget child : widgets)
+		for (int i = 0; i < widgets.length; ++i)
 		{
-			idx++;
-
-			if (child == null)
-			{
-				continue;
-			}
-
-			children[idx] = new Widget(client, child);
+			children[i] = getChild(i);
 		}
 
 		return children;
