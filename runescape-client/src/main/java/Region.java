@@ -351,7 +351,7 @@ public class Region {
    }
 
    @ObfuscatedName("e")
-   public boolean method1732(int var1, int var2, int var3, int var4, int var5, Renderable var6, int var7, int var8, boolean var9) {
+   public boolean method1732(int var1, int var2, int var3, int var4, int var5, Renderable var6, int orientation, int var8, boolean var9) {
       if(var6 == null) {
          return true;
       } else {
@@ -360,19 +360,19 @@ public class Region {
          int var12 = var2 + var5;
          int var13 = var3 + var5;
          if(var9) {
-            if(var7 > 640 && var7 < 1408) {
+            if(orientation > 640 && orientation < 1408) {
                var13 += 128;
             }
 
-            if(var7 > 1152 && var7 < 1920) {
+            if(orientation > 1152 && orientation < 1920) {
                var12 += 128;
             }
 
-            if(var7 > 1664 || var7 < 384) {
+            if(orientation > 1664 || orientation < 384) {
                var11 -= 128;
             }
 
-            if(var7 > 128 && var7 < 896) {
+            if(orientation > 128 && orientation < 896) {
                var10 -= 128;
             }
          }
@@ -381,12 +381,12 @@ public class Region {
          var11 /= 128;
          var12 /= 128;
          var13 /= 128;
-         return this.method1734(var1, var10, var11, var12 - var10 + 1, var13 - var11 + 1, var2, var3, var4, var6, var7, true, var8, 0);
+         return this.method1734(var1, var10, var11, var12 - var10 + 1, var13 - var11 + 1, var2, var3, var4, var6, orientation, true, var8, 0);
       }
    }
 
    @ObfuscatedName("i")
-   boolean method1734(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, Renderable var9, int var10, boolean var11, int var12, int var13) {
+   boolean method1734(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, Renderable var9, int orientation, boolean var11, int var12, int var13) {
       int var15;
       for(int var14 = var2; var14 < var2 + var4; ++var14) {
          for(var15 = var3; var15 < var3 + var5; ++var15) {
@@ -409,7 +409,7 @@ public class Region {
       var20.y = var7;
       var20.height = var8;
       var20.renderable = var9;
-      var20.orientation = var10;
+      var20.orientation = orientation;
       var20.relativeX = var2;
       var20.relativeY = var3;
       var20.offsetX = var2 + var4 - 1;
@@ -690,13 +690,13 @@ public class Region {
    }
 
    @ObfuscatedName("k")
-   public boolean method1746(int var1, int var2, int var3, int var4, int var5, int var6, Renderable var7, int var8, int var9, int var10) {
+   public boolean method1746(int var1, int var2, int var3, int var4, int var5, int var6, Renderable var7, int orientation, int var9, int var10) {
       if(var7 == null) {
          return true;
       } else {
          int var11 = var2 * 128 + var5 * 64;
          int var12 = var3 * 128 + var6 * 64;
-         return this.method1734(var1, var2, var3, var5, var6, var11, var12, var4, var7, var8, false, var9, var10);
+         return this.method1734(var1, var2, var3, var5, var6, var11, var12, var4, var7, orientation, false, var9, var10);
       }
    }
 
@@ -880,10 +880,10 @@ public class Region {
       int var12;
       for(var6 = 128; var6 <= 384; var6 += 32) {
          for(var7 = 0; var7 < 2048; var7 += 64) {
-            field1488 = class84.field1433[var6];
-            field1489 = class84.field1441[var6];
-            field1491 = class84.field1433[var7];
-            field1475 = class84.field1441[var7];
+            field1488 = class84.SINE[var6];
+            field1489 = class84.COSINE[var6];
+            field1491 = class84.SINE[var7];
+            field1475 = class84.COSINE[var7];
             var8 = (var6 - 128) / 32;
             var9 = var7 / 64;
 
@@ -1667,10 +1667,10 @@ public class Region {
       }
 
       ++field1478;
-      field1488 = class84.field1433[var4];
-      field1489 = class84.field1441[var4];
-      field1491 = class84.field1433[var5];
-      field1475 = class84.field1441[var5];
+      field1488 = class84.SINE[var4];
+      field1489 = class84.COSINE[var4];
+      field1491 = class84.SINE[var5];
+      field1475 = class84.COSINE[var5];
       renderArea = field1514[(var4 - 128) / 32][var5 / 64];
       field1485 = var1;
       field1486 = var2;

@@ -317,16 +317,16 @@ public final class class105 implements KeyListener, FocusListener {
          int var17;
          int var18;
          if(var11 != 0) {
-            var16 = class84.field1433[var11];
-            var17 = class84.field1441[var11];
+            var16 = class84.SINE[var11];
+            var17 = class84.COSINE[var11];
             var18 = var17 * var14 - var10 * var16 >> 16;
             var15 = var14 * var16 + var17 * var10 >> 16;
             var14 = var18;
          }
 
          if(var12 != 0) {
-            var16 = class84.field1433[var12];
-            var17 = class84.field1441[var12];
+            var16 = class84.SINE[var12];
+            var17 = class84.COSINE[var12];
             var18 = var16 * var15 + var13 * var17 >> 16;
             var15 = var17 * var15 - var16 * var13 >> 16;
             var13 = var18;

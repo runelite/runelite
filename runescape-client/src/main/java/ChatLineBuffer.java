@@ -126,15 +126,15 @@ public class ChatLineBuffer {
          int var3;
          int var4;
          Buffer var8;
-         int var9;
+         int id;
          int var10;
          int var11;
          int var13;
          int var14;
          int var15;
          int var16;
-         int var17;
-         int var18;
+         int type;
+         int orientation;
          for(var1 = 0; var1 < class215.field3156.length; ++var1) {
             byte[] var2 = RSCanvas.field1759[var1];
             if(var2 != null) {
@@ -147,7 +147,7 @@ public class ChatLineBuffer {
 
                boolean var7 = true;
                var8 = new Buffer(var2);
-               var9 = -1;
+               id = -1;
 
                label1485:
                while(true) {
@@ -157,7 +157,7 @@ public class ChatLineBuffer {
                      break;
                   }
 
-                  var9 += var10;
+                  id += var10;
                   var11 = 0;
                   boolean var12 = false;
 
@@ -172,10 +172,10 @@ public class ChatLineBuffer {
                         var14 = var11 & 63;
                         var15 = var11 >> 6 & 63;
                         var16 = var8.readUnsignedByte() >> 2;
-                        var17 = var15 + var3;
-                        var18 = var14 + var4;
-                        if(var17 > 0 && var18 > 0 && var17 < 103 && var18 < 103) {
-                           ObjectComposition var19 = class26.getObjectDefinition(var9);
+                        type = var15 + var3;
+                        orientation = var14 + var4;
+                        if(type > 0 && orientation > 0 && type < 103 && orientation < 103) {
+                           ObjectComposition var19 = class26.getObjectDefinition(id);
                            if(var16 != 22 || !Client.field285 || var19.field2943 != 0 || var19.field2936 == 1 || var19.field2962) {
                               if(!var19.method3683()) {
                                  ++Client.field369;
@@ -293,7 +293,7 @@ public class ChatLineBuffer {
                      Region var54 = class172.region;
                      CollisionData[] var55 = Client.collisionMaps;
                      var8 = new Buffer(var53);
-                     var9 = -1;
+                     id = -1;
 
                      while(true) {
                         var10 = var8.method2395();
@@ -301,7 +301,7 @@ public class ChatLineBuffer {
                            break;
                         }
 
-                        var9 += var10;
+                        id += var10;
                         var11 = 0;
 
                         while(true) {
@@ -315,8 +315,8 @@ public class ChatLineBuffer {
                            var14 = var11 >> 6 & 63;
                            var15 = var11 >> 12;
                            var16 = var8.readUnsignedByte();
-                           var17 = var16 >> 2;
-                           var18 = var16 & 3;
+                           type = var16 >> 2;
+                           orientation = var16 & 3;
                            var49 = var4 + var14;
                            var50 = var5 + var13;
                            if(var49 > 0 && var50 > 0 && var49 < 103 && var50 < 103) {
@@ -330,7 +330,7 @@ public class ChatLineBuffer {
                                  var57 = var55[var21];
                               }
 
-                              class9.method107(var15, var49, var50, var9, var18, var17, var54, var57);
+                              class9.method107(var15, var49, var50, id, orientation, type, var54, var57);
                            }
                         }
                      }
@@ -363,13 +363,13 @@ public class ChatLineBuffer {
                         if(var6 != -1) {
                            var68 = var6 >> 24 & 3;
                            var48 = var6 >> 1 & 3;
-                           var9 = var6 >> 14 & 1023;
+                           id = var6 >> 14 & 1023;
                            var10 = var6 >> 3 & 2047;
-                           var11 = var10 / 8 + (var9 / 8 << 8);
+                           var11 = var10 / 8 + (id / 8 << 8);
 
                            for(var69 = 0; var69 < class164.mapRegions.length; ++var69) {
                               if(var11 == class164.mapRegions[var69] && class215.field3156[var69] != null) {
-                                 class121.method2303(class215.field3156[var69], var46, var3 * 8, var4 * 8, var68, (var9 & 7) * 8, (var10 & 7) * 8, var48, Client.collisionMaps);
+                                 class121.method2303(class215.field3156[var69], var46, var3 * 8, var4 * 8, var68, (id & 7) * 8, (var10 & 7) * 8, var48, Client.collisionMaps);
                                  var67 = true;
                                  break;
                               }
@@ -405,8 +405,8 @@ public class ChatLineBuffer {
                            var6 = var5 >> 24 & 3;
                            var68 = var5 >> 1 & 3;
                            var48 = var5 >> 14 & 1023;
-                           var9 = var5 >> 3 & 2047;
-                           var10 = (var48 / 8 << 8) + var9 / 8;
+                           id = var5 >> 3 & 2047;
+                           var10 = (var48 / 8 << 8) + id / 8;
 
                            for(var11 = 0; var11 < class164.mapRegions.length; ++var11) {
                               if(var10 == class164.mapRegions[var11] && RSCanvas.field1759[var11] != null) {
@@ -414,7 +414,7 @@ public class ChatLineBuffer {
                                  var13 = var3 * 8;
                                  var14 = var4 * 8;
                                  var15 = (var48 & 7) * 8;
-                                 var16 = (var9 & 7) * 8;
+                                 var16 = (id & 7) * 8;
                                  Region var60 = class172.region;
                                  CollisionData[] var51 = Client.collisionMaps;
                                  Buffer var70 = new Buffer(var58);
@@ -520,11 +520,11 @@ public class ChatLineBuffer {
                   for(var14 = 1; var14 < 103; ++var14) {
                      var15 = class10.tileHeights[var4][var14 + 1][var13] - class10.tileHeights[var4][var14 - 1][var13];
                      var16 = class10.tileHeights[var4][var14][var13 + 1] - class10.tileHeights[var4][var14][var13 - 1];
-                     var17 = (int)Math.sqrt((double)(var15 * var15 + 65536 + var16 * var16));
-                     var18 = (var15 << 8) / var17;
-                     var49 = 65536 / var17;
-                     var50 = (var16 << 8) / var17;
-                     var21 = (var50 * -50 + var18 * -50 + var49 * -10) / var69 + 96;
+                     type = (int)Math.sqrt((double)(var15 * var15 + 65536 + var16 * var16));
+                     orientation = (var15 << 8) / type;
+                     var49 = 65536 / type;
+                     var50 = (var16 << 8) / type;
+                     var21 = (var50 * -50 + orientation * -50 + var49 * -10) / var69 + 96;
                      var22 = (var76[var14][var13] >> 1) + (var76[var14 - 1][var13] >> 2) + (var76[var14 + 1][var13] >> 3) + (var76[var14][var13 - 1] >> 2) + (var76[var14][var13 + 1] >> 3);
                      ItemLayer.field1199[var14][var13] = var21 - var22;
                   }
@@ -544,20 +544,20 @@ public class ChatLineBuffer {
                      if(var15 >= 0 && var15 < 104) {
                         var16 = class173.underlayIds[var4][var15][var14] & 255;
                         if(var16 > 0) {
-                           var18 = var16 - 1;
-                           FloorUnderlayDefinition var71 = (FloorUnderlayDefinition)FloorUnderlayDefinition.field2822.get((long)var18);
+                           orientation = var16 - 1;
+                           FloorUnderlayDefinition var71 = (FloorUnderlayDefinition)FloorUnderlayDefinition.field2822.get((long)orientation);
                            FloorUnderlayDefinition var78;
                            if(var71 != null) {
                               var78 = var71;
                            } else {
-                              byte[] var20 = FloorUnderlayDefinition.field2820.getConfigData(1, var18);
+                              byte[] var20 = FloorUnderlayDefinition.field2820.getConfigData(1, orientation);
                               var71 = new FloorUnderlayDefinition();
                               if(var20 != null) {
-                                 var71.method3488(new Buffer(var20), var18);
+                                 var71.method3488(new Buffer(var20), orientation);
                               }
 
                               var71.method3490();
-                              FloorUnderlayDefinition.field2822.put(var71, (long)var18);
+                              FloorUnderlayDefinition.field2822.put(var71, (long)orientation);
                               var78 = var71;
                            }
 
@@ -571,9 +571,9 @@ public class ChatLineBuffer {
 
                      var16 = var13 - 5;
                      if(var16 >= 0 && var16 < 104) {
-                        var17 = class173.underlayIds[var4][var16][var14] & 255;
-                        if(var17 > 0) {
-                           var49 = var17 - 1;
+                        type = class173.underlayIds[var4][var16][var14] & 255;
+                        if(type > 0) {
+                           var49 = type - 1;
                            FloorUnderlayDefinition var73 = (FloorUnderlayDefinition)FloorUnderlayDefinition.field2822.get((long)var49);
                            FloorUnderlayDefinition var75;
                            if(var73 != null) {
@@ -603,8 +603,8 @@ public class ChatLineBuffer {
                      var14 = 0;
                      var15 = 0;
                      var16 = 0;
-                     var17 = 0;
-                     var18 = 0;
+                     type = 0;
+                     orientation = 0;
 
                      for(var49 = -5; var49 < 109; ++var49) {
                         var50 = var49 + 5;
@@ -612,8 +612,8 @@ public class ChatLineBuffer {
                            var14 += FrameMap.field1459[var50];
                            var15 += class10.field98[var50];
                            var16 += class10.field96[var50];
-                           var17 += class138.field2005[var50];
-                           var18 += class10.field91[var50];
+                           type += class138.field2005[var50];
+                           orientation += class10.field91[var50];
                         }
 
                         var21 = var49 - 5;
@@ -621,8 +621,8 @@ public class ChatLineBuffer {
                            var14 -= FrameMap.field1459[var21];
                            var15 -= class10.field98[var21];
                            var16 -= class10.field96[var21];
-                           var17 -= class138.field2005[var21];
-                           var18 -= class10.field91[var21];
+                           type -= class138.field2005[var21];
+                           orientation -= class10.field91[var21];
                         }
 
                         if(var49 >= 1 && var49 < 103 && (!Client.field285 || (class10.tileSettings[0][var13][var49] & 2) != 0 || (class10.tileSettings[var4][var13][var49] & 16) == 0)) {
@@ -647,9 +647,9 @@ public class ChatLineBuffer {
                               int var36;
                               int var62;
                               if(var22 > 0) {
-                                 var62 = var14 * 256 / var17;
-                                 var35 = var15 / var18;
-                                 var36 = var16 / var18;
+                                 var62 = var14 * 256 / type;
+                                 var35 = var15 / orientation;
+                                 var36 = var16 / orientation;
                                  var32 = class39.method773(var62, var35, var36);
                                  var62 = class10.field104 + var62 & 255;
                                  var36 += class10.field105;
@@ -817,12 +817,12 @@ public class ChatLineBuffer {
                }
 
                for(var48 = 0; var48 <= var68; ++var48) {
-                  for(var9 = 0; var9 <= 104; ++var9) {
+                  for(id = 0; id <= 104; ++id) {
                      for(var10 = 0; var10 <= 104; ++var10) {
                         short var72;
-                        if((class164.field2160[var48][var10][var9] & var4) != 0) {
-                           var11 = var9;
-                           var69 = var9;
+                        if((class164.field2160[var48][var10][id] & var4) != 0) {
+                           var11 = id;
+                           var69 = id;
                            var13 = var48;
 
                            for(var14 = var48; var11 > 0 && (class164.field2160[var48][var10][var11 - 1] & var4) != 0; --var11) {
@@ -858,9 +858,9 @@ public class ChatLineBuffer {
                            var15 = (var69 - var11 + 1) * (var14 + 1 - var13);
                            if(var15 >= 8) {
                               var72 = 240;
-                              var17 = class10.tileHeights[var14][var10][var11] - var72;
-                              var18 = class10.tileHeights[var13][var10][var11];
-                              Region.method1881(var68, 1, var10 * 128, var10 * 128, var11 * 128, var69 * 128 + 128, var17, var18);
+                              type = class10.tileHeights[var14][var10][var11] - var72;
+                              orientation = class10.tileHeights[var13][var10][var11];
+                              Region.method1881(var68, 1, var10 * 128, var10 * 128, var11 * 128, var69 * 128 + 128, type, orientation);
 
                               for(var49 = var13; var49 <= var14; ++var49) {
                                  for(var50 = var11; var50 <= var69; ++var50) {
@@ -870,23 +870,23 @@ public class ChatLineBuffer {
                            }
                         }
 
-                        if((class164.field2160[var48][var10][var9] & var5) != 0) {
+                        if((class164.field2160[var48][var10][id] & var5) != 0) {
                            var11 = var10;
                            var69 = var10;
                            var13 = var48;
 
-                           for(var14 = var48; var11 > 0 && (class164.field2160[var48][var11 - 1][var9] & var5) != 0; --var11) {
+                           for(var14 = var48; var11 > 0 && (class164.field2160[var48][var11 - 1][id] & var5) != 0; --var11) {
                               ;
                            }
 
-                           while(var69 < 104 && (class164.field2160[var48][var69 + 1][var9] & var5) != 0) {
+                           while(var69 < 104 && (class164.field2160[var48][var69 + 1][id] & var5) != 0) {
                               ++var69;
                            }
 
                            label1122:
                            while(var13 > 0) {
                               for(var15 = var11; var15 <= var69; ++var15) {
-                                 if((class164.field2160[var13 - 1][var15][var9] & var5) == 0) {
+                                 if((class164.field2160[var13 - 1][var15][id] & var5) == 0) {
                                     break label1122;
                                  }
                               }
@@ -897,7 +897,7 @@ public class ChatLineBuffer {
                            label1111:
                            while(var14 < var68) {
                               for(var15 = var11; var15 <= var69; ++var15) {
-                                 if((class164.field2160[var14 + 1][var15][var9] & var5) == 0) {
+                                 if((class164.field2160[var14 + 1][var15][id] & var5) == 0) {
                                     break label1111;
                                  }
                               }
@@ -908,24 +908,24 @@ public class ChatLineBuffer {
                            var15 = (var69 - var11 + 1) * (var14 + 1 - var13);
                            if(var15 >= 8) {
                               var72 = 240;
-                              var17 = class10.tileHeights[var14][var11][var9] - var72;
-                              var18 = class10.tileHeights[var13][var11][var9];
-                              Region.method1881(var68, 2, var11 * 128, var69 * 128 + 128, var9 * 128, var9 * 128, var17, var18);
+                              type = class10.tileHeights[var14][var11][id] - var72;
+                              orientation = class10.tileHeights[var13][var11][id];
+                              Region.method1881(var68, 2, var11 * 128, var69 * 128 + 128, id * 128, id * 128, type, orientation);
 
                               for(var49 = var13; var49 <= var14; ++var49) {
                                  for(var50 = var11; var50 <= var69; ++var50) {
-                                    class164.field2160[var49][var50][var9] &= ~var5;
+                                    class164.field2160[var49][var50][id] &= ~var5;
                                  }
                               }
                            }
                         }
 
-                        if((class164.field2160[var48][var10][var9] & var6) != 0) {
+                        if((class164.field2160[var48][var10][id] & var6) != 0) {
                            var11 = var10;
                            var69 = var10;
-                           var13 = var9;
+                           var13 = id;
 
-                           for(var14 = var9; var13 > 0 && (class164.field2160[var48][var10][var13 - 1] & var6) != 0; --var13) {
+                           for(var14 = id; var13 > 0 && (class164.field2160[var48][var10][var13 - 1] & var6) != 0; --var13) {
                               ;
                            }
 
@@ -960,8 +960,8 @@ public class ChatLineBuffer {
                               Region.method1881(var68, 4, var11 * 128, var69 * 128 + 128, var13 * 128, var14 * 128 + 128, var15, var15);
 
                               for(var16 = var11; var16 <= var69; ++var16) {
-                                 for(var17 = var13; var17 <= var14; ++var17) {
-                                    class164.field2160[var48][var16][var17] &= ~var6;
+                                 for(type = var13; type <= var14; ++type) {
+                                    class164.field2160[var48][var16][type] &= ~var6;
                                  }
                               }
                            }
@@ -1007,11 +1007,11 @@ public class ChatLineBuffer {
                var68 = (class180.field2680 - 6) / 8;
                var48 = (class180.field2680 + 6) / 8;
 
-               for(var9 = var5 - 1; var9 <= var6 + 1; ++var9) {
+               for(id = var5 - 1; id <= var6 + 1; ++id) {
                   for(var10 = var68 - 1; var10 <= var48 + 1; ++var10) {
-                     if(var9 < var5 || var9 > var6 || var10 < var68 || var10 > var48) {
-                        FileOnDisk.indexMaps.method3335("m" + var9 + "_" + var10);
-                        FileOnDisk.indexMaps.method3335("l" + var9 + "_" + var10);
+                     if(id < var5 || id > var6 || var10 < var68 || var10 > var48) {
+                        FileOnDisk.indexMaps.method3335("m" + id + "_" + var10);
+                        FileOnDisk.indexMaps.method3335("l" + id + "_" + var10);
                      }
                   }
                }

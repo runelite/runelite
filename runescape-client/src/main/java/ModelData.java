@@ -1095,8 +1095,8 @@ public class ModelData extends Renderable {
       field1244 = new int[10000];
       field1251 = new int[10000];
       field1252 = 0;
-      field1211 = class84.field1433;
-      field1254 = class84.field1441;
+      field1211 = class84.SINE;
+      field1254 = class84.COSINE;
    }
 
    @ObfuscatedName("az")
