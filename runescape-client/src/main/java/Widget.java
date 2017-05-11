@@ -495,13 +495,13 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 1236134309
    )
-   @Export("item")
+   @Export("itemId")
    public int item;
    @ObfuscatedName("er")
    @ObfuscatedGetter(
       intValue = -2058219481
    )
-   @Export("stackSize")
+   @Export("itemQuantity")
    public int stackSize;
    @ObfuscatedName("ex")
    @ObfuscatedGetter(

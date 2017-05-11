@@ -152,6 +152,9 @@ public class Widget
 		{
 			x += cur.getRelativeX();
 			y += cur.getRelativeY();
+
+			x -= cur.widget.getScrollX();
+			y -= cur.widget.getScrollY();
 		}
 
 		// cur is now the root
@@ -244,6 +247,38 @@ public class Widget
 		return items;
 	}
 
+	public WidgetItem getWidgetItem(int index)
+	{
+		int[] itemIds = widget.getItemIds();
+		int[] itemQuantities = widget.getItemQuantities();
+
+		if (itemIds == null || itemQuantities == null)
+		{
+			return null;
+		}
+
+		int columns = getWidth(); // the number of item slot columns is stored here
+		int paddingX = getPaddingX();
+		int paddingY = getPaddingY();
+		int itemId = itemIds[index];
+		int itemQuantity = itemQuantities[index];
+
+		Point widgetCanvasLocation = getCanvasLocation();
+
+		if (itemId <= 0 || itemQuantity <= 0 || columns <= 0)
+		{
+			return null;
+		}
+
+		int row = index / columns;
+		int col = index % columns;
+		int itemX = widgetCanvasLocation.getX() + ((ITEM_SLOT_SIZE + paddingX) * col);
+		int itemY = widgetCanvasLocation.getY() + ((ITEM_SLOT_SIZE + paddingY) * row);
+
+		Rectangle bounds = new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
+		return new WidgetItem(itemId - 1, itemQuantity, index, bounds);
+	}
+
 	private int getPaddingX()
 	{
 		return widget.getPaddingX();
@@ -252,5 +287,54 @@ public class Widget
 	private int getPaddingY()
 	{
 		return widget.getPaddingY();
+	}
+
+	public Widget[] getChildren()
+	{
+		net.runelite.rs.api.Widget[] widgets = widget.getChildren();
+
+		if (widgets == null)
+		{
+			return null;
+		}
+
+		Widget[] children = new Widget[widgets.length];
+
+		int idx = -1;
+		for (net.runelite.rs.api.Widget child : widgets)
+		{
+			idx++;
+
+			if (child == null)
+			{
+				continue;
+			}
+
+			children[idx] = new Widget(client, child);
+		}
+
+		return children;
+	}
+
+	public Widget getChild(int index)
+	{
+		net.runelite.rs.api.Widget[] widgets = widget.getChildren();
+
+		if (widgets == null || widgets[index] == null)
+		{
+			return null;
+		}
+
+		return new Widget(client, widgets[index]);
+	}
+
+	public int getItemId()
+	{
+		return widget.getItemId();
+	}
+
+	public int getItemQuantity()
+	{
+		return widget.getItemQuantity();
 	}
 }
