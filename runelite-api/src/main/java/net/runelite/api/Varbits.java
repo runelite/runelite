@@ -37,7 +37,20 @@ public enum Varbits
 	/**
 	 * Prayers
 	 */
-	PRAYER_THICK_SKIN(4104, 83, 0, 0);
+	PRAYER_THICK_SKIN(4104, 83, 0, 0),
+
+	/**
+	 * Special Attack
+	 */
+	SPECIAL_ATTACK_PERCENT(300, 31, 0),
+	SPECIAL_ATTACK_ENABLED(301, 0, 0),
+
+	/**
+	 * Poison
+	 * Venom - 1,000,000 (6dmg/hit) - 1,000,008 (20 dmg/hit)
+	 */
+	POISON(102, 0, 5),
+	VENOM(102, 6, 9);
 
 	/**
 	 * varbit id
@@ -50,6 +63,11 @@ public enum Varbits
 	private final int index;
 	private final int leastSignificantBit;
 	private final int mostSignificantBit;
+
+	private Varbits(int index, int leastSignificantBit, int mostSignificantBit)
+	{
+		this(-1, index, leastSignificantBit, mostSignificantBit);
+	}
 
 	private Varbits(int id, int index, int leastSignificantBit, int mostSignificantBit)
 	{
