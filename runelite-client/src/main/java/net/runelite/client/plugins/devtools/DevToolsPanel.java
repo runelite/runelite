@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.devtools;
 
 import java.awt.*;
+import java.util.Collection;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -32,7 +33,10 @@ import javax.swing.tree.DefaultTreeModel;
 
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
+import static net.runelite.client.plugins.devtools.DevToolsOverlay.ITEM_EMPTY;
+import static net.runelite.client.plugins.devtools.DevToolsOverlay.ITEM_FILLED;
 import net.runelite.client.ui.PluginPanel;
 
 public class DevToolsPanel extends PluginPanel
@@ -174,6 +178,7 @@ public class DevToolsPanel extends PluginPanel
 			Object[] path = e.getPath().getPath();
 			plugin.setWidgetParent(Integer.parseInt(path[1].toString()));
 			plugin.setWidgetChild((path.length > 2) ? Integer.parseInt(path[2].toString()) : -1);
+			plugin.setWidgetItem((path.length > 3) ? Integer.parseInt(path[3].toString()) : -1);
 			setWidgetInfo();
 		});
 
@@ -266,6 +271,7 @@ public class DevToolsPanel extends PluginPanel
 
 		plugin.setWidgetParent(-1);
 		plugin.setWidgetChild(-1);
+		plugin.setWidgetItem(-1);
 
 		int idx = -1;
 
@@ -286,14 +292,50 @@ public class DevToolsPanel extends PluginPanel
 			DefaultMutableTreeNode parent = new DefaultMutableTreeNode(idx);
 			root.add(parent);
 
-			for (Widget child : children)
+			for (Widget widgetChild : children)
 			{
-				if (child == null || child.isHidden())
+				if (widgetChild == null || widgetChild.isHidden())
 				{
 					continue;
 				}
 
-				parent.add(new DefaultMutableTreeNode(child.getId() & 0xFFFF));
+				DefaultMutableTreeNode child = new DefaultMutableTreeNode(widgetChild.getId() & 0xFFFF);
+				parent.add(child);
+
+				Widget[] childComponents = widgetChild.getChildren();
+				if (childComponents != null)
+				{
+					int index = -1;
+					for (Widget component : childComponents)
+					{
+						index++;
+						if (component == null || component.isHidden()
+								|| component.getItemId() == ITEM_EMPTY
+								|| component.getItemId() == ITEM_FILLED)
+						{
+							continue;
+						}
+
+						child.add(new DefaultMutableTreeNode(index));
+					}
+				}
+
+				Collection<WidgetItem> items = widgetChild.getWidgetItems();
+				if (items == null)
+				{
+					continue;
+				}
+
+				for (WidgetItem item : items)
+				{
+
+					if (item == null)
+					{
+						continue;
+					}
+
+					child.add(new DefaultMutableTreeNode(item.getIndex()));
+				}
 			}
 		}
 

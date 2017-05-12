@@ -152,6 +152,9 @@ public class Widget
 		{
 			x += cur.getRelativeX();
 			y += cur.getRelativeY();
+
+			x -= cur.widget.getScrollX();
+			y -= cur.widget.getScrollY();
 		}
 
 		// cur is now the root
@@ -198,6 +201,30 @@ public class Widget
 	public Collection<WidgetItem> getWidgetItems()
 	{
 		int[] itemIds = widget.getItemIds();
+
+		if (itemIds == null)
+		{
+			return null;
+		}
+
+		List<WidgetItem> items = new ArrayList<>(itemIds.length);
+
+		for (int i = 0; i < itemIds.length; ++i)
+		{
+			WidgetItem item = getWidgetItem(i);
+
+			if (item != null)
+			{
+				items.add(item);
+			}
+		}
+
+		return items;
+	}
+
+	public WidgetItem getWidgetItem(int index)
+	{
+		int[] itemIds = widget.getItemIds();
 		int[] itemQuantities = widget.getItemQuantities();
 
 		if (itemIds == null || itemQuantities == null)
@@ -205,43 +232,26 @@ public class Widget
 			return null;
 		}
 
-		List<WidgetItem> items = new ArrayList<>(itemIds.length);
-
-		assert itemIds.length == itemQuantities.length;
-
 		int columns = getWidth(); // the number of item slot columns is stored here
 		int paddingX = getPaddingX();
 		int paddingY = getPaddingY();
+		int itemId = itemIds[index];
+		int itemQuantity = itemQuantities[index];
 
 		Point widgetCanvasLocation = getCanvasLocation();
 
-		for (int i = 0; i < itemIds.length; ++i)
+		if (itemId <= 0 || itemQuantity <= 0 || columns <= 0)
 		{
-			int itemId = itemIds[i];
-			int itemQuantity = itemQuantities[i];
-
-			if (itemId <= 0 || itemQuantity <= 0)
-			{
-				continue;
-			}
-
-			Rectangle bounds = null;
-
-			if (columns > 0)
-			{
-				int row = i / columns;
-				int col = i % columns;
-				int itemX = widgetCanvasLocation.getX() + ((ITEM_SLOT_SIZE + paddingX) * col);
-				int itemY = widgetCanvasLocation.getY() + ((ITEM_SLOT_SIZE + paddingY) * row);
-
-				bounds = new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
-			}
-
-			WidgetItem item = new WidgetItem(itemId - 1, itemQuantity, i, bounds);
-			items.add(item);
+			return null;
 		}
 
-		return items;
+		int row = index / columns;
+		int col = index % columns;
+		int itemX = widgetCanvasLocation.getX() + ((ITEM_SLOT_SIZE + paddingX) * col);
+		int itemY = widgetCanvasLocation.getY() + ((ITEM_SLOT_SIZE + paddingY) * row);
+
+		Rectangle bounds = new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
+		return new WidgetItem(itemId - 1, itemQuantity, index, bounds);
 	}
 
 	private int getPaddingX()
@@ -252,5 +262,46 @@ public class Widget
 	private int getPaddingY()
 	{
 		return widget.getPaddingY();
+	}
+
+	public Widget[] getChildren()
+	{
+		net.runelite.rs.api.Widget[] widgets = widget.getChildren();
+
+		if (widgets == null)
+		{
+			return null;
+		}
+
+		Widget[] children = new Widget[widgets.length];
+
+		for (int i = 0; i < widgets.length; ++i)
+		{
+			children[i] = getChild(i);
+		}
+
+		return children;
+	}
+
+	public Widget getChild(int index)
+	{
+		net.runelite.rs.api.Widget[] widgets = widget.getChildren();
+
+		if (widgets == null || widgets[index] == null)
+		{
+			return null;
+		}
+
+		return new Widget(client, widgets[index]);
+	}
+
+	public int getItemId()
+	{
+		return widget.getItemId();
+	}
+
+	public int getItemQuantity()
+	{
+		return widget.getItemQuantity();
 	}
 }
