@@ -43,7 +43,9 @@ public enum WidgetInfo
 
 	CLAN_CHAT_TITLE(WidgetID.CLAN_CHAT_GROUP_ID, WidgetID.ClanChat.TITLE),
 	CLAN_CHAT_NAME(WidgetID.CLAN_CHAT_GROUP_ID, WidgetID.ClanChat.NAME),
-	CLAN_CHAT_OWNER(WidgetID.CLAN_CHAT_GROUP_ID, WidgetID.ClanChat.OWNER);
+	CLAN_CHAT_OWNER(WidgetID.CLAN_CHAT_GROUP_ID, WidgetID.ClanChat.OWNER),
+
+	BANK_ITEM_CONTAINER(WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER);
 
 	private final int groupId;
 	private final int childId;

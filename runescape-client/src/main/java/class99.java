@@ -188,7 +188,7 @@ public class class99 extends class109 {
          var8 = class0.method13(var1, var0);
          if(var8 != null) {
             class85.method1713();
-            class112.method2109(var1, var0, CombatInfo2.method3540(class103.method1988(var8)), var8.item);
+            class112.method2109(var1, var0, CombatInfo2.method3540(class103.method1988(var8)), var8.itemId);
             Client.field351 = 0;
             String var19;
             if(CombatInfo2.method3540(class103.method1988(var8)) == 0) {
@@ -253,7 +253,7 @@ public class class99 extends class109 {
          if(var2 == 57 || var2 == 1007) {
             var8 = class0.method13(var1, var0);
             if(var8 != null) {
-               var15 = var8.item;
+               var15 = var8.itemId;
                Widget var10 = class0.method13(var1, var0);
                if(var10 != null) {
                   if(var10.field2307 != null) {
@@ -428,7 +428,7 @@ public class class99 extends class109 {
             var8 = class0.method13(var1, var0);
             if(var8 != null) {
                Client.secretPacketBuffer1.putOpcode(44);
-               Client.secretPacketBuffer1.method2375(var8.item);
+               Client.secretPacketBuffer1.method2375(var8.itemId);
                Client.secretPacketBuffer1.method2427(var1);
                Client.secretPacketBuffer1.putShort(Client.field537);
                Client.secretPacketBuffer1.putShort(Client.field441);

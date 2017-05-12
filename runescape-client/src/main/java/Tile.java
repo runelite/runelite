@@ -1153,8 +1153,8 @@ public final class Tile extends Node {
                            var28.field2244 = var101.zoom2d * 100 / var4;
                            class124.method2350(var28);
                         } else {
-                           var28.item = var21;
-                           var28.stackSize = var4;
+                           var28.itemId = var21;
+                           var28.itemQuantity = var4;
                            var101 = class47.getItemDefinition(var21);
                            var28.rotationX = var101.xan2d;
                            var28.rotationZ = var101.yan2d;
@@ -2326,8 +2326,8 @@ public final class Tile extends Node {
                                                          if(Client.field462 != null && class105.method2027(Client.field458) != null) {
                                                             Client.secretPacketBuffer1.putOpcode(43);
                                                             Client.secretPacketBuffer1.method2375(Client.field462.index);
-                                                            Client.secretPacketBuffer1.putShort(Client.field458.item);
-                                                            Client.secretPacketBuffer1.method2416(Client.field462.item);
+                                                            Client.secretPacketBuffer1.putShort(Client.field458.itemId);
+                                                            Client.secretPacketBuffer1.method2416(Client.field462.itemId);
                                                             Client.secretPacketBuffer1.method2411(Client.field458.id);
                                                             Client.secretPacketBuffer1.method2411(Client.field462.id);
                                                             Client.secretPacketBuffer1.putShort(Client.field458.index);

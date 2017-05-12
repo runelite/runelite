@@ -26,10 +26,9 @@ package net.runelite.api.widgets;
 
 class WidgetID
 {
+	static final int BANK_GROUP_ID = 12;
 	static final int INVENTORY_GROUP_ID = 149;
-
 	static final int PESTRCONTROL_GROUP_ID = 408;
-
 	static final int CLAN_CHAT_GROUP_ID = 7;
 
 	static class PestControl
@@ -55,5 +54,10 @@ class WidgetID
 		static final int TITLE = 1;
 		static final int NAME = 3;
 		static final int OWNER = 5;
+	}
+
+	public static class Bank
+	{
+		static final int ITEM_CONTAINER = 12;
 	}
 }

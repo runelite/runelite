@@ -259,8 +259,8 @@ public class XClanMember extends Node {
          class32.intStackSize -= 2;
          int var4 = class32.intStack[class32.intStackSize];
          int var5 = class32.intStack[class32.intStackSize + 1];
-         var3.item = var4;
-         var3.stackSize = var5;
+         var3.itemId = var4;
+         var3.itemQuantity = var5;
          ItemComposition var6 = class47.getItemDefinition(var4);
          var3.rotationX = var6.xan2d;
          var3.rotationZ = var6.yan2d;

@@ -410,15 +410,15 @@ public class class164 extends class68 {
                                     }
                                  }
 
-                                 if(var10.hasScript && var10.item != -1) {
-                                    ItemComposition var52 = class47.getItemDefinition(var10.item);
+                                 if(var10.hasScript && var10.itemId != -1) {
+                                    ItemComposition var52 = class47.getItemDefinition(var10.itemId);
                                     var46 = var52.name;
                                     if(var46 == null) {
                                        var46 = "null";
                                     }
 
-                                    if((var52.isStackable == 1 || var10.stackSize != 1) && var10.stackSize != -1) {
-                                       var46 = class213.method4037(16748608) + var46 + "</col>" + " " + 'x' + XItemContainer.method168(var10.stackSize);
+                                    if((var52.isStackable == 1 || var10.itemQuantity != 1) && var10.itemQuantity != -1) {
+                                       var46 = class213.method4037(16748608) + var46 + "</col>" + " " + 'x' + XItemContainer.method168(var10.itemQuantity);
                                     }
                                  }
 
@@ -444,8 +444,8 @@ public class class164 extends class68 {
                                     class124.method2350(var10);
                                  }
                               } else {
-                                 if(var10.item != -1) {
-                                    var51 = class130.createSprite(var10.item, var10.stackSize, var10.borderThickness, var10.sprite2, var10.field2265, false);
+                                 if(var10.itemId != -1) {
+                                    var51 = class130.createSprite(var10.itemId, var10.itemQuantity, var10.borderThickness, var10.sprite2, var10.field2265, false);
                                  } else {
                                     var51 = var10.method3193(false);
                                  }
@@ -501,10 +501,10 @@ public class class164 extends class68 {
 
                                  Model var43 = null;
                                  var22 = 0;
-                                 if(var10.item != -1) {
-                                    var23 = class47.getItemDefinition(var10.item);
+                                 if(var10.itemId != -1) {
+                                    var23 = class47.getItemDefinition(var10.itemId);
                                     if(var23 != null) {
-                                       var23 = var23.method3744(var10.stackSize);
+                                       var23 = var23.method3744(var10.itemQuantity);
                                        var43 = var23.getModel(1);
                                        if(var43 != null) {
                                           var43.method1574();

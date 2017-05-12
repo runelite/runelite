@@ -495,14 +495,14 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 1236134309
    )
-   @Export("item")
-   public int item;
+   @Export("itemId")
+   public int itemId;
    @ObfuscatedName("er")
    @ObfuscatedGetter(
       intValue = -2058219481
    )
-   @Export("stackSize")
-   public int stackSize;
+   @Export("itemQuantity")
+   public int itemQuantity;
    @ObfuscatedName("ex")
    @ObfuscatedGetter(
       intValue = -1056431989
@@ -1435,8 +1435,8 @@ public class Widget extends Node {
       this.field2322 = -1;
       this.field2213 = "";
       this.tooltip = "Ok";
-      this.item = -1;
-      this.stackSize = 0;
+      this.itemId = -1;
+      this.itemQuantity = 0;
       this.field2329 = 0;
       this.field2214 = 0;
       this.field2332 = false;
