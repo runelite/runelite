@@ -24,7 +24,7 @@
  */
 package net.runelite.api.widgets;
 
-public class WidgetID
+class WidgetID
 {
 	static final int BANK_GROUP_ID = 12;
 	static final int INVENTORY_GROUP_ID = 149;

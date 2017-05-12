@@ -50,7 +50,7 @@ public enum WidgetInfo
 	private final int groupId;
 	private final int childId;
 
-	WidgetInfo(int groupId, int childId)
+	private WidgetInfo(int groupId, int childId)
 	{
 		this.groupId = groupId;
 		this.childId = childId;
