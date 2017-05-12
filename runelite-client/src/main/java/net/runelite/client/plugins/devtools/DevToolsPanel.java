@@ -33,10 +33,10 @@ import javax.swing.tree.DefaultTreeModel;
 
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
+import static net.runelite.client.plugins.devtools.DevToolsOverlay.ITEM_EMPTY;
+import static net.runelite.client.plugins.devtools.DevToolsOverlay.ITEM_FILLED;
 import net.runelite.client.ui.PluginPanel;
 
 public class DevToolsPanel extends PluginPanel
@@ -310,8 +310,8 @@ public class DevToolsPanel extends PluginPanel
 					{
 						index++;
 						if (component == null || component.isHidden()
-								|| component.getItemId() == WidgetID.Bank.ITEM_EMPTY
-								|| component.getItemId() == WidgetID.Bank.ITEM_FILLED)
+								|| component.getItemId() == ITEM_EMPTY
+								|| component.getItemId() == ITEM_FILLED)
 						{
 							continue;
 						}

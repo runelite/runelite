@@ -61,6 +61,9 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class DevToolsOverlay extends Overlay
 {
+	public static final int ITEM_EMPTY = 6512;
+	public static final int ITEM_FILLED = 20594;
+
 	private static final Color RED = new Color(221, 44, 0);
 	private static final Color GREEN = new Color(0, 200, 83);
 	private static final Color ORANGE = new Color(255, 109, 0);
@@ -437,8 +440,8 @@ public class DevToolsOverlay extends Overlay
 
 		Widget childComponent = widgetChild.getChild(itemIndex);
 		if (childComponent != null && !childComponent.isHidden()
-				&& childComponent.getItemId() != WidgetID.Bank.ITEM_EMPTY
-				&& childComponent.getItemId() != WidgetID.Bank.ITEM_FILLED)
+			&& childComponent.getItemId() != ITEM_EMPTY
+			&& childComponent.getItemId() != ITEM_FILLED)
 		{
 			Rectangle componentBounds = childComponent.getBounds();
 

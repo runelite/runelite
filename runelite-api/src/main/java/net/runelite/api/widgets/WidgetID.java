@@ -59,7 +59,5 @@ public class WidgetID
 	public static class Bank
 	{
 		static final int ITEM_CONTAINER = 12;
-		public static final int ITEM_EMPTY = 6512;
-		public static final int ITEM_FILLED = 20594;
 	}
 }
