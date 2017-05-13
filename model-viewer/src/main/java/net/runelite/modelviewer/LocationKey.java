@@ -22,42 +22,59 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.widgets;
+package net.runelite.modelviewer;
 
-class WidgetID
+public class LocationKey
 {
-	static final int BANK_GROUP_ID = 12;
-	static final int INVENTORY_GROUP_ID = 149;
-	static final int PESTRCONTROL_GROUP_ID = 408;
-	static final int CLAN_CHAT_GROUP_ID = 7;
+	private final int id;
+	private final int type;
+	private final int orientation;
 
-	static class PestControl
+	public LocationKey(int id, int type, int orientation)
 	{
-		static final int PURPLE_SHIELD = 18;
-		static final int BLUE_SHIELD = 20;
-		static final int YELLOW_SHIELD = 22;
-		static final int RED_SHIELD = 24;
-
-		static final int PURPLE_HEALTH = 14;
-		static final int BLUE_HEALTH = 15;
-		static final int YELLOW_HEALTH = 16;
-		static final int RED_HEALTH = 17;
-
-		static final int PURPLE_ICON = 10;
-		static final int BLUE_ICON = 11;
-		static final int YELLOW_ICON = 12;
-		static final int RED_ICON = 13;
+		this.id = id;
+		this.type = type;
+		this.orientation = orientation;
 	}
 
-	static class ClanChat
+	@Override
+	public int hashCode()
 	{
-		static final int TITLE = 1;
-		static final int NAME = 3;
-		static final int OWNER = 5;
+		int hash = 5;
+		hash = 97 * hash + this.id;
+		hash = 97 * hash + this.type;
+		hash = 97 * hash + this.orientation;
+		return hash;
 	}
 
-	public static class Bank
+	@Override
+	public boolean equals(Object obj)
 	{
-		static final int ITEM_CONTAINER = 12;
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final LocationKey other = (LocationKey) obj;
+		if (this.id != other.id)
+		{
+			return false;
+		}
+		if (this.type != other.type)
+		{
+			return false;
+		}
+		if (this.orientation != other.orientation)
+		{
+			return false;
+		}
+		return true;
 	}
 }

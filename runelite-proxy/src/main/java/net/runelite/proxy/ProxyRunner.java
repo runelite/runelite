@@ -43,16 +43,16 @@ public class ProxyRunner extends Thread
 	private final Socket client;
 	private final Socket server;
 
-	//private RLISAACCipher clientInCipher;
+	private RLISAACCipher clientInCipher;
 	private RLISAACCipher clientOutCipher;
 
 	private RLISAACCipher serverInCipher;
-	//private RLISAACCipher serverOutCipher;
+	private RLISAACCipher serverOutCipher;
 
 	public ProxyRunner(Socket client) throws IOException
 	{
 		this.client = client;
-		this.server = new Socket("localhost", 8080);
+		this.server = new Socket("oldschool84.runescape.com", 43594);
 	}
 
 	@Override
@@ -76,21 +76,18 @@ public class ProxyRunner extends Thread
 		DataInputStream serverIn = new DataInputStream(server.getInputStream());
 		DataOutputStream serverOut = new DataOutputStream(server.getOutputStream());
 
-		// For the http proxy..
-		serverOut.write("CONNECT oldschool78.runescape.com:43594 HTTP/1.0\r\n\r\n".getBytes());
-		System.out.println(serverIn.readLine());
-		System.out.println(serverIn.readLine());
-
 		int handshakeType = in.read();
 		logger.info("Handshake from client: {}", handshakeType);
 
-		if (handshakeType != 14) // login?
-		{
-			return;
-		}
-
 		// Forward to server
 		serverOut.write(handshakeType);
+
+		if (handshakeType != 14) // 14 = login, 15 = ondemand
+		{
+			new IOCopy("OnDemand C2S", in, serverOut).start();
+			new IOCopy("OnDemand S2C", serverIn, out).start();
+			return;
+		}
 
 		int handshakeResponse = serverIn.read();
 		logger.info("Handshake response from server: {}", handshakeResponse);
@@ -146,10 +143,16 @@ public class ProxyRunner extends Thread
 
 		logger.info("Xtea key is {} {} {} {}", key1, key2, key3, key4);
 
-		//clientInCipher = new RLISAACCipher(keys);
+		clientInCipher = new RLISAACCipher(keys);
+		serverOutCipher = new RLISAACCipher(keys);
+
+		for(int i = 0; i < 4; i++)
+		{
+			keys[i] += 50;
+		}
+
 		clientOutCipher = new RLISAACCipher(keys);
 		serverInCipher = new RLISAACCipher(keys);
-		//serverOutCipher = new RLISAACCipher(keys);
 
 		// Following this is xtea encrypted data
 		int xteaDataLength = length - 4 - encrypedDataLength - 2; // total length - revision - rsa encrypted data - rsa encrypted data length
@@ -181,29 +184,30 @@ public class ProxyRunner extends Thread
 			return;
 		}
 
-		int hasPreferenceValue = serverIn.read();
-		logger.info("Has preference value: {}", hasPreferenceValue);
-		out.write(hasPreferenceValue);
-		assert hasPreferenceValue != 1;
+		int isTrusted = serverIn.read();
+		int trustedValue = serverIn.readInt();
+		logger.info("is trusted value: {}", isTrusted);
+		out.write(isTrusted);
+		out.writeInt(trustedValue);
 
-		int byte1 = serverIn.read();
-		int byte2 = serverIn.read();
-		int interactingIndex = serverIn.readShort() & 0xffff;
-		int byte3 = serverIn.read();
+		int permission = serverIn.read();//0 = player, 1 = player_mod, 2 = jagex_mod
+		int byte2 = serverIn.read();//some boolean, pushed onto intStack in script opcode 3323
+		int interactingIndex = serverIn.readShort() & 0xffff;//index of player in server array
+		int worldType = serverIn.read();//0 = f2p, 1 = p2p, only used for checking friends/ignores list size
 
-		logger.info("B1/B2/interactingIndex/B3: {}/{}/{}/{}", byte1, byte2, interactingIndex, byte3);
+		logger.info("permission/B2/interactingIndex/worldType: {}/{}/{}/{}", permission, byte2, interactingIndex, worldType);
 
-		out.write(byte1);
+		out.write(permission);
 		out.write(byte2);
 		out.writeShort(interactingIndex);
-		out.write(byte3);
+		out.write(worldType);
 
-		int packetOpcode = readOpcode(serverInCipher, serverIn);
+		int staticMapOpcode = readOpcode(serverInCipher, serverIn);
 		int packetLength = serverIn.readShort() & 0xffff;
 
-		logger.info("Packet opcode: {}", packetOpcode);
+		logger.info("staticMap opcode: {}", staticMapOpcode);
 
-		writeOpcode(clientOutCipher, out, packetOpcode);
+		writeOpcode(clientOutCipher, out, staticMapOpcode);
 		out.writeShort(packetLength);
 
 		byte[] packetData = new byte[packetLength];
@@ -211,9 +215,8 @@ public class ProxyRunner extends Thread
 		assert len == packetData.length;
 		out.write(packetData);
 
-		new IOCopy("Client to Server", in, serverOut).start();
-		new IOCopy("Server to Client", serverIn, out).start();
-		//new PacketCopy("Server to Client", serverIn, out, serverInCipher, clientOutCipher).start();
+		new PacketCopy("Game C2S", in, serverOut, clientInCipher, serverOutCipher).start();
+		new PacketCopy("Game S2C", serverIn, out, serverInCipher, clientOutCipher).start();
 	}
 
 	public static int readOpcode(RLISAACCipher cipher, InputStream in) throws IOException

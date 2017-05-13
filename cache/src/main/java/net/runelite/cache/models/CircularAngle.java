@@ -22,42 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.widgets;
+package net.runelite.cache.models;
 
-class WidgetID
+public class CircularAngle
 {
-	static final int BANK_GROUP_ID = 12;
-	static final int INVENTORY_GROUP_ID = 149;
-	static final int PESTRCONTROL_GROUP_ID = 408;
-	static final int CLAN_CHAT_GROUP_ID = 7;
+	private static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
 
-	static class PestControl
+	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
+	public static final int[] COSINE = new int[2048]; // cosine
+
+	static
 	{
-		static final int PURPLE_SHIELD = 18;
-		static final int BLUE_SHIELD = 20;
-		static final int YELLOW_SHIELD = 22;
-		static final int RED_SHIELD = 24;
-
-		static final int PURPLE_HEALTH = 14;
-		static final int BLUE_HEALTH = 15;
-		static final int YELLOW_HEALTH = 16;
-		static final int RED_HEALTH = 17;
-
-		static final int PURPLE_ICON = 10;
-		static final int BLUE_ICON = 11;
-		static final int YELLOW_ICON = 12;
-		static final int RED_ICON = 13;
-	}
-
-	static class ClanChat
-	{
-		static final int TITLE = 1;
-		static final int NAME = 3;
-		static final int OWNER = 5;
-	}
-
-	public static class Bank
-	{
-		static final int ITEM_CONTAINER = 12;
+		for (int i = 0; i < 2048; ++i)
+		{
+			SINE[i] = (int) (65536.0D * Math.sin((double) i * UNIT));
+			COSINE[i] = (int) (65536.0D * Math.cos((double) i * UNIT));
+		}
 	}
 }

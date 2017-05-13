@@ -22,42 +22,70 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.widgets;
+package net.runelite.api;
 
-class WidgetID
+public class Experience
 {
-	static final int BANK_GROUP_ID = 12;
-	static final int INVENTORY_GROUP_ID = 149;
-	static final int PESTRCONTROL_GROUP_ID = 408;
-	static final int CLAN_CHAT_GROUP_ID = 7;
+	/**
+	 * Maximum level under 200m xp
+	 */
+	private static final int MAX_VIRT_LEVEL = 126;
 
-	static class PestControl
+	private static final int[] XP_FOR_LEVEL = new int[MAX_VIRT_LEVEL];
+
+	static
 	{
-		static final int PURPLE_SHIELD = 18;
-		static final int BLUE_SHIELD = 20;
-		static final int YELLOW_SHIELD = 22;
-		static final int RED_SHIELD = 24;
+		int xp = 0;
 
-		static final int PURPLE_HEALTH = 14;
-		static final int BLUE_HEALTH = 15;
-		static final int YELLOW_HEALTH = 16;
-		static final int RED_HEALTH = 17;
+		for (int level = 1; level <= MAX_VIRT_LEVEL; ++level)
+		{
+			int difference = (int) ((double) level + 300.0 * Math.pow(2.0, (double) level / 7.0));
+			xp += difference;
 
-		static final int PURPLE_ICON = 10;
-		static final int BLUE_ICON = 11;
-		static final int YELLOW_ICON = 12;
-		static final int RED_ICON = 13;
+			XP_FOR_LEVEL[level - 1] = xp / 4;
+		}
 	}
 
-	static class ClanChat
+	public static int getXpForLevel(int level)
 	{
-		static final int TITLE = 1;
-		static final int NAME = 3;
-		static final int OWNER = 5;
+		if (level < 2 || level > MAX_VIRT_LEVEL)
+		{
+			throw new IllegalArgumentException();
+		}
+
+		// XP_FOR_LEVEL[0] is XP for level 2
+		return XP_FOR_LEVEL[level - 2];
 	}
 
-	public static class Bank
+	public static int getLevelForXp(int xp)
 	{
-		static final int ITEM_CONTAINER = 12;
+		if (xp < 0)
+		{
+			throw new IllegalArgumentException();
+		}
+
+		int low = 0;
+		int high = XP_FOR_LEVEL.length - 1;
+
+		while (low <= high)
+		{
+			int mid = low + (high - low) / 2;
+			int xpForLevel = XP_FOR_LEVEL[mid];
+
+			if (xp < xpForLevel)
+			{
+				high = mid - 1;
+			}
+			else if (xp > xpForLevel)
+			{
+				low = mid + 1;
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		return high + 2;
 	}
 }

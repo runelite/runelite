@@ -22,42 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.widgets;
+package net.runelite.api;
 
-class WidgetID
+import org.junit.Assert;
+import org.junit.Test;
+
+public class ExperienceTest
 {
-	static final int BANK_GROUP_ID = 12;
-	static final int INVENTORY_GROUP_ID = 149;
-	static final int PESTRCONTROL_GROUP_ID = 408;
-	static final int CLAN_CHAT_GROUP_ID = 7;
+	private static final int XP_FOR_99 = 13_034_431;
 
-	static class PestControl
+	@Test
+	public void testGetXpForLevel()
 	{
-		static final int PURPLE_SHIELD = 18;
-		static final int BLUE_SHIELD = 20;
-		static final int YELLOW_SHIELD = 22;
-		static final int RED_SHIELD = 24;
-
-		static final int PURPLE_HEALTH = 14;
-		static final int BLUE_HEALTH = 15;
-		static final int YELLOW_HEALTH = 16;
-		static final int RED_HEALTH = 17;
-
-		static final int PURPLE_ICON = 10;
-		static final int BLUE_ICON = 11;
-		static final int YELLOW_ICON = 12;
-		static final int RED_ICON = 13;
+		int xp = Experience.getXpForLevel(99);
+		Assert.assertEquals(XP_FOR_99, xp);
 	}
 
-	static class ClanChat
+	@Test
+	public void testGetLevelForXp()
 	{
-		static final int TITLE = 1;
-		static final int NAME = 3;
-		static final int OWNER = 5;
-	}
+		int level;
 
-	public static class Bank
-	{
-		static final int ITEM_CONTAINER = 12;
+		level = Experience.getLevelForXp(XP_FOR_99);
+		Assert.assertEquals(99, level);
+
+		level = Experience.getLevelForXp(XP_FOR_99 + 1);
+		Assert.assertEquals(99, level);
+
+		level = Experience.getLevelForXp(XP_FOR_99 - 1);
+		Assert.assertEquals(98, level);
+
+		level = Experience.getLevelForXp(0);
+		Assert.assertEquals(1, level);
+		
+		level = Experience.getLevelForXp(200_000_000);
+		Assert.assertEquals(126, level);
 	}
 }

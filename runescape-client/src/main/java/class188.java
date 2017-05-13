@@ -81,7 +81,7 @@ public class class188 extends CacheableNode {
             for(var1 = 0; var1 < 9; ++var1) {
                var2 = var1 * 32 + 128 + 15;
                var3 = var2 * 3 + 600;
-               var4 = class84.field1433[var2];
+               var4 = class84.SINE[var2];
                var24[var1] = var4 * var3 >> 16;
             }
 

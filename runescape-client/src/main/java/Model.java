@@ -26,7 +26,8 @@ public class Model extends Renderable {
    @ObfuscatedName("l")
    int field1352;
    @ObfuscatedName("bf")
-   static int[] field1353;
+   //@Export("COSINE2")
+   static int[] COSINE2;
    @ObfuscatedName("bw")
    public static int field1354;
    @ObfuscatedName("w")
@@ -51,7 +52,8 @@ public class Model extends Renderable {
    @ObfuscatedName("k")
    int[] field1364;
    @ObfuscatedName("bv")
-   static int[] field1365;
+   //@Export("SINE2")
+   static int[] SINE2;
    @ObfuscatedName("at")
    static int[] field1366;
    @ObfuscatedName("ac")
@@ -413,24 +415,24 @@ public class Model extends Renderable {
                      int var16;
                      int var17;
                      if(var14 != 0) {
-                        var15 = field1365[var14];
-                        var16 = field1353[var14];
+                        var15 = SINE2[var14];
+                        var16 = COSINE2[var14];
                         var17 = this.verticesY[var11] * var15 + this.verticesX[var11] * var16 >> 16;
                         this.verticesY[var11] = this.verticesY[var11] * var16 - this.verticesX[var11] * var15 >> 16;
                         this.verticesX[var11] = var17;
                      }
 
                      if(var12 != 0) {
-                        var15 = field1365[var12];
-                        var16 = field1353[var12];
+                        var15 = SINE2[var12];
+                        var16 = COSINE2[var12];
                         var17 = this.verticesY[var11] * var16 - this.verticesZ[var11] * var15 >> 16;
                         this.verticesZ[var11] = this.verticesY[var11] * var15 + this.verticesZ[var11] * var16 >> 16;
                         this.verticesY[var11] = var17;
                      }
 
                      if(var13 != 0) {
-                        var15 = field1365[var13];
-                        var16 = field1353[var13];
+                        var15 = SINE2[var13];
+                        var16 = COSINE2[var13];
                         var17 = this.verticesZ[var11] * var15 + this.verticesX[var11] * var16 >> 16;
                         this.verticesZ[var11] = this.verticesZ[var11] * var16 - this.verticesX[var11] * var15 >> 16;
                         this.verticesX[var11] = var17;
@@ -503,8 +505,8 @@ public class Model extends Renderable {
 
    @ObfuscatedName("f")
    public void method1581(int var1) {
-      int var2 = field1365[var1];
-      int var3 = field1353[var1];
+      int var2 = SINE2[var1];
+      int var3 = COSINE2[var1];
 
       for(int var4 = 0; var4 < this.field1400; ++var4) {
          int var5 = this.verticesY[var4] * var3 - this.verticesZ[var4] * var2 >> 16;
@@ -546,14 +548,14 @@ public class Model extends Renderable {
 
       int var8 = class84.field1427;
       int var9 = class84.field1420;
-      int var10000 = field1365[var1];
-      var10000 = field1353[var1];
-      int var12 = field1365[var2];
-      int var13 = field1353[var2];
-      int var14 = field1365[var3];
-      int var15 = field1353[var3];
-      int var16 = field1365[var4];
-      int var17 = field1353[var4];
+      int var10000 = SINE2[var1];
+      var10000 = COSINE2[var1];
+      int var12 = SINE2[var2];
+      int var13 = COSINE2[var2];
+      int var14 = SINE2[var3];
+      int var15 = COSINE2[var3];
+      int var16 = SINE2[var4];
+      int var17 = COSINE2[var4];
       int var18 = var6 * var16 + var7 * var17 >> 16;
 
       for(int var19 = 0; var19 < this.field1400; ++var19) {
@@ -597,7 +599,7 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("ct")
-   void vmethod1902(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
+   void vmethod1902(int orientation, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
       field1371[0] = -1;
       if(this.field1380 != 1) {
          this.method1574();
@@ -631,7 +633,7 @@ public class Model extends Renderable {
                      boolean var26 = false;
                      int var27;
                      int var28;
-                     int var29;
+                     int sin;
                      if(var9 > 0 && field1399) {
                         var27 = var11 - var12;
                         if(var27 <= 50) {
@@ -655,8 +657,8 @@ public class Model extends Renderable {
                         }
 
                         var28 = field1354 - class84.field1427;
-                        var29 = field1401 - class84.field1420;
-                        if(var28 > var15 && var28 < var16 && var29 > var21 && var29 < var19) {
+                        sin = field1401 - class84.field1420;
+                        if(var28 > var15 && var28 < var16 && sin > var21 && sin < var19) {
                            if(this.field1370) {
                               field1403[field1402++] = var9;
                            } else {
@@ -667,45 +669,45 @@ public class Model extends Renderable {
 
                      var27 = class84.field1427;
                      var28 = class84.field1420;
-                     var29 = 0;
-                     int var30 = 0;
-                     if(var1 != 0) {
-                        var29 = field1365[var1];
-                        var30 = field1353[var1];
+                     sin = 0;
+                     int cos = 0;
+                     if(orientation != 0) {
+                        sin = SINE2[orientation];
+                        cos = COSINE2[orientation];
                      }
 
                      for(int var31 = 0; var31 < this.field1400; ++var31) {
-                        int var32 = this.verticesX[var31];
-                        int var33 = this.verticesY[var31];
-                        int var34 = this.verticesZ[var31];
+                        int vertexX = this.verticesX[var31];
+                        int vertexY = this.verticesY[var31];
+                        int vertexZ = this.verticesZ[var31];
                         int var35;
-                        if(var1 != 0) {
-                           var35 = var34 * var29 + var32 * var30 >> 16;
-                           var34 = var34 * var30 - var32 * var29 >> 16;
-                           var32 = var35;
+                        if(orientation != 0) {
+                           var35 = vertexZ * sin + vertexX * cos >> 16;
+                           vertexZ = vertexZ * cos - vertexX * sin >> 16;
+                           vertexX = var35;
                         }
 
-                        var32 += var6;
-                        var33 += var7;
-                        var34 += var8;
-                        var35 = var34 * var4 + var32 * var5 >> 16;
-                        var34 = var34 * var5 - var32 * var4 >> 16;
-                        var32 = var35;
-                        var35 = var33 * var3 - var34 * var2 >> 16;
-                        var34 = var33 * var2 + var34 * var3 >> 16;
-                        field1381[var31] = var34 - var11;
-                        if(var34 >= 50) {
-                           field1379[var31] = var27 + var32 * class84.field1426 / var34;
-                           field1386[var31] = var28 + var35 * class84.field1426 / var34;
+                        vertexX += var6;
+                        vertexY += var7;
+                        vertexZ += var8;
+                        var35 = vertexZ * var4 + vertexX * var5 >> 16;
+                        vertexZ = vertexZ * var5 - vertexX * var4 >> 16;
+                        vertexX = var35;
+                        var35 = vertexY * var3 - vertexZ * var2 >> 16;
+                        vertexZ = vertexY * var2 + vertexZ * var3 >> 16;
+                        field1381[var31] = vertexZ - var11;
+                        if(vertexZ >= 50) {
+                           field1379[var31] = var27 + vertexX * class84.field1426 / vertexZ;
+                           field1386[var31] = var28 + var35 * class84.field1426 / vertexZ;
                         } else {
                            field1379[var31] = -5000;
                            var23 = true;
                         }
 
                         if(var25) {
-                           field1382[var31] = var32;
+                           field1382[var31] = vertexX;
                            field1344[var31] = var35;
-                           field1384[var31] = var34;
+                           field1384[var31] = vertexZ;
                         }
                      }
 
@@ -731,14 +733,14 @@ public class Model extends Renderable {
 
       int var9 = class84.field1427;
       int var10 = class84.field1420;
-      int var10000 = field1365[var1];
-      var10000 = field1353[var1];
-      int var13 = field1365[var2];
-      int var14 = field1353[var2];
-      int var15 = field1365[var3];
-      int var16 = field1353[var3];
-      int var17 = field1365[var4];
-      int var18 = field1353[var4];
+      int var10000 = SINE2[var1];
+      var10000 = COSINE2[var1];
+      int var13 = SINE2[var2];
+      int var14 = COSINE2[var2];
+      int var15 = SINE2[var3];
+      int var16 = COSINE2[var3];
+      int var17 = SINE2[var4];
+      int var18 = COSINE2[var4];
       int var19 = var6 * var17 + var7 * var18 >> 16;
 
       for(int var20 = 0; var20 < this.field1400; ++var20) {
@@ -1146,8 +1148,8 @@ public class Model extends Renderable {
       field1401 = 0;
       field1402 = 0;
       field1403 = new int[1000];
-      field1365 = class84.field1433;
-      field1353 = class84.field1441;
+      SINE2 = class84.SINE;
+      COSINE2 = class84.COSINE;
       field1406 = class84.colorPalette;
       field1407 = class84.field1439;
    }

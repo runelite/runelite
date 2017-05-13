@@ -30,8 +30,8 @@ public class class39 {
          int var6 = Client.mapAngle + Client.mapScale & 2047;
          int var7 = var2 * var2 + var3 * var3;
          if(var7 <= 6400) {
-            int var8 = class84.field1433[var6];
-            int var9 = class84.field1441[var6];
+            int var8 = class84.SINE[var6];
+            int var9 = class84.COSINE[var6];
             var8 = var8 * 256 / (Client.mapScaleDelta + 256);
             var9 = var9 * 256 / (Client.mapScaleDelta + 256);
             int var10 = var8 * var3 + var2 * var9 >> 16;

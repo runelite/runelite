@@ -34,7 +34,8 @@ public class class84 extends Rasterizer2D {
    @ObfuscatedName("e")
    static int field1432;
    @ObfuscatedName("o")
-   public static int[] field1433;
+   @Export("SINE")
+   public static int[] SINE;
    @ObfuscatedName("i")
    static int field1434;
    @ObfuscatedName("a")
@@ -51,7 +52,8 @@ public class class84 extends Rasterizer2D {
    @Export("rasterGouraudLowRes")
    public static boolean rasterGouraudLowRes;
    @ObfuscatedName("m")
-   public static int[] field1441;
+   @Export("COSINE")
+   public static int[] COSINE;
 
    @ObfuscatedName("d")
    public static final void method1649() {
@@ -3358,8 +3360,8 @@ public class class84 extends Rasterizer2D {
       colorPalette = new int[65536];
       field1431 = new int[512];
       field1439 = new int[2048];
-      field1433 = new int[2048];
-      field1441 = new int[2048];
+      SINE = new int[2048];
+      COSINE = new int[2048];
 
       int var0;
       for(var0 = 1; var0 < 512; ++var0) {
@@ -3371,8 +3373,8 @@ public class class84 extends Rasterizer2D {
       }
 
       for(var0 = 0; var0 < 2048; ++var0) {
-         field1433[var0] = (int)(65536.0D * Math.sin((double)var0 * 0.0030679615D));
-         field1441[var0] = (int)(65536.0D * Math.cos((double)var0 * 0.0030679615D));
+         SINE[var0] = (int)(65536.0D * Math.sin((double)var0 * 0.0030679615D));
+         COSINE[var0] = (int)(65536.0D * Math.cos((double)var0 * 0.0030679615D));
       }
 
    }

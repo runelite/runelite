@@ -204,8 +204,8 @@ public class class130 {
             var16 = (int)((double)var16 * 1.04D);
          }
 
-         int var17 = var16 * class84.field1433[var9.xan2d] >> 16;
-         int var18 = class84.field1441[var9.xan2d] * var16 >> 16;
+         int var17 = var16 * class84.SINE[var9.xan2d] >> 16;
+         int var18 = class84.COSINE[var9.xan2d] * var16 >> 16;
          var10.method1574();
          var10.method1586(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var9.offsetY2d + var17 + var10.modelHeight / 2, var18 + var9.offsetY2d);
          if(var9.field3030 != -1) {

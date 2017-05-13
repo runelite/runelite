@@ -15,21 +15,21 @@ public final class class9 {
       signature = "(IIIIIILRegion;LCollisionData;I)V",
       garbageValue = "-1081546478"
    )
-   static final void method107(int var0, int var1, int var2, int var3, int var4, int var5, Region var6, CollisionData var7) {
+   static final void method107(int var0, int var1, int var2, int id, int orientation, int type, Region var6, CollisionData var7) {
       if(!Client.field285 || (class10.tileSettings[0][var1][var2] & 2) != 0 || (class10.tileSettings[var0][var1][var2] & 16) == 0) {
          if(var0 < class10.field93) {
             class10.field93 = var0;
          }
 
-         ObjectComposition var8 = class26.getObjectDefinition(var3);
+         ObjectComposition object = class26.getObjectDefinition(id);
          int var9;
          int var10;
-         if(var4 != 1 && var4 != 3) {
-            var9 = var8.sizeX;
-            var10 = var8.sizeY;
+         if(orientation != 1 && orientation != 3) {
+            var9 = object.sizeX;
+            var10 = object.sizeY;
          } else {
-            var9 = var8.sizeY;
-            var10 = var8.sizeX;
+            var9 = object.sizeY;
+            var10 = object.sizeX;
          }
 
          int var11;
@@ -56,284 +56,284 @@ public final class class9 {
          int var16 = var15[var11][var13] + var15[var12][var13] + var15[var11][var14] + var15[var12][var14] >> 2;
          int var17 = (var1 << 7) + (var9 << 6);
          int var18 = (var10 << 6) + (var2 << 7);
-         int var19 = (var3 << 14) + var1 + (var2 << 7) + 1073741824;
-         if(var8.field2943 == 0) {
+         int var19 = (id << 14) + var1 + (var2 << 7) + 1073741824;
+         if(object.field2943 == 0) {
             var19 -= Integer.MIN_VALUE;
          }
 
-         int var20 = (var4 << 6) + var5;
-         if(var8.field2964 == 1) {
+         int var20 = (orientation << 6) + type;
+         if(object.field2964 == 1) {
             var20 += 256;
          }
 
-         if(var8.method3691()) {
-            FaceNormal.method1907(var0, var1, var2, var8, var4);
+         if(object.method3691()) {
+            FaceNormal.method1907(var0, var1, var2, object, orientation);
          }
 
          Object var21;
-         if(var5 == 22) {
-            if(!Client.field285 || var8.field2943 != 0 || var8.field2936 == 1 || var8.field2962) {
-               if(var8.animationId == -1 && var8.impostorIds == null) {
-                  var21 = var8.method3684(22, var4, var15, var17, var16, var18);
+         if(type == 22) {
+            if(!Client.field285 || object.field2943 != 0 || object.field2936 == 1 || object.field2962) {
+               if(object.animationId == -1 && object.impostorIds == null) {
+                  var21 = object.method3684(22, orientation, var15, var17, var16, var18);
                } else {
-                  var21 = new class49(var3, 22, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                  var21 = new class49(id, 22, orientation, var0, var1, var2, object.animationId, true, (Renderable)null);
                }
 
                var6.groundObjectSpawned(var0, var1, var2, var16, (Renderable)var21, var19, var20);
-               if(var8.field2936 == 1 && var7 != null) {
+               if(object.field2936 == 1 && var7 != null) {
                   var7.method2253(var1, var2);
                }
 
             }
          } else {
             int var22;
-            if(var5 != 10 && var5 != 11) {
-               if(var5 >= 12) {
-                  if(var8.animationId == -1 && var8.impostorIds == null) {
-                     var21 = var8.method3684(var5, var4, var15, var17, var16, var18);
+            if(type != 10 && type != 11) {
+               if(type >= 12) {
+                  if(object.animationId == -1 && object.impostorIds == null) {
+                     var21 = object.method3684(type, orientation, var15, var17, var16, var18);
                   } else {
-                     var21 = new class49(var3, var5, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                     var21 = new class49(id, type, orientation, var0, var1, var2, object.animationId, true, (Renderable)null);
                   }
 
                   var6.method1746(var0, var1, var2, var16, 1, 1, (Renderable)var21, 0, var19, var20);
-                  if(var5 >= 12 && var5 <= 17 && var5 != 13 && var0 > 0) {
+                  if(type >= 12 && type <= 17 && type != 13 && var0 > 0) {
                      class164.field2160[var0][var1][var2] |= 2340;
                   }
 
-                  if(var8.field2936 != 0 && var7 != null) {
-                     var7.method2252(var1, var2, var9, var10, var8.field2942);
+                  if(object.field2936 != 0 && var7 != null) {
+                     var7.method2252(var1, var2, var9, var10, object.field2942);
                   }
 
-               } else if(var5 == 0) {
-                  if(var8.animationId == -1 && var8.impostorIds == null) {
-                     var21 = var8.method3684(0, var4, var15, var17, var16, var18);
+               } else if(type == 0) {
+                  if(object.animationId == -1 && object.impostorIds == null) {
+                     var21 = object.method3684(0, orientation, var15, var17, var16, var18);
                   } else {
-                     var21 = new class49(var3, 0, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                     var21 = new class49(id, 0, orientation, var0, var1, var2, object.animationId, true, (Renderable)null);
                   }
 
-                  var6.method1729(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class10.field99[var4], 0, var19, var20);
-                  if(var4 == 0) {
-                     if(var8.field2955) {
+                  var6.method1729(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class10.field99[orientation], 0, var19, var20);
+                  if(orientation == 0) {
+                     if(object.field2955) {
                         class44.field882[var0][var1][var2] = 50;
                         class44.field882[var0][var1][var2 + 1] = 50;
                      }
 
-                     if(var8.field2939) {
+                     if(object.field2939) {
                         class164.field2160[var0][var1][var2] |= 585;
                      }
-                  } else if(var4 == 1) {
-                     if(var8.field2955) {
+                  } else if(orientation == 1) {
+                     if(object.field2955) {
                         class44.field882[var0][var1][var2 + 1] = 50;
                         class44.field882[var0][var1 + 1][var2 + 1] = 50;
                      }
 
-                     if(var8.field2939) {
+                     if(object.field2939) {
                         class164.field2160[var0][var1][var2 + 1] |= 1170;
                      }
-                  } else if(var4 == 2) {
-                     if(var8.field2955) {
+                  } else if(orientation == 2) {
+                     if(object.field2955) {
                         class44.field882[var0][var1 + 1][var2] = 50;
                         class44.field882[var0][var1 + 1][var2 + 1] = 50;
                      }
 
-                     if(var8.field2939) {
+                     if(object.field2939) {
                         class164.field2160[var0][var1 + 1][var2] |= 585;
                      }
-                  } else if(var4 == 3) {
-                     if(var8.field2955) {
+                  } else if(orientation == 3) {
+                     if(object.field2955) {
                         class44.field882[var0][var1][var2] = 50;
                         class44.field882[var0][var1 + 1][var2] = 50;
                      }
 
-                     if(var8.field2939) {
+                     if(object.field2939) {
                         class164.field2160[var0][var1][var2] |= 1170;
                      }
                   }
 
-                  if(var8.field2936 != 0 && var7 != null) {
-                     var7.method2254(var1, var2, var5, var4, var8.field2942);
+                  if(object.field2936 != 0 && var7 != null) {
+                     var7.method2254(var1, var2, type, orientation, object.field2942);
                   }
 
-                  if(var8.field2951 != 16) {
-                     var6.method1737(var0, var1, var2, var8.field2951);
+                  if(object.field2951 != 16) {
+                     var6.method1737(var0, var1, var2, object.field2951);
                   }
 
-               } else if(var5 == 1) {
-                  if(var8.animationId == -1 && var8.impostorIds == null) {
-                     var21 = var8.method3684(1, var4, var15, var17, var16, var18);
+               } else if(type == 1) {
+                  if(object.animationId == -1 && object.impostorIds == null) {
+                     var21 = object.method3684(1, orientation, var15, var17, var16, var18);
                   } else {
-                     var21 = new class49(var3, 1, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                     var21 = new class49(id, 1, orientation, var0, var1, var2, object.animationId, true, (Renderable)null);
                   }
 
-                  var6.method1729(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class10.field101[var4], 0, var19, var20);
-                  if(var8.field2955) {
-                     if(var4 == 0) {
+                  var6.method1729(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class10.field101[orientation], 0, var19, var20);
+                  if(object.field2955) {
+                     if(orientation == 0) {
                         class44.field882[var0][var1][var2 + 1] = 50;
-                     } else if(var4 == 1) {
+                     } else if(orientation == 1) {
                         class44.field882[var0][var1 + 1][var2 + 1] = 50;
-                     } else if(var4 == 2) {
+                     } else if(orientation == 2) {
                         class44.field882[var0][var1 + 1][var2] = 50;
-                     } else if(var4 == 3) {
+                     } else if(orientation == 3) {
                         class44.field882[var0][var1][var2] = 50;
                      }
                   }
 
-                  if(var8.field2936 != 0 && var7 != null) {
-                     var7.method2254(var1, var2, var5, var4, var8.field2942);
+                  if(object.field2936 != 0 && var7 != null) {
+                     var7.method2254(var1, var2, type, orientation, object.field2942);
                   }
 
                } else {
                   int var28;
                   Object var29;
-                  if(var5 == 2) {
-                     var28 = var4 + 1 & 3;
+                  if(type == 2) {
+                     var28 = orientation + 1 & 3;
                      Object var27;
-                     if(var8.animationId == -1 && var8.impostorIds == null) {
-                        var27 = var8.method3684(2, var4 + 4, var15, var17, var16, var18);
-                        var29 = var8.method3684(2, var28, var15, var17, var16, var18);
+                     if(object.animationId == -1 && object.impostorIds == null) {
+                        var27 = object.method3684(2, orientation + 4, var15, var17, var16, var18);
+                        var29 = object.method3684(2, var28, var15, var17, var16, var18);
                      } else {
-                        var27 = new class49(var3, 2, var4 + 4, var0, var1, var2, var8.animationId, true, (Renderable)null);
-                        var29 = new class49(var3, 2, var28, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                        var27 = new class49(id, 2, orientation + 4, var0, var1, var2, object.animationId, true, (Renderable)null);
+                        var29 = new class49(id, 2, var28, var0, var1, var2, object.animationId, true, (Renderable)null);
                      }
 
-                     var6.method1729(var0, var1, var2, var16, (Renderable)var27, (Renderable)var29, class10.field99[var4], class10.field99[var28], var19, var20);
-                     if(var8.field2939) {
-                        if(var4 == 0) {
+                     var6.method1729(var0, var1, var2, var16, (Renderable)var27, (Renderable)var29, class10.field99[orientation], class10.field99[var28], var19, var20);
+                     if(object.field2939) {
+                        if(orientation == 0) {
                            class164.field2160[var0][var1][var2] |= 585;
                            class164.field2160[var0][var1][var2 + 1] |= 1170;
-                        } else if(var4 == 1) {
+                        } else if(orientation == 1) {
                            class164.field2160[var0][var1][var2 + 1] |= 1170;
                            class164.field2160[var0][var1 + 1][var2] |= 585;
-                        } else if(var4 == 2) {
+                        } else if(orientation == 2) {
                            class164.field2160[var0][var1 + 1][var2] |= 585;
                            class164.field2160[var0][var1][var2] |= 1170;
-                        } else if(var4 == 3) {
+                        } else if(orientation == 3) {
                            class164.field2160[var0][var1][var2] |= 1170;
                            class164.field2160[var0][var1][var2] |= 585;
                         }
                      }
 
-                     if(var8.field2936 != 0 && var7 != null) {
-                        var7.method2254(var1, var2, var5, var4, var8.field2942);
+                     if(object.field2936 != 0 && var7 != null) {
+                        var7.method2254(var1, var2, type, orientation, object.field2942);
                      }
 
-                     if(var8.field2951 != 16) {
-                        var6.method1737(var0, var1, var2, var8.field2951);
+                     if(object.field2951 != 16) {
+                        var6.method1737(var0, var1, var2, object.field2951);
                      }
 
-                  } else if(var5 == 3) {
-                     if(var8.animationId == -1 && var8.impostorIds == null) {
-                        var21 = var8.method3684(3, var4, var15, var17, var16, var18);
+                  } else if(type == 3) {
+                     if(object.animationId == -1 && object.impostorIds == null) {
+                        var21 = object.method3684(3, orientation, var15, var17, var16, var18);
                      } else {
-                        var21 = new class49(var3, 3, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                        var21 = new class49(id, 3, orientation, var0, var1, var2, object.animationId, true, (Renderable)null);
                      }
 
-                     var6.method1729(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class10.field101[var4], 0, var19, var20);
-                     if(var8.field2955) {
-                        if(var4 == 0) {
+                     var6.method1729(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class10.field101[orientation], 0, var19, var20);
+                     if(object.field2955) {
+                        if(orientation == 0) {
                            class44.field882[var0][var1][var2 + 1] = 50;
-                        } else if(var4 == 1) {
+                        } else if(orientation == 1) {
                            class44.field882[var0][var1 + 1][var2 + 1] = 50;
-                        } else if(var4 == 2) {
+                        } else if(orientation == 2) {
                            class44.field882[var0][var1 + 1][var2] = 50;
-                        } else if(var4 == 3) {
+                        } else if(orientation == 3) {
                            class44.field882[var0][var1][var2] = 50;
                         }
                      }
 
-                     if(var8.field2936 != 0 && var7 != null) {
-                        var7.method2254(var1, var2, var5, var4, var8.field2942);
+                     if(object.field2936 != 0 && var7 != null) {
+                        var7.method2254(var1, var2, type, orientation, object.field2942);
                      }
 
-                  } else if(var5 == 9) {
-                     if(var8.animationId == -1 && var8.impostorIds == null) {
-                        var21 = var8.method3684(var5, var4, var15, var17, var16, var18);
+                  } else if(type == 9) {
+                     if(object.animationId == -1 && object.impostorIds == null) {
+                        var21 = object.method3684(type, orientation, var15, var17, var16, var18);
                      } else {
-                        var21 = new class49(var3, var5, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                        var21 = new class49(id, type, orientation, var0, var1, var2, object.animationId, true, (Renderable)null);
                      }
 
                      var6.method1746(var0, var1, var2, var16, 1, 1, (Renderable)var21, 0, var19, var20);
-                     if(var8.field2936 != 0 && var7 != null) {
-                        var7.method2252(var1, var2, var9, var10, var8.field2942);
+                     if(object.field2936 != 0 && var7 != null) {
+                        var7.method2252(var1, var2, var9, var10, object.field2942);
                      }
 
-                     if(var8.field2951 != 16) {
-                        var6.method1737(var0, var1, var2, var8.field2951);
+                     if(object.field2951 != 16) {
+                        var6.method1737(var0, var1, var2, object.field2951);
                      }
 
-                  } else if(var5 == 4) {
-                     if(var8.animationId == -1 && var8.impostorIds == null) {
-                        var21 = var8.method3684(4, var4, var15, var17, var16, var18);
+                  } else if(type == 4) {
+                     if(object.animationId == -1 && object.impostorIds == null) {
+                        var21 = object.method3684(4, orientation, var15, var17, var16, var18);
                      } else {
-                        var21 = new class49(var3, 4, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                        var21 = new class49(id, 4, orientation, var0, var1, var2, object.animationId, true, (Renderable)null);
                      }
 
-                     var6.method1730(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class10.field99[var4], 0, 0, 0, var19, var20);
-                  } else if(var5 == 5) {
+                     var6.method1730(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class10.field99[orientation], 0, 0, 0, var19, var20);
+                  } else if(type == 5) {
                      var28 = 16;
                      var22 = var6.method1747(var0, var1, var2);
                      if(var22 != 0) {
                         var28 = class26.getObjectDefinition(var22 >> 14 & 32767).field2951;
                      }
 
-                     if(var8.animationId == -1 && var8.impostorIds == null) {
-                        var29 = var8.method3684(4, var4, var15, var17, var16, var18);
+                     if(object.animationId == -1 && object.impostorIds == null) {
+                        var29 = object.method3684(4, orientation, var15, var17, var16, var18);
                      } else {
-                        var29 = new class49(var3, 4, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                        var29 = new class49(id, 4, orientation, var0, var1, var2, object.animationId, true, (Renderable)null);
                      }
 
-                     var6.method1730(var0, var1, var2, var16, (Renderable)var29, (Renderable)null, class10.field99[var4], 0, class10.field100[var4] * var28, class10.field107[var4] * var28, var19, var20);
-                  } else if(var5 == 6) {
+                     var6.method1730(var0, var1, var2, var16, (Renderable)var29, (Renderable)null, class10.field99[orientation], 0, class10.field100[orientation] * var28, class10.field107[orientation] * var28, var19, var20);
+                  } else if(type == 6) {
                      var28 = 8;
                      var22 = var6.method1747(var0, var1, var2);
                      if(var22 != 0) {
                         var28 = class26.getObjectDefinition(var22 >> 14 & 32767).field2951 / 2;
                      }
 
-                     if(var8.animationId == -1 && var8.impostorIds == null) {
-                        var29 = var8.method3684(4, var4 + 4, var15, var17, var16, var18);
+                     if(object.animationId == -1 && object.impostorIds == null) {
+                        var29 = object.method3684(4, orientation + 4, var15, var17, var16, var18);
                      } else {
-                        var29 = new class49(var3, 4, var4 + 4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                        var29 = new class49(id, 4, orientation + 4, var0, var1, var2, object.animationId, true, (Renderable)null);
                      }
 
-                     var6.method1730(var0, var1, var2, var16, (Renderable)var29, (Renderable)null, 256, var4, var28 * class10.field110[var4], var28 * class10.field103[var4], var19, var20);
-                  } else if(var5 == 7) {
-                     var22 = var4 + 2 & 3;
-                     if(var8.animationId == -1 && var8.impostorIds == null) {
-                        var21 = var8.method3684(4, var22 + 4, var15, var17, var16, var18);
+                     var6.method1730(var0, var1, var2, var16, (Renderable)var29, (Renderable)null, 256, orientation, var28 * class10.field110[orientation], var28 * class10.field103[orientation], var19, var20);
+                  } else if(type == 7) {
+                     var22 = orientation + 2 & 3;
+                     if(object.animationId == -1 && object.impostorIds == null) {
+                        var21 = object.method3684(4, var22 + 4, var15, var17, var16, var18);
                      } else {
-                        var21 = new class49(var3, 4, var22 + 4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                        var21 = new class49(id, 4, var22 + 4, var0, var1, var2, object.animationId, true, (Renderable)null);
                      }
 
                      var6.method1730(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, 256, var22, 0, 0, var19, var20);
-                  } else if(var5 == 8) {
+                  } else if(type == 8) {
                      var28 = 8;
                      var22 = var6.method1747(var0, var1, var2);
                      if(var22 != 0) {
                         var28 = class26.getObjectDefinition(var22 >> 14 & 32767).field2951 / 2;
                      }
 
-                     int var25 = var4 + 2 & 3;
+                     int var25 = orientation + 2 & 3;
                      Object var24;
-                     if(var8.animationId == -1 && var8.impostorIds == null) {
-                        var29 = var8.method3684(4, var4 + 4, var15, var17, var16, var18);
-                        var24 = var8.method3684(4, var25 + 4, var15, var17, var16, var18);
+                     if(object.animationId == -1 && object.impostorIds == null) {
+                        var29 = object.method3684(4, orientation + 4, var15, var17, var16, var18);
+                        var24 = object.method3684(4, var25 + 4, var15, var17, var16, var18);
                      } else {
-                        var29 = new class49(var3, 4, var4 + 4, var0, var1, var2, var8.animationId, true, (Renderable)null);
-                        var24 = new class49(var3, 4, var25 + 4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                        var29 = new class49(id, 4, orientation + 4, var0, var1, var2, object.animationId, true, (Renderable)null);
+                        var24 = new class49(id, 4, var25 + 4, var0, var1, var2, object.animationId, true, (Renderable)null);
                      }
 
-                     var6.method1730(var0, var1, var2, var16, (Renderable)var29, (Renderable)var24, 256, var4, var28 * class10.field110[var4], var28 * class10.field103[var4], var19, var20);
+                     var6.method1730(var0, var1, var2, var16, (Renderable)var29, (Renderable)var24, 256, orientation, var28 * class10.field110[orientation], var28 * class10.field103[orientation], var19, var20);
                   }
                }
             } else {
-               if(var8.animationId == -1 && var8.impostorIds == null) {
-                  var21 = var8.method3684(10, var4, var15, var17, var16, var18);
+               if(object.animationId == -1 && object.impostorIds == null) {
+                  var21 = object.method3684(10, orientation, var15, var17, var16, var18);
                } else {
-                  var21 = new class49(var3, 10, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                  var21 = new class49(id, 10, orientation, var0, var1, var2, object.animationId, true, (Renderable)null);
                }
 
-               if(var21 != null && var6.method1746(var0, var1, var2, var16, var9, var10, (Renderable)var21, var5 == 11?256:0, var19, var20) && var8.field2955) {
+               if(var21 != null && var6.method1746(var0, var1, var2, var16, var9, var10, (Renderable)var21, type == 11?256:0, var19, var20) && object.field2955) {
                   var22 = 15;
                   if(var21 instanceof Model) {
                      var22 = ((Model)var21).method1594() / 4;
@@ -351,8 +351,8 @@ public final class class9 {
                   }
                }
 
-               if(var8.field2936 != 0 && var7 != null) {
-                  var7.method2252(var1, var2, var9, var10, var8.field2942);
+               if(object.field2936 != 0 && var7 != null) {
+                  var7.method2252(var1, var2, var9, var10, object.field2942);
                }
 
             }

@@ -554,8 +554,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                var4 -= var3.field2167 / 2;
                var5 -= var3.field2165 / 2;
                int var6 = Client.mapAngle + Client.mapScale & 2047;
-               int var7 = class84.field1433[var6];
-               int var8 = class84.field1441[var6];
+               int var7 = class84.SINE[var6];
+               int var8 = class84.COSINE[var6];
                var7 = (Client.mapScaleDelta + 256) * var7 >> 8;
                var8 = var8 * (Client.mapScaleDelta + 256) >> 8;
                int var9 = var4 * var8 + var5 * var7 >> 11;

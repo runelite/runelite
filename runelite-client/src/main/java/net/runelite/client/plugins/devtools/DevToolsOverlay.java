@@ -60,6 +60,9 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class DevToolsOverlay extends Overlay
 {
+	public static final int ITEM_EMPTY = 6512;
+	public static final int ITEM_FILLED = 20594;
+
 	private static final Color RED = new Color(221, 44, 0);
 	private static final Color GREEN = new Color(0, 200, 83);
 	private static final Color ORANGE = new Color(255, 109, 0);
@@ -116,7 +119,7 @@ public class DevToolsOverlay extends Overlay
 			renderInventory(graphics);
 		}
 
-		renderWidget(graphics);
+		renderWidgets(graphics);
 
 		return null;
 	}
@@ -393,23 +396,92 @@ public class DevToolsOverlay extends Overlay
 		}
 	}
 
-	public void renderWidget(Graphics2D graphics)
+	public void renderWidgets(Graphics2D graphics)
 	{
 		int parentID = plugin.getWidgetParent();
 		int childID = plugin.getWidgetChild();
+		int itemIndex = plugin.getWidgetItem();
 
 		if (parentID == -1)
 		{
 			return;
 		}
 
-		Widget widget = client.getWidget(parentID, (childID == -1) ? 0 : childID);
-		if (widget != null && !widget.isHidden())
+		Widget widgetParent = client.getWidget(parentID, 0);
+		if (widgetParent == null || widgetParent.isHidden())
 		{
-			Rectangle bounds = widget.getBounds();
-			graphics.setColor(CYAN);
-			graphics.draw(bounds);
+			return;
 		}
+
+		Rectangle parentBounds = widgetParent.getBounds();
+		graphics.setColor(YELLOW);
+		graphics.draw(parentBounds);
+
+		if (childID == -1)
+		{
+			return;
+		}
+
+		Widget widgetChild = client.getWidget(parentID, childID);
+		if (widgetChild == null || widgetChild.isHidden())
+		{
+			return;
+		}
+
+		Rectangle childBounds = widgetChild.getBounds();
+		graphics.setColor(CYAN);
+		graphics.draw(childBounds);
+
+		if (itemIndex == -1)
+		{
+			return;
+		}
+
+		Widget childComponent = widgetChild.getChild(itemIndex);
+		if (childComponent != null && !childComponent.isHidden()
+			&& childComponent.getItemId() != ITEM_EMPTY
+			&& childComponent.getItemId() != ITEM_FILLED)
+		{
+			Rectangle componentBounds = childComponent.getBounds();
+
+			graphics.setColor(ORANGE);
+			graphics.draw(componentBounds);
+
+			renderWidgetText(graphics, componentBounds, childComponent.getItemId(), YELLOW);
+		}
+
+		WidgetItem widgetItem = widgetChild.getWidgetItem(itemIndex);
+		if (widgetItem == null)
+		{
+			return;
+		}
+
+		Rectangle itemBounds = widgetItem.getCanvasBounds();
+
+		graphics.setColor(ORANGE);
+		graphics.draw(itemBounds);
+
+		renderWidgetText(graphics, itemBounds, widgetItem.getId(), YELLOW);
+	}
+
+	private void renderWidgetText(Graphics2D graphics, Rectangle bounds, int itemId, Color color)
+	{
+		if (itemId == -1)
+		{
+			return;
+		}
+
+		String text = itemId + "";
+		FontMetrics fm = graphics.getFontMetrics();
+		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
+
+		int textX = (int) (bounds.getX() + (bounds.getWidth() / 2) - (textBounds.getWidth() / 2));
+		int textY = (int) (bounds.getY() + (bounds.getHeight() / 2) + (textBounds.getHeight() / 2));
+
+		graphics.setColor(Color.BLACK);
+		graphics.drawString(text, textX + 1, textY + 1);
+		graphics.setColor(color);
+		graphics.drawString(text, textX, textY);
 	}
 
 }

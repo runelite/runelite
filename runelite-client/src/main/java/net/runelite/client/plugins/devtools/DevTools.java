@@ -54,6 +54,7 @@ public class DevTools extends Plugin
 
 	private int widgetParent = -1;
 	private int widgetChild = -1;
+	private int widgetItem = -1;
 
 	private Font font;
 
@@ -185,6 +186,11 @@ public class DevTools extends Plugin
 		widgetChild = id;
 	}
 
+	void setWidgetItem(int id)
+	{
+		widgetItem = id;
+	}
+
 	int getWidgetParent()
 	{
 		return widgetParent;
@@ -193,6 +199,11 @@ public class DevTools extends Plugin
 	int getWidgetChild()
 	{
 		return widgetChild;
+	}
+
+	int getWidgetItem()
+	{
+		return widgetItem;
 	}
 
 }
