@@ -78,6 +78,7 @@ public class HiscorePanel extends PluginPanel
 	private final JLabel farmingLabel = new JLabel("--");
 	private final JLabel constructionLabel = new JLabel("--");
 	private final JLabel hunterLabel = new JLabel("--");
+	private final JLabel overallLabel = new JLabel("--");
 
 	private GridLayout stats;
 
@@ -135,6 +136,7 @@ public class HiscorePanel extends PluginPanel
 			statsPanel.add(makeSkillPanel(Skill.FARMING, farmingLabel));
 			statsPanel.add(makeSkillPanel(Skill.CONSTRUCTION, constructionLabel));
 			statsPanel.add(makeSkillPanel(Skill.HUNTER, hunterLabel));
+			statsPanel.add(makeSkillPanel(Skill.OVERALL, overallLabel));
 		}
 		catch (IOException ex)
 		{
@@ -210,6 +212,7 @@ public class HiscorePanel extends PluginPanel
 		setLabel(runecraftLabel, result.getRunecraft());
 		setLabel(hunterLabel, result.getHunter());
 		setLabel(constructionLabel, result.getConstruction());
+		setLabel(overallLabel, result.getOverall());
 	}
 
 	private void setLabel(JLabel label, net.runelite.http.api.hiscore.Skill skill)

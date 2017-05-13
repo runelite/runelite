@@ -49,7 +49,8 @@ public enum Skill
 	FARMING("Farming"),
 	RUNECRAFT("Runecraft"),
 	HUNTER("Hunter"),
-	CONSTRUCTION("Construction");
+	CONSTRUCTION("Construction"),
+	OVERALL("Overall");
 
 	private final String name;
 
