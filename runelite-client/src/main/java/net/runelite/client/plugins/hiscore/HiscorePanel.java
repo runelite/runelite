@@ -54,29 +54,30 @@ public class HiscorePanel extends PluginPanel
 	private JTextField input;
 	private JButton lookupButton;
 
+	//these are inlaid left to right, wrapping to a new line after 3
 	private final JLabel attackLabel = new JLabel("--");
-	private final JLabel defenceLabel = new JLabel("--");
-	private final JLabel strengthLabel = new JLabel("--");
 	private final JLabel hitpointsLabel = new JLabel("--");
-	private final JLabel rangedLabel = new JLabel("--");
-	private final JLabel prayerLabel = new JLabel("--");
-	private final JLabel magicLabel = new JLabel("--");
-	private final JLabel cookingLabel = new JLabel("--");
-	private final JLabel woodcuttingLabel = new JLabel("--");
-	private final JLabel fletchingLabel = new JLabel("--");
-	private final JLabel fishingLabel = new JLabel("--");
-	private final JLabel firemakingLabel = new JLabel("--");
-	private final JLabel craftingLabel = new JLabel("--");
-	private final JLabel smithingLabel = new JLabel("--");
 	private final JLabel miningLabel = new JLabel("--");
-	private final JLabel herbloreLabel = new JLabel("--");
+	private final JLabel strengthLabel = new JLabel("--");
 	private final JLabel agilityLabel = new JLabel("--");
+	private final JLabel smithingLabel = new JLabel("--");
+	private final JLabel defenceLabel = new JLabel("--");
+	private final JLabel herbloreLabel = new JLabel("--");
+	private final JLabel fishingLabel = new JLabel("--");
+	private final JLabel rangedLabel = new JLabel("--");
 	private final JLabel thievingLabel = new JLabel("--");
+	private final JLabel cookingLabel = new JLabel("--");
+	private final JLabel prayerLabel = new JLabel("--");
+	private final JLabel craftingLabel = new JLabel("--");
+	private final JLabel firemakingLabel = new JLabel("--");
+	private final JLabel magicLabel = new JLabel("--");
+	private final JLabel fletchingLabel = new JLabel("--");
+	private final JLabel woodcuttingLabel = new JLabel("--");
+	private final JLabel runecraftLabel = new JLabel("--");
 	private final JLabel slayerLabel = new JLabel("--");
 	private final JLabel farmingLabel = new JLabel("--");
-	private final JLabel runecraftLabel = new JLabel("--");
-	private final JLabel hunterLabel = new JLabel("--");
 	private final JLabel constructionLabel = new JLabel("--");
+	private final JLabel hunterLabel = new JLabel("--");
 
 	private GridLayout stats;
 
@@ -110,29 +111,30 @@ public class HiscorePanel extends PluginPanel
 
 		try
 		{
+			//these are inlaid left to right, wrapping to a new line after 3
 			statsPanel.add(makeSkillPanel(Skill.ATTACK, attackLabel));
-			statsPanel.add(makeSkillPanel(Skill.DEFENCE, defenceLabel));
-			statsPanel.add(makeSkillPanel(Skill.STRENGTH, strengthLabel));
 			statsPanel.add(makeSkillPanel(Skill.HITPOINTS, hitpointsLabel));
-			statsPanel.add(makeSkillPanel(Skill.RANGED, rangedLabel));
-			statsPanel.add(makeSkillPanel(Skill.PRAYER, prayerLabel));
-			statsPanel.add(makeSkillPanel(Skill.MAGIC, magicLabel));
-			statsPanel.add(makeSkillPanel(Skill.COOKING, cookingLabel));
-			statsPanel.add(makeSkillPanel(Skill.WOODCUTTING, woodcuttingLabel));
-			statsPanel.add(makeSkillPanel(Skill.FLETCHING, fletchingLabel));
-			statsPanel.add(makeSkillPanel(Skill.FISHING, fishingLabel));
-			statsPanel.add(makeSkillPanel(Skill.FIREMAKING, firemakingLabel));
-			statsPanel.add(makeSkillPanel(Skill.CRAFTING, craftingLabel));
-			statsPanel.add(makeSkillPanel(Skill.SMITHING, smithingLabel));
 			statsPanel.add(makeSkillPanel(Skill.MINING, miningLabel));
-			statsPanel.add(makeSkillPanel(Skill.HERBLORE, herbloreLabel));
+			statsPanel.add(makeSkillPanel(Skill.STRENGTH, strengthLabel));
 			statsPanel.add(makeSkillPanel(Skill.AGILITY, agilityLabel));
+			statsPanel.add(makeSkillPanel(Skill.SMITHING, smithingLabel));
+			statsPanel.add(makeSkillPanel(Skill.DEFENCE, defenceLabel));
+			statsPanel.add(makeSkillPanel(Skill.HERBLORE, herbloreLabel));
+			statsPanel.add(makeSkillPanel(Skill.FISHING, fishingLabel));
+			statsPanel.add(makeSkillPanel(Skill.RANGED, rangedLabel));
 			statsPanel.add(makeSkillPanel(Skill.THIEVING, thievingLabel));
+			statsPanel.add(makeSkillPanel(Skill.COOKING, cookingLabel));
+			statsPanel.add(makeSkillPanel(Skill.PRAYER, prayerLabel));
+			statsPanel.add(makeSkillPanel(Skill.CRAFTING, craftingLabel));
+			statsPanel.add(makeSkillPanel(Skill.FIREMAKING, firemakingLabel));
+			statsPanel.add(makeSkillPanel(Skill.MAGIC, magicLabel));
+			statsPanel.add(makeSkillPanel(Skill.FLETCHING, fletchingLabel));
+			statsPanel.add(makeSkillPanel(Skill.WOODCUTTING, woodcuttingLabel));
+			statsPanel.add(makeSkillPanel(Skill.RUNECRAFT, runecraftLabel));
 			statsPanel.add(makeSkillPanel(Skill.SLAYER, slayerLabel));
 			statsPanel.add(makeSkillPanel(Skill.FARMING, farmingLabel));
-			statsPanel.add(makeSkillPanel(Skill.RUNECRAFT, runecraftLabel));
-			statsPanel.add(makeSkillPanel(Skill.HUNTER, hunterLabel));
 			statsPanel.add(makeSkillPanel(Skill.CONSTRUCTION, constructionLabel));
+			statsPanel.add(makeSkillPanel(Skill.HUNTER, hunterLabel));
 		}
 		catch (IOException ex)
 		{
