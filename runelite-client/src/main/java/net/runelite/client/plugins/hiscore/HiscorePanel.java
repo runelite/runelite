@@ -54,29 +54,30 @@ public class HiscorePanel extends PluginPanel
 	private JTextField input;
 	private JButton lookupButton;
 
+	//these are inlaid left to right, wrapping to a new line after 3
 	private final JLabel attackLabel = new JLabel("--");
-	private final JLabel defenceLabel = new JLabel("--");
-	private final JLabel strengthLabel = new JLabel("--");
 	private final JLabel hitpointsLabel = new JLabel("--");
-	private final JLabel rangedLabel = new JLabel("--");
-	private final JLabel prayerLabel = new JLabel("--");
-	private final JLabel magicLabel = new JLabel("--");
-	private final JLabel cookingLabel = new JLabel("--");
-	private final JLabel woodcuttingLabel = new JLabel("--");
-	private final JLabel fletchingLabel = new JLabel("--");
-	private final JLabel fishingLabel = new JLabel("--");
-	private final JLabel firemakingLabel = new JLabel("--");
-	private final JLabel craftingLabel = new JLabel("--");
-	private final JLabel smithingLabel = new JLabel("--");
 	private final JLabel miningLabel = new JLabel("--");
-	private final JLabel herbloreLabel = new JLabel("--");
+	private final JLabel strengthLabel = new JLabel("--");
 	private final JLabel agilityLabel = new JLabel("--");
+	private final JLabel smithingLabel = new JLabel("--");
+	private final JLabel defenceLabel = new JLabel("--");
+	private final JLabel herbloreLabel = new JLabel("--");
+	private final JLabel fishingLabel = new JLabel("--");
+	private final JLabel rangedLabel = new JLabel("--");
 	private final JLabel thievingLabel = new JLabel("--");
+	private final JLabel cookingLabel = new JLabel("--");
+	private final JLabel prayerLabel = new JLabel("--");
+	private final JLabel craftingLabel = new JLabel("--");
+	private final JLabel firemakingLabel = new JLabel("--");
+	private final JLabel magicLabel = new JLabel("--");
+	private final JLabel fletchingLabel = new JLabel("--");
+	private final JLabel woodcuttingLabel = new JLabel("--");
+	private final JLabel runecraftLabel = new JLabel("--");
 	private final JLabel slayerLabel = new JLabel("--");
 	private final JLabel farmingLabel = new JLabel("--");
-	private final JLabel runecraftLabel = new JLabel("--");
-	private final JLabel hunterLabel = new JLabel("--");
 	private final JLabel constructionLabel = new JLabel("--");
+	private final JLabel hunterLabel = new JLabel("--");
 
 	private GridLayout stats;
 
@@ -110,6 +111,7 @@ public class HiscorePanel extends PluginPanel
 
 		try
 		{
+			//these are inlaid left to right, wrapping to a new line after 3
 			statsPanel.add(makeSkillPanel(Skill.ATTACK, attackLabel));
 			statsPanel.add(makeSkillPanel(Skill.HITPOINTS, hitpointsLabel));
 			statsPanel.add(makeSkillPanel(Skill.MINING, miningLabel));
