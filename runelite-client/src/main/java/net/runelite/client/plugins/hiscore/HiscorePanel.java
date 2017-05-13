@@ -111,28 +111,28 @@ public class HiscorePanel extends PluginPanel
 		try
 		{
 			statsPanel.add(makeSkillPanel(Skill.ATTACK, attackLabel));
-			statsPanel.add(makeSkillPanel(Skill.DEFENCE, defenceLabel));
-			statsPanel.add(makeSkillPanel(Skill.STRENGTH, strengthLabel));
 			statsPanel.add(makeSkillPanel(Skill.HITPOINTS, hitpointsLabel));
-			statsPanel.add(makeSkillPanel(Skill.RANGED, rangedLabel));
-			statsPanel.add(makeSkillPanel(Skill.PRAYER, prayerLabel));
-			statsPanel.add(makeSkillPanel(Skill.MAGIC, magicLabel));
-			statsPanel.add(makeSkillPanel(Skill.COOKING, cookingLabel));
-			statsPanel.add(makeSkillPanel(Skill.WOODCUTTING, woodcuttingLabel));
-			statsPanel.add(makeSkillPanel(Skill.FLETCHING, fletchingLabel));
-			statsPanel.add(makeSkillPanel(Skill.FISHING, fishingLabel));
-			statsPanel.add(makeSkillPanel(Skill.FIREMAKING, firemakingLabel));
-			statsPanel.add(makeSkillPanel(Skill.CRAFTING, craftingLabel));
-			statsPanel.add(makeSkillPanel(Skill.SMITHING, smithingLabel));
 			statsPanel.add(makeSkillPanel(Skill.MINING, miningLabel));
-			statsPanel.add(makeSkillPanel(Skill.HERBLORE, herbloreLabel));
+			statsPanel.add(makeSkillPanel(Skill.STRENGTH, strengthLabel));
 			statsPanel.add(makeSkillPanel(Skill.AGILITY, agilityLabel));
+			statsPanel.add(makeSkillPanel(Skill.SMITHING, smithingLabel));
+			statsPanel.add(makeSkillPanel(Skill.DEFENCE, defenceLabel));
+			statsPanel.add(makeSkillPanel(Skill.HERBLORE, herbloreLabel));
+			statsPanel.add(makeSkillPanel(Skill.FISHING, fishingLabel));
+			statsPanel.add(makeSkillPanel(Skill.RANGED, rangedLabel));
 			statsPanel.add(makeSkillPanel(Skill.THIEVING, thievingLabel));
+			statsPanel.add(makeSkillPanel(Skill.COOKING, cookingLabel));
+			statsPanel.add(makeSkillPanel(Skill.PRAYER, prayerLabel));
+			statsPanel.add(makeSkillPanel(Skill.CRAFTING, craftingLabel));
+			statsPanel.add(makeSkillPanel(Skill.FIREMAKING, firemakingLabel));
+			statsPanel.add(makeSkillPanel(Skill.MAGIC, magicLabel));
+			statsPanel.add(makeSkillPanel(Skill.FLETCHING, fletchingLabel));
+			statsPanel.add(makeSkillPanel(Skill.WOODCUTTING, woodcuttingLabel));
+			statsPanel.add(makeSkillPanel(Skill.RUNECRAFT, runecraftLabel));
 			statsPanel.add(makeSkillPanel(Skill.SLAYER, slayerLabel));
 			statsPanel.add(makeSkillPanel(Skill.FARMING, farmingLabel));
-			statsPanel.add(makeSkillPanel(Skill.RUNECRAFT, runecraftLabel));
-			statsPanel.add(makeSkillPanel(Skill.HUNTER, hunterLabel));
 			statsPanel.add(makeSkillPanel(Skill.CONSTRUCTION, constructionLabel));
+			statsPanel.add(makeSkillPanel(Skill.HUNTER, hunterLabel));
 		}
 		catch (IOException ex)
 		{
