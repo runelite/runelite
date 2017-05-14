@@ -22,45 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.http.service.ws;
 
-import javax.websocket.CloseReason;
-import javax.websocket.EndpointConfig;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
+import com.google.common.base.Objects;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 import javax.websocket.Session;
-import javax.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@ServerEndpoint("/ws")
-public class WSService
+public class SessionManager
 {
-	private static final Logger logger = LoggerFactory.getLogger(WSService.class);
+	private static final Logger logger = LoggerFactory.getLogger(SessionManager.class);
 
-	@OnOpen
-	public void onOpen(Session session, EndpointConfig config)
+	private static final Set<WSSession> sessions = Collections.synchronizedSet(new HashSet<>());
+
+	public static void add(WSService service, Session session)
 	{
-		logger.info("New session {}", session);
+		WSSession wssession = new WSSession(service, session);
+
+		logger.info("Adding service {} session {}", service, session);
+
+		sessions.add(wssession);
 	}
 
-	@OnClose
-	public void onClose(Session session, CloseReason resaon)
+	public static void remove(Session session)
 	{
-		logger.info("Close session {}", session);
+		WSSession wssession = new WSSession(null, session);
+		sessions.remove(wssession);
 	}
 
-	@OnError
-	public void onError(Session session, Throwable ex)
+	public static WSSession findSession(UUID uuid)
 	{
-		logger.warn("Error in session {}", session, ex);
-	}
+		synchronized (sessions)
+		{
+			for (WSSession session : sessions)
+			{
+				if (Objects.equal(session.getServlet().getUuid(), uuid))
+				{
+					return session;
+				}
+			}
+		}
 
-	@OnMessage
-	public void onMessage(Session session, String message)
-	{
-		logger.info("Got message: {}", message);
+		return null;
 	}
 }

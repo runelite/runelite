@@ -24,7 +24,16 @@
  */
 package net.runelite.client;
 
+import com.google.common.eventbus.EventBus;
+import com.google.gson.Gson;
+import java.time.Duration;
+import java.time.Instant;
+import net.runelite.client.account.AccountSession;
 import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.ws.messages.Handshake;
+import net.runelite.http.api.ws.messages.Ping;
+import net.runelite.http.api.ws.WebsocketGsonFactory;
+import net.runelite.http.api.ws.WebsocketMessage;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -37,22 +46,47 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 {
 	private static final Logger logger = LoggerFactory.getLogger(WSClient.class);
 
+	public static final Duration PING_TIME = Duration.ofSeconds(30);
+
+	private static final Gson gson = WebsocketGsonFactory.build();
+	private static final EventBus eventBus = RuneLite.getRunelite().getEventBus();
+
 	private final OkHttpClient client = new OkHttpClient();
 
+	private final AccountSession session;
 	private WebSocket webSocket;
 
-	public WSClient()
+	public WSClient(AccountSession session)
 	{
-		connect();
+		this.session = session;
 	}
 
-	private void connect()
+	public void connect()
 	{
 		Request request = new Request.Builder()
 			.url(RuneliteAPI.getWsEndpoint())
 			.build();
 
 		webSocket = client.newWebSocket(request, this);
+
+		Handshake handshake = new Handshake();
+		handshake.setSession(session.getUuid());
+		send(handshake);
+	}
+
+	public void ping()
+	{
+		Ping ping = new Ping();
+		ping.setTime(Instant.now());
+		send(ping);
+	}
+
+	public void send(WebsocketMessage message)
+	{
+		String json = gson.toJson(message, WebsocketMessage.class);
+		webSocket.send(json);
+
+		logger.debug("Sent: {}", json);
 	}
 
 	@Override
@@ -65,14 +99,15 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	public void onOpen(WebSocket webSocket, Response response)
 	{
 		logger.info("Websocket {} opened", webSocket);
-
-		webSocket.send("Hello");
 	}
 
 	@Override
 	public void onMessage(WebSocket webSocket, String text)
 	{
-		logger.debug("Got message: {}", text);
+		WebsocketMessage message = gson.fromJson(text, WebsocketMessage.class);
+		logger.debug("Got message: {}", message);
+
+		eventBus.post(message);
 	}
 
 	@Override

@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.runelite.client.RuneLite;
+import net.runelite.client.plugins.account.AccountPlugin;
 import net.runelite.client.plugins.boosts.Boosts;
 import net.runelite.client.plugins.bosstimer.BossTimers;
 import net.runelite.client.plugins.clanchat.ClanChat;
@@ -75,6 +76,7 @@ public class PluginManager
 		plugins.add(new PestControl());
 		plugins.add(new ClanChat());
 		plugins.add(new Zulrah());
+		plugins.add(new AccountPlugin());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{

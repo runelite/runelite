@@ -26,18 +26,25 @@ package net.runelite.client;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
+import com.google.gson.Gson;
 import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
+import net.runelite.client.account.AccountSession;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
@@ -50,7 +57,7 @@ public class RuneLite
 	private static final Logger logger = LoggerFactory.getLogger(RuneLite.class);
 
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
-	public static final File REPO_DIR = new File(RUNELITE_DIR, "repository");
+	public static final File SESSION_FILE = new File(RUNELITE_DIR, "session");
 
 	public static Image ICON;
 
@@ -65,7 +72,9 @@ public class RuneLite
 	private OverlayRenderer renderer;
 	private EventBus eventBus = new EventBus(this::eventExceptionHandler);
 	private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
-	private final WSClient wsclient = new WSClient();
+	private WSClient wsclient;
+
+	private AccountSession accountSession;
 
 	static
 	{
@@ -106,6 +115,8 @@ public class RuneLite
 		pluginManager.loadAll();
 
 		renderer = new OverlayRenderer();
+
+		loadSession();
 	}
 
 	private void setupTrayIcon()
@@ -128,6 +139,79 @@ public class RuneLite
 		{
 			logger.debug("Unable to add system tray icon", ex);
 		}
+	}
+
+	private void loadSession()
+	{
+		if (!SESSION_FILE.exists())
+		{
+			logger.info("No session file exists");
+			return;
+		}
+
+		try (FileInputStream in = new FileInputStream(SESSION_FILE))
+		{
+			accountSession = new Gson().fromJson(new InputStreamReader(in), AccountSession.class);
+
+			logger.debug("Loaded session for {}", accountSession.getUsername());
+		}
+		catch (Exception ex)
+		{
+			logger.warn("Unable to load session file", ex);
+			return;
+		}
+
+		openSession(accountSession);
+	}
+
+	public void saveSession()
+	{
+		if (accountSession == null)
+		{
+			return;
+		}
+
+		try (FileWriter fw = new FileWriter(SESSION_FILE))
+		{
+			new Gson().toJson(accountSession, fw);
+
+			logger.debug("Saved session to {}", SESSION_FILE);
+		}
+		catch (IOException ex)
+		{
+			logger.warn("Unable to save session file", ex);
+		}
+	}
+
+	/**
+	 * Set the given session as the active session and open a socket to the
+	 * server with the given session
+	 * @param session
+	 */
+	public void openSession(AccountSession session)
+	{
+		boolean needExecutor = false;
+
+		if (wsclient != null)
+		{
+			wsclient.close();
+		}
+		else
+		{
+			needExecutor = true;
+		}
+
+		wsclient = new WSClient(session);
+		wsclient.connect();
+
+		if (needExecutor)
+		{
+			executor.scheduleWithFixedDelay(wsclient::ping, WSClient.PING_TIME.getSeconds(), WSClient.PING_TIME.getSeconds(), TimeUnit.SECONDS);
+		}
+
+		accountSession = session;
+
+		eventBus.post(new SessionOpen());
 	}
 
 	private void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
@@ -188,5 +272,10 @@ public class RuneLite
 	public static TrayIcon getTrayIcon()
 	{
 		return trayIcon;
+	}
+
+	public AccountSession getAccountSession()
+	{
+		return accountSession;
 	}
 }
