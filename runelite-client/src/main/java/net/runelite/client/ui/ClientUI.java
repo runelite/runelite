@@ -84,7 +84,7 @@ public final class ClientUI extends JFrame
 		container = new JPanel();
 		container.setLayout(new BorderLayout(0, 0));
 
-		panel = new ClientPanel();
+		panel = new ClientPanel(!RuneLite.getOptions().has("no-rs"));
 		container.add(panel, BorderLayout.CENTER);
 
 		navContainer = new JPanel();

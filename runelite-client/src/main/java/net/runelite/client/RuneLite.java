@@ -87,6 +87,7 @@ public class RuneLite
 
 		OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode");
+		parser.accepts("no-rs");
 		options = parser.parse(args);
 
 		runelite = new RuneLite();
