@@ -43,13 +43,18 @@ final class ClientPanel extends JPanel
 
 	private Applet rs;
 
-	public ClientPanel() throws Exception
+	public ClientPanel(boolean loadRs) throws Exception
 	{
 		setSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setLayout(new BorderLayout());
 		setBackground(Color.black);
+
+		if (!loadRs)
+		{
+			return;
+		}
 
 		ClientLoader loader = new ClientLoader();
 
