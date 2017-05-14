@@ -181,7 +181,7 @@ public class HiscorePanel extends PluginPanel
 		{
 			result = client.lookup(lookup);
 		}
-		catch (IOException | URISyntaxException ex)
+		catch (IOException ex)
 		{
 			logger.warn(null, ex);
 			return;
