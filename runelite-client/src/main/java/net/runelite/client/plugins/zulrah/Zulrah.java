@@ -93,7 +93,7 @@ public class Zulrah extends Plugin
 
 	private synchronized void update()
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client == null || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
