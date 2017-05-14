@@ -28,7 +28,6 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import net.runelite.http.api.RuneliteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -45,7 +44,7 @@ public class HiscoreClient
 	private final OkHttpClient client = new OkHttpClient();
 	private final Gson gson = new Gson();
 
-	public HiscoreResult lookup(String username) throws IOException, URISyntaxException
+	public HiscoreResult lookup(String username) throws IOException
 	{
 		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
 			.addPathSegment("hiscore")
