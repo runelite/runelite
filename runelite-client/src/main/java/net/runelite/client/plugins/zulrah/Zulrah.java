@@ -45,6 +45,7 @@ import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternB;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternC;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternD;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.RunnableExceptionLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +82,7 @@ public class Zulrah extends Plugin
 	protected void startUp() throws Exception
 	{
 		ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
-		future = executor.scheduleAtFixedRate(this::update, 100, 100, TimeUnit.MILLISECONDS);
+		future = executor.scheduleAtFixedRate(RunnableExceptionLogger.wrap(this::update), 100, 100, TimeUnit.MILLISECONDS);
 	}
 
 	@Override
@@ -97,88 +98,79 @@ public class Zulrah extends Plugin
 			return;
 		}
 
-		try
+		NPC zulrah = findZulrah();
+
+		if (zulrah == null)
 		{
-			NPC zulrah = findZulrah();
-
-			if (zulrah == null)
+			if (fight != null)
 			{
-				if (fight != null)
-				{
-					logger.debug("Fight has ended!");
+				logger.debug("Fight has ended!");
 
-					fight = null;
-				}
-				return;
+				fight = null;
 			}
-
-			if (fight == null)
-			{
-				Point startTile = zulrah.getLocalLocation();
-				startTile = Perspective.localToWorld(client, startTile);
-
-				fight = new Fight(startTile);
-
-				logger.debug("Fight has begun!");
-			}
-
-			ZulrahInstance currentZulrah = ZulrahInstance.of(zulrah, fight.getStartLocationWorld());
-
-			if (fight.getZulrah() == null)
-			{
-				fight.setZulrah(currentZulrah);
-			}
-			else if (!fight.getZulrah().equals(currentZulrah))
-			{
-				ZulrahInstance previousInstance = fight.getZulrah();
-				fight.setZulrah(currentZulrah);
-				fight.nextStage();
-
-				logger.debug("Zulrah has moved from {} -> {}, index now {}",
-					previousInstance, currentZulrah, fight.getStage());
-			}
-
-			ZulrahPattern pattern = fight.getPattern();
-			if (pattern == null)
-			{
-				int potential = 0;
-				ZulrahPattern potentialPattern = null;
-
-				for (ZulrahPattern p : patterns)
-				{
-					if (p.stageMatches(fight.getStage(), fight.getZulrah()))
-					{
-						potential++;
-						potentialPattern = p;
-					}
-				}
-
-				if (potential == 1)
-				{
-					logger.debug("Zulrah pattern identified: {}", potentialPattern);
-
-					fight.setPattern(potentialPattern);
-				}
-			}
-			else
-			{
-				if (pattern.canReset(fight.getStage()))
-				{
-					if (fight.getZulrah().equals(pattern.get(0)))
-					{
-						logger.debug("Fight has reset");
-
-						fight.reset();
-					}
-				}
-			}
-
-		}
-		catch (Exception ex)
-		{
-			logger.debug(null, ex);
+			return;
 		}
 
+		if (fight == null)
+		{
+			Point startTile = zulrah.getLocalLocation();
+			startTile = Perspective.localToWorld(client, startTile);
+
+			fight = new Fight(startTile);
+
+			logger.debug("Fight has begun!");
+		}
+
+		ZulrahInstance currentZulrah = ZulrahInstance.of(zulrah, fight.getStartLocationWorld());
+
+		if (fight.getZulrah() == null)
+		{
+			fight.setZulrah(currentZulrah);
+		}
+		else if (!fight.getZulrah().equals(currentZulrah))
+		{
+			ZulrahInstance previousInstance = fight.getZulrah();
+			fight.setZulrah(currentZulrah);
+			fight.nextStage();
+
+			logger.debug("Zulrah has moved from {} -> {}, index now {}",
+				previousInstance, currentZulrah, fight.getStage());
+		}
+
+		ZulrahPattern pattern = fight.getPattern();
+		if (pattern == null)
+		{
+			int potential = 0;
+			ZulrahPattern potentialPattern = null;
+
+			for (ZulrahPattern p : patterns)
+			{
+				if (p.stageMatches(fight.getStage(), fight.getZulrah()))
+				{
+					potential++;
+					potentialPattern = p;
+				}
+			}
+
+			if (potential == 1)
+			{
+				logger.debug("Zulrah pattern identified: {}", potentialPattern);
+
+				fight.setPattern(potentialPattern);
+			}
+		}
+		else
+		{
+			if (pattern.canReset(fight.getStage()))
+			{
+				if (fight.getZulrah().equals(pattern.get(0)))
+				{
+					logger.debug("Fight has reset");
+
+					fight.reset();
+				}
+			}
+		}
 	}
 
 	private NPC findZulrah()
