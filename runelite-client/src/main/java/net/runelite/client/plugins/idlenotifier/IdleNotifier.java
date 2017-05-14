@@ -115,12 +115,10 @@ public class IdleNotifier extends Plugin
 			case IDLE:
 				if(!idling && Instant.now().compareTo(lastAnimating.plus(WAIT_DURATION)) >= 0) {
 					trayIcon.displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
-
 					if (OS_IS_WINDOWS)
 					{
 						Toolkit.getDefaultToolkit().beep();
 					}
-
 					idling = true;
 				}
 				break;
