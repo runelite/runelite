@@ -83,6 +83,13 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 
 	public void send(WebsocketMessage message)
 	{
+		if (webSocket == null)
+		{
+			logger.debug("Reconnecting to server");
+
+			connect();
+		}
+
 		String json = gson.toJson(message, WebsocketMessage.class);
 		webSocket.send(json);
 
@@ -92,7 +99,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	@Override
 	public void close()
 	{
-		webSocket.close(0, null);
+		webSocket.close(1000, null);
 	}
 
 	@Override
