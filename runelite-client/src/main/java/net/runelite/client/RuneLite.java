@@ -171,6 +171,8 @@ public class RuneLite
 			return;
 		}
 
+		SESSION_FILE.getParentFile().mkdirs();
+
 		try (FileWriter fw = new FileWriter(SESSION_FILE))
 		{
 			new Gson().toJson(accountSession, fw);
