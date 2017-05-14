@@ -22,32 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.account;
+package net.runelite.http.api.ws.messages;
 
-import java.util.UUID;
+import java.time.Instant;
+import net.runelite.http.api.ws.WebsocketMessage;
 
-public class LoginResponse
+public class Ping extends WebsocketMessage
 {
-	private String oauthUrl;
-	private UUID uid;
+	private Instant time;
 
-	public String getOauthUrl()
+	public Instant getTime()
 	{
-		return oauthUrl;
+		return time;
 	}
 
-	public void setOauthUrl(String oauthUrl)
+	public void setTime(Instant time)
 	{
-		this.oauthUrl = oauthUrl;
-	}
-
-	public UUID getUid()
-	{
-		return uid;
-	}
-
-	public void setUid(UUID uid)
-	{
-		this.uid = uid;
+		this.time = time;
 	}
 }

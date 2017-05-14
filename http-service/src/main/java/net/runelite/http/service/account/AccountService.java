@@ -39,7 +39,11 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import net.runelite.http.api.RuneliteAPI;
-import net.runelite.http.api.account.LoginResponse;
+import net.runelite.http.api.account.OAuthResponse;
+import net.runelite.http.api.ws.messages.LoginResponse;
+import net.runelite.http.service.ws.SessionManager;
+import net.runelite.http.service.ws.WSService;
+import net.runelite.http.service.ws.WSSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sql2o.Connection;
@@ -117,7 +121,7 @@ public class AccountService
 		}
 	}
 
-	public LoginResponse login(Request request, Response response)
+	public OAuthResponse login(Request request, Response response)
 	{
 		UUID uuid = UUID.randomUUID();
 
@@ -135,7 +139,7 @@ public class AccountService
 
 		String authorizationUrl = service.getAuthorizationUrl();
 
-		LoginResponse lr = new LoginResponse();
+		OAuthResponse lr = new OAuthResponse();
 		lr.setOauthUrl(authorizationUrl);
 		lr.setUid(uuid);
 
@@ -205,11 +209,31 @@ public class AccountService
 				.addParameter("uuid", state.getUuid().toString())
 				.executeUpdate();
 
-			logger.info("Created session for user {}", user.getUsername());
+			logger.info("Created session for user {}", userInfo.getEmail());
 		}
 
 		response.redirect(RL_REDIR);
+
+		notifySession(state.getUuid(), userInfo.getEmail());
+
 		return "";
+	}
+
+	private void notifySession(UUID uuid, String username)
+	{
+		WSSession session = SessionManager.findSession(uuid);
+		if (session == null)
+		{
+			logger.info("Session {} logged in - but no websocket session", uuid);
+			return;
+		}
+
+		WSService service = session.getServlet();
+
+		LoginResponse response = new LoginResponse();
+		response.setUsername(username);
+
+		service.send(response);
 	}
 
 	public Object logout(Request request, Response response)
