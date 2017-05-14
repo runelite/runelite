@@ -24,44 +24,45 @@
  */
 package net.runelite.client.plugins.clanchat;
 
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import net.runelite.api.GameState;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
 public class ClanChat extends Plugin
 {
 
-    private final long INTERVAL = 600;
-    private ScheduledFuture<?> future;
+	private final long INTERVAL = 600;
+	private ScheduledFuture<?> future;
 
-    @Override
-    protected void startUp() throws Exception
-    {
-        ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
-        future = executor.scheduleAtFixedRate(this::updateClanChatTitle, INTERVAL, INTERVAL, TimeUnit.MILLISECONDS);
-    }
+	@Override
+	protected void startUp() throws Exception
+	{
+		ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
+		future = executor.scheduleAtFixedRate(this::updateClanChatTitle, INTERVAL, INTERVAL, TimeUnit.MILLISECONDS);
+	}
 
-    @Override
-    protected void shutDown() throws Exception
-    {
-        future.cancel(true);
-    }
+	@Override
+	protected void shutDown() throws Exception
+	{
+		future.cancel(true);
+	}
 
-    private void updateClanChatTitle()
-    {
-        if (RuneLite.getClient().getGameState() != GameState.LOGGED_IN)
-            return;
+	private void updateClanChatTitle()
+	{
+		if (RuneLite.getClient().getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
 
-        Widget clanChatTitleWidget = RuneLite.getClient().getWidget(WidgetInfo.CLAN_CHAT_TITLE);
-        if (clanChatTitleWidget != null)
-        {
-            clanChatTitleWidget.setText("Clan Chat (" + RuneLite.getClient().getClanChatCount() + "/100)");
-        }
-    }
+		Widget clanChatTitleWidget = RuneLite.getClient().getWidget(WidgetInfo.CLAN_CHAT_TITLE);
+		if (clanChatTitleWidget != null)
+		{
+			clanChatTitleWidget.setText("Clan Chat (" + RuneLite.getClient().getClanChatCount() + "/100)");
+		}
+	}
 }
