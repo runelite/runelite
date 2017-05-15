@@ -99,7 +99,10 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	@Override
 	public void close()
 	{
-		webSocket.close(1000, null);
+		if (webSocket != null)
+		{
+			webSocket.close(1000, null);
+		}
 	}
 
 	@Override
