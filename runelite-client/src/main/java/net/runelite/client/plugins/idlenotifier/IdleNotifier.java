@@ -25,12 +25,14 @@
 package net.runelite.client.plugins.idlenotifier;
 
 import com.google.common.eventbus.Subscribe;
+
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static net.runelite.api.AnimationID.*;
+
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
@@ -131,10 +133,10 @@ public class IdleNotifier extends Plugin
 		{
 			trayIcon.displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
 			if (OS_IS_WINDOWS)
-            {
-                Toolkit.getDefaultToolkit().beep();
-            }
-            idling = true;
-        }
-    }
+			{
+				Toolkit.getDefaultToolkit().beep();
+			}
+			idling = true;
+		}
+	}
 }
