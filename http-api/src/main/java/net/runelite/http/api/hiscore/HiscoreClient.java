@@ -24,7 +24,6 @@
  */
 package net.runelite.http.api.hiscore;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,8 +38,6 @@ import org.slf4j.LoggerFactory;
 public class HiscoreClient
 {
 	private static final Logger logger = LoggerFactory.getLogger(HiscoreClient.class);
-
-	private final Gson gson = new Gson();
 
 	public HiscoreResult lookup(String username) throws IOException
 	{
@@ -61,7 +58,7 @@ public class HiscoreClient
 		try (ResponseBody body = response.body())
 		{
 			InputStream in = body.byteStream();
-			return gson.fromJson(new InputStreamReader(in), HiscoreResult.class);
+			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), HiscoreResult.class);
 		}
 	}
 }

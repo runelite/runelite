@@ -24,7 +24,6 @@
  */
 package net.runelite.http.api.xtea;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import net.runelite.http.api.RuneliteAPI;
 import okhttp3.HttpUrl;
@@ -41,8 +40,6 @@ public class XteaClient
 
 	private static final Logger logger = LoggerFactory.getLogger(XteaClient.class);
 
-	private final Gson gson = new Gson();
-
 	public Response submit(int revision, int region, int[] keys) throws IOException
 	{
 		XteaRequest xteaRequest = new XteaRequest();
@@ -54,7 +51,7 @@ public class XteaClient
 
 		xteaRequest.addKey(xteaKey);
 
-		String json = gson.toJson(xteaRequest);
+		String json = RuneliteAPI.GSON.toJson(xteaRequest);
 
 		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
 			.addPathSegment("xtea");
