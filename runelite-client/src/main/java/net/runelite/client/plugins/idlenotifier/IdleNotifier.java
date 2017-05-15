@@ -27,8 +27,9 @@ package net.runelite.client.plugins.idlenotifier;
 import com.google.common.eventbus.Subscribe;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.time.Duration;
-import java.time.Instant;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -39,13 +40,13 @@ import net.runelite.client.plugins.Plugin;
 public class IdleNotifier extends Plugin
 {
 	private static final boolean OS_IS_WINDOWS = System.getProperty("os.name").startsWith("Windows");
-	private static final Duration WAIT_DURATION = Duration.ofMillis(0); // Duration.ofMillis(2500L);
+	private static final long WAIT_DURATION = 2500;
 
 	private final Client client = RuneLite.getClient();
 	private final TrayIcon trayIcon = RuneLite.getTrayIcon();
 
-	private Instant lastAnimating;
 	private boolean idling = true;
+	private ScheduledFuture future;
 
 	@Override
 	protected void startUp() throws Exception
@@ -109,19 +110,31 @@ public class IdleNotifier extends Plugin
 			case MINING_MOTHERLODE_DRAGON:
 			case HERBLORE_POTIONMAKING:
 			case MAGIC_CHARGING_ORBS:
-				lastAnimating = Instant.now();
+				if (future != null && !future.isCancelled())
+				{
+					future.cancel(true);
+				}
 				idling = false;
 				break;
 			case IDLE:
-				if(!idling && Instant.now().compareTo(lastAnimating.plus(WAIT_DURATION)) >= 0) {
-					trayIcon.displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
-					if (OS_IS_WINDOWS)
-					{
-						Toolkit.getDefaultToolkit().beep();
-					}
-					idling = true;
+				if (!idling)
+				{
+					future = RuneLite.getRunelite().getExecutor().schedule(this::notifyIdle, WAIT_DURATION, TimeUnit.MILLISECONDS);
 				}
 				break;
 		}
 	}
+
+	private void notifyIdle()
+	{
+		if (client.getLocalPlayer().getAnimation() == IDLE)
+		{
+			trayIcon.displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
+			if (OS_IS_WINDOWS)
+            {
+                Toolkit.getDefaultToolkit().beep();
+            }
+            idling = true;
+        }
+    }
 }
