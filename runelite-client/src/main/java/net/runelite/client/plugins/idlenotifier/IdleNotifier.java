@@ -112,15 +112,16 @@ public class IdleNotifier extends Plugin
 			case MINING_MOTHERLODE_DRAGON:
 			case HERBLORE_POTIONMAKING:
 			case MAGIC_CHARGING_ORBS:
+				idling = false;
 				if (future != null && !future.isCancelled())
 				{
 					future.cancel(true);
 				}
-				idling = false;
 				break;
 			case IDLE:
 				if (!idling)
 				{
+					idling = true;
 					future = RuneLite.getRunelite().getExecutor().schedule(this::notifyIdle, WAIT_DURATION, TimeUnit.MILLISECONDS);
 				}
 				break;
@@ -136,7 +137,6 @@ public class IdleNotifier extends Plugin
 			{
 				Toolkit.getDefaultToolkit().beep();
 			}
-			idling = true;
 		}
 	}
 }
