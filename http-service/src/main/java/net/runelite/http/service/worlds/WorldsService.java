@@ -29,10 +29,10 @@ import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -41,7 +41,6 @@ public class WorldsService
 {
 	private static final HttpUrl WORLD_URL = HttpUrl.parse("http://www.runescape.com/g=oldscape/slr.ws?order=LPWM");
 
-	private final OkHttpClient client = new OkHttpClient();
 	private HttpUrl url = WORLD_URL;
 
 	public WorldResult listWorlds() throws IOException, URISyntaxException
@@ -50,7 +49,7 @@ public class WorldsService
 			.url(url)
 			.build();
 
-		Response response = client.newCall(request).execute();
+		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
 		byte[] b;
 
 		try (ResponseBody body = response.body())

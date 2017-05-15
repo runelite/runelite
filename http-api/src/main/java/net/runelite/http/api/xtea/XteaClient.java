@@ -29,7 +29,6 @@ import java.io.IOException;
 import net.runelite.http.api.RuneliteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -42,7 +41,6 @@ public class XteaClient
 
 	private static final Logger logger = LoggerFactory.getLogger(XteaClient.class);
 
-	private final OkHttpClient client = new OkHttpClient();
 	private final Gson gson = new Gson();
 
 	public Response submit(int revision, int region, int[] keys) throws IOException
@@ -70,6 +68,6 @@ public class XteaClient
 			.url(url)
 			.build();
 
-		return client.newCall(request).execute();
+		return RuneliteAPI.CLIENT.newCall(request).execute();
 	}
 }

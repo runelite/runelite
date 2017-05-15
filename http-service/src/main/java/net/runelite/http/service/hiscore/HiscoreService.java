@@ -26,10 +26,10 @@ package net.runelite.http.service.hiscore;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.Skill;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -41,7 +41,6 @@ public class HiscoreService
 {
 	private static final HttpUrl RUNESCAPE_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool/index_lite.ws");
 
-	private final OkHttpClient client = new OkHttpClient();
 	private HttpUrl url = RUNESCAPE_HISCORE_SERVICE;
 
 	public HiscoreResult lookup(String username) throws IOException, URISyntaxException
@@ -53,7 +52,7 @@ public class HiscoreService
 			.url(builder.build())
 			.build();
 
-		Response response = client.newCall(request).execute();
+		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
 		String responseStr;
 		
 		try (ResponseBody body = response.body())
