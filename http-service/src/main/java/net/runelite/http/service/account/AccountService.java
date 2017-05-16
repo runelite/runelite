@@ -101,7 +101,7 @@ public class AccountService
 
 	public void init()
 	{
-		try (Connection con = sql2o.beginTransaction())
+		try (Connection con = sql2o.open())
 		{
 			con.createQuery(CREATE_SESSIONS)
 				.executeUpdate();
