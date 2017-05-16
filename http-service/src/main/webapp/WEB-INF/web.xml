@@ -42,5 +42,10 @@
 	
 	<listener> 
 		<listener-class>com.commongroundpublishing.slf4j.impl.ServletContextLoggerSCL</listener-class>
-	</listener> 
+	</listener>
+
+	<context-param>
+		<param-name>ServletContextLogger.LEVEL</param-name>
+		<param-value>INFO</param-value>
+	</context-param>
 </web-app>
