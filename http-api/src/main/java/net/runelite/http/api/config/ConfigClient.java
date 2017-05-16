@@ -90,6 +90,7 @@ public class ConfigClient
 		Request request = new Request.Builder()
 			.put(RequestBody.create(TEXT_PLAIN, value))
 			.header(RuneliteAPI.RUNELITE_AUTH, uuid.toString())
+			.url(url)
 			.build();
 
 		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
@@ -110,6 +111,7 @@ public class ConfigClient
 		Request request = new Request.Builder()
 			.delete()
 			.header(RuneliteAPI.RUNELITE_AUTH, uuid.toString())
+			.url(url)
 			.build();
 
 		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
