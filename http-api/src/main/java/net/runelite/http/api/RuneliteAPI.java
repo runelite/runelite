@@ -37,6 +37,8 @@ public class RuneliteAPI
 {
 	private static final Logger logger = LoggerFactory.getLogger(RuneliteAPI.class);
 
+	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
+
 	public static final OkHttpClient CLIENT = new OkHttpClient();
 	public static final Gson GSON = new Gson();
 
