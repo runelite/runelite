@@ -29,6 +29,7 @@ import com.google.inject.Inject;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.service.account.AccountService;
 import net.runelite.http.service.account.AuthFilter;
+import net.runelite.http.service.config.ConfigService;
 import net.runelite.http.service.hiscore.HiscoreService;
 import net.runelite.http.service.updatecheck.UpdateCheckService;
 import net.runelite.http.service.worlds.WorldsService;
@@ -49,6 +50,9 @@ public class Service implements SparkApplication
 
 	@Inject
 	private AccountService accounts;
+
+	@Inject
+	private ConfigService config;
 
 	@Inject
 	private HiscoreService hiscores;
@@ -73,6 +77,7 @@ public class Service implements SparkApplication
 	{
 		xtea.init();
 		accounts.init();
+		config.init();
 
 		get("/version", (request, response) -> RuneliteAPI.getVersion());
 		get("/update-check", updateCheck::check, transformer);
@@ -87,6 +92,16 @@ public class Service implements SparkApplication
 
 			before("/logout", authFilter);
 			get("/logout", accounts::logout);
+		});
+		before("/config", authFilter);
+		path("/config", () ->
+		{
+			// Just using before(authFilter); here doesn't work
+			before("/*", authFilter);
+
+			get("", config::get, transformer);
+			put("/:key", config::setKey);
+			delete("/:key", config::unsetKey);
 		});
 
 		exception(Exception.class, (exception, request, response) -> logger.warn(null, exception));

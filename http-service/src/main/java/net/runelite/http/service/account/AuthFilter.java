@@ -30,6 +30,7 @@ import com.google.inject.name.Named;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.UUID;
+import net.runelite.http.api.RuneliteAPI;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import spark.Filter;
@@ -40,8 +41,6 @@ import static spark.Spark.halt;
 
 public class AuthFilter implements Filter
 {
-	private static final String RUNELITE_AUTH = "RUNELITE-AUTH";
-
 	private final Sql2o sql2o;
 
 	@Inject
@@ -53,7 +52,7 @@ public class AuthFilter implements Filter
 	@Override
 	public void handle(Request request, Response response) throws Exception
 	{
-		String runeliteAuth = request.headers(RUNELITE_AUTH);
+		String runeliteAuth = request.headers(RuneliteAPI.RUNELITE_AUTH);
 		if (runeliteAuth == null)
 		{
 			halt(401, "Access denied");

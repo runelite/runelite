@@ -36,6 +36,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import net.runelite.http.service.account.AccountService;
 import net.runelite.http.service.account.AuthFilter;
+import net.runelite.http.service.config.ConfigService;
 import net.runelite.http.service.hiscore.HiscoreService;
 import net.runelite.http.service.updatecheck.UpdateCheckService;
 import net.runelite.http.service.worlds.WorldsService;
@@ -118,6 +119,7 @@ public class ServiceModule extends AbstractModule
 		bind(AuthFilter.class);
 
 		bind(AccountService.class);
+		bind(ConfigService.class);
 		bind(HiscoreService.class);
 		bind(UpdateCheckService.class);
 		bind(WorldsService.class);
