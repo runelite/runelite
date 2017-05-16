@@ -24,6 +24,7 @@
  */
 package net.runelite.http.api.hiscore;
 
+import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -59,6 +60,10 @@ public class HiscoreClient
 		{
 			InputStream in = body.byteStream();
 			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), HiscoreResult.class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
 		}
 	}
 }
