@@ -24,6 +24,7 @@
  */
 package net.runelite.http.api.account;
 
+import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -59,6 +60,10 @@ public class LoginClient
 		{
 			InputStream in = body.byteStream();
 			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), OAuthResponse.class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
 		}
 	}
 }

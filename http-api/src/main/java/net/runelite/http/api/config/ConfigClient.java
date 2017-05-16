@@ -24,6 +24,7 @@
  */
 package net.runelite.http.api.config;
 
+import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -70,6 +71,10 @@ public class ConfigClient
 		{
 			InputStream in = body.byteStream();
 			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), Configuration.class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
 		}
 	}
 
