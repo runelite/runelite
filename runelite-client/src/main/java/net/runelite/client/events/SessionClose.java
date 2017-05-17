@@ -22,76 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.account;
+package net.runelite.client.events;
 
-import java.time.Instant;
-import java.util.Objects;
-import java.util.UUID;
-
-public class AccountSession
+public class SessionClose
 {
-	private UUID uuid;
-	private String username;
-	private Instant created;
 
-	@Override
-	public int hashCode()
-	{
-		int hash = 3;
-		hash = 29 * hash + Objects.hashCode(this.uuid);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final AccountSession other = (AccountSession) obj;
-		if (!Objects.equals(this.uuid, other.uuid))
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public UUID getUuid()
-	{
-		return uuid;
-	}
-
-	public void setUuid(UUID uuid)
-	{
-		this.uuid = uuid;
-	}
-
-	public String getUsername()
-	{
-		return username;
-	}
-
-	public void setUsername(String username)
-	{
-		this.username = username;
-	}
-
-	public Instant getCreated()
-	{
-		return created;
-	}
-
-	public void setCreated(Instant created)
-	{
-		this.created = created;
-	}
 }

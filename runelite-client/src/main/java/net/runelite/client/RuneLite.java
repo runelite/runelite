@@ -38,12 +38,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
 import net.runelite.client.account.AccountSession;
+import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
@@ -68,9 +68,9 @@ public class RuneLite
 
 	private ClientUI gui;
 	private PluginManager pluginManager;
-	private MenuManager menuManager = new MenuManager(this);
+	private final MenuManager menuManager = new MenuManager(this);
 	private OverlayRenderer renderer;
-	private EventBus eventBus = new EventBus(this::eventExceptionHandler);
+	private final EventBus eventBus = new EventBus(this::eventExceptionHandler);
 	private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
 	private WSClient wsclient;
 
@@ -171,8 +171,6 @@ public class RuneLite
 			return;
 		}
 
-		SESSION_FILE.getParentFile().mkdirs();
-
 		try (FileWriter fw = new FileWriter(SESSION_FILE))
 		{
 			new Gson().toJson(accountSession, fw);
@@ -185,35 +183,54 @@ public class RuneLite
 		}
 	}
 
+	public void deleteSession()
+	{
+		SESSION_FILE.delete();
+	}
+
 	/**
 	 * Set the given session as the active session and open a socket to the
 	 * server with the given session
+	 *
 	 * @param session
 	 */
 	public void openSession(AccountSession session)
 	{
-		boolean needExecutor = false;
-
-		if (wsclient != null)
+		// If the ws session already exists, don't need to do anything
+		if (wsclient == null || !wsclient.getSession().equals(session))
 		{
-			wsclient.close();
-		}
-		else
-		{
-			needExecutor = true;
-		}
+			if (wsclient != null)
+			{
+				wsclient.close();
+			}
 
-		wsclient = new WSClient(session);
-		wsclient.connect();
-
-		if (needExecutor)
-		{
-			executor.scheduleWithFixedDelay(wsclient::ping, WSClient.PING_TIME.getSeconds(), WSClient.PING_TIME.getSeconds(), TimeUnit.SECONDS);
+			wsclient = new WSClient(session);
+			wsclient.connect();
 		}
 
 		accountSession = session;
 
 		eventBus.post(new SessionOpen());
+	}
+
+	public void closeSession()
+	{
+		if (wsclient != null)
+		{
+			wsclient.close();
+			wsclient = null;
+		}
+
+		if (accountSession == null)
+		{
+			return;
+		}
+
+		logger.debug("Logging out of account {}", accountSession.getUsername());
+
+		accountSession = null; // No more account
+
+		eventBus.post(new SessionClose());
 	}
 
 	private void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
