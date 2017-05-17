@@ -36,10 +36,12 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
+import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.NavigationPanel;
 import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.http.api.account.LoginClient;
 import net.runelite.http.api.account.OAuthResponse;
@@ -54,16 +56,21 @@ public class AccountPlugin extends Plugin
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final ClientUI ui = runelite.getGui();
 	private final NavigationButton loginButton = new NavigationButton("Login");
+	private final NavigationButton logoutButton = new NavigationButton("Logout");
 
 	private final LoginClient loginClient = new LoginClient();
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		loginButton.getButton().addActionListener(this::loginClick);
-
 		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("login_icon.png")));
 		loginButton.getButton().setIcon(icon);
+
+		icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("logout_icon.png")));
+		logoutButton.getButton().setIcon(icon);
+
+		loginButton.getButton().addActionListener(this::loginClick);
+		logoutButton.getButton().addActionListener(this::logoutClick);
 
 		ui.getNavigationPanel().addNavigation(loginButton);
 	}
@@ -77,6 +84,17 @@ public class AccountPlugin extends Plugin
 	{
 		ScheduledExecutorService executor = runelite.getExecutor();
 		executor.execute(RunnableExceptionLogger.wrap(this::openLoginPage));
+	}
+
+	private void logoutClick(ActionEvent ae)
+	{
+		runelite.closeSession();
+		runelite.deleteSession();
+
+		// Replace logout nav button with login
+		NavigationPanel navigationPanel = ui.getNavigationPanel();
+		navigationPanel.removeNavigation(logoutButton);
+		navigationPanel.addNavigation(loginButton);
 	}
 
 	private void openLoginPage()
@@ -130,11 +148,15 @@ public class AccountPlugin extends Plugin
 	{
 		logger.debug("Now logged in as {}", loginResponse.getUsername());
 
-		runelite.getGui().setTitle("RuneLite (" + loginResponse.getUsername() + ")");
-
+		//runelite.getGui().setTitle("RuneLite (" + loginResponse.getUsername() + ")");
 		AccountSession session = runelite.getAccountSession();
 		session.setUsername(loginResponse.getUsername());
 
+		// Open session, again, now that we have a username
+		// This triggers onSessionOpen
+		runelite.openSession(session);
+
+		// Save session to disk
 		runelite.saveSession();
 	}
 
@@ -151,6 +173,22 @@ public class AccountPlugin extends Plugin
 		logger.debug("Session opened as {}", session.getUsername());
 
 		runelite.getGui().setTitle("RuneLite (" + session.getUsername() + ")");
+
+		replaceLoginWithLogout();
+	}
+
+	private void replaceLoginWithLogout()
+	{
+		// Replace login nav button with logout
+		NavigationPanel navigationPanel = ui.getNavigationPanel();
+		navigationPanel.removeNavigation(loginButton);
+		navigationPanel.addNavigation(logoutButton);
+	}
+
+	@Subscribe
+	public void onSessionClose(SessionClose sessionClose)
+	{
+		runelite.getGui().setTitle("RuneLite");
 	}
 
 }

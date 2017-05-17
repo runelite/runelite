@@ -28,6 +28,9 @@ import com.google.common.eventbus.EventBus;
 import com.google.gson.Gson;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import net.runelite.client.account.AccountSession;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.ws.messages.Handshake;
@@ -46,19 +49,27 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 {
 	private static final Logger logger = LoggerFactory.getLogger(WSClient.class);
 
-	public static final Duration PING_TIME = Duration.ofSeconds(30);
+	private static final Duration PING_TIME = Duration.ofSeconds(30);
 
 	private static final Gson gson = WebsocketGsonFactory.build();
 	private static final EventBus eventBus = RuneLite.getRunelite().getEventBus();
+	private static final ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
 
 	private final OkHttpClient client = new OkHttpClient();
 
 	private final AccountSession session;
 	private WebSocket webSocket;
+	private final ScheduledFuture pingFuture;
 
 	public WSClient(AccountSession session)
 	{
 		this.session = session;
+		this.pingFuture = executor.scheduleWithFixedDelay(this::ping, PING_TIME.getSeconds(), PING_TIME.getSeconds(), TimeUnit.SECONDS);
+	}
+
+	public AccountSession getSession()
+	{
+		return session;
 	}
 
 	public void connect()
@@ -99,6 +110,11 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	@Override
 	public void close()
 	{
+		if (pingFuture != null)
+		{
+			pingFuture.cancel(true);
+		}
+
 		if (webSocket != null)
 		{
 			webSocket.close(1000, null);

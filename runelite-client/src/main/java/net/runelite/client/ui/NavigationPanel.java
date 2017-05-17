@@ -52,4 +52,11 @@ public class NavigationPanel extends JPanel
 		add(button.getButton());
 		revalidate();
 	}
+
+	public void removeNavigation(NavigationButton button)
+	{
+		buttons.remove(button);
+		remove(button.getButton());
+		revalidate();
+	}
 }
