@@ -43,7 +43,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.NavigationPanel;
 import net.runelite.client.util.RunnableExceptionLogger;
-import net.runelite.http.api.account.LoginClient;
+import net.runelite.http.api.account.AccountClient;
 import net.runelite.http.api.account.OAuthResponse;
 import net.runelite.http.api.ws.messages.LoginResponse;
 import org.slf4j.Logger;
@@ -58,7 +58,7 @@ public class AccountPlugin extends Plugin
 	private final NavigationButton loginButton = new NavigationButton("Login");
 	private final NavigationButton logoutButton = new NavigationButton("Logout");
 
-	private final LoginClient loginClient = new LoginClient();
+	private final AccountClient loginClient = new AccountClient();
 
 	@Override
 	protected void startUp() throws Exception
@@ -88,8 +88,23 @@ public class AccountPlugin extends Plugin
 
 	private void logoutClick(ActionEvent ae)
 	{
-		runelite.closeSession();
-		runelite.deleteSession();
+		// Destroy session
+		AccountSession session = runelite.getAccountSession();
+		if (session != null)
+		{
+			AccountClient client = new AccountClient(session.getUuid());
+			try
+			{
+				client.logout();
+			}
+			catch (IOException ex)
+			{
+				logger.warn("Unable to logout of session", ex);
+			}
+		}
+
+		runelite.closeSession(); // remove session from client
+		runelite.deleteSession(); // delete saved session file
 
 		// Replace logout nav button with login
 		NavigationPanel navigationPanel = ui.getNavigationPanel();

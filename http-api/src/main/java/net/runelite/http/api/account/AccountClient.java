@@ -28,6 +28,7 @@ import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.UUID;
 import net.runelite.http.api.RuneliteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -36,17 +37,27 @@ import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LoginClient
+public class AccountClient
 {
-	private static final Logger logger = LoggerFactory.getLogger(LoginClient.class);
+	private static final Logger logger = LoggerFactory.getLogger(AccountClient.class);
+
+	private UUID uuid;
+
+	public AccountClient()
+	{
+	}
+
+	public AccountClient(UUID uuid)
+	{
+		this.uuid = uuid;
+	}
 
 	public OAuthResponse login() throws IOException
 	{
-		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
 			.addPathSegment("account")
-			.addPathSegment("login");
-
-		HttpUrl url = builder.build();
+			.addPathSegment("login")
+			.build();
 
 		logger.debug("Built URI: {}", url);
 
@@ -64,6 +75,28 @@ public class LoginClient
 		catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
+		}
+	}
+
+	public void logout() throws IOException
+	{
+		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+			.addPathSegment("account")
+			.addPathSegment("logout")
+			.build();
+
+		logger.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+			.header(RuneliteAPI.RUNELITE_AUTH, uuid.toString())
+			.url(url)
+			.build();
+
+		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
+
+		try (ResponseBody body = response.body())
+		{
+			logger.debug("Sent logout request");
 		}
 	}
 }
