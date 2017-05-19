@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.opponentinfo;
+package net.runelite.client.plugins.config;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.Map;
+import java.awt.event.ActionEvent;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.NavigationButton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class OpponentInfo extends Plugin
+public class ConfigPlugin extends Plugin
 {
-	private final OpponentConfig config = RuneLite.getRunelite().getConfigManager().getConfig(OpponentConfig.class);
-	private final Overlay overlay = new OpponentInfoOverlay(this);
+	private static final Logger logger = LoggerFactory.getLogger(ConfigPlugin.class);
 
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
+	private final NavigationButton navButton = new NavigationButton("Configuration");
+	private final RuneLite runelite = RuneLite.getRunelite();
+	private final ClientUI ui = runelite.getGui();
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		navButton.getButton().addActionListener(this::setPluginPanel);
+
+		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("config_icon.png")));
+		navButton.getButton().setIcon(icon);
+
+		ui.getNavigationPanel().addNavigation(navButton);
 	}
 
 	@Override
@@ -55,20 +59,12 @@ public class OpponentInfo extends Plugin
 	{
 	}
 
-	@Override
-	public OpponentConfig getConfig()
+	private void setPluginPanel(ActionEvent ae)
 	{
-		return config;
+		ConfigPanel panel = new ConfigPanel();
+		panel.init();
+
+		ui.expand(panel);
 	}
 
-	public static Map<String, Integer> loadNpcHealth()
-	{
-		Gson gson = new Gson();
-		Type type = new TypeToken<Map<String, Integer>>()
-		{
-		}.getType();
-
-		InputStream healthFile = OpponentInfo.class.getResourceAsStream("/npc_health.json");
-		return gson.fromJson(new InputStreamReader(healthFile), type);
-	}
 }

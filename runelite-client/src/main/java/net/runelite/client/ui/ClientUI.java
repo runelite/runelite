@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Objects;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -99,7 +100,7 @@ public final class ClientUI extends JFrame
 
 	public void expand(PluginPanel panel)
 	{
-		if (pluginPanel == panel)
+		if (Objects.equals(pluginPanel, panel))
 		{
 			navContainer.remove(1);
 			container.validate();

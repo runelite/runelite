@@ -42,6 +42,7 @@ import javax.imageio.ImageIO;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
@@ -57,6 +58,7 @@ public class RuneLite
 	private static final Logger logger = LoggerFactory.getLogger(RuneLite.class);
 
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
+	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SESSION_FILE = new File(RUNELITE_DIR, "session");
 
 	public static Image ICON;
@@ -75,6 +77,7 @@ public class RuneLite
 	private WSClient wsclient;
 
 	private AccountSession accountSession;
+	private ConfigManager configManager = new ConfigManager(eventBus);
 
 	static
 	{
@@ -99,6 +102,8 @@ public class RuneLite
 		parser.accepts("no-rs");
 		options = parser.parse(args);
 
+		PROFILES_DIR.mkdirs();
+
 		runelite = new RuneLite();
 		runelite.start();
 	}
@@ -108,6 +113,8 @@ public class RuneLite
 		gui = new ClientUI();
 
 		setupTrayIcon();
+
+		configManager.load();
 
 		eventBus.register(menuManager);
 
@@ -210,6 +217,14 @@ public class RuneLite
 
 		accountSession = session;
 
+		if (session.getUsername() != null)
+		{
+			// Initialize config for new session
+			// If the session isn't logged in yet, don't switch to the new config
+			configManager = new ConfigManager(eventBus, session);
+			configManager.load();
+		}
+
 		eventBus.post(new SessionOpen());
 	}
 
@@ -229,6 +244,10 @@ public class RuneLite
 		logger.debug("Logging out of account {}", accountSession.getUsername());
 
 		accountSession = null; // No more account
+
+		// Restore config
+		configManager = new ConfigManager(eventBus);
+		configManager.load();
 
 		eventBus.post(new SessionClose());
 	}
@@ -291,6 +310,11 @@ public class RuneLite
 	public static TrayIcon getTrayIcon()
 	{
 		return trayIcon;
+	}
+
+	public ConfigManager getConfigManager()
+	{
+		return configManager;
 	}
 
 	public AccountSession getAccountSession()
