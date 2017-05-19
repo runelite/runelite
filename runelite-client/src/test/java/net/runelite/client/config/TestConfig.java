@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,53 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.opponentinfo;
+package net.runelite.client.config;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.Map;
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
-
-public class OpponentInfo extends Plugin
+@ConfigGroup(
+	keyName = "test",
+	name = "test",
+	description = "test"
+)
+public interface TestConfig
 {
-	private final OpponentConfig config = RuneLite.getRunelite().getConfigManager().getConfig(OpponentConfig.class);
-	private final Overlay overlay = new OpponentInfoOverlay(this);
-
-	@Override
-	public Overlay getOverlay()
+	@ConfigItem(
+		keyName = "key",
+		name = "Key Name",
+		description = "value"
+	)
+	default String key()
 	{
-		return overlay;
+		return "default";
 	}
 
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
-
-	@Override
-	public OpponentConfig getConfig()
-	{
-		return config;
-	}
-
-	public static Map<String, Integer> loadNpcHealth()
-	{
-		Gson gson = new Gson();
-		Type type = new TypeToken<Map<String, Integer>>()
-		{
-		}.getType();
-
-		InputStream healthFile = OpponentInfo.class.getResourceAsStream("/npc_health.json");
-		return gson.fromJson(new InputStreamReader(healthFile), type);
-	}
+	@ConfigItem(
+		keyName = "key",
+		name = "Key Name",
+		description = "value"
+	)
+	void key(String key);
 }

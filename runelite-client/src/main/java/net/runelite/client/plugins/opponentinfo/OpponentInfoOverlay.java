@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.opponentinfo;
 
 import java.awt.Color;
@@ -58,6 +57,7 @@ class OpponentInfoOverlay extends Overlay
 
 	private static final Duration WAIT = Duration.ofSeconds(3);
 
+	private final OpponentConfig config;
 	private Integer lastMaxHealth;
 	private DecimalFormat df = new DecimalFormat("0.0");
 	private float lastRatio = 0;
@@ -65,9 +65,10 @@ class OpponentInfoOverlay extends Overlay
 	private String opponentName;
 	private Map<String, Integer> oppInfoHealth = OpponentInfo.loadNpcHealth();
 
-	OpponentInfoOverlay()
+	OpponentInfoOverlay(OpponentInfo plugin)
 	{
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.HIGH);
+		this.config = plugin.getConfig();
 	}
 
 	private Actor getOpponent()
@@ -76,7 +77,9 @@ class OpponentInfoOverlay extends Overlay
 
 		Player player = client.getLocalPlayer();
 		if (player == null)
+		{
 			return null;
+		}
 
 		return player.getInteracting();
 	}
@@ -84,8 +87,10 @@ class OpponentInfoOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (RuneLite.getClient().getGameState() != GameState.LOGGED_IN)
+		if (RuneLite.getClient().getGameState() != GameState.LOGGED_IN || config.enabled() == false)
+		{
 			return null;
+		}
 
 		Actor opponent = getOpponent();
 
@@ -98,8 +103,9 @@ class OpponentInfoOverlay extends Overlay
 		}
 
 		if (Duration.between(Instant.now(), lastTime).abs().compareTo(WAIT) > 0)
+		{
 			return null; //don't draw anything.
-
+		}
 		FontMetrics fm = graphics.getFontMetrics();
 
 		int height = TOP_BORDER + fm.getHeight(); // opponent name

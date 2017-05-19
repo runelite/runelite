@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,53 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.opponentinfo;
+package net.runelite.client.events;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.Map;
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
-
-public class OpponentInfo extends Plugin
+public class ConfigChanged
 {
-	private final OpponentConfig config = RuneLite.getRunelite().getConfigManager().getConfig(OpponentConfig.class);
-	private final Overlay overlay = new OpponentInfoOverlay(this);
+	private String group;
+	private String key;
+	private String oldValue;
+	private String newValue;
 
-	@Override
-	public Overlay getOverlay()
+	public String getGroup()
 	{
-		return overlay;
+		return group;
 	}
 
-	@Override
-	protected void startUp() throws Exception
+	public void setGroup(String group)
 	{
+		this.group = group;
 	}
 
-	@Override
-	protected void shutDown() throws Exception
+	public String getKey()
 	{
+		return key;
 	}
 
-	@Override
-	public OpponentConfig getConfig()
+	public void setKey(String key)
 	{
-		return config;
+		this.key = key;
 	}
 
-	public static Map<String, Integer> loadNpcHealth()
+	public String getOldValue()
 	{
-		Gson gson = new Gson();
-		Type type = new TypeToken<Map<String, Integer>>()
-		{
-		}.getType();
+		return oldValue;
+	}
 
-		InputStream healthFile = OpponentInfo.class.getResourceAsStream("/npc_health.json");
-		return gson.fromJson(new InputStreamReader(healthFile), type);
+	public void setOldValue(String oldValue)
+	{
+		this.oldValue = oldValue;
+	}
+
+	public String getNewValue()
+	{
+		return newValue;
+	}
+
+	public void setNewValue(String newValue)
+	{
+		this.newValue = newValue;
 	}
 }
