@@ -132,6 +132,7 @@ public class ProxyRunner extends Thread
 
 		// Extract xtea key
 		b = rsaData;
+		assert b[0] == 1;
 		int key1 = Ints.fromBytes(b[2], b[3], b[4], b[5]);
 		int key2 = Ints.fromBytes(b[6], b[7], b[8], b[9]);
 		int key3 = Ints.fromBytes(b[10], b[11], b[12], b[13]);
@@ -146,7 +147,7 @@ public class ProxyRunner extends Thread
 		clientInCipher = new RLISAACCipher(keys);
 		serverOutCipher = new RLISAACCipher(keys);
 
-		for(int i = 0; i < 4; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			keys[i] += 50;
 		}
@@ -187,6 +188,7 @@ public class ProxyRunner extends Thread
 		int isTrusted = serverIn.read();
 		int trustedValue = serverIn.readInt();
 		logger.info("is trusted value: {}", isTrusted);
+		assert isTrusted != 1; // if == 1 trustedValue is decrypted using the cipher
 		out.write(isTrusted);
 		out.writeInt(trustedValue);
 
@@ -215,7 +217,7 @@ public class ProxyRunner extends Thread
 		assert len == packetData.length;
 		out.write(packetData);
 
-		new PacketCopy("Game C2S", in, serverOut, clientInCipher, serverOutCipher).start();
+		new IOCopy("Game C2S", in, serverOut).start();
 		new PacketCopy("Game S2C", serverIn, out, serverInCipher, clientOutCipher).start();
 	}
 
