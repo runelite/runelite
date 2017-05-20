@@ -22,59 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.http.api.RuneliteAPI;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class ConfigLoader
 {
-	private static URL configURL;
-	
+	private static final OkHttpClient CLIENT = RuneliteAPI.CLIENT;
+	private static final HttpUrl CONFIG_URL = HttpUrl.parse("http://oldschool.runescape.com/jav_config.ws"); // https redirects us to rs3
+
 	public static final String CODEBASE = "codebase";
 	public static final String INITIAL_JAR = "initial_jar";
 	public static final String INITIAL_CLASS = "initial_class";
-	public static final String APP_MINWIDTH = "applet_minwidth";
-	public static final String APP_MINHEIGHT = "applet_minheight";
-	
+
 	private final Map<String, String> properties = new HashMap<>(),
 		appletProperties = new HashMap<>();
-	
-	static
-	{
-		try
-		{
-			configURL = new URL("http://oldschool.runescape.com/jav_config.ws"); // https redirects us to rs3
-		}
-		catch (MalformedURLException ex)
-		{
-			ex.printStackTrace();
-		}
-	}
-	
+
 	public void fetch() throws IOException
 	{
-		URLConnection conn = configURL.openConnection();
-		try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream())))
+		Request request = new Request.Builder()
+			.url(CONFIG_URL)
+			.build();
+
+		try (Response response = CLIENT.newCall(request).execute();
+			BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream())))
 		{
 			String str;
-			
+
 			while ((str = in.readLine()) != null)
 			{
 				int idx = str.indexOf('=');
 
 				if (idx == -1)
+				{
 					continue;
+				}
 
 				String s = str.substring(0, idx);
-				
+
 				if (s.equals("param"))
 				{
 					str = str.substring(idx + 1);
@@ -94,7 +88,7 @@ public class ConfigLoader
 			}
 		}
 	}
-	
+
 	public String getProperty(String name)
 	{
 		return properties.get(name);
