@@ -30,9 +30,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -54,10 +58,12 @@ public class ConfigManager
 	private final EventBus eventBus;
 	private AccountSession session;
 	private ConfigClient client;
+	private File propertiesFile;
 
-	private final File propertiesFile;
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
+
+	private final List<Object> configProxies = new ArrayList<>();
 
 	public ConfigManager(EventBus eventBus)
 	{
@@ -68,10 +74,39 @@ public class ConfigManager
 	public ConfigManager(EventBus eventBus, AccountSession session)
 	{
 		this.eventBus = eventBus;
-		this.session = session;
-		// if session username is null then dont..
-		this.client = new ConfigClient(session.getUuid());
+		switchSession(session);
+	}
+
+	public Collection<Object> getConfigProxies()
+	{
+		return Collections.unmodifiableCollection(configProxies);
+	}
+
+	public void loadDefault()
+	{
+		for (Object config : configProxies)
+		{
+			setDefaultConfiguration(config);
+		}
+	}
+
+	public final void switchSession(AccountSession session)
+	{
+		if (session == null)
+		{
+			this.session = null;
+			this.client = null;
+		}
+		else
+		{
+			this.session = session;
+			this.client = new ConfigClient(session.getUuid());
+		}
+
 		this.propertiesFile = getPropertiesFile();
+
+		load(); // load profile specific config
+		loadDefault(); // set defaults over anything not set
 	}
 
 	private File getPropertiesFile()
@@ -120,6 +155,8 @@ public class ConfigManager
 
 		for (ConfigEntry entry : configuration.getConfig())
 		{
+			logger.debug("Loading configuration value from client {}: {}", entry.getKey(), entry.getValue());
+
 			properties.setProperty(entry.getKey(), entry.getValue());
 		}
 
@@ -137,6 +174,8 @@ public class ConfigManager
 
 	private void loadFromFile()
 	{
+		properties.clear();
+
 		try (FileInputStream in = new FileInputStream(propertiesFile))
 		{
 			properties.load(in);
@@ -168,10 +207,14 @@ public class ConfigManager
 			throw new RuntimeException("Non-public configuration classes can't have default methods invoked");
 		}
 
-		return (T) Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[]
+		T t = (T) Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[]
 		{
 			clazz
 		}, handler);
+
+		configProxies.add(t);
+
+		return t;
 	}
 
 	public String getConfiguration(String groupName, String key)
@@ -268,5 +311,55 @@ public class ConfigManager
 		))
 			.collect(Collectors.toList());
 		return new ConfigDescriptor(group, items);
+	}
+
+	private void setDefaultConfiguration(Object proxy)
+	{
+		Class<?> clazz = proxy.getClass().getInterfaces()[0];
+		ConfigGroup group = clazz.getAnnotation(ConfigGroup.class);
+
+		if (group == null)
+		{
+			return;
+		}
+
+		for (Method method : clazz.getDeclaredMethods())
+		{
+			ConfigItem item = method.getAnnotation(ConfigItem.class);
+
+			if (item == null || !method.isDefault())
+			{
+				continue;
+			}
+
+			String current = getConfiguration(group.keyName(), item.keyName());
+			if (current != null)
+			{
+				continue; // something else is already set
+			}
+
+			Object defaultValue;
+			try
+			{
+				defaultValue = ConfigInvocationHandler.callDefaultMethod(proxy, method, null);
+			}
+			catch (Throwable ex)
+			{
+				logger.warn(null, ex);
+				continue;
+			}
+
+			logger.debug("Setting default configuration value for {}.{} to {}", group.keyName(), item.keyName(), defaultValue);
+			setConfiguration(group.keyName(), item.keyName(), defaultValue.toString());
+		}
+	}
+
+	static Object stringToObject(String str, Class<?> type)
+	{
+		if (type == boolean.class)
+		{
+			return Boolean.parseBoolean(str);
+		}
+		return str;
 	}
 }

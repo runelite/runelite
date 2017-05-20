@@ -39,8 +39,6 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.PluginPanel;
 import static net.runelite.client.ui.PluginPanel.PANEL_HEIGHT;
 import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
@@ -76,16 +74,12 @@ public class ConfigPanel extends PluginPanel
 	private Collection<ConfigDescriptor> getConfig()
 	{
 		List<ConfigDescriptor> list = new ArrayList<>();
-		PluginManager pm = runelite.getPluginManager();
-		for (Plugin plugin : pm.getPlugins())
+		for (Object config : runelite.getConfigManager().getConfigProxies())
 		{
-			Object config = plugin.getConfig();
-			if (config != null)
-			{
-				ConfigManager configManager = runelite.getConfigManager();
-				ConfigDescriptor configDescriptor = configManager.getConfigDescriptor(config);
-				list.add(configDescriptor);
-			}
+			ConfigManager configManager = runelite.getConfigManager();
+			ConfigDescriptor configDescriptor = configManager.getConfigDescriptor(config);
+
+			list.add(configDescriptor);
 		}
 		return list;
 	}
