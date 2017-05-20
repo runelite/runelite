@@ -99,4 +99,28 @@ public class AccountClient
 			logger.debug("Sent logout request");
 		}
 	}
+
+	public boolean sesssionCheck()
+	{
+		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+			.addPathSegment("account")
+			.addPathSegment("session-check")
+			.build();
+
+		logger.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+			.header(RuneliteAPI.RUNELITE_AUTH, uuid.toString())
+			.url(url)
+			.build();
+
+		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		{
+			return response.isSuccessful();
+		}
+		catch (IOException ex)
+		{
+			return false;
+		}
+	}
 }

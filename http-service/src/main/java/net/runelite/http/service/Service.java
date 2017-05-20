@@ -92,6 +92,9 @@ public class Service implements SparkApplication
 
 			before("/logout", authFilter);
 			get("/logout", accounts::logout);
+
+			before("/session-check", authFilter);
+			get("/session-check", accounts::sessionCheck);
 		});
 		before("/config", authFilter);
 		path("/config", () ->

@@ -249,4 +249,10 @@ public class AccountService
 
 		return "";
 	}
+
+	public Object sessionCheck(Request request, Response response)
+	{
+		// Auth filter would kick this out before here
+		return "";
+	}
 }
