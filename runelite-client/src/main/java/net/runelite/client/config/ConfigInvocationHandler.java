@@ -85,9 +85,10 @@ class ConfigInvocationHandler implements InvocationHandler
 			if (!objectValue.getClass().equals(returnType))
 			{
 				logger.warn("Unable to convert return type for configuration item {}.{}: {}", group.keyName(), item.keyName(), returnType);
+				return null;
 			}
 
-			return null;
+			return objectValue;
 		}
 		else
 		{
