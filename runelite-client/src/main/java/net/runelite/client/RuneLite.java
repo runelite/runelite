@@ -77,7 +77,7 @@ public class RuneLite
 	private WSClient wsclient;
 
 	private AccountSession accountSession;
-	private ConfigManager configManager = new ConfigManager(eventBus);
+	private final ConfigManager configManager = new ConfigManager(eventBus);
 
 	static
 	{
@@ -120,6 +120,10 @@ public class RuneLite
 
 		pluginManager = new PluginManager(this);
 		pluginManager.loadAll();
+
+		// Plugins have registered their config, so set default config
+		// to main settings
+		configManager.loadDefault();
 
 		renderer = new OverlayRenderer();
 
@@ -221,8 +225,7 @@ public class RuneLite
 		{
 			// Initialize config for new session
 			// If the session isn't logged in yet, don't switch to the new config
-			configManager = new ConfigManager(eventBus, session);
-			configManager.load();
+			configManager.switchSession(session);
 		}
 
 		eventBus.post(new SessionOpen());
@@ -246,8 +249,7 @@ public class RuneLite
 		accountSession = null; // No more account
 
 		// Restore config
-		configManager = new ConfigManager(eventBus);
-		configManager.load();
+		configManager.switchSession(null);
 
 		eventBus.post(new SessionClose());
 	}

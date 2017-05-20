@@ -55,7 +55,6 @@ public class OpponentInfo extends Plugin
 	{
 	}
 
-	@Override
 	public OpponentConfig getConfig()
 	{
 		return config;

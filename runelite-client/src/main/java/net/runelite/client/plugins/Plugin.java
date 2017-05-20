@@ -44,11 +44,6 @@ public abstract class Plugin extends AbstractIdleService
 		return overlay != null ? Arrays.asList(overlay) : Collections.EMPTY_LIST;
 	}
 
-	public Object getConfig()
-	{
-		return null;
-	}
-
 	/**
 	 * Override AbstractIdleService's default executor to instead execute in
 	 * the main thread. Prevents plugins from all being initialized from

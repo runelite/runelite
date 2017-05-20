@@ -80,17 +80,13 @@ class ConfigInvocationHandler implements InvocationHandler
 
 			// Convert value to return type
 			Class<?> returnType = method.getReturnType();
-			if (returnType == value.getClass())
+			Object objectValue = ConfigManager.stringToObject(value, returnType);
+
+			if (!objectValue.getClass().equals(returnType))
 			{
-				return value;
+				logger.warn("Unable to convert return type for configuration item {}.{}: {}", group.keyName(), item.keyName(), returnType);
 			}
 
-			if (returnType == Boolean.class)
-			{
-				return Boolean.valueOf(value);
-			}
-
-			logger.warn("Unknown return type for configuration item {}.{}: {}", group.keyName(), item.keyName(), returnType);
 			return null;
 		}
 		else
@@ -121,7 +117,7 @@ class ConfigInvocationHandler implements InvocationHandler
 		}
 	}
 
-	private Object callDefaultMethod(Object proxy, Method method, Object[] args) throws Throwable
+	static Object callDefaultMethod(Object proxy, Method method, Object[] args) throws Throwable
 	{
 		// Call the default method implementation - https://rmannibucau.wordpress.com/2014/03/27/java-8-default-interface-methods-and-jdk-dynamic-proxies/
 		Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class, int.class);
