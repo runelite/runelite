@@ -120,7 +120,8 @@ public class AccountClient
 		}
 		catch (IOException ex)
 		{
-			return false;
+			logger.debug("Unable to verify session", ex);
+			return true; // assume it is still valid if the server is unreachable
 		}
 	}
 }

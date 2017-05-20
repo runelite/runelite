@@ -50,6 +50,7 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.http.api.account.AccountClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -160,11 +161,13 @@ public class RuneLite
 			return;
 		}
 
+		AccountSession session;
+
 		try (FileInputStream in = new FileInputStream(SESSION_FILE))
 		{
-			accountSession = new Gson().fromJson(new InputStreamReader(in), AccountSession.class);
+			session = new Gson().fromJson(new InputStreamReader(in), AccountSession.class);
 
-			logger.debug("Loaded session for {}", accountSession.getUsername());
+			logger.debug("Loaded session for {}", session.getUsername());
 		}
 		catch (Exception ex)
 		{
@@ -172,7 +175,15 @@ public class RuneLite
 			return;
 		}
 
-		openSession(accountSession);
+		// Check if session is still valid
+		AccountClient accountClient = new AccountClient(session.getUuid());
+		if (!accountClient.sesssionCheck())
+		{
+			logger.debug("Loaded session {} is invalid", session.getUuid());
+			return;
+		}
+
+		openSession(session);
 	}
 
 	public void saveSession()
