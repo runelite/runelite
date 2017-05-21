@@ -24,28 +24,39 @@
  */
 package net.runelite.cache.script.interpreter.instructions;
 
+import java.util.Map;
+import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.script.interpreter.Frame;
 import net.runelite.cache.script.interpreter.InstructionContext;
 import net.runelite.cache.script.interpreter.InstructionHandler;
+import net.runelite.cache.script.interpreter.ScriptInstruction;
 import net.runelite.cache.script.interpreter.Stack;
 import net.runelite.cache.script.interpreter.StackContext;
 
-public abstract class If extends InstructionHandler
+public class Switch extends InstructionHandler
 {
 	@Override
-	public final void execute(Frame frame, InstructionContext ctx)
+	public void execute(Frame frame, InstructionContext ctx)
 	{
 		Stack intStack = frame.getIntStack();
-		int iop = ctx.getScriptInstruction().getIop();
+		ScriptInstruction scriptInstruction = ctx.getScriptInstruction();
+		ScriptDefinition script = frame.getScript();
+		int switchTableIndex = scriptInstruction.getIop();
 
-		StackContext sctx1 = intStack.pop();
-		StackContext sctx2 = intStack.pop();
+		// value -> pc
+		Map<Integer, Integer> switchTable = script.getSwitches()[switchTableIndex];
 
-		ctx.popsInt(sctx1, sctx2);
-		sctx1.poppedBy(ctx);
-		sctx2.poppedBy(ctx);
+		// pop value off stack
+		StackContext sctx = intStack.pop();
+		ctx.popsInt(sctx);
+		sctx.poppedBy(ctx);
 
-		Frame dup = frame.dup();
-		dup.jump(iop);
+		// jump to targets
+		for (int target : switchTable.values())
+		{
+			Frame dup = frame.dup();
+			dup.jump(target);
+		}
 	}
+
 }
