@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions;
 
-package net.runelite.cache;
-
-public enum IndexType
+public class FrameDefinition
 {
-	FRAMES(0),
-	FRAMEMAPS(1),
-	CONFIGS(2),
-	INTERFACES(3),
-	SOUNDEFFECTS(4),
-	MAPS(5),
-	TRACK1(6),
-	MODELS(7),
-	SPRITES(8),
-	TEXTURES(9),
-	BINARY(10),
-	TRACK2(11),
-	CLIENTSCRIPT(12),
-	FONTS(13),
-	VORBIS(14),
-	INSTRUMENTS(15);
-
-	private int id;
-	
-	IndexType(int id)
-	{
-		this.id = id;
-	}
-	
-	public int getNumber()
-	{
-		return id;
-	}
+	public FramemapDefinition framemap;
+	public int[] translator_x;
+	public int[] translator_y;
+	public int[] translator_z;
+	public int field1310 = -1;
+	public int[] indexFrameIds;
+	public boolean field1315;
 }
