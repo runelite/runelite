@@ -33,10 +33,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import net.runelite.cache.definitions.KitDefinition;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.definitions.ObjectDefinition;
@@ -100,6 +102,7 @@ public class ModelViewer
 		options.addOption(null, "object", true, "object to render");
 		options.addOption(null, "model", true, "model to render");
 		options.addOption(null, "map", true, "map region to render");
+		options.addOption(null, "kits", true, "kits to render");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd = parser.parse(options, args);
@@ -179,6 +182,21 @@ public class ModelViewer
 
 			loadUnderlays();
 			loadOverlays();
+		}
+		if (cmd.hasOption("kits"))
+		{
+			String kits = cmd.getOptionValue("kits");
+			Integer[] kitIds = Arrays.stream(kits.split(",")).map(s -> Integer.parseInt(s)).toArray(Integer[]::new);
+
+			for (int kitId : kitIds)
+			{
+				KitDefinition kit = KitManager.getKit(kitId);
+				for (int model : kit.modelIds)
+				{
+					ModelDefinition md = ModelManager.getModel(model, null, null);
+					models.add(md);
+				}
+			}
 		}
 
 		Display.setDisplayMode(new DisplayMode(800, 600));
@@ -297,7 +315,9 @@ public class ModelViewer
 				assert texture != null;
 
 				if (md.faceTextureUCoordinates == null || md.faceTextureVCoordinates == null)
+				{
 					md.computeTextureUVCoordinates();
+				}
 
 				u = md.faceTextureUCoordinates[i];
 				v = md.faceTextureVCoordinates[i];
