@@ -82,11 +82,12 @@ class ConfigInvocationHandler implements InvocationHandler
 			Class<?> returnType = method.getReturnType();
 			Object objectValue = ConfigManager.stringToObject(value, returnType);
 
-			if (!objectValue.getClass().equals(returnType))
-			{
-				logger.warn("Unable to convert return type for configuration item {}.{}: {}", group.keyName(), item.keyName(), returnType);
-				return null;
-			}
+			// objectValue automatically gets unboxed
+//			if (!objectValue.getClass().equals(returnType))
+//			{
+//				logger.warn("Unable to convert return type for configuration item {}.{}: {}", group.keyName(), item.keyName(), returnType);
+//				return null;
+//			}
 
 			return objectValue;
 		}
