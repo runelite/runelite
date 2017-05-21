@@ -68,7 +68,10 @@ public class ModelManager
 			ModelLoader loader = new ModelLoader();
 			md = loader.load(id, b);
 
-			rotate(md, object, location);
+			if (object != null && location != null)
+			{
+				rotate(md, object, location);
+			}
 
 			models.put(key, md);
 			return md;
