@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.kit;
 
-public class Player extends Actor
+public enum KitType
 {
-	private Client client;
-	private net.runelite.rs.api.Player player;
+	CAPE(1),
+	AMULET(2),
+	WEAPON(3),
+	TORSO(4),
+	SHIELD(5),
+	LEGS(7),
+	HEAD(8),
+	HANDS(9),
+	BOOTS(10),
+	JAW(11);
 
-	public Player(Client client, net.runelite.rs.api.Player player)
+	/** index into player composition equipment ids
+	 */
+	private final int index;
+
+	private KitType(int index)
 	{
-		super(client, player);
-
-		this.player = player;
-		this.client = client;
+		this.index = index;
 	}
 
-	@Override
-	public String getName()
+	public int getIndex()
 	{
-		return player.getName().replace('\u00A0', ' ');
-	}
-
-	@Override
-	public int getCombatLevel()
-	{
-		return player.getCombatLevel();
-	}
-
-	public PlayerComposition getPlayerComposition()
-	{
-		return new PlayerComposition(player.getComposition());
+		return index;
 	}
 }
