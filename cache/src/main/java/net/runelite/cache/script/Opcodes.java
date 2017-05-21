@@ -38,6 +38,10 @@ public class Opcodes
 	public static final int RETURN = 21;
 	public static final int IF_ICMPLE = 31;
 	public static final int IF_ICMPGE = 32;
+	public static final int ILOAD = 33;
+	public static final int ISTORE = 34;
+	public static final int SLOAD = 35;
+	public static final int SSTORE = 36;
 	public static final int POP_INT = 38;
 	public static final int POP_STRING = 39;
 	//public static final int INVOKE = 40;
