@@ -22,20 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.script.interpreter.instructions;
+package net.runelite.cache.script.interpreter;
 
-import net.runelite.cache.script.interpreter.Frame;
-import net.runelite.cache.script.interpreter.InstructionContext;
-import net.runelite.cache.script.interpreter.InstructionHandler;
-
-public class Return extends InstructionHandler
+public class VariableContext
 {
-	@Override
-	public void execute(Frame frame, InstructionContext ctx)
-	{
-		frame.stop();
-
-		// restore lvt from calling script. return value is on the stack.
-	}
 
 }
