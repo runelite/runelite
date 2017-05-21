@@ -18,7 +18,7 @@ LABEL7:
    load_int               0
    return                
 LABEL9:
-   sload                 
+   sload                  0
    string_remove_html    
    3623                  
    load_int               1
@@ -40,7 +40,7 @@ LABEL24:
    load_int               0
    return                
 LABEL26:
-   sload                 
+   sload                  0
    string_remove_html    
    3623                  
    load_int               1
@@ -63,7 +63,7 @@ LABEL40:
    if_icmpeq              LABEL44
    jump                   LABEL51
 LABEL44:
-   sload                 
+   sload                  0
    3609                  
    load_int               1
    if_icmpeq              LABEL49

@@ -199,6 +199,7 @@ public class Disassembler
 		{
 			case Opcodes.LOAD_INT:
 			case Opcodes.ILOAD:
+			case Opcodes.SLOAD:
 				return true;
 		}
 
