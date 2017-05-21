@@ -42,6 +42,10 @@ public class ScriptWriter extends rs2asmBaseListener
 	private final LabelVisitor labelVisitor;
 
 	private int pos;
+	private int intStackCount;
+	private int stringStackCount;
+	private int localIntCount;
+	private int localStringCount;
 	private List<Integer> opcodes = new ArrayList<>();
 	private List<Integer> iops = new ArrayList<>();
 	private List<String> sops = new ArrayList<>();
@@ -50,6 +54,34 @@ public class ScriptWriter extends rs2asmBaseListener
 	public ScriptWriter(LabelVisitor labelVisitor)
 	{
 		this.labelVisitor = labelVisitor;
+	}
+
+	@Override
+	public void enterInt_stack_value(rs2asmParser.Int_stack_valueContext ctx)
+	{
+		int value = Integer.parseInt(ctx.getText());
+		intStackCount = value;
+	}
+
+	@Override
+	public void enterString_stack_value(rs2asmParser.String_stack_valueContext ctx)
+	{
+		int value = Integer.parseInt(ctx.getText());
+		stringStackCount = value;
+	}
+
+	@Override
+	public void enterInt_var_value(rs2asmParser.Int_var_valueContext ctx)
+	{
+		int value = Integer.parseInt(ctx.getText());
+		localIntCount = value;
+	}
+
+	@Override
+	public void enterString_var_value(rs2asmParser.String_var_valueContext ctx)
+	{
+		int value = Integer.parseInt(ctx.getText());
+		localStringCount = value;
 	}
 
 	@Override
@@ -175,6 +207,10 @@ public class ScriptWriter extends rs2asmBaseListener
 	public ScriptDefinition buildScript()
 	{
 		ScriptDefinition script = new ScriptDefinition();
+		script.setIntStackCount(intStackCount);
+		script.setStringStackCount(stringStackCount);
+		script.setLocalIntCount(localIntCount);
+		script.setLocalStringCount(localStringCount);
 		script.setInstructions(opcodes.stream().mapToInt(Integer::valueOf).toArray());
 		script.setIntOperands(iops.stream()
 			.map(i -> i == null ? 0 : i)
