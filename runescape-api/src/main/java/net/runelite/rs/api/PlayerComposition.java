@@ -32,9 +32,6 @@ public interface PlayerComposition
 	@Import("isFemale")
 	boolean isFemale();
 
-	@Import("equipment")
-	int[] getEquipment();
-
 	@Import("bodyPartColours")
 	int[] getBodyPartColours();
 

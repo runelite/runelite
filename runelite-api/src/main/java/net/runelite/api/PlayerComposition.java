@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,33 +24,45 @@
  */
 package net.runelite.api;
 
-public class Player extends Actor
+import net.runelite.api.kit.KitType;
+
+public class PlayerComposition
 {
-	private Client client;
-	private net.runelite.rs.api.Player player;
+	private final net.runelite.rs.api.PlayerComposition playerComposition;
 
-	public Player(Client client, net.runelite.rs.api.Player player)
+	public PlayerComposition(net.runelite.rs.api.PlayerComposition playerComposition)
 	{
-		super(client, player);
-
-		this.player = player;
-		this.client = client;
+		this.playerComposition = playerComposition;
 	}
 
-	@Override
-	public String getName()
+	/**
+	 * Get equipment ids. If id is >= 256 && < 512 then subtract 256 and the id is a kit definition.
+	 * If the id is >= 512 then subtract 512 and the id is an item id.
+	 *
+	 * @return
+	 */
+	public int[] getEquipmentIds()
 	{
-		return player.getName().replace('\u00A0', ' ');
+		return playerComposition.getEquipmentIds();
 	}
 
-	@Override
-	public int getCombatLevel()
+	public int getEquipmentId(KitType type)
 	{
-		return player.getCombatLevel();
+		int id = getEquipmentIds()[type.getIndex()];
+		if (id < 512)
+		{
+			return -1; // not an item
+		}
+		return id - 512;
 	}
 
-	public PlayerComposition getPlayerComposition()
+	public int getKitId(KitType type)
 	{
-		return new PlayerComposition(player.getComposition());
+		int id = getEquipmentIds()[type.getIndex()];
+		if (id < 256 || id >= 512)
+		{
+			return -1; // not a kit
+		}
+		return id - 256;
 	}
 }
