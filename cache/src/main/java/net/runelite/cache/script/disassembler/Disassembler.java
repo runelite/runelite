@@ -101,8 +101,6 @@ public class Disassembler
 
 	public String disassemble(ScriptDefinition script) throws IOException
 	{
-		StringBuilder writer = new StringBuilder();
-
 		int[] instructions = script.getInstructions();
 		int[] iops = script.getIntOperands();
 		String[] sops = script.getStringOperands();
@@ -112,6 +110,9 @@ public class Disassembler
 		assert sops.length == instructions.length;
 
 		boolean[] jumps = needLabel(script);
+
+		StringBuilder writer = new StringBuilder();
+		writerHeader(writer, script);
 
 		for (int i = 0; i < instructions.length; ++i)
 		{
@@ -188,7 +189,33 @@ public class Disassembler
 			return false;
 		}
 
-		// Write if operand != 0 or if the instruction is specifically to load int
-		return operand != 0 || opcode == Opcodes.LOAD_INT;
+		if (operand != 0)
+		{
+			// always write non-zero operand
+			return true;
+		}
+
+		switch (opcode)
+		{
+			case Opcodes.LOAD_INT:
+			case Opcodes.ILOAD:
+				return true;
+		}
+
+		// int operand is not used, don't write it
+		return false;
+	}
+
+	private void writerHeader(StringBuilder writer, ScriptDefinition script)
+	{
+		int intStackCount = script.getIntStackCount();
+		int stringStackCount = script.getStringStackCount();
+		int localIntCount = script.getLocalIntCount();
+		int localStringCount = script.getLocalStringCount();
+
+		writer.append(".int_stack_count    ").append(intStackCount).append('\n');
+		writer.append(".string_stack_count ").append(stringStackCount).append('\n');
+		writer.append(".int_var_count      ").append(localIntCount).append('\n');
+		writer.append(".string_var_count   ").append(localStringCount).append('\n');
 	}
 }

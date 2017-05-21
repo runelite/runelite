@@ -29,13 +29,13 @@ import java.util.Map;
 public class ScriptDefinition
 {
 	private int id;
-	private int intStackCount;
 	private int[] instructions;
 	private int[] intOperands;
 	private String[] stringOperands;
-	private int localStringCount;
+	private int intStackCount;
 	private int stringStackCount;
 	private int localIntCount;
+	private int localStringCount;
 	private Map<Integer, Integer>[] switches;
 
 	public int getId()

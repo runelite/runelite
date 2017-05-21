@@ -50,7 +50,7 @@ public class AssemblerTest
 	{
 		return new String[]
 		{
-			"395.rs2asm", "91.rs2asm"
+			"91.rs2asm"
 		};
 	}
 

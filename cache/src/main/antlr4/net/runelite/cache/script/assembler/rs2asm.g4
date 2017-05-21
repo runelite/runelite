@@ -24,7 +24,19 @@
  */
 grammar rs2asm;
 
-prog: (line NEWLINE)+ ;
+prog: (header NEWLINE)* (line NEWLINE)+ ;
+
+header: int_stack_count | string_stack_count | int_var_count | string_var_count ;
+
+int_stack_count: '.int_stack_count ' int_stack_value ;
+string_stack_count: '.string_stack_count ' string_stack_value ;
+int_var_count: '.int_var_count ' int_var_value ;
+string_var_count: '.string_var_count ' string_var_value ;
+
+int_stack_value: INT ;
+string_stack_value: INT ;
+int_var_value: INT ;
+string_var_value: INT ;
 
 line: instruction | label | switch_lookup ;
 instruction: instruction_name instruction_operand ;
