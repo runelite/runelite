@@ -37,6 +37,7 @@ import net.runelite.cache.script.interpreter.instructions.Invoke;
 import net.runelite.cache.script.interpreter.instructions.Jump;
 import net.runelite.cache.script.interpreter.instructions.LoadInt;
 import net.runelite.cache.script.interpreter.instructions.Return;
+import net.runelite.cache.script.interpreter.instructions.Switch;
 
 public class InstructionHandlers
 {
@@ -59,6 +60,7 @@ public class InstructionHandlers
 		add(Opcodes.IF_ICMPGE, new If_ICmpGE());
 		add(Opcodes.INVOKE, new Invoke());
 		add(Opcodes.RETURN, new Return());
+		add(Opcodes.SWITCH, new Switch());
 	}
 
 	private static void add(int opcode, InstructionHandler handler)
