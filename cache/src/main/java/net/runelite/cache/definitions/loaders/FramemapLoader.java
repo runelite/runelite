@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions.loaders;
 
-package net.runelite.cache;
+import net.runelite.cache.definitions.FramemapDefinition;
+import net.runelite.cache.io.InputStream;
 
-public enum IndexType
+public class FramemapLoader
 {
-	FRAMES(0),
-	FRAMEMAPS(1),
-	CONFIGS(2),
-	INTERFACES(3),
-	SOUNDEFFECTS(4),
-	MAPS(5),
-	TRACK1(6),
-	MODELS(7),
-	SPRITES(8),
-	TEXTURES(9),
-	BINARY(10),
-	TRACK2(11),
-	CLIENTSCRIPT(12),
-	FONTS(13),
-	VORBIS(14),
-	INSTRUMENTS(15);
+	public FramemapDefinition load(int id, byte[] b)
+	{
+		FramemapDefinition def = new FramemapDefinition();
+		InputStream in = new InputStream(b);
 
-	private int id;
-	
-	IndexType(int id)
-	{
-		this.id = id;
-	}
-	
-	public int getNumber()
-	{
-		return id;
+		def.id = id;
+
+		def.length = in.readUnsignedByte();
+		def.field1456 = new int[def.length];
+		def.field1457 = new int[def.length][];
+
+		for (int i = 0; i < def.length; ++i)
+		{
+			def.field1456[i] = in.readUnsignedByte();
+		}
+
+		for (int i = 0; i < def.length; ++i)
+		{
+			def.field1457[i] = new int[in.readUnsignedByte()];
+		}
+
+		for (int i = 0; i < def.length; ++i)
+		{
+			for (int j = 0; j < def.field1457[i].length; ++j)
+			{
+				def.field1457[i][j] = in.readUnsignedByte();
+			}
+		}
+
+		return def;
 	}
 }
