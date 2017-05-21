@@ -27,15 +27,24 @@ package net.runelite.cache.script.interpreter.instructions;
 import net.runelite.cache.script.interpreter.Frame;
 import net.runelite.cache.script.interpreter.InstructionContext;
 import net.runelite.cache.script.interpreter.InstructionHandler;
+import net.runelite.cache.script.interpreter.ScriptInstruction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Return extends InstructionHandler
+public class Invoke extends InstructionHandler
 {
+	private static final Logger logger = LoggerFactory.getLogger(Invoke.class);
+
 	@Override
 	public void execute(Frame frame, InstructionContext ctx)
 	{
-		frame.stop();
+		ScriptInstruction scriptInstruction = ctx.getScriptInstruction();
 
-		// restore lvt from calling script. return value is on the stack.
+		int scriptToInvoke = scriptInstruction.getIop();
+
+		// copy new script's intStackCount/stringStackCount to the new LVT, and pop from caller's stack
+		
+		logger.warn("Invoke not implemented yet");
 	}
 
 }

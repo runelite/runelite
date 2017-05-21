@@ -33,6 +33,7 @@ import net.runelite.cache.script.interpreter.instructions.If_ICmpGT;
 import net.runelite.cache.script.interpreter.instructions.If_ICmpLE;
 import net.runelite.cache.script.interpreter.instructions.If_ICmpLT;
 import net.runelite.cache.script.interpreter.instructions.If_ICmpNE;
+import net.runelite.cache.script.interpreter.instructions.Invoke;
 import net.runelite.cache.script.interpreter.instructions.Jump;
 import net.runelite.cache.script.interpreter.instructions.LoadInt;
 import net.runelite.cache.script.interpreter.instructions.Return;
@@ -56,6 +57,7 @@ public class InstructionHandlers
 		add(Opcodes.IF_ICMPGT, new If_ICmpGT());
 		add(Opcodes.IF_ICMPLE, new If_ICmpLE());
 		add(Opcodes.IF_ICMPGE, new If_ICmpGE());
+		add(Opcodes.INVOKE, new Invoke());
 		add(Opcodes.RETURN, new Return());
 	}
 

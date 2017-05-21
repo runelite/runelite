@@ -58,7 +58,7 @@ public class Instructions
 		// 37 - pops strings eq to int operand, pushes 1 string
 		add(Opcodes.POP_INT, "pop_int", 1, 0);
 		add(Opcodes.POP_STRING, "pop_string", 0, 0, 1, 0);
-		// 40 seems to interact with other scripts, variable pops/pushes
+		// 40 invoke script, variable pops/pushes
 		add(42, 0, 1);
 		add(43, 1, 0);
 		add(44, 1, 0);
