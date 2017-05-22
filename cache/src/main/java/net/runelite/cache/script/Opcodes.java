@@ -42,6 +42,7 @@ public class Opcodes
 	public static final int ISTORE = 34;
 	public static final int SLOAD = 35;
 	public static final int SSTORE = 36;
+	public static final int STRING_APPEND = 37;
 	public static final int POP_INT = 38;
 	public static final int POP_STRING = 39;
 	public static final int INVOKE = 40;

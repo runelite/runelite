@@ -55,7 +55,7 @@ public class Instructions
 		add(Opcodes.ISTORE, "istore", 1, 0);
 		add(Opcodes.SLOAD, "sload", 0, 0, 0, 1);
 		add(Opcodes.SSTORE, "sstore", 0, 0, 1, 0);
-		// 37 - pops strings eq to int operand, pushes 1 string
+		add(Opcodes.STRING_APPEND, 0, 0, -1, 1);
 		add(Opcodes.POP_INT, "pop_int", 1, 0);
 		add(Opcodes.POP_STRING, "pop_string", 0, 0, 1, 0);
 		add(Opcodes.INVOKE, "invoke", -1, -1, -1, -1);
