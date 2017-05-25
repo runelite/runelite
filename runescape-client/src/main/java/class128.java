@@ -1,419 +1,290 @@
-import java.awt.Desktop;
-import java.awt.Desktop.Action;
-import java.net.URI;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dd")
+@ObfuscatedName("dy")
 public final class class128 {
    @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1699705957
-   )
-   int field1913;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1401420029
-   )
-   int field1914;
-   @ObfuscatedName("n")
-   final int field1915;
-   @ObfuscatedName("q")
-   final int field1916;
-   @ObfuscatedName("t")
-   final int field1917;
-   @ObfuscatedName("p")
-   final int field1918;
-   @ObfuscatedName("v")
-   byte[] field1919;
-   @ObfuscatedName("aw")
-   @ObfuscatedGetter(
-      intValue = -531075811
-   )
-   int field1920;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 2003734653
-   )
-   int field1921;
-   @ObfuscatedName("c")
-   final int field1922;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 785139229
-   )
-   int field1923;
-   @ObfuscatedName("ay")
-   int[][] field1924;
-   @ObfuscatedName("av")
-   int[] field1925;
-   @ObfuscatedName("s")
-   byte field1926;
-   @ObfuscatedName("aq")
-   int[][] field1927;
-   @ObfuscatedName("ak")
-   byte[] field1928;
-   @ObfuscatedName("ae")
-   int[][] field1929;
-   @ObfuscatedName("u")
-   byte[] field1930;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1411473743
-   )
-   int field1931;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1329752917
-   )
-   int field1932;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1025699273
-   )
-   int field1933;
-   @ObfuscatedName("b")
-   int[] field1934;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -264950253
-   )
-   int field1935;
-   @ObfuscatedName("o")
-   int[] field1936;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1344810201
-   )
-   int field1937;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -581720111
-   )
-   int field1938;
-   @ObfuscatedName("am")
-   boolean[] field1939;
-   @ObfuscatedName("ax")
-   boolean[] field1940;
-   @ObfuscatedName("ac")
-   byte[] field1941;
-   @ObfuscatedName("az")
-   byte[] field1942;
+   boolean field1823;
    @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1219872247
-   )
-   int field1943;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 137246519
-   )
-   int field1944;
-   @ObfuscatedName("aa")
-   byte[] field1945;
-   @ObfuscatedName("aj")
-   byte[][] field1946;
+   int[] field1824;
+   @ObfuscatedName("u")
+   int[] field1825;
+   @ObfuscatedName("l")
+   int[] field1826;
+   @ObfuscatedName("g")
+   int[] field1827;
+   @ObfuscatedName("v")
+   int[] field1828;
+   @ObfuscatedName("t")
+   int[] field1829;
+   @ObfuscatedName("p")
+   int[] field1830;
+   @ObfuscatedName("q")
+   int[] field1831;
+   @ObfuscatedName("a")
+   int[] field1832;
+   @ObfuscatedName("y")
+   static final int[][] field1833;
    @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 2036138579
-   )
-   int field1947;
-   @ObfuscatedName("d")
-   final int field1948;
-   @ObfuscatedName("ao")
-   int[] field1949;
-   @ObfuscatedName("m")
-   static int[] field1950;
+   int field1834;
+   @ObfuscatedName("b")
+   int field1835;
+   @ObfuscatedName("x")
+   int field1836;
+   @ObfuscatedName("o")
+   int field1837;
    @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -126247067
-   )
-   int field1951;
-   @ObfuscatedName("ev")
-   static ModIcon[] field1952;
+   static int[] field1838;
+   @ObfuscatedName("h")
+   int[] field1839;
+   @ObfuscatedName("d")
+   static int[] field1840;
+   @ObfuscatedName("e")
+   static int[] field1841;
+   @ObfuscatedName("s")
+   static int[] field1842;
+   @ObfuscatedName("n")
+   static final int[][] field1843;
+   @ObfuscatedName("m")
+   static int[] field1844;
 
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(IB)LWidget;",
-      garbageValue = "83"
-   )
-   public static Widget method2364(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & '\uffff';
-      if(class133.widgets[var1] == null || class133.widgets[var1][var2] == null) {
-         boolean var3 = class112.method2112(var1);
-         if(!var3) {
-            return null;
+   static {
+      field1838 = new int[6];
+      field1844 = new int[6];
+      field1840 = new int[6];
+      field1841 = new int[6];
+      field1842 = new int[6];
+      field1843 = new int[][]{{1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 2, 6}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 13, 14}};
+      field1833 = new int[][]{{0, 1, 2, 3, 0, 0, 1, 3}, {1, 1, 2, 3, 1, 0, 1, 3}, {0, 1, 2, 3, 1, 0, 1, 3}, {0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3}, {0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4}, {0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4}, {0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3}, {0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3}, {0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5}, {0, 0, 4, 5, 1, 4, 1, 2, 1, 4, 2, 3, 1, 4, 3, 5}, {0, 0, 1, 5, 0, 1, 4, 5, 0, 1, 2, 4, 1, 0, 5, 3, 1, 5, 4, 3, 1, 4, 2, 3}, {1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3}, {1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5}};
+   }
+
+   class128(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14, int var15, int var16, int var17, int var18, int var19) {
+      this.field1823 = true;
+      if(var6 != var7 || var6 != var8 || var6 != var9) {
+         this.field1823 = false;
+      }
+
+      this.field1834 = var1;
+      this.field1835 = var2;
+      this.field1836 = var18;
+      this.field1837 = var19;
+      short var20 = 128;
+      int var21 = var20 / 2;
+      int var22 = var20 / 4;
+      int var23 = var20 * 3 / 4;
+      int[] var24 = field1843[var1];
+      int var25 = var24.length;
+      this.field1824 = new int[var25];
+      this.field1839 = new int[var25];
+      this.field1825 = new int[var25];
+      int[] var26 = new int[var25];
+      int[] var27 = new int[var25];
+      int var28 = var4 * var20;
+      int var29 = var5 * var20;
+
+      int var31;
+      int var32;
+      int var33;
+      int var34;
+      int var35;
+      int var36;
+      for(int var30 = 0; var30 < var25; ++var30) {
+         var31 = var24[var30];
+         if((var31 & 1) == 0 && var31 <= 8) {
+            var31 = (var31 - var2 - var2 - 1 & 7) + 1;
          }
-      }
 
-      return class133.widgets[var1][var2];
-   }
+         if(var31 > 8 && var31 <= 12) {
+            var31 = (var31 - 9 - var2 & 3) + 9;
+         }
 
-   class128() {
-      this.field1948 = 4096;
-      this.field1922 = 16;
-      this.field1915 = 258;
-      this.field1916 = 6;
-      this.field1917 = 50;
-      this.field1918 = 18002;
-      this.field1937 = 0;
-      this.field1923 = 0;
-      this.field1934 = new int[256];
-      this.field1936 = new int[257];
-      this.field1939 = new boolean[256];
-      this.field1940 = new boolean[16];
-      this.field1941 = new byte[256];
-      this.field1942 = new byte[4096];
-      this.field1949 = new int[16];
-      this.field1928 = new byte[18002];
-      this.field1945 = new byte[18002];
-      this.field1946 = new byte[6][258];
-      this.field1924 = new int[6][258];
-      this.field1929 = new int[6][258];
-      this.field1927 = new int[6][258];
-      this.field1925 = new int[6];
-   }
+         if(var31 > 12 && var31 <= 16) {
+            var31 = (var31 - 13 - var2 & 3) + 13;
+         }
 
-   @ObfuscatedName("do")
-   @ObfuscatedSignature(
-      signature = "(LWidget;III)V",
-      garbageValue = "642326787"
-   )
-   static final void method2365(Widget var0, int var1, int var2) {
-      if(var0.field2210 == 1) {
-         class59.addMenuEntry(var0.tooltip, "", 24, 0, 0, var0.id);
-      }
-
-      String var3;
-      if(var0.field2210 == 2 && !Client.field440) {
-         if(CombatInfo2.method3540(class103.method1988(var0)) == 0) {
-            var3 = null;
-         } else if(var0.field2286 != null && var0.field2286.trim().length() != 0) {
-            var3 = var0.field2286;
+         if(var31 == 1) {
+            var32 = var28;
+            var33 = var29;
+            var34 = var6;
+            var35 = var10;
+            var36 = var14;
+         } else if(var31 == 2) {
+            var32 = var28 + var21;
+            var33 = var29;
+            var34 = var6 + var7 >> 1;
+            var35 = var10 + var11 >> 1;
+            var36 = var14 + var15 >> 1;
+         } else if(var31 == 3) {
+            var32 = var28 + var20;
+            var33 = var29;
+            var34 = var7;
+            var35 = var11;
+            var36 = var15;
+         } else if(var31 == 4) {
+            var32 = var28 + var20;
+            var33 = var29 + var21;
+            var34 = var7 + var8 >> 1;
+            var35 = var11 + var12 >> 1;
+            var36 = var15 + var16 >> 1;
+         } else if(var31 == 5) {
+            var32 = var28 + var20;
+            var33 = var29 + var20;
+            var34 = var8;
+            var35 = var12;
+            var36 = var16;
+         } else if(var31 == 6) {
+            var32 = var28 + var21;
+            var33 = var29 + var20;
+            var34 = var8 + var9 >> 1;
+            var35 = var12 + var13 >> 1;
+            var36 = var16 + var17 >> 1;
+         } else if(var31 == 7) {
+            var32 = var28;
+            var33 = var29 + var20;
+            var34 = var9;
+            var35 = var13;
+            var36 = var17;
+         } else if(var31 == 8) {
+            var32 = var28;
+            var33 = var29 + var21;
+            var34 = var9 + var6 >> 1;
+            var35 = var13 + var10 >> 1;
+            var36 = var17 + var14 >> 1;
+         } else if(var31 == 9) {
+            var32 = var28 + var21;
+            var33 = var29 + var22;
+            var34 = var6 + var7 >> 1;
+            var35 = var10 + var11 >> 1;
+            var36 = var14 + var15 >> 1;
+         } else if(var31 == 10) {
+            var32 = var28 + var23;
+            var33 = var29 + var21;
+            var34 = var7 + var8 >> 1;
+            var35 = var11 + var12 >> 1;
+            var36 = var15 + var16 >> 1;
+         } else if(var31 == 11) {
+            var32 = var28 + var21;
+            var33 = var29 + var23;
+            var34 = var8 + var9 >> 1;
+            var35 = var12 + var13 >> 1;
+            var36 = var16 + var17 >> 1;
+         } else if(var31 == 12) {
+            var32 = var28 + var22;
+            var33 = var29 + var21;
+            var34 = var9 + var6 >> 1;
+            var35 = var13 + var10 >> 1;
+            var36 = var17 + var14 >> 1;
+         } else if(var31 == 13) {
+            var32 = var28 + var22;
+            var33 = var29 + var22;
+            var34 = var6;
+            var35 = var10;
+            var36 = var14;
+         } else if(var31 == 14) {
+            var32 = var28 + var23;
+            var33 = var29 + var22;
+            var34 = var7;
+            var35 = var11;
+            var36 = var15;
+         } else if(var31 == 15) {
+            var32 = var28 + var23;
+            var33 = var29 + var23;
+            var34 = var8;
+            var35 = var12;
+            var36 = var16;
          } else {
-            var3 = null;
+            var32 = var28 + var22;
+            var33 = var29 + var23;
+            var34 = var9;
+            var35 = var13;
+            var36 = var17;
          }
 
-         if(var3 != null) {
-            class59.addMenuEntry(var3, class213.method4037('\uff00') + var0.field2213, 25, 0, -1, var0.id);
+         this.field1824[var30] = var32;
+         this.field1839[var30] = var34;
+         this.field1825[var30] = var33;
+         var26[var30] = var35;
+         var27[var30] = var36;
+      }
+
+      int[] var38 = field1833[var1];
+      var31 = var38.length / 4;
+      this.field1829 = new int[var31];
+      this.field1830 = new int[var31];
+      this.field1826 = new int[var31];
+      this.field1831 = new int[var31];
+      this.field1827 = new int[var31];
+      this.field1828 = new int[var31];
+      if(var3 != -1) {
+         this.field1832 = new int[var31];
+      }
+
+      var32 = 0;
+
+      for(var33 = 0; var33 < var31; ++var33) {
+         var34 = var38[var32];
+         var35 = var38[var32 + 1];
+         var36 = var38[var32 + 2];
+         int var37 = var38[var32 + 3];
+         var32 += 4;
+         if(var35 < 4) {
+            var35 = var35 - var2 & 3;
          }
-      }
 
-      if(var0.field2210 == 3) {
-         class59.addMenuEntry("Close", "", 26, 0, 0, var0.id);
-      }
-
-      if(var0.field2210 == 4) {
-         class59.addMenuEntry(var0.tooltip, "", 28, 0, 0, var0.id);
-      }
-
-      if(var0.field2210 == 5) {
-         class59.addMenuEntry(var0.tooltip, "", 29, 0, 0, var0.id);
-      }
-
-      if(var0.field2210 == 6 && Client.field449 == null) {
-         class59.addMenuEntry(var0.tooltip, "", 30, 0, -1, var0.id);
-      }
-
-      int var5;
-      int var6;
-      int var15;
-      if(var0.type == 2) {
-         var15 = 0;
-
-         for(int var14 = 0; var14 < var0.height; ++var14) {
-            for(var5 = 0; var5 < var0.width; ++var5) {
-               var6 = (var0.paddingX + 32) * var5;
-               int var7 = var14 * (var0.paddingY + 32);
-               if(var15 < 20) {
-                  var6 += var0.field2223[var15];
-                  var7 += var0.field2276[var15];
-               }
-
-               if(var1 >= var6 && var2 >= var7 && var1 < var6 + 32 && var2 < var7 + 32) {
-                  Client.field399 = var15;
-                  class9.field83 = var0;
-                  if(var0.itemIds[var15] > 0) {
-                     ItemComposition var8 = class47.getItemDefinition(var0.itemIds[var15] - 1);
-                     if(Client.field351 == 1 && XItemContainer.method172(class103.method1988(var0))) {
-                        if(class72.field1171 != var0.id || var15 != Player.field264) {
-                           class59.addMenuEntry("Use", Client.field439 + " " + "->" + " " + class213.method4037(16748608) + var8.name, 31, var8.id, var15, var0.id);
-                        }
-                     } else if(Client.field440 && XItemContainer.method172(class103.method1988(var0))) {
-                        if((class159.field2071 & 16) == 16) {
-                           class59.addMenuEntry(Client.field438, Client.field392 + " " + "->" + " " + class213.method4037(16748608) + var8.name, 32, var8.id, var15, var0.id);
-                        }
-                     } else {
-                        String[] var9 = var8.inventoryActions;
-                        if(Client.field456) {
-                           var9 = CollisionData.method2275(var9);
-                        }
-
-                        int var10 = var8.method3776();
-                        int var11;
-                        boolean var12;
-                        byte var13;
-                        if(XItemContainer.method172(class103.method1988(var0))) {
-                           for(var11 = 4; var11 >= 3; --var11) {
-                              var12 = var11 == var10;
-                              if(var9 != null && var9[var11] != null) {
-                                 if(var11 == 3) {
-                                    var13 = 36;
-                                 } else {
-                                    var13 = 37;
-                                 }
-
-                                 class36.method752(var9[var11], class213.method4037(16748608) + var8.name, var13, var8.id, var15, var0.id, var12);
-                              } else if(var11 == 4) {
-                                 class36.method752("Drop", class213.method4037(16748608) + var8.name, 37, var8.id, var15, var0.id, var12);
-                              }
-                           }
-                        }
-
-                        if(Preferences.method650(class103.method1988(var0))) {
-                           class59.addMenuEntry("Use", class213.method4037(16748608) + var8.name, 38, var8.id, var15, var0.id);
-                        }
-
-                        if(XItemContainer.method172(class103.method1988(var0)) && var9 != null) {
-                           for(var11 = 2; var11 >= 0; --var11) {
-                              var12 = var11 == var10;
-                              if(var9[var11] != null) {
-                                 var13 = 0;
-                                 if(var11 == 0) {
-                                    var13 = 33;
-                                 }
-
-                                 if(var11 == 1) {
-                                    var13 = 34;
-                                 }
-
-                                 if(var11 == 2) {
-                                    var13 = 35;
-                                 }
-
-                                 class36.method752(var9[var11], class213.method4037(16748608) + var8.name, var13, var8.id, var15, var0.id, var12);
-                              }
-                           }
-                        }
-
-                        var9 = var0.field2278;
-                        if(Client.field456) {
-                           var9 = CollisionData.method2275(var9);
-                        }
-
-                        if(var9 != null) {
-                           for(var11 = 4; var11 >= 0; --var11) {
-                              if(var9[var11] != null) {
-                                 byte var18 = 0;
-                                 if(var11 == 0) {
-                                    var18 = 39;
-                                 }
-
-                                 if(var11 == 1) {
-                                    var18 = 40;
-                                 }
-
-                                 if(var11 == 2) {
-                                    var18 = 41;
-                                 }
-
-                                 if(var11 == 3) {
-                                    var18 = 42;
-                                 }
-
-                                 if(var11 == 4) {
-                                    var18 = 43;
-                                 }
-
-                                 class59.addMenuEntry(var9[var11], class213.method4037(16748608) + var8.name, var18, var8.id, var15, var0.id);
-                              }
-                           }
-                        }
-
-                        class59.addMenuEntry("Examine", class213.method4037(16748608) + var8.name, 1005, var8.id, var15, var0.id);
-                     }
-                  }
-               }
-
-               ++var15;
-            }
+         if(var36 < 4) {
+            var36 = var36 - var2 & 3;
          }
-      }
 
-      if(var0.hasScript) {
-         if(Client.field440) {
-            if(class94.method1927(class103.method1988(var0)) && (class159.field2071 & 32) == 32) {
-               class59.addMenuEntry(Client.field438, Client.field392 + " " + "->" + " " + var0.name, 58, 0, var0.index, var0.id);
+         if(var37 < 4) {
+            var37 = var37 - var2 & 3;
+         }
+
+         this.field1829[var33] = var35;
+         this.field1830[var33] = var36;
+         this.field1826[var33] = var37;
+         if(var34 == 0) {
+            this.field1831[var33] = var26[var35];
+            this.field1827[var33] = var26[var36];
+            this.field1828[var33] = var26[var37];
+            if(this.field1832 != null) {
+               this.field1832[var33] = -1;
             }
          } else {
-            for(var15 = 9; var15 >= 5; --var15) {
-               String var4 = class183.method3290(var0, var15);
-               if(var4 != null) {
-                  class59.addMenuEntry(var4, var0.name, 1007, var15 + 1, var0.index, var0.id);
-               }
-            }
-
-            if(CombatInfo2.method3540(class103.method1988(var0)) == 0) {
-               var3 = null;
-            } else if(var0.field2286 != null && var0.field2286.trim().length() != 0) {
-               var3 = var0.field2286;
-            } else {
-               var3 = null;
-            }
-
-            if(var3 != null) {
-               class59.addMenuEntry(var3, var0.name, 25, 0, var0.index, var0.id);
-            }
-
-            for(var5 = 4; var5 >= 0; --var5) {
-               String var16 = class183.method3290(var0, var5);
-               if(var16 != null) {
-                  class59.addMenuEntry(var16, var0.name, 57, var5 + 1, var0.index, var0.id);
-               }
-            }
-
-            var6 = class103.method1988(var0);
-            boolean var17 = (var6 & 1) != 0;
-            if(var17) {
-               class59.addMenuEntry("Continue", "", 30, 0, var0.index, var0.id);
+            this.field1831[var33] = var27[var35];
+            this.field1827[var33] = var27[var36];
+            this.field1828[var33] = var27[var37];
+            if(this.field1832 != null) {
+               this.field1832[var33] = var3;
             }
          }
       }
 
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZLjava/lang/String;ZB)V",
-      garbageValue = "101"
-   )
-   public static void method2366(String var0, boolean var1, String var2, boolean var3) {
-      if(var1) {
-         if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
-            try {
-               Desktop.getDesktop().browse(new URI(var0));
-               return;
-            } catch (Exception var5) {
-               ;
-            }
-         }
-
-         if(class114.field1788.startsWith("win")) {
-            class118.method2291(var0, 0, "openjs");
-            return;
-         }
-
-         if(class114.field1788.startsWith("mac")) {
-            class118.method2291(var0, 1, var2);
-            return;
-         }
-
-         class118.method2291(var0, 2, "openjs");
-      } else {
-         class118.method2291(var0, 3, "openjs");
+      var33 = var6;
+      var34 = var7;
+      if(var7 < var6) {
+         var33 = var7;
       }
 
+      if(var7 > var7) {
+         var34 = var7;
+      }
+
+      if(var8 < var33) {
+         var33 = var8;
+      }
+
+      if(var8 > var34) {
+         var34 = var8;
+      }
+
+      if(var9 < var33) {
+         var33 = var9;
+      }
+
+      if(var9 > var34) {
+         var34 = var9;
+      }
+
+      var33 /= 14;
+      var34 /= 14;
    }
 }

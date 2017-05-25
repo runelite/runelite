@@ -1,37 +1,26 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hy")
+@ObfuscatedName("hp")
 public class class211 {
-   @ObfuscatedName("n")
-   static final char[] field3136;
-   @ObfuscatedName("q")
-   static final char[] field3138;
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(II)Lclass220;",
-      garbageValue = "2102684924"
-   )
-   public static class220 method4013(int var0) {
-      class220[] var1 = class109.method2068();
-
-      for(int var2 = 0; var2 < var1.length; ++var2) {
-         class220 var3 = var1[var2];
-         if(var3.field3201 == var0) {
-            return var3;
-         }
-      }
-
-      return null;
-   }
+   @ObfuscatedName("h")
+   public static int[] field2595;
+   @ObfuscatedName("u")
+   @Export("widgetSettings")
+   public static int[] widgetSettings;
+   @ObfuscatedName("i")
+   public static int[] field2597;
 
    static {
-      field3136 = new char[]{' ', ' ', '_', '-', 'à', 'á', 'â', 'ä', 'ã', 'À', 'Á', 'Â', 'Ä', 'Ã', 'è', 'é', 'ê', 'ë', 'È', 'É', 'Ê', 'Ë', 'í', 'î', 'ï', 'Í', 'Î', 'Ï', 'ò', 'ó', 'ô', 'ö', 'õ', 'Ò', 'Ó', 'Ô', 'Ö', 'Õ', 'ù', 'ú', 'û', 'ü', 'Ù', 'Ú', 'Û', 'Ü', 'ç', 'Ç', 'ÿ', 'Ÿ', 'ñ', 'Ñ', 'ß'};
-      field3138 = new char[]{'[', ']', '#'};
-   }
+      field2597 = new int[32];
+      int var0 = 2;
 
-   class211() throws Throwable {
-      throw new Error();
+      for(int var1 = 0; var1 < 32; ++var1) {
+         field2597[var1] = var0 - 1;
+         var0 += var0;
+      }
+
+      field2595 = new int[2000];
+      widgetSettings = new int[2000];
    }
 }

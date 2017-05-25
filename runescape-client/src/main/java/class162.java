@@ -1,228 +1,263 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fa")
+@ObfuscatedName("fx")
 public class class162 {
-   @ObfuscatedName("u")
-   int field2127;
-   @ObfuscatedName("n")
-   int[] field2129;
-   @ObfuscatedName("q")
-   int[] field2130;
-   @ObfuscatedName("c")
-   int field2131;
-   @ObfuscatedName("p")
-   int[] field2132;
-   @ObfuscatedName("v")
-   static final byte[] field2133;
    @ObfuscatedName("l")
-   long field2135;
-   @ObfuscatedName("t")
-   int[] field2136;
-   @ObfuscatedName("d")
-   Buffer field2140;
-
-   class162(byte[] var1) {
-      this.field2140 = new Buffer((byte[])null);
-      this.method3055(var1);
-   }
-
-   class162() {
-      this.field2140 = new Buffer((byte[])null);
-   }
-
-   @ObfuscatedName("q")
-   int method3031() {
-      return this.field2130.length;
-   }
-
-   @ObfuscatedName("t")
-   void method3033(int var1) {
-      this.field2140.offset = this.field2130[var1];
-   }
-
-   @ObfuscatedName("p")
-   void method3034(int var1) {
-      this.field2130[var1] = this.field2140.offset;
-   }
-
+   public static int[] field2279;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1502145357
+   )
+   public static int field2280;
    @ObfuscatedName("u")
-   void method3035() {
-      this.field2140.offset = -1;
+   public static int[][] field2281;
+   @ObfuscatedName("q")
+   public static int[][] field2282;
+   @ObfuscatedName("p")
+   public static int[] field2284;
+
+   static {
+      field2281 = new int[128][128];
+      field2282 = new int[128][128];
+      field2284 = new int[4096];
+      field2279 = new int[4096];
    }
 
-   @ObfuscatedName("w")
-   void method3036(int var1) {
-      int var2 = this.field2140.readVarInt();
-      this.field2136[var1] += var2;
-   }
+   @ObfuscatedName("gt")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "847572382"
+   )
+   static final void method3106(boolean var0) {
+      Client.field1158 = 0;
+      Client.field930 = 0;
+      class69.method1107();
 
-   @ObfuscatedName("r")
-   int method3037(int var1) {
-      int var2 = this.method3038(var1);
-      return var2;
-   }
-
-   @ObfuscatedName("s")
-   int method3038(int var1) {
-      byte var2 = this.field2140.payload[this.field2140.offset];
+      int var1;
+      NPC var3;
+      int var4;
       int var5;
-      if(var2 < 0) {
-         var5 = var2 & 255;
-         this.field2132[var1] = var5;
-         ++this.field2140.offset;
-      } else {
-         var5 = this.field2132[var1];
-      }
+      int var6;
+      int var7;
+      int var8;
+      while(Client.secretPacketBuffer2.method3468(Client.packetLength) >= 27) {
+         var1 = Client.secretPacketBuffer2.method3470(15);
+         if(var1 == 32767) {
+            break;
+         }
 
-      if(var5 != 240 && var5 != 247) {
-         return this.method3041(var1, var5);
-      } else {
-         int var3 = this.field2140.readVarInt();
-         if(var5 == 247 && var3 > 0) {
-            int var4 = this.field2140.payload[this.field2140.offset] & 255;
-            if(var4 >= 241 && var4 <= 243 || var4 == 246 || var4 == 248 || var4 >= 250 && var4 <= 252 || var4 == 254) {
-               ++this.field2140.offset;
-               this.field2132[var1] = var4;
-               return this.method3041(var1, var4);
+         boolean var2 = false;
+         if(Client.cachedNPCs[var1] == null) {
+            Client.cachedNPCs[var1] = new NPC();
+            var2 = true;
+         }
+
+         var3 = Client.cachedNPCs[var1];
+         Client.field1013[++Client.field928 - 1] = var1;
+         var3.field1245 = Client.gameCycle;
+         var4 = Client.secretPacketBuffer2.method3470(1);
+         if(var0) {
+            var5 = Client.secretPacketBuffer2.method3470(8);
+            if(var5 > 127) {
+               var5 -= 256;
+            }
+         } else {
+            var5 = Client.secretPacketBuffer2.method3470(5);
+            if(var5 > 15) {
+               var5 -= 32;
             }
          }
 
-         this.field2140.offset += var3;
-         return 0;
-      }
-   }
+         var6 = Client.field1018[Client.secretPacketBuffer2.method3470(3)];
+         if(var2) {
+            var3.field1247 = var3.angle = var6;
+         }
 
-   @ObfuscatedName("e")
-   long method3040(int var1) {
-      return this.field2135 + (long)var1 * (long)this.field2127;
-   }
-
-   @ObfuscatedName("k")
-   int method3041(int var1, int var2) {
-      int var4;
-      if(var2 == 255) {
-         int var7 = this.field2140.readUnsignedByte();
-         var4 = this.field2140.readVarInt();
-         if(var7 == 47) {
-            this.field2140.offset += var4;
-            return 1;
-         } else if(var7 == 81) {
-            int var5 = this.field2140.read24BitInt();
-            var4 -= 3;
-            int var6 = this.field2136[var1];
-            this.field2135 += (long)var6 * (long)(this.field2127 - var5);
-            this.field2127 = var5;
-            this.field2140.offset += var4;
-            return 2;
+         var3.composition = class220.getNpcDefinition(Client.secretPacketBuffer2.method3470(14));
+         if(var0) {
+            var7 = Client.secretPacketBuffer2.method3470(8);
+            if(var7 > 127) {
+               var7 -= 256;
+            }
          } else {
-            this.field2140.offset += var4;
-            return 3;
+            var7 = Client.secretPacketBuffer2.method3470(5);
+            if(var7 > 15) {
+               var7 -= 32;
+            }
          }
+
+         var8 = Client.secretPacketBuffer2.method3470(1);
+         if(var8 == 1) {
+            Client.field931[++Client.field930 - 1] = var1;
+         }
+
+         var3.field1202 = var3.composition.field3548;
+         var3.field1209 = var3.composition.field3571;
+         if(var3.field1209 == 0) {
+            var3.angle = 0;
+         }
+
+         var3.field1227 = var3.composition.field3554;
+         var3.field1251 = var3.composition.field3555;
+         var3.field1208 = var3.composition.field3556;
+         var3.field1226 = var3.composition.field3545;
+         var3.idlePoseAnimation = var3.composition.field3560;
+         var3.field1204 = var3.composition.field3573;
+         var3.field1205 = var3.composition.field3553;
+         var3.method1712(var5 + XGrandExchangeOffer.localPlayer.pathX[0], XGrandExchangeOffer.localPlayer.pathY[0] + var7, var4 == 1);
+      }
+
+      Client.secretPacketBuffer2.method3466();
+
+      int var13;
+      for(var1 = 0; var1 < Client.field930; ++var1) {
+         var13 = Client.field931[var1];
+         var3 = Client.cachedNPCs[var13];
+         var4 = Client.secretPacketBuffer2.readUnsignedByte();
+         if((var4 & 2) != 0) {
+            var3.interacting = Client.secretPacketBuffer2.method3189();
+            if(var3.interacting == '\uffff') {
+               var3.interacting = -1;
+            }
+         }
+
+         if((var4 & 64) != 0) {
+            var3.graphic = Client.secretPacketBuffer2.readUnsignedShort();
+            var5 = Client.secretPacketBuffer2.method3310();
+            var3.field1239 = var5 >> 16;
+            var3.field1206 = Client.gameCycle + (var5 & '\uffff');
+            var3.field1228 = 0;
+            var3.field1237 = 0;
+            if(var3.field1206 > Client.gameCycle) {
+               var3.field1228 = -1;
+            }
+
+            if(var3.graphic == '\uffff') {
+               var3.graphic = -1;
+            }
+         }
+
+         if((var4 & 8) != 0) {
+            var5 = Client.secretPacketBuffer2.method3245();
+            var6 = Client.secretPacketBuffer2.method3189();
+            var7 = var3.x - (var5 - class166.baseX - class166.baseX) * 64;
+            var8 = var3.y - (var6 - class146.baseY - class146.baseY) * 64;
+            if(var7 != 0 || var8 != 0) {
+               var3.field1230 = (int)(Math.atan2((double)var7, (double)var8) * 325.949D) & 2047;
+            }
+         }
+
+         if((var4 & 1) != 0) {
+            var5 = Client.secretPacketBuffer2.readUnsignedShort();
+            if(var5 == '\uffff') {
+               var5 = -1;
+            }
+
+            var6 = Client.secretPacketBuffer2.method3260();
+            if(var3.animation == var5 && var5 != -1) {
+               var7 = class165.getAnimation(var5).replyMode;
+               if(var7 == 1) {
+                  var3.actionFrame = 0;
+                  var3.field1220 = 0;
+                  var3.actionAnimationDisable = var6;
+                  var3.field1234 = 0;
+               }
+
+               if(var7 == 2) {
+                  var3.field1234 = 0;
+               }
+            } else if(var5 == -1 || var3.animation == -1 || class165.getAnimation(var5).forcedPriority >= class165.getAnimation(var3.animation).forcedPriority) {
+               var3.animation = var5;
+               var3.actionFrame = 0;
+               var3.field1220 = 0;
+               var3.actionAnimationDisable = var6;
+               var3.field1234 = 0;
+               var3.field1236 = var3.field1252;
+            }
+         }
+
+         if((var4 & 16) != 0) {
+            var5 = Client.secretPacketBuffer2.method3305();
+            int var9;
+            int var10;
+            int var11;
+            if(var5 > 0) {
+               for(var6 = 0; var6 < var5; ++var6) {
+                  var8 = -1;
+                  var9 = -1;
+                  var10 = -1;
+                  var7 = Client.secretPacketBuffer2.method3212();
+                  if(var7 == 32767) {
+                     var7 = Client.secretPacketBuffer2.method3212();
+                     var9 = Client.secretPacketBuffer2.method3212();
+                     var8 = Client.secretPacketBuffer2.method3212();
+                     var10 = Client.secretPacketBuffer2.method3212();
+                  } else if(var7 != 32766) {
+                     var9 = Client.secretPacketBuffer2.method3212();
+                  } else {
+                     var7 = -1;
+                  }
+
+                  var11 = Client.secretPacketBuffer2.method3212();
+                  var3.method1525(var7, var9, var8, var10, Client.gameCycle, var11);
+               }
+            }
+
+            var6 = Client.secretPacketBuffer2.method3260();
+            if(var6 > 0) {
+               for(var7 = 0; var7 < var6; ++var7) {
+                  var8 = Client.secretPacketBuffer2.method3212();
+                  var9 = Client.secretPacketBuffer2.method3212();
+                  if(var9 != 32767) {
+                     var10 = Client.secretPacketBuffer2.method3212();
+                     var11 = Client.secretPacketBuffer2.method3260();
+                     int var12 = var9 > 0?Client.secretPacketBuffer2.method3227():var11;
+                     var3.method1526(var8, Client.gameCycle, var9, var10, var11, var12);
+                  } else {
+                     var3.method1527(var8);
+                  }
+               }
+            }
+         }
+
+         if((var4 & 4) != 0) {
+            var3.composition = class220.getNpcDefinition(Client.secretPacketBuffer2.method3245());
+            var3.field1202 = var3.composition.field3548;
+            var3.field1209 = var3.composition.field3571;
+            var3.field1227 = var3.composition.field3554;
+            var3.field1251 = var3.composition.field3555;
+            var3.field1208 = var3.composition.field3556;
+            var3.field1226 = var3.composition.field3545;
+            var3.idlePoseAnimation = var3.composition.field3560;
+            var3.field1204 = var3.composition.field3573;
+            var3.field1205 = var3.composition.field3553;
+         }
+
+         if((var4 & 32) != 0) {
+            var3.overhead = Client.secretPacketBuffer2.readString();
+            var3.field1214 = 100;
+         }
+      }
+
+      for(var1 = 0; var1 < Client.field1158; ++var1) {
+         var13 = Client.field1087[var1];
+         if(Client.gameCycle != Client.cachedNPCs[var13].field1245) {
+            Client.cachedNPCs[var13].composition = null;
+            Client.cachedNPCs[var13] = null;
+         }
+      }
+
+      if(Client.packetLength != Client.secretPacketBuffer2.offset) {
+         throw new RuntimeException(Client.secretPacketBuffer2.offset + "," + Client.packetLength);
       } else {
-         byte var3 = field2133[var2 - 128];
-         var4 = var2;
-         if(var3 >= 1) {
-            var4 = var2 | this.field2140.readUnsignedByte() << 8;
+         for(var1 = 0; var1 < Client.field928; ++var1) {
+            if(Client.cachedNPCs[Client.field1013[var1]] == null) {
+               throw new RuntimeException(var1 + "," + Client.field928);
+            }
          }
 
-         if(var3 >= 2) {
-            var4 |= this.field2140.readUnsignedByte() << 16;
-         }
-
-         return var4;
       }
-   }
-
-   @ObfuscatedName("a")
-   void method3043(long var1) {
-      this.field2135 = var1;
-      int var3 = this.field2130.length;
-
-      for(int var4 = 0; var4 < var3; ++var4) {
-         this.field2136[var4] = 0;
-         this.field2132[var4] = 0;
-         this.field2140.offset = this.field2129[var4];
-         this.method3036(var4);
-         this.field2130[var4] = this.field2140.offset;
-      }
-
-   }
-
-   static {
-      field2133 = new byte[]{(byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)0, (byte)1, (byte)2, (byte)1, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0};
-   }
-
-   @ObfuscatedName("j")
-   int method3049() {
-      int var1 = this.field2130.length;
-      int var2 = -1;
-      int var3 = Integer.MAX_VALUE;
-
-      for(int var4 = 0; var4 < var1; ++var4) {
-         if(this.field2130[var4] >= 0 && this.field2136[var4] < var3) {
-            var2 = var4;
-            var3 = this.field2136[var4];
-         }
-      }
-
-      return var2;
-   }
-
-   @ObfuscatedName("n")
-   boolean method3051() {
-      return this.field2140.payload != null;
-   }
-
-   @ObfuscatedName("d")
-   void method3055(byte[] var1) {
-      this.field2140.payload = var1;
-      this.field2140.offset = 10;
-      int var2 = this.field2140.readUnsignedShort();
-      this.field2131 = this.field2140.readUnsignedShort();
-      this.field2127 = 500000;
-      this.field2129 = new int[var2];
-
-      int var3;
-      int var5;
-      for(var3 = 0; var3 < var2; this.field2140.offset += var5) {
-         int var4 = this.field2140.readInt();
-         var5 = this.field2140.readInt();
-         if(var4 == 1297379947) {
-            this.field2129[var3] = this.field2140.offset;
-            ++var3;
-         }
-      }
-
-      this.field2135 = 0L;
-      this.field2130 = new int[var2];
-
-      for(var3 = 0; var3 < var2; ++var3) {
-         this.field2130[var3] = this.field2129[var3];
-      }
-
-      this.field2136 = new int[var2];
-      this.field2132 = new int[var2];
-   }
-
-   @ObfuscatedName("i")
-   boolean method3064() {
-      int var1 = this.field2130.length;
-
-      for(int var2 = 0; var2 < var1; ++var2) {
-         if(this.field2130[var2] >= 0) {
-            return false;
-         }
-      }
-
-      return true;
-   }
-
-   @ObfuscatedName("c")
-   void method3069() {
-      this.field2140.payload = null;
-      this.field2129 = null;
-      this.field2130 = null;
-      this.field2136 = null;
-      this.field2132 = null;
    }
 }

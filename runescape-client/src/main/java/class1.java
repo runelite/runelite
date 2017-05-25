@@ -1,92 +1,84 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("c")
+@ObfuscatedName("h")
 public class class1 {
-   @ObfuscatedName("c")
-   public static Comparator field11;
-   @ObfuscatedName("n")
-   public static Comparator field12;
+   @ObfuscatedName("h")
+   static final class1 field0;
+   @ObfuscatedName("u")
+   static final class1 field2;
    @ObfuscatedName("q")
-   public static Comparator field13;
+   static final class1 field3;
+   @ObfuscatedName("g")
+   static final class1 field4;
+   @ObfuscatedName("v")
+   static final class1 field5;
    @ObfuscatedName("t")
-   public static Comparator field14;
-   @ObfuscatedName("d")
-   public final List field15;
-   @ObfuscatedName("fv")
+   static final class1 field6;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 2019010125
+      intValue = -809369807
    )
-   @Export("cameraZ")
-   static int cameraZ;
-   @ObfuscatedName("hw")
-   @ObfuscatedGetter(
-      intValue = 920665721
-   )
-   @Export("menuY")
-   static int menuY;
+   final int field7;
+   @ObfuscatedName("i")
+   static final class1 field8;
+   @ObfuscatedName("cr")
+   @Export("indexInterfaces")
+   static IndexData indexInterfaces;
 
-   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-983407984"
+      signature = "(I)V",
+      garbageValue = "0"
    )
-   static void method15(int var0, int var1) {
-      long var2 = (long)(var1 + (var0 << 16));
-      class183 var4 = (class183)class187.field2771.method2773(var2);
-      if(var4 != null) {
-         class187.field2758.method2714(var4);
-      }
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Ljava/util/Comparator;ZI)V",
-      garbageValue = "2113961692"
-   )
-   public void method16(Comparator var1, boolean var2) {
-      if(var2) {
-         Collections.sort(this.field15, var1);
-      } else {
-         Collections.sort(this.field15, Collections.reverseOrder(var1));
-      }
-
+   class1(int var1) {
+      this.field7 = var1;
    }
 
    static {
-      field11 = new class7();
-      new class0();
-      field12 = new class5();
-      field13 = new class6();
-      field14 = new class3();
+      field8 = new class1(0);
+      field0 = new class1(5);
+      field2 = new class1(3);
+      field3 = new class1(2);
+      field4 = new class1(6);
+      field5 = new class1(1);
+      field6 = new class1(4);
    }
 
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(LBuffer;Z)V",
+      signature = "(Ljava/lang/CharSequence;B)I",
       garbageValue = "1"
    )
-   public class1(Buffer var1, boolean var2) {
-      int var3 = var1.readUnsignedShort();
-      boolean var4 = var1.readUnsignedByte() == 1;
-      byte var5;
-      if(var4) {
-         var5 = 1;
-      } else {
-         var5 = 0;
+   public static int method0(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if(var4 <= 127) {
+            ++var2;
+         } else if(var4 <= 2047) {
+            var2 += 2;
+         } else {
+            var2 += 3;
+         }
       }
 
-      int var6 = var1.readUnsignedShort();
-      this.field15 = new ArrayList(var6);
+      return var2;
+   }
 
-      for(int var7 = 0; var7 < var6; ++var7) {
-         this.field15.add(new class2(var1, var5, var3));
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "1625342230"
+   )
+   static void method1(int var0, int var1) {
+      long var2 = (long)((var0 << 16) + var1);
+      class234 var4 = (class234)class238.field3259.method3615(var2);
+      if(var4 != null) {
+         class238.field3247.method3540(var4);
       }
-
    }
 }

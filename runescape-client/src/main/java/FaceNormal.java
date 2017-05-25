@@ -4,80 +4,72 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cg")
+@ObfuscatedName("ez")
 @Implements("FaceNormal")
 public class FaceNormal {
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 457884979
-   )
-   @Export("z")
-   int z;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -744396141
+      intValue = 1543507565
    )
    @Export("y")
    int y;
-   @ObfuscatedName("d")
+   @ObfuscatedName("lb")
    @ObfuscatedGetter(
-      intValue = 65656505
+      intValue = -119925087
+   )
+   static int field2120;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 109902883
+   )
+   @Export("z")
+   int z;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1026323817
    )
    @Export("x")
    int x;
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Object;ZB)[B",
-      garbageValue = "8"
+      signature = "(I)V",
+      garbageValue = "1964359242"
    )
-   public static byte[] method1906(Object var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else if(var0 instanceof byte[]) {
-         byte[] var3 = (byte[])((byte[])var0);
-         return var1?class130.method2605(var3):var3;
-      } else if(var0 instanceof class132) {
-         class132 var2 = (class132)var0;
-         return var2.vmethod2615();
-      } else {
-         throw new IllegalArgumentException();
-      }
-   }
+   public static void method2912() {
+      class50 var0 = class50.keyboard;
+      synchronized(class50.keyboard) {
+         ++class50.keyboardIdleTicks;
+         class50.field621 = class50.field635;
+         class50.field641 = 0;
+         int var1;
+         if(class50.field628 < 0) {
+            for(var1 = 0; var1 < 112; ++var1) {
+               class50.field624[var1] = false;
+            }
 
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(IIILObjectComposition;II)V",
-      garbageValue = "-356794397"
-   )
-   static void method1907(int var0, int var1, int var2, ObjectComposition var3, int var4) {
-      class31 var5 = new class31();
-      var5.field698 = var0;
-      var5.field699 = var1 * 128;
-      var5.field700 = var2 * 128;
-      int var6 = var3.sizeX;
-      int var7 = var3.sizeY;
-      if(var4 == 1 || var4 == 3) {
-         var6 = var3.sizeY;
-         var7 = var3.sizeX;
-      }
+            class50.field628 = class50.field631;
+         } else {
+            while(class50.field628 != class50.field631) {
+               var1 = class50.field617[class50.field631];
+               class50.field631 = class50.field631 + 1 & 127;
+               if(var1 < 0) {
+                  class50.field624[~var1] = false;
+               } else {
+                  if(!class50.field624[var1] && class50.field641 < class50.field629.length - 1) {
+                     class50.field629[++class50.field641 - 1] = var1;
+                  }
 
-      var5.field701 = (var6 + var1) * 128;
-      var5.field702 = (var2 + var7) * 128;
-      var5.field704 = var3.ambientSoundId;
-      var5.field703 = var3.field2969 * 128;
-      var5.field713 = var3.field2923;
-      var5.field707 = var3.field2971;
-      var5.field708 = var3.field2959;
-      if(var3.impostorIds != null) {
-         var5.field711 = var3;
-         var5.method653();
-      }
+                  class50.field624[var1] = true;
+               }
+            }
+         }
 
-      class31.field709.method2824(var5);
-      if(var5.field708 != null) {
-         var5.field712 = var5.field713 + (int)(Math.random() * (double)(var5.field707 - var5.field713));
-      }
+         if(class50.field641 > 0) {
+            class50.keyboardIdleTicks = 0;
+         }
 
+         class50.field635 = class50.field634;
+      }
    }
 }

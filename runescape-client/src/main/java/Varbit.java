@@ -4,38 +4,45 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gp")
+@ObfuscatedName("ik")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("n")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1255956327
+      intValue = -2120197371
    )
    @Export("configId")
    public int configId;
-   @ObfuscatedName("d")
-   static IndexDataBase field2866;
-   @ObfuscatedName("c")
-   static NodeCache field2867;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1967430679
+      intValue = 1482733855
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("t")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 479453047
+      intValue = -2111894343
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
+   @ObfuscatedName("b")
+   static class112 field3377;
+   @ObfuscatedName("h")
+   public static NodeCache field3378;
+   @ObfuscatedName("ja")
+   @ObfuscatedGetter(
+      intValue = 1256370663
+   )
+   static int field3379;
+   @ObfuscatedName("v")
+   public static IndexDataBase field3380;
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(LBuffer;II)V",
-      garbageValue = "-703677951"
+      garbageValue = "-74106318"
    )
-   void method3568(Buffer var1, int var2) {
+   void method4484(Buffer var1, int var2) {
       if(var2 == 1) {
          this.configId = var1.readUnsignedShort();
          this.leastSignificantBit = var1.readUnsignedByte();
@@ -44,32 +51,23 @@ public class Varbit extends CacheableNode {
 
    }
 
-   static {
-      field2867 = new NodeCache(64);
-   }
-
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
-      garbageValue = "413464348"
+      garbageValue = "-2093500171"
    )
-   void method3581(Buffer var1) {
+   void method4485(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method3568(var1, var2);
+         this.method4484(var1, var2);
       }
    }
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Lclass121;I)V",
-      garbageValue = "1982821861"
-   )
-   public static void method3582(class121 var0) {
-      class209.field3127 = var0;
+   static {
+      field3378 = new NodeCache(64);
    }
 }

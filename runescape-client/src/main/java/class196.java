@@ -1,20 +1,19 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gi")
+@ObfuscatedName("gw")
 public class class196 {
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1483956823
-   )
-   public static int field2862;
-   @ObfuscatedName("at")
-   @ObfuscatedGetter(
-      longValue = 9101429451035311299L
-   )
-   static long field2864;
+   @ObfuscatedName("g")
+   class196 field2474;
+   @ObfuscatedName("q")
+   class196 field2475;
 
-   class196() throws Throwable {
-      throw new Error();
+   @ObfuscatedName("i")
+   public void method3699() {
+      if(this.field2474 != null) {
+         this.field2474.field2475 = this.field2475;
+         this.field2475.field2474 = this.field2474;
+         this.field2475 = null;
+         this.field2474 = null;
+      }
    }
 }

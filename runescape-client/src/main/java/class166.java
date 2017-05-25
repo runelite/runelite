@@ -1,359 +1,191 @@
+import java.util.zip.Inflater;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fu")
-public class class166 extends CacheableNode {
-   @ObfuscatedName("n")
-   public final int[] field2164;
-   @ObfuscatedName("c")
+@ObfuscatedName("fm")
+public class class166 {
+   @ObfuscatedName("ef")
    @ObfuscatedGetter(
-      intValue = 29490981
+      intValue = 1604638969
    )
-   public final int field2165;
+   @Export("baseX")
+   static int baseX;
+   @ObfuscatedName("gk")
+   static SpritePixels field2304;
+   @ObfuscatedName("i")
+   Inflater field2305;
+
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "1000000"
+   )
+   class166(int var1, int var2, int var3) {
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;[BI)V",
+      garbageValue = "2119241598"
+   )
+   public void method3127(Buffer var1, byte[] var2) {
+      if(var1.payload[var1.offset] == 31 && var1.payload[var1.offset + 1] == -117) {
+         if(this.field2305 == null) {
+            this.field2305 = new Inflater(true);
+         }
+
+         try {
+            this.field2305.setInput(var1.payload, var1.offset + 10, var1.payload.length - (var1.offset + 10 + 8));
+            this.field2305.inflate(var2);
+         } catch (Exception var4) {
+            this.field2305.reset();
+            throw new RuntimeException("");
+         }
+
+         this.field2305.reset();
+      } else {
+         throw new RuntimeException("");
+      }
+   }
+
+   @ObfuscatedName("ju")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "2126233490"
+   )
+   static void method3129(int var0) {
+      for(class198 var1 = (class198)Client.widgetFlags.method3606(); var1 != null; var1 = (class198)Client.widgetFlags.method3607()) {
+         if((long)var0 == (var1.hash >> 48 & 65535L)) {
+            var1.unlink();
+         }
+      }
+
+   }
+
    @ObfuscatedName("q")
-   public final int[] field2166;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1645405243
-   )
-   public final int field2167;
-
-   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lclass68;B)V",
-      garbageValue = "-29"
+      signature = "(IIIIB)V",
+      garbageValue = "26"
    )
-   static final void method3132(class68 var0) {
-      var0.field1125 = false;
-      if(var0.field1122 != null) {
-         var0.field1122.field1156 = 0;
-      }
+   static void method3131(int var0, int var1, int var2, int var3) {
+      for(class82 var4 = (class82)class82.field1299.method3660(); var4 != null; var4 = (class82)class82.field1299.method3661()) {
+         if(var4.field1297 != -1 || var4.field1301 != null) {
+            int var5 = 0;
+            if(var1 > var4.field1304) {
+               var5 += var1 - var4.field1304;
+            } else if(var1 < var4.field1305) {
+               var5 += var4.field1305 - var1;
+            }
 
-      for(class68 var1 = var0.vmethod3102(); var1 != null; var1 = var0.vmethod3091()) {
-         method3132(var1);
+            if(var2 > var4.field1295) {
+               var5 += var2 - var4.field1295;
+            } else if(var2 < var4.field1300) {
+               var5 += var4.field1300 - var2;
+            }
+
+            if(var5 - 64 <= var4.field1296 && Client.field1130 != 0 && var4.field1291 == var0) {
+               var5 -= 64;
+               if(var5 < 0) {
+                  var5 = 0;
+               }
+
+               int var6 = (var4.field1296 - var5) * Client.field1130 / var4.field1296;
+               if(var4.field1298 == null) {
+                  if(var4.field1297 >= 0) {
+                     SoundEffect var7 = SoundEffect.method1970(class43.field559, var4.field1297, 0);
+                     if(var7 != null) {
+                        class107 var8 = var7.method1966().method2017(class154.field2216);
+                        class117 var9 = class117.method2249(var8, 100, var6);
+                        var9.method2160(-1);
+                        class164.field2291.method1936(var9);
+                        var4.field1298 = var9;
+                     }
+                  }
+               } else {
+                  var4.field1298.method2248(var6);
+               }
+
+               if(var4.field1303 == null) {
+                  if(var4.field1301 != null && (var4.field1293 -= var3) <= 0) {
+                     int var11 = (int)(Math.random() * (double)var4.field1301.length);
+                     SoundEffect var12 = SoundEffect.method1970(class43.field559, var4.field1301[var11], 0);
+                     if(var12 != null) {
+                        class107 var13 = var12.method1966().method2017(class154.field2216);
+                        class117 var10 = class117.method2249(var13, 100, var6);
+                        var10.method2160(0);
+                        class164.field2291.method1936(var10);
+                        var4.field1303 = var10;
+                        var4.field1293 = var4.field1292 + (int)(Math.random() * (double)(var4.field1290 - var4.field1292));
+                     }
+                  }
+               } else {
+                  var4.field1303.method2248(var6);
+                  if(!var4.field1303.linked()) {
+                     var4.field1303 = null;
+                  }
+               }
+            } else {
+               if(var4.field1298 != null) {
+                  class164.field2291.method1910(var4.field1298);
+                  var4.field1298 = null;
+               }
+
+               if(var4.field1303 != null) {
+                  class164.field2291.method1910(var4.field1303);
+                  var4.field1303 = null;
+               }
+            }
+         }
       }
 
    }
 
-   @ObfuscatedName("d")
+   public class166() {
+      this(-1, 1000000, 1000000);
+   }
+
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "-1158062598"
+      signature = "(B)V",
+      garbageValue = "109"
    )
-   public boolean method3133(int var1, int var2) {
-      if(var2 >= 0 && var2 < this.field2166.length) {
-         int var3 = this.field2166[var2];
-         if(var1 >= var3 && var1 <= var3 + this.field2164[var2]) {
-            return true;
+   public static void method3132() {
+      if(class59.mouse != null) {
+         class59 var0 = class59.mouse;
+         synchronized(class59.mouse) {
+            class59.mouse = null;
          }
       }
 
-      return false;
    }
 
-   class166(int var1, int var2, int[] var3, int[] var4, int var5) {
-      this.field2167 = var1;
-      this.field2165 = var2;
-      this.field2164 = var3;
-      this.field2166 = var4;
-   }
-
-   @ObfuscatedName("bs")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "1412669661"
+      signature = "(IIB)I",
+      garbageValue = "-25"
    )
-   static final void method3137(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if(var2 >= 1 && var3 >= 1 && var2 <= 102 && var3 <= 102) {
-         if(Client.field285 && Client.plane != var0) {
-            return;
+   static int method3133(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 0) {
+            var1 = 0;
+         } else if(var1 > 127) {
+            var1 = 127;
          }
 
-         int var7 = 0;
-         boolean var8 = true;
-         boolean var9 = false;
-         boolean var10 = false;
-         if(var1 == 0) {
-            var7 = class172.region.method1747(var0, var2, var3);
+         var1 = 127 - var1;
+         return var1;
+      } else {
+         var1 = var1 * (var0 & 127) / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
          }
 
-         if(var1 == 1) {
-            var7 = class172.region.method1805(var0, var2, var3);
-         }
-
-         if(var1 == 2) {
-            var7 = class172.region.method1818(var0, var2, var3);
-         }
-
-         if(var1 == 3) {
-            var7 = class172.region.method1750(var0, var2, var3);
-         }
-
-         int var11;
-         if(var7 != 0) {
-            var11 = class172.region.method1751(var0, var2, var3, var7);
-            int var34 = var7 >> 14 & 32767;
-            int var35 = var11 & 31;
-            int var36 = var11 >> 6 & 3;
-            ObjectComposition var12;
-            if(var1 == 0) {
-               class172.region.method1738(var0, var2, var3);
-               var12 = class26.getObjectDefinition(var34);
-               if(var12.field2936 != 0) {
-                  Client.collisionMaps[var0].method2263(var2, var3, var35, var36, var12.field2942);
-               }
-            }
-
-            if(var1 == 1) {
-               class172.region.method1720(var0, var2, var3);
-            }
-
-            if(var1 == 2) {
-               class172.region.method1740(var0, var2, var3);
-               var12 = class26.getObjectDefinition(var34);
-               if(var12.sizeX + var2 > 103 || var3 + var12.sizeX > 103 || var12.sizeY + var2 > 103 || var12.sizeY + var3 > 103) {
-                  return;
-               }
-
-               if(var12.field2936 != 0) {
-                  Client.collisionMaps[var0].method2262(var2, var3, var12.sizeX, var12.sizeY, var36, var12.field2942);
-               }
-            }
-
-            if(var1 == 3) {
-               class172.region.method1741(var0, var2, var3);
-               var12 = class26.getObjectDefinition(var34);
-               if(var12.field2936 == 1) {
-                  Client.collisionMaps[var0].method2258(var2, var3);
-               }
-            }
-         }
-
-         if(var4 >= 0) {
-            var11 = var0;
-            if(var0 < 3 && (class10.tileSettings[1][var2][var3] & 2) == 2) {
-               var11 = var0 + 1;
-            }
-
-            Region var37 = class172.region;
-            CollisionData var13 = Client.collisionMaps[var0];
-            ObjectComposition var14 = class26.getObjectDefinition(var4);
-            int var15;
-            int var16;
-            if(var5 != 1 && var5 != 3) {
-               var15 = var14.sizeX;
-               var16 = var14.sizeY;
-            } else {
-               var15 = var14.sizeY;
-               var16 = var14.sizeX;
-            }
-
-            int var17;
-            int var18;
-            if(var2 + var15 <= 104) {
-               var17 = var2 + (var15 >> 1);
-               var18 = (var15 + 1 >> 1) + var2;
-            } else {
-               var17 = var2;
-               var18 = var2 + 1;
-            }
-
-            int var19;
-            int var20;
-            if(var3 + var16 <= 104) {
-               var19 = var3 + (var16 >> 1);
-               var20 = var3 + (var16 + 1 >> 1);
-            } else {
-               var19 = var3;
-               var20 = var3 + 1;
-            }
-
-            int[][] var21 = class10.tileHeights[var11];
-            int var22 = var21[var18][var20] + var21[var17][var20] + var21[var17][var19] + var21[var18][var19] >> 2;
-            int var23 = (var2 << 7) + (var15 << 6);
-            int var24 = (var3 << 7) + (var16 << 6);
-            int var25 = (var4 << 14) + var2 + (var3 << 7) + 1073741824;
-            if(var14.field2943 == 0) {
-               var25 -= Integer.MIN_VALUE;
-            }
-
-            int var26 = var6 + (var5 << 6);
-            if(var14.field2964 == 1) {
-               var26 += 256;
-            }
-
-            Object var27;
-            if(var6 == 22) {
-               if(var14.animationId == -1 && var14.impostorIds == null) {
-                  var27 = var14.method3685(22, var5, var21, var23, var22, var24);
-               } else {
-                  var27 = new class49(var4, 22, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
-               }
-
-               var37.groundObjectSpawned(var0, var2, var3, var22, (Renderable)var27, var25, var26);
-               if(var14.field2936 == 1) {
-                  var13.method2253(var2, var3);
-               }
-            } else if(var6 != 10 && var6 != 11) {
-               if(var6 >= 12) {
-                  if(var14.animationId == -1 && var14.impostorIds == null) {
-                     var27 = var14.method3685(var6, var5, var21, var23, var22, var24);
-                  } else {
-                     var27 = new class49(var4, var6, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                  }
-
-                  var37.method1746(var0, var2, var3, var22, 1, 1, (Renderable)var27, 0, var25, var26);
-                  if(var14.field2936 != 0) {
-                     var13.method2252(var2, var3, var15, var16, var14.field2942);
-                  }
-               } else if(var6 == 0) {
-                  if(var14.animationId == -1 && var14.impostorIds == null) {
-                     var27 = var14.method3685(0, var5, var21, var23, var22, var24);
-                  } else {
-                     var27 = new class49(var4, 0, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                  }
-
-                  var37.method1729(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, class10.field99[var5], 0, var25, var26);
-                  if(var14.field2936 != 0) {
-                     var13.method2254(var2, var3, var6, var5, var14.field2942);
-                  }
-               } else if(var6 == 1) {
-                  if(var14.animationId == -1 && var14.impostorIds == null) {
-                     var27 = var14.method3685(1, var5, var21, var23, var22, var24);
-                  } else {
-                     var27 = new class49(var4, 1, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                  }
-
-                  var37.method1729(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, class10.field101[var5], 0, var25, var26);
-                  if(var14.field2936 != 0) {
-                     var13.method2254(var2, var3, var6, var5, var14.field2942);
-                  }
-               } else {
-                  Object var29;
-                  int var32;
-                  if(var6 == 2) {
-                     var32 = var5 + 1 & 3;
-                     Object var33;
-                     if(var14.animationId == -1 && var14.impostorIds == null) {
-                        var33 = var14.method3685(2, var5 + 4, var21, var23, var22, var24);
-                        var29 = var14.method3685(2, var32, var21, var23, var22, var24);
-                     } else {
-                        var33 = new class49(var4, 2, var5 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                        var29 = new class49(var4, 2, var32, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                     }
-
-                     var37.method1729(var0, var2, var3, var22, (Renderable)var33, (Renderable)var29, class10.field99[var5], class10.field99[var32], var25, var26);
-                     if(var14.field2936 != 0) {
-                        var13.method2254(var2, var3, var6, var5, var14.field2942);
-                     }
-                  } else if(var6 == 3) {
-                     if(var14.animationId == -1 && var14.impostorIds == null) {
-                        var27 = var14.method3685(3, var5, var21, var23, var22, var24);
-                     } else {
-                        var27 = new class49(var4, 3, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                     }
-
-                     var37.method1729(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, class10.field101[var5], 0, var25, var26);
-                     if(var14.field2936 != 0) {
-                        var13.method2254(var2, var3, var6, var5, var14.field2942);
-                     }
-                  } else if(var6 == 9) {
-                     if(var14.animationId == -1 && var14.impostorIds == null) {
-                        var27 = var14.method3685(var6, var5, var21, var23, var22, var24);
-                     } else {
-                        var27 = new class49(var4, var6, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                     }
-
-                     var37.method1746(var0, var2, var3, var22, 1, 1, (Renderable)var27, 0, var25, var26);
-                     if(var14.field2936 != 0) {
-                        var13.method2252(var2, var3, var15, var16, var14.field2942);
-                     }
-                  } else if(var6 == 4) {
-                     if(var14.animationId == -1 && var14.impostorIds == null) {
-                        var27 = var14.method3685(4, var5, var21, var23, var22, var24);
-                     } else {
-                        var27 = new class49(var4, 4, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                     }
-
-                     var37.method1730(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, class10.field99[var5], 0, 0, 0, var25, var26);
-                  } else {
-                     int var28;
-                     if(var6 == 5) {
-                        var32 = 16;
-                        var28 = var37.method1747(var0, var2, var3);
-                        if(var28 != 0) {
-                           var32 = class26.getObjectDefinition(var28 >> 14 & 32767).field2951;
-                        }
-
-                        if(var14.animationId == -1 && var14.impostorIds == null) {
-                           var29 = var14.method3685(4, var5, var21, var23, var22, var24);
-                        } else {
-                           var29 = new class49(var4, 4, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                        }
-
-                        var37.method1730(var0, var2, var3, var22, (Renderable)var29, (Renderable)null, class10.field99[var5], 0, var32 * class10.field100[var5], var32 * class10.field107[var5], var25, var26);
-                     } else if(var6 == 6) {
-                        var32 = 8;
-                        var28 = var37.method1747(var0, var2, var3);
-                        if(var28 != 0) {
-                           var32 = class26.getObjectDefinition(var28 >> 14 & 32767).field2951 / 2;
-                        }
-
-                        if(var14.animationId == -1 && var14.impostorIds == null) {
-                           var29 = var14.method3685(4, var5 + 4, var21, var23, var22, var24);
-                        } else {
-                           var29 = new class49(var4, 4, var5 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                        }
-
-                        var37.method1730(var0, var2, var3, var22, (Renderable)var29, (Renderable)null, 256, var5, var32 * class10.field110[var5], var32 * class10.field103[var5], var25, var26);
-                     } else if(var6 == 7) {
-                        var28 = var5 + 2 & 3;
-                        if(var14.animationId == -1 && var14.impostorIds == null) {
-                           var27 = var14.method3685(4, var28 + 4, var21, var23, var22, var24);
-                        } else {
-                           var27 = new class49(var4, 4, var28 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                        }
-
-                        var37.method1730(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, 256, var28, 0, 0, var25, var26);
-                     } else if(var6 == 8) {
-                        var32 = 8;
-                        var28 = var37.method1747(var0, var2, var3);
-                        if(var28 != 0) {
-                           var32 = class26.getObjectDefinition(var28 >> 14 & 32767).field2951 / 2;
-                        }
-
-                        int var31 = var5 + 2 & 3;
-                        Object var30;
-                        if(var14.animationId == -1 && var14.impostorIds == null) {
-                           var29 = var14.method3685(4, var5 + 4, var21, var23, var22, var24);
-                           var30 = var14.method3685(4, var31 + 4, var21, var23, var22, var24);
-                        } else {
-                           var29 = new class49(var4, 4, var5 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                           var30 = new class49(var4, 4, var31 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                        }
-
-                        var37.method1730(var0, var2, var3, var22, (Renderable)var29, (Renderable)var30, 256, var5, var32 * class10.field110[var5], class10.field103[var5] * var32, var25, var26);
-                     }
-                  }
-               }
-            } else {
-               if(var14.animationId == -1 && var14.impostorIds == null) {
-                  var27 = var14.method3685(10, var5, var21, var23, var22, var24);
-               } else {
-                  var27 = new class49(var4, 10, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
-               }
-
-               if(var27 != null) {
-                  var37.method1746(var0, var2, var3, var22, var15, var16, (Renderable)var27, var6 == 11?256:0, var25, var26);
-               }
-
-               if(var14.field2936 != 0) {
-                  var13.method2252(var2, var3, var15, var16, var14.field2942);
-               }
-            }
-         }
+         return (var0 & 'ﾀ') + var1;
       }
-
    }
 }

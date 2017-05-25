@@ -1,86 +1,102 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import java.io.File;
+import java.io.IOException;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("n")
-public class class2 {
-   @ObfuscatedName("q")
-   String field19;
-   @ObfuscatedName("n")
-   public final XGrandExchangeOffer field21;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -764767103
-   )
-   public final int field22;
-   @ObfuscatedName("t")
-   String field23;
-   @ObfuscatedName("am")
-   static int[] field24;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      longValue = -3354601879741057549L
-   )
-   public final long field25;
+@ObfuscatedName("u")
+final class class2 implements class0 {
+   @ObfuscatedName("y")
+   static int[] field10;
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "695139454"
+      signature = "(Ljava/lang/String;Ljava/lang/String;III)V",
+      garbageValue = "-480015952"
    )
-   public String method20() {
-      return this.field23;
-   }
+   public static void method2(String var0, String var1, int var2, int var3) throws IOException {
+      class155.field2223 = var3;
+      class155.field2230 = var2;
 
-   class2(Buffer var1, byte var2, int var3) {
-      this.field19 = var1.readString();
-      this.field23 = var1.readString();
-      this.field22 = var1.readUnsignedShort();
-      this.field25 = var1.readLong();
-      int var4 = var1.readInt();
-      int var5 = var1.readInt();
-      this.field21 = new XGrandExchangeOffer();
-      this.field21.method46(2);
-      this.field21.method47(var2);
-      this.field21.price = var4;
-      this.field21.totalQuantity = var5;
-      this.field21.quantitySold = 0;
-      this.field21.spent = 0;
-      this.field21.itemId = var3;
-   }
+      try {
+         class73.field847 = System.getProperty("os.name");
+      } catch (Exception var12) {
+         class73.field847 = "Unknown";
+      }
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "-531186240"
-   )
-   public String method25() {
-      return this.field19;
-   }
+      WallObject.field2113 = class73.field847.toLowerCase();
 
-   @ObfuscatedName("eg")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Z",
-      garbageValue = "2044594720"
-   )
-   static boolean method27(String var0) {
-      if(var0 == null) {
-         return false;
-      } else {
-         String var1 = class108.method2059(var0, NPC.field757);
+      try {
+         class60.field735 = System.getProperty("user.home");
+         if(class60.field735 != null) {
+            class60.field735 = class60.field735 + "/";
+         }
+      } catch (Exception var11) {
+         ;
+      }
 
-         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
-            Ignore var3 = Client.ignores[var2];
-            if(var1.equalsIgnoreCase(class108.method2059(var3.name, NPC.field757))) {
-               return true;
+      try {
+         if(WallObject.field2113.startsWith("win")) {
+            if(class60.field735 == null) {
+               class60.field735 = System.getenv("USERPROFILE");
             }
-
-            if(var1.equalsIgnoreCase(class108.method2059(var3.previousName, NPC.field757))) {
-               return true;
-            }
+         } else if(class60.field735 == null) {
+            class60.field735 = System.getenv("HOME");
          }
 
-         return false;
+         if(class60.field735 != null) {
+            class60.field735 = class60.field735 + "/";
+         }
+      } catch (Exception var10) {
+         ;
       }
+
+      if(class60.field735 == null) {
+         class60.field735 = "~/";
+      }
+
+      class60.field736 = new String[]{"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", class60.field735, "/tmp/", ""};
+      class155.field2227 = new String[]{".jagex_cache_" + class155.field2230, ".file_store_" + class155.field2230};
+      int var9 = 0;
+
+      label88:
+      while(var9 < 4) {
+         class155.field2224 = Preferences.method1592(var0, var1, var9);
+         if(!class155.field2224.exists()) {
+            class155.field2224.mkdirs();
+         }
+
+         File[] var5 = class155.field2224.listFiles();
+         if(var5 == null) {
+            break;
+         }
+
+         File[] var6 = var5;
+         int var7 = 0;
+
+         while(true) {
+            if(var7 >= var6.length) {
+               break label88;
+            }
+
+            File var8 = var6[var7];
+            if(!MessageNode.method1131(var8, false)) {
+               ++var9;
+               break;
+            }
+
+            ++var7;
+         }
+      }
+
+      class92.method1778(class155.field2224);
+      class36.method499();
+      class155.field2231 = new class123(new FileOnDisk(class28.method215("main_file_cache.dat2"), "rw", 1048576000L), 5200, 0);
+      class155.field2229 = new class123(new FileOnDisk(class28.method215("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
+      VertexNormal.field1994 = new class123[class155.field2223];
+
+      for(var9 = 0; var9 < class155.field2223; ++var9) {
+         VertexNormal.field1994[var9] = new class123(new FileOnDisk(class28.method215("main_file_cache.idx" + var9), "rw", 1048576L), 6000, 0);
+      }
+
    }
 }

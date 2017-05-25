@@ -1,24 +1,36 @@
-import java.io.File;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dv")
+@ObfuscatedName("dl")
 public class class120 {
-   @ObfuscatedName("c")
-   static File field1866;
+   @ObfuscatedName("h")
+   int field1707;
+   @ObfuscatedName("q")
+   int[] field1708;
+   @ObfuscatedName("u")
+   int[] field1709;
+   @ObfuscatedName("i")
+   int field1710;
 
-   class120() throws Throwable {
-      throw new Error();
-   }
+   class120() {
+      class106.method1978(16);
+      this.field1710 = class106.method1977() != 0?class106.method1978(4) + 1:1;
+      if(class106.method1977() != 0) {
+         class106.method1978(8);
+      }
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;S)V",
-      garbageValue = "-32356"
-   )
-   public static void method2299(IndexDataBase var0, IndexDataBase var1) {
-      class6.field57 = var0;
-      KitDefinition.field2844 = var1;
-      KitDefinition.field2840 = class6.field57.method3305(3);
+      class106.method1978(2);
+      if(this.field1710 > 1) {
+         this.field1707 = class106.method1978(4);
+      }
+
+      this.field1709 = new int[this.field1710];
+      this.field1708 = new int[this.field1710];
+
+      for(int var1 = 0; var1 < this.field1710; ++var1) {
+         class106.method1978(8);
+         this.field1709[var1] = class106.method1978(8);
+         this.field1708[var1] = class106.method1978(8);
+      }
+
    }
 }

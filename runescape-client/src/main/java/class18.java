@@ -1,76 +1,58 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
+import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("a")
-public class class18 extends Node {
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -698563905
-   )
-   int field187;
-   @ObfuscatedName("c")
-   boolean field188;
-   @ObfuscatedName("n")
-   Widget field189;
-   @ObfuscatedName("v")
-   String field190;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1757052415
-   )
-   int field191;
+@ObfuscatedName("e")
+final class class18 implements Comparator {
    @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -322143939
-   )
-   int field192;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -934453075
-   )
-   int field193;
-   @ObfuscatedName("bg")
-   @ObfuscatedGetter(
-      intValue = -1821722553
-   )
-   static int field194;
-   @ObfuscatedName("u")
-   Widget field195;
-   @ObfuscatedName("d")
-   Object[] field196;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -757020121
-   )
-   int field197;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -218613445
-   )
-   int field198;
-   @ObfuscatedName("bo")
-   @Export("indexTrack1")
-   static IndexData indexTrack1;
+   static byte[][][] field315;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;I)V",
-      garbageValue = "-732125067"
+      signature = "(Lclass14;Lclass14;I)I",
+      garbageValue = "604650076"
    )
-   public static void method201(IndexDataBase var0) {
-      class189.field2786 = var0;
-      class189.field2783 = class189.field2786.method3305(16);
+   int method128(class14 var1, class14 var2) {
+      return var1.method70().compareTo(var2.method70());
    }
 
-   @ObfuscatedName("d")
+   public int compare(Object var1, Object var2) {
+      return this.method128((class14)var1, (class14)var2);
+   }
+
+   public boolean equals(Object var1) {
+      return super.equals(var1);
+   }
+
+   @ObfuscatedName("im")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "1724054196"
+      signature = "(B)V",
+      garbageValue = "-2"
    )
-   public static int method202(int var0, int var1, int var2) {
-      var2 &= 3;
-      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0:7 - var1));
+   static void method132() {
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3606(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3607()) {
+         int var1 = var0.id;
+         if(class14.method75(var1)) {
+            boolean var2 = true;
+            Widget[] var3 = class90.widgets[var1];
+
+            int var4;
+            for(var4 = 0; var4 < var3.length; ++var4) {
+               if(var3[var4] != null) {
+                  var2 = var3[var4].hasScript;
+                  break;
+               }
+            }
+
+            if(!var2) {
+               var4 = (int)var0.hash;
+               Widget var5 = class261.method4792(var4);
+               if(var5 != null) {
+                  class219.method4130(var5);
+               }
+            }
+         }
+      }
+
    }
 }

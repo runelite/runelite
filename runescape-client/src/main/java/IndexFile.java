@@ -1,120 +1,98 @@
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.Date;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ds")
+@ObfuscatedName("fr")
 @Implements("IndexFile")
 public final class IndexFile {
-   @ObfuscatedName("q")
+   @ObfuscatedName("h")
+   static byte[] field2258;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 296619661
+      intValue = 1626530313
    )
    @Export("index")
    int index;
-   @ObfuscatedName("c")
-   static byte[] field1819;
-   @ObfuscatedName("d")
-   class72 field1820;
-   @ObfuscatedName("t")
+   @ObfuscatedName("q")
+   class123 field2260;
+   @ObfuscatedName("u")
+   class123 field2261;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1856765907
+      intValue = 1455023899
    )
-   int field1822;
-   @ObfuscatedName("n")
-   class72 field1825;
+   int field2262;
 
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(I[BIB)Z",
-      garbageValue = "1"
-   )
-   public boolean method2234(int var1, byte[] var2, int var3) {
-      class72 var4 = this.field1825;
-      synchronized(this.field1825) {
-         if(var3 >= 0 && var3 <= this.field1822) {
-            boolean var5 = this.method2235(var1, var2, var3, true);
-            if(!var5) {
-               var5 = this.method2235(var1, var2, var3, false);
-            }
-
-            return var5;
-         } else {
-            throw new IllegalArgumentException();
-         }
-      }
-   }
-
-   @ObfuscatedName("n")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(I[BIZI)Z",
-      garbageValue = "1403989477"
+      garbageValue = "-2006891739"
    )
-   boolean method2235(int var1, byte[] var2, int var3, boolean var4) {
-      class72 var5 = this.field1825;
-      synchronized(this.field1825) {
+   boolean method3057(int var1, byte[] var2, int var3, boolean var4) {
+      class123 var5 = this.field2261;
+      synchronized(this.field2261) {
          try {
             int var6;
             boolean var10000;
             if(var4) {
-               if(this.field1820.method1396() < (long)(var1 * 6 + 6)) {
+               if(this.field2260.method2374() < (long)(var1 * 6 + 6)) {
                   var10000 = false;
                   return var10000;
                }
 
-               this.field1820.method1395((long)(var1 * 6));
-               this.field1820.method1401(field1819, 0, 6);
-               var6 = ((field1819[4] & 255) << 8) + ((field1819[3] & 255) << 16) + (field1819[5] & 255);
-               if(var6 <= 0 || (long)var6 > this.field1825.method1396() / 520L) {
+               this.field2260.method2358((long)(var1 * 6));
+               this.field2260.method2361(field2258, 0, 6);
+               var6 = (field2258[5] & 255) + ((field2258[4] & 255) << 8) + ((field2258[3] & 255) << 16);
+               if(var6 <= 0 || (long)var6 > this.field2261.method2374() / 520L) {
                   var10000 = false;
                   return var10000;
                }
             } else {
-               var6 = (int)((this.field1825.method1396() + 519L) / 520L);
+               var6 = (int)((this.field2261.method2374() + 519L) / 520L);
                if(var6 == 0) {
                   var6 = 1;
                }
             }
 
-            field1819[0] = (byte)(var3 >> 16);
-            field1819[1] = (byte)(var3 >> 8);
-            field1819[2] = (byte)var3;
-            field1819[3] = (byte)(var6 >> 16);
-            field1819[4] = (byte)(var6 >> 8);
-            field1819[5] = (byte)var6;
-            this.field1820.method1395((long)(var1 * 6));
-            this.field1820.method1415(field1819, 0, 6);
+            field2258[0] = (byte)(var3 >> 16);
+            field2258[1] = (byte)(var3 >> 8);
+            field2258[2] = (byte)var3;
+            field2258[3] = (byte)(var6 >> 16);
+            field2258[4] = (byte)(var6 >> 8);
+            field2258[5] = (byte)var6;
+            this.field2260.method2358((long)(var1 * 6));
+            this.field2260.method2356(field2258, 0, 6);
             int var7 = 0;
             int var8 = 0;
 
             while(true) {
                if(var7 < var3) {
-                  label143: {
+                  label146: {
                      int var9 = 0;
                      int var14;
                      if(var4) {
-                        this.field1825.method1395((long)(var6 * 520));
+                        this.field2261.method2358((long)(var6 * 520));
 
                         try {
-                           this.field1825.method1401(field1819, 0, 8);
+                           this.field2261.method2361(field2258, 0, 8);
                         } catch (EOFException var16) {
-                           break label143;
+                           break label146;
                         }
 
-                        var14 = (field1819[1] & 255) + ((field1819[0] & 255) << 8);
-                        int var11 = ((field1819[2] & 255) << 8) + (field1819[3] & 255);
-                        var9 = (field1819[6] & 255) + ((field1819[4] & 255) << 16) + ((field1819[5] & 255) << 8);
-                        int var12 = field1819[7] & 255;
+                        var14 = (field2258[1] & 255) + ((field2258[0] & 255) << 8);
+                        int var11 = (field2258[3] & 255) + ((field2258[2] & 255) << 8);
+                        var9 = ((field2258[5] & 255) << 8) + ((field2258[4] & 255) << 16) + (field2258[6] & 255);
+                        int var12 = field2258[7] & 255;
                         if(var1 != var14 || var11 != var8 || var12 != this.index) {
                            var10000 = false;
                            return var10000;
                         }
 
-                        if(var9 < 0 || (long)var9 > this.field1825.method1396() / 520L) {
+                        if(var9 < 0 || (long)var9 > this.field2261.method2374() / 520L) {
                            var10000 = false;
                            return var10000;
                         }
@@ -122,12 +100,12 @@ public final class IndexFile {
 
                      if(var9 == 0) {
                         var4 = false;
-                        var9 = (int)((this.field1825.method1396() + 519L) / 520L);
+                        var9 = (int)((this.field2261.method2374() + 519L) / 520L);
                         if(var9 == 0) {
                            ++var9;
                         }
 
-                        if(var9 == var6) {
+                        if(var6 == var9) {
                            ++var9;
                         }
                      }
@@ -136,22 +114,22 @@ public final class IndexFile {
                         var9 = 0;
                      }
 
-                     field1819[0] = (byte)(var1 >> 8);
-                     field1819[1] = (byte)var1;
-                     field1819[2] = (byte)(var8 >> 8);
-                     field1819[3] = (byte)var8;
-                     field1819[4] = (byte)(var9 >> 16);
-                     field1819[5] = (byte)(var9 >> 8);
-                     field1819[6] = (byte)var9;
-                     field1819[7] = (byte)this.index;
-                     this.field1825.method1395((long)(var6 * 520));
-                     this.field1825.method1415(field1819, 0, 8);
+                     field2258[0] = (byte)(var1 >> 8);
+                     field2258[1] = (byte)var1;
+                     field2258[2] = (byte)(var8 >> 8);
+                     field2258[3] = (byte)var8;
+                     field2258[4] = (byte)(var9 >> 16);
+                     field2258[5] = (byte)(var9 >> 8);
+                     field2258[6] = (byte)var9;
+                     field2258[7] = (byte)this.index;
+                     this.field2261.method2358((long)(var6 * 520));
+                     this.field2261.method2356(field2258, 0, 8);
                      var14 = var3 - var7;
                      if(var14 > 512) {
                         var14 = 512;
                      }
 
-                     this.field1825.method1415(var2, var7, var14);
+                     this.field2261.method2356(var2, var7, var14);
                      var7 += var14;
                      var6 = var9;
                      ++var8;
@@ -168,73 +146,66 @@ public final class IndexFile {
       }
    }
 
-   static {
-      field1819 = new byte[520];
-   }
-
-   @ObfuscatedName("d")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(II)[B",
-      garbageValue = "611406008"
+      signature = "(IB)[B",
+      garbageValue = "-7"
    )
-   public byte[] method2242(int var1) {
-      class72 var2 = this.field1825;
-      synchronized(this.field1825) {
+   public byte[] method3058(int var1) {
+      class123 var2 = this.field2261;
+      synchronized(this.field2261) {
          try {
             Object var10000;
-            if(this.field1820.method1396() < (long)(var1 * 6 + 6)) {
+            if(this.field2260.method2374() < (long)(var1 * 6 + 6)) {
                var10000 = null;
                return (byte[])var10000;
             } else {
-               this.field1820.method1395((long)(var1 * 6));
-               this.field1820.method1401(field1819, 0, 6);
-               int var3 = ((field1819[0] & 255) << 16) + ((field1819[1] & 255) << 8) + (field1819[2] & 255);
-               int var4 = (field1819[5] & 255) + ((field1819[3] & 255) << 16) + ((field1819[4] & 255) << 8);
-               if(var3 < 0 || var3 > this.field1822) {
+               this.field2260.method2358((long)(var1 * 6));
+               this.field2260.method2361(field2258, 0, 6);
+               int var3 = (field2258[2] & 255) + ((field2258[1] & 255) << 8) + ((field2258[0] & 255) << 16);
+               int var4 = (field2258[5] & 255) + ((field2258[4] & 255) << 8) + ((field2258[3] & 255) << 16);
+               if(var3 < 0 || var3 > this.field2262) {
                   var10000 = null;
                   return (byte[])var10000;
-               } else if(var4 <= 0 || (long)var4 > this.field1825.method1396() / 520L) {
+               } else if(var4 <= 0 || (long)var4 > this.field2261.method2374() / 520L) {
                   var10000 = null;
                   return (byte[])var10000;
                } else {
                   byte[] var5 = new byte[var3];
                   int var6 = 0;
-                  int var7 = 0;
 
-                  while(var6 < var3) {
+                  for(int var7 = 0; var6 < var3; ++var7) {
                      if(var4 == 0) {
                         var10000 = null;
                         return (byte[])var10000;
                      }
 
-                     this.field1825.method1395((long)(var4 * 520));
+                     this.field2261.method2358((long)(var4 * 520));
                      int var8 = var3 - var6;
                      if(var8 > 512) {
                         var8 = 512;
                      }
 
-                     this.field1825.method1401(field1819, 0, var8 + 8);
-                     int var9 = (field1819[1] & 255) + ((field1819[0] & 255) << 8);
-                     int var10 = ((field1819[2] & 255) << 8) + (field1819[3] & 255);
-                     int var11 = (field1819[6] & 255) + ((field1819[4] & 255) << 16) + ((field1819[5] & 255) << 8);
-                     int var12 = field1819[7] & 255;
-                     if(var1 == var9 && var7 == var10 && this.index == var12) {
-                        if(var11 >= 0 && (long)var11 <= this.field1825.method1396() / 520L) {
-                           for(int var13 = 0; var13 < var8; ++var13) {
-                              var5[var6++] = field1819[var13 + 8];
-                           }
-
-                           var4 = var11;
-                           ++var7;
-                           continue;
-                        }
-
+                     this.field2261.method2361(field2258, 0, var8 + 8);
+                     int var9 = (field2258[1] & 255) + ((field2258[0] & 255) << 8);
+                     int var10 = ((field2258[2] & 255) << 8) + (field2258[3] & 255);
+                     int var11 = (field2258[6] & 255) + ((field2258[5] & 255) << 8) + ((field2258[4] & 255) << 16);
+                     int var12 = field2258[7] & 255;
+                     if(var9 != var1 || var10 != var7 || this.index != var12) {
                         var10000 = null;
                         return (byte[])var10000;
                      }
 
-                     var10000 = null;
-                     return (byte[])var10000;
+                     if(var11 < 0 || (long)var11 > this.field2261.method2374() / 520L) {
+                        var10000 = null;
+                        return (byte[])var10000;
+                     }
+
+                     for(int var13 = 0; var13 < var8; ++var13) {
+                        var5[var6++] = field2258[var13 + 8];
+                     }
+
+                     var4 = var11;
                   }
 
                   byte[] var18 = var5;
@@ -247,145 +218,164 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(LPacketBuffer;II)Z",
-      garbageValue = "-119979071"
+      signature = "(ILclass123;Lclass123;I)V",
+      garbageValue = "500000"
    )
-   static boolean method2245(PacketBuffer var0, int var1) {
-      int var2 = var0.method2645(2);
+   public IndexFile(int var1, class123 var2, class123 var3, int var4) {
+      this.field2261 = null;
+      this.field2260 = null;
+      this.field2262 = '\ufde8';
+      this.index = var1;
+      this.field2261 = var2;
+      this.field2260 = var3;
+      this.field2262 = var4;
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "0"
+   )
+   static final void method3065() {
+      short var0 = 256;
+      int var1;
+      if(class92.field1424 > 0) {
+         for(var1 = 0; var1 < 256; ++var1) {
+            if(class92.field1424 > 768) {
+               class30.field430[var1] = class33.method354(World.field1265[var1], class24.field365[var1], 1024 - class92.field1424);
+            } else if(class92.field1424 > 256) {
+               class30.field430[var1] = class24.field365[var1];
+            } else {
+               class30.field430[var1] = class33.method354(class24.field365[var1], World.field1265[var1], 256 - class92.field1424);
+            }
+         }
+      } else if(class92.field1419 > 0) {
+         for(var1 = 0; var1 < 256; ++var1) {
+            if(class92.field1419 > 768) {
+               class30.field430[var1] = class33.method354(World.field1265[var1], class2.field10[var1], 1024 - class92.field1419);
+            } else if(class92.field1419 > 256) {
+               class30.field430[var1] = class2.field10[var1];
+            } else {
+               class30.field430[var1] = class33.method354(class2.field10[var1], World.field1265[var1], 256 - class92.field1419);
+            }
+         }
+      } else {
+         for(var1 = 0; var1 < 256; ++var1) {
+            class30.field430[var1] = World.field1265[var1];
+         }
+      }
+
+      Rasterizer2D.method4998(class92.field1416, 9, class92.field1416 + 128, var0 + 7);
+      class92.field1429.method5130(class92.field1416, 0);
+      Rasterizer2D.method5009();
+      var1 = 0;
+      int var2 = class40.field541.width * 9 + class92.field1416;
+
       int var3;
       int var4;
+      int var5;
+      int var6;
       int var7;
       int var8;
       int var9;
       int var10;
-      if(var2 == 0) {
-         if(var0.method2645(1) != 0) {
-            method2245(var0, var1);
+      for(var3 = 1; var3 < var0 - 1; ++var3) {
+         var4 = (var0 - var3) * class92.field1423[var3] / var0;
+         var5 = var4 + 22;
+         if(var5 < 0) {
+            var5 = 0;
          }
 
-         var3 = var0.method2645(13);
-         var4 = var0.method2645(13);
-         boolean var12 = var0.method2645(1) == 1;
-         if(var12) {
-            class45.field899[++class45.field902 - 1] = var1;
+         var1 += var5;
+
+         for(var6 = var5; var6 < 128; ++var6) {
+            var7 = class5.field33[var1++];
+            if(var7 != 0) {
+               var8 = var7;
+               var9 = 256 - var7;
+               var7 = class30.field430[var7];
+               var10 = class40.field541.pixels[var2];
+               class40.field541.pixels[var2++] = ((var10 & 16711935) * var9 + (var7 & 16711935) * var8 & -16711936) + ((var7 & '\uff00') * var8 + var9 * (var10 & '\uff00') & 16711680) >> 8;
+            } else {
+               ++var2;
+            }
          }
 
-         if(Client.cachedPlayers[var1] != null) {
-            throw new RuntimeException();
+         var2 += var5 + class40.field541.width - 128;
+      }
+
+      Rasterizer2D.method4998(class92.field1416 + 765 - 128, 9, class92.field1416 + 765, var0 + 7);
+      class269.field3672.method5130(class92.field1416 + 382, 0);
+      Rasterizer2D.method5009();
+      var1 = 0;
+      var2 = class40.field541.width * 9 + 24 + 637 + class92.field1416;
+
+      for(var3 = 1; var3 < var0 - 1; ++var3) {
+         var4 = (var0 - var3) * class92.field1423[var3] / var0;
+         var5 = 103 - var4;
+         var2 += var4;
+
+         for(var6 = 0; var6 < var5; ++var6) {
+            var7 = class5.field33[var1++];
+            if(var7 != 0) {
+               var8 = var7;
+               var9 = 256 - var7;
+               var7 = class30.field430[var7];
+               var10 = class40.field541.pixels[var2];
+               class40.field541.pixels[var2++] = (var8 * (var7 & 16711935) + (var10 & 16711935) * var9 & -16711936) + ((var10 & '\uff00') * var9 + var8 * (var7 & '\uff00') & 16711680) >> 8;
+            } else {
+               ++var2;
+            }
+         }
+
+         var1 += 128 - var5;
+         var2 += class40.field541.width - var5 - var4;
+      }
+
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(I[BII)Z",
+      garbageValue = "-463459175"
+   )
+   public boolean method3067(int var1, byte[] var2, int var3) {
+      class123 var4 = this.field2261;
+      synchronized(this.field2261) {
+         if(var3 >= 0 && var3 <= this.field2262) {
+            boolean var5 = this.method3057(var1, var2, var3, true);
+            if(!var5) {
+               var5 = this.method3057(var1, var2, var3, false);
+            }
+
+            return var5;
          } else {
-            Player var6 = Client.cachedPlayers[var1] = new Player();
-            var6.field257 = var1;
-            if(class45.field890[var1] != null) {
-               var6.method227(class45.field890[var1]);
-            }
-
-            var6.field650 = class45.field900[var1];
-            var6.interacting = class45.field897[var1];
-            var7 = class45.field895[var1];
-            var8 = var7 >> 28;
-            var9 = var7 >> 14 & 255;
-            var10 = var7 & 255;
-            var6.field618[0] = class45.field889[var1];
-            var6.field256 = (byte)var8;
-            var6.method236(var3 + (var9 << 13) - class108.baseX, (var10 << 13) + var4 - GameEngine.baseY);
-            var6.field255 = false;
-            return true;
-         }
-      } else if(var2 == 1) {
-         var3 = var0.method2645(2);
-         var4 = class45.field895[var1];
-         class45.field895[var1] = ((var3 + (var4 >> 28) & 3) << 28) + (var4 & 268435455);
-         return false;
-      } else {
-         int var5;
-         int var11;
-         if(var2 == 2) {
-            var3 = var0.method2645(5);
-            var4 = var3 >> 3;
-            var5 = var3 & 7;
-            var11 = class45.field895[var1];
-            var7 = var4 + (var11 >> 28) & 3;
-            var8 = var11 >> 14 & 255;
-            var9 = var11 & 255;
-            if(var5 == 0) {
-               --var8;
-               --var9;
-            }
-
-            if(var5 == 1) {
-               --var9;
-            }
-
-            if(var5 == 2) {
-               ++var8;
-               --var9;
-            }
-
-            if(var5 == 3) {
-               --var8;
-            }
-
-            if(var5 == 4) {
-               ++var8;
-            }
-
-            if(var5 == 5) {
-               --var8;
-               ++var9;
-            }
-
-            if(var5 == 6) {
-               ++var9;
-            }
-
-            if(var5 == 7) {
-               ++var8;
-               ++var9;
-            }
-
-            class45.field895[var1] = (var8 << 14) + (var7 << 28) + var9;
-            return false;
-         } else {
-            var3 = var0.method2645(18);
-            var4 = var3 >> 16;
-            var5 = var3 >> 8 & 255;
-            var11 = var3 & 255;
-            var7 = class45.field895[var1];
-            var8 = var4 + (var7 >> 28) & 3;
-            var9 = var5 + (var7 >> 14) & 255;
-            var10 = var11 + var7 & 255;
-            class45.field895[var1] = var10 + (var8 << 28) + (var9 << 14);
-            return false;
+            throw new IllegalArgumentException();
          }
       }
    }
 
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(ILclass72;Lclass72;I)V",
-      garbageValue = "500000"
+      signature = "(Ljava/lang/Object;ZB)[B",
+      garbageValue = "-2"
    )
-   public IndexFile(int var1, class72 var2, class72 var3, int var4) {
-      this.field1825 = null;
-      this.field1820 = null;
-      this.field1822 = '\ufde8';
-      this.index = var1;
-      this.field1825 = var2;
-      this.field1820 = var3;
-      this.field1822 = var4;
+   public static byte[] method3071(Object var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else if(var0 instanceof byte[]) {
+         byte[] var3 = (byte[])((byte[])var0);
+         return var1?class9.method41(var3):var3;
+      } else if(var0 instanceof class176) {
+         class176 var2 = (class176)var0;
+         return var2.vmethod3421();
+      } else {
+         throw new IllegalArgumentException();
+      }
    }
 
-   @ObfuscatedName("d")
-   public static String method2247(long var0) {
-      class138.field2004.setTime(new Date(var0));
-      int var2 = class138.field2004.get(7);
-      int var3 = class138.field2004.get(5);
-      int var4 = class138.field2004.get(2);
-      int var5 = class138.field2004.get(1);
-      int var6 = class138.field2004.get(11);
-      int var7 = class138.field2004.get(12);
-      int var8 = class138.field2004.get(13);
-      return class138.field2002[var2 - 1] + ", " + var3 / 10 + var3 % 10 + "-" + class138.field2003[0][var4] + "-" + var5 + " " + var6 / 10 + var6 % 10 + ":" + var7 / 10 + var7 % 10 + ":" + var8 / 10 + var8 % 10 + " GMT";
+   static {
+      field2258 = new byte[520];
    }
 }

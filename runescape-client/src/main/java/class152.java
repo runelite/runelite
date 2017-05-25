@@ -1,19 +1,37 @@
+import java.applet.Applet;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eo")
-public class class152 {
-   @ObfuscatedName("t")
-   class152 field2040;
+@ObfuscatedName("ep")
+public class class152 extends RuntimeException {
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -915272505
+   )
+   @Export("revision")
+   public static int revision;
+   @ObfuscatedName("h")
+   public static String field2196;
    @ObfuscatedName("q")
-   class152 field2041;
+   String field2198;
+   @ObfuscatedName("g")
+   Throwable field2199;
+   @ObfuscatedName("i")
+   public static Applet field2201;
+   @ObfuscatedName("jt")
+   @ObfuscatedGetter(
+      intValue = -407493319
+   )
+   static int field2202;
 
-   @ObfuscatedName("d")
-   public void method2865() {
-      if(this.field2040 != null) {
-         this.field2040.field2041 = this.field2041;
-         this.field2041.field2040 = this.field2040;
-         this.field2041 = null;
-         this.field2040 = null;
-      }
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-273934086"
+   )
+   public static boolean method2965(int var0) {
+      return (var0 & 1) != 0;
    }
 }

@@ -1,52 +1,50 @@
+import java.util.HashMap;
+import java.util.Map;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cv")
-public class class98 extends class109 {
-   @ObfuscatedName("d")
+@ObfuscatedName("cu")
+public class class98 {
+   @ObfuscatedName("u")
+   static final class201 field1518;
+   @ObfuscatedName("h")
+   static final class186 field1519;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      longValue = -8045312740261136589L
+      intValue = -219163049
    )
-   long field1629;
+   static int field1520;
+   @ObfuscatedName("a")
+   public static short[][] field1521;
+   @ObfuscatedName("ee")
+   static RSSocket field1523;
+   @ObfuscatedName("i")
+   @Export("chatLineMap")
+   static final Map chatLineMap;
 
-   class98() {
-      this.field1629 = System.nanoTime();
+   static {
+      chatLineMap = new HashMap();
+      field1519 = new class186(1024);
+      field1518 = new class201();
+      field1520 = 0;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-86"
+      signature = "(LBuffer;IB)V",
+      garbageValue = "38"
    )
-   public void vmethod2062() {
-      this.field1629 = System.nanoTime();
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "29"
-   )
-   int vmethod2063(int var1, int var2) {
-      long var3 = (long)var2 * 1000000L;
-      long var5 = this.field1629 - System.nanoTime();
-      if(var5 < var3) {
-         var5 = var3;
+   public static void method1866(Buffer var0, int var1) {
+      if(class155.field2221 != null) {
+         try {
+            class155.field2221.method2358(0L);
+            class155.field2221.method2356(var0.payload, var1, 24);
+         } catch (Exception var3) {
+            ;
+         }
       }
 
-      class0.method14(var5 / 1000000L);
-      long var7 = System.nanoTime();
-
-      int var9;
-      for(var9 = 0; var9 < 10 && (var9 < 1 || this.field1629 < var7); this.field1629 += (long)var1 * 1000000L) {
-         ++var9;
-      }
-
-      if(this.field1629 < var7) {
-         this.field1629 = var7;
-      }
-
-      return var9;
    }
 }

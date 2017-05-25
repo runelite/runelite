@@ -1,141 +1,83 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bf")
-public class class61 {
-   @ObfuscatedName("c")
-   IndexDataBase field1068;
+@ObfuscatedName("bq")
+public final class class61 {
+   @ObfuscatedName("h")
+   @Export("tileSettings")
+   static byte[][][] tileSettings;
+   @ObfuscatedName("f")
+   static final int[] field742;
+   @ObfuscatedName("g")
+   @Export("overlayIds")
+   static byte[][][] overlayIds;
+   @ObfuscatedName("i")
+   @Export("tileHeights")
+   static int[][][] tileHeights;
+   @ObfuscatedName("x")
+   static int[] field745;
+   @ObfuscatedName("l")
+   static int[][] field746;
+   @ObfuscatedName("iw")
+   static Widget field747;
+   @ObfuscatedName("v")
+   @Export("overlayPaths")
+   static byte[][][] overlayPaths;
+   @ObfuscatedName("t")
+   @Export("overlayRotations")
+   static byte[][][] overlayRotations;
+   @ObfuscatedName("s")
+   static final int[] field750;
    @ObfuscatedName("n")
-   XHashTable field1069;
-   @ObfuscatedName("d")
-   IndexDataBase field1070;
-   @ObfuscatedName("q")
-   XHashTable field1071;
-   @ObfuscatedName("a")
-   static int[] field1072;
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(II[IS)Lclass55;",
-      garbageValue = "10658"
+   static final int[] field751;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1701450723
    )
-   class55 method1160(int var1, int var2, int[] var3) {
-      int var4 = var2 ^ (var1 << 4 & '\uffff' | var1 >>> 12);
-      var4 |= var1 << 16;
-      long var5 = (long)var4;
-      class55 var7 = (class55)this.field1071.method2773(var5);
-      if(var7 != null) {
-         return var7;
-      } else if(var3 != null && var3[0] <= 0) {
-         return null;
-      } else {
-         SoundEffect var8 = SoundEffect.method993(this.field1070, var1, var2);
-         if(var8 == null) {
-            return null;
-         } else {
-            var7 = var8.method991();
-            this.field1071.method2774(var7, var5);
-            if(var3 != null) {
-               var3[0] -= var7.field1012.length;
-            }
-
-            return var7;
-         }
-      }
-   }
-
+   static int field752;
+   @ObfuscatedName("w")
+   static final int[] field753;
+   @ObfuscatedName("o")
+   static int[][][] field754;
+   @ObfuscatedName("e")
+   static final int[] field755;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -400329583
+   )
+   static int field756;
+   @ObfuscatedName("y")
+   static final int[] field757;
    @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(II[II)Lclass55;",
-      garbageValue = "50425512"
+   @ObfuscatedGetter(
+      intValue = -1495410147
    )
-   class55 method1161(int var1, int var2, int[] var3) {
-      int var4 = var2 ^ (var1 << 4 & '\uffff' | var1 >>> 12);
-      var4 |= var1 << 16;
-      long var5 = (long)var4 ^ 4294967296L;
-      class55 var7 = (class55)this.field1071.method2773(var5);
-      if(var7 != null) {
-         return var7;
-      } else if(var3 != null && var3[0] <= 0) {
-         return null;
-      } else {
-         class54 var8 = (class54)this.field1069.method2773(var5);
-         if(var8 == null) {
-            var8 = class54.method1011(this.field1068, var1, var2);
-            if(var8 == null) {
-               return null;
-            }
+   static int field758;
+   @ObfuscatedName("ri")
+   static IndexFile field759;
 
-            this.field1069.method2774(var8, var5);
-         }
-
-         var7 = var8.method1013(var3);
-         if(var7 == null) {
-            return null;
-         } else {
-            var8.unlink();
-            this.field1071.method2774(var7, var5);
-            return var7;
-         }
-      }
+   static {
+      tileHeights = new int[4][105][105];
+      tileSettings = new byte[4][104][104];
+      field752 = 99;
+      field755 = new int[]{1, 2, 4, 8};
+      field750 = new int[]{16, 32, 64, 128};
+      field751 = new int[]{1, 0, -1, 0};
+      field757 = new int[]{0, -1, 0, 1};
+      field753 = new int[]{1, -1, -1, 1};
+      field742 = new int[]{-1, -1, 1, 1};
+      field758 = (int)(Math.random() * 17.0D) - 8;
+      field756 = (int)(Math.random() * 33.0D) - 16;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(I[II)Lclass55;",
-      garbageValue = "-1418793050"
+      signature = "(IS)Z",
+      garbageValue = "1841"
    )
-   public class55 method1169(int var1, int[] var2) {
-      if(this.field1070.method3306() == 1) {
-         return this.method1160(0, var1, var2);
-      } else if(this.field1070.method3305(var1) == 1) {
-         return this.method1160(var1, 0, var2);
-      } else {
-         throw new RuntimeException();
-      }
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(I[II)Lclass55;",
-      garbageValue = "-143476729"
-   )
-   public class55 method1173(int var1, int[] var2) {
-      if(this.field1068.method3306() == 1) {
-         return this.method1161(0, var1, var2);
-      } else if(this.field1068.method3305(var1) == 1) {
-         return this.method1161(var1, 0, var2);
-      } else {
-         throw new RuntimeException();
-      }
-   }
-
-   public class61(IndexDataBase var1, IndexDataBase var2) {
-      this.field1069 = new XHashTable(256);
-      this.field1071 = new XHashTable(256);
-      this.field1070 = var1;
-      this.field1068 = var2;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1621218008"
-   )
-   public static int method1174(int var0, int var1) {
-      int var2;
-      if(var1 > var0) {
-         var2 = var0;
-         var0 = var1;
-         var1 = var2;
-      }
-
-      while(var1 != 0) {
-         var2 = var0 % var1;
-         var0 = var1;
-         var1 = var2;
-      }
-
-      return var0;
+   public static boolean method1070(int var0) {
+      return var0 == class221.field2806.field2826;
    }
 }

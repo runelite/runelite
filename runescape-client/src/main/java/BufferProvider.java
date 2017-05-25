@@ -1,61 +1,48 @@
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Image;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hs")
+@ObfuscatedName("jh")
 @Implements("BufferProvider")
 public abstract class BufferProvider {
-   @ObfuscatedName("t")
-   @Export("image")
-   public Image image;
-   @ObfuscatedName("c")
-   @Export("pixels")
-   public int[] pixels;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 794665399
-   )
-   @Export("height")
-   int height;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -273697131
+      intValue = -2126286277
    )
    @Export("width")
    public int width;
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1468205805"
+   @ObfuscatedName("u")
+   @Export("pixels")
+   public int[] pixels;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1796242355
    )
-   public final void method4147() {
+   @Export("height")
+   public int height;
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-30"
+   )
+   public final void method5082() {
       Rasterizer2D.setRasterBuffer(this.pixels, this.width, this.height);
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;III)V",
-      garbageValue = "760519699"
+      signature = "(III)V",
+      garbageValue = "1113058415"
    )
-   public abstract void draw(Graphics var1, int var2, int var3);
+   public abstract void vmethod5083(int var1, int var2);
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIIII)V",
-      garbageValue = "617664203"
+      signature = "(IIIII)V",
+      garbageValue = "128721490"
    )
-   public abstract void drawSub(Graphics var1, int var2, int var3, int var4, int var5);
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(IILjava/awt/Component;B)V",
-      garbageValue = "23"
-   )
-   abstract void init(int var1, int var2, Component var3);
+   public abstract void vmethod5084(int var1, int var2, int var3, int var4);
 }

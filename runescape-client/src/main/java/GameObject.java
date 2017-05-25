@@ -2,97 +2,112 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ci")
+@ObfuscatedName("ey")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("na")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 372467429
+      intValue = -1348482943
    )
-   static int field1597;
-   @ObfuscatedName("c")
+   @Export("plane")
+   int plane;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1204771041
-   )
-   @Export("height")
-   int height;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1510157693
+      intValue = 1639834407
    )
    @Export("x")
    int x;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1178976389
+      intValue = 1250418639
    )
    @Export("y")
    int y;
-   @ObfuscatedName("t")
+   @ObfuscatedName("g")
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("p")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 758713025
+      intValue = -515129617
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 2005562965
-   )
-   @Export("relativeX")
-   int relativeX;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1240943997
-   )
-   @Export("offsetX")
-   int offsetX;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1605232111
-   )
-   int field1605;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 387569951
-   )
-   @Export("offsetY")
-   int offsetY;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 603394919
-   )
-   @Export("flags")
-   int flags;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 757781661
-   )
-   int field1608;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1936736595
-   )
-   @Export("plane")
-   int plane;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1016134539
+      intValue = 335509333
    )
    @Export("hash")
    public int hash;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1496584953
+   )
+   @Export("offsetX")
+   int offsetX;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1437069007
+      intValue = -88415481
    )
    @Export("relativeY")
    int relativeY;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -943111231
+   )
+   int field2169;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 1119553957
+   )
+   int field2170;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 116027087
+   )
+   @Export("offsetY")
+   int offsetY;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -95297751
+   )
+   @Export("flags")
+   int flags;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 250399303
+   )
+   @Export("height")
+   int height;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -361333291
+   )
+   @Export("relativeX")
+   int relativeX;
 
    GameObject() {
       this.hash = 0;
       this.flags = 0;
+   }
+
+   @ObfuscatedName("hf")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "1251408739"
+   )
+   static boolean method2938(int var0) {
+      return var0 == 57 || var0 == 58 || var0 == 1007 || var0 == 25 || var0 == 30;
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(ILjava/lang/String;Ljava/lang/String;B)V",
+      garbageValue = "-121"
+   )
+   @Export("sendGameMessage")
+   static void sendGameMessage(int var0, String var1, String var2) {
+      CombatInfoListHolder.addChatMessage(var0, var1, var2, (String)null);
    }
 }

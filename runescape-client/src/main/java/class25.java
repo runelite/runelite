@@ -2,102 +2,79 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("y")
-public final class class25 extends Node {
-   @ObfuscatedName("cq")
-   public static char field571;
-   @ObfuscatedName("c")
+@ObfuscatedName("z")
+public class class25 {
+   @ObfuscatedName("h")
+   class212 field371;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1738911739
+      intValue = 159288117
    )
-   int field572;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1493479849
-   )
-   int field573;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -687664959
-   )
-   int field574;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1974317475
-   )
-   int field575;
+   int field375;
+
    @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -2080561995
-   )
-   int field576;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -726253813
-   )
-   int field577;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -571492997
-   )
-   int field578;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1095374499
-   )
-   int field579;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 569309071
-   )
-   int field580;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 537339127
-   )
-   int field581;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 1170290131
-   )
-   int field582;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 412647969
-   )
-   int field585;
-
-   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I[BLIndexFile;B)V",
-      garbageValue = "48"
+      signature = "(II)I",
+      garbageValue = "1965431535"
    )
-   static void method573(int var0, byte[] var1, IndexFile var2) {
-      class182 var3 = new class182();
-      var3.field2702 = 0;
-      var3.hash = (long)var0;
-      var3.field2695 = var1;
-      var3.field2697 = var2;
-      Deque var4 = class185.field2727;
-      synchronized(class185.field2727) {
-         class185.field2727.method2824(var3);
+   public static int method177(int var0) {
+      int var1 = 0;
+      if(var0 < 0 || var0 >= 65536) {
+         var0 >>>= 16;
+         var1 += 16;
       }
 
-      Object var9 = class185.field2730;
-      synchronized(class185.field2730) {
-         if(class185.field2729 == 0) {
-            class185.field2731 = new Thread(new class185());
-            class185.field2731.setDaemon(true);
-            class185.field2731.start();
-            class185.field2731.setPriority(5);
-         }
-
-         class185.field2729 = 600;
+      if(var0 >= 256) {
+         var0 >>>= 8;
+         var1 += 8;
       }
+
+      if(var0 >= 16) {
+         var0 >>>= 4;
+         var1 += 4;
+      }
+
+      if(var0 >= 4) {
+         var0 >>>= 2;
+         var1 += 2;
+      }
+
+      if(var0 >= 1) {
+         var0 >>>= 1;
+         ++var1;
+      }
+
+      return var0 + var1;
    }
 
-   class25() {
-      this.field581 = 0;
-      this.field582 = -1;
+   class25(int var1, class212 var2) {
+      this.field375 = var1;
+      this.field371 = var2;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;LIndexDataBase;I)Z",
+      garbageValue = "-448933486"
+   )
+   public static boolean method178(IndexDataBase var0, IndexDataBase var1) {
+      class242.field3281 = var1;
+      if(!var0.method4178()) {
+         return false;
+      } else {
+         class242.field3293 = var0.method4184(35);
+         class242.field3276 = new class242[class242.field3293];
+
+         for(int var2 = 0; var2 < class242.field3293; ++var2) {
+            byte[] var3 = var0.getConfigData(35, var2);
+            if(var3 != null) {
+               class242.field3276[var2] = new class242(var2);
+               class242.field3276[var2].method4365(new Buffer(var3));
+               class242.field3276[var2].method4367();
+            }
+         }
+
+         return true;
+      }
    }
 }

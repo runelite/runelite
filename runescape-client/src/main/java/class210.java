@@ -1,80 +1,44 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hb")
-public class class210 {
-   @ObfuscatedName("d")
-   public static final char[] field3134;
-
-   static {
-      field3134 = new char[]{'€', '\u0000', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u0000', 'Ž', '\u0000', '\u0000', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u0000', 'ž', 'Ÿ'};
-   }
-
-   class210() throws Throwable {
-      throw new Error();
-   }
-
-   @ObfuscatedName("cr")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIII)V",
-      garbageValue = "-2120246606"
+@ObfuscatedName("hj")
+public class class210 extends CacheableNode {
+   @ObfuscatedName("q")
+   public final int[] field2587;
+   @ObfuscatedName("u")
+   public final int[] field2589;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 864208735
    )
-   static final void method4010(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      if(class112.method2112(var0)) {
-         ScriptState.field117 = null;
-         class164.gameDraw(class133.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
-         if(ScriptState.field117 != null) {
-            class164.gameDraw(ScriptState.field117, -1412584499, var1, var2, var3, var4, class122.field1886, NPC.field760, var7);
-            ScriptState.field117 = null;
-         }
-
-      } else {
-         if(var7 != -1) {
-            Client.field368[var7] = true;
-         } else {
-            for(int var8 = 0; var8 < 100; ++var8) {
-               Client.field368[var8] = true;
-            }
-         }
-
-      }
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;I)[LModIcon;",
-      garbageValue = "-1937985847"
+   public final int field2590;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 673689791
    )
-   public static ModIcon[] method4011(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.method3296(var1);
-      int var4 = var0.method3310(var3, var2);
-      ModIcon[] var5;
-      if(!class199.method3620(var0, var3, var4)) {
-         var5 = null;
-      } else {
-         ModIcon[] var7 = new ModIcon[class229.field3250];
+   public final int field2591;
 
-         for(int var8 = 0; var8 < class229.field3250; ++var8) {
-            ModIcon var9 = var7[var8] = new ModIcon();
-            var9.width = class229.field3255;
-            var9.originalHeight = class229.field3251;
-            var9.offsetX = class199.field2877[var8];
-            var9.offsetY = class229.field3252[var8];
-            var9.originalWidth = class229.field3254[var8];
-            var9.height = class36.field772[var8];
-            var9.palette = class229.field3249;
-            var9.pixels = class229.field3253[var8];
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(IIB)Z",
+      garbageValue = "60"
+   )
+   public boolean method3980(int var1, int var2) {
+      if(var2 >= 0 && var2 < this.field2587.length) {
+         int var3 = this.field2587[var2];
+         if(var1 >= var3 && var1 <= var3 + this.field2589[var2]) {
+            return true;
          }
-
-         class199.field2877 = null;
-         class229.field3252 = null;
-         class229.field3254 = null;
-         class36.field772 = null;
-         class229.field3249 = null;
-         class229.field3253 = null;
-         var5 = var7;
       }
 
-      return var5;
+      return false;
+   }
+
+   class210(int var1, int var2, int[] var3, int[] var4, int var5) {
+      this.field2591 = var1;
+      this.field2590 = var2;
+      this.field2589 = var3;
+      this.field2587 = var4;
    }
 }

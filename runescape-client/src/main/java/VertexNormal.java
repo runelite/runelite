@@ -4,64 +4,89 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cj")
+@ObfuscatedName("eg")
 @Implements("VertexNormal")
 public class VertexNormal {
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 703595271
+      intValue = -1095778789
    )
    @Export("y")
    int y;
-   @ObfuscatedName("t")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 988935729
-   )
-   @Export("magnitude")
-   int magnitude;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1130056623
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("ez")
-   static SpritePixels[] field1414;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -149388147
+      intValue = -1059862525
    )
    @Export("z")
    int z;
-
    @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(LPacketBuffer;B)I",
-      garbageValue = "112"
+   @ObfuscatedGetter(
+      intValue = -1596640761
    )
-   static int method1647(PacketBuffer var0) {
-      int var1 = var0.method2645(2);
-      int var2;
-      if(var1 == 0) {
-         var2 = 0;
-      } else if(var1 == 1) {
-         var2 = var0.method2645(5);
-      } else if(var1 == 2) {
-         var2 = var0.method2645(8);
-      } else {
-         var2 = var0.method2645(11);
-      }
-
-      return var2;
-   }
-
-   VertexNormal() {
-   }
+   @Export("magnitude")
+   int magnitude;
+   @ObfuscatedName("o")
+   public static class123[] field1994;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1398382327
+   )
+   @Export("x")
+   int x;
 
    VertexNormal(VertexNormal var1) {
       this.x = var1.x;
       this.y = var1.y;
       this.z = var1.z;
       this.magnitude = var1.magnitude;
+   }
+
+   VertexNormal() {
+   }
+
+   @ObfuscatedName("hy")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1952505812"
+   )
+   static final void method2620() {
+      boolean var0 = false;
+
+      while(!var0) {
+         var0 = true;
+
+         for(int var1 = 0; var1 < Client.menuOptionCount - 1; ++var1) {
+            if(Client.menuTypes[var1] < 1000 && Client.menuTypes[var1 + 1] > 1000) {
+               String var2 = Client.menuTargets[var1];
+               Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
+               Client.menuTargets[var1 + 1] = var2;
+               String var3 = Client.menuOptions[var1];
+               Client.menuOptions[var1] = Client.menuOptions[var1 + 1];
+               Client.menuOptions[var1 + 1] = var3;
+               int var4 = Client.menuTypes[var1];
+               Client.menuTypes[var1] = Client.menuTypes[var1 + 1];
+               Client.menuTypes[var1 + 1] = var4;
+               var4 = Client.menuActionParams0[var1];
+               Client.menuActionParams0[var1] = Client.menuActionParams0[var1 + 1];
+               Client.menuActionParams0[var1 + 1] = var4;
+               var4 = Client.menuActionParams1[var1];
+               Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
+               Client.menuActionParams1[var1 + 1] = var4;
+               var4 = Client.menuIdentifiers[var1];
+               Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
+               Client.menuIdentifiers[var1 + 1] = var4;
+               if(Client.field1037 != -1) {
+                  if(var1 == Client.field1037) {
+                     Client.field1037 = var1 + 1;
+                  } else if(Client.field1037 == var1 + 1) {
+                     Client.field1037 = var1;
+                  }
+               }
+
+               var0 = false;
+            }
+         }
+      }
+
    }
 }

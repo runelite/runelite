@@ -4,569 +4,298 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("k")
+@ObfuscatedName("bv")
 @Implements("Friend")
 public class Friend {
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1238224047
-   )
-   @Export("rank")
-   int rank;
-   @ObfuscatedName("c")
+   @ObfuscatedName("h")
    @Export("previousName")
    String previousName;
-   @ObfuscatedName("t")
-   boolean field152;
-   @ObfuscatedName("n")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -963256029
+      intValue = 985852265
    )
    @Export("world")
    int world;
-   @ObfuscatedName("u")
-   public static short[] field155;
-   @ObfuscatedName("ai")
-   static class102 field156;
-   @ObfuscatedName("lv")
-   static class220 field157;
-   @ObfuscatedName("p")
-   boolean field159;
-   @ObfuscatedName("cq")
-   @Export("rssocket")
-   static RSSocket rssocket;
-   @ObfuscatedName("d")
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1785513907
+   )
+   @Export("rank")
+   int rank;
+   @ObfuscatedName("i")
    @Export("name")
    String name;
+   @ObfuscatedName("v")
+   boolean field796;
+   @ObfuscatedName("g")
+   boolean field797;
 
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(ILScript;ZB)I",
-      garbageValue = "8"
-   )
-   static int method180(int var0, Script var1, boolean var2) {
-      Widget var3 = class128.method2364(class32.intStack[--class32.intStackSize]);
-      if(var0 == 2600) {
-         class32.intStack[++class32.intStackSize - 1] = var3.scrollX;
-         return 1;
-      } else if(var0 == 2601) {
-         class32.intStack[++class32.intStackSize - 1] = var3.scrollY;
-         return 1;
-      } else if(var0 == 2602) {
-         class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.text;
-         return 1;
-      } else if(var0 == 2603) {
-         class32.intStack[++class32.intStackSize - 1] = var3.scrollWidth;
-         return 1;
-      } else if(var0 == 2604) {
-         class32.intStack[++class32.intStackSize - 1] = var3.scrollHeight;
-         return 1;
-      } else if(var0 == 2605) {
-         class32.intStack[++class32.intStackSize - 1] = var3.field2244;
-         return 1;
-      } else if(var0 == 2606) {
-         class32.intStack[++class32.intStackSize - 1] = var3.rotationX;
-         return 1;
-      } else if(var0 == 2607) {
-         class32.intStack[++class32.intStackSize - 1] = var3.rotationY;
-         return 1;
-      } else if(var0 == 2608) {
-         class32.intStack[++class32.intStackSize - 1] = var3.rotationZ;
-         return 1;
-      } else if(var0 == 2609) {
-         class32.intStack[++class32.intStackSize - 1] = var3.opacity;
-         return 1;
-      } else if(var0 == 2610) {
-         class32.intStack[++class32.intStackSize - 1] = var3.field2248;
-         return 1;
-      } else if(var0 == 2611) {
-         class32.intStack[++class32.intStackSize - 1] = var3.textColor;
-         return 1;
-      } else if(var0 == 2612) {
-         class32.intStack[++class32.intStackSize - 1] = var3.field2279;
-         return 1;
-      } else if(var0 == 2613) {
-         class32.intStack[++class32.intStackSize - 1] = var3.field2238.vmethod4163();
-         return 1;
-      } else {
-         return 2;
-      }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1273390526"
-   )
-   static final void method181(int var0) {
-      short var1 = 256;
-      class41.field824 += var0 * 128;
-      int var2;
-      if(class41.field824 > class94.field1580.length) {
-         class41.field824 -= class94.field1580.length;
-         var2 = (int)(Math.random() * 12.0D);
-         class59.method1138(class126.field1909[var2]);
-      }
-
-      var2 = 0;
-      int var3 = var0 * 128;
-      int var4 = (var1 - var0) * 128;
-
-      int var5;
-      int var6;
-      for(var5 = 0; var5 < var4; ++var5) {
-         var6 = class2.field24[var3 + var2] - class94.field1580[var2 + class41.field824 & class94.field1580.length - 1] * var0 / 6;
-         if(var6 < 0) {
-            var6 = 0;
-         }
-
-         class2.field24[var2++] = var6;
-      }
-
-      int var7;
-      int var8;
-      for(var5 = var1 - var0; var5 < var1; ++var5) {
-         var6 = var5 * 128;
-
-         for(var7 = 0; var7 < 128; ++var7) {
-            var8 = (int)(Math.random() * 100.0D);
-            if(var8 < 50 && var7 > 10 && var7 < 118) {
-               class2.field24[var6 + var7] = 255;
-            } else {
-               class2.field24[var7 + var6] = 0;
-            }
-         }
-      }
-
-      if(class41.field822 > 0) {
-         class41.field822 -= var0 * 4;
-      }
-
-      if(class41.field845 > 0) {
-         class41.field845 -= var0 * 4;
-      }
-
-      if(class41.field822 == 0 && class41.field845 == 0) {
-         var5 = (int)(Math.random() * (double)(2000 / var0));
-         if(var5 == 0) {
-            class41.field822 = 1024;
-         }
-
-         if(var5 == 1) {
-            class41.field845 = 1024;
-         }
-      }
-
-      for(var5 = 0; var5 < var1 - var0; ++var5) {
-         class41.field820[var5] = class41.field820[var5 + var0];
-      }
-
-      for(var5 = var1 - var0; var5 < var1; ++var5) {
-         class41.field820[var5] = (int)(Math.sin((double)class41.field828 / 14.0D) * 16.0D + Math.sin((double)class41.field828 / 15.0D) * 14.0D + Math.sin((double)class41.field828 / 16.0D) * 12.0D);
-         ++class41.field828;
-      }
-
-      class41.field838 += var0;
-      var5 = (var0 + (Client.gameCycle & 1)) / 2;
-      if(var5 > 0) {
-         for(var6 = 0; var6 < class41.field838 * 100; ++var6) {
-            var7 = (int)(Math.random() * 124.0D) + 2;
-            var8 = (int)(Math.random() * 128.0D) + 128;
-            class2.field24[var7 + (var8 << 7)] = 192;
-         }
-
-         class41.field838 = 0;
-
-         int var9;
-         for(var6 = 0; var6 < var1; ++var6) {
-            var7 = 0;
-            var8 = var6 * 128;
-
-            for(var9 = -var5; var9 < 128; ++var9) {
-               if(var9 + var5 < 128) {
-                  var7 += class2.field24[var8 + var9 + var5];
-               }
-
-               if(var9 - (var5 + 1) >= 0) {
-                  var7 -= class2.field24[var8 + var9 - (var5 + 1)];
-               }
-
-               if(var9 >= 0) {
-                  class133.field1983[var8 + var9] = var7 / (var5 * 2 + 1);
-               }
-            }
-         }
-
-         for(var6 = 0; var6 < 128; ++var6) {
-            var7 = 0;
-
-            for(var8 = -var5; var8 < var1; ++var8) {
-               var9 = var8 * 128;
-               if(var5 + var8 < var1) {
-                  var7 += class133.field1983[var6 + var9 + var5 * 128];
-               }
-
-               if(var8 - (var5 + 1) >= 0) {
-                  var7 -= class133.field1983[var6 + var9 - (var5 + 1) * 128];
-               }
-
-               if(var8 >= 0) {
-                  class2.field24[var9 + var6] = var7 / (var5 * 2 + 1);
-               }
-            }
-         }
-      }
-
-   }
-
-   @ObfuscatedName("x")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(ILScript;ZI)I",
-      garbageValue = "-2012330685"
+      garbageValue = "-15836678"
    )
-   static int method182(int var0, Script var1, boolean var2) {
-      if(var0 == 3600) {
-         if(Client.field554 == 0) {
-            class32.intStack[++class32.intStackSize - 1] = -2;
-         } else if(Client.field554 == 1) {
-            class32.intStack[++class32.intStackSize - 1] = -1;
-         } else {
-            class32.intStack[++class32.intStackSize - 1] = Client.friendCount;
-         }
-
+   static int method1095(int var0, Script var1, boolean var2) {
+      int var3;
+      if(var0 == 4200) {
+         var3 = class83.intStack[--class83.intStackSize];
+         class83.scriptStringStack[++ChatMessages.scriptStringStackSize - 1] = class51.getItemDefinition(var3).name;
          return 1;
       } else {
-         int var3;
-         if(var0 == 3601) {
-            var3 = class32.intStack[--class32.intStackSize];
-            if(Client.field554 == 2 && var3 < Client.friendCount) {
-               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.friends[var3].name;
-               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.friends[var3].previousName;
+         int var13;
+         ItemComposition var17;
+         if(var0 == 4201) {
+            class83.intStackSize -= 2;
+            var3 = class83.intStack[class83.intStackSize];
+            var13 = class83.intStack[class83.intStackSize + 1];
+            var17 = class51.getItemDefinition(var3);
+            if(var13 >= 1 && var13 <= 5 && var17.groundActions[var13 - 1] != null) {
+               class83.scriptStringStack[++ChatMessages.scriptStringStackSize - 1] = var17.groundActions[var13 - 1];
             } else {
-               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
-               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
+               class83.scriptStringStack[++ChatMessages.scriptStringStackSize - 1] = "";
             }
 
             return 1;
-         } else if(var0 == 3602) {
-            var3 = class32.intStack[--class32.intStackSize];
-            if(Client.field554 == 2 && var3 < Client.friendCount) {
-               class32.intStack[++class32.intStackSize - 1] = Client.friends[var3].world;
+         } else if(var0 == 4202) {
+            class83.intStackSize -= 2;
+            var3 = class83.intStack[class83.intStackSize];
+            var13 = class83.intStack[class83.intStackSize + 1];
+            var17 = class51.getItemDefinition(var3);
+            if(var13 >= 1 && var13 <= 5 && var17.inventoryActions[var13 - 1] != null) {
+               class83.scriptStringStack[++ChatMessages.scriptStringStackSize - 1] = var17.inventoryActions[var13 - 1];
             } else {
-               class32.intStack[++class32.intStackSize - 1] = 0;
+               class83.scriptStringStack[++ChatMessages.scriptStringStackSize - 1] = "";
             }
 
             return 1;
-         } else if(var0 == 3603) {
-            var3 = class32.intStack[--class32.intStackSize];
-            if(Client.field554 == 2 && var3 < Client.friendCount) {
-               class32.intStack[++class32.intStackSize - 1] = Client.friends[var3].rank;
-            } else {
-               class32.intStack[++class32.intStackSize - 1] = 0;
-            }
-
+         } else if(var0 == 4203) {
+            var3 = class83.intStack[--class83.intStackSize];
+            class83.intStack[++class83.intStackSize - 1] = class51.getItemDefinition(var3).price;
+            return 1;
+         } else if(var0 == 4204) {
+            var3 = class83.intStack[--class83.intStackSize];
+            class83.intStack[++class83.intStackSize - 1] = class51.getItemDefinition(var3).isStackable == 1?1:0;
             return 1;
          } else {
-            String var10;
-            if(var0 == 3604) {
-               var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
-               int var4 = class32.intStack[--class32.intStackSize];
-               Client.secretPacketBuffer1.putOpcode(91);
-               Client.secretPacketBuffer1.putByte(class36.method753(var10) + 1);
-               Client.secretPacketBuffer1.method2504(var10);
-               Client.secretPacketBuffer1.method2499(var4);
-               return 1;
-            } else if(var0 == 3605) {
-               var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
-               class105.method2036(var10);
-               return 1;
-            } else {
-               int var5;
-               String var7;
-               String var8;
-               Friend var13;
-               String var14;
-               if(var0 == 3606) {
-                  var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                  if(var10 != null) {
-                     var14 = class108.method2059(var10, NPC.field757);
-                     if(var14 != null) {
-                        for(var5 = 0; var5 < Client.friendCount; ++var5) {
-                           var13 = Client.friends[var5];
-                           var7 = var13.name;
-                           var8 = class108.method2059(var7, NPC.field757);
-                           if(TextureProvider.method1474(var10, var14, var7, var8)) {
-                              --Client.friendCount;
+            ItemComposition var4;
+            if(var0 == 4205) {
+               var3 = class83.intStack[--class83.intStackSize];
+               var4 = class51.getItemDefinition(var3);
+               if(var4.notedTemplate == -1 && var4.note >= 0) {
+                  class83.intStack[++class83.intStackSize - 1] = var4.note;
+               } else {
+                  class83.intStack[++class83.intStackSize - 1] = var3;
+               }
 
-                              for(int var9 = var5; var9 < Client.friendCount; ++var9) {
-                                 Client.friends[var9] = Client.friends[var9 + 1];
-                              }
+               return 1;
+            } else if(var0 == 4206) {
+               var3 = class83.intStack[--class83.intStackSize];
+               var4 = class51.getItemDefinition(var3);
+               if(var4.notedTemplate >= 0 && var4.note >= 0) {
+                  class83.intStack[++class83.intStackSize - 1] = var4.note;
+               } else {
+                  class83.intStack[++class83.intStackSize - 1] = var3;
+               }
 
-                              Client.field478 = Client.field311;
-                              Client.secretPacketBuffer1.putOpcode(22);
-                              Client.secretPacketBuffer1.putByte(class36.method753(var10));
-                              Client.secretPacketBuffer1.method2504(var10);
-                              break;
-                           }
-                        }
+               return 1;
+            } else if(var0 == 4207) {
+               var3 = class83.intStack[--class83.intStackSize];
+               class83.intStack[++class83.intStackSize - 1] = class51.getItemDefinition(var3).isMembers?1:0;
+               return 1;
+            } else if(var0 == 4208) {
+               var3 = class83.intStack[--class83.intStackSize];
+               var4 = class51.getItemDefinition(var3);
+               if(var4.field3535 == -1 && var4.field3534 >= 0) {
+                  class83.intStack[++class83.intStackSize - 1] = var4.field3534;
+               } else {
+                  class83.intStack[++class83.intStackSize - 1] = var3;
+               }
+
+               return 1;
+            } else if(var0 == 4209) {
+               var3 = class83.intStack[--class83.intStackSize];
+               var4 = class51.getItemDefinition(var3);
+               if(var4.field3535 >= 0 && var4.field3534 >= 0) {
+                  class83.intStack[++class83.intStackSize - 1] = var4.field3534;
+               } else {
+                  class83.intStack[++class83.intStackSize - 1] = var3;
+               }
+
+               return 1;
+            } else if(var0 == 4210) {
+               String var15 = class83.scriptStringStack[--ChatMessages.scriptStringStackSize];
+               var13 = class83.intStack[--class83.intStackSize];
+               boolean var6 = var13 == 1;
+               String var5 = var15.toLowerCase();
+               short[] var7 = new short[16];
+               int var8 = 0;
+               int var9 = 0;
+
+               while(true) {
+                  if(var9 >= ItemComposition.field3484) {
+                     class170.field2327 = var7;
+                     XGrandExchangeOffer.field304 = 0;
+                     class44.field573 = var8;
+                     String[] var16 = new String[class44.field573];
+
+                     for(int var10 = 0; var10 < class44.field573; ++var10) {
+                        var16[var10] = class51.getItemDefinition(var7[var10]).name;
                      }
+
+                     short[] var18 = class170.field2327;
+                     class116.method2148(var16, var18, 0, var16.length - 1);
+                     break;
                   }
 
-                  return 1;
-               } else if(var0 == 3607) {
-                  var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                  if(var10 != null) {
-                     if((Client.ignoreCount < 100 || Client.field406 == 1) && Client.ignoreCount < 400) {
-                        var14 = class108.method2059(var10, NPC.field757);
-                        if(var14 != null) {
-                           var5 = 0;
-
-                           while(true) {
-                              if(var5 >= Client.ignoreCount) {
-                                 for(var5 = 0; var5 < Client.friendCount; ++var5) {
-                                    var13 = Client.friends[var5];
-                                    var7 = class108.method2059(var13.name, NPC.field757);
-                                    if(var7 != null && var7.equals(var14)) {
-                                       WidgetNode.sendGameMessage(31, "", "Please remove " + var10 + " from your friend list first");
-                                       return 1;
-                                    }
-
-                                    if(var13.previousName != null) {
-                                       var8 = class108.method2059(var13.previousName, NPC.field757);
-                                       if(var8 != null && var8.equals(var14)) {
-                                          WidgetNode.sendGameMessage(31, "", "Please remove " + var10 + " from your friend list first");
-                                          return 1;
-                                       }
-                                    }
-                                 }
-
-                                 if(class108.method2059(class22.localPlayer.name, NPC.field757).equals(var14)) {
-                                    WidgetNode.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
-                                 } else {
-                                    Client.secretPacketBuffer1.putOpcode(47);
-                                    Client.secretPacketBuffer1.putByte(class36.method753(var10));
-                                    Client.secretPacketBuffer1.method2504(var10);
-                                 }
-                                 break;
-                              }
-
-                              Ignore var12 = Client.ignores[var5];
-                              var7 = class108.method2059(var12.name, NPC.field757);
-                              if(var7 != null && var7.equals(var14)) {
-                                 WidgetNode.sendGameMessage(31, "", var10 + " is already on your ignore list");
-                                 break;
-                              }
-
-                              if(var12.previousName != null) {
-                                 var8 = class108.method2059(var12.previousName, NPC.field757);
-                                 if(var8 != null && var8.equals(var14)) {
-                                    WidgetNode.sendGameMessage(31, "", var10 + " is already on your ignore list");
-                                    break;
-                                 }
-                              }
-
-                              ++var5;
-                           }
-                        }
-                     } else {
-                        WidgetNode.sendGameMessage(31, "", "Your ignore list is full. Max of 100 for free users, and 400 for members");
-                     }
-                  }
-
-                  return 1;
-               } else if(var0 == 3608) {
-                  var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                  class118.method2290(var10);
-                  return 1;
-               } else if(var0 == 3609) {
-                  var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                  class179[] var11 = ItemLayer.method1475();
-
-                  for(var5 = 0; var5 < var11.length; ++var5) {
-                     class179 var6 = var11[var5];
-                     if(var6.field2661 != -1 && var10.startsWith(TextureProvider.method1472(var6.field2661))) {
-                        var10 = var10.substring(Integer.toString(var6.field2661).length() + 6);
+                  ItemComposition var14 = class51.getItemDefinition(var9);
+                  if((!var6 || var14.field3531) && var14.notedTemplate == -1 && var14.name.toLowerCase().indexOf(var5) != -1) {
+                     if(var8 >= 250) {
+                        class44.field573 = -1;
+                        class170.field2327 = null;
                         break;
                      }
-                  }
 
-                  class32.intStack[++class32.intStackSize - 1] = WidgetNode.method199(var10, false)?1:0;
-                  return 1;
-               } else if(var0 == 3611) {
-                  if(Client.field485 != null) {
-                     class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class103.method1963(Client.field485);
-                  } else {
-                     class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
-                  }
+                     if(var8 >= var7.length) {
+                        short[] var11 = new short[var7.length * 2];
 
-                  return 1;
-               } else if(var0 == 3612) {
-                  if(Client.field485 != null) {
-                     class32.intStack[++class32.intStackSize - 1] = class85.clanChatCount;
-                  } else {
-                     class32.intStack[++class32.intStackSize - 1] = 0;
-                  }
+                        for(int var12 = 0; var12 < var8; ++var12) {
+                           var11[var12] = var7[var12];
+                        }
 
-                  return 1;
-               } else if(var0 == 3613) {
-                  var3 = class32.intStack[--class32.intStackSize];
-                  if(Client.field485 != null && var3 < class85.clanChatCount) {
-                     class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.clanMembers[var3].username;
-                  } else {
-                     class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
-                  }
-
-                  return 1;
-               } else if(var0 == 3614) {
-                  var3 = class32.intStack[--class32.intStackSize];
-                  if(Client.field485 != null && var3 < class85.clanChatCount) {
-                     class32.intStack[++class32.intStackSize - 1] = Client.clanMembers[var3].world;
-                  } else {
-                     class32.intStack[++class32.intStackSize - 1] = 0;
-                  }
-
-                  return 1;
-               } else if(var0 == 3615) {
-                  var3 = class32.intStack[--class32.intStackSize];
-                  if(Client.field485 != null && var3 < class85.clanChatCount) {
-                     class32.intStack[++class32.intStackSize - 1] = Client.clanMembers[var3].rank;
-                  } else {
-                     class32.intStack[++class32.intStackSize - 1] = 0;
-                  }
-
-                  return 1;
-               } else if(var0 == 3616) {
-                  class32.intStack[++class32.intStackSize - 1] = Client.field332;
-                  return 1;
-               } else if(var0 == 3617) {
-                  var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                  class125.method2354(var10);
-                  return 1;
-               } else if(var0 == 3618) {
-                  class32.intStack[++class32.intStackSize - 1] = Player.field242;
-                  return 1;
-               } else if(var0 == 3619) {
-                  var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                  World.method640(var10);
-                  return 1;
-               } else if(var0 == 3620) {
-                  Client.secretPacketBuffer1.putOpcode(117);
-                  Client.secretPacketBuffer1.putByte(0);
-                  return 1;
-               } else if(var0 == 3621) {
-                  if(Client.field554 == 0) {
-                     class32.intStack[++class32.intStackSize - 1] = -1;
-                  } else {
-                     class32.intStack[++class32.intStackSize - 1] = Client.ignoreCount;
-                  }
-
-                  return 1;
-               } else if(var0 == 3622) {
-                  var3 = class32.intStack[--class32.intStackSize];
-                  if(Client.field554 != 0 && var3 < Client.ignoreCount) {
-                     class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.ignores[var3].name;
-                     class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.ignores[var3].previousName;
-                  } else {
-                     class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
-                     class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
-                  }
-
-                  return 1;
-               } else if(var0 == 3623) {
-                  var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
-                  if(var10.startsWith(TextureProvider.method1472(0)) || var10.startsWith(TextureProvider.method1472(1))) {
-                     var10 = var10.substring(7);
-                  }
-
-                  class32.intStack[++class32.intStackSize - 1] = class2.method27(var10)?1:0;
-                  return 1;
-               } else if(var0 != 3624) {
-                  if(var0 == 3625) {
-                     if(Client.clanChatOwner != null) {
-                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class103.method1963(Client.clanChatOwner);
-                     } else {
-                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
+                        var7 = var11;
                      }
 
-                     return 1;
-                  } else {
-                     return 2;
-                  }
-               } else {
-                  var3 = class32.intStack[--class32.intStackSize];
-                  if(Client.clanMembers != null && var3 < class85.clanChatCount && Client.clanMembers[var3].username.equalsIgnoreCase(class22.localPlayer.name)) {
-                     class32.intStack[++class32.intStackSize - 1] = 1;
-                  } else {
-                     class32.intStack[++class32.intStackSize - 1] = 0;
+                     var7[var8++] = (short)var9;
                   }
 
-                  return 1;
+                  ++var9;
                }
+
+               class83.intStack[++class83.intStackSize - 1] = class44.field573;
+               return 1;
+            } else if(var0 != 4211) {
+               if(var0 == 4212) {
+                  XGrandExchangeOffer.field304 = 0;
+                  return 1;
+               } else {
+                  return 2;
+               }
+            } else {
+               if(class170.field2327 != null && XGrandExchangeOffer.field304 < class44.field573) {
+                  class83.intStack[++class83.intStackSize - 1] = class170.field2327[++XGrandExchangeOffer.field304 - 1] & '\uffff';
+               } else {
+                  class83.intStack[++class83.intStackSize - 1] = -1;
+               }
+
+               return 1;
             }
          }
       }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;II[BIS)I",
+      garbageValue = "6638"
+   )
+   public static int method1096(CharSequence var0, int var1, int var2, byte[] var3, int var4) {
+      int var5 = var2 - var1;
+
+      for(int var6 = 0; var6 < var5; ++var6) {
+         char var7 = var0.charAt(var1 + var6);
+         if((var7 <= 0 || var7 >= 128) && (var7 < 160 || var7 > 255)) {
+            if(var7 == 8364) {
+               var3[var4 + var6] = -128;
+            } else if(var7 == 8218) {
+               var3[var6 + var4] = -126;
+            } else if(var7 == 402) {
+               var3[var4 + var6] = -125;
+            } else if(var7 == 8222) {
+               var3[var4 + var6] = -124;
+            } else if(var7 == 8230) {
+               var3[var6 + var4] = -123;
+            } else if(var7 == 8224) {
+               var3[var4 + var6] = -122;
+            } else if(var7 == 8225) {
+               var3[var4 + var6] = -121;
+            } else if(var7 == 710) {
+               var3[var4 + var6] = -120;
+            } else if(var7 == 8240) {
+               var3[var4 + var6] = -119;
+            } else if(var7 == 352) {
+               var3[var6 + var4] = -118;
+            } else if(var7 == 8249) {
+               var3[var4 + var6] = -117;
+            } else if(var7 == 338) {
+               var3[var4 + var6] = -116;
+            } else if(var7 == 381) {
+               var3[var4 + var6] = -114;
+            } else if(var7 == 8216) {
+               var3[var4 + var6] = -111;
+            } else if(var7 == 8217) {
+               var3[var4 + var6] = -110;
+            } else if(var7 == 8220) {
+               var3[var6 + var4] = -109;
+            } else if(var7 == 8221) {
+               var3[var6 + var4] = -108;
+            } else if(var7 == 8226) {
+               var3[var4 + var6] = -107;
+            } else if(var7 == 8211) {
+               var3[var4 + var6] = -106;
+            } else if(var7 == 8212) {
+               var3[var4 + var6] = -105;
+            } else if(var7 == 732) {
+               var3[var6 + var4] = -104;
+            } else if(var7 == 8482) {
+               var3[var6 + var4] = -103;
+            } else if(var7 == 353) {
+               var3[var4 + var6] = -102;
+            } else if(var7 == 8250) {
+               var3[var6 + var4] = -101;
+            } else if(var7 == 339) {
+               var3[var4 + var6] = -100;
+            } else if(var7 == 382) {
+               var3[var6 + var4] = -98;
+            } else if(var7 == 376) {
+               var3[var4 + var6] = -97;
+            } else {
+               var3[var4 + var6] = 63;
+            }
+         } else {
+            var3[var6 + var4] = (byte)var7;
+         }
+      }
+
+      return var5;
+   }
+
+   @ObfuscatedName("ie")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "2"
+   )
+   static final void method1097() {
+      Client.secretPacketBuffer1.putOpcode(123);
+
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3606(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3607()) {
+         if(var0.field810 == 0 || var0.field810 == 3) {
+            class276.method4969(var0, true);
+         }
+      }
+
+      if(Client.field1054 != null) {
+         class219.method4130(Client.field1054);
+         Client.field1054 = null;
+      }
+
    }
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "682221706"
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "-111598595"
    )
-   public static int method183(int var0) {
-      int var1 = 0;
-      if(var0 < 0 || var0 >= 65536) {
-         var0 >>>= 16;
-         var1 += 16;
-      }
-
-      if(var0 >= 256) {
-         var0 >>>= 8;
-         var1 += 8;
-      }
-
-      if(var0 >= 16) {
-         var0 >>>= 4;
-         var1 += 4;
-      }
-
-      if(var0 >= 4) {
-         var0 >>>= 2;
-         var1 += 2;
-      }
-
-      if(var0 >= 1) {
-         var0 >>>= 1;
-         ++var1;
-      }
-
-      return var0 + var1;
-   }
-
-   @ObfuscatedName("et")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
-      garbageValue = "2121530951"
-   )
-   static String method184(String var0, boolean var1) {
-      String var2 = var1?"https://":"http://";
-      if(Client.field283 == 1) {
-         var0 = var0 + "-wtrc";
-      } else if(Client.field283 == 2) {
-         var0 = var0 + "-wtqa";
-      } else if(Client.field283 == 3) {
-         var0 = var0 + "-wtwip";
-      } else if(Client.field283 == 5) {
-         var0 = var0 + "-wti";
-      } else if(Client.field283 == 4) {
-         var0 = "local";
-      }
-
-      String var3 = "";
-      if(Client.field287 != null) {
-         var3 = "/p=" + Client.field287;
-      }
-
-      String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.field286 + "/a=" + class10.field97 + var3 + "/";
+   public static int method1098(CharSequence var0) {
+      return class217.method4119(var0, 10, true);
    }
 }

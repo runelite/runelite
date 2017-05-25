@@ -8,46 +8,43 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ba")
+@ObfuscatedName("dp")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("bk")
-   @Export("indexMaps")
-   static IndexData indexMaps;
-   @ObfuscatedName("qv")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1882013251
-   )
-   static int field1174;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      longValue = -9051046450171518019L
-   )
-   @Export("position")
-   long position;
-   @ObfuscatedName("d")
-   @Export("file")
-   RandomAccessFile file;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      longValue = -2312879698182260947L
+      longValue = -6880207762770644403L
    )
    @Export("length")
    long length;
+   @ObfuscatedName("jv")
+   @ObfuscatedGetter(
+      intValue = 874853037
+   )
+   static int field1751;
+   @ObfuscatedName("i")
+   @Export("file")
+   RandomAccessFile file;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      longValue = 4856900901058070213L
+   )
+   @Export("position")
+   long position;
 
-   @ObfuscatedName("d")
-   final void method1423(long var1) throws IOException {
+   @ObfuscatedName("i")
+   final void method2383(long var1) throws IOException {
       this.file.seek(var1);
       this.position = var1;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "2146439638"
+      garbageValue = "176402679"
    )
-   public final void method1424(byte[] var1, int var2, int var3) throws IOException {
-      if((long)var3 + this.position > this.length) {
+   public final void method2384(byte[] var1, int var2, int var3) throws IOException {
+      if(this.position + (long)var3 > this.length) {
          this.file.seek(this.length + 1L);
          this.file.write(1);
          throw new EOFException();
@@ -57,12 +54,12 @@ public final class FileOnDisk {
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2065499094"
+      signature = "(S)V",
+      garbageValue = "256"
    )
-   public final void method1425() throws IOException {
+   public final void method2385() throws IOException {
       if(this.file != null) {
          this.file.close();
          this.file = null;
@@ -70,21 +67,21 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2037619757"
+      signature = "(B)J",
+      garbageValue = "92"
    )
-   public static void method1426() {
-      class189.field2784.reset();
+   public final long method2386() throws IOException {
+      return this.file.length();
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "([BIII)I",
-      garbageValue = "-1838454379"
+      garbageValue = "-1588092024"
    )
-   public final int method1427(byte[] var1, int var2, int var3) throws IOException {
+   public final int method2387(byte[] var1, int var2, int var3) throws IOException {
       int var4 = this.file.read(var1, var2, var3);
       if(var4 > 0) {
          this.position += (long)var4;
@@ -96,7 +93,7 @@ public final class FileOnDisk {
    protected void finalize() throws Throwable {
       if(this.file != null) {
          System.out.println("");
-         this.method1425();
+         this.method2385();
       }
 
    }
@@ -124,86 +121,10 @@ public final class FileOnDisk {
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "-1336475526"
+      signature = "(I)I",
+      garbageValue = "-677066588"
    )
-   public final long method1438() throws IOException {
-      return this.file.length();
-   }
-
-   @ObfuscatedName("cp")
-   @ObfuscatedSignature(
-      signature = "(LWidget;B)V",
-      garbageValue = "35"
-   )
-   static void method1441(Widget var0) {
-      Widget var1 = var0.parentId == -1?null:class128.method2364(var0.parentId);
-      int var2;
-      int var3;
-      if(var1 == null) {
-         var2 = class187.field2760;
-         var3 = IndexDataBase.field2726;
-      } else {
-         var2 = var1.width;
-         var3 = var1.height;
-      }
-
-      class5.method63(var0, var2, var3, false);
-      class161.method3028(var0, var2, var3);
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "1"
-   )
-   public static boolean method1443(int var0) {
-      return (var0 >> 28 & 1) != 0;
-   }
-
-   @ObfuscatedName("dp")
-   @ObfuscatedSignature(
-      signature = "([LWidget;II)V",
-      garbageValue = "-402939849"
-   )
-   static final void method1445(Widget[] var0, int var1) {
-      for(int var2 = 0; var2 < var0.length; ++var2) {
-         Widget var3 = var0[var2];
-         if(var3 != null) {
-            if(var3.type == 0) {
-               if(var3.children != null) {
-                  method1445(var3.children, var1);
-               }
-
-               WidgetNode var4 = (WidgetNode)Client.componentTable.method2773((long)var3.id);
-               if(var4 != null) {
-                  Client.method572(var4.id, var1);
-               }
-            }
-
-            class18 var5;
-            if(var1 == 0 && var3.field2314 != null) {
-               var5 = new class18();
-               var5.field189 = var3;
-               var5.field196 = var3.field2314;
-               Script.method910(var5, 200000);
-            }
-
-            if(var1 == 1 && var3.field2315 != null) {
-               if(var3.index >= 0) {
-                  Widget var6 = class128.method2364(var3.id);
-                  if(var6 == null || var6.children == null || var3.index >= var6.children.length || var6.children[var3.index] != var3) {
-                     continue;
-                  }
-               }
-
-               var5 = new class18();
-               var5.field189 = var3;
-               var5.field196 = var3.field2315;
-               Script.method910(var5, 200000);
-            }
-         }
-      }
-
+   static final int method2407() {
+      return class134.field1979;
    }
 }

@@ -1,213 +1,273 @@
-import java.io.File;
-import java.io.IOException;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("by")
-public class class59 implements Runnable {
-   @ObfuscatedName("d")
-   volatile class57[] field1061;
-
-   public void run() {
-      try {
-         for(int var1 = 0; var1 < 2; ++var1) {
-            class57 var2 = this.field1061[var1];
-            if(var2 != null) {
-               var2.method1078();
-            }
-         }
-      } catch (Exception var4) {
-         class173.method3259((String)null, var4);
-      }
-
-   }
-
-   @ObfuscatedName("cz")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;IIIIB)V",
-      garbageValue = "14"
+@ObfuscatedName("bl")
+public class class59 implements MouseListener, MouseMotionListener, FocusListener {
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      longValue = -6241900171626895147L
    )
-   @Export("addMenuEntry")
-   static final void addMenuEntry(String var0, String var1, int var2, int var3, int var4, int var5) {
-      class36.method752(var0, var1, var2, var3, var4, var5, false);
-   }
-
+   public static long field715;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -806188681
+   )
+   @Export("mouseIdleTicks")
+   static volatile int mouseIdleTicks;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1799222615
+   )
+   public static int field717;
+   @ObfuscatedName("i")
+   @Export("mouse")
+   static class59 mouse;
    @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(LModIcon;I)V",
-      garbageValue = "-134250005"
+   @ObfuscatedGetter(
+      intValue = 2105352335
    )
-   static final void method1138(ModIcon var0) {
-      short var1 = 256;
-
-      int var2;
-      for(var2 = 0; var2 < class94.field1580.length; ++var2) {
-         class94.field1580[var2] = 0;
-      }
-
-      int var3;
-      for(var2 = 0; var2 < 5000; ++var2) {
-         var3 = (int)(Math.random() * 128.0D * (double)var1);
-         class94.field1580[var3] = (int)(Math.random() * 256.0D);
-      }
-
-      int var4;
-      int var5;
-      for(var2 = 0; var2 < 20; ++var2) {
-         for(var3 = 1; var3 < var1 - 1; ++var3) {
-            for(var4 = 1; var4 < 127; ++var4) {
-               var5 = var4 + (var3 << 7);
-               class32.field729[var5] = (class94.field1580[var5 + 128] + class94.field1580[var5 - 128] + class94.field1580[var5 - 1] + class94.field1580[var5 + 1]) / 4;
-            }
-         }
-
-         int[] var8 = class94.field1580;
-         class94.field1580 = class32.field729;
-         class32.field729 = var8;
-      }
-
-      if(var0 != null) {
-         var2 = 0;
-
-         for(var3 = 0; var3 < var0.height; ++var3) {
-            for(var4 = 0; var4 < var0.originalWidth; ++var4) {
-               if(var0.pixels[var2++] != 0) {
-                  var5 = var4 + 16 + var0.offsetX;
-                  int var6 = var0.offsetY + var3 + 16;
-                  int var7 = var5 + (var6 << 7);
-                  class94.field1580[var7] = 0;
-               }
-            }
-         }
-      }
-
-   }
-
+   static volatile int field720;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -630773307
+   )
+   public static int field721;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -494966575
+   )
+   public static int field722;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -340168263
+   )
+   static volatile int field723;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -383658549
+   )
+   static volatile int field724;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 109859673
+   )
+   static volatile int field725;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      longValue = -1386567575218064451L
+   )
+   static volatile long field726;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 1031282807
+   )
+   public static int field727;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1837799465
+   )
+   public static int field729;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -775677157
+   )
+   @Export("mouseY")
+   static volatile int mouseY;
+   @ObfuscatedName("bi")
+   @ObfuscatedGetter(
+      intValue = 120516181
+   )
+   static int field731;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -115778013
+   )
+   public static int field732;
    @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;ZB)LFileOnDisk;",
-      garbageValue = "-91"
+   @ObfuscatedGetter(
+      intValue = -506248187
    )
-   @Export("getPreferencesFile")
-   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
-      File var3 = new File(class104.field1676, "preferences" + var0 + ".dat");
-      if(var3.exists()) {
-         try {
-            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
-            ;
+   @Export("mouseX")
+   static volatile int mouseX;
+
+   public final synchronized void mouseReleased(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         field720 = 0;
+      }
+
+      if(var1.isPopupTrigger()) {
+         var1.consume();
+      }
+
+   }
+
+   public final void mouseClicked(MouseEvent var1) {
+      if(var1.isPopupTrigger()) {
+         var1.consume();
+      }
+
+   }
+
+   public final synchronized void mouseEntered(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         mouseX = var1.getX();
+         mouseY = var1.getY();
+      }
+
+   }
+
+   public final synchronized void mouseExited(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         mouseX = -1;
+         mouseY = -1;
+      }
+
+   }
+
+   public final synchronized void mouseMoved(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         mouseX = var1.getX();
+         mouseY = var1.getY();
+      }
+
+   }
+
+   public final void focusGained(FocusEvent var1) {
+   }
+
+   static {
+      mouse = new class59();
+      mouseIdleTicks = 0;
+      field720 = 0;
+      mouseX = -1;
+      mouseY = -1;
+      field732 = 0;
+      field721 = 0;
+      field722 = 0;
+      field723 = 0;
+      field724 = 0;
+      field725 = 0;
+      field726 = 0L;
+      field727 = 0;
+      field717 = 0;
+      field729 = 0;
+      field715 = 0L;
+   }
+
+   public final synchronized void mouseDragged(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         mouseX = var1.getX();
+         mouseY = var1.getY();
+      }
+
+   }
+
+   @ObfuscatedName("hi")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIB)V",
+      garbageValue = "-48"
+   )
+   static final void method998(int var0, int var1, int var2, int var3, int var4, int var5) {
+      int var6 = var2 - var0;
+      int var7 = var3 - var1;
+      int var8 = var6 >= 0?var6:-var6;
+      int var9 = var7 >= 0?var7:-var7;
+      int var10 = var8;
+      if(var8 < var9) {
+         var10 = var9;
+      }
+
+      if(var10 != 0) {
+         int var11 = (var6 << 16) / var10;
+         int var12 = (var7 << 16) / var10;
+         if(var12 <= var11) {
+            var11 = -var11;
+         } else {
+            var12 = -var12;
          }
-      }
 
-      String var4 = "";
-      if(class16.field176 == 33) {
-         var4 = "_rc";
-      } else if(class16.field176 == 34) {
-         var4 = "_wip";
-      }
-
-      File var5 = new File(class20.field216, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-      FileOnDisk var6;
-      if(!var2 && var5.exists()) {
-         try {
-            var6 = new FileOnDisk(var5, "rw", 10000L);
-            return var6;
-         } catch (IOException var8) {
-            ;
-         }
-      }
-
-      try {
-         var6 = new FileOnDisk(var3, "rw", 10000L);
-         return var6;
-      } catch (IOException var7) {
-         throw new RuntimeException();
+         int var13 = var12 * var5 >> 17;
+         int var14 = var5 * var12 + 1 >> 17;
+         int var15 = var11 * var5 >> 17;
+         int var16 = var5 * var11 + 1 >> 17;
+         var0 -= Rasterizer2D.field3749;
+         var1 -= Rasterizer2D.field3746;
+         int var17 = var0 + var13;
+         int var18 = var0 - var14;
+         int var19 = var6 + var0 - var14;
+         int var20 = var0 + var6 + var13;
+         int var21 = var1 + var15;
+         int var22 = var1 - var16;
+         int var23 = var1 + var7 - var16;
+         int var24 = var1 + var7 + var15;
+         class136.setRasterClippingEnabled(var17, var18, var19);
+         class136.rasterFlat(var21, var22, var23, var17, var18, var19, var4);
+         class136.setRasterClippingEnabled(var17, var19, var20);
+         class136.rasterFlat(var21, var23, var24, var17, var19, var20, var4);
       }
    }
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "1833531824"
-   )
-   public static int method1140(int var0) {
-      Varbit var1 = class161.method3027(var0);
-      int var2 = var1.configId;
-      int var3 = var1.leastSignificantBit;
-      int var4 = var1.mostSignificantBit;
-      int var5 = class167.field2175[var4 - var3];
-      return class167.widgetSettings[var2] >> var3 & var5;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(LRSSocket;ZB)V",
-      garbageValue = "79"
-   )
-   public static void method1141(RSSocket var0, boolean var1) {
-      if(class187.field2759 != null) {
-         try {
-            class187.field2759.method2093();
-         } catch (Exception var6) {
-            ;
-         }
-
-         class187.field2759 = null;
+   public final synchronized void focusLost(FocusEvent var1) {
+      if(mouse != null) {
+         field720 = 0;
       }
 
-      class187.field2759 = var0;
-      class112.method2101(var1);
-      class187.field2763.offset = 0;
-      class199.field2881 = null;
-      class187.field2751 = null;
-      class187.field2765 = 0;
+   }
 
-      while(true) {
-         class183 var2 = (class183)class187.field2756.method2776();
-         if(var2 == null) {
-            while(true) {
-               var2 = (class183)class187.field2761.method2776();
-               if(var2 == null) {
-                  if(class187.field2764 != 0) {
-                     try {
-                        Buffer var7 = new Buffer(4);
-                        var7.putByte(4);
-                        var7.putByte(class187.field2764);
-                        var7.putShort(0);
-                        class187.field2759.queueForWrite(var7.payload, 0, 4);
-                     } catch (IOException var5) {
-                        try {
-                           class187.field2759.method2093();
-                        } catch (Exception var4) {
-                           ;
-                        }
+   public final synchronized void mousePressed(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         field724 = var1.getX();
+         field725 = var1.getY();
+         field726 = class226.method4147();
+         if(var1.isAltDown()) {
+            field723 = 4;
+            field720 = 4;
+         } else if(var1.isMetaDown()) {
+            field723 = 2;
+            field720 = 2;
+         } else {
+            field723 = 1;
+            field720 = 1;
+         }
+      }
 
-                        ++class187.field2770;
-                        class187.field2759 = null;
-                     }
-                  }
+      if(var1.isPopupTrigger()) {
+         var1.consume();
+      }
 
-                  class187.field2752 = 0;
-                  class187.field2753 = class72.method1421();
-                  return;
-               }
+   }
 
-               class187.field2758.method2714(var2);
-               class187.field2771.method2774(var2, var2.hash);
-               ++class187.field2767;
-               --class187.field2762;
+   @ObfuscatedName("ji")
+   @ObfuscatedSignature(
+      signature = "(LWidget;I)LWidget;",
+      garbageValue = "2080044679"
+   )
+   static Widget method1028(Widget var0) {
+      int var1 = NPC.method1730(class43.method626(var0));
+      if(var1 == 0) {
+         return null;
+      } else {
+         for(int var2 = 0; var2 < var1; ++var2) {
+            var0 = class261.method4792(var0.parentId);
+            if(var0 == null) {
+               return null;
             }
          }
 
-         class187.field2772.method2774(var2, var2.hash);
-         ++class187.field2755;
-         --class187.field2768;
+         return var0;
       }
-   }
-
-   class59() {
-      this.field1061 = new class57[2];
    }
 }

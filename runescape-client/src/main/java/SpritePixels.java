@@ -1,139 +1,136 @@
-import java.awt.Component;
-import java.awt.Image;
-import java.awt.MediaTracker;
-import java.awt.Toolkit;
-import java.awt.image.PixelGrabber;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hu")
+@ObfuscatedName("jk")
 @Implements("SpritePixels")
 public final class SpritePixels extends Rasterizer2D {
-   @ObfuscatedName("d")
-   @Export("image")
-   public int[] image;
-   @ObfuscatedName("c")
-   @Export("width")
-   public int width;
-   @ObfuscatedName("t")
-   @Export("offsetY")
-   int offsetY;
-   @ObfuscatedName("q")
-   @Export("offsetX")
-   public int offsetX;
-   @ObfuscatedName("n")
-   @Export("height")
-   public int height;
-   @ObfuscatedName("p")
+   @ObfuscatedName("v")
    @Export("maxWidth")
    public int maxWidth;
    @ObfuscatedName("u")
+   @Export("height")
+   public int height;
+   @ObfuscatedName("q")
+   @Export("offsetX")
+   public int offsetX;
+   @ObfuscatedName("h")
+   @Export("width")
+   public int width;
+   @ObfuscatedName("t")
    @Export("maxHeight")
    public int maxHeight;
+   @ObfuscatedName("i")
+   @Export("image")
+   public int[] image;
+   @ObfuscatedName("g")
+   @Export("offsetY")
+   int offsetY;
 
-   @ObfuscatedName("o")
-   static void method4217(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
-      int var10 = 256 - var9;
-
-      for(int var11 = -var6; var11 < 0; ++var11) {
-         for(int var12 = -var5; var12 < 0; ++var12) {
-            var2 = var1[var3++];
-            if(var2 != 0) {
-               int var13 = var0[var4];
-               var0[var4++] = ((var2 & 16711935) * var9 + (var13 & 16711935) * var10 & -16711936) + ((var2 & '\uff00') * var9 + (var13 & '\uff00') * var10 & 16711680) >> 8;
-            } else {
-               ++var4;
-            }
-         }
-
-         var4 += var7;
-         var3 += var8;
-      }
-
+   public SpritePixels(int var1, int var2) {
+      this(new int[var1 * var2], var1, var2);
    }
 
-   public SpritePixels(byte[] var1, Component var2) {
-      try {
-         Image var3 = Toolkit.getDefaultToolkit().createImage(var1);
-         MediaTracker var4 = new MediaTracker(var2);
-         var4.addImage(var3, 0);
-         var4.waitForAll();
-         this.width = var3.getWidth(var2);
-         this.height = var3.getHeight(var2);
-         this.maxWidth = this.width;
-         this.maxHeight = this.height;
-         this.offsetX = 0;
-         this.offsetY = 0;
-         this.image = new int[this.width * this.height];
-         PixelGrabber var5 = new PixelGrabber(var3, 0, 0, this.width, this.height, this.image, 0, this.width);
-         var5.grabPixels();
-      } catch (InterruptedException var6) {
-         ;
-      }
-
+   public SpritePixels(int[] var1, int var2, int var3) {
+      this.image = var1;
+      this.width = this.maxWidth = var2;
+      this.height = this.maxHeight = var3;
+      this.offsetY = 0;
+      this.offsetX = 0;
    }
 
-   @ObfuscatedName("d")
-   public SpritePixels method4218() {
-      SpritePixels var1 = new SpritePixels(this.width, this.height);
-      var1.maxWidth = this.maxWidth;
-      var1.maxHeight = this.maxHeight;
-      var1.offsetX = this.maxWidth - this.width - this.offsetX;
-      var1.offsetY = this.offsetY;
+   @ObfuscatedName("ah")
+   public void method5121(int var1, int var2, int var3, int var4) {
+      this.method5146(this.maxWidth << 3, this.maxHeight << 3, var1 << 4, var2 << 4, var3, var4);
+   }
+
+   @ObfuscatedName("h")
+   public SpritePixels method5122() {
+      SpritePixels var1 = new SpritePixels(this.maxWidth, this.maxHeight);
 
       for(int var2 = 0; var2 < this.height; ++var2) {
          for(int var3 = 0; var3 < this.width; ++var3) {
-            var1.image[var2 * this.width + var3] = this.image[var2 * this.width + this.width - 1 - var3];
+            var1.image[(var2 + this.offsetY) * this.maxWidth + var3 + this.offsetX] = this.image[var2 * this.width + var3];
          }
       }
 
       return var1;
    }
 
-   @ObfuscatedName("n")
-   public void method4220() {
-      Rasterizer2D.setRasterBuffer(this.image, this.width, this.height);
+   @ObfuscatedName("g")
+   public void method5124(int var1) {
+      if(this.width != this.maxWidth || this.height != this.maxHeight) {
+         int var2 = var1;
+         if(var1 > this.offsetX) {
+            var2 = this.offsetX;
+         }
+
+         int var3 = var1;
+         if(var1 + this.offsetX + this.width > this.maxWidth) {
+            var3 = this.maxWidth - this.offsetX - this.width;
+         }
+
+         int var4 = var1;
+         if(var1 > this.offsetY) {
+            var4 = this.offsetY;
+         }
+
+         int var5 = var1;
+         if(var1 + this.offsetY + this.height > this.maxHeight) {
+            var5 = this.maxHeight - this.offsetY - this.height;
+         }
+
+         int var6 = this.width + var2 + var3;
+         int var7 = this.height + var4 + var5;
+         int[] var8 = new int[var6 * var7];
+
+         for(int var9 = 0; var9 < this.height; ++var9) {
+            for(int var10 = 0; var10 < this.width; ++var10) {
+               var8[(var9 + var4) * var6 + var10 + var2] = this.image[var9 * this.width + var10];
+            }
+         }
+
+         this.image = var8;
+         this.width = var6;
+         this.height = var7;
+         this.offsetX -= var2;
+         this.offsetY -= var4;
+      }
    }
 
-   @ObfuscatedName("q")
-   public void method4221(int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < this.image.length; ++var4) {
-         int var5 = this.image[var4];
-         if(var5 != 0) {
-            int var6 = var5 >> 16 & 255;
-            var6 += var1;
-            if(var6 < 1) {
-               var6 = 1;
-            } else if(var6 > 255) {
-               var6 = 255;
-            }
+   @ObfuscatedName("v")
+   public void method5126() {
+      int[] var1 = new int[this.width * this.height];
+      int var2 = 0;
 
-            int var7 = var5 >> 8 & 255;
-            var7 += var2;
-            if(var7 < 1) {
-               var7 = 1;
-            } else if(var7 > 255) {
-               var7 = 255;
-            }
-
-            int var8 = var5 & 255;
-            var8 += var3;
-            if(var8 < 1) {
-               var8 = 1;
-            } else if(var8 > 255) {
-               var8 = 255;
-            }
-
-            this.image[var4] = (var6 << 16) + (var7 << 8) + var8;
+      for(int var3 = 0; var3 < this.height; ++var3) {
+         for(int var4 = this.width - 1; var4 >= 0; --var4) {
+            var1[var2++] = this.image[var4 + var3 * this.width];
          }
       }
 
+      this.image = var1;
+      this.offsetX = this.maxWidth - this.width - this.offsetX;
    }
 
-   @ObfuscatedName("s")
-   public void method4225(int var1) {
+   @ObfuscatedName("t")
+   public void method5127() {
+      int[] var1 = new int[this.width * this.height];
+      int var2 = 0;
+
+      for(int var3 = this.height - 1; var3 >= 0; --var3) {
+         for(int var4 = 0; var4 < this.width; ++var4) {
+            var1[var2++] = this.image[var4 + var3 * this.width];
+         }
+      }
+
+      this.image = var1;
+      this.offsetY = this.maxHeight - this.height - this.offsetY;
+   }
+
+   @ObfuscatedName("l")
+   public void method5129(int var1) {
       for(int var2 = this.height - 1; var2 > 0; --var2) {
          int var3 = var2 * this.width;
 
@@ -146,44 +143,53 @@ public final class SpritePixels extends Rasterizer2D {
 
    }
 
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1"
-   )
-   public void method4226(int var1) {
-      int[] var2 = new int[this.width * this.height];
-      int var3 = 0;
-
-      for(int var4 = 0; var4 < this.height; ++var4) {
-         for(int var5 = 0; var5 < this.width; ++var5) {
-            int var6 = this.image[var3];
-            if(var6 == 0) {
-               if(var5 > 0 && this.image[var3 - 1] != 0) {
-                  var6 = var1;
-               } else if(var4 > 0 && this.image[var3 - this.width] != 0) {
-                  var6 = var1;
-               } else if(var5 < this.width - 1 && this.image[var3 + 1] != 0) {
-                  var6 = var1;
-               } else if(var4 < this.height - 1 && this.image[var3 + this.width] != 0) {
-                  var6 = var1;
-               }
-            }
-
-            var2[var3++] = var6;
-         }
+   @ObfuscatedName("a")
+   public void method5130(int var1, int var2) {
+      var1 += this.offsetX;
+      var2 += this.offsetY;
+      int var3 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
+      int var4 = 0;
+      int var5 = this.height;
+      int var6 = this.width;
+      int var7 = Rasterizer2D.graphicsPixelsWidth - var6;
+      int var8 = 0;
+      int var9;
+      if(var2 < Rasterizer2D.field3746) {
+         var9 = Rasterizer2D.field3746 - var2;
+         var5 -= var9;
+         var2 = Rasterizer2D.field3746;
+         var4 += var9 * var6;
+         var3 += var9 * Rasterizer2D.graphicsPixelsWidth;
       }
 
-      this.image = var2;
+      if(var2 + var5 > Rasterizer2D.field3750) {
+         var5 -= var2 + var5 - Rasterizer2D.field3750;
+      }
+
+      if(var1 < Rasterizer2D.field3749) {
+         var9 = Rasterizer2D.field3749 - var1;
+         var6 -= var9;
+         var1 = Rasterizer2D.field3749;
+         var4 += var9;
+         var3 += var9;
+         var8 += var9;
+         var7 += var9;
+      }
+
+      if(var1 + var6 > Rasterizer2D.field3752) {
+         var9 = var1 + var6 - Rasterizer2D.field3752;
+         var6 -= var9;
+         var8 += var9;
+         var7 += var9;
+      }
+
+      if(var6 > 0 && var5 > 0) {
+         method5131(Rasterizer2D.graphicsPixels, this.image, var4, var3, var6, var5, var7, var8);
+      }
    }
 
-   @ObfuscatedName("az")
-   public void method4227(int var1, int var2, int var3, int var4) {
-      this.method4244(this.maxWidth << 3, this.maxHeight << 3, var1 << 4, var2 << 4, var3, var4);
-   }
-
-   @ObfuscatedName("e")
-   static void method4229(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @ObfuscatedName("k")
+   static void method5131(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       for(int var8 = -var5; var8 < 0; ++var8) {
          int var9;
          for(var9 = var3 + var4 - 3; var3 < var9; var0[var3++] = var1[var2++]) {
@@ -203,104 +209,7 @@ public final class SpritePixels extends Rasterizer2D {
    }
 
    @ObfuscatedName("j")
-   public void method4230(int var1, int var2) {
-      var1 += this.offsetX;
-      var2 += this.offsetY;
-      int var3 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
-      int var4 = 0;
-      int var5 = this.height;
-      int var6 = this.width;
-      int var7 = Rasterizer2D.graphicsPixelsWidth - var6;
-      int var8 = 0;
-      int var9;
-      if(var2 < Rasterizer2D.field3211) {
-         var9 = Rasterizer2D.field3211 - var2;
-         var5 -= var9;
-         var2 = Rasterizer2D.field3211;
-         var4 += var9 * var6;
-         var3 += var9 * Rasterizer2D.graphicsPixelsWidth;
-      }
-
-      if(var2 + var5 > Rasterizer2D.field3213) {
-         var5 -= var2 + var5 - Rasterizer2D.field3213;
-      }
-
-      if(var1 < Rasterizer2D.field3208) {
-         var9 = Rasterizer2D.field3208 - var1;
-         var6 -= var9;
-         var1 = Rasterizer2D.field3208;
-         var4 += var9;
-         var3 += var9;
-         var8 += var9;
-         var7 += var9;
-      }
-
-      if(var1 + var6 > Rasterizer2D.field3214) {
-         var9 = var1 + var6 - Rasterizer2D.field3214;
-         var6 -= var9;
-         var8 += var9;
-         var7 += var9;
-      }
-
-      if(var6 > 0 && var5 > 0) {
-         method4231(Rasterizer2D.graphicsPixels, this.image, 0, var4, var3, var6, var5, var7, var8);
-      }
-   }
-
-   @ObfuscatedName("i")
-   static void method4231(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-      int var9 = -(var5 >> 2);
-      var5 = -(var5 & 3);
-
-      for(int var10 = -var6; var10 < 0; ++var10) {
-         int var11;
-         for(var11 = var9; var11 < 0; ++var11) {
-            var2 = var1[var3++];
-            if(var2 != 0) {
-               var0[var4++] = var2;
-            } else {
-               ++var4;
-            }
-
-            var2 = var1[var3++];
-            if(var2 != 0) {
-               var0[var4++] = var2;
-            } else {
-               ++var4;
-            }
-
-            var2 = var1[var3++];
-            if(var2 != 0) {
-               var0[var4++] = var2;
-            } else {
-               ++var4;
-            }
-
-            var2 = var1[var3++];
-            if(var2 != 0) {
-               var0[var4++] = var2;
-            } else {
-               ++var4;
-            }
-         }
-
-         for(var11 = var5; var11 < 0; ++var11) {
-            var2 = var1[var3++];
-            if(var2 != 0) {
-               var0[var4++] = var2;
-            } else {
-               ++var4;
-            }
-         }
-
-         var4 += var7;
-         var3 += var8;
-      }
-
-   }
-
-   @ObfuscatedName("x")
-   static void method4233(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11) {
+   static void method5132(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11) {
       int var12 = var3;
 
       for(int var13 = -var8; var13 < 0; ++var13) {
@@ -324,12 +233,76 @@ public final class SpritePixels extends Rasterizer2D {
 
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("o")
+   public void method5134(int var1, int var2, int var3, int var4) {
+      if(var3 > 0 && var4 > 0) {
+         int var5 = this.width;
+         int var6 = this.height;
+         int var7 = 0;
+         int var8 = 0;
+         int var9 = this.maxWidth;
+         int var10 = this.maxHeight;
+         int var11 = (var9 << 16) / var3;
+         int var12 = (var10 << 16) / var4;
+         int var13;
+         if(this.offsetX > 0) {
+            var13 = ((this.offsetX << 16) + var11 - 1) / var11;
+            var1 += var13;
+            var7 += var13 * var11 - (this.offsetX << 16);
+         }
+
+         if(this.offsetY > 0) {
+            var13 = ((this.offsetY << 16) + var12 - 1) / var12;
+            var2 += var13;
+            var8 += var13 * var12 - (this.offsetY << 16);
+         }
+
+         if(var5 < var9) {
+            var3 = ((var5 << 16) - var7 + var11 - 1) / var11;
+         }
+
+         if(var6 < var10) {
+            var4 = ((var6 << 16) - var8 + var12 - 1) / var12;
+         }
+
+         var13 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
+         int var14 = Rasterizer2D.graphicsPixelsWidth - var3;
+         if(var2 + var4 > Rasterizer2D.field3750) {
+            var4 -= var2 + var4 - Rasterizer2D.field3750;
+         }
+
+         int var15;
+         if(var2 < Rasterizer2D.field3746) {
+            var15 = Rasterizer2D.field3746 - var2;
+            var4 -= var15;
+            var13 += var15 * Rasterizer2D.graphicsPixelsWidth;
+            var8 += var12 * var15;
+         }
+
+         if(var1 + var3 > Rasterizer2D.field3752) {
+            var15 = var1 + var3 - Rasterizer2D.field3752;
+            var3 -= var15;
+            var14 += var15;
+         }
+
+         if(var1 < Rasterizer2D.field3749) {
+            var15 = Rasterizer2D.field3749 - var1;
+            var3 -= var15;
+            var13 += var15;
+            var7 += var11 * var15;
+            var14 += var15;
+         }
+
+         method5132(Rasterizer2D.graphicsPixels, this.image, 0, var7, var8, var13, var14, var3, var4, var11, var12, var5);
+      }
+   }
+
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(IIII)V",
       garbageValue = "16777215"
    )
-   public void method4234(int var1, int var2, int var3, int var4) {
+   public void method5136(int var1, int var2, int var3, int var4) {
       var1 += this.offsetX;
       var2 += this.offsetY;
       int var5 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
@@ -339,42 +312,42 @@ public final class SpritePixels extends Rasterizer2D {
       int var9 = Rasterizer2D.graphicsPixelsWidth - var8;
       int var10 = 0;
       int var11;
-      if(var2 < Rasterizer2D.field3211) {
-         var11 = Rasterizer2D.field3211 - var2;
+      if(var2 < Rasterizer2D.field3746) {
+         var11 = Rasterizer2D.field3746 - var2;
          var7 -= var11;
-         var2 = Rasterizer2D.field3211;
+         var2 = Rasterizer2D.field3746;
          var6 += var11 * var8;
          var5 += var11 * Rasterizer2D.graphicsPixelsWidth;
       }
 
-      if(var2 + var7 > Rasterizer2D.field3213) {
-         var7 -= var2 + var7 - Rasterizer2D.field3213;
+      if(var2 + var7 > Rasterizer2D.field3750) {
+         var7 -= var2 + var7 - Rasterizer2D.field3750;
       }
 
-      if(var1 < Rasterizer2D.field3208) {
-         var11 = Rasterizer2D.field3208 - var1;
+      if(var1 < Rasterizer2D.field3749) {
+         var11 = Rasterizer2D.field3749 - var1;
          var8 -= var11;
-         var1 = Rasterizer2D.field3208;
+         var1 = Rasterizer2D.field3749;
          var6 += var11;
          var5 += var11;
          var10 += var11;
          var9 += var11;
       }
 
-      if(var1 + var8 > Rasterizer2D.field3214) {
-         var11 = var1 + var8 - Rasterizer2D.field3214;
+      if(var1 + var8 > Rasterizer2D.field3752) {
+         var11 = var1 + var8 - Rasterizer2D.field3752;
          var8 -= var11;
          var10 += var11;
          var9 += var11;
       }
 
       if(var8 > 0 && var7 > 0) {
-         method4275(Rasterizer2D.graphicsPixels, this.image, 0, var6, var5, var8, var7, var9, var10, var3, var4);
+         method5196(Rasterizer2D.graphicsPixels, this.image, 0, var6, var5, var8, var7, var9, var10, var3, var4);
       }
    }
 
-   @ObfuscatedName("f")
-   public void method4236(int var1, int var2, int var3) {
+   @ObfuscatedName("n")
+   public void method5138(int var1, int var2, int var3) {
       var1 += this.offsetX;
       var2 += this.offsetY;
       int var4 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
@@ -384,42 +357,42 @@ public final class SpritePixels extends Rasterizer2D {
       int var8 = Rasterizer2D.graphicsPixelsWidth - var7;
       int var9 = 0;
       int var10;
-      if(var2 < Rasterizer2D.field3211) {
-         var10 = Rasterizer2D.field3211 - var2;
+      if(var2 < Rasterizer2D.field3746) {
+         var10 = Rasterizer2D.field3746 - var2;
          var6 -= var10;
-         var2 = Rasterizer2D.field3211;
+         var2 = Rasterizer2D.field3746;
          var5 += var10 * var7;
          var4 += var10 * Rasterizer2D.graphicsPixelsWidth;
       }
 
-      if(var2 + var6 > Rasterizer2D.field3213) {
-         var6 -= var2 + var6 - Rasterizer2D.field3213;
+      if(var2 + var6 > Rasterizer2D.field3750) {
+         var6 -= var2 + var6 - Rasterizer2D.field3750;
       }
 
-      if(var1 < Rasterizer2D.field3208) {
-         var10 = Rasterizer2D.field3208 - var1;
+      if(var1 < Rasterizer2D.field3749) {
+         var10 = Rasterizer2D.field3749 - var1;
          var7 -= var10;
-         var1 = Rasterizer2D.field3208;
+         var1 = Rasterizer2D.field3749;
          var5 += var10;
          var4 += var10;
          var9 += var10;
          var8 += var10;
       }
 
-      if(var1 + var7 > Rasterizer2D.field3214) {
-         var10 = var1 + var7 - Rasterizer2D.field3214;
+      if(var1 + var7 > Rasterizer2D.field3752) {
+         var10 = var1 + var7 - Rasterizer2D.field3752;
          var7 -= var10;
          var9 += var10;
          var8 += var10;
       }
 
       if(var7 > 0 && var6 > 0) {
-         method4217(Rasterizer2D.graphicsPixels, this.image, 0, var5, var4, var7, var6, var8, var9, var3);
+         method5185(Rasterizer2D.graphicsPixels, this.image, 0, var5, var4, var7, var6, var8, var9, var3);
       }
    }
 
-   @ObfuscatedName("m")
-   public void method4238(int var1, int var2, int var3, int var4, int var5) {
+   @ObfuscatedName("w")
+   public void method5140(int var1, int var2, int var3, int var4, int var5) {
       if(var3 > 0 && var4 > 0) {
          int var6 = this.width;
          int var7 = this.height;
@@ -452,38 +425,38 @@ public final class SpritePixels extends Rasterizer2D {
 
          var14 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
          int var15 = Rasterizer2D.graphicsPixelsWidth - var3;
-         if(var2 + var4 > Rasterizer2D.field3213) {
-            var4 -= var2 + var4 - Rasterizer2D.field3213;
+         if(var2 + var4 > Rasterizer2D.field3750) {
+            var4 -= var2 + var4 - Rasterizer2D.field3750;
          }
 
          int var16;
-         if(var2 < Rasterizer2D.field3211) {
-            var16 = Rasterizer2D.field3211 - var2;
+         if(var2 < Rasterizer2D.field3746) {
+            var16 = Rasterizer2D.field3746 - var2;
             var4 -= var16;
             var14 += var16 * Rasterizer2D.graphicsPixelsWidth;
             var9 += var13 * var16;
          }
 
-         if(var1 + var3 > Rasterizer2D.field3214) {
-            var16 = var1 + var3 - Rasterizer2D.field3214;
+         if(var1 + var3 > Rasterizer2D.field3752) {
+            var16 = var1 + var3 - Rasterizer2D.field3752;
             var3 -= var16;
             var15 += var16;
          }
 
-         if(var1 < Rasterizer2D.field3208) {
-            var16 = Rasterizer2D.field3208 - var1;
+         if(var1 < Rasterizer2D.field3749) {
+            var16 = Rasterizer2D.field3749 - var1;
             var3 -= var16;
             var14 += var16;
             var8 += var12 * var16;
             var15 += var16;
          }
 
-         method4239(Rasterizer2D.graphicsPixels, this.image, 0, var8, var9, var14, var15, var3, var4, var12, var13, var6, var5);
+         method5141(Rasterizer2D.graphicsPixels, this.image, 0, var8, var9, var14, var15, var3, var4, var12, var13, var6, var5);
       }
    }
 
-   @ObfuscatedName("y")
-   static void method4239(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12) {
+   @ObfuscatedName("f")
+   static void method5141(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12) {
       int var13 = 256 - var12;
       int var14 = var3;
 
@@ -509,31 +482,47 @@ public final class SpritePixels extends Rasterizer2D {
 
    }
 
-   @ObfuscatedName("t")
-   public void method4240() {
-      if(this.width != this.maxWidth || this.height != this.maxHeight) {
-         int[] var1 = new int[this.maxWidth * this.maxHeight];
+   @ObfuscatedName("z")
+   public void method5143(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int[] var9, int[] var10) {
+      try {
+         int var11 = -var3 / 2;
+         int var12 = -var4 / 2;
+         int var13 = (int)(Math.sin((double)var7 / 326.11D) * 65536.0D);
+         int var14 = (int)(Math.cos((double)var7 / 326.11D) * 65536.0D);
+         var13 = var13 * var8 >> 8;
+         var14 = var14 * var8 >> 8;
+         int var15 = (var5 << 16) + var12 * var13 + var11 * var14;
+         int var16 = (var6 << 16) + (var12 * var14 - var11 * var13);
+         int var17 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
 
-         for(int var2 = 0; var2 < this.height; ++var2) {
-            for(int var3 = 0; var3 < this.width; ++var3) {
-               var1[(var2 + this.offsetY) * this.maxWidth + var3 + this.offsetX] = this.image[var2 * this.width + var3];
+         for(var2 = 0; var2 < var4; ++var2) {
+            int var18 = var9[var2];
+            int var19 = var17 + var18;
+            int var20 = var15 + var14 * var18;
+            int var21 = var16 - var13 * var18;
+
+            for(var1 = -var10[var2]; var1 < 0; ++var1) {
+               Rasterizer2D.graphicsPixels[var19++] = this.image[(var20 >> 16) + (var21 >> 16) * this.width];
+               var20 += var14;
+               var21 -= var13;
             }
-         }
 
-         this.image = var1;
-         this.width = this.maxWidth;
-         this.height = this.maxHeight;
-         this.offsetX = 0;
-         this.offsetY = 0;
+            var15 += var13;
+            var16 += var14;
+            var17 += Rasterizer2D.graphicsPixelsWidth;
+         }
+      } catch (Exception var23) {
+         ;
       }
+
    }
 
-   @ObfuscatedName("ac")
+   @ObfuscatedName("ay")
    @ObfuscatedSignature(
       signature = "(IIIIIIDI)V",
       garbageValue = "256"
    )
-   public void method4242(int var1, int var2, int var3, int var4, int var5, int var6, double var7, int var9) {
+   public void method5144(int var1, int var2, int var3, int var4, int var5, int var6, double var7, int var9) {
       try {
          int var10 = -var3 / 2;
          int var11 = -var4 / 2;
@@ -572,8 +561,27 @@ public final class SpritePixels extends Rasterizer2D {
 
    }
 
-   @ObfuscatedName("ao")
-   void method4244(int var1, int var2, int var3, int var4, int var5, int var6) {
+   @ObfuscatedName("q")
+   public void method5145() {
+      if(this.width != this.maxWidth || this.height != this.maxHeight) {
+         int[] var1 = new int[this.maxWidth * this.maxHeight];
+
+         for(int var2 = 0; var2 < this.height; ++var2) {
+            for(int var3 = 0; var3 < this.width; ++var3) {
+               var1[(var2 + this.offsetY) * this.maxWidth + var3 + this.offsetX] = this.image[var2 * this.width + var3];
+            }
+         }
+
+         this.image = var1;
+         this.width = this.maxWidth;
+         this.height = this.maxHeight;
+         this.offsetX = 0;
+         this.offsetY = 0;
+      }
+   }
+
+   @ObfuscatedName("az")
+   void method5146(int var1, int var2, int var3, int var4, int var5, int var6) {
       if(var6 != 0) {
          var1 -= this.offsetX << 4;
          var2 -= this.offsetY << 4;
@@ -652,20 +660,20 @@ public final class SpritePixels extends Rasterizer2D {
          var20 = var20 + 15 >> 4;
          var21 >>= 4;
          var22 = var22 + 15 >> 4;
-         if(var19 < Rasterizer2D.field3208) {
-            var19 = Rasterizer2D.field3208;
+         if(var19 < Rasterizer2D.field3749) {
+            var19 = Rasterizer2D.field3749;
          }
 
-         if(var20 > Rasterizer2D.field3214) {
-            var20 = Rasterizer2D.field3214;
+         if(var20 > Rasterizer2D.field3752) {
+            var20 = Rasterizer2D.field3752;
          }
 
-         if(var21 < Rasterizer2D.field3211) {
-            var21 = Rasterizer2D.field3211;
+         if(var21 < Rasterizer2D.field3746) {
+            var21 = Rasterizer2D.field3746;
          }
 
-         if(var22 > Rasterizer2D.field3213) {
-            var22 = Rasterizer2D.field3213;
+         if(var22 > Rasterizer2D.field3750) {
+            var22 = Rasterizer2D.field3750;
          }
 
          var20 = var19 - var20;
@@ -1041,150 +1049,130 @@ public final class SpritePixels extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("ax")
-   public void method4257(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int[] var9, int[] var10) {
-      try {
-         int var11 = -var3 / 2;
-         int var12 = -var4 / 2;
-         int var13 = (int)(Math.sin((double)var7 / 326.11D) * 65536.0D);
-         int var14 = (int)(Math.cos((double)var7 / 326.11D) * 65536.0D);
-         var13 = var13 * var8 >> 8;
-         var14 = var14 * var8 >> 8;
-         int var15 = (var5 << 16) + var12 * var13 + var11 * var14;
-         int var16 = (var6 << 16) + (var12 * var14 - var11 * var13);
-         int var17 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
+   @ObfuscatedName("ac")
+   public void method5147(int var1, int var2, int var3, int var4) {
+      if(var3 <= this.maxWidth && var4 <= this.maxHeight) {
+         int var5 = var1 + this.offsetX * var3 / this.maxWidth;
+         int var6 = var1 + ((this.offsetX + this.width) * var3 + this.maxWidth - 1) / this.maxWidth;
+         int var7 = var2 + this.offsetY * var4 / this.maxHeight;
+         int var8 = var2 + ((this.offsetY + this.height) * var4 + this.maxHeight - 1) / this.maxHeight;
+         if(var5 < Rasterizer2D.field3749) {
+            var5 = Rasterizer2D.field3749;
+         }
 
-         for(var2 = 0; var2 < var4; ++var2) {
-            int var18 = var9[var2];
-            int var19 = var17 + var18;
-            int var20 = var15 + var14 * var18;
-            int var21 = var16 - var13 * var18;
+         if(var6 > Rasterizer2D.field3752) {
+            var6 = Rasterizer2D.field3752;
+         }
 
-            for(var1 = -var10[var2]; var1 < 0; ++var1) {
-               Rasterizer2D.graphicsPixels[var19++] = this.image[(var20 >> 16) + (var21 >> 16) * this.width];
-               var20 += var14;
-               var21 -= var13;
+         if(var7 < Rasterizer2D.field3746) {
+            var7 = Rasterizer2D.field3746;
+         }
+
+         if(var8 > Rasterizer2D.field3750) {
+            var8 = Rasterizer2D.field3750;
+         }
+
+         if(var5 < var6 && var7 < var8) {
+            int var9 = var7 * Rasterizer2D.graphicsPixelsWidth + var5;
+            int var10 = Rasterizer2D.graphicsPixelsWidth - (var6 - var5);
+            if(var9 < Rasterizer2D.graphicsPixels.length) {
+               for(int var11 = var7; var11 < var8; ++var11) {
+                  for(int var12 = var5; var12 < var6; ++var12) {
+                     int var13 = var12 - var1 << 4;
+                     int var14 = var11 - var2 << 4;
+                     int var15 = var13 * this.maxWidth / var3 - (this.offsetX << 4);
+                     int var16 = (var13 + 16) * this.maxWidth / var3 - (this.offsetX << 4);
+                     int var17 = var14 * this.maxHeight / var4 - (this.offsetY << 4);
+                     int var18 = (var14 + 16) * this.maxHeight / var4 - (this.offsetY << 4);
+                     int var19 = (var16 - var15) * (var18 - var17) >> 1;
+                     if(var19 != 0) {
+                        if(var15 < 0) {
+                           var15 = 0;
+                        }
+
+                        if(var16 >= this.width << 4) {
+                           var16 = this.width << 4;
+                        }
+
+                        if(var17 < 0) {
+                           var17 = 0;
+                        }
+
+                        if(var18 >= this.height << 4) {
+                           var18 = this.height << 4;
+                        }
+
+                        --var16;
+                        --var18;
+                        int var20 = 16 - (var15 & 15);
+                        int var21 = (var16 & 15) + 1;
+                        int var22 = 16 - (var17 & 15);
+                        int var23 = (var18 & 15) + 1;
+                        var15 >>= 4;
+                        var16 >>= 4;
+                        var17 >>= 4;
+                        var18 >>= 4;
+                        int var24 = 0;
+                        int var25 = 0;
+                        int var26 = 0;
+                        int var27 = 0;
+
+                        int var28;
+                        for(var28 = var17; var28 <= var18; ++var28) {
+                           int var29 = 16;
+                           if(var28 == var17) {
+                              var29 = var22;
+                           }
+
+                           if(var28 == var18) {
+                              var29 = var23;
+                           }
+
+                           for(int var30 = var15; var30 <= var16; ++var30) {
+                              int var31 = this.image[var28 * this.width + var30];
+                              if(var31 != 0) {
+                                 int var32;
+                                 if(var30 == var15) {
+                                    var32 = var29 * var20;
+                                 } else if(var30 == var16) {
+                                    var32 = var29 * var21;
+                                 } else {
+                                    var32 = var29 << 4;
+                                 }
+
+                                 var27 += var32;
+                                 var24 += (var31 >> 16 & 255) * var32;
+                                 var25 += (var31 >> 8 & 255) * var32;
+                                 var26 += (var31 & 255) * var32;
+                              }
+                           }
+                        }
+
+                        if(var27 >= var19) {
+                           var28 = (var24 / var27 << 16) + (var25 / var27 << 8) + var26 / var27;
+                           if(var28 == 0) {
+                              var28 = 1;
+                           }
+
+                           Rasterizer2D.graphicsPixels[var9] = var28;
+                        }
+
+                        ++var9;
+                     }
+                  }
+
+                  var9 += var10;
+               }
+
             }
-
-            var15 += var13;
-            var16 += var14;
-            var17 += Rasterizer2D.graphicsPixelsWidth;
          }
-      } catch (Exception var23) {
-         ;
-      }
-
-   }
-
-   SpritePixels() {
-   }
-
-   @ObfuscatedName("b")
-   static void method4275(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10) {
-      int var11 = 256 - var9;
-      int var12 = (var10 & 16711935) * var11 & -16711936;
-      int var13 = (var10 & '\uff00') * var11 & 16711680;
-      var10 = (var12 | var13) >>> 8;
-
-      for(int var14 = -var6; var14 < 0; ++var14) {
-         for(int var15 = -var5; var15 < 0; ++var15) {
-            var2 = var1[var3++];
-            if(var2 != 0) {
-               var12 = (var2 & 16711935) * var9 & -16711936;
-               var13 = (var2 & '\uff00') * var9 & 16711680;
-               var0[var4++] = ((var12 | var13) >>> 8) + var10;
-            } else {
-               ++var4;
-            }
-         }
-
-         var4 += var7;
-         var3 += var8;
-      }
-
-   }
-
-   @ObfuscatedName("u")
-   public void method4278() {
-      int[] var1 = new int[this.width * this.height];
-      int var2 = 0;
-
-      for(int var3 = 0; var3 < this.height; ++var3) {
-         for(int var4 = this.width - 1; var4 >= 0; --var4) {
-            var1[var2++] = this.image[var4 + var3 * this.width];
-         }
-      }
-
-      this.image = var1;
-      this.offsetX = this.maxWidth - this.width - this.offsetX;
-   }
-
-   @ObfuscatedName("a")
-   public void method4279(int var1, int var2, int var3, int var4) {
-      if(var3 > 0 && var4 > 0) {
-         int var5 = this.width;
-         int var6 = this.height;
-         int var7 = 0;
-         int var8 = 0;
-         int var9 = this.maxWidth;
-         int var10 = this.maxHeight;
-         int var11 = (var9 << 16) / var3;
-         int var12 = (var10 << 16) / var4;
-         int var13;
-         if(this.offsetX > 0) {
-            var13 = ((this.offsetX << 16) + var11 - 1) / var11;
-            var1 += var13;
-            var7 += var13 * var11 - (this.offsetX << 16);
-         }
-
-         if(this.offsetY > 0) {
-            var13 = ((this.offsetY << 16) + var12 - 1) / var12;
-            var2 += var13;
-            var8 += var13 * var12 - (this.offsetY << 16);
-         }
-
-         if(var5 < var9) {
-            var3 = ((var5 << 16) - var7 + var11 - 1) / var11;
-         }
-
-         if(var6 < var10) {
-            var4 = ((var6 << 16) - var8 + var12 - 1) / var12;
-         }
-
-         var13 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
-         int var14 = Rasterizer2D.graphicsPixelsWidth - var3;
-         if(var2 + var4 > Rasterizer2D.field3213) {
-            var4 -= var2 + var4 - Rasterizer2D.field3213;
-         }
-
-         int var15;
-         if(var2 < Rasterizer2D.field3211) {
-            var15 = Rasterizer2D.field3211 - var2;
-            var4 -= var15;
-            var13 += var15 * Rasterizer2D.graphicsPixelsWidth;
-            var8 += var12 * var15;
-         }
-
-         if(var1 + var3 > Rasterizer2D.field3214) {
-            var15 = var1 + var3 - Rasterizer2D.field3214;
-            var3 -= var15;
-            var14 += var15;
-         }
-
-         if(var1 < Rasterizer2D.field3208) {
-            var15 = Rasterizer2D.field3208 - var1;
-            var3 -= var15;
-            var13 += var15;
-            var7 += var11 * var15;
-            var14 += var15;
-         }
-
-         method4233(Rasterizer2D.graphicsPixels, this.image, 0, var7, var8, var13, var14, var3, var4, var11, var12, var5);
+      } else {
+         throw new IllegalArgumentException();
       }
    }
 
-   @ObfuscatedName("am")
-   public void method4287(int var1, int var2, int var3, int var4, int var5, int var6, int[] var7, int[] var8) {
+   @ObfuscatedName("c")
+   public void method5152(int var1, int var2, int var3, int var4, int var5, int var6, int[] var7, int[] var8) {
       int var9 = var2 < 0?-var2:0;
       int var10 = var2 + this.height <= var6?this.height:var6 - var2;
       int var11 = var1 < 0?-var1:0;
@@ -1231,8 +1219,162 @@ public final class SpritePixels extends Rasterizer2D {
 
    }
 
-   @ObfuscatedName("k")
-   public void method4295(int var1, int var2) {
+   SpritePixels() {
+   }
+
+   @ObfuscatedName("i")
+   public SpritePixels method5178() {
+      SpritePixels var1 = new SpritePixels(this.width, this.height);
+      var1.maxWidth = this.maxWidth;
+      var1.maxHeight = this.maxHeight;
+      var1.offsetX = this.maxWidth - this.width - this.offsetX;
+      var1.offsetY = this.offsetY;
+
+      for(int var2 = 0; var2 < this.height; ++var2) {
+         for(int var3 = 0; var3 < this.width; ++var3) {
+            var1.image[var2 * this.width + var3] = this.image[var2 * this.width + this.width - 1 - var3];
+         }
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("x")
+   static void method5183(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      int var9 = -(var5 >> 2);
+      var5 = -(var5 & 3);
+
+      for(int var10 = -var6; var10 < 0; ++var10) {
+         int var11;
+         for(var11 = var9; var11 < 0; ++var11) {
+            var2 = var1[var3++];
+            if(var2 != 0) {
+               var0[var4++] = var2;
+            } else {
+               ++var4;
+            }
+
+            var2 = var1[var3++];
+            if(var2 != 0) {
+               var0[var4++] = var2;
+            } else {
+               ++var4;
+            }
+
+            var2 = var1[var3++];
+            if(var2 != 0) {
+               var0[var4++] = var2;
+            } else {
+               ++var4;
+            }
+
+            var2 = var1[var3++];
+            if(var2 != 0) {
+               var0[var4++] = var2;
+            } else {
+               ++var4;
+            }
+         }
+
+         for(var11 = var5; var11 < 0; ++var11) {
+            var2 = var1[var3++];
+            if(var2 != 0) {
+               var0[var4++] = var2;
+            } else {
+               ++var4;
+            }
+         }
+
+         var4 += var7;
+         var3 += var8;
+      }
+
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1"
+   )
+   public void method5184(int var1) {
+      int[] var2 = new int[this.width * this.height];
+      int var3 = 0;
+
+      for(int var4 = 0; var4 < this.height; ++var4) {
+         for(int var5 = 0; var5 < this.width; ++var5) {
+            int var6 = this.image[var3];
+            if(var6 == 0) {
+               if(var5 > 0 && this.image[var3 - 1] != 0) {
+                  var6 = var1;
+               } else if(var4 > 0 && this.image[var3 - this.width] != 0) {
+                  var6 = var1;
+               } else if(var5 < this.width - 1 && this.image[var3 + 1] != 0) {
+                  var6 = var1;
+               } else if(var4 < this.height - 1 && this.image[var3 + this.width] != 0) {
+                  var6 = var1;
+               }
+            }
+
+            var2[var3++] = var6;
+         }
+      }
+
+      this.image = var2;
+   }
+
+   @ObfuscatedName("y")
+   static void method5185(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
+      int var10 = 256 - var9;
+
+      for(int var11 = -var6; var11 < 0; ++var11) {
+         for(int var12 = -var5; var12 < 0; ++var12) {
+            var2 = var1[var3++];
+            if(var2 != 0) {
+               int var13 = var0[var4];
+               var0[var4++] = ((var2 & 16711935) * var9 + (var13 & 16711935) * var10 & -16711936) + ((var2 & '\uff00') * var9 + (var13 & '\uff00') * var10 & 16711680) >> 8;
+            } else {
+               ++var4;
+            }
+         }
+
+         var4 += var7;
+         var3 += var8;
+      }
+
+   }
+
+   @ObfuscatedName("s")
+   static void method5196(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10) {
+      int var11 = 256 - var9;
+      int var12 = (var10 & 16711935) * var11 & -16711936;
+      int var13 = (var10 & '\uff00') * var11 & 16711680;
+      var10 = (var12 | var13) >>> 8;
+
+      for(int var14 = -var6; var14 < 0; ++var14) {
+         for(int var15 = -var5; var15 < 0; ++var15) {
+            var2 = var1[var3++];
+            if(var2 != 0) {
+               var12 = (var2 & 16711935) * var9 & -16711936;
+               var13 = (var2 & '\uff00') * var9 & 16711680;
+               var0[var4++] = ((var12 | var13) >>> 8) + var10;
+            } else {
+               ++var4;
+            }
+         }
+
+         var4 += var7;
+         var3 += var8;
+      }
+
+   }
+
+   @ObfuscatedName("u")
+   public void method5199() {
+      Rasterizer2D.setRasterBuffer(this.image, this.width, this.height);
+   }
+
+   @ObfuscatedName("b")
+   public void method5207(int var1, int var2) {
       var1 += this.offsetX;
       var2 += this.offsetY;
       int var3 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
@@ -1242,114 +1384,37 @@ public final class SpritePixels extends Rasterizer2D {
       int var7 = Rasterizer2D.graphicsPixelsWidth - var6;
       int var8 = 0;
       int var9;
-      if(var2 < Rasterizer2D.field3211) {
-         var9 = Rasterizer2D.field3211 - var2;
+      if(var2 < Rasterizer2D.field3746) {
+         var9 = Rasterizer2D.field3746 - var2;
          var5 -= var9;
-         var2 = Rasterizer2D.field3211;
+         var2 = Rasterizer2D.field3746;
          var4 += var9 * var6;
          var3 += var9 * Rasterizer2D.graphicsPixelsWidth;
       }
 
-      if(var2 + var5 > Rasterizer2D.field3213) {
-         var5 -= var2 + var5 - Rasterizer2D.field3213;
+      if(var2 + var5 > Rasterizer2D.field3750) {
+         var5 -= var2 + var5 - Rasterizer2D.field3750;
       }
 
-      if(var1 < Rasterizer2D.field3208) {
-         var9 = Rasterizer2D.field3208 - var1;
+      if(var1 < Rasterizer2D.field3749) {
+         var9 = Rasterizer2D.field3749 - var1;
          var6 -= var9;
-         var1 = Rasterizer2D.field3208;
+         var1 = Rasterizer2D.field3749;
          var4 += var9;
          var3 += var9;
          var8 += var9;
          var7 += var9;
       }
 
-      if(var1 + var6 > Rasterizer2D.field3214) {
-         var9 = var1 + var6 - Rasterizer2D.field3214;
+      if(var1 + var6 > Rasterizer2D.field3752) {
+         var9 = var1 + var6 - Rasterizer2D.field3752;
          var6 -= var9;
          var8 += var9;
          var7 += var9;
       }
 
       if(var6 > 0 && var5 > 0) {
-         method4229(Rasterizer2D.graphicsPixels, this.image, var4, var3, var6, var5, var7, var8);
+         method5183(Rasterizer2D.graphicsPixels, this.image, 0, var4, var3, var6, var5, var7, var8);
       }
-   }
-
-   @ObfuscatedName("p")
-   public void method4302(int var1) {
-      if(this.width != this.maxWidth || this.height != this.maxHeight) {
-         int var2 = var1;
-         if(var1 > this.offsetX) {
-            var2 = this.offsetX;
-         }
-
-         int var3 = var1;
-         if(var1 + this.offsetX + this.width > this.maxWidth) {
-            var3 = this.maxWidth - this.offsetX - this.width;
-         }
-
-         int var4 = var1;
-         if(var1 > this.offsetY) {
-            var4 = this.offsetY;
-         }
-
-         int var5 = var1;
-         if(var1 + this.offsetY + this.height > this.maxHeight) {
-            var5 = this.maxHeight - this.offsetY - this.height;
-         }
-
-         int var6 = this.width + var2 + var3;
-         int var7 = this.height + var4 + var5;
-         int[] var8 = new int[var6 * var7];
-
-         for(int var9 = 0; var9 < this.height; ++var9) {
-            for(int var10 = 0; var10 < this.width; ++var10) {
-               var8[(var9 + var4) * var6 + var10 + var2] = this.image[var9 * this.width + var10];
-            }
-         }
-
-         this.image = var8;
-         this.width = var6;
-         this.height = var7;
-         this.offsetX -= var2;
-         this.offsetY -= var4;
-      }
-   }
-
-   public SpritePixels(int var1, int var2) {
-      this.image = new int[var1 * var2];
-      this.width = this.maxWidth = var1;
-      this.height = this.maxHeight = var2;
-      this.offsetY = 0;
-      this.offsetX = 0;
-   }
-
-   @ObfuscatedName("w")
-   public void method4305() {
-      int[] var1 = new int[this.width * this.height];
-      int var2 = 0;
-
-      for(int var3 = this.height - 1; var3 >= 0; --var3) {
-         for(int var4 = 0; var4 < this.width; ++var4) {
-            var1[var2++] = this.image[var4 + var3 * this.width];
-         }
-      }
-
-      this.image = var1;
-      this.offsetY = this.maxHeight - this.height - this.offsetY;
-   }
-
-   @ObfuscatedName("c")
-   public SpritePixels method4308() {
-      SpritePixels var1 = new SpritePixels(this.maxWidth, this.maxHeight);
-
-      for(int var2 = 0; var2 < this.height; ++var2) {
-         for(int var3 = 0; var3 < this.width; ++var3) {
-            var1.image[(var2 + this.offsetY) * this.maxWidth + var3 + this.offsetX] = this.image[var2 * this.width + var3];
-         }
-      }
-
-      return var1;
    }
 }

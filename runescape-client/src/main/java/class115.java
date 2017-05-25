@@ -1,233 +1,120 @@
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dh")
-public class class115 implements MouseListener, MouseMotionListener, FocusListener {
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1908681181
-   )
-   public static int field1799;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1876836511
-   )
-   @Export("mouseIdleTicks")
-   static volatile int mouseIdleTicks;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1744435211
-   )
-   public static volatile int field1801;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 37330559
-   )
-   public static int field1802;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 585714265
-   )
-   @Export("mouseY")
-   public static volatile int mouseY;
+@ObfuscatedName("dz")
+public class class115 {
    @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -291560687
-   )
-   public static int field1805;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1439228953
-   )
-   public static int field1806;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1856076585
-   )
-   public static volatile int field1807;
-   @ObfuscatedName("d")
-   @Export("mouse")
-   public static class115 mouse;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 941214543
-   )
-   public static volatile int field1809;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -473000331
-   )
-   public static volatile int field1810;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 215800197
-   )
-   public static int field1811;
+   int field1663;
+   @ObfuscatedName("h")
+   int field1664;
+   @ObfuscatedName("t")
+   int[] field1665;
    @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -726765429
-   )
-   @Export("mouseX")
-   public static volatile int mouseX;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1978892205
-   )
-   public static int field1813;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      longValue = -6106567573784004277L
-   )
-   public static long field1814;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      longValue = -2679474711508405225L
-   )
-   public static volatile long field1817;
+   int field1666;
+   @ObfuscatedName("g")
+   int field1667;
+   @ObfuscatedName("v")
+   int field1668;
+   @ObfuscatedName("i")
+   int field1669;
 
-   public final synchronized void mouseReleased(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         field1801 = 0;
+   @ObfuscatedName("i")
+   void method2140(float[] var1, int var2, boolean var3) {
+      int var4;
+      for(var4 = 0; var4 < var2; ++var4) {
+         var1[var4] = 0.0F;
       }
 
-      if(var1.isPopupTrigger()) {
-         var1.consume();
-      }
+      if(!var3) {
+         var4 = class106.field1578[this.field1668].field1561;
+         int var5 = this.field1663 - this.field1664;
+         int var6 = var5 / this.field1666;
+         int[] var7 = new int[var6];
 
-   }
+         for(int var8 = 0; var8 < 8; ++var8) {
+            int var9 = 0;
 
-   public final void mouseClicked(MouseEvent var1) {
-      if(var1.isPopupTrigger()) {
-         var1.consume();
-      }
+            while(var9 < var6) {
+               int var10;
+               int var11;
+               if(var8 == 0) {
+                  var10 = class106.field1578[this.field1668].method1950();
 
-   }
+                  for(var11 = var4 - 1; var11 >= 0; --var11) {
+                     if(var9 + var11 < var6) {
+                        var7[var9 + var11] = var10 % this.field1667;
+                     }
 
-   public final synchronized void mouseExited(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         mouseX = -1;
-         mouseY = -1;
-      }
+                     var10 /= this.field1667;
+                  }
+               }
 
-   }
+               for(var10 = 0; var10 < var4; ++var10) {
+                  var11 = var7[var9];
+                  int var12 = this.field1665[var11 * 8 + var8];
+                  if(var12 >= 0) {
+                     int var13 = this.field1664 + var9 * this.field1666;
+                     class104 var14 = class106.field1578[var12];
+                     int var15;
+                     if(this.field1669 == 0) {
+                        var15 = this.field1666 / var14.field1561;
 
-   public final synchronized void mouseMoved(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         mouseX = var1.getX();
-         mouseY = var1.getY();
-      }
+                        for(int var16 = 0; var16 < var15; ++var16) {
+                           float[] var19 = var14.method1951();
 
-   }
+                           for(int var18 = 0; var18 < var14.field1561; ++var18) {
+                              var1[var13 + var16 + var18 * var15] += var19[var18];
+                           }
+                        }
+                     } else {
+                        var15 = 0;
 
-   public final void focusGained(FocusEvent var1) {
-   }
+                        while(var15 < this.field1666) {
+                           float[] var20 = var14.method1951();
 
-   static {
-      mouse = new class115();
-      mouseIdleTicks = 0;
-      field1801 = 0;
-      mouseX = -1;
-      mouseY = -1;
-      field1799 = 0;
-      field1805 = 0;
-      field1806 = 0;
-      field1807 = 0;
-      field1810 = 0;
-      field1809 = 0;
-      field1817 = 0L;
-      field1811 = 0;
-      field1802 = 0;
-      field1813 = 0;
-      field1814 = 0L;
-   }
+                           for(int var17 = 0; var17 < var14.field1561; ++var17) {
+                              var1[var13 + var15] += var20[var17];
+                              ++var15;
+                           }
+                        }
+                     }
+                  }
 
-   public final synchronized void focusLost(FocusEvent var1) {
-      if(mouse != null) {
-         field1801 = 0;
-      }
-
-   }
-
-   public final synchronized void mouseDragged(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         mouseX = var1.getX();
-         mouseY = var1.getY();
-      }
-
-   }
-
-   public final synchronized void mouseEntered(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         mouseX = var1.getX();
-         mouseY = var1.getY();
-      }
-
-   }
-
-   public final synchronized void mousePressed(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         field1810 = var1.getX();
-         field1809 = var1.getY();
-         field1817 = class72.method1421();
-         if(var1.isAltDown()) {
-            field1807 = 4;
-            field1801 = 4;
-         } else if(var1.isMetaDown()) {
-            field1807 = 2;
-            field1801 = 2;
-         } else {
-            field1807 = 1;
-            field1801 = 1;
-         }
-      }
-
-      if(var1.isPopupTrigger()) {
-         var1.consume();
-      }
-
-   }
-
-   @ObfuscatedName("aj")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "23"
-   )
-   static final void method2231() {
-      int[] var0 = class45.field894;
-
-      int var1;
-      for(var1 = 0; var1 < class45.field891; ++var1) {
-         Player var2 = Client.cachedPlayers[var0[var1]];
-         if(var2 != null && var2.field615 > 0) {
-            --var2.field615;
-            if(var2.field615 == 0) {
-               var2.overhead = null;
+                  ++var9;
+                  if(var9 >= var6) {
+                     break;
+                  }
+               }
             }
          }
+
+      }
+   }
+
+   class115() {
+      this.field1669 = class106.method1978(16);
+      this.field1664 = class106.method1978(24);
+      this.field1663 = class106.method1978(24);
+      this.field1666 = class106.method1978(24) + 1;
+      this.field1667 = class106.method1978(6) + 1;
+      this.field1668 = class106.method1978(8);
+      int[] var1 = new int[this.field1667];
+
+      int var2;
+      for(var2 = 0; var2 < this.field1667; ++var2) {
+         int var3 = 0;
+         int var4 = class106.method1978(3);
+         boolean var5 = class106.method1977() != 0;
+         if(var5) {
+            var3 = class106.method1978(5);
+         }
+
+         var1[var2] = var3 << 3 | var4;
       }
 
-      for(var1 = 0; var1 < Client.field321; ++var1) {
-         int var4 = Client.field350[var1];
-         NPC var3 = Client.cachedNPCs[var4];
-         if(var3 != null && var3.field615 > 0) {
-            --var3.field615;
-            if(var3.field615 == 0) {
-               var3.overhead = null;
-            }
-         }
+      this.field1665 = new int[this.field1667 * 8];
+
+      for(var2 = 0; var2 < this.field1667 * 8; ++var2) {
+         this.field1665[var2] = (var1[var2 >> 3] & 1 << (var2 & 7)) != 0?class106.method1978(8):-1;
       }
 
    }
