@@ -8,18 +8,22 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("ScriptState")
 public class ScriptState {
    @ObfuscatedName("d")
-   Script field113;
+   @Export("invokedFromScript")
+   Script invokedFromScript;
    @ObfuscatedName("n")
-   int[] field114;
+   @Export("savedLocalInts")
+   int[] savedLocalInts;
    @ObfuscatedName("q")
-   String[] field115;
+   @Export("savedLocalStrings")
+   String[] savedLocalStrings;
    @ObfuscatedName("kp")
    static Widget[] field117;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = -380192045
    )
-   int field118;
+   @Export("invokedFromPc")
+   int invokedFromPc;
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
@@ -157,6 +161,6 @@ public class ScriptState {
    }
 
    ScriptState() {
-      this.field118 = -1;
+      this.invokedFromPc = -1;
    }
 }

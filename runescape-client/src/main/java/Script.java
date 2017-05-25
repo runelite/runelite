@@ -87,9 +87,9 @@ public class Script extends CacheableNode {
 
          int var11;
          try {
-            class32.field718 = new int[script.localIntCount];
+            class32.scriptLocalInts = new int[script.localIntCount];
             int var9 = 0;
-            class32.field717 = new String[script.localStringCount];
+            class32.scriptLocalStrings = new String[script.localStringCount];
             int var10 = 0;
 
             int var12;
@@ -133,14 +133,14 @@ public class Script extends CacheableNode {
                      var12 = var0.field198;
                   }
 
-                  class32.field718[var9++] = var12;
+                  class32.scriptLocalInts[var9++] = var12;
                } else if(var2[var11] instanceof String) {
                   var32 = (String)var2[var11];
                   if(var32.equals("event_opbase")) {
                      var32 = var0.field190;
                   }
 
-                  class32.field717[var10++] = var32;
+                  class32.scriptLocalStrings[var10++] = var32;
                }
             }
 
@@ -283,33 +283,37 @@ public class Script extends CacheableNode {
                                                                                                                                                                   class32.intStack[++class32.intStackSize - 1] = XClanMember.chatMessages.method859(intOperands[pc]);
                                                                                                                                                                }
                                                                                                                                                             } else {
+																				    //40
                                                                                                                                                                var12 = intOperands[pc];
-                                                                                                                                                               Script var56 = class49.method918(var12);
-                                                                                                                                                               int[] var55 = new int[var56.localIntCount];
-                                                                                                                                                               String[] var91 = new String[var56.localStringCount];
+                                                                                                                                                               Script scriptToInvoke = class49.method918(var12);
+                                                                                                                                                               int[] scriptToInvokeLocalInt = new int[scriptToInvoke.localIntCount];
+                                                                                                                                                               String[] var91 = new String[scriptToInvoke.localStringCount];
 
-                                                                                                                                                               for(var33 = 0; var33 < var56.intStackCount; ++var33) {
-                                                                                                                                                                  var55[var33] = class32.intStack[var33 + (class32.intStackSize - var56.intStackCount)];
+                                                                                                                                                               for(var33 = 0; var33 < scriptToInvoke.intStackCount; ++var33) {
+																				       // copy from stack to LVT
+                                                                                                                                                                  scriptToInvokeLocalInt[var33] = class32.intStack[var33 + (class32.intStackSize - scriptToInvoke.intStackCount)];
                                                                                                                                                                }
 
-                                                                                                                                                               for(var33 = 0; var33 < var56.stringStackCount; ++var33) {
-                                                                                                                                                                  var91[var33] = class32.scriptStringStack[var33 + (class32.scriptStringStackSize - var56.stringStackCount)];
+                                                                                                                                                               for(var33 = 0; var33 < scriptToInvoke.stringStackCount; ++var33) {
+																				       // copy from stack to LVT
+                                                                                                                                                                  var91[var33] = class32.scriptStringStack[var33 + (class32.scriptStringStackSize - scriptToInvoke.stringStackCount)];
                                                                                                                                                                }
 
-                                                                                                                                                               class32.intStackSize -= var56.intStackCount;
-                                                                                                                                                               class32.scriptStringStackSize -= var56.stringStackCount;
+																			       // remove arguments from int/string stack
+                                                                                                                                                               class32.intStackSize -= scriptToInvoke.intStackCount;
+                                                                                                                                                               class32.scriptStringStackSize -= scriptToInvoke.stringStackCount;
                                                                                                                                                                ScriptState var68 = new ScriptState();
-                                                                                                                                                               var68.field113 = script;
-                                                                                                                                                               var68.field118 = pc;
-                                                                                                                                                               var68.field114 = class32.field718;
-                                                                                                                                                               var68.field115 = class32.field717;
+                                                                                                                                                               var68.invokedFromScript = script;
+                                                                                                                                                               var68.invokedFromPc = pc;
+                                                                                                                                                               var68.savedLocalInts = class32.scriptLocalInts;
+                                                                                                                                                               var68.savedLocalStrings = class32.scriptLocalStrings;
                                                                                                                                                                class32.scriptStack[++class32.scriptStackCount - 1] = var68;
-                                                                                                                                                               script = var56;
-                                                                                                                                                               instructions = var56.instructions;
-                                                                                                                                                               intOperands = var56.intOperands;
+                                                                                                                                                               script = scriptToInvoke;
+                                                                                                                                                               instructions = scriptToInvoke.instructions;
+                                                                                                                                                               intOperands = scriptToInvoke.intOperands;
                                                                                                                                                                pc = -1;
-                                                                                                                                                               class32.field718 = var55;
-                                                                                                                                                               class32.field717 = var91;
+                                                                                                                                                               class32.scriptLocalInts = scriptToInvokeLocalInt;
+                                                                                                                                                               class32.scriptLocalStrings = var91;
                                                                                                                                                             }
                                                                                                                                                          } else {
                                                                                                                                                             --class32.scriptStringStackSize;
@@ -318,15 +322,16 @@ public class Script extends CacheableNode {
                                                                                                                                                          --class32.intStackSize;
                                                                                                                                                       }
                                                                                                                                                    } else {
+																			   //37
                                                                                                                                                       var12 = intOperands[pc];
                                                                                                                                                       class32.scriptStringStackSize -= var12;
-                                                                                                                                                      String[] var14 = class32.scriptStringStack;
+                                                                                                                                                      String[] stringStack = class32.scriptStringStack;
                                                                                                                                                       var15 = class32.scriptStringStackSize;
                                                                                                                                                       String var13;
                                                                                                                                                       if(var12 == 0) {
                                                                                                                                                          var13 = "";
                                                                                                                                                       } else if(var12 == 1) {
-                                                                                                                                                         var58 = var14[var15];
+                                                                                                                                                         var58 = stringStack[var15];
                                                                                                                                                          if(var58 == null) {
                                                                                                                                                             var13 = "null";
                                                                                                                                                          } else {
@@ -337,7 +342,7 @@ public class Script extends CacheableNode {
                                                                                                                                                          var17 = 0;
 
                                                                                                                                                          for(var18 = var15; var18 < var33; ++var18) {
-                                                                                                                                                            var64 = var14[var18];
+                                                                                                                                                            var64 = stringStack[var18];
                                                                                                                                                             if(var64 == null) {
                                                                                                                                                                var17 += 4;
                                                                                                                                                             } else {
@@ -348,7 +353,7 @@ public class Script extends CacheableNode {
                                                                                                                                                          StringBuilder var83 = new StringBuilder(var17);
 
                                                                                                                                                          for(var84 = var15; var84 < var33; ++var84) {
-                                                                                                                                                            var20 = var14[var84];
+                                                                                                                                                            var20 = stringStack[var84];
                                                                                                                                                             if(var20 == null) {
                                                                                                                                                                var83.append("null");
                                                                                                                                                             } else {
@@ -362,16 +367,20 @@ public class Script extends CacheableNode {
                                                                                                                                                       class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var13;
                                                                                                                                                    }
                                                                                                                                                 } else {
-                                                                                                                                                   class32.field717[intOperands[pc]] = class32.scriptStringStack[--class32.scriptStringStackSize];
+																			// 36
+                                                                                                                                                   class32.scriptLocalStrings[intOperands[pc]] = class32.scriptStringStack[--class32.scriptStringStackSize];
                                                                                                                                                 }
                                                                                                                                              } else {
-                                                                                                                                                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class32.field717[intOperands[pc]];
+																		     // 35
+                                                                                                                                                class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class32.scriptLocalStrings[intOperands[pc]];
                                                                                                                                              }
                                                                                                                                           } else {
-                                                                                                                                             class32.field718[intOperands[pc]] = class32.intStack[--class32.intStackSize];
+																		  //34
+                                                                                                                                             class32.scriptLocalInts[intOperands[pc]] = class32.intStack[--class32.intStackSize];
                                                                                                                                           }
                                                                                                                                        } else {
-                                                                                                                                          class32.intStack[++class32.intStackSize - 1] = class32.field718[intOperands[pc]];
+																	       //33
+                                                                                                                                          class32.intStack[++class32.intStackSize - 1] = class32.scriptLocalInts[intOperands[pc]];
                                                                                                                                        }
                                                                                                                                     } else {
                                                                                                                                        class32.intStackSize -= 2;
@@ -394,17 +403,18 @@ public class Script extends CacheableNode {
                                                                                                                               class32.intStack[++class32.intStackSize - 1] = class59.method1140(var12);
                                                                                                                            }
                                                                                                                         } else {
+																//21 - return
                                                                                                                            if(class32.scriptStackCount == 0) {
                                                                                                                               return;
                                                                                                                            }
 
                                                                                                                            ScriptState var76 = class32.scriptStack[--class32.scriptStackCount];
-                                                                                                                           script = var76.field113;
+                                                                                                                           script = var76.invokedFromScript;
                                                                                                                            instructions = script.instructions;
                                                                                                                            intOperands = script.intOperands;
-                                                                                                                           pc = var76.field118;
-                                                                                                                           class32.field718 = var76.field114;
-                                                                                                                           class32.field717 = var76.field115;
+                                                                                                                           pc = var76.invokedFromPc;
+                                                                                                                           class32.scriptLocalInts = var76.savedLocalInts;
+                                                                                                                           class32.scriptLocalStrings = var76.savedLocalStrings;
                                                                                                                         }
                                                                                                                      } else {
                                                                                                                         class32.intStackSize -= 2;
@@ -1451,7 +1461,7 @@ public class Script extends CacheableNode {
             var52.append("").append(script.hash).append(" ");
 
             for(var11 = class32.scriptStackCount - 1; var11 >= 0; --var11) {
-               var52.append("").append(class32.scriptStack[var11].field113.hash).append(" ");
+               var52.append("").append(class32.scriptStack[var11].invokedFromScript.hash).append(" ");
             }
 
             var52.append("").append(var8);

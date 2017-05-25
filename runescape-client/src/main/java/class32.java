@@ -18,9 +18,11 @@ public class class32 {
    )
    static int field716;
    @ObfuscatedName("q")
-   static String[] field717;
+   @Export("scriptLocalStrings")
+   static String[] scriptLocalStrings;
    @ObfuscatedName("n")
-   static int[] field718;
+   @Export("scriptLocalInts")
+   static int[] scriptLocalInts;
    @ObfuscatedName("t")
    static int[] field719;
    @ObfuscatedName("u")
