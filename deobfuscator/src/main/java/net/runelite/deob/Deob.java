@@ -58,10 +58,7 @@ public class Deob
 {
 	private static final Logger logger = LoggerFactory.getLogger(Deob.class);
 
-	/** osrs uses 2 max, some of the older pre eoc builds have enough symbols
-	 * to use 3.
-	 */
-	public static final int OBFUSCATED_NAME_MAX_LEN = 3;
+	public static final int OBFUSCATED_NAME_MAX_LEN = 2;
 
 	public static void main(String[] args) throws IOException
 	{
