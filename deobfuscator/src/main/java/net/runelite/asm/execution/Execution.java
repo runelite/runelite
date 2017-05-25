@@ -78,6 +78,11 @@ public class Execution
 					
 					methods.add(m); // I guess this method name is overriding a jre interface (init, run, ?).
 				}
+
+				if (m.getName().equals("<init>") && cf.getSuperName().equals("java/applet/Applet"))
+				{
+					methods.add(m);
+				}
 			}
 		}
 		
