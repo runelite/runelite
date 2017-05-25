@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators;
 
 import java.util.ArrayList;
@@ -32,26 +31,33 @@ import net.runelite.asm.Method;
 import net.runelite.asm.execution.Execution;
 import net.runelite.deob.Deob;
 import net.runelite.deob.Deobfuscator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UnusedMethods implements Deobfuscator
 {
+	private static final Logger logger = LoggerFactory.getLogger(UnusedMethods.class);
+
 	@Override
 	public void run(ClassGroup group)
 	{
 		group.buildClassGraph();
-		
+
 		Execution execution = new Execution(group);
 		execution.populateInitialMethods();
 		execution.run();
-		
+
 		int i = 0;
 		for (ClassFile cf : group.getClasses())
 		{
 			for (Method m : new ArrayList<>(cf.getMethods().getMethods()))
 			{
 				if (!Deob.isObfuscated(m.getName()) && !m.getName().equals("<init>"))
+				{
+					// constructors can't be renamed, but are obfuscated
 					continue;
-				
+				}
+
 				if (!execution.methods.contains(m))
 				{
 					cf.getMethods().removeMethod(m);
@@ -59,7 +65,7 @@ public class UnusedMethods implements Deobfuscator
 				}
 			}
 		}
-		
-		System.out.println("Removed " + i + " methods");
+
+		logger.info("Removed {} methods", i);
 	}
 }
