@@ -150,11 +150,11 @@ public class class71 implements Runnable {
                }
 
                if(var6 == 11) {
-                  var7 = Client.field1107;
+                  var7 = Client.energy;
                }
 
                if(var6 == 12) {
-                  var7 = Client.field1010;
+                  var7 = Client.weight;
                }
 
                if(var6 == 13) {
