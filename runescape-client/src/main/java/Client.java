@@ -649,7 +649,8 @@ public final class Client extends GameEngine {
    @Export("widgetRoot")
    static int widgetRoot;
    @ObfuscatedName("mk")
-   static int[] field1051;
+   @Export("interfaceItemTriggers")
+   static int[] interfaceItemTriggers;
    @ObfuscatedName("kp")
    @ObfuscatedGetter(
       intValue = -340207221
@@ -3326,7 +3327,7 @@ public final class Client extends GameEngine {
                   var98.unlink();
                }
 
-               field1051[++field1079 - 1 & 31] = var21 & 32767;
+               interfaceItemTriggers[++field1079 - 1 & 31] = var21 & 32767;
                field936 = -1;
                return true;
             }
@@ -4505,7 +4506,7 @@ public final class Client extends GameEngine {
                }
 
                class18.method132();
-               field1051[++field1079 - 1 & 31] = var3 & 32767;
+               interfaceItemTriggers[++field1079 - 1 & 31] = var3 & 32767;
                field936 = -1;
                return true;
             }
@@ -5149,7 +5150,7 @@ public final class Client extends GameEngine {
                }
 
                class18.method132();
-               field1051[++field1079 - 1 & 31] = var3 & 32767;
+               interfaceItemTriggers[++field1079 - 1 & 31] = var3 & 32767;
                field936 = -1;
                return true;
             }
@@ -5388,7 +5389,7 @@ public final class Client extends GameEngine {
       field1075 = 1;
       field955 = new int[32];
       field1145 = 0;
-      field1051 = new int[32];
+      interfaceItemTriggers = new int[32];
       field1079 = 0;
       field1080 = new int[32];
       field1081 = 0;

@@ -624,7 +624,7 @@ public class class37 {
                            if(var9.field2738 != null && Client.field1079 - var9.field2771 <= 32) {
                               label1233:
                               for(var56 = var9.field2771; var56 < Client.field1079; ++var56) {
-                                 var22 = Client.field1051[var56 & 31];
+                                 var22 = Client.interfaceItemTriggers[var56 & 31];
 
                                  for(var23 = 0; var23 < var9.field2738.length; ++var23) {
                                     if(var22 == var9.field2738[var23]) {
