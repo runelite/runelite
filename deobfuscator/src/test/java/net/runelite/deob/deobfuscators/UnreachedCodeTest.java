@@ -70,7 +70,10 @@ public class UnreachedCodeTest
 
 		ClassFile cf = group.getClasses().get(0);
 
-		Method method = cf.findMethod("method1Unused");
+		Method method = cf.findMethod("entry");
+		Assert.assertFalse(method.getCode().getExceptions().getExceptions().isEmpty());
+
+		method = cf.findMethod("method1Unused");
 		Assert.assertNotNull(method);
 		Assert.assertFalse(method.getCode().getInstructions().getInstructions().stream().filter(i -> !(i instanceof Label)).findAny().isPresent());
 		Assert.assertTrue(method.getCode().getExceptions().getExceptions().isEmpty());

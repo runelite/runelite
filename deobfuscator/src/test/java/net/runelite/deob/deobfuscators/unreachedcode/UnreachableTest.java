@@ -32,7 +32,14 @@ public class UnreachableTest
 
 	public void entry()
 	{
-		System.out.println("used");
+		try
+		{
+			System.out.println("used");
+		}
+		catch (Exception ex)
+		{
+			System.out.println("should be hit");
+		}
 	}
 
 	public void method1Unused()
