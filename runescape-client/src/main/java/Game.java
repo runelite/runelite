@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hd")
-@Implements("Game")
+//@Implements("Game")
 public class Game implements class178 {
    @ObfuscatedName("g")
    public static final Game field3181;
@@ -18,13 +18,13 @@ public class Game implements class178 {
    @ObfuscatedName("i")
    public static final Game field3186;
    @ObfuscatedName("t")
-   @Export("name")
+   //@Export("name")
    public final String name;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1847774459
    )
-   @Export("number")
+  // @Export("number")
    final int number;
    @ObfuscatedName("v")
    public static final Game field3189;
