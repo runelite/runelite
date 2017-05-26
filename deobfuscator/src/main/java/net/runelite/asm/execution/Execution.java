@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.execution;
 
 import java.util.ArrayList;
@@ -44,7 +43,8 @@ public class Execution
 	public List<Frame> frames = new ArrayList<>(), framesOther = new ArrayList<>();
 	public Set<Method> methods = new HashSet<>(); // all methods
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
-	private MultiValueMap<WeakInstructionContext, Method> invokes = new MultiValueMap<>();
+	private MultiValueMap<WeakInstructionContext, Method> stepInvokes = new MultiValueMap<>();
+	private Set<Method> invokes = new HashSet<>();
 	public boolean paused;
 	public boolean step = false;
 	public boolean noInvoke = false;
@@ -56,14 +56,14 @@ public class Execution
 	{
 		this.group = group;
 	}
-	
+
 	public List<Method> getInitialMethods()
 	{
 		List<Method> methods = new ArrayList<>();
-		
+
 		group.buildClassGraph(); // required when looking up methods
 		group.lookup(); // lookup methods
-		
+
 		for (ClassFile cf : group.getClasses())
 		{
 			for (Method m : cf.getMethods().getMethods())
@@ -75,7 +75,7 @@ public class Execution
 						methods.add(m);
 						continue;
 					}
-					
+
 					methods.add(m); // I guess this method name is overriding a jre interface (init, run, ?).
 				}
 
@@ -85,10 +85,10 @@ public class Execution
 				}
 			}
 		}
-		
+
 		return methods;
 	}
-	
+
 	public void populateInitialMethods()
 	{
 		for (Method m : this.getInitialMethods())
@@ -104,70 +104,99 @@ public class Execution
 			addFrame(frame); // I guess this method name is overriding a jre interface (init, run, ?).
 		}
 	}
-	
+
 	public boolean hasInvoked(InstructionContext from, Method to)
 	{
-		Collection<Method> methods = invokes.getCollection(from.toWeak());
+		if (!step)
+		{
+			if (invokes.contains(to))
+			{
+				return true;
+			}
+
+			invokes.add(to);
+			return false;
+		}
+
+		// The step executor needs to be able to step into static methods,
+		// and use MappingExecutorUtil.resolve to trace back through
+		// the lvt to the caller which invoked the method.
+		//
+		// So, check that the stack is unique too. invoke() doesn't get this
+		// far in the step executor, so this is only called from stepInto
+		Collection<Method> methods = stepInvokes.getCollection(from.toWeak());
 		if (methods != null && methods.contains(to))
+		{
 			return true;
-		
-		invokes.put(from.toWeak(), to);
+		}
+
+		stepInvokes.put(from.toWeak(), to);
 		return false;
 	}
 
 	public void addFrame(Frame frame)
 	{
 		if (frames.isEmpty() || frames.get(0).getMethod() == frame.getMethod())
+		{
 			frames.add(frame);
+		}
 		else
+		{
 			framesOther.add(frame);
+		}
 	}
-	
+
 	public Frame invoke(InstructionContext from, Method to)
 	{
 		if (step) // step executor
+		{
 			return null;
-		
+		}
+
 		if (noInvoke)
+		{
 			return null;
+		}
 
 		if (hasInvoked(from, to))
+		{
 			return null;
-		
+		}
+
 		Frame f = new Frame(this, to);
 		f.initialize(from);
 		this.addFrame(f);
 		return f;
 	}
-	
+
 	public void addMethod(Method to)
 	{
 		Frame f = new Frame(this, to);
 		f.initialize();
 		this.addFrame(f);
 	}
-	
+
 	public void run()
 	{
 		assert !paused;
-		
+
 		int fcount = 0;
 		while (!frames.isEmpty())
 		{
 			Frame frame = frames.get(0);
-			
+
 			methods.add(frame.getMethod());
-			
+
 			++fcount;
 			frame.execute();
-			
+
 			assert frames.get(0) == frame;
 			assert !frame.isExecuting();
 
 			accept(frame);
 
 			frames.remove(frame);
-			
+
 			if (frames.isEmpty())
 			{
 				assert frame.getMethod() == frame.getMethodCtx().getMethod();
@@ -175,7 +204,9 @@ public class Execution
 				accept(frame.getMethodCtx());
 
 				if (framesOther.isEmpty())
+				{
 					break;
+				}
 
 				Frame begin = framesOther.remove(0);
 				frames.add(begin);
@@ -185,7 +216,7 @@ public class Execution
 				framesOther.removeAll(toMove);
 			}
 		}
-		
+
 		System.out.println("Processed " + fcount + " frames");
 	}
 
@@ -208,12 +239,12 @@ public class Execution
 	{
 		frameVisitors.forEach(v -> v.visit(f));
 	}
-	
+
 	public void addMethodContextVisitor(MethodContextVisitor mcv)
 	{
 		methodContextVisitors.add(mcv);
 	}
-	
+
 	public void accept(MethodContext m)
 	{
 		methodContextVisitors.forEach(mc -> mc.visit(m));
