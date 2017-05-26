@@ -24,7 +24,8 @@ public class class152 extends RuntimeException {
    @ObfuscatedGetter(
       intValue = -407493319
    )
-   static int field2202;
+   @Export("menuX")
+   static int menuX;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(

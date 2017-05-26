@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -8,7 +9,8 @@ public class class287 {
    @ObfuscatedGetter(
       intValue = -203580143
    )
-   static int field3788;
+   @Export("menuY")
+   static int menuY;
    @ObfuscatedName("t")
    IndexDataBase field3791;
    @ObfuscatedName("p")

@@ -2806,9 +2806,9 @@ public final class Client extends GameEngine {
             }
          }
       } else {
-         var1 = class152.field2202;
-         var2 = class287.field3788;
-         var3 = Varbit.field3379;
+         var1 = class152.menuX;
+         var2 = class287.menuY;
+         var3 = Varbit.menuHeight;
          int var11 = FileOnDisk.field1751;
          int var5 = 6116423;
          Rasterizer2D.method5042(var1, var2, var3, var11, var5);
@@ -2828,7 +2828,7 @@ public final class Client extends GameEngine {
             class40.field531.method4889(class46.method677(var8), var1 + 3, var9, var10, 0);
          }
 
-         ChatLineBuffer.method1903(class152.field2202, class287.field3788, Varbit.field3379, FileOnDisk.field1751);
+         ChatLineBuffer.method1903(class152.menuX, class287.menuY, Varbit.menuHeight, FileOnDisk.field1751);
       }
 
       if(field1102 == 3) {
@@ -5927,9 +5927,9 @@ public final class Client extends GameEngine {
 
       class46.region.method2744(Sequence.plane, var1, var2, false);
       isMenuOpen = true;
-      class152.field2202 = var5;
-      class287.field3788 = var6;
-      Varbit.field3379 = var3;
+      class152.menuX = var5;
+      class287.menuY = var6;
+      Varbit.menuHeight = var3;
       FileOnDisk.field1751 = menuOptionCount * 15 + 22;
    }
 
@@ -6131,16 +6131,16 @@ public final class Client extends GameEngine {
                if(var1 != 1 && (class149.field2178 || var1 != 4)) {
                   var2 = class59.field721;
                   var3 = class59.field722;
-                  if(var2 < class152.field2202 - 10 || var2 > Varbit.field3379 + class152.field2202 + 10 || var3 < class287.field3788 - 10 || var3 > FileOnDisk.field1751 + class287.field3788 + 10) {
+                  if(var2 < class152.menuX - 10 || var2 > Varbit.menuHeight + class152.menuX + 10 || var3 < class287.menuY - 10 || var3 > FileOnDisk.field1751 + class287.menuY + 10) {
                      isMenuOpen = false;
-                     class44.method645(class152.field2202, class287.field3788, Varbit.field3379, FileOnDisk.field1751);
+                     class44.method645(class152.menuX, class287.menuY, Varbit.menuHeight, FileOnDisk.field1751);
                   }
                }
 
                if(var1 == 1 || !class149.field2178 && var1 == 4) {
-                  var2 = class152.field2202;
-                  var3 = class287.field3788;
-                  var4 = Varbit.field3379;
+                  var2 = class152.menuX;
+                  var3 = class287.menuY;
+                  var4 = Varbit.menuHeight;
                   var5 = class59.field717;
                   int var10 = class59.field729;
                   var7 = -1;
@@ -6157,7 +6157,7 @@ public final class Client extends GameEngine {
                   }
 
                   isMenuOpen = false;
-                  class44.method645(class152.field2202, class287.field3788, Varbit.field3379, FileOnDisk.field1751);
+                  class44.method645(class152.menuX, class287.menuY, Varbit.menuHeight, FileOnDisk.field1751);
                }
             } else {
                var2 = class84.method1694();

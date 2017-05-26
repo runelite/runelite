@@ -33,7 +33,8 @@ public class Varbit extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 1256370663
    )
-   static int field3379;
+   @Export("menuHeight")
+   static int menuHeight;
    @ObfuscatedName("v")
    public static IndexDataBase field3380;
 
