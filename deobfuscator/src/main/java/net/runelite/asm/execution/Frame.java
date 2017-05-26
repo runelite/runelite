@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.execution;
 
 import com.google.common.collect.Lists;
@@ -57,7 +56,7 @@ public class Frame
 	{
 		this.execution = execution;
 		this.method = method;
-		
+
 		Code code = method.getCode();
 
 		stack = new Stack(code.getMaxStack());
@@ -71,24 +70,26 @@ public class Frame
 	{
 		return "Frame{" + "cur=" + cur + ", last=" + this.lastInstruction() + "}";
 	}
-	
+
 	public void initialize()
 	{
 		// initialize LVT
 		int pos = 0;
 		if (!method.isStatic())
+		{
 			variables.set(pos++, new VariableContext(new Type(method.getMethods().getClassFile().getName())).markParameter());
-		
+		}
+
 		for (int i = 0; i < method.getDescriptor().size(); ++i)
 		{
 			variables.set(pos, new VariableContext(new Type(method.getDescriptor().getTypeOfArg(i))).markParameter());
 			pos += method.getDescriptor().getTypeOfArg(i).getSlots();
 		}
-		
+
 		Code code = method.getCode();
 		cur = code.getInstructions().getInstructions().get(0);
 	}
-	
+
 	public void initialize(InstructionContext ctx)
 	{
 		// initialize frame from invoking context
@@ -96,21 +97,20 @@ public class Frame
 
 		// this assert fails. evidently it's possible to invokevirtual a static method.
 		//assert ctx.getInstruction() instanceof InvokeStatic == this.method.isStatic();
-		
 		if (this.getMethod().isStatic())
 		{
 			this.nonStatic = ctx.getFrame().nonStatic;
 		}
-		
+
 		// initialize LVT. the last argument is popped first, and is at arguments[0]
 		List<StackContext> pops = ctx.getPops();
 		pops = Lists.reverse(new ArrayList<>(pops)); // reverse the list so first argument is at index 0
-		
+
 		int lvtOffset = 0;
 		if (!(ctx.getInstruction() instanceof InvokeStatic))
 		{
 			StackContext s = pops.remove(0); // object
-			
+
 			// sometimes there are invokevirtuals on static methods. still must pop the object from the stack,
 			// but don't set as a parameter
 			if (!method.isStatic())
@@ -133,9 +133,9 @@ public class Frame
 			variables.set(lvtOffset, vctx);
 			lvtOffset += method.getDescriptor().getTypeOfArg(i).getSlots();
 		}
-		
+
 		assert pops.isEmpty();
-		
+
 		Code code = method.getCode();
 		cur = code.getInstructions().getInstructions().get(0);
 	}
@@ -157,19 +157,19 @@ public class Frame
 		}
 		this.otherStatic = other.otherStatic;
 	}
-	
+
 	public Frame dup()
 	{
 		Frame other = new Frame(this);
 		execution.addFrame(other);
 		return other;
 	}
-	
+
 	public void stop()
 	{
 		executing = false;
 	}
-	
+
 	public Execution getExecution()
 	{
 		return execution;
@@ -179,17 +179,17 @@ public class Frame
 	{
 		return executing;
 	}
-	
+
 	public Method getMethod()
 	{
 		return method;
 	}
-	
+
 	public Stack getStack()
 	{
 		return stack;
 	}
-	
+
 	public Variables getVariables()
 	{
 		return variables;
@@ -199,29 +199,29 @@ public class Frame
 	{
 		return ctx;
 	}
-	
+
 	private void addInstructionContext(InstructionContext i)
 	{
 		instructions.add(i);
 	}
-	
+
 	public List<InstructionContext> getInstructions()
 	{
 		return instructions;
 	}
-	
+
 	public void execute()
 	{
 		Instructions ins = method.getCode().getInstructions();
 		List<Instruction> instructions = ins.getInstructions();
-		
+
 		assert !execution.paused;
-		
+
 		while (executing)
 		{
 			Instruction oldCur = cur;
 			InstructionContext ictx;
-			
+
 			try
 			{
 				ictx = cur.execute(this);
@@ -236,30 +236,30 @@ public class Frame
 					StackContext stacki = stack.pop();
 					InstructionContext pushed = stacki.getPushed();
 					Frame frame = pushed.getFrame();
-					
+
 					System.err.println(pushed.getInstruction());
 				}
 				System.err.println("end of stack");
 				ex.printStackTrace();
 				throw ex;
 			}
-			
+
 			assert ictx.getInstruction() == oldCur;
 			ctx.contexts.put(oldCur, ictx);
-			
+
 			execution.executed.add(oldCur);
 
 			execution.accept(ictx);
-			
+
 			processExceptions(ictx);
-			
+
 			if (!executing)
 			{
 				// this can be mappable, too, but we stop executing anyway
 				checkMappable(ictx); // to set paused
 				break;
 			}
-			
+
 			if (oldCur == cur)
 			{
 				this.nextInstruction();
@@ -268,14 +268,16 @@ public class Frame
 			{
 				/* jump */
 			}
-			
+
 			// it is important we move cur first as when the step executor
 			// resumes it will start there
 			if (checkMappable(ictx))
+			{
 				return;
+			}
 		}
 	}
-	
+
 	private boolean checkMappable(InstructionContext ictx)
 	{
 		if (execution.step && ictx.getInstruction() instanceof MappableInstruction)
@@ -290,62 +292,72 @@ public class Frame
 
 		return false;
 	}
-	
+
 	public void nextInstruction()
 	{
 		Instructions ins = method.getCode().getInstructions();
 		List<Instruction> instructions = ins.getInstructions();
-		
+
 		int idx = instructions.indexOf(cur);
 		assert idx != -1;
 		cur = instructions.get(idx + 1);
 	}
-	
+
 	private InstructionContext lastInstruction()
 	{
 		return instructions.isEmpty() ? null : instructions.get(instructions.size() - 1);
 	}
-	
+
 	private void processExceptions(InstructionContext ictx)
 	{
 		if (this.execution.step)
+		{
 			return; // no frame.other
-		
+		}
 		Code code = method.getCode();
-		
+
 		for (Exception e : code.getExceptions().getExceptions())
 		{
 			if (e.getStart().next() == ictx.getInstruction())
-			{				
+			{
+				// checking hasJumped here instead of below in
+				// jump() provides a >2x speedup
+				if (ctx.hasJumped(ictx, e.getHandler()))
+				{
+					continue;
+				}
+
 				Frame f = dup();
 				Stack stack = f.getStack();
-				
+
 				while (stack.getSize() > 0)
+				{
 					stack.pop();
-				
+				}
+
 				InstructionContext ins = new InstructionContext(ictx.getInstruction(), f);
 				StackContext ctx = new StackContext(ins, new Type("java/lang/Exception"), Value.UNKNOWN);
 				stack.push(ctx);
-				
+
 				ins.push(ctx);
-			
+
 				f.jump(ictx, e.getHandler());
 			}
 		}
 	}
-	
+
 	public void jump(InstructionContext from, Label to)
 	{
 		assert to != null;
 		assert to.getInstructions() == method.getCode().getInstructions();
 		assert method.getCode().getInstructions().getInstructions().contains(to);
-		
+
 		if (ctx.hasJumped(from, to))
 		{
 			executing = false;
 			return;
 		}
-		
+
 		cur = to.next();
 	}
 }
