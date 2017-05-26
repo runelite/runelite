@@ -297,12 +297,14 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -633012243
    )
-   static int field962;
+   @Export("mapOffset")
+   static int mapOffset;
    @ObfuscatedName("fl")
    @ObfuscatedGetter(
       intValue = -477984119
    )
-   static int field963;
+   @Export("mapScaleDelta")
+   static int mapScaleDelta;
    @ObfuscatedName("gd")
    @ObfuscatedGetter(
       intValue = 725445287
@@ -413,7 +415,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -641204291
    )
-   static int field990;
+   @Export("mapScale")
+   static int mapScale;
    @ObfuscatedName("ne")
    @Export("widgetPositionY")
    static int[] widgetPositionY;
@@ -1887,8 +1890,8 @@ public final class Client extends GameEngine {
                   field1061 = (int)(Math.random() * 100.0D) - 50;
                   field956 = (int)(Math.random() * 110.0D) - 55;
                   field958 = (int)(Math.random() * 80.0D) - 40;
-                  field990 = (int)(Math.random() * 120.0D) - 60;
-                  field963 = (int)(Math.random() * 30.0D) - 20;
+                  mapScale = (int)(Math.random() * 120.0D) - 60;
+                  mapScaleDelta = (int)(Math.random() * 30.0D) - 20;
                   mapAngle = (int)(Math.random() * 20.0D) - 10 & 2047;
                   field1017 = 0;
                   field1117 = -1;
@@ -2621,27 +2624,27 @@ public final class Client extends GameEngine {
                                                 field965 = 0;
                                                 var6 = (int)(Math.random() * 8.0D);
                                                 if((var6 & 1) == 1) {
-                                                   field990 += field962;
+                                                   mapScale += mapOffset;
                                                 }
 
                                                 if((var6 & 2) == 2) {
-                                                   field963 += field964;
+                                                   mapScaleDelta += field964;
                                                 }
                                              }
 
-                                             if(field990 < -60) {
-                                                field962 = 2;
+                                             if(mapScale < -60) {
+                                                mapOffset = 2;
                                              }
 
-                                             if(field990 > 60) {
-                                                field962 = -2;
+                                             if(mapScale > 60) {
+                                                mapOffset = -2;
                                              }
 
-                                             if(field963 < -20) {
+                                             if(mapScaleDelta < -20) {
                                                 field964 = 1;
                                              }
 
-                                             if(field963 > 10) {
+                                             if(mapScaleDelta > 10) {
                                                 field964 = -1;
                                              }
 
@@ -5263,9 +5266,9 @@ public final class Client extends GameEngine {
       field958 = 0;
       field959 = 1;
       field902 = 0;
-      field990 = 0;
-      field962 = 2;
-      field963 = 0;
+      mapScale = 0;
+      mapOffset = 2;
+      mapScaleDelta = 0;
       field964 = 1;
       field965 = 0;
       field966 = 0;

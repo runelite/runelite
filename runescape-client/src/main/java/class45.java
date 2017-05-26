@@ -158,11 +158,11 @@ public class class45 extends class28 {
    static final void method675(int var0, int var1, int var2, int var3, SpritePixels var4, class210 var5) {
       int var6 = var2 * var2 + var3 * var3;
       if(var6 > 4225 && var6 < 90000) {
-         int var7 = Client.mapAngle + Client.field990 & 2047;
+         int var7 = Client.mapAngle + Client.mapScale & 2047;
          int var8 = class136.SINE[var7];
          int var9 = class136.COSINE[var7];
-         var8 = var8 * 256 / (Client.field963 + 256);
-         var9 = var9 * 256 / (Client.field963 + 256);
+         var8 = var8 * 256 / (Client.mapScaleDelta + 256);
+         var9 = var9 * 256 / (Client.mapScaleDelta + 256);
          int var10 = var3 * var8 + var9 * var2 >> 16;
          int var11 = var3 * var9 - var8 * var2 >> 16;
          double var12 = Math.atan2((double)var10, (double)var11);

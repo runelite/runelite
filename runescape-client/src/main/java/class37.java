@@ -342,11 +342,11 @@ public class class37 {
                         if(var46.method3980(var47, var56)) {
                            var47 -= var46.field2591 / 2;
                            var56 -= var46.field2590 / 2;
-                           var22 = Client.field990 + Client.mapAngle & 2047;
+                           var22 = Client.mapScale + Client.mapAngle & 2047;
                            var23 = class136.SINE[var22];
                            var24 = class136.COSINE[var22];
-                           var23 = var23 * (Client.field963 + 256) >> 8;
-                           var24 = (Client.field963 + 256) * var24 >> 8;
+                           var23 = var23 * (Client.mapScaleDelta + 256) >> 8;
+                           var24 = (Client.mapScaleDelta + 256) * var24 >> 8;
                            var25 = var47 * var24 + var56 * var23 >> 11;
                            var26 = var24 * var56 - var47 * var23 >> 11;
                            int var41 = XGrandExchangeOffer.localPlayer.x + var25 >> 7;
@@ -360,8 +360,8 @@ public class class37 {
                            Client.secretPacketBuffer1.putByte(var56);
                            Client.secretPacketBuffer1.putShort(Client.mapAngle);
                            Client.secretPacketBuffer1.putByte(57);
-                           Client.secretPacketBuffer1.putByte(Client.field990);
-                           Client.secretPacketBuffer1.putByte(Client.field963);
+                           Client.secretPacketBuffer1.putByte(Client.mapScale);
+                           Client.secretPacketBuffer1.putByte(Client.mapScaleDelta);
                            Client.secretPacketBuffer1.putByte(89);
                            Client.secretPacketBuffer1.putShort(XGrandExchangeOffer.localPlayer.x);
                            Client.secretPacketBuffer1.putShort(XGrandExchangeOffer.localPlayer.y);

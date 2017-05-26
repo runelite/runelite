@@ -669,10 +669,10 @@ public class class33 {
                         if(var74 != null) {
                            Rasterizer2D.method4998(var12, var13, var74.field2591 + var12, var74.field2590 + var13);
                            if(Client.field1017 != 2 && Client.field1017 != 5) {
-                              var20 = Client.field990 + Client.mapAngle & 2047;
+                              var20 = Client.mapScale + Client.mapAngle & 2047;
                               var21 = XGrandExchangeOffer.localPlayer.x / 32 + 48;
                               var22 = 464 - XGrandExchangeOffer.localPlayer.y / 32;
-                              class172.field2368.method5143(var12, var13, var74.field2591, var74.field2590, var21, var22, var20, Client.field963 + 256, var74.field2587, var74.field2589);
+                              class172.field2368.method5143(var12, var13, var74.field2591, var74.field2590, var21, var22, var20, Client.mapScaleDelta + 256, var74.field2587, var74.field2589);
 
                               for(var49 = 0; var49 < Client.field1118; ++var49) {
                                  var24 = Client.field918[var49] * 4 + 2 - XGrandExchangeOffer.localPlayer.x / 32;
