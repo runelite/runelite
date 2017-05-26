@@ -1075,7 +1075,7 @@ public class class48 implements class42 {
                                                                                                                      var62 = 1;
                                                                                                                   } else if(var7 == 3305) {
                                                                                                                      var14 = class83.intStack[--class83.intStackSize];
-                                                                                                                     class83.intStack[++class83.intStackSize - 1] = Client.field1024[var14];
+                                                                                                                     class83.intStack[++class83.intStackSize - 1] = Client.boostedSkillLevels[var14];
                                                                                                                      var62 = 1;
                                                                                                                   } else if(var7 == 3306) {
                                                                                                                      var14 = class83.intStack[--class83.intStackSize];
@@ -1083,7 +1083,7 @@ public class class48 implements class42 {
                                                                                                                      var62 = 1;
                                                                                                                   } else if(var7 == 3307) {
                                                                                                                      var14 = class83.intStack[--class83.intStackSize];
-                                                                                                                     class83.intStack[++class83.intStackSize - 1] = Client.field976[var14];
+                                                                                                                     class83.intStack[++class83.intStackSize - 1] = Client.skillExperiences[var14];
                                                                                                                      var62 = 1;
                                                                                                                   } else if(var7 == 3308) {
                                                                                                                      var14 = Sequence.plane;

@@ -357,7 +357,8 @@ public final class Client extends GameEngine {
    )
    static int field975;
    @ObfuscatedName("js")
-   static int[] field976;
+   @Export("skillExperiences")
+   static int[] skillExperiences;
    @ObfuscatedName("hp")
    @ObfuscatedGetter(
       intValue = 2065117441
@@ -541,7 +542,8 @@ public final class Client extends GameEngine {
    @ObfuscatedName("jm")
    static Deque field1023;
    @ObfuscatedName("jn")
-   static int[] field1024;
+   @Export("boostedSkillLevels")
+   static int[] boostedSkillLevels;
    @ObfuscatedName("jl")
    @Export("realSkillLevels")
    static int[] realSkillLevels;
@@ -3449,8 +3451,8 @@ public final class Client extends GameEngine {
                var21 = secretPacketBuffer2.method3310();
                var3 = secretPacketBuffer2.method3227();
                var4 = secretPacketBuffer2.readUnsignedByte();
-               field976[var4] = var21;
-               field1024[var4] = var3;
+               skillExperiences[var4] = var21;
+               boostedSkillLevels[var4] = var3;
                realSkillLevels[var4] = 1;
 
                for(var5 = 0; var5 < 98; ++var5) {
@@ -5329,9 +5331,9 @@ public final class Client extends GameEngine {
       field1021 = new Deque();
       projectiles = new Deque();
       field1023 = new Deque();
-      field1024 = new int[25];
+      boostedSkillLevels = new int[25];
       realSkillLevels = new int[25];
-      field976 = new int[25];
+      skillExperiences = new int[25];
       field1027 = 0;
       isMenuOpen = false;
       menuOptionCount = 0;
