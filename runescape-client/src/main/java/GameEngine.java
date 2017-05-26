@@ -120,7 +120,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    @ObfuscatedName("ao")
    class49 field707;
    @ObfuscatedName("aj")
-   Canvas field708;
+   @Export("canvas")
+   Canvas canvas;
    @ObfuscatedName("v")
    boolean field709;
    @ObfuscatedName("as")
@@ -154,10 +155,10 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    )
    protected final void method842(int var1, String var2, boolean var3) {
       try {
-         Graphics var4 = this.field708.getGraphics();
+         Graphics var4 = this.canvas.getGraphics();
          if(ChatLineBuffer.field1552 == null) {
             ChatLineBuffer.field1552 = new java.awt.Font("Helvetica", 1, 13);
-            class73.field850 = this.field708.getFontMetrics(ChatLineBuffer.field1552);
+            class73.field850 = this.canvas.getFontMetrics(ChatLineBuffer.field1552);
          }
 
          if(var3) {
@@ -169,7 +170,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
          try {
             if(class40.field539 == null) {
-               class40.field539 = this.field708.createImage(304, 34);
+               class40.field539 = this.canvas.createImage(304, 34);
             }
 
             Graphics var6 = class40.field539.getGraphics();
@@ -197,7 +198,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             var4.drawString(var2, var7 + (304 - class73.field850.stringWidth(var2)) / 2, var8 + 22);
          }
       } catch (Exception var10) {
-         this.field708.repaint();
+         this.canvas.repaint();
       }
 
    }
@@ -210,7 +211,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    protected class156 method843() {
       if(this.field707 == null) {
          this.field707 = new class49();
-         this.field707.method741(this.field708);
+         this.field707.method741(this.canvas);
       }
 
       return this.field707;
@@ -234,7 +235,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       garbageValue = "-1309227167"
    )
    protected final void method846() {
-      PlayerComposition.method4040(this.field708);
+      PlayerComposition.method4040(this.canvas);
    }
 
    @ObfuscatedName("ax")
@@ -247,7 +248,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          field712 = true;
 
          try {
-            this.field708.removeFocusListener(this);
+            this.canvas.removeFocusListener(this);
          } catch (Exception var5) {
             ;
          }
@@ -372,9 +373,9 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    )
    final synchronized void method852() {
       Container var1 = this.method871();
-      if(this.field708 != null) {
-         this.field708.removeFocusListener(this);
-         var1.remove(this.field708);
+      if(this.canvas != null) {
+         this.canvas.removeFocusListener(this);
+         var1.remove(this.canvas);
       }
 
       class261.field3626 = Math.max(var1.getWidth(), this.field701);
@@ -386,26 +387,26 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          class19.field320 -= var2.top + var2.bottom;
       }
 
-      this.field708 = new RSCanvas(this);
-      var1.add(this.field708);
-      this.field708.setSize(class261.field3626, class19.field320);
-      this.field708.setVisible(true);
-      this.field708.setBackground(Color.BLACK);
+      this.canvas = new RSCanvas(this);
+      var1.add(this.canvas);
+      this.canvas.setSize(class261.field3626, class19.field320);
+      this.canvas.setVisible(true);
+      this.canvas.setBackground(Color.BLACK);
       if(this.field700 == var1) {
          var2 = this.field700.getInsets();
-         this.field708.setLocation(var2.left + this.field689, this.field695 + var2.top);
+         this.canvas.setLocation(var2.left + this.field689, this.field695 + var2.top);
       } else {
-         this.field708.setLocation(this.field689, this.field695);
+         this.canvas.setLocation(this.field689, this.field695);
       }
 
-      this.field708.addFocusListener(this);
-      this.field708.requestFocus();
+      this.canvas.addFocusListener(this);
+      this.canvas.requestFocus();
       this.field694 = true;
       if(class40.field541 != null && class40.field541.width == class261.field3626 && class40.field541.height == class19.field320) {
-         ((MainBufferProvider)class40.field541).method827(this.field708);
+         ((MainBufferProvider)class40.field541).method827(this.canvas);
          class40.field541.vmethod5083(0, 0);
       } else {
-         class40.field541 = new MainBufferProvider(class261.field3626, class19.field320, this.field708);
+         class40.field541 = new MainBufferProvider(class261.field3626, class19.field320, this.canvas);
       }
 
       this.field705 = false;
@@ -477,7 +478,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          class50.field637[520] = 59;
       }
 
-      Canvas var1 = this.field708;
+      Canvas var1 = this.canvas;
       var1.setFocusTraversalKeysEnabled(false);
       var1.addKeyListener(class50.keyboard);
       var1.addFocusListener(class50.keyboard);
@@ -523,13 +524,13 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       if(++field703 - 1 > 50) {
          field703 -= 50;
          this.field694 = true;
-         this.field708.setSize(class261.field3626, class19.field320);
-         this.field708.setVisible(true);
+         this.canvas.setSize(class261.field3626, class19.field320);
+         this.canvas.setVisible(true);
          if(this.field700 == var1) {
             Insets var7 = this.field700.getInsets();
-            this.field708.setLocation(this.field689 + var7.left, this.field695 + var7.top);
+            this.canvas.setLocation(this.field689 + var7.left, this.field695 + var7.top);
          } else {
-            this.field708.setLocation(this.field689, this.field695);
+            this.canvas.setLocation(this.field689, this.field695);
          }
       }
 
@@ -789,13 +790,13 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          class19.field320 = Math.min(this.field686, this.field699);
          this.field689 = (this.field692 - class261.field3626) / 2;
          this.field695 = 0;
-         this.field708.setSize(class261.field3626, class19.field320);
-         class40.field541 = new MainBufferProvider(class261.field3626, class19.field320, this.field708);
+         this.canvas.setSize(class261.field3626, class19.field320);
+         class40.field541 = new MainBufferProvider(class261.field3626, class19.field320, this.canvas);
          if(var1 == this.field700) {
             Insets var3 = this.field700.getInsets();
-            this.field708.setLocation(this.field689 + var3.left, this.field695 + var3.top);
+            this.canvas.setLocation(this.field689 + var3.left, this.field695 + var3.top);
          } else {
-            this.field708.setLocation(this.field689, this.field695);
+            this.canvas.setLocation(this.field689, this.field695);
          }
 
          this.field694 = true;
@@ -858,7 +859,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             }
 
             this.method856();
-            this.method862(this.field708);
+            this.method862(this.canvas);
          }
       } catch (Exception var7) {
          Game.method4169((String)null, var7);
@@ -881,23 +882,23 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       garbageValue = "849604058"
    )
    final void method957() {
-      Canvas var1 = this.field708;
+      Canvas var1 = this.canvas;
       var1.removeKeyListener(class50.keyboard);
       var1.removeFocusListener(class50.keyboard);
       class50.field628 = -1;
-      class87.method1737(this.field708);
+      class87.method1737(this.canvas);
       if(this.field707 != null) {
-         this.field707.method742(this.field708);
+         this.field707.method742(this.canvas);
       }
 
       this.method852();
-      Canvas var2 = this.field708;
+      Canvas var2 = this.canvas;
       var2.setFocusTraversalKeysEnabled(false);
       var2.addKeyListener(class50.keyboard);
       var2.addFocusListener(class50.keyboard);
-      PlayerComposition.method4040(this.field708);
+      PlayerComposition.method4040(this.canvas);
       if(this.field707 != null) {
-         this.field707.method741(this.field708);
+         this.field707.method741(this.canvas);
       }
 
       this.method898();
