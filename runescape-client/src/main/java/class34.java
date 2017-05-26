@@ -826,7 +826,7 @@ public class class34 {
          }
       }
 
-      return var2.field3457 != -1?class242.field3276[var2.field3457]:null;
+      return var2.mapIconId != -1?class242.field3276[var2.mapIconId]:null;
    }
 
    @ObfuscatedName("p")

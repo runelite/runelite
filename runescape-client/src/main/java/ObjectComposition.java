@@ -126,7 +126,8 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -421296471
    )
-   public int field3457;
+   @Export("mapIconId")
+   public int mapIconId;
    @ObfuscatedName("aq")
    @ObfuscatedGetter(
       intValue = 1804235583
@@ -386,7 +387,7 @@ public class ObjectComposition extends CacheableNode {
          } else if(var2 == 81) {
             this.field3449 = var1.readUnsignedByte() * 256;
          } else if(var2 == 82) {
-            this.field3457 = var1.readUnsignedShort();
+            this.mapIconId = var1.readUnsignedShort();
          } else if(var2 == 249) {
             this.field3467 = Frames.method2913(var1, this.field3467);
          }
@@ -679,7 +680,7 @@ public class ObjectComposition extends CacheableNode {
       this.ambient = 0;
       this.contrast = 0;
       this.actions = new String[5];
-      this.field3457 = -1;
+      this.mapIconId = -1;
       this.mapSceneId = -1;
       this.isRotated = false;
       this.field3460 = true;

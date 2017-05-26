@@ -80,7 +80,7 @@ public class class286 {
             int var7 = class46.region.method2736(Sequence.plane, var5, var6);
             if(var7 != 0) {
                var7 = var7 >> 14 & 32767;
-               int var8 = class43.getObjectDefinition(var7).field3457;
+               int var8 = class43.getObjectDefinition(var7).mapIconId;
                if(var8 >= 0) {
                   int var9 = var5;
                   int var10 = var6;
