@@ -91,6 +91,10 @@ public class ParallelExecutorMapping
 			{
 				highest = m;
 			}
+			else if (m.getCount() == highest.getCount() && getName(from).compareTo(getName(highest.getObject())) > 0)
+			{
+				highest = m;
+			}
 		}
 		return highest != null ? highest.getObject() : null;
 	}
@@ -204,19 +208,25 @@ public class ParallelExecutorMapping
 		List<Mapping> sorted = new ArrayList<>(map.values());
 
 		// Sort indepdent of the map's order, which is undefined
-		Collections.sort(sorted, (m1, m2) -> getName(m1.getFrom()).compareTo(getName(m2.getFrom())));
-		
-		Collections.sort(sorted, (m1, m2) -> {
+		Collections.sort(sorted, (m1, m2) ->
+		{
 
-				// Number of times mapped
-				int i = Integer.compare(m1.getCount(), m2.getCount());
-				if (i != 0)
-				{
-					return i;
-				}
+			// Number of times mapped
+			int i = Integer.compare(m1.getCount(), m2.getCount());
+			if (i != 0)
+			{
+				return i;
+			}
 
+			if (m1.weight != m2.weight)
+			{
 				// If equal, number of ins equal in the mapping
 				return Integer.compare(m1.weight, m2.weight);
+			}
+
+			logger.debug("Count and weight for {} <-> {} are the same! Sorting from name", m1, m2);
+
+			return getName(m1.getFrom()).compareTo(getName(m2.getFrom()));
 		});
 
 		// reverse so highest is first
@@ -404,12 +414,12 @@ public class ParallelExecutorMapping
 		if (o instanceof Field)
 		{
 			Field f = (Field) o;
-			return f.getName();
+			return f.getFields().getClassFile().getClassName() + "." + f.getName();
 		}
 		else if (o instanceof Method)
 		{
 			Method m = (Method) o;
-			return m.getName();
+			return m.getMethods().getClassFile().getClassName() + "." + m.getName();
 		}
 		else if (o instanceof ClassFile)
 		{
