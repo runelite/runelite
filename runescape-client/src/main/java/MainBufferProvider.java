@@ -18,7 +18,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("MainBufferProvider")
 public final class MainBufferProvider extends BufferProvider {
    @ObfuscatedName("h")
-   Image field679;
+   @Export("image")
+   Image image;
    @ObfuscatedName("i")
    Component field680;
 
@@ -56,7 +57,7 @@ public final class MainBufferProvider extends BufferProvider {
       DataBufferInt var4 = new DataBufferInt(super.pixels, super.pixels.length);
       DirectColorModel var5 = new DirectColorModel(32, 16711680, '\uff00', 255);
       WritableRaster var6 = Raster.createWritableRaster(var5.createCompatibleSampleModel(super.width, super.height), var4, (Point)null);
-      this.field679 = new BufferedImage(var5, var6, false, new Hashtable());
+      this.image = new BufferedImage(var5, var6, false, new Hashtable());
       this.method827(var3);
       this.method5082();
    }
@@ -69,7 +70,7 @@ public final class MainBufferProvider extends BufferProvider {
    @Export("draw")
    final void draw(Graphics var1, int var2, int var3) {
       try {
-         var1.drawImage(this.field679, var2, var3, this.field680);
+         var1.drawImage(this.image, var2, var3, this.field680);
       } catch (Exception var5) {
          this.field680.repaint();
       }
@@ -86,7 +87,7 @@ public final class MainBufferProvider extends BufferProvider {
       try {
          Shape var6 = var1.getClip();
          var1.clipRect(var2, var3, var4, var5);
-         var1.drawImage(this.field679, 0, 0, this.field680);
+         var1.drawImage(this.image, 0, 0, this.field680);
          var1.setClip(var6);
       } catch (Exception var7) {
          this.field680.repaint();
