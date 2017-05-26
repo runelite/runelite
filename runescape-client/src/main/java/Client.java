@@ -1084,7 +1084,8 @@ public final class Client extends GameEngine {
    )
    static int field1164;
    @ObfuscatedName("rs")
-   static XGrandExchangeOffer[] field1165;
+   @Export("grandExchangeOffers")
+   static XGrandExchangeOffer[] grandExchangeOffers;
    @ObfuscatedName("qz")
    static int[] field1166;
    @ObfuscatedName("rh")
@@ -2000,7 +2001,7 @@ public final class Client extends GameEngine {
                   ClassInfo.clanMembers = null;
 
                   for(var1 = 0; var1 < 8; ++var1) {
-                     field1165[var1] = new XGrandExchangeOffer();
+                     grandExchangeOffers[var1] = new XGrandExchangeOffer();
                   }
 
                   class176.field2402 = null;
@@ -3574,11 +3575,11 @@ public final class Client extends GameEngine {
             if(field936 == 113) {
                var21 = secretPacketBuffer2.readUnsignedByte();
                if(secretPacketBuffer2.readUnsignedByte() == 0) {
-                  field1165[var21] = new XGrandExchangeOffer();
+                  grandExchangeOffers[var21] = new XGrandExchangeOffer();
                   secretPacketBuffer2.offset += 18;
                } else {
                   --secretPacketBuffer2.offset;
-                  field1165[var21] = new XGrandExchangeOffer(secretPacketBuffer2, false);
+                  grandExchangeOffers[var21] = new XGrandExchangeOffer(secretPacketBuffer2, false);
                }
 
                field1085 = field1075;
@@ -5473,7 +5474,7 @@ public final class Client extends GameEngine {
       field1162 = new PlayerComposition();
       field1163 = -1;
       field1055 = -1;
-      field1165 = new XGrandExchangeOffer[8];
+      grandExchangeOffers = new XGrandExchangeOffer[8];
       field945 = -1L;
       field1167 = -1L;
       field1168 = new class73();

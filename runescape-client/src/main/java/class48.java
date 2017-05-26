@@ -1307,46 +1307,46 @@ public class class48 implements class42 {
                                                                                                          } else if(var7 < 4000) {
                                                                                                             if(var7 == 3903) {
                                                                                                                var14 = class83.intStack[--class83.intStackSize];
-                                                                                                               class83.intStack[++class83.intStackSize - 1] = Client.field1165[var14].method96();
+                                                                                                               class83.intStack[++class83.intStackSize - 1] = Client.grandExchangeOffers[var14].method96();
                                                                                                                var62 = 1;
                                                                                                             } else if(var7 == 3904) {
                                                                                                                var14 = class83.intStack[--class83.intStackSize];
-                                                                                                               class83.intStack[++class83.intStackSize - 1] = Client.field1165[var14].itemId;
+                                                                                                               class83.intStack[++class83.intStackSize - 1] = Client.grandExchangeOffers[var14].itemId;
                                                                                                                var62 = 1;
                                                                                                             } else if(var7 == 3905) {
                                                                                                                var14 = class83.intStack[--class83.intStackSize];
-                                                                                                               class83.intStack[++class83.intStackSize - 1] = Client.field1165[var14].price;
+                                                                                                               class83.intStack[++class83.intStackSize - 1] = Client.grandExchangeOffers[var14].price;
                                                                                                                var62 = 1;
                                                                                                             } else if(var7 == 3906) {
                                                                                                                var14 = class83.intStack[--class83.intStackSize];
-                                                                                                               class83.intStack[++class83.intStackSize - 1] = Client.field1165[var14].totalQuantity;
+                                                                                                               class83.intStack[++class83.intStackSize - 1] = Client.grandExchangeOffers[var14].totalQuantity;
                                                                                                                var62 = 1;
                                                                                                             } else if(var7 == 3907) {
                                                                                                                var14 = class83.intStack[--class83.intStackSize];
-                                                                                                               class83.intStack[++class83.intStackSize - 1] = Client.field1165[var14].quantitySold;
+                                                                                                               class83.intStack[++class83.intStackSize - 1] = Client.grandExchangeOffers[var14].quantitySold;
                                                                                                                var62 = 1;
                                                                                                             } else if(var7 == 3908) {
                                                                                                                var14 = class83.intStack[--class83.intStackSize];
-                                                                                                               class83.intStack[++class83.intStackSize - 1] = Client.field1165[var14].spent;
+                                                                                                               class83.intStack[++class83.intStackSize - 1] = Client.grandExchangeOffers[var14].spent;
                                                                                                                var62 = 1;
                                                                                                             } else if(var7 == 3910) {
                                                                                                                var14 = class83.intStack[--class83.intStackSize];
-                                                                                                               var27 = Client.field1165[var14].method111();
+                                                                                                               var27 = Client.grandExchangeOffers[var14].method111();
                                                                                                                class83.intStack[++class83.intStackSize - 1] = var27 == 0?1:0;
                                                                                                                var62 = 1;
                                                                                                             } else if(var7 == 3911) {
                                                                                                                var14 = class83.intStack[--class83.intStackSize];
-                                                                                                               var27 = Client.field1165[var14].method111();
+                                                                                                               var27 = Client.grandExchangeOffers[var14].method111();
                                                                                                                class83.intStack[++class83.intStackSize - 1] = var27 == 2?1:0;
                                                                                                                var62 = 1;
                                                                                                             } else if(var7 == 3912) {
                                                                                                                var14 = class83.intStack[--class83.intStackSize];
-                                                                                                               var27 = Client.field1165[var14].method111();
+                                                                                                               var27 = Client.grandExchangeOffers[var14].method111();
                                                                                                                class83.intStack[++class83.intStackSize - 1] = var27 == 5?1:0;
                                                                                                                var62 = 1;
                                                                                                             } else if(var7 == 3913) {
                                                                                                                var14 = class83.intStack[--class83.intStackSize];
-                                                                                                               var27 = Client.field1165[var14].method111();
+                                                                                                               var27 = Client.grandExchangeOffers[var14].method111();
                                                                                                                class83.intStack[++class83.intStackSize - 1] = var27 == 1?1:0;
                                                                                                                var62 = 1;
                                                                                                             } else {
