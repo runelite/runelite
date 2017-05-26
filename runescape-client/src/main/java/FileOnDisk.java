@@ -21,7 +21,8 @@ public final class FileOnDisk {
    @ObfuscatedGetter(
       intValue = 874853037
    )
-   static int field1751;
+   @Export("menuHeight")
+   static int menuHeight;
    @ObfuscatedName("i")
    @Export("file")
    RandomAccessFile file;
