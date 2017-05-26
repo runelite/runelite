@@ -285,9 +285,6 @@ public class Inject
 				invokes.process(m, other, implementingClass);
 			}
 		}
-
-		InjectorValidator iv = new InjectorValidator(vanilla);
-		iv.validate();
 	}
 	
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)
