@@ -4225,14 +4225,14 @@ public final class Client extends GameEngine {
                   var6 = var4 - class40.cameraZ;
                   var29 = var3 - class12.cameraY;
                   var8 = (int)Math.sqrt((double)(var29 * var29 + var5 * var5));
-                  class36.field502 = (int)(Math.atan2((double)var6, (double)var8) * 325.949D) & 2047;
-                  class244.field3307 = (int)(Math.atan2((double)var5, (double)var29) * -325.949D) & 2047;
-                  if(class36.field502 < 128) {
-                     class36.field502 = 128;
+                  class36.cameraPitch = (int)(Math.atan2((double)var6, (double)var8) * 325.949D) & 2047;
+                  class244.cameraYaw = (int)(Math.atan2((double)var5, (double)var29) * -325.949D) & 2047;
+                  if(class36.cameraPitch < 128) {
+                     class36.cameraPitch = 128;
                   }
 
-                  if(class36.field502 > 383) {
-                     class36.field502 = 383;
+                  if(class36.cameraPitch > 383) {
+                     class36.cameraPitch = 383;
                   }
                }
 

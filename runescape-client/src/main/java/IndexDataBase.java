@@ -630,10 +630,10 @@ public abstract class IndexDataBase {
          var0 -= class12.cameraX;
          var3 -= class40.cameraZ;
          var1 -= class12.cameraY;
-         int var4 = class136.SINE[class36.field502];
-         int var5 = class136.COSINE[class36.field502];
-         int var6 = class136.SINE[class244.field3307];
-         int var7 = class136.COSINE[class244.field3307];
+         int var4 = class136.SINE[class36.cameraPitch];
+         int var5 = class136.COSINE[class36.cameraPitch];
+         int var6 = class136.SINE[class244.cameraYaw];
+         int var7 = class136.COSINE[class244.cameraYaw];
          int var8 = var1 * var6 + var0 * var7 >> 16;
          var1 = var7 * var1 - var6 * var0 >> 16;
          var0 = var8;

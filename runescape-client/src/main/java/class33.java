@@ -304,8 +304,8 @@ public class class33 {
                            class12.cameraX = var53 - var32;
                            class40.cameraZ = var27 - var33;
                            class12.cameraY = var28 - var34;
-                           class36.field502 = var24;
-                           class244.field3307 = var51;
+                           class36.cameraPitch = var24;
+                           class244.cameraYaw = var51;
                         }
 
                         if(!Client.field929) {
@@ -314,7 +314,7 @@ public class class33 {
                            } else {
                               label2041: {
                                  var53 = 3;
-                                 if(class36.field502 < 310) {
+                                 if(class36.cameraPitch < 310) {
                                     var27 = class12.cameraX >> 7;
                                     var28 = class12.cameraY >> 7;
                                     var29 = XGrandExchangeOffer.localPlayer.x >> 7;
@@ -432,8 +432,8 @@ public class class33 {
                         var51 = class12.cameraX;
                         var53 = class40.cameraZ;
                         var27 = class12.cameraY;
-                        var28 = class36.field502;
-                        var29 = class244.field3307;
+                        var28 = class36.cameraPitch;
+                        var29 = class244.cameraYaw;
 
                         for(var67 = 0; var67 < 5; ++var67) {
                            if(Client.field1138[var67]) {
@@ -451,17 +451,17 @@ public class class33 {
                               }
 
                               if(var67 == 3) {
-                                 class244.field3307 = class244.field3307 + var31 & 2047;
+                                 class244.cameraYaw = class244.cameraYaw + var31 & 2047;
                               }
 
                               if(var67 == 4) {
-                                 class36.field502 += var31;
-                                 if(class36.field502 < 128) {
-                                    class36.field502 = 128;
+                                 class36.cameraPitch += var31;
+                                 if(class36.cameraPitch < 128) {
+                                    class36.cameraPitch = 128;
                                  }
 
-                                 if(class36.field502 > 383) {
-                                    class36.field502 = 383;
+                                 if(class36.cameraPitch > 383) {
+                                    class36.cameraPitch = 383;
                                  }
                               }
                            }
@@ -485,7 +485,7 @@ public class class33 {
                         Ignore.method1118();
                         var32 = class136.field1998;
                         class136.field1998 = Client.scale;
-                        class46.region.method2748(class12.cameraX, class40.cameraZ, class12.cameraY, class36.field502, class244.field3307, var24);
+                        class46.region.method2748(class12.cameraX, class40.cameraZ, class12.cameraY, class36.cameraPitch, class244.cameraYaw, var24);
                         Client.method1275();
                         class136.field1998 = var32;
                         Ignore.method1118();
@@ -642,8 +642,8 @@ public class class33 {
                         class12.cameraX = var51;
                         class40.cameraZ = var53;
                         class12.cameraY = var27;
-                        class36.field502 = var28;
-                        class244.field3307 = var29;
+                        class36.cameraPitch = var28;
+                        class244.cameraYaw = var29;
                         if(Client.field898) {
                            byte var71 = 0;
                            var34 = var71 + class238.field3244 + class238.field3246;

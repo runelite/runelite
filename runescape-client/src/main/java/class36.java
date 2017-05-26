@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -22,7 +23,8 @@ public class class36 {
    @ObfuscatedGetter(
       intValue = 1332885709
    )
-   static int field502;
+   @Export("cameraPitch")
+   static int cameraPitch;
 
    static {
       field497 = new class36(0);
@@ -673,21 +675,21 @@ public class class36 {
          var7 = 383;
       }
 
-      if(field502 < var7) {
-         field502 += ChatMessages.field1500 * (var7 - field502) / 1000 + class164.field2292;
-         if(field502 > var7) {
-            field502 = var7;
+      if(cameraPitch < var7) {
+         cameraPitch += ChatMessages.field1500 * (var7 - cameraPitch) / 1000 + class164.field2292;
+         if(cameraPitch > var7) {
+            cameraPitch = var7;
          }
       }
 
-      if(field502 > var7) {
-         field502 -= class164.field2292 + ChatMessages.field1500 * (field502 - var7) / 1000;
-         if(field502 < var7) {
-            field502 = var7;
+      if(cameraPitch > var7) {
+         cameraPitch -= class164.field2292 + ChatMessages.field1500 * (cameraPitch - var7) / 1000;
+         if(cameraPitch < var7) {
+            cameraPitch = var7;
          }
       }
 
-      int var9 = var8 - class244.field3307;
+      int var9 = var8 - class244.cameraYaw;
       if(var9 > 1024) {
          var9 -= 2048;
       }
@@ -697,16 +699,16 @@ public class class36 {
       }
 
       if(var9 > 0) {
-         class244.field3307 += class164.field2292 + var9 * ChatMessages.field1500 / 1000;
-         class244.field3307 &= 2047;
+         class244.cameraYaw += class164.field2292 + var9 * ChatMessages.field1500 / 1000;
+         class244.cameraYaw &= 2047;
       }
 
       if(var9 < 0) {
-         class244.field3307 -= class164.field2292 + ChatMessages.field1500 * -var9 / 1000;
-         class244.field3307 &= 2047;
+         class244.cameraYaw -= class164.field2292 + ChatMessages.field1500 * -var9 / 1000;
+         class244.cameraYaw &= 2047;
       }
 
-      int var10 = var8 - class244.field3307;
+      int var10 = var8 - class244.cameraYaw;
       if(var10 > 1024) {
          var10 -= 2048;
       }
@@ -716,7 +718,7 @@ public class class36 {
       }
 
       if(var10 < 0 && var9 > 0 || var10 > 0 && var9 < 0) {
-         class244.field3307 = var8;
+         class244.cameraYaw = var8;
       }
 
    }

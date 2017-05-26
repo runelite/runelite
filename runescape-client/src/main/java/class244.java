@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -10,7 +11,8 @@ public class class244 extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 729986531
    )
-   static int field3307;
+   @Export("cameraYaw")
+   static int cameraYaw;
    @ObfuscatedName("i")
    static IndexDataBase field3308;
    @ObfuscatedName("u")
