@@ -24,7 +24,6 @@
  */
 package net.runelite.rs.api;
 
-import java.awt.Canvas;
 import net.runelite.mapping.Import;
 
 public interface Client extends GameEngine
@@ -214,9 +213,6 @@ public interface Client extends GameEngine
 
 	@Import("packetHandler")
 	void packetHandler();
-
-	@Import("canvas")
-	Canvas getCanvas();
 
 	@Import("revision")
 	int getRevision();
