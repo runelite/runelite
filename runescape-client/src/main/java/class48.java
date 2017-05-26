@@ -301,13 +301,13 @@ public class class48 implements class42 {
          int[] var39 = var3.instructions;
          int[] var40 = var3.intOperands;
          byte var41 = -1;
-         class83.field1323 = 0;
+         class83.scriptStackCount = 0;
 
          int var10;
          try {
-            class83.field1309 = new int[var3.localIntCount];
+            class83.scriptLocalInts = new int[var3.localIntCount];
             var8 = 0;
-            class83.field1318 = new String[var3.localStringCount];
+            class83.scriptLocalStrings = new String[var3.localStringCount];
             var9 = 0;
 
             int var25;
@@ -351,14 +351,14 @@ public class class48 implements class42 {
                      var25 = var0.field818;
                   }
 
-                  class83.field1309[var8++] = var25;
+                  class83.scriptLocalInts[var8++] = var25;
                } else if(var2[var10] instanceof String) {
                   var43 = (String)var2[var10];
                   if(var43.equals("event_opbase")) {
                      var43 = var0.field815;
                   }
 
-                  class83.field1318[var9++] = var43;
+                  class83.scriptLocalStrings[var9++] = var43;
                }
             }
 
@@ -513,15 +513,15 @@ public class class48 implements class42 {
                                                                                                                                                                ScriptState var61 = new ScriptState();
                                                                                                                                                                var61.field762 = var3;
                                                                                                                                                                var61.field764 = var24;
-                                                                                                                                                               var61.field763 = class83.field1309;
-                                                                                                                                                               var61.field765 = class83.field1318;
-                                                                                                                                                               class83.field1324[++class83.field1323 - 1] = var61;
+                                                                                                                                                               var61.field763 = class83.scriptLocalInts;
+                                                                                                                                                               var61.field765 = class83.scriptLocalStrings;
+                                                                                                                                                               class83.scriptStack[++class83.scriptStackCount - 1] = var61;
                                                                                                                                                                var3 = var12;
                                                                                                                                                                var39 = var12.instructions;
                                                                                                                                                                var40 = var12.intOperands;
                                                                                                                                                                var24 = -1;
-                                                                                                                                                               class83.field1309 = var46;
-                                                                                                                                                               class83.field1318 = var67;
+                                                                                                                                                               class83.scriptLocalInts = var46;
+                                                                                                                                                               class83.scriptLocalStrings = var67;
                                                                                                                                                             }
                                                                                                                                                          } else {
                                                                                                                                                             --ChatMessages.scriptStringStackSize;
@@ -536,16 +536,16 @@ public class class48 implements class42 {
                                                                                                                                                       class83.scriptStringStack[++ChatMessages.scriptStringStackSize - 1] = var42;
                                                                                                                                                    }
                                                                                                                                                 } else {
-                                                                                                                                                   class83.field1318[var40[var24]] = class83.scriptStringStack[--ChatMessages.scriptStringStackSize];
+                                                                                                                                                   class83.scriptLocalStrings[var40[var24]] = class83.scriptStringStack[--ChatMessages.scriptStringStackSize];
                                                                                                                                                 }
                                                                                                                                              } else {
-                                                                                                                                                class83.scriptStringStack[++ChatMessages.scriptStringStackSize - 1] = class83.field1318[var40[var24]];
+                                                                                                                                                class83.scriptStringStack[++ChatMessages.scriptStringStackSize - 1] = class83.scriptLocalStrings[var40[var24]];
                                                                                                                                              }
                                                                                                                                           } else {
-                                                                                                                                             class83.field1309[var40[var24]] = class83.intStack[--class83.intStackSize];
+                                                                                                                                             class83.scriptLocalInts[var40[var24]] = class83.intStack[--class83.intStackSize];
                                                                                                                                           }
                                                                                                                                        } else {
-                                                                                                                                          class83.intStack[++class83.intStackSize - 1] = class83.field1309[var40[var24]];
+                                                                                                                                          class83.intStack[++class83.intStackSize - 1] = class83.scriptLocalInts[var40[var24]];
                                                                                                                                        }
                                                                                                                                     } else {
                                                                                                                                        class83.intStackSize -= 2;
@@ -579,17 +579,17 @@ public class class48 implements class42 {
                                                                                                                               class83.intStack[++class83.intStackSize - 1] = Actor.method1539(var25);
                                                                                                                            }
                                                                                                                         } else {
-                                                                                                                           if(class83.field1323 == 0) {
+                                                                                                                           if(class83.scriptStackCount == 0) {
                                                                                                                               return;
                                                                                                                            }
 
-                                                                                                                           ScriptState var47 = class83.field1324[--class83.field1323];
+                                                                                                                           ScriptState var47 = class83.scriptStack[--class83.scriptStackCount];
                                                                                                                            var3 = var47.field762;
                                                                                                                            var39 = var3.instructions;
                                                                                                                            var40 = var3.intOperands;
                                                                                                                            var24 = var47.field764;
-                                                                                                                           class83.field1309 = var47.field763;
-                                                                                                                           class83.field1318 = var47.field765;
+                                                                                                                           class83.scriptLocalInts = var47.field763;
+                                                                                                                           class83.scriptLocalStrings = var47.field765;
                                                                                                                         }
                                                                                                                      } else {
                                                                                                                         class83.intStackSize -= 2;
@@ -1747,8 +1747,8 @@ public class class48 implements class42 {
             StringBuilder var37 = new StringBuilder(30);
             var37.append("").append(var3.hash).append(" ");
 
-            for(var10 = class83.field1323 - 1; var10 >= 0; --var10) {
-               var37.append("").append(class83.field1324[var10].field762.hash).append(" ");
+            for(var10 = class83.scriptStackCount - 1; var10 >= 0; --var10) {
+               var37.append("").append(class83.scriptStack[var10].field762.hash).append(" ");
             }
 
             var37.append("").append(var41);

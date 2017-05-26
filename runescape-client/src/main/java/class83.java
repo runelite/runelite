@@ -9,7 +9,8 @@ public class class83 {
    @ObfuscatedName("a")
    static class111 field1308;
    @ObfuscatedName("u")
-   static int[] field1309;
+   @Export("scriptLocalInts")
+   static int[] scriptLocalInts;
    @ObfuscatedName("j")
    static final String[] field1310;
    @ObfuscatedName("x")
@@ -29,7 +30,8 @@ public class class83 {
    @Export("scriptStringStack")
    static String[] scriptStringStack;
    @ObfuscatedName("q")
-   static String[] field1318;
+   @Export("scriptLocalStrings")
+   static String[] scriptLocalStrings;
    @ObfuscatedName("o")
    static Calendar field1320;
    @ObfuscatedName("d")
@@ -43,9 +45,11 @@ public class class83 {
    @ObfuscatedGetter(
       intValue = 315081167
    )
-   static int field1323;
+   @Export("scriptStackCount")
+   static int scriptStackCount;
    @ObfuscatedName("r")
-   static ScriptState[] field1324;
+   @Export("scriptStack")
+   static ScriptState[] scriptStack;
    @ObfuscatedName("rq")
    static class288 field1325;
 
@@ -54,8 +58,8 @@ public class class83 {
       field1312 = new int[5][5000];
       intStack = new int[1000];
       scriptStringStack = new String[1000];
-      field1323 = 0;
-      field1324 = new ScriptState[50];
+      scriptStackCount = 0;
+      scriptStack = new ScriptState[50];
       field1320 = Calendar.getInstance();
       field1310 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
       field1321 = 0;
