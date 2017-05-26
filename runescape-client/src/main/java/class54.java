@@ -11,13 +11,13 @@ public class class54 {
    )
    static final void method787(int var0, int var1, int var2, int var3, SpritePixels var4, class210 var5) {
       if(var4 != null) {
-         int var6 = Client.field990 + Client.mapAngle & 2047;
+         int var6 = Client.mapScale + Client.mapAngle & 2047;
          int var7 = var2 * var2 + var3 * var3;
          if(var7 <= 6400) {
             int var8 = class136.SINE[var6];
             int var9 = class136.COSINE[var6];
-            var8 = var8 * 256 / (Client.field963 + 256);
-            var9 = var9 * 256 / (Client.field963 + 256);
+            var8 = var8 * 256 / (Client.mapScaleDelta + 256);
+            var9 = var9 * 256 / (Client.mapScaleDelta + 256);
             int var10 = var2 * var9 + var8 * var3 >> 16;
             int var11 = var9 * var3 - var2 * var8 >> 16;
             if(var7 > 2500) {
