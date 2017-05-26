@@ -1,41 +1,36 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hd")
-//@Implements("Game")
-public class Game implements class178 {
+public class class232 implements class178 {
    @ObfuscatedName("g")
-   public static final Game field3181;
+   public static final class232 field3181;
    @ObfuscatedName("h")
-   public static final Game field3182;
+   public static final class232 field3182;
    @ObfuscatedName("u")
-   public static final Game field3183;
+   public static final class232 field3183;
    @ObfuscatedName("q")
-   public static final Game field3184;
+   public static final class232 field3184;
    @ObfuscatedName("i")
-   public static final Game field3186;
+   public static final class232 field3186;
    @ObfuscatedName("t")
-   //@Export("name")
-   public final String name;
+   public final String field3187;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1847774459
    )
-  // @Export("number")
-   final int number;
+   final int field3188;
    @ObfuscatedName("v")
-   public static final Game field3189;
+   public static final class232 field3189;
 
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;Ljava/lang/String;I)V",
       garbageValue = "0"
    )
-   Game(String var1, String var2, int var3) {
-      this.name = var1;
-      this.number = var3;
+   class232(String var1, String var2, int var3) {
+      this.field3187 = var1;
+      this.field3188 = var3;
    }
 
    @ObfuscatedName("i")
@@ -44,16 +39,16 @@ public class Game implements class178 {
       garbageValue = "-1015343640"
    )
    public int vmethod5090() {
-      return this.number;
+      return this.field3188;
    }
 
    static {
-      field3186 = new Game("runescape", "RuneScape", 0);
-      field3182 = new Game("stellardawn", "Stellar Dawn", 1);
-      field3183 = new Game("game3", "Game 3", 2);
-      field3184 = new Game("game4", "Game 4", 3);
-      field3181 = new Game("game5", "Game 5", 4);
-      field3189 = new Game("oldscape", "RuneScape 2007", 5);
+      field3186 = new class232("runescape", "RuneScape", 0);
+      field3182 = new class232("stellardawn", "Stellar Dawn", 1);
+      field3183 = new class232("game3", "Game 3", 2);
+      field3184 = new class232("game4", "Game 4", 3);
+      field3181 = new class232("game5", "Game 5", 4);
+      field3189 = new class232("oldscape", "RuneScape 2007", 5);
    }
 
    @ObfuscatedName("i")

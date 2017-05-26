@@ -128,7 +128,7 @@ public class class39 {
       Preferences var1 = new Preferences();
 
       try {
-         var0 = XGrandExchangeOffer.getPreferencesFile("", class4.field25.name, false);
+         var0 = XGrandExchangeOffer.getPreferencesFile("", class4.field25.field3187, false);
          byte[] var2 = new byte[(int)var0.method2386()];
 
          int var4;

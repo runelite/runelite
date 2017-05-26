@@ -1173,9 +1173,9 @@ public final class Client extends GameEngine {
                   class45.field583 = ItemLayer.method2440(Integer.parseInt(var5));
                   break;
                case 11:
-                  Game[] var6 = new Game[]{Game.field3181, Game.field3182, Game.field3183, Game.field3189, Game.field3184, Game.field3186};
-                  class4.field25 = (Game)method1381(var6, Integer.parseInt(var5));
-                  if(class4.field25 == Game.field3189) {
+                  class232[] var6 = new class232[]{class232.field3181, class232.field3182, class232.field3183, class232.field3189, class232.field3184, class232.field3186};
+                  class4.field25 = (class232)method1381(var6, Integer.parseInt(var5));
+                  if(class4.field25 == class232.field3189) {
                      class30.field423 = class289.field3850;
                   } else {
                      class30.field423 = class289.field3847;
@@ -1202,7 +1202,7 @@ public final class Client extends GameEngine {
          try {
             class2.method2("oldschool", var10, var7, 17);
          } catch (Exception var9) {
-            Game.method4169((String)null, var9);
+            class232.method4169((String)null, var9);
          }
 
          class24.field356 = this;
@@ -5155,7 +5155,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            Game.method4169("" + field936 + "," + field1070 + "," + field978 + "," + packetLength, (Throwable)null);
+            class232.method4169("" + field936 + "," + field1070 + "," + field978 + "," + packetLength, (Throwable)null);
             class84.method1695();
          } catch (IOException var51) {
             if(field986 > 0) {
@@ -5172,7 +5172,7 @@ public final class Client extends GameEngine {
                var2 = var2 + secretPacketBuffer2.payload[var3] + ",";
             }
 
-            Game.method4169(var2, var52);
+            class232.method4169(var2, var52);
             class84.method1695();
          }
 

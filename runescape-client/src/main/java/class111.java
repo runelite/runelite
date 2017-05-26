@@ -42,7 +42,7 @@ public class class111 implements Runnable {
             }
          }
       } catch (Exception var4) {
-         Game.method4169((String)null, var4);
+         class232.method4169((String)null, var4);
       }
 
    }

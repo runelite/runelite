@@ -80,7 +80,7 @@ public final class GroundObject {
       FileOnDisk var0 = null;
 
       try {
-         var0 = XGrandExchangeOffer.getPreferencesFile("", class4.field25.name, true);
+         var0 = XGrandExchangeOffer.getPreferencesFile("", class4.field25.field3187, true);
          Buffer var1 = class134.field1989.method1602();
          var0.method2384(var1.payload, 0, var1.offset);
       } catch (Exception var3) {

@@ -3,8 +3,8 @@ import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("hp")
 public class class211 {
-   @Export("settings")
    @ObfuscatedName("h")
+   @Export("settings")
    public static int[] settings;
    @ObfuscatedName("u")
    @Export("widgetSettings")

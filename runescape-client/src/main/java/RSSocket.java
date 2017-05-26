@@ -304,7 +304,7 @@ public final class RSSocket implements Runnable {
             break;
          }
       } catch (Exception var12) {
-         Game.method4169((String)null, var12);
+         class232.method4169((String)null, var12);
       }
 
    }

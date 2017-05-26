@@ -21,7 +21,7 @@ public class class4 implements class178 {
    @ObfuscatedName("i")
    static final class4 field24;
    @ObfuscatedName("bd")
-   static Game field25;
+   static class232 field25;
    @ObfuscatedName("u")
    static final class4 field26;
 

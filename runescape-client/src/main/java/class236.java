@@ -68,7 +68,7 @@ public class class236 implements Runnable {
             }
          }
       } catch (Exception var13) {
-         Game.method4169((String)null, var13);
+         class232.method4169((String)null, var13);
       }
    }
 

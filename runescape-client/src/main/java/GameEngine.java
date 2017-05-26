@@ -360,7 +360,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
          field682.method2969(this, 1);
       } catch (Exception var5) {
-         Game.method4169((String)null, var5);
+         class232.method4169((String)null, var5);
          this.method973("crash");
       }
 
@@ -862,7 +862,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             this.method862(this.canvas);
          }
       } catch (Exception var7) {
-         Game.method4169((String)null, var7);
+         class232.method4169((String)null, var7);
          this.method973("crash");
       }
 

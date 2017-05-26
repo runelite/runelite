@@ -93,7 +93,7 @@ public class ChatMessages {
       garbageValue = "-779219492"
    )
    FileOnDisk method1827(boolean var1) {
-      return XGrandExchangeOffer.getPreferencesFile("2", class4.field25.name, var1);
+      return XGrandExchangeOffer.getPreferencesFile("2", class4.field25.field3187, var1);
    }
 
    @ObfuscatedName("t")
@@ -171,7 +171,7 @@ public class ChatMessages {
    void method1829() {
       FileOnDisk var1 = this.method1827(false);
 
-      label190: {
+      label205: {
          try {
             byte[] var2 = new byte[(int)var1.method2386()];
 
@@ -186,42 +186,42 @@ public class ChatMessages {
             Buffer var13 = new Buffer(var2);
             if(var13.payload.length - var13.offset >= 1) {
                int var14 = var13.readUnsignedByte();
-               if(var14 < 0 || var14 > 1) {
-                  return;
-               }
+               if(var14 >= 0 && var14 <= 1) {
+                  int var15 = var13.readUnsignedShort();
 
-               int var15 = var13.readUnsignedShort();
+                  int var7;
+                  int var8;
+                  int var9;
+                  for(var7 = 0; var7 < var15; ++var7) {
+                     var8 = var13.readUnsignedShort();
+                     var9 = var13.readInt();
+                     if(this.field1502[var8]) {
+                        this.field1504[var8] = var9;
+                     }
+                  }
 
-               int var7;
-               int var8;
-               int var9;
-               for(var7 = 0; var7 < var15; ++var7) {
-                  var8 = var13.readUnsignedShort();
-                  var9 = var13.readInt();
-                  if(this.field1502[var8]) {
-                     this.field1504[var8] = var9;
+                  var7 = var13.readUnsignedShort();
+                  var8 = 0;
+
+                  while(true) {
+                     if(var8 >= var7) {
+                        break label205;
+                     }
+
+                     var9 = var13.readUnsignedShort();
+                     String var10 = var13.readString();
+                     if(this.field1503[var9]) {
+                        this.messages[var9] = var10;
+                     }
+
+                     ++var8;
                   }
                }
 
-               var7 = var13.readUnsignedShort();
-               var8 = 0;
-
-               while(true) {
-                  if(var8 >= var7) {
-                     break label190;
-                  }
-
-                  var9 = var13.readUnsignedShort();
-                  String var10 = var13.readString();
-                  if(this.field1503[var9]) {
-                     this.messages[var9] = var10;
-                  }
-
-                  ++var8;
-               }
+               return;
             }
          } catch (Exception var24) {
-            break label190;
+            break label205;
          } finally {
             try {
                var1.method2385();
