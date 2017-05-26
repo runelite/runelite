@@ -1145,10 +1145,10 @@ public class class48 implements class42 {
                                                                                                                         class83.intStack[++class83.intStackSize - 1] = Client.world;
                                                                                                                         var62 = 1;
                                                                                                                      } else if(var7 == 3321) {
-                                                                                                                        class83.intStack[++class83.intStackSize - 1] = Client.field1107;
+                                                                                                                        class83.intStack[++class83.intStackSize - 1] = Client.energy;
                                                                                                                         var62 = 1;
                                                                                                                      } else if(var7 == 3322) {
-                                                                                                                        class83.intStack[++class83.intStackSize - 1] = Client.field1010;
+                                                                                                                        class83.intStack[++class83.intStackSize - 1] = Client.weight;
                                                                                                                         var62 = 1;
                                                                                                                      } else if(var7 == 3323) {
                                                                                                                         if(Client.field1059) {

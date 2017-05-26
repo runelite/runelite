@@ -492,7 +492,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -2004264753
    )
-   static int field1010;
+   @Export("weight")
+   static int weight;
    @ObfuscatedName("if")
    @ObfuscatedGetter(
       intValue = -1621399727
@@ -867,7 +868,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -714387809
    )
-   static int field1107;
+   @Export("energy")
+   static int energy;
    @ObfuscatedName("nw")
    static String field1108;
    @ObfuscatedName("oh")
@@ -3227,7 +3229,7 @@ public final class Client extends GameEngine {
 
             if(field936 == 124) {
                class18.method132();
-               field1010 = secretPacketBuffer2.readShort();
+               weight = secretPacketBuffer2.readShort();
                field1053 = field1075;
                field936 = -1;
                return true;
@@ -3533,7 +3535,7 @@ public final class Client extends GameEngine {
 
             if(field936 == 18) {
                class18.method132();
-               field1107 = secretPacketBuffer2.readUnsignedByte();
+               energy = secretPacketBuffer2.readUnsignedByte();
                field1053 = field1075;
                field936 = -1;
                return true;
@@ -5362,8 +5364,8 @@ public final class Client extends GameEngine {
       field1052 = 0;
       field1069 = 0;
       field1054 = null;
-      field1107 = 0;
-      field1010 = 0;
+      energy = 0;
+      weight = 0;
       field1057 = 0;
       field1058 = -1;
       field1059 = false;
