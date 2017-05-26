@@ -32,9 +32,6 @@ public interface Actor extends Renderable
 	@Import("interacting")
 	int getInteracting();
 
-	@Import("interactingObjects")
-	int getInteractingObjects();
-
 	@Import("inSequence")
 	boolean inSequence();
 

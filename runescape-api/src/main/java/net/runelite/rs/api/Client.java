@@ -164,9 +164,6 @@ public interface Client extends GameEngine
 	@Import("worldList")
 	World[] getWorldList();
 
-	@Import("rootInterface")
-	int getRootInterface();
-
 	@Import("sendGameMessage")
 	void sendGameMessage(int var1, String var2, String var3);
 
@@ -203,9 +200,6 @@ public interface Client extends GameEngine
 	@Import("grandExchangeOffers")
 	XGrandExchangeOffer[] getGrandExchangeOffers();
 
-	@Import("activeInterface")
-	Widget getActiveInterface();
-
 	@Import("clanChatCount")
 	int getClanChatCount();
 
@@ -214,9 +208,6 @@ public interface Client extends GameEngine
 
 	@Import("isMenuOpen")
 	boolean isMenuOpen();
-
-	@Import("packetOpcode")
-	int getPacketOpcode();
 
 	@Import("gameCycle")
 	int getGameCycle();
