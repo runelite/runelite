@@ -132,7 +132,7 @@
 				<version>2.16</version>
 				<configuration>
 					<enableAssertions>true</enableAssertions>
-					<argLine>-Xmx1024m</argLine>
+					<argLine>-Xmx2048m</argLine>
 				</configuration>
 			</plugin>
 			<plugin>
