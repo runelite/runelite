@@ -81,7 +81,7 @@ public class class71 implements Runnable {
                }
 
                if(var6 == 1) {
-                  var7 = Client.field1024[var2[var4++]];
+                  var7 = Client.boostedSkillLevels[var2[var4++]];
                }
 
                if(var6 == 2) {
@@ -89,7 +89,7 @@ public class class71 implements Runnable {
                }
 
                if(var6 == 3) {
-                  var7 = Client.field976[var2[var4++]];
+                  var7 = Client.skillExperiences[var2[var4++]];
                }
 
                int var9;
