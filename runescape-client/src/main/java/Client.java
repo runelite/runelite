@@ -1673,7 +1673,7 @@ public final class Client extends GameEngine {
             }
 
             secretPacketBuffer1.method3191(class92.password);
-            secretPacketBuffer1.method3353(class90.field1396, class90.field1397);
+            secretPacketBuffer1.method3353(class90.rsaKeyExponent, class90.rsaKeyModulus);
             field933.offset = 0;
             if(gameState == 40) {
                field933.putByte(18);
