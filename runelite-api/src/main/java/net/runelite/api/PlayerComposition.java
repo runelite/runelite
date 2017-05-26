@@ -36,8 +36,8 @@ public class PlayerComposition
 	}
 
 	/**
-	 * Get equipment ids. If id is >= 256 && < 512 then subtract 256 and the id is a kit definition.
-	 * If the id is >= 512 then subtract 512 and the id is an item id.
+	 * Get equipment ids. If id is &ge; 256 &amp;&amp; &lt; 512 then subtract 256 and the id is a kit definition.
+	 * If the id is &ge; 512 then subtract 512 and the id is an item id.
 	 *
 	 * @return
 	 */
