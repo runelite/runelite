@@ -3,8 +3,9 @@ import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("hp")
 public class class211 {
+   @Export("settings")
    @ObfuscatedName("h")
-   public static int[] field2595;
+   public static int[] settings;
    @ObfuscatedName("u")
    @Export("widgetSettings")
    public static int[] widgetSettings;
@@ -20,7 +21,7 @@ public class class211 {
          var0 += var0;
       }
 
-      field2595 = new int[2000];
+      settings = new int[2000];
       widgetSettings = new int[2000];
    }
 }

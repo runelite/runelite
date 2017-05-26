@@ -1927,7 +1927,7 @@ public final class Client extends GameEngine {
                   for(var1 = 0; var1 < class168.field2316; ++var1) {
                      class241 var8 = XItemContainer.method1091(var1);
                      if(var8 != null) {
-                        class211.field2595[var1] = 0;
+                        class211.settings[var1] = 0;
                         class211.widgetSettings[var1] = 0;
                      }
                   }
@@ -3407,7 +3407,7 @@ public final class Client extends GameEngine {
                for(var21 = 0; var21 < class168.field2316; ++var21) {
                   class241 var97 = XItemContainer.method1091(var21);
                   if(var97 != null) {
-                     class211.field2595[var21] = 0;
+                     class211.settings[var21] = 0;
                      class211.widgetSettings[var21] = 0;
                   }
                }
@@ -4511,7 +4511,7 @@ public final class Client extends GameEngine {
             if(field936 == 217) {
                var21 = secretPacketBuffer2.method3189();
                byte var67 = secretPacketBuffer2.method3231();
-               class211.field2595[var21] = var67;
+               class211.settings[var21] = var67;
                if(class211.widgetSettings[var21] != var67) {
                   class211.widgetSettings[var21] = var67;
                }
@@ -4585,7 +4585,7 @@ public final class Client extends GameEngine {
             if(field936 == 2) {
                var21 = secretPacketBuffer2.method3310();
                var3 = secretPacketBuffer2.readUnsignedShort();
-               class211.field2595[var3] = var21;
+               class211.settings[var3] = var21;
                if(var21 != class211.widgetSettings[var3]) {
                   class211.widgetSettings[var3] = var21;
                }
@@ -4612,8 +4612,8 @@ public final class Client extends GameEngine {
 
             if(field936 == 185) {
                for(var21 = 0; var21 < class211.widgetSettings.length; ++var21) {
-                  if(class211.widgetSettings[var21] != class211.field2595[var21]) {
-                     class211.widgetSettings[var21] = class211.field2595[var21];
+                  if(class211.widgetSettings[var21] != class211.settings[var21]) {
+                     class211.widgetSettings[var21] = class211.settings[var21];
                      class45.method676(var21);
                      field955[++field1145 - 1 & 31] = var21;
                   }
