@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -7,16 +8,20 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("ScriptState")
 public class ScriptState {
    @ObfuscatedName("i")
-   Script field762;
+   @Export("invokedFromScript")
+   Script invokedFromScript;
    @ObfuscatedName("u")
-   int[] field763;
+   @Export("savedLocalInts")
+   int[] savedLocalInts;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = -1000208797
    )
-   int field764;
+   @Export("invokedFromPc")
+   int invokedFromPc;
    @ObfuscatedName("q")
-   String[] field765;
+   @Export("savedLocalStrings")
+   String[] savedLocalStrings;
 
    @ObfuscatedName("h")
    @ObfuscatedSignature(
@@ -309,6 +314,6 @@ public class ScriptState {
    }
 
    ScriptState() {
-      this.field764 = -1;
+      this.invokedFromPc = -1;
    }
 }

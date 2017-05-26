@@ -511,10 +511,10 @@ public class class48 implements class42 {
                                                                                                                                                                class83.intStackSize -= var12.intStackCount;
                                                                                                                                                                ChatMessages.scriptStringStackSize -= var12.stringStackCount;
                                                                                                                                                                ScriptState var61 = new ScriptState();
-                                                                                                                                                               var61.field762 = var3;
-                                                                                                                                                               var61.field764 = var24;
-                                                                                                                                                               var61.field763 = class83.scriptLocalInts;
-                                                                                                                                                               var61.field765 = class83.scriptLocalStrings;
+                                                                                                                                                               var61.invokedFromScript = var3;
+                                                                                                                                                               var61.invokedFromPc = var24;
+                                                                                                                                                               var61.savedLocalInts = class83.scriptLocalInts;
+                                                                                                                                                               var61.savedLocalStrings = class83.scriptLocalStrings;
                                                                                                                                                                class83.scriptStack[++class83.scriptStackCount - 1] = var61;
                                                                                                                                                                var3 = var12;
                                                                                                                                                                var39 = var12.instructions;
@@ -584,12 +584,12 @@ public class class48 implements class42 {
                                                                                                                            }
 
                                                                                                                            ScriptState var47 = class83.scriptStack[--class83.scriptStackCount];
-                                                                                                                           var3 = var47.field762;
+                                                                                                                           var3 = var47.invokedFromScript;
                                                                                                                            var39 = var3.instructions;
                                                                                                                            var40 = var3.intOperands;
-                                                                                                                           var24 = var47.field764;
-                                                                                                                           class83.scriptLocalInts = var47.field763;
-                                                                                                                           class83.scriptLocalStrings = var47.field765;
+                                                                                                                           var24 = var47.invokedFromPc;
+                                                                                                                           class83.scriptLocalInts = var47.savedLocalInts;
+                                                                                                                           class83.scriptLocalStrings = var47.savedLocalStrings;
                                                                                                                         }
                                                                                                                      } else {
                                                                                                                         class83.intStackSize -= 2;
@@ -1748,7 +1748,7 @@ public class class48 implements class42 {
             var37.append("").append(var3.hash).append(" ");
 
             for(var10 = class83.scriptStackCount - 1; var10 >= 0; --var10) {
-               var37.append("").append(class83.scriptStack[var10].field762.hash).append(" ");
+               var37.append("").append(class83.scriptStack[var10].invokedFromScript.hash).append(" ");
             }
 
             var37.append("").append(var41);
