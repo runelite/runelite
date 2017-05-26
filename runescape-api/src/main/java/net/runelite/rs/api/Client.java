@@ -166,8 +166,8 @@ public interface Client extends GameEngine
 	@Import("sendGameMessage")
 	void sendGameMessage(int var1, String var2, String var3);
 
-	@Import("objectDefinition")
-	ObjectComposition getObjectDefinition(int var1);
+	@Import("getObjectDefinition")
+	ObjectComposition getObjectDefinition(int objectId);
 
 	@Import("scale")
 	int getScale();
