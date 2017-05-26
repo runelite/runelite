@@ -73,8 +73,11 @@ final class ClientPanel extends JPanel
 		}
 
 		rs.setLayout(null);
+		rs.setSize(PANEL_WIDTH, PANEL_HEIGHT);
+
 		rs.init();
 		rs.start();
+
 		add(rs, BorderLayout.CENTER);
 
 		if (isOutdated)
