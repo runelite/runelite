@@ -37,6 +37,8 @@
 	<name>Cache</name>
 
 	<properties>
+		<cache.version>140</cache.version>
+		
 		<antlr4.version>4.6</antlr4.version>
 	</properties>
 
@@ -102,12 +104,18 @@
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>cache</artifactId>
-			<version>140</version>
+			<version>${cache.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	
 	<build>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

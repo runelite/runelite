@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.Properties;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,9 +62,17 @@ public class StoreLocation
 		}
 	}
 
+	private static Properties getProperies() throws IOException
+	{
+		Properties properties = new Properties();
+		InputStream resourceAsStream = StoreLocation.class.getResourceAsStream("/cache.properties");
+		properties.load(resourceAsStream);
+		return properties;
+	}
+
 	private static File setupCacheDir() throws IOException
 	{
-		File file = new File(System.getProperty("java.io.tmpdir"), "cache-work");
+		File file = new File(System.getProperty("java.io.tmpdir"), "cache-" + getProperies().getProperty("cache.version"));
 
 		if (file.exists())
 		{
