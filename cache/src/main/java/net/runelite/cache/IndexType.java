@@ -42,7 +42,8 @@ public enum IndexType
 	CLIENTSCRIPT(12),
 	FONTS(13),
 	VORBIS(14),
-	INSTRUMENTS(15);
+	INSTRUMENTS(15),
+	WORLDMAP(16);
 
 	private int id;
 	

@@ -37,7 +37,7 @@ public class StoreLocation
 {
 	private static final Logger logger = LoggerFactory.getLogger(StoreLocation.class);
 
-	private static final int NUM_INDEXES = 15;
+	private static final int NUM_INDEXES = 16;
 	private static final String TMP_DIR = "d:/temp";
 
 	public static File LOCATION;
