@@ -193,10 +193,6 @@ public class ObjectLoader
 			def.setRetextureToFind(retextureToFind);
 			def.setTextureToReplace(textureToReplace);
 		}
-		else if (opcode == 60)
-		{
-			def.setMapIconID(is.readUnsignedShort());
-		}
 		else if (62 == opcode)
 		{
 			def.setIsRotated(true);
@@ -303,7 +299,11 @@ public class ObjectLoader
 		}
 		else if (opcode == 81)
 		{
-			def.setAnInt2105(is.readUnsignedByte());
+			def.setAnInt2105(is.readUnsignedByte() * 256);
+		}
+		else if (opcode == 82)
+		{
+			def.setMapIconID(is.readUnsignedShort());
 		}
 		else if (opcode == 92)
 		{
