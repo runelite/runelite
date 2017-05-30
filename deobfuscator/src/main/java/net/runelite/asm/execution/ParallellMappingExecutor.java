@@ -62,7 +62,8 @@ public class ParallellMappingExecutor
 		
 		if (f2 == null)
 		{
-			// why?
+			// this is from anything which creates frames without mapping the .other
+			// and/or is not mappable
 			e.frames.remove(0);
 			return step();
 		}
@@ -95,25 +96,31 @@ public class ParallellMappingExecutor
 		
 		if (!f1.isExecuting() && !f2.isExecuting() && e.paused && e2.paused)
 		{
-			// this is a mappable return
+			// this can happen from a return (which is mappable), or from a mapped instruction
+			// which jumps on the executing frame (currently just tableswitch?)
 			
 			p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
 			p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
-			
-			// the only mappable returns are of objects
-			assert p1.getInstruction() instanceof Return;
-			assert p2.getInstruction() instanceof Return;
-			
-			// the only mappable returns are in non static methods
-			assert f1.getMethod().isStatic() == false;
-			assert f2.getMethod().isStatic() == false;
-			
-			// because this method isnt static theres nothing to return to
-			assert f1.returnTo == null;
-			assert f2.returnTo == null;
-			
-			// because theres nothing to return to, this will hit the !isExecuting check above
-			// next step, and move to the next frame
+
+			assert p1.getInstruction() instanceof ReturnInstruction == p2.getInstruction() instanceof ReturnInstruction;
+
+			if (p1.getInstruction() instanceof ReturnInstruction)
+			{
+				// the only mappable returns are of objects
+				assert p1.getInstruction() instanceof Return;
+				assert p2.getInstruction() instanceof Return;
+
+				// the only mappable returns are in non static methods
+				assert f1.getMethod().isStatic() == false;
+				assert f2.getMethod().isStatic() == false;
+
+				// because this method isnt static theres nothing to return to
+				assert f1.returnTo == null;
+				assert f2.returnTo == null;
+
+				// because theres nothing to return to, this will hit the !isExecuting check above
+				// next step, and move to the next frame
+			}
 			
 			e.paused = e2.paused = false;
 			

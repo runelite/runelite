@@ -22,28 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
+import net.runelite.asm.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 import org.objectweb.asm.MethodVisitor;
 
-public class TableSwitch extends Instruction implements JumpingInstruction
+public class TableSwitch extends Instruction implements JumpingInstruction, MappableInstruction
 {
 	private List<Label> branchi = new ArrayList<>();
 	private Label defi;
-	
+
 	private int low;
 	private int high;
 
@@ -51,7 +53,7 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 	{
 		super(instructions, type);
 	}
-	
+
 	@Override
 	public Instruction clone()
 	{
@@ -72,38 +74,37 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
-		
+
 		StackContext value = stack.pop();
 		ins.pop(value);
-	
-		if (!frame.getExecution().step)
-		{
-			for (Label i : branchi)
-			{
-				Frame other = frame.dup();
-				other.jump(ins, i);
 
-				ins.branch(other);
-			}
+		for (Label i : branchi)
+		{
+			Frame other = frame.dup();
+			other.jump(ins, i);
+
+			ins.branch(other);
 		}
-		
+
 		frame.jump(ins, defi);
-		
+
 		return ins;
 	}
-	
+
 	@Override
 	public boolean isTerminal()
 	{
 		return true;
 	}
-	
+
 	@Override
 	public List<Label> getJumps()
 	{
 		List<Label> list = new ArrayList<>();
 		for (Label i : branchi)
+		{
 			list.add(i);
+		}
 		list.add(defi);
 		return list.stream().distinct().collect(Collectors.toList());
 	}
@@ -154,5 +155,50 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 		this.defi = defi;
 	}
 
+	@Override
+	public void map(ParallelExecutorMapping mappings, InstructionContext ctx, InstructionContext other)
+	{
+		// Map branches for step executor
+
+		List<Frame> br1 = ctx.getBranches(),
+			br2 = other.getBranches();
+
+		assert br1.size() == br2.size();
+
+		for (int i = 0; i < br1.size(); ++i)
+		{
+			Frame fr1 = br1.get(i), fr2 = br2.get(i);
+
+			assert fr1.other == null;
+			assert fr2.other == null;
+
+			fr1.other = fr2;
+			fr2.other = fr1;
+		}
+	}
+
+	@Override
+	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
+	{
+		if (thisIc.getInstruction().getType() != otherIc.getInstruction().getType())
+		{
+			return false;
+		}
+
+		TableSwitch sw1 = (TableSwitch) thisIc.getInstruction();
+		TableSwitch sw2 = (TableSwitch) otherIc.getInstruction();
+
+		assert sw1 == this;
+
+		return sw1.branchi.size() == sw2.branchi.size();
+	}
+
+	@Override
+	public boolean canMap(InstructionContext thisIc)
+	{
+		Method method = thisIc.getFrame().getMethod();
+		// client init has randomally scrambled tableswitch
+		return method.getName().equals("init") == false;
+	}
 
 }
