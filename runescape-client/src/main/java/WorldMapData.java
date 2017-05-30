@@ -1,11 +1,14 @@
 import java.util.Iterator;
 import java.util.LinkedList;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aj")
-public class class32 {
+@Implements("WorldMapData")
+public class WorldMapData {
    @ObfuscatedName("u")
    String field449;
    @ObfuscatedName("q")
@@ -22,7 +25,8 @@ public class class32 {
    @ObfuscatedGetter(
       intValue = -55817721
    )
-   int field452;
+   @Export("fileId")
+   int fileId;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -340226737
@@ -49,7 +53,7 @@ public class class32 {
    @ObfuscatedName("ff")
    static byte[][] field461;
    @ObfuscatedName("v")
-   class212 field462;
+   Coordinates field462;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 1329272397
@@ -64,13 +68,13 @@ public class class32 {
    public boolean method270(int var1, int var2, int var3) {
       Iterator var4 = this.field458.iterator();
 
-      class42 var5;
+      WorldMapSectionBase var5;
       do {
          if(!var4.hasNext()) {
             return false;
          }
 
-         var5 = (class42)var4.next();
+         var5 = (WorldMapSectionBase)var4.next();
       } while(!var5.vmethod724(var1, var2, var3));
 
       return true;
@@ -81,11 +85,12 @@ public class class32 {
       signature = "(LBuffer;IS)V",
       garbageValue = "-18156"
    )
-   public void method271(Buffer var1, int var2) {
-      this.field452 = var2;
+   @Export("loadMapData")
+   public void loadMapData(Buffer var1, int var2) {
+      this.fileId = var2;
       this.field459 = var1.readString();
       this.field449 = var1.readString();
-      this.field462 = new class212(var1.readInt());
+      this.field462 = new Coordinates(var1.readInt());
       this.field450 = var1.readInt();
       var1.readUnsignedByte();
       this.field457 = var1.readUnsignedByte() == 1;
@@ -105,29 +110,29 @@ public class class32 {
       signature = "(LBuffer;S)Lclass42;",
       garbageValue = "-5808"
    )
-   class42 method272(Buffer var1) {
+   WorldMapSectionBase method272(Buffer var1) {
       int var2 = var1.readUnsignedByte();
       class27 var3 = (class27)Client.method1381(class27.method213(), var2);
       Object var4 = null;
       switch(var3.field394) {
       case 0:
-         var4 = new class48();
+         var4 = new WorldMapType0();
          break;
       case 1:
-         var4 = new class30();
+         var4 = new WorldMapType1();
          break;
       case 2:
-         var4 = new class38();
+         var4 = new WorldMapType2();
          break;
       case 3:
-         var4 = new class26();
+         var4 = new WorldMapType3();
          break;
       default:
          throw new IllegalStateException("");
       }
 
-      ((class42)var4).vmethod719(var1);
-      return (class42)var4;
+      ((WorldMapSectionBase)var4).vmethod719(var1);
+      return (WorldMapSectionBase)var4;
    }
 
    @ObfuscatedName("w")
@@ -136,7 +141,7 @@ public class class32 {
       garbageValue = "2010696610"
    )
    public int method273() {
-      return this.field462.field2601;
+      return this.field462.worldY;
    }
 
    @ObfuscatedName("q")
@@ -151,13 +156,13 @@ public class class32 {
          if(var4 >= this.field463 && var4 <= this.field456) {
             Iterator var5 = this.field458.iterator();
 
-            class42 var6;
+            WorldMapSectionBase var6;
             do {
                if(!var5.hasNext()) {
                   return false;
                }
 
-               var6 = (class42)var5.next();
+               var6 = (WorldMapSectionBase)var5.next();
             } while(!var6.vmethod716(var1, var2));
 
             return true;
@@ -178,7 +183,7 @@ public class class32 {
       Iterator var1 = this.field458.iterator();
 
       while(var1.hasNext()) {
-         class42 var2 = (class42)var1.next();
+         WorldMapSectionBase var2 = (WorldMapSectionBase)var1.next();
          var2.vmethod715(this);
       }
 
@@ -192,13 +197,13 @@ public class class32 {
    public int[] method280(int var1, int var2, int var3) {
       Iterator var4 = this.field458.iterator();
 
-      class42 var5;
+      WorldMapSectionBase var5;
       do {
          if(!var4.hasNext()) {
             return null;
          }
 
-         var5 = (class42)var4.next();
+         var5 = (WorldMapSectionBase)var4.next();
       } while(!var5.vmethod724(var1, var2, var3));
 
       return var5.vmethod717(var1, var2, var3);
@@ -255,7 +260,7 @@ public class class32 {
       garbageValue = "-1990760578"
    )
    public int method289() {
-      return this.field462.field2603;
+      return this.field462.plane;
    }
 
    @ObfuscatedName("f")
@@ -263,8 +268,8 @@ public class class32 {
       signature = "(I)Lclass212;",
       garbageValue = "1039512103"
    )
-   public class212 method291() {
-      return new class212(this.field462);
+   public Coordinates method291() {
+      return new Coordinates(this.field462);
    }
 
    @ObfuscatedName("n")
@@ -273,7 +278,7 @@ public class class32 {
       garbageValue = "-755406857"
    )
    public int method293() {
-      return this.field462.field2600;
+      return this.field462.worldX;
    }
 
    @ObfuscatedName("a")
@@ -285,8 +290,8 @@ public class class32 {
       return this.field459;
    }
 
-   public class32() {
-      this.field452 = -1;
+   public WorldMapData() {
+      this.fileId = -1;
       this.field450 = -1;
       this.field451 = -1;
       this.field462 = null;
@@ -303,7 +308,7 @@ public class class32 {
       garbageValue = "842807361"
    )
    public int method318() {
-      return this.field452;
+      return this.fileId;
    }
 
    @ObfuscatedName("u")
@@ -344,16 +349,16 @@ public class class32 {
       signature = "(III)Lclass212;",
       garbageValue = "-1764009313"
    )
-   public class212 method341(int var1, int var2) {
+   public Coordinates method341(int var1, int var2) {
       Iterator var3 = this.field458.iterator();
 
-      class42 var4;
+      WorldMapSectionBase var4;
       do {
          if(!var3.hasNext()) {
             return null;
          }
 
-         var4 = (class42)var3.next();
+         var4 = (WorldMapSectionBase)var3.next();
       } while(!var4.vmethod716(var1, var2));
 
       return var4.vmethod718(var1, var2);

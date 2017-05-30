@@ -29,15 +29,15 @@ public abstract class class158 {
       if(var0 == null) {
          return false;
       } else {
-         String var2 = class27.method214(var0, class30.field423);
+         String var2 = class27.method214(var0, WorldMapType1.field423);
 
          for(int var3 = 0; var3 < Client.friendCount; ++var3) {
-            if(var2.equalsIgnoreCase(class27.method214(Client.friends[var3].name, class30.field423)) && (!var1 || Client.friends[var3].world != 0)) {
+            if(var2.equalsIgnoreCase(class27.method214(Client.friends[var3].name, WorldMapType1.field423)) && (!var1 || Client.friends[var3].world != 0)) {
                return true;
             }
          }
 
-         if(var2.equalsIgnoreCase(class27.method214(XGrandExchangeOffer.localPlayer.name, class30.field423))) {
+         if(var2.equalsIgnoreCase(class27.method214(XGrandExchangeOffer.localPlayer.name, WorldMapType1.field423))) {
             return true;
          } else {
             return false;

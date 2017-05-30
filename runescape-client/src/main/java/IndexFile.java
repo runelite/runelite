@@ -243,26 +243,26 @@ public final class IndexFile {
       if(class92.field1424 > 0) {
          for(var1 = 0; var1 < 256; ++var1) {
             if(class92.field1424 > 768) {
-               class30.field430[var1] = class33.method354(World.field1265[var1], class24.field365[var1], 1024 - class92.field1424);
+               WorldMapType1.field430[var1] = class33.method354(World.field1265[var1], class24.field365[var1], 1024 - class92.field1424);
             } else if(class92.field1424 > 256) {
-               class30.field430[var1] = class24.field365[var1];
+               WorldMapType1.field430[var1] = class24.field365[var1];
             } else {
-               class30.field430[var1] = class33.method354(class24.field365[var1], World.field1265[var1], 256 - class92.field1424);
+               WorldMapType1.field430[var1] = class33.method354(class24.field365[var1], World.field1265[var1], 256 - class92.field1424);
             }
          }
       } else if(class92.field1419 > 0) {
          for(var1 = 0; var1 < 256; ++var1) {
             if(class92.field1419 > 768) {
-               class30.field430[var1] = class33.method354(World.field1265[var1], class2.field10[var1], 1024 - class92.field1419);
+               WorldMapType1.field430[var1] = class33.method354(World.field1265[var1], class2.field10[var1], 1024 - class92.field1419);
             } else if(class92.field1419 > 256) {
-               class30.field430[var1] = class2.field10[var1];
+               WorldMapType1.field430[var1] = class2.field10[var1];
             } else {
-               class30.field430[var1] = class33.method354(class2.field10[var1], World.field1265[var1], 256 - class92.field1419);
+               WorldMapType1.field430[var1] = class33.method354(class2.field10[var1], World.field1265[var1], 256 - class92.field1419);
             }
          }
       } else {
          for(var1 = 0; var1 < 256; ++var1) {
-            class30.field430[var1] = World.field1265[var1];
+            WorldMapType1.field430[var1] = World.field1265[var1];
          }
       }
 
@@ -294,7 +294,7 @@ public final class IndexFile {
             if(var7 != 0) {
                var8 = var7;
                var9 = 256 - var7;
-               var7 = class30.field430[var7];
+               var7 = WorldMapType1.field430[var7];
                var10 = class40.field541.pixels[var2];
                class40.field541.pixels[var2++] = ((var10 & 16711935) * var9 + (var7 & 16711935) * var8 & -16711936) + ((var7 & '\uff00') * var8 + var9 * (var10 & '\uff00') & 16711680) >> 8;
             } else {
@@ -321,7 +321,7 @@ public final class IndexFile {
             if(var7 != 0) {
                var8 = var7;
                var9 = 256 - var7;
-               var7 = class30.field430[var7];
+               var7 = WorldMapType1.field430[var7];
                var10 = class40.field541.pixels[var2];
                class40.field541.pixels[var2++] = (var8 * (var7 & 16711935) + (var10 & 16711935) * var9 & -16711936) + ((var10 & '\uff00') * var9 + var8 * (var7 & '\uff00') & 16711680) >> 8;
             } else {

@@ -3,18 +3,21 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("kf")
-public class class288 {
+@Implements("RenderOverview")
+public class RenderOverview {
    @ObfuscatedName("av")
    HashSet field3795;
    @ObfuscatedName("ap")
    List field3800;
    @ObfuscatedName("t")
-   IndexDataBase field3801;
+   IndexDataBase worldMapIndex;
    @ObfuscatedName("p")
    static final class261 field3802;
    @ObfuscatedName("l")
@@ -33,7 +36,7 @@ public class class288 {
    @ObfuscatedName("x")
    HashMap field3808;
    @ObfuscatedName("o")
-   class32 field3809;
+   WorldMapData field3809;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1029164747
@@ -49,7 +52,7 @@ public class class288 {
    @ObfuscatedName("e")
    class287 field3813;
    @ObfuscatedName("m")
-   class32 field3814;
+   WorldMapData field3814;
    @ObfuscatedName("k")
    Font field3815;
    @ObfuscatedName("y")
@@ -98,7 +101,7 @@ public class class288 {
    )
    int field3828;
    @ObfuscatedName("j")
-   class32 field3829;
+   WorldMapData field3829;
    @ObfuscatedName("ae")
    HashSet field3831;
    @ObfuscatedName("ar")
@@ -134,21 +137,21 @@ public class class288 {
    )
    public void method5253(IndexDataBase var1, Font var2, HashMap var3, ModIcon[] var4) {
       this.field3807 = var4;
-      this.field3801 = var1;
+      this.worldMapIndex = var1;
       this.field3815 = var2;
       this.field3833 = new HashMap();
       this.field3833.put(class24.field367, var3.get(field3802));
       this.field3833.put(class24.field357, var3.get(field3803));
       this.field3833.put(class24.field358, var3.get(field3804));
       this.field3813 = new class287(var1);
-      int var5 = this.field3801.method4189(class40.field538.field540);
-      int[] var6 = this.field3801.method4183(var5);
+      int var5 = this.worldMapIndex.method4189(class40.field538.field540);
+      int[] var6 = this.worldMapIndex.method4183(var5);
       this.field3808 = new HashMap(var6.length);
 
       for(int var7 = 0; var7 < var6.length; ++var7) {
-         Buffer var8 = new Buffer(this.field3801.getConfigData(var5, var6[var7]));
-         class32 var9 = new class32();
-         var9.method271(var8, var6[var7]);
+         Buffer var8 = new Buffer(this.worldMapIndex.getConfigData(var5, var6[var7]));
+         WorldMapData var9 = new WorldMapData();
+         var9.loadMapData(var8, var6[var7]);
          this.field3808.put(var9.method295(), var9);
          if(var9.method330()) {
             this.field3809 = var9;
@@ -174,7 +177,7 @@ public class class288 {
       garbageValue = "1807977885"
    )
    public int method5255() {
-      return this.field3801.method4193(this.field3809.method295(), class40.field534.field540)?100:this.field3801.method4196(this.field3809.method295());
+      return this.worldMapIndex.method4193(this.field3809.method295(), class40.field534.field540)?100:this.worldMapIndex.method4196(this.field3809.method295());
    }
 
    @ObfuscatedName("u")
@@ -251,7 +254,7 @@ public class class288 {
       garbageValue = "-2091651263"
    )
    public void method5262(int var1, int var2, int var3, boolean var4) {
-      class32 var5 = this.method5307(var1, var2, var3);
+      WorldMapData var5 = this.method5307(var1, var2, var3);
       if(var5 == null) {
          if(!var4) {
             return;
@@ -278,7 +281,7 @@ public class class288 {
       signature = "(I)Lclass32;",
       garbageValue = "-825274503"
    )
-   public class32 method5265() {
+   public WorldMapData method5265() {
       return this.field3829;
    }
 
@@ -287,7 +290,7 @@ public class class288 {
       signature = "(Lclass32;I)V",
       garbageValue = "-939890925"
    )
-   void method5266(class32 var1) {
+   void method5266(WorldMapData var1) {
       if(this.field3829 == null || this.field3829 != var1) {
          this.method5267(var1);
          this.method5326(-1, -1, -1);
@@ -299,7 +302,7 @@ public class class288 {
       signature = "(Lclass32;I)V",
       garbageValue = "638898869"
    )
-   void method5267(class32 var1) {
+   void method5267(WorldMapData var1) {
       this.field3829 = var1;
       this.field3812 = new class41(this.field3807, this.field3833);
       this.field3813.method5241(this.field3829.method295());
@@ -310,16 +313,16 @@ public class class288 {
       signature = "(Lclass32;Lclass212;Lclass212;ZB)V",
       garbageValue = "33"
    )
-   public void method5268(class32 var1, class212 var2, class212 var3, boolean var4) {
+   public void method5268(WorldMapData var1, Coordinates var2, Coordinates var3, boolean var4) {
       if(var1 != null) {
          if(this.field3829 == null || var1 != this.field3829) {
             this.method5267(var1);
          }
 
-         if(!var4 && this.field3829.method270(var2.field2603, var2.field2600, var2.field2601)) {
-            this.method5326(var2.field2603, var2.field2600, var2.field2601);
+         if(!var4 && this.field3829.method270(var2.plane, var2.worldX, var2.worldY)) {
+            this.method5326(var2.plane, var2.worldX, var2.worldY);
          } else {
-            this.method5326(var3.field2603, var3.field2600, var3.field2601);
+            this.method5326(var3.plane, var3.worldX, var3.worldY);
          }
 
       }
@@ -330,7 +333,8 @@ public class class288 {
       signature = "(IIIIIB)V",
       garbageValue = "0"
    )
-   public void method5270(int var1, int var2, int var3, int var4, int var5) {
+   @Export("extractWorldmap")
+   public void extractWorldmap(int var1, int var2, int var3, int var4, int var5) {
       int[] var6 = new int[4];
       Rasterizer2D.method5000(var6);
       Rasterizer2D.method4998(var1, var2, var3 + var1, var2 + var4);
@@ -341,7 +345,7 @@ public class class288 {
       } else {
          if(!this.field3812.method586()) {
             System.out.println("renderOverview extractWorldmap");
-            this.field3812.method561(this.field3801, this.field3829.method295(), Client.isMembers);
+            this.field3812.method561(this.worldMapIndex, this.field3829.method295(), Client.isMembers);
             System.out.println("done");
             if(!this.field3812.method586()) {
                return;
@@ -379,7 +383,7 @@ public class class288 {
       }
    }
 
-   public class288() {
+   public RenderOverview() {
       this.field3816 = -1;
       this.field3810 = -1;
       this.field3820 = -1;
@@ -524,7 +528,7 @@ public class class288 {
       signature = "(I)Lclass212;",
       garbageValue = "-1365789298"
    )
-   public class212 method5284() {
+   public Coordinates method5284() {
       return this.field3829 == null?null:this.field3829.method341(this.method5363(), this.method5254());
    }
 
@@ -572,16 +576,16 @@ public class class288 {
       signature = "(IB)Lclass32;",
       garbageValue = "-1"
    )
-   public class32 method5292(int var1) {
+   public WorldMapData method5292(int var1) {
       Iterator var2 = this.field3808.values().iterator();
 
-      class32 var3;
+      WorldMapData var3;
       do {
          if(!var2.hasNext()) {
             return null;
          }
 
-         var3 = (class32)var2.next();
+         var3 = (WorldMapData)var2.next();
       } while(var3.method318() != var1);
 
       return var3;
@@ -675,7 +679,7 @@ public class class288 {
       signature = "(IILclass212;Lclass212;I)V",
       garbageValue = "-1643003467"
    )
-   public void method5304(int var1, int var2, class212 var3, class212 var4) {
+   public void method5304(int var1, int var2, Coordinates var3, Coordinates var4) {
       class69 var5 = new class69();
       class47 var6 = new class47(var2, var3, var4);
       var5.method1110(new Object[]{var6});
@@ -738,16 +742,16 @@ public class class288 {
       signature = "(IIIB)Lclass32;",
       garbageValue = "-46"
    )
-   public class32 method5307(int var1, int var2, int var3) {
+   public WorldMapData method5307(int var1, int var2, int var3) {
       Iterator var4 = this.field3808.values().iterator();
 
-      class32 var5;
+      WorldMapData var5;
       do {
          if(!var4.hasNext()) {
             return null;
          }
 
-         var5 = (class32)var4.next();
+         var5 = (WorldMapData)var4.next();
       } while(!var5.method270(var1, var2, var3));
 
       return var5;
@@ -826,7 +830,7 @@ public class class288 {
       garbageValue = "1"
    )
    public void method5361(int var1) {
-      class32 var2 = this.method5292(var1);
+      WorldMapData var2 = this.method5292(var1);
       if(var2 != null) {
          this.method5266(var2);
       }
@@ -941,12 +945,12 @@ public class class288 {
       signature = "(ILclass212;S)Lclass212;",
       garbageValue = "14287"
    )
-   public class212 method5416(int var1, class212 var2) {
+   public Coordinates method5416(int var1, Coordinates var2) {
       if(!this.field3813.method5243()) {
          return null;
       } else if(!this.field3812.method586()) {
          return null;
-      } else if(!this.field3829.method275(var2.field2600, var2.field2601)) {
+      } else if(!this.field3829.method275(var2.worldX, var2.worldY)) {
          return null;
       } else {
          HashMap var3 = this.field3812.method566();
@@ -965,8 +969,8 @@ public class class288 {
                   }
 
                   var8 = (class39)var7.next();
-                  int var9 = var8.field527.field2600 - var2.field2600;
-                  int var10 = var8.field527.field2601 - var2.field2601;
+                  int var9 = var8.field527.worldX - var2.worldX;
+                  int var10 = var8.field527.worldY - var2.worldY;
                   var11 = var9 * var9 + var10 * var10;
                   if(var11 == 0) {
                      return var8.field527;
@@ -1032,11 +1036,12 @@ public class class288 {
       signature = "(IIIIB)V",
       garbageValue = "-4"
    )
-   public void method5436(int var1, int var2, int var3, int var4) {
+   @Export("extractData")
+   public void extractData(int var1, int var2, int var3, int var4) {
       if(this.field3813.method5243()) {
          if(!this.field3812.method586()) {
             System.out.println("renderOverview extractData");
-            this.field3812.method561(this.field3801, this.field3829.method295(), Client.isMembers);
+            this.field3812.method561(this.worldMapIndex, this.field3829.method295(), Client.isMembers);
             System.out.println("done");
             if(!this.field3812.method586()) {
                return;

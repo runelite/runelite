@@ -5,16 +5,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ak")
 public class class47 {
    @ObfuscatedName("u")
-   public class212 field596;
+   public Coordinates field596;
    @ObfuscatedName("h")
-   public class212 field597;
+   public Coordinates field597;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -705845037
    )
    public int field598;
 
-   public class47(int var1, class212 var2, class212 var3) {
+   public class47(int var1, Coordinates var2, Coordinates var3) {
       this.field598 = var1;
       this.field597 = var2;
       this.field596 = var3;

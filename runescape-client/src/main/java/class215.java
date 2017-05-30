@@ -98,7 +98,7 @@ public class class215 {
       }
 
       if(var2 == 1008 || var2 == 1009 || var2 == 1010 || var2 == 1011 || var2 == 1012) {
-         class83.field1325.method5304(var2, var3, new class212(var0), new class212(var1));
+         class83.field1325.method5304(var2, var3, new Coordinates(var0), new Coordinates(var1));
       }
 
       Player var19;
@@ -215,7 +215,7 @@ public class class215 {
             Client.flagY = var1;
             Client.secretPacketBuffer1.putOpcode(173);
             Client.secretPacketBuffer1.method3285(class214.field2622);
-            Client.secretPacketBuffer1.method3232(class48.field612);
+            Client.secretPacketBuffer1.method3232(WorldMapType0.field612);
             Client.secretPacketBuffer1.method3223(class50.field624[82]?1:0);
             Client.secretPacketBuffer1.putShort(WidgetNode.field809);
             Client.secretPacketBuffer1.method3382(var3);
@@ -256,7 +256,7 @@ public class class215 {
             Client.flagY = var1;
             Client.secretPacketBuffer1.putOpcode(210);
             Client.secretPacketBuffer1.method3408(class50.field624[82]?1:0);
-            Client.secretPacketBuffer1.method3382(class48.field612);
+            Client.secretPacketBuffer1.method3382(WorldMapType0.field612);
             Client.secretPacketBuffer1.method3243(class214.field2622);
             Client.secretPacketBuffer1.method3382(var3);
             Client.secretPacketBuffer1.method3232(WidgetNode.field809);
@@ -342,7 +342,7 @@ public class class215 {
 
       if(var2 == 31) {
          Client.secretPacketBuffer1.putOpcode(216);
-         Client.secretPacketBuffer1.putShort(class48.field612);
+         Client.secretPacketBuffer1.putShort(WorldMapType0.field612);
          Client.secretPacketBuffer1.method3285(var1);
          Client.secretPacketBuffer1.method3382(var0);
          Client.secretPacketBuffer1.putInt(class214.field2622);
@@ -422,7 +422,7 @@ public class class215 {
          class19.method143();
          var8 = class261.method4792(var1);
          Client.field1043 = 1;
-         class48.field612 = var0;
+         WorldMapType0.field612 = var0;
          class214.field2622 = var1;
          WidgetNode.field809 = var3;
          class219.method4130(var8);
@@ -626,7 +626,7 @@ public class class215 {
                Client.secretPacketBuffer1.method3285(class214.field2622);
                Client.secretPacketBuffer1.method3225(class50.field624[82]?1:0);
                Client.secretPacketBuffer1.method3382(class166.baseX + var0);
-               Client.secretPacketBuffer1.method3232(class48.field612);
+               Client.secretPacketBuffer1.method3232(WorldMapType0.field612);
             }
 
             if(var2 == 6) {
@@ -745,7 +745,7 @@ public class class215 {
                Client.secretPacketBuffer1.method3285(class214.field2622);
                Client.secretPacketBuffer1.method3232(class146.baseY + var1);
                Client.secretPacketBuffer1.method3232(var3 >> 14 & 32767);
-               Client.secretPacketBuffer1.method3234(class48.field612);
+               Client.secretPacketBuffer1.method3234(WorldMapType0.field612);
                Client.secretPacketBuffer1.method3382(var0 + class166.baseX);
                Client.secretPacketBuffer1.method3223(class50.field624[82]?1:0);
                Client.secretPacketBuffer1.putShort(WidgetNode.field809);

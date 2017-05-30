@@ -51,7 +51,7 @@ public class class83 {
    @Export("scriptStack")
    static ScriptState[] scriptStack;
    @ObfuscatedName("rq")
-   static class288 field1325;
+   static RenderOverview field1325;
 
    static {
       field1322 = new int[5];

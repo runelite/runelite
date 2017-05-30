@@ -1095,7 +1095,7 @@ public class Widget extends Node {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = class30.method265(class56.field677, field2635, this.fontId, 0);
+            var1 = WorldMapType1.method265(class56.field677, field2635, this.fontId, 0);
             if(var1 != null) {
                field2737.put(var1, (long)this.fontId);
             } else {

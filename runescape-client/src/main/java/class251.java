@@ -60,7 +60,7 @@ public class class251 extends CacheableNode {
    )
    void method4497(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field3383 = class212.method3989(var1.readByte());
+         this.field3383 = Coordinates.method3989(var1.readByte());
       } else if(var2 == 2) {
          this.field3381 = var1.readInt();
       } else if(var2 == 4) {

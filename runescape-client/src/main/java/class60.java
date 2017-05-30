@@ -43,7 +43,7 @@ public final class class60 {
          RSCanvas.mapRegions = new int[var3];
          class168.field2317 = new int[var3];
          class100.field1545 = new int[var3];
-         class32.field461 = new byte[var3][];
+         WorldMapData.field461 = new byte[var3][];
          class50.field619 = new byte[var3][];
          boolean var15 = false;
          if((var1 / 8 == 48 || var1 / 8 == 49) && var2 / 8 == 48) {
@@ -102,7 +102,7 @@ public final class class60 {
          RSCanvas.mapRegions = new int[var4];
          class168.field2317 = new int[var4];
          class100.field1545 = new int[var4];
-         class32.field461 = new byte[var4][];
+         WorldMapData.field461 = new byte[var4][];
          class50.field619 = new byte[var4][];
          var4 = 0;
 

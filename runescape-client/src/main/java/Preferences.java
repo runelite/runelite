@@ -286,21 +286,21 @@ public class Preferences {
    static final void method1608(String var0) {
       if(var0 != null) {
          if((Client.friendCount < 200 || Client.field1012 == 1) && Client.friendCount < 400) {
-            String var1 = class27.method214(var0, class30.field423);
+            String var1 = class27.method214(var0, WorldMapType1.field423);
             if(var1 != null) {
                int var2;
                String var4;
                String var5;
                for(var2 = 0; var2 < Client.friendCount; ++var2) {
                   Friend var3 = Client.friends[var2];
-                  var4 = class27.method214(var3.name, class30.field423);
+                  var4 = class27.method214(var3.name, WorldMapType1.field423);
                   if(var4 != null && var4.equals(var1)) {
                      GameObject.sendGameMessage(30, "", var0 + " is already on your friend list");
                      return;
                   }
 
                   if(var3.previousName != null) {
-                     var5 = class27.method214(var3.previousName, class30.field423);
+                     var5 = class27.method214(var3.previousName, WorldMapType1.field423);
                      if(var5 != null && var5.equals(var1)) {
                         GameObject.sendGameMessage(30, "", var0 + " is already on your friend list");
                         return;
@@ -310,14 +310,14 @@ public class Preferences {
 
                for(var2 = 0; var2 < Client.ignoreCount; ++var2) {
                   Ignore var6 = Client.ignores[var2];
-                  var4 = class27.method214(var6.name, class30.field423);
+                  var4 = class27.method214(var6.name, WorldMapType1.field423);
                   if(var4 != null && var4.equals(var1)) {
                      GameObject.sendGameMessage(30, "", "Please remove " + var0 + " from your ignore list first");
                      return;
                   }
 
                   if(var6.previousName != null) {
-                     var5 = class27.method214(var6.previousName, class30.field423);
+                     var5 = class27.method214(var6.previousName, WorldMapType1.field423);
                      if(var5 != null && var5.equals(var1)) {
                         GameObject.sendGameMessage(30, "", "Please remove " + var0 + " from your ignore list first");
                         return;
@@ -325,7 +325,7 @@ public class Preferences {
                   }
                }
 
-               if(class27.method214(XGrandExchangeOffer.localPlayer.name, class30.field423).equals(var1)) {
+               if(class27.method214(XGrandExchangeOffer.localPlayer.name, WorldMapType1.field423).equals(var1)) {
                   GameObject.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
                } else {
                   Client.secretPacketBuffer1.putOpcode(105);

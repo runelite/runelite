@@ -1176,9 +1176,9 @@ public final class Client extends GameEngine {
                   class232[] var6 = new class232[]{class232.field3181, class232.field3182, class232.field3183, class232.field3189, class232.field3184, class232.field3186};
                   class4.field25 = (class232)method1381(var6, Integer.parseInt(var5));
                   if(class4.field25 == class232.field3189) {
-                     class30.field423 = class289.field3850;
+                     WorldMapType1.field423 = class289.field3850;
                   } else {
-                     class30.field423 = class289.field3847;
+                     WorldMapType1.field423 = class289.field3847;
                   }
                   break;
                case 12:
@@ -1269,7 +1269,7 @@ public final class Client extends GameEngine {
    protected final void packetHandler() {
       ++gameCycle;
       this.method1175();
-      class30.method264();
+      WorldMapType1.method264();
       class17.method125();
       Ignore.method1118();
       FaceNormal.method2912();
@@ -1333,8 +1333,8 @@ public final class Client extends GameEngine {
    )
    protected final void vmethod1173(boolean var1) {
       boolean var2 = class89.method1744();
-      if(var2 && field1109 && class48.field611 != null) {
-         class48.field611.method2093();
+      if(var2 && field1109 && WorldMapType0.field611 != null) {
+         WorldMapType0.field611.method2093();
       }
 
       int var3;
@@ -1384,23 +1384,23 @@ public final class Client extends GameEngine {
                }
 
                var3 = (field1119 * 50 - field1044 * 50) / field1119;
-               class32.method349("Loading - please wait." + "<br>" + " (" + var3 + "%" + ")", false);
+               WorldMapData.method349("Loading - please wait." + "<br>" + " (" + var3 + "%" + ")", false);
             } else if(field949 == 2) {
                if(field947 > field923) {
                   field923 = field947;
                }
 
                var3 = (field923 * 50 - field947 * 50) / field923 + 50;
-               class32.method349("Loading - please wait." + "<br>" + " (" + var3 + "%" + ")", false);
+               WorldMapData.method349("Loading - please wait." + "<br>" + " (" + var3 + "%" + ")", false);
             } else {
-               class32.method349("Loading - please wait.", false);
+               WorldMapData.method349("Loading - please wait.", false);
             }
          } else if(gameState == 30) {
             this.method1182();
          } else if(gameState == 40) {
-            class32.method349("Connection lost" + "<br>" + "Please wait - attempting to reestablish", false);
+            WorldMapData.method349("Connection lost" + "<br>" + "Please wait - attempting to reestablish", false);
          } else if(gameState == 45) {
-            class32.method349("Please wait...", false);
+            WorldMapData.method349("Please wait...", false);
          }
       } else {
          Ignore.method1121(class40.field531, class3.field15, MessageNode.field845, var1);
@@ -1601,8 +1601,8 @@ public final class Client extends GameEngine {
 
          int var1;
          if(loginState == 3) {
-            if(class48.field611 != null) {
-               class48.field611.method2047();
+            if(WorldMapType0.field611 != null) {
+               WorldMapType0.field611.method2047();
             }
 
             if(WidgetNode.field812 != null) {
@@ -1610,8 +1610,8 @@ public final class Client extends GameEngine {
             }
 
             var1 = XGrandExchangeOffer.rssocket.readByte();
-            if(class48.field611 != null) {
-               class48.field611.method2047();
+            if(WorldMapType0.field611 != null) {
+               WorldMapType0.field611.method2047();
             }
 
             if(WidgetNode.field812 != null) {
@@ -1701,7 +1701,7 @@ public final class Client extends GameEngine {
             field933.putInt(class1.indexInterfaces.field3216);
             field933.putInt(class170.indexSoundEffects.field3216);
             field933.putInt(class17.field311.field3216);
-            field933.putInt(class38.field513.field3216);
+            field933.putInt(WorldMapType2.field513.field3216);
             field933.putInt(class43.field559.field3216);
             field933.putInt(class34.indexMaps.field3216);
             field933.putInt(class44.indexTrack1.field3216);
@@ -1714,7 +1714,7 @@ public final class Client extends GameEngine {
             field933.putInt(class91.field1411.field3216);
             field933.putInt(class15.field294.field3216);
             field933.putInt(field1171.field3216);
-            field933.putInt(class22.field336.field3216);
+            field933.putInt(class22.indexWorldMap.field3216);
             field933.encryptXtea(var6, var3, field933.offset);
             field933.method3195(field933.offset - var2);
             XGrandExchangeOffer.rssocket.queueForWrite(field933.payload, 0, field933.offset);
@@ -1998,7 +1998,7 @@ public final class Client extends GameEngine {
                   secretPacketBuffer1.putShort(class261.field3626);
                   secretPacketBuffer1.putShort(class19.field320);
                   field1115 = null;
-                  class48.clanChatCount = 0;
+                  WorldMapType0.clanChatCount = 0;
                   ClassInfo.clanMembers = null;
 
                   for(var1 = 0; var1 < 8; ++var1) {
@@ -2065,7 +2065,7 @@ public final class Client extends GameEngine {
          }
 
          if(gameState == 30) {
-            while(class212.method3993()) {
+            while(Coordinates.method3993()) {
                secretPacketBuffer1.putOpcode(148);
                secretPacketBuffer1.putByte(0);
                var1 = secretPacketBuffer1.offset;
@@ -2303,7 +2303,7 @@ public final class Client extends GameEngine {
 
                if(field1109 && !class20.method148()) {
                   if(field1077 != 0 && field1127 != -1) {
-                     class32.method322(class44.indexTrack1, field1127, 0, field1077, false);
+                     WorldMapData.method322(class44.indexTrack1, field1127, 0, field1077, false);
                   }
 
                   field1109 = false;
@@ -2409,7 +2409,7 @@ public final class Client extends GameEngine {
                                           var35 = (class69)field1089.method3658();
                                           if(var35 == null) {
                                              this.method1465();
-                                             class48.method737();
+                                             WorldMapType0.method737();
                                              if(field961 != null) {
                                                 this.method1453();
                                              }
@@ -3673,7 +3673,7 @@ public final class Client extends GameEngine {
                if(packetLength == 0) {
                   field1115 = null;
                   clanChatOwner = null;
-                  class48.clanChatCount = 0;
+                  WorldMapType0.clanChatCount = 0;
                   ClassInfo.clanMembers = null;
                   field936 = -1;
                   return true;
@@ -3714,13 +3714,13 @@ public final class Client extends GameEngine {
                   return true;
                }
 
-               class48.clanChatCount = var29;
+               WorldMapType0.clanChatCount = var29;
                XClanMember[] var103 = new XClanMember[100];
 
-               for(var64 = 0; var64 < class48.clanChatCount; ++var64) {
+               for(var64 = 0; var64 < WorldMapType0.clanChatCount; ++var64) {
                   var103[var64] = new XClanMember();
                   var103[var64].username = secretPacketBuffer2.readString();
-                  var103[var64].field887 = class27.method214(var103[var64].username, class30.field423);
+                  var103[var64].field887 = class27.method214(var103[var64].username, WorldMapType1.field423);
                   var103[var64].world = secretPacketBuffer2.readUnsignedShort();
                   var103[var64].rank = secretPacketBuffer2.readByte();
                   secretPacketBuffer2.readString();
@@ -3730,7 +3730,7 @@ public final class Client extends GameEngine {
                }
 
                var66 = false;
-               var18 = class48.clanChatCount;
+               var18 = WorldMapType0.clanChatCount;
 
                while(var18 > 0) {
                   var66 = true;
@@ -4126,35 +4126,35 @@ public final class Client extends GameEngine {
                }
 
                if(var63) {
-                  if(class48.clanChatCount == 0) {
+                  if(WorldMapType0.clanChatCount == 0) {
                      field936 = -1;
                      return true;
                   }
 
                   boolean var62 = false;
 
-                  for(var6 = 0; var6 < class48.clanChatCount && (!ClassInfo.clanMembers[var6].username.equals(var2) || ClassInfo.clanMembers[var6].world != var3); ++var6) {
+                  for(var6 = 0; var6 < WorldMapType0.clanChatCount && (!ClassInfo.clanMembers[var6].username.equals(var2) || ClassInfo.clanMembers[var6].world != var3); ++var6) {
                      ;
                   }
 
-                  if(var6 < class48.clanChatCount) {
-                     while(var6 < class48.clanChatCount - 1) {
+                  if(var6 < WorldMapType0.clanChatCount) {
+                     while(var6 < WorldMapType0.clanChatCount - 1) {
                         ClassInfo.clanMembers[var6] = ClassInfo.clanMembers[var6 + 1];
                         ++var6;
                      }
 
-                     --class48.clanChatCount;
-                     ClassInfo.clanMembers[class48.clanChatCount] = null;
+                     --WorldMapType0.clanChatCount;
+                     ClassInfo.clanMembers[WorldMapType0.clanChatCount] = null;
                   }
                } else {
                   secretPacketBuffer2.readString();
                   XClanMember var86 = new XClanMember();
                   var86.username = var2;
-                  var86.field887 = class27.method214(var86.username, class30.field423);
+                  var86.field887 = class27.method214(var86.username, WorldMapType1.field423);
                   var86.world = var3;
                   var86.rank = var59;
 
-                  for(var29 = class48.clanChatCount - 1; var29 >= 0; --var29) {
+                  for(var29 = WorldMapType0.clanChatCount - 1; var29 >= 0; --var29) {
                      var8 = ClassInfo.clanMembers[var29].field887.compareTo(var86.field887);
                      if(var8 == 0) {
                         ClassInfo.clanMembers[var29].world = var3;
@@ -4173,21 +4173,21 @@ public final class Client extends GameEngine {
                      }
                   }
 
-                  if(class48.clanChatCount >= ClassInfo.clanMembers.length) {
+                  if(WorldMapType0.clanChatCount >= ClassInfo.clanMembers.length) {
                      field936 = -1;
                      return true;
                   }
 
-                  for(var8 = class48.clanChatCount - 1; var8 > var29; --var8) {
+                  for(var8 = WorldMapType0.clanChatCount - 1; var8 > var29; --var8) {
                      ClassInfo.clanMembers[var8 + 1] = ClassInfo.clanMembers[var8];
                   }
 
-                  if(class48.clanChatCount == 0) {
+                  if(WorldMapType0.clanChatCount == 0) {
                      ClassInfo.clanMembers = new XClanMember[100];
                   }
 
                   ClassInfo.clanMembers[var29 + 1] = var86;
-                  ++class48.clanChatCount;
+                  ++WorldMapType0.clanChatCount;
                   if(var2.equals(XGrandExchangeOffer.localPlayer.name)) {
                      class29.field418 = var59;
                   }
@@ -4659,7 +4659,7 @@ public final class Client extends GameEngine {
 
                var3 = secretPacketBuffer2.read24BitInt();
                if(field1077 != 0 && var21 != -1) {
-                  class32.method322(class33.indexTrack2, var21, 0, field1077, false);
+                  WorldMapData.method322(class33.indexTrack2, var21, 0, field1077, false);
                   field1109 = true;
                }
 
@@ -5511,7 +5511,7 @@ public final class Client extends GameEngine {
                class1.indexInterfaces = class13.method68(0, false, true, true);
                class170.indexSoundEffects = class13.method68(1, false, true, true);
                class17.field311 = class13.method68(2, true, false, true);
-               class38.field513 = class13.method68(3, false, true, true);
+               WorldMapType2.field513 = class13.method68(3, false, true, true);
                class43.field559 = class13.method68(4, false, true, true);
                class34.indexMaps = class13.method68(5, true, true, true);
                class44.indexTrack1 = class13.method68(6, true, true, false);
@@ -5524,7 +5524,7 @@ public final class Client extends GameEngine {
                class91.field1411 = class13.method68(13, true, false, true);
                class15.field294 = class13.method68(14, false, true, false);
                field1171 = class13.method68(15, false, true, true);
-               class22.field336 = class13.method68(16, false, true, false);
+               class22.indexWorldMap = class13.method68(16, false, true, false);
                class92.field1431 = "Connecting to update server";
                class92.field1430 = 20;
                field968 = 40;
@@ -5533,7 +5533,7 @@ public final class Client extends GameEngine {
                var0 = var27 + class1.indexInterfaces.method4320() * 4 / 100;
                var0 += class170.indexSoundEffects.method4320() * 4 / 100;
                var0 += class17.field311.method4320() * 2 / 100;
-               var0 += class38.field513.method4320() * 2 / 100;
+               var0 += WorldMapType2.field513.method4320() * 2 / 100;
                var0 += class43.field559.method4320() * 6 / 100;
                var0 += class34.indexMaps.method4320() * 4 / 100;
                var0 += class44.indexTrack1.method4320() * 2 / 100;
@@ -5546,7 +5546,7 @@ public final class Client extends GameEngine {
                var0 += class91.field1411.method4320() * 2 / 100;
                var0 += class15.field294.method4320() * 2 / 100;
                var0 += field1171.method4320() * 2 / 100;
-               var0 += class22.field336.method4320() * 2 / 100;
+               var0 += class22.indexWorldMap.method4320() * 2 / 100;
                if(var0 != 100) {
                   if(var0 != 0) {
                      class92.field1431 = "Checking for updates - " + var0 + "%";
@@ -5565,8 +5565,8 @@ public final class Client extends GameEngine {
                class243.field3305 = 2;
                class204 var33 = new class204();
                var33.method3762(9, 128);
-               class48.field611 = class95.method1798(GameEngine.field682, 0, 22050);
-               class48.field611.method2064(var33);
+               WorldMapType0.field611 = class95.method1798(GameEngine.field682, 0, 22050);
+               WorldMapType0.field611.method2064(var33);
                class10.method42(field1171, class15.field294, class43.field559, var33);
                WidgetNode.field812 = class95.method1798(GameEngine.field682, 1, 2048);
                class164.field2291 = new class102();
@@ -5643,7 +5643,7 @@ public final class Client extends GameEngine {
                      IndexData var10 = class17.field311;
                      class5.field28 = var10;
                      class154.method2989(class17.field311);
-                     IndexData var11 = class38.field513;
+                     IndexData var11 = WorldMapType2.field513;
                      IndexData var12 = ChatMessages.indexModels;
                      IndexData var13 = class77.indexSprites;
                      IndexData var14 = class91.field1411;
@@ -5743,8 +5743,8 @@ public final class Client extends GameEngine {
                      ++var0;
                   }
 
-                  if(class32.field460 == null) {
-                     class32.field460 = class56.method826(class77.indexSprites, "mod_icons", "");
+                  if(WorldMapData.field460 == null) {
+                     WorldMapData.field460 = class56.method826(class77.indexSprites, "mod_icons", "");
                   } else {
                      ++var0;
                   }
@@ -5753,7 +5753,7 @@ public final class Client extends GameEngine {
                      class92.field1431 = "Loading sprites - " + var0 * 100 / 12 + "%";
                      class92.field1430 = 70;
                   } else {
-                     FontTypeFace.modIcons = class32.field460;
+                     FontTypeFace.modIcons = WorldMapData.field460;
                      class158.field2238.method5145();
                      var1 = (int)(Math.random() * 21.0D) - 10;
                      var2 = (int)(Math.random() * 21.0D) - 10;
@@ -5794,8 +5794,8 @@ public final class Client extends GameEngine {
                      field968 = 130;
                   }
                } else if(field968 == 130) {
-                  if(!class38.field513.method4178()) {
-                     class92.field1431 = "Loading interfaces - " + class38.field513.method4296() * 4 / 5 + "%";
+                  if(!WorldMapType2.field513.method4178()) {
+                     class92.field1431 = "Loading interfaces - " + WorldMapType2.field513.method4296() * 4 / 5 + "%";
                      class92.field1430 = 100;
                   } else if(!class66.indexScripts.method4178()) {
                      class92.field1431 = "Loading interfaces - " + (class66.indexScripts.method4296() / 6 + 80) + "%";
@@ -5809,12 +5809,12 @@ public final class Client extends GameEngine {
                      field968 = 140;
                   }
                } else if(field968 == 140) {
-                  if(!class22.field336.method4225(class40.field538.field540)) {
-                     class92.field1431 = "Loading world map - " + class22.field336.method4196(class40.field538.field540) / 10 + "%";
+                  if(!class22.indexWorldMap.method4225(class40.field538.field540)) {
+                     class92.field1431 = "Loading world map - " + class22.indexWorldMap.method4196(class40.field538.field540) / 10 + "%";
                   } else {
                      if(class83.field1325 == null) {
-                        class83.field1325 = new class288();
-                        class83.field1325.method5253(class22.field336, class40.field531, field944, class112.field1658);
+                        class83.field1325 = new RenderOverview();
+                        class83.field1325.method5253(class22.indexWorldMap, class40.field531, field944, class112.field1658);
                      }
 
                      var0 = class83.field1325.method5255();
@@ -5871,8 +5871,8 @@ public final class Client extends GameEngine {
       Tile.method2530();
       class166.method3132();
       class20.field331 = null;
-      if(class48.field611 != null) {
-         class48.field611.method2049();
+      if(WorldMapType0.field611 != null) {
+         WorldMapType0.field611.method2049();
       }
 
       if(WidgetNode.field812 != null) {

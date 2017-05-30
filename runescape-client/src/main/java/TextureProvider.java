@@ -99,7 +99,7 @@ public class TextureProvider implements class145 {
    public static void method2414(IndexDataBase var0, String var1, String var2, int var3, boolean var4) {
       int var5 = var0.method4189(var1);
       int var6 = var0.method4190(var5, var2);
-      class32.method322(var0, var5, var6, var3, var4);
+      WorldMapData.method322(var0, var5, var6, var3, var4);
    }
 
    @ObfuscatedName("v")

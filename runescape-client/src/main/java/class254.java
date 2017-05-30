@@ -345,7 +345,7 @@ public class class254 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = class30.method265(field3404, Frames.field2126, this.field3411, 0);
+            var1 = WorldMapType1.method265(field3404, Frames.field2126, this.field3411, 0);
             if(var1 != null) {
                field3414.put(var1, (long)this.field3411);
             }

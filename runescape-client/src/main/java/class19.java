@@ -112,7 +112,7 @@ final class class19 implements Comparator {
                ;
             }
 
-            class38.method513(1L);
+            WorldMapType2.method513(1L);
          } else {
             try {
                Thread.sleep(var0);

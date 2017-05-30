@@ -30,7 +30,7 @@ public class class262 {
             String var9 = var5.field3621;
             int var10 = var7.method4189(var9);
             int var11 = var7.method4190(var10, "");
-            Font var6 = class30.method265(var7, var8, var10, var11);
+            Font var6 = WorldMapType1.method265(var7, var8, var10, var11);
             if(var6 != null) {
                this.field3631.put(var5, var6);
                var2.put(var5, var6);

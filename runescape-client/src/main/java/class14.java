@@ -398,12 +398,12 @@ public class class14 {
       signature = "(ILclass212;ZI)V",
       garbageValue = "217947212"
    )
-   static void method81(int var0, class212 var1, boolean var2) {
-      class32 var3 = MessageNode.method1130().method5292(var0);
+   static void method81(int var0, Coordinates var1, boolean var2) {
+      WorldMapData var3 = MessageNode.method1130().method5292(var0);
       int var4 = XGrandExchangeOffer.localPlayer.field874;
       int var5 = class166.baseX + (XGrandExchangeOffer.localPlayer.x >> 7);
       int var6 = (XGrandExchangeOffer.localPlayer.y >> 7) + class146.baseY;
-      class212 var7 = new class212(var4, var5, var6);
+      Coordinates var7 = new Coordinates(var4, var5, var6);
       MessageNode.method1130().method5268(var3, var7, var1, var2);
    }
 

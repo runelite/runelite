@@ -412,23 +412,23 @@ public abstract class FontTypeFace extends Rasterizer2D {
    void method4824(String var1) {
       try {
          if(var1.startsWith("col=")) {
-            field3648 = class48.method738(var1.substring(4), 16);
+            field3648 = WorldMapType0.method738(var1.substring(4), 16);
          } else if(var1.equals("/col")) {
             field3648 = field3647;
          } else if(var1.startsWith("str=")) {
-            field3640 = class48.method738(var1.substring(4), 16);
+            field3640 = WorldMapType0.method738(var1.substring(4), 16);
          } else if(var1.equals("str")) {
             field3640 = 8388608;
          } else if(var1.equals("/str")) {
             field3640 = -1;
          } else if(var1.startsWith("u=")) {
-            field3644 = class48.method738(var1.substring(2), 16);
+            field3644 = WorldMapType0.method738(var1.substring(2), 16);
          } else if(var1.equals("u")) {
             field3644 = 0;
          } else if(var1.equals("/u")) {
             field3644 = -1;
          } else if(var1.startsWith("shad=")) {
-            field3646 = class48.method738(var1.substring(5), 16);
+            field3646 = WorldMapType0.method738(var1.substring(5), 16);
          } else if(var1.equals("shad")) {
             field3646 = 0;
          } else if(var1.equals("/shad")) {

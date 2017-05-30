@@ -265,7 +265,7 @@ public final class NPC extends Actor {
       var12 = var12;
 
       try {
-         URL var20 = new URL(class26.method179("services", false) + "m=accountappeal/login.ws");
+         URL var20 = new URL(WorldMapType3.method179("services", false) + "m=accountappeal/login.ws");
          URLConnection var25 = var20.openConnection();
          var25.setDoInput(true);
          var25.setDoOutput(true);

@@ -180,7 +180,7 @@ public class ScriptState {
          class51.field646 = var0;
          DecorativeObject.field2158 = var1;
          class12.setGameState(25);
-         class32.method349("Loading - please wait.", true);
+         WorldMapData.method349("Loading - please wait.", true);
          int var3 = class166.baseX;
          int var4 = class146.baseY;
          class166.baseX = (var0 - 6) * 8;

@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("z")
 public class class25 {
    @ObfuscatedName("h")
-   class212 field371;
+   Coordinates field371;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 159288117
@@ -47,7 +47,7 @@ public class class25 {
       return var0 + var1;
    }
 
-   class25(int var1, class212 var2) {
+   class25(int var1, Coordinates var2) {
       this.field375 = var1;
       this.field371 = var2;
    }

@@ -105,8 +105,8 @@ public class class239 implements class178 {
             class2.field10[var5 + 192] = 16777215;
          }
 
-         class30.field430 = new int[256];
-         class30.field437 = new int['耀'];
+         WorldMapType1.field430 = new int[256];
+         WorldMapType1.field437 = new int['耀'];
          Preferences.field1289 = new int['耀'];
          class64.method1094((ModIcon)null);
          class5.field33 = new int['耀'];

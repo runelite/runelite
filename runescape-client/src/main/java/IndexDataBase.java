@@ -506,13 +506,13 @@ public abstract class IndexDataBase {
 
                for(var15 = 0; var15 < var3; ++var15) {
                   if(!this.field3205) {
-                     var5[var4[var15]] = class38.method538(var19[var15], false);
+                     var5[var4[var15]] = WorldMapType2.method538(var19[var15], false);
                   } else {
                      var5[var4[var15]] = var19[var15];
                   }
                }
             } else if(!this.field3205) {
-               var5[var4[0]] = class38.method538(var20, false);
+               var5[var4[0]] = WorldMapType2.method538(var20, false);
             } else {
                var5[var4[0]] = var20;
             }

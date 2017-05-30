@@ -169,7 +169,7 @@ public class class208 extends class119 {
 
          for(int var9 = var0; var9 < var1; ++var9) {
             World var11 = World.worldList[var9];
-            int var12 = class32.method348(var11, var8, var2, var3);
+            int var12 = WorldMapData.method348(var11, var8, var2, var3);
             int var10;
             if(var12 != 0) {
                if(var3) {
@@ -180,7 +180,7 @@ public class class208 extends class119 {
             } else if(var4 == -1) {
                var10 = 0;
             } else {
-               int var13 = class32.method348(var11, var8, var4, var5);
+               int var13 = WorldMapData.method348(var11, var8, var4, var5);
                if(var5) {
                   var10 = -var13;
                } else {

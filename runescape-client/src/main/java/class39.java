@@ -13,7 +13,7 @@ public class class39 {
    @ObfuscatedName("v")
    final class33 field522;
    @ObfuscatedName("u")
-   public final class212 field523;
+   public final Coordinates field523;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 960156815
@@ -25,7 +25,7 @@ public class class39 {
    )
    public final int field526;
    @ObfuscatedName("h")
-   public final class212 field527;
+   public final Coordinates field527;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 831690275
@@ -37,7 +37,7 @@ public class class39 {
    )
    final int field529;
 
-   class39(int var1, class212 var2, class212 var3, class33 var4) {
+   class39(int var1, Coordinates var2, Coordinates var3, class33 var4) {
       this.field526 = var1;
       this.field523 = var2;
       this.field527 = var3;

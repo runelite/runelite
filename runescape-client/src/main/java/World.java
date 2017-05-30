@@ -147,12 +147,12 @@ public class World {
          Buffer.field2378 = null;
          class45.field584 = null;
          class100.field1544 = null;
-         class38.field518 = null;
+         WorldMapType2.field518 = null;
          field1265 = null;
          class24.field365 = null;
          class2.field10 = null;
-         class30.field430 = null;
-         class30.field437 = null;
+         WorldMapType1.field430 = null;
+         WorldMapType1.field437 = null;
          Preferences.field1289 = null;
          class5.field33 = null;
          GroundObject.field1847 = null;

@@ -133,7 +133,7 @@ public class class217 {
                   if(var0.itemIds[var3] > 0) {
                      ItemComposition var8 = class51.getItemDefinition(var0.itemIds[var3] - 1);
                      if(Client.field1043 == 1 && class6.method16(class43.method626(var0))) {
-                        if(var0.id != class214.field2622 || class48.field612 != var3) {
+                        if(var0.id != class214.field2622 || WorldMapType0.field612 != var3) {
                            class176.addMenuEntry("Use", Client.field1142 + " " + "->" + " " + class82.method1610(16748608) + var8.name, 31, var8.id, var3, var0.id);
                         }
                      } else if(Client.field1045 && class6.method16(class43.method626(var0))) {

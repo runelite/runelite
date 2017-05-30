@@ -157,7 +157,7 @@ public final class ItemLayer {
                   var5 = class92.loginWindowX + 180 - 80;
                   var6 = 291;
                   if(var1 == 1 && var10 >= var5 - 75 && var10 <= var5 + 75 && var11 >= var6 - 20 && var11 <= var6 + 20) {
-                     class11.method47(class26.method179("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws", true, false);
+                     class11.method47(WorldMapType3.method179("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws", true, false);
                   }
 
                   var5 = class92.loginWindowX + 180 + 80;
@@ -361,7 +361,7 @@ public final class ItemLayer {
                            }
 
                            if(var1 == 1 && var10 >= class92.loginWindowX + 180 - 34 && var10 <= class92.loginWindowX + 180 + 34 && var11 >= 351 && var11 <= 363) {
-                              class11.method47(class26.method179("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
+                              class11.method47(WorldMapType3.method179("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
                            }
 
                            var13 = class92.loginWindowX + 180 + 80;

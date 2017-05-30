@@ -1,8 +1,10 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("am")
-public interface class42 {
+@Implements("WorldMapSectionBase")
+public interface WorldMapSectionBase {
    @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(IIIB)Z",
@@ -22,7 +24,7 @@ public interface class42 {
       signature = "(III)Lclass212;",
       garbageValue = "-820164631"
    )
-   class212 vmethod718(int var1, int var2);
+   Coordinates vmethod718(int var1, int var2);
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
@@ -36,7 +38,7 @@ public interface class42 {
       signature = "(Lclass32;I)V",
       garbageValue = "-228062308"
    )
-   void vmethod715(class32 var1);
+   void vmethod715(WorldMapData var1);
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(

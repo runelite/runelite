@@ -326,7 +326,7 @@ public final class Player extends Actor {
       if(var1 >= 0 && var1 < 104 && var2 >= 0 && var2 < 104) {
          if(super.pathX[0] >= 0 && super.pathX[0] < 104 && super.pathY[0] >= 0 && super.pathY[0] < 104) {
             if(var3 == 2) {
-               class38.method537(this, var1, var2, (byte)2);
+               WorldMapType2.method537(this, var1, var2, (byte)2);
             }
 
             this.method1164(var1, var2, var3);

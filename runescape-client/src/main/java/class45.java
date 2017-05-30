@@ -234,7 +234,7 @@ public class class45 extends class28 {
 
             if(Client.field1077 != var3) {
                if(Client.field1077 == 0 && Client.field1127 != -1) {
-                  class32.method322(class44.indexTrack1, Client.field1127, 0, var3, false);
+                  WorldMapData.method322(class44.indexTrack1, Client.field1127, 0, var3, false);
                   Client.field1109 = false;
                } else if(var3 == 0) {
                   class36.field501.method3801();

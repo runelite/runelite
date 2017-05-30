@@ -7,7 +7,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("as")
-public class class44 extends class32 {
+public class class44 extends WorldMapData {
    @ObfuscatedName("b")
    HashSet field571;
    @ObfuscatedName("o")
@@ -29,7 +29,7 @@ public class class44 extends class32 {
       garbageValue = "-310776848"
    )
    void method640(Buffer var1, Buffer var2, Buffer var3, int var4, boolean var5) {
-      this.method271(var1, var4);
+      this.loadMapData(var1, var4);
       int var6 = var3.readUnsignedShort();
       this.field571 = new HashSet(var6);
 
@@ -75,7 +75,7 @@ public class class44 extends class32 {
 
       for(int var4 = 0; var4 < var3; ++var4) {
          int var5 = var1.method3214();
-         class212 var6 = new class212(var1.readInt());
+         Coordinates var6 = new Coordinates(var1.readInt());
          boolean var7 = var1.readUnsignedByte() == 1;
          if(var2 || !var7) {
             this.field572.add(new class25(var5, var6));

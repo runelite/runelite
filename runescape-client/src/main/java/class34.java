@@ -44,7 +44,7 @@ public class class34 {
    @ObfuscatedName("b")
    HashMap field484;
    @ObfuscatedName("o")
-   static final class212 field486;
+   static final Coordinates field486;
    @ObfuscatedName("hx")
    @ObfuscatedGetter(
       intValue = -856073755
@@ -427,9 +427,9 @@ public class class34 {
 
       while(var7.hasNext()) {
          Entry var8 = (Entry)var7.next();
-         class212 var9 = (class212)var8.getKey();
-         int var10 = (int)((float)var1 + var5 * (float)var9.field2600 - var6);
-         int var11 = (int)((float)(var4 + var2) - var5 * (float)var9.field2601 - var6);
+         Coordinates var9 = (Coordinates)var8.getKey();
+         int var10 = (int)((float)var1 + var5 * (float)var9.worldX - var6);
+         int var11 = (int)((float)(var4 + var2) - var5 * (float)var9.worldY - var6);
          class39 var12 = (class39)var8.getValue();
          if(var12 != null) {
             var12.field521 = var10;
@@ -546,27 +546,27 @@ public class class34 {
                   if(var10 != null) {
                      if(var10.field526 != var9.field3279) {
                         class39 var16 = new class39(var9.field3279, var10.field523, var10.field527, this.method390(var9));
-                        this.field484.put(new class212(field486), var16);
+                        this.field484.put(new Coordinates(field486), var16);
                         var10 = var16;
                      }
 
-                     int var11 = var10.field523.field2603 - var10.field527.field2603;
-                     var10.field527.field2603 = var4;
-                     var10.field523.field2603 = var4 + var11;
+                     int var11 = var10.field523.plane - var10.field527.plane;
+                     var10.field527.plane = var4;
+                     var10.field523.plane = var4 + var11;
                      return;
                   }
 
-                  class212 var15 = new class212(var4, var1 + this.field475 * 64, var2 + this.field476 * 64);
-                  class212 var12 = null;
+                  Coordinates var15 = new Coordinates(var4, var1 + this.field475 * 64, var2 + this.field476 * 64);
+                  Coordinates var12 = null;
                   if(this.field477 != null) {
-                     var12 = new class212(this.field477.field410 + var4, this.field477.field409 * 64 + var1, var2 + this.field477.field404 * 64);
+                     var12 = new Coordinates(this.field477.field410 + var4, this.field477.field409 * 64 + var1, var2 + this.field477.field404 * 64);
                   } else {
                      Iterator var13 = this.field478.iterator();
 
                      while(var13.hasNext()) {
                         class45 var14 = (class45)var13.next();
                         if(var14.method673(var1, var2)) {
-                           var12 = new class212(var14.field410 + var4, var1 + var14.field409 * 64 + var14.method654() * 8, var2 + var14.field404 * 64 + var14.method655() * 8);
+                           var12 = new Coordinates(var14.field410 + var4, var1 + var14.field409 * 64 + var14.method654() * 8, var2 + var14.field404 * 64 + var14.method655() * 8);
                            break;
                         }
                      }
@@ -574,7 +574,7 @@ public class class34 {
 
                   if(var12 != null) {
                      var10 = new class39(var9.field3279, var12, var15, this.method390(var9));
-                     this.field484.put(new class212(field486), var10);
+                     this.field484.put(new Coordinates(field486), var10);
                      return;
                   }
                }
@@ -718,7 +718,7 @@ public class class34 {
    }
 
    static {
-      field486 = new class212();
+      field486 = new Coordinates();
    }
 
    @ObfuscatedName("h")
@@ -744,8 +744,8 @@ public class class34 {
 
       while(var6.hasNext()) {
          class39 var7 = (class39)var6.next();
-         int var8 = var7.field527.field2600 % 64;
-         int var9 = var7.field527.field2601 % 64;
+         int var8 = var7.field527.worldX % 64;
+         int var9 = var7.field527.worldY % 64;
          var7.field521 = (int)((float)var1 + (float)var8 * var5);
          var7.field528 = (int)((float)var2 + var5 * (float)(63 - var9));
          if(!var3.contains(Integer.valueOf(var7.field526))) {
@@ -780,7 +780,7 @@ public class class34 {
       for(int var6 = var1; var6 < var1 + var3; ++var6) {
          label64:
          for(int var7 = var2; var7 < var2 + var4; ++var7) {
-            class212 var8 = new class212(0, var6, var7);
+            Coordinates var8 = new Coordinates(0, var6, var7);
 
             for(int var9 = 0; var9 < var5.field408; ++var9) {
                class31[] var10 = var5.field413[var9][var6][var7];
@@ -791,13 +791,13 @@ public class class34 {
                      class31 var13 = var11[var12];
                      class242 var14 = this.method413(var13.field445);
                      if(var14 != null) {
-                        class212 var15 = new class212(var9, var6 + this.field475 * 64, var7 + this.field476 * 64);
-                        class212 var16 = null;
+                        Coordinates var15 = new Coordinates(var9, var6 + this.field475 * 64, var7 + this.field476 * 64);
+                        Coordinates var16 = null;
                         if(this.field477 != null) {
-                           var16 = new class212(var9 + this.field477.field410, var6 + this.field477.field409 * 64, this.field477.field404 * 64 + var7);
+                           var16 = new Coordinates(var9 + this.field477.field410, var6 + this.field477.field409 * 64, this.field477.field404 * 64 + var7);
                         } else {
                            class45 var17 = (class45)var5;
-                           var16 = new class212(var17.field410 + var9, var6 + var17.field409 * 64 + var17.method654() * 8, var7 + var17.field404 * 64 + var17.method655() * 8);
+                           var16 = new Coordinates(var17.field410 + var9, var6 + var17.field409 * 64 + var17.method654() * 8, var7 + var17.field404 * 64 + var17.method655() * 8);
                         }
 
                         class39 var18 = new class39(var14.field3279, var16, var15, this.method390(var14));
@@ -985,7 +985,7 @@ public class class34 {
 
       while(var2.hasNext()) {
          class25 var3 = (class25)var2.next();
-         if(this.field475 == var3.field371.field2600 >> 6 && this.field476 == var3.field371.field2601 >> 6) {
+         if(this.field475 == var3.field371.worldX >> 6 && this.field476 == var3.field371.worldY >> 6) {
             class39 var4 = new class39(var3.field375, var3.field371, var3.field371, this.method389(var3.field375));
             this.field483.add(var4);
          }

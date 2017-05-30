@@ -33,7 +33,7 @@ public class class35 {
          MessageNode.method1130().method5262(var3, var9, var5, true);
          return 1;
       } else {
-         class32 var11;
+         WorldMapData var11;
          if(var0 == 6601) {
             var3 = class83.intStack[--class83.intStackSize];
             String var16 = "";
@@ -59,29 +59,29 @@ public class class35 {
             class83.intStack[++class83.intStackSize - 1] = MessageNode.method1130().method5276()?1:0;
             return 1;
          } else {
-            class212 var15;
+            Coordinates var15;
             if(var0 == 6606) {
-               var15 = new class212(class83.intStack[--class83.intStackSize]);
-               MessageNode.method1130().method5278(var15.field2600, var15.field2601);
+               var15 = new Coordinates(class83.intStack[--class83.intStackSize]);
+               MessageNode.method1130().method5278(var15.worldX, var15.worldY);
                return 1;
             } else if(var0 == 6607) {
-               var15 = new class212(class83.intStack[--class83.intStackSize]);
-               MessageNode.method1130().method5279(var15.field2600, var15.field2601);
+               var15 = new Coordinates(class83.intStack[--class83.intStackSize]);
+               MessageNode.method1130().method5279(var15.worldX, var15.worldY);
                return 1;
             } else if(var0 == 6608) {
-               var15 = new class212(class83.intStack[--class83.intStackSize]);
-               MessageNode.method1130().method5280(var15.field2603, var15.field2600, var15.field2601);
+               var15 = new Coordinates(class83.intStack[--class83.intStackSize]);
+               MessageNode.method1130().method5280(var15.plane, var15.worldX, var15.worldY);
                return 1;
             } else if(var0 == 6609) {
-               var15 = new class212(class83.intStack[--class83.intStackSize]);
-               MessageNode.method1130().method5281(var15.field2603, var15.field2600, var15.field2601);
+               var15 = new Coordinates(class83.intStack[--class83.intStackSize]);
+               MessageNode.method1130().method5281(var15.plane, var15.worldX, var15.worldY);
                return 1;
             } else if(var0 == 6610) {
                class83.intStack[++class83.intStackSize - 1] = MessageNode.method1130().method5363();
                class83.intStack[++class83.intStackSize - 1] = MessageNode.method1130().method5254();
                return 1;
             } else {
-               class32 var13;
+               WorldMapData var13;
                if(var0 == 6611) {
                   var3 = class83.intStack[--class83.intStackSize];
                   var13 = MessageNode.method1130().method5292(var3);
@@ -136,8 +136,8 @@ public class class35 {
                      class83.intStack[++class83.intStackSize - 1] = -1;
                      class83.intStack[++class83.intStackSize - 1] = -1;
                   } else {
-                     class83.intStack[++class83.intStackSize - 1] = var15.field2600;
-                     class83.intStack[++class83.intStackSize - 1] = var15.field2601;
+                     class83.intStack[++class83.intStackSize - 1] = var15.worldX;
+                     class83.intStack[++class83.intStackSize - 1] = var15.worldY;
                   }
 
                   return 1;
@@ -145,14 +145,14 @@ public class class35 {
                   class83.intStack[++class83.intStackSize - 1] = MessageNode.method1130().method5427();
                   return 1;
                } else if(var0 == 6617) {
-                  var15 = new class212(class83.intStack[--class83.intStackSize]);
+                  var15 = new Coordinates(class83.intStack[--class83.intStackSize]);
                   var13 = MessageNode.method1130().method5265();
                   if(var13 == null) {
                      class83.intStack[++class83.intStackSize - 1] = -1;
                      class83.intStack[++class83.intStackSize - 1] = -1;
                      return 1;
                   } else {
-                     int[] var14 = var13.method280(var15.field2603, var15.field2600, var15.field2601);
+                     int[] var14 = var13.method280(var15.plane, var15.worldX, var15.worldY);
                      if(var14 == null) {
                         class83.intStack[++class83.intStackSize - 1] = -1;
                         class83.intStack[++class83.intStackSize - 1] = -1;
@@ -164,16 +164,16 @@ public class class35 {
                      return 1;
                   }
                } else {
-                  class212 var7;
+                  Coordinates var7;
                   if(var0 == 6618) {
-                     var15 = new class212(class83.intStack[--class83.intStackSize]);
+                     var15 = new Coordinates(class83.intStack[--class83.intStackSize]);
                      var13 = MessageNode.method1130().method5265();
                      if(var13 == null) {
                         class83.intStack[++class83.intStackSize - 1] = -1;
                         class83.intStack[++class83.intStackSize - 1] = -1;
                         return 1;
                      } else {
-                        var7 = var13.method341(var15.field2600, var15.field2601);
+                        var7 = var13.method341(var15.worldX, var15.worldY);
                         if(var7 == null) {
                            class83.intStack[++class83.intStackSize - 1] = -1;
                         } else {
@@ -183,29 +183,29 @@ public class class35 {
                         return 1;
                      }
                   } else {
-                     class212 var12;
+                     Coordinates var12;
                      if(var0 == 6619) {
                         class83.intStackSize -= 2;
                         var3 = class83.intStack[class83.intStackSize];
-                        var12 = new class212(class83.intStack[class83.intStackSize + 1]);
+                        var12 = new Coordinates(class83.intStack[class83.intStackSize + 1]);
                         class14.method81(var3, var12, false);
                         return 1;
                      } else if(var0 == 6620) {
                         class83.intStackSize -= 2;
                         var3 = class83.intStack[class83.intStackSize];
-                        var12 = new class212(class83.intStack[class83.intStackSize + 1]);
+                        var12 = new Coordinates(class83.intStack[class83.intStackSize + 1]);
                         class14.method81(var3, var12, true);
                         return 1;
                      } else if(var0 == 6621) {
                         class83.intStackSize -= 2;
                         var3 = class83.intStack[class83.intStackSize];
-                        var12 = new class212(class83.intStack[class83.intStackSize + 1]);
+                        var12 = new Coordinates(class83.intStack[class83.intStackSize + 1]);
                         var11 = MessageNode.method1130().method5292(var3);
                         if(var11 == null) {
                            class83.intStack[++class83.intStackSize - 1] = 0;
                            return 1;
                         } else {
-                           class83.intStack[++class83.intStackSize - 1] = var11.method270(var12.field2603, var12.field2600, var12.field2601)?1:0;
+                           class83.intStack[++class83.intStackSize - 1] = var11.method270(var12.plane, var12.worldX, var12.worldY)?1:0;
                            return 1;
                         }
                      } else if(var0 == 6622) {
@@ -213,8 +213,8 @@ public class class35 {
                         class83.intStack[++class83.intStackSize - 1] = MessageNode.method1130().method5286();
                         return 1;
                      } else if(var0 == 6623) {
-                        var15 = new class212(class83.intStack[--class83.intStackSize]);
-                        var13 = MessageNode.method1130().method5307(var15.field2603, var15.field2600, var15.field2601);
+                        var15 = new Coordinates(class83.intStack[--class83.intStackSize]);
+                        var13 = MessageNode.method1130().method5307(var15.plane, var15.worldX, var15.worldY);
                         if(var13 == null) {
                            class83.intStack[++class83.intStackSize - 1] = -1;
                         } else {
@@ -283,7 +283,7 @@ public class class35 {
                            } else if(var0 == 6638) {
                               class83.intStackSize -= 2;
                               var3 = class83.intStack[class83.intStackSize];
-                              var12 = new class212(class83.intStack[class83.intStackSize + 1]);
+                              var12 = new Coordinates(class83.intStack[class83.intStackSize + 1]);
                               var7 = MessageNode.method1130().method5416(var3, var12);
                               if(var7 == null) {
                                  class83.intStack[++class83.intStackSize - 1] = -1;

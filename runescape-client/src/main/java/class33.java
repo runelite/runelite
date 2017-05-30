@@ -654,7 +654,7 @@ public class class33 {
 
                         if(Client.field898) {
                            Rasterizer2D.method5042(var19, var20, var21, var22, 0);
-                           class32.method349("Loading - please wait.", false);
+                           WorldMapData.method349("Loading - please wait.", false);
                         }
 
                         Client.field1095[var10.boundsIndex] = true;
@@ -715,7 +715,7 @@ public class class33 {
 
                                           boolean var30 = false;
 
-                                          for(var31 = 0; var31 < class48.clanChatCount; ++var31) {
+                                          for(var31 = 0; var31 < WorldMapType0.clanChatCount; ++var31) {
                                              if(var26.name.equals(ClassInfo.clanMembers[var31].username)) {
                                                 var30 = true;
                                                 break;
@@ -814,11 +814,11 @@ public class class33 {
                      }
 
                      if(var10.contentType == 1400) {
-                        class83.field1325.method5270(var12, var13, var10.width, var10.height, Client.gameCycle);
+                        class83.field1325.extractWorldmap(var12, var13, var10.width, var10.height, Client.gameCycle);
                      }
 
                      if(var10.contentType == 1401) {
-                        class83.field1325.method5436(var12, var13, var10.width, var10.height);
+                        class83.field1325.extractData(var12, var13, var10.width, var10.height);
                      }
                   }
 
@@ -905,7 +905,7 @@ public class class33 {
                                     var53 = var10.itemIds[var19] - 1;
                                     if(var22 + 32 > var2 && var22 < var4 && var49 + 32 > var3 && var49 < var5 || class20.field323 == var10 && var19 == Client.field1105) {
                                        SpritePixels var58;
-                                       if(Client.field1043 == 1 && class48.field612 == var19 && var10.id == class214.field2622) {
+                                       if(Client.field1043 == 1 && WorldMapType0.field612 == var19 && var10.id == class214.field2622) {
                                           var58 = class28.createSprite(var53, var10.itemQuantities[var19], 2, 0, 2, false);
                                        } else {
                                           var58 = class28.createSprite(var53, var10.itemQuantities[var19], 1, 3153952, 2, false);
@@ -1318,10 +1318,10 @@ public class class33 {
       boolean var0 = true;
 
       int var1;
-      for(var1 = 0; var1 < class32.field461.length; ++var1) {
-         if(class168.field2317[var1] != -1 && class32.field461[var1] == null) {
-            class32.field461[var1] = class34.indexMaps.getConfigData(class168.field2317[var1], 0);
-            if(class32.field461[var1] == null) {
+      for(var1 = 0; var1 < WorldMapData.field461.length; ++var1) {
+         if(class168.field2317[var1] != -1 && WorldMapData.field461[var1] == null) {
+            WorldMapData.field461[var1] = class34.indexMaps.getConfigData(class168.field2317[var1], 0);
+            if(WorldMapData.field461[var1] == null) {
                var0 = false;
                ++Client.field1044;
             }
@@ -1354,7 +1354,7 @@ public class class33 {
          int var16;
          int var17;
          int var18;
-         for(var1 = 0; var1 < class32.field461.length; ++var1) {
+         for(var1 = 0; var1 < WorldMapData.field461.length; ++var1) {
             byte[] var2 = class50.field619[var1];
             if(var2 != null) {
                var3 = (RSCanvas.mapRegions[var1] >> 8) * 64 - class166.baseX;
@@ -1421,7 +1421,7 @@ public class class33 {
             Client.field949 = 2;
          } else {
             if(Client.field949 != 0) {
-               class32.method349("Loading - please wait." + "<br>" + " (" + 100 + "%" + ")", true);
+               WorldMapData.method349("Loading - please wait." + "<br>" + " (" + 100 + "%" + ")", true);
             }
 
             Ignore.method1118();
@@ -1458,7 +1458,7 @@ public class class33 {
             class249.field3371 = new int[104];
             class11.field264 = new int[104];
             class61.field745 = new int[104];
-            var1 = class32.field461.length;
+            var1 = WorldMapData.field461.length;
 
             for(class82 var30 = (class82)class82.field1299.method3660(); var30 != null; var30 = (class82)class82.field1299.method3661()) {
                if(var30.field1298 != null) {
@@ -1481,7 +1481,7 @@ public class class33 {
                for(var23 = 0; var23 < var1; ++var23) {
                   var3 = (RSCanvas.mapRegions[var23] >> 8) * 64 - class166.baseX;
                   var4 = (RSCanvas.mapRegions[var23] & 255) * 64 - class146.baseY;
-                  var25 = class32.field461[var23];
+                  var25 = WorldMapData.field461[var23];
                   if(var25 != null) {
                      Ignore.method1118();
                      ChatMessages.method1855(var25, var3, var4, class51.field646 * 8 - 48, DecorativeObject.field2158 * 8 - 48, Client.collisionMaps);
@@ -1491,7 +1491,7 @@ public class class33 {
                for(var23 = 0; var23 < var1; ++var23) {
                   var3 = (RSCanvas.mapRegions[var23] >> 8) * 64 - class166.baseX;
                   var4 = (RSCanvas.mapRegions[var23] & 255) * 64 - class146.baseY;
-                  var25 = class32.field461[var23];
+                  var25 = WorldMapData.field461[var23];
                   if(var25 == null && DecorativeObject.field2158 < 800) {
                      Ignore.method1118();
                      Item.method1796(var3, var4, 64, 64);
@@ -1573,8 +1573,8 @@ public class class33 {
                            var11 = var10 / 8 + (var9 / 8 << 8);
 
                            for(var33 = 0; var33 < RSCanvas.mapRegions.length; ++var33) {
-                              if(RSCanvas.mapRegions[var33] == var11 && class32.field461[var33] != null) {
-                                 class11.method46(class32.field461[var33], var23, var3 * 8, var4 * 8, var32, (var9 & 7) * 8, (var10 & 7) * 8, var29, Client.collisionMaps);
+                              if(RSCanvas.mapRegions[var33] == var11 && WorldMapData.field461[var33] != null) {
+                                 class11.method46(WorldMapData.field461[var33], var23, var3 * 8, var4 * 8, var32, (var9 & 7) * 8, (var10 & 7) * 8, var29, Client.collisionMaps);
                                  var31 = true;
                                  break;
                               }
@@ -1651,7 +1651,7 @@ public class class33 {
             }
 
             Ignore.method1118();
-            class38.method512();
+            WorldMapType2.method512();
             ObjectComposition.field3478.reset();
             if(class24.field356.method873()) {
                Client.secretPacketBuffer1.putOpcode(169);

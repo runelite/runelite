@@ -146,7 +146,7 @@ public class MessageNode extends CacheableNode {
       signature = "(I)Lclass288;",
       garbageValue = "-963316191"
    )
-   static class288 method1130() {
+   static RenderOverview method1130() {
       return class83.field1325;
    }
 

@@ -32,7 +32,7 @@ final class class17 implements Comparator {
                   class69 var4 = new class69();
                   var4.field816 = var3;
                   var4.field826 = var3.field2716;
-                  class48.method739(var4, 2000000);
+                  WorldMapType0.method739(var4, 2000000);
                }
             }
 

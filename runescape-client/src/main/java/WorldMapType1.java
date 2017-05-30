@@ -1,9 +1,11 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aq")
-public class class30 implements class42 {
+@Implements("WorldMapType1")
+public class WorldMapType1 implements WorldMapSectionBase {
    @ObfuscatedName("bp")
    static class289 field423;
    @ObfuscatedName("h")
@@ -66,7 +68,7 @@ public class class30 implements class42 {
       signature = "(Lclass32;I)V",
       garbageValue = "-228062308"
    )
-   public void vmethod715(class32 var1) {
+   public void vmethod715(WorldMapData var1) {
       if(var1.field453 > this.field429) {
          var1.field453 = this.field429;
       }
@@ -149,13 +151,13 @@ public class class30 implements class42 {
       signature = "(III)Lclass212;",
       garbageValue = "-820164631"
    )
-   public class212 vmethod718(int var1, int var2) {
+   public Coordinates vmethod718(int var1, int var2) {
       if(!this.vmethod716(var1, var2)) {
          return null;
       } else {
          int var3 = this.field425 * 64 - this.field429 * 64 + var1;
          int var4 = this.field426 * 64 - this.field428 * 64 + var2;
-         return new class212(this.field434, var3, var4);
+         return new Coordinates(this.field434, var3, var4);
       }
    }
 

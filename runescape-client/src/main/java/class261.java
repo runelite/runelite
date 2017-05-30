@@ -65,12 +65,12 @@ public class class261 {
    )
    static final void method4791(String var0) {
       if(var0 != null) {
-         String var1 = class27.method214(var0, class30.field423);
+         String var1 = class27.method214(var0, WorldMapType1.field423);
          if(var1 != null) {
             for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
                Ignore var3 = Client.ignores[var2];
                String var4 = var3.name;
-               String var5 = class27.method214(var4, class30.field423);
+               String var5 = class27.method214(var4, WorldMapType1.field423);
                if(class21.method151(var0, var1, var4, var5)) {
                   --Client.ignoreCount;
 

@@ -102,7 +102,7 @@ public class class77 {
       } else {
          long var1;
          try {
-            URL var3 = new URL(class26.method179("services", false) + "m=accountappeal/login.ws");
+            URL var3 = new URL(WorldMapType3.method179("services", false) + "m=accountappeal/login.ws");
             URLConnection var4 = var3.openConnection();
             var4.setRequestProperty("connection", "close");
             var4.setDoInput(true);

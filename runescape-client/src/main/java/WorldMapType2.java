@@ -1,9 +1,11 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ag")
-public class class38 implements class42 {
+@Implements("WorldMapType2")
+public class WorldMapType2 implements WorldMapSectionBase {
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1361445081
@@ -121,13 +123,13 @@ public class class38 implements class42 {
       signature = "(III)Lclass212;",
       garbageValue = "-820164631"
    )
-   public class212 vmethod718(int var1, int var2) {
+   public Coordinates vmethod718(int var1, int var2) {
       if(!this.vmethod716(var1, var2)) {
          return null;
       } else {
          int var3 = var1 + (this.field510 * 64 - this.field514 * 64);
          int var4 = var2 + (this.field512 * 64 - this.field515 * 64);
-         return new class212(this.field519, var3, var4);
+         return new Coordinates(this.field519, var3, var4);
       }
    }
 
@@ -534,7 +536,7 @@ public class class38 implements class42 {
       signature = "(Lclass32;I)V",
       garbageValue = "-228062308"
    )
-   public void vmethod715(class32 var1) {
+   public void vmethod715(WorldMapData var1) {
       if(var1.field453 > this.field514) {
          var1.field453 = this.field514;
       }
@@ -624,7 +626,7 @@ public class class38 implements class42 {
                   var9 = class83.scriptStringStack[--ChatMessages.scriptStringStackSize];
                   if(var9 != null) {
                      if((Client.ignoreCount < 100 || Client.field1012 == 1) && Client.ignoreCount < 400) {
-                        String var12 = class27.method214(var9, class30.field423);
+                        String var12 = class27.method214(var9, WorldMapType1.field423);
                         if(var12 != null) {
                            var5 = 0;
 
@@ -634,14 +636,14 @@ public class class38 implements class42 {
                               if(var5 >= Client.ignoreCount) {
                                  for(var5 = 0; var5 < Client.friendCount; ++var5) {
                                     Friend var14 = Client.friends[var5];
-                                    var7 = class27.method214(var14.name, class30.field423);
+                                    var7 = class27.method214(var14.name, WorldMapType1.field423);
                                     if(var7 != null && var7.equals(var12)) {
                                        GameObject.sendGameMessage(31, "", "Please remove " + var9 + " from your friend list first");
                                        return 1;
                                     }
 
                                     if(var14.previousName != null) {
-                                       var8 = class27.method214(var14.previousName, class30.field423);
+                                       var8 = class27.method214(var14.previousName, WorldMapType1.field423);
                                        if(var8 != null && var8.equals(var12)) {
                                           GameObject.sendGameMessage(31, "", "Please remove " + var9 + " from your friend list first");
                                           return 1;
@@ -649,7 +651,7 @@ public class class38 implements class42 {
                                     }
                                  }
 
-                                 if(class27.method214(XGrandExchangeOffer.localPlayer.name, class30.field423).equals(var12)) {
+                                 if(class27.method214(XGrandExchangeOffer.localPlayer.name, WorldMapType1.field423).equals(var12)) {
                                     GameObject.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
                                  } else {
                                     Client.secretPacketBuffer1.putOpcode(44);
@@ -660,14 +662,14 @@ public class class38 implements class42 {
                               }
 
                               Ignore var13 = Client.ignores[var5];
-                              var7 = class27.method214(var13.name, class30.field423);
+                              var7 = class27.method214(var13.name, WorldMapType1.field423);
                               if(var7 != null && var7.equals(var12)) {
                                  GameObject.sendGameMessage(31, "", var9 + " is already on your ignore list");
                                  break;
                               }
 
                               if(var13.previousName != null) {
-                                 var8 = class27.method214(var13.previousName, class30.field423);
+                                 var8 = class27.method214(var13.previousName, WorldMapType1.field423);
                                  if(var8 != null && var8.equals(var12)) {
                                     GameObject.sendGameMessage(31, "", var9 + " is already on your ignore list");
                                     break;
@@ -711,7 +713,7 @@ public class class38 implements class42 {
                   return 1;
                } else if(var0 == 3612) {
                   if(Client.field1115 != null) {
-                     class83.intStack[++class83.intStackSize - 1] = class48.clanChatCount;
+                     class83.intStack[++class83.intStackSize - 1] = WorldMapType0.clanChatCount;
                   } else {
                      class83.intStack[++class83.intStackSize - 1] = 0;
                   }
@@ -719,7 +721,7 @@ public class class38 implements class42 {
                   return 1;
                } else if(var0 == 3613) {
                   var3 = class83.intStack[--class83.intStackSize];
-                  if(Client.field1115 != null && var3 < class48.clanChatCount) {
+                  if(Client.field1115 != null && var3 < WorldMapType0.clanChatCount) {
                      class83.scriptStringStack[++ChatMessages.scriptStringStackSize - 1] = ClassInfo.clanMembers[var3].username;
                   } else {
                      class83.scriptStringStack[++ChatMessages.scriptStringStackSize - 1] = "";
@@ -728,7 +730,7 @@ public class class38 implements class42 {
                   return 1;
                } else if(var0 == 3614) {
                   var3 = class83.intStack[--class83.intStackSize];
-                  if(Client.field1115 != null && var3 < class48.clanChatCount) {
+                  if(Client.field1115 != null && var3 < WorldMapType0.clanChatCount) {
                      class83.intStack[++class83.intStackSize - 1] = ClassInfo.clanMembers[var3].world;
                   } else {
                      class83.intStack[++class83.intStackSize - 1] = 0;
@@ -737,7 +739,7 @@ public class class38 implements class42 {
                   return 1;
                } else if(var0 == 3615) {
                   var3 = class83.intStack[--class83.intStackSize];
-                  if(Client.field1115 != null && var3 < class48.clanChatCount) {
+                  if(Client.field1115 != null && var3 < WorldMapType0.clanChatCount) {
                      class83.intStack[++class83.intStackSize - 1] = ClassInfo.clanMembers[var3].rank;
                   } else {
                      class83.intStack[++class83.intStackSize - 1] = 0;
@@ -819,7 +821,7 @@ public class class38 implements class42 {
                   }
                } else {
                   var3 = class83.intStack[--class83.intStackSize];
-                  if(ClassInfo.clanMembers != null && var3 < class48.clanChatCount && ClassInfo.clanMembers[var3].username.equalsIgnoreCase(XGrandExchangeOffer.localPlayer.name)) {
+                  if(ClassInfo.clanMembers != null && var3 < WorldMapType0.clanChatCount && ClassInfo.clanMembers[var3].username.equalsIgnoreCase(XGrandExchangeOffer.localPlayer.name)) {
                      class83.intStack[++class83.intStackSize - 1] = 1;
                   } else {
                      class83.intStack[++class83.intStackSize - 1] = 0;

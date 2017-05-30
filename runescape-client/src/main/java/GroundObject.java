@@ -68,7 +68,7 @@ public final class GroundObject {
       garbageValue = "-11209"
    )
    public static void method2522(class69 var0) {
-      class48.method739(var0, 200000);
+      WorldMapType0.method739(var0, 200000);
    }
 
    @ObfuscatedName("q")

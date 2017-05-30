@@ -23,8 +23,8 @@ public class Ignore {
          WidgetNode.field812.method2046();
       }
 
-      if(class48.field611 != null) {
-         class48.field611.method2046();
+      if(WorldMapType0.field611 != null) {
+         WorldMapType0.field611.method2046();
       }
 
    }
@@ -301,8 +301,8 @@ public class Ignore {
             var17 = class92.field1445;
             var18 = 256;
             class92.field1426 += var17 * 128;
-            if(class92.field1426 > class30.field437.length) {
-               class92.field1426 -= class30.field437.length;
+            if(class92.field1426 > WorldMapType1.field437.length) {
+               class92.field1426 -= WorldMapType1.field437.length;
                var19 = (int)(Math.random() * 12.0D);
                class64.method1094(class29.field419[var19]);
             }
@@ -314,7 +314,7 @@ public class Ignore {
             int var10;
             int var23;
             for(var23 = 0; var23 < var20; ++var23) {
-               var10 = class5.field33[var7 + var19] - class30.field437[var19 + class92.field1426 & class30.field437.length - 1] * var17 / 6;
+               var10 = class5.field33[var7 + var19] - WorldMapType1.field437[var19 + class92.field1426 & WorldMapType1.field437.length - 1] * var17 / 6;
                if(var10 < 0) {
                   var10 = 0;
                }
@@ -436,12 +436,12 @@ public class Ignore {
          IndexFile.method3065();
          class89.field1392[class134.field1989.field1285?1:0].method5101(class92.field1416 + 765 - 40, 463);
          if(Client.gameState > 5 && Client.field896 == 0) {
-            if(class38.field518 != null) {
+            if(WorldMapType2.field518 != null) {
                var17 = class92.field1416 + 5;
                var18 = 463;
                byte var22 = 100;
                byte var21 = 35;
-               class38.field518.method5101(var17, var18);
+               WorldMapType2.field518.method5101(var17, var18);
                var0.method4817("World" + " " + Client.world, var22 / 2 + var17, var18 + var21 / 2 - 2, 16777215, 0);
                if(World.worldServersDownload != null) {
                   var1.method4817("Loading...", var22 / 2 + var17, var21 / 2 + var18 + 12, 16777215, 0);
@@ -449,7 +449,7 @@ public class Ignore {
                   var1.method4817("Click to switch", var22 / 2 + var17, var21 / 2 + var18 + 12, 16777215, 0);
                }
             } else {
-               class38.field518 = class238.method4337(class77.indexSprites, "sl_button", "");
+               WorldMapType2.field518 = class238.method4337(class77.indexSprites, "sl_button", "");
             }
          }
 

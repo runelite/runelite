@@ -198,8 +198,8 @@ public final class class41 {
 
                while(var11.hasNext()) {
                   class39 var12 = (class39)var11.next();
-                  int var13 = var3 * (var12.field527.field2600 - this.field551) / this.field553;
-                  int var14 = var4 - var4 * (var12.field527.field2601 - this.field552) / this.field554;
+                  int var13 = var3 * (var12.field527.worldX - this.field551) / this.field553;
+                  int var14 = var4 - var4 * (var12.field527.worldY - this.field552) / this.field554;
                   Rasterizer2D.method5004(var1 + var13, var14 + var2, 2, 16776960, 256);
                }
             }

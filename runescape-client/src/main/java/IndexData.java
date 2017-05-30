@@ -138,7 +138,7 @@ public class IndexData extends IndexDataBase {
          }
 
          if(var4) {
-            super.field3209[var1] = class38.method538(var2, false);
+            super.field3209[var1] = WorldMapType2.method538(var2, false);
          }
       }
 
@@ -268,7 +268,7 @@ public class IndexData extends IndexDataBase {
 
          this.field3233[var2] = true;
          if(var4) {
-            super.field3209[var2] = class38.method538(var3, false);
+            super.field3209[var2] = WorldMapType2.method538(var3, false);
          }
       }
 

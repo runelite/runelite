@@ -82,7 +82,7 @@ public class class170 {
       Script.field1534.reset();
       class1.indexInterfaces.method4187();
       indexSoundEffects.method4187();
-      class38.field513.method4187();
+      WorldMapType2.field513.method4187();
       class43.field559.method4187();
       class34.indexMaps.method4187();
       class44.indexTrack1.method4187();

@@ -1,10 +1,12 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aa")
-public class class48 implements class42 {
+@Implements("WorldMapType0")
+public class WorldMapType0 implements WorldMapSectionBase {
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -924987217
@@ -74,7 +76,7 @@ public class class48 implements class42 {
       signature = "(Lclass32;I)V",
       garbageValue = "-228062308"
    )
-   public void vmethod715(class32 var1) {
+   public void vmethod715(WorldMapData var1) {
       if(var1.field453 > this.field604) {
          var1.field453 = this.field604;
       }
@@ -121,13 +123,13 @@ public class class48 implements class42 {
       signature = "(III)Lclass212;",
       garbageValue = "-820164631"
    )
-   public class212 vmethod718(int var1, int var2) {
+   public Coordinates vmethod718(int var1, int var2) {
       if(!this.vmethod716(var1, var2)) {
          return null;
       } else {
          int var3 = var1 + (this.field601 * 64 - this.field604 * 64) + (this.field602 * 8 - this.field600 * 8);
          int var4 = this.field603 * 64 - this.field608 * 64 + var2 + (this.field607 * 8 - this.field609 * 8);
-         return new class212(this.field606, var3, var4);
+         return new Coordinates(this.field606, var3, var4);
       }
    }
 
@@ -987,7 +989,7 @@ public class class48 implements class42 {
                                                                                                                var14 = class83.intStack[class83.intStackSize];
                                                                                                                var27 = class83.intStack[class83.intStackSize + 1];
                                                                                                                if(Client.field1077 != 0 && var14 != -1) {
-                                                                                                                  class32.method322(class33.indexTrack2, var14, 0, Client.field1077, false);
+                                                                                                                  WorldMapData.method322(class33.indexTrack2, var14, 0, Client.field1077, false);
                                                                                                                   Client.field1109 = true;
                                                                                                                }
 
@@ -1303,7 +1305,7 @@ public class class48 implements class42 {
 
                                                                                                             var26 = var62;
                                                                                                          } else if(var7 < 3700) {
-                                                                                                            var26 = class38.method540(var7, var3, var72);
+                                                                                                            var26 = WorldMapType2.method540(var7, var3, var72);
                                                                                                          } else if(var7 < 4000) {
                                                                                                             if(var7 == 3903) {
                                                                                                                var14 = class83.intStack[--class83.intStackSize];
