@@ -286,9 +286,9 @@ public final class class50 implements KeyListener, FocusListener {
                   }
 
                   int var6;
-                  int var7;
-                  int var8;
-                  int var10;
+                  int index;
+                  int file;
+                  int compressedFileSize;
                   if(var5 > 0) {
                      var6 = var5 - class238.field3252.offset;
                      if(var6 > var16) {
@@ -297,8 +297,8 @@ public final class class50 implements KeyListener, FocusListener {
 
                      class238.field3257.read(class238.field3252.payload, class238.field3252.offset, var6);
                      if(class238.field3254 != 0) {
-                        for(var7 = 0; var7 < var6; ++var7) {
-                           class238.field3252.payload[class238.field3252.offset + var7] ^= class238.field3254;
+                        for(index = 0; index < var6; ++index) {
+                           class238.field3252.payload[class238.field3252.offset + index] ^= class238.field3254;
                         }
                      }
 
@@ -309,11 +309,11 @@ public final class class50 implements KeyListener, FocusListener {
 
                      if(class56.field674 == null) {
                         class238.field3252.offset = 0;
-                        var7 = class238.field3252.readUnsignedByte();
-                        var8 = class238.field3252.readUnsignedShort();
-                        int var9 = class238.field3252.readUnsignedByte();
-                        var10 = class238.field3252.readInt();
-                        long var11 = (long)(var8 + (var7 << 16));
+                        index = class238.field3252.readUnsignedByte();
+                        file = class238.field3252.readUnsignedShort();
+                        int compression = class238.field3252.readUnsignedByte();
+                        compressedFileSize = class238.field3252.readInt();
+                        long var11 = (long)(file + (index << 16));
                         class234 var13 = (class234)class238.field3245.method3615(var11);
                         class234.field3196 = true;
                         if(var13 == null) {
@@ -325,11 +325,11 @@ public final class class50 implements KeyListener, FocusListener {
                            throw new IOException();
                         }
 
-                        int var14 = var9 == 0?5:9;
+                        int var14 = compression == 0?5:9;
                         class56.field674 = var13;
-                        class24.field362 = new Buffer(var10 + var14 + class56.field674.field3198);
-                        class24.field362.putByte(var9);
-                        class24.field362.putInt(var10);
+                        class24.field362 = new Buffer(compressedFileSize + var14 + class56.field674.field3198);
+                        class24.field362.putByte(compression);
+                        class24.field362.putInt(compressedFileSize);
                         class238.field3248 = 8;
                         class238.field3252.offset = 0;
                      } else if(class238.field3248 == 0) {
@@ -342,42 +342,42 @@ public final class class50 implements KeyListener, FocusListener {
                      }
                   } else {
                      var6 = class24.field362.payload.length - class56.field674.field3198;
-                     var7 = 512 - class238.field3248;
-                     if(var7 > var6 - class24.field362.offset) {
-                        var7 = var6 - class24.field362.offset;
+                     index = 512 - class238.field3248;
+                     if(index > var6 - class24.field362.offset) {
+                        index = var6 - class24.field362.offset;
                      }
 
-                     if(var7 > var16) {
-                        var7 = var16;
+                     if(index > var16) {
+                        index = var16;
                      }
 
-                     class238.field3257.read(class24.field362.payload, class24.field362.offset, var7);
+                     class238.field3257.read(class24.field362.payload, class24.field362.offset, index);
                      if(class238.field3254 != 0) {
-                        for(var8 = 0; var8 < var7; ++var8) {
-                           class24.field362.payload[class24.field362.offset + var8] ^= class238.field3254;
+                        for(file = 0; file < index; ++file) {
+                           class24.field362.payload[class24.field362.offset + file] ^= class238.field3254;
                         }
                      }
 
-                     class24.field362.offset += var7;
-                     class238.field3248 += var7;
+                     class24.field362.offset += index;
+                     class238.field3248 += index;
                      if(class24.field362.offset == var6) {
                         if(16711935L == class56.field674.hash) {
                            class241.field3274 = class24.field362;
 
-                           for(var8 = 0; var8 < 256; ++var8) {
-                              IndexData var17 = class238.field3253[var8];
+                           for(file = 0; file < 256; ++file) {
+                              IndexData var17 = class238.field3253[file];
                               if(var17 != null) {
-                                 class241.field3274.offset = var8 * 8 + 5;
-                                 var10 = class241.field3274.readInt();
+                                 class241.field3274.offset = file * 8 + 5;
+                                 compressedFileSize = class241.field3274.readInt();
                                  int var18 = class241.field3274.readInt();
-                                 var17.method4303(var10, var18);
+                                 var17.method4303(compressedFileSize, var18);
                               }
                            }
                         } else {
                            class238.field3242.reset();
                            class238.field3242.update(class24.field362.payload, 0, var6);
-                           var8 = (int)class238.field3242.getValue();
-                           if(var8 != class56.field674.field3202) {
+                           file = (int)class238.field3242.getValue();
+                           if(file != class56.field674.field3202) {
                               try {
                                  class238.field3257.method3048();
                               } catch (Exception var20) {

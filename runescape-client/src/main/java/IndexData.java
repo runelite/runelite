@@ -84,7 +84,7 @@ public class IndexData extends IndexDataBase {
       if(this.field3238 != null && this.field3233 != null && this.field3233[var1]) {
          class43.method637(var1, this.field3238, this);
       } else {
-         Widget.method4047(this, this.index, var1, super.field3207[var1], (byte)2, true);
+         Widget.method4047(this, this.index, var1, super.archiveCrcs[var1], (byte)2, true);
       }
 
    }
@@ -119,8 +119,8 @@ public class IndexData extends IndexDataBase {
          this.method4172(var2);
          this.method4295();
       } else {
-         var2[var2.length - 2] = (byte)(super.field3208[var1] >> 8);
-         var2[var2.length - 1] = (byte)super.field3208[var1];
+         var2[var2.length - 2] = (byte)(super.archiveRevisions[var1] >> 8);
+         var2[var2.length - 1] = (byte)super.archiveRevisions[var1];
          if(this.field3238 != null) {
             IndexFile var11 = this.field3238;
             class233 var14 = new class233();
@@ -163,7 +163,7 @@ public class IndexData extends IndexDataBase {
          this.field3237 = -1;
 
          for(var1 = 0; var1 < this.field3233.length; ++var1) {
-            if(super.field3219[var1] > 0) {
+            if(super.archiveNumberOfFiles[var1] > 0) {
                CollisionData.method3103(var1, this.field3238, this);
                this.field3237 = var1;
             }
@@ -187,7 +187,7 @@ public class IndexData extends IndexDataBase {
 
       int var3;
       for(var3 = 0; var3 < super.field3209.length; ++var3) {
-         if(super.field3219[var3] > 0) {
+         if(super.archiveNumberOfFiles[var3] > 0) {
             var1 += 100;
             var2 += this.vmethod4290(var3);
          }
@@ -247,7 +247,7 @@ public class IndexData extends IndexDataBase {
          if(var3 == null || var3.length <= 2) {
             this.field3233[var2] = false;
             if(this.field3232 || var4) {
-               Widget.method4047(this, this.index, var2, super.field3207[var2], (byte)2, var4);
+               Widget.method4047(this, this.index, var2, super.archiveCrcs[var2], (byte)2, var4);
             }
 
             return;
@@ -257,10 +257,10 @@ public class IndexData extends IndexDataBase {
          field3234.update(var3, 0, var3.length - 2);
          var5 = (int)field3234.getValue();
          int var9 = ((var3[var3.length - 2] & 255) << 8) + (var3[var3.length - 1] & 255);
-         if(super.field3207[var2] != var5 || super.field3208[var2] != var9) {
+         if(super.archiveCrcs[var2] != var5 || super.archiveRevisions[var2] != var9) {
             this.field3233[var2] = false;
             if(this.field3232 || var4) {
-               Widget.method4047(this, this.index, var2, super.field3207[var2], (byte)2, var4);
+               Widget.method4047(this, this.index, var2, super.archiveCrcs[var2], (byte)2, var4);
             }
 
             return;

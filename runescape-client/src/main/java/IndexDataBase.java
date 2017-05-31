@@ -13,26 +13,33 @@ public abstract class IndexDataBase {
    @ObfuscatedName("j")
    boolean field3205;
    @ObfuscatedName("u")
-   int[] field3206;
+   @Export("archiveNames")
+   int[] archiveNames;
    @ObfuscatedName("g")
-   int[] field3207;
+   @Export("archiveCrcs")
+   int[] archiveCrcs;
    @ObfuscatedName("v")
-   int[] field3208;
+   @Export("archiveRevisions")
+   int[] archiveRevisions;
    @ObfuscatedName("k")
    Object[] field3209;
    @ObfuscatedName("p")
-   int[][] field3210;
+   @Export("archiveFileIds")
+   int[][] archiveFileIds;
    @ObfuscatedName("l")
-   int[][] field3211;
+   @Export("archiveFileNames")
+   int[][] archiveFileNames;
    @ObfuscatedName("a")
    class187[] field3212;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1113300183
    )
-   int field3213;
+   @Export("validArchivesCount")
+   int validArchivesCount;
    @ObfuscatedName("h")
-   int[] field3214;
+   @Export("archiveIds")
+   int[] archiveIds;
    @ObfuscatedName("b")
    static class166 field3215;
    @ObfuscatedName("x")
@@ -48,7 +55,8 @@ public abstract class IndexDataBase {
    )
    static int field3218;
    @ObfuscatedName("t")
-   int[] field3219;
+   @Export("archiveNumberOfFiles")
+   int[] archiveNumberOfFiles;
    @ObfuscatedName("q")
    class187 field3221;
 
@@ -68,57 +76,57 @@ public abstract class IndexDataBase {
 
          int var4 = var2.readUnsignedByte();
          if(var3 >= 7) {
-            this.field3213 = var2.method3391();
+            this.validArchivesCount = var2.method3391();
          } else {
-            this.field3213 = var2.readUnsignedShort();
+            this.validArchivesCount = var2.readUnsignedShort();
          }
 
          int var5 = 0;
          int var6 = -1;
-         this.field3214 = new int[this.field3213];
+         this.archiveIds = new int[this.validArchivesCount];
          int var7;
          if(var3 >= 7) {
-            for(var7 = 0; var7 < this.field3213; ++var7) {
-               this.field3214[var7] = var5 += var2.method3391();
-               if(this.field3214[var7] > var6) {
-                  var6 = this.field3214[var7];
+            for(var7 = 0; var7 < this.validArchivesCount; ++var7) {
+               this.archiveIds[var7] = var5 += var2.method3391();
+               if(this.archiveIds[var7] > var6) {
+                  var6 = this.archiveIds[var7];
                }
             }
          } else {
-            for(var7 = 0; var7 < this.field3213; ++var7) {
-               this.field3214[var7] = var5 += var2.readUnsignedShort();
-               if(this.field3214[var7] > var6) {
-                  var6 = this.field3214[var7];
+            for(var7 = 0; var7 < this.validArchivesCount; ++var7) {
+               this.archiveIds[var7] = var5 += var2.readUnsignedShort();
+               if(this.archiveIds[var7] > var6) {
+                  var6 = this.archiveIds[var7];
                }
             }
          }
 
-         this.field3207 = new int[var6 + 1];
-         this.field3208 = new int[var6 + 1];
-         this.field3219 = new int[var6 + 1];
-         this.field3210 = new int[var6 + 1][];
+         this.archiveCrcs = new int[var6 + 1];
+         this.archiveRevisions = new int[var6 + 1];
+         this.archiveNumberOfFiles = new int[var6 + 1];
+         this.archiveFileIds = new int[var6 + 1][];
          this.field3209 = new Object[var6 + 1];
          this.field3203 = new Object[var6 + 1][];
          if(var4 != 0) {
-            this.field3206 = new int[var6 + 1];
+            this.archiveNames = new int[var6 + 1];
 
-            for(var7 = 0; var7 < this.field3213; ++var7) {
-               this.field3206[this.field3214[var7]] = var2.readInt();
+            for(var7 = 0; var7 < this.validArchivesCount; ++var7) {
+               this.archiveNames[this.archiveIds[var7]] = var2.readInt();
             }
 
-            this.field3221 = new class187(this.field3206);
+            this.field3221 = new class187(this.archiveNames);
          }
 
-         for(var7 = 0; var7 < this.field3213; ++var7) {
-            this.field3207[this.field3214[var7]] = var2.readInt();
+         for(var7 = 0; var7 < this.validArchivesCount; ++var7) {
+            this.archiveCrcs[this.archiveIds[var7]] = var2.readInt();
          }
 
-         for(var7 = 0; var7 < this.field3213; ++var7) {
-            this.field3208[this.field3214[var7]] = var2.readInt();
+         for(var7 = 0; var7 < this.validArchivesCount; ++var7) {
+            this.archiveRevisions[this.archiveIds[var7]] = var2.readInt();
          }
 
-         for(var7 = 0; var7 < this.field3213; ++var7) {
-            this.field3219[this.field3214[var7]] = var2.readUnsignedShort();
+         for(var7 = 0; var7 < this.validArchivesCount; ++var7) {
+            this.archiveNumberOfFiles[this.archiveIds[var7]] = var2.readUnsignedShort();
          }
 
          int var8;
@@ -127,15 +135,15 @@ public abstract class IndexDataBase {
          int var11;
          int var12;
          if(var3 >= 7) {
-            for(var7 = 0; var7 < this.field3213; ++var7) {
-               var8 = this.field3214[var7];
-               var9 = this.field3219[var8];
+            for(var7 = 0; var7 < this.validArchivesCount; ++var7) {
+               var8 = this.archiveIds[var7];
+               var9 = this.archiveNumberOfFiles[var8];
                var5 = 0;
                var10 = -1;
-               this.field3210[var8] = new int[var9];
+               this.archiveFileIds[var8] = new int[var9];
 
                for(var11 = 0; var11 < var9; ++var11) {
-                  var12 = this.field3210[var8][var11] = var5 += var2.method3391();
+                  var12 = this.archiveFileIds[var8][var11] = var5 += var2.method3391();
                   if(var12 > var10) {
                      var10 = var12;
                   }
@@ -144,15 +152,15 @@ public abstract class IndexDataBase {
                this.field3203[var8] = new Object[var10 + 1];
             }
          } else {
-            for(var7 = 0; var7 < this.field3213; ++var7) {
-               var8 = this.field3214[var7];
-               var9 = this.field3219[var8];
+            for(var7 = 0; var7 < this.validArchivesCount; ++var7) {
+               var8 = this.archiveIds[var7];
+               var9 = this.archiveNumberOfFiles[var8];
                var5 = 0;
                var10 = -1;
-               this.field3210[var8] = new int[var9];
+               this.archiveFileIds[var8] = new int[var9];
 
                for(var11 = 0; var11 < var9; ++var11) {
-                  var12 = this.field3210[var8][var11] = var5 += var2.readUnsignedShort();
+                  var12 = this.archiveFileIds[var8][var11] = var5 += var2.readUnsignedShort();
                   if(var12 > var10) {
                      var10 = var12;
                   }
@@ -163,19 +171,19 @@ public abstract class IndexDataBase {
          }
 
          if(var4 != 0) {
-            this.field3211 = new int[var6 + 1][];
+            this.archiveFileNames = new int[var6 + 1][];
             this.field3212 = new class187[var6 + 1];
 
-            for(var7 = 0; var7 < this.field3213; ++var7) {
-               var8 = this.field3214[var7];
-               var9 = this.field3219[var8];
-               this.field3211[var8] = new int[this.field3203[var8].length];
+            for(var7 = 0; var7 < this.validArchivesCount; ++var7) {
+               var8 = this.archiveIds[var7];
+               var9 = this.archiveNumberOfFiles[var8];
+               this.archiveFileNames[var8] = new int[this.field3203[var8].length];
 
                for(var10 = 0; var10 < var9; ++var10) {
-                  this.field3211[var8][this.field3210[var8][var10]] = var2.readInt();
+                  this.archiveFileNames[var8][this.archiveFileIds[var8][var10]] = var2.readInt();
                }
 
-               this.field3212[var8] = new class187(this.field3211[var8]);
+               this.field3212[var8] = new class187(this.archiveFileNames[var8]);
             }
          }
 
@@ -260,8 +268,8 @@ public abstract class IndexDataBase {
    public boolean method4178() {
       boolean var1 = true;
 
-      for(int var2 = 0; var2 < this.field3214.length; ++var2) {
-         int var3 = this.field3214[var2];
+      for(int var2 = 0; var2 < this.archiveIds.length; ++var2) {
+         int var3 = this.archiveIds[var2];
          if(this.field3209[var3] == null) {
             this.vmethod4291(var3);
             if(this.field3209[var3] == null) {
@@ -322,7 +330,7 @@ public abstract class IndexDataBase {
       garbageValue = "-80"
    )
    public int[] method4183(int var1) {
-      return this.field3210[var1];
+      return this.archiveFileIds[var1];
    }
 
    @ObfuscatedName("o")
@@ -434,8 +442,8 @@ public abstract class IndexDataBase {
       if(this.field3209[var1] == null) {
          return false;
       } else {
-         int var3 = this.field3219[var1];
-         int[] var4 = this.field3210[var1];
+         int var3 = this.archiveNumberOfFiles[var1];
+         int[] var4 = this.archiveFileIds[var1];
          Object[] var5 = this.field3203[var1];
          boolean var6 = true;
 
