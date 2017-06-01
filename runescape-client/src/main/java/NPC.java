@@ -175,21 +175,21 @@ public final class NPC extends Actor {
          class83.intStackSize -= 2;
          var3 = class83.intStack[class83.intStackSize];
          var4 = class83.intStack[class83.intStackSize + 1];
-         class253 var5 = Buffer.method3345(var3);
-         if(var5.field3400 != 115) {
+         Enum var5 = Buffer.method3345(var3);
+         if(var5.valType != 115) {
             ;
          }
 
-         for(var6 = 0; var6 < var5.field3397; ++var6) {
-            if(var4 == var5.field3403[var6]) {
-               class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var5.field3405[var6];
+         for(var6 = 0; var6 < var5.size; ++var6) {
+            if(var4 == var5.keys[var6]) {
+               class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var5.stringVals[var6];
                var5 = null;
                break;
             }
          }
 
          if(var5 != null) {
-            class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var5.field3396;
+            class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var5.defaultString;
          }
 
          return 1;
@@ -201,14 +201,14 @@ public final class NPC extends Actor {
          var4 = class83.intStack[class83.intStackSize + 1];
          int var9 = class83.intStack[class83.intStackSize + 2];
          var6 = class83.intStack[class83.intStackSize + 3];
-         class253 var7 = Buffer.method3345(var9);
-         if(var7.field3398 == var3 && var7.field3400 == var4) {
-            for(int var8 = 0; var8 < var7.field3397; ++var8) {
-               if(var6 == var7.field3403[var8]) {
+         Enum var7 = Buffer.method3345(var9);
+         if(var7.keyType == var3 && var7.valType == var4) {
+            for(int var8 = 0; var8 < var7.size; ++var8) {
+               if(var6 == var7.keys[var8]) {
                   if(var4 == 115) {
-                     class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var7.field3405[var8];
+                     class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var7.stringVals[var8];
                   } else {
-                     class83.intStack[++class83.intStackSize - 1] = var7.field3404[var8];
+                     class83.intStack[++class83.intStackSize - 1] = var7.intVals[var8];
                   }
 
                   var7 = null;
@@ -218,9 +218,9 @@ public final class NPC extends Actor {
 
             if(var7 != null) {
                if(var4 == 115) {
-                  class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var7.field3396;
+                  class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var7.defaultString;
                } else {
-                  class83.intStack[++class83.intStackSize - 1] = var7.field3401;
+                  class83.intStack[++class83.intStackSize - 1] = var7.defaultInt;
                }
             }
 

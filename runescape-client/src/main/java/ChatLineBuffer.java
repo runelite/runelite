@@ -340,7 +340,7 @@ public class ChatLineBuffer {
                   Frames.method2875(class25.field365, class36.indexModels, class261.indexSprites, class20.field324);
                   class9.method40(Overlay.field3594);
                   IndexData var13 = Overlay.field3594;
-                  class253.field3402 = var13;
+                  Enum.field3402 = var13;
                   Renderable.method2864(Overlay.field3594);
                   IndexData var14 = Overlay.field3594;
                   class244.field3319 = var14;

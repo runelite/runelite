@@ -997,18 +997,18 @@ public class Buffer extends Node {
       signature = "(II)Lclass253;",
       garbageValue = "-897033227"
    )
-   public static class253 method3345(int var0) {
-      class253 var1 = (class253)class253.field3399.get((long)var0);
+   public static Enum method3345(int var0) {
+      Enum var1 = (Enum)Enum.field3399.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = class253.field3402.getConfigData(8, var0);
-         var1 = new class253();
+         byte[] var2 = Enum.field3402.getConfigData(8, var0);
+         var1 = new Enum();
          if(var2 != null) {
             var1.method4472(new Buffer(var2));
          }
 
-         class253.field3399.put(var1, (long)var0);
+         Enum.field3399.put(var1, (long)var0);
          return var1;
       }
    }

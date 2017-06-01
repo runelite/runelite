@@ -1,35 +1,46 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ib")
-public class class253 extends CacheableNode {
+@Implements("Enum")
+public class Enum extends CacheableNode {
    @ObfuscatedName("b")
-   public String field3396;
+   @Export("defaultString")
+   public String defaultString;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = -1243068017
    )
-   public int field3397;
+   @Export("size")
+   public int size;
    @ObfuscatedName("e")
-   public char field3398;
+   @Export("keyType")
+   public char keyType;
    @ObfuscatedName("c")
    static NodeCache field3399;
    @ObfuscatedName("v")
-   public char field3400;
+   @Export("valType")
+   public char valType;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -49014589
    )
-   public int field3401;
+   @Export("defaultInt")
+   public int defaultInt;
    @ObfuscatedName("i")
    public static IndexDataBase field3402;
    @ObfuscatedName("x")
-   public int[] field3403;
+   @Export("keys")
+   public int[] keys;
    @ObfuscatedName("f")
-   public int[] field3404;
+   @Export("intVals")
+   public int[] intVals;
    @ObfuscatedName("n")
-   public String[] field3405;
+   @Export("stringVals")
+   public String[] stringVals;
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
@@ -38,32 +49,32 @@ public class class253 extends CacheableNode {
    )
    void method4471(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field3398 = (char)var1.readUnsignedByte();
+         this.keyType = (char)var1.readUnsignedByte();
       } else if(var2 == 2) {
-         this.field3400 = (char)var1.readUnsignedByte();
+         this.valType = (char)var1.readUnsignedByte();
       } else if(var2 == 3) {
-         this.field3396 = var1.readString();
+         this.defaultString = var1.readString();
       } else if(var2 == 4) {
-         this.field3401 = var1.readInt();
+         this.defaultInt = var1.readInt();
       } else {
          int var3;
          if(var2 == 5) {
-            this.field3397 = var1.readUnsignedShort();
-            this.field3403 = new int[this.field3397];
-            this.field3405 = new String[this.field3397];
+            this.size = var1.readUnsignedShort();
+            this.keys = new int[this.size];
+            this.stringVals = new String[this.size];
 
-            for(var3 = 0; var3 < this.field3397; ++var3) {
-               this.field3403[var3] = var1.readInt();
-               this.field3405[var3] = var1.readString();
+            for(var3 = 0; var3 < this.size; ++var3) {
+               this.keys[var3] = var1.readInt();
+               this.stringVals[var3] = var1.readString();
             }
          } else if(var2 == 6) {
-            this.field3397 = var1.readUnsignedShort();
-            this.field3403 = new int[this.field3397];
-            this.field3404 = new int[this.field3397];
+            this.size = var1.readUnsignedShort();
+            this.keys = new int[this.size];
+            this.intVals = new int[this.size];
 
-            for(var3 = 0; var3 < this.field3397; ++var3) {
-               this.field3403[var3] = var1.readInt();
-               this.field3404[var3] = var1.readInt();
+            for(var3 = 0; var3 < this.size; ++var3) {
+               this.keys[var3] = var1.readInt();
+               this.intVals[var3] = var1.readInt();
             }
          }
       }
@@ -156,8 +167,8 @@ public class class253 extends CacheableNode {
       field3399 = new NodeCache(64);
    }
 
-   class253() {
-      this.field3396 = "null";
-      this.field3397 = 0;
+   Enum() {
+      this.defaultString = "null";
+      this.size = 0;
    }
 }

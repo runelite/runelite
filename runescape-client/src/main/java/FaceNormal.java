@@ -59,7 +59,7 @@ public class FaceNormal {
    )
    static final void method2867(int var0) {
       if(RSSocket.method2986(var0)) {
-         class253.method4473(CombatInfo1.widgets[var0], -1);
+         Enum.method4473(CombatInfo1.widgets[var0], -1);
       }
    }
 }
