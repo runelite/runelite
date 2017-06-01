@@ -101,6 +101,8 @@ public class CacheServerTest
 
 				Index index = store2.findIndex(0);
 				Archive archive = index.getArchive(0);
+				archive.decompressAndLoad(null); // cache client doesn't decompress archive
+
 				File file = archive.getFiles().get(0);
 				Assert.assertArrayEquals("test".getBytes(), file.getContents());
 			}
