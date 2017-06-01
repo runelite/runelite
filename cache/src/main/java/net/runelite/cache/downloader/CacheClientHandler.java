@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.downloader;
 
 import io.netty.buffer.ByteBuf;
@@ -47,6 +46,12 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 	}
 
 	@Override
+	public void channelInactive(ChannelHandlerContext ctx) throws Exception
+	{
+		logger.warn("Channel has gone inactive");
+	}
+
+	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 	{
 		ByteBuf inbuf = (ByteBuf) msg;
@@ -63,108 +68,121 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 			if (response != HelloHandshake.RESPONSE_OK)
 			{
 				if (response == HelloHandshake.RESPONSE_OUTDATED)
+				{
 					logger.warn("Client version is outdated");
+				}
 				else
+				{
 					logger.warn("Handshake response error {}", response);
+				}
 			}
 
 			client.onHandshake(response);
 		}
 		else if (state == ClientState.CONNECTED)
 		{
-			if (buffer.readableBytes() < 8)
-			{
-				logger.trace("Connected, but not enough data yet to read header");
-				return;
-			}
-
-			ByteBuf copy = buffer.slice();
-
-			int index = copy.readUnsignedByte();
-			int file = copy.readUnsignedShort();
-			// decompress() starts reading here
-			int compression = copy.readUnsignedByte();
-			int compressedFileSize = copy.readInt();
-
-			int size = compressedFileSize
-				+ 5 // 1 byte compresion type, 4 byte compressed size
-				+ (compression != 0 ? 4 : 0); // compression has leading 4 byte decompressed length
-
-			int breaks = calculateBreaks(size);
-
-			// 3 for index/file
-			if (size + 3 + breaks > buffer.readableBytes())
-			{
-				logger.trace("Index {} archive {}: Not enough data yet {} > {}", index, file, size + 3 + breaks, buffer.readableBytes());
-				return;
-			}
-
-			byte[] compressedData = new byte[size];
-			int compressedDataOffset = 0;
-
-			int totalRead = 3;
-			buffer.skipBytes(3); // skip index/file
-
-			for (int i = 0; i < breaks + 1; ++i)
-			{
-				int bytesInBlock = 512 - (totalRead % 512);
-				int bytesToRead = Math.min(bytesInBlock, size - compressedDataOffset);
-
-				logger.trace("{}/{}: reading block {}/{}, read so far this block: {}, file status: {}/{}",
-					index, file,
-					(totalRead % 512), 512,
-					bytesInBlock,
-					compressedDataOffset, size);
-
-				buffer.getBytes(buffer.readerIndex(), compressedData, compressedDataOffset, bytesToRead);
-				buffer.skipBytes(bytesToRead);
-
-				compressedDataOffset += bytesToRead;
-				totalRead += bytesToRead;
-
-				if (i < breaks)
-				{
-					assert compressedDataOffset < size;
-					int b = buffer.readUnsignedByte();
-					++totalRead;
-					assert b == 0xff;
-				}
-			}
-
-			assert compressedDataOffset == size;
-
-			logger.trace("{}/{}: done downloading file, remaining buffer {}",
-				index, file,
-				buffer.readableBytes());
-			buffer.clear();
-
-			client.onFileFinish(index, file, compressedData);
+			while (readFile());
 		}
 
 		buffer.discardReadBytes();
 		ReferenceCountUtil.release(msg);
 	}
 
-	/** Calculate how many breaks there are in the file stream.
-	 * There are calculateBreaks()+1 total chunks in the file stream
+	private boolean readFile()
+	{
+		if (buffer.readableBytes() < 8)
+		{
+			logger.trace("Connected, but not enough data yet to read header");
+			return false;
+		}
+
+		ByteBuf copy = buffer.slice();
+
+		int index = copy.readUnsignedByte();
+		int file = copy.readUnsignedShort();
+		// decompress() starts reading here
+		int compression = copy.readUnsignedByte();
+		int compressedFileSize = copy.readInt();
+
+		int size = compressedFileSize
+			+ 5 // 1 byte compresion type, 4 byte compressed size
+			+ (compression != 0 ? 4 : 0); // compression has leading 4 byte decompressed length
+
+		assert size > 0;
+
+		int breaks = calculateBreaks(size);
+
+		// 3 for index/file
+		if (size + 3 + breaks > buffer.readableBytes())
+		{
+			logger.trace("Index {} archive {}: Not enough data yet {} > {}", index, file, size + 3 + breaks, buffer.readableBytes());
+			return false;
+		}
+
+		byte[] compressedData = new byte[size];
+		int compressedDataOffset = 0;
+
+		int totalRead = 3;
+		buffer.skipBytes(3); // skip index/file
+
+		for (int i = 0; i < breaks + 1; ++i)
+		{
+			int bytesInBlock = 512 - (totalRead % 512);
+			int bytesToRead = Math.min(bytesInBlock, size - compressedDataOffset);
+
+			logger.trace("{}/{}: reading block {}/{}, read so far this block: {}, file status: {}/{}",
+				index, file,
+				(totalRead % 512), 512,
+				bytesInBlock,
+				compressedDataOffset, size);
+
+			buffer.getBytes(buffer.readerIndex(), compressedData, compressedDataOffset, bytesToRead);
+			buffer.skipBytes(bytesToRead);
+
+			compressedDataOffset += bytesToRead;
+			totalRead += bytesToRead;
+
+			if (i < breaks)
+			{
+				assert compressedDataOffset < size;
+				int b = buffer.readUnsignedByte();
+				++totalRead;
+				assert b == 0xff;
+			}
+		}
+
+		assert compressedDataOffset == size;
+
+		logger.trace("{}/{}: done downloading file, remaining buffer {}",
+			index, file,
+			buffer.readableBytes());
+
+		client.onFileFinish(index, file, compressedData);
+		return true;
+	}
+
+	/**
+	 * Calculate how many breaks there are in the file stream. There are
+	 * calculateBreaks()+1 total chunks in the file stream
 	 *
 	 * File contents are sent in 512 byte chunks, with the first byte of
 	 * each chunk except for the first one being 0xff.
 	 *
 	 * The first chunk has an 8 byte header (index, file, compression,
-	 * compressed size). So, the first chunk can contain 512 - 8 bytes
-	 * of the file, and each chunk after 511 bytes.
+	 * compressed size). So, the first chunk can contain 512 - 8 bytes of
+	 * the file, and each chunk after 511 bytes.
 	 *
 	 * The 'size' parameter has the compression type and size included in
 	 * it, since they haven't been read yet by the buffer stream, as
-	 * decompress() reads it, so we use  512 - 3 (because 8-5) = 3
+	 * decompress() reads it, so we use 512 - 3 (because 8-5) = 3
 	 */
 	private int calculateBreaks(int size)
 	{
 		int initialSize = 512 - 3;
 		if (size <= initialSize)
+		{
 			return 0; // First in the initial chunk, no breaks
-
+		}
 		int left = size - initialSize;
 
 		if (left % 511 == 0)
@@ -178,12 +196,6 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 			// own chunk
 			return (left / 511) + 1;
 		}
-	}
-
-	@Override
-	public void channelReadComplete(ChannelHandlerContext ctx)
-	{
-		ctx.flush();
 	}
 
 	@Override
