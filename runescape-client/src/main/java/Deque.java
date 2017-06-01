@@ -2,30 +2,18 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gq")
+@ObfuscatedName("gs")
 @Implements("Deque")
 public class Deque {
-   @ObfuscatedName("h")
-   @Export("current")
-   Node current;
    @ObfuscatedName("i")
    @Export("head")
    public Node head;
-
-   @ObfuscatedName("h")
-   public void method3655(Node var1) {
-      if(var1.previous != null) {
-         var1.unlink();
-      }
-
-      var1.previous = this.head.previous;
-      var1.next = this.head;
-      var1.previous.next = var1;
-      var1.next.previous = var1;
-   }
+   @ObfuscatedName("c")
+   @Export("current")
+   Node current;
 
    @ObfuscatedName("i")
-   public void method3656() {
+   public void method3569() {
       while(true) {
          Node var1 = this.head.next;
          if(var1 == this.head) {
@@ -37,84 +25,32 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("g")
-   public Node method3658() {
-      Node var1 = this.head.next;
-      if(var1 == this.head) {
-         return null;
-      } else {
+   @ObfuscatedName("c")
+   public void method3571(Node var1) {
+      if(var1.previous != null) {
          var1.unlink();
-         return var1;
       }
+
+      var1.previous = this.head.previous;
+      var1.next = this.head;
+      var1.previous.next = var1;
+      var1.next.previous = var1;
+   }
+
+   @ObfuscatedName("e")
+   public void method3572(Node var1) {
+      if(var1.previous != null) {
+         var1.unlink();
+      }
+
+      var1.previous = this.head;
+      var1.next = this.head.next;
+      var1.previous.next = var1;
+      var1.next.previous = var1;
    }
 
    @ObfuscatedName("v")
-   public Node method3659() {
-      Node var1 = this.head.previous;
-      if(var1 == this.head) {
-         return null;
-      } else {
-         var1.unlink();
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("t")
-   public Node method3660() {
-      Node var1 = this.head.next;
-      if(var1 == this.head) {
-         this.current = null;
-         return null;
-      } else {
-         this.current = var1.next;
-         return var1;
-      }
-   }
-
-   public Deque() {
-      this.head = new Node();
-      this.head.next = this.head;
-      this.head.previous = this.head;
-   }
-
-   @ObfuscatedName("l")
-   public Node method3661() {
-      Node var1 = this.current;
-      if(var1 == this.head) {
-         this.current = null;
-         return null;
-      } else {
-         this.current = var1.next;
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("a")
-   public Node method3662() {
-      Node var1 = this.current;
-      if(var1 == this.head) {
-         this.current = null;
-         return null;
-      } else {
-         this.current = var1.previous;
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("p")
-   public Node method3666() {
-      Node var1 = this.head.previous;
-      if(var1 == this.head) {
-         this.current = null;
-         return null;
-      } else {
-         this.current = var1.previous;
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("q")
-   public static void method3673(Node var0, Node var1) {
+   public static void method3573(Node var0, Node var1) {
       if(var0.previous != null) {
          var0.unlink();
       }
@@ -125,15 +61,79 @@ public class Deque {
       var0.next.previous = var0;
    }
 
-   @ObfuscatedName("u")
-   public void method3686(Node var1) {
-      if(var1.previous != null) {
-         var1.unlink();
+   @ObfuscatedName("x")
+   public Node method3574() {
+      Node var1 = this.head.previous;
+      if(var1 == this.head) {
+         this.current = null;
+         return null;
+      } else {
+         this.current = var1.previous;
+         return var1;
       }
+   }
 
-      var1.previous = this.head;
-      var1.next = this.head.next;
-      var1.previous.next = var1;
-      var1.next.previous = var1;
+   @ObfuscatedName("y")
+   public Node method3575() {
+      Node var1 = this.head.previous;
+      if(var1 == this.head) {
+         return null;
+      } else {
+         var1.unlink();
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("h")
+   public Node method3576() {
+      Node var1 = this.head.next;
+      if(var1 == this.head) {
+         this.current = null;
+         return null;
+      } else {
+         this.current = var1.next;
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("f")
+   public Node method3578() {
+      Node var1 = this.current;
+      if(var1 == this.head) {
+         this.current = null;
+         return null;
+      } else {
+         this.current = var1.next;
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("n")
+   public Node method3582() {
+      Node var1 = this.current;
+      if(var1 == this.head) {
+         this.current = null;
+         return null;
+      } else {
+         this.current = var1.previous;
+         return var1;
+      }
+   }
+
+   public Deque() {
+      this.head = new Node();
+      this.head.next = this.head;
+      this.head.previous = this.head;
+   }
+
+   @ObfuscatedName("b")
+   public Node method3595() {
+      Node var1 = this.head.next;
+      if(var1 == this.head) {
+         return null;
+      } else {
+         var1.unlink();
+         return var1;
+      }
    }
 }

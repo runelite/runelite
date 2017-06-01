@@ -2,122 +2,85 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hh")
+@ObfuscatedName("hu")
 public class class228 implements class178 {
+   @ObfuscatedName("x")
+   public static final class228 field3146;
+   @ObfuscatedName("c")
+   public static final class228 field3147;
    @ObfuscatedName("h")
-   public static final class228 field3137;
-   @ObfuscatedName("u")
-   public static final class228 field3138;
-   @ObfuscatedName("t")
-   public static final class228 field3139;
-   @ObfuscatedName("g")
-   public static final class228 field3140;
+   public static final class228 field3148;
    @ObfuscatedName("v")
-   public static final class228 field3141;
-   @ObfuscatedName("q")
-   public static final class228 field3142;
-   @ObfuscatedName("p")
-   public static final class228 field3143;
-   @ObfuscatedName("l")
+   public static final class228 field3149;
+   @ObfuscatedName("b")
+   public static final class228 field3150;
+   @ObfuscatedName("y")
+   public static final class228 field3151;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -998585525
+      intValue = 1143653283
    )
-   public final int field3144;
-   @ObfuscatedName("i")
-   public static final class228 field3145;
-   @ObfuscatedName("a")
+   final int field3152;
+   @ObfuscatedName("e")
+   public static final class228 field3153;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 780754333
+      intValue = 1689740313
    )
-   final int field3147;
-   @ObfuscatedName("gn")
-   static SpritePixels[] field3148;
-
+   public final int field3154;
    @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1015343640"
-   )
-   public int vmethod5090() {
-      return this.field3147;
-   }
-
-   static {
-      field3145 = new class228(5, 0);
-      field3137 = new class228(7, 1);
-      field3138 = new class228(6, 2);
-      field3142 = new class228(4, 3);
-      field3140 = new class228(0, 4);
-      field3141 = new class228(2, 5);
-      field3139 = new class228(3, 6);
-      field3143 = new class228(1, 7);
-   }
+   public static final class228 field3155;
 
    @ObfuscatedSignature(
       signature = "(II)V",
       garbageValue = "0"
    )
    class228(int var1, int var2) {
-      this.field3144 = var1;
-      this.field3147 = var2;
+      this.field3154 = var1;
+      this.field3152 = var2;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "([BIII)Ljava/lang/String;",
-      garbageValue = "-565659583"
+      signature = "(B)I",
+      garbageValue = "-70"
    )
-   public static String method4153(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
-
-      for(int var5 = 0; var5 < var2; ++var5) {
-         int var6 = var0[var1 + var5] & 255;
-         if(var6 != 0) {
-            if(var6 >= 128 && var6 < 160) {
-               char var7 = class266.field3658[var6 - 128];
-               if(var7 == 0) {
-                  var7 = 63;
-               }
-
-               var6 = var7;
-            }
-
-            var3[var4++] = (char)var6;
-         }
-      }
-
-      return new String(var3, 0, var4);
+   public int vmethod5009() {
+      return this.field3152;
    }
 
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "-958399584"
-   )
-   public static int method4154(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + var0.charAt(var3);
-      }
-
-      return var2;
+   static {
+      field3155 = new class228(6, 0);
+      field3147 = new class228(2, 1);
+      field3153 = new class228(3, 2);
+      field3149 = new class228(1, 3);
+      field3150 = new class228(4, 4);
+      field3151 = new class228(7, 5);
+      field3148 = new class228(5, 6);
+      field3146 = new class228(0, 7);
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;III)Z",
-      garbageValue = "-318828532"
+      signature = "(LModel;IIII)Z",
+      garbageValue = "630960146"
    )
-   static boolean method4155(IndexDataBase var0, int var1, int var2) {
-      byte[] var3 = var0.getConfigData(var1, var2);
-      if(var3 == null) {
+   public static final boolean method4085(Model var0, int var1, int var2, int var3) {
+      boolean var4 = class134.field2018;
+      if(!var4) {
          return false;
       } else {
-         class43.method638(var3);
-         return true;
+         class172.method3124();
+         int var5 = var0.field1969 + var1;
+         int var6 = var0.field1937 + var2;
+         int var7 = var3 + var0.field1980;
+         int var8 = var0.field1972;
+         int var9 = var0.field1973;
+         int var10 = var0.field1981;
+         int var11 = class134.field2011 - var5;
+         int var12 = class134.field2010 - var6;
+         int var13 = WidgetNode.field842 - var7;
+         return Math.abs(var11) > class24.field353 + var8?false:(Math.abs(var12) > var9 + XGrandExchangeOffer.field304?false:(Math.abs(var13) > var10 + DecorativeObject.field2195?false:(Math.abs(class227.field3140 * var13 - class89.field1429 * var12) > var9 * DecorativeObject.field2195 + XGrandExchangeOffer.field304 * var10?false:(Math.abs(var11 * class89.field1429 - class152.field2239 * var13) > var8 * DecorativeObject.field2195 + class24.field353 * var10?false:Math.abs(var12 * class152.field2239 - class227.field3140 * var11) <= XGrandExchangeOffer.field304 * var8 + var9 * class24.field353))));
       }
    }
 }

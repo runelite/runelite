@@ -4,118 +4,142 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gp")
 public class class205 extends Node {
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -886941019
-   )
-   int field2534;
-   @ObfuscatedName("h")
-   class207 field2535;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1460061117
-   )
-   int field2536;
-   @ObfuscatedName("u")
-   class107 field2537;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1974722733
-   )
-   int field2538;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1963070937
-   )
-   int field2539;
-   @ObfuscatedName("q")
-   class202 field2540;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 148616795
-   )
-   int field2541;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 1973706909
-   )
-   int field2542;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 775698187
-   )
-   int field2543;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 402111525
-   )
-   int field2544;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -766520351
+      intValue = -905951633
    )
    int field2545;
-   @ObfuscatedName("b")
+   @ObfuscatedName("v")
+   class202 field2546;
+   @ObfuscatedName("e")
+   class107 field2547;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1426594621
-   )
-   int field2546;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1313288107
-   )
-   int field2547;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1573481489
+      intValue = 254843615
    )
    int field2548;
-   @ObfuscatedName("j")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 12039671
+      intValue = -1728735675
    )
    int field2549;
-   @ObfuscatedName("m")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1978087267
+      intValue = 1034524455
    )
    int field2550;
-   @ObfuscatedName("g")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1249060091
+      intValue = -501485
    )
    int field2551;
-   @ObfuscatedName("e")
-   class117 field2552;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1291798821
+      intValue = 888216399
+   )
+   int field2552;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 1675542655
    )
    int field2553;
-   @ObfuscatedName("y")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1743727677
+      intValue = -952927577
    )
    int field2554;
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;I)V",
-      garbageValue = "-307468041"
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 1061305047
    )
-   public static void method3885(IndexDataBase var0) {
-      Overlay.field3581 = var0;
-   }
+   int field2555;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1355331135
+   )
+   int field2556;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 2020809265
+   )
+   int field2557;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 424319579
+   )
+   int field2558;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -978757445
+   )
+   int field2559;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1681071893
+   )
+   int field2560;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 1491639745
+   )
+   int field2561;
+   @ObfuscatedName("c")
+   class207 field2562;
+   @ObfuscatedName("d")
+   class117 field2563;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -156200167
+   )
+   int field2564;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 119584397
+   )
+   int field2565;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1317179423"
+      garbageValue = "675934302"
    )
-   void method3886() {
-      this.field2535 = null;
-      this.field2537 = null;
-      this.field2540 = null;
-      this.field2552 = null;
+   void method3784() {
+      this.field2562 = null;
+      this.field2547 = null;
+      this.field2546 = null;
+      this.field2563 = null;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;I)V",
+      garbageValue = "2036300700"
+   )
+   public static void method3788(IndexDataBase var0) {
+      class252.field3391 = var0;
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-667616655"
+   )
+   public static boolean method3789(int var0) {
+      return var0 >= class221.field2827.field2832 && var0 <= class221.field2812.field2832 || class221.field2813.field2832 == var0;
+   }
+
+   @ObfuscatedName("ff")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "-60"
+   )
+   static void method3791(int var0) {
+      if(var0 == -1 && !Client.field1123) {
+         class164.method3060();
+      } else if(var0 != -1 && var0 != Client.field1166 && Client.field1165 != 0 && !Client.field1123) {
+         class51.method762(2, class22.indexTrack1, var0, 0, Client.field1165, false);
+      }
+
+      Client.field1166 = var0;
    }
 }

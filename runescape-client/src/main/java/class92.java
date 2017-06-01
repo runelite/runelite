@@ -1,240 +1,152 @@
-import java.applet.Applet;
-import java.io.File;
-import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import netscape.javascript.JSObject;
 
-@ObfuscatedName("cr")
+@ObfuscatedName("ci")
 public class class92 {
-   @ObfuscatedName("af")
-   @ObfuscatedGetter(
-      intValue = -788588935
-   )
-   static int field1415;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1451660505
-   )
-   static int field1416;
-   @ObfuscatedName("u")
-   static ModIcon field1417;
-   @ObfuscatedName("ac")
-   @ObfuscatedGetter(
-      intValue = 779546423
-   )
-   static int field1418;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -578651247
-   )
-   static int field1419;
-   @ObfuscatedName("a")
-   static ModIcon field1420;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1988337167
-   )
-   @Export("loginWindowX")
-   static int loginWindowX;
-   @ObfuscatedName("d")
-   static int[] field1423;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -880909845
-   )
-   static int field1424;
-   @ObfuscatedName("q")
-   static ModIcon field1425;
-   @ObfuscatedName("az")
-   @ObfuscatedGetter(
-      intValue = 855155367
-   )
-   static int field1426;
-   @ObfuscatedName("i")
-   static boolean field1427;
-   @ObfuscatedName("av")
-   static String field1428;
-   @ObfuscatedName("v")
-   static SpritePixels field1429;
-   @ObfuscatedName("aj")
-   @ObfuscatedGetter(
-      intValue = 438323633
-   )
-   static int field1430;
-   @ObfuscatedName("ax")
-   static String field1431;
-   @ObfuscatedName("ad")
-   @ObfuscatedGetter(
-      intValue = 999823653
-   )
-   @Export("loginIndex")
-   static int loginIndex;
-   @ObfuscatedName("ae")
-   @Export("loginMessage1")
-   static String loginMessage1;
-   @ObfuscatedName("ar")
+   @ObfuscatedName("ap")
    @Export("loginMessage2")
    static String loginMessage2;
-   @ObfuscatedName("ao")
-   static class149 field1436;
-   @ObfuscatedName("at")
+   @ObfuscatedName("e")
+   static ModIcon field1442;
+   @ObfuscatedName("as")
    @Export(
       value = "username",
       setter = true
    )
    static String username;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1600233259
+   )
+   static int field1444;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1434145207
+   )
+   @Export("loginWindowX")
+   static int loginWindowX;
+   @ObfuscatedName("m")
+   static int[] field1447;
    @ObfuscatedName("ai")
+   @ObfuscatedGetter(
+      intValue = -1282306437
+   )
+   static int field1448;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 846047257
+   )
+   static int field1449;
+   @ObfuscatedName("an")
+   @ObfuscatedGetter(
+      intValue = 1846576629
+   )
+   static int field1450;
+   @ObfuscatedName("af")
+   @ObfuscatedGetter(
+      intValue = 2071141653
+   )
+   static int field1451;
+   @ObfuscatedName("at")
+   @ObfuscatedGetter(
+      intValue = 60190587
+   )
+   static int field1452;
+   @ObfuscatedName("ah")
+   @ObfuscatedGetter(
+      intValue = -1989392443
+   )
+   static int field1453;
+   @ObfuscatedName("ag")
+   static class149 field1454;
+   @ObfuscatedName("aw")
+   static String field1455;
+   @ObfuscatedName("al")
+   @ObfuscatedGetter(
+      intValue = 245474999
+   )
+   @Export("loginIndex")
+   static int loginIndex;
+   @ObfuscatedName("x")
+   static ModIcon field1457;
+   @ObfuscatedName("aa")
+   @Export("loginMessage1")
+   static String loginMessage1;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -531974147
+   )
+   static int field1459;
+   @ObfuscatedName("ab")
+   static String field1460;
+   @ObfuscatedName("av")
    @Export("password")
    static String password;
-   @ObfuscatedName("ag")
-   @Export("loginMessage3")
-   static String loginMessage3;
-   @ObfuscatedName("as")
-   static boolean field1440;
-   @ObfuscatedName("aw")
+   @ObfuscatedName("pi")
    @ObfuscatedGetter(
-      intValue = 493469167
+      intValue = 407245143
+   )
+   static int field1463;
+   @ObfuscatedName("ax")
+   static boolean field1464;
+   @ObfuscatedName("au")
+   @ObfuscatedGetter(
+      intValue = -553440627
    )
    @Export("loginIndex2")
    static int loginIndex2;
-   @ObfuscatedName("an")
+   @ObfuscatedName("ae")
+   @Export("loginMessage3")
+   static String loginMessage3;
+   @ObfuscatedName("ak")
    @Export("worldSelectShown")
    static boolean worldSelectShown;
-   @ObfuscatedName("aq")
+   @ObfuscatedName("bo")
    @ObfuscatedGetter(
-      intValue = 829090433
+      intValue = -766232281
    )
-   static int field1445;
-   @ObfuscatedName("bf")
-   @ObfuscatedGetter(
-      intValue = -2011124489
-   )
-   static int field1446;
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Ljava/io/File;B)V",
-      garbageValue = "16"
-   )
-   static void method1778(File var0) {
-      class157.field2234 = var0;
-      if(!class157.field2234.exists()) {
-         throw new RuntimeException("");
-      } else {
-         class157.field2236 = true;
-      }
-   }
+   static int field1469;
+   @ObfuscatedName("b")
+   static ModIcon[] field1470;
 
    static {
-      field1416 = 0;
-      loginWindowX = field1416 + 202;
-      field1423 = new int[256];
-      field1424 = 0;
-      field1419 = 0;
-      field1426 = 0;
-      field1418 = 0;
-      field1445 = 0;
-      field1415 = 0;
-      field1430 = 10;
-      field1431 = "";
+      field1459 = 0;
+      loginWindowX = field1459 + 202;
+      field1447 = new int[256];
+      field1444 = 0;
+      field1449 = 0;
+      field1450 = 0;
+      field1451 = 0;
+      field1452 = 0;
+      field1453 = 0;
+      field1448 = 10;
+      field1455 = "";
       loginIndex = 0;
-      field1428 = "";
+      field1460 = "";
       loginMessage1 = "";
       loginMessage2 = "";
       loginMessage3 = "";
       username = "";
       password = "";
-      field1436 = class149.field2179;
-      field1440 = true;
+      field1454 = class149.field2213;
+      field1464 = true;
       loginIndex2 = 0;
       worldSelectShown = false;
-      field1446 = -1;
+      field1469 = -1;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("ga")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ILjava/lang/String;I)Z",
-      garbageValue = "1455036628"
+      signature = "(IIIII)V",
+      garbageValue = "-88510903"
    )
-   static boolean method1779(String var0, int var1, String var2) {
-      if(var1 == 0) {
-         try {
-            if(!class56.field673.startsWith("win")) {
-               throw new Exception();
-            } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
-               throw new Exception();
-            } else {
-               String var14 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
-
-               for(int var4 = 0; var4 < var0.length(); ++var4) {
-                  if(var14.indexOf(var0.charAt(var4)) == -1) {
-                     throw new Exception();
-                  }
-               }
-
-               Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
-               return true;
-            }
-         } catch (Throwable var8) {
-            return false;
+   static final void method1736(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.field1133; ++var4) {
+         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field1136[var4] = true;
          }
-      } else if(var1 == 1) {
-         try {
-            Applet var7 = class56.field678;
-            Object[] var5 = new Object[]{(new URL(class56.field678.getCodeBase(), var0)).toString()};
-            Object var13 = JSObject.getWindow(var7).call(var2, var5);
-            return var13 != null;
-         } catch (Throwable var9) {
-            return false;
-         }
-      } else if(var1 == 2) {
-         try {
-            class56.field678.getAppletContext().showDocument(new URL(class56.field678.getCodeBase(), var0), "_blank");
-            return true;
-         } catch (Exception var10) {
-            return false;
-         }
-      } else if(var1 == 3) {
-         try {
-            Applet var3 = class56.field678;
-            JSObject.getWindow(var3).call("loggedout", (Object[])null);
-         } catch (Throwable var12) {
-            ;
-         }
-
-         try {
-            class56.field678.getAppletContext().showDocument(new URL(class56.field678.getCodeBase(), var0), "_top");
-            return true;
-         } catch (Exception var11) {
-            return false;
-         }
-      } else {
-         throw new IllegalArgumentException();
-      }
-   }
-
-   @ObfuscatedName("gd")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1216381213"
-   )
-   static final void method1780() {
-      Client.field1014 = 0;
-      int var0 = class166.baseX + (XGrandExchangeOffer.localPlayer.x >> 7);
-      int var1 = class146.baseY + (XGrandExchangeOffer.localPlayer.y >> 7);
-      if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
-         Client.field1014 = 1;
-      }
-
-      if(var0 >= 3072 && var0 <= 3118 && var1 >= 9492 && var1 <= 9535) {
-         Client.field1014 = 1;
-      }
-
-      if(Client.field1014 == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
-         Client.field1014 = 0;
       }
 
    }

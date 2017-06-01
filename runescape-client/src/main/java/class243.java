@@ -1,54 +1,99 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import java.awt.Component;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iw")
+@ObfuscatedName("iq")
 public class class243 extends CacheableNode {
+   @ObfuscatedName("c")
+   public static NodeCache field3312;
+   @ObfuscatedName("e")
+   public boolean field3314;
    @ObfuscatedName("i")
-   public static IndexDataBase field3302;
-   @ObfuscatedName("h")
-   public static NodeCache field3303;
-   @ObfuscatedName("u")
-   public boolean field3304;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 91362615
-   )
-   public static int field3305;
+   public static IndexDataBase field3316;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "2098860661"
+      signature = "(LBuffer;S)V",
+      garbageValue = "602"
    )
-   public void method4389(Buffer var1) {
+   public void method4316(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4390(var1, var2);
+         this.method4317(var1, var2);
       }
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(LBuffer;IS)V",
-      garbageValue = "11567"
+      signature = "(LBuffer;II)V",
+      garbageValue = "679762014"
    )
-   void method4390(Buffer var1, int var2) {
+   void method4317(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3304 = true;
+         this.field3314 = true;
       }
 
-   }
-
-   public class243() {
-      this.field3304 = false;
    }
 
    static {
-      field3303 = new NodeCache(64);
+      field3312 = new NodeCache(64);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Ljava/awt/Component;I)V",
+      garbageValue = "2062675851"
+   )
+   static void method4319(Component var0) {
+      var0.addMouseListener(class59.mouse);
+      var0.addMouseMotionListener(class59.mouse);
+      var0.addFocusListener(class59.mouse);
+   }
+
+   public class243() {
+      this.field3314 = false;
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "([BIIB)Ljava/lang/String;",
+      garbageValue = "-51"
+   )
+   public static String method4326(byte[] var0, int var1, int var2) {
+      char[] var3 = new char[var2];
+      int var4 = 0;
+
+      for(int var5 = 0; var5 < var2; ++var5) {
+         int var6 = var0[var1 + var5] & 255;
+         if(var6 != 0) {
+            if(var6 >= 128 && var6 < 160) {
+               char var7 = class266.field3661[var6 - 128];
+               if(var7 == 0) {
+                  var7 = 63;
+               }
+
+               var6 = var7;
+            }
+
+            var3[var4++] = (char)var6;
+         }
+      }
+
+      return new String(var3, 0, var4);
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;I)LSpritePixels;",
+      garbageValue = "1731326507"
+   )
+   public static SpritePixels method4328(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.method4125(var1);
+      int var4 = var0.method4126(var3, var2);
+      return GameEngine.method827(var0, var3, var4);
    }
 }

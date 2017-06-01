@@ -1,81 +1,80 @@
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.net.URL;
-import java.net.URLConnection;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ba")
+@ObfuscatedName("bp")
 public class class77 {
+   @ObfuscatedName("e")
+   class153 field1229;
+   @ObfuscatedName("y")
+   byte[] field1230;
+   @ObfuscatedName("v")
+   DataInputStream field1231;
+   @ObfuscatedName("i")
+   byte[] field1232;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 1508227533
+   )
+   int field1234;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1896363617
+      intValue = -841714091
    )
-   int field1189;
-   @ObfuscatedName("i")
-   byte[] field1190;
-   @ObfuscatedName("v")
-   byte[] field1191;
-   @ObfuscatedName("g")
+   int field1235;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -280477563
+      intValue = 787236665
    )
-   int field1192;
-   @ObfuscatedName("p")
+   int field1236;
+   @ObfuscatedName("a")
+   static ModIcon field1237;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      longValue = 3798814088879397815L
+      longValue = -53969428926690331L
    )
-   long field1193;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -1196201245
-   )
-   int field1194;
-   @ObfuscatedName("u")
-   class153 field1195;
-   @ObfuscatedName("cy")
-   @Export("indexSprites")
-   static IndexData indexSprites;
-   @ObfuscatedName("q")
-   DataInputStream field1197;
+   long field1239;
+   @ObfuscatedName("of")
+   @Export("clanMembers")
+   static XClanMember[] clanMembers;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)[B",
-      garbageValue = "-1741469993"
+      garbageValue = "1075661198"
    )
-   byte[] method1517() throws IOException {
-      if(class226.method4147() > this.field1193) {
+   byte[] method1507() throws IOException {
+      if(XGrandExchangeOffer.method96() > this.field1239) {
          throw new IOException();
       } else {
-         if(this.field1189 == 0) {
-            if(this.field1195.field2209 == 2) {
+         if(this.field1236 == 0) {
+            if(this.field1229.field2244 == 2) {
                throw new IOException();
             }
 
-            if(this.field1195.field2209 == 1) {
-               this.field1197 = (DataInputStream)this.field1195.field2211;
-               this.field1189 = 1;
+            if(this.field1229.field2244 == 1) {
+               this.field1231 = (DataInputStream)this.field1229.field2248;
+               this.field1236 = 1;
             }
          }
 
-         if(this.field1189 == 1) {
-            this.field1192 += this.field1197.read(this.field1190, this.field1192, this.field1190.length - this.field1192);
-            if(this.field1192 == 4) {
-               int var1 = (new Buffer(this.field1190)).readInt();
-               this.field1191 = new byte[var1];
-               this.field1189 = 2;
+         if(this.field1236 == 1) {
+            this.field1234 += this.field1231.read(this.field1232, this.field1234, this.field1232.length - this.field1234);
+            if(this.field1234 == 4) {
+               int var1 = (new Buffer(this.field1232)).readInt();
+               this.field1230 = new byte[var1];
+               this.field1236 = 2;
             }
          }
 
-         if(this.field1189 == 2) {
-            this.field1194 += this.field1197.read(this.field1191, this.field1194, this.field1191.length - this.field1194);
-            if(this.field1191.length == this.field1194) {
-               return this.field1191;
+         if(this.field1236 == 2) {
+            this.field1235 += this.field1231.read(this.field1230, this.field1235, this.field1230.length - this.field1235);
+            if(this.field1235 == this.field1230.length) {
+               return this.field1230;
             }
          }
 
@@ -84,83 +83,46 @@ public class class77 {
    }
 
    class77(class154 var1, URL var2) {
-      this.field1190 = new byte[4];
-      this.field1195 = var1.method2971(var2);
-      this.field1189 = 0;
-      this.field1193 = class226.method4147() + 30000L;
+      this.field1232 = new byte[4];
+      this.field1229 = var1.method2954(var2);
+      this.field1236 = 0;
+      this.field1239 = XGrandExchangeOffer.method96() + 30000L;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "666952529"
+      signature = "(LModel;IB)V",
+      garbageValue = "-1"
    )
-   static void method1521() {
-      class92.username = class92.username.trim();
-      if(class92.username.length() == 0) {
-         Buffer.method3383("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
-      } else {
-         long var1;
-         try {
-            URL var3 = new URL(WorldMapType3.method179("services", false) + "m=accountappeal/login.ws");
-            URLConnection var4 = var3.openConnection();
-            var4.setRequestProperty("connection", "close");
-            var4.setDoInput(true);
-            var4.setDoOutput(true);
-            var4.setConnectTimeout(5000);
-            OutputStreamWriter var5 = new OutputStreamWriter(var4.getOutputStream());
-            var5.write("data1=req");
-            var5.flush();
-            InputStream var6 = var4.getInputStream();
-            Buffer var7 = new Buffer(new byte[1000]);
-
-            while(true) {
-               int var8 = var6.read(var7.payload, var7.offset, 1000 - var7.offset);
-               if(var8 == -1) {
-                  var7.offset = 0;
-                  long var10 = var7.readLong();
-                  var1 = var10;
-                  break;
-               }
-
-               var7.offset += var8;
-               if(var7.offset >= 1000) {
-                  var1 = 0L;
-                  break;
-               }
-            }
-         } catch (Exception var14) {
-            var1 = 0L;
+   public static final void method1511(Model var0, int var1) {
+      for(int var2 = 0; var2 < var0.field1945; ++var2) {
+         if(var0.field1951[var2] != -2) {
+            int var3 = var0.indices1[var2];
+            int var4 = var0.indices2[var2];
+            int var5 = var0.indices3[var2];
+            int var6 = Model.field1978[var3];
+            int var7 = Model.field1978[var4];
+            int var8 = Model.field1978[var5];
+            int var9 = Model.field1979[var3];
+            int var10 = Model.field1979[var4];
+            int var11 = Model.field1979[var5];
+            int var12 = Math.min(var6, Math.min(var7, var8)) - var1;
+            int var13 = Math.max(var6, Math.max(var7, var8)) + var1;
+            int var14 = Math.min(var9, Math.min(var10, var11)) - var1;
+            int var15 = Math.max(var9, Math.max(var10, var11)) + var1;
+            class59.method966(var12, var14, var13, var15, -49088);
          }
-
-         int var0;
-         if(0L == var1) {
-            var0 = 5;
-         } else {
-            var0 = NPC.method1729(var1, class92.username);
-         }
-
-         switch(var0) {
-         case 2:
-            Buffer.method3383("", "Page has opened in a new window.", "(Please check your popup blocker.)");
-            class92.loginIndex = 6;
-            break;
-         case 3:
-            Buffer.method3383("", "Error connecting to server.", "");
-            break;
-         case 4:
-            Buffer.method3383("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
-            break;
-         case 5:
-            Buffer.method3383("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
-            break;
-         case 6:
-            Buffer.method3383("", "Error connecting to server.", "");
-            break;
-         case 7:
-            Buffer.method3383("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
-         }
-
       }
+
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "99"
+   )
+   static int method1512(int var0, int var1) {
+      XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.method3520((long)var0);
+      return var2 == null?0:(var1 >= 0 && var1 < var2.stackSizes.length?var2.stackSizes[var1]:0);
    }
 }

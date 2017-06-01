@@ -1,98 +1,83 @@
-import java.io.IOException;
+import java.applet.Applet;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("at")
+@ObfuscatedName("as")
 public class class39 {
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -1346251409
-   )
-   int field521;
+   @ObfuscatedName("c")
+   public final Coordinates field525;
+   @ObfuscatedName("e")
+   public final Coordinates field526;
    @ObfuscatedName("v")
-   final class33 field522;
-   @ObfuscatedName("u")
-   public final Coordinates field523;
-   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 960156815
+      intValue = 597031569
    )
-   final int field525;
+   final int field527;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 428439963
+   )
+   final int field528;
+   @ObfuscatedName("y")
+   final class33 field529;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -817716847
+   )
+   int field530;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1047073313
+   )
+   int field531;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -543112109
+      intValue = -900822885
    )
-   public final int field526;
-   @ObfuscatedName("h")
-   public final Coordinates field527;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 831690275
-   )
-   int field528;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1561084021
-   )
-   final int field529;
+   public final int field536;
 
-   class39(int var1, Coordinates var2, Coordinates var3, class33 var4) {
-      this.field526 = var1;
-      this.field523 = var2;
-      this.field527 = var3;
-      this.field522 = var4;
-      class242 var5 = class242.field3276[this.field526];
-      SpritePixels var6 = var5.method4370(false);
-      if(var6 != null) {
-         this.field529 = var6.width;
-         this.field525 = var6.height;
-      } else {
-         this.field529 = 0;
-         this.field525 = 0;
-      }
-
-   }
-
-   @ObfuscatedName("h")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "5"
+      signature = "(III)Z",
+      garbageValue = "234532059"
    )
-   boolean method543(int var1, int var2) {
-      class242 var3 = class242.field3276[this.field526];
-      switch(var3.field3292.field3539) {
+   boolean method521(int var1, int var2) {
+      class242 var3 = class223.field2839[this.field536];
+      switch(var3.field3299.field3541) {
       case 0:
-         if(var1 >= this.field521 && var1 < this.field529 + this.field521) {
+         if(var1 >= this.field530 - this.field527 / 2 && var1 <= this.field530 + this.field527 / 2) {
             break;
          }
 
          return false;
       case 1:
-         if(var1 <= this.field521 - this.field529 || var1 > this.field521) {
-            return false;
+         if(var1 > this.field530 - this.field527 && var1 <= this.field530) {
+            break;
          }
-         break;
+
+         return false;
       case 2:
-         if(var1 < this.field521 - this.field529 / 2 || var1 > this.field529 / 2 + this.field521) {
+         if(var1 < this.field530 || var1 >= this.field530 + this.field527) {
             return false;
          }
       }
 
-      switch(var3.field3287.field3263) {
+      switch(var3.field3306.field3274) {
       case 0:
-         if(var2 <= this.field528 - this.field525 || var2 > this.field528) {
-            return false;
+         if(var2 > this.field531 - this.field528 && var2 <= this.field531) {
+            break;
          }
-         break;
+
+         return false;
       case 1:
-         if(var2 >= this.field528 - this.field525 / 2 && var2 <= this.field528 + this.field525 / 2) {
+         if(var2 >= this.field531 && var2 < this.field531 + this.field528) {
             break;
          }
 
          return false;
       case 2:
-         if(var2 < this.field528 || var2 >= this.field525 + this.field528) {
+         if(var2 < this.field531 - this.field528 / 2 || var2 > this.field531 + this.field528 / 2) {
             return false;
          }
       }
@@ -103,70 +88,93 @@ public class class39 {
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(III)Z",
-      garbageValue = "2076461606"
+      garbageValue = "1423860356"
    )
-   boolean method550(int var1, int var2) {
-      return this.method543(var1, var2)?true:this.method551(var1, var2);
+   boolean method522(int var1, int var2) {
+      return this.method521(var1, var2)?true:this.method523(var1, var2);
    }
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "-5"
-   )
-   boolean method551(int var1, int var2) {
-      return this.field522 == null?false:(var1 >= this.field521 - this.field522.field465 / 2 && var1 <= this.field522.field465 / 2 + this.field521?var2 >= this.field528 && var2 <= this.field522.field464 + this.field528:false);
+   class39(int var1, Coordinates var2, Coordinates var3, class33 var4) {
+      this.field536 = var1;
+      this.field526 = var2;
+      this.field525 = var3;
+      this.field529 = var4;
+      class242 var5 = class223.field2839[this.field536];
+      SpritePixels var6 = var5.method4313(false);
+      if(var6 != null) {
+         this.field527 = var6.width;
+         this.field528 = var6.height;
+      } else {
+         this.field527 = 0;
+         this.field528 = 0;
+      }
+
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(B)LPreferences;",
-      garbageValue = "4"
+      signature = "(III)Z",
+      garbageValue = "-1975578765"
    )
-   static Preferences method552() {
-      FileOnDisk var0 = null;
-      Preferences var1 = new Preferences();
+   boolean method523(int var1, int var2) {
+      return this.field529 == null?false:(var1 >= this.field530 - this.field529.field469 / 2 && var1 <= this.field530 + this.field529.field469 / 2?var2 >= this.field531 && var2 <= this.field531 + this.field529.field468:false);
+   }
 
-      try {
-         var0 = XGrandExchangeOffer.getPreferencesFile("", class4.field25.field3187, false);
-         byte[] var2 = new byte[(int)var0.method2386()];
-
-         int var4;
-         for(int var3 = 0; var3 < var2.length; var3 += var4) {
-            var4 = var0.method2387(var2, var3, var2.length - var3);
-            if(var4 == -1) {
-               throw new IOException();
-            }
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(II)Lclass251;",
+      garbageValue = "-45488289"
+   )
+   public static class251 method528(int var0) {
+      class251 var1 = (class251)class251.field3384.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class251.field3383.getConfigData(11, var0);
+         var1 = new class251();
+         if(var2 != null) {
+            var1.method4437(new Buffer(var2));
          }
 
-         var1 = new Preferences(new Buffer(var2));
-      } catch (Exception var6) {
-         ;
+         var1.method4436();
+         class251.field3384.put(var1, (long)var0);
+         return var1;
       }
-
-      try {
-         if(var0 != null) {
-            var0.method2385();
-         }
-      } catch (Exception var5) {
-         ;
-      }
-
-      return var1;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "-50"
+      signature = "(Ljava/applet/Applet;Ljava/lang/String;I)V",
+      garbageValue = "1499760332"
    )
-   public static int method553(int var0, int var1) {
-      int var2;
-      for(var2 = 0; var1 > 0; --var1) {
-         var2 = var2 << 1 | var0 & 1;
-         var0 >>>= 1;
+   public static void method531(Applet var0, String var1) {
+      class56.field694 = var0;
+      class56.field690 = var1;
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(LPacketBuffer;II)V",
+      garbageValue = "-1079440964"
+   )
+   static final void method532(PacketBuffer var0, int var1) {
+      int var2 = var0.offset;
+      class96.field1514 = 0;
+      class71.method1096(var0);
+
+      for(int var3 = 0; var3 < class96.field1514; ++var3) {
+         int var4 = class96.field1517[var3];
+         Player var5 = Client.cachedPlayers[var4];
+         int var6 = var0.readUnsignedByte();
+         if((var6 & 8) != 0) {
+            var6 += var0.readUnsignedByte() << 8;
+         }
+
+         class56.method805(var0, var4, var5, var6);
       }
 
-      return var2;
+      if(var1 != var0.offset - var2) {
+         throw new RuntimeException(var0.offset - var2 + " " + var1);
+      }
    }
 }

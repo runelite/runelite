@@ -4,60 +4,64 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gr")
 public class class203 {
-   @ObfuscatedName("k")
-   public static boolean field2495;
+   @ObfuscatedName("z")
+   public static class112 field2509;
+   @ObfuscatedName("c")
+   public static IndexDataBase field2510;
+   @ObfuscatedName("v")
+   public static class204 field2511;
    @ObfuscatedName("i")
-   static IndexDataBase field2496;
-   @ObfuscatedName("r")
-   static Track1 field2497;
-   @ObfuscatedName("g")
+   public static IndexDataBase field2512;
+   @ObfuscatedName("y")
+   public static IndexDataBase field2513;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1797166945
+      intValue = 816015785
    )
-   public static int field2498;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 1136205249
-   )
-   public static int field2499;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 2001536553
-   )
-   public static int field2500;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -83316807
-   )
-   public static int field2501;
-   @ObfuscatedName("u")
-   static IndexDataBase field2502;
+   public static int field2514;
    @ObfuscatedName("h")
-   static IndexDataBase field2503;
+   @ObfuscatedGetter(
+      intValue = -896087141
+   )
+   public static int field2515;
 
    static {
-      field2498 = 0;
+      field2514 = 0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("jp")
    @ObfuscatedSignature(
-      signature = "(II)LSpotanim;",
-      garbageValue = "65754960"
+      signature = "(Ljava/lang/String;II)V",
+      garbageValue = "546328156"
    )
-   public static Spotanim method3752(int var0) {
-      Spotanim var1 = (Spotanim)Spotanim.field3312.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Spotanim.field3323.getConfigData(13, var0);
-         var1 = new Spotanim();
-         var1.field3310 = var0;
-         if(var2 != null) {
-            var1.method4405(new Buffer(var2));
+   static final void method3665(String var0, int var1) {
+      Client.secretPacketBuffer1.putOpcode(178);
+      Client.secretPacketBuffer1.putByte(class5.method11(var0) + 1);
+      Client.secretPacketBuffer1.method3150(var0);
+      Client.secretPacketBuffer1.method3170(var1);
+   }
+
+   @ObfuscatedName("hf")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/String;IIIIZI)V",
+      garbageValue = "-1441460856"
+   )
+   static final void method3666(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
+      if(!Client.isMenuOpen) {
+         if(Client.menuOptionCount < 500) {
+            Client.menuOptions[Client.menuOptionCount] = var0;
+            Client.menuTargets[Client.menuOptionCount] = var1;
+            Client.menuTypes[Client.menuOptionCount] = var2;
+            Client.menuIdentifiers[Client.menuOptionCount] = var3;
+            Client.menuActionParams0[Client.menuOptionCount] = var4;
+            Client.menuActionParams1[Client.menuOptionCount] = var5;
+            if(var6) {
+               Client.field1090 = Client.menuOptionCount;
+            }
+
+            ++Client.menuOptionCount;
          }
 
-         Spotanim.field3312.put(var1, (long)var0);
-         return var1;
       }
    }
 }

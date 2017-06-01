@@ -1,44 +1,43 @@
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.OptionalDataException;
+import java.io.StreamCorruptedException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Reflection;
 
-@ObfuscatedName("ii")
+@ObfuscatedName("io")
 public class class257 implements class178 {
-   @ObfuscatedName("i")
-   static final class257 field3536;
-   @ObfuscatedName("h")
-   static final class257 field3537;
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
    static final class257 field3538;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
+   static final class257 field3539;
+   @ObfuscatedName("e")
+   static final class257 field3540;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -480217525
+      intValue = -100202383
    )
-   public final int field3539;
-   @ObfuscatedName("g")
+   public final int field3541;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 957979787
+      intValue = 1049180811
    )
-   final int field3541;
-   @ObfuscatedName("pw")
-   @ObfuscatedGetter(
-      intValue = -1591020969
-   )
-   static int field3542;
+   final int field3542;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1015343640"
+      signature = "(B)I",
+      garbageValue = "-70"
    )
-   public int vmethod5090() {
-      return this.field3541;
-   }
-
-   static {
-      field3536 = new class257(1, 0);
-      field3537 = new class257(2, 1);
-      field3538 = new class257(0, 2);
+   public int vmethod5009() {
+      return this.field3542;
    }
 
    @ObfuscatedSignature(
@@ -46,217 +45,112 @@ public class class257 implements class178 {
       garbageValue = "0"
    )
    class257(int var1, int var2) {
-      this.field3539 = var1;
-      this.field3541 = var2;
+      this.field3541 = var1;
+      this.field3542 = var2;
    }
 
-   @ObfuscatedName("q")
+   static {
+      field3539 = new class257(1, 0);
+      field3538 = new class257(0, 1);
+      field3540 = new class257(2, 2);
+   }
+
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(LPacketBuffer;IB)V",
-      garbageValue = "2"
+      signature = "(LPacketBuffer;I)V",
+      garbageValue = "-991962441"
    )
-   static void method4698(PacketBuffer var0, int var1) {
-      boolean var2 = var0.method3470(1) == 1;
-      if(var2) {
-         class96.field1495[++class96.field1487 - 1] = var1;
-      }
+   public static void method4641(PacketBuffer var0) {
+      ClassInfo var1 = (ClassInfo)class280.field3751.method3530();
+      if(var1 != null) {
+         int var2 = var0.offset;
+         var0.putInt(var1.field3742);
 
-      int var3 = var0.method3470(2);
-      Player var4 = Client.cachedPlayers[var1];
-      if(var3 == 0) {
-         if(var2) {
-            var4.field876 = false;
-         } else if(var1 == Client.localInteractingIndex) {
-            throw new RuntimeException();
-         } else {
-            class96.field1491[var1] = (var4.pathY[0] + class146.baseY >> 13) + (var4.field874 << 28) + (class166.baseX + var4.pathX[0] >> 13 << 14);
-            if(var4.field1230 != -1) {
-               class96.field1492[var1] = var4.field1230;
+         for(int var3 = 0; var3 < var1.field3749; ++var3) {
+            if(var1.field3744[var3] != 0) {
+               var0.putByte(var1.field3744[var3]);
             } else {
-               class96.field1492[var1] = var4.field1247;
-            }
-
-            class96.field1493[var1] = var4.interacting;
-            Client.cachedPlayers[var1] = null;
-            if(var0.method3470(1) != 0) {
-               Player.method1166(var0, var1);
-            }
-
-         }
-      } else {
-         int var5;
-         int var6;
-         int var7;
-         if(var3 == 1) {
-            var5 = var0.method3470(3);
-            var6 = var4.pathX[0];
-            var7 = var4.pathY[0];
-            if(var5 == 0) {
-               --var6;
-               --var7;
-            } else if(var5 == 1) {
-               --var7;
-            } else if(var5 == 2) {
-               ++var6;
-               --var7;
-            } else if(var5 == 3) {
-               --var6;
-            } else if(var5 == 4) {
-               ++var6;
-            } else if(var5 == 5) {
-               --var6;
-               ++var7;
-            } else if(var5 == 6) {
-               ++var7;
-            } else if(var5 == 7) {
-               ++var6;
-               ++var7;
-            }
-
-            if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-               if(var2) {
-                  var4.field876 = true;
-                  var4.field877 = var6;
-                  var4.field861 = var7;
-               } else {
-                  var4.field876 = false;
-                  var4.method1145(var6, var7, class96.field1485[var1]);
-               }
-            } else {
-               var4.method1146(var6, var7);
-               var4.field876 = false;
-            }
-
-         } else if(var3 == 2) {
-            var5 = var0.method3470(4);
-            var6 = var4.pathX[0];
-            var7 = var4.pathY[0];
-            if(var5 == 0) {
-               var6 -= 2;
-               var7 -= 2;
-            } else if(var5 == 1) {
-               --var6;
-               var7 -= 2;
-            } else if(var5 == 2) {
-               var7 -= 2;
-            } else if(var5 == 3) {
-               ++var6;
-               var7 -= 2;
-            } else if(var5 == 4) {
-               var6 += 2;
-               var7 -= 2;
-            } else if(var5 == 5) {
-               var6 -= 2;
-               --var7;
-            } else if(var5 == 6) {
-               var6 += 2;
-               --var7;
-            } else if(var5 == 7) {
-               var6 -= 2;
-            } else if(var5 == 8) {
-               var6 += 2;
-            } else if(var5 == 9) {
-               var6 -= 2;
-               ++var7;
-            } else if(var5 == 10) {
-               var6 += 2;
-               ++var7;
-            } else if(var5 == 11) {
-               var6 -= 2;
-               var7 += 2;
-            } else if(var5 == 12) {
-               --var6;
-               var7 += 2;
-            } else if(var5 == 13) {
-               var7 += 2;
-            } else if(var5 == 14) {
-               ++var6;
-               var7 += 2;
-            } else if(var5 == 15) {
-               var6 += 2;
-               var7 += 2;
-            }
-
-            if(var1 == Client.localInteractingIndex && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
-               var4.method1146(var6, var7);
-               var4.field876 = false;
-            } else if(var2) {
-               var4.field876 = true;
-               var4.field877 = var6;
-               var4.field861 = var7;
-            } else {
-               var4.field876 = false;
-               var4.method1145(var6, var7, class96.field1485[var1]);
-            }
-
-         } else {
-            var5 = var0.method3470(1);
-            int var8;
-            int var9;
-            int var10;
-            int var11;
-            if(var5 == 0) {
-               var6 = var0.method3470(12);
-               var7 = var6 >> 10;
-               var8 = var6 >> 5 & 31;
-               if(var8 > 15) {
-                  var8 -= 32;
-               }
-
-               var9 = var6 & 31;
-               if(var9 > 15) {
-                  var9 -= 32;
-               }
-
-               var10 = var4.pathX[0] + var8;
-               var11 = var4.pathY[0] + var9;
-               if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-                  if(var2) {
-                     var4.field876 = true;
-                     var4.field877 = var10;
-                     var4.field861 = var11;
-                  } else {
-                     var4.field876 = false;
-                     var4.method1145(var10, var11, class96.field1485[var1]);
+               try {
+                  int var4 = var1.field3743[var3];
+                  Field var5;
+                  int var6;
+                  if(var4 == 0) {
+                     var5 = var1.fields[var3];
+                     var6 = Reflection.getInt(var5, (Object)null);
+                     var0.putByte(0);
+                     var0.putInt(var6);
+                  } else if(var4 == 1) {
+                     var5 = var1.fields[var3];
+                     Reflection.setInt(var5, (Object)null, var1.field3741[var3]);
+                     var0.putByte(0);
+                  } else if(var4 == 2) {
+                     var5 = var1.fields[var3];
+                     var6 = var5.getModifiers();
+                     var0.putByte(0);
+                     var0.putInt(var6);
                   }
-               } else {
-                  var4.method1146(var10, var11);
-                  var4.field876 = false;
-               }
 
-               var4.field874 = (byte)(var7 + var4.field874 & 3);
-               if(Client.localInteractingIndex == var1) {
-                  Sequence.plane = var4.field874;
-               }
-
-            } else {
-               var6 = var0.method3470(30);
-               var7 = var6 >> 28;
-               var8 = var6 >> 14 & 16383;
-               var9 = var6 & 16383;
-               var10 = (class166.baseX + var4.pathX[0] + var8 & 16383) - class166.baseX;
-               var11 = (class146.baseY + var4.pathY[0] + var9 & 16383) - class146.baseY;
-               if(var1 != Client.localInteractingIndex || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-                  if(var2) {
-                     var4.field876 = true;
-                     var4.field877 = var10;
-                     var4.field861 = var11;
+                  Method var25;
+                  if(var4 != 3) {
+                     if(var4 == 4) {
+                        var25 = var1.methods[var3];
+                        var6 = var25.getModifiers();
+                        var0.putByte(0);
+                        var0.putInt(var6);
+                     }
                   } else {
-                     var4.field876 = false;
-                     var4.method1145(var10, var11, class96.field1485[var1]);
+                     var25 = var1.methods[var3];
+                     byte[][] var10 = var1.args[var3];
+                     Object[] var7 = new Object[var10.length];
+
+                     for(int var8 = 0; var8 < var10.length; ++var8) {
+                        ObjectInputStream var9 = new ObjectInputStream(new ByteArrayInputStream(var10[var8]));
+                        var7[var8] = var9.readObject();
+                     }
+
+                     Object var11 = Reflection.invoke(var25, (Object)null, var7);
+                     if(var11 == null) {
+                        var0.putByte(0);
+                     } else if(var11 instanceof Number) {
+                        var0.putByte(1);
+                        var0.putLong(((Number)var11).longValue());
+                     } else if(var11 instanceof String) {
+                        var0.putByte(2);
+                        var0.method3150((String)var11);
+                     } else {
+                        var0.putByte(4);
+                     }
                   }
-               } else {
-                  var4.method1146(var10, var11);
-                  var4.field876 = false;
+               } catch (ClassNotFoundException var13) {
+                  var0.putByte(-10);
+               } catch (InvalidClassException var14) {
+                  var0.putByte(-11);
+               } catch (StreamCorruptedException var15) {
+                  var0.putByte(-12);
+               } catch (OptionalDataException var16) {
+                  var0.putByte(-13);
+               } catch (IllegalAccessException var17) {
+                  var0.putByte(-14);
+               } catch (IllegalArgumentException var18) {
+                  var0.putByte(-15);
+               } catch (InvocationTargetException var19) {
+                  var0.putByte(-16);
+               } catch (SecurityException var20) {
+                  var0.putByte(-17);
+               } catch (IOException var21) {
+                  var0.putByte(-18);
+               } catch (NullPointerException var22) {
+                  var0.putByte(-19);
+               } catch (Exception var23) {
+                  var0.putByte(-20);
+               } catch (Throwable var24) {
+                  var0.putByte(-21);
                }
-
-               var4.field874 = (byte)(var7 + var4.field874 & 3);
-               if(var1 == Client.localInteractingIndex) {
-                  Sequence.plane = var4.field874;
-               }
-
             }
          }
+
+         var0.method3163(var2);
+         var1.unlink();
       }
    }
 }

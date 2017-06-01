@@ -4,71 +4,63 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ik")
+@ObfuscatedName("ix")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("u")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -2120197371
+      intValue = -2121938487
    )
    @Export("configId")
    public int configId;
-   @ObfuscatedName("q")
+   @ObfuscatedName("c")
+   public static NodeCache field3379;
+   @ObfuscatedName("i")
+   public static IndexDataBase field3380;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1482733855
+      intValue = -618212039
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("g")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -2111894343
+      intValue = 503160633
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
-   @ObfuscatedName("b")
-   static class112 field3377;
-   @ObfuscatedName("h")
-   public static NodeCache field3378;
-   @ObfuscatedName("ja")
-   @ObfuscatedGetter(
-      intValue = 1256370663
-   )
-   @Export("menuWidth")
-   static int menuWidth;
-   @ObfuscatedName("v")
-   public static IndexDataBase field3380;
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "-74106318"
-   )
-   void method4484(Buffer var1, int var2) {
-      if(var2 == 1) {
-         this.configId = var1.readUnsignedShort();
-         this.leastSignificantBit = var1.readUnsignedByte();
-         this.mostSignificantBit = var1.readUnsignedByte();
-      }
-
-   }
-
-   @ObfuscatedName("h")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
-      garbageValue = "-2093500171"
+      garbageValue = "1344583863"
    )
-   void method4485(Buffer var1) {
+   public void method4425(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4484(var1, var2);
+         this.method4428(var1, var2);
       }
    }
 
    static {
-      field3378 = new NodeCache(64);
+      field3379 = new NodeCache(64);
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;II)V",
+      garbageValue = "1768518756"
+   )
+   void method4428(Buffer var1, int var2) {
+      if(var2 == 1) {
+         this.configId = var1.readUnsignedShort();
+         this.leastSignificantBit = var1.readUnsignedByte();
+         this.mostSignificantBit = var1.readUnsignedByte();
+      }
+
    }
 }

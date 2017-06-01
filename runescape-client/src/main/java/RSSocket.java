@@ -9,126 +9,94 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ft")
+@ObfuscatedName("fp")
 @Implements("RSSocket")
 public final class RSSocket implements Runnable {
-   @ObfuscatedName("p")
+   @ObfuscatedName("c")
+   @Export("inputStream")
+   InputStream inputStream;
+   @ObfuscatedName("dk")
    @ObfuscatedGetter(
-      intValue = -312521567
+      intValue = -1567018067
    )
-   int field2246;
+   static int field2290;
+   @ObfuscatedName("v")
+   boolean field2292;
    @ObfuscatedName("i")
    @Export("outputStream")
    OutputStream outputStream;
-   @ObfuscatedName("u")
-   @Export("socket")
-   Socket socket;
+   @ObfuscatedName("y")
+   class153 field2294;
    @ObfuscatedName("h")
-   @Export("inputStream")
-   InputStream inputStream;
-   @ObfuscatedName("g")
-   class154 field2250;
-   @ObfuscatedName("q")
-   boolean field2251;
-   @ObfuscatedName("t")
    @Export("outbuffer")
    byte[] outbuffer;
-   @ObfuscatedName("v")
-   class153 field2253;
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1018449025
+      intValue = -992111631
+   )
+   int field2296;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1310380629
    )
    @Export("outbufLen")
    int outbufLen;
-   @ObfuscatedName("a")
-   boolean field2255;
-   @ObfuscatedName("au")
-   static SpritePixels[] field2257;
+   @ObfuscatedName("n")
+   boolean field2298;
+   @ObfuscatedName("b")
+   class154 field2299;
+   @ObfuscatedName("e")
+   @Export("socket")
+   Socket socket;
 
-   public RSSocket(Socket var1, class154 var2) throws IOException {
-      this.field2251 = false;
-      this.field2246 = 0;
-      this.outbufLen = 0;
-      this.field2255 = false;
-      this.field2250 = var2;
-      this.socket = var1;
-      this.socket.setSoTimeout(30000);
-      this.socket.setTcpNoDelay(true);
-      this.socket.setReceiveBufferSize(16384);
-      this.socket.setSendBufferSize(16384);
-      this.inputStream = this.socket.getInputStream();
-      this.outputStream = this.socket.getOutputStream();
-   }
-
-   protected void finalize() {
-      this.method3048();
-   }
-
-   @ObfuscatedName("g")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "-147085461"
+      signature = "(I)V",
+      garbageValue = "-623851410"
    )
-   @Export("queueForWrite")
-   public void queueForWrite(byte[] var1, int var2, int var3) throws IOException {
-      if(!this.field2251) {
-         if(this.field2255) {
-            this.field2255 = false;
-            throw new IOException();
-         } else {
-            if(this.outbuffer == null) {
-               this.outbuffer = new byte[5000];
+   public void method2981() {
+      if(!this.field2292) {
+         synchronized(this) {
+            this.field2292 = true;
+            this.notifyAll();
+         }
+
+         if(this.field2294 != null) {
+            while(this.field2294.field2244 == 0) {
+               class4.method9(1L);
             }
 
-            synchronized(this) {
-               for(int var5 = 0; var5 < var3; ++var5) {
-                  this.outbuffer[this.outbufLen] = var1[var5 + var2];
-                  this.outbufLen = (this.outbufLen + 1) % 5000;
-                  if((this.field2246 + 4900) % 5000 == this.outbufLen) {
-                     throw new IOException();
-                  }
+            if(this.field2294.field2244 == 1) {
+               try {
+                  ((Thread)this.field2294.field2248).join();
+               } catch (InterruptedException var3) {
+                  ;
                }
-
-               if(this.field2253 == null) {
-                  this.field2253 = this.field2250.method2969(this, 3);
-               }
-
-               this.notifyAll();
             }
          }
+
+         this.field2294 = null;
       }
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "-72"
+      garbageValue = "3"
    )
-   @Export("available")
-   public int available() throws IOException {
-      return this.field2251?0:this.inputStream.available();
+   @Export("readByte")
+   public int readByte() throws IOException {
+      return this.field2292?0:this.inputStream.read();
    }
 
-   @ObfuscatedName("il")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(IIIIIIIB)V",
-      garbageValue = "76"
-   )
-   static final void method3039(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if(class14.method75(var0)) {
-         class37.method510(class90.widgets[var0], -1, var1, var2, var3, var4, var5, var6);
-      }
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "-1507308868"
+      signature = "([BIIB)V",
+      garbageValue = "0"
    )
    @Export("read")
    public void read(byte[] var1, int var2, int var3) throws IOException {
-      if(!this.field2251) {
+      if(!this.field2292) {
          while(var3 > 0) {
             int var4 = this.inputStream.read(var1, var2, var3);
             if(var4 <= 0) {
@@ -142,96 +110,44 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-329358441"
+      signature = "(IB)Z",
+      garbageValue = "93"
    )
-   public void method3048() {
-      if(!this.field2251) {
-         synchronized(this) {
-            this.field2251 = true;
-            this.notifyAll();
-         }
-
-         if(this.field2253 != null) {
-            while(this.field2253.field2209 == 0) {
-               class19.method145(1L);
+   public static boolean method2986(int var0) {
+      if(Widget.validInterfaces[var0]) {
+         return true;
+      } else if(!Widget.field2686.method4112(var0)) {
+         return false;
+      } else {
+         int var1 = Widget.field2686.method4187(var0);
+         if(var1 == 0) {
+            Widget.validInterfaces[var0] = true;
+            return true;
+         } else {
+            if(CombatInfo1.widgets[var0] == null) {
+               CombatInfo1.widgets[var0] = new Widget[var1];
             }
 
-            if(this.field2253.field2209 == 1) {
-               try {
-                  ((Thread)this.field2253.field2211).join();
-               } catch (InterruptedException var3) {
-                  ;
+            for(int var2 = 0; var2 < var1; ++var2) {
+               if(CombatInfo1.widgets[var0][var2] == null) {
+                  byte[] var3 = Widget.field2686.getConfigData(var0, var2);
+                  if(var3 != null) {
+                     CombatInfo1.widgets[var0][var2] = new Widget();
+                     CombatInfo1.widgets[var0][var2].id = (var0 << 16) + var2;
+                     if(var3[0] == -1) {
+                        CombatInfo1.widgets[var0][var2].method3995(new Buffer(var3));
+                     } else {
+                        CombatInfo1.widgets[var0][var2].method3978(new Buffer(var3));
+                     }
+                  }
                }
             }
+
+            Widget.validInterfaces[var0] = true;
+            return true;
          }
-
-         this.field2253 = null;
-      }
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1012790610"
-   )
-   @Export("readByte")
-   public int readByte() throws IOException {
-      return this.field2251?0:this.inputStream.read();
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(ILScript;ZB)I",
-      garbageValue = "0"
-   )
-   static int method3054(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 >= 2000) {
-         var0 -= 1000;
-         var3 = class261.method4792(class83.intStack[--class83.intStackSize]);
-      } else {
-         var3 = var2?class83.field1311:Buffer.field2384;
-      }
-
-      int var4;
-      if(var0 == 1300) {
-         var4 = class83.intStack[--class83.intStackSize] - 1;
-         if(var4 >= 0 && var4 <= 9) {
-            var3.method4062(var4, class83.scriptStringStack[--ChatMessages.scriptStringStackSize]);
-            return 1;
-         } else {
-            --ChatMessages.scriptStringStackSize;
-            return 1;
-         }
-      } else if(var0 == 1301) {
-         class83.intStackSize -= 2;
-         var4 = class83.intStack[class83.intStackSize];
-         int var5 = class83.intStack[class83.intStackSize + 1];
-         var3.dragParent = class66.method1099(var4, var5);
-         return 1;
-      } else if(var0 == 1302) {
-         var3.field2720 = class83.intStack[--class83.intStackSize] == 1;
-         return 1;
-      } else if(var0 == 1303) {
-         var3.field2718 = class83.intStack[--class83.intStackSize];
-         return 1;
-      } else if(var0 == 1304) {
-         var3.field2687 = class83.intStack[--class83.intStackSize];
-         return 1;
-      } else if(var0 == 1305) {
-         var3.name = class83.scriptStringStack[--ChatMessages.scriptStringStackSize];
-         return 1;
-      } else if(var0 == 1306) {
-         var3.field2721 = class83.scriptStringStack[--ChatMessages.scriptStringStackSize];
-         return 1;
-      } else if(var0 == 1307) {
-         var3.actions = null;
-         return 1;
-      } else {
-         return 2;
       }
    }
 
@@ -242,8 +158,8 @@ public final class RSSocket implements Runnable {
                int var1;
                int var2;
                synchronized(this) {
-                  if(this.outbufLen == this.field2246) {
-                     if(this.field2251) {
+                  if(this.outbufLen == this.field2296) {
+                     if(this.field2292) {
                         break label84;
                      }
 
@@ -254,11 +170,11 @@ public final class RSSocket implements Runnable {
                      }
                   }
 
-                  var2 = this.field2246;
-                  if(this.outbufLen >= this.field2246) {
-                     var1 = this.outbufLen - this.field2246;
+                  var2 = this.field2296;
+                  if(this.outbufLen >= this.field2296) {
+                     var1 = this.outbufLen - this.field2296;
                   } else {
-                     var1 = 5000 - this.field2246;
+                     var1 = 5000 - this.field2296;
                   }
                }
 
@@ -269,17 +185,17 @@ public final class RSSocket implements Runnable {
                try {
                   this.outputStream.write(this.outbuffer, var2, var1);
                } catch (IOException var9) {
-                  this.field2255 = true;
+                  this.field2298 = true;
                }
 
-               this.field2246 = (this.field2246 + var1) % 5000;
+               this.field2296 = (this.field2296 + var1) % 5000;
 
                try {
-                  if(this.field2246 == this.outbufLen) {
+                  if(this.outbufLen == this.field2296) {
                      this.outputStream.flush();
                   }
                } catch (IOException var8) {
-                  this.field2255 = true;
+                  this.field2298 = true;
                }
                continue;
             }
@@ -304,45 +220,131 @@ public final class RSSocket implements Runnable {
             break;
          }
       } catch (Exception var12) {
-         class232.method4169((String)null, var12);
+         class21.method138((String)null, var12);
       }
 
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "99724276"
+      signature = "([BIII)V",
+      garbageValue = "2145684202"
    )
-   public static String method3056(CharSequence var0) {
-      long var3 = 0L;
-      int var5 = var0.length();
+   @Export("queueForWrite")
+   public void queueForWrite(byte[] var1, int var2, int var3) throws IOException {
+      if(!this.field2292) {
+         if(this.field2298) {
+            this.field2298 = false;
+            throw new IOException();
+         } else {
+            if(this.outbuffer == null) {
+               this.outbuffer = new byte[5000];
+            }
 
-      for(int var6 = 0; var6 < var5; ++var6) {
-         var3 *= 37L;
-         char var7 = var0.charAt(var6);
-         if(var7 >= 65 && var7 <= 90) {
-            var3 += (long)(var7 + 1 - 65);
-         } else if(var7 >= 97 && var7 <= 122) {
-            var3 += (long)(var7 + 1 - 97);
-         } else if(var7 >= 48 && var7 <= 57) {
-            var3 += (long)(var7 + 27 - 48);
+            synchronized(this) {
+               for(int var5 = 0; var5 < var3; ++var5) {
+                  this.outbuffer[this.outbufLen] = var1[var2 + var5];
+                  this.outbufLen = (this.outbufLen + 1) % 5000;
+                  if(this.outbufLen == (this.field2296 + 4900) % 5000) {
+                     throw new IOException();
+                  }
+               }
+
+               if(this.field2294 == null) {
+                  this.field2294 = this.field2299.method2936(this, 3);
+               }
+
+               this.notifyAll();
+            }
+         }
+      }
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "7"
+   )
+   @Export("available")
+   public int available() throws IOException {
+      return this.field2292?0:this.inputStream.available();
+   }
+
+   public RSSocket(Socket var1, class154 var2) throws IOException {
+      this.field2292 = false;
+      this.field2296 = 0;
+      this.outbufLen = 0;
+      this.field2298 = false;
+      this.field2299 = var2;
+      this.socket = var1;
+      this.socket.setSoTimeout(30000);
+      this.socket.setTcpNoDelay(true);
+      this.socket.setReceiveBufferSize(16384);
+      this.socket.setSendBufferSize(16384);
+      this.inputStream = this.socket.getInputStream();
+      this.outputStream = this.socket.getOutputStream();
+   }
+
+   protected void finalize() {
+      this.method2981();
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(CB)C",
+      garbageValue = "0"
+   )
+   static char method3005(char var0) {
+      return var0 != 181 && var0 != 131?Character.toTitleCase(var0):var0;
+   }
+
+   @ObfuscatedName("ip")
+   @ObfuscatedSignature(
+      signature = "(LWidget;III)V",
+      garbageValue = "-1673027194"
+   )
+   static void method3006(Widget var0, int var1, int var2) {
+      if(var0.field2656 == 0) {
+         var0.relativeX = var0.originalX;
+      } else if(var0.field2656 == 1) {
+         var0.relativeX = var0.originalX + (var1 - var0.width) / 2;
+      } else if(var0.field2656 == 2) {
+         var0.relativeX = var1 - var0.width - var0.originalX;
+      } else if(var0.field2656 == 3) {
+         var0.relativeX = var1 * var0.originalX >> 14;
+      } else if(var0.field2656 == 4) {
+         var0.relativeX = (var1 - var0.width) / 2 + (var1 * var0.originalX >> 14);
+      } else {
+         var0.relativeX = var1 - var0.width - (var1 * var0.originalX >> 14);
+      }
+
+      if(var0.field2643 == 0) {
+         var0.relativeY = var0.originalY;
+      } else if(var0.field2643 == 1) {
+         var0.relativeY = var0.originalY + (var2 - var0.height) / 2;
+      } else if(var0.field2643 == 2) {
+         var0.relativeY = var2 - var0.height - var0.originalY;
+      } else if(var0.field2643 == 3) {
+         var0.relativeY = var2 * var0.originalY >> 14;
+      } else if(var0.field2643 == 4) {
+         var0.relativeY = (var0.originalY * var2 >> 14) + (var2 - var0.height) / 2;
+      } else {
+         var0.relativeY = var2 - var0.height - (var2 * var0.originalY >> 14);
+      }
+
+      if(Client.field1100 && var0.type == 0) {
+         if(var0.relativeX < 0) {
+            var0.relativeX = 0;
+         } else if(var0.relativeX + var0.width > var1) {
+            var0.relativeX = var1 - var0.width;
          }
 
-         if(var3 >= 177917621779460413L) {
-            break;
+         if(var0.relativeY < 0) {
+            var0.relativeY = 0;
+         } else if(var0.height + var0.relativeY > var2) {
+            var0.relativeY = var2 - var0.height;
          }
       }
 
-      while(var3 % 37L == 0L && var3 != 0L) {
-         var3 /= 37L;
-      }
-
-      String var8 = class96.method1813(var3);
-      if(var8 == null) {
-         var8 = "";
-      }
-
-      return var8;
    }
 }

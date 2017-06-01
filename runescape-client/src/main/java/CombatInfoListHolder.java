@@ -3,67 +3,30 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cs")
+@ObfuscatedName("cy")
 @Implements("CombatInfoListHolder")
 public class CombatInfoListHolder extends Node {
-   @ObfuscatedName("u")
+   @ObfuscatedName("e")
    @Export("combatInfo2")
    CombatInfo2 combatInfo2;
-   @ObfuscatedName("gu")
-   static SpritePixels[] field1347;
-   @ObfuscatedName("q")
+   @ObfuscatedName("v")
    @Export("combatInfo1")
    CombatInfoList combatInfo1;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "2124701452"
+      signature = "(IB)LCombatInfo1;",
+      garbageValue = "102"
    )
-   void method1697(int var1, int var2, int var3, int var4) {
-      CombatInfo1 var5 = null;
-      int var6 = 0;
-
-      for(CombatInfo1 var7 = (CombatInfo1)this.combatInfo1.method3620(); var7 != null; var7 = (CombatInfo1)this.combatInfo1.method3625()) {
-         ++var6;
-         if(var1 == var7.field1259) {
-            var7.method1547(var1, var2, var3, var4);
-            return;
-         }
-
-         if(var7.field1259 <= var1) {
-            var5 = var7;
-         }
-      }
-
-      if(var5 == null) {
-         if(var6 < 4) {
-            this.combatInfo1.method3619(new CombatInfo1(var1, var2, var3, var4));
-         }
-
-      } else {
-         CombatInfoList.method3627(new CombatInfo1(var1, var2, var3, var4), var5);
-         if(var6 >= 4) {
-            this.combatInfo1.method3620().unlink();
-         }
-
-      }
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(II)LCombatInfo1;",
-      garbageValue = "-755406857"
-   )
-   CombatInfo1 method1699(int var1) {
-      CombatInfo1 var2 = (CombatInfo1)this.combatInfo1.method3620();
-      if(var2 != null && var2.field1259 <= var1) {
-         for(CombatInfo1 var3 = (CombatInfo1)this.combatInfo1.method3625(); var3 != null && var3.field1259 <= var1; var3 = (CombatInfo1)this.combatInfo1.method3625()) {
+   CombatInfo1 method1673(int var1) {
+      CombatInfo1 var2 = (CombatInfo1)this.combatInfo1.method3530();
+      if(var2 != null && var2.field1306 <= var1) {
+         for(CombatInfo1 var3 = (CombatInfo1)this.combatInfo1.method3540(); var3 != null && var3.field1306 <= var1; var3 = (CombatInfo1)this.combatInfo1.method3540()) {
             var2.unlink();
             var2 = var3;
          }
 
-         if(var2.field1259 + var2.field1261 + this.combatInfo2.field3359 > var1) {
+         if(this.combatInfo2.field3370 + var2.field1309 + var2.field1306 > var1) {
             return var2;
          } else {
             var2.unlink();
@@ -74,36 +37,52 @@ public class CombatInfoListHolder extends Node {
       }
    }
 
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-882485061"
+   )
+   boolean method1674() {
+      return this.combatInfo1.method3538();
+   }
+
    CombatInfoListHolder(CombatInfo2 var1) {
       this.combatInfo1 = new CombatInfoList();
       this.combatInfo2 = var1;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-1707523715"
+      signature = "(IIIIB)V",
+      garbageValue = "110"
    )
-   boolean method1703() {
-      return this.combatInfo1.method3626();
-   }
+   void method1680(int var1, int var2, int var3, int var4) {
+      CombatInfo1 var5 = null;
+      int var6 = 0;
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
-      garbageValue = "33"
-   )
-   @Export("addChatMessage")
-   static void addChatMessage(int var0, String var1, String var2, String var3) {
-      ChatLineBuffer var4 = (ChatLineBuffer)class98.chatLineMap.get(Integer.valueOf(var0));
-      if(var4 == null) {
-         var4 = new ChatLineBuffer();
-         class98.chatLineMap.put(Integer.valueOf(var0), var4);
+      for(CombatInfo1 var7 = (CombatInfo1)this.combatInfo1.method3530(); var7 != null; var7 = (CombatInfo1)this.combatInfo1.method3540()) {
+         ++var6;
+         if(var7.field1306 == var1) {
+            var7.method1536(var1, var2, var3, var4);
+            return;
+         }
+
+         if(var7.field1306 <= var1) {
+            var5 = var7;
+         }
       }
 
-      MessageNode var5 = var4.method1896(var0, var1, var2, var3);
-      class98.field1519.method3575(var5, (long)var5.id);
-      class98.field1518.method3723(var5);
-      Client.field1082 = Client.field1075;
+      if(var5 == null) {
+         if(var6 < 4) {
+            this.combatInfo1.method3532(new CombatInfo1(var1, var2, var3, var4));
+         }
+
+      } else {
+         CombatInfoList.method3539(new CombatInfo1(var1, var2, var3, var4), var5);
+         if(var6 >= 4) {
+            this.combatInfo1.method3530().unlink();
+         }
+
+      }
    }
 }

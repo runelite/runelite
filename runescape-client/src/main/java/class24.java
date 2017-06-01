@@ -2,114 +2,103 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("c")
+@ObfuscatedName("u")
 public class class24 {
-   @ObfuscatedName("ak")
-   static Client field356;
-   @ObfuscatedName("h")
-   public static final class24 field357;
-   @ObfuscatedName("u")
-   public static final class24 field358;
-   @ObfuscatedName("q")
-   final String field359;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1580682051
-   )
-   final int field360;
+   @ObfuscatedName("c")
+   public static final class24 field350;
    @ObfuscatedName("v")
+   final String field351;
+   @ObfuscatedName("e")
+   public static final class24 field352;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1974680807
+      intValue = 1907369177
    )
-   final int field361;
-   @ObfuscatedName("j")
-   static Buffer field362;
-   @ObfuscatedName("kk")
+   static int field353;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1264989545
+      intValue = -6113973
    )
-   static int field364;
-   @ObfuscatedName("n")
-   static int[] field365;
+   final int field354;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -35910235
+   )
+   final int field355;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1109221653
+   )
+   final int field356;
    @ObfuscatedName("i")
-   public static final class24 field367;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1205881661
-   )
-   final int field368;
+   public static final class24 field357;
 
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;III)V",
       garbageValue = "4"
    )
    class24(String var1, int var2, int var3, int var4) {
-      this.field359 = var1;
-      this.field360 = var2;
-      this.field361 = var3;
-      this.field368 = var4;
+      this.field351 = var1;
+      this.field354 = var2;
+      this.field355 = var3;
+      this.field356 = var4;
+   }
+
+   static {
+      field357 = new class24("SMALL", 0, 0, 4);
+      field350 = new class24("MEDIUM", 2, 1, 2);
+      field352 = new class24("LARGE", 1, 2, 0);
+   }
+
+   @ObfuscatedName("al")
+   @ObfuscatedSignature(
+      signature = "([BB)[B",
+      garbageValue = "80"
+   )
+   static final byte[] method163(byte[] var0) {
+      Buffer var1 = new Buffer(var0);
+      int var2 = var1.readUnsignedByte();
+      int var3 = var1.readInt();
+      if(var3 >= 0 && (IndexDataBase.field3215 == 0 || var3 <= IndexDataBase.field3215)) {
+         if(var2 == 0) {
+            byte[] var6 = new byte[var3];
+            var1.readBytes(var6, 0, var3);
+            return var6;
+         } else {
+            int var4 = var1.readInt();
+            if(var4 >= 0 && (IndexDataBase.field3215 == 0 || var4 <= IndexDataBase.field3215)) {
+               byte[] var5 = new byte[var4];
+               if(var2 == 1) {
+                  class167.method3102(var5, var4, var0, var3, 9);
+               } else {
+                  IndexDataBase.field3227.method3081(var1, var5);
+               }
+
+               return var5;
+            } else {
+               throw new RuntimeException();
+            }
+         }
+      } else {
+         throw new RuntimeException();
+      }
    }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)[Lclass24;",
-      garbageValue = "767048081"
+      garbageValue = "-309867679"
    )
-   static class24[] method166() {
-      return new class24[]{field358, field357, field367};
+   static class24[] method164() {
+      return new class24[]{field350, field352, field357};
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(FI)Z",
-      garbageValue = "643901213"
+      signature = "(FB)Z",
+      garbageValue = "-79"
    )
-   boolean method168(float var1) {
-      return var1 >= (float)this.field368;
-   }
-
-   static {
-      field367 = new class24("SMALL", 0, 0, 4);
-      field357 = new class24("MEDIUM", 2, 1, 2);
-      field358 = new class24("LARGE", 1, 2, 0);
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "1"
-   )
-   public static void method175() {
-      if(class238.field3257 != null) {
-         class238.field3257.method3048();
-      }
-
-   }
-
-   @ObfuscatedName("hs")
-   @ObfuscatedSignature(
-      signature = "([LWidget;LWidget;ZI)V",
-      garbageValue = "1347961198"
-   )
-   static void method176(Widget[] var0, Widget var1, boolean var2) {
-      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
-      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
-      class123.method2366(var0, var1.id, var3, var4, var2);
-      if(var1.children != null) {
-         class123.method2366(var1.children, var1.id, var3, var4, var2);
-      }
-
-      WidgetNode var5 = (WidgetNode)Client.componentTable.method3615((long)var1.id);
-      if(var5 != null) {
-         int var6 = var5.id;
-         if(class14.method75(var6)) {
-            class123.method2366(class90.widgets[var6], -1, var3, var4, var2);
-         }
-      }
-
-      if(var1.contentType == 1337) {
-         ;
-      }
-
+   boolean method166(float var1) {
+      return var1 >= (float)this.field356;
    }
 }

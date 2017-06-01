@@ -2,88 +2,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ex")
+@ObfuscatedName("eo")
 public class class149 implements class178 {
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
+   public static final class149 field2213;
+   @ObfuscatedName("c")
+   public static final class149 field2214;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1824268637
+      intValue = -361698659
    )
-   public final int field2177;
-   @ObfuscatedName("cp")
-   static boolean field2178;
-   @ObfuscatedName("u")
-   public static final class149 field2179;
-   @ObfuscatedName("q")
-   public static final class149 field2180;
-   @ObfuscatedName("i")
-   public static final class149 field2181;
+   public final int field2215;
    @ObfuscatedName("v")
+   public static final class149 field2216;
+   @ObfuscatedName("i")
+   public static final class149 field2217;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -101145565
+      intValue = 283909179
    )
-   final int field2182;
-   @ObfuscatedName("dh")
-   @ObfuscatedGetter(
-      intValue = 1799407197
-   )
-   static int field2183;
-   @ObfuscatedName("h")
-   public static final class149 field2186;
+   final int field2218;
 
    static {
-      field2181 = new class149(3, 0);
-      field2186 = new class149(1, 1);
-      field2179 = new class149(0, 2);
-      field2180 = new class149(2, 3);
+      field2217 = new class149(0, 0);
+      field2214 = new class149(1, 1);
+      field2213 = new class149(2, 2);
+      field2216 = new class149(3, 3);
    }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1015343640"
+      signature = "(B)I",
+      garbageValue = "-70"
    )
-   public int vmethod5090() {
-      return this.field2182;
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(IB)Lclass254;",
-      garbageValue = "47"
-   )
-   public static class254 method2942(int var0) {
-      class254 var1 = (class254)class254.field3416.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class254.field3409.getConfigData(32, var0);
-         var1 = new class254();
-         if(var2 != null) {
-            var1.method4544(new Buffer(var2));
-         }
-
-         class254.field3416.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("jz")
-   @ObfuscatedSignature(
-      signature = "(LWidget;I)Z",
-      garbageValue = "-652682008"
-   )
-   static boolean method2945(Widget var0) {
-      if(Client.field1060) {
-         if(class43.method626(var0) != 0) {
-            return false;
-         }
-
-         if(var0.type == 0) {
-            return false;
-         }
-      }
-
-      return var0.isHidden;
+   public int vmethod5009() {
+      return this.field2218;
    }
 
    @ObfuscatedSignature(
@@ -91,7 +44,7 @@ public class class149 implements class178 {
       garbageValue = "0"
    )
    class149(int var1, int var2) {
-      this.field2177 = var1;
-      this.field2182 = var2;
+      this.field2215 = var1;
+      this.field2218 = var2;
    }
 }

@@ -4,72 +4,62 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ez")
+@ObfuscatedName("ef")
 @Implements("FaceNormal")
 public class FaceNormal {
-   @ObfuscatedName("h")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1543507565
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("lb")
-   @ObfuscatedGetter(
-      intValue = -119925087
-   )
-   static int field2120;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 109902883
+      intValue = -190126105
    )
    @Export("z")
    int z;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -687616175
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("pd")
+   static class109 field2155;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1026323817
+      intValue = 1713777981
    )
    @Export("x")
    int x;
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1964359242"
+   @ObfuscatedName("ib")
+   @ObfuscatedGetter(
+      intValue = 760280513
    )
-   public static void method2912() {
-      class50 var0 = class50.keyboard;
-      synchronized(class50.keyboard) {
-         ++class50.keyboardIdleTicks;
-         class50.field621 = class50.field635;
-         class50.field641 = 0;
-         int var1;
-         if(class50.field628 < 0) {
-            for(var1 = 0; var1 < 112; ++var1) {
-               class50.field624[var1] = false;
-            }
+   @Export("plane")
+   static int plane;
 
-            class50.field628 = class50.field631;
-         } else {
-            while(class50.field628 != class50.field631) {
-               var1 = class50.field617[class50.field631];
-               class50.field631 = class50.field631 + 1 & 127;
-               if(var1 < 0) {
-                  class50.field624[~var1] = false;
-               } else {
-                  if(!class50.field624[var1] && class50.field641 < class50.field629.length - 1) {
-                     class50.field629[++class50.field641 - 1] = var1;
-                  }
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(CB)Z",
+      garbageValue = "1"
+   )
+   public static boolean method2865(char var0) {
+      return var0 >= 65 && var0 <= 90 || var0 >= 97 && var0 <= 122;
+   }
 
-                  class50.field624[var1] = true;
-               }
-            }
-         }
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "([BII)I",
+      garbageValue = "-743222655"
+   )
+   public static int method2866(byte[] var0, int var1) {
+      return class15.method75(var0, 0, var1);
+   }
 
-         if(class50.field641 > 0) {
-            class50.keyboardIdleTicks = 0;
-         }
-
-         class50.field635 = class50.field634;
+   @ObfuscatedName("ij")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1137308577"
+   )
+   static final void method2867(int var0) {
+      if(RSSocket.method2986(var0)) {
+         class253.method4473(CombatInfo1.widgets[var0], -1);
       }
    }
 }

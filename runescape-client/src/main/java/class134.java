@@ -1,106 +1,140 @@
-import java.io.IOException;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ea")
+@ObfuscatedName("ez")
 public class class134 {
-   @ObfuscatedName("h")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1857824587
+      intValue = 325011331
    )
-   static int field1979;
-   @ObfuscatedName("i")
-   static boolean field1980;
-   @ObfuscatedName("l")
+   public static int field2007;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -565997421
+      intValue = -1896065809
    )
-   static int field1981;
-   @ObfuscatedName("g")
+   public static int field2008;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1325186875
+      intValue = -1338504821
    )
-   static int field1982;
-   @ObfuscatedName("v")
+   static int field2010;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 768292897
+      intValue = -1681393341
    )
-   static int field1983;
-   @ObfuscatedName("q")
-   static boolean field1984;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 836314185
-   )
-   static int field1985;
+   static int field2011;
    @ObfuscatedName("x")
+   @Export("isMembersWorld")
+   public static boolean isMembersWorld;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 12893219
+      intValue = -868559201
    )
-   public static int field1986;
-   @ObfuscatedName("o")
-   public static int[] field1987;
-   @ObfuscatedName("u")
+   public static int field2013;
+   @ObfuscatedName("j")
+   public static int[] field2014;
+   @ObfuscatedName("v")
+   public static boolean field2015;
+   @ObfuscatedName("az")
    @ObfuscatedGetter(
-      intValue = -1934210365
+      intValue = 1158634311
    )
-   static int field1988;
-   @ObfuscatedName("rb")
-   static Preferences field1989;
+   @Export("authCodeForLogin")
+   static int authCodeForLogin;
+   @ObfuscatedName("i")
+   public static boolean field2018;
 
    static {
-      field1980 = false;
-      field1979 = 0;
-      field1988 = 0;
-      field1984 = false;
-      field1986 = 0;
-      field1987 = new int[1000];
+      field2018 = false;
+      field2008 = 0;
+      field2007 = 0;
+      field2015 = false;
+      field2013 = 0;
+      field2014 = new int[1000];
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("ar")
    @ObfuscatedSignature(
-      signature = "(B)[B",
-      garbageValue = "-21"
+      signature = "(ILScript;ZI)I",
+      garbageValue = "-1514118798"
    )
-   public static byte[] method2618() {
-      byte[] var0 = new byte[24];
-
-      try {
-         class155.field2221.method2358(0L);
-         class155.field2221.method2380(var0);
-
-         int var1;
-         for(var1 = 0; var1 < 24 && var0[var1] == 0; ++var1) {
-            ;
+   static int method2586(int var0, Script var1, boolean var2) {
+      if(var0 == 6200) {
+         class83.intStackSize -= 2;
+         Client.field1045 = (short)class83.intStack[class83.intStackSize];
+         if(Client.field1045 <= 0) {
+            Client.field1045 = 256;
          }
 
-         if(var1 >= 24) {
-            throw new IOException();
+         Client.field975 = (short)class83.intStack[class83.intStackSize + 1];
+         if(Client.field975 <= 0) {
+            Client.field975 = 205;
          }
-      } catch (Exception var4) {
-         for(int var2 = 0; var2 < 24; ++var2) {
-            var0[var2] = -1;
+
+         return 1;
+      } else if(var0 == 6201) {
+         class83.intStackSize -= 2;
+         Client.field1094 = (short)class83.intStack[class83.intStackSize];
+         if(Client.field1094 <= 0) {
+            Client.field1094 = 256;
          }
+
+         Client.field1185 = (short)class83.intStack[class83.intStackSize + 1];
+         if(Client.field1185 <= 0) {
+            Client.field1185 = 320;
+         }
+
+         return 1;
+      } else if(var0 == 6202) {
+         class83.intStackSize -= 4;
+         Client.field1159 = (short)class83.intStack[class83.intStackSize];
+         if(Client.field1159 <= 0) {
+            Client.field1159 = 1;
+         }
+
+         Client.field1187 = (short)class83.intStack[class83.intStackSize + 1];
+         if(Client.field1187 <= 0) {
+            Client.field1187 = 32767;
+         } else if(Client.field1187 < Client.field1159) {
+            Client.field1187 = Client.field1159;
+         }
+
+         Client.field1188 = (short)class83.intStack[class83.intStackSize + 2];
+         if(Client.field1188 <= 0) {
+            Client.field1188 = 1;
+         }
+
+         Client.field1189 = (short)class83.intStack[class83.intStackSize + 3];
+         if(Client.field1189 <= 0) {
+            Client.field1189 = 32767;
+         } else if(Client.field1189 < Client.field1188) {
+            Client.field1189 = Client.field1188;
+         }
+
+         return 1;
+      } else if(var0 == 6203) {
+         if(Client.field1102 != null) {
+            class91.method1710(0, 0, Client.field1102.width, Client.field1102.height, false);
+            class83.intStack[++class83.intStackSize - 1] = Client.camera2;
+            class83.intStack[++class83.intStackSize - 1] = Client.camera3;
+         } else {
+            class83.intStack[++class83.intStackSize - 1] = -1;
+            class83.intStack[++class83.intStackSize - 1] = -1;
+         }
+
+         return 1;
+      } else if(var0 == 6204) {
+         class83.intStack[++class83.intStackSize - 1] = Client.field1094;
+         class83.intStack[++class83.intStackSize - 1] = Client.field1185;
+         return 1;
+      } else if(var0 == 6205) {
+         class83.intStack[++class83.intStackSize - 1] = Client.field1045;
+         class83.intStack[++class83.intStackSize - 1] = Client.field975;
+         return 1;
+      } else {
+         return 2;
       }
-
-      return var0;
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-2135300288"
-   )
-   public static String method2619(CharSequence var0) {
-      int var2 = var0.length();
-      char[] var3 = new char[var2];
-
-      for(int var4 = 0; var4 < var2; ++var4) {
-         var3[var4] = 42;
-      }
-
-      String var1 = new String(var3);
-      return var1;
    }
 }

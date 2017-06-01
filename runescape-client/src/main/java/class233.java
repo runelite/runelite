@@ -1,27 +1,21 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hq")
+@ObfuscatedName("hn")
 public class class233 extends Node {
+   @ObfuscatedName("c")
+   byte[] field3198;
+   @ObfuscatedName("e")
+   IndexFile field3199;
+   @ObfuscatedName("v")
+   IndexData field3200;
+   @ObfuscatedName("cw")
+   static boolean field3202;
+   @ObfuscatedName("y")
+   public static int[] field3205;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1024229019
+      intValue = -2022724467
    )
-   int field3190;
-   @ObfuscatedName("h")
-   byte[] field3191;
-   @ObfuscatedName("u")
-   IndexFile field3192;
-   @ObfuscatedName("q")
-   IndexData field3193;
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "460222811"
-   )
-   public static boolean method4170(char var0) {
-      return var0 >= 48 && var0 <= 57;
-   }
+   int field3207;
 }

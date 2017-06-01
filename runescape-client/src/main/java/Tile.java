@@ -4,129 +4,136 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("em")
+@ObfuscatedName("er")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("d")
-   boolean field1885;
-   @ObfuscatedName("h")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 509272557
+      intValue = 1772743249
    )
-   @Export("x")
-   int x;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -70650453
-   )
-   @Export("plane")
-   int plane;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 966477479
-   )
-   int field1888;
-   @ObfuscatedName("v")
-   class128 field1889;
-   @ObfuscatedName("g")
-   class137 field1890;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -86577299
-   )
-   int field1891;
-   @ObfuscatedName("p")
-   @Export("decorativeObject")
-   DecorativeObject decorativeObject;
-   @ObfuscatedName("l")
+   int field1914;
+   @ObfuscatedName("f")
    @Export("groundObject")
    GroundObject groundObject;
-   @ObfuscatedName("r")
-   @Export("objects")
-   GameObject[] objects;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1464921991
-   )
-   int field1895;
-   @ObfuscatedName("a")
-   @Export("itemLayer")
-   ItemLayer itemLayer;
-   @ObfuscatedName("b")
-   int[] field1897;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -670251893
-   )
-   int field1898;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -2110195345
+      intValue = -45521239
    )
    @Export("y")
    int y;
-   @ObfuscatedName("j")
-   boolean field1900;
-   @ObfuscatedName("m")
-   boolean field1901;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -1800328599
+   )
+   int field1917;
+   @ObfuscatedName("b")
+   class137 field1918;
+   @ObfuscatedName("y")
+   class128 field1919;
    @ObfuscatedName("w")
-   Tile field1902;
-   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 906047659
+      intValue = -1852317203
    )
-   int field1903;
-   @ObfuscatedName("s")
+   int field1920;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1904394923
+      intValue = -1451408085
    )
-   int field1904;
+   int field1921;
+   @ObfuscatedName("x")
+   @Export("decorativeObject")
+   DecorativeObject decorativeObject;
    @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1235445247
-   )
-   int field1905;
-   @ObfuscatedName("t")
+   @Export("itemLayer")
+   ItemLayer itemLayer;
+   @ObfuscatedName("h")
    @Export("wallObject")
    WallObject wallObject;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 292919483
-   )
-   int field1907;
-
+   @ObfuscatedName("o")
+   @Export("objects")
+   GameObject[] objects;
+   @ObfuscatedName("z")
+   int[] field1926;
    @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-85"
+   @ObfuscatedGetter(
+      intValue = 229219513
    )
-   public static void method2530() {
-      if(class50.keyboard != null) {
-         class50 var0 = class50.keyboard;
-         synchronized(class50.keyboard) {
-            class50.keyboard = null;
-         }
+   @Export("plane")
+   int plane;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 466785007
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("k")
+   boolean field1929;
+   @ObfuscatedName("r")
+   boolean field1930;
+   @ObfuscatedName("m")
+   boolean field1931;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 445072241
+   )
+   int field1932;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1671406139
+   )
+   int field1933;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -2107987587
+   )
+   int field1934;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -2144286367
+   )
+   int field1935;
+   @ObfuscatedName("p")
+   Tile field1936;
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(I)LSpritePixels;",
+      garbageValue = "-1708742426"
+   )
+   static SpritePixels method2488() {
+      SpritePixels var0 = new SpritePixels();
+      var0.maxWidth = class286.field3790;
+      var0.maxHeight = class286.field3792;
+      var0.offsetX = class286.field3793[0];
+      var0.offsetY = class266.field3657[0];
+      var0.width = class233.field3205[0];
+      var0.height = ScriptState.field779[0];
+      int var1 = var0.height * var0.width;
+      byte[] var2 = IndexFile.field2307[0];
+      var0.image = new int[var1];
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var0.image[var3] = class4.field33[var2[var3] & 255];
       }
 
+      class251.method4451();
+      return var0;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("et")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "272494502"
+      signature = "(B)LRenderOverview;",
+      garbageValue = "-48"
    )
-   static void method2531() {
-      class98.chatLineMap.clear();
-      class98.field1519.method3561();
-      class98.field1518.method3722();
-      class98.field1520 = 0;
+   static RenderOverview method2489() {
+      return class1.field14;
    }
 
    Tile(int var1, int var2, int var3) {
       this.objects = new GameObject[5];
-      this.field1897 = new int[5];
-      this.field1898 = 0;
-      this.field1888 = this.plane = var1;
+      this.field1926 = new int[5];
+      this.field1921 = 0;
+      this.field1917 = this.plane = var1;
       this.x = var2;
       this.y = var3;
    }

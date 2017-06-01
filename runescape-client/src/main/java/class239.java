@@ -2,162 +2,86 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ic")
+@ObfuscatedName("ik")
 public class class239 implements class178 {
-   @ObfuscatedName("g")
+   @ObfuscatedName("c")
+   static final class239 field3271;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 88745985
+      intValue = 2060119023
    )
-   final int field3260;
-   @ObfuscatedName("h")
-   static final class239 field3261;
-   @ObfuscatedName("u")
-   static final class239 field3262;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 482688479
-   )
-   public final int field3263;
+   final int field3272;
    @ObfuscatedName("i")
-   static final class239 field3264;
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;ZIB)V",
-      garbageValue = "54"
+   static final class239 field3273;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 405362467
    )
-   static void method4338(IndexDataBase var0, IndexDataBase var1, boolean var2, int var3) {
-      if(class92.field1427) {
-         if(var3 == 4) {
-            class92.loginIndex = 4;
+   public final int field3274;
+   @ObfuscatedName("e")
+   static final class239 field3275;
+
+   @ObfuscatedName("fl")
+   @ObfuscatedSignature(
+      signature = "(LSequence;IIII)V",
+      garbageValue = "-1313533942"
+   )
+   static void method4269(Sequence var0, int var1, int var2, int var3) {
+      if(Client.field1061 < 50 && Client.field1169 != 0) {
+         if(var0.field3605 != null && var1 < var0.field3605.length) {
+            int var4 = var0.field3605[var1];
+            if(var4 != 0) {
+               int var5 = var4 >> 8;
+               int var6 = var4 >> 4 & 7;
+               int var7 = var4 & 15;
+               Client.field1171[Client.field1061] = var5;
+               Client.field1018[Client.field1061] = var6;
+               Client.field1028[Client.field1061] = 0;
+               Client.field1008[Client.field1061] = null;
+               int var8 = (var2 - 64) / 128;
+               int var9 = (var3 - 64) / 128;
+               Client.field956[Client.field1061] = (var9 << 8) + (var8 << 16) + var7;
+               ++Client.field1061;
+            }
          }
-
-      } else {
-         class92.loginIndex = var3;
-         Rasterizer2D.method5002();
-         byte[] var4 = var0.method4192("title.jpg", "");
-         class92.field1429 = class154.method2980(var4);
-         class269.field3672 = class92.field1429.method5178();
-         if((Client.flags & 536870912) != 0) {
-            class268.field3670 = class238.method4337(var1, "logo_deadman_mode", "");
-         } else {
-            class268.field3670 = class238.method4337(var1, "logo", "");
-         }
-
-         class92.field1417 = class238.method4337(var1, "titlebox", "");
-         class92.field1425 = class238.method4337(var1, "titlebutton", "");
-         class29.field419 = class56.method826(var1, "runes", "");
-         class89.field1392 = class56.method826(var1, "title_mute", "");
-         class92.field1420 = class238.method4337(var1, "options_radio_buttons,0", "");
-         class56.field676 = class238.method4337(var1, "options_radio_buttons,2", "");
-         World.field1265 = new int[256];
-
-         int var5;
-         for(var5 = 0; var5 < 64; ++var5) {
-            World.field1265[var5] = var5 * 262144;
-         }
-
-         for(var5 = 0; var5 < 64; ++var5) {
-            World.field1265[var5 + 64] = var5 * 1024 + 16711680;
-         }
-
-         for(var5 = 0; var5 < 64; ++var5) {
-            World.field1265[var5 + 128] = var5 * 4 + 16776960;
-         }
-
-         for(var5 = 0; var5 < 64; ++var5) {
-            World.field1265[var5 + 192] = 16777215;
-         }
-
-         class24.field365 = new int[256];
-
-         for(var5 = 0; var5 < 64; ++var5) {
-            class24.field365[var5] = var5 * 1024;
-         }
-
-         for(var5 = 0; var5 < 64; ++var5) {
-            class24.field365[var5 + 64] = var5 * 4 + '\uff00';
-         }
-
-         for(var5 = 0; var5 < 64; ++var5) {
-            class24.field365[var5 + 128] = var5 * 262144 + '\uffff';
-         }
-
-         for(var5 = 0; var5 < 64; ++var5) {
-            class24.field365[var5 + 192] = 16777215;
-         }
-
-         class2.field10 = new int[256];
-
-         for(var5 = 0; var5 < 64; ++var5) {
-            class2.field10[var5] = var5 * 4;
-         }
-
-         for(var5 = 0; var5 < 64; ++var5) {
-            class2.field10[var5 + 64] = var5 * 262144 + 255;
-         }
-
-         for(var5 = 0; var5 < 64; ++var5) {
-            class2.field10[var5 + 128] = var5 * 1024 + 16711935;
-         }
-
-         for(var5 = 0; var5 < 64; ++var5) {
-            class2.field10[var5 + 192] = 16777215;
-         }
-
-         WorldMapType1.field430 = new int[256];
-         WorldMapType1.field437 = new int['耀'];
-         Preferences.field1289 = new int['耀'];
-         class64.method1094((ModIcon)null);
-         class5.field33 = new int['耀'];
-         GroundObject.field1847 = new int['耀'];
-         if(var2) {
-            class92.username = "";
-            class92.password = "";
-         }
-
-         class175.authCodeForLogin = 0;
-         ItemLayer.authCode = "";
-         class92.field1440 = true;
-         class92.worldSelectShown = false;
-         if(!class134.field1989.field1285) {
-            IndexData var8 = class44.indexTrack1;
-            int var6 = var8.method4189("scape main");
-            int var7 = var8.method4190(var6, "");
-            class13.method62(2, var8, var6, var7, 255, false);
-         } else {
-            class203.field2498 = 1;
-            Varbit.field3380 = null;
-            class169.field2325 = -1;
-            class203.field2499 = -1;
-            class203.field2500 = 0;
-            class203.field2495 = false;
-            class203.field2501 = 2;
-         }
-
-         class91.method1753(false);
-         class92.field1427 = true;
-         class92.field1416 = (class261.field3626 - 765) / 2;
-         class92.loginWindowX = class92.field1416 + 202;
-         class92.field1429.method5130(class92.field1416, 0);
-         class269.field3672.method5130(class92.field1416 + 382, 0);
-         class268.field3670.method5101(class92.field1416 + 382 - class268.field3670.originalWidth / 2, 18);
       }
    }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1015343640"
+      signature = "(B)I",
+      garbageValue = "-70"
    )
-   public int vmethod5090() {
-      return this.field3260;
+   public int vmethod5009() {
+      return this.field3272;
    }
 
    static {
-      field3264 = new class239(0, 0);
-      field3261 = new class239(1, 1);
-      field3262 = new class239(2, 2);
+      field3273 = new class239(0, 0);
+      field3271 = new class239(2, 1);
+      field3275 = new class239(1, 2);
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-498017117"
+   )
+   public static int method4271(int var0, int var1) {
+      int var2;
+      if(var1 > var0) {
+         var2 = var0;
+         var0 = var1;
+         var1 = var2;
+      }
+
+      while(var1 != 0) {
+         var2 = var0 % var1;
+         var0 = var1;
+         var1 = var2;
+      }
+
+      return var0;
    }
 
    @ObfuscatedSignature(
@@ -165,7 +89,7 @@ public class class239 implements class178 {
       garbageValue = "0"
    )
    class239(int var1, int var2) {
-      this.field3263 = var1;
-      this.field3260 = var2;
+      this.field3274 = var1;
+      this.field3272 = var2;
    }
 }

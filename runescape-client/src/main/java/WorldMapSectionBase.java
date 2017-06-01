@@ -2,48 +2,48 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("am")
+@ObfuscatedName("az")
 @Implements("WorldMapSectionBase")
 public interface WorldMapSectionBase {
-   @ObfuscatedName("h")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IIIB)Z",
-      garbageValue = "-5"
+      signature = "(IIII)Z",
+      garbageValue = "952872297"
    )
-   boolean vmethod724(int var1, int var2, int var3);
+   boolean vmethod696(int var1, int var2, int var3);
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "892960012"
+      signature = "(III)Z",
+      garbageValue = "-106764697"
    )
-   int[] vmethod717(int var1, int var2, int var3);
+   boolean vmethod707(int var1, int var2);
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(III)Lclass212;",
-      garbageValue = "-820164631"
+      signature = "(LBuffer;B)V",
+      garbageValue = "-56"
    )
-   Coordinates vmethod718(int var1, int var2);
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "-1671424373"
-   )
-   void vmethod719(Buffer var1);
+   void vmethod700(Buffer var1);
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lclass32;I)V",
-      garbageValue = "-228062308"
+      signature = "(LWorldMapData;B)V",
+      garbageValue = "-1"
    )
-   void vmethod715(WorldMapData var1);
+   void vmethod695(WorldMapData var1);
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "437687546"
+      signature = "(III)LCoordinates;",
+      garbageValue = "730410078"
    )
-   boolean vmethod716(int var1, int var2);
+   Coordinates vmethod699(int var1, int var2);
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(IIII)[I",
+      garbageValue = "-578749739"
+   )
+   int[] vmethod698(int var1, int var2, int var3);
 }

@@ -2,79 +2,103 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("z")
+@ObfuscatedName("t")
 public class class25 {
-   @ObfuscatedName("h")
-   Coordinates field371;
+   @ObfuscatedName("t")
+   static int[] field362;
+   @ObfuscatedName("c")
+   Coordinates field363;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 159288117
+      intValue = -1508816243
    )
-   int field375;
+   int field364;
+   @ObfuscatedName("cm")
+   static IndexData field365;
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "1965431535"
+      signature = "(ILScript;ZB)I",
+      garbageValue = "3"
    )
-   public static int method177(int var0) {
-      int var1 = 0;
-      if(var0 < 0 || var0 >= 65536) {
-         var0 >>>= 16;
-         var1 += 16;
+   static int method167(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class232.field3187:class2.field15;
+      if(var0 == 1800) {
+         int[] var8 = class83.intStack;
+         int var5 = ++class83.intStackSize - 1;
+         int var7 = class210.method3903(var3);
+         int var6 = var7 >> 11 & 63;
+         var8[var5] = var6;
+         return 1;
+      } else if(var0 != 1801) {
+         if(var0 == 1802) {
+            if(var3.name == null) {
+               class83.scriptStringStack[++class51.scriptStringStackSize - 1] = "";
+            } else {
+               class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var3.name;
+            }
+
+            return 1;
+         } else {
+            return 2;
+         }
+      } else {
+         int var4 = class83.intStack[--class83.intStackSize];
+         --var4;
+         if(var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
+            class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var3.actions[var4];
+         } else {
+            class83.scriptStringStack[++class51.scriptStringStackSize - 1] = "";
+         }
+
+         return 1;
+      }
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-1540152412"
+   )
+   static final int method168(int var0, int var1) {
+      int var2 = var1 * 57 + var0;
+      var2 ^= var2 << 13;
+      int var3 = var2 * (var2 * var2 * 15731 + 789221) + 1376312589 & Integer.MAX_VALUE;
+      return var3 >> 19 & 255;
+   }
+
+   @ObfuscatedName("iy")
+   @ObfuscatedSignature(
+      signature = "(LWidget;I)V",
+      garbageValue = "2117025756"
+   )
+   static void method169(Widget var0) {
+      if(var0.field2754 == Client.field1134) {
+         Client.field1135[var0.boundsIndex] = true;
       }
 
-      if(var0 >= 256) {
-         var0 >>>= 8;
-         var1 += 8;
+   }
+
+   @ObfuscatedName("jv")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;IB)V",
+      garbageValue = "111"
+   )
+   static void method170(Buffer var0, int var1) {
+      class3.method2(var0.payload, var1);
+      if(class155.field2268 != null) {
+         try {
+            class155.field2268.method2316(0L);
+            class155.field2268.method2321(var0.payload, var1, 24);
+         } catch (Exception var3) {
+            ;
+         }
       }
 
-      if(var0 >= 16) {
-         var0 >>>= 4;
-         var1 += 4;
-      }
-
-      if(var0 >= 4) {
-         var0 >>>= 2;
-         var1 += 2;
-      }
-
-      if(var0 >= 1) {
-         var0 >>>= 1;
-         ++var1;
-      }
-
-      return var0 + var1;
    }
 
    class25(int var1, Coordinates var2) {
-      this.field375 = var1;
-      this.field371 = var2;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;I)Z",
-      garbageValue = "-448933486"
-   )
-   public static boolean method178(IndexDataBase var0, IndexDataBase var1) {
-      class242.field3281 = var1;
-      if(!var0.method4178()) {
-         return false;
-      } else {
-         class242.field3293 = var0.method4184(35);
-         class242.field3276 = new class242[class242.field3293];
-
-         for(int var2 = 0; var2 < class242.field3293; ++var2) {
-            byte[] var3 = var0.getConfigData(35, var2);
-            if(var3 != null) {
-               class242.field3276[var2] = new class242(var2);
-               class242.field3276[var2].method4365(new Buffer(var3));
-               class242.field3276[var2].method4367();
-            }
-         }
-
-         return true;
-      }
+      this.field364 = var1;
+      this.field363 = var2;
    }
 }

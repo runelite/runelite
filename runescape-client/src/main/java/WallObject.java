@@ -3,59 +3,57 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("eo")
+@ObfuscatedName("ei")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
+   @Export("renderable1")
+   public Renderable renderable1;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -2103463111
+      intValue = 1125256237
    )
    @Export("x")
    int x;
-   @ObfuscatedName("u")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1115958401
+      intValue = -1830937697
    )
-   @Export("y")
-   int y;
-   @ObfuscatedName("t")
+   int field2144;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 619903679
+   )
+   int field2145;
+   @ObfuscatedName("h")
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("v")
-   @Export("renderable1")
-   public Renderable renderable1;
-   @ObfuscatedName("p")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1459753793
+      intValue = 624100519
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("l")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1994299827
+      intValue = 863334673
    )
-   int field2112;
-   @ObfuscatedName("n")
-   public static String field2113;
-   @ObfuscatedName("g")
+   int field2149;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -486196087
+      intValue = 1562757691
    )
-   int field2114;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -53257687
-   )
-   int field2115;
+   @Export("y")
+   int y;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -243348171
+      intValue = -1743061051
    )
    @Export("floor")
    int floor;
 
    WallObject() {
       this.hash = 0;
-      this.field2112 = 0;
+      this.field2149 = 0;
    }
 }
