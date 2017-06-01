@@ -135,6 +135,15 @@ public class InputStream extends java.io.InputStream
 		return peek() >= 0 ? this.readUnsignedShort() : Integer.MAX_VALUE & this.readInt();
 	}
 
+	public int readBigSmart2()
+	{
+		if (peek() < 0)
+			return readInt() & Integer.MAX_VALUE; // and off sign bit
+
+		int value = readUnsignedShort();
+		return value == 32767 ? -1 : value;
+	}
+
 	public int readShortSmart()
 	{
 		int peek = this.peek() & 0xFF;
