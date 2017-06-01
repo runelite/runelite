@@ -637,7 +637,7 @@ public class RenderOverview {
                }
 
                class39 var11 = (class39)var10.next();
-               class242 var12 = class223.field2839[var11.field536];
+               Area var12 = class223.field2839[var11.field536];
                var13 = false;
 
                for(int var14 = this.field3839.length - 1; var14 >= 0; --var14) {

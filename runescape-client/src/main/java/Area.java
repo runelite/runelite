@@ -1,9 +1,12 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ie")
-public class class242 extends CacheableNode {
+@Implements("Area")
+public class Area extends CacheableNode {
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = -866825563
@@ -22,14 +25,16 @@ public class class242 extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -331293099
    )
-   public int field3293;
+   @Export("spriteId")
+   public int spriteId;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 1124069309
    )
    int field3294;
    @ObfuscatedName("x")
-   public String field3295;
+   @Export("name")
+   public String name;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1769503951
@@ -87,11 +92,11 @@ public class class242 extends CacheableNode {
    )
    void method4295(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field3293 = var1.method3156();
+         this.spriteId = var1.method3156();
       } else if(var2 == 2) {
          this.field3294 = var1.method3156();
       } else if(var2 == 3) {
-         this.field3295 = var1.readString();
+         this.name = var1.readString();
       } else if(var2 == 4) {
          this.field3296 = var1.read24BitInt();
       } else if(var2 == 5) {
@@ -222,8 +227,8 @@ public class class242 extends CacheableNode {
       return this.field3289;
    }
 
-   public class242(int var1) {
-      this.field3293 = -1;
+   public Area(int var1) {
+      this.spriteId = -1;
       this.field3294 = -1;
       this.field3310 = 0;
       this.field3298 = new String[5];
@@ -243,7 +248,7 @@ public class class242 extends CacheableNode {
       garbageValue = "-843503219"
    )
    public SpritePixels method4313(boolean var1) {
-      int var2 = this.field3293;
+      int var2 = this.spriteId;
       return this.method4299(var2);
    }
 

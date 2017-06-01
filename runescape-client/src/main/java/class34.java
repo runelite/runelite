@@ -67,7 +67,7 @@ public class class34 {
 
             for(int var7 = 0; var7 < var6.length; ++var7) {
                class31 var8 = var6[var7];
-               class242 var9 = this.method374(var8.field445);
+               Area var9 = this.method374(var8.field445);
                if(var9 != null) {
                   class39 var10 = (class39)this.field491.get(field493);
                   if(var10 != null) {
@@ -169,7 +169,7 @@ public class class34 {
       while(var4.hasNext()) {
          class39 var5 = (class39)var4.next();
          if(var1.contains(Integer.valueOf(var5.field536))) {
-            class242 var6 = class223.field2839[var5.field536];
+            Area var6 = class223.field2839[var5.field536];
             this.method365(var6, var5.field530, var5.field531, var2, var3);
          }
       }
@@ -562,7 +562,7 @@ public class class34 {
       signature = "(Lclass242;IIIII)V",
       garbageValue = "1434145207"
    )
-   void method365(class242 var1, int var2, int var3, int var4, int var5) {
+   void method365(Area var1, int var2, int var3, int var4, int var5) {
       SpritePixels var6 = var1.method4313(false);
       if(var6 != null) {
          var6.method5047(var2 - var6.width / 2, var3 - var6.height / 2);
@@ -580,7 +580,7 @@ public class class34 {
       garbageValue = "-1549563531"
    )
    void method366(class39 var1, int var2, int var3, float var4) {
-      class242 var5 = class223.field2839[var1.field536];
+      Area var5 = class223.field2839[var1.field536];
       this.method367(var5, var2, var3);
       this.method403(var1, var5, var2, var3, var4);
    }
@@ -590,7 +590,7 @@ public class class34 {
       signature = "(Lclass242;III)V",
       garbageValue = "587254451"
    )
-   void method367(class242 var1, int var2, int var3) {
+   void method367(Area var1, int var2, int var3) {
       SpritePixels var4 = var1.method4313(false);
       if(var4 != null) {
          int var5 = this.method372(var4, var1.field3299);
@@ -638,7 +638,7 @@ public class class34 {
 
       while(var4.hasNext()) {
          class39 var5 = (class39)var4.next();
-         class242 var6 = class223.field2839[var5.field536];
+         Area var6 = class223.field2839[var5.field536];
          if(var6 != null && var1.contains(Integer.valueOf(var6.method4300()))) {
             this.method365(var6, var5.field530, var5.field531, var2, var3);
          }
@@ -683,7 +683,7 @@ public class class34 {
       signature = "(II)Lclass242;",
       garbageValue = "-998622637"
    )
-   class242 method374(int var1) {
+   Area method374(int var1) {
       ObjectComposition var2 = class226.getObjectDefinition(var1);
       if(var2.impostorIds != null) {
          var2 = var2.getImpostor();
@@ -701,7 +701,7 @@ public class class34 {
       garbageValue = "116053675"
    )
    class33 method375(int var1) {
-      class242 var2 = class223.field2839[var1];
+      Area var2 = class223.field2839[var1];
       return this.method469(var2);
    }
 
@@ -819,7 +819,7 @@ public class class34 {
          if(var12 != null) {
             var12.field530 = var10;
             var12.field531 = var11;
-            class242 var13 = class223.field2839[var12.field536];
+            Area var13 = class223.field2839[var12.field536];
             if(!var3.contains(Integer.valueOf(var13.method4300()))) {
                this.method366(var12, var10, var11, var5);
             }
@@ -833,7 +833,7 @@ public class class34 {
       signature = "(Lclass39;Lclass242;IIFI)V",
       garbageValue = "1672560077"
    )
-   void method403(class39 var1, class242 var2, int var3, int var4, float var5) {
+   void method403(class39 var1, Area var2, int var3, int var4, float var5) {
       if(var1.field529 != null) {
          if(var1.field529.field471.method166(var5)) {
             Font var6 = (Font)this.field480.get(var1.field529.field471);
@@ -895,7 +895,7 @@ public class class34 {
 
                   for(int var12 = 0; var12 < var11.length; ++var12) {
                      class31 var13 = var11[var12];
-                     class242 var14 = this.method374(var13.field445);
+                     Area var14 = this.method374(var13.field445);
                      if(var14 != null) {
                         Coordinates var15 = new Coordinates(var9, var6 + this.field479 * 64, this.field481 * 64 + var7);
                         Coordinates var16 = null;
@@ -1019,8 +1019,8 @@ public class class34 {
       signature = "(Lclass242;I)Lclass33;",
       garbageValue = "473676084"
    )
-   class33 method469(class242 var1) {
-      if(var1.field3295 != null && this.field480 != null && this.field480.get(class24.field357) != null) {
+   class33 method469(Area var1) {
+      if(var1.name != null && this.field480 != null && this.field480.get(class24.field357) != null) {
          int var3 = var1.field3310;
          class24[] var4 = class24.method164();
          int var14 = 0;
@@ -1048,9 +1048,9 @@ public class class34 {
             if(var5 == null) {
                return null;
             } else {
-               int var15 = var5.method4765(var1.field3295, 1000000);
+               int var15 = var5.method4765(var1.name, 1000000);
                String[] var7 = new String[var15];
-               var5.method4729(var1.field3295, (int[])null, var7);
+               var5.method4729(var1.name, (int[])null, var7);
                int var8 = var5.field3652 * var7.length / 2;
                int var9 = 0;
                String[] var10 = var7;
@@ -1063,7 +1063,7 @@ public class class34 {
                   }
                }
 
-               return new class33(var1.field3295, var9, var8, var2);
+               return new class33(var1.name, var9, var8, var2);
             }
          }
       } else {

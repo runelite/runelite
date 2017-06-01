@@ -354,15 +354,15 @@ public class ChatLineBuffer {
                   CombatInfo2.field3365 = var17;
                   IndexData var18 = Overlay.field3594;
                   IndexData var19 = class261.indexSprites;
-                  class242.field3301 = var19;
+                  Area.field3301 = var19;
                   if(var18.method4113()) {
-                     class242.field3290 = var18.method4187(35);
-                     class223.field2839 = new class242[class242.field3290];
+                     Area.field3290 = var18.method4187(35);
+                     class223.field2839 = new Area[Area.field3290];
 
-                     for(int var20 = 0; var20 < class242.field3290; ++var20) {
+                     for(int var20 = 0; var20 < Area.field3290; ++var20) {
                         byte[] var21 = var18.getConfigData(35, var20);
                         if(var21 != null) {
-                           class223.field2839[var20] = new class242(var20);
+                           class223.field2839[var20] = new Area(var20);
                            class223.field2839[var20].method4296(new Buffer(var21));
                            class223.field2839[var20].method4314();
                         }

@@ -357,7 +357,7 @@ public final class class10 extends class9 {
       CombatInfo2.spriteCache.reset();
       class252.field3392.reset();
       class98.method1839();
-      class242.field3291.reset();
+      Area.field3291.reset();
       class22.method144();
       VertexNormal.method2588();
       ((TextureProvider)class136.field2049).method2372();

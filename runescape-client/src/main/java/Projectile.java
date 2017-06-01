@@ -241,7 +241,7 @@ public final class Projectile extends Renderable {
       int var29;
       if(var4) {
          class44.field585 = (class47)var2[0];
-         class242 var6 = class223.field2839[class44.field585.field606];
+         Area var6 = class223.field2839[class44.field585.field606];
          var3 = MessageNode.method1106(var0.field859, var6.field3289, var6.field3297);
       } else {
          var29 = ((Integer)var2[0]).intValue();
@@ -2714,14 +2714,14 @@ public final class Projectile extends Renderable {
 
                                                                                                                                           var36 = 1;
                                                                                                                                        } else {
-                                                                                                                                          class242 var76;
+                                                                                                                                          Area var76;
                                                                                                                                           if(var54 == 6693) {
                                                                                                                                              var32 = class83.intStack[--class83.intStackSize];
                                                                                                                                              var76 = class223.field2839[var32];
-                                                                                                                                             if(var76.field3295 == null) {
+                                                                                                                                             if(var76.name == null) {
                                                                                                                                                 class83.scriptStringStack[++class51.scriptStringStackSize - 1] = "";
                                                                                                                                              } else {
-                                                                                                                                                class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var76.field3295;
+                                                                                                                                                class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var76.name;
                                                                                                                                              }
 
                                                                                                                                              var36 = 1;
@@ -2746,7 +2746,7 @@ public final class Projectile extends Renderable {
                                                                                                                                              if(var76 == null) {
                                                                                                                                                 class83.intStack[++class83.intStackSize - 1] = -1;
                                                                                                                                              } else {
-                                                                                                                                                class83.intStack[++class83.intStackSize - 1] = var76.field3293;
+                                                                                                                                                class83.intStack[++class83.intStackSize - 1] = var76.spriteId;
                                                                                                                                              }
 
                                                                                                                                              var36 = 1;

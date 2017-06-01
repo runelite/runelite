@@ -43,7 +43,7 @@ public class class39 {
       garbageValue = "234532059"
    )
    boolean method521(int var1, int var2) {
-      class242 var3 = class223.field2839[this.field536];
+      Area var3 = class223.field2839[this.field536];
       switch(var3.field3299.field3541) {
       case 0:
          if(var1 >= this.field530 - this.field527 / 2 && var1 <= this.field530 + this.field527 / 2) {
@@ -99,7 +99,7 @@ public class class39 {
       this.field526 = var2;
       this.field525 = var3;
       this.field529 = var4;
-      class242 var5 = class223.field2839[this.field536];
+      Area var5 = class223.field2839[this.field536];
       SpritePixels var6 = var5.method4313(false);
       if(var6 != null) {
          this.field527 = var6.width;
