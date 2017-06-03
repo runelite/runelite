@@ -45,6 +45,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 public class Reflection
 {
+	private static final boolean PRINT_DEBUG_MESSAGES = true;
+
 	private static Map<String, Class<?>> classes = new HashMap<>();
 
 	static
@@ -116,7 +118,10 @@ public class Reflection
 
 	public static Field findField(Class<?> clazz, String name) throws NoSuchFieldException
 	{
-		System.out.println("Looking for field " + name + " on " + clazz);
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Looking for field " + name + " on " + clazz);
+		}
 
 		for (Field f : clazz.getDeclaredFields())
 		{
@@ -181,7 +186,10 @@ public class Reflection
 
 	public static int getInt(Field field, Object obj) throws IllegalArgumentException, IllegalAccessException
 	{
-		System.out.println("Getting field " + field);
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Getting field " + field);
+		}
 
 		boolean unset = false;
 		if ((field.getModifiers() & Modifier.PRIVATE) == 0)
@@ -199,7 +207,10 @@ public class Reflection
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			if (PRINT_DEBUG_MESSAGES)
+			{
+				ex.printStackTrace();
+			}
 			throw ex;
 		}
 		finally
@@ -224,7 +235,10 @@ public class Reflection
 
 	public static void setInt(Field field, Object obj, int value) throws IllegalArgumentException, IllegalAccessException
 	{
-		System.out.println("Setting field " + field + " to " + value);
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Setting field " + field + " to " + value);
+		}
 
 		ObfuscatedGetter og = field.getAnnotation(ObfuscatedGetter.class);
 		if (og != null)
@@ -270,7 +284,10 @@ public class Reflection
 
 	public static Object invoke(Method method, Object object, Object[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
-		System.out.println("Invoking " + method);
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Invoking " + method);
+		}
 
 		try
 		{
@@ -278,7 +295,10 @@ public class Reflection
 		}
 		catch (Throwable ex)
 		{
-			ex.printStackTrace();
+			if (PRINT_DEBUG_MESSAGES)
+			{
+				ex.printStackTrace();
+			}
 			throw ex;
 		}
 	}
