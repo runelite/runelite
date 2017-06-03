@@ -24,65 +24,91 @@
  */
 package net.runelite.rs;
 
-import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 public class Reflection
 {
-	private static List<String> classes = new ArrayList<>();
+	private static Map<String, Class<?>> classes = new HashMap<>();
 
 	static
 	{
 		try
 		{
-			InputStream in = Reflection.class.getResourceAsStream("/classes.txt");
+			Enumeration<URL> systemResources = ClassLoader.getSystemResources("");
 
-			try (BufferedReader reader = new BufferedReader(new InputStreamReader(in)))
+			while (systemResources.hasMoreElements())
 			{
-				String str;
+				URL url = systemResources.nextElement();
 
-				while ((str = reader.readLine()) != null)
+				Path path;
+				try
 				{
-					classes.add(str);
+					path = new File(url.toURI())
+						.toPath();
 				}
+				catch (URISyntaxException e)
+				{
+					path = new File(url.getPath())
+						.toPath();
+				}
+
+				Files.walk(path)
+					.filter(Files::isRegularFile)
+					.forEach(f ->
+					{
+						String className = f
+							.getName(f.getNameCount() - 1)
+							.toString()
+							.replace(".class", "");
+
+						try
+						{
+							Class<?> clazz = Class.forName(className);
+
+							ObfuscatedName obfuscatedName = clazz
+								.getAnnotation(ObfuscatedName.class);
+
+							if (obfuscatedName != null)
+							{
+								classes.put(obfuscatedName.value(), clazz);
+							}
+						}
+						catch (ClassNotFoundException ignore)
+						{
+						}
+					});
 			}
 		}
-		catch (IOException ex)
+		catch (IOException e)
 		{
-			ex.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
 	public static Class<?> findClass(String name) throws ClassNotFoundException
 	{
-		for (String clazz : classes)
+		Class<?> clazz = classes.get(name);
+
+		if (clazz != null)
 		{
-			try
-			{
-				Class<?> c = Class.forName(clazz);
-				ObfuscatedName on = c.getAnnotation(ObfuscatedName.class);
-				if (on != null && on.value().equals(name))
-				{
-					return c;
-				}
-			}
-			catch (ClassNotFoundException ex)
-			{
-				ex.printStackTrace();
-			}
+			return clazz;
 		}
 
 		return Class.forName(name);
