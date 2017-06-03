@@ -113,6 +113,11 @@ public class Reflection
 			return clazz;
 		}
 
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Server requested dummy class " + name);
+		}
+
 		return Class.forName(name);
 	}
 
@@ -120,7 +125,7 @@ public class Reflection
 	{
 		if (PRINT_DEBUG_MESSAGES)
 		{
-			System.out.println("Looking for field " + name + " on " + clazz);
+			System.out.println("Looking for field " + name + " in " + clazz);
 		}
 
 		for (Field f : clazz.getDeclaredFields())
@@ -130,6 +135,11 @@ public class Reflection
 			{
 				return f;
 			}
+		}
+
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Server requested dummy field " + name + " in " + clazz);
 		}
 
 		return clazz.getDeclaredField(name);
