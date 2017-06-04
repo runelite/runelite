@@ -41,11 +41,6 @@ public final class OutputStream extends java.io.OutputStream
 		this(16);
 	}
 
-	public OutputStream(byte[] b)
-	{
-		buffer = ByteBuffer.wrap(b);
-	}
-
 	public byte[] getArray()
 	{
 		assert buffer.hasArray();
