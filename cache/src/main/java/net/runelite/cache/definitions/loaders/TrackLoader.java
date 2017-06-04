@@ -273,184 +273,181 @@ public class TrackLoader
 
 			while (true)
 			{
-				while (true)
+				int var63 = var1.readVarInt();
+				var51.writeVarInt(var63); // delta time
+				int var64 = var1.getArray()[var29++] & 255;
+				boolean var65 = var64 != var62;
+				var62 = var64 & 15;
+				if (var64 == 7)
 				{
-					int var63 = var1.readVarInt();
-					var51.writeVarInt(var63); // delta time
-					int var64 = var1.getArray()[var29++] & 255;
-					boolean var65 = var64 != var62;
-					var62 = var64 & 15;
-					if (var64 == 7)
+					//if (var65) -- client has this if, but it causes broken midi to be produced
 					{
-						//if (var65) -- client has this if, but it causes broken midi to be produced
-						{
-							var51.writeByte(255);
-						}
-
-						var51.writeByte(47); // type - end of track
-						var51.writeByte(0); // length
-						var51.writeLengthFromMark(var51.getOffset() - var61);
-						continue label361;
+						var51.writeByte(255);
 					}
 
-					if (var64 == 23)
-					{
-						//if (var65) -- client has this if, but it causes broken midi to be produced
-						{
-							var51.writeByte(255); // meta event FF
-						}
+					var51.writeByte(47); // type - end of track
+					var51.writeByte(0); // length
+					var51.writeLengthFromMark(var51.getOffset() - var61);
+					continue label361;
+				}
 
-						var51.writeByte(81); // type - set tempo
-						var51.writeByte(3); // length
-						var51.writeByte(var1.getArray()[var50++]);
-						var51.writeByte(var1.getArray()[var50++]);
-						var51.writeByte(var1.getArray()[var50++]);
+				if (var64 == 23)
+				{
+					//if (var65) -- client has this if, but it causes broken midi to be produced
+					{
+						var51.writeByte(255); // meta event FF
 					}
-					else
+
+					var51.writeByte(81); // type - set tempo
+					var51.writeByte(3); // length
+					var51.writeByte(var1.getArray()[var50++]);
+					var51.writeByte(var1.getArray()[var50++]);
+					var51.writeByte(var1.getArray()[var50++]);
+				}
+				else
+				{
+					var52 ^= var64 >> 4;
+					if (var62 == 0)
 					{
-						var52 ^= var64 >> 4;
-						if (var62 == 0)
+						if (var65)
 						{
-							if (var65)
-							{
-								var51.writeByte(144 + var52);
-							}
-
-							var53 += var1.getArray()[var37++];
-							var54 += var1.getArray()[var38++];
-							var51.writeByte(var53 & 127);
-							var51.writeByte(var54 & 127);
+							var51.writeByte(144 + var52);
 						}
-						else if (var62 == 1)
-						{
-							if (var65)
-							{
-								var51.writeByte(128 + var52);
-							}
 
-							var53 += var1.getArray()[var37++];
-							var55 += var1.getArray()[var40++];
-							var51.writeByte(var53 & 127);
-							var51.writeByte(var55 & 127);
+						var53 += var1.getArray()[var37++];
+						var54 += var1.getArray()[var38++];
+						var51.writeByte(var53 & 127);
+						var51.writeByte(var54 & 127);
+					}
+					else if (var62 == 1)
+					{
+						if (var65)
+						{
+							var51.writeByte(128 + var52);
 						}
-						else if (var62 == 2)
-						{
-							if (var65)
-							{
-								var51.writeByte(176 + var52);
-							}
 
-							var28 = var28 + var1.getArray()[var15++] & 127;
-							var51.writeByte(var28);
-							byte var66;
-							if (var28 != 0 && var28 != 32)
+						var53 += var1.getArray()[var37++];
+						var55 += var1.getArray()[var40++];
+						var51.writeByte(var53 & 127);
+						var51.writeByte(var55 & 127);
+					}
+					else if (var62 == 2)
+					{
+						if (var65)
+						{
+							var51.writeByte(176 + var52);
+						}
+
+						var28 = var28 + var1.getArray()[var15++] & 127;
+						var51.writeByte(var28);
+						byte var66;
+						if (var28 != 0 && var28 != 32)
+						{
+							if (var28 == 1)
 							{
-								if (var28 == 1)
-								{
-									var66 = var1.getArray()[var34++];
-								}
-								else if (var28 == 33)
-								{
-									var66 = var1.getArray()[var41++];
-								}
-								else if (var28 == 7)
-								{
-									var66 = var1.getArray()[var35++];
-								}
-								else if (var28 == 39)
-								{
-									var66 = var1.getArray()[var42++];
-								}
-								else if (var28 == 10)
-								{
-									var66 = var1.getArray()[var36++];
-								}
-								else if (var28 == 42)
-								{
-									var66 = var1.getArray()[var43++];
-								}
-								else if (var28 == 99)
-								{
-									var66 = var1.getArray()[var46++];
-								}
-								else if (var28 == 98)
-								{
-									var66 = var1.getArray()[var47++];
-								}
-								else if (var28 == 101)
-								{
-									var66 = var1.getArray()[var48++];
-								}
-								else if (var28 == 100)
-								{
-									var66 = var1.getArray()[var49++];
-								}
-								else if (var28 != 64 && var28 != 65 && var28 != 120 && var28 != 121 && var28 != 123)
-								{
-									var66 = var1.getArray()[var39++];
-								}
-								else
-								{
-									var66 = var1.getArray()[var30++];
-								}
+								var66 = var1.getArray()[var34++];
+							}
+							else if (var28 == 33)
+							{
+								var66 = var1.getArray()[var41++];
+							}
+							else if (var28 == 7)
+							{
+								var66 = var1.getArray()[var35++];
+							}
+							else if (var28 == 39)
+							{
+								var66 = var1.getArray()[var42++];
+							}
+							else if (var28 == 10)
+							{
+								var66 = var1.getArray()[var36++];
+							}
+							else if (var28 == 42)
+							{
+								var66 = var1.getArray()[var43++];
+							}
+							else if (var28 == 99)
+							{
+								var66 = var1.getArray()[var46++];
+							}
+							else if (var28 == 98)
+							{
+								var66 = var1.getArray()[var47++];
+							}
+							else if (var28 == 101)
+							{
+								var66 = var1.getArray()[var48++];
+							}
+							else if (var28 == 100)
+							{
+								var66 = var1.getArray()[var49++];
+							}
+							else if (var28 != 64 && var28 != 65 && var28 != 120 && var28 != 121 && var28 != 123)
+							{
+								var66 = var1.getArray()[var39++];
 							}
 							else
 							{
-								var66 = var1.getArray()[var44++];
+								var66 = var1.getArray()[var30++];
 							}
-
-							int var67 = var66 + var59[var28];
-							var59[var28] = var67;
-							var51.writeByte(var67 & 127);
-						}
-						else if (var62 == 3)
-						{
-							if (var65)
-							{
-								var51.writeByte(224 + var52);
-							}
-
-							var56 += var1.getArray()[var45++];
-							var56 += var1.getArray()[var33++] << 7;
-							var51.writeByte(var56 & 127);
-							var51.writeByte(var56 >> 7 & 127);
-						}
-						else if (var62 == 4)
-						{
-							if (var65)
-							{
-								var51.writeByte(208 + var52);
-							}
-
-							var57 += var1.getArray()[var32++];
-							var51.writeByte(var57 & 127);
-						}
-						else if (var62 == 5)
-						{
-							if (var65)
-							{
-								var51.writeByte(160 + var52);
-							}
-
-							var53 += var1.getArray()[var37++];
-							var58 += var1.getArray()[var31++];
-							var51.writeByte(var53 & 127);
-							var51.writeByte(var58 & 127);
 						}
 						else
 						{
-							if (var62 != 6)
-							{
-								throw new RuntimeException();
-							}
-
-							if (var65)
-							{
-								var51.writeByte(192 + var52);
-							}
-
-							var51.writeByte(var1.getArray()[var44++]);
+							var66 = var1.getArray()[var44++];
 						}
+
+						int var67 = var66 + var59[var28];
+						var59[var28] = var67;
+						var51.writeByte(var67 & 127);
+					}
+					else if (var62 == 3)
+					{
+						if (var65)
+						{
+							var51.writeByte(224 + var52);
+						}
+
+						var56 += var1.getArray()[var45++];
+						var56 += var1.getArray()[var33++] << 7;
+						var51.writeByte(var56 & 127);
+						var51.writeByte(var56 >> 7 & 127);
+					}
+					else if (var62 == 4)
+					{
+						if (var65)
+						{
+							var51.writeByte(208 + var52);
+						}
+
+						var57 += var1.getArray()[var32++];
+						var51.writeByte(var57 & 127);
+					}
+					else if (var62 == 5)
+					{
+						if (var65)
+						{
+							var51.writeByte(160 + var52);
+						}
+
+						var53 += var1.getArray()[var37++];
+						var58 += var1.getArray()[var31++];
+						var51.writeByte(var53 & 127);
+						var51.writeByte(var58 & 127);
+					}
+					else
+					{
+						if (var62 != 6)
+						{
+							throw new RuntimeException();
+						}
+
+						if (var65)
+						{
+							var51.writeByte(192 + var52);
+						}
+
+						var51.writeByte(var1.getArray()[var44++]);
 					}
 				}
 			}
