@@ -246,8 +246,7 @@ public class TrackLoader
 		var1.skip(var25);
 		int var50 = var1.getOffset();
 		var1.skip(tempoOpcodes * 3);
-		def.midi = new byte[offset];
-		OutputStream var51 = new OutputStream(def.midi);
+		OutputStream var51 = new OutputStream(offset);
 		var51.writeInt(1297377380); // MThd header
 		var51.writeInt(6); // length of header
 		var51.writeShort(tracks > 1 ? 1 : 0); // format
@@ -457,5 +456,6 @@ public class TrackLoader
 			}
 		}
 
+		def.midi = var51.flip();
 	}
 }
