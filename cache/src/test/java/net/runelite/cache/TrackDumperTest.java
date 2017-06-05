@@ -94,7 +94,7 @@ public class TrackDumperTest
 		TrackDefinition def = loader.load(file.getContents());
 
 		String name;
-		if (archive.getNameHash() > 0)
+		if (archive.getNameHash() != 0)
 		{
 			name = djb2.getName(archive.getNameHash());
 			if (name == null)
