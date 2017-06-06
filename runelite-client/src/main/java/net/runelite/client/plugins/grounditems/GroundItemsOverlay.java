@@ -30,12 +30,9 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
@@ -64,7 +61,7 @@ public class GroundItemsOverlay extends Overlay
 	private static final int STRING_GAP = 15;
 
 	private final Client client = RuneLite.getClient();
-	private GroundItemsConfig config;
+	private final GroundItemsConfig config;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 
 	public GroundItemsOverlay(GroundItems plugin)

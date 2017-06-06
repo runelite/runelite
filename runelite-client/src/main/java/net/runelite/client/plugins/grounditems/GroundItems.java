@@ -36,7 +36,7 @@ public class GroundItems extends Plugin
 	private final Overlay overlay = new GroundItemsOverlay(this);
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 	}
@@ -48,7 +48,7 @@ public class GroundItems extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 
 	}
