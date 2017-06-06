@@ -36,120 +36,115 @@ import java.util.*;
 
 public class GroundItemsOverlay extends Overlay
 {
-    GroundItemsOverlay()
-    {
-        super(OverlayPosition.DYNAMIC);
-    }
-    private final Client client = RuneLite.getClient();
-    private final StringBuilder itemStringBuilder = new StringBuilder();
+	private final Client client = RuneLite.getClient();
+	private final StringBuilder itemStringBuilder = new StringBuilder();
+	private final int REGION_SIZE = 104;
+
+    public GroundItemsOverlay()
+	{
+		super(OverlayPosition.DYNAMIC);
+	}
+
     @Override
-    public Dimension render(Graphics2D graphics)
-    {
+	public Dimension render(Graphics2D graphics)
+	{
+		// won't draw if not logged in
+		if(client.getGameState() != GameState.LOGGED_IN)
+		{
+			return null;
+		}
 
-        if(client.getGameState() != GameState.LOGGED_IN)
-        {
-            return null;
-        }
+		/*Widget[] bank = client.getWidgets()[12];
+		if(bank != null && bank[0] != null && !bank[0].isHidden())
+		{
+			return null;
+		} */
 
+		Region region = client.getRegion();
+		Tile[][][] tiles = region.getTiles();
+		FontMetrics fm = graphics.getFontMetrics();
 
-        /*Widget[] bank = client.getWidgets()[12];
-        if(bank != null && bank[0] != null && !bank[0].isHidden())
-        {
-            return null;
-        } */
+		int z = client.getPlane();
 
+		for(int x = 0; x < REGION_SIZE; x++)
+		{
+			for(int y = 0; y < REGION_SIZE; y++)
+			{
+				Tile tile = tiles[z][x][y];
+				if(tile == null)
+				{
+					continue;
+				}
+				Player player = client.getLocalPlayer();
+				if(player == null)
+				{
+					continue;
+				}
 
-        Region region = client.getRegion();
-        Tile[][][] tiles = region.getTiles();
-        FontMetrics fm = graphics.getFontMetrics();
+				ItemLayer itemLayer = tile.getItemLayer();
+				if (itemLayer != null)
+				{
+					if(player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) < 2400)
+					{
+						Node current = itemLayer.getBottom();
+						ArrayList<Integer> itemIds = new ArrayList<>();
+						Map<Integer, Integer> itemQuantities = new HashMap<>();
+						// adds the items on the ground to the ArrayList to be drawn
+						while(current instanceof Item)
+						{
+							Item item = (Item) current;
+							addItemToMap(item, itemIds, itemQuantities);
+							current = current.getNext();
+						}
 
-        int z = client.getPlane();
+						Collections.reverse(itemIds);
 
-        int REGION_SIZE = 104;
-        for(int x = 0; x < REGION_SIZE; ++x)
-        {
-            for(int y = 0; y < REGION_SIZE; ++y)
-            {
-               Tile tile = tiles[z][x][y];
-               if(tile == null)
-               {
-                   continue;
-               }
-                Player player = client.getLocalPlayer();
-               if(player == null)
-               {
-                   continue;
-               }
+						for(int i = 0; i < itemIds.size(); ++i)
+						{
+							Integer id = itemIds.get(i); // get the next thing to be drawn
+							Integer qty = itemQuantities.get(id);
+							if(qty == null)
+							{
+								continue;
+							}
+							String itemName;
+							if (qty > 1)
+							{
+								itemStringBuilder.append(qty).append("x ");
+							}
+							itemName = client.getItemDefinition(id).getName();
+							itemStringBuilder.append(itemName);
 
-                ItemLayer itemLayer = tile.getItemLayer();
-               if (itemLayer != null)
-               {
-                   if(player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) < 2400)
-                   {
-                      Node current = itemLayer.getBottom();
-                      ArrayList<Integer> itemIds = new ArrayList<>();
-                      Map<Integer, Integer> itemQuantities = new HashMap<>();
-                      while(current instanceof Item)
-                      {
-                          Item item = (Item) current;
-                          addItemToMap(item, itemIds, itemQuantities);
-                          current = current.getNext();
-                      }
+							String itemString = itemStringBuilder.toString();
+							itemStringBuilder.setLength(0);
+							Point point = itemLayer.getCanvasLocation();
+							int screenX = point.getX() + 2 - (fm.stringWidth(itemString) / 2);
 
-                       Collections.reverse(itemIds);
+							// Drawing the shadow for the text, 1px on both x and y
+							graphics.setColor(Color.BLACK);
+							graphics.drawString(itemString, screenX + 1, point.getY() - (15 * i) + 1);
+							// Drawing the text itself
+							graphics.setColor(Color.WHITE);
+							graphics.drawString(itemString, screenX, point.getY() - (15 * i));
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
 
-                      for(int i = 0; i < itemIds.size(); ++i)
-                      {
-                          Integer id = itemIds.get(i);
-                          Integer qty = itemQuantities.get(id);
-                          if(qty == null)
-                          {
-                              continue;
-                          }
-                          String itemName;
-                          if(id == 995)
-                          {
-                              itemName = "Coins";
-                              itemStringBuilder.append(qty).append(" x ").append(itemName);
-                          } else {
-                              if (qty > 1)
-                              {
-                                if(qty == 65535)
-                                {
-                                    itemStringBuilder.append("Lots of ");
-                                } else {
-                                    itemStringBuilder.append(qty).append("x ");
-                                }
-                              }
-                              itemName = client.getItemDefinition(id).getName();
-                              itemStringBuilder.append(itemName);
-                          }
-                          String itemString = itemStringBuilder.toString();
-                          itemStringBuilder.setLength(0);
-                          Point point = itemLayer.getCanvasLocation();
-                          int screenX = point.getX() + 2 - (fm.stringWidth(itemString) / 2);
-
-                          graphics.setColor(Color.BLACK);
-                          graphics.drawString(itemString, screenX + 1, point.getY() - (15 * i) + 1);
-                          graphics.setColor(Color.WHITE);
-                          graphics.drawString(itemString, screenX, point.getY() - (15 * i));
-                      }
-                   }
-               }
-            }
-        }
-        return null;
-    }
-
-    private void addItemToMap(Item item, ArrayList<Integer> itemIds, Map<Integer, Integer> itemQuantities)
-    {
-        int id = item.getId();
-        if(itemIds.contains(id))
-        {
-            itemQuantities.put(id, itemQuantities.get(id) + item.getQuantity());
-        } else {
-            itemIds.add(id);
-            itemQuantities.put(id, item.getQuantity());
-        }
-    }
+	private void addItemToMap(Item item, ArrayList<Integer> itemIds, Map<Integer, Integer> itemQuantities)
+	{
+		int id = item.getId();
+		if(itemIds.contains(id))
+		{
+			itemQuantities.put(id, itemQuantities.get(id) + item.getQuantity());
+		}
+		else
+		{
+			itemIds.add(id);
+			itemQuantities.put(id, item.getQuantity());
+		}
+	}
 }
