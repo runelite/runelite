@@ -29,8 +29,11 @@ import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
+import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
+
+import java.util.List;
 
 public class DeobAnnotations
 {
@@ -89,6 +92,28 @@ public class DeobAnnotations
 		}
 		
 		return (Number) an.getElement().getValue();
+	}
+
+	public static Number getObfuscatedPredicate(Method method)
+	{
+		if (method == null || method.getAnnotations() == null)
+		{
+			return null;
+		}
+
+		Annotation an = method.getAnnotations().find(OBFUSCATED_GETTER);
+		if (an == null)
+		{
+			return null;
+		}
+
+		List<Element> elements = an.getElements();
+		if (elements == null || elements.size() < 2)
+		{
+			return null;
+		}
+
+		return Long.valueOf((String) elements.get(1).getValue());
 	}
 
 	private static String getAnnotationValue(Annotations an, Type type)

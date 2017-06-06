@@ -24,16 +24,23 @@
  */
 package net.runelite.deob.deobfuscators.mapping;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.time.Instant;
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.attributes.annotation.Annotation;
+import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.signature.Signature;
+import net.runelite.asm.signature.Type;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.DeobProperties;
 import net.runelite.deob.util.JarUtil;
@@ -52,8 +59,8 @@ public class MappingDumper
 
 		int classes = 0, methods = 0, fields = 0;
 
-		ByteArrayOutputStream bout = new ByteArrayOutputStream();
-		PrintStream out = new PrintStream(bout);
+		StringBuilder builder = new StringBuilder();
+		StringBuilder sBuilder = new StringBuilder();
 
 		for (ClassFile cf : group.getClasses())
 		{
@@ -61,13 +68,11 @@ public class MappingDumper
 				obfName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 
 			String classPrefix = obfName + ".";
-			boolean neednl = false;
 
 			if (impl != null)
 			{
-				out.println(obfName + " -> " + impl);
+				builder.append("\n").append(impl).append(" -> ").append(obfName).append("\n");
 				++classes;
-				neednl = true;
 			}
 
 			for (Field f : cf.getFields().getFields())
@@ -81,17 +86,40 @@ public class MappingDumper
 					continue;
 				}
 
-				String prefix = f.isStatic() ? "static " : "       ";
 				++fields;
-				neednl = true;
 
-				if (getter != null)
+				String type = typeToString(f.getType());
+
+				if (f.isStatic())
 				{
-					out.println(prefix + f.getType() + " " + deobName + " -> " + classPrefix + obfName + " * " + getter);
+					sBuilder.append("\t").append(String.format("%-25s", type)).append(String.format("%-25s", deobName))
+						.append(classPrefix).append(obfName);
+
+					if (getter != null)
+					{
+						sBuilder.append(" * ").append(getter).append("\n");
+					}
+
+					else
+					{
+						sBuilder.append("\n");
+					}
 				}
+
 				else
 				{
-					out.println(prefix + f.getType() + " " + deobName + " -> " + classPrefix + obfName);
+					builder.append("\t").append(String.format("%-25s", type)).append(String.format("%-25s", deobName))
+							.append(classPrefix).append(obfName);
+
+					if (getter != null)
+					{
+						builder.append(" * ").append(getter).append("\n");
+					}
+
+					else
+					{
+						builder.append("\n");
+					}
 				}
 			}
 
@@ -101,6 +129,7 @@ public class MappingDumper
 				Signature obfSignature = DeobAnnotations.getObfuscatedSignature(m);
 
 				String deobName = DeobAnnotations.getExportedName(m.getAnnotations());
+				Number predicate = DeobAnnotations.getObfuscatedPredicate(m);
 				Signature deobSig = m.getDescriptor();
 
 				if (deobName == null)
@@ -108,16 +137,67 @@ public class MappingDumper
 					continue;
 				}
 
-				String prefix = m.isStatic() ? "static " : "       ";
-				++methods;
-				neednl = true;
+				methods++;
 
-				out.println(prefix + deobName + " " + deobSig + " -> " + classPrefix + obfName + " " + obfSignature);
-			}
+				String type = typeToString(deobSig.getReturnValue());
+				String[] params;
 
-			if (neednl)
-			{
-				out.println("");
+				if (obfSignature != null)
+				{
+					params = new String[obfSignature.size()];
+					for (int i = 0; i < params.length; i++)
+					{
+						params[i] = typeToString(obfSignature.getTypeOfArg(i));
+					}
+				}
+
+				else
+				{
+					params = new String[deobSig.size()];
+					for (int i = 0; i < params.length; i++)
+					{
+						params[i] = typeToString(deobSig.getTypeOfArg(i));
+					}
+				}
+
+				if (m.isStatic())
+				{
+					sBuilder.append("\t").append(String.format("%-25s", type)).append(String.format("%-25s", deobName))
+							.append(classPrefix).append(obfName);
+
+					sBuilder.append("(");
+					for (int i = 0; i < params.length; i++)
+					{
+						sBuilder.append(params[i]).append((i == params.length - 1 ? "" : ", "));
+					}
+					sBuilder.append(")\n");
+				}
+
+				else
+				{
+					builder.append("\t").append(String.format("%-25s", type)).append(String.format("%-25s", deobName))
+							.append(classPrefix).append(obfName);
+
+					builder.append("(");
+					for (int i = 0; i < params.length; i++)
+					{
+						builder.append(params[i]);
+
+						if (i == params.length - 1)
+						{
+							if (predicate != null)
+							{
+								builder.append(" = ").append(predicate);
+							}
+						}
+
+						else
+						{
+							builder.append(", ");
+						}
+					}
+					builder.append(")\n");
+				}
 			}
 		}
 
@@ -125,7 +205,139 @@ public class MappingDumper
 		System.out.println("Run " + Instant.now());
 		System.out.println("Classes: " + classes + ", methods: " + methods + ", fields: " + fields);
 		System.out.println("Gamepack " + properties.getRsVersion());
-		System.out.println("");
-		System.out.println(new String(bout.toByteArray()));
+		System.out.println(builder.toString());
+		System.out.println("Static ->");
+		System.out.println(sBuilder.toString());
+	}
+
+	@Test
+	public void dumpJson() throws IOException
+	{
+		ClassGroup group = JarUtil.loadJar(new File(properties.getRsClient()));
+
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		JsonObject jObject = new JsonObject();
+
+		JsonArray jClasses = new JsonArray();
+		for (ClassFile cf : group.getClasses())
+		{
+			String impl = DeobAnnotations.getImplements(cf), obfName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
+			String classPrefix = obfName;
+
+			JsonObject jClass = new JsonObject();
+
+			jClass.addProperty("name", (impl != null ? impl : ""));
+			jClass.addProperty("class", (obfName != null ? obfName : ""));
+
+			JsonArray jFields = new JsonArray();
+			for (Field f : cf.getFields().getFields())
+			{
+				obfName = DeobAnnotations.getObfuscatedName(f.getAnnotations());
+				String deobName = DeobAnnotations.getExportedName(f.getAnnotations());
+				Number getter = DeobAnnotations.getObfuscatedGetter(f);
+
+				if (deobName == null)
+				{
+					continue;
+				}
+
+				JsonObject jField = new JsonObject();
+
+				jField.addProperty("name", deobName);
+				jField.addProperty("class", classPrefix);
+				jField.addProperty("field", obfName);
+				jField.addProperty("signiture", f.getType().getFullType());
+				jField.addProperty("multiplier", (getter != null ? getter : 0));
+
+				jFields.add(jField);
+			}
+
+			JsonArray jMethods = new JsonArray();
+			for (Method m : cf.getMethods().getMethods())
+			{
+				obfName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
+				Signature obfSignature = DeobAnnotations.getObfuscatedSignature(m);
+
+				String deobName = DeobAnnotations.getExportedName(m.getAnnotations());
+				Number predicate = DeobAnnotations.getObfuscatedPredicate(m);
+				Signature deobSig = m.getDescriptor();
+
+				if (deobName == null)
+				{
+					continue;
+				}
+
+				JsonObject jMethod = new JsonObject();
+
+				jMethod.addProperty("name", deobName);
+				jMethod.addProperty("class", classPrefix);
+				jMethod.addProperty("field", obfName);
+				jMethod.addProperty("signiture", (obfSignature != null ? obfSignature.toString() : deobSig.toString()));
+				jMethod.addProperty("predicate", predicate);
+
+				jMethods.add(jMethod);
+
+			}
+
+			jClass.add("fields", jFields);
+			jClass.add("methods", jMethods);
+			jClasses.add(jClass);
+		}
+
+		jObject.addProperty("runelite", "http://github.com/runelite");
+		jObject.addProperty("run", Instant.now().toString());
+		jObject.addProperty("gamepack", properties.getRsVersion());
+		jObject.add("classes", jClasses);
+
+		System.out.println(gson.toJson(jObject));
+	}
+
+	private static String typeToString(Type type)
+	{
+		String subType;
+		switch (type.getType())
+		{
+			case "B":
+				subType = byte.class.getCanonicalName();
+				break;
+			case "C":
+				subType = char.class.getCanonicalName();
+				break;
+			case "I":
+				subType = int.class.getCanonicalName();
+				break;
+			case "S":
+				subType = short.class.getCanonicalName();
+				break;
+			case "Z":
+				subType = boolean.class.getCanonicalName();
+				break;
+			case "D":
+				subType = double.class.getCanonicalName();
+				break;
+			case "F":
+				subType = float.class.getCanonicalName();
+				break;
+			case "J":
+				subType = long.class.getCanonicalName();
+				break;
+			case "V":
+				subType = void.class.getCanonicalName();
+				break;
+			default:
+				String t = type.getType();
+				subType = t.substring(1, t.length() - 1).replace("/", ".");
+				break;
+		}
+
+		if (type.isArray())
+		{
+			for (int i = 0; i < type.getArrayDims(); ++i)
+			{
+				subType += "[]";
+			}
+		}
+
+		return subType;
 	}
 }
