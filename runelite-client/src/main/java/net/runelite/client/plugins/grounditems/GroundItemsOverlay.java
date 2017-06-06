@@ -88,7 +88,6 @@ public class GroundItemsOverlay extends Overlay
 				{
 					continue;
 				}
-
 				ItemLayer itemLayer = tile.getItemLayer();
 				if (itemLayer != null)
 				{
@@ -132,6 +131,11 @@ public class GroundItemsOverlay extends Overlay
 							String itemString = itemStringBuilder.toString();
 							itemStringBuilder.setLength(0);
 							Point point = itemLayer.getCanvasLocation();
+							// if the item is offscreen, don't bother drawing it
+							if(point == null)
+							{
+								continue;
+							}
 							int screenX = point.getX() + 2 - (fm.stringWidth(itemString) / 2);
 
 							// Drawing the shadow for the text, 1px on both x and y
