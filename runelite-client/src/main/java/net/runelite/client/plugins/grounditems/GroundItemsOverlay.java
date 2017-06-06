@@ -36,6 +36,7 @@ import java.util.*;
 
 public class GroundItemsOverlay extends Overlay
 {
+	private GroundItemsConfig config;
 	private final Client client = RuneLite.getClient();
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 	private final int REGION_SIZE = 104;
@@ -47,16 +48,17 @@ public class GroundItemsOverlay extends Overlay
 	// The 15 pixel gap between each drawn ground item.
 	private final int STRING_GAP = 15;
 
-    public GroundItemsOverlay()
+    public GroundItemsOverlay(GroundItems plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
+		this.config = plugin.getConfig();
 	}
 
     @Override
 	public Dimension render(Graphics2D graphics)
 	{
 		// won't draw if not logged in
-		if(client.getGameState() != GameState.LOGGED_IN)
+		if(client.getGameState() != GameState.LOGGED_IN || !config.enabled())
 		{
 			return null;
 		}

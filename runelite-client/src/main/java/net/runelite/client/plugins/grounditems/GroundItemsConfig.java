@@ -22,38 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.plugins.grounditems;
 
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public class GroundItems extends Plugin
+@ConfigGroup(
+	keyName = "grounditems",
+	name = "Ground Items",
+	description = "Configuration for the ground items plugin"
+)
+public interface GroundItemsConfig
 {
-	private final GroundItemsConfig config = RuneLite.getRunelite().getConfigManager()
-			.getConfig(GroundItemsConfig.class);
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Configures whether or not item names/quantities are displayed"
+	)
 
-	private final Overlay overlay = new GroundItemsOverlay(this);
-	@Override
-	protected void startUp() throws Exception
+	default boolean enabled()
 	{
-
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-
-	}
-
-	public GroundItemsConfig getConfig()
-	{
-		return config;
+		return true;
 	}
 }
