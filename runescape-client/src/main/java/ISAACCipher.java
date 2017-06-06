@@ -1,51 +1,60 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("er")
+@ObfuscatedName("fz")
 @Implements("ISAACCipher")
 public final class ISAACCipher {
-   @ObfuscatedName("l")
+   @ObfuscatedName("b")
+   @Export("randResult")
+   int[] randResult;
+   @ObfuscatedName("pw")
    @ObfuscatedGetter(
-      intValue = 810455027
+      intValue = 847157707
    )
-   int field1990;
-   @ObfuscatedName("q")
+   static int field2438;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -77385527
+      intValue = -1915555969
    )
    @Export("valuesRemaining")
    int valuesRemaining;
-   @ObfuscatedName("t")
-   @Export("randResult")
-   int[] randResult;
-   @ObfuscatedName("p")
+   @ObfuscatedName("y")
    @Export("mm")
    int[] mm;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1751688471
+      intValue = -1625961475
    )
-   int field1995;
-   @ObfuscatedName("z")
+   int field2442;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -265025177
+      intValue = 822171247
    )
-   int field1996;
-   @ObfuscatedName("md")
-   static SpritePixels field2000;
+   int field2443;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -2017867729
+   )
+   int field2444;
 
-   @ObfuscatedName("d")
+   ISAACCipher(int[] var1) {
+      this.mm = new int[256];
+      this.randResult = new int[256];
+
+      for(int var2 = 0; var2 < var1.length; ++var2) {
+         this.randResult[var2] = var1[var2];
+      }
+
+      this.method3415();
+   }
+
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "842309143"
+      garbageValue = "1796876195"
    )
    @Export("nextInt")
    final int nextInt() {
@@ -57,23 +66,82 @@ public final class ISAACCipher {
       return this.randResult[this.valuesRemaining];
    }
 
-   ISAACCipher(int[] var1) {
-      this.mm = new int[256];
-      this.randResult = new int[256];
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "74"
+   )
+   @Export("generateMoreResults")
+   final void generateMoreResults() {
+      this.field2443 += ++this.field2444;
 
-      for(int var2 = 0; var2 < var1.length; ++var2) {
-         this.randResult[var2] = var1[var2];
+      for(int var1 = 0; var1 < 256; ++var1) {
+         int var2 = this.mm[var1];
+         if((var1 & 2) == 0) {
+            if((var1 & 1) == 0) {
+               this.field2442 ^= this.field2442 << 13;
+            } else {
+               this.field2442 ^= this.field2442 >>> 6;
+            }
+         } else if((var1 & 1) == 0) {
+            this.field2442 ^= this.field2442 << 2;
+         } else {
+            this.field2442 ^= this.field2442 >>> 16;
+         }
+
+         this.field2442 += this.mm[var1 + 128 & 255];
+         int var3;
+         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2442 + this.field2443;
+         this.randResult[var1] = this.field2443 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
-      this.method2660();
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("ad")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1490056447"
+      signature = "(ILScript;ZS)I",
+      garbageValue = "-27027"
    )
-   final void method2660() {
+   static int method3414(int var0, Script var1, boolean var2) {
+      int var3;
+      if(var0 == 5504) {
+         class83.intStackSize -= 2;
+         var3 = class83.intStack[class83.intStackSize];
+         int var4 = class83.intStack[class83.intStackSize + 1];
+         if(!Client.field989) {
+            Client.field1013 = var3;
+            Client.mapAngle = var4;
+         }
+
+         return 1;
+      } else if(var0 == 5505) {
+         class83.intStack[++class83.intStackSize - 1] = Client.field1013;
+         return 1;
+      } else if(var0 == 5506) {
+         class83.intStack[++class83.intStackSize - 1] = Client.mapAngle;
+         return 1;
+      } else if(var0 == 5530) {
+         var3 = class83.intStack[--class83.intStackSize];
+         if(var3 < 0) {
+            var3 = 0;
+         }
+
+         Client.field1019 = var3;
+         return 1;
+      } else if(var0 == 5531) {
+         class83.intStack[++class83.intStackSize - 1] = Client.field1019;
+         return 1;
+      } else {
+         return 2;
+      }
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "14"
+   )
+   final void method3415() {
       int var9 = -1640531527;
       int var8 = -1640531527;
       int var7 = -1640531527;
@@ -199,100 +267,5 @@ public final class ISAACCipher {
 
       this.generateMoreResults();
       this.valuesRemaining = 256;
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;IZI)V",
-      garbageValue = "-471033253"
-   )
-   public static void method2662(IndexDataBase var0, String var1, String var2, int var3, boolean var4) {
-      int var5 = var0.method3296(var1);
-      int var6 = var0.method3310(var5, var2);
-      Script.method911(var0, var5, var6, var3, var4);
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1568188956"
-   )
-   @Export("generateMoreResults")
-   final void generateMoreResults() {
-      this.field1996 += ++this.field1990;
-
-      for(int var1 = 0; var1 < 256; ++var1) {
-         int var2 = this.mm[var1];
-         if((var1 & 2) == 0) {
-            if((var1 & 1) == 0) {
-               this.field1995 ^= this.field1995 << 13;
-            } else {
-               this.field1995 ^= this.field1995 >>> 6;
-            }
-         } else if((var1 & 1) == 0) {
-            this.field1995 ^= this.field1995 << 2;
-         } else {
-            this.field1995 ^= this.field1995 >>> 16;
-         }
-
-         this.field1995 += this.mm[var1 + 128 & 255];
-         int var3;
-         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field1995 + this.field1996;
-         this.randResult[var1] = this.field1996 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
-      }
-
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/Throwable;I)Ljava/lang/String;",
-      garbageValue = "-1957813225"
-   )
-   static String method2666(Throwable var0) throws IOException {
-      String var1;
-      if(var0 instanceof class101) {
-         class101 var2 = (class101)var0;
-         var1 = var2.field1642 + " | ";
-         var0 = var2.field1640;
-      } else {
-         var1 = "";
-      }
-
-      StringWriter var12 = new StringWriter();
-      PrintWriter var3 = new PrintWriter(var12);
-      var0.printStackTrace(var3);
-      var3.close();
-      String var4 = var12.toString();
-      BufferedReader var5 = new BufferedReader(new StringReader(var4));
-      String var6 = var5.readLine();
-
-      while(true) {
-         while(true) {
-            String var7 = var5.readLine();
-            if(var7 == null) {
-               var1 = var1 + "| " + var6;
-               return var1;
-            }
-
-            int var8 = var7.indexOf(40);
-            int var9 = var7.indexOf(41, var8 + 1);
-            if(var8 >= 0 && var9 >= 0) {
-               String var10 = var7.substring(var8 + 1, var9);
-               int var11 = var10.indexOf(".java:");
-               if(var11 >= 0) {
-                  var10 = var10.substring(0, var11) + var10.substring(var11 + 5);
-                  var1 = var1 + var10 + ' ';
-                  continue;
-               }
-
-               var7 = var7.substring(0, var8);
-            }
-
-            var7 = var7.trim();
-            var7 = var7.substring(var7.lastIndexOf(32) + 1);
-            var7 = var7.substring(var7.lastIndexOf(9) + 1);
-            var1 = var1 + var7 + ' ';
-         }
-      }
    }
 }

@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.api;
 
 public class Player extends Actor
@@ -41,7 +40,7 @@ public class Player extends Actor
 	@Override
 	public String getName()
 	{
-		return player.getName();
+		return player.getName().replace('\u00A0', ' ');
 	}
 
 	@Override
@@ -49,5 +48,9 @@ public class Player extends Actor
 	{
 		return player.getCombatLevel();
 	}
-}
 
+	public PlayerComposition getPlayerComposition()
+	{
+		return new PlayerComposition(player.getComposition());
+	}
+}

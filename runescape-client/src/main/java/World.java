@@ -4,160 +4,212 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("az")
+@ObfuscatedName("ck")
 @Implements("World")
 public class World {
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1393644151
-   )
-   static int field669;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 5525853
-   )
-   @Export("playerCount")
-   int playerCount;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @Export("worldList")
    static World[] worldList;
-   @ObfuscatedName("k")
-   @Export("activity")
-   String activity;
-   @ObfuscatedName("u")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1838249521
-   )
-   static int field674;
-   @ObfuscatedName("z")
-   static int[] field675;
-   @ObfuscatedName("l")
-   static int[] field676;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 288236961
-   )
-   @Export("mask")
-   int mask;
-   @ObfuscatedName("s")
-   @Export("address")
-   String address;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1769256957
-   )
-   @Export("id")
-   int id;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -500944135
-   )
-   @Export("location")
-   int location;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -260970347
+      intValue = -926216409
    )
    @Export("index")
    int index;
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-940717220"
+   @ObfuscatedName("x")
+   static int[] field1318;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 186242501
    )
-   boolean method603() {
-      return (1 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-1673666222"
+   @Export("playerCount")
+   int playerCount;
+   @ObfuscatedName("io")
+   @Export("localPlayer")
+   static Player localPlayer;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 813015327
    )
-   boolean method604() {
-      return (2 & this.mask) != 0;
-   }
-
+   @Export("mask")
+   int mask;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1427287969
+   )
+   static int field1322;
+   @ObfuscatedName("q")
+   @Export("address")
+   String address;
+   @ObfuscatedName("j")
+   @Export("activity")
+   String activity;
    @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "584258502"
+   @ObfuscatedGetter(
+      intValue = 547025441
    )
-   boolean method605() {
-      return (4 & this.mask) != 0;
-   }
+   @Export("location")
+   int location;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -1471446757
+   )
+   static int field1326;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1252733993
+   )
+   @Export("id")
+   int id;
+   @ObfuscatedName("f")
+   static int[] field1328;
+   @ObfuscatedName("bu")
+   static class289 field1331;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-1863370907"
+      signature = "(B)Z",
+      garbageValue = "64"
    )
-   boolean method606() {
+   boolean method1545() {
       return (8 & this.mask) != 0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "1948957509"
+      garbageValue = "1907707327"
    )
-   boolean method608() {
+   public static final boolean method1546() {
+      class50 var0 = class50.keyboard;
+      synchronized(class50.keyboard) {
+         if(class50.field635 == class50.field644) {
+            return false;
+         } else {
+            class3.field27 = class50.field651[class50.field635];
+            class50.field642 = class50.field637[class50.field635];
+            class50.field635 = class50.field635 + 1 & 127;
+            return true;
+         }
+      }
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-1567173617"
+   )
+   boolean method1547() {
+      return (2 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "0"
+   )
+   boolean method1548() {
+      return (4 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-465050274"
+   )
+   boolean method1550() {
+      return (536870912 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-180582743"
+   )
+   boolean method1551() {
       return (33554432 & this.mask) != 0;
    }
 
    static {
-      field669 = 0;
-      field674 = 0;
-      field675 = new int[]{1, 1, 1, 1};
-      field676 = new int[]{0, 1, 2, 3};
+      field1326 = 0;
+      field1322 = 0;
+      field1318 = new int[]{1, 1, 1, 1};
+      field1328 = new int[]{0, 1, 2, 3};
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("go")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "97"
+      signature = "(III)V",
+      garbageValue = "-2142455045"
    )
-   boolean method618() {
-      return (536870912 & this.mask) != 0;
-   }
+   @Export("groundItemSpawned")
+   static final void groundItemSpawned(int var0, int var1) {
+      Deque var2 = Client.groundItemDeque[FaceNormal.plane][var0][var1];
+      if(var2 == null) {
+         class1.region.method2695(FaceNormal.plane, var0, var1);
+      } else {
+         long var3 = -99999999L;
+         Item var5 = null;
 
-   @ObfuscatedName("es")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)V",
-      garbageValue = "14"
-   )
-   static final void method640(String var0) {
-      if(!var0.equals("")) {
-         Client.secretPacketBuffer1.putOpcode(117);
-         Client.secretPacketBuffer1.putByte(class36.method753(var0));
-         Client.secretPacketBuffer1.method2504(var0);
+         Item var6;
+         for(var6 = (Item)var2.method3576(); var6 != null; var6 = (Item)var2.method3578()) {
+            ItemComposition var7 = Buffer.getItemDefinition(var6.id);
+            long var10 = (long)var7.price;
+            if(var7.isStackable == 1) {
+               var10 *= (long)(var6.quantity + 1);
+            }
+
+            if(var10 > var3) {
+               var3 = var10;
+               var5 = var6;
+            }
+         }
+
+         if(var5 == null) {
+            class1.region.method2695(FaceNormal.plane, var0, var1);
+         } else {
+            var2.method3572(var5);
+            Item var12 = null;
+            Item var8 = null;
+
+            for(var6 = (Item)var2.method3576(); var6 != null; var6 = (Item)var2.method3578()) {
+               if(var5.id != var6.id) {
+                  if(var12 == null) {
+                     var12 = var6;
+                  }
+
+                  if(var6.id != var12.id && var8 == null) {
+                     var8 = var6;
+                  }
+               }
+            }
+
+            int var9 = var0 + (var1 << 7) + 1610612736;
+            class1.region.method2681(FaceNormal.plane, var0, var1, class21.method139(var0 * 128 + 64, var1 * 128 + 64, FaceNormal.plane), var5, var9, var12, var8);
+         }
       }
    }
 
-   @ObfuscatedName("ao")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(LSequence;IIII)V",
-      garbageValue = "1997457071"
+      signature = "(B)Z",
+      garbageValue = "0"
    )
-   static void method641(Sequence var0, int var1, int var2, int var3) {
-      if(Client.field528 < 50 && Client.field527 != 0) {
-         if(var0.field3095 != null && var1 < var0.field3095.length) {
-            int var4 = var0.field3095[var1];
-            if(var4 != 0) {
-               int var5 = var4 >> 8;
-               int var6 = var4 >> 4 & 7;
-               int var7 = var4 & 15;
-               Client.field529[Client.field528] = var5;
-               Client.field530[Client.field528] = var6;
-               Client.field442[Client.field528] = 0;
-               Client.field504[Client.field528] = null;
-               int var8 = (var2 - 64) / 128;
-               int var9 = (var3 - 64) / 128;
-               Client.field493[Client.field528] = (var9 << 8) + (var8 << 16) + var7;
-               ++Client.field528;
-            }
-         }
+   boolean method1567() {
+      return (1 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Lclass186;III)I",
+      garbageValue = "1743928357"
+   )
+   static int method1583(class186 var0, int var1, int var2) {
+      if(var0 == null) {
+         return var2;
+      } else {
+         class198 var3 = (class198)var0.method3475((long)var1);
+         return var3 == null?var2:var3.field2494;
       }
    }
 }

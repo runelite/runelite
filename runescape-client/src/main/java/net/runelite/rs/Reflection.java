@@ -24,65 +24,98 @@
  */
 package net.runelite.rs;
 
-import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 public class Reflection
 {
-	private static List<String> classes = new ArrayList<>();
+	private static final boolean PRINT_DEBUG_MESSAGES = true;
+
+	private static Map<String, Class<?>> classes = new HashMap<>();
 
 	static
 	{
 		try
 		{
-			InputStream in = Reflection.class.getResourceAsStream("/classes.txt");
+			Enumeration<URL> systemResources = ClassLoader.getSystemResources("");
 
-			try (BufferedReader reader = new BufferedReader(new InputStreamReader(in)))
+			while (systemResources.hasMoreElements())
 			{
-				String str;
+				URL url = systemResources.nextElement();
 
-				while ((str = reader.readLine()) != null)
+				Path path;
+				try
 				{
-					classes.add(str);
+					path = new File(url.toURI())
+						.toPath();
 				}
+				catch (URISyntaxException e)
+				{
+					path = new File(url.getPath())
+						.toPath();
+				}
+
+				Files.walk(path)
+					.filter(Files::isRegularFile)
+					.forEach(f ->
+					{
+						String className = f
+							.getName(f.getNameCount() - 1)
+							.toString()
+							.replace(".class", "");
+
+						try
+						{
+							Class<?> clazz = Class.forName(className);
+
+							ObfuscatedName obfuscatedName = clazz
+								.getAnnotation(ObfuscatedName.class);
+
+							if (obfuscatedName != null)
+							{
+								classes.put(obfuscatedName.value(), clazz);
+							}
+						}
+						catch (ClassNotFoundException ignore)
+						{
+						}
+					});
 			}
 		}
-		catch (IOException ex)
+		catch (IOException e)
 		{
-			ex.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
 	public static Class<?> findClass(String name) throws ClassNotFoundException
 	{
-		for (String clazz : classes)
+		Class<?> clazz = classes.get(name);
+
+		if (clazz != null)
 		{
-			try
-			{
-				Class<?> c = Class.forName(clazz);
-				ObfuscatedName on = c.getAnnotation(ObfuscatedName.class);
-				if (on != null && on.value().equals(name))
-				{
-					return c;
-				}
-			}
-			catch (ClassNotFoundException ex)
-			{
-				ex.printStackTrace();
-			}
+			return clazz;
+		}
+
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Server requested dummy class " + name);
 		}
 
 		return Class.forName(name);
@@ -90,7 +123,10 @@ public class Reflection
 
 	public static Field findField(Class<?> clazz, String name) throws NoSuchFieldException
 	{
-		System.out.println("Looking for field " + name + " on " + clazz);
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Looking for field " + name + " in " + clazz);
+		}
 
 		for (Field f : clazz.getDeclaredFields())
 		{
@@ -99,6 +135,11 @@ public class Reflection
 			{
 				return f;
 			}
+		}
+
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Server requested dummy field " + name + " in " + clazz);
 		}
 
 		return clazz.getDeclaredField(name);
@@ -155,7 +196,10 @@ public class Reflection
 
 	public static int getInt(Field field, Object obj) throws IllegalArgumentException, IllegalAccessException
 	{
-		System.out.println("Getting field " + field);
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Getting field " + field);
+		}
 
 		boolean unset = false;
 		if ((field.getModifiers() & Modifier.PRIVATE) == 0)
@@ -173,7 +217,10 @@ public class Reflection
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			if (PRINT_DEBUG_MESSAGES)
+			{
+				ex.printStackTrace();
+			}
 			throw ex;
 		}
 		finally
@@ -198,7 +245,10 @@ public class Reflection
 
 	public static void setInt(Field field, Object obj, int value) throws IllegalArgumentException, IllegalAccessException
 	{
-		System.out.println("Setting field " + field + " to " + value);
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Setting field " + field + " to " + value);
+		}
 
 		ObfuscatedGetter og = field.getAnnotation(ObfuscatedGetter.class);
 		if (og != null)
@@ -244,7 +294,10 @@ public class Reflection
 
 	public static Object invoke(Method method, Object object, Object[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
-		System.out.println("Invoking " + method);
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Invoking " + method);
+		}
 
 		try
 		{
@@ -252,7 +305,10 @@ public class Reflection
 		}
 		catch (Throwable ex)
 		{
-			ex.printStackTrace();
+			if (PRINT_DEBUG_MESSAGES)
+			{
+				ex.printStackTrace();
+			}
 			throw ex;
 		}
 	}

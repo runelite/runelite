@@ -24,14 +24,12 @@
  */
 package net.runelite.http.api.hiscore;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import net.runelite.http.api.RuneliteAPI;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -42,10 +40,7 @@ public class HiscoreClient
 {
 	private static final Logger logger = LoggerFactory.getLogger(HiscoreClient.class);
 
-	private final OkHttpClient client = new OkHttpClient();
-	private final Gson gson = new Gson();
-
-	public HiscoreResult lookup(String username) throws IOException, URISyntaxException
+	public HiscoreResult lookup(String username) throws IOException
 	{
 		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
 			.addPathSegment("hiscore")
@@ -59,12 +54,16 @@ public class HiscoreClient
 			.url(url)
 			.build();
 
-		Response response = client.newCall(request).execute();
+		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
 
 		try (ResponseBody body = response.body())
 		{
 			InputStream in = body.byteStream();
-			return gson.fromJson(new InputStreamReader(in), HiscoreResult.class);
+			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), HiscoreResult.class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
 		}
 	}
 }

@@ -51,14 +51,14 @@ public class Instructions
 		add(27, 1, 0);
 		add(Opcodes.IF_ICMPLE, "if_icmple", 2, 0);
 		add(Opcodes.IF_ICMPGE, "if_icmpge", 2, 0);
-		add(33, 0, 1);
-		add(34, 1, 0);
-		add(35, 0, 0, 0, 1);
-		add(36, 0, 0, 1, 0);
-		// 37 - pops strings eq to int operand, pushes 1 string
+		add(Opcodes.ILOAD, "iload", 0, 1);
+		add(Opcodes.ISTORE, "istore", 1, 0);
+		add(Opcodes.SLOAD, "sload", 0, 0, 0, 1);
+		add(Opcodes.SSTORE, "sstore", 0, 0, 1, 0);
+		add(Opcodes.STRING_APPEND, 0, 0, -1, 1);
 		add(Opcodes.POP_INT, "pop_int", 1, 0);
 		add(Opcodes.POP_STRING, "pop_string", 0, 0, 1, 0);
-		// 40 seems to interact with other scripts, variable pops/pushes
+		add(Opcodes.INVOKE, "invoke", -1, -1, -1, -1);
 		add(42, 0, 1);
 		add(43, 1, 0);
 		add(44, 1, 0);
@@ -66,6 +66,7 @@ public class Instructions
 		add(46, 2, 0);
 		add(47, 0, 0, 0, 1);
 		add(48, 0, 0, 1, 0);
+		add(Opcodes.SWITCH, "switch", 1, 0);
 		add(100, 3, 0);
 		add(101, 0, 0);
 		add(102, 1, 0);

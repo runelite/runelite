@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.ui.overlay;
 
 import java.awt.image.BufferedImage;
@@ -40,24 +39,20 @@ public class OverlayRenderer
 
 		for (Plugin plugin : RuneLite.getRunelite().getPluginManager().getPlugins())
 		{
-			Overlay overlay = plugin.getOverlay();
-
-			if (overlay == null)
+			for (Overlay overlay : plugin.getOverlays())
 			{
-				continue;
-			}
-
-			switch (overlay.getPosition())
-			{
-				case TOP_RIGHT:
-					tdr.add(overlay);
-					break;
-				case TOP_LEFT:
-					tdl.add(overlay);
-					break;
-				case DYNAMIC:
-					dr.add(overlay);
-					break;
+				switch (overlay.getPosition())
+				{
+					case TOP_RIGHT:
+						tdr.add(overlay);
+						break;
+					case TOP_LEFT:
+						tdl.add(overlay);
+						break;
+					case DYNAMIC:
+						dr.add(overlay);
+						break;
+				}
 			}
 		}
 

@@ -1,5 +1,4 @@
-import java.io.File;
-import java.io.RandomAccessFile;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
@@ -9,66 +8,57 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ao")
+@ObfuscatedName("cf")
 @Implements("Preferences")
 public class Preferences {
-   @ObfuscatedName("d")
+   @ObfuscatedName("v")
+   boolean field1332;
+   @ObfuscatedName("e")
+   boolean field1333;
+   @ObfuscatedName("gp")
    @ObfuscatedGetter(
-      intValue = -1839616837
+      intValue = -597338299
    )
-   static int field689;
-   @ObfuscatedName("n")
-   boolean field690;
-   @ObfuscatedName("q")
-   boolean field691;
-   @ObfuscatedName("t")
+   @Export("cameraPitch")
+   static int cameraPitch;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1023255843
+      intValue = 197732061
    )
-   int field692;
-   @ObfuscatedName("p")
+   int field1336;
+   @ObfuscatedName("y")
    @Export("preferences")
    LinkedHashMap preferences;
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(Ljava/io/File;ZI)Z",
-      garbageValue = "665353413"
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -103065215
    )
-   public static boolean method642(File var0, boolean var1) {
-      try {
-         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
-         int var3 = var2.read();
-         var2.seek(0L);
-         var2.write(var3);
-         var2.seek(0L);
-         var2.close();
-         if(var1) {
-            var0.delete();
-         }
+   static int field1338;
 
-         return true;
-      } catch (Exception var4) {
-         return false;
-      }
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(ZB)V",
+      garbageValue = "-87"
+   )
+   void method1584(boolean var1) {
    }
 
    Preferences(Buffer var1) {
-      this.field692 = 1;
+      this.field1336 = 1;
       this.preferences = new LinkedHashMap();
       if(var1 != null && var1.payload != null) {
          int var2 = var1.readUnsignedByte();
-         if(var2 >= 0 && var2 <= field689) {
+         if(var2 >= 0 && var2 <= field1338) {
             if(var1.readUnsignedByte() == 1) {
-               this.field690 = true;
+               this.field1333 = true;
             }
 
             if(var2 > 1) {
-               this.field691 = var1.readUnsignedByte() == 1;
+               this.field1332 = var1.readUnsignedByte() == 1;
             }
 
             if(var2 > 3) {
-               this.field692 = var1.readUnsignedByte();
+               this.field1336 = var1.readUnsignedByte();
             }
 
             if(var2 > 2) {
@@ -81,142 +71,25 @@ public class Preferences {
                }
             }
          } else {
-            this.method643(true);
+            this.method1584(true);
          }
       } else {
-         this.method643(true);
+         this.method1584(true);
       }
 
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-1783066575"
-   )
-   void method643(boolean var1) {
-   }
-
-   Preferences() {
-      this.field692 = 1;
-      this.preferences = new LinkedHashMap();
-      this.method643(true);
-   }
-
-   static {
-      field689 = 4;
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(ILScript;ZB)I",
-      garbageValue = "-43"
-   )
-   static int method648(int var0, Script var1, boolean var2) {
-      int var3;
-      int var4;
-      int var6;
-      if(var0 == 3400) {
-         class32.field715 -= 2;
-         var3 = class32.field720[class32.field715];
-         var4 = class32.field720[class32.field715 + 1];
-         class200 var5 = class105.method2038(var3);
-         if(var5.field2886 != 115) {
-            ;
-         }
-
-         for(var6 = 0; var6 < var5.field2885; ++var6) {
-            if(var5.field2890[var6] == var4) {
-               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var5.field2889[var6];
-               var5 = null;
-               break;
-            }
-         }
-
-         if(var5 != null) {
-            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var5.field2887;
-         }
-
-         return 1;
-      } else if(var0 != 3408) {
-         return 2;
-      } else {
-         class32.field715 -= 4;
-         var3 = class32.field720[class32.field715];
-         var4 = class32.field720[class32.field715 + 1];
-         int var9 = class32.field720[class32.field715 + 2];
-         var6 = class32.field720[class32.field715 + 3];
-         class200 var7 = class105.method2038(var9);
-         if(var3 == var7.field2893 && var4 == var7.field2886) {
-            for(int var8 = 0; var8 < var7.field2885; ++var8) {
-               if(var6 == var7.field2890[var8]) {
-                  if(var4 == 115) {
-                     class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var7.field2889[var8];
-                  } else {
-                     class32.field720[++class32.field715 - 1] = var7.field2891[var8];
-                  }
-
-                  var7 = null;
-                  break;
-               }
-            }
-
-            if(var7 != null) {
-               if(var4 == 115) {
-                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var7.field2887;
-               } else {
-                  class32.field720[++class32.field715 - 1] = var7.field2888;
-               }
-            }
-
-            return 1;
-         } else {
-            if(var4 == 115) {
-               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "null";
-            } else {
-               class32.field720[++class32.field715 - 1] = 0;
-            }
-
-            return 1;
-         }
-      }
-   }
-
-   @ObfuscatedName("br")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-39314763"
-   )
-   static final void method649(int var0, int var1) {
-      if(Client.field298 == 2) {
-         CombatInfo1.method601(Client.field304 + (Client.field301 - class108.baseX << 7), Client.field305 + (Client.field302 - GameEngine.baseY << 7), Client.field303 * 2);
-         if(Client.field388 > -1 && Client.gameCycle % 20 < 10) {
-            class108.field1726[0].method4230(Client.field388 + var0 - 12, var1 + Client.field389 - 28);
-         }
-
-      }
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "1"
-   )
-   public static boolean method650(int var0) {
-      return (var0 >> 31 & 1) != 0;
    }
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(B)LBuffer;",
-      garbageValue = "32"
+      garbageValue = "-41"
    )
-   Buffer method651() {
+   Buffer method1586() {
       Buffer var1 = new Buffer(100);
-      var1.putByte(field689);
-      var1.putByte(this.field690?1:0);
-      var1.putByte(this.field691?1:0);
-      var1.putByte(this.field692);
+      var1.putByte(field1338);
+      var1.putByte(this.field1333?1:0);
+      var1.putByte(this.field1332?1:0);
+      var1.putByte(this.field1336);
       var1.putByte(this.preferences.size());
       Iterator var2 = this.preferences.entrySet().iterator();
 
@@ -227,5 +100,41 @@ public class Preferences {
       }
 
       return var1;
+   }
+
+   static {
+      field1338 = 4;
+   }
+
+   Preferences() {
+      this.field1336 = 1;
+      this.preferences = new LinkedHashMap();
+      this.method1584(true);
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "1004200139"
+   )
+   public static void method1595(boolean var0) {
+      if(class164.field2337 != null) {
+         try {
+            Buffer var1 = new Buffer(4);
+            var1.putByte(var0?2:3);
+            var1.put24bitInt(0);
+            class164.field2337.queueForWrite(var1.payload, 0, 4);
+         } catch (IOException var4) {
+            try {
+               class164.field2337.method2981();
+            } catch (Exception var3) {
+               ;
+            }
+
+            ++class238.field3263;
+            class164.field2337 = null;
+         }
+
+      }
    }
 }

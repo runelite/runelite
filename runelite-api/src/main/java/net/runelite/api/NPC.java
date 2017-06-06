@@ -35,10 +35,15 @@ public class NPC extends Actor
 		this.npc = npc;
 	}
 
+	public int getId()
+	{
+		return npc.getComposition().getId();
+	}
+
 	@Override
 	public String getName()
 	{
-		return npc.getComposition().getName();
+		return npc.getComposition().getName().replace('\u00A0', ' ');
 	}
 
 	@Override

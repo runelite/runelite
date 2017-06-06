@@ -247,7 +247,7 @@ public class CodeVisitor extends MethodVisitor
 	public void visitMultiANewArrayInsn(String desc, int dims)
 	{
 		MultiANewArray m = new MultiANewArray(code.getInstructions(), InstructionType.MULTIANEWARRAY);
-		m.setClass(new net.runelite.asm.pool.Class(desc));
+		m.setArrayType(new Type(desc));
 		m.setDimensions(dims);
 		code.getInstructions().addInstruction(m);
 	}

@@ -24,8 +24,8 @@
  */
 package net.runelite.client.plugins.runecraft;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
+
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Point;
@@ -50,7 +50,8 @@ public class RunecraftOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-		if (inventoryWidget == null)
+
+		if (inventoryWidget == null || inventoryWidget.isHidden())
 		{
 			return null;
 		}
@@ -78,15 +79,12 @@ public class RunecraftOverlay extends Overlay
 			}
 
 			Point location = item.getCanvasLocation();
-			if (location == null)
+			if (location != null)
 			{
-				continue;
+				int value = client.getSetting(varbits);
+				graphics.drawString("" + value, location.getX(), location.getY() + graphics.getFontMetrics().getHeight());
 			}
-
-			int value = client.getSetting(varbits);
-			graphics.drawString("" + value, location.getX(), location.getY());
 		}
-
 		return null;
 	}
 

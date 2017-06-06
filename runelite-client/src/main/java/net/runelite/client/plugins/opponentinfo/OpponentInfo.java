@@ -30,12 +30,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.Map;
+import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 
 public class OpponentInfo extends Plugin
 {
-	private final Overlay overlay = new OpponentInfoOverlay();
+	private final OpponentConfig config = RuneLite.getRunelite().getConfigManager().getConfig(OpponentConfig.class);
+	private final Overlay overlay = new OpponentInfoOverlay(this);
 
 	@Override
 	public Overlay getOverlay()
@@ -53,10 +55,17 @@ public class OpponentInfo extends Plugin
 	{
 	}
 
+	public OpponentConfig getConfig()
+	{
+		return config;
+	}
+
 	public static Map<String, Integer> loadNpcHealth()
 	{
 		Gson gson = new Gson();
-		Type type = new TypeToken<Map<String, Integer>>(){}.getType();
+		Type type = new TypeToken<Map<String, Integer>>()
+		{
+		}.getType();
 
 		InputStream healthFile = OpponentInfo.class.getResourceAsStream("/npc_health.json");
 		return gson.fromJson(new InputStreamReader(healthFile), type);

@@ -98,6 +98,9 @@ public class MouseHighlightOverlay extends Overlay
 		String colour = m.group(1);
 		String matchedTarget = m.group(2);
 
+		// Remove colour text from option
+		option = option.replaceAll("<col=([^>]+)>", "");
+
 		Point mouse = client.getMouseCanvasPosition();
 		int x = mouse.getX();
 		int y = mouse.getY();

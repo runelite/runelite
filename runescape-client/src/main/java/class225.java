@@ -2,52 +2,63 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hk")
-public class class225 implements class134 {
-   @ObfuscatedName("p")
+@ObfuscatedName("hb")
+public class class225 {
+   @ObfuscatedName("lu")
    @ObfuscatedGetter(
-      intValue = -477517981
+      intValue = -1473473571
    )
-   public final int field3219;
-   @ObfuscatedName("c")
-   public static final class225 field3220;
-   @ObfuscatedName("n")
-   public static final class225 field3221;
-   @ObfuscatedName("q")
-   public static final class225 field3222;
-   @ObfuscatedName("t")
-   public static final class225 field3223;
-   @ObfuscatedName("d")
-   public static final class225 field3224;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 2042424991
-   )
-   final int field3225;
+   static int field3134;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("hl")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1946751124"
+      signature = "(Ljava/lang/String;LWidget;I)Ljava/lang/String;",
+      garbageValue = "1333009312"
    )
-   public int vmethod4163() {
-      return this.field3225;
-   }
+   static String method4075(String var0, Widget var1) {
+      if(var0.indexOf("%") != -1) {
+         int var2;
+         String var4;
+         for(var2 = 1; var2 <= 5; ++var2) {
+            while(true) {
+               int var7 = var0.indexOf("%" + var2);
+               if(var7 == -1) {
+                  break;
+               }
 
-   static {
-      field3224 = new class225(0, 0);
-      field3220 = new class225(1, 1);
-      field3221 = new class225(2, 2);
-      field3222 = new class225(3, 3);
-      field3223 = new class225(4, 4);
-   }
+               var4 = var0.substring(0, var7);
+               int var6 = IndexFile.method3012(var1, var2 - 1);
+               String var5;
+               if(var6 < 999999999) {
+                  var5 = Integer.toString(var6);
+               } else {
+                  var5 = "*";
+               }
 
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "0"
-   )
-   class225(int var1, int var2) {
-      this.field3219 = var1;
-      this.field3225 = var2;
+               var0 = var4 + var5 + var0.substring(var7 + 2);
+            }
+         }
+
+         while(true) {
+            var2 = var0.indexOf("%dns");
+            if(var2 == -1) {
+               break;
+            }
+
+            String var3 = "";
+            if(Projectile.field1472 != null) {
+               int var8 = Projectile.field1472.field2246;
+               var4 = (var8 >> 24 & 255) + "." + (var8 >> 16 & 255) + "." + (var8 >> 8 & 255) + "." + (var8 & 255);
+               var3 = var4;
+               if(Projectile.field1472.field2248 != null) {
+                  var3 = (String)Projectile.field1472.field2248;
+               }
+            }
+
+            var0 = var0.substring(0, var2) + var3 + var0.substring(var2 + 4);
+         }
+      }
+
+      return var0;
    }
 }

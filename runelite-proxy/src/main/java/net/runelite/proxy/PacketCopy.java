@@ -24,6 +24,8 @@
  */
 package net.runelite.proxy;
 
+import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.Unpooled;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -81,7 +83,8 @@ public class PacketCopy extends Thread
 					read += r;
 				}
 
-				logger.info("Read packet opcode {} length {}", packetOpcode, packetLength);
+				String hexdump = ByteBufUtil.prettyHexDump(Unpooled.wrappedBuffer(b));
+				logger.info("Read packet opcode {} length {}\n{}", packetOpcode, packetLength, hexdump);
 
 				// Write out
 				ProxyRunner.writeOpcode(outCipher, out, packetOpcode);

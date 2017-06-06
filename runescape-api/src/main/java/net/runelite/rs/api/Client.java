@@ -24,7 +24,6 @@
  */
 package net.runelite.rs.api;
 
-import java.awt.Canvas;
 import net.runelite.mapping.Import;
 
 public interface Client extends GameEngine
@@ -164,14 +163,11 @@ public interface Client extends GameEngine
 	@Import("worldList")
 	World[] getWorldList();
 
-	@Import("rootInterface")
-	int getRootInterface();
-
 	@Import("sendGameMessage")
 	void sendGameMessage(int var1, String var2, String var3);
 
-	@Import("objectDefinition")
-	ObjectComposition getObjectDefinition(int var1);
+	@Import("getObjectDefinition")
+	ObjectComposition getObjectDefinition(int objectId);
 
 	@Import("scale")
 	int getScale();
@@ -206,9 +202,6 @@ public interface Client extends GameEngine
 	@Import("grandExchangeOffers")
 	XGrandExchangeOffer[] getGrandExchangeOffers();
 
-	@Import("activeInterface")
-	Widget getActiveInterface();
-
 	@Import("clanChatCount")
 	int getClanChatCount();
 
@@ -218,17 +211,11 @@ public interface Client extends GameEngine
 	@Import("isMenuOpen")
 	boolean isMenuOpen();
 
-	@Import("packetOpcode")
-	int getPacketOpcode();
-
 	@Import("gameCycle")
 	int getGameCycle();
 
 	@Import("packetHandler")
 	void packetHandler();
-
-	@Import("canvas")
-	Canvas getCanvas();
 
 	@Import("revision")
 	int getRevision();

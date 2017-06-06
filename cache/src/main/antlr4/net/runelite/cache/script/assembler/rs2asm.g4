@@ -24,8 +24,21 @@
  */
 grammar rs2asm;
 
-prog: (line NEWLINE)+ ;
-line: instruction | label ;
+prog: (header NEWLINE)* (line NEWLINE)+ ;
+
+header: int_stack_count | string_stack_count | int_var_count | string_var_count ;
+
+int_stack_count: '.int_stack_count ' int_stack_value ;
+string_stack_count: '.string_stack_count ' string_stack_value ;
+int_var_count: '.int_var_count ' int_var_value ;
+string_var_count: '.string_var_count ' string_var_value ;
+
+int_stack_value: INT ;
+string_stack_value: INT ;
+int_var_value: INT ;
+string_var_value: INT ;
+
+line: instruction | label | switch_lookup ;
 instruction: instruction_name instruction_operand ;
 label: 'LABEL' INT ':' ;
 
@@ -37,6 +50,10 @@ instruction_operand: operand_int | operand_qstring | operand_label | ;
 operand_int: INT ;
 operand_qstring: QSTRING ;
 operand_label: 'LABEL' INT ;
+
+switch_lookup: switch_key ':' switch_value ;
+switch_key: INT ;
+switch_value: 'LABEL' INT ;
 
 NEWLINE: '\n'+ ;
 INT: '-'? [0-9]+ ;

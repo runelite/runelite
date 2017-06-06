@@ -30,10 +30,10 @@ import java.io.IOException;
 import net.runelite.asm.ClassGroup;
 import net.runelite.deob.DeobProperties;
 import net.runelite.deob.TemporyFolderLocation;
-import net.runelite.deob.deobfuscators.RenameUniqueTest;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -61,6 +61,7 @@ public class ModArithTest
 	}
 
 	@Test
+	@Ignore
 	public void testRun()
 	{
 		ModArith mod = new ModArith();

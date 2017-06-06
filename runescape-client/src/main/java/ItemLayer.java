@@ -4,103 +4,128 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bz")
+@ObfuscatedName("dp")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("p")
-   @Export("top")
-   Renderable top;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 128792277
+      intValue = -1361297231
    )
    @Export("x")
    int x;
-   @ObfuscatedName("n")
+   @ObfuscatedName("v")
+   @Export("bottom")
+   Renderable bottom;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 2101326953
+      intValue = 888982089
    )
    @Export("y")
    int y;
-   @ObfuscatedName("q")
-   @Export("bottom")
-   Renderable bottom;
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
+   @Export("top")
+   Renderable top;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1117902831
-   )
-   @Export("hash")
-   int hash;
-   @ObfuscatedName("l")
-   static int[][] field1199;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 2075021049
-   )
-   @Export("height")
-   int height;
-   @ObfuscatedName("ef")
-   static SpritePixels field1204;
-   @ObfuscatedName("t")
-   @Export("middle")
-   Renderable middle;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 2084235863
+      intValue = 1376401029
    )
    @Export("flags")
    int flags;
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(I)[Lclass179;",
-      garbageValue = "74329661"
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -453985679
    )
-   public static class179[] method1475() {
-      return new class179[]{class179.field2665, class179.field2664, class179.field2666, class179.field2667, class179.field2662, class179.field2663};
+   @Export("hash")
+   int hash;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -2065740901
+   )
+   @Export("height")
+   int height;
+   @ObfuscatedName("b")
+   @Export("middle")
+   Renderable middle;
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "868695555"
+   )
+   public static void method2392() {
+      try {
+         if(class203.field2514 == 1) {
+            int var0 = class203.field2511.method3669();
+            if(var0 > 0 && class203.field2511.method3689()) {
+               var0 -= ChatMessages.field1527;
+               if(var0 < 0) {
+                  var0 = 0;
+               }
+
+               class203.field2511.method3668(var0);
+               return;
+            }
+
+            class203.field2511.method3674();
+            class203.field2511.method3672();
+            if(class203.field2513 != null) {
+               class203.field2514 = 2;
+            } else {
+               class203.field2514 = 0;
+            }
+
+            ChatLineBuffer.field1565 = null;
+            class203.field2509 = null;
+         }
+      } catch (Exception var2) {
+         var2.printStackTrace();
+         class203.field2511.method3674();
+         class203.field2514 = 0;
+         ChatLineBuffer.field1565 = null;
+         class203.field2509 = null;
+         class203.field2513 = null;
+      }
+
    }
 
-   @ObfuscatedName("cd")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "([LWidget;IIIZB)V",
-      garbageValue = "0"
+      signature = "(IB)Z",
+      garbageValue = "-90"
    )
-   static void method1476(Widget[] var0, int var1, int var2, int var3, boolean var4) {
-      for(int var5 = 0; var5 < var0.length; ++var5) {
-         Widget var6 = var0[var5];
-         if(var6 != null && var1 == var6.parentId) {
-            class5.method63(var6, var2, var3, var4);
-            class161.method3028(var6, var2, var3);
-            if(var6.scrollX > var6.scrollWidth - var6.width) {
-               var6.scrollX = var6.scrollWidth - var6.width;
-            }
+   public static boolean method2393(int var0) {
+      return class221.field2831.field2832 == var0;
+   }
 
-            if(var6.scrollX < 0) {
-               var6.scrollX = 0;
+   @ObfuscatedName("fz")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "98"
+   )
+   static final void method2394() {
+      for(class84 var0 = (class84)Client.field1172.method3576(); var0 != null; var0 = (class84)Client.field1172.method3578()) {
+         if(FaceNormal.plane == var0.field1374 && !var0.field1386) {
+            if(Client.gameCycle >= var0.field1382) {
+               var0.method1662(Client.field1119);
+               if(var0.field1386) {
+                  var0.unlink();
+               } else {
+                  class1.region.method2685(var0.field1374, var0.field1376, var0.field1378, var0.field1379, 60, var0, 0, -1, false);
+               }
             }
-
-            if(var6.scrollY > var6.scrollHeight - var6.height) {
-               var6.scrollY = var6.scrollHeight - var6.height;
-            }
-
-            if(var6.scrollY < 0) {
-               var6.scrollY = 0;
-            }
-
-            if(var6.type == 0) {
-               class164.method3116(var0, var6, var4);
-            }
+         } else {
+            var0.unlink();
          }
       }
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-81"
+      signature = "(CB)Z",
+      garbageValue = "14"
    )
-   public static void method1477() {
-      class231.field3265 = new CombatInfoList();
+   static final boolean method2395(char var0) {
+      return var0 == 160 || var0 == 32 || var0 == 95 || var0 == 45;
    }
 }

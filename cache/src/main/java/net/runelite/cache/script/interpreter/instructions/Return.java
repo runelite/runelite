@@ -34,6 +34,8 @@ public class Return extends InstructionHandler
 	public void execute(Frame frame, InstructionContext ctx)
 	{
 		frame.stop();
+
+		// restore lvt from calling script. return value is on the stack.
 	}
 
 }

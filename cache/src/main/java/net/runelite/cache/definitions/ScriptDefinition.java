@@ -22,19 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.definitions;
+
+import java.util.Map;
 
 public class ScriptDefinition
 {
 	private int id;
-        private int intStackCount;
-        private int[] instructions;
-        private int[] intOperands;
-        private String[] stringOperands;
-        private int localStringCount;
-        private int stringStackCount;
-        private int localIntCount;
+	private int[] instructions;
+	private int[] intOperands;
+	private String[] stringOperands;
+	private int intStackCount;
+	private int stringStackCount;
+	private int localIntCount;
+	private int localStringCount;
+	private Map<Integer, Integer>[] switches;
 
 	public int getId()
 	{
@@ -114,5 +116,15 @@ public class ScriptDefinition
 	public void setLocalIntCount(int localIntCount)
 	{
 		this.localIntCount = localIntCount;
+	}
+
+	public Map<Integer, Integer>[] getSwitches()
+	{
+		return switches;
+	}
+
+	public void setSwitches(Map<Integer, Integer>[] switches)
+	{
+		this.switches = switches;
 	}
 }

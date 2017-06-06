@@ -22,16 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators;
 
 import java.util.ArrayList;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UnusedClass implements Deobfuscator
 {
+	private static final Logger logger = LoggerFactory.getLogger(UnusedClass.class);
+
 	@Override
 	public void run(ClassGroup group)
 	{
@@ -39,15 +42,36 @@ public class UnusedClass implements Deobfuscator
 		for (ClassFile cf : new ArrayList<>(group.getClasses()))
 		{
 			if (!cf.getFields().getFields().isEmpty())
+			{
 				continue;
-			
+			}
+
 			if (!cf.getMethods().getMethods().isEmpty())
+			{
 				continue;
-			
+			}
+
+			if (isImplemented(group, cf))
+			{
+				continue;
+			}
+
 			group.removeClass(cf);
 			++count;
 		}
-		System.out.println("Removed " + count + " classes");
+		
+		logger.info("Removed {} classes", count);
 	}
-	
+
+	private boolean isImplemented(ClassGroup group, ClassFile iface)
+	{
+		for (ClassFile cf : group.getClasses())
+		{
+			if (cf.getInterfaces().getMyInterfaces().contains(iface))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }

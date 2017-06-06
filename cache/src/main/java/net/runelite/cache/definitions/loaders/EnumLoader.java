@@ -80,6 +80,7 @@ public class EnumLoader
 					keys[index] = is.readInt();
 					stringVals[index] = is.readString();
 				}
+				def.setSize(size);
 				def.setKeys(keys);
 				def.setStringVals(stringVals);
 				break;
@@ -94,6 +95,7 @@ public class EnumLoader
 					keys[index] = is.readInt();
 					intVals[index] = is.readInt();
 				}
+				def.setSize(size);
 				def.setKeys(keys);
 				def.setIntVals(intVals);
 				break;

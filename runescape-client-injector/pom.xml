@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.1.27-SNAPSHOT</version>
+		<version>1.1.29-SNAPSHOT</version>
 	</parent>
 
 	<groupId>net.runelite.rs</groupId>
@@ -41,13 +41,13 @@
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>rs-client</artifactId>
 			<version>${project.version}</version>
-			<scope>provided</scope> <!-- to prevent the dependency on this from runelite-client -->
+			<optional>true</optional> <!-- to prevent the dependency on this from runelite-client -->
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>vanilla</artifactId>
 			<version>${rs.version}</version>
-			<scope>provided</scope>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 

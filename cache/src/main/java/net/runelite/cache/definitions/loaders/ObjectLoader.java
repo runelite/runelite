@@ -29,6 +29,9 @@ import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ObjectLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(ObjectLoader.class);
@@ -190,13 +193,9 @@ public class ObjectLoader
 			def.setRetextureToFind(retextureToFind);
 			def.setTextureToReplace(textureToReplace);
 		}
-		else if (opcode == 60)
-		{
-			def.setMapIconID(is.readUnsignedShort());
-		}
 		else if (62 == opcode)
 		{
-			def.setaBool2108(true);
+			def.setIsRotated(true);
 		}
 		else if (opcode == 64)
 		{
@@ -263,7 +262,7 @@ public class ObjectLoader
 			def.setConfigId(configId);
 
 			int length = is.readUnsignedByte();
-			int[] configChangeDest = new int[length + 1];
+			int[] configChangeDest = new int[length + 2];
 
 			for (int index = 0; index <= length; ++index)
 			{
@@ -273,6 +272,8 @@ public class ObjectLoader
 					configChangeDest[index] = -1;
 				}
 			}
+
+			configChangeDest[length + 1] = -1;
 
 			def.setConfigChangeDest(configChangeDest);
 		}
@@ -298,7 +299,76 @@ public class ObjectLoader
 		}
 		else if (opcode == 81)
 		{
-			def.setAnInt2105(is.readUnsignedByte());
+			def.setAnInt2105(is.readUnsignedByte() * 256);
+		}
+		else if (opcode == 82)
+		{
+			def.setMapIconID(is.readUnsignedShort());
+		}
+		else if (opcode == 92)
+		{
+			int varpID = is.readUnsignedShort();
+			if (varpID == 0xFFFF)
+			{
+				varpID = -1;
+			}
+			def.setVarpID(varpID);
+
+			int configId = is.readUnsignedShort();
+			if (configId == 0xFFFF)
+			{
+				configId = -1;
+			}
+			def.setConfigId(configId);
+
+
+			int var = is.readUnsignedShort();
+			if (var == 0xFFFF)
+			{
+				var = -1;
+			}
+
+			int length = is.readUnsignedByte();
+			int[] configChangeDest = new int[length + 2];
+
+			for (int index = 0; index <= length; ++index)
+			{
+				configChangeDest[index] = is.readUnsignedShort();
+				if (0xFFFF == configChangeDest[index])
+				{
+					configChangeDest[index] = -1;
+				}
+			}
+
+			configChangeDest[length + 1] = var;
+
+			def.setConfigChangeDest(configChangeDest);
+		}
+		else if (opcode == 249)
+		{
+			int length = is.readUnsignedByte();
+
+			Map<Integer, Object> params = new HashMap<>(length);
+			for (int i = 0; i < length; i++)
+			{
+				boolean isString = is.readUnsignedByte() == 1;
+				int key = is.read24BitInt();
+				Object value;
+
+				if (isString)
+				{
+					value = is.readString();
+				}
+
+				else
+				{
+					value = is.readInt();
+				}
+
+				params.put(key, value);
+			}
+
+			def.setParams(params);
 		}
 		else
 		{

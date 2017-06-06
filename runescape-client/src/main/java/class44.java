@@ -1,106 +1,102 @@
-import java.util.Comparator;
-import net.runelite.mapping.ObfuscatedGetter;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ai")
-final class class44 implements Comparator {
+@ObfuscatedName("ax")
+public class class44 extends WorldMapData {
+   @ObfuscatedName("j")
+   List field579;
    @ObfuscatedName("z")
-   static byte[][][] field882;
-   @ObfuscatedName("oq")
-   @ObfuscatedGetter(
-      intValue = 717140167
-   )
-   static int field884;
-   // $FF: synthetic field
-   final boolean val$preferOwnWorld;
+   HashSet field581;
+   @ObfuscatedName("au")
+   protected static boolean field582;
+   @ObfuscatedName("q")
+   HashSet field583;
+   @ObfuscatedName("r")
+   static class47 field585;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lclass2;Lclass2;I)I",
-      garbageValue = "617378814"
+      signature = "(IB)LOverlay;",
+      garbageValue = "0"
    )
-   int method825(class2 var1, class2 var2) {
-      if(var1.field22 == var2.field22) {
-         return 0;
+   public static Overlay method604(int var0) {
+      Overlay var1 = (Overlay)Overlay.field3583.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         if(this.val$preferOwnWorld) {
-            if(Client.world == var1.field22) {
-               return -1;
-            }
-
-            if(var2.field22 == Client.world) {
-               return 1;
-            }
+         byte[] var2 = Overlay.field3587.getConfigData(4, var0);
+         var1 = new Overlay();
+         if(var2 != null) {
+            var1.method4676(new Buffer(var2), var0);
          }
 
-         return var1.field22 < var2.field22?-1:1;
+         var1.method4672();
+         Overlay.field3583.put(var1, (long)var0);
+         return var1;
       }
    }
 
-   public boolean equals(Object var1) {
-      return super.equals(var1);
-   }
-
-   public int compare(Object var1, Object var2) {
-      return this.method825((class2)var1, (class2)var2);
-   }
-
-   class44(boolean var1) {
-      this.val$preferOwnWorld = var1;
-   }
-
-   @ObfuscatedName("r")
+   @ObfuscatedName("cs")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
-      garbageValue = "889878050"
+      signature = "(LBuffer;LBuffer;LBuffer;IZB)V",
+      garbageValue = "0"
    )
-   static int method834(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class200.field2894:Script.field942;
-      if(var0 == 1600) {
-         class32.field720[++class32.field715 - 1] = var3.scrollX;
-         return 1;
-      } else if(var0 == 1601) {
-         class32.field720[++class32.field715 - 1] = var3.scrollY;
-         return 1;
-      } else if(var0 == 1602) {
-         class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.text;
-         return 1;
-      } else if(var0 == 1603) {
-         class32.field720[++class32.field715 - 1] = var3.scrollWidth;
-         return 1;
-      } else if(var0 == 1604) {
-         class32.field720[++class32.field715 - 1] = var3.scrollHeight;
-         return 1;
-      } else if(var0 == 1605) {
-         class32.field720[++class32.field715 - 1] = var3.field2244;
-         return 1;
-      } else if(var0 == 1606) {
-         class32.field720[++class32.field715 - 1] = var3.rotationX;
-         return 1;
-      } else if(var0 == 1607) {
-         class32.field720[++class32.field715 - 1] = var3.rotationY;
-         return 1;
-      } else if(var0 == 1608) {
-         class32.field720[++class32.field715 - 1] = var3.rotationZ;
-         return 1;
-      } else if(var0 == 1609) {
-         class32.field720[++class32.field715 - 1] = var3.opacity;
-         return 1;
-      } else if(var0 == 1610) {
-         class32.field720[++class32.field715 - 1] = var3.field2248;
-         return 1;
-      } else if(var0 == 1611) {
-         class32.field720[++class32.field715 - 1] = var3.textColor;
-         return 1;
-      } else if(var0 == 1612) {
-         class32.field720[++class32.field715 - 1] = var3.field2279;
-         return 1;
-      } else if(var0 == 1613) {
-         class32.field720[++class32.field715 - 1] = var3.field2238.vmethod4163();
-         return 1;
-      } else {
-         return 2;
+   void method605(Buffer var1, Buffer var2, Buffer var3, int var4, boolean var5) {
+      this.loadMapData(var1, var4);
+      int var6 = var3.readUnsignedShort();
+      this.field581 = new HashSet(var6);
+
+      int var7;
+      for(var7 = 0; var7 < var6; ++var7) {
+         class22 var8 = new class22();
+
+         try {
+            var8.method142(var2, var3);
+         } catch (IllegalStateException var13) {
+            continue;
+         }
+
+         this.field581.add(var8);
       }
+
+      var7 = var3.readUnsignedShort();
+      this.field583 = new HashSet(var7);
+
+      for(int var11 = 0; var11 < var7; ++var11) {
+         class45 var9 = new class45();
+
+         try {
+            var9.method612(var2, var3);
+         } catch (IllegalStateException var12) {
+            continue;
+         }
+
+         this.field583.add(var9);
+      }
+
+      this.method606(var2, var5);
+   }
+
+   @ObfuscatedName("ce")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;ZB)V",
+      garbageValue = "1"
+   )
+   void method606(Buffer var1, boolean var2) {
+      this.field579 = new LinkedList();
+      int var3 = var1.readUnsignedShort();
+
+      for(int var4 = 0; var4 < var3; ++var4) {
+         int var5 = var1.method3156();
+         Coordinates var6 = new Coordinates(var1.readInt());
+         boolean var7 = var1.readUnsignedByte() == 1;
+         if(var2 || !var7) {
+            this.field579.add(new class25(var5, var6));
+         }
+      }
+
    }
 }

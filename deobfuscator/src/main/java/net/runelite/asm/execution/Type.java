@@ -111,6 +111,11 @@ public class Type
 		hash = 53 * hash + Objects.hashCode(this.type);
 		return hash;
 	}
+
+	public boolean isArray()
+	{
+		return type.endsWith("[]");
+	}
 	
 	public Type getSubtype()
 	{

@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.injection;
 
 import java.io.File;
@@ -54,13 +53,22 @@ public class Injector
 	public static void main(String[] args) throws IOException
 	{
 		if (args.length < 3)
+		{
 			System.exit(-1);
-		
+		}
+
+		ClassGroup deobfuscated = JarUtil.loadJar(new File(args[0]));
+		ClassGroup vanilla = JarUtil.loadJar(new File(args[1]));
+
 		Injector u = new Injector(
-			JarUtil.loadJar(new File(args[0])),
-			JarUtil.loadJar(new File(args[1]))
+			deobfuscated,
+			vanilla
 		);
 		u.inject();
+
+		InjectorValidator iv = new InjectorValidator(vanilla);
+		iv.validate();
+
 		u.save(new File(args[2]));
 	}
 }

@@ -86,6 +86,8 @@ public class AnnotationIntegrityChecker
 				}
 				else
 				{
+					assert other != null : "other class for " + cf.getName() + " is null";
+
 					f2 = findExportedField(other, DeobAnnotations.getExportedName(f1.getAnnotations()));
 				}
 
@@ -121,6 +123,8 @@ public class AnnotationIntegrityChecker
 				}
 				else
 				{
+					assert other != null : "other class for " + cf.getName() + " is null";
+
 					m2 = findExportedMethod(other, DeobAnnotations.getExportedName(m1.getAnnotations()));
 				}
 
@@ -139,7 +143,7 @@ public class AnnotationIntegrityChecker
 						logger.warn("Missing exported method on {} named {}",
 							other,
 							DeobAnnotations.getExportedName(m1.getAnnotations()));
-						
+
 						++warnings;
 					}
 				}

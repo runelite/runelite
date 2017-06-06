@@ -41,7 +41,8 @@ public enum ConfigType
 	VARBIT(14),
 	VARCLIENT(19),
 	VARCLIENTSTRING(15),
-	VARPLAYER(16);
+	VARPLAYER(16),
+	AREA(35);
 
 	private final int id;
 

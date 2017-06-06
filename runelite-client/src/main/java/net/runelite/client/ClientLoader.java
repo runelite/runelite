@@ -22,12 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client;
 
 import java.applet.Applet;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,19 +35,47 @@ public class ClientLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(ClientLoader.class);
 
-	public Applet load() throws MalformedURLException, ClassNotFoundException, IOException, InstantiationException, IllegalAccessException
+	public Applet loadRunelite() throws ClassNotFoundException, IOException, InstantiationException, IllegalAccessException
 	{
 		ConfigLoader config = new ConfigLoader();
 
 		config.fetch();
-		
+
 		String initialClass = config.getProperty(ConfigLoader.INITIAL_CLASS).replace(".class", "");
 
+		// the injected client is a runtime scoped dependency
 		Class<?> clientClass = this.getClass().getClassLoader().loadClass(initialClass);
 		Applet rs = (Applet) clientClass.newInstance();
 
 		rs.setStub(new RSStub(config, rs));
-		
+
+		return rs;
+	}
+
+	public Applet loadVanilla() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
+	{
+		ConfigLoader config = new ConfigLoader();
+
+		config.fetch();
+
+		String codebase = config.getProperty(ConfigLoader.CODEBASE);
+		String initialJar = config.getProperty(ConfigLoader.INITIAL_JAR);
+		String initialClass = config.getProperty(ConfigLoader.INITIAL_CLASS).replace(".class", "");
+
+		URL url = new URL(codebase + initialJar);
+
+		// Must set parent classloader to null, or it will pull from
+		// this class's classloader first
+		URLClassLoader classloader = new URLClassLoader(new URL[]
+		{
+			url
+		}, null);
+
+		Class<?> clientClass = classloader.loadClass(initialClass);
+		Applet rs = (Applet) clientClass.newInstance();
+
+		rs.setStub(new RSStub(config, rs));
+
 		return rs;
 	}
 }

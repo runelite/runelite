@@ -32,6 +32,8 @@ public class Frame
 	private final ScriptDefinition script;
 	private final Stack intStack;
 	private final Stack stringStack;
+	private final Variables intVariables;
+	private final Variables stringVariables;
 
 	private boolean running = true;
 	int pc;
@@ -42,6 +44,8 @@ public class Frame
 		this.script = script;
 		this.intStack = new Stack();
 		this.stringStack = new Stack();
+		this.intVariables = new Variables(script.getLocalIntCount());
+		this.stringVariables = new Variables(script.getLocalStringCount());
 	}
 
 	public Frame(Interpreter interpreter, Frame other)
@@ -50,6 +54,8 @@ public class Frame
 		this.script = other.script;
 		this.intStack = new Stack(other.intStack);
 		this.stringStack = new Stack(other.stringStack);
+		this.intVariables = new Variables(other.intVariables);
+		this.stringVariables = new Variables(other.stringVariables);
 		this.pc = other.pc;
 	}
 

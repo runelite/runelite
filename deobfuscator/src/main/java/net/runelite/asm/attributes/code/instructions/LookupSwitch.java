@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import java.util.ArrayList;
@@ -43,14 +42,14 @@ public class LookupSwitch extends Instruction implements JumpingInstruction
 {
 	private List<Label> branchi = new ArrayList<>();
 	private Label defi;
-	
+
 	private int[] match;
 
 	public LookupSwitch(Instructions instructions, InstructionType type)
 	{
 		super(instructions, type);
 	}
-	
+
 	@Override
 	public Instruction clone()
 	{
@@ -58,7 +57,7 @@ public class LookupSwitch extends Instruction implements JumpingInstruction
 		i.branchi = new ArrayList<>(branchi);
 		return i;
 	}
-	
+
 	@Override
 	public void accept(MethodVisitor visitor)
 	{
@@ -71,38 +70,41 @@ public class LookupSwitch extends Instruction implements JumpingInstruction
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
-		
+
 		StackContext value = stack.pop();
 		ins.pop(value);
-		
-		if (!frame.getExecution().step)
-		{
-			for (Label i : branchi)
-			{
-				Frame other = frame.dup();
-				other.jump(ins, i);
 
-				ins.branch(other);
-			}
+		// N.B. lookupswitch isn't mappable, so frame.other is never mapped
+		// (the frames it creates are dropped from the pending execution list
+		// for other == null) - so the step executor won't map instructions
+		// from the non-default branch
+		for (Label i : branchi)
+		{
+			Frame other = frame.dup();
+			other.jump(ins, i);
+
+			ins.branch(other);
 		}
-		
+
 		frame.jump(ins, defi);
-		
+
 		return ins;
 	}
-	
+
 	@Override
 	public boolean isTerminal()
 	{
 		return true;
 	}
-	
+
 	@Override
 	public List<Label> getJumps()
 	{
 		List<Label> list = new ArrayList<>();
 		for (Label i : branchi)
+		{
 			list.add(i);
+		}
 		list.add(defi);
 		return list.stream().distinct().collect(Collectors.toList());
 	}

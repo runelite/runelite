@@ -55,7 +55,7 @@ public class SequenceDumper
 	public void extract() throws IOException
 	{
 		java.io.File base = StoreLocation.LOCATION,
-			outDir = folder.newFile();
+			outDir = folder.newFolder();
 
 		int count = 0;
 

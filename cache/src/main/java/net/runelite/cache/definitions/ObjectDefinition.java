@@ -25,6 +25,8 @@
 
 package net.runelite.cache.definitions;
 
+import java.util.Map;
+
 public class ObjectDefinition
 {
 	private int id;
@@ -63,13 +65,14 @@ public class ObjectDefinition
 	private int anInt2105 = -1;
 	private int anInt2106 = -1;
 	private int[] configChangeDest;
-	private boolean aBool2108 = false;
+	private boolean isRotated = false;
 	private int configId = -1;
 	private int anInt2110 = -1;
 	private boolean aBool2111 = false;
 	private int anInt2112 = 0;
 	private int anInt2113 = 0;
 	private boolean aBool2114 = true;
+	private Map<Integer, Object> params = null;
 
 	public int getId()
 	{
@@ -431,14 +434,14 @@ public class ObjectDefinition
 		this.configChangeDest = configChangeDest;
 	}
 
-	public boolean isaBool2108()
+	public boolean isRotated()
 	{
-		return aBool2108;
+		return isRotated;
 	}
 
-	public void setaBool2108(boolean aBool2108)
+	public void setIsRotated(boolean isRotated)
 	{
-		this.aBool2108 = aBool2108;
+		this.isRotated = isRotated;
 	}
 
 	public int getConfigId()
@@ -499,5 +502,15 @@ public class ObjectDefinition
 	public void setaBool2114(boolean aBool2114)
 	{
 		this.aBool2114 = aBool2114;
+	}
+
+	public Map<Integer, Object> getParams()
+	{
+		return params;
+	}
+
+	public void setParams(final Map<Integer, Object> params)
+	{
+		this.params = params;
 	}
 }

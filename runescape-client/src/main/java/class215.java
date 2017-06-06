@@ -1,17 +1,20 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hh")
+@ObfuscatedName("hm")
 public class class215 {
-   @ObfuscatedName("da")
-   static byte[][] field3156;
-   @ObfuscatedName("dr")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1894285813
+      intValue = -518087433
    )
-   static int field3157;
-
-   class215() throws Throwable {
-      throw new Error();
-   }
+   @Export("revision")
+   public static int revision;
+   @ObfuscatedName("o")
+   static int[] field2637;
+   @ObfuscatedName("dm")
+   @ObfuscatedGetter(
+      intValue = -1442557773
+   )
+   static int field2638;
 }

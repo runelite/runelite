@@ -24,10 +24,12 @@
  */
 package net.runelite.http.api;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +37,13 @@ public class RuneliteAPI
 {
 	private static final Logger logger = LoggerFactory.getLogger(RuneliteAPI.class);
 
+	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
+
+	public static final OkHttpClient CLIENT = new OkHttpClient();
+	public static final Gson GSON = new Gson();
+
 	private static final String BASE = "https://api.runelite.net/runelite-";
+	private static final String WSBASE = "wss://api.runelite.net/runelite-";
 	private static final Properties properties = new Properties();
 	private static String version;
 	private static int rsVersion;
@@ -59,6 +67,11 @@ public class RuneliteAPI
 	public static HttpUrl getApiBase()
 	{
 		return HttpUrl.parse(BASE + getVersion());
+	}
+
+	public static String getWsEndpoint()
+	{
+		return WSBASE + getVersion() + "/ws";
 	}
 
 	public static String getVersion()

@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob;
 
 import com.google.common.base.Stopwatch;
@@ -58,19 +57,22 @@ import org.slf4j.LoggerFactory;
 public class Deob
 {
 	private static final Logger logger = LoggerFactory.getLogger(Deob.class);
-	
+
+	public static final int OBFUSCATED_NAME_MAX_LEN = 2;
+
 	public static void main(String[] args) throws IOException
 	{
 		Stopwatch stopwatch = Stopwatch.createStarted();
-		
+
 		ClassGroup group = JarUtil.loadJar(new File(args[0]));
-		
+
 		run(group, new RenameUnique());
 
 		// remove except RuntimeException
 		run(group, new RuntimeExceptions());
 
-		// remove unused methods
+		// remove unused methods - this leaves Code with no instructions,
+		// which is not valid, so unused methods is run after
 		run(group, new UnreachedCode());
 		run(group, new UnusedMethods());
 
@@ -110,7 +112,9 @@ public class Deob
 			new MultiplyZeroDeobfuscator().run(group);
 
 			if (last == cur)
+			{
 				break;
+			}
 
 			last = cur;
 		}
@@ -129,26 +133,24 @@ public class Deob
 		new MaxMemoryTransformer().transform(group);
 
 		JarUtil.saveJar(group, new File(args[1]));
-		
+
 		stopwatch.stop();
 		logger.info("Done in {}", stopwatch);
 	}
 
-	public static final int OBFUSCATED_NAME_MAX_LEN = 2;
-	
 	public static boolean isObfuscated(String name)
 	{
 		return name.length() <= OBFUSCATED_NAME_MAX_LEN || name.startsWith("method") || name.startsWith("vmethod") || name.startsWith("field") || name.startsWith("class");
 	}
-	
+
 	private static void run(ClassGroup group, Deobfuscator deob)
 	{
 		Stopwatch stopwatch = Stopwatch.createStarted();
 		deob.run(group);
 		stopwatch.stop();
-		
+
 		logger.info("{} took {}", deob.getClass().getSimpleName(), stopwatch);
-		
+
 		// check code is still correct
 		Execution execution = new Execution(group);
 		execution.populateInitialMethods();

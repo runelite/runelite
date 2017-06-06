@@ -35,8 +35,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.Overlay;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DevTools extends Plugin
 {
@@ -56,6 +54,7 @@ public class DevTools extends Plugin
 
 	private int widgetParent = -1;
 	private int widgetChild = -1;
+	private int widgetItem = -1;
 
 	private Font font;
 
@@ -71,7 +70,7 @@ public class DevTools extends Plugin
 
 		font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape.ttf"));
 
-		font = font.deriveFont(Font.PLAIN, 16);
+		font = font.deriveFont(Font.BOLD, 16);
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		ge.registerFont(font);
 	}
@@ -187,6 +186,11 @@ public class DevTools extends Plugin
 		widgetChild = id;
 	}
 
+	void setWidgetItem(int id)
+	{
+		widgetItem = id;
+	}
+
 	int getWidgetParent()
 	{
 		return widgetParent;
@@ -195,6 +199,11 @@ public class DevTools extends Plugin
 	int getWidgetChild()
 	{
 		return widgetChild;
+	}
+
+	int getWidgetItem()
+	{
+		return widgetItem;
 	}
 
 }

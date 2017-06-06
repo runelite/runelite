@@ -42,6 +42,8 @@ public abstract class If extends InstructionHandler
 		StackContext sctx2 = intStack.pop();
 
 		ctx.popsInt(sctx1, sctx2);
+		sctx1.poppedBy(ctx);
+		sctx2.poppedBy(ctx);
 
 		Frame dup = frame.dup();
 		dup.jump(iop);

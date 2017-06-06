@@ -25,6 +25,8 @@
 package net.runelite.cache.script.disassembler;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Map.Entry;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.script.Instruction;
 import net.runelite.cache.script.Instructions;
@@ -56,12 +58,29 @@ public class Disassembler
 	private boolean[] needLabel(ScriptDefinition script)
 	{
 		int[] instructions = script.getInstructions();
-		int[] iop = script.getIntOperands();
+		int[] iops = script.getIntOperands();
+		Map<Integer, Integer>[] switches = script.getSwitches();
+
 		boolean[] jumped = new boolean[instructions.length];
 
 		for (int i = 0; i < instructions.length; ++i)
 		{
 			int opcode = instructions[i];
+			int iop = iops[i];
+
+			if (opcode == Opcodes.SWITCH)
+			{
+				Map<Integer, Integer> switchMap = switches[iop];
+
+				for (Entry<Integer, Integer> entry : switchMap.entrySet())
+				{
+					int offset = entry.getValue();
+
+					int to = i + offset + 1;
+					assert to >= 0 && to < instructions.length;
+					jumped[to] = true;
+				}
+			}
 
 			if (!isJump(opcode))
 			{
@@ -71,7 +90,7 @@ public class Disassembler
 			// + 1 because the jumps go to the instructions prior to the
 			// one you really want, because the pc is incremented on the
 			// next loop
-			int to = i + iop[i] + 1;
+			int to = i + iop + 1;
 			assert to >= 0 && to < instructions.length;
 
 			jumped[to] = true;
@@ -82,16 +101,18 @@ public class Disassembler
 
 	public String disassemble(ScriptDefinition script) throws IOException
 	{
-		StringBuilder writer = new StringBuilder();
-
 		int[] instructions = script.getInstructions();
 		int[] iops = script.getIntOperands();
 		String[] sops = script.getStringOperands();
+		Map<Integer, Integer>[] switches = script.getSwitches();
 
 		assert iops.length == instructions.length;
 		assert sops.length == instructions.length;
 
 		boolean[] jumps = needLabel(script);
+
+		StringBuilder writer = new StringBuilder();
+		writerHeader(writer, script);
 
 		for (int i = 0; i < instructions.length; ++i)
 		{
@@ -123,7 +144,7 @@ public class Disassembler
 
 			writer.append(String.format("   %-22s", name));
 
-			if (iop != 0 || opcode == Opcodes.LOAD_INT)
+			if (shouldWriteIntOperand(opcode, iop))
 			{
 				if (isJump(opcode))
 				{
@@ -139,9 +160,63 @@ public class Disassembler
 			{
 				writer.append(" \"").append(sop).append("\"");
 			}
+
+			if (opcode == Opcodes.SWITCH)
+			{
+				Map<Integer, Integer> switchMap = switches[iop];
+
+				for (Entry<Integer, Integer> entry : switchMap.entrySet())
+				{
+					int value = entry.getKey();
+					int jump = entry.getValue();
+
+					writer.append("\n");
+					writer.append("      ").append(value).append(": LABEL").append(i + jump + 1);
+				}
+			}
+
 			writer.append("\n");
 		}
 
 		return writer.toString();
+	}
+
+	private boolean shouldWriteIntOperand(int opcode, int operand)
+	{
+		if (opcode == Opcodes.SWITCH)
+		{
+			// table follows instruction
+			return false;
+		}
+
+		if (operand != 0)
+		{
+			// always write non-zero operand
+			return true;
+		}
+
+		switch (opcode)
+		{
+			case Opcodes.LOAD_INT:
+			case Opcodes.ILOAD:
+			case Opcodes.SLOAD:
+				return true;
+		}
+
+		// int operand is not used, don't write it
+		return false;
+	}
+
+	private void writerHeader(StringBuilder writer, ScriptDefinition script)
+	{
+		int intStackCount = script.getIntStackCount();
+		int stringStackCount = script.getStringStackCount();
+		int localIntCount = script.getLocalIntCount();
+		int localStringCount = script.getLocalStringCount();
+
+		writer.append(".int_stack_count    ").append(intStackCount).append('\n');
+		writer.append(".string_stack_count ").append(stringStackCount).append('\n');
+		writer.append(".int_var_count      ").append(localIntCount).append('\n');
+		writer.append(".string_var_count   ").append(localStringCount).append('\n');
 	}
 }

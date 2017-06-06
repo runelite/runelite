@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.ClassFile;
@@ -34,14 +33,13 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
-import net.runelite.asm.pool.Class;
+import net.runelite.asm.signature.Type;
 import org.objectweb.asm.MethodVisitor;
 
 public class MultiANewArray extends Instruction
 {
-	private Class clazz;
+	private Type type;
 	private int dimensions;
 	private ClassFile myClass;
 
@@ -53,68 +51,64 @@ public class MultiANewArray extends Instruction
 	@Override
 	public void accept(MethodVisitor visitor)
 	{
-		visitor.visitMultiANewArrayInsn(clazz.getName(), dimensions);
+		visitor.visitMultiANewArrayInsn(type.getFullType(), dimensions);
 	}
-	
+
 	@Override
 	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
-		
+
 		Value[] lenghts = new Value[dimensions];
 		for (int i = 0; i < dimensions; ++i)
 		{
 			StackContext ctx = stack.pop();
 			ins.pop(ctx);
-			
+
 			lenghts[i] = ctx.getValue();
 		}
-		
-		Type t = new Type(new net.runelite.asm.signature.Type(clazz.getName()));
+
+		net.runelite.asm.execution.Type t = new net.runelite.asm.execution.Type(type);
 		StackContext ctx = new StackContext(ins, t, Value.newArray(lenghts));
 		stack.push(ctx);
-		
+
 		ins.push(ctx);
-		
+
 		return ins;
 	}
-	
+
 	@Override
 	public void lookup()
 	{
-		net.runelite.asm.signature.Type t = new net.runelite.asm.signature.Type(clazz.getName());
-		String name = t.getType();
+		String name = type.getType();
 		if (name.startsWith("L") && name.endsWith(";"))
+		{
 			name = name.substring(1, name.length() - 1);
+		}
+
 		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
 		myClass = group.findClass(name);
 	}
-	
+
 	@Override
 	public void regeneratePool()
 	{
 		if (myClass != null)
 		{
-			StringBuffer sb = new StringBuffer();
-			for (int i = 0; i < this.dimensions; ++i)
-				sb.append('[');
-			if (this.dimensions > 0)
-				sb.append("L" + myClass.getName() + ";");
-			else
-				sb.append(myClass.getName());
-			clazz = new Class(sb.toString());
+			String className = dimensions > 0 ? "L" + myClass.getName() + ";" : myClass.getName();
+			type = new Type(className, type.getArrayDims());
 		}
 	}
 
-	public Class getClass_()
+	public Type getArrayType()
 	{
-		return clazz;
+		return type;
 	}
 
-	public void setClass(Class c)
+	public void setArrayType(Type type)
 	{
-		clazz = c;
+		this.type = type;
 	}
 
 	public int getDimensions()

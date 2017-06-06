@@ -1,111 +1,106 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
+import java.applet.Applet;
+import java.net.URL;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import netscape.javascript.JSObject;
 
-@ObfuscatedName("af")
-public class class40 implements class134 {
-   @ObfuscatedName("ek")
-   static ModIcon[] field804;
+@ObfuscatedName("av")
+public class class40 {
+   @ObfuscatedName("e")
+   public static final class40 field539;
+   @ObfuscatedName("i")
+   public static final class40 field540;
+   @ObfuscatedName("b")
+   public static final class40 field541;
+   @ObfuscatedName("y")
+   public final String field542;
+   @ObfuscatedName("rv")
+   static short[] field543;
+   @ObfuscatedName("v")
+   public static final class40 field544;
    @ObfuscatedName("c")
-   static final class40 field805;
-   @ObfuscatedName("n")
-   static final class40 field806;
-   @ObfuscatedName("q")
-   static final class40 field807;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -1134393975
-   )
-   final int field808;
-   @ObfuscatedName("d")
-   static final class40 field809;
+   public static final class40 field545;
 
-   @ObfuscatedName("bq")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-1881606954"
+      signature = "(Ljava/lang/String;ILjava/lang/String;I)Z",
+      garbageValue = "-318463255"
    )
-   @Export("groundItemSpawned")
-   static final void groundItemSpawned(int var0, int var1) {
-      Deque var2 = Client.groundItemDeque[Client.plane][var0][var1];
-      if(var2 == null) {
-         class172.region.method1801(Client.plane, var0, var1);
-      } else {
-         long var3 = -99999999L;
-         Item var5 = null;
+   public static boolean method534(String var0, int var1, String var2) {
+      if(var1 == 0) {
+         try {
+            if(!class56.field690.startsWith("win")) {
+               throw new Exception();
+            } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
+               throw new Exception();
+            } else {
+               String var13 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
 
-         Item var6;
-         for(var6 = (Item)var2.method2828(); var6 != null; var6 = (Item)var2.method2830()) {
-            ItemComposition var7 = class47.getItemDefinition(var6.id);
-            long var10 = (long)var7.price;
-            if(var7.isStackable == 1) {
-               var10 *= (long)(var6.quantity + 1);
-            }
-
-            if(var10 > var3) {
-               var3 = var10;
-               var5 = var6;
-            }
-         }
-
-         if(var5 == null) {
-            class172.region.method1801(Client.plane, var0, var1);
-         } else {
-            var2.method2843(var5);
-            Item var12 = null;
-            Item var8 = null;
-
-            for(var6 = (Item)var2.method2828(); var6 != null; var6 = (Item)var2.method2830()) {
-               if(var5.id != var6.id) {
-                  if(var12 == null) {
-                     var12 = var6;
-                  }
-
-                  if(var6.id != var12.id && var8 == null) {
-                     var8 = var6;
+               for(int var4 = 0; var4 < var0.length(); ++var4) {
+                  if(var13.indexOf(var0.charAt(var4)) == -1) {
+                     throw new Exception();
                   }
                }
-            }
 
-            int var9 = (var1 << 7) + var0 + 1610612736;
-            class172.region.method1749(Client.plane, var0, var1, CombatInfo1.method600(var0 * 128 + 64, var1 * 128 + 64, Client.plane), var5, var9, var12, var8);
+               Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
+               return true;
+            }
+         } catch (Throwable var8) {
+            return false;
          }
+      } else if(var1 == 1) {
+         try {
+            Applet var7 = class56.field694;
+            Object[] var5 = new Object[]{(new URL(class56.field694.getCodeBase(), var0)).toString()};
+            Object var3 = JSObject.getWindow(var7).call(var2, var5);
+            return var3 != null;
+         } catch (Throwable var9) {
+            return false;
+         }
+      } else if(var1 == 2) {
+         try {
+            class56.field694.getAppletContext().showDocument(new URL(class56.field694.getCodeBase(), var0), "_blank");
+            return true;
+         } catch (Exception var10) {
+            return false;
+         }
+      } else if(var1 == 3) {
+         try {
+            class52.method763(class56.field694, "loggedout");
+         } catch (Throwable var12) {
+            ;
+         }
+
+         try {
+            class56.field694.getAppletContext().showDocument(new URL(class56.field694.getCodeBase(), var0), "_top");
+            return true;
+         } catch (Exception var11) {
+            return false;
+         }
+      } else {
+         throw new IllegalArgumentException();
       }
    }
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1946751124"
-   )
-   public int vmethod4163() {
-      return this.field808;
-   }
-
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "0"
-   )
-   class40(int var1) {
-      this.field808 = var1;
-   }
-
    static {
-      field809 = new class40(0);
-      field805 = new class40(1);
-      field806 = new class40(2);
-      field807 = new class40(3);
+      field540 = new class40("details");
+      field545 = new class40("compositemap");
+      field539 = new class40("compositetexture");
+      field544 = new class40("area");
+      field541 = new class40("labels");
    }
 
-   @ObfuscatedName("cj")
+   class40(String var1) {
+      this.field542 = var1;
+   }
+
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "-59"
+      signature = "(IIIII)I",
+      garbageValue = "-1917443302"
    )
-   static void method780(int var0, int var1) {
-      Client.secretPacketBuffer1.putOpcode(192);
-      Client.secretPacketBuffer1.method2416(var1);
-      Client.secretPacketBuffer1.putInt(var0);
+   static final int method535(int var0, int var1, int var2, int var3) {
+      int var4 = 65536 - class136.COSINE[var2 * 1024 / var3] >> 1;
+      return (var4 * var1 >> 16) + (var0 * (65536 - var4) >> 16);
    }
 }

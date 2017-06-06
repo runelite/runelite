@@ -32,6 +32,7 @@ import javax.swing.JPanel;
 import net.runelite.api.Client;
 import net.runelite.client.ClientLoader;
 import net.runelite.client.RuneLite;
+import net.runelite.http.api.updatecheck.UpdateCheckClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +44,7 @@ final class ClientPanel extends JPanel
 
 	private Applet rs;
 
-	public ClientPanel() throws Exception
+	public ClientPanel(boolean loadRs) throws Exception
 	{
 		setSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -51,25 +52,46 @@ final class ClientPanel extends JPanel
 		setLayout(new BorderLayout());
 		setBackground(Color.black);
 
+		if (!loadRs)
+		{
+			return;
+		}
+
 		ClientLoader loader = new ClientLoader();
 
-		rs = loader.load();
+		UpdateCheckClient updateCheck = new UpdateCheckClient();
+		boolean isOutdated = updateCheck.isOutdated();
+		if (isOutdated)
+		{
+			logger.info("Runelite is outdated - fetching vanilla client");
+			rs = loader.loadVanilla();
+		}
+		else
+		{
+			logger.debug("Runelite is up to date");
+			rs = loader.loadRunelite();
+		}
+
 		rs.setLayout(null);
+		rs.setSize(PANEL_WIDTH, PANEL_HEIGHT);
+
 		rs.init();
 		rs.start();
+
 		add(rs, BorderLayout.CENTER);
 
-		Client client = null;
-		try
+		if (isOutdated)
 		{
-			client = new Client((net.runelite.rs.api.Client) rs);
+			return;
 		}
-		catch (Exception ex)
+
+		if (!(rs instanceof net.runelite.rs.api.Client))
 		{
-			logger.warn("Unable to create client", ex);
+			logger.error("Injected client does not implement Client!");
 			System.exit(-1);
 		}
 
+		Client client = new Client((net.runelite.rs.api.Client) rs);
 		RuneLite.setClient(client);
 	}
 

@@ -1,38 +1,24 @@
-import java.util.Iterator;
+import java.io.File;
+import java.util.Hashtable;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("fe")
-public class class157 implements Iterable {
-   @ObfuscatedName("d")
-   public CacheableNode field2051;
-
-   public class157() {
-      this.field2051 = new CacheableNode();
-      this.field2051.previous = this.field2051;
-      this.field2051.next = this.field2051;
-   }
-
+@ObfuscatedName("fc")
+public class class157 {
    @ObfuscatedName("c")
-   public void method2883(CacheableNode var1) {
-      if(var1.next != null) {
-         var1.method2851();
-      }
+   public static File field2278;
+   @ObfuscatedName("e")
+   static Hashtable field2279;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -414341665
+   )
+   public static int field2280;
+   @ObfuscatedName("i")
+   public static boolean field2281;
 
-      var1.next = this.field2051.next;
-      var1.previous = this.field2051;
-      var1.next.previous = var1;
-      var1.previous.next = var1;
-   }
-
-   public Iterator iterator() {
-      return new class156(this);
-   }
-
-   @ObfuscatedName("d")
-   public void method2884() {
-      while(this.field2051.previous != this.field2051) {
-         this.field2051.previous.method2851();
-      }
-
+   static {
+      field2281 = false;
+      field2279 = new Hashtable(16);
    }
 }

@@ -1,76 +1,101 @@
+import java.util.Comparator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("a")
-public class class18 extends Node {
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -698563905
-   )
-   int field187;
-   @ObfuscatedName("c")
-   boolean field188;
-   @ObfuscatedName("n")
-   Widget field189;
-   @ObfuscatedName("v")
-   String field190;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1757052415
-   )
-   int field191;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -322143939
-   )
-   int field192;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -934453075
-   )
-   int field193;
-   @ObfuscatedName("bg")
-   @ObfuscatedGetter(
-      intValue = -1821722553
-   )
-   static int field194;
+@ObfuscatedName("d")
+final class class18 implements Comparator {
    @ObfuscatedName("u")
-   Widget field195;
-   @ObfuscatedName("d")
-   Object[] field196;
-   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -757020121
+      intValue = 1326379815
    )
-   int field197;
-   @ObfuscatedName("l")
+   protected static int field311;
+   @ObfuscatedName("bl")
    @ObfuscatedGetter(
-      intValue = -218613445
+      intValue = -189313039
    )
-   int field198;
-   @ObfuscatedName("bo")
-   @Export("indexTrack1")
-   static IndexData indexTrack1;
+   static int field312;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;I)V",
-      garbageValue = "-732125067"
+      signature = "(Lclass14;Lclass14;I)I",
+      garbageValue = "-725413894"
    )
-   public static void method201(IndexDataBase var0) {
-      class189.field2786 = var0;
-      class189.field2783 = class189.field2786.method3305(16);
+   int method111(class14 var1, class14 var2) {
+      return var1.method72().compareTo(var2.method72());
    }
 
-   @ObfuscatedName("d")
+   public int compare(Object var1, Object var2) {
+      return this.method111((class14)var1, (class14)var2);
+   }
+
+   public boolean equals(Object var1) {
+      return super.equals(var1);
+   }
+
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "1724054196"
+      signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "1434145207"
    )
-   public static int method202(int var0, int var1, int var2) {
-      var2 &= 3;
-      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0:7 - var1));
+   @Export("sendGameMessage")
+   static void sendGameMessage(int var0, String var1, String var2) {
+      class151.addChatMessage(var0, var1, var2, (String)null);
+   }
+
+   @ObfuscatedName("hr")
+   @ObfuscatedSignature(
+      signature = "(IIIIIII)V",
+      garbageValue = "-1099162138"
+   )
+   static final void method118(int var0, int var1, int var2, int var3, int var4, int var5) {
+      int var6 = var2 - var0;
+      int var7 = var3 - var1;
+      int var8 = var6 >= 0?var6:-var6;
+      int var9 = var7 >= 0?var7:-var7;
+      int var10 = var8;
+      if(var8 < var9) {
+         var10 = var9;
+      }
+
+      if(var10 != 0) {
+         int var11 = (var6 << 16) / var10;
+         int var12 = (var7 << 16) / var10;
+         if(var12 <= var11) {
+            var11 = -var11;
+         } else {
+            var12 = -var12;
+         }
+
+         int var13 = var5 * var12 >> 17;
+         int var14 = var5 * var12 + 1 >> 17;
+         int var15 = var11 * var5 >> 17;
+         int var16 = var5 * var11 + 1 >> 17;
+         var0 -= Rasterizer2D.field3757;
+         var1 -= Rasterizer2D.field3752;
+         int var17 = var13 + var0;
+         int var18 = var0 - var14;
+         int var19 = var0 + var6 - var14;
+         int var20 = var13 + var6 + var0;
+         int var21 = var1 + var15;
+         int var22 = var1 - var16;
+         int var23 = var7 + var1 - var16;
+         int var24 = var7 + var1 + var15;
+         class136.setRasterClippingEnabled(var17, var18, var19);
+         class136.rasterFlat(var21, var22, var23, var17, var18, var19, var4);
+         class136.setRasterClippingEnabled(var17, var19, var20);
+         class136.rasterFlat(var21, var23, var24, var17, var19, var20, var4);
+      }
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1687748341"
+   )
+   public static void method119() {
+      NPCComposition.field3547.reset();
+      NPCComposition.npcModelCache.reset();
    }
 }

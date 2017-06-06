@@ -29,14 +29,14 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
 import net.runelite.asm.execution.Execution;
-import net.runelite.asm.signature.Signature;
 import net.runelite.deob.Deob;
 import net.runelite.deob.Deobfuscator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UnusedMethods implements Deobfuscator
 {
-	private static final String INIT = "<init>";
-	private static final Signature INIT_SIG = new Signature("()V");
+	private static final Logger logger = LoggerFactory.getLogger(UnusedMethods.class);
 
 	@Override
 	public void run(ClassGroup group)
@@ -54,12 +54,7 @@ public class UnusedMethods implements Deobfuscator
 			{
 				if (!Deob.isObfuscated(m.getName()) && !m.getName().equals("<init>"))
 				{
-					continue;
-				}
-				
-				if (m.getName().endsWith(INIT) && m.getDescriptor().equals(INIT_SIG))
-				{
-					// never remove default constructor
+					// constructors can't be renamed, but are obfuscated
 					continue;
 				}
 
@@ -71,6 +66,6 @@ public class UnusedMethods implements Deobfuscator
 			}
 		}
 
-		System.out.println("Removed " + i + " methods");
+		logger.info("Removed {} methods", i);
 	}
 }

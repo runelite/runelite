@@ -1,58 +1,91 @@
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ex")
-public class class137 {
-   class137() throws Throwable {
-      throw new Error();
+@ObfuscatedName("em")
+public final class class137 {
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 1246027909
+   )
+   int field2054;
+   @ObfuscatedName("pa")
+   static class116 field2055;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -1658266229
+   )
+   int field2056;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -306839795
+   )
+   int field2057;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -296669527
+   )
+   int field2058;
+   @ObfuscatedName("y")
+   boolean field2059;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1346202821
+   )
+   int field2060;
+   @ObfuscatedName("u")
+   static int[] field2061;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1807308501
+   )
+   int field2062;
+
+   @ObfuscatedSignature(
+      signature = "(IIIIIIZ)V",
+      garbageValue = "0"
+   )
+   class137(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
+      this.field2059 = true;
+      this.field2062 = var1;
+      this.field2058 = var2;
+      this.field2056 = var3;
+      this.field2057 = var4;
+      this.field2054 = var5;
+      this.field2060 = var6;
+      this.field2059 = var7;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("in")
    @ObfuscatedSignature(
-      signature = "(II)LFrames;",
-      garbageValue = "-457726988"
+      signature = "(LWidget;I)Z",
+      garbageValue = "1429818739"
    )
-   @Export("getFrames")
-   static Frames getFrames(int var0) {
-      Frames var1 = (Frames)Sequence.field3088.get((long)var0);
-      if(var1 != null) {
-         return var1;
+   static final boolean method2672(Widget var0) {
+      if(var0.field2756 == null) {
+         return false;
       } else {
-         IndexDataBase var3 = Sequence.field3085;
-         IndexDataBase var4 = Sequence.field3086;
-         boolean var5 = true;
-         int[] var6 = var3.method3304(var0);
-
-         for(int var7 = 0; var7 < var6.length; ++var7) {
-            byte[] var8 = var3.method3301(var0, var6[var7]);
-            if(var8 == null) {
-               var5 = false;
-            } else {
-               int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
-               byte[] var10 = var4.method3301(var9, 0);
-               if(var10 == null) {
-                  var5 = false;
+         for(int var1 = 0; var1 < var0.field2756.length; ++var1) {
+            int var2 = IndexFile.method3012(var0, var1);
+            int var3 = var0.field2678[var1];
+            if(var0.field2756[var1] == 2) {
+               if(var2 >= var3) {
+                  return false;
                }
+            } else if(var0.field2756[var1] == 3) {
+               if(var2 <= var3) {
+                  return false;
+               }
+            } else if(var0.field2756[var1] == 4) {
+               if(var2 == var3) {
+                  return false;
+               }
+            } else if(var2 != var3) {
+               return false;
             }
          }
 
-         Frames var2;
-         if(!var5) {
-            var2 = null;
-         } else {
-            try {
-               var2 = new Frames(var3, var4, var0, false);
-            } catch (Exception var12) {
-               var2 = null;
-            }
-         }
-
-         if(var2 != null) {
-            Sequence.field3088.put(var2, (long)var0);
-         }
-
-         return var2;
+         return true;
       }
    }
 }

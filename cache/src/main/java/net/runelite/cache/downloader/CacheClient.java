@@ -43,7 +43,6 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import net.runelite.cache.IndexType;
 import net.runelite.cache.downloader.requests.ConnectionInfo;
 import net.runelite.cache.downloader.requests.FileRequest;
 import net.runelite.cache.downloader.requests.HelloHandshake;
@@ -60,7 +59,9 @@ public class CacheClient implements AutoCloseable
 	private static final String HOST = "oldschool1.runescape.com";
 	private static final int PORT = 43594;
 
-	private static final int CLIENT_REVISION = 139;
+	private static final int CLIENT_REVISION = 142;
+
+	private static final int MAX_REQUESTS = 19; // too many and the server closes the conncetion
 
 	private final Store store; // store cache will be written to
 	private final String host;
@@ -175,7 +176,7 @@ public class CacheClient implements AutoCloseable
 	{
 		Stopwatch stopwatch = Stopwatch.createStarted();
 
-		FileResult result = requestFile(255, 255).get();
+		FileResult result = requestFile(255, 255, true).get();
 		result.decompress(null);
 
 		ByteBuf buffer = Unpooled.wrappedBuffer(result.getContents());
@@ -212,7 +213,7 @@ public class CacheClient implements AutoCloseable
 
 			logger.info("Downloading index {}", i);
 
-			FileResult indexFileResult = requestFile(255, i).get();
+			FileResult indexFileResult = requestFile(255, i, true).get();
 			indexFileResult.decompress(null);
 
 			logger.info("Downloaded index {}", i);
@@ -261,14 +262,12 @@ public class CacheClient implements AutoCloseable
 							oldArchive.getRevision(), archive.getRevision());
 					}
 
-					FileResult archiveFileResult = requestFile(index.getId(), archive.getArchiveId()).get();
-					byte[] compressedContents = archiveFileResult.getCompressedData();
-
-					archive.setData(compressedContents);
-					if (index.getId() != IndexType.MAPS.getNumber())
+					CompletableFuture<FileResult> future = requestFile(index.getId(), archive.getArchiveId(), false);
+					future.handle((fr, ex) ->
 					{
-						archive.decompressAndLoad(null);
-					}
+						archive.setData(fr.getCompressedData());
+						return null;
+					});
 				}
 				else
 				{
@@ -290,15 +289,44 @@ public class CacheClient implements AutoCloseable
 			}
 		}
 
+		// flush any pending requests
+		channel.flush();
+
+		while (!requests.isEmpty())
+		{
+			// wait for pending requests
+			synchronized (this)
+			{
+				wait();
+			}
+		}
+
 		stopwatch.stop();
 		logger.info("Download completed in {}", stopwatch);
 	}
 
-	public synchronized CompletableFuture<FileResult> requestFile(int index, int fileId)
+	public synchronized CompletableFuture<FileResult> requestFile(int index, int fileId, boolean flush)
 	{
 		if (state != ClientState.CONNECTED)
 		{
 			throw new IllegalStateException("Can't request files until connected!");
+		}
+
+		if (!flush)
+		{
+			while (requests.size() >= MAX_REQUESTS)
+			{
+				channel.flush();
+
+				try
+				{
+					wait();
+				}
+				catch (InterruptedException ex)
+				{
+					logger.warn("interrupted while waiting for requests", ex);
+				}
+			}
 		}
 
 		ByteBuf buf = Unpooled.buffer(4);
@@ -306,15 +334,22 @@ public class CacheClient implements AutoCloseable
 		CompletableFuture<FileResult> future = new CompletableFuture<>();
 		PendingFileRequest pf = new PendingFileRequest(request, future);
 
-		buf.writeByte(request.getIndex() == 255 ? 1 : 0);
+		buf.writeByte(0); // 0/1 - seems to be a priority?
 		int hash = pf.computeHash();
 		buf.writeMedium(hash);
 
 		logger.trace("Sending request for {}/{}", index, fileId);
 
-		channel.writeAndFlush(buf);
-
 		requests.add(pf);
+
+		if (!flush)
+		{
+			channel.write(buf);
+		}
+		else
+		{
+			channel.writeAndFlush(buf);
+		}
 
 		return future;
 	}
@@ -342,6 +377,8 @@ public class CacheClient implements AutoCloseable
 		}
 
 		requests.remove(pr);
+
+		notify();
 
 		FileResult result = new FileResult(index, file, compressedData);
 

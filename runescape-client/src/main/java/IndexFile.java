@@ -1,199 +1,61 @@
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.Date;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ds")
+@ObfuscatedName("ff")
 @Implements("IndexFile")
 public final class IndexFile {
-   @ObfuscatedName("q")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 296619661
+      intValue = -1805007521
+   )
+   int field2301;
+   @ObfuscatedName("e")
+   class123 field2302;
+   @ObfuscatedName("kn")
+   @ObfuscatedGetter(
+      intValue = 1639414541
+   )
+   static int field2303;
+   @ObfuscatedName("c")
+   static byte[] field2304;
+   @ObfuscatedName("v")
+   class123 field2305;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 801275237
    )
    @Export("index")
    int index;
-   @ObfuscatedName("c")
-   static byte[] field1819;
-   @ObfuscatedName("d")
-   class72 field1820;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1856765907
-   )
-   int field1822;
-   @ObfuscatedName("n")
-   class72 field1825;
+   @ObfuscatedName("f")
+   public static byte[][] field2307;
 
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(I[BIB)Z",
-      garbageValue = "1"
-   )
-   public boolean method2234(int var1, byte[] var2, int var3) {
-      class72 var4 = this.field1825;
-      synchronized(this.field1825) {
-         if(var3 >= 0 && var3 <= this.field1822) {
-            boolean var5 = this.method2235(var1, var2, var3, true);
-            if(!var5) {
-               var5 = this.method2235(var1, var2, var3, false);
-            }
-
-            return var5;
-         } else {
-            throw new IllegalArgumentException();
-         }
-      }
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(I[BIZI)Z",
-      garbageValue = "1403989477"
-   )
-   boolean method2235(int var1, byte[] var2, int var3, boolean var4) {
-      class72 var5 = this.field1825;
-      synchronized(this.field1825) {
-         try {
-            int var6;
-            boolean var10000;
-            if(var4) {
-               if(this.field1820.method1396() < (long)(var1 * 6 + 6)) {
-                  var10000 = false;
-                  return var10000;
-               }
-
-               this.field1820.method1395((long)(var1 * 6));
-               this.field1820.method1401(field1819, 0, 6);
-               var6 = ((field1819[4] & 255) << 8) + ((field1819[3] & 255) << 16) + (field1819[5] & 255);
-               if(var6 <= 0 || (long)var6 > this.field1825.method1396() / 520L) {
-                  var10000 = false;
-                  return var10000;
-               }
-            } else {
-               var6 = (int)((this.field1825.method1396() + 519L) / 520L);
-               if(var6 == 0) {
-                  var6 = 1;
-               }
-            }
-
-            field1819[0] = (byte)(var3 >> 16);
-            field1819[1] = (byte)(var3 >> 8);
-            field1819[2] = (byte)var3;
-            field1819[3] = (byte)(var6 >> 16);
-            field1819[4] = (byte)(var6 >> 8);
-            field1819[5] = (byte)var6;
-            this.field1820.method1395((long)(var1 * 6));
-            this.field1820.method1415(field1819, 0, 6);
-            int var7 = 0;
-            int var8 = 0;
-
-            while(true) {
-               if(var7 < var3) {
-                  label143: {
-                     int var9 = 0;
-                     int var14;
-                     if(var4) {
-                        this.field1825.method1395((long)(var6 * 520));
-
-                        try {
-                           this.field1825.method1401(field1819, 0, 8);
-                        } catch (EOFException var16) {
-                           break label143;
-                        }
-
-                        var14 = (field1819[1] & 255) + ((field1819[0] & 255) << 8);
-                        int var11 = ((field1819[2] & 255) << 8) + (field1819[3] & 255);
-                        var9 = (field1819[6] & 255) + ((field1819[4] & 255) << 16) + ((field1819[5] & 255) << 8);
-                        int var12 = field1819[7] & 255;
-                        if(var1 != var14 || var11 != var8 || var12 != this.index) {
-                           var10000 = false;
-                           return var10000;
-                        }
-
-                        if(var9 < 0 || (long)var9 > this.field1825.method1396() / 520L) {
-                           var10000 = false;
-                           return var10000;
-                        }
-                     }
-
-                     if(var9 == 0) {
-                        var4 = false;
-                        var9 = (int)((this.field1825.method1396() + 519L) / 520L);
-                        if(var9 == 0) {
-                           ++var9;
-                        }
-
-                        if(var9 == var6) {
-                           ++var9;
-                        }
-                     }
-
-                     if(var3 - var7 <= 512) {
-                        var9 = 0;
-                     }
-
-                     field1819[0] = (byte)(var1 >> 8);
-                     field1819[1] = (byte)var1;
-                     field1819[2] = (byte)(var8 >> 8);
-                     field1819[3] = (byte)var8;
-                     field1819[4] = (byte)(var9 >> 16);
-                     field1819[5] = (byte)(var9 >> 8);
-                     field1819[6] = (byte)var9;
-                     field1819[7] = (byte)this.index;
-                     this.field1825.method1395((long)(var6 * 520));
-                     this.field1825.method1415(field1819, 0, 8);
-                     var14 = var3 - var7;
-                     if(var14 > 512) {
-                        var14 = 512;
-                     }
-
-                     this.field1825.method1415(var2, var7, var14);
-                     var7 += var14;
-                     var6 = var9;
-                     ++var8;
-                     continue;
-                  }
-               }
-
-               var10000 = true;
-               return var10000;
-            }
-         } catch (IOException var17) {
-            return false;
-         }
-      }
-   }
-
-   static {
-      field1819 = new byte[520];
-   }
-
-   @ObfuscatedName("d")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(II)[B",
-      garbageValue = "611406008"
+      garbageValue = "-1104666051"
    )
-   public byte[] method2242(int var1) {
-      class72 var2 = this.field1825;
-      synchronized(this.field1825) {
+   public byte[] method3008(int var1) {
+      class123 var2 = this.field2302;
+      synchronized(this.field2302) {
          try {
             Object var10000;
-            if(this.field1820.method1396() < (long)(var1 * 6 + 6)) {
+            if(this.field2305.method2317() < (long)(var1 * 6 + 6)) {
                var10000 = null;
                return (byte[])var10000;
             } else {
-               this.field1820.method1395((long)(var1 * 6));
-               this.field1820.method1401(field1819, 0, 6);
-               int var3 = ((field1819[0] & 255) << 16) + ((field1819[1] & 255) << 8) + (field1819[2] & 255);
-               int var4 = (field1819[5] & 255) + ((field1819[3] & 255) << 16) + ((field1819[4] & 255) << 8);
-               if(var3 < 0 || var3 > this.field1822) {
+               this.field2305.method2316((long)(var1 * 6));
+               this.field2305.method2329(field2304, 0, 6);
+               int var3 = ((field2304[1] & 255) << 8) + ((field2304[0] & 255) << 16) + (field2304[2] & 255);
+               int var4 = ((field2304[4] & 255) << 8) + ((field2304[3] & 255) << 16) + (field2304[5] & 255);
+               if(var3 < 0 || var3 > this.field2301) {
                   var10000 = null;
                   return (byte[])var10000;
-               } else if(var4 <= 0 || (long)var4 > this.field1825.method1396() / 520L) {
+               } else if(var4 <= 0 || (long)var4 > this.field2302.method2317() / 520L) {
                   var10000 = null;
                   return (byte[])var10000;
                } else {
@@ -207,21 +69,21 @@ public final class IndexFile {
                         return (byte[])var10000;
                      }
 
-                     this.field1825.method1395((long)(var4 * 520));
+                     this.field2302.method2316((long)(var4 * 520));
                      int var8 = var3 - var6;
                      if(var8 > 512) {
                         var8 = 512;
                      }
 
-                     this.field1825.method1401(field1819, 0, var8 + 8);
-                     int var9 = (field1819[1] & 255) + ((field1819[0] & 255) << 8);
-                     int var10 = ((field1819[2] & 255) << 8) + (field1819[3] & 255);
-                     int var11 = (field1819[6] & 255) + ((field1819[4] & 255) << 16) + ((field1819[5] & 255) << 8);
-                     int var12 = field1819[7] & 255;
-                     if(var1 == var9 && var7 == var10 && this.index == var12) {
-                        if(var11 >= 0 && (long)var11 <= this.field1825.method1396() / 520L) {
+                     this.field2302.method2329(field2304, 0, var8 + 8);
+                     int var9 = ((field2304[0] & 255) << 8) + (field2304[1] & 255);
+                     int var10 = ((field2304[2] & 255) << 8) + (field2304[3] & 255);
+                     int var11 = ((field2304[5] & 255) << 8) + ((field2304[4] & 255) << 16) + (field2304[6] & 255);
+                     int var12 = field2304[7] & 255;
+                     if(var1 == var9 && var10 == var7 && this.index == var12) {
+                        if(var11 >= 0 && (long)var11 <= this.field2302.method2317() / 520L) {
                            for(int var13 = 0; var13 < var8; ++var13) {
-                              var5[var6++] = field1819[var13 + 8];
+                              var5[var6++] = field2304[var13 + 8];
                            }
 
                            var4 = var11;
@@ -247,145 +109,356 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(LPacketBuffer;II)Z",
-      garbageValue = "-119979071"
+      signature = "(I[BIB)Z",
+      garbageValue = "90"
    )
-   static boolean method2245(PacketBuffer var0, int var1) {
-      int var2 = var0.method2645(2);
-      int var3;
-      int var4;
-      int var7;
-      int var8;
-      int var9;
-      int var10;
-      if(var2 == 0) {
-         if(var0.method2645(1) != 0) {
-            method2245(var0, var1);
-         }
+   public boolean method3009(int var1, byte[] var2, int var3) {
+      class123 var4 = this.field2302;
+      synchronized(this.field2302) {
+         if(var3 >= 0 && var3 <= this.field2301) {
+            boolean var5 = this.method3010(var1, var2, var3, true);
+            if(!var5) {
+               var5 = this.method3010(var1, var2, var3, false);
+            }
 
-         var3 = var0.method2645(13);
-         var4 = var0.method2645(13);
-         boolean var12 = var0.method2645(1) == 1;
-         if(var12) {
-            class45.field899[++class45.field902 - 1] = var1;
-         }
-
-         if(Client.cachedPlayers[var1] != null) {
-            throw new RuntimeException();
+            return var5;
          } else {
-            Player var6 = Client.cachedPlayers[var1] = new Player();
-            var6.field257 = var1;
-            if(class45.field890[var1] != null) {
-               var6.method227(class45.field890[var1]);
-            }
-
-            var6.field650 = class45.field900[var1];
-            var6.interacting = class45.field897[var1];
-            var7 = class45.field895[var1];
-            var8 = var7 >> 28;
-            var9 = var7 >> 14 & 255;
-            var10 = var7 & 255;
-            var6.field618[0] = class45.field889[var1];
-            var6.field256 = (byte)var8;
-            var6.method236(var3 + (var9 << 13) - class108.baseX, (var10 << 13) + var4 - GameEngine.baseY);
-            var6.field255 = false;
-            return true;
+            throw new IllegalArgumentException();
          }
-      } else if(var2 == 1) {
-         var3 = var0.method2645(2);
-         var4 = class45.field895[var1];
-         class45.field895[var1] = ((var3 + (var4 >> 28) & 3) << 28) + (var4 & 268435455);
-         return false;
-      } else {
-         int var5;
-         int var11;
-         if(var2 == 2) {
-            var3 = var0.method2645(5);
-            var4 = var3 >> 3;
-            var5 = var3 & 7;
-            var11 = class45.field895[var1];
-            var7 = var4 + (var11 >> 28) & 3;
-            var8 = var11 >> 14 & 255;
-            var9 = var11 & 255;
-            if(var5 == 0) {
-               --var8;
-               --var9;
+      }
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(I[BIZI)Z",
+      garbageValue = "-1529806568"
+   )
+   boolean method3010(int var1, byte[] var2, int var3, boolean var4) {
+      class123 var5 = this.field2302;
+      synchronized(this.field2302) {
+         try {
+            int var6;
+            boolean var10000;
+            if(var4) {
+               if(this.field2305.method2317() < (long)(var1 * 6 + 6)) {
+                  var10000 = false;
+                  return var10000;
+               }
+
+               this.field2305.method2316((long)(var1 * 6));
+               this.field2305.method2329(field2304, 0, 6);
+               var6 = (field2304[5] & 255) + ((field2304[4] & 255) << 8) + ((field2304[3] & 255) << 16);
+               if(var6 <= 0 || (long)var6 > this.field2302.method2317() / 520L) {
+                  var10000 = false;
+                  return var10000;
+               }
+            } else {
+               var6 = (int)((this.field2302.method2317() + 519L) / 520L);
+               if(var6 == 0) {
+                  var6 = 1;
+               }
             }
 
-            if(var5 == 1) {
-               --var9;
-            }
+            field2304[0] = (byte)(var3 >> 16);
+            field2304[1] = (byte)(var3 >> 8);
+            field2304[2] = (byte)var3;
+            field2304[3] = (byte)(var6 >> 16);
+            field2304[4] = (byte)(var6 >> 8);
+            field2304[5] = (byte)var6;
+            this.field2305.method2316((long)(var1 * 6));
+            this.field2305.method2321(field2304, 0, 6);
+            int var7 = 0;
+            int var8 = 0;
 
-            if(var5 == 2) {
-               ++var8;
-               --var9;
-            }
+            while(true) {
+               if(var7 < var3) {
+                  label144: {
+                     int var9 = 0;
+                     int var14;
+                     if(var4) {
+                        this.field2302.method2316((long)(var6 * 520));
 
-            if(var5 == 3) {
-               --var8;
-            }
+                        try {
+                           this.field2302.method2329(field2304, 0, 8);
+                        } catch (EOFException var16) {
+                           break label144;
+                        }
 
-            if(var5 == 4) {
-               ++var8;
-            }
+                        var14 = ((field2304[0] & 255) << 8) + (field2304[1] & 255);
+                        int var11 = ((field2304[2] & 255) << 8) + (field2304[3] & 255);
+                        var9 = ((field2304[4] & 255) << 16) + ((field2304[5] & 255) << 8) + (field2304[6] & 255);
+                        int var12 = field2304[7] & 255;
+                        if(var1 != var14 || var8 != var11 || var12 != this.index) {
+                           var10000 = false;
+                           return var10000;
+                        }
 
-            if(var5 == 5) {
-               --var8;
-               ++var9;
-            }
+                        if(var9 < 0 || (long)var9 > this.field2302.method2317() / 520L) {
+                           var10000 = false;
+                           return var10000;
+                        }
+                     }
 
-            if(var5 == 6) {
-               ++var9;
-            }
+                     if(var9 == 0) {
+                        var4 = false;
+                        var9 = (int)((this.field2302.method2317() + 519L) / 520L);
+                        if(var9 == 0) {
+                           ++var9;
+                        }
 
-            if(var5 == 7) {
-               ++var8;
-               ++var9;
-            }
+                        if(var9 == var6) {
+                           ++var9;
+                        }
+                     }
 
-            class45.field895[var1] = (var8 << 14) + (var7 << 28) + var9;
-            return false;
-         } else {
-            var3 = var0.method2645(18);
-            var4 = var3 >> 16;
-            var5 = var3 >> 8 & 255;
-            var11 = var3 & 255;
-            var7 = class45.field895[var1];
-            var8 = var4 + (var7 >> 28) & 3;
-            var9 = var5 + (var7 >> 14) & 255;
-            var10 = var11 + var7 & 255;
-            class45.field895[var1] = var10 + (var8 << 28) + (var9 << 14);
+                     if(var3 - var7 <= 512) {
+                        var9 = 0;
+                     }
+
+                     field2304[0] = (byte)(var1 >> 8);
+                     field2304[1] = (byte)var1;
+                     field2304[2] = (byte)(var8 >> 8);
+                     field2304[3] = (byte)var8;
+                     field2304[4] = (byte)(var9 >> 16);
+                     field2304[5] = (byte)(var9 >> 8);
+                     field2304[6] = (byte)var9;
+                     field2304[7] = (byte)this.index;
+                     this.field2302.method2316((long)(var6 * 520));
+                     this.field2302.method2321(field2304, 0, 8);
+                     var14 = var3 - var7;
+                     if(var14 > 512) {
+                        var14 = 512;
+                     }
+
+                     this.field2302.method2321(var2, var7, var14);
+                     var7 += var14;
+                     var6 = var9;
+                     ++var8;
+                     continue;
+                  }
+               }
+
+               var10000 = true;
+               return var10000;
+            }
+         } catch (IOException var17) {
             return false;
          }
       }
    }
 
-   @ObfuscatedSignature(
-      signature = "(ILclass72;Lclass72;I)V",
-      garbageValue = "500000"
-   )
-   public IndexFile(int var1, class72 var2, class72 var3, int var4) {
-      this.field1825 = null;
-      this.field1820 = null;
-      this.field1822 = '\ufde8';
-      this.index = var1;
-      this.field1825 = var2;
-      this.field1820 = var3;
-      this.field1822 = var4;
+   static {
+      field2304 = new byte[520];
    }
 
-   @ObfuscatedName("d")
-   public static String method2247(long var0) {
-      class138.field2004.setTime(new Date(var0));
-      int var2 = class138.field2004.get(7);
-      int var3 = class138.field2004.get(5);
-      int var4 = class138.field2004.get(2);
-      int var5 = class138.field2004.get(1);
-      int var6 = class138.field2004.get(11);
-      int var7 = class138.field2004.get(12);
-      int var8 = class138.field2004.get(13);
-      return class138.field2002[var2 - 1] + ", " + var3 / 10 + var3 % 10 + "-" + class138.field2003[0][var4] + "-" + var5 + " " + var6 / 10 + var6 % 10 + ":" + var7 / 10 + var7 % 10 + ":" + var8 / 10 + var8 % 10 + " GMT";
+   @ObfuscatedSignature(
+      signature = "(ILclass123;Lclass123;I)V",
+      garbageValue = "500000"
+   )
+   public IndexFile(int var1, class123 var2, class123 var3, int var4) {
+      this.field2302 = null;
+      this.field2305 = null;
+      this.field2301 = '\ufde8';
+      this.index = var1;
+      this.field2302 = var2;
+      this.field2305 = var3;
+      this.field2301 = var4;
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(ILScript;ZB)I",
+      garbageValue = "3"
+   )
+   static int method3011(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = WorldMapType3.method199(class83.intStack[--class83.intStackSize]);
+      } else {
+         var3 = var2?class232.field3187:class2.field15;
+      }
+
+      if(var0 == 1927) {
+         if(class83.field1368 >= 10) {
+            throw new RuntimeException();
+         } else if(var3.field2760 == null) {
+            return 0;
+         } else {
+            class69 var4 = new class69();
+            var4.field852 = var3;
+            var4.field849 = var3.field2760;
+            var4.field857 = class83.field1368 + 1;
+            Client.field955.method3571(var4);
+            return 1;
+         }
+      } else {
+         return 2;
+      }
+   }
+
+   @ObfuscatedName("ih")
+   @ObfuscatedSignature(
+      signature = "(LWidget;IB)I",
+      garbageValue = "0"
+   )
+   static final int method3012(Widget var0, int var1) {
+      if(var0.dynamicValues != null && var1 < var0.dynamicValues.length) {
+         try {
+            int[] var2 = var0.dynamicValues[var1];
+            int var3 = 0;
+            int var4 = 0;
+            byte var5 = 0;
+
+            while(true) {
+               int var6 = var2[var4++];
+               int var7 = 0;
+               byte var8 = 0;
+               if(var6 == 0) {
+                  return var3;
+               }
+
+               if(var6 == 1) {
+                  var7 = Client.boostedSkillLevels[var2[var4++]];
+               }
+
+               if(var6 == 2) {
+                  var7 = Client.realSkillLevels[var2[var4++]];
+               }
+
+               if(var6 == 3) {
+                  var7 = Client.skillExperiences[var2[var4++]];
+               }
+
+               int var9;
+               Widget var10;
+               int var11;
+               int var12;
+               if(var6 == 4) {
+                  var9 = var2[var4++] << 16;
+                  var9 += var2[var4++];
+                  var10 = WorldMapType3.method199(var9);
+                  var11 = var2[var4++];
+                  if(var11 != -1 && (!Buffer.getItemDefinition(var11).isMembers || Client.isMembers)) {
+                     for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
+                        if(var10.itemIds[var12] == var11 + 1) {
+                           var7 += var10.itemQuantities[var12];
+                        }
+                     }
+                  }
+               }
+
+               if(var6 == 5) {
+                  var7 = class211.widgetSettings[var2[var4++]];
+               }
+
+               if(var6 == 6) {
+                  var7 = class222.field2835[Client.realSkillLevels[var2[var4++]] - 1];
+               }
+
+               if(var6 == 7) {
+                  var7 = class211.widgetSettings[var2[var4++]] * 100 / '뜛';
+               }
+
+               if(var6 == 8) {
+                  var7 = World.localPlayer.combatLevel;
+               }
+
+               if(var6 == 9) {
+                  for(var9 = 0; var9 < 25; ++var9) {
+                     if(class222.field2834[var9]) {
+                        var7 += Client.realSkillLevels[var9];
+                     }
+                  }
+               }
+
+               if(var6 == 10) {
+                  var9 = var2[var4++] << 16;
+                  var9 += var2[var4++];
+                  var10 = WorldMapType3.method199(var9);
+                  var11 = var2[var4++];
+                  if(var11 != -1 && (!Buffer.getItemDefinition(var11).isMembers || Client.isMembers)) {
+                     for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
+                        if(var11 + 1 == var10.itemIds[var12]) {
+                           var7 = 999999999;
+                           break;
+                        }
+                     }
+                  }
+               }
+
+               if(var6 == 11) {
+                  var7 = Client.energy;
+               }
+
+               if(var6 == 12) {
+                  var7 = Client.weight;
+               }
+
+               if(var6 == 13) {
+                  var9 = class211.widgetSettings[var2[var4++]];
+                  int var13 = var2[var4++];
+                  var7 = (var9 & 1 << var13) != 0?1:0;
+               }
+
+               if(var6 == 14) {
+                  var9 = var2[var4++];
+                  var7 = FileOnDisk.method2363(var9);
+               }
+
+               if(var6 == 15) {
+                  var8 = 1;
+               }
+
+               if(var6 == 16) {
+                  var8 = 2;
+               }
+
+               if(var6 == 17) {
+                  var8 = 3;
+               }
+
+               if(var6 == 18) {
+                  var7 = class41.baseX + (World.localPlayer.x >> 7);
+               }
+
+               if(var6 == 19) {
+                  var7 = (World.localPlayer.y >> 7) + WorldMapType3.baseY;
+               }
+
+               if(var6 == 20) {
+                  var7 = var2[var4++];
+               }
+
+               if(var8 == 0) {
+                  if(var5 == 0) {
+                     var3 += var7;
+                  }
+
+                  if(var5 == 1) {
+                     var3 -= var7;
+                  }
+
+                  if(var5 == 2 && var7 != 0) {
+                     var3 /= var7;
+                  }
+
+                  if(var5 == 3) {
+                     var3 *= var7;
+                  }
+
+                  var5 = 0;
+               } else {
+                  var5 = var8;
+               }
+            }
+         } catch (Exception var14) {
+            return -1;
+         }
+      } else {
+         return -2;
+      }
    }
 }

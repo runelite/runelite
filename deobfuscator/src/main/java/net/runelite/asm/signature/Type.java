@@ -32,7 +32,7 @@ public class Type
 	public static final Type STRING = new Type("Ljava/lang/String;");
 	public static final Type THROWABLE = new Type("Ljava/lang/Throwable;");
 	
-	private String type;
+	private final String type;
 	private int arrayDimms;
 	
 	public Type(String str)
