@@ -24,46 +24,66 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import net.runelite.api.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.Item;
+import net.runelite.api.ItemLayer;
+import net.runelite.api.Node;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.Region;
+import net.runelite.api.Tile;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-
-import java.awt.*;
-import java.util.*;
+import net.runelite.rs.api.ItemComposition;
 
 public class GroundItemsOverlay extends Overlay
 {
-	private GroundItemsConfig config;
-	private final Client client = RuneLite.getClient();
-	private final StringBuilder itemStringBuilder = new StringBuilder();
-	private final int REGION_SIZE = 104;
+	private static final int REGION_SIZE = 104;
 	// The game won't send anything higher than this value to the plugin -
 	// so we replace any item quantity higher with "Lots" instead.
-	private final int MAX_QUANTITY = 65535;
+	private static final int MAX_QUANTITY = 65535;
 	// The max distance between the player and the item.
-	private final int MAX_RANGE = 2400;
+	private static final int MAX_RANGE = 2400;
 	// The 15 pixel gap between each drawn ground item.
-	private final int STRING_GAP = 15;
+	private static final int STRING_GAP = 15;
 
-    public GroundItemsOverlay(GroundItems plugin)
+	private final Client client = RuneLite.getClient();
+	private GroundItemsConfig config;
+	private final StringBuilder itemStringBuilder = new StringBuilder();
+
+	public GroundItemsOverlay(GroundItems plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.config = plugin.getConfig();
 	}
 
-    @Override
+	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		// won't draw if not logged in
-		if(client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
 		{
 			return null;
 		}
-		Widget[] bank = client.getWidgets()[12];
-		if(bank != null && bank[0] != null && !bank[0].isHidden())
+
+		Widget bank = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (bank != null && !bank.isHidden())
 		{
 			return null;
 		}
@@ -72,97 +92,107 @@ public class GroundItemsOverlay extends Overlay
 		Tile[][][] tiles = region.getTiles();
 		FontMetrics fm = graphics.getFontMetrics();
 
+		Player player = client.getLocalPlayer();
+		if (player == null)
+		{
+			return null;
+		}
+
 		int z = client.getPlane();
 
-		for(int x = 0; x < REGION_SIZE; x++)
+		for (int x = 0; x < REGION_SIZE; x++)
 		{
-			for(int y = 0; y < REGION_SIZE; y++)
+			for (int y = 0; y < REGION_SIZE; y++)
 			{
 				Tile tile = tiles[z][x][y];
-				if(tile == null)
+				if (tile == null)
 				{
 					continue;
 				}
-				Player player = client.getLocalPlayer();
-				if(player == null)
-				{
-					continue;
-				}
+
 				ItemLayer itemLayer = tile.getItemLayer();
-				if (itemLayer != null)
+				if (itemLayer == null)
 				{
-					if(player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) < MAX_RANGE)
+					continue;
+				}
+
+				if (player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) >= MAX_RANGE)
+				{
+					continue;
+				}
+
+				Node current = itemLayer.getBottom();
+				Map<Integer, Integer> items = new LinkedHashMap<>();
+				// adds the items on the ground to the ArrayList to be drawn
+				while (current instanceof Item)
+				{
+					Item item = (Item) current;
+					int itemId = item.getId();
+					int itemQuantity = item.getQuantity();
+
+					Integer currentQuantity = items.get(itemId);
+					if (currentQuantity == null)
 					{
-						Node current = itemLayer.getBottom();
-						ArrayList<Integer> itemIds = new ArrayList<>();
-						Map<Integer, Integer> itemQuantities = new HashMap<>();
-						// adds the items on the ground to the ArrayList to be drawn
-						while(current instanceof Item)
+						items.put(itemId, itemQuantity);
+					}
+					else
+					{
+						items.put(itemId, currentQuantity + itemQuantity);
+					}
+
+					current = current.getNext();
+				}
+
+				// The bottom item is drawn first
+				List<Integer> itemIds = new ArrayList<>(items.keySet());
+				Collections.reverse(itemIds);
+
+				for (int i = 0; i < itemIds.size(); ++i)
+				{
+					int itemId = itemIds.get(i);
+					int quantity = items.get(itemId);
+					ItemComposition item = client.getItemDefinition(itemId);
+
+					if (item == null)
+					{
+						continue;
+					}
+
+					itemStringBuilder.append(item.getName());
+					if (quantity > 1)
+					{
+						if (quantity >= MAX_QUANTITY)
 						{
-							Item item = (Item) current;
-							addItemToMap(item, itemIds, itemQuantities);
-							current = current.getNext();
+							itemStringBuilder.append(" (Lots!)");
 						}
-
-						Collections.reverse(itemIds);
-
-						for(int i = 0; i < itemIds.size(); ++i)
+						else
 						{
-							Integer id = itemIds.get(i); // get the next thing to be drawn
-							Integer qty = itemQuantities.get(id);
-							if(qty == null)
-							{
-								continue;
-							}
-							String itemName = client.getItemDefinition(id).getName();
-							itemStringBuilder.append(itemName);
-							if (qty > 1)
-							{
-								if(qty >= MAX_QUANTITY)
-								{
-									itemStringBuilder.append(" (Lots!)");
-								}
-								else
-								{
-									itemStringBuilder.append(" (").append(qty).append(")");
-								}
-							}
-
-							String itemString = itemStringBuilder.toString();
-							itemStringBuilder.setLength(0);
-							Point point = itemLayer.getCanvasLocation();
-							// if the item is offscreen, don't bother drawing it
-							if(point == null)
-							{
-								continue;
-							}
-							int screenX = point.getX() + 2 - (fm.stringWidth(itemString) / 2);
-
-							// Drawing the shadow for the text, 1px on both x and y
-							graphics.setColor(Color.BLACK);
-							graphics.drawString(itemString, screenX + 1, point.getY() - (STRING_GAP * i) + 1);
-							// Drawing the text itself
-							graphics.setColor(Color.WHITE);
-							graphics.drawString(itemString, screenX, point.getY() - (STRING_GAP * i));
+							itemStringBuilder.append(" (").append(quantity).append(")");
 						}
 					}
+
+					String itemString = itemStringBuilder.toString();
+					itemStringBuilder.setLength(0);
+
+					Point point = itemLayer.getCanvasLocation();
+					// if the item is offscreen, don't bother drawing it
+					if (point == null)
+					{
+						continue;
+					}
+
+					int screenX = point.getX() + 2 - (fm.stringWidth(itemString) / 2);
+
+					// Drawing the shadow for the text, 1px on both x and y
+					graphics.setColor(Color.BLACK);
+					graphics.drawString(itemString, screenX + 1, point.getY() - (STRING_GAP * i) + 1);
+					// Drawing the text itself
+					graphics.setColor(Color.WHITE);
+					graphics.drawString(itemString, screenX, point.getY() - (STRING_GAP * i));
 				}
 			}
 		}
-		return null;
-	}
 
-	private void addItemToMap(Item item, ArrayList<Integer> itemIds, Map<Integer, Integer> itemQuantities)
-	{
-		int id = item.getId();
-		if(itemIds.contains(id))
-		{
-			itemQuantities.put(id, itemQuantities.get(id) + item.getQuantity());
-		}
-		else
-		{
-			itemIds.add(id);
-			itemQuantities.put(id, item.getQuantity());
-		}
+		return null;
 	}
 }

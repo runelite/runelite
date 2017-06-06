@@ -31,9 +31,10 @@ import net.runelite.client.ui.overlay.Overlay;
 public class GroundItems extends Plugin
 {
 	private final GroundItemsConfig config = RuneLite.getRunelite().getConfigManager()
-			.getConfig(GroundItemsConfig.class);
+		.getConfig(GroundItemsConfig.class);
 
 	private final Overlay overlay = new GroundItemsOverlay(this);
+
 	@Override
 	protected void startUp() throws Exception
 	{
