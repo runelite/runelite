@@ -27,20 +27,24 @@ package net.runelite.client.plugins.grounditems;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 
-public class GroundItems extends Plugin{
-    private final Overlay overlay = new GroundItemsOverlay();
-    @Override
-    protected void startUp() throws Exception {
+public class GroundItems extends Plugin
+{
+	private final Overlay overlay = new GroundItemsOverlay();
+	@Override
+	protected void startUp() throws Exception
+	{
 
-    }
+	}
 
-    @Override
-    public Overlay getOverlay() {
-       return overlay;
-    }
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
 
-    @Override
-    protected void shutDown() throws Exception {
+	@Override
+	protected void shutDown() throws Exception
+	{
 
-    }
+	}
 }

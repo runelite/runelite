@@ -39,6 +39,13 @@ public class GroundItemsOverlay extends Overlay
 	private final Client client = RuneLite.getClient();
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 	private final int REGION_SIZE = 104;
+	// The game won't send anything higher than this value to the plugin -
+	// so we replace any item quantity higher with "Lots" instead.
+	private final int MAX_QUANTITY = 65535;
+	// The max distance between the player and the item.
+	private final int MAX_RANGE = 2400;
+	// The 15 pixel gap between each drawn ground item.
+	private final int STRING_GAP = 15;
 
     public GroundItemsOverlay()
 	{
@@ -53,12 +60,11 @@ public class GroundItemsOverlay extends Overlay
 		{
 			return null;
 		}
-
-		/*Widget[] bank = client.getWidgets()[12];
+		Widget[] bank = client.getWidgets()[12];
 		if(bank != null && bank[0] != null && !bank[0].isHidden())
 		{
 			return null;
-		} */
+		}
 
 		Region region = client.getRegion();
 		Tile[][][] tiles = region.getTiles();
@@ -84,7 +90,7 @@ public class GroundItemsOverlay extends Overlay
 				ItemLayer itemLayer = tile.getItemLayer();
 				if (itemLayer != null)
 				{
-					if(player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) < 2400)
+					if(player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) < MAX_RANGE)
 					{
 						Node current = itemLayer.getBottom();
 						ArrayList<Integer> itemIds = new ArrayList<>();
@@ -107,13 +113,19 @@ public class GroundItemsOverlay extends Overlay
 							{
 								continue;
 							}
-							String itemName;
+							String itemName = client.getItemDefinition(id).getName();
+							itemStringBuilder.append(itemName);
 							if (qty > 1)
 							{
-								itemStringBuilder.append(qty).append("x ");
+								if(qty >= MAX_QUANTITY)
+								{
+									itemStringBuilder.append(" (Lots!)");
+								}
+								else
+								{
+									itemStringBuilder.append(" (").append(qty).append(")");
+								}
 							}
-							itemName = client.getItemDefinition(id).getName();
-							itemStringBuilder.append(itemName);
 
 							String itemString = itemStringBuilder.toString();
 							itemStringBuilder.setLength(0);
@@ -122,10 +134,10 @@ public class GroundItemsOverlay extends Overlay
 
 							// Drawing the shadow for the text, 1px on both x and y
 							graphics.setColor(Color.BLACK);
-							graphics.drawString(itemString, screenX + 1, point.getY() - (15 * i) + 1);
+							graphics.drawString(itemString, screenX + 1, point.getY() - (STRING_GAP * i) + 1);
 							// Drawing the text itself
 							graphics.setColor(Color.WHITE);
-							graphics.drawString(itemString, screenX, point.getY() - (15 * i));
+							graphics.drawString(itemString, screenX, point.getY() - (STRING_GAP * i));
 						}
 					}
 				}
