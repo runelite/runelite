@@ -27,7 +27,6 @@ package net.runelite.deob.deobfuscators.mapping;
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
-import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -37,8 +36,6 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
-import net.runelite.asm.attributes.annotation.Annotation;
-import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.deob.DeobAnnotations;
@@ -217,19 +214,14 @@ public class MappingDumper
 
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		JsonObject jObject = new JsonObject();
+		JsonArray jFields = new JsonArray();
+		JsonArray jMethods = new JsonArray();
 
-		JsonArray jClasses = new JsonArray();
 		for (ClassFile cf : group.getClasses())
 		{
 			String impl = DeobAnnotations.getImplements(cf), obfName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 			String classPrefix = obfName;
 
-			JsonObject jClass = new JsonObject();
-
-			jClass.addProperty("name", (impl != null ? impl : ""));
-			jClass.addProperty("class", (obfName != null ? obfName : ""));
-
-			JsonArray jFields = new JsonArray();
 			for (Field f : cf.getFields().getFields())
 			{
 				obfName = DeobAnnotations.getObfuscatedName(f.getAnnotations());
@@ -244,15 +236,16 @@ public class MappingDumper
 				JsonObject jField = new JsonObject();
 
 				jField.addProperty("name", deobName);
+				jField.addProperty("owner", f.isStatic() ? "" : impl);
 				jField.addProperty("class", classPrefix);
 				jField.addProperty("field", obfName);
 				jField.addProperty("signiture", f.getType().getFullType());
 				jField.addProperty("multiplier", (getter != null ? getter : 0));
+				jField.addProperty("static", f.isStatic());
 
 				jFields.add(jField);
 			}
 
-			JsonArray jMethods = new JsonArray();
 			for (Method m : cf.getMethods().getMethods())
 			{
 				obfName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
@@ -270,24 +263,24 @@ public class MappingDumper
 				JsonObject jMethod = new JsonObject();
 
 				jMethod.addProperty("name", deobName);
+				jMethod.addProperty("owner", m.isStatic() ? "" : impl);
 				jMethod.addProperty("class", classPrefix);
 				jMethod.addProperty("field", obfName);
-				jMethod.addProperty("signiture", (obfSignature != null ? obfSignature.toString() : deobSig.toString()));
-				jMethod.addProperty("predicate", predicate);
+				jMethod.addProperty("obfSigniture", (obfSignature != null ? obfSignature.toString() : ""));
+				jMethod.addProperty("signiture", (deobSig != null ? deobSig.toString() : ""));
+				jMethod.addProperty("predicate", (predicate != null ? predicate : 0));
+				jMethod.addProperty("static", m.isStatic());
 
 				jMethods.add(jMethod);
 
 			}
-
-			jClass.add("fields", jFields);
-			jClass.add("methods", jMethods);
-			jClasses.add(jClass);
 		}
 
 		jObject.addProperty("runelite", "http://github.com/runelite");
 		jObject.addProperty("run", Instant.now().toString());
 		jObject.addProperty("gamepack", properties.getRsVersion());
-		jObject.add("classes", jClasses);
+		jObject.add("fields", jFields);
+		jObject.add("methods", jMethods);
 
 		System.out.println(gson.toJson(jObject));
 	}
