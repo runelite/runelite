@@ -39,6 +39,7 @@ import net.runelite.client.plugins.clanchat.ClanChat;
 import net.runelite.client.plugins.config.ConfigPlugin;
 import net.runelite.client.plugins.devtools.DevTools;
 import net.runelite.client.plugins.fpsinfo.FPS;
+import net.runelite.client.plugins.grounditems.GroundItems;
 import net.runelite.client.plugins.hiscore.Hiscore;
 import net.runelite.client.plugins.idlenotifier.IdleNotifier;
 import net.runelite.client.plugins.mousehighlight.MouseHighlight;
@@ -79,6 +80,7 @@ public class PluginManager
 		plugins.add(new Zulrah());
 		plugins.add(new AccountPlugin());
 		plugins.add(new ConfigPlugin());
+		plugins.add(new GroundItems());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{

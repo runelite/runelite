@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Aria <aria@snorflake.com>
+ * Copyright (c) 2017, Aria <aria@ar1as.space>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
