@@ -22,14 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.mousehighlight;
+package net.runelite.client.plugins.grounditems;
 
+import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 
-public class MouseHighlight extends Plugin
+public class GroundItems extends Plugin
 {
-	private final Overlay overlay = new MouseHighlightOverlay();
+	private final GroundItemsConfig config = RuneLite.getRunelite().getConfigManager()
+		.getConfig(GroundItemsConfig.class);
+
+	private final Overlay overlay = new GroundItemsOverlay(this);
+
+	@Override
+	protected void startUp()
+	{
+
+	}
 
 	@Override
 	public Overlay getOverlay()
@@ -38,14 +48,13 @@ public class MouseHighlight extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void shutDown()
 	{
 
 	}
 
-	@Override
-	protected void shutDown() throws Exception
+	public GroundItemsConfig getConfig()
 	{
-
+		return config;
 	}
 }

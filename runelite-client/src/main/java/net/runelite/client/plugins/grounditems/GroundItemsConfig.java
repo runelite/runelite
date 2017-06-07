@@ -22,30 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.mousehighlight;
 
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
+package net.runelite.client.plugins.grounditems;
 
-public class MouseHighlight extends Plugin
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup(
+	keyName = "grounditems",
+	name = "Ground Items",
+	description = "Configuration for the ground items plugin"
+)
+public interface GroundItemsConfig
 {
-	private final Overlay overlay = new MouseHighlightOverlay();
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Configures whether or not item names/quantities are displayed"
+	)
 
-	@Override
-	public Overlay getOverlay()
+	default boolean enabled()
 	{
-		return overlay;
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-
+		return true;
 	}
 }
