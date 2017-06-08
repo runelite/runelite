@@ -39,6 +39,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
+		<checkstyle.skip>true</checkstyle.skip>
 
 		<rs.version>144</rs.version>
 	</properties>
@@ -109,6 +110,24 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>verify-style</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<configLocation>checkstyle.xml</configLocation>
+					<!-- exclude generated sources from checkstyle https://stackoverflow.com/a/30406454/7189686 -->
+					<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 		<extensions>
