@@ -62,6 +62,10 @@ public class Deob
 
 	public static void main(String[] args) throws IOException
 	{
+		if (args == null || args.length < 2) {
+			System.out.println("Please specify the following runtime args: input_jar output_jar");
+			return;
+		}
 		Stopwatch stopwatch = Stopwatch.createStarted();
 
 		ClassGroup group = JarUtil.loadJar(new File(args[0]));
