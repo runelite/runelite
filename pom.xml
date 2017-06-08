@@ -40,7 +40,7 @@
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 
-		<rs.version>143</rs.version>
+		<rs.version>144</rs.version>
 	</properties>
 
 	<scm>
