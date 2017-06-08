@@ -1,47 +1,47 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("di")
+@ObfuscatedName("dh")
 public class class107 extends class122 {
-   @ObfuscatedName("c")
-   public byte[] field1620;
-   @ObfuscatedName("e")
-   public int field1621;
+   @ObfuscatedName("j")
+   int field1612;
+   @ObfuscatedName("p")
+   public byte[] field1613;
    @ObfuscatedName("i")
-   public int field1622;
-   @ObfuscatedName("v")
-   int field1623;
-   @ObfuscatedName("b")
-   public boolean field1624;
+   public int field1614;
+   @ObfuscatedName("n")
+   public int field1615;
+   @ObfuscatedName("f")
+   public boolean field1616;
 
-   class107(int var1, byte[] var2, int var3, int var4, boolean var5) {
-      this.field1622 = var1;
-      this.field1620 = var2;
-      this.field1621 = var3;
-      this.field1623 = var4;
-      this.field1624 = var5;
+   class107(int var1, byte[] var2, int var3, int var4) {
+      this.field1615 = var1;
+      this.field1613 = var2;
+      this.field1614 = var3;
+      this.field1612 = var4;
    }
 
-   @ObfuscatedName("i")
-   public class107 method1982(class116 var1) {
-      this.field1620 = var1.method2092(this.field1620);
-      this.field1622 = var1.method2091(this.field1622);
-      if(this.field1621 == this.field1623) {
-         this.field1621 = this.field1623 = var1.method2094(this.field1621);
+   class107(int var1, byte[] var2, int var3, int var4, boolean var5) {
+      this.field1615 = var1;
+      this.field1613 = var2;
+      this.field1614 = var3;
+      this.field1612 = var4;
+      this.field1616 = var5;
+   }
+
+   @ObfuscatedName("n")
+   public class107 method1958(class116 var1) {
+      this.field1613 = var1.method2106(this.field1613);
+      this.field1615 = var1.method2107(this.field1615);
+      if(this.field1614 == this.field1612) {
+         this.field1614 = this.field1612 = var1.method2108(this.field1614);
       } else {
-         this.field1621 = var1.method2094(this.field1621);
-         this.field1623 = var1.method2094(this.field1623);
-         if(this.field1621 == this.field1623) {
-            --this.field1621;
+         this.field1614 = var1.method2108(this.field1614);
+         this.field1612 = var1.method2108(this.field1612);
+         if(this.field1614 == this.field1612) {
+            --this.field1614;
          }
       }
 
       return this;
-   }
-
-   class107(int var1, byte[] var2, int var3, int var4) {
-      this.field1622 = var1;
-      this.field1620 = var2;
-      this.field1621 = var3;
-      this.field1623 = var4;
    }
 }

@@ -1,7 +1,11 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("jh")
+@ObfuscatedName("jo")
 public class class275 {
-   @ObfuscatedName("y")
-   protected static boolean field3732;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -42212397
+   )
+   public static int field3730;
 }

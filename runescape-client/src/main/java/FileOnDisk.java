@@ -8,35 +8,74 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dz")
+@ObfuscatedName("dg")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
+   @ObfuscatedName("c")
+   @Export("validInterfaces")
+   public static boolean[] validInterfaces;
    @ObfuscatedName("i")
-   @Export("file")
-   RandomAccessFile file;
-   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      longValue = -6743454464588498539L
+      longValue = 5258037184149921181L
    )
    @Export("position")
    long position;
-   @ObfuscatedName("v")
-   static ModIcon field1782;
-   @ObfuscatedName("g")
-   static int[] field1783;
-   @ObfuscatedName("c")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      longValue = -210835793448921061L
+      longValue = 8372313475435441603L
    )
    @Export("length")
    long length;
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "([BIII)I",
-      garbageValue = "728879475"
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 2130683069
    )
-   public final int method2343(byte[] var1, int var2, int var3) throws IOException {
+   public static int field1774;
+   @ObfuscatedName("n")
+   @Export("file")
+   RandomAccessFile file;
+
+   @ObfuscatedName("n")
+   final void method2365(long var1) throws IOException {
+      this.file.seek(var1);
+      this.position = var1;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "([BIIB)V",
+      garbageValue = "46"
+   )
+   public final void method2366(byte[] var1, int var2, int var3) throws IOException {
+      if((long)var3 + this.position > this.length) {
+         this.file.seek(1L + this.length);
+         this.file.write(1);
+         throw new EOFException();
+      } else {
+         this.file.write(var1, var2, var3);
+         this.position += (long)var3;
+      }
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-56193190"
+   )
+   public final void method2368() throws IOException {
+      if(this.file != null) {
+         this.file.close();
+         this.file = null;
+      }
+
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "([BIIB)I",
+      garbageValue = "32"
+   )
+   public final int method2369(byte[] var1, int var2, int var3) throws IOException {
       int var4 = this.file.read(var1, var2, var3);
       if(var4 > 0) {
          this.position += (long)var4;
@@ -45,54 +84,25 @@ public final class FileOnDisk {
       return var4;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "1323595172"
+      signature = "(B)J",
+      garbageValue = "-19"
    )
-   public final long method2344() throws IOException {
+   public final long method2370() throws IOException {
       return this.file.length();
    }
 
    protected void finalize() throws Throwable {
       if(this.file != null) {
          System.out.println("");
-         this.method2348();
+         this.method2368();
       }
 
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-361165486"
-   )
-   public final void method2348() throws IOException {
-      if(this.file != null) {
-         this.file.close();
-         this.file = null;
-      }
-
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(III)LWidget;",
-      garbageValue = "1623079208"
-   )
-   public static Widget method2351(int var0, int var1) {
-      Widget var2 = WorldMapType3.method199(var0);
-      return var1 == -1?var2:(var2 != null && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
-   }
-
-   @ObfuscatedName("i")
-   final void method2360(long var1) throws IOException {
-      this.file.seek(var1);
-      this.position = var1;
    }
 
    public FileOnDisk(File var1, String var2, long var3) throws IOException {
-      if(var3 == -1L) {
+      if(-1L == var3) {
          var3 = Long.MAX_VALUE;
       }
 
@@ -112,66 +122,32 @@ public final class FileOnDisk {
       this.file.seek(0L);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("gh")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "0"
+      signature = "(LActor;II)V",
+      garbageValue = "2106717047"
    )
-   public static int method2363(int var0) {
-      Varbit var2 = (Varbit)Varbit.field3379.get((long)var0);
-      Varbit var1;
-      if(var2 != null) {
-         var1 = var2;
-      } else {
-         byte[] var7 = Varbit.field3380.getConfigData(14, var0);
-         var2 = new Varbit();
-         if(var7 != null) {
-            var2.method4425(new Buffer(var7));
-         }
-
-         Varbit.field3379.put(var2, (long)var0);
-         var1 = var2;
-      }
-
-      int var3 = var1.configId;
-      int var4 = var1.leastSignificantBit;
-      int var5 = var1.mostSignificantBit;
-      int var6 = class211.field2612[var5 - var4];
-      return class211.widgetSettings[var3] >> var4 & var6;
+   static final void method2384(Actor var0, int var1) {
+      class24.method201(var0.x, var0.y, var1);
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "1636702183"
+      signature = "(ZZB)I",
+      garbageValue = "55"
    )
-   public final void method2364(byte[] var1, int var2, int var3) throws IOException {
-      if((long)var3 + this.position > this.length) {
-         this.file.seek(1L + this.length);
-         this.file.write(1);
-         throw new EOFException();
-      } else {
-         this.file.write(var1, var2, var3);
-         this.position += (long)var3;
-      }
+   public static int method2385(boolean var0, boolean var1) {
+      byte var2 = 0;
+      int var3 = var2 + class238.field3254 + class238.field3256;
+      return var3;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Object;ZB)[B",
-      garbageValue = "26"
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "912541969"
    )
-   public static byte[] method2365(Object var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else if(var0 instanceof byte[]) {
-         byte[] var3 = (byte[])((byte[])var0);
-         return var1?CombatInfo1.method1541(var3):var3;
-      } else if(var0 instanceof class176) {
-         class176 var2 = (class176)var0;
-         return var2.vmethod3366();
-      } else {
-         throw new IllegalArgumentException();
-      }
+   public static String method2386(int var0) {
+      return (var0 >> 24 & 255) + "." + (var0 >> 16 & 255) + "." + (var0 >> 8 & 255) + "." + (var0 & 255);
    }
 }

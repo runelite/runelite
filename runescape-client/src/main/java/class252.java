@@ -1,70 +1,70 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ig")
+@ObfuscatedName("iz")
 public class class252 extends CacheableNode {
+   @ObfuscatedName("n")
+   public static IndexDataBase field3401;
    @ObfuscatedName("i")
-   public static IndexDataBase field3391;
-   @ObfuscatedName("c")
-   public static NodeCache field3392;
-   @ObfuscatedName("e")
-   class186 field3393;
+   class186 field3402;
+   @ObfuscatedName("p")
+   public static NodeCache field3403;
 
-   @ObfuscatedName("e")
+   static {
+      field3403 = new NodeCache(64);
+   }
+
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
-      garbageValue = "14"
+      signature = "(I)V",
+      garbageValue = "290978638"
    )
-   public void method4460(Buffer var1) {
+   public void method4473() {
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;I)V",
+      garbageValue = "594015992"
+   )
+   public void method4474(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4461(var1, var2);
+         this.method4475(var1, var2);
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "460557905"
+      signature = "(LBuffer;IB)V",
+      garbageValue = "-38"
    )
-   void method4461(Buffer var1, int var2) {
+   void method4475(Buffer var1, int var2) {
       if(var2 == 249) {
-         this.field3393 = class116.method2101(var1, this.field3393);
+         this.field3402 = ChatMessages.method1795(var1, this.field3402);
       }
 
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "-40"
+      signature = "(III)I",
+      garbageValue = "-1897899550"
    )
-   public int method4462(int var1, int var2) {
-      return World.method1583(this.field3393, var1, var2);
+   public int method4482(int var1, int var2) {
+      return class243.method4341(this.field3402, var1, var2);
    }
 
-   static {
-      field3392 = new NodeCache(64);
-   }
-
-   @ObfuscatedName("y")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;I)Ljava/lang/String;",
-      garbageValue = "781387308"
+      signature = "(ILjava/lang/String;B)Ljava/lang/String;",
+      garbageValue = "125"
    )
-   public String method4468(int var1, String var2) {
-      return class35.method480(this.field3393, var1, var2);
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2038929526"
-   )
-   public void method4469() {
+   public String method4486(int var1, String var2) {
+      return class204.method3838(this.field3402, var1, var2);
    }
 }

@@ -1,59 +1,67 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fh")
+@ObfuscatedName("fb")
 public class class162 {
-   @ObfuscatedName("v")
-   public static int[][] field2322;
-   @ObfuscatedName("x")
-   public static int[] field2325;
    @ObfuscatedName("f")
-   public static int[] field2326;
-   @ObfuscatedName("e")
-   public static int[][] field2329;
+   @ObfuscatedGetter(
+      intValue = -1772873429
+   )
+   public static int field2310;
+   @ObfuscatedName("i")
+   public static int[][] field2311;
+   @ObfuscatedName("h")
+   public static int[] field2312;
+   @ObfuscatedName("z")
+   public static int[] field2314;
+   @ObfuscatedName("j")
+   public static int[][] field2318;
 
    static {
-      field2329 = new int[128][128];
-      field2322 = new int[128][128];
-      field2325 = new int[4096];
-      field2326 = new int[4096];
+      field2311 = new int[128][128];
+      field2318 = new int[128][128];
+      field2314 = new int[4096];
+      field2312 = new int[4096];
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;I)[LSpritePixels;",
-      garbageValue = "1129006332"
+      signature = "(II)LFloorUnderlayDefinition;",
+      garbageValue = "-1476361347"
    )
-   public static SpritePixels[] method3053(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.method4125(var1);
-      int var4 = var0.method4126(var3, var2);
-      SpritePixels[] var5;
-      if(!class7.method28(var0, var3, var4)) {
-         var5 = null;
+   public static FloorUnderlayDefinition method3053(int var0) {
+      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.field3343.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         SpritePixels[] var7 = new SpritePixels[class286.field3791];
-
-         for(int var8 = 0; var8 < class286.field3791; ++var8) {
-            SpritePixels var9 = var7[var8] = new SpritePixels();
-            var9.maxWidth = class286.field3790;
-            var9.maxHeight = class286.field3792;
-            var9.offsetX = class286.field3793[var8];
-            var9.offsetY = class266.field3657[var8];
-            var9.width = class233.field3205[var8];
-            var9.height = ScriptState.field779[var8];
-            int var10 = var9.height * var9.width;
-            byte[] var11 = IndexFile.field2307[var8];
-            var9.image = new int[var10];
-
-            for(int var12 = 0; var12 < var10; ++var12) {
-               var9.image[var12] = class4.field33[var11[var12] & 255];
-            }
+         byte[] var2 = FloorUnderlayDefinition.field3344.getConfigData(1, var0);
+         var1 = new FloorUnderlayDefinition();
+         if(var2 != null) {
+            var1.method4373(new Buffer(var2), var0);
          }
 
-         class251.method4451();
-         var5 = var7;
+         var1.method4380();
+         FloorUnderlayDefinition.field3343.put(var1, (long)var0);
+         return var1;
       }
+   }
 
-      return var5;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Lclass289;I)I",
+      garbageValue = "-2036150182"
+   )
+   static final int method3054(class289 var0) {
+      if(var0 == null) {
+         return 12;
+      } else {
+         switch(var0.field3848) {
+         case 8:
+            return 20;
+         default:
+            return 12;
+         }
+      }
    }
 }

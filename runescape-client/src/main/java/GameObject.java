@@ -4,135 +4,114 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eu")
+@ObfuscatedName("es")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 833809969
-   )
-   @Export("orientation")
-   int orientation;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 270026369
-   )
-   @Export("plane")
-   int plane;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1396987937
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 1678907967
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("b")
-   @Export("renderable")
-   public Renderable renderable;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1266742377
-   )
-   @Export("offsetY")
-   int offsetY;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1660533217
-   )
-   @Export("relativeX")
-   int relativeX;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 1498494521
+      intValue = -1260806173
    )
    @Export("height")
    int height;
-   @ObfuscatedName("f")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1729456781
+      intValue = 1326247899
    )
-   @Export("relativeY")
-   int relativeY;
-   @ObfuscatedName("q")
+   @Export("x")
+   int x;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 549594881
+      intValue = 23290381
    )
-   @Export("flags")
-   int flags;
-   @ObfuscatedName("a")
+   @Export("offsetY")
+   int offsetY;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -385252105
+      intValue = -695810893
    )
-   int field2206;
-   @ObfuscatedName("o")
+   @Export("orientation")
+   int orientation;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1751386743
+      intValue = -1282356493
    )
-   int field2207;
+   int field2194;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -690191441
+   )
+   @Export("relativeX")
+   int relativeX;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 731070671
-   )
-   @Export("hash")
-   public int hash;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 1126082421
+      intValue = -1508606227
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("ix")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1003642159
+      intValue = -917193957
    )
-   static int field2212;
-
+   @Export("plane")
+   int plane;
+   @ObfuscatedName("f")
+   @Export("renderable")
+   public Renderable renderable;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1756218729
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -2130431423
+   )
+   int field2200;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1320615025
+   )
+   @Export("hash")
+   public int hash;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1251092415
+   )
+   @Export("flags")
+   int flags;
+   @ObfuscatedName("w")
+   public static String field2203;
    @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "55"
+   @ObfuscatedGetter(
+      intValue = -191377343
    )
-   public static boolean method2898(int var0) {
-      return (var0 >> 30 & 1) != 0;
-   }
+   @Export("relativeY")
+   int relativeY;
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("ic")
    @ObfuscatedSignature(
-      signature = "(IIIIIIII)Z",
-      garbageValue = "1191280799"
+      signature = "(IIIILSpritePixels;Lclass210;I)V",
+      garbageValue = "-666739544"
    )
-   static final boolean method2899(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = class134.field2007 + var6;
-      if(var7 < var0 && var7 < var1 && var7 < var2) {
-         return false;
+   static final void method2904(int var0, int var1, int var2, int var3, SpritePixels var4, class210 var5) {
+      int var6 = var3 * var3 + var2 * var2;
+      if(var6 > 4225 && var6 < 90000) {
+         int var7 = Client.mapScale + Client.mapAngle & 2047;
+         int var8 = class136.SINE[var7];
+         int var9 = class136.COSINE[var7];
+         var8 = var8 * 256 / (Client.mapScaleDelta + 256);
+         var9 = var9 * 256 / (Client.mapScaleDelta + 256);
+         int var10 = var9 * var2 + var3 * var8 >> 16;
+         int var11 = var9 * var3 - var2 * var8 >> 16;
+         double var12 = Math.atan2((double)var10, (double)var11);
+         int var14 = (int)(Math.sin(var12) * 63.0D);
+         int var15 = (int)(Math.cos(var12) * 57.0D);
+         class44.field577.method5094(var0 + 94 + var14 + 4 - 10, var1 + 83 - var15 - 20, 20, 20, 15, 15, var12, 256);
       } else {
-         var7 = class134.field2007 - var6;
-         if(var7 > var0 && var7 > var1 && var7 > var2) {
-            return false;
-         } else {
-            var7 = var6 + class134.field2008;
-            if(var7 < var3 && var7 < var4 && var7 < var5) {
-               return false;
-            } else {
-               var7 = class134.field2008 - var6;
-               return var7 <= var3 || var7 <= var4 || var7 <= var5;
-            }
-         }
+         XGrandExchangeOffer.method135(var0, var1, var2, var3, var4, var5);
       }
-   }
 
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-18745560"
-   )
-   public static boolean method2900(int var0) {
-      return (var0 >> 28 & 1) != 0;
    }
 
    GameObject() {

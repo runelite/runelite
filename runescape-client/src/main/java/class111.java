@@ -1,27 +1,35 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("de")
+@ObfuscatedName("dc")
 public class class111 implements Runnable {
-   @ObfuscatedName("i")
-   volatile class109[] field1675;
-   @ObfuscatedName("b")
-   static Thread field1676;
+   @ObfuscatedName("n")
+   volatile class109[] field1666;
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(ILclass219;I)I",
+      garbageValue = "561777426"
+   )
+   public static int method2072(int var0, class219 var1) {
+      return (var0 << 8) + var1.field2799;
+   }
 
    public void run() {
       try {
          for(int var1 = 0; var1 < 2; ++var1) {
-            class109 var2 = this.field1675[var1];
+            class109 var2 = this.field1666[var1];
             if(var2 != null) {
-               var2.method2012();
+               var2.method2009();
             }
          }
       } catch (Exception var4) {
-         class21.method138((String)null, var4);
+         Projectile.method1734((String)null, var4);
       }
 
    }
 
    class111() {
-      this.field1675 = new class109[2];
+      this.field1666 = new class109[2];
    }
 }

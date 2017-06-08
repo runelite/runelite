@@ -1,30 +1,28 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fr")
+@ObfuscatedName("fz")
 public abstract class class176 {
-   @ObfuscatedName("a")
-   static IndexDataBase field2425;
-   @ObfuscatedName("s")
-   static Buffer field2426;
-   @ObfuscatedName("c")
-   static boolean field2427;
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "([BI)V",
-      garbageValue = "55737015"
-   )
-   abstract void vmethod3358(byte[] var1);
+   @ObfuscatedName("p")
+   static boolean field2419;
+   @ObfuscatedName("cn")
+   static class153 field2420;
 
    static {
-      field2427 = false;
+      field2419 = false;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)[B",
-      garbageValue = "95"
+      signature = "(I)[B",
+      garbageValue = "1888028960"
    )
-   abstract byte[] vmethod3366();
+   abstract byte[] vmethod3361();
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "([BB)V",
+      garbageValue = "-118"
+   )
+   abstract void vmethod3374(byte[] var1);
 }

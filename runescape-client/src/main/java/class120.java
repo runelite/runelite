@@ -1,35 +1,35 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ds")
+@ObfuscatedName("df")
 public class class120 {
-   @ObfuscatedName("e")
-   int[] field1736;
-   @ObfuscatedName("c")
-   int field1737;
+   @ObfuscatedName("n")
+   int field1727;
+   @ObfuscatedName("j")
+   int[] field1728;
    @ObfuscatedName("i")
-   int field1738;
-   @ObfuscatedName("v")
-   int[] field1739;
+   int[] field1729;
+   @ObfuscatedName("p")
+   int field1730;
 
    class120() {
-      class106.method1950(16);
-      this.field1738 = class106.method1949() != 0?class106.method1950(4) + 1:1;
-      if(class106.method1949() != 0) {
-         class106.method1950(8);
+      class106.method1936(16);
+      this.field1727 = class106.method1935() != 0?class106.method1936(4) + 1:1;
+      if(class106.method1935() != 0) {
+         class106.method1936(8);
       }
 
-      class106.method1950(2);
-      if(this.field1738 > 1) {
-         this.field1737 = class106.method1950(4);
+      class106.method1936(2);
+      if(this.field1727 > 1) {
+         this.field1730 = class106.method1936(4);
       }
 
-      this.field1736 = new int[this.field1738];
-      this.field1739 = new int[this.field1738];
+      this.field1729 = new int[this.field1727];
+      this.field1728 = new int[this.field1727];
 
-      for(int var1 = 0; var1 < this.field1738; ++var1) {
-         class106.method1950(8);
-         this.field1736[var1] = class106.method1950(8);
-         this.field1739[var1] = class106.method1950(8);
+      for(int var1 = 0; var1 < this.field1727; ++var1) {
+         class106.method1936(8);
+         this.field1729[var1] = class106.method1936(8);
+         this.field1728[var1] = class106.method1936(8);
       }
 
    }

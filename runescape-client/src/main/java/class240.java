@@ -2,62 +2,51 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ii")
+@ObfuscatedName("ig")
 public class class240 extends CacheableNode {
+   @ObfuscatedName("n")
+   public static IndexDataBase field3283;
+   @ObfuscatedName("p")
+   static NodeCache field3284;
    @ObfuscatedName("i")
-   public static IndexDataBase field3276;
-   @ObfuscatedName("c")
-   public static NodeCache field3277;
-   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -949416431
+      intValue = -1104678105
    )
-   public int field3279;
+   public int field3285;
 
-   @ObfuscatedName("c")
+   class240() {
+      this.field3285 = 0;
+   }
+
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
-      garbageValue = "66"
+      signature = "(LBuffer;I)V",
+      garbageValue = "-1464379269"
    )
-   public void method4274(Buffer var1) {
+   void method4291(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4275(var1, var2);
+         this.method4294(var1, var2);
       }
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "-1662391623"
-   )
-   void method4275(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.field3279 = var1.readUnsignedShort();
-      }
-
-   }
-
-   public class240() {
-      this.field3279 = 0;
    }
 
    static {
-      field3277 = new NodeCache(64);
+      field3284 = new NodeCache(64);
    }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;I)V",
-      garbageValue = "-161388946"
+      signature = "(LBuffer;II)V",
+      garbageValue = "-704311108"
    )
-   public static void method4280(IndexDataBase var0, IndexDataBase var1) {
-      class17.field309 = var0;
-      KitDefinition.field3348 = var1;
-      KitDefinition.field3350 = class17.field309.method4187(3);
+   void method4294(Buffer var1, int var2) {
+      if(var2 == 2) {
+         this.field3285 = var1.readUnsignedShort();
+      }
+
    }
 }

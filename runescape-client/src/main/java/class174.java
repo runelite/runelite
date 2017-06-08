@@ -2,95 +2,153 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fw")
+@ObfuscatedName("fk")
 public class class174 {
-   @ObfuscatedName("c")
+   @ObfuscatedName("m")
+   static byte[][] field2402;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 762828263
+      intValue = -927023337
    )
-   static int field2415;
-   @ObfuscatedName("e")
+   static int field2403;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -2047729463
+      intValue = 230155529
    )
-   static int field2417;
-   @ObfuscatedName("y")
-   static byte[][] field2418;
-   @ObfuscatedName("b")
-   static byte[][] field2419;
+   static int field2404;
+   @ObfuscatedName("j")
+   static byte[][] field2405;
+   @ObfuscatedName("f")
+   static byte[][] field2406;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1594219691
+   )
+   public static int field2408;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 2082910641
+      intValue = 539241415
    )
-   static int field2420;
-   @ObfuscatedName("v")
-   static byte[][] field2421;
+   static int field2409;
+   @ObfuscatedName("z")
+   public static int[] field2410;
 
-   @ObfuscatedName("i")
+   static {
+      field2404 = 0;
+      field2403 = 0;
+      field2409 = 0;
+      field2405 = new byte[1000][];
+      field2406 = new byte[250][];
+      field2402 = new byte[50][];
+   }
+
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(II)[B",
-      garbageValue = "1054487972"
+      signature = "(I)[Lclass283;",
+      garbageValue = "1082451622"
    )
-   static synchronized byte[] method3349(int var0) {
+   public static class283[] method3356() {
+      return new class283[]{class283.field3766, class283.field3767, class283.field3764, class283.field3765, class283.field3769};
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(IB)[B",
+      garbageValue = "82"
+   )
+   static synchronized byte[] method3357(int var0) {
       byte[] var1;
-      if(var0 == 100 && field2420 > 0) {
-         var1 = field2421[--field2420];
-         field2421[field2420] = null;
+      if(var0 == 100 && field2404 > 0) {
+         var1 = field2405[--field2404];
+         field2405[field2404] = null;
          return var1;
-      } else if(var0 == 5000 && field2415 > 0) {
-         var1 = field2419[--field2415];
-         field2419[field2415] = null;
+      } else if(var0 == 5000 && field2403 > 0) {
+         var1 = field2406[--field2403];
+         field2406[field2403] = null;
          return var1;
-      } else if(var0 == 30000 && field2417 > 0) {
-         var1 = field2418[--field2417];
-         field2418[field2417] = null;
+      } else if(var0 == 30000 && field2409 > 0) {
+         var1 = field2402[--field2409];
+         field2402[field2409] = null;
          return var1;
       } else {
          return new byte[var0];
       }
    }
 
-   static {
-      field2420 = 0;
-      field2415 = 0;
-      field2417 = 0;
-      field2421 = new byte[1000][];
-      field2419 = new byte[250][];
-      field2418 = new byte[50][];
-   }
-
-   @ObfuscatedName("hd")
+   @ObfuscatedName("fb")
    @ObfuscatedSignature(
-      signature = "([LWidget;IIIZB)V",
-      garbageValue = "21"
+      signature = "(Ljava/lang/String;B)V",
+      garbageValue = "-64"
    )
-   static void method3351(Widget[] var0, int var1, int var2, int var3, boolean var4) {
-      for(int var5 = 0; var5 < var0.length; ++var5) {
-         Widget var6 = var0[var5];
-         if(var6 != null && var6.parentId == var1) {
-            class251.method4435(var6, var2, var3, var4);
-            RSSocket.method3006(var6, var2, var3);
-            if(var6.scrollX > var6.scrollWidth - var6.width) {
-               var6.scrollX = var6.scrollWidth - var6.width;
-            }
-
-            if(var6.scrollX < 0) {
-               var6.scrollX = 0;
-            }
-
-            if(var6.scrollY > var6.scrollHeight - var6.height) {
-               var6.scrollY = var6.scrollHeight - var6.height;
-            }
-
-            if(var6.scrollY < 0) {
-               var6.scrollY = 0;
-            }
-
-            if(var6.type == 0) {
-               class236.method4216(var0, var6, var4);
-            }
+   static final void method3358(String var0) {
+      if(var0.equalsIgnoreCase("toggleroof")) {
+         class66.field801.field1318 = !class66.field801.field1318;
+         WorldMapType3.method232();
+         if(class66.field801.field1318) {
+            class98.sendGameMessage(99, "", "Roofs are now all hidden");
+         } else {
+            class98.sendGameMessage(99, "", "Roofs will only be removed selectively");
          }
       }
 
+      if(var0.equalsIgnoreCase("displayfps")) {
+         Client.field928 = !Client.field928;
+      }
+
+      if(var0.equalsIgnoreCase("clickbox")) {
+         Model.field1944 = !Model.field1944;
+         class98.sendGameMessage(99, "", "Clickbox Mode: " + (Model.field1944?"AABB":"Legacy"));
+      }
+
+      if(Client.field1132 >= 2) {
+         if(var0.equalsIgnoreCase("aabb")) {
+            if(!class7.field231) {
+               class7.field231 = true;
+               class7.field234 = class11.field266;
+               class98.sendGameMessage(99, "", "AABB boxes: All");
+            } else if(class11.field266 == class7.field234) {
+               class7.field231 = true;
+               class7.field234 = class11.field268;
+               class98.sendGameMessage(99, "", "AABB boxes: Mouse Over");
+            } else {
+               class7.field231 = false;
+               class98.sendGameMessage(99, "", "AABB boxes: Off");
+            }
+         }
+
+         if(var0.equalsIgnoreCase("legacyboxes")) {
+            class7.field232 = !class7.field232;
+            class98.sendGameMessage(99, "", "Show legacy boxes: " + class7.field232);
+         }
+
+         if(var0.equalsIgnoreCase("geotests")) {
+            class7.field235 = !class7.field235;
+            class98.sendGameMessage(99, "", "Show geometry tests: " + class7.field235);
+         }
+
+         if(var0.equalsIgnoreCase("fpson")) {
+            Client.field928 = true;
+         }
+
+         if(var0.equalsIgnoreCase("fpsoff")) {
+            Client.field928 = false;
+         }
+
+         if(var0.equalsIgnoreCase("gc")) {
+            System.gc();
+         }
+
+         if(var0.equalsIgnoreCase("clientdrop")) {
+            class210.method3941();
+         }
+
+         if(var0.equalsIgnoreCase("errortest") && Client.field915 == 2) {
+            throw new RuntimeException();
+         }
+      }
+
+      Client.secretPacketBuffer1.putOpcode(254);
+      Client.secretPacketBuffer1.putByte(var0.length() + 1);
+      Client.secretPacketBuffer1.method3150(var0);
    }
 }

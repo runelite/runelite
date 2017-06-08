@@ -7,52 +7,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bo")
+@ObfuscatedName("bj")
 public class class55 extends class109 {
+   @ObfuscatedName("p")
+   SourceDataLine field661;
+   @ObfuscatedName("j")
+   byte[] field662;
+   @ObfuscatedName("n")
+   AudioFormat field663;
    @ObfuscatedName("i")
-   AudioFormat field681;
-   @ObfuscatedName("c")
-   SourceDataLine field682;
-   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1966734295
+      intValue = -976474757
    )
-   int field683;
-   @ObfuscatedName("v")
-   byte[] field684;
+   int field664;
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "16"
+   )
+   protected int vmethod1995() {
+      return this.field664 - (this.field661.available() >> (class109.field1630?2:1));
+   }
+
+   @ObfuscatedName("j")
    protected void vmethod2022() {
       int var1 = 256;
-      if(class275.field3732) {
+      if(class109.field1630) {
          var1 <<= 1;
       }
 
       for(int var2 = 0; var2 < var1; ++var2) {
-         int var3 = super.field1641[var2];
+         int var3 = super.field1636[var2];
          if((var3 + 8388608 & -16777216) != 0) {
             var3 = 8388607 ^ var3 >> 31;
          }
 
-         this.field684[var2 * 2] = (byte)(var3 >> 8);
-         this.field684[var2 * 2 + 1] = (byte)(var3 >> 16);
+         this.field662[var2 * 2] = (byte)(var3 >> 8);
+         this.field662[var2 * 2 + 1] = (byte)(var3 >> 16);
       }
 
-      this.field682.write(this.field684, 0, var1 << 1);
+      this.field661.write(this.field662, 0, var1 << 1);
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "426457422"
+      garbageValue = "-647845185"
    )
-   protected void vmethod2020(int var1) throws LineUnavailableException {
+   protected void vmethod2002(int var1) throws LineUnavailableException {
       try {
-         Info var2 = new Info(SourceDataLine.class, this.field681, var1 << (class275.field3732?2:1));
-         this.field682 = (SourceDataLine)AudioSystem.getLine(var2);
-         this.field682.open();
-         this.field682.start();
-         this.field683 = var1;
+         Info var2 = new Info(SourceDataLine.class, this.field663, var1 << (class109.field1630?2:1));
+         this.field661 = (SourceDataLine)AudioSystem.getLine(var2);
+         this.field661.open();
+         this.field661.start();
+         this.field664 = var1;
       } catch (LineUnavailableException var5) {
          int var4 = (var1 & 1431655765) + (var1 >>> 1 & 1431655765);
          var4 = (var4 & 858993459) + (var4 >>> 2 & 858993459);
@@ -61,52 +70,43 @@ public class class55 extends class109 {
          var4 += var4 >>> 16;
          int var3 = var4 & 255;
          if(var3 != 1) {
-            this.vmethod2020(class29.method228(var1));
+            this.vmethod2002(class13.method88(var1));
          } else {
-            this.field682 = null;
+            this.field661 = null;
             throw var5;
          }
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-2130181861"
+      garbageValue = "-93901902"
    )
-   protected void vmethod2019() {
-      this.field681 = new AudioFormat((float)class109.field1640, 16, class275.field3732?2:1, true, false);
-      this.field684 = new byte[256 << (class275.field3732?2:1)];
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "548209644"
-   )
-   protected void vmethod2023() {
-      if(this.field682 != null) {
-         this.field682.close();
-         this.field682 = null;
+   protected void vmethod2017() {
+      if(this.field661 != null) {
+         this.field661.close();
+         this.field661 = null;
       }
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-362612567"
+      signature = "(I)V",
+      garbageValue = "-1357874836"
    )
-   protected int vmethod2021() {
-      return this.field683 - (this.field682.available() >> (class275.field3732?2:1));
+   protected void vmethod2005() {
+      this.field661.flush();
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "99"
+      signature = "(I)V",
+      garbageValue = "902341640"
    )
-   protected void vmethod2024() {
-      this.field682.flush();
+   protected void vmethod2001() {
+      this.field663 = new AudioFormat((float)class109.field1633, 16, class109.field1630?2:1, true, false);
+      this.field662 = new byte[256 << (class109.field1630?2:1)];
    }
 }

@@ -4,62 +4,81 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ef")
+@ObfuscatedName("ej")
 @Implements("FaceNormal")
 public class FaceNormal {
-   @ObfuscatedName("e")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -190126105
-   )
-   @Export("z")
-   int z;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -687616175
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("pd")
-   static class109 field2155;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1713777981
+      intValue = -383907761
    )
    @Export("x")
    int x;
-   @ObfuscatedName("ib")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 760280513
+      intValue = 970908259
    )
-   @Export("plane")
-   static int plane;
+   @Export("y")
+   int y;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -854934929
+   )
+   @Export("z")
+   int z;
+   @ObfuscatedName("rn")
+   static RenderOverview field2146;
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(CB)Z",
-      garbageValue = "1"
+      signature = "(ILScript;ZB)I",
+      garbageValue = "2"
    )
-   public static boolean method2865(char var0) {
-      return var0 >= 65 && var0 <= 90 || var0 >= 97 && var0 <= 122;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "([BII)I",
-      garbageValue = "-743222655"
-   )
-   public static int method2866(byte[] var0, int var1) {
-      return class15.method75(var0, 0, var1);
-   }
-
-   @ObfuscatedName("ij")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1137308577"
-   )
-   static final void method2867(int var0) {
-      if(RSSocket.method2986(var0)) {
-         Enum.method4473(CombatInfo1.widgets[var0], -1);
+   static int method2877(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class278.field3737:class37.field515;
+      if(var0 == 1600) {
+         class83.intStack[++class165.intStackSize - 1] = var3.scrollX;
+         return 1;
+      } else if(var0 == 1601) {
+         class83.intStack[++class165.intStackSize - 1] = var3.scrollY;
+         return 1;
+      } else if(var0 == 1602) {
+         class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = var3.text;
+         return 1;
+      } else if(var0 == 1603) {
+         class83.intStack[++class165.intStackSize - 1] = var3.scrollWidth;
+         return 1;
+      } else if(var0 == 1604) {
+         class83.intStack[++class165.intStackSize - 1] = var3.scrollHeight;
+         return 1;
+      } else if(var0 == 1605) {
+         class83.intStack[++class165.intStackSize - 1] = var3.field2706;
+         return 1;
+      } else if(var0 == 1606) {
+         class83.intStack[++class165.intStackSize - 1] = var3.rotationX;
+         return 1;
+      } else if(var0 == 1607) {
+         class83.intStack[++class165.intStackSize - 1] = var3.rotationY;
+         return 1;
+      } else if(var0 == 1608) {
+         class83.intStack[++class165.intStackSize - 1] = var3.rotationZ;
+         return 1;
+      } else if(var0 == 1609) {
+         class83.intStack[++class165.intStackSize - 1] = var3.opacity;
+         return 1;
+      } else if(var0 == 1610) {
+         class83.intStack[++class165.intStackSize - 1] = var3.field2684;
+         return 1;
+      } else if(var0 == 1611) {
+         class83.intStack[++class165.intStackSize - 1] = var3.textColor;
+         return 1;
+      } else if(var0 == 1612) {
+         class83.intStack[++class165.intStackSize - 1] = var3.field2775;
+         return 1;
+      } else if(var0 == 1613) {
+         class83.intStack[++class165.intStackSize - 1] = var3.field2668.vmethod5059();
+         return 1;
+      } else {
+         return 2;
       }
    }
 }

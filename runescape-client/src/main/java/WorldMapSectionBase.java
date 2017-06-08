@@ -2,48 +2,48 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("az")
+@ObfuscatedName("av")
 @Implements("WorldMapSectionBase")
 public interface WorldMapSectionBase {
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(IIII)Z",
-      garbageValue = "952872297"
-   )
-   boolean vmethod696(int var1, int var2, int var3);
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "-106764697"
-   )
-   boolean vmethod707(int var1, int var2);
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
-      garbageValue = "-56"
-   )
-   void vmethod700(Buffer var1);
-
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(LWorldMapData;B)V",
-      garbageValue = "-1"
+      signature = "(III)Z",
+      garbageValue = "-203277119"
    )
-   void vmethod695(WorldMapData var1);
+   boolean vmethod713(int var1, int var2);
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(III)LCoordinates;",
-      garbageValue = "730410078"
+      garbageValue = "1721490041"
    )
-   Coordinates vmethod699(int var1, int var2);
+   Coordinates vmethod696(int var1, int var2);
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "-578749739"
+      signature = "(LBuffer;I)V",
+      garbageValue = "-2062162233"
    )
-   int[] vmethod698(int var1, int var2, int var3);
+   void vmethod697(Buffer var1);
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(IIIB)Z",
+      garbageValue = "-126"
+   )
+   boolean vmethod693(int var1, int var2, int var3);
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(IIIB)[I",
+      garbageValue = "-1"
+   )
+   int[] vmethod695(int var1, int var2, int var3);
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(LWorldMapData;B)V",
+      garbageValue = "101"
+   )
+   void vmethod692(WorldMapData var1);
 }

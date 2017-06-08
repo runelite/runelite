@@ -2,105 +2,104 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ia")
+@ObfuscatedName("id")
 public class class236 implements Runnable {
-   @ObfuscatedName("v")
-   public static Object field3234;
-   @ObfuscatedName("c")
-   static Deque field3235;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1045187219
-   )
-   public static int field3236;
+   @ObfuscatedName("n")
+   public static Deque field3233;
+   @ObfuscatedName("p")
+   public static Deque field3234;
    @ObfuscatedName("i")
-   static Deque field3238;
+   @ObfuscatedGetter(
+      intValue = -1937146931
+   )
+   static int field3235;
+   @ObfuscatedName("j")
+   static Object field3236;
 
    public void run() {
       try {
          while(true) {
-            Deque var2 = field3238;
+            Deque var2 = field3233;
             class233 var1;
-            synchronized(field3238) {
-               var1 = (class233)field3238.method3576();
+            synchronized(field3233) {
+               var1 = (class233)field3233.method3622();
             }
 
             Object var14;
             if(var1 != null) {
-               if(var1.field3207 == 0) {
-                  var1.field3199.method3009((int)var1.hash, var1.field3198, var1.field3198.length);
-                  var2 = field3238;
-                  synchronized(field3238) {
+               if(var1.field3204 == 0) {
+                  var1.field3201.method3009((int)var1.hash, var1.field3200, var1.field3200.length);
+                  var2 = field3233;
+                  synchronized(field3233) {
                      var1.unlink();
                   }
-               } else if(var1.field3207 == 1) {
-                  var1.field3198 = var1.field3199.method3008((int)var1.hash);
-                  var2 = field3238;
-                  synchronized(field3238) {
-                     field3235.method3571(var1);
+               } else if(var1.field3204 == 1) {
+                  var1.field3200 = var1.field3201.method3008((int)var1.hash);
+                  var2 = field3233;
+                  synchronized(field3233) {
+                     field3234.method3634(var1);
                   }
                }
 
-               var14 = field3234;
-               synchronized(field3234) {
-                  if(field3236 <= 1) {
-                     field3236 = 0;
-                     field3234.notifyAll();
+               var14 = field3236;
+               synchronized(field3236) {
+                  if(field3235 <= 1) {
+                     field3235 = 0;
+                     field3236.notifyAll();
                      return;
                   }
 
-                  field3236 = 600;
+                  field3235 = 600;
                }
             } else {
-               class4.method9(100L);
-               var14 = field3234;
-               synchronized(field3234) {
-                  if(field3236 <= 1) {
-                     field3236 = 0;
-                     field3234.notifyAll();
+               class100.method1842(100L);
+               var14 = field3236;
+               synchronized(field3236) {
+                  if(field3235 <= 1) {
+                     field3235 = 0;
+                     field3236.notifyAll();
                      return;
                   }
 
-                  --field3236;
+                  --field3235;
                }
             }
          }
       } catch (Exception var13) {
-         class21.method138((String)null, var13);
+         Projectile.method1734((String)null, var13);
       }
    }
 
    static {
-      field3238 = new Deque();
-      field3235 = new Deque();
-      field3236 = 0;
-      field3234 = new Object();
+      field3233 = new Deque();
+      field3234 = new Deque();
+      field3235 = 0;
+      field3236 = new Object();
    }
 
-   @ObfuscatedName("hg")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "([LWidget;LWidget;ZI)V",
-      garbageValue = "2010191879"
+      signature = "([BILjava/lang/CharSequence;I)I",
+      garbageValue = "332619095"
    )
-   static void method4216(Widget[] var0, Widget var1, boolean var2) {
-      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
-      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
-      class174.method3351(var0, var1.id, var3, var4, var2);
-      if(var1.children != null) {
-         class174.method3351(var1.children, var1.id, var3, var4, var2);
-      }
+   public static int method4231(byte[] var0, int var1, CharSequence var2) {
+      int var3 = var2.length();
+      int var4 = var1;
 
-      WidgetNode var5 = (WidgetNode)Client.componentTable.method3520((long)var1.id);
-      if(var5 != null) {
-         int var6 = var5.id;
-         if(RSSocket.method2986(var6)) {
-            class174.method3351(CombatInfo1.widgets[var6], -1, var3, var4, var2);
+      for(int var5 = 0; var5 < var3; ++var5) {
+         char var6 = var2.charAt(var5);
+         if(var6 <= 127) {
+            var0[var4++] = (byte)var6;
+         } else if(var6 <= 2047) {
+            var0[var4++] = (byte)(192 | var6 >> 6);
+            var0[var4++] = (byte)(128 | var6 & 63);
+         } else {
+            var0[var4++] = (byte)(224 | var6 >> 12);
+            var0[var4++] = (byte)(128 | var6 >> 6 & 63);
+            var0[var4++] = (byte)(128 | var6 & 63);
          }
       }
 
-      if(var1.contentType == 1337) {
-         ;
-      }
-
+      return var4 - var1;
    }
 }

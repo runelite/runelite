@@ -1,59 +1,87 @@
+import java.awt.Desktop;
+import java.awt.Desktop.Action;
+import java.net.URI;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("x")
+@ObfuscatedName("z")
 public class class7 {
-   @ObfuscatedName("c")
-   public static boolean field235;
+   @ObfuscatedName("n")
+   public static boolean field231;
+   @ObfuscatedName("p")
+   public static boolean field232;
+   @ObfuscatedName("ge")
+   static ModIcon[] field233;
+   @ObfuscatedName("j")
+   public static class11 field234;
    @ObfuscatedName("i")
-   public static boolean field236;
-   @ObfuscatedName("e")
-   public static boolean field237;
-   @ObfuscatedName("b")
-   public static CombatInfoList field239;
-   @ObfuscatedName("v")
-   public static class11 field240;
+   public static boolean field235;
+   @ObfuscatedName("f")
+   static CombatInfoList field236;
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("jd")
    @ObfuscatedSignature(
-      signature = "(ILclass219;B)I",
-      garbageValue = "-2"
+      signature = "(Ljava/lang/String;ZI)Z",
+      garbageValue = "1376312589"
    )
-   public static int method22(int var0, class219 var1) {
-      return var1.field2797 + (var0 + '鱀' << 8);
+   static boolean method29(String var0, boolean var1) {
+      if(var0 == null) {
+         return false;
+      } else {
+         String var2 = CollisionData.method3023(var0, class13.field281);
+
+         for(int var3 = 0; var3 < Client.friendCount; ++var3) {
+            if(var2.equalsIgnoreCase(CollisionData.method3023(Client.friends[var3].name, class13.field281)) && (!var1 || Client.friends[var3].world != 0)) {
+               return true;
+            }
+         }
+
+         if(var2.equalsIgnoreCase(CollisionData.method3023(class168.localPlayer.name, class13.field281))) {
+            return true;
+         } else {
+            return false;
+         }
+      }
    }
 
    static {
-      field236 = false;
+      field231 = false;
+      field232 = false;
       field235 = false;
-      field237 = false;
-      field240 = class11.field268;
-      field239 = new CombatInfoList();
+      field234 = class11.field268;
+      field236 = new CombatInfoList();
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(ILIndexDataBase;Ljava/lang/String;Ljava/lang/String;IZI)V",
-      garbageValue = "189659239"
+      signature = "(Ljava/lang/String;ZLjava/lang/String;ZI)V",
+      garbageValue = "2137502630"
    )
-   public static void method26(int var0, IndexDataBase var1, String var2, String var3, int var4, boolean var5) {
-      int var6 = var1.method4125(var2);
-      int var7 = var1.method4126(var6, var3);
-      class51.method762(var0, var1, var6, var7, var4, var5);
-   }
+   public static void method44(String var0, boolean var1, String var2, boolean var3) {
+      if(var1) {
+         if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
+            try {
+               Desktop.getDesktop().browse(new URI(var0));
+               return;
+            } catch (Exception var5) {
+               ;
+            }
+         }
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;III)Z",
-      garbageValue = "-1978219462"
-   )
-   public static boolean method28(IndexDataBase var0, int var1, int var2) {
-      byte[] var3 = var0.getConfigData(var1, var2);
-      if(var3 == null) {
-         return false;
+         if(class56.field669.startsWith("win")) {
+            class47.method687(var0, 0, "openjs");
+            return;
+         }
+
+         if(class56.field669.startsWith("mac")) {
+            class47.method687(var0, 1, var2);
+            return;
+         }
+
+         class47.method687(var0, 2, "openjs");
       } else {
-         class31.method262(var3);
-         return true;
+         class47.method687(var0, 3, "openjs");
       }
+
    }
 }

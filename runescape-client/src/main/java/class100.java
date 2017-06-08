@@ -1,239 +1,261 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ct")
+@ObfuscatedName("cx")
 public class class100 extends Renderable {
-   @ObfuscatedName("b")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 959359777
+      intValue = 821490071
    )
-   int field1553;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 758723279
-   )
-   int field1554;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -48747735
-   )
-   int field1555;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -2083681593
-   )
-   int field1556;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 677869865
-   )
-   int field1557;
-   @ObfuscatedName("d")
-   static int[] field1558;
+   int field1543;
    @ObfuscatedName("h")
-   Sequence field1559;
-   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 2080307207
+      intValue = 1460018579
    )
-   int field1560;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1544042567
-   )
-   int field1561;
+   int field1544;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1590290143
+      intValue = 1560050815
    )
-   int field1563;
-   @ObfuscatedName("ff")
-   @Export("mapRegions")
-   @Hook("mapRegionsChanged")
-   static int[] mapRegions;
+   int field1545;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1028790775
+   )
+   int field1546;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1569154449
+   )
+   int field1547;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -1184483233
+   )
+   int field1548;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1839964555
+   )
+   int field1549;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -2003595571
+   )
+   int field1550;
+   @ObfuscatedName("c")
+   Sequence field1551;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("ev")
    @ObfuscatedSignature(
-      signature = "(I)LModel;",
-      garbageValue = "2096882887"
+      signature = "(B)V",
+      garbageValue = "49"
+   )
+   static final void method1838() {
+      Overlay.field3596.reset();
+      class169.method3123();
+      class88.method1694();
+      class234.method4121();
+      NPCComposition.field3593.reset();
+      NPCComposition.npcModelCache.reset();
+      ItemComposition.field3501.reset();
+      ItemComposition.itemModelCache.reset();
+      ItemComposition.itemSpriteCache.reset();
+      class31.method282();
+      Spotanim.field3327.reset();
+      Spotanim.field3328.reset();
+      Varbit.field3385.reset();
+      class241.field3290.reset();
+      class254.field3419.reset();
+      class254.field3420.reset();
+      class254.field3421.reset();
+      CombatInfo2.field3365.reset();
+      CombatInfo2.spriteCache.reset();
+      class252.field3403.reset();
+      class251.field3388.reset();
+      Area.field3295.reset();
+      class82.method1583();
+      class71.method1083();
+      ((TextureProvider)class136.field2039).method2393();
+      Script.field1534.reset();
+      class69.indexInterfaces.method4139();
+      Client.indexSoundEffects.method4139();
+      XItemContainer.field765.method4139();
+      RSCanvas.field655.method4139();
+      class77.indexMaps.method4139();
+      class54.indexTrack1.method4139();
+      class23.indexModels.method4139();
+      Client.indexSprites.method4139();
+      Player.indexTextures.method4139();
+      class22.field353.method4139();
+      IndexData.indexTrack2.method4139();
+      GroundObject.indexScripts.method4139();
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(S)LModel;",
+      garbageValue = "-1617"
    )
    protected final Model getModel() {
-      if(this.field1559 != null) {
-         int var12 = Client.gameCycle - this.field1561;
-         if(var12 > 100 && this.field1559.frameStep > 0) {
-            var12 = 100;
+      if(this.field1551 != null) {
+         int var1 = Client.gameCycle - this.field1544;
+         if(var1 > 100 && this.field1551.frameStep > 0) {
+            var1 = 100;
          }
 
-         label69: {
+         label67: {
             do {
                do {
-                  if(var12 <= this.field1559.frameLenghts[this.field1560]) {
-                     break label69;
+                  if(var1 <= this.field1551.frameLenghts[this.field1550]) {
+                     break label67;
                   }
 
-                  var12 -= this.field1559.frameLenghts[this.field1560];
-                  ++this.field1560;
-               } while(this.field1560 < this.field1559.frameIDs.length);
+                  var1 -= this.field1551.frameLenghts[this.field1550];
+                  ++this.field1550;
+               } while(this.field1550 < this.field1551.frameIDs.length);
 
-               this.field1560 -= this.field1559.frameStep;
-            } while(this.field1560 >= 0 && this.field1560 < this.field1559.frameIDs.length);
+               this.field1550 -= this.field1551.frameStep;
+            } while(this.field1550 >= 0 && this.field1550 < this.field1551.frameIDs.length);
 
-            this.field1559 = null;
+            this.field1551 = null;
          }
 
-         this.field1561 = Client.gameCycle - var12;
+         this.field1544 = Client.gameCycle - var1;
       }
 
-      ObjectComposition var1 = class226.getObjectDefinition(this.field1563);
-      if(var1.impostorIds != null) {
-         var1 = var1.getImpostor();
+      ObjectComposition var12 = class61.getObjectDefinition(this.field1543);
+      if(var12.impostorIds != null) {
+         var12 = var12.getImpostor();
       }
 
-      if(var1 == null) {
+      if(var12 == null) {
          return null;
       } else {
          int var2;
          int var3;
-         if(this.field1556 != 1 && this.field1556 != 3) {
-            var2 = var1.sizeX;
-            var3 = var1.sizeY;
+         if(this.field1545 != 1 && this.field1545 != 3) {
+            var2 = var12.sizeX;
+            var3 = var12.sizeY;
          } else {
-            var2 = var1.sizeY;
-            var3 = var1.sizeX;
+            var2 = var12.sizeY;
+            var3 = var12.sizeX;
          }
 
-         int var4 = (var2 >> 1) + this.field1553;
-         int var5 = (var2 + 1 >> 1) + this.field1553;
-         int var6 = this.field1555 + (var3 >> 1);
-         int var7 = (var3 + 1 >> 1) + this.field1555;
-         int[][] var8 = class61.tileHeights[this.field1557];
+         int var4 = this.field1549 + (var2 >> 1);
+         int var5 = (var2 + 1 >> 1) + this.field1549;
+         int var6 = (var3 >> 1) + this.field1548;
+         int var7 = (var3 + 1 >> 1) + this.field1548;
+         int[][] var8 = class61.tileHeights[this.field1546];
          int var9 = var8[var4][var7] + var8[var4][var6] + var8[var5][var6] + var8[var5][var7] >> 2;
-         int var10 = (var2 << 6) + (this.field1553 << 7);
-         int var11 = (var3 << 6) + (this.field1555 << 7);
-         return var1.method4532(this.field1554, this.field1556, var8, var10, var9, var11, this.field1559, this.field1560);
+         int var10 = (var2 << 6) + (this.field1549 << 7);
+         int var11 = (var3 << 6) + (this.field1548 << 7);
+         return var12.method4546(this.field1547, this.field1545, var8, var10, var9, var11, this.field1551, this.field1550);
+      }
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(II)LSpotanim;",
+      garbageValue = "-1827471331"
+   )
+   public static Spotanim method1840(int var0) {
+      Spotanim var1 = (Spotanim)Spotanim.field3327.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = Spotanim.field3326.getConfigData(13, var0);
+         var1 = new Spotanim();
+         var1.field3334 = var0;
+         if(var2 != null) {
+            var1.method4356(new Buffer(var2));
+         }
+
+         Spotanim.field3327.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("fd")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "124"
+   )
+   static void method1841(int var0) {
+      Client.field946 = 0L;
+      if(var0 >= 2) {
+         Client.isResized = true;
+      } else {
+         Client.isResized = false;
+      }
+
+      if(class140.method2868() == 1) {
+         class46.field590.method831(765, 503);
+      } else {
+         class46.field590.method831(7680, 2160);
+      }
+
+      if(Client.gameState >= 25) {
+         class77.method1488();
+      }
+
+   }
+
+   @ObfuscatedName("n")
+   public static final void method1842(long var0) {
+      if(var0 > 0L) {
+         if(var0 % 10L == 0L) {
+            Tile.method2508(var0 - 1L);
+            Tile.method2508(1L);
+         } else {
+            Tile.method2508(var0);
+         }
+
       }
    }
 
    class100(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
-      this.field1563 = var1;
-      this.field1554 = var2;
-      this.field1556 = var3;
-      this.field1557 = var4;
-      this.field1553 = var5;
-      this.field1555 = var6;
+      this.field1543 = var1;
+      this.field1547 = var2;
+      this.field1545 = var3;
+      this.field1546 = var4;
+      this.field1549 = var5;
+      this.field1548 = var6;
       if(var7 != -1) {
-         this.field1559 = class227.getAnimation(var7);
-         this.field1560 = 0;
-         this.field1561 = Client.gameCycle - 1;
-         if(this.field1559.replyMode == 0 && var9 != null && var9 instanceof class100) {
+         this.field1551 = class169.getAnimation(var7);
+         this.field1550 = 0;
+         this.field1544 = Client.gameCycle - 1;
+         if(this.field1551.replyMode == 0 && var9 != null && var9 instanceof class100) {
             class100 var10 = (class100)var9;
-            if(this.field1559 == var10.field1559) {
-               this.field1560 = var10.field1560;
-               this.field1561 = var10.field1561;
+            if(var10.field1551 == this.field1551) {
+               this.field1550 = var10.field1550;
+               this.field1544 = var10.field1544;
                return;
             }
          }
 
-         if(var8 && this.field1559.frameStep != -1) {
-            this.field1560 = (int)(Math.random() * (double)this.field1559.frameIDs.length);
-            this.field1561 -= (int)(Math.random() * (double)this.field1559.frameLenghts[this.field1560]);
+         if(var8 && this.field1551.frameStep != -1) {
+            this.field1550 = (int)(Math.random() * (double)this.field1551.frameIDs.length);
+            this.field1544 -= (int)(Math.random() * (double)this.field1551.frameLenghts[this.field1550]);
          }
       }
 
    }
 
-   @ObfuscatedName("gw")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "1269813310"
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "539296862"
    )
-   static final void method1855(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if(var2 >= 1 && var3 >= 1 && var2 <= 102 && var3 <= 102) {
-         if(Client.field1046 && var0 != FaceNormal.plane) {
-            return;
-         }
+   public static int method1843(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
 
-         int var7 = 0;
-         boolean var8 = true;
-         boolean var9 = false;
-         boolean var10 = false;
-         if(var1 == 0) {
-            var7 = class1.region.method2704(var0, var2, var3);
-         }
-
-         if(var1 == 1) {
-            var7 = class1.region.method2701(var0, var2, var3);
-         }
-
-         if(var1 == 2) {
-            var7 = class1.region.method2702(var0, var2, var3);
-         }
-
-         if(var1 == 3) {
-            var7 = class1.region.method2703(var0, var2, var3);
-         }
-
-         int var11;
-         if(var7 != 0) {
-            var11 = class1.region.method2835(var0, var2, var3, var7);
-            int var13 = var7 >> 14 & 32767;
-            int var14 = var11 & 31;
-            int var15 = var11 >> 6 & 3;
-            ObjectComposition var12;
-            if(var1 == 0) {
-               class1.region.method2772(var0, var2, var3);
-               var12 = class226.getObjectDefinition(var13);
-               if(var12.field3471 != 0) {
-                  Client.collisionMaps[var0].method3026(var2, var3, var14, var15, var12.field3450);
-               }
-            }
-
-            if(var1 == 1) {
-               class1.region.method2692(var0, var2, var3);
-            }
-
-            if(var1 == 2) {
-               class1.region.method2822(var0, var2, var3);
-               var12 = class226.getObjectDefinition(var13);
-               if(var12.sizeX + var2 > 103 || var3 + var12.sizeX > 103 || var12.sizeY + var2 > 103 || var3 + var12.sizeY > 103) {
-                  return;
-               }
-
-               if(var12.field3471 != 0) {
-                  Client.collisionMaps[var0].method3027(var2, var3, var12.sizeX, var12.sizeY, var15, var12.field3450);
-               }
-            }
-
-            if(var1 == 3) {
-               class1.region.method2694(var0, var2, var3);
-               var12 = class226.getObjectDefinition(var13);
-               if(var12.field3471 == 1) {
-                  Client.collisionMaps[var0].method3029(var2, var3);
-               }
-            }
-         }
-
-         if(var4 >= 0) {
-            var11 = var0;
-            if(var0 < 3 && (class61.tileSettings[1][var2][var3] & 2) == 2) {
-               var11 = var0 + 1;
-            }
-
-            CombatInfo1.method1535(var0, var11, var2, var3, var4, var5, var6, class1.region, Client.collisionMaps[var0]);
-         }
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + var0.charAt(var3);
       }
 
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)[Lclass230;",
-      garbageValue = "1506539763"
-   )
-   public static class230[] method1857() {
-      return new class230[]{class230.field3167, class230.field3170, class230.field3165, class230.field3168, class230.field3172, class230.field3166};
+      return var2;
    }
 }

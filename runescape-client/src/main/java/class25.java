@@ -1,104 +1,96 @@
+import java.io.File;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("t")
+@ObfuscatedName("u")
 public class class25 {
-   @ObfuscatedName("t")
-   static int[] field362;
-   @ObfuscatedName("c")
-   Coordinates field363;
-   @ObfuscatedName("i")
+   @ObfuscatedName("pr")
    @ObfuscatedGetter(
-      intValue = -1508816243
+      intValue = 1222582905
    )
-   int field364;
-   @ObfuscatedName("cm")
-   static IndexData field365;
+   static int field373;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 426545695
+   )
+   int field374;
+   @ObfuscatedName("db")
+   @ObfuscatedGetter(
+      longValue = 4575816343425306825L
+   )
+   static long field375;
+   @ObfuscatedName("p")
+   Coordinates field379;
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZB)I",
-      garbageValue = "3"
+      signature = "(Ljava/lang/String;B)Ljava/io/File;",
+      garbageValue = "-29"
    )
-   static int method167(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class232.field3187:class2.field15;
-      if(var0 == 1800) {
-         int[] var8 = class83.intStack;
-         int var5 = ++class83.intStackSize - 1;
-         int var7 = class210.method3903(var3);
-         int var6 = var7 >> 11 & 63;
-         var8[var5] = var6;
-         return 1;
-      } else if(var0 != 1801) {
-         if(var0 == 1802) {
-            if(var3.name == null) {
-               class83.scriptStringStack[++class51.scriptStringStackSize - 1] = "";
-            } else {
-               class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var3.name;
-            }
-
-            return 1;
-         } else {
-            return 2;
-         }
+   static File method205(String var0) {
+      if(!class157.field2270) {
+         throw new RuntimeException("");
       } else {
-         int var4 = class83.intStack[--class83.intStackSize];
-         --var4;
-         if(var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
-            class83.scriptStringStack[++class51.scriptStringStackSize - 1] = var3.actions[var4];
+         File var1 = (File)class157.field2265.get(var0);
+         if(var1 != null) {
+            return var1;
          } else {
-            class83.scriptStringStack[++class51.scriptStringStackSize - 1] = "";
-         }
+            File var2 = new File(class157.field2268, var0);
+            RandomAccessFile var3 = null;
 
-         return 1;
-      }
-   }
+            try {
+               File var4 = new File(var2.getParent());
+               if(!var4.exists()) {
+                  throw new RuntimeException("");
+               } else {
+                  var3 = new RandomAccessFile(var2, "rw");
+                  int var5 = var3.read();
+                  var3.seek(0L);
+                  var3.write(var5);
+                  var3.seek(0L);
+                  var3.close();
+                  class157.field2265.put(var0, var2);
+                  return var2;
+               }
+            } catch (Exception var8) {
+               try {
+                  if(var3 != null) {
+                     var3.close();
+                     var3 = null;
+                  }
+               } catch (Exception var7) {
+                  ;
+               }
 
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1540152412"
-   )
-   static final int method168(int var0, int var1) {
-      int var2 = var1 * 57 + var0;
-      var2 ^= var2 << 13;
-      int var3 = var2 * (var2 * var2 * 15731 + 789221) + 1376312589 & Integer.MAX_VALUE;
-      return var3 >> 19 & 255;
-   }
-
-   @ObfuscatedName("iy")
-   @ObfuscatedSignature(
-      signature = "(LWidget;I)V",
-      garbageValue = "2117025756"
-   )
-   static void method169(Widget var0) {
-      if(var0.field2754 == Client.field1134) {
-         Client.field1135[var0.boundsIndex] = true;
-      }
-
-   }
-
-   @ObfuscatedName("jv")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;IB)V",
-      garbageValue = "111"
-   )
-   static void method170(Buffer var0, int var1) {
-      class3.method2(var0.payload, var1);
-      if(class155.field2268 != null) {
-         try {
-            class155.field2268.method2316(0L);
-            class155.field2268.method2321(var0.payload, var1, 24);
-         } catch (Exception var3) {
-            ;
+               throw new RuntimeException();
+            }
          }
       }
+   }
 
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-273128582"
+   )
+   public static final boolean method206() {
+      class50 var0 = class50.keyboard;
+      synchronized(class50.keyboard) {
+         if(class50.field633 == class50.field632) {
+            return false;
+         } else {
+            class82.field1337 = class50.field634[class50.field632];
+            class39.field535 = class50.field628[class50.field632];
+            class50.field632 = class50.field632 + 1 & 127;
+            return true;
+         }
+      }
    }
 
    class25(int var1, Coordinates var2) {
-      this.field364 = var1;
-      this.field363 = var2;
+      this.field374 = var1;
+      this.field379 = var2;
    }
 }

@@ -1,58 +1,73 @@
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hq")
+@ObfuscatedName("hw")
 public class class220 {
-   @ObfuscatedName("i")
+   @ObfuscatedName("jq")
    @ObfuscatedSignature(
-      signature = "(II)LNPCComposition;",
-      garbageValue = "1844346874"
+      signature = "(LBuffer;I)V",
+      garbageValue = "-1041240999"
    )
-   @Export("getNpcDefinition")
-   public static NPCComposition getNpcDefinition(int var0) {
-      NPCComposition var1 = (NPCComposition)NPCComposition.field3547.get((long)var0);
-      if(var1 != null) {
-         return var1;
+   static void method4084(Buffer var0) {
+      if(Client.field1108 != null) {
+         var0.putBytes(Client.field1108, 0, Client.field1108.length);
       } else {
-         byte[] var2 = NPCComposition.field3575.getConfigData(9, var0);
-         var1 = new NPCComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.method4647(new Buffer(var2));
+         byte[] var2 = new byte[24];
+
+         try {
+            class155.field2257.method2337(0L);
+            class155.field2257.method2347(var2);
+
+            int var3;
+            for(var3 = 0; var3 < 24 && var2[var3] == 0; ++var3) {
+               ;
+            }
+
+            if(var3 >= 24) {
+               throw new IOException();
+            }
+         } catch (Exception var6) {
+            for(int var4 = 0; var4 < 24; ++var4) {
+               var2[var4] = -1;
+            }
          }
 
-         var1.method4643();
-         NPCComposition.field3547.put(var1, (long)var0);
-         return var1;
+         var0.putBytes(var2, 0, var2.length);
       }
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("es")
    @ObfuscatedSignature(
-      signature = "([BIII)Ljava/lang/String;",
-      garbageValue = "306667014"
+      signature = "(IZZZI)LIndexData;",
+      garbageValue = "218144892"
    )
-   static String method4057(byte[] var0, int var1, int var2) {
-      StringBuilder var3 = new StringBuilder();
-
-      for(int var4 = var1; var4 < var1 + var2; var4 += 3) {
-         int var5 = var0[var4] & 255;
-         var3.append(class269.field3672[var5 >>> 2]);
-         if(var4 < var2 - 1) {
-            int var6 = var0[var4 + 1] & 255;
-            var3.append(class269.field3672[(var5 & 3) << 4 | var6 >>> 4]);
-            if(var4 < var2 - 2) {
-               int var7 = var0[var4 + 2] & 255;
-               var3.append(class269.field3672[(var6 & 15) << 2 | var7 >>> 6]).append(class269.field3672[var7 & 63]);
-            } else {
-               var3.append(class269.field3672[(var6 & 15) << 2]).append("=");
-            }
-         } else {
-            var3.append(class269.field3672[(var5 & 3) << 4]).append("==");
-         }
+   static IndexData method4085(int var0, boolean var1, boolean var2, boolean var3) {
+      IndexFile var4 = null;
+      if(class155.field2254 != null) {
+         var4 = new IndexFile(var0, class155.field2254, class29.field432[var0], 1000000);
       }
 
-      return var3.toString();
+      return new IndexData(var4, class54.field658, var0, var1, var2, var3);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "-428290227"
+   )
+   @Export("addChatMessage")
+   static void addChatMessage(int var0, String var1, String var2, String var3) {
+      ChatLineBuffer var4 = (ChatLineBuffer)class98.chatLineMap.get(Integer.valueOf(var0));
+      if(var4 == null) {
+         var4 = new ChatLineBuffer();
+         class98.chatLineMap.put(Integer.valueOf(var0), var4);
+      }
+
+      MessageNode var5 = var4.method1851(var0, var1, var2, var3);
+      class98.field1524.method3494(var5, (long)var5.id);
+      class98.field1525.method3680(var5);
+      Client.field932 = Client.field1110;
    }
 }

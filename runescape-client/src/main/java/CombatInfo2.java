@@ -4,177 +4,215 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("it")
+@ObfuscatedName("ip")
 @Implements("CombatInfo2")
 public class CombatInfo2 extends CacheableNode {
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1547642001
-   )
-   int field3361;
-   @ObfuscatedName("e")
-   public static NodeCache field3362;
-   @ObfuscatedName("v")
-   @Export("spriteCache")
-   public static NodeCache spriteCache;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -561918135
-   )
-   public int field3364;
-   @ObfuscatedName("c")
-   public static IndexDataBase field3365;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1654283003
+      intValue = 44212577
    )
-   public int field3366;
+   int field3364;
+   @ObfuscatedName("i")
+   public static NodeCache field3365;
+   @ObfuscatedName("j")
+   @Export("spriteCache")
+   public static NodeCache spriteCache;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1465010611
+      intValue = -883000509
    )
    public int field3367;
-   @ObfuscatedName("n")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 2114076103
+      intValue = 133754693
    )
    public int field3368;
-   @ObfuscatedName("a")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -130467439
+      intValue = 1442381863
    )
    public int field3369;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1370642371
+      intValue = 1078140419
    )
    public int field3370;
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1217782983
+      intValue = -1727769847
    )
-   int field3371;
-   @ObfuscatedName("k")
+   public int field3371;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1729546445
+      intValue = -1990109727
    )
    public int field3372;
-   @ObfuscatedName("j")
+   @ObfuscatedName("n")
+   public static IndexDataBase field3373;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1904694843
+      intValue = 1610620871
+   )
+   int field3374;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 83565071
    )
    @Export("healthScale")
    public int healthScale;
-   @ObfuscatedName("i")
-   public static IndexDataBase field3374;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 251308715
+   )
+   public int field3376;
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
-      garbageValue = "-1720103568"
+      garbageValue = "130460096"
    )
-   void method4397(Buffer var1) {
+   public void method4414(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4408(var1, var2);
+         this.method4415(var1, var2);
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(B)LSpritePixels;",
-      garbageValue = "-73"
+      signature = "(LBuffer;II)V",
+      garbageValue = "428180556"
    )
-   public SpritePixels method4399() {
-      if(this.field3361 < 0) {
-         return null;
-      } else {
-         SpritePixels var1 = (SpritePixels)spriteCache.get((long)this.field3361);
-         if(var1 != null) {
-            return var1;
-         } else {
-            var1 = GameEngine.method827(field3365, this.field3361, 0);
-            if(var1 != null) {
-               spriteCache.put(var1, (long)this.field3361);
-            }
-
-            return var1;
-         }
-      }
-   }
-
-   CombatInfo2() {
-      this.field3366 = 255;
-      this.field3367 = 255;
-      this.field3368 = -1;
-      this.field3369 = 1;
-      this.field3370 = 70;
-      this.field3361 = -1;
-      this.field3371 = -1;
-      this.healthScale = 30;
-      this.field3372 = 0;
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(B)LSpritePixels;",
-      garbageValue = "-78"
-   )
-   public SpritePixels method4403() {
-      if(this.field3371 < 0) {
-         return null;
-      } else {
-         SpritePixels var1 = (SpritePixels)spriteCache.get((long)this.field3371);
-         if(var1 != null) {
-            return var1;
-         } else {
-            var1 = GameEngine.method827(field3365, this.field3371, 0);
-            if(var1 != null) {
-               spriteCache.put(var1, (long)this.field3371);
-            }
-
-            return var1;
-         }
-      }
-   }
-
-   static {
-      field3362 = new NodeCache(64);
-      spriteCache = new NodeCache(64);
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;IS)V",
-      garbageValue = "-18379"
-   )
-   void method4408(Buffer var1, int var2) {
+   void method4415(Buffer var1, int var2) {
       if(var2 == 1) {
          var1.readUnsignedShort();
       } else if(var2 == 2) {
-         this.field3366 = var1.readUnsignedByte();
+         this.field3368 = var1.readUnsignedByte();
       } else if(var2 == 3) {
-         this.field3367 = var1.readUnsignedByte();
+         this.field3369 = var1.readUnsignedByte();
       } else if(var2 == 4) {
-         this.field3368 = 0;
+         this.field3371 = 0;
       } else if(var2 == 5) {
          this.field3370 = var1.readUnsignedShort();
       } else if(var2 == 6) {
          var1.readUnsignedByte();
       } else if(var2 == 7) {
-         this.field3361 = var1.method3156();
+         this.field3364 = var1.method3338();
       } else if(var2 == 8) {
-         this.field3371 = var1.method3156();
+         this.field3374 = var1.method3338();
       } else if(var2 == 11) {
-         this.field3368 = var1.readUnsignedShort();
+         this.field3371 = var1.readUnsignedShort();
       } else if(var2 == 14) {
          this.healthScale = var1.readUnsignedByte();
       } else if(var2 == 15) {
-         this.field3372 = var1.readUnsignedByte();
+         this.field3376 = var1.readUnsignedByte();
+      }
+
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(B)LSpritePixels;",
+      garbageValue = "-38"
+   )
+   public SpritePixels method4416() {
+      if(this.field3374 < 0) {
+         return null;
+      } else {
+         SpritePixels var1 = (SpritePixels)spriteCache.get((long)this.field3374);
+         if(var1 != null) {
+            return var1;
+         } else {
+            var1 = WallObject.method2876(class5.field40, this.field3374, 0);
+            if(var1 != null) {
+               spriteCache.put(var1, (long)this.field3374);
+            }
+
+            return var1;
+         }
+      }
+   }
+
+   public CombatInfo2() {
+      this.field3368 = 255;
+      this.field3369 = 255;
+      this.field3371 = -1;
+      this.field3372 = 1;
+      this.field3370 = 70;
+      this.field3364 = -1;
+      this.field3374 = -1;
+      this.healthScale = 30;
+      this.field3376 = 0;
+   }
+
+   static {
+      field3365 = new NodeCache(64);
+      spriteCache = new NodeCache(64);
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(I)LSpritePixels;",
+      garbageValue = "-1117458151"
+   )
+   public SpritePixels method4422() {
+      if(this.field3364 < 0) {
+         return null;
+      } else {
+         SpritePixels var1 = (SpritePixels)spriteCache.get((long)this.field3364);
+         if(var1 != null) {
+            return var1;
+         } else {
+            var1 = WallObject.method2876(class5.field40, this.field3364, 0);
+            if(var1 != null) {
+               spriteCache.put(var1, (long)this.field3364);
+            }
+
+            return var1;
+         }
+      }
+   }
+
+   @ObfuscatedName("fy")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1280051711"
+   )
+   static final void method4423() {
+      for(Projectile var0 = (Projectile)Client.projectiles.method3622(); var0 != null; var0 = (Projectile)Client.projectiles.method3608()) {
+         if(class92.plane == var0.floor && Client.gameCycle <= var0.field1460) {
+            if(Client.gameCycle >= var0.startTime) {
+               if(var0.interacting > 0) {
+                  NPC var1 = Client.cachedNPCs[var0.interacting - 1];
+                  if(var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
+                     var0.method1726(var1.x, var1.y, class181.method3424(var1.x, var1.y, var0.floor) - var0.field1473, Client.gameCycle);
+                  }
+               }
+
+               if(var0.interacting < 0) {
+                  int var2 = -var0.interacting - 1;
+                  Player var3;
+                  if(var2 == Client.localInteractingIndex) {
+                     var3 = class168.localPlayer;
+                  } else {
+                     var3 = Client.cachedPlayers[var2];
+                  }
+
+                  if(var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
+                     var0.method1726(var3.x, var3.y, class181.method3424(var3.x, var3.y, var0.floor) - var0.field1473, Client.gameCycle);
+                  }
+               }
+
+               var0.method1727(Client.field990);
+               class61.region.method2686(class92.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.field1456, -1, false);
+            }
+         } else {
+            var0.unlink();
+         }
       }
 
    }

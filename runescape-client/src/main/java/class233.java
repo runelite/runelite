@@ -1,21 +1,19 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hn")
+@ObfuscatedName("hh")
 public class class233 extends Node {
-   @ObfuscatedName("c")
-   byte[] field3198;
-   @ObfuscatedName("e")
-   IndexFile field3199;
-   @ObfuscatedName("v")
-   IndexData field3200;
-   @ObfuscatedName("cw")
-   static boolean field3202;
-   @ObfuscatedName("y")
-   public static int[] field3205;
+   @ObfuscatedName("p")
+   public byte[] field3200;
    @ObfuscatedName("i")
+   public IndexFile field3201;
+   @ObfuscatedName("j")
+   public IndexData field3202;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -2022724467
+      intValue = 343319793
    )
-   int field3207;
+   int field3204;
+   @ObfuscatedName("dt")
+   static IndexData field3207;
 }

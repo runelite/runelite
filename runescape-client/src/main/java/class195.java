@@ -1,51 +1,51 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gn")
+@ObfuscatedName("ge")
 public class class195 {
-   @ObfuscatedName("i")
-   class196 field2486;
-   @ObfuscatedName("c")
-   class196 field2487;
+   @ObfuscatedName("n")
+   class196 field2488;
+   @ObfuscatedName("p")
+   class196 field2489;
 
-   @ObfuscatedName("c")
-   public class196 method3603() {
-      class196 var1 = this.field2486.field2489;
-      if(var1 == this.field2486) {
-         this.field2487 = null;
+   @ObfuscatedName("n")
+   public void method3645(class196 var1) {
+      if(var1.field2490 != null) {
+         var1.method3655();
+      }
+
+      var1.field2490 = this.field2488.field2490;
+      var1.field2491 = this.field2488;
+      var1.field2490.field2491 = var1;
+      var1.field2491.field2490 = var1;
+   }
+
+   @ObfuscatedName("p")
+   public class196 method3646() {
+      class196 var1 = this.field2488.field2491;
+      if(var1 == this.field2488) {
+         this.field2489 = null;
          return null;
       } else {
-         this.field2487 = var1.field2489;
+         this.field2489 = var1.field2491;
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("i")
+   public class196 method3649() {
+      class196 var1 = this.field2489;
+      if(var1 == this.field2488) {
+         this.field2489 = null;
+         return null;
+      } else {
+         this.field2489 = var1.field2491;
          return var1;
       }
    }
 
    public class195() {
-      this.field2486 = new class196();
-      this.field2486.field2489 = this.field2486;
-      this.field2486.field2488 = this.field2486;
-   }
-
-   @ObfuscatedName("e")
-   public class196 method3605() {
-      class196 var1 = this.field2487;
-      if(var1 == this.field2486) {
-         this.field2487 = null;
-         return null;
-      } else {
-         this.field2487 = var1.field2489;
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("i")
-   public void method3608(class196 var1) {
-      if(var1.field2488 != null) {
-         var1.method3615();
-      }
-
-      var1.field2488 = this.field2486.field2488;
-      var1.field2489 = this.field2486;
-      var1.field2488.field2489 = var1;
-      var1.field2489.field2488 = var1;
+      this.field2488 = new class196();
+      this.field2488.field2491 = this.field2488;
+      this.field2488.field2490 = this.field2488;
    }
 }

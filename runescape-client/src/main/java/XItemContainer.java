@@ -1,29 +1,39 @@
+import java.io.File;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bt")
+@ObfuscatedName("bl")
 @Implements("XItemContainer")
 public class XItemContainer extends Node {
-   @ObfuscatedName("c")
-   @Export("itemIds")
-   int[] itemIds;
-   @ObfuscatedName("e")
+   @ObfuscatedName("aq")
+   @Export("authCode")
+   static String authCode;
+   @ObfuscatedName("gq")
+   @ObfuscatedGetter(
+      intValue = 487221659
+   )
+   @Export("cameraY")
+   static int cameraY;
+   @ObfuscatedName("i")
    @Export("stackSizes")
    int[] stackSizes;
-   @ObfuscatedName("dc")
+   @ObfuscatedName("cm")
+   static IndexData field765;
+   @ObfuscatedName("j")
+   static File field767;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 523801497
+      intValue = -1113993497
    )
-   static int field790;
-   @ObfuscatedName("kh")
-   static Widget field791;
-   @ObfuscatedName("fk")
-   static int[] field794;
-   @ObfuscatedName("i")
+   static int field768;
+   @ObfuscatedName("n")
    @Export("itemContainers")
    static XHashTable itemContainers;
+   @ObfuscatedName("p")
+   @Export("itemIds")
+   int[] itemIds;
 
    static {
       itemContainers = new XHashTable(32);

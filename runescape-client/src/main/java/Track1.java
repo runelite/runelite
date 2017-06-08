@@ -1,13 +1,13 @@
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hj")
+@ObfuscatedName("hb")
 @Implements("Track1")
 public class Track1 extends Node {
-   @ObfuscatedName("i")
-   XHashTable field2598;
-   @ObfuscatedName("c")
-   byte[] field2599;
+   @ObfuscatedName("p")
+   byte[] field2602;
+   @ObfuscatedName("n")
+   XHashTable field2603;
 
    Track1(Buffer var1) {
       var1.offset = var1.payload.length - 3;
@@ -168,8 +168,8 @@ public class Track1 extends Node {
       var1.offset += var25;
       int var50 = var1.offset;
       var1.offset += var5 * 3;
-      this.field2599 = new byte[var4];
-      Buffer var51 = new Buffer(this.field2599);
+      this.field2602 = new byte[var4];
+      Buffer var51 = new Buffer(this.field2602);
       var51.putInt(1297377380);
       var51.putInt(6);
       var51.putShort(var2 > 1?1:0);
@@ -186,7 +186,7 @@ public class Track1 extends Node {
       int[] var59 = new int[128];
       var28 = 0;
 
-      label352:
+      label363:
       for(int var60 = 0; var60 < var2; ++var60) {
          var51.putInt(1297379947);
          var51.offset += 4;
@@ -207,8 +207,8 @@ public class Track1 extends Node {
 
                   var51.putByte(47);
                   var51.putByte(0);
-                  var51.method3151(var51.offset - var61);
-                  continue label352;
+                  var51.method3154(var51.offset - var61);
+                  continue label363;
                }
 
                if(var64 == 23) {
@@ -325,48 +325,42 @@ public class Track1 extends Node {
 
    }
 
-   @ObfuscatedName("e")
-   void method3893() {
-      this.field2598 = null;
-   }
-
    @ObfuscatedName("i")
-   public static Track1 method3894(IndexDataBase var0, int var1, int var2) {
-      byte[] var3 = var0.getConfigData(var1, var2);
-      return var3 == null?null:new Track1(new Buffer(var3));
+   void method3930() {
+      this.field2603 = null;
    }
 
-   @ObfuscatedName("c")
-   void method3901() {
-      if(this.field2598 == null) {
-         this.field2598 = new XHashTable(16);
+   @ObfuscatedName("p")
+   void method3931() {
+      if(this.field2603 == null) {
+         this.field2603 = new XHashTable(16);
          int[] var1 = new int[16];
          int[] var2 = new int[16];
          var2[9] = 128;
          var1[9] = 128;
-         class206 var4 = new class206(this.field2599);
-         int var5 = var4.method3796();
+         class206 var4 = new class206(this.field2602);
+         int var5 = var4.method3848();
 
          int var6;
          for(var6 = 0; var6 < var5; ++var6) {
-            var4.method3834(var6);
-            var4.method3800(var6);
-            var4.method3817(var6);
+            var4.method3872(var6);
+            var4.method3850(var6);
+            var4.method3886(var6);
          }
 
-         label81:
+         label78:
          do {
             while(true) {
-               var6 = var4.method3805();
-               int var7 = var4.field2569[var6];
+               var6 = var4.method3856();
+               int var7 = var4.field2576[var6];
 
-               while(var4.field2569[var6] == var7) {
-                  var4.method3834(var6);
-                  int var8 = var4.method3801(var6);
+               while(var4.field2576[var6] == var7) {
+                  var4.method3872(var6);
+                  int var8 = var4.method3854(var6);
                   if(var8 == 1) {
-                     var4.method3799();
-                     var4.method3817(var6);
-                     continue label81;
+                     var4.method3895();
+                     var4.method3886(var6);
+                     continue label78;
                   }
 
                   int var9 = var8 & 240;
@@ -398,22 +392,28 @@ public class Track1 extends Node {
                      var12 = var8 >> 16 & 127;
                      if(var12 > 0) {
                         int var13 = var2[var10];
-                        class199 var14 = (class199)this.field2598.method3520((long)var13);
+                        class199 var14 = (class199)this.field2603.method3545((long)var13);
                         if(var14 == null) {
                            var14 = new class199(new byte[128]);
-                           this.field2598.method3516(var14, (long)var13);
+                           this.field2603.method3546(var14, (long)var13);
                         }
 
-                        var14.field2495[var11] = 1;
+                        var14.field2497[var11] = 1;
                      }
                   }
 
-                  var4.method3800(var6);
-                  var4.method3817(var6);
+                  var4.method3850(var6);
+                  var4.method3886(var6);
                }
             }
-         } while(!var4.method3806());
+         } while(!var4.method3857());
 
       }
+   }
+
+   @ObfuscatedName("n")
+   public static Track1 method3934(IndexDataBase var0, int var1, int var2) {
+      byte[] var3 = var0.getConfigData(var1, var2);
+      return var3 == null?null:new Track1(new Buffer(var3));
    }
 }

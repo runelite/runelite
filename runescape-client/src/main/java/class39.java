@@ -1,83 +1,100 @@
-import java.applet.Applet;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("as")
+@ObfuscatedName("am")
 public class class39 {
-   @ObfuscatedName("c")
-   public final Coordinates field525;
-   @ObfuscatedName("e")
-   public final Coordinates field526;
-   @ObfuscatedName("v")
+   @ObfuscatedName("p")
+   public final Coordinates field527;
+   @ObfuscatedName("i")
+   public final Coordinates field529;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 597031569
+      intValue = 776304463
    )
-   final int field527;
-   @ObfuscatedName("b")
+   final int field530;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 428439963
-   )
-   final int field528;
-   @ObfuscatedName("y")
-   final class33 field529;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -817716847
-   )
-   int field530;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 1047073313
+      intValue = 292657709
    )
    int field531;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -900822885
-   )
-   public final int field536;
-
+   @ObfuscatedName("m")
+   final class33 field532;
    @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "234532059"
+   @ObfuscatedGetter(
+      intValue = 1562409383
    )
-   boolean method521(int var1, int var2) {
-      Area var3 = class223.field2839[this.field536];
-      switch(var3.field3299.field3541) {
-      case 0:
-         if(var1 >= this.field530 - this.field527 / 2 && var1 <= this.field530 + this.field527 / 2) {
-            break;
-         }
+   int field533;
+   @ObfuscatedName("cn")
+   public static char field535;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1693354327
+   )
+   final int field537;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1333333283
+   )
+   public final int field538;
 
-         return false;
+   class39(int var1, Coordinates var2, Coordinates var3, class33 var4) {
+      this.field538 = var1;
+      this.field529 = var2;
+      this.field527 = var3;
+      this.field532 = var4;
+      Area var5 = World.field1300[this.field538];
+      SpritePixels var6 = var5.method4325(false);
+      if(var6 != null) {
+         this.field530 = var6.width;
+         this.field537 = var6.height;
+      } else {
+         this.field530 = 0;
+         this.field537 = 0;
+      }
+
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(IIB)Z",
+      garbageValue = "-42"
+   )
+   boolean method530(int var1, int var2) {
+      Area var3 = World.field1300[this.field538];
+      switch(var3.field3309.field3554) {
+      case 0:
+         if(var1 < this.field533 || var1 >= this.field530 + this.field533) {
+            return false;
+         }
+         break;
       case 1:
-         if(var1 > this.field530 - this.field527 && var1 <= this.field530) {
+         if(var1 >= this.field533 - this.field530 / 2 && var1 <= this.field533 + this.field530 / 2) {
             break;
          }
 
          return false;
       case 2:
-         if(var1 < this.field530 || var1 >= this.field530 + this.field527) {
+         if(var1 <= this.field533 - this.field530 || var1 > this.field533) {
             return false;
          }
       }
 
-      switch(var3.field3306.field3274) {
+      switch(var3.field3310.field3273) {
       case 0:
-         if(var2 > this.field531 - this.field528 && var2 <= this.field531) {
+         if(var2 >= this.field531 && var2 < this.field537 + this.field531) {
             break;
          }
 
          return false;
       case 1:
-         if(var2 >= this.field531 && var2 < this.field531 + this.field528) {
+         if(var2 >= this.field531 - this.field537 / 2 && var2 <= this.field537 / 2 + this.field531) {
             break;
          }
 
          return false;
       case 2:
-         if(var2 < this.field531 - this.field528 / 2 || var2 > this.field531 + this.field528 / 2) {
+         if(var2 <= this.field531 - this.field537 || var2 > this.field531) {
             return false;
          }
       }
@@ -88,93 +105,56 @@ public class class39 {
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(III)Z",
-      garbageValue = "1423860356"
+      garbageValue = "-1984636900"
    )
-   boolean method522(int var1, int var2) {
-      return this.method521(var1, var2)?true:this.method523(var1, var2);
+   boolean method531(int var1, int var2) {
+      return this.field532 == null?false:(var1 >= this.field533 - this.field532.field472 / 2 && var1 <= this.field532.field472 / 2 + this.field533?var2 >= this.field531 && var2 <= this.field532.field473 + this.field531:false);
    }
 
-   class39(int var1, Coordinates var2, Coordinates var3, class33 var4) {
-      this.field536 = var1;
-      this.field526 = var2;
-      this.field525 = var3;
-      this.field529 = var4;
-      Area var5 = class223.field2839[this.field536];
-      SpritePixels var6 = var5.method4313(false);
-      if(var6 != null) {
-         this.field527 = var6.width;
-         this.field528 = var6.height;
-      } else {
-         this.field527 = 0;
-         this.field528 = 0;
-      }
-
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(III)Z",
+      garbageValue = "1904540805"
+   )
+   boolean method540(int var1, int var2) {
+      return this.method530(var1, var2)?true:this.method531(var1, var2);
    }
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "-1975578765"
+      signature = "(IIIII)I",
+      garbageValue = "1035242778"
    )
-   boolean method523(int var1, int var2) {
-      return this.field529 == null?false:(var1 >= this.field530 - this.field529.field469 / 2 && var1 <= this.field530 + this.field529.field469 / 2?var2 >= this.field531 && var2 <= this.field531 + this.field529.field468:false);
+   static final int method541(int var0, int var1, int var2, int var3) {
+      int var4 = 65536 - class136.COSINE[var2 * 1024 / var3] >> 1;
+      return (var1 * var4 >> 16) + ((65536 - var4) * var0 >> 16);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("jm")
    @ObfuscatedSignature(
-      signature = "(II)Lclass251;",
-      garbageValue = "-45488289"
+      signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
+      garbageValue = "650652029"
    )
-   public static class251 method528(int var0) {
-      class251 var1 = (class251)class251.field3384.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class251.field3383.getConfigData(11, var0);
-         var1 = new class251();
-         if(var2 != null) {
-            var1.method4437(new Buffer(var2));
-         }
-
-         var1.method4436();
-         class251.field3384.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Ljava/applet/Applet;Ljava/lang/String;I)V",
-      garbageValue = "1499760332"
-   )
-   public static void method531(Applet var0, String var1) {
-      class56.field694 = var0;
-      class56.field690 = var1;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(LPacketBuffer;II)V",
-      garbageValue = "-1079440964"
-   )
-   static final void method532(PacketBuffer var0, int var1) {
-      int var2 = var0.offset;
-      class96.field1514 = 0;
-      class71.method1096(var0);
-
-      for(int var3 = 0; var3 < class96.field1514; ++var3) {
-         int var4 = class96.field1517[var3];
-         Player var5 = Client.cachedPlayers[var4];
-         int var6 = var0.readUnsignedByte();
-         if((var6 & 8) != 0) {
-            var6 += var0.readUnsignedByte() << 8;
-         }
-
-         class56.method805(var0, var4, var5, var6);
+   static String method542(String var0, boolean var1) {
+      String var2 = var1?"https://":"http://";
+      if(Client.field915 == 1) {
+         var0 = var0 + "-wtrc";
+      } else if(Client.field915 == 2) {
+         var0 = var0 + "-wtqa";
+      } else if(Client.field915 == 3) {
+         var0 = var0 + "-wtwip";
+      } else if(Client.field915 == 5) {
+         var0 = var0 + "-wti";
+      } else if(Client.field915 == 4) {
+         var0 = "local";
       }
 
-      if(var1 != var0.offset - var2) {
-         throw new RuntimeException(var0.offset - var2 + " " + var1);
+      String var3 = "";
+      if(class47.field598 != null) {
+         var3 = "/p=" + class47.field598;
       }
+
+      String var4 = "runescape.com";
+      return var2 + var0 + "." + var4 + "/l=" + Client.field919 + "/a=" + class204.field2548 + var3 + "/";
    }
 }

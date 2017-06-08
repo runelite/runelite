@@ -6,63 +6,91 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 import net.runelite.mapping.Replace;
 
-@ObfuscatedName("bs")
+@ObfuscatedName("bd")
 @Implements("RSCanvas")
 @Replace("net.runelite.inject.RSCanvas")
 public final class RSCanvas extends Canvas {
-   @ObfuscatedName("i")
-   Component field676;
+   @ObfuscatedName("n")
+   Component field654;
+   @ObfuscatedName("cr")
+   static IndexData field655;
 
-   public final void update(Graphics var1) {
-      this.field676.update(var1);
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;I)V",
+      garbageValue = "1532548489"
+   )
+   public static void method762(IndexDataBase var0) {
+      class244.field3324 = var0;
    }
 
-   public final void paint(Graphics var1) {
-      this.field676.paint(var1);
+   public final void update(Graphics var1) {
+      this.field654.update(var1);
    }
 
    RSCanvas(Component var1) {
-      this.field676 = var1;
+      this.field654 = var1;
    }
 
-   @ObfuscatedName("y")
+   public final void paint(Graphics var1) {
+      this.field654.paint(var1);
+   }
+
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(IZI)Ljava/lang/String;",
-      garbageValue = "-1179501281"
+      signature = "(ILScript;ZS)I",
+      garbageValue = "17077"
    )
-   public static String method774(int var0, boolean var1) {
-      if(var1 && var0 >= 0) {
-         int var3 = var0;
-         String var2;
-         if(var1 && var0 >= 0) {
-            int var4 = 2;
-
-            for(int var5 = var0 / 10; var5 != 0; ++var4) {
-               var5 /= 10;
+   static int method771(int var0, Script var1, boolean var2) {
+      Widget var3 = class177.method3390(class83.intStack[--class165.intStackSize]);
+      if(var0 == 2800) {
+         class83.intStack[++class165.intStackSize - 1] = GameEngine.method844(class251.method4472(var3));
+         return 1;
+      } else if(var0 != 2801) {
+         if(var0 == 2802) {
+            if(var3.name == null) {
+               class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = "";
+            } else {
+               class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = var3.name;
             }
 
-            char[] var6 = new char[var4];
-            var6[0] = 43;
-
-            for(int var7 = var4 - 1; var7 > 0; --var7) {
-               int var8 = var3;
-               var3 /= 10;
-               int var9 = var8 - var3 * 10;
-               if(var9 >= 10) {
-                  var6[var7] = (char)(var9 + 87);
-               } else {
-                  var6[var7] = (char)(var9 + 48);
-               }
-            }
-
-            var2 = new String(var6);
+            return 1;
          } else {
-            var2 = Integer.toString(var0, 10);
+            return 2;
+         }
+      } else {
+         int var4 = class83.intStack[--class165.intStackSize];
+         --var4;
+         if(var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
+            class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = var3.actions[var4];
+         } else {
+            class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = "";
          }
 
-         return var2;
+         return 1;
+      }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "([BZI)Ljava/lang/Object;",
+      garbageValue = "-1314183554"
+   )
+   public static Object method772(byte[] var0, boolean var1) {
+      if(var0 == null) {
+         return null;
       } else {
-         return Integer.toString(var0);
+         if(var0.length > 136 && !class176.field2419) {
+            try {
+               class171 var2 = new class171();
+               var2.vmethod3374(var0);
+               return var2;
+            } catch (Throwable var3) {
+               class176.field2419 = true;
+            }
+         }
+
+         return var0;
       }
    }
 }

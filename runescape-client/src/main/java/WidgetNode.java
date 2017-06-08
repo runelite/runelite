@@ -1,132 +1,136 @@
+import java.io.File;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bw")
+@ObfuscatedName("by")
 @Implements("WidgetNode")
 public class WidgetNode extends Node {
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 1833238245
-   )
-   int field840;
-   @ObfuscatedName("cr")
-   static IndexData field841;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1938151357
-   )
-   static int field842;
-   @ObfuscatedName("z")
-   public static Font field844;
-   @ObfuscatedName("e")
-   boolean field845;
    @ObfuscatedName("i")
+   boolean field815;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -790644279
+      intValue = -1148336583
+   )
+   int field816;
+   @ObfuscatedName("ex")
+   static Font field817;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1299048029
    )
    @Export("id")
    int id;
+   @ObfuscatedName("j")
+   static ModIcon field820;
 
-   @ObfuscatedName("fn")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "57"
+      signature = "(II)Lclass243;",
+      garbageValue = "-1672255627"
    )
-   static final void method1084() {
-      if(FaceNormal.field2155 != null) {
-         FaceNormal.field2155.method2012();
-      }
-
-      if(class11.field267 != null) {
-         class11.field267.method2012();
-      }
-
-   }
-
-   @ObfuscatedName("gk")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "1903609966"
-   )
-   static final void method1085(boolean var0) {
-      while(true) {
-         if(Client.secretPacketBuffer2.method3392(Client.packetLength) >= 27) {
-            int var1 = Client.secretPacketBuffer2.method3397(15);
-            if(var1 != 32767) {
-               boolean var2 = false;
-               if(Client.cachedNPCs[var1] == null) {
-                  Client.cachedNPCs[var1] = new NPC();
-                  var2 = true;
-               }
-
-               NPC var3 = Client.cachedNPCs[var1];
-               Client.field950[++Client.field968 - 1] = var1;
-               var3.field1276 = Client.gameCycle;
-               int var4 = Client.secretPacketBuffer2.method3397(1);
-               if(var4 == 1) {
-                  Client.field971[++Client.field970 - 1] = var1;
-               }
-
-               int var5;
-               if(var0) {
-                  var5 = Client.secretPacketBuffer2.method3397(8);
-                  if(var5 > 127) {
-                     var5 -= 256;
-                  }
-               } else {
-                  var5 = Client.secretPacketBuffer2.method3397(5);
-                  if(var5 > 15) {
-                     var5 -= 32;
-                  }
-               }
-
-               int var6 = Client.secretPacketBuffer2.method3397(1);
-               int var7 = Client.field1058[Client.secretPacketBuffer2.method3397(3)];
-               if(var2) {
-                  var3.field1259 = var3.angle = var7;
-               }
-
-               var3.composition = class220.getNpcDefinition(Client.secretPacketBuffer2.method3397(14));
-               int var8;
-               if(var0) {
-                  var8 = Client.secretPacketBuffer2.method3397(8);
-                  if(var8 > 127) {
-                     var8 -= 256;
-                  }
-               } else {
-                  var8 = Client.secretPacketBuffer2.method3397(5);
-                  if(var8 > 15) {
-                     var8 -= 32;
-                  }
-               }
-
-               var3.field1268 = var3.composition.field3577;
-               var3.field1295 = var3.composition.field3574;
-               if(var3.field1295 == 0) {
-                  var3.angle = 0;
-               }
-
-               var3.field1242 = var3.composition.field3557;
-               var3.field1299 = var3.composition.field3578;
-               var3.field1288 = var3.composition.field3560;
-               var3.field1253 = var3.composition.field3545;
-               var3.idlePoseAnimation = var3.composition.field3550;
-               var3.field1248 = var3.composition.field3555;
-               var3.field1249 = var3.composition.field3556;
-               var3.method1683(World.localPlayer.pathX[0] + var8, var5 + World.localPlayer.pathY[0], var6 == 1);
-               continue;
-            }
+   public static class243 method1065(int var0) {
+      class243 var1 = (class243)class243.field3316.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class243.field3318.getConfigData(19, var0);
+         var1 = new class243();
+         if(var2 != null) {
+            var1.method4342(new Buffer(var2));
          }
 
-         Client.secretPacketBuffer2.method3391();
-         return;
+         class243.field3316.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Ljava/io/File;ZI)Z",
+      garbageValue = "2138522478"
+   )
+   static boolean method1066(File var0, boolean var1) {
+      try {
+         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
+         int var3 = var2.read();
+         var2.seek(0L);
+         var2.write(var3);
+         var2.seek(0L);
+         var2.close();
+         if(var1) {
+            var0.delete();
+         }
+
+         return true;
+      } catch (Exception var4) {
+         return false;
       }
    }
 
    WidgetNode() {
-      this.field845 = false;
+      this.field815 = false;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(LModel;IIIII)V",
+      garbageValue = "-128367635"
+   )
+   public static final void method1067(Model var0, int var1, int var2, int var3, int var4) {
+      class7.field236.method3574(new class10(var0, var1, var2, var3, var4));
+   }
+
+   @ObfuscatedName("is")
+   @ObfuscatedSignature(
+      signature = "(LWidget;IIB)V",
+      garbageValue = "-73"
+   )
+   static void method1068(Widget var0, int var1, int var2) {
+      if(var0.field2681 == 0) {
+         var0.relativeX = var0.originalX;
+      } else if(var0.field2681 == 1) {
+         var0.relativeX = (var1 - var0.width) / 2 + var0.originalX;
+      } else if(var0.field2681 == 2) {
+         var0.relativeX = var1 - var0.width - var0.originalX;
+      } else if(var0.field2681 == 3) {
+         var0.relativeX = var0.originalX * var1 >> 14;
+      } else if(var0.field2681 == 4) {
+         var0.relativeX = (var1 - var0.width) / 2 + (var1 * var0.originalX >> 14);
+      } else {
+         var0.relativeX = var1 - var0.width - (var0.originalX * var1 >> 14);
+      }
+
+      if(var0.field2777 == 0) {
+         var0.relativeY = var0.originalY;
+      } else if(var0.field2777 == 1) {
+         var0.relativeY = var0.originalY + (var2 - var0.height) / 2;
+      } else if(var0.field2777 == 2) {
+         var0.relativeY = var2 - var0.height - var0.originalY;
+      } else if(var0.field2777 == 3) {
+         var0.relativeY = var2 * var0.originalY >> 14;
+      } else if(var0.field2777 == 4) {
+         var0.relativeY = (var2 - var0.height) / 2 + (var2 * var0.originalY >> 14);
+      } else {
+         var0.relativeY = var2 - var0.height - (var0.originalY * var2 >> 14);
+      }
+
+      if(Client.field1086 && var0.type == 0) {
+         if(var0.relativeX < 0) {
+            var0.relativeX = 0;
+         } else if(var0.relativeX + var0.width > var1) {
+            var0.relativeX = var1 - var0.width;
+         }
+
+         if(var0.relativeY < 0) {
+            var0.relativeY = 0;
+         } else if(var0.height + var0.relativeY > var2) {
+            var0.relativeY = var2 - var0.height;
+         }
+      }
+
    }
 }

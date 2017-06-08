@@ -1,89 +1,82 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ap")
+@ObfuscatedName("ah")
 public class class37 {
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -41127975
-   )
-   public static int field512;
+   @ObfuscatedName("x")
+   static Widget field515;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("id")
    @ObfuscatedSignature(
-      signature = "(BB)C",
-      garbageValue = "0"
+      signature = "(LWidget;IIIIIII)V",
+      garbageValue = "-1283947101"
    )
-   public static char method486(byte var0) {
-      int var1 = var0 & 255;
-      if(var1 == 0) {
-         throw new IllegalArgumentException("");
+   static final void method496(Widget var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      if(Client.field995) {
+         Client.field912 = 32;
       } else {
-         if(var1 >= 128 && var1 < 160) {
-            char var2 = class266.field3661[var1 - 128];
-            if(var2 == 0) {
-               var2 = 63;
+         Client.field912 = 0;
+      }
+
+      Client.field995 = false;
+      int var7;
+      if(class59.field716 == 1 || !ItemLayer.field1798 && class59.field716 == 4) {
+         if(var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
+            var0.scrollY -= 4;
+            CombatInfo1.method1515(var0);
+         } else if(var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
+            var0.scrollY += 4;
+            CombatInfo1.method1515(var0);
+         } else if(var5 >= var1 - Client.field912 && var5 < var1 + 16 + Client.field912 && var6 >= var2 + 16 && var6 < var2 + var3 - 16) {
+            var7 = (var3 - 32) * var3 / var4;
+            if(var7 < 8) {
+               var7 = 8;
             }
 
-            var1 = var2;
+            int var8 = var6 - var2 - 16 - var7 / 2;
+            int var9 = var3 - 32 - var7;
+            var0.scrollY = var8 * (var4 - var3) / var9;
+            CombatInfo1.method1515(var0);
+            Client.field995 = true;
          }
-
-         return (char)var1;
       }
+
+      if(Client.field940 != 0) {
+         var7 = var0.width;
+         if(var5 >= var1 - var7 && var6 >= var2 && var5 < var1 + 16 && var6 <= var3 + var2) {
+            var0.scrollY += Client.field940 * 45;
+            CombatInfo1.method1515(var0);
+         }
+      }
+
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("fv")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-26"
+      signature = "(LPlayer;III)V",
+      garbageValue = "1386355975"
    )
-   public static void method487(int var0) {
-      if(var0 != -1) {
-         if(Widget.validInterfaces[var0]) {
-            Widget.field2686.method4122(var0);
-            if(CombatInfo1.widgets[var0] != null) {
-               boolean var1 = true;
-
-               for(int var2 = 0; var2 < CombatInfo1.widgets[var0].length; ++var2) {
-                  if(CombatInfo1.widgets[var0][var2] != null) {
-                     if(CombatInfo1.widgets[var0][var2].type != 2) {
-                        CombatInfo1.widgets[var0][var2] = null;
-                     } else {
-                        var1 = false;
-                     }
-                  }
-               }
-
-               if(var1) {
-                  CombatInfo1.widgets[var0] = null;
-               }
-
-               Widget.validInterfaces[var0] = false;
-            }
-         }
-      }
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(II)LFloorUnderlayDefinition;",
-      garbageValue = "-1496318055"
-   )
-   public static FloorUnderlayDefinition method488(int var0) {
-      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.field3338.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = FloorUnderlayDefinition.field3345.getConfigData(1, var0);
-         var1 = new FloorUnderlayDefinition();
-         if(var2 != null) {
-            var1.method4353(new Buffer(var2), var0);
+   static void method499(Player var0, int var1, int var2) {
+      if(var1 == var0.animation && var1 != -1) {
+         int var3 = class169.getAnimation(var1).replyMode;
+         if(var3 == 1) {
+            var0.actionFrame = 0;
+            var0.field1260 = 0;
+            var0.actionAnimationDisable = var2;
+            var0.field1228 = 0;
          }
 
-         var1.method4352();
-         FloorUnderlayDefinition.field3338.put(var1, (long)var0);
-         return var1;
+         if(var3 == 2) {
+            var0.field1228 = 0;
+         }
+      } else if(var1 == -1 || var0.animation == -1 || class169.getAnimation(var1).forcedPriority >= class169.getAnimation(var0.animation).forcedPriority) {
+         var0.animation = var1;
+         var0.actionFrame = 0;
+         var0.field1260 = 0;
+         var0.actionAnimationDisable = var2;
+         var0.field1228 = 0;
+         var0.field1285 = var0.field1280;
       }
+
    }
 }

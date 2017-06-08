@@ -1,108 +1,104 @@
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("il")
+@ObfuscatedName("ii")
 public class class241 extends CacheableNode {
+   @ObfuscatedName("ez")
+   static Font field3288;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 2107558689
+   )
+   public static int field3289;
    @ObfuscatedName("i")
-   static IndexDataBase field3282;
-   @ObfuscatedName("e")
-   public static NodeCache field3284;
-   @ObfuscatedName("v")
+   public static NodeCache field3290;
+   @ObfuscatedName("n")
+   public static IndexDataBase field3291;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1701171289
+      intValue = -2082064457
    )
-   public int field3285;
-   @ObfuscatedName("z")
-   public static class103 field3287;
+   public int field3292;
    @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 1337628191
-   )
-   public static int field3288;
+   public static int[] field3293;
 
-   class241() {
-      this.field3285 = 0;
-   }
-
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(LBuffer;IB)V",
-      garbageValue = "63"
+      signature = "(LBuffer;II)V",
+      garbageValue = "-814824984"
    )
-   void method4282(Buffer var1, int var2) {
+   void method4300(Buffer var1, int var2) {
       if(var2 == 5) {
-         this.field3285 = var1.readUnsignedShort();
+         this.field3292 = var1.readUnsignedShort();
       }
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(LBuffer;S)V",
-      garbageValue = "30026"
+      signature = "(LBuffer;B)V",
+      garbageValue = "-88"
    )
-   void method4291(Buffer var1) {
+   void method4301(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4282(var1, var2);
+         this.method4300(var1, var2);
       }
    }
 
-   @ObfuscatedName("af")
-   @ObfuscatedSignature(
-      signature = "(Lclass154;IIB)Lclass109;",
-      garbageValue = "-33"
-   )
-   public static final class109 method4293(class154 var0, int var1, int var2) {
-      if(class109.field1640 == 0) {
-         throw new IllegalStateException();
-      } else if(var1 >= 0 && var1 < 2) {
-         if(var2 < 256) {
-            var2 = 256;
-         }
-
-         try {
-            class109 var3 = field3287.vmethod1916();
-            var3.field1641 = new int[256 * (class275.field3732?2:1)];
-            var3.field1646 = var2;
-            var3.vmethod2019();
-            var3.field1649 = (var2 & -1024) + 1024;
-            if(var3.field1649 > 16384) {
-               var3.field1649 = 16384;
-            }
-
-            var3.vmethod2020(var3.field1649);
-            if(WorldMapType2.field522 > 0 && class109.field1654 == null) {
-               class109.field1654 = new class111();
-               class109.field1639 = Executors.newScheduledThreadPool(1);
-               class109.field1639.scheduleAtFixedRate(class109.field1654, 0L, 10L, TimeUnit.MILLISECONDS);
-            }
-
-            if(class109.field1654 != null) {
-               if(class109.field1654.field1675[var1] != null) {
-                  throw new IllegalArgumentException();
-               }
-
-               class109.field1654.field1675[var1] = var3;
-            }
-
-            return var3;
-         } catch (Throwable var4) {
-            return new class109();
-         }
-      } else {
-         throw new IllegalArgumentException();
-      }
+   class241() {
+      this.field3292 = 0;
    }
 
    static {
-      field3284 = new NodeCache(64);
+      field3290 = new NodeCache(64);
+   }
+
+   @ObfuscatedName("ib")
+   @ObfuscatedSignature(
+      signature = "(LWidget;I)Z",
+      garbageValue = "-805356056"
+   )
+   static final boolean method4308(Widget var0) {
+      int var1 = var0.contentType;
+      if(var1 == 205) {
+         Client.field966 = 250;
+         return true;
+      } else {
+         int var2;
+         int var3;
+         if(var1 >= 300 && var1 <= 313) {
+            var2 = (var1 - 300) / 2;
+            var3 = var1 & 1;
+            Client.field1188.method3973(var2, var3 == 1);
+         }
+
+         if(var1 >= 314 && var1 <= 323) {
+            var2 = (var1 - 314) / 2;
+            var3 = var1 & 1;
+            Client.field1188.method3986(var2, var3 == 1);
+         }
+
+         if(var1 == 324) {
+            Client.field1188.method3975(false);
+         }
+
+         if(var1 == 325) {
+            Client.field1188.method3975(true);
+         }
+
+         if(var1 == 326) {
+            Client.secretPacketBuffer1.putOpcode(146);
+            Client.field1188.method3976(Client.secretPacketBuffer1);
+            return true;
+         } else {
+            return false;
+         }
+      }
    }
 }

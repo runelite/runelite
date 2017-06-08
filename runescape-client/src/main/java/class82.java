@@ -2,108 +2,136 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cw")
+@ObfuscatedName("cg")
 public final class class82 extends Node {
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1663151903
+      intValue = -547576971
    )
-   int field1340;
-   @ObfuscatedName("f")
-   class117 field1341;
-   @ObfuscatedName("v")
+   int field1322;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 551925621
+      intValue = -1592560977
    )
-   int field1342;
-   @ObfuscatedName("o")
-   int[] field1343;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 357190219
-   )
-   int field1344;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 1689985153
-   )
-   int field1345;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1029200173
-   )
-   int field1346;
+   int field1323;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1070049931
+      intValue = -30282431
    )
-   int field1347;
-   @ObfuscatedName("i")
-   static Deque field1348;
-   @ObfuscatedName("e")
+   int field1324;
+   @ObfuscatedName("n")
+   static Deque field1325;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 764616761
+      intValue = -660486487
    )
-   int field1349;
-   @ObfuscatedName("a")
+   int field1326;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -914531703
+      intValue = 1979363263
    )
-   int field1350;
-   @ObfuscatedName("y")
+   int field1327;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 666484841
+      intValue = -1727172199
    )
-   int field1351;
+   int field1328;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1513635475
+      intValue = -1862667841
    )
-   int field1352;
-   @ObfuscatedName("q")
-   class117 field1353;
-   @ObfuscatedName("j")
-   ObjectComposition field1354;
+   int field1329;
+   @ObfuscatedName("h")
+   class117 field1330;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1705554677
+   )
+   int field1331;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -302871997
+   )
+   int field1332;
+   @ObfuscatedName("o")
+   int[] field1333;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 1691605909
+   )
+   int field1334;
+   @ObfuscatedName("a")
+   class117 field1335;
+   @ObfuscatedName("y")
+   ObjectComposition field1336;
+   @ObfuscatedName("ck")
+   @ObfuscatedGetter(
+      intValue = -1657330943
+   )
+   public static int field1337;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;LIndexDataBase;I)V",
+      garbageValue = "-293782011"
+   )
+   public static void method1575(IndexDataBase var0, IndexDataBase var1) {
+      NPCComposition.field3585 = var0;
+      NPCComposition.field3559 = var1;
+   }
+
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "553401466"
+      garbageValue = "987939478"
    )
-   void method1597() {
-      int var1 = this.field1347;
-      ObjectComposition var2 = this.field1354.getImpostor();
+   void method1576() {
+      int var1 = this.field1329;
+      ObjectComposition var2 = this.field1336.getImpostor();
       if(var2 != null) {
-         this.field1347 = var2.ambientSoundId;
-         this.field1346 = var2.field3477 * 128;
-         this.field1340 = var2.field3478;
-         this.field1350 = var2.field3459;
-         this.field1343 = var2.field3480;
+         this.field1329 = var2.ambientSoundId;
+         this.field1328 = var2.field3487 * 128;
+         this.field1331 = var2.field3488;
+         this.field1332 = var2.field3489;
+         this.field1333 = var2.field3479;
       } else {
-         this.field1347 = -1;
-         this.field1346 = 0;
-         this.field1340 = 0;
-         this.field1350 = 0;
-         this.field1343 = null;
+         this.field1329 = -1;
+         this.field1328 = 0;
+         this.field1331 = 0;
+         this.field1332 = 0;
+         this.field1333 = null;
       }
 
-      if(var1 != this.field1347 && this.field1341 != null) {
-         class158.field2288.method1871(this.field1341);
-         this.field1341 = null;
+      if(var1 != this.field1329 && this.field1330 != null) {
+         WorldMapType0.field613.method1862(this.field1330);
+         this.field1330 = null;
       }
 
    }
 
    static {
-      field1348 = new Deque();
+      field1325 = new Deque();
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(CB)C",
-      garbageValue = "-89"
+      signature = "(B)V",
+      garbageValue = "-30"
    )
-   public static char method1599(char var0) {
-      return (char)(var0 == 198?'E':(var0 == 230?'e':(var0 == 223?'s':(var0 == 338?'E':(var0 == 339?'e':'\u0000')))));
+   public static void method1583() {
+      PlayerComposition.field2630.reset();
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "-424425459"
+   )
+   static void method1584(int var0, int var1) {
+      long var2 = (long)(var1 + (var0 << 16));
+      class234 var4 = (class234)class238.field3258.method3545(var2);
+      if(var4 != null) {
+         class238.field3253.method3474(var4);
+      }
    }
 }

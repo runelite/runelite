@@ -2,75 +2,65 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("af")
+@ObfuscatedName("aa")
 public final class class29 {
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 79360867
-   )
-   int field423;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 513385365
-   )
-   int field424;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 638670775
-   )
-   int field426;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1444240161
-   )
-   int field428;
-   @ObfuscatedName("oj")
-   static byte field429;
    // $FF: synthetic field
    final class41 this$0;
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1065690112"
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -339319019
    )
-   public static int method228(int var0) {
-      --var0;
-      var0 |= var0 >>> 1;
-      var0 |= var0 >>> 2;
-      var0 |= var0 >>> 4;
-      var0 |= var0 >>> 8;
-      var0 |= var0 >>> 16;
-      return var0 + 1;
-   }
-
-   @ObfuscatedName("ap")
-   @ObfuscatedSignature(
-      signature = "(Lclass119;B)V",
-      garbageValue = "2"
+   int field423;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1535612075
    )
-   static final void method229(class119 var0) {
-      var0.field1732 = false;
-      if(var0.field1734 != null) {
-         var0.field1734.field1766 = 0;
-      }
+   int field424;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -870153051
+   )
+   int field425;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1668454901
+   )
+   int field428;
+   @ObfuscatedName("y")
+   public static class123[] field432;
 
-      for(class119 var1 = var0.vmethod3858(); var1 != null; var1 = var0.vmethod3886()) {
-         method229(var1);
-      }
-
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(III)LWidget;",
+      garbageValue = "1575558767"
+   )
+   public static Widget method254(int var0, int var1) {
+      Widget var2 = class177.method3390(var0);
+      return var1 == -1?var2:(var2 != null && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
    }
 
    class29(class41 var1) {
       this.this$0 = var1;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1243899989"
+      signature = "(I)V",
+      garbageValue = "-1967325718"
    )
-   public static boolean method230() {
-      return class203.field2514 != 0?true:class203.field2511.method3689();
+   public static void method255() {
+      try {
+         class155.field2254.method2351();
+
+         for(int var0 = 0; var0 < class155.field2253; ++var0) {
+            field432[var0].method2351();
+         }
+
+         class155.field2259.method2351();
+         class155.field2257.method2351();
+      } catch (Exception var2) {
+         ;
+      }
+
    }
 }
