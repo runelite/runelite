@@ -158,7 +158,7 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		if (m == null)
 			return null;
 		
-		return VirtualMethods.getVirutalMethods(m);
+		return VirtualMethods.getVirtualMethods(m);
 	}
 
 	@Override

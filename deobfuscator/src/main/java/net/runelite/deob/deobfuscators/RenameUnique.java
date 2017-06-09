@@ -77,7 +77,7 @@ public class RenameUnique implements Deobfuscator
 				if (method.getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN)
 					continue;
 				
-				List<Method> virtualMethods = VirtualMethods.getVirutalMethods(method);
+				List<Method> virtualMethods = VirtualMethods.getVirtualMethods(method);
 				assert !virtualMethods.isEmpty();
 				
 				String name;

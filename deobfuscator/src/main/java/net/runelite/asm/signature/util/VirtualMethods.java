@@ -75,7 +75,7 @@ public class VirtualMethods
 			findMethodUp(methods, visited, child, name, type);
 	}
 	
-	public static List<Method> getVirutalMethods(Method method)
+	public static List<Method> getVirtualMethods(Method method)
 	{
 		List<Method> list = new ArrayList<>();
 		

@@ -184,7 +184,7 @@ public class Renamer implements Deobfuscator
 				if (newName == null)
 					continue;
 
-				List<Method> virtualMethods = VirtualMethods.getVirutalMethods(method);
+				List<Method> virtualMethods = VirtualMethods.getVirtualMethods(method);
 				assert !virtualMethods.isEmpty();
 
 				for (Method m : virtualMethods)

@@ -77,7 +77,7 @@ public class UnusedParameters implements Deobfuscator
 				if (!Deob.isObfuscated(m.getName()))
 					continue;
 				
-				List<Method> ms = VirtualMethods.getVirutalMethods(m);
+				List<Method> ms = VirtualMethods.getVirtualMethods(m);
 				Collection<Integer> u = this.findUnusedParameters(ms);
 				if (!u.isEmpty())
 					unused.put(ms, u);

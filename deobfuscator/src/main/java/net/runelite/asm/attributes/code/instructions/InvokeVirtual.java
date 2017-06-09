@@ -161,7 +161,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		if (m == null)
 			return null;
 
-		return VirtualMethods.getVirutalMethods(m);
+		return VirtualMethods.getVirtualMethods(m);
 	}
 
 	private net.runelite.asm.Method lookupMethod()
