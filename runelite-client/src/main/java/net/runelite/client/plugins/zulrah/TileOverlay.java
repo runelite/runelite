@@ -38,6 +38,7 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class TileOverlay extends Overlay
 {
@@ -126,11 +127,7 @@ public class TileOverlay extends Overlay
 		Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
 		if (poly != null)
 		{
-			graphics.setColor(outlineColor);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.drawPolygon(poly);
-			graphics.setColor(new Color(0, 0, 0, 50));
-			graphics.fillPolygon(poly);
+			OverlayUtil.renderPolygon(graphics, poly, outlineColor);
 		}
 	}
 

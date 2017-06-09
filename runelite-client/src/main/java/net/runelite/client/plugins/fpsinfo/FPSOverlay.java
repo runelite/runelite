@@ -24,12 +24,13 @@
  */
 package net.runelite.client.plugins.fpsinfo;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -38,10 +39,12 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 public class FPSOverlay extends Overlay
 {
 	private static final Client client = RuneLite.getClient();
+	private final FPS plugin;
 
-	public FPSOverlay()
+	public FPSOverlay(FPS plugin)
 	{
-		super(OverlayPosition.TOP_RIGHT, OverlayPriority.HIGH);
+		super(OverlayPosition.DYNAMIC, OverlayPriority.HIGH);
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -53,21 +56,32 @@ public class FPSOverlay extends Overlay
 			return null;
 		}
 
+		Font font = plugin.getFont();
+		if (font != null)
+		{
+			graphics.setFont(font);
+		}
+
 		FontMetrics fm = graphics.getFontMetrics();
 		String str = String.valueOf(client.getFPS());
 
-		int x = 0;
-		int y = fm.getHeight();
+		Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_XP_ORG);
+		Rectangle2D bounds = xpOrb.getBounds().getBounds2D();
+
+		int x = (int) (bounds.getX() + ((bounds.getWidth() / 2) - (fm.stringWidth(str) / 2)));
+		int y = (int) (bounds.getY() - (fm.getHeight() / 2));
+
 		//outline
-		graphics.setColor(Color.black);
+		graphics.setColor(Color.BLACK);
 		graphics.drawString(str, x - 1, y + 1);
 		graphics.drawString(str, x - 1, y - 1);
 		graphics.drawString(str, x + 1, y + 1);
 		graphics.drawString(str, x + 1, y - 1);
+
 		//actual text
-		graphics.setColor(Color.white);
+		graphics.setColor(Color.WHITE);
 		graphics.drawString(str, x, y);
 
-		return new Dimension(fm.stringWidth(str), y);
+		return new Dimension(fm.stringWidth(str), fm.getHeight());
 	}
 }

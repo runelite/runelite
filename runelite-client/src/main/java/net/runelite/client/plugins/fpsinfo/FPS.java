@@ -28,9 +28,27 @@ package net.runelite.client.plugins.fpsinfo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 
+import java.awt.*;
+
 public class FPS extends Plugin
 {
-	private final Overlay overlay = new FPSOverlay();
+	private final Overlay overlay = new FPSOverlay(this);
+
+	private Font font;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape.ttf"));
+		font = font.deriveFont(Font.BOLD, 16);
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		ge.registerFont(font);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+	}
 
 	@Override
 	public Overlay getOverlay()
@@ -38,13 +56,8 @@ public class FPS extends Plugin
 		return overlay;
 	}
 
-	@Override
-	protected void startUp() throws Exception
+	public Font getFont()
 	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
+		return font;
 	}
 }
