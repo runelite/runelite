@@ -128,6 +128,11 @@ public abstract class Actor extends Renderable
 		return actor.getAnimation();
 	}
 
+	public int getGraphic()
+	{
+		return actor.getGraphic();
+	}
+
 	public int getModelHeight()
 	{
 		return actor.getModelHeight();
