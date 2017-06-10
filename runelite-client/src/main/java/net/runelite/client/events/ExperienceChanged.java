@@ -47,7 +47,7 @@ public class ExperienceChanged
 	 * Sets the changed {@link Skill} to the specified {@link Skill}.
 	 * @param skill the {@link Skill} that had its experience changed
 	 */
-	public void setIndex(Skill skill)
+	public void setSkill(Skill skill)
 	{
 		this.skill = skill;
 	}

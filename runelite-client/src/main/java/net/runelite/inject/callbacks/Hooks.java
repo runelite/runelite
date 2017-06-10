@@ -56,10 +56,10 @@ public class Hooks
 				Skill[] possibleSkills = Skill.values();
 
 				// We subtract one here because 'Overall' isn't considered a skill that's updated.
-				if(idx < possibleSkills.length - 1)
+				if (idx < possibleSkills.length - 1)
 				{
 					Skill updatedSkill = possibleSkills[idx];
-					experienceChanged.setIndex(updatedSkill);
+					experienceChanged.setSkill(updatedSkill);
 					runelite.getEventBus().post(experienceChanged);
 				}
 				break;

@@ -366,11 +366,11 @@ public class Client
 	{
 		int[] experiences = client.getSkillExperiences();
 
-		if(skill == Skill.OVERALL)
+		if (skill == Skill.OVERALL)
 		{
 			int totalExperience = 0;
 
-			for(int experience : experiences)
+			for (int experience : experiences)
 			{
 				totalExperience += experience;
 			}
@@ -382,7 +382,7 @@ public class Client
 
 		// I'm not certain exactly how needed this is, but if the Skill enum is updated in the future
 		// to hold something else that's not reported it'll save us from an ArrayIndexOutOfBoundsException.
-		if(idx >= experiences.length)
+		if (idx >= experiences.length)
 		{
 			return -1;
 		}
