@@ -354,4 +354,45 @@ public class Client
 	{
 		return client.getClanChatCount();
 	}
+
+	/**
+	 * Returns the local player's current experience in the {@link Skill} at the specified index.
+	 *
+	 * @param idx the index of the {@link Skill}
+	 * @return the local player's current experience in the {@link Skill} at the specified index, or -1 if the index
+	 *         isn't valid
+	 */
+	public int getSkillExperience(int idx) {
+		int[] experiences = client.getSkillExperiences();
+
+		if(idx >= experiences.length)
+		{
+			return -1;
+		}
+
+		return experiences[idx];
+	}
+
+	/**
+	 * Returns the local player's current experience in the specified {@link Skill}.
+	 *
+	 * @param skill the {@link Skill} to retrieve the experience for
+	 * @return the local player's current experience in the specified {@link Skill}, or -1 if the {@link Skill} isn't
+	 *         valid
+	 */
+	public int getSkillExperience(Skill skill) {
+		int[] experiences = client.getSkillExperiences();
+
+		if(skill == Skill.OVERALL) {
+			int totalExperience = 0;
+
+			for(int i = 0; i < experiences.length; i++) {
+				totalExperience += experiences[i];
+			}
+
+			return totalExperience;
+		}
+
+		return getSkillExperience(skill.ordinal());
+	}
 }
