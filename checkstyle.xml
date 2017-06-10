@@ -12,6 +12,9 @@
 			<property name="message" value="Indent must use tab characters"/>
 			<property name="ignoreComments" value="true"/>
 		</module>
+		<module name="WhitespaceAround">
+			<property name="tokens" value="LITERAL_IF, LITERAL_ELSE, LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, DO_WHILE"/>
+		</module>
 	</module>
 	<module name="SuppressionFilter">
 		<property name="file" value="suppressions.xml"/>
