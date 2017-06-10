@@ -75,7 +75,7 @@ public class IdleNotifier extends Plugin
 		int animation = client.getLocalPlayer().getAnimation();
 		switch (animation)
 		{
-				/* Woodcutting */
+			/* Woodcutting */
 			case WOODCUTTING_BRONZE:
 			case WOODCUTTING_IRON:
 			case WOODCUTTING_STEEL:
@@ -84,10 +84,10 @@ public class IdleNotifier extends Plugin
 			case WOODCUTTING_ADAMANT:
 			case WOODCUTTING_RUNE:
 			case WOODCUTTING_DRAGON:
-				/* Cooking(Fire, Range) */
+			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
-				/* Crafting(Gem Cutting, Glassblowing */
+			/* Crafting(Gem Cutting, Glassblowing */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
 			case GEM_CUTTING_REDTOPAZ:
@@ -96,7 +96,7 @@ public class IdleNotifier extends Plugin
 			case GEM_CUTTING_RUBY:
 			case GEM_CUTTING_DIAMOND:
 			case CRAFTING_GLASSBLOWING:
-				/* Fletching(Cutting, Stringing) */
+			/* Fletching(Cutting, Stringing) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
 			case FLETCHING_STRING_OAK_SHORTBOW:
@@ -110,15 +110,15 @@ public class IdleNotifier extends Plugin
 			case FLETCHING_STRING_MAPLE_LONGBOW:
 			case FLETCHING_STRING_YEW_LONGBOW:
 			case FLETCHING_STRING_MAGIC_LONGBOW:
-				/* Smithing(Anvil, Furnace, Cannonballs */
+			/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
 			case SMITHING_SMELTING:
-				/* Fishing */
+			/* Fishing */
 			case FISHING_NET:
 			case FISHING_HARPOON:
 			case FISHING_CAGE:
 			case FISHING_POLE_CAST:
-				/* Mining(Normal) */
+			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
 			case MINING_STEEL_PICKAXE:
@@ -127,7 +127,7 @@ public class IdleNotifier extends Plugin
 			case MINING_ADAMANT_PICKAXE:
 			case MINING_RUNE_PICKAXE:
 			case MINING_DRAGON_PICKAXE:
-				/* Mining(Motherlode) */
+			/* Mining(Motherlode) */
 			case MINING_MOTHERLODE_BRONZE:
 			case MINING_MOTHERLODE_IRON:
 			case MINING_MOTHERLODE_STEEL:
@@ -136,9 +136,9 @@ public class IdleNotifier extends Plugin
 			case MINING_MOTHERLODE_ADAMANT:
 			case MINING_MOTHERLODE_RUNE:
 			case MINING_MOTHERLODE_DRAGON:
-				/* Herblore */
+			/* Herblore */
 			case HERBLORE_POTIONMAKING:
-				/* Magic */
+			/* Magic */
 			case MAGIC_CHARGING_ORBS:
 				notifyIdle = true;
 				lastAnimating = Instant.now();
