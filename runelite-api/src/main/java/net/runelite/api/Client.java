@@ -362,7 +362,8 @@ public class Client
 	 * @return the local player's current experience in the {@link Skill} at the specified index, or -1 if the index
 	 *         isn't valid
 	 */
-	public int getSkillExperience(int idx) {
+	public int getSkillExperience(int idx)
+	{
 		int[] experiences = client.getSkillExperiences();
 
 		if(idx < 0 || idx >= experiences.length)
