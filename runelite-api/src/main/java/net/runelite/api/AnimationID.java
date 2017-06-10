@@ -43,7 +43,18 @@ public final class AnimationID
 	public static final int COOKING_FIRE = 897;
 	public static final int COOKING_RANGE = 896;
 	public static final int FLETCHING_BOW_CUTTING = 1248;
-	public static final int FLETCHING_BOW_STRINGING = 6684; // ids are based on bow - incomplete!
+	public static final int FLETCHING_STRING_NORMAL_SHORTBOW = 6678;
+	public static final int FLETCHING_STRING_NORMAL_LONGBOW = 6684;
+	public static final int FLETCHING_STRING_OAK_SHORTBOW = 6679;
+	public static final int FLETCHING_STRING_OAK_LONGBOW = 6685;
+	public static final int FLETCHING_STRING_WILLOW_SHORTBOW = 6680;
+	public static final int FLETCHING_STRING_WILLOW_LONGBOW = 6686;
+	public static final int FLETCHING_STRING_MAPLE_SHORTBOW = 6681;
+	public static final int FLETCHING_STRING_MAPLE_LONGBOW = 6687;
+	public static final int FLETCHING_STRING_YEW_SHORTBOW = 6682;
+	public static final int FLETCHING_STRING_YEW_LONGBOW = 6688;
+	public static final int FLETCHING_STRING_MAGIC_SHORTBOW = 6683;
+	public static final int FLETCHING_STRING_MAGIC_LONGBOW = 6689;
 	public static final int GEM_CUTTING_OPAL = 890;
 	public static final int GEM_CUTTING_JADE = 891;
 	public static final int GEM_CUTTING_REDTOPAZ = 892;
@@ -52,6 +63,7 @@ public final class AnimationID
 	public static final int GEM_CUTTING_RUBY = 887;
 	public static final int GEM_CUTTING_DIAMOND = 886;
 	public static final int CRAFTING_LEATHER = 1249; // unknown if the anim is the same for all leathers
+	public static final int CRAFTING_GLASSBLOWING = 884;
 	public static final int SMITHING_SMELTING = 899;
 	public static final int SMITHING_CANNONBALL = 827; //cball smithing uses this and SMITHING_SMELTING
 	public static final int SMITHING_ANVIL = 898;
