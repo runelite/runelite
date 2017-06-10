@@ -6,6 +6,12 @@
 		<module name="LeftCurly">
 			<property name="option" value="nl"/>
 		</module>
+		<!-- require tabs for indenting - https://stackoverflow.com/a/28550141 -->
+		<module name="RegexpSinglelineJava">
+			<property name="format" value="^\t* "/>
+			<property name="message" value="Indent must use tab characters"/>
+			<property name="ignoreComments" value="true"/>
+		</module>
 	</module>
 	<module name="SuppressionFilter">
 		<property name="file" value="suppressions.xml"/>
