@@ -24,6 +24,7 @@
  */
 package net.runelite.inject.callbacks;
 
+import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.events.MapRegionChanged;
@@ -52,8 +53,15 @@ public class Hooks
 			case "experienceChanged":
 			{
 				ExperienceChanged experienceChanged = new ExperienceChanged();
-				experienceChanged.setIndex(idx);
-				runelite.getEventBus().post(experienceChanged);
+				Skill[] possibleSkills = Skill.values();
+
+				// We subtract one here because 'Overall' isn't considered a skill that's updated.
+				if (idx < possibleSkills.length - 1)
+				{
+					Skill updatedSkill = possibleSkills[idx];
+					experienceChanged.setSkill(updatedSkill);
+					runelite.getEventBus().post(experienceChanged);
+				}
 				break;
 			}
 			case "mapRegionsChanged":
