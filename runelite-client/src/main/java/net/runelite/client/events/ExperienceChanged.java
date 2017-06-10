@@ -25,18 +25,30 @@
 
 package net.runelite.client.events;
 
+import net.runelite.api.Skill;
+
 public class ExperienceChanged
 {
-	/** the index in the array which changed */
-	private int index;
+	/**
+	 * The {@link Skill} that had its experience changed.
+	 */
+	private Skill skill;
 
-	public int getIndex()
+	/**
+	 * Returns the {@link Skill} that had its experience changed
+	 * @return the {@link Skill} that had its experience changed
+	 */
+	public Skill getSkill()
 	{
-		return index;
+		return skill;
 	}
 
-	public void setIndex(int index)
+	/**
+	 * Sets the changed {@link Skill} to the specified {@link Skill}.
+	 * @param skill the {@link Skill} that had its experience changed
+	 */
+	public void setSkill(Skill skill)
 	{
-		this.index = index;
+		this.skill = skill;
 	}
 }

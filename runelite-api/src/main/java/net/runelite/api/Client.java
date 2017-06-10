@@ -354,4 +354,39 @@ public class Client
 	{
 		return client.getClanChatCount();
 	}
+
+	/**
+	 * Returns the local player's current experience in the specified {@link Skill}.
+	 *
+	 * @param skill the {@link Skill} to retrieve the experience for
+	 * @return the local player's current experience in the specified {@link Skill}, or -1 if the {@link Skill} isn't
+	 *         valid
+	 */
+	public int getSkillExperience(Skill skill)
+	{
+		int[] experiences = client.getSkillExperiences();
+
+		if (skill == Skill.OVERALL)
+		{
+			int totalExperience = 0;
+
+			for (int experience : experiences)
+			{
+				totalExperience += experience;
+			}
+
+			return totalExperience;
+		}
+
+		int idx = skill.ordinal();
+
+		// I'm not certain exactly how needed this is, but if the Skill enum is updated in the future
+		// to hold something else that's not reported it'll save us from an ArrayIndexOutOfBoundsException.
+		if (idx >= experiences.length)
+		{
+			return -1;
+		}
+
+		return experiences[idx];
+	}
 }
