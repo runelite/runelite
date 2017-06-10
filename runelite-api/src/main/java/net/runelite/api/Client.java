@@ -356,25 +356,6 @@ public class Client
 	}
 
 	/**
-	 * Returns the local player's current experience in the {@link Skill} at the specified index.
-	 *
-	 * @param idx the index of the {@link Skill}
-	 * @return the local player's current experience in the {@link Skill} at the specified index, or -1 if the index
-	 *         isn't valid
-	 */
-	public int getSkillExperience(int idx)
-	{
-		int[] experiences = client.getSkillExperiences();
-
-		if(idx < 0 || idx >= experiences.length)
-		{
-			return -1;
-		}
-
-		return experiences[idx];
-	}
-
-	/**
 	 * Returns the local player's current experience in the specified {@link Skill}.
 	 *
 	 * @param skill the {@link Skill} to retrieve the experience for
@@ -389,14 +370,23 @@ public class Client
 		{
 			int totalExperience = 0;
 
-			for(int i = 0; i < experiences.length; i++)
+			for(int experience : experiences)
 			{
-				totalExperience += experiences[i];
+				totalExperience += experience;
 			}
 
 			return totalExperience;
 		}
 
-		return getSkillExperience(skill.ordinal());
+		int idx = skill.ordinal();
+
+		// I'm not certain exactly how needed this is, but if the Skill enum is updated in the future
+		// to hold something else that's not reported it'll save us from an ArrayIndexOutOfBoundsException.
+		if(idx >= experiences.length)
+		{
+			return -1;
+		}
+
+		return experiences[idx];
 	}
 }
