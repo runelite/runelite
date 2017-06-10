@@ -365,7 +365,7 @@ public class Client
 	public int getSkillExperience(int idx) {
 		int[] experiences = client.getSkillExperiences();
 
-		if(idx >= experiences.length)
+		if(idx < 0 || idx >= experiences.length)
 		{
 			return -1;
 		}
@@ -380,13 +380,16 @@ public class Client
 	 * @return the local player's current experience in the specified {@link Skill}, or -1 if the {@link Skill} isn't
 	 *         valid
 	 */
-	public int getSkillExperience(Skill skill) {
+	public int getSkillExperience(Skill skill)
+	{
 		int[] experiences = client.getSkillExperiences();
 
-		if(skill == Skill.OVERALL) {
+		if(skill == Skill.OVERALL)
+		{
 			int totalExperience = 0;
 
-			for(int i = 0; i < experiences.length; i++) {
+			for(int i = 0; i < experiences.length; i++)
+			{
 				totalExperience += experiences[i];
 			}
 
