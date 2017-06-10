@@ -30,23 +30,27 @@ class WidgetID
 	static final int INVENTORY_GROUP_ID = 149;
 	static final int PESTRCONTROL_GROUP_ID = 408;
 	static final int CLAN_CHAT_GROUP_ID = 7;
+	static final int MINIMAP_GROUP_ID = 160;
 
 	static class PestControl
 	{
-		static final int PURPLE_SHIELD = 18;
-		static final int BLUE_SHIELD = 20;
-		static final int YELLOW_SHIELD = 22;
-		static final int RED_SHIELD = 24;
+		static final int PURPLE_SHIELD = 21;
+		static final int BLUE_SHIELD = 23;
+		static final int YELLOW_SHIELD = 25;
+		static final int RED_SHIELD = 27;
 
-		static final int PURPLE_HEALTH = 14;
-		static final int BLUE_HEALTH = 15;
-		static final int YELLOW_HEALTH = 16;
-		static final int RED_HEALTH = 17;
+		static final int PURPLE_HEALTH = 17;
+		static final int BLUE_HEALTH = 18;
+		static final int YELLOW_HEALTH = 19;
+		static final int RED_HEALTH = 20;
 
-		static final int PURPLE_ICON = 10;
-		static final int BLUE_ICON = 11;
-		static final int YELLOW_ICON = 12;
-		static final int RED_ICON = 13;
+		static final int PURPLE_ICON = 13;
+		static final int BLUE_ICON = 14;
+		static final int YELLOW_ICON = 15;
+		static final int RED_ICON = 16;
+
+		static final int ACTIVITY_BAR = 6;
+		static final int ACTIVITY_PROGRESS = 8;
 	}
 
 	static class ClanChat
@@ -56,8 +60,13 @@ class WidgetID
 		static final int OWNER = 5;
 	}
 
-	public static class Bank
+	static class Bank
 	{
 		static final int ITEM_CONTAINER = 12;
+	}
+
+	static class Minimap
+	{
+		static final int XP_ORB = 1;
 	}
 }
