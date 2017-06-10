@@ -53,8 +53,6 @@ public class Zulrah extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(Zulrah.class);
 
-	private static final String ZULRAH = "Zulrah";
-
 	private final Client client = RuneLite.getClient();
 
 	private final StatusOverlay overlay = new StatusOverlay(this);
@@ -175,8 +173,7 @@ public class Zulrah extends Plugin
 
 	private NPC findZulrah()
 	{
-		Query query = new NPCQuery()
-			.nameEquals(ZULRAH);
+		Query query = new NPCQuery().nameEquals("Zulrah");
 		NPC[] result = client.runQuery(query);
 		return result.length == 1 ? result[0] : null;
 	}
