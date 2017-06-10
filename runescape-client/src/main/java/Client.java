@@ -433,6 +433,7 @@ public final class Client extends GameEngine {
    static int[] field1010;
    @ObfuscatedName("jx")
    @Export("skillExperiences")
+   @Hook("experienceChanged")
    static int[] skillExperiences;
    @ObfuscatedName("hf")
    static int[] field1012;
