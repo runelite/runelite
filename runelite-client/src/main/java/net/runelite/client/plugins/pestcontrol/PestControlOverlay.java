@@ -25,19 +25,18 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
-import net.runelite.api.Actor;
+import java.util.Arrays;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
-import net.runelite.api.Point;
+import net.runelite.api.Query;
+import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
@@ -47,6 +46,7 @@ import static net.runelite.client.plugins.pestcontrol.Portal.RED;
 import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,26 +106,9 @@ public class PestControlOverlay extends Overlay
 
 	private void renderSpinners(Graphics2D graphics)
 	{
-		NPC[] npcs = client.getNpcs();
-		if (npcs == null)
-		{
-			return;
-		}
-
-		for (NPC npc : npcs)
-		{
-			if (npc == null)
-			{
-				continue;
-			}
-
-			String name = npc.getName();
-
-			if (name.toLowerCase().contains("spinner"))
-			{
-				renderActorOverlay(graphics, npc, name, Color.CYAN);
-			}
-		}
+		Query query = new NPCQuery().nameEquals("Spinner");
+		NPC[] result = client.runQuery(query);
+		Arrays.stream(result).forEach(npc -> OverlayUtil.renderActorOverlay(graphics, npc, npc.getName(), Color.CYAN));
 	}
 
 	private void renderPortalWidgets(Graphics2D graphics)
@@ -197,58 +180,58 @@ public class PestControlOverlay extends Overlay
 		{
 			renderWidgetOverlay(graphics, portal, "NEXT", Color.ORANGE);
 		}
+
+		renderProgressWidget(graphics);
 	}
 
-	private void renderActorOverlay(Graphics2D graphics, Actor actor, String text, Color color)
+	private void renderProgressWidget(Graphics2D graphics)
 	{
-		Polygon poly = actor.getCanvasTilePoly();
-		if (poly != null)
+		Widget bar = client.getWidget(WidgetInfo.PESTCONTROL_ACTIVITY_BAR).getChild(0);
+		Rectangle2D bounds = bar.getBounds().getBounds2D();
+
+		Widget prgs = client.getWidget(WidgetInfo.PESTCONTROL_ACTIVITY_PROGRESS).getChild(0);
+		int perc = (int) ((prgs.getBounds().getWidth() / bounds.getWidth()) * 100);
+
+		Color color = Color.GREEN;
+		if (perc < 25)
 		{
-			graphics.setColor(color);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.drawPolygon(poly);
-			graphics.setColor(new Color(0, 0, 0, 50));
-			graphics.fillPolygon(poly);
+			color = Color.RED;
 		}
 
-		Point minimapLocation = actor.getMinimapLocation();
-		if (minimapLocation != null)
-		{
-			graphics.setColor(color);
-			graphics.fillOval(minimapLocation.getX(), minimapLocation.getY(), 5, 5);
-			graphics.setColor(Color.WHITE);
-			graphics.setStroke(new BasicStroke(1));
-			graphics.drawOval(minimapLocation.getX(), minimapLocation.getY(), 5, 5);
-		}
+		String text = String.valueOf(perc) + "%";
 
-		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getModelHeight() + 40);
-		if (textLocation != null)
-		{
-			int x = textLocation.getX();
-			int y = textLocation.getY();
+		FontMetrics fm = graphics.getFontMetrics();
+		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
+		int x = (int) (bounds.getX() - textBounds.getWidth());
+		int y = (int) (bounds.getY() + fm.getHeight() - 2);
 
-			graphics.setColor(Color.BLACK);
-			graphics.drawString(text, x + 1, y + 1);
-
-			graphics.setColor(color);
-			graphics.drawString(text, x, y);
-		}
+		graphics.setColor(Color.BLACK);
+		graphics.drawString(text, x + 1, y + 1);
+		graphics.setColor(color);
+		graphics.drawString(text, x, y);
 	}
 
 	private void renderWidgetOverlay(Graphics2D graphics, Portal portal, String text, Color color)
 	{
 		Widget shield = client.getWidget(portal.getShield());
 		Widget icon = client.getWidget(portal.getIcon());
+		Widget hp = client.getWidget(portal.getHitpoints());
+
+		Widget bar = client.getWidget(WidgetInfo.PESTCONTROL_ACTIVITY_BAR).getChild(0);
+
+		Rectangle2D barBounds = bar.getBounds().getBounds2D();
 
 		// create one rectangle from two different widget bounds
 		Rectangle2D bounds = union(shield.getBounds().getBounds2D(), icon.getBounds().getBounds2D());
+		bounds = union(bounds, hp.getBounds().getBounds2D());
+
 		graphics.setColor(color);
-		graphics.draw(bounds);
+		graphics.draw(new Rectangle2D.Double(bounds.getX(), bounds.getY() - 2, bounds.getWidth(), bounds.getHeight() - 3));
 
 		FontMetrics fm = graphics.getFontMetrics();
 		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
 		int x = (int) (bounds.getX() + (bounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-		int y = (int) (bounds.getY() + bounds.getHeight() + textBounds.getHeight());
+		int y = (int) (bounds.getY() + bounds.getHeight() + textBounds.getHeight() + barBounds.getHeight());
 
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(text, x + 1, y + 1);
