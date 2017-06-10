@@ -138,15 +138,15 @@ public class DevToolsOverlay extends Overlay
 				{
 					if (!p.getName().equals(local.getName()))
 					{
-						String text = p.getName() + " (A: " + p.getAnimation() + ")";
-						renderActorOverlay(graphics, p, text, BLUE);
+						String text = p.getName() + " (A: " + p.getAnimation() + ") (G: " + p.getGraphic() + ")";
+						OverlayUtil.renderActorOverlay(graphics, p, text, BLUE);
 					}
 				}
 			}
 		}
 
-		String text = local.getName() + " (A: " + local.getAnimation() + ")";
-		renderActorOverlay(graphics, local, text, CYAN);
+		String text = local.getName() + " (A: " + local.getAnimation() + ") (G: " + local.getGraphic() + ")";
+		OverlayUtil.renderActorOverlay(graphics, local, text, CYAN);
 	}
 
 	private void renderNpcs(Graphics2D graphics)
@@ -158,14 +158,14 @@ public class DevToolsOverlay extends Overlay
 			{
 				if (npc != null)
 				{
-					String text = npc.getName() + " (A: " + npc.getAnimation() + ")";
+					String text = npc.getName() + " (A: " + npc.getAnimation() + ") (G: " + npc.getGraphic() + ")";
 					if (npc.getCombatLevel() > 1)
 					{
-						renderActorOverlay(graphics, npc, text, YELLOW);
+						OverlayUtil.renderActorOverlay(graphics, npc, text, YELLOW);
 					}
 					else
 					{
-						renderActorOverlay(graphics, npc, text, ORANGE);
+						OverlayUtil.renderActorOverlay(graphics, npc, text, ORANGE);
 					}
 				}
 			}
@@ -235,7 +235,7 @@ public class DevToolsOverlay extends Overlay
 				while (current instanceof Item)
 				{
 					Item item = (Item) current;
-					renderTileOverlay(graphics, itemLayer, "ID: " + item.getId() + " Qty:" + item.getQuantity(), RED);
+					OverlayUtil.renderTileOverlay(graphics, itemLayer, "ID: " + item.getId() + " Qty:" + item.getQuantity(), RED);
 					current = current.getNext();
 				}
 			}
@@ -253,7 +253,7 @@ public class DevToolsOverlay extends Overlay
 				{
 					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
 					{
-						renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
+						OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
 					}
 				}
 			}
@@ -267,7 +267,7 @@ public class DevToolsOverlay extends Overlay
 		{
 			if (player.getLocalLocation().distanceTo(groundObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
-				renderTileOverlay(graphics, groundObject, "ID: " + groundObject.getId(), PURPLE);
+				OverlayUtil.renderTileOverlay(graphics, groundObject, "ID: " + groundObject.getId(), PURPLE);
 			}
 		}
 	}
@@ -279,7 +279,7 @@ public class DevToolsOverlay extends Overlay
 		{
 			if (player.getLocalLocation().distanceTo(wallObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
-				renderTileOverlay(graphics, wallObject, "ID: " + wallObject.getId(), GRAY);
+				OverlayUtil.renderTileOverlay(graphics, wallObject, "ID: " + wallObject.getId(), GRAY);
 			}
 		}
 	}
@@ -291,7 +291,7 @@ public class DevToolsOverlay extends Overlay
 		{
 			if (player.getLocalLocation().distanceTo(decorObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
-				renderTileOverlay(graphics, decorObject, "ID: " + decorObject.getId(), DEEP_PURPLE);
+				OverlayUtil.renderTileOverlay(graphics, decorObject, "ID: " + decorObject.getId(), DEEP_PURPLE);
 			}
 		}
 	}
@@ -368,8 +368,8 @@ public class DevToolsOverlay extends Overlay
 
 		Widget childComponent = widgetChild.getChild(itemIndex);
 		if (childComponent != null && !childComponent.isHidden()
-			&& childComponent.getItemId() != ITEM_EMPTY
-			&& childComponent.getItemId() != ITEM_FILLED)
+				&& childComponent.getItemId() != ITEM_EMPTY
+				&& childComponent.getItemId() != ITEM_FILLED)
 		{
 			Rectangle componentBounds = childComponent.getBounds();
 
