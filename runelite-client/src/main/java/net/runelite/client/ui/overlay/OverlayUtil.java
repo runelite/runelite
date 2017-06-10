@@ -47,7 +47,7 @@ public class OverlayUtil
 		graphics.fillPolygon(poly);
 	}
 
-	public static void rednerMinimapLocation(Graphics2D graphics, Point mini, Color color)
+	public static void renderMinimapLocation(Graphics2D graphics, Point mini, Color color)
 	{
 		graphics.setColor(color);
 		graphics.fillOval(mini.getX(), mini.getY(), 5, 5);
@@ -79,7 +79,7 @@ public class OverlayUtil
 		Point minimapLocation = actor.getMinimapLocation();
 		if (minimapLocation != null)
 		{
-			rednerMinimapLocation(graphics, minimapLocation, color);
+			renderMinimapLocation(graphics, minimapLocation, color);
 		}
 
 		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getModelHeight() + 40);
@@ -100,7 +100,7 @@ public class OverlayUtil
 		Point minimapLocation = tileObject.getMinimapLocation();
 		if (minimapLocation != null)
 		{
-			rednerMinimapLocation(graphics, minimapLocation, color);
+			renderMinimapLocation(graphics, minimapLocation, color);
 		}
 
 		Point textLocation = tileObject.getCanvasTextLocation(graphics, text, 0);
