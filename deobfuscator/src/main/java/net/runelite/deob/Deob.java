@@ -47,6 +47,7 @@ import net.runelite.deob.deobfuscators.arithmetic.ModArith;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplicationDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
+import net.runelite.deob.deobfuscators.cfg.ControlFlowDeobfuscator;
 import net.runelite.deob.deobfuscators.transformers.ClientErrorTransformer;
 import net.runelite.deob.deobfuscators.transformers.MaxMemoryTransformer;
 import net.runelite.deob.deobfuscators.transformers.ReflectionTransformer;
@@ -62,14 +63,17 @@ public class Deob
 
 	public static void main(String[] args) throws IOException
 	{
-		if (args == null || args.length < 2) 
+		if (args == null || args.length < 2)
 		{
-			System.err.println("Please specify the following runtime args: input_jar output_jar");
+			System.err.println("Syntax: input_jar output_jar");
 			System.exit(-1);
 		}
+
 		Stopwatch stopwatch = Stopwatch.createStarted();
 
 		ClassGroup group = JarUtil.loadJar(new File(args[0]));
+
+		run(group, new ControlFlowDeobfuscator());
 
 		run(group, new RenameUnique());
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,73 +22,66 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.asm.attributes.code;
+package net.runelite.deob.deobfuscators.cfg;
 
-import net.runelite.asm.attributes.code.instructions.NOP;
-import org.objectweb.asm.MethodVisitor;
+import java.util.Objects;
+import net.runelite.asm.attributes.code.Label;
+import net.runelite.asm.pool.Class;
 
-public class Label extends NOP
+public class ExceptionHandler
 {
-	private org.objectweb.asm.Label label;
+	private final Class catchType;
+	private final Label handler;
 
-	public Label(Instructions instructions)
+	public ExceptionHandler(Class type, Label handler)
 	{
-		super(instructions);
+		this.catchType = type;
+		this.handler = handler;
 	}
 
-	public Label(Instructions instructions, org.objectweb.asm.Label label)
+	public Class getCatchType()
 	{
-		super(instructions);
-		this.label = label;
+		return catchType;
+	}
+
+	public Label getHandler()
+	{
+		return handler;
 	}
 
 	@Override
-	public String toString()
+	public int hashCode()
 	{
-		if (this.getInstructions() == null)
+		int hash = 7;
+		hash = 29 * hash + Objects.hashCode(this.catchType);
+		hash = 29 * hash + Objects.hashCode(this.handler);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
 		{
-			return "label <unattached>";
+			return true;
 		}
-
-		return "label " + next().toString();
-	}
-
-	@Override
-	public Instruction clone()
-	{
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void accept(MethodVisitor visitor)
-	{
-		visitor.visitLabel(label);
-	}
-
-	public org.objectweb.asm.Label getLabel()
-	{
-		return label;
-	}
-
-	public void setLabel(org.objectweb.asm.Label label)
-	{
-		this.label = label;
-	}
-
-	public Instruction next()
-	{
-		Instructions ins = this.getInstructions();
-		int i = ins.getInstructions().indexOf(this);
-		assert i != -1;
-
-		Instruction next;
-		do
+		if (obj == null)
 		{
-			next = ins.getInstructions().get(i + 1);
-			++i;
+			return false;
 		}
-		while (next instanceof Label);
-
-		return next;
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final ExceptionHandler other = (ExceptionHandler) obj;
+		if (!Objects.equals(this.catchType, other.catchType))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.handler, other.handler))
+		{
+			return false;
+		}
+		return true;
 	}
 }

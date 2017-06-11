@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,73 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.asm.attributes.code;
+package net.runelite.deob.deobfuscators.cfg;
 
-import net.runelite.asm.attributes.code.instructions.NOP;
-import org.objectweb.asm.MethodVisitor;
+import java.io.File;
+import java.io.IOException;
+import net.runelite.asm.ClassGroup;
+import net.runelite.deob.DeobProperties;
+import net.runelite.deob.TemporyFolderLocation;
+import net.runelite.deob.util.JarUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
-public class Label extends NOP
+public class ControlFlowDeobfuscatorTest
 {
-	private org.objectweb.asm.Label label;
+	@Rule
+	public DeobProperties properties = new DeobProperties();
 
-	public Label(Instructions instructions)
+	@Rule
+	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
+
+	private ClassGroup group;
+
+	@Before
+	public void before() throws IOException
 	{
-		super(instructions);
+		group = JarUtil.loadJar(new File(properties.getVanillaClient()));
 	}
 
-	public Label(Instructions instructions, org.objectweb.asm.Label label)
+	@After
+	public void after() throws IOException
 	{
-		super(instructions);
-		this.label = label;
+		JarUtil.saveJar(group, folder.newFile());
 	}
 
-	@Override
-	public String toString()
+	@Test
+	@Ignore
+	public void testRun() throws Exception
 	{
-		if (this.getInstructions() == null)
-		{
-			return "label <unattached>";
-		}
-
-		return "label " + next().toString();
-	}
-
-	@Override
-	public Instruction clone()
-	{
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void accept(MethodVisitor visitor)
-	{
-		visitor.visitLabel(label);
-	}
-
-	public org.objectweb.asm.Label getLabel()
-	{
-		return label;
-	}
-
-	public void setLabel(org.objectweb.asm.Label label)
-	{
-		this.label = label;
-	}
-
-	public Instruction next()
-	{
-		Instructions ins = this.getInstructions();
-		int i = ins.getInstructions().indexOf(this);
-		assert i != -1;
-
-		Instruction next;
-		do
-		{
-			next = ins.getInstructions().get(i + 1);
-			++i;
-		}
-		while (next instanceof Label);
-
-		return next;
+		new ControlFlowDeobfuscator().run(group);
 	}
 }

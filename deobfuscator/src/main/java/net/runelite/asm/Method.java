@@ -95,9 +95,14 @@ public class Method
 				assert exception.getEnd().getLabel() != null;
 				assert exception.getHandler().getLabel() != null;
 
-				assert code.getInstructions().getInstructions().contains(exception.getStart());
-				assert code.getInstructions().getInstructions().contains(exception.getEnd());
+				int idxStart = code.getInstructions().getInstructions().indexOf(exception.getStart());
+				int idxEnd = code.getInstructions().getInstructions().indexOf(exception.getEnd());
+
+				assert idxStart != -1;
+				assert idxEnd != -1;
 				assert code.getInstructions().getInstructions().contains(exception.getHandler());
+
+				assert idxEnd > idxStart;
 
 				visitor.visitTryCatchBlock(
 					exception.getStart().getLabel(),
