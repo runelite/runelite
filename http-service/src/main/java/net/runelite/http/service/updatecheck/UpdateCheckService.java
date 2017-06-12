@@ -67,6 +67,7 @@ public class UpdateCheckService
 
 	public Boolean check(Request request, Response response)
 	{
+		response.type("application/json");
 		return updateAvailable.get();
 	}
 
@@ -130,7 +131,7 @@ public class UpdateCheckService
 			int worldNumber = worlds.getWorlds().get(rand.nextInt(size)).getId();
 			return worldNumber - WORLD_OFFSET;
 		}
-		catch (IOException | URISyntaxException ex)
+		catch (IOException ex)
 		{
 			logger.warn(null, ex);
 			return -1;

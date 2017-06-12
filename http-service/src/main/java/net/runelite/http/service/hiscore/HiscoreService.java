@@ -25,17 +25,16 @@
 package net.runelite.http.service.hiscore;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.Skill;
 import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import spark.Request;
+import spark.Response;
 
 public class HiscoreService
 {
@@ -43,20 +42,22 @@ public class HiscoreService
 
 	private HttpUrl url = RUNESCAPE_HISCORE_SERVICE;
 
-	public HiscoreResult lookup(String username) throws IOException, URISyntaxException
+	public HiscoreResult lookup(Request request, Response response) throws IOException
 	{
+		String username = request.queryParams("username");
+
 		HttpUrl hiscoreUrl = url.newBuilder()
 			.addQueryParameter("player", username)
 			.build();
 
-		Request request = new Request.Builder()
+		okhttp3.Request okrequest = new okhttp3.Request.Builder()
 			.url(hiscoreUrl)
 			.build();
 
-		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
+		okhttp3.Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute();
 		String responseStr;
-		
-		try (ResponseBody body = response.body())
+
+		try (ResponseBody body = okresponse.body())
 		{
 			responseStr = body.string();
 		}
@@ -84,6 +85,7 @@ public class HiscoreService
 			hiscoreBuilder.setNextSkill(skill);
 		}
 
+		response.type("application/json");
 		return hiscoreBuilder.build();
 	}
 

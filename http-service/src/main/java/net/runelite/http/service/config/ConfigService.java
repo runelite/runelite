@@ -88,6 +88,7 @@ public class ConfigService
 				.executeAndFetch(ConfigEntry.class);
 		}
 
+		response.type("application/json");
 		return new Configuration(config);
 	}
 

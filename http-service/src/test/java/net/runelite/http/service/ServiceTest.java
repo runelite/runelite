@@ -43,11 +43,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Answers;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.sql2o.Sql2o;
+import spark.Request;
+import spark.Response;
 import spark.Spark;
 
 public class ServiceTest
@@ -102,7 +105,7 @@ public class ServiceTest
 		HiscoreResult result = new HiscoreResult();
 		result.setAttack(new Skill(1, 99, 42));
 
-		when(hiscoreService.lookup("zezima")).thenReturn(result);
+		when(hiscoreService.lookup(Matchers.any(Request.class), Matchers.any(Response.class))).thenReturn(result);
 
 		URL url = new URL(URL_BASE + "/hiscore?username=zezima");
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();

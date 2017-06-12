@@ -85,6 +85,7 @@ public class ItemService
 		ItemEntry item = get(itemId);
 		if (item != null)
 		{
+			response.type("application/json");
 			response.header(RUNELITE_ITEM_CACHE, "HIT");
 			return item.toItem();
 		}
@@ -92,6 +93,7 @@ public class ItemService
 		item = fetch(itemId);
 		if (item != null)
 		{
+			response.type("application/json");
 			response.header(RUNELITE_ITEM_CACHE, "MISS");
 			return item.toItem();
 		}

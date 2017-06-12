@@ -143,6 +143,7 @@ public class AccountService
 		lr.setOauthUrl(authorizationUrl);
 		lr.setUid(uuid);
 
+		response.type("application/json");
 		return lr;
 	}
 
