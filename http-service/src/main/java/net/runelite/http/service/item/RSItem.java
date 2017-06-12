@@ -22,25 +22,74 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.http.service.item;
 
-import com.google.gson.Gson;
-import spark.ResponseTransformer;
-
-public class JsonTransformer implements ResponseTransformer
+public class RSItem
 {
-	private final Gson gson = new Gson();
+	private int id;
+	private String name;
+	private String description;
+	private String type;
+	private String icon;
+	private String icon_large;
 
-	@Override
-	public String render(Object model) throws Exception
+	public int getId()
 	{
-		if (model == null)
-		{
-			// gson turns a null object into "null" which
-			// causes spark to return http 200 instead of 404
-			return null;
-		}
+		return id;
+	}
 
-		return gson.toJson(model);
+	public void setId(int id)
+	{
+		this.id = id;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+
+	public String getType()
+	{
+		return type;
+	}
+
+	public void setType(String type)
+	{
+		this.type = type;
+	}
+
+	public String getIcon()
+	{
+		return icon;
+	}
+
+	public void setIcon(String icon)
+	{
+		this.icon = icon;
+	}
+
+	public String getIcon_large()
+	{
+		return icon_large;
+	}
+
+	public void setIcon_large(String icon_large)
+	{
+		this.icon_large = icon_large;
 	}
 }

@@ -31,6 +31,7 @@ import net.runelite.http.service.account.AccountService;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.config.ConfigService;
 import net.runelite.http.service.hiscore.HiscoreService;
+import net.runelite.http.service.item.ItemService;
 import net.runelite.http.service.updatecheck.UpdateCheckService;
 import net.runelite.http.service.worlds.WorldsService;
 import net.runelite.http.service.xtea.XteaService;
@@ -58,6 +59,9 @@ public class Service implements SparkApplication
 	private HiscoreService hiscores;
 
 	@Inject
+	private ItemService item;
+
+	@Inject
 	private UpdateCheckService updateCheck;
 
 	@Inject
@@ -78,6 +82,7 @@ public class Service implements SparkApplication
 		xtea.init();
 		accounts.init();
 		config.init();
+		item.init();
 
 		get("/version", (request, response) -> RuneliteAPI.getVersion());
 		get("/update-check", updateCheck::check, transformer);
@@ -105,6 +110,12 @@ public class Service implements SparkApplication
 			get("", config::get, transformer);
 			put("/:key", config::setKey);
 			delete("/:key", config::unsetKey);
+		});
+		path("/item", () ->
+		{
+			get("/:id", item::getItem, transformer);
+			get("/:id/icon", item::getIcon);
+			get("/:id/icon_large", item::getIconLarge);
 		});
 
 		exception(Exception.class, (exception, request, response) -> logger.warn(null, exception));

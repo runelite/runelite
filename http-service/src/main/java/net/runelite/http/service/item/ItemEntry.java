@@ -22,25 +22,99 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.http.service.item;
 
-import com.google.gson.Gson;
-import spark.ResponseTransformer;
+import java.time.Instant;
+import net.runelite.http.api.item.Item;
+import net.runelite.http.api.item.ItemType;
 
-public class JsonTransformer implements ResponseTransformer
+public class ItemEntry
 {
-	private final Gson gson = new Gson();
+	private int id;
+	private String name;
+	private String description;
+	private ItemType type;
+	private byte[] icon;
+	private byte[] icon_large;
+	private Instant timestamp;
 
-	@Override
-	public String render(Object model) throws Exception
+	public Item toItem()
 	{
-		if (model == null)
-		{
-			// gson turns a null object into "null" which
-			// causes spark to return http 200 instead of 404
-			return null;
-		}
+		Item item = new Item();
+		item.setId(id);
+		item.setName(name);
+		item.setDescription(description);
+		item.setType(type);
+		return item;
+	}
 
-		return gson.toJson(model);
+	public int getId()
+	{
+		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+
+	public ItemType getType()
+	{
+		return type;
+	}
+
+	public void setType(ItemType type)
+	{
+		this.type = type;
+	}
+
+	public byte[] getIcon()
+	{
+		return icon;
+	}
+
+	public void setIcon(byte[] icon)
+	{
+		this.icon = icon;
+	}
+
+	public byte[] getIcon_large()
+	{
+		return icon_large;
+	}
+
+	public void setIcon_large(byte[] icon_large)
+	{
+		this.icon_large = icon_large;
+	}
+
+	public Instant getTimestamp()
+	{
+		return timestamp;
+	}
+
+	public void setTimestamp(Instant timestamp)
+	{
+		this.timestamp = timestamp;
 	}
 }

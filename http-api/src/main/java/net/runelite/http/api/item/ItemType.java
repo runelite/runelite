@@ -22,25 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.http.api.item;
 
-import com.google.gson.Gson;
-import spark.ResponseTransformer;
-
-public class JsonTransformer implements ResponseTransformer
+public enum ItemType
 {
-	private final Gson gson = new Gson();
-
-	@Override
-	public String render(Object model) throws Exception
-	{
-		if (model == null)
-		{
-			// gson turns a null object into "null" which
-			// causes spark to return http 200 instead of 404
-			return null;
-		}
-
-		return gson.toJson(model);
-	}
+	DEFAULT
 }
