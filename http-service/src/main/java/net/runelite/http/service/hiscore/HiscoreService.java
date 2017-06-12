@@ -45,11 +45,12 @@ public class HiscoreService
 
 	public HiscoreResult lookup(String username) throws IOException, URISyntaxException
 	{
-		HttpUrl.Builder builder = url.newBuilder()
-			.addQueryParameter("player", username);
+		HttpUrl hiscoreUrl = url.newBuilder()
+			.addQueryParameter("player", username)
+			.build();
 
 		Request request = new Request.Builder()
-			.url(builder.build())
+			.url(hiscoreUrl)
 			.build();
 
 		Response response = RuneliteAPI.CLIENT.newCall(request).execute();

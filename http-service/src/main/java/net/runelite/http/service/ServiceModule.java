@@ -38,6 +38,7 @@ import net.runelite.http.service.account.AccountService;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.config.ConfigService;
 import net.runelite.http.service.hiscore.HiscoreService;
+import net.runelite.http.service.item.ItemService;
 import net.runelite.http.service.updatecheck.UpdateCheckService;
 import net.runelite.http.service.worlds.WorldsService;
 import net.runelite.http.service.xtea.XteaService;
@@ -121,6 +122,7 @@ public class ServiceModule extends AbstractModule
 		bind(AccountService.class);
 		bind(ConfigService.class);
 		bind(HiscoreService.class);
+		bind(ItemService.class);
 		bind(UpdateCheckService.class);
 		bind(WorldsService.class);
 		bind(XteaService.class);
