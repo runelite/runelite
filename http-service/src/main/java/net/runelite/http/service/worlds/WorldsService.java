@@ -25,7 +25,6 @@
 package net.runelite.http.service.worlds;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +32,9 @@ import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
 import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.ResponseBody;
+import spark.Request;
+import spark.Response;
 
 public class WorldsService
 {
@@ -43,16 +42,23 @@ public class WorldsService
 
 	private HttpUrl url = WORLD_URL;
 
-	public WorldResult listWorlds() throws IOException, URISyntaxException
+	public WorldResult listWorlds(Request request, Response response) throws IOException
 	{
-		Request request = new Request.Builder()
+		WorldResult result = listWorlds();
+		response.type("application/json");
+		return result;
+	}
+
+	public WorldResult listWorlds() throws IOException
+	{
+		okhttp3.Request okrequest = new okhttp3.Request.Builder()
 			.url(url)
 			.build();
 
-		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
+		okhttp3.Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute();
 		byte[] b;
 
-		try (ResponseBody body = response.body())
+		try (ResponseBody body = okresponse.body())
 		{
 			b = body.bytes();
 		}
