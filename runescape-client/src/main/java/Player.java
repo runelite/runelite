@@ -46,7 +46,8 @@ public final class Player extends Actor {
    @ObfuscatedGetter(
       intValue = -1240889055
    )
-   int field876;
+   @Export("totalLevel")
+   int totalLevel;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = -1306707351
@@ -56,8 +57,8 @@ public final class Player extends Actor {
    @ObfuscatedGetter(
       intValue = 766479329
    )
-   @Export("totalLevel")
-   int totalLevel;
+   //@Export("totalLevel")
+   int totalLevel2;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 2054658703
@@ -109,7 +110,8 @@ public final class Player extends Actor {
    )
    int field889;
    @ObfuscatedName("l")
-   boolean field890;
+   @Export("hidden")
+   boolean hidden;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 496836127
@@ -451,7 +453,7 @@ public final class Player extends Actor {
                   this.model = null;
                }
 
-               if(Client.gameCycle >= this.totalLevel && Client.gameCycle < this.field879) {
+               if(Client.gameCycle >= this.totalLevel2 && Client.gameCycle < this.field879) {
                   var4 = this.model;
                   var4.method2519(this.field880 - super.x, this.field881 - this.field877, this.field882 - super.y);
                   if(super.field1252 == 512) {
@@ -498,12 +500,12 @@ public final class Player extends Actor {
       }
 
       this.combatLevel = 0;
-      this.field876 = 0;
       this.totalLevel = 0;
+      this.totalLevel2 = 0;
       this.field879 = 0;
       this.field895 = false;
       this.team = 0;
-      this.field890 = false;
+      this.hidden = false;
       this.field893 = false;
    }
 
@@ -762,10 +764,10 @@ public final class Player extends Actor {
       }
 
       this.combatLevel = var1.readUnsignedByte();
-      this.field876 = var1.readUnsignedShort();
-      this.field890 = var1.readUnsignedByte() == 1;
+      this.totalLevel = var1.readUnsignedShort();
+      this.hidden = var1.readUnsignedByte() == 1;
       if(Client.field915 == 0 && Client.field1132 >= 2) {
-         this.field890 = false;
+         this.hidden = false;
       }
 
       if(this.composition == null) {

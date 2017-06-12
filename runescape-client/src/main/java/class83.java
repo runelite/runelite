@@ -220,7 +220,7 @@ public class class83 {
             }
          }
 
-         if(var5 != null && var5.vmethod1669() && !var5.field890) {
+         if(var5 != null && var5.vmethod1669() && !var5.hidden) {
             var5.field895 = false;
             if((Client.field918 && var1 > 50 || var1 > 200) && class66.field800 != var0 && var5.poseAnimation == var5.idlePoseAnimation) {
                var5.field895 = true;
@@ -229,7 +229,7 @@ public class class83 {
             int var7 = var5.x >> 7;
             int var8 = var5.y >> 7;
             if(var7 >= 0 && var7 < 104 && var8 >= 0 && var8 < 104) {
-               if(var5.model != null && Client.gameCycle >= var5.totalLevel && Client.gameCycle < var5.field879) {
+               if(var5.model != null && Client.gameCycle >= var5.totalLevel2 && Client.gameCycle < var5.field879) {
                   var5.field895 = false;
                   var5.field877 = class181.method3424(var5.x, var5.y, class92.plane);
                   class61.region.method2687(class92.plane, var5.x, var5.y, var5.field877, 60, var5, var5.angle, var6, var5.field888, var5.field889, var5.field886, var5.field870);

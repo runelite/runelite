@@ -1107,7 +1107,7 @@ public class class34 {
             Model var27 = var16.method4560(var11, var12, var23, var25, var24, var26);
             if(var27 != null) {
                class67.method1064(class92.plane, var5, var6, var13, -1, 0, 0, var1 + 1, var7 + 1);
-               var15.totalLevel = Client.gameCycle + var1;
+               var15.totalLevel2 = Client.gameCycle + var1;
                var15.field879 = var7 + Client.gameCycle;
                var15.model = var27;
                var15.field880 = var17 * 64 + var5 * 128;

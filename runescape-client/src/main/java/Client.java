@@ -3986,7 +3986,7 @@ public final class Client extends GameEngine {
                            var94 = true;
                         }
 
-                        if(!var94 && field1034 == 0 && !var116.field890) {
+                        if(!var94 && field1034 == 0 && !var116.hidden) {
                            class96.field1509.offset = 0;
                            var113.readBytes(class96.field1509.payload, 0, var13);
                            class96.field1509.offset = 0;
@@ -4900,7 +4900,7 @@ public final class Client extends GameEngine {
                            var94 = true;
                         }
 
-                        if(!var94 && field1034 == 0 && !var116.field890) {
+                        if(!var94 && field1034 == 0 && !var116.hidden) {
                            class96.field1509.offset = 0;
                            var113.readBytes(class96.field1509.payload, 0, var13);
                            class96.field1509.offset = 0;
@@ -5327,7 +5327,7 @@ public final class Client extends GameEngine {
                            var94 = true;
                         }
 
-                        if(!var94 && field1034 == 0 && !var116.field890) {
+                        if(!var94 && field1034 == 0 && !var116.hidden) {
                            class96.field1509.offset = 0;
                            var98.readBytes(class96.field1509.payload, 0, var13);
                            class96.field1509.offset = 0;

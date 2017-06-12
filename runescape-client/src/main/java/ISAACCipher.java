@@ -468,7 +468,7 @@ public final class ISAACCipher {
 
                                     for(var47 = 0; var47 < var23; ++var47) {
                                        Player var46 = Client.cachedPlayers[var70[var47]];
-                                       if(var46 != null && var46.vmethod1669() && !var46.field890 && class168.localPlayer != var46) {
+                                       if(var46 != null && var46.vmethod1669() && !var46.hidden && class168.localPlayer != var46) {
                                           var27 = var46.x / 32 - class168.localPlayer.x / 32;
                                           var51 = var46.y / 32 - class168.localPlayer.y / 32;
                                           boolean var63 = false;
@@ -534,7 +534,7 @@ public final class ISAACCipher {
                                        XGrandExchangeOffer.method135(var12, var13, var47, var26, World.field1310[0], var71);
                                     }
 
-                                    if(!class168.localPlayer.field890) {
+                                    if(!class168.localPlayer.hidden) {
                                        Rasterizer2D.method5040(var12 + var71.field2610 / 2 - 1, var71.field2605 / 2 + var13 - 1, 3, 3, 16777215);
                                     }
                                     break;

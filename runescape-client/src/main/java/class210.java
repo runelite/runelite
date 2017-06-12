@@ -53,7 +53,7 @@ public class class210 extends CacheableNode {
          if(Client.menuOptionCount < 400) {
             String var4;
             int var7;
-            if(var0.field876 == 0) {
+            if(var0.totalLevel == 0) {
                String var5 = var0.actions[0] + var0.name + var0.actions[1];
                var7 = var0.combatLevel;
                int var8 = class168.localPlayer.combatLevel;
@@ -81,7 +81,7 @@ public class class210 extends CacheableNode {
 
                var4 = var5 + var10 + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
             } else {
-               var4 = var0.actions[0] + var0.name + var0.actions[1] + " " + " (" + "skill-" + var0.field876 + ")" + var0.actions[2];
+               var4 = var0.actions[0] + var0.name + var0.actions[1] + " " + " (" + "skill-" + var0.totalLevel + ")" + var0.actions[2];
             }
 
             int var11;

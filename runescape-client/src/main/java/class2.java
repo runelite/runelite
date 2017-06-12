@@ -1099,7 +1099,7 @@ final class class2 implements class0 {
 
          if(var1 < var74) {
             Player var85 = (Player)var0;
-            if(var85.field890) {
+            if(var85.hidden) {
                return;
             }
 
