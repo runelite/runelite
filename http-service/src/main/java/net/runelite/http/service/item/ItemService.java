@@ -30,15 +30,23 @@ import com.google.inject.name.Named;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.item.Item;
+import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.ItemType;
 import okhttp3.HttpUrl;
 import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sql2o.Connection;
+import org.sql2o.Query;
 import org.sql2o.Sql2o;
+import org.sql2o.Sql2oException;
 import spark.Request;
 import spark.Response;
 
@@ -47,6 +55,7 @@ public class ItemService
 	private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
 
 	private static final HttpUrl RS_ITEM_URL = HttpUrl.parse("http://services.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json");
+	private static final HttpUrl RS_PRICE_URL = HttpUrl.parse("http://services.runescape.com/m=itemdb_oldschool/api/graph");
 
 	private static final String CREATE_ITEMS = "CREATE TABLE IF NOT EXISTS `items` (\n"
 		+ "  `id` int(11) NOT NULL,\n"
@@ -58,6 +67,19 @@ public class ItemService
 		+ "  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
 		+ "  PRIMARY KEY (`id`)\n"
 		+ ") ENGINE=InnoDB";
+
+	private static final String CREATE_PRICES = "CREATE TABLE IF NOT EXISTS `prices` (\n"
+		+ "  `item` int(11) NOT NULL,\n"
+		+ "  `price` int(11) NOT NULL,\n"
+		+ "  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
+		+ "  KEY `item` (`item`)\n"
+		+ ") ENGINE=InnoDB";
+
+	private static final String CREATE_PRICES_FK = "ALTER TABLE `prices`\n"
+		+ "  ADD CONSTRAINT `item` FOREIGN KEY (`item`) REFERENCES `items` (`id`);";
+
+	private static final String CREATE_PRICES_IDX = "ALTER TABLE `prices`\n"
+		+ "  ADD UNIQUE KEY `item` (`item`,`time`);";
 
 	private static final String RUNELITE_ITEM_CACHE = "Runelite-Item-Cache";
 
@@ -75,6 +97,29 @@ public class ItemService
 		{
 			con.createQuery(CREATE_ITEMS)
 				.executeUpdate();
+
+			con.createQuery(CREATE_PRICES)
+				.executeUpdate();
+
+			try
+			{
+				con.createQuery(CREATE_PRICES_FK)
+					.executeUpdate();
+			}
+			catch (Sql2oException ex)
+			{
+				// Ignore, happens when index already exists
+			}
+
+			try
+			{
+				con.createQuery(CREATE_PRICES_IDX)
+					.executeUpdate();
+			}
+			catch (Sql2oException ex)
+			{
+				// Ignore
+			}
 		}
 	}
 
@@ -82,7 +127,7 @@ public class ItemService
 	{
 		int itemId = Integer.parseInt(request.params("id"));
 
-		ItemEntry item = get(itemId);
+		ItemEntry item = getItem(itemId);
 		if (item != null)
 		{
 			response.type("application/json");
@@ -90,7 +135,7 @@ public class ItemService
 			return item.toItem();
 		}
 
-		item = fetch(itemId);
+		item = fetchItem(itemId);
 		if (item != null)
 		{
 			response.type("application/json");
@@ -105,7 +150,7 @@ public class ItemService
 	{
 		int itemId = Integer.parseInt(request.params("id"));
 
-		ItemEntry item = get(itemId);
+		ItemEntry item = getItem(itemId);
 		if (item != null)
 		{
 			response.type("image/gif");
@@ -113,7 +158,7 @@ public class ItemService
 			return item.getIcon();
 		}
 
-		item = fetch(itemId);
+		item = fetchItem(itemId);
 		if (item != null)
 		{
 			response.type("image/gif");
@@ -128,7 +173,7 @@ public class ItemService
 	{
 		int itemId = Integer.parseInt(request.params("id"));
 
-		ItemEntry item = get(itemId);
+		ItemEntry item = getItem(itemId);
 		if (item != null)
 		{
 			response.type("image/gif");
@@ -136,7 +181,7 @@ public class ItemService
 			return item.getIcon_large();
 		}
 
-		item = fetch(itemId);
+		item = fetchItem(itemId);
 		if (item != null)
 		{
 			response.type("image/gif");
@@ -147,7 +192,74 @@ public class ItemService
 		return null;
 	}
 
-	private ItemEntry get(int itemId)
+	public ItemPrice getPrice(Request request, Response response)
+	{
+		int itemId = Integer.parseInt(request.params("id"));
+		String ptime = request.params("time");
+		Instant time = null;
+		Instant now = Instant.now();
+		boolean hit = true;
+
+		if (ptime != null)
+		{
+			time = Instant.ofEpochMilli(Long.parseLong(ptime));
+
+			if (time.isAfter(now))
+			{
+				time = now;
+			}
+		}
+
+		ItemEntry item = getItem(itemId);
+		if (item == null)
+		{
+			item = fetchItem(itemId);
+			hit = false;
+
+			if (item == null)
+			{
+				return null;
+			}
+		}
+
+		PriceEntry priceEntry = getPrice(itemId, time);
+
+		if (time != null)
+		{
+			if (priceEntry == null)
+			{
+				// we maybe can't backfill this
+				return null;
+			}
+		}
+		else
+		{
+			Instant yesterday = now.minus(1, ChronoUnit.DAYS);
+			if (priceEntry == null || priceEntry.getTime().isBefore(yesterday))
+			{
+				List<PriceEntry> prices = fetchPrice(itemId);
+
+				if (prices == null || prices.isEmpty())
+				{
+					return null;
+				}
+
+				priceEntry = prices.get(prices.size() - 1);
+				hit = false;
+			}
+		}
+
+		ItemPrice itemPrice = new ItemPrice();
+		itemPrice.setItem(item.toItem());
+		itemPrice.setPrice(priceEntry.getPrice());
+		itemPrice.setTime(priceEntry.getTime());
+
+		response.type("application/json");
+		response.header(RUNELITE_ITEM_CACHE, hit ? "HIT" : "MISS");
+		return itemPrice;
+	}
+
+	private ItemEntry getItem(int itemId)
 	{
 		try (Connection con = sql2o.open())
 		{
@@ -159,11 +271,31 @@ public class ItemService
 		}
 	}
 
-	private ItemEntry fetch(int itemId)
+	private PriceEntry getPrice(int itemId, Instant time)
+	{
+		try (Connection con = sql2o.open())
+		{
+			if (time != null)
+			{
+				return con.createQuery("select price, time from prices where item = :item and time <= :time order by time desc limit 1")
+					.addParameter("item", itemId)
+					.addParameter("time", time.toString())
+					.executeAndFetchFirst(PriceEntry.class);
+			}
+			else
+			{
+				return con.createQuery("select price, time from prices where item = :item order by time desc limit 1")
+					.addParameter("item", itemId)
+					.executeAndFetchFirst(PriceEntry.class);
+			}
+		}
+	}
+
+	private ItemEntry fetchItem(int itemId)
 	{
 		try
 		{
-			RSItem rsItem = fetchItem(itemId);
+			RSItem rsItem = fetchRSItem(itemId);
 			byte[] icon = fetchImage(rsItem.getIcon());
 			byte[] iconLarge = fetchImage(rsItem.getIcon_large());
 
@@ -205,7 +337,48 @@ public class ItemService
 		}
 	}
 
-	private RSItem fetchItem(int itemId) throws IOException
+	private List<PriceEntry> fetchPrice(int itemId)
+	{
+		try (Connection con = sql2o.beginTransaction())
+		{
+			RSPrices rsprice = fetchRSPrices(itemId);
+			List<PriceEntry> entries = new ArrayList<>();
+
+			Query query = con.createQuery("insert ignore into prices (item, price, time) values (:item, :price, :time)");
+
+			for (Entry<Long, Integer> entry : rsprice.getDaily().entrySet())
+			{
+				long ts = entry.getKey(); // ms since epoch
+				int price = entry.getValue(); // gp
+
+				Instant time = Instant.ofEpochMilli(ts);
+
+				PriceEntry priceEntry = new PriceEntry();
+				priceEntry.setItem(itemId);
+				priceEntry.setPrice(price);
+				priceEntry.setTime(time);
+				entries.add(priceEntry);
+
+				query
+					.addParameter("item", itemId)
+					.addParameter("price", price)
+					.addParameter("time", time)
+					.addToBatch();
+			}
+
+			query.executeBatch();
+			con.commit();
+
+			return entries;
+		}
+		catch (IOException ex)
+		{
+			logger.warn("unable to fetch price for item {}", itemId, ex);
+			return null;
+		}
+	}
+
+	private RSItem fetchRSItem(int itemId) throws IOException
 	{
 		HttpUrl itemUrl = RS_ITEM_URL
 			.newBuilder()
@@ -216,13 +389,38 @@ public class ItemService
 			.url(itemUrl)
 			.build();
 
+		RSItemResponse itemResponse = fetchJson(request, RSItemResponse.class);
+		return itemResponse.getItem();
+
+	}
+
+	private RSPrices fetchRSPrices(int itemId) throws IOException
+	{
+		HttpUrl priceUrl = RS_PRICE_URL
+			.newBuilder()
+			.addPathSegment(itemId + ".json")
+			.build();
+
+		okhttp3.Request request = new okhttp3.Request.Builder()
+			.url(priceUrl)
+			.build();
+
+		return fetchJson(request, RSPrices.class);
+	}
+
+	private <T> T fetchJson(okhttp3.Request request, Class<T> clazz) throws IOException
+	{
 		okhttp3.Response response = RuneliteAPI.CLIENT.newCall(request).execute();
+
+		if (!response.isSuccessful())
+		{
+			throw new IOException("Unsuccessful http response: " + response.message());
+		}
 
 		try (ResponseBody body = response.body())
 		{
 			InputStream in = body.byteStream();
-			RSItemResponse itemResponse = RuneliteAPI.GSON.fromJson(new InputStreamReader(in), RSItemResponse.class);
-			return itemResponse.getItem();
+			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), clazz);
 		}
 		catch (JsonParseException ex)
 		{
@@ -239,6 +437,11 @@ public class ItemService
 			.build();
 
 		okhttp3.Response response = RuneliteAPI.CLIENT.newCall(request).execute();
+
+		if (!response.isSuccessful())
+		{
+			throw new IOException("Unsuccessful http response: " + response.message());
+		}
 
 		try (ResponseBody body = response.body())
 		{
