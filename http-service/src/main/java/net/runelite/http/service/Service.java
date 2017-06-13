@@ -115,7 +115,9 @@ public class Service implements SparkApplication
 		{
 			get("/:id", item::getItem, transformer);
 			get("/:id/icon", item::getIcon);
-			get("/:id/icon_large", item::getIconLarge);
+			get("/:id/icon/large", item::getIconLarge);
+			get("/:id/price", item::getPrice, transformer);
+			get("/:id/price/:time", item::getPrice, transformer);
 		});
 
 		exception(Exception.class, (exception, request, response) -> logger.warn(null, exception));
