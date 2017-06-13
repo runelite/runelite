@@ -79,6 +79,7 @@ public class RuneLite
 
 	private AccountSession accountSession;
 	private final ConfigManager configManager = new ConfigManager(eventBus);
+	private final ItemManager itemManager = new ItemManager(this);
 
 	static
 	{
@@ -325,13 +326,18 @@ public class RuneLite
 		return trayIcon;
 	}
 
+	public AccountSession getAccountSession()
+	{
+		return accountSession;
+	}
+
 	public ConfigManager getConfigManager()
 	{
 		return configManager;
 	}
 
-	public AccountSession getAccountSession()
+	public ItemManager getItemManager()
 	{
-		return accountSession;
+		return itemManager;
 	}
 }
