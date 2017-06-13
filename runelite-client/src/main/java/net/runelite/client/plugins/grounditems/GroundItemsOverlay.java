@@ -44,9 +44,11 @@ import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.ItemManager;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.http.api.item.ItemPrice;
 import net.runelite.rs.api.ItemComposition;
 
 public class GroundItemsOverlay extends Overlay
@@ -62,6 +64,7 @@ public class GroundItemsOverlay extends Overlay
 
 	private final Client client = RuneLite.getClient();
 	private final GroundItemsConfig config;
+	private final ItemManager itemManager = RuneLite.getRunelite().getItemManager();
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 
 	public GroundItemsOverlay(GroundItems plugin)
@@ -166,6 +169,16 @@ public class GroundItemsOverlay extends Overlay
 						{
 							itemStringBuilder.append(" (").append(quantity).append(")");
 						}
+					}
+
+					ItemPrice itemPrice = itemManager.get(itemId);
+					if (itemPrice != null)
+					{
+						int cost = itemPrice.getPrice() * quantity;
+
+						itemStringBuilder.append(" (")
+							.append(ItemManager.quantityToStackSize(cost))
+							.append(")");
 					}
 
 					String itemString = itemStringBuilder.toString();
