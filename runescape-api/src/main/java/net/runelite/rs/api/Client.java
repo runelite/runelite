@@ -172,11 +172,11 @@ public interface Client extends GameEngine
 	@Import("scale")
 	int getScale();
 
-	@Import("camera2")
-	int getCamera2();
+	@Import("viewportHeight")
+	int getViewportHeight();
 
-	@Import("camera3")
-	int getCamera3();
+	@Import("viewportWidth")
+	int getViewportWidth();
 
 	@Import("validInterfaces")
 	boolean[] getValidInterfaces();
