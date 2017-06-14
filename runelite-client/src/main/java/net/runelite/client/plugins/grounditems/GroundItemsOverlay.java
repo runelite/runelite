@@ -61,6 +61,18 @@ public class GroundItemsOverlay extends Overlay
 	private static final int MAX_RANGE = 2400;
 	// The 15 pixel gap between each drawn ground item.
 	private static final int STRING_GAP = 15;
+	// Threshold for highlighting items as blue.
+	private static final int LOW_VALUE = 20_000;
+	private static final Color BRIGHT_BLUE = new Color(102, 178, 255);
+	// Threshold for highlighting items as green.
+	private static final int MEDIUM_VALUE = 100_000;
+	private static final Color BRIGHT_GREEN = new Color(153, 255, 153);
+	// Threshold for highlighting items as amber.
+	private static final int HIGH_VALUE = 1_000_000;
+	private static final Color AMBER = new Color(255, 150, 0);
+	// Threshold for highlighting items as pink.
+	private static final int INSANE_VALUE = 10_000_000;
+	private static final Color FADED_PINK = new Color(255, 102, 178);
 
 	private final Client client = RuneLite.getClient();
 	private final GroundItemsConfig config;
@@ -171,14 +183,32 @@ public class GroundItemsOverlay extends Overlay
 						}
 					}
 
+					Color textColor = Color.WHITE; // Color to use when drawing the ground item
 					ItemPrice itemPrice = itemManager.get(itemId);
 					if (itemPrice != null)
 					{
 						int cost = itemPrice.getPrice() * quantity;
+						// set the color according to rarity, if possible
+						if (cost >= INSANE_VALUE) // 10,000,000 gp
+						{
+							textColor = FADED_PINK;
+						}
+						else if (cost >= HIGH_VALUE) // 1,000,000 gp
+						{
+							textColor = AMBER;
+						}
+						else if (cost >= MEDIUM_VALUE) // 100,000 gp
+						{
+							textColor = BRIGHT_GREEN;
+						}
+						else if (cost >= LOW_VALUE) // 20,000 gp
+						{
+							textColor = BRIGHT_BLUE;
+						}
 
-						itemStringBuilder.append(" (")
+						itemStringBuilder.append(" (EX: ")
 							.append(ItemManager.quantityToStackSize(cost))
-							.append(")");
+							.append(" gp)");
 					}
 
 					String itemString = itemStringBuilder.toString();
@@ -197,7 +227,7 @@ public class GroundItemsOverlay extends Overlay
 					graphics.setColor(Color.BLACK);
 					graphics.drawString(itemString, screenX + 1, point.getY() - (STRING_GAP * i) + 1);
 					// Drawing the text itself
-					graphics.setColor(Color.WHITE);
+					graphics.setColor(textColor);
 					graphics.drawString(itemString, screenX, point.getY() - (STRING_GAP * i));
 				}
 			}
