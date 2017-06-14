@@ -146,16 +146,16 @@ public final class ModIcon extends Rasterizer2D {
       int var7 = Rasterizer2D.graphicsPixelsWidth - var6;
       int var8 = 0;
       int var9;
-      if(var2 < Rasterizer2D.field3755) {
-         var9 = Rasterizer2D.field3755 - var2;
+      if(var2 < Rasterizer2D.drawingAreaTop) {
+         var9 = Rasterizer2D.drawingAreaTop - var2;
          var5 -= var9;
-         var2 = Rasterizer2D.field3755;
+         var2 = Rasterizer2D.drawingAreaTop;
          var4 += var9 * var6;
          var3 += var9 * Rasterizer2D.graphicsPixelsWidth;
       }
 
-      if(var2 + var5 > Rasterizer2D.field3756) {
-         var5 -= var2 + var5 - Rasterizer2D.field3756;
+      if(var2 + var5 > Rasterizer2D.drawingAreaRight) {
+         var5 -= var2 + var5 - Rasterizer2D.drawingAreaRight;
       }
 
       if(var1 < Rasterizer2D.field3754) {
@@ -168,8 +168,8 @@ public final class ModIcon extends Rasterizer2D {
          var7 += var9;
       }
 
-      if(var1 + var6 > Rasterizer2D.field3758) {
-         var9 = var1 + var6 - Rasterizer2D.field3758;
+      if(var1 + var6 > Rasterizer2D.drawingAreaBottom) {
+         var9 = var1 + var6 - Rasterizer2D.drawingAreaBottom;
          var6 -= var9;
          var8 += var9;
          var7 += var9;
@@ -238,20 +238,20 @@ public final class ModIcon extends Rasterizer2D {
 
       var13 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
       int var14 = Rasterizer2D.graphicsPixelsWidth - var3;
-      if(var2 + var4 > Rasterizer2D.field3756) {
-         var4 -= var2 + var4 - Rasterizer2D.field3756;
+      if(var2 + var4 > Rasterizer2D.drawingAreaRight) {
+         var4 -= var2 + var4 - Rasterizer2D.drawingAreaRight;
       }
 
       int var15;
-      if(var2 < Rasterizer2D.field3755) {
-         var15 = Rasterizer2D.field3755 - var2;
+      if(var2 < Rasterizer2D.drawingAreaTop) {
+         var15 = Rasterizer2D.drawingAreaTop - var2;
          var4 -= var15;
          var13 += var15 * Rasterizer2D.graphicsPixelsWidth;
          var8 += var12 * var15;
       }
 
-      if(var1 + var3 > Rasterizer2D.field3758) {
-         var15 = var1 + var3 - Rasterizer2D.field3758;
+      if(var1 + var3 > Rasterizer2D.drawingAreaBottom) {
+         var15 = var1 + var3 - Rasterizer2D.drawingAreaBottom;
          var3 -= var15;
          var14 += var15;
       }

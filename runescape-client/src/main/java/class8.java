@@ -70,7 +70,7 @@ public final class class8 extends class9 {
          throw new RuntimeException(Client.secretPacketBuffer2.offset + "," + Client.packetLength);
       } else {
          for(var1 = 0; var1 < Client.field952; ++var1) {
-            if(Client.cachedNPCs[Client.field953[var1]] == null) {
+            if(Client.cachedNPCs[Client.npcIndices[var1]] == null) {
                throw new RuntimeException(var1 + "," + Client.field952);
             }
          }
@@ -92,7 +92,7 @@ public final class class8 extends class9 {
       garbageValue = "1699185912"
    )
    final void vmethod62() {
-      Rasterizer2D.method4976(this.field238 + Rasterizer2D.field3754, Rasterizer2D.field3755 + this.field245, this.field239 - this.field238, this.field240 - this.field245, this.field241);
+      Rasterizer2D.method4976(this.field238 + Rasterizer2D.field3754, Rasterizer2D.drawingAreaTop + this.field245, this.field239 - this.field238, this.field240 - this.field245, this.field241);
    }
 
    @ObfuscatedName("p")
@@ -243,7 +243,7 @@ public final class class8 extends class9 {
                            }
 
                            class15.method115("", "Connecting to server...", "");
-                           class92.field1441 = class66.field801.preferences.containsKey(Integer.valueOf(class100.method1843(class92.username)))?class149.field2212:class149.field2208;
+                           class92.field1441 = class66.field801.preferences.containsKey(Integer.valueOf(DynamicObject.method1843(class92.username)))?class149.field2212:class149.field2208;
                            class3.setGameState(20);
                            return;
                         }
@@ -310,7 +310,7 @@ public final class class8 extends class9 {
                                     }
 
                                     class15.method115("", "Connecting to server...", "");
-                                    class92.field1441 = class66.field801.preferences.containsKey(Integer.valueOf(class100.method1843(class92.username)))?class149.field2212:class149.field2208;
+                                    class92.field1441 = class66.field801.preferences.containsKey(Integer.valueOf(DynamicObject.method1843(class92.username)))?class149.field2212:class149.field2208;
                                     class3.setGameState(20);
                                     return;
                                  }

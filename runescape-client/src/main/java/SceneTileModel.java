@@ -1,7 +1,10 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("db")
-public final class class128 {
+@Implements("SceneTileModel")
+public final class SceneTileModel {
    @ObfuscatedName("l")
    static final int[][] field1847;
    @ObfuscatedName("p")
@@ -23,15 +26,19 @@ public final class class128 {
    @ObfuscatedName("g")
    int[] field1856;
    @ObfuscatedName("e")
-   boolean field1857;
+   @Export("flatShade")
+   boolean flatShade;
    @ObfuscatedName("j")
    int[] field1858;
    @ObfuscatedName("x")
-   int field1859;
+   @Export("rotation")
+   int rotation;
    @ObfuscatedName("a")
-   int field1860;
+   @Export("underlay")
+   int underlay;
    @ObfuscatedName("y")
-   int field1861;
+   @Export("overlay")
+   int overlay;
    @ObfuscatedName("r")
    static int[] field1862;
    @ObfuscatedName("b")
@@ -43,7 +50,8 @@ public final class class128 {
    @ObfuscatedName("n")
    int[] field1866;
    @ObfuscatedName("o")
-   int field1867;
+   @Export("shape")
+   int shape;
    @ObfuscatedName("i")
    int[] field1868;
 
@@ -57,16 +65,16 @@ public final class class128 {
       field1847 = new int[][]{{0, 1, 2, 3, 0, 0, 1, 3}, {1, 1, 2, 3, 1, 0, 1, 3}, {0, 1, 2, 3, 1, 0, 1, 3}, {0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3}, {0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4}, {0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4}, {0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3}, {0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3}, {0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5}, {0, 0, 4, 5, 1, 4, 1, 2, 1, 4, 2, 3, 1, 4, 3, 5}, {0, 0, 1, 5, 0, 1, 4, 5, 0, 1, 2, 4, 1, 0, 5, 3, 1, 5, 4, 3, 1, 4, 2, 3}, {1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3}, {1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5}};
    }
 
-   class128(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14, int var15, int var16, int var17, int var18, int var19) {
-      this.field1857 = true;
+   SceneTileModel(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14, int var15, int var16, int var17, int var18, int var19) {
+      this.flatShade = true;
       if(var6 != var7 || var6 != var8 || var6 != var9) {
-         this.field1857 = false;
+         this.flatShade = false;
       }
 
-      this.field1867 = var1;
-      this.field1859 = var2;
-      this.field1860 = var18;
-      this.field1861 = var19;
+      this.shape = var1;
+      this.rotation = var2;
+      this.underlay = var18;
+      this.overlay = var19;
       short var20 = 128;
       int var21 = var20 / 2;
       int var22 = var20 / 4;

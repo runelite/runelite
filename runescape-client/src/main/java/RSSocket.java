@@ -62,7 +62,7 @@ public final class RSSocket implements Runnable {
 
          if(this.field2281 != null) {
             while(this.field2281.field2236 == 0) {
-               class100.method1842(1L);
+               DynamicObject.method1842(1L);
             }
 
             if(this.field2281.field2236 == 1) {

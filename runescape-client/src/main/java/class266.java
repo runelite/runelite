@@ -39,12 +39,12 @@ public class class266 {
       class83.method1650(var4?class66.field802:class66.field806);
       class217.method4073(false);
       CombatInfo2.method4423();
-      class76.method1482();
+      PendingSpawn.method1482();
       class211.method3950(var0, var1, var2, var3, true);
       var0 = Client.field1177;
       var1 = Client.field1150;
-      var2 = Client.camera2;
-      var3 = Client.camera3;
+      var2 = Client.viewportHeight;
+      var3 = Client.viewportWidth;
       Rasterizer2D.method4961(var0, var1, var0 + var2, var3 + var1);
       class136.method2594();
       int var6;
@@ -98,7 +98,7 @@ public class class266 {
          class203.cameraZ = var8 - var14;
          XItemContainer.cameraY = var9 - var15;
          Client.cameraPitch = var5;
-         class84.cameraYaw = var6;
+         GraphicsObject.cameraYaw = var6;
       }
 
       if(!Client.field987) {
@@ -122,7 +122,7 @@ public class class266 {
       var7 = class203.cameraZ;
       var8 = XItemContainer.cameraY;
       var9 = Client.cameraPitch;
-      var10 = class84.cameraYaw;
+      var10 = GraphicsObject.cameraYaw;
 
       for(var11 = 0; var11 < 5; ++var11) {
          if(Client.field1164[var11]) {
@@ -140,7 +140,7 @@ public class class266 {
             }
 
             if(var11 == 3) {
-               class84.cameraYaw = var12 + class84.cameraYaw & 2047;
+               GraphicsObject.cameraYaw = var12 + GraphicsObject.cameraYaw & 2047;
             }
 
             if(var11 == 4) {
@@ -180,7 +180,7 @@ public class class266 {
       class24.method202();
       var13 = class136.field2028;
       class136.field2028 = Client.scale;
-      class61.region.method2716(class2.cameraX, class203.cameraZ, XItemContainer.cameraY, Client.cameraPitch, class84.cameraYaw, var5);
+      class61.region.method2716(class2.cameraX, class203.cameraZ, XItemContainer.cameraY, Client.cameraPitch, GraphicsObject.cameraYaw, var5);
       class211.method3948();
       class136.field2028 = var13;
       class24.method202();
@@ -193,7 +193,7 @@ public class class266 {
       class203.cameraZ = var7;
       XItemContainer.cameraY = var8;
       Client.cameraPitch = var9;
-      class84.cameraYaw = var10;
+      GraphicsObject.cameraYaw = var10;
       if(Client.field921 && FileOnDisk.method2385(true, false) == 0) {
          Client.field921 = false;
       }

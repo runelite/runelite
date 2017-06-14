@@ -17,7 +17,8 @@ public class WidgetNode extends Node {
    )
    int field816;
    @ObfuscatedName("ex")
-   static Font field817;
+   @Export("font_p12full")
+   static Font font_p12full;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 1299048029

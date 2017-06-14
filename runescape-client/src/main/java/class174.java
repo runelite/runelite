@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -24,7 +25,8 @@ public class class174 {
    @ObfuscatedGetter(
       intValue = 1594219691
    )
-   public static int field2408;
+   @Export("canvasWidth")
+   public static int canvasWidth;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 539241415
@@ -100,7 +102,7 @@ public class class174 {
          class98.sendGameMessage(99, "", "Clickbox Mode: " + (Model.field1944?"AABB":"Legacy"));
       }
 
-      if(Client.field1132 >= 2) {
+      if(Client.rights >= 2) {
          if(var0.equalsIgnoreCase("aabb")) {
             if(!class7.field231) {
                class7.field231 = true;

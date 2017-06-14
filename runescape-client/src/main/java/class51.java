@@ -54,7 +54,7 @@ public class class51 implements class103 {
          var3.name = class83.scriptStringStack[--ISAACCipher.scriptStringStackSize];
          return 1;
       } else if(var0 == 1306) {
-         var3.field2780 = class83.scriptStringStack[--ISAACCipher.scriptStringStackSize];
+         var3.selectedAction = class83.scriptStringStack[--ISAACCipher.scriptStringStackSize];
          return 1;
       } else if(var0 == 1307) {
          var3.actions = null;

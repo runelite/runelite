@@ -17,7 +17,7 @@ public class class140 {
          World.worldList[var1] = var8;
 
          for(int var9 = var0; var9 < var1; ++var9) {
-            if(class76.method1481(World.worldList[var9], var8, var2, var3, var4, var5) <= 0) {
+            if(PendingSpawn.method1481(World.worldList[var9], var8, var2, var3, var4, var5) <= 0) {
                World var10 = World.worldList[var9];
                World.worldList[var9] = World.worldList[var7];
                World.worldList[var7++] = var10;

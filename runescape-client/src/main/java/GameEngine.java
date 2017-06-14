@@ -170,7 +170,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    final void method832(Object var1) {
       if(this.field701 != null) {
          for(int var2 = 0; var2 < 50 && this.field701.peekEvent() != null; ++var2) {
-            class100.method1842(1L);
+            DynamicObject.method1842(1L);
          }
 
          if(var1 != null) {
@@ -225,8 +225,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    void method839() {
       int var1 = this.field691;
       int var2 = this.field695;
-      int var3 = this.field689 - class174.field2408 - var1;
-      int var4 = this.field690 - class2.field21 - var2;
+      int var3 = this.field689 - class174.canvasWidth - var1;
+      int var4 = this.field690 - class2.canvasHeight - var2;
       if(var1 > 0 || var3 > 0 || var2 > 0 || var4 > 0) {
          try {
             Container var5 = this.method860();
@@ -313,8 +313,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          }
 
          field676 = this;
-         class174.field2408 = var1;
-         class2.field21 = var2;
+         class174.canvasWidth = var1;
+         class2.canvasHeight = var2;
          class152.revision = var3;
          class15.field304 = this;
          if(field678 == null) {
@@ -341,18 +341,18 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          var1.remove(this.canvas);
       }
 
-      class174.field2408 = Math.max(var1.getWidth(), this.field693);
-      class2.field21 = Math.max(var1.getHeight(), this.field685);
+      class174.canvasWidth = Math.max(var1.getWidth(), this.field693);
+      class2.canvasHeight = Math.max(var1.getHeight(), this.field685);
       Insets var2;
       if(this.field706 != null) {
          var2 = this.field706.getInsets();
-         class174.field2408 -= var2.left + var2.right;
-         class2.field21 -= var2.top + var2.bottom;
+         class174.canvasWidth -= var2.left + var2.right;
+         class2.canvasHeight -= var2.top + var2.bottom;
       }
 
       this.canvas = new RSCanvas(this);
       var1.add(this.canvas);
-      this.canvas.setSize(class174.field2408, class2.field21);
+      this.canvas.setSize(class174.canvasWidth, class2.canvasHeight);
       this.canvas.setVisible(true);
       this.canvas.setBackground(Color.BLACK);
       if(var1 == this.field706) {
@@ -365,11 +365,11 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       this.canvas.addFocusListener(this);
       this.canvas.requestFocus();
       this.field699 = true;
-      if(class47.field601 != null && class174.field2408 == class47.field601.width && class47.field601.height == class2.field21) {
+      if(class47.field601 != null && class174.canvasWidth == class47.field601.width && class47.field601.height == class2.canvasHeight) {
          ((MainBufferProvider)class47.field601).method813(this.canvas);
          class47.field601.vmethod5052(0, 0);
       } else {
-         class47.field601 = new MainBufferProvider(class174.field2408, class2.field21, this.canvas);
+         class47.field601 = new MainBufferProvider(class174.canvasWidth, class2.canvasHeight, this.canvas);
       }
 
       this.field697 = false;
@@ -490,7 +490,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    public final void destroy() {
       if(field676 == this && !field679) {
          field692 = class134.method2587();
-         class100.method1842(5000L);
+         DynamicObject.method1842(5000L);
          this.method848();
       }
    }
@@ -500,7 +500,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          this.field699 = true;
          if(class134.method2587() - this.field680 > 1000L) {
             Rectangle var2 = var1.getClipBounds();
-            if(var2 == null || var2.width >= class174.field2408 && var2.height >= class2.field21) {
+            if(var2 == null || var2.width >= class174.canvasWidth && var2.height >= class2.canvasHeight) {
                this.field697 = true;
             }
          }
@@ -581,7 +581,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
          if(var3) {
             var4.setColor(Color.black);
-            var4.fillRect(0, 0, class174.field2408, class2.field21);
+            var4.fillRect(0, 0, class174.canvasWidth, class2.canvasHeight);
          }
 
          Color var5 = new Color(140, 17, 17);
@@ -601,10 +601,10 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             var6.setFont(class15.field298);
             var6.setColor(Color.white);
             var6.drawString(var2, (304 - GroundObject.field1880.stringWidth(var2)) / 2, 22);
-            var4.drawImage(class19.field330, class174.field2408 / 2 - 152, class2.field21 / 2 - 18, (ImageObserver)null);
+            var4.drawImage(class19.field330, class174.canvasWidth / 2 - 152, class2.canvasHeight / 2 - 18, (ImageObserver)null);
          } catch (Exception var9) {
-            int var7 = class174.field2408 / 2 - 152;
-            int var8 = class2.field21 / 2 - 18;
+            int var7 = class174.canvasWidth / 2 - 152;
+            int var8 = class2.canvasHeight / 2 - 18;
             var4.setColor(var5);
             var4.drawRect(var7, var8, 303, 33);
             var4.fillRect(var7 + 2, var8 + 2, var1 * 3, 30);
@@ -679,7 +679,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       if(++field700 - 1 > 50) {
          field700 -= 50;
          this.field699 = true;
-         this.canvas.setSize(class174.field2408, class2.field21);
+         this.canvas.setSize(class174.canvasWidth, class2.canvasHeight);
          this.canvas.setVisible(true);
          if(var1 == this.field706) {
             Insets var7 = this.field706.getInsets();
@@ -759,12 +759,12 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             this.field690 = 1;
          }
 
-         class174.field2408 = Math.min(this.field689, this.field702);
-         class2.field21 = Math.min(this.field690, this.field696);
-         this.field691 = (this.field689 - class174.field2408) / 2;
+         class174.canvasWidth = Math.min(this.field689, this.field702);
+         class2.canvasHeight = Math.min(this.field690, this.field696);
+         this.field691 = (this.field689 - class174.canvasWidth) / 2;
          this.field695 = 0;
-         this.canvas.setSize(class174.field2408, class2.field21);
-         class47.field601 = new MainBufferProvider(class174.field2408, class2.field21, this.canvas);
+         this.canvas.setSize(class174.canvasWidth, class2.canvasHeight);
+         class47.field601 = new MainBufferProvider(class174.canvasWidth, class2.canvasHeight, this.canvas);
          if(this.field706 == var1) {
             Insets var3 = this.field706.getInsets();
             this.canvas.setLocation(var3.left + this.field691, var3.top + this.field695);

@@ -158,7 +158,7 @@ public class class35 {
                if(var14.animationId == -1 && var14.impostorIds == null) {
                   var27 = var14.method4560(22, var5, var21, var23, var22, var24);
                } else {
-                  var27 = new class100(var4, 22, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                  var27 = new DynamicObject(var4, 22, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
                }
 
                var37.groundObjectSpawned(var0, var2, var3, var22, (Renderable)var27, var25, var26);
@@ -170,7 +170,7 @@ public class class35 {
                   if(var14.animationId == -1 && var14.impostorIds == null) {
                      var27 = var14.method4560(var6, var5, var21, var23, var22, var24);
                   } else {
-                     var27 = new class100(var4, var6, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                     var27 = new DynamicObject(var4, var6, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
                   }
 
                   var37.method2685(var0, var2, var3, var22, 1, 1, (Renderable)var27, 0, var25, var26);
@@ -181,7 +181,7 @@ public class class35 {
                   if(var14.animationId == -1 && var14.impostorIds == null) {
                      var27 = var14.method4560(0, var5, var21, var23, var22, var24);
                   } else {
-                     var27 = new class100(var4, 0, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                     var27 = new DynamicObject(var4, 0, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
                   }
 
                   var37.method2683(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, class61.field744[var5], 0, var25, var26);
@@ -192,7 +192,7 @@ public class class35 {
                   if(var14.animationId == -1 && var14.impostorIds == null) {
                      var27 = var14.method4560(1, var5, var21, var23, var22, var24);
                   } else {
-                     var27 = new class100(var4, 1, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                     var27 = new DynamicObject(var4, 1, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
                   }
 
                   var37.method2683(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, class61.field745[var5], 0, var25, var26);
@@ -209,8 +209,8 @@ public class class35 {
                         var32 = var14.method4560(2, var5 + 4, var21, var23, var22, var24);
                         var29 = var14.method4560(2, var33, var21, var23, var22, var24);
                      } else {
-                        var32 = new class100(var4, 2, var5 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                        var29 = new class100(var4, 2, var33, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                        var32 = new DynamicObject(var4, 2, var5 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                        var29 = new DynamicObject(var4, 2, var33, var11, var2, var3, var14.animationId, true, (Renderable)null);
                      }
 
                      var37.method2683(var0, var2, var3, var22, (Renderable)var32, (Renderable)var29, class61.field744[var5], class61.field744[var33], var25, var26);
@@ -221,7 +221,7 @@ public class class35 {
                      if(var14.animationId == -1 && var14.impostorIds == null) {
                         var27 = var14.method4560(3, var5, var21, var23, var22, var24);
                      } else {
-                        var27 = new class100(var4, 3, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                        var27 = new DynamicObject(var4, 3, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
                      }
 
                      var37.method2683(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, class61.field745[var5], 0, var25, var26);
@@ -232,7 +232,7 @@ public class class35 {
                      if(var14.animationId == -1 && var14.impostorIds == null) {
                         var27 = var14.method4560(var6, var5, var21, var23, var22, var24);
                      } else {
-                        var27 = new class100(var4, var6, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                        var27 = new DynamicObject(var4, var6, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
                      }
 
                      var37.method2685(var0, var2, var3, var22, 1, 1, (Renderable)var27, 0, var25, var26);
@@ -243,7 +243,7 @@ public class class35 {
                      if(var14.animationId == -1 && var14.impostorIds == null) {
                         var27 = var14.method4560(4, var5, var21, var23, var22, var24);
                      } else {
-                        var27 = new class100(var4, 4, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                        var27 = new DynamicObject(var4, 4, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
                      }
 
                      var37.method2684(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, class61.field744[var5], 0, 0, 0, var25, var26);
@@ -259,7 +259,7 @@ public class class35 {
                         if(var14.animationId == -1 && var14.impostorIds == null) {
                            var29 = var14.method4560(4, var5, var21, var23, var22, var24);
                         } else {
-                           var29 = new class100(var4, 4, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                           var29 = new DynamicObject(var4, 4, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
                         }
 
                         var37.method2684(var0, var2, var3, var22, (Renderable)var29, (Renderable)null, class61.field744[var5], 0, class61.field746[var5] * var33, var33 * class61.field752[var5], var25, var26);
@@ -273,7 +273,7 @@ public class class35 {
                         if(var14.animationId == -1 && var14.impostorIds == null) {
                            var29 = var14.method4560(4, var5 + 4, var21, var23, var22, var24);
                         } else {
-                           var29 = new class100(var4, 4, var5 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                           var29 = new DynamicObject(var4, 4, var5 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
                         }
 
                         var37.method2684(var0, var2, var3, var22, (Renderable)var29, (Renderable)null, 256, var5, class61.field738[var5] * var33, class61.field749[var5] * var33, var25, var26);
@@ -282,7 +282,7 @@ public class class35 {
                         if(var14.animationId == -1 && var14.impostorIds == null) {
                            var27 = var14.method4560(4, var28 + 4, var21, var23, var22, var24);
                         } else {
-                           var27 = new class100(var4, 4, var28 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                           var27 = new DynamicObject(var4, 4, var28 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
                         }
 
                         var37.method2684(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, 256, var28, 0, 0, var25, var26);
@@ -299,8 +299,8 @@ public class class35 {
                            var29 = var14.method4560(4, var5 + 4, var21, var23, var22, var24);
                            var30 = var14.method4560(4, var31 + 4, var21, var23, var22, var24);
                         } else {
-                           var29 = new class100(var4, 4, var5 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
-                           var30 = new class100(var4, 4, var31 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                           var29 = new DynamicObject(var4, 4, var5 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                           var30 = new DynamicObject(var4, 4, var31 + 4, var11, var2, var3, var14.animationId, true, (Renderable)null);
                         }
 
                         var37.method2684(var0, var2, var3, var22, (Renderable)var29, (Renderable)var30, 256, var5, var33 * class61.field738[var5], var33 * class61.field749[var5], var25, var26);
@@ -311,7 +311,7 @@ public class class35 {
                if(var14.animationId == -1 && var14.impostorIds == null) {
                   var27 = var14.method4560(10, var5, var21, var23, var22, var24);
                } else {
-                  var27 = new class100(var4, 10, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
+                  var27 = new DynamicObject(var4, 10, var5, var11, var2, var3, var14.animationId, true, (Renderable)null);
                }
 
                if(var27 != null) {

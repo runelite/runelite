@@ -85,10 +85,10 @@ public class class210 extends CacheableNode {
             }
 
             int var11;
-            if(Client.field1068 == 1) {
-               Enum.addMenuEntry("Use", Client.field988 + " " + "->" + " " + class60.method996(16777215) + var4, 14, var1, var2, var3);
+            if(Client.itemSelectionState == 1) {
+               Enum.addMenuEntry("Use", Client.selectedItemName + " " + "->" + " " + class60.method996(16777215) + var4, 14, var1, var2, var3);
             } else if(Client.field1071) {
-               if((class221.field2836 & 8) == 8) {
+               if((class221.spellTargetFlags & 8) == 8) {
                   Enum.addMenuEntry(Client.field1074, Client.field1075 + " " + "->" + " " + class60.method996(16777215) + var4, 15, var1, var2, var3);
                }
             } else {

@@ -71,11 +71,11 @@ public class class13 {
       garbageValue = "346270808"
    )
    static final void method87(int var0, int var1) {
-      if(Client.menuOptionCount >= 2 || Client.field1068 != 0 || Client.field1071) {
+      if(Client.menuOptionCount >= 2 || Client.itemSelectionState != 0 || Client.field1071) {
          int var2 = Script.method1824();
          String var3;
-         if(Client.field1068 == 1 && Client.menuOptionCount < 2) {
-            var3 = "Use" + " " + Client.field988 + " " + "->";
+         if(Client.itemSelectionState == 1 && Client.menuOptionCount < 2) {
+            var3 = "Use" + " " + Client.selectedItemName + " " + "->";
          } else if(Client.field1071 && Client.menuOptionCount < 2) {
             var3 = Client.field1074 + " " + Client.field1075 + " " + "->";
          } else {

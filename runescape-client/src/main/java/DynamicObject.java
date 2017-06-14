@@ -1,14 +1,18 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cx")
-public class class100 extends Renderable {
+@Implements("DynamicObject")
+public class DynamicObject extends Renderable {
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 821490071
    )
-   int field1543;
+   @Export("id")
+   int id;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 1460018579
@@ -18,27 +22,32 @@ public class class100 extends Renderable {
    @ObfuscatedGetter(
       intValue = 1560050815
    )
-   int field1545;
+   @Export("orientation")
+   int orientation;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -1028790775
    )
-   int field1546;
+   @Export("level")
+   int level;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 1569154449
    )
-   int field1547;
+   @Export("type")
+   int type;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -1184483233
    )
-   int field1548;
+   @Export("sceneY")
+   int sceneY;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -1839964555
    )
-   int field1549;
+   @Export("sceneX")
+   int sceneX;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -2003595571
@@ -125,7 +134,7 @@ public class class100 extends Renderable {
          this.field1544 = Client.gameCycle - var1;
       }
 
-      ObjectComposition var12 = class61.getObjectDefinition(this.field1543);
+      ObjectComposition var12 = class61.getObjectDefinition(this.id);
       if(var12.impostorIds != null) {
          var12 = var12.getImpostor();
       }
@@ -135,7 +144,7 @@ public class class100 extends Renderable {
       } else {
          int var2;
          int var3;
-         if(this.field1545 != 1 && this.field1545 != 3) {
+         if(this.orientation != 1 && this.orientation != 3) {
             var2 = var12.sizeX;
             var3 = var12.sizeY;
          } else {
@@ -143,15 +152,15 @@ public class class100 extends Renderable {
             var3 = var12.sizeX;
          }
 
-         int var4 = this.field1549 + (var2 >> 1);
-         int var5 = (var2 + 1 >> 1) + this.field1549;
-         int var6 = (var3 >> 1) + this.field1548;
-         int var7 = (var3 + 1 >> 1) + this.field1548;
-         int[][] var8 = class61.tileHeights[this.field1546];
+         int var4 = this.sceneX + (var2 >> 1);
+         int var5 = (var2 + 1 >> 1) + this.sceneX;
+         int var6 = (var3 >> 1) + this.sceneY;
+         int var7 = (var3 + 1 >> 1) + this.sceneY;
+         int[][] var8 = class61.tileHeights[this.level];
          int var9 = var8[var4][var7] + var8[var4][var6] + var8[var5][var6] + var8[var5][var7] >> 2;
-         int var10 = (var2 << 6) + (this.field1549 << 7);
-         int var11 = (var3 << 6) + (this.field1548 << 7);
-         return var12.method4546(this.field1547, this.field1545, var8, var10, var9, var11, this.field1551, this.field1550);
+         int var10 = (var2 << 6) + (this.sceneX << 7);
+         int var11 = (var3 << 6) + (this.sceneY << 7);
+         return var12.method4546(this.type, this.orientation, var8, var10, var9, var11, this.field1551, this.field1550);
       }
    }
 
@@ -215,19 +224,19 @@ public class class100 extends Renderable {
       }
    }
 
-   class100(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
-      this.field1543 = var1;
-      this.field1547 = var2;
-      this.field1545 = var3;
-      this.field1546 = var4;
-      this.field1549 = var5;
-      this.field1548 = var6;
+   DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
+      this.id = var1;
+      this.type = var2;
+      this.orientation = var3;
+      this.level = var4;
+      this.sceneX = var5;
+      this.sceneY = var6;
       if(var7 != -1) {
          this.field1551 = class169.getAnimation(var7);
          this.field1550 = 0;
          this.field1544 = Client.gameCycle - 1;
-         if(this.field1551.replyMode == 0 && var9 != null && var9 instanceof class100) {
-            class100 var10 = (class100)var9;
+         if(this.field1551.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
+            DynamicObject var10 = (DynamicObject)var9;
             if(var10.field1551 == this.field1551) {
                this.field1550 = var10.field1550;
                this.field1544 = var10.field1544;

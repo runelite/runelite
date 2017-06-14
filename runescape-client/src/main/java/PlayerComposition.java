@@ -39,7 +39,8 @@ public class PlayerComposition {
    @ObfuscatedGetter(
       intValue = 457257085
    )
-   public int field2631;
+   @Export("transformedNpcId")
+   public int transformedNpcId;
 
    @ObfuscatedName("z")
    @ObfuscatedSignature(
@@ -47,8 +48,8 @@ public class PlayerComposition {
       garbageValue = "104"
    )
    ModelData method3972() {
-      if(this.field2631 != -1) {
-         return class217.getNpcDefinition(this.field2631).method4675();
+      if(this.transformedNpcId != -1) {
+         return class217.getNpcDefinition(this.transformedNpcId).method4675();
       } else {
          boolean var1 = false;
 
@@ -225,8 +226,8 @@ public class PlayerComposition {
       garbageValue = "-1944899848"
    )
    public Model method3978(Sequence var1, int var2, Sequence var3, int var4) {
-      if(this.field2631 != -1) {
-         return class217.getNpcDefinition(this.field2631).method4665(var1, var2, var3, var4);
+      if(this.transformedNpcId != -1) {
+         return class217.getNpcDefinition(this.transformedNpcId).method4665(var1, var2, var3, var4);
       } else {
          long var5 = this.hash;
          int[] var7 = this.equipmentIds;
@@ -309,7 +310,7 @@ public class PlayerComposition {
                   }
                }
 
-               var15 = var12.method2437(64, 850, -30, -50, -30);
+               var15 = var12.light(64, 850, -30, -50, -30);
                field2630.put(var15, var5);
                this.field2626 = var5;
             }
@@ -338,7 +339,7 @@ public class PlayerComposition {
       garbageValue = "1381952753"
    )
    public int method3980() {
-      return this.field2631 == -1?this.equipmentIds[1] + (this.bodyPartColours[0] << 25) + (this.bodyPartColours[4] << 20) + (this.equipmentIds[0] << 15) + (this.equipmentIds[8] << 10) + (this.equipmentIds[11] << 5):class217.getNpcDefinition(this.field2631).id + 305419896;
+      return this.transformedNpcId == -1?this.equipmentIds[1] + (this.bodyPartColours[0] << 25) + (this.bodyPartColours[4] << 20) + (this.equipmentIds[0] << 15) + (this.equipmentIds[8] << 10) + (this.equipmentIds[11] << 5):class217.getNpcDefinition(this.transformedNpcId).id + 305419896;
    }
 
    static {
@@ -396,7 +397,7 @@ public class PlayerComposition {
       this.equipmentIds = var1;
       this.bodyPartColours = var2;
       this.isFemale = var3;
-      this.field2631 = var4;
+      this.transformedNpcId = var4;
       this.method3977();
    }
 }

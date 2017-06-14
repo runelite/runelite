@@ -103,9 +103,9 @@ public final class class146 {
    )
    static final void method2900(boolean var0) {
       class24.method202();
-      ++Client.field962;
-      if(Client.field962 >= 50 || var0) {
-         Client.field962 = 0;
+      ++Client.audioEffectCount;
+      if(Client.audioEffectCount >= 50 || var0) {
+         Client.audioEffectCount = 0;
          if(!Client.field967 && class8.rssocket != null) {
             Client.secretPacketBuffer1.putOpcode(36);
 
@@ -129,7 +129,7 @@ public final class class146 {
       for(int var0 = 0; var0 < Client.field1077; ++var0) {
          --Client.field1049[var0];
          if(Client.field1049[var0] >= -10) {
-            SoundEffect var10 = Client.field1162[var0];
+            SoundEffect var10 = Client.audioEffects[var0];
             if(var10 == null) {
                Object var10000 = null;
                var10 = SoundEffect.method1922(RSCanvas.field655, Client.field1158[var0], 0);
@@ -138,7 +138,7 @@ public final class class146 {
                }
 
                Client.field1049[var0] += var10.method1921();
-               Client.field1162[var0] = var10;
+               Client.audioEffects[var0] = var10;
             }
 
             if(Client.field1049[var0] < 0) {
@@ -186,7 +186,7 @@ public final class class146 {
 
             for(int var1 = var0; var1 < Client.field1077; ++var1) {
                Client.field1158[var1] = Client.field1158[var1 + 1];
-               Client.field1162[var1] = Client.field1162[var1 + 1];
+               Client.audioEffects[var1] = Client.audioEffects[var1 + 1];
                Client.field1159[var1] = Client.field1159[var1 + 1];
                Client.field1049[var1] = Client.field1049[var1 + 1];
                Client.field1101[var1] = Client.field1101[var1 + 1];

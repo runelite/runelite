@@ -1211,7 +1211,7 @@ public class class34 {
                      Client.field1158[Client.field1077] = var36;
                      Client.field1159[Client.field1077] = var6;
                      Client.field1049[Client.field1077] = var7;
-                     Client.field1162[Client.field1077] = null;
+                     Client.audioEffects[Client.field1077] = null;
                      Client.field1101[Client.field1077] = var5 + (var2 << 8) + (var1 << 16);
                      ++Client.field1077;
                   }
@@ -1266,7 +1266,7 @@ public class class34 {
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                      var1 = var1 * 128 + 64;
                      var2 = var2 * 128 + 64;
-                     class84 var29 = new class84(var36, class92.plane, var1, var2, class181.method3424(var1, var2, class92.plane) - var4, var5, Client.gameCycle);
+                     GraphicsObject var29 = new GraphicsObject(var36, class92.plane, var1, var2, class181.method3424(var1, var2, class92.plane) - var4, var5, Client.gameCycle);
                      Client.field1048.method3634(var29);
                   }
 
@@ -1303,10 +1303,10 @@ public class class34 {
                         if(var30 != null) {
                            var37 = var30.hash >> 14 & 32767;
                            if(var1 == 2) {
-                              var30.renderable1 = new class100(var37, 2, var2 + 4, class92.plane, var6, var7, var4, false, var30.renderable1);
-                              var30.renderable2 = new class100(var37, 2, var2 + 1 & 3, class92.plane, var6, var7, var4, false, var30.renderable2);
+                              var30.renderable1 = new DynamicObject(var37, 2, var2 + 4, class92.plane, var6, var7, var4, false, var30.renderable1);
+                              var30.renderable2 = new DynamicObject(var37, 2, var2 + 1 & 3, class92.plane, var6, var7, var4, false, var30.renderable2);
                            } else {
-                              var30.renderable1 = new class100(var37, var1, var2, class92.plane, var6, var7, var4, false, var30.renderable1);
+                              var30.renderable1 = new DynamicObject(var37, var1, var2, class92.plane, var6, var7, var4, false, var30.renderable1);
                            }
                         }
                      }
@@ -1317,15 +1317,15 @@ public class class34 {
                            var37 = var39.hash >> 14 & 32767;
                            if(var1 != 4 && var1 != 5) {
                               if(var1 == 6) {
-                                 var39.renderable1 = new class100(var37, 4, var2 + 4, class92.plane, var6, var7, var4, false, var39.renderable1);
+                                 var39.renderable1 = new DynamicObject(var37, 4, var2 + 4, class92.plane, var6, var7, var4, false, var39.renderable1);
                               } else if(var1 == 7) {
-                                 var39.renderable1 = new class100(var37, 4, (var2 + 2 & 3) + 4, class92.plane, var6, var7, var4, false, var39.renderable1);
+                                 var39.renderable1 = new DynamicObject(var37, 4, (var2 + 2 & 3) + 4, class92.plane, var6, var7, var4, false, var39.renderable1);
                               } else if(var1 == 8) {
-                                 var39.renderable1 = new class100(var37, 4, var2 + 4, class92.plane, var6, var7, var4, false, var39.renderable1);
-                                 var39.renderable2 = new class100(var37, 4, (var2 + 2 & 3) + 4, class92.plane, var6, var7, var4, false, var39.renderable2);
+                                 var39.renderable1 = new DynamicObject(var37, 4, var2 + 4, class92.plane, var6, var7, var4, false, var39.renderable1);
+                                 var39.renderable2 = new DynamicObject(var37, 4, (var2 + 2 & 3) + 4, class92.plane, var6, var7, var4, false, var39.renderable2);
                               }
                            } else {
-                              var39.renderable1 = new class100(var37, 4, var2, class92.plane, var6, var7, var4, false, var39.renderable1);
+                              var39.renderable1 = new DynamicObject(var37, 4, var2, class92.plane, var6, var7, var4, false, var39.renderable1);
                            }
                         }
                      }
@@ -1337,14 +1337,14 @@ public class class34 {
                         }
 
                         if(var40 != null) {
-                           var40.renderable = new class100(var40.hash >> 14 & 32767, var1, var2, class92.plane, var6, var7, var4, false, var40.renderable);
+                           var40.renderable = new DynamicObject(var40.hash >> 14 & 32767, var1, var2, class92.plane, var6, var7, var4, false, var40.renderable);
                         }
                      }
 
                      if(var36 == 3) {
                         GroundObject var41 = class61.region.method2759(class92.plane, var6, var7);
                         if(var41 != null) {
-                           var41.renderable = new class100(var41.hash >> 14 & 32767, 22, var2, class92.plane, var6, var7, var4, false, var41.renderable);
+                           var41.renderable = new DynamicObject(var41.hash >> 14 & 32767, 22, var2, class92.plane, var6, var7, var4, false, var41.renderable);
                         }
                      }
                   }
@@ -1373,10 +1373,10 @@ public class class34 {
          if(var8 != null) {
             Client.field1022 = var6;
             Client.field970 = var7;
-            Client.field1195 = 2;
+            Client.cursorState = 2;
             Client.field1024 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
+            Client.detinationX = var0;
+            Client.destinationY = var1;
             Client.secretPacketBuffer1.putOpcode(164);
             Client.secretPacketBuffer1.method3184(class50.field624[82]?1:0);
             Client.secretPacketBuffer1.method3192(var3);
@@ -1388,10 +1388,10 @@ public class class34 {
          if(var8 != null) {
             Client.field1022 = var6;
             Client.field970 = var7;
-            Client.field1195 = 2;
+            Client.cursorState = 2;
             Client.field1024 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
+            Client.detinationX = var0;
+            Client.destinationY = var1;
             Client.secretPacketBuffer1.putOpcode(235);
             Client.secretPacketBuffer1.putByte(class50.field624[82]?1:0);
             Client.secretPacketBuffer1.method3191(var3);
@@ -1404,12 +1404,12 @@ public class class34 {
          if(var15 != null) {
             Varbit.method4453();
             class112.method2074(var1, var0, GameEngine.method844(class251.method4472(var15)), var15.itemId);
-            Client.field1068 = 0;
+            Client.itemSelectionState = 0;
             String var17;
             if(GameEngine.method844(class251.method4472(var15)) == 0) {
                var17 = null;
-            } else if(var15.field2780 != null && var15.field2780.trim().length() != 0) {
-               var17 = var15.field2780;
+            } else if(var15.selectedAction != null && var15.selectedAction.trim().length() != 0) {
+               var17 = var15.selectedAction;
             } else {
                var17 = null;
             }
@@ -1430,27 +1430,27 @@ public class class34 {
          if(var2 == 1) {
             Client.field1022 = var6;
             Client.field970 = var7;
-            Client.field1195 = 2;
+            Client.cursorState = 2;
             Client.field1024 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
+            Client.detinationX = var0;
+            Client.destinationY = var1;
             Client.secretPacketBuffer1.putOpcode(216);
-            Client.secretPacketBuffer1.putShort(Client.field1090);
+            Client.secretPacketBuffer1.putShort(Client.selectedItemIndex);
             Client.secretPacketBuffer1.method3192(var0 + class61.baseX);
             Client.secretPacketBuffer1.method3192(var3 >> 14 & 32767);
             Client.secretPacketBuffer1.method3201(Frames.field2152);
             Client.secretPacketBuffer1.method3184(class50.field624[82]?1:0);
             Client.secretPacketBuffer1.method3193(var1 + class23.baseY);
-            Client.secretPacketBuffer1.method3191(class18.field324);
+            Client.secretPacketBuffer1.method3191(class18.packetId);
          }
 
          if(var2 == 19) {
             Client.field1022 = var6;
             Client.field970 = var7;
-            Client.field1195 = 2;
+            Client.cursorState = 2;
             Client.field1024 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
+            Client.detinationX = var0;
+            Client.destinationY = var1;
             Client.secretPacketBuffer1.putOpcode(149);
             Client.secretPacketBuffer1.method3191(var3);
             Client.secretPacketBuffer1.method3193(var0 + class61.baseX);
@@ -1463,9 +1463,9 @@ public class class34 {
             Client.secretPacketBuffer1.method3203(Frames.field2152);
             Client.secretPacketBuffer1.method3203(var1);
             Client.secretPacketBuffer1.putShort(var0);
-            Client.secretPacketBuffer1.method3193(class18.field324);
+            Client.secretPacketBuffer1.method3193(class18.packetId);
             Client.secretPacketBuffer1.method3191(var3);
-            Client.secretPacketBuffer1.method3192(Client.field1090);
+            Client.secretPacketBuffer1.method3192(Client.selectedItemIndex);
             Client.field1026 = 0;
             class268.field3681 = class177.method3390(var1);
             Client.field1027 = var0;
@@ -1487,10 +1487,10 @@ public class class34 {
             if(var14 != null) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(78);
                Client.secretPacketBuffer1.putByte(class50.field624[82]?1:0);
                Client.secretPacketBuffer1.method3192(var3);
@@ -1516,10 +1516,10 @@ public class class34 {
             if(var14 != null) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(134);
                Client.secretPacketBuffer1.method3184(class50.field624[82]?1:0);
                Client.secretPacketBuffer1.method3192(var3);
@@ -1531,10 +1531,10 @@ public class class34 {
             if(var8 != null) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(225);
                Client.secretPacketBuffer1.method3193(var3);
                Client.secretPacketBuffer1.putByte(class50.field624[82]?1:0);
@@ -1544,10 +1544,10 @@ public class class34 {
          if(var2 == 4) {
             Client.field1022 = var6;
             Client.field970 = var7;
-            Client.field1195 = 2;
+            Client.cursorState = 2;
             Client.field1024 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
+            Client.detinationX = var0;
+            Client.destinationY = var1;
             Client.secretPacketBuffer1.putOpcode(138);
             Client.secretPacketBuffer1.putShort(class61.baseX + var0);
             Client.secretPacketBuffer1.method3185(class50.field624[82]?1:0);
@@ -1568,10 +1568,10 @@ public class class34 {
          if(var2 == 6) {
             Client.field1022 = var6;
             Client.field970 = var7;
-            Client.field1195 = 2;
+            Client.cursorState = 2;
             Client.field1024 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
+            Client.detinationX = var0;
+            Client.destinationY = var1;
             Client.secretPacketBuffer1.putOpcode(2);
             Client.secretPacketBuffer1.method3192(var3 >> 14 & 32767);
             Client.secretPacketBuffer1.method3192(var1 + class23.baseY);
@@ -1584,10 +1584,10 @@ public class class34 {
             if(var14 != null) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(39);
                Client.secretPacketBuffer1.putShort(var3);
                Client.secretPacketBuffer1.method3185(class50.field624[82]?1:0);
@@ -1607,7 +1607,7 @@ public class class34 {
          if(var2 == 1004) {
             Client.field1022 = var6;
             Client.field970 = var7;
-            Client.field1195 = 2;
+            Client.cursorState = 2;
             Client.field1024 = 0;
             Client.secretPacketBuffer1.putOpcode(200);
             Client.secretPacketBuffer1.method3191(var3);
@@ -1724,10 +1724,10 @@ public class class34 {
             if(var14 != null) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(102);
                Client.secretPacketBuffer1.method3193(var3);
                Client.secretPacketBuffer1.method3192(Client.field1072);
@@ -1741,10 +1741,10 @@ public class class34 {
             if(var14 != null) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(191);
                Client.secretPacketBuffer1.method3193(var3);
                Client.secretPacketBuffer1.method3185(class50.field624[82]?1:0);
@@ -1764,7 +1764,7 @@ public class class34 {
          if(var2 == 1002) {
             Client.field1022 = var6;
             Client.field970 = var7;
-            Client.field1195 = 2;
+            Client.cursorState = 2;
             Client.field1024 = 0;
             Client.secretPacketBuffer1.putOpcode(32);
             Client.secretPacketBuffer1.method3192(var3 >> 14 & 32767);
@@ -1777,10 +1777,10 @@ public class class34 {
          if(var2 == 5) {
             Client.field1022 = var6;
             Client.field970 = var7;
-            Client.field1195 = 2;
+            Client.cursorState = 2;
             Client.field1024 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
+            Client.detinationX = var0;
+            Client.destinationY = var1;
             Client.secretPacketBuffer1.putOpcode(87);
             Client.secretPacketBuffer1.method3193(var3 >> 14 & 32767);
             Client.secretPacketBuffer1.method3191(var1 + class23.baseY);
@@ -1817,10 +1817,10 @@ public class class34 {
          if(var2 == 20) {
             Client.field1022 = var6;
             Client.field970 = var7;
-            Client.field1195 = 2;
+            Client.cursorState = 2;
             Client.field1024 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
+            Client.detinationX = var0;
+            Client.destinationY = var1;
             Client.secretPacketBuffer1.putOpcode(207);
             Client.secretPacketBuffer1.method3192(var0 + class61.baseX);
             Client.secretPacketBuffer1.method3191(class23.baseY + var1);
@@ -1833,10 +1833,10 @@ public class class34 {
             if(var8 != null) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(148);
                Client.secretPacketBuffer1.putByte(class50.field624[82]?1:0);
                Client.secretPacketBuffer1.putShort(var3);
@@ -1859,10 +1859,10 @@ public class class34 {
          if(var2 == 3) {
             Client.field1022 = var6;
             Client.field970 = var7;
-            Client.field1195 = 2;
+            Client.cursorState = 2;
             Client.field1024 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
+            Client.detinationX = var0;
+            Client.destinationY = var1;
             Client.secretPacketBuffer1.putOpcode(180);
             Client.secretPacketBuffer1.method3192(var1 + class23.baseY);
             Client.secretPacketBuffer1.putByte(class50.field624[82]?1:0);
@@ -1873,14 +1873,14 @@ public class class34 {
          if(var2 == 38) {
             Varbit.method4453();
             var15 = class177.method3390(var1);
-            Client.field1068 = 1;
-            Client.field1090 = var0;
+            Client.itemSelectionState = 1;
+            Client.selectedItemIndex = var0;
             Frames.field2152 = var1;
-            class18.field324 = var3;
+            class18.packetId = var3;
             CombatInfo1.method1515(var15);
-            Client.field988 = class60.method996(16748608) + ItemComposition.getItemDefinition(var3).name + class60.method996(16777215);
-            if(Client.field988 == null) {
-               Client.field988 = "null";
+            Client.selectedItemName = class60.method996(16748608) + ItemComposition.getItemDefinition(var3).name + class60.method996(16777215);
+            if(Client.selectedItemName == null) {
+               Client.selectedItemName = "null";
             }
 
          } else {
@@ -1923,10 +1923,10 @@ public class class34 {
                if(var8 != null) {
                   Client.field1022 = var6;
                   Client.field970 = var7;
-                  Client.field1195 = 2;
+                  Client.cursorState = 2;
                   Client.field1024 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
+                  Client.detinationX = var0;
+                  Client.destinationY = var1;
                   Client.secretPacketBuffer1.putOpcode(161);
                   Client.secretPacketBuffer1.putShort(var3);
                   Client.secretPacketBuffer1.putByte(class50.field624[82]?1:0);
@@ -1938,10 +1938,10 @@ public class class34 {
                if(var14 != null) {
                   Client.field1022 = var6;
                   Client.field970 = var7;
-                  Client.field1195 = 2;
+                  Client.cursorState = 2;
                   Client.field1024 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
+                  Client.detinationX = var0;
+                  Client.destinationY = var1;
                   Client.secretPacketBuffer1.putOpcode(43);
                   Client.secretPacketBuffer1.putByte(class50.field624[82]?1:0);
                   Client.secretPacketBuffer1.method3193(var3);
@@ -1953,10 +1953,10 @@ public class class34 {
                if(var8 != null) {
                   Client.field1022 = var6;
                   Client.field970 = var7;
-                  Client.field1195 = 2;
+                  Client.cursorState = 2;
                   Client.field1024 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
+                  Client.detinationX = var0;
+                  Client.destinationY = var1;
                   Client.secretPacketBuffer1.putOpcode(28);
                   Client.secretPacketBuffer1.method3183(class50.field624[82]?1:0);
                   Client.secretPacketBuffer1.method3192(var3);
@@ -1966,10 +1966,10 @@ public class class34 {
             if(var2 == 21) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(199);
                Client.secretPacketBuffer1.method3191(var3);
                Client.secretPacketBuffer1.putByte(class50.field624[82]?1:0);
@@ -1994,10 +1994,10 @@ public class class34 {
                if(var8 != null) {
                   Client.field1022 = var6;
                   Client.field970 = var7;
-                  Client.field1195 = 2;
+                  Client.cursorState = 2;
                   Client.field1024 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
+                  Client.detinationX = var0;
+                  Client.destinationY = var1;
                   Client.secretPacketBuffer1.putOpcode(77);
                   Client.secretPacketBuffer1.method3183(class50.field624[82]?1:0);
                   Client.secretPacketBuffer1.putShort(var3);
@@ -2038,17 +2038,17 @@ public class class34 {
             if(var2 == 16) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(34);
-               Client.secretPacketBuffer1.method3193(Client.field1090);
+               Client.secretPacketBuffer1.method3193(Client.selectedItemIndex);
                Client.secretPacketBuffer1.putInt(Frames.field2152);
                Client.secretPacketBuffer1.method3191(var1 + class23.baseY);
                Client.secretPacketBuffer1.method3191(var3);
                Client.secretPacketBuffer1.method3184(class50.field624[82]?1:0);
-               Client.secretPacketBuffer1.putShort(class18.field324);
+               Client.secretPacketBuffer1.putShort(class18.packetId);
                Client.secretPacketBuffer1.method3192(var0 + class61.baseX);
             }
 
@@ -2057,10 +2057,10 @@ public class class34 {
                if(var8 != null) {
                   Client.field1022 = var6;
                   Client.field970 = var7;
-                  Client.field1195 = 2;
+                  Client.cursorState = 2;
                   Client.field1024 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
+                  Client.detinationX = var0;
+                  Client.destinationY = var1;
                   Client.secretPacketBuffer1.putOpcode(194);
                   Client.secretPacketBuffer1.method3183(class50.field624[82]?1:0);
                   Client.secretPacketBuffer1.method3192(var3);
@@ -2070,7 +2070,7 @@ public class class34 {
             if(var2 == 1003) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
                var14 = Client.cachedNPCs[var3];
                if(var14 != null) {
@@ -2114,10 +2114,10 @@ public class class34 {
             if(var2 == 17) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(117);
                Client.secretPacketBuffer1.putByte(class50.field624[82]?1:0);
                Client.secretPacketBuffer1.method3193(var0 + class61.baseX);
@@ -2132,15 +2132,15 @@ public class class34 {
                if(var14 != null) {
                   Client.field1022 = var6;
                   Client.field970 = var7;
-                  Client.field1195 = 2;
+                  Client.cursorState = 2;
                   Client.field1024 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
+                  Client.detinationX = var0;
+                  Client.destinationY = var1;
                   Client.secretPacketBuffer1.putOpcode(142);
                   Client.secretPacketBuffer1.method3191(var3);
                   Client.secretPacketBuffer1.method3203(Frames.field2152);
-                  Client.secretPacketBuffer1.putShort(class18.field324);
-                  Client.secretPacketBuffer1.method3193(Client.field1090);
+                  Client.secretPacketBuffer1.putShort(class18.packetId);
+                  Client.secretPacketBuffer1.method3193(Client.selectedItemIndex);
                   Client.secretPacketBuffer1.method3185(class50.field624[82]?1:0);
                }
             }
@@ -2148,10 +2148,10 @@ public class class34 {
             if(var2 == 22) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(56);
                Client.secretPacketBuffer1.method3192(var3);
                Client.secretPacketBuffer1.putByte(class50.field624[82]?1:0);
@@ -2164,15 +2164,15 @@ public class class34 {
                if(var8 != null) {
                   Client.field1022 = var6;
                   Client.field970 = var7;
-                  Client.field1195 = 2;
+                  Client.cursorState = 2;
                   Client.field1024 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
+                  Client.detinationX = var0;
+                  Client.destinationY = var1;
                   Client.secretPacketBuffer1.putOpcode(136);
                   Client.secretPacketBuffer1.method3342(Frames.field2152);
                   Client.secretPacketBuffer1.method3191(var3);
-                  Client.secretPacketBuffer1.method3191(Client.field1090);
-                  Client.secretPacketBuffer1.putShort(class18.field324);
+                  Client.secretPacketBuffer1.method3191(Client.selectedItemIndex);
+                  Client.secretPacketBuffer1.putShort(class18.packetId);
                   Client.secretPacketBuffer1.method3184(class50.field624[82]?1:0);
                }
             }
@@ -2180,10 +2180,10 @@ public class class34 {
             if(var2 == 1001) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(189);
                Client.secretPacketBuffer1.method3185(class50.field624[82]?1:0);
                Client.secretPacketBuffer1.method3193(class23.baseY + var1);
@@ -2196,10 +2196,10 @@ public class class34 {
                if(var8 != null) {
                   Client.field1022 = var6;
                   Client.field970 = var7;
-                  Client.field1195 = 2;
+                  Client.cursorState = 2;
                   Client.field1024 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
+                  Client.detinationX = var0;
+                  Client.destinationY = var1;
                   Client.secretPacketBuffer1.putOpcode(81);
                   Client.secretPacketBuffer1.method3201(NPC.field1375);
                   Client.secretPacketBuffer1.putShort(var3);
@@ -2211,10 +2211,10 @@ public class class34 {
             if(var2 == 18) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(218);
                Client.secretPacketBuffer1.method3183(class50.field624[82]?1:0);
                Client.secretPacketBuffer1.putShort(var0 + class61.baseX);
@@ -2225,10 +2225,10 @@ public class class34 {
             if(var2 == 2) {
                Client.field1022 = var6;
                Client.field970 = var7;
-               Client.field1195 = 2;
+               Client.cursorState = 2;
                Client.field1024 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
+               Client.detinationX = var0;
+               Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(175);
                Client.secretPacketBuffer1.method3192(Client.field1072);
                Client.secretPacketBuffer1.method3342(NPC.field1375);
@@ -2238,8 +2238,8 @@ public class class34 {
                Client.secretPacketBuffer1.method3183(class50.field624[82]?1:0);
             }
 
-            if(Client.field1068 != 0) {
-               Client.field1068 = 0;
+            if(Client.itemSelectionState != 0) {
+               Client.itemSelectionState = 0;
                CombatInfo1.method1515(class177.method3390(Frames.field2152));
             }
 

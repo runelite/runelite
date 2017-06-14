@@ -75,7 +75,7 @@ public class class37 {
          var0.field1260 = 0;
          var0.actionAnimationDisable = var2;
          var0.field1228 = 0;
-         var0.field1285 = var0.field1280;
+         var0.field1285 = var0.queueSize;
       }
 
    }

@@ -94,7 +94,7 @@ public final class class61 {
             Client.field1158[Client.field1077] = var3;
             Client.field1159[Client.field1077] = var4;
             Client.field1049[Client.field1077] = var5;
-            Client.field1162[Client.field1077] = null;
+            Client.audioEffects[Client.field1077] = null;
             Client.field1101[Client.field1077] = 0;
             ++Client.field1077;
          }

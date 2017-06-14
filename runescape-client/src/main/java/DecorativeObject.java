@@ -121,7 +121,7 @@ public final class DecorativeObject {
             class22.field353 = class220.method4085(10, false, true, true);
             IndexData.indexTrack2 = class220.method4085(11, false, true, true);
             GroundObject.indexScripts = class220.method4085(12, false, true, true);
-            class233.field3207 = class220.method4085(13, true, false, true);
+            FileSystem.field3207 = class220.method4085(13, true, false, true);
             class61.field753 = class220.method4085(14, false, true, false);
             class14.field291 = class220.method4085(15, false, true, true);
             class21.indexWorldMap = class220.method4085(16, false, true, false);
@@ -143,7 +143,7 @@ public final class DecorativeObject {
             var0 += class22.field353.method4252() * 2 / 100;
             var0 += IndexData.indexTrack2.method4252() * 2 / 100;
             var0 += GroundObject.indexScripts.method4252() * 2 / 100;
-            var0 += class233.field3207.method4252() * 2 / 100;
+            var0 += FileSystem.field3207.method4252() * 2 / 100;
             var0 += class61.field753.method4252() * 2 / 100;
             var0 += class14.field291.method4252() * 2 / 100;
             var0 += class21.indexWorldMap.method4252() * 2 / 100;
@@ -185,7 +185,7 @@ public final class DecorativeObject {
                class92.field1433 = "Prepared sound engine";
                class92.field1416 = 35;
                Client.field981 = 50;
-               class34.field494 = new class262(Client.indexSprites, class233.field3207);
+               class34.field494 = new class262(Client.indexSprites, FileSystem.field3207);
             } else if(Client.field981 == 50) {
                var0 = class261.method4760().length;
                Client.field914 = class34.field494.method4768(class261.method4760());
@@ -194,7 +194,7 @@ public final class DecorativeObject {
                   class92.field1416 = 40;
                } else {
                   class261.field3629 = (Font)Client.field914.get(class261.field3627);
-                  WidgetNode.field817 = (Font)Client.field914.get(class261.field3635);
+                  WidgetNode.font_p12full = (Font)Client.field914.get(class261.field3635);
                   class241.field3288 = (Font)Client.field914.get(class261.field3628);
                   class230.field3183 = new class291(true);
                   class92.field1433 = "Loaded fonts";
@@ -298,7 +298,7 @@ public final class DecorativeObject {
                      IndexData var12 = XItemContainer.field765;
                      IndexData var13 = class23.indexModels;
                      IndexData var14 = Client.indexSprites;
-                     IndexData var15 = class233.field3207;
+                     IndexData var15 = FileSystem.field3207;
                      Widget.field2736 = var12;
                      Widget.field2644 = var13;
                      Widget.field2645 = var14;
@@ -315,7 +315,7 @@ public final class DecorativeObject {
                      Tile.chatMessages = new ChatMessages();
                      IndexData var18 = NPC.field1374;
                      IndexData var19 = Client.indexSprites;
-                     IndexData var20 = class233.field3207;
+                     IndexData var20 = FileSystem.field3207;
                      class254.field3430 = var18;
                      class254.field3437 = var19;
                      class2.field20 = var20;
@@ -472,8 +472,8 @@ public final class DecorativeObject {
                   } else if(!GroundObject.indexScripts.method4197()) {
                      class92.field1433 = "Loading interfaces - " + (GroundObject.indexScripts.method4253() / 6 + 80) + "%";
                      class92.field1416 = 100;
-                  } else if(!class233.field3207.method4197()) {
-                     class92.field1433 = "Loading interfaces - " + (class233.field3207.method4253() / 50 + 96) + "%";
+                  } else if(!FileSystem.field3207.method4197()) {
+                     class92.field1433 = "Loading interfaces - " + (FileSystem.field3207.method4253() / 50 + 96) + "%";
                      class92.field1416 = 100;
                   } else {
                      class92.field1433 = "Loaded interfaces";

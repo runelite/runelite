@@ -17,7 +17,7 @@ public class class20 {
          class8.rssocket = null;
       }
 
-      class100.method1838();
+      DynamicObject.method1838();
       class61.region.method2675();
 
       for(int var0 = 0; var0 < 4; ++var0) {

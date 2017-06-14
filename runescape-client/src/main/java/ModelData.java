@@ -874,7 +874,8 @@ public class ModelData extends Renderable {
    }
 
    @ObfuscatedName("aa")
-   public final Model method2437(int var1, int var2, int var3, int var4, int var5) {
+   @Export("light")
+   public final Model light(int var1, int var2, int var3, int var4, int var5) {
       this.computeNormals();
       int var6 = (int)Math.sqrt((double)(var3 * var3 + var4 * var4 + var5 * var5));
       int var7 = var2 * var6 >> 8;

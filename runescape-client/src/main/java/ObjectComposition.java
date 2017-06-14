@@ -52,7 +52,8 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedName("c")
    static NodeCache field3452;
    @ObfuscatedName("k")
-   public boolean field3453;
+   @Export("clipped")
+   public boolean clipped;
    @ObfuscatedName("a")
    @Export("recolorToReplace")
    short[] recolorToReplace;
@@ -358,7 +359,7 @@ public class ObjectComposition extends CacheableNode {
       } else if(var2 == 22) {
          this.nonFlatShading = true;
       } else if(var2 == 23) {
-         this.field3453 = true;
+         this.clipped = true;
       } else if(var2 == 24) {
          this.animationId = var1.readUnsignedShort();
          if(this.animationId == '\uffff') {
@@ -496,7 +497,7 @@ public class ObjectComposition extends CacheableNode {
             return null;
          }
 
-         var11 = var12.method2437(this.ambient + 64, this.contrast + 768, -50, -10, -50);
+         var11 = var12.light(this.ambient + 64, this.contrast + 768, -50, -10, -50);
          field3452.put(var11, var9);
       }
 
@@ -730,7 +731,7 @@ public class ObjectComposition extends CacheableNode {
       this.field3464 = -1;
       this.field3447 = -1;
       this.nonFlatShading = false;
-      this.field3453 = false;
+      this.clipped = false;
       this.animationId = -1;
       this.field3466 = 16;
       this.ambient = 0;
@@ -786,7 +787,7 @@ public class ObjectComposition extends CacheableNode {
             return null;
          }
 
-         var9 = var10.method2437(this.ambient + 64, this.contrast + 768, -50, -10, -50);
+         var9 = var10.light(this.ambient + 64, this.contrast + 768, -50, -10, -50);
          field3452.put(var9, var7);
       }
 
@@ -818,7 +819,7 @@ public class ObjectComposition extends CacheableNode {
          }
 
          if(!this.nonFlatShading) {
-            var9 = var10.method2437(this.ambient + 64, this.contrast + 768, -50, -10, -50);
+            var9 = var10.light(this.ambient + 64, this.contrast + 768, -50, -10, -50);
          } else {
             var10.field1802 = (short)(this.ambient + 64);
             var10.field1835 = (short)(this.contrast + 768);

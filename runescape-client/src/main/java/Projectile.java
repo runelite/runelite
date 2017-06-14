@@ -26,13 +26,14 @@ public final class Projectile extends Renderable {
    @ObfuscatedGetter(
       intValue = -1302806347
    )
-   int field1456;
+   @Export("rotationX")
+   int rotationX;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 200158761
    )
-   @Export("z1")
-   int z1;
+   @Export("height")
+   int height;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -1283959955
@@ -46,12 +47,14 @@ public final class Projectile extends Renderable {
    @ObfuscatedGetter(
       intValue = 2080507783
    )
-   int field1460;
+   @Export("cycle")
+   int cycle;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 559392947
    )
-   int field1461;
+   @Export("slope")
+   int slope;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -172562981
@@ -101,7 +104,8 @@ public final class Projectile extends Renderable {
    @ObfuscatedGetter(
       intValue = -1355988503
    )
-   int field1474;
+   @Export("rotationY")
+   int rotationY;
    @ObfuscatedName("q")
    @Export("animationSequence")
    Sequence animationSequence;
@@ -117,8 +121,8 @@ public final class Projectile extends Renderable {
    )
    int field1477;
    @ObfuscatedName("t")
-   @Export("az")
-   double az;
+   @Export("heightOffset")
+   double heightOffset;
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
@@ -133,18 +137,18 @@ public final class Projectile extends Renderable {
          double var9 = Math.sqrt(var7 * var7 + var5 * var5);
          this.x = var5 * (double)this.start / var9 + (double)this.x1;
          this.velocityZ = (double)this.y1 + (double)this.start * var7 / var9;
-         this.z = (double)this.z1;
+         this.z = (double)this.height;
       }
 
-      var5 = (double)(this.field1460 + 1 - var4);
+      var5 = (double)(this.cycle + 1 - var4);
       this.field1471 = ((double)var1 - this.x) / var5;
       this.scalar = ((double)var2 - this.velocityZ) / var5;
       this.velocityY = Math.sqrt(this.scalar * this.scalar + this.field1471 * this.field1471);
       if(!this.isMoving) {
-         this.velocityX = -this.velocityY * Math.tan((double)this.field1461 * 0.02454369D);
+         this.velocityX = -this.velocityY * Math.tan((double)this.slope * 0.02454369D);
       }
 
-      this.az = 2.0D * ((double)var3 - this.z - var5 * this.velocityX) / (var5 * var5);
+      this.heightOffset = 2.0D * ((double)var3 - this.z - var5 * this.velocityX) / (var5 * var5);
    }
 
    @ObfuscatedName("p")
@@ -156,10 +160,10 @@ public final class Projectile extends Renderable {
       this.isMoving = true;
       this.x += this.field1471 * (double)var1;
       this.velocityZ += this.scalar * (double)var1;
-      this.z += this.velocityX * (double)var1 + (double)var1 * (double)var1 * 0.5D * this.az;
-      this.velocityX += this.az * (double)var1;
-      this.field1456 = (int)(Math.atan2(this.field1471, this.scalar) * 325.949D) + 1024 & 2047;
-      this.field1474 = (int)(Math.atan2(this.velocityX, this.velocityY) * 325.949D) & 2047;
+      this.z += this.velocityX * (double)var1 + (double)var1 * (double)var1 * 0.5D * this.heightOffset;
+      this.velocityX += this.heightOffset * (double)var1;
+      this.rotationX = (int)(Math.atan2(this.field1471, this.scalar) * 325.949D) + 1024 & 2047;
+      this.rotationY = (int)(Math.atan2(this.velocityX, this.velocityY) * 325.949D) & 2047;
       if(this.animationSequence != null) {
          this.field1477 += var1;
 
@@ -188,12 +192,12 @@ public final class Projectile extends Renderable {
       garbageValue = "-1617"
    )
    protected final Model getModel() {
-      Spotanim var1 = class100.method1840(this.id);
+      Spotanim var1 = DynamicObject.method1840(this.id);
       Model var2 = var1.method4358(this.field1472);
       if(var2 == null) {
          return null;
       } else {
-         var2.method2525(this.field1474);
+         var2.method2525(this.rotationY);
          return var2;
       }
    }
@@ -286,15 +290,15 @@ public final class Projectile extends Renderable {
       this.floor = var2;
       this.x1 = var3;
       this.y1 = var4;
-      this.z1 = var5;
+      this.height = var5;
       this.startTime = var6;
-      this.field1460 = var7;
-      this.field1461 = var8;
+      this.cycle = var7;
+      this.slope = var8;
       this.start = var9;
       this.interacting = var10;
       this.field1473 = var11;
       this.isMoving = false;
-      int var12 = class100.method1840(this.id).field3340;
+      int var12 = DynamicObject.method1840(this.id).field3340;
       if(var12 != -1) {
          this.animationSequence = class169.getAnimation(var12);
       } else {

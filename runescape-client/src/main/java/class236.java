@@ -20,21 +20,21 @@ public class class236 implements Runnable {
       try {
          while(true) {
             Deque var2 = field3233;
-            class233 var1;
+            FileSystem var1;
             synchronized(field3233) {
-               var1 = (class233)field3233.method3622();
+               var1 = (FileSystem)field3233.method3622();
             }
 
             Object var14;
             if(var1 != null) {
                if(var1.field3204 == 0) {
-                  var1.field3201.method3009((int)var1.hash, var1.field3200, var1.field3200.length);
+                  var1.index.method3009((int)var1.hash, var1.field3200, var1.field3200.length);
                   var2 = field3233;
                   synchronized(field3233) {
                      var1.unlink();
                   }
                } else if(var1.field3204 == 1) {
-                  var1.field3200 = var1.field3201.method3008((int)var1.hash);
+                  var1.field3200 = var1.index.method3008((int)var1.hash);
                   var2 = field3233;
                   synchronized(field3233) {
                      field3234.method3634(var1);
@@ -52,7 +52,7 @@ public class class236 implements Runnable {
                   field3235 = 600;
                }
             } else {
-               class100.method1842(100L);
+               DynamicObject.method1842(100L);
                var14 = field3236;
                synchronized(field3236) {
                   if(field3235 <= 1) {

@@ -76,8 +76,8 @@ public class class90 {
       } else if(var0 == 6203) {
          if(Client.field1088 != null) {
             class211.method3950(0, 0, Client.field1088.width, Client.field1088.height, false);
-            class83.intStack[++class165.intStackSize - 1] = Client.camera2;
-            class83.intStack[++class165.intStackSize - 1] = Client.camera3;
+            class83.intStack[++class165.intStackSize - 1] = Client.viewportHeight;
+            class83.intStack[++class165.intStackSize - 1] = Client.viewportWidth;
          } else {
             class83.intStack[++class165.intStackSize - 1] = -1;
             class83.intStack[++class165.intStackSize - 1] = -1;
@@ -154,7 +154,7 @@ public class class90 {
       }
 
       var0 = GameEngine.field708 * 128 + 64;
-      var1 = class137.field2052 * 128 + 64;
+      var1 = SceneTilePaint.field2052 * 128 + 64;
       var2 = class181.method3424(var0, var1, class92.plane) - class2.field19;
       int var3 = var0 - class2.cameraX;
       int var4 = var2 - class203.cameraZ;
@@ -184,7 +184,7 @@ public class class90 {
          }
       }
 
-      int var9 = var8 - class84.cameraYaw;
+      int var9 = var8 - GraphicsObject.cameraYaw;
       if(var9 > 1024) {
          var9 -= 2048;
       }
@@ -194,16 +194,16 @@ public class class90 {
       }
 
       if(var9 > 0) {
-         class84.cameraYaw += var9 * XGrandExchangeOffer.field313 / 1000 + class73.field868;
-         class84.cameraYaw &= 2047;
+         GraphicsObject.cameraYaw += var9 * XGrandExchangeOffer.field313 / 1000 + class73.field868;
+         GraphicsObject.cameraYaw &= 2047;
       }
 
       if(var9 < 0) {
-         class84.cameraYaw -= class73.field868 + -var9 * XGrandExchangeOffer.field313 / 1000;
-         class84.cameraYaw &= 2047;
+         GraphicsObject.cameraYaw -= class73.field868 + -var9 * XGrandExchangeOffer.field313 / 1000;
+         GraphicsObject.cameraYaw &= 2047;
       }
 
-      int var10 = var8 - class84.cameraYaw;
+      int var10 = var8 - GraphicsObject.cameraYaw;
       if(var10 > 1024) {
          var10 -= 2048;
       }
@@ -213,7 +213,7 @@ public class class90 {
       }
 
       if(var10 < 0 && var9 > 0 || var10 > 0 && var9 < 0) {
-         class84.cameraYaw = var8;
+         GraphicsObject.cameraYaw = var8;
       }
 
    }

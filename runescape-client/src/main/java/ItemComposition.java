@@ -503,7 +503,7 @@ public class ItemComposition extends CacheableNode {
                }
             }
 
-            var2 = var6.method2437(this.ambient + 64, this.contrast + 768, -50, -10, -50);
+            var2 = var6.light(this.ambient + 64, this.contrast + 768, -50, -10, -50);
             var2.field1957 = true;
             itemModelCache.put(var2, (long)this.id);
             return var2;

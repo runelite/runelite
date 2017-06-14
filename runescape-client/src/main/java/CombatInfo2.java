@@ -184,7 +184,7 @@ public class CombatInfo2 extends CacheableNode {
    )
    static final void method4423() {
       for(Projectile var0 = (Projectile)Client.projectiles.method3622(); var0 != null; var0 = (Projectile)Client.projectiles.method3608()) {
-         if(class92.plane == var0.floor && Client.gameCycle <= var0.field1460) {
+         if(class92.plane == var0.floor && Client.gameCycle <= var0.cycle) {
             if(Client.gameCycle >= var0.startTime) {
                if(var0.interacting > 0) {
                   NPC var1 = Client.cachedNPCs[var0.interacting - 1];
@@ -208,7 +208,7 @@ public class CombatInfo2 extends CacheableNode {
                }
 
                var0.method1727(Client.field990);
-               class61.region.method2686(class92.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.field1456, -1, false);
+               class61.region.method2686(class92.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.rotationX, -1, false);
             }
          } else {
             var0.unlink();

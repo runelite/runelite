@@ -3,12 +3,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ey")
-public final class class137 {
+@Implements("SceneTilePaint")
+public final class SceneTilePaint {
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1492151921
@@ -28,9 +31,11 @@ public final class class137 {
    @ObfuscatedGetter(
       intValue = 1086444817
    )
-   int field2048;
+   @Export("texture")
+   int texture;
    @ObfuscatedName("m")
-   boolean field2049;
+   @Export("flatShade")
+   boolean flatShade;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -116004415
@@ -40,7 +45,8 @@ public final class class137 {
    @ObfuscatedGetter(
       intValue = -454422451
    )
-   int field2051;
+   @Export("rgb")
+   int rgb;
    @ObfuscatedName("pa")
    @ObfuscatedGetter(
       intValue = -1295095745
@@ -104,15 +110,15 @@ public final class class137 {
       signature = "(IIIIIIZ)V",
       garbageValue = "0"
    )
-   class137(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
-      this.field2049 = true;
+   SceneTilePaint(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
+      this.flatShade = true;
       this.field2050 = var1;
       this.field2045 = var2;
       this.field2046 = var3;
       this.field2047 = var4;
-      this.field2048 = var5;
-      this.field2051 = var6;
-      this.field2049 = var7;
+      this.texture = var5;
+      this.rgb = var6;
+      this.flatShade = var7;
    }
 
    @ObfuscatedName("p")

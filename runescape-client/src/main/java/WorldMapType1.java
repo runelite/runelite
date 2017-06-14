@@ -187,10 +187,10 @@ public class WorldMapType1 implements WorldMapSectionBase {
                      Enum.addMenuEntry("Examine", class60.method996(16776960) + var4, 1003, var1, var2, var3);
                   }
 
-                  if(Client.field1068 == 1) {
-                     Enum.addMenuEntry("Use", Client.field988 + " " + "->" + " " + class60.method996(16776960) + var4, 7, var1, var2, var3);
+                  if(Client.itemSelectionState == 1) {
+                     Enum.addMenuEntry("Use", Client.selectedItemName + " " + "->" + " " + class60.method996(16776960) + var4, 7, var1, var2, var3);
                   } else if(Client.field1071) {
-                     if((class221.field2836 & 2) == 2) {
+                     if((class221.spellTargetFlags & 2) == 2) {
                         Enum.addMenuEntry(Client.field1074, Client.field1075 + " " + "->" + " " + class60.method996(16776960) + var4, 8, var1, var2, var3);
                      }
                   } else {

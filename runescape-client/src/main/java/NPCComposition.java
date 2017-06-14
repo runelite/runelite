@@ -336,7 +336,7 @@ public class NPCComposition extends CacheableNode {
                }
             }
 
-            var5 = var11.method2437(this.field3584 + 64, this.field3586 + 850, -30, -50, -30);
+            var5 = var11.light(this.field3584 + 64, this.field3586 + 850, -30, -50, -30);
             npcModelCache.put(var5, (long)this.id);
          }
 

@@ -308,7 +308,7 @@ public final class ISAACCipher {
                int var16;
                if(Client.field1089 == var10) {
                   if(var1 != -1412584499 && !var10.field2730) {
-                     class84.field1366 = var0;
+                     GraphicsObject.field1366 = var0;
                      class163.field2323 = var6;
                      class45.field583 = var7;
                      continue;
@@ -397,7 +397,7 @@ public final class ISAACCipher {
                      if(var10.contentType == 1336) {
                         if(Client.field928) {
                            var13 += 15;
-                           WidgetNode.field817.method4809("Fps:" + GameEngine.FPS, var12 + var10.width, var13, 16776960, -1);
+                           WidgetNode.font_p12full.method4809("Fps:" + GameEngine.FPS, var12 + var10.width, var13, 16776960, -1);
                            var13 += 15;
                            Runtime var72 = Runtime.getRuntime();
                            var20 = (int)((var72.totalMemory() - var72.freeMemory()) / 1024L);
@@ -410,7 +410,7 @@ public final class ISAACCipher {
                               var52 = 16711680;
                            }
 
-                           WidgetNode.field817.method4809("Mem:" + var20 + "k", var10.width + var12, var13, var52, -1);
+                           WidgetNode.font_p12full.method4809("Mem:" + var20 + "k", var10.width + var12, var13, var52, -1);
                            var13 += 15;
                         }
                         continue;
@@ -448,7 +448,7 @@ public final class ISAACCipher {
                               while(true) {
                                  if(var23 >= 104) {
                                     for(var23 = 0; var23 < Client.field952; ++var23) {
-                                       NPC var69 = Client.cachedNPCs[Client.field953[var23]];
+                                       NPC var69 = Client.cachedNPCs[Client.npcIndices[var23]];
                                        if(var69 != null && var69.vmethod1669()) {
                                           NPCComposition var58 = var69.composition;
                                           if(var58 != null && var58.configs != null) {
@@ -513,8 +513,8 @@ public final class ISAACCipher {
                                        }
 
                                        if(Client.field930 == 2) {
-                                          var47 = Client.field933 * 4 - class61.baseX * 4 + 2 - class168.localPlayer.x / 32;
-                                          var26 = Client.field1136 * 4 - class23.baseY * 4 + 2 - class168.localPlayer.y / 32;
+                                          var47 = Client.hintArrowX * 4 - class61.baseX * 4 + 2 - class168.localPlayer.x / 32;
+                                          var26 = Client.hintArrowY * 4 - class23.baseY * 4 + 2 - class168.localPlayer.y / 32;
                                           GameObject.method2904(var12, var13, var47, var26, World.field1310[1], var71);
                                        }
 
@@ -528,9 +528,9 @@ public final class ISAACCipher {
                                        }
                                     }
 
-                                    if(Client.flagX != 0) {
-                                       var47 = Client.flagX * 4 + 2 - class168.localPlayer.x / 32;
-                                       var26 = Client.flagY * 4 + 2 - class168.localPlayer.y / 32;
+                                    if(Client.detinationX != 0) {
+                                       var47 = Client.detinationX * 4 + 2 - class168.localPlayer.x / 32;
+                                       var26 = Client.destinationY * 4 + 2 - class168.localPlayer.y / 32;
                                        XGrandExchangeOffer.method135(var12, var13, var47, var26, World.field1310[0], var71);
                                     }
 
@@ -648,7 +648,7 @@ public final class ISAACCipher {
                                     var26 = var10.itemIds[var19] - 1;
                                     if(var22 + 32 > var2 && var22 < var4 && var23 + 32 > var3 && var23 < var5 || var10 == class98.field1529 && var19 == Client.field1028) {
                                        SpritePixels var54;
-                                       if(Client.field1068 == 1 && Client.field1090 == var19 && Frames.field2152 == var10.id) {
+                                       if(Client.itemSelectionState == 1 && Client.selectedItemIndex == var19 && Frames.field2152 == var10.id) {
                                           var54 = VertexNormal.createSprite(var26, var10.itemQuantities[var19], 2, 0, 2, false);
                                        } else {
                                           var54 = VertexNormal.createSprite(var26, var10.itemQuantities[var19], 1, 3153952, 2, false);
@@ -674,8 +674,8 @@ public final class ISAACCipher {
                                              var54.method5103(var22 + var24, var47 + var23, 128);
                                              if(var1 != -1) {
                                                 Widget var28 = var0[var1 & '\uffff'];
-                                                if(var23 + var47 < Rasterizer2D.field3755 && var28.scrollY > 0) {
-                                                   var29 = (Rasterizer2D.field3755 - var23 - var47) * Client.field990 / 3;
+                                                if(var23 + var47 < Rasterizer2D.drawingAreaTop && var28.scrollY > 0) {
+                                                   var29 = (Rasterizer2D.drawingAreaTop - var23 - var47) * Client.field990 / 3;
                                                    if(var29 > Client.field990 * 10) {
                                                       var29 = Client.field990 * 10;
                                                    }
@@ -689,8 +689,8 @@ public final class ISAACCipher {
                                                    CombatInfo1.method1515(var28);
                                                 }
 
-                                                if(var47 + var23 + 32 > Rasterizer2D.field3756 && var28.scrollY < var28.scrollHeight - var28.height) {
-                                                   var29 = Client.field990 * (var47 + var23 + 32 - Rasterizer2D.field3756) / 3;
+                                                if(var47 + var23 + 32 > Rasterizer2D.drawingAreaRight && var28.scrollY < var28.scrollHeight - var28.height) {
+                                                   var29 = Client.field990 * (var47 + var23 + 32 - Rasterizer2D.drawingAreaRight) / 3;
                                                    if(var29 > Client.field990 * 10) {
                                                       var29 = Client.field990 * 10;
                                                    }
@@ -964,7 +964,7 @@ public final class ISAACCipher {
                                  if(var10.type == 8 && var10 == Preferences.field1319 && Client.field1094 == Client.field1118) {
                                     var19 = 0;
                                     var20 = 0;
-                                    Font var21 = WidgetNode.field817;
+                                    Font var21 = WidgetNode.font_p12full;
                                     String var50 = var10.text;
 
                                     String var74;
@@ -1060,7 +1060,7 @@ public final class ISAACCipher {
                                           int var36 = var26 * var32 >> 17;
                                           int var37 = var32 * var26 + 1 >> 17;
                                           var23 = var19 - Rasterizer2D.field3754;
-                                          var24 = var20 - Rasterizer2D.field3755;
+                                          var24 = var20 - Rasterizer2D.drawingAreaTop;
                                           int var38 = var23 + var34;
                                           int var39 = var23 - var35;
                                           int var40 = var27 + var23 - var35;

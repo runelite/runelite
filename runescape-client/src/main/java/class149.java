@@ -172,7 +172,7 @@ public class class149 implements class178 {
                var2.field1260 = 0;
                var2.actionAnimationDisable = var5;
                var2.field1228 = 0;
-               var2.field1285 = var2.field1280;
+               var2.field1285 = var2.queueSize;
             }
          }
 

@@ -1,30 +1,32 @@
 import java.util.Random;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("dw")
-@Implements("SoundEffect1")
-public class SoundEffect1 {
+@Implements("AudioInstrument")
+public class AudioInstrument {
    @ObfuscatedName("z")
-   SoundEffect2 field1731;
+   AudioEnvelope field1731;
    @ObfuscatedName("p")
-   SoundEffect2 field1732;
+   AudioEnvelope field1732;
    @ObfuscatedName("e")
    int[] field1733;
    @ObfuscatedName("j")
-   SoundEffect2 field1734;
+   AudioEnvelope field1734;
    @ObfuscatedName("f")
-   SoundEffect2 field1735;
+   AudioEnvelope field1735;
    @ObfuscatedName("c")
-   SoundEffect2 field1736;
+   AudioEnvelope field1736;
    @ObfuscatedName("n")
-   SoundEffect2 field1737;
+   AudioEnvelope field1737;
    @ObfuscatedName("i")
-   SoundEffect2 field1738;
+   AudioEnvelope field1738;
    @ObfuscatedName("g")
-   int[] field1740;
+   @Export("oscillatorPitch")
+   int[] oscillatorPitch;
    @ObfuscatedName("m")
-   SoundEffect2 field1741;
+   AudioEnvelope field1741;
    @ObfuscatedName("o")
    int field1742;
    @ObfuscatedName("x")
@@ -32,7 +34,7 @@ public class SoundEffect1 {
    @ObfuscatedName("a")
    SoundEffect3 field1744;
    @ObfuscatedName("y")
-   SoundEffect2 field1745;
+   AudioEnvelope field1745;
    @ObfuscatedName("r")
    int field1746;
    @ObfuscatedName("b")
@@ -71,8 +73,8 @@ public class SoundEffect1 {
          if(this.field1738 != null) {
             this.field1738.method2062();
             this.field1734.method2062();
-            var5 = (int)((double)(this.field1738.field1659 - this.field1738.field1658) * 32.768D / var3);
-            var6 = (int)((double)this.field1738.field1658 * 32.768D / var3);
+            var5 = (int)((double)(this.field1738.end - this.field1738.start) * 32.768D / var3);
+            var6 = (int)((double)this.field1738.start * 32.768D / var3);
          }
 
          int var8 = 0;
@@ -81,8 +83,8 @@ public class SoundEffect1 {
          if(this.field1735 != null) {
             this.field1735.method2062();
             this.field1741.method2062();
-            var8 = (int)((double)(this.field1735.field1659 - this.field1735.field1658) * 32.768D / var3);
-            var9 = (int)((double)this.field1735.field1658 * 32.768D / var3);
+            var8 = (int)((double)(this.field1735.end - this.field1735.start) * 32.768D / var3);
+            var9 = (int)((double)this.field1735.start * 32.768D / var3);
          }
 
          int var11;
@@ -91,8 +93,8 @@ public class SoundEffect1 {
                field1752[var11] = 0;
                field1753[var11] = (int)((double)this.field1733[var11] * var3);
                field1754[var11] = (this.field1751[var11] << 14) / 100;
-               field1755[var11] = (int)((double)(this.field1737.field1659 - this.field1737.field1658) * 32.768D * Math.pow(1.0057929410678534D, (double)this.field1740[var11]) / var3);
-               field1756[var11] = (int)((double)this.field1737.field1658 * 32.768D / var3);
+               field1755[var11] = (int)((double)(this.field1737.end - this.field1737.start) * 32.768D * Math.pow(1.0057929410678534D, (double)this.oscillatorPitch[var11]) / var3);
+               field1756[var11] = (int)((double)this.field1737.start * 32.768D / var3);
             }
          }
 
@@ -140,9 +142,9 @@ public class SoundEffect1 {
                var15 = this.field1736.method2063(var1);
                var16 = this.field1731.method2063(var1);
                if(var20) {
-                  var12 = this.field1736.field1658 + ((this.field1736.field1659 - this.field1736.field1658) * var15 >> 8);
+                  var12 = this.field1736.start + ((this.field1736.end - this.field1736.start) * var15 >> 8);
                } else {
-                  var12 = this.field1736.field1658 + ((this.field1736.field1659 - this.field1736.field1658) * var16 >> 8);
+                  var12 = this.field1736.start + ((this.field1736.end - this.field1736.start) * var16 >> 8);
                }
 
                var11 += 256;
@@ -260,34 +262,34 @@ public class SoundEffect1 {
 
    @ObfuscatedName("i")
    final void method2325(Buffer var1) {
-      this.field1737 = new SoundEffect2();
+      this.field1737 = new AudioEnvelope();
       this.field1737.method2060(var1);
-      this.field1732 = new SoundEffect2();
+      this.field1732 = new AudioEnvelope();
       this.field1732.method2060(var1);
       int var2 = var1.readUnsignedByte();
       if(var2 != 0) {
          --var1.offset;
-         this.field1738 = new SoundEffect2();
+         this.field1738 = new AudioEnvelope();
          this.field1738.method2060(var1);
-         this.field1734 = new SoundEffect2();
+         this.field1734 = new AudioEnvelope();
          this.field1734.method2060(var1);
       }
 
       var2 = var1.readUnsignedByte();
       if(var2 != 0) {
          --var1.offset;
-         this.field1735 = new SoundEffect2();
+         this.field1735 = new AudioEnvelope();
          this.field1735.method2060(var1);
-         this.field1741 = new SoundEffect2();
+         this.field1741 = new AudioEnvelope();
          this.field1741.method2060(var1);
       }
 
       var2 = var1.readUnsignedByte();
       if(var2 != 0) {
          --var1.offset;
-         this.field1736 = new SoundEffect2();
+         this.field1736 = new AudioEnvelope();
          this.field1736.method2060(var1);
-         this.field1731 = new SoundEffect2();
+         this.field1731 = new AudioEnvelope();
          this.field1731.method2060(var1);
       }
 
@@ -298,7 +300,7 @@ public class SoundEffect1 {
          }
 
          this.field1751[var3] = var4;
-         this.field1740[var3] = var1.readShortSmart();
+         this.oscillatorPitch[var3] = var1.readShortSmart();
          this.field1733[var3] = var1.method3172();
       }
 
@@ -307,7 +309,7 @@ public class SoundEffect1 {
       this.field1746 = var1.readUnsignedShort();
       this.field1747 = var1.readUnsignedShort();
       this.field1744 = new SoundEffect3();
-      this.field1745 = new SoundEffect2();
+      this.field1745 = new AudioEnvelope();
       this.field1744.method2285(var1, this.field1745);
    }
 
@@ -339,9 +341,9 @@ public class SoundEffect1 {
       return var3 == 1?((var1 & 32767) < 16384?var2:-var2):(var3 == 2?field1750[var1 & 32767] * var2 >> 14:(var3 == 3?((var1 & 32767) * var2 >> 14) - var2:(var3 == 4?field1749[var1 / 2607 & 32767] * var2:0)));
    }
 
-   SoundEffect1() {
+   AudioInstrument() {
       this.field1751 = new int[]{0, 0, 0, 0, 0};
-      this.field1740 = new int[]{0, 0, 0, 0, 0};
+      this.oscillatorPitch = new int[]{0, 0, 0, 0, 0};
       this.field1733 = new int[]{0, 0, 0, 0, 0};
       this.field1742 = 0;
       this.field1743 = 100;

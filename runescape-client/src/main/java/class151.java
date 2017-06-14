@@ -103,7 +103,7 @@ public class class151 extends class158 {
          this.field2224 = var2;
       }
 
-      class100.method1842((long)this.field2224);
+      DynamicObject.method1842((long)this.field2224);
 
       for(var5 = 0; this.field2216 < 256; this.field2216 += this.field2217) {
          ++var5;

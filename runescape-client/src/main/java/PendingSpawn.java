@@ -1,24 +1,30 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bq")
-public final class class76 extends Node {
+@Implements("PendingSpawn")
+public final class PendingSpawn extends Node {
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -72604677
    )
-   int field1199;
+   @Export("type")
+   int type;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1418021977
    )
-   int field1200;
+   @Export("x")
+   int x;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -205612967
    )
-   int field1201;
+   @Export("y")
+   int y;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -2124617679
@@ -28,14 +34,16 @@ public final class class76 extends Node {
    @ObfuscatedGetter(
       intValue = -2137500001
    )
-   int field1203;
+   @Export("level")
+   int level;
    @ObfuscatedName("in")
    static Widget field1204;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = 288760971
    )
-   int field1205;
+   @Export("id")
+   int id;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -233112685
@@ -45,7 +53,8 @@ public final class class76 extends Node {
    @ObfuscatedGetter(
       intValue = 554127361
    )
-   int field1208;
+   @Export("orientation")
+   int orientation;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -1035715197
@@ -55,12 +64,14 @@ public final class class76 extends Node {
    @ObfuscatedGetter(
       intValue = 1009362479
    )
-   int field1212;
+   @Export("delay")
+   int delay;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -276221133
    )
-   int field1213;
+   @Export("hitpoints")
+   int hitpoints;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = -355898623
@@ -84,9 +95,9 @@ public final class class76 extends Node {
       }
    }
 
-   class76() {
-      this.field1212 = 0;
-      this.field1213 = -1;
+   PendingSpawn() {
+      this.delay = 0;
+      this.hitpoints = -1;
    }
 
    @ObfuscatedName("fe")
@@ -95,14 +106,14 @@ public final class class76 extends Node {
       garbageValue = "1001724018"
    )
    static final void method1482() {
-      for(class84 var0 = (class84)Client.field1048.method3622(); var0 != null; var0 = (class84)Client.field1048.method3608()) {
-         if(var0.field1358 == class92.plane && !var0.field1361) {
+      for(GraphicsObject var0 = (GraphicsObject)Client.field1048.method3622(); var0 != null; var0 = (GraphicsObject)Client.field1048.method3608()) {
+         if(var0.level == class92.plane && !var0.field1361) {
             if(Client.gameCycle >= var0.field1365) {
                var0.method1654(Client.field990);
                if(var0.field1361) {
                   var0.unlink();
                } else {
-                  class61.region.method2686(var0.field1358, var0.field1367, var0.field1360, var0.field1359, 60, var0, 0, -1, false);
+                  class61.region.method2686(var0.level, var0.x, var0.y, var0.height, 60, var0, 0, -1, false);
                }
             }
          } else {

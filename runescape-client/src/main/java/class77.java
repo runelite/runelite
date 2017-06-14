@@ -298,8 +298,8 @@ public class class77 {
    static void method1488() {
       Client.secretPacketBuffer1.putOpcode(53);
       Client.secretPacketBuffer1.putByte(class140.method2868());
-      Client.secretPacketBuffer1.putShort(class174.field2408);
-      Client.secretPacketBuffer1.putShort(class2.field21);
+      Client.secretPacketBuffer1.putShort(class174.canvasWidth);
+      Client.secretPacketBuffer1.putShort(class2.canvasHeight);
    }
 
    class77(class154 var1, URL var2) {

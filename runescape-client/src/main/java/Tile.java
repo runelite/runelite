@@ -34,9 +34,10 @@ public final class Tile extends Node {
    )
    int field1910;
    @ObfuscatedName("f")
-   class137 field1911;
+   @Export("paint")
+   SceneTilePaint paint;
    @ObfuscatedName("m")
-   class128 field1912;
+   SceneTileModel field1912;
    @ObfuscatedName("c")
    @Export("wallObject")
    WallObject wallObject;
@@ -247,7 +248,7 @@ public final class Tile extends Node {
 
          class222.method4092(false);
          class92.field1430 = true;
-         class92.field1417 = (class174.field2408 - 765) / 2;
+         class92.field1417 = (class174.canvasWidth - 765) / 2;
          class92.loginWindowX = class92.field1417 + 202;
          class92.field1420.method5164(class92.field1417, 0);
          class92.field1421.method5164(class92.field1417 + 382, 0);

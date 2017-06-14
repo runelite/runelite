@@ -89,7 +89,7 @@ public class SoundEffect3 {
    }
 
    @ObfuscatedName("f")
-   final void method2285(Buffer var1, SoundEffect2 var2) {
+   final void method2285(Buffer var1, AudioEnvelope var2) {
       int var3 = var1.readUnsignedByte();
       this.field1713[0] = var3 >> 4;
       this.field1713[1] = var3 & 15;

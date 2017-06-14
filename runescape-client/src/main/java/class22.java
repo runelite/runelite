@@ -118,11 +118,11 @@ public class class22 extends class28 {
    )
    static final void method190(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       if(class73.method1095(var0)) {
-         class84.field1366 = null;
+         GraphicsObject.field1366 = null;
          ISAACCipher.gameDraw(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
-         if(class84.field1366 != null) {
-            ISAACCipher.gameDraw(class84.field1366, -1412584499, var1, var2, var3, var4, class163.field2323, class45.field583, var7);
-            class84.field1366 = null;
+         if(GraphicsObject.field1366 != null) {
+            ISAACCipher.gameDraw(GraphicsObject.field1366, -1412584499, var1, var2, var3, var4, class163.field2323, class45.field583, var7);
+            GraphicsObject.field1366 = null;
          }
 
       } else {

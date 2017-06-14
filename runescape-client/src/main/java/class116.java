@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -12,7 +13,8 @@ public class class116 {
    @ObfuscatedName("m")
    int[][] field1691;
    @ObfuscatedName("oj")
-   static byte field1693;
+   @Export("clanChatRank")
+   static byte clanChatRank;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1794531687

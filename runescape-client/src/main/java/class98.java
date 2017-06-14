@@ -54,7 +54,7 @@ public class class98 {
       int var1;
       if(var0 < Client.field952) {
          for(var1 = var0; var1 < Client.field952; ++var1) {
-            Client.field1039[++Client.field950 - 1] = Client.field953[var1];
+            Client.field1039[++Client.field950 - 1] = Client.npcIndices[var1];
          }
       }
 
@@ -64,23 +64,23 @@ public class class98 {
          Client.field952 = 0;
 
          for(var1 = 0; var1 < var0; ++var1) {
-            int var2 = Client.field953[var1];
+            int var2 = Client.npcIndices[var1];
             NPC var3 = Client.cachedNPCs[var2];
             int var4 = Client.secretPacketBuffer2.method3400(1);
             if(var4 == 0) {
-               Client.field953[++Client.field952 - 1] = var2;
+               Client.npcIndices[++Client.field952 - 1] = var2;
                var3.field1261 = Client.gameCycle;
             } else {
                int var5 = Client.secretPacketBuffer2.method3400(2);
                if(var5 == 0) {
-                  Client.field953[++Client.field952 - 1] = var2;
+                  Client.npcIndices[++Client.field952 - 1] = var2;
                   var3.field1261 = Client.gameCycle;
                   Client.field955[++Client.field954 - 1] = var2;
                } else {
                   int var6;
                   int var7;
                   if(var5 == 1) {
-                     Client.field953[++Client.field952 - 1] = var2;
+                     Client.npcIndices[++Client.field952 - 1] = var2;
                      var3.field1261 = Client.gameCycle;
                      var6 = Client.secretPacketBuffer2.method3400(3);
                      var3.method1666(var6, (byte)1);
@@ -89,7 +89,7 @@ public class class98 {
                         Client.field955[++Client.field954 - 1] = var2;
                      }
                   } else if(var5 == 2) {
-                     Client.field953[++Client.field952 - 1] = var2;
+                     Client.npcIndices[++Client.field952 - 1] = var2;
                      var3.field1261 = Client.gameCycle;
                      var6 = Client.secretPacketBuffer2.method3400(3);
                      var3.method1666(var6, (byte)2);

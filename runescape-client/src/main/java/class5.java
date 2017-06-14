@@ -61,7 +61,7 @@ final class class5 implements class0 {
                Client.field1158[Client.field1077] = var5;
                Client.field1159[Client.field1077] = var6;
                Client.field1049[Client.field1077] = 0;
-               Client.field1162[Client.field1077] = null;
+               Client.audioEffects[Client.field1077] = null;
                int var8 = (var2 - 64) / 128;
                int var9 = (var3 - 64) / 128;
                Client.field1101[Client.field1077] = var7 + (var9 << 8) + (var8 << 16);

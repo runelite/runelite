@@ -174,17 +174,17 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
             }
          }
 
-         for(class76 var13 = (class76)Client.field1046.method3622(); var13 != null; var13 = (class76)Client.field1046.method3608()) {
-            var13.field1200 -= var5;
-            var13.field1201 -= var6;
-            if(var13.field1200 < 0 || var13.field1201 < 0 || var13.field1200 >= 104 || var13.field1201 >= 104) {
+         for(PendingSpawn var13 = (PendingSpawn)Client.pendingSpawns.method3622(); var13 != null; var13 = (PendingSpawn)Client.pendingSpawns.method3608()) {
+            var13.x -= var5;
+            var13.y -= var6;
+            if(var13.x < 0 || var13.y < 0 || var13.x >= 104 || var13.y >= 104) {
                var13.unlink();
             }
          }
 
-         if(Client.flagX != 0) {
-            Client.flagX -= var5;
-            Client.flagY -= var6;
+         if(Client.detinationX != 0) {
+            Client.detinationX -= var5;
+            Client.destinationY -= var6;
          }
 
          Client.field1077 = 0;

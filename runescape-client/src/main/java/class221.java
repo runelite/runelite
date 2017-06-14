@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -59,7 +60,8 @@ public class class221 implements class178 {
    @ObfuscatedGetter(
       intValue = -274740629
    )
-   static int field2836;
+   @Export("spellTargetFlags")
+   static int spellTargetFlags;
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(

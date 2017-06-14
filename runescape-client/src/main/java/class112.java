@@ -30,7 +30,7 @@ public class class112 {
       Client.field1071 = true;
       NPC.field1375 = var0;
       Client.field1072 = var1;
-      class221.field2836 = var2;
+      class221.spellTargetFlags = var2;
       CombatInfo1.method1515(var4);
    }
 

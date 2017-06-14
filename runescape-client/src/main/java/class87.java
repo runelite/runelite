@@ -65,7 +65,7 @@ public class class87 {
                var6.method1109(class96.field1497[var1]);
             }
 
-            var6.field1252 = class96.field1505[var1];
+            var6.orientation = class96.field1505[var1];
             var6.interacting = class96.field1495[var1];
             var7 = class96.field1504[var1];
             var8 = var7 >> 28;

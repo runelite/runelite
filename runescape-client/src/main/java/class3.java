@@ -88,7 +88,7 @@ final class class3 implements class0 {
    )
    static void method9(Font var0, Font var1, Font var2, boolean var3) {
       if(var3) {
-         class92.field1417 = (class174.field2408 - 765) / 2;
+         class92.field1417 = (class174.canvasWidth - 765) / 2;
          class92.loginWindowX = class92.field1417 + 202;
       }
 

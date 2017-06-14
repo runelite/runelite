@@ -34,7 +34,7 @@ public class Frames extends CacheableNode {
       garbageValue = "-323398394"
    )
    public boolean method2879(int var1) {
-      return this.field2148[var1].field1905;
+      return this.field2148[var1].showing;
    }
 
    @ObfuscatedName("j")

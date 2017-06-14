@@ -151,7 +151,7 @@ public class Spotanim extends CacheableNode {
             }
          }
 
-         var2 = var3.method2437(this.field3337 + 64, this.field3329 + 850, -30, -50, -30);
+         var2 = var3.light(this.field3337 + 64, this.field3329 + 850, -30, -50, -30);
          field3328.put(var2, (long)this.field3334);
       }
 

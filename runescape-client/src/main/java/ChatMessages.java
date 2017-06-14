@@ -322,11 +322,11 @@ public class ChatMessages {
       garbageValue = "-113"
    )
    static final void method1800(int var0, int var1, int var2, int var3) {
-      if(Client.field1195 == 1) {
+      if(Client.cursorState == 1) {
          class73.field867[Client.field1024 / 100].method5097(Client.field1022 - 8, Client.field970 - 8);
       }
 
-      if(Client.field1195 == 2) {
+      if(Client.cursorState == 2) {
          class73.field867[Client.field1024 / 100 + 4].method5097(Client.field1022 - 8, Client.field970 - 8);
       }
 

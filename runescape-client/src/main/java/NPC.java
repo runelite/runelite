@@ -71,11 +71,11 @@ public final class NPC extends Actor {
          super.animation = -1;
       }
 
-      if(super.field1280 < 9) {
-         ++super.field1280;
+      if(super.queueSize < 9) {
+         ++super.queueSize;
       }
 
-      for(int var5 = super.field1280; var5 > 0; --var5) {
+      for(int var5 = super.queueSize; var5 > 0; --var5) {
          super.pathX[var5] = super.pathX[var5 - 1];
          super.pathY[var5] = super.pathY[var5 - 1];
          super.field1283[var5] = super.field1283[var5 - 1];
@@ -100,11 +100,11 @@ public final class NPC extends Actor {
          int var4 = var1 - super.pathX[0];
          int var5 = var2 - super.pathY[0];
          if(var4 >= -8 && var4 <= 8 && var5 >= -8 && var5 <= 8) {
-            if(super.field1280 < 9) {
-               ++super.field1280;
+            if(super.queueSize < 9) {
+               ++super.queueSize;
             }
 
-            for(int var6 = super.field1280; var6 > 0; --var6) {
+            for(int var6 = super.queueSize; var6 > 0; --var6) {
                super.pathX[var6] = super.pathX[var6 - 1];
                super.pathY[var6] = super.pathY[var6 - 1];
                super.field1283[var6] = super.field1283[var6 - 1];
@@ -117,7 +117,7 @@ public final class NPC extends Actor {
          }
       }
 
-      super.field1280 = 0;
+      super.queueSize = 0;
       super.field1285 = 0;
       super.field1258 = 0;
       super.pathX[0] = var1;
@@ -144,7 +144,7 @@ public final class NPC extends Actor {
             var3.method2515();
             super.field1276 = var3.modelHeight;
             if(super.graphic != -1 && super.field1264 != -1) {
-               Model var4 = class100.method1840(super.graphic).method4358(super.field1264);
+               Model var4 = DynamicObject.method1840(super.graphic).method4358(super.field1264);
                if(var4 != null) {
                   var4.method2519(0, -super.field1279, 0);
                   Model[] var5 = new Model[]{var3, var4};

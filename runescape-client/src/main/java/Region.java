@@ -72,11 +72,14 @@ public class Region {
    @ObfuscatedName("au")
    static int field2094;
    @ObfuscatedName("ak")
-   public static int field2095;
+   @Export("selectedRegionTileX")
+   public static int selectedRegionTileX;
    @ObfuscatedName("as")
-   public static int field2096;
+   @Export("selectedRegionTileY")
+   public static int selectedRegionTileY;
    @ObfuscatedName("ah")
-   static boolean field2097;
+   @Export("viewportWalking")
+   static boolean viewportWalking;
    @ObfuscatedName("q")
    static int field2098;
    @ObfuscatedName("aa")
@@ -186,12 +189,12 @@ public class Region {
    public void method2678(int var1, int var2, int var3, boolean var4) {
       if(!method2714() || var4) {
          field2107 = true;
-         field2097 = var4;
+         viewportWalking = var4;
          field2092 = var1;
          field2069 = var2;
          field2094 = var3;
-         field2095 = -1;
-         field2096 = -1;
+         selectedRegionTileX = -1;
+         selectedRegionTileY = -1;
       }
    }
 
@@ -205,10 +208,10 @@ public class Region {
 
    @ObfuscatedName("m")
    public void method2680(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14, int var15, int var16, int var17, int var18, int var19, int var20) {
-      class137 var21;
+      SceneTilePaint var21;
       int var22;
       if(var4 == 0) {
-         var21 = new class137(var11, var12, var13, var14, -1, var19, false);
+         var21 = new SceneTilePaint(var11, var12, var13, var14, -1, var19, false);
 
          for(var22 = var1; var22 >= 0; --var22) {
             if(this.tiles[var22][var2][var3] == null) {
@@ -216,9 +219,9 @@ public class Region {
             }
          }
 
-         this.tiles[var1][var2][var3].field1911 = var21;
+         this.tiles[var1][var2][var3].paint = var21;
       } else if(var4 != 1) {
-         class128 var23 = new class128(var4, var5, var6, var2, var3, var7, var8, var9, var10, var11, var12, var13, var14, var15, var16, var17, var18, var19, var20);
+         SceneTileModel var23 = new SceneTileModel(var4, var5, var6, var2, var3, var7, var8, var9, var10, var11, var12, var13, var14, var15, var16, var17, var18, var19, var20);
 
          for(var22 = var1; var22 >= 0; --var22) {
             if(this.tiles[var22][var2][var3] == null) {
@@ -228,7 +231,7 @@ public class Region {
 
          this.tiles[var1][var2][var3].field1912 = var23;
       } else {
-         var21 = new class137(var15, var16, var17, var18, var6, var20, var7 == var8 && var7 == var9 && var7 == var10);
+         var21 = new SceneTilePaint(var15, var16, var17, var18, var6, var20, var7 == var8 && var7 == var9 && var7 == var10);
 
          for(var22 = var1; var22 >= 0; --var22) {
             if(this.tiles[var22][var2][var3] == null) {
@@ -236,7 +239,7 @@ public class Region {
             }
          }
 
-         this.tiles[var1][var2][var3].field1911 = var21;
+         this.tiles[var1][var2][var3].paint = var21;
       }
    }
 
@@ -698,10 +701,10 @@ public class Region {
                         var10 = (ModelData)var8.renderable2;
                         this.method2845(var10, var4, var5, var6, 1, 1);
                         ModelData.method2485(var9, var10, 0, 0, 0, false);
-                        var8.renderable2 = var10.method2437(var10.field1802, var10.field1835, var1, var2, var3);
+                        var8.renderable2 = var10.light(var10.field1802, var10.field1835, var1, var2, var3);
                      }
 
-                     var8.renderable1 = var9.method2437(var9.field1802, var9.field1835, var1, var2, var3);
+                     var8.renderable1 = var9.light(var9.field1802, var9.field1835, var1, var2, var3);
                   }
 
                   for(int var12 = 0; var12 < var7.field1925; ++var12) {
@@ -709,7 +712,7 @@ public class Region {
                      if(var14 != null && var14.renderable instanceof ModelData) {
                         ModelData var11 = (ModelData)var14.renderable;
                         this.method2845(var11, var4, var5, var6, var14.offsetX - var14.relativeX + 1, var14.offsetY - var14.relativeY + 1);
-                        var14.renderable = var11.method2437(var11.field1802, var11.field1835, var1, var2, var3);
+                        var14.renderable = var11.light(var11.field1802, var11.field1835, var1, var2, var3);
                      }
                   }
 
@@ -717,7 +720,7 @@ public class Region {
                   if(var13 != null && var13.renderable instanceof ModelData) {
                      var10 = (ModelData)var13.renderable;
                      this.method2707(var10, var4, var5, var6);
-                     var13.renderable = var10.method2437(var10.field1802, var10.field1835, var1, var2, var3);
+                     var13.renderable = var10.light(var10.field1802, var10.field1835, var1, var2, var3);
                   }
                }
             }
@@ -878,12 +881,12 @@ public class Region {
 
    @ObfuscatedName("ag")
    public void method2713() {
-      field2097 = true;
+      viewportWalking = true;
    }
 
    @ObfuscatedName("ar")
    public static boolean method2714() {
-      return field2097 && field2095 != -1;
+      return viewportWalking && selectedRegionTileX != -1;
    }
 
    @ObfuscatedName("j")
@@ -1184,9 +1187,9 @@ public class Region {
                                  var3.field1915 = false;
                                  if(var3.field1929 != null) {
                                     var9 = var3.field1929;
-                                    if(var9.field1911 != null) {
+                                    if(var9.paint != null) {
                                        if(!this.method2723(0, var4, var5)) {
-                                          this.method2718(var9.field1911, 0, field2086, field2114, field2088, field2099, var4, var5);
+                                          this.method2718(var9.paint, 0, field2086, field2114, field2088, field2099, var4, var5);
                                        }
                                     } else if(var9.field1912 != null && !this.method2723(0, var4, var5)) {
                                        this.method2791(var9.field1912, field2086, field2114, field2088, field2099, var4, var5);
@@ -1206,11 +1209,11 @@ public class Region {
                                  }
 
                                  var20 = false;
-                                 if(var3.field1911 != null) {
+                                 if(var3.paint != null) {
                                     if(!this.method2723(var7, var4, var5)) {
                                        var20 = true;
-                                       if(var3.field1911.field2046 != 12345678 || field2107 && var6 <= field2092) {
-                                          this.method2718(var3.field1911, var7, field2086, field2114, field2088, field2099, var4, var5);
+                                       if(var3.paint.field2046 != 12345678 || field2107 && var6 <= field2092) {
+                                          this.method2718(var3.paint, var7, field2086, field2114, field2088, field2099, var4, var5);
                                        }
                                     }
                                  } else if(var3.field1912 != null && !this.method2723(var7, var4, var5)) {
@@ -1620,7 +1623,7 @@ public class Region {
    }
 
    @ObfuscatedName("ai")
-   void method2718(class137 var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+   void method2718(SceneTilePaint var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var9;
       int var10 = var9 = (var7 << 7) - field2083;
       int var11;
@@ -1677,22 +1680,22 @@ public class Region {
                      }
 
                      if(field2107 && this.method2721(field2069, field2094, var27, var29, var25, var26, var28, var24)) {
-                        field2095 = var7;
-                        field2096 = var8;
+                        selectedRegionTileX = var7;
+                        selectedRegionTileY = var8;
                      }
 
-                     if(var1.field2048 == -1) {
+                     if(var1.texture == -1) {
                         if(var1.field2046 != 12345678) {
                            class136.rasterGouraud(var27, var29, var25, var26, var28, var24, var1.field2046, var1.field2047, var1.field2045);
                         }
                      } else if(!field2115) {
-                        if(var1.field2049) {
-                           class136.rasterTexture(var27, var29, var25, var26, var28, var24, var1.field2046, var1.field2047, var1.field2045, var10, var14, var9, var17, var18, var21, var12, var11, var15, var1.field2048);
+                        if(var1.flatShade) {
+                           class136.rasterTexture(var27, var29, var25, var26, var28, var24, var1.field2046, var1.field2047, var1.field2045, var10, var14, var9, var17, var18, var21, var12, var11, var15, var1.texture);
                         } else {
-                           class136.rasterTexture(var27, var29, var25, var26, var28, var24, var1.field2046, var1.field2047, var1.field2045, var13, var9, var14, var19, var21, var18, var16, var15, var11, var1.field2048);
+                           class136.rasterTexture(var27, var29, var25, var26, var28, var24, var1.field2046, var1.field2047, var1.field2045, var13, var9, var14, var19, var21, var18, var16, var15, var11, var1.texture);
                         }
                      } else {
-                        var30 = class136.field2039.vmethod2887(var1.field2048);
+                        var30 = class136.field2039.vmethod2887(var1.texture);
                         class136.rasterGouraud(var27, var29, var25, var26, var28, var24, method2751(var30, var1.field2046), method2751(var30, var1.field2047), method2751(var30, var1.field2045));
                      }
                   }
@@ -1704,18 +1707,18 @@ public class Region {
                      }
 
                      if(field2107 && this.method2721(field2069, field2094, var23, var25, var29, var22, var24, var28)) {
-                        field2095 = var7;
-                        field2096 = var8;
+                        selectedRegionTileX = var7;
+                        selectedRegionTileY = var8;
                      }
 
-                     if(var1.field2048 == -1) {
+                     if(var1.texture == -1) {
                         if(var1.field2050 != 12345678) {
                            class136.rasterGouraud(var23, var25, var29, var22, var24, var28, var1.field2050, var1.field2045, var1.field2047);
                         }
                      } else if(!field2115) {
-                        class136.rasterTexture(var23, var25, var29, var22, var24, var28, var1.field2050, var1.field2045, var1.field2047, var10, var14, var9, var17, var18, var21, var12, var11, var15, var1.field2048);
+                        class136.rasterTexture(var23, var25, var29, var22, var24, var28, var1.field2050, var1.field2045, var1.field2047, var10, var14, var9, var17, var18, var21, var12, var11, var15, var1.texture);
                      } else {
-                        var30 = class136.field2039.vmethod2887(var1.field2048);
+                        var30 = class136.field2039.vmethod2887(var1.texture);
                         class136.rasterGouraud(var23, var25, var29, var22, var24, var28, method2751(var30, var1.field2050), method2751(var30, var1.field2045), method2751(var30, var1.field2047));
                      }
                   }
@@ -2035,7 +2038,7 @@ public class Region {
       var2 = var1 * field2086 + var2 * field2114 >> 16;
       var2 |= 1;
       int var4 = class136.field2029 + var0 * class136.field2028 / var2 + Rasterizer2D.field3754;
-      int var5 = class136.field2030 + var3 * class136.field2028 / var2 + Rasterizer2D.field3755;
+      int var5 = class136.field2030 + var3 * class136.field2028 / var2 + Rasterizer2D.drawingAreaTop;
       return new int[]{var4, var5};
    }
 
@@ -2048,9 +2051,9 @@ public class Region {
       field2092 = 0;
       field2069 = 0;
       field2094 = 0;
-      field2095 = -1;
-      field2096 = -1;
-      field2097 = false;
+      selectedRegionTileX = -1;
+      selectedRegionTileY = -1;
+      viewportWalking = false;
       field2100 = 4;
       field2091 = new int[field2100];
       field2102 = new class146[field2100][500];
@@ -2196,12 +2199,12 @@ public class Region {
 
    @ObfuscatedName("aj")
    public static void method2784() {
-      field2095 = -1;
-      field2097 = false;
+      selectedRegionTileX = -1;
+      viewportWalking = false;
    }
 
    @ObfuscatedName("az")
-   void method2791(class128 var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   void method2791(SceneTileModel var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = var1.field1866.length;
 
       int var9;
@@ -2223,13 +2226,13 @@ public class Region {
          }
 
          if(var1.field1856 != null) {
-            class128.field1864[var9] = var10;
-            class128.field1865[var9] = var13;
-            class128.field1855[var9] = var12;
+            SceneTileModel.field1864[var9] = var10;
+            SceneTileModel.field1865[var9] = var13;
+            SceneTileModel.field1855[var9] = var12;
          }
 
-         class128.field1862[var9] = class136.field2029 + var10 * class136.field2028 / var12;
-         class128.field1863[var9] = class136.field2030 + var13 * class136.field2028 / var12;
+         SceneTileModel.field1862[var9] = class136.field2029 + var10 * class136.field2028 / var12;
+         SceneTileModel.field1863[var9] = class136.field2030 + var13 * class136.field2028 / var12;
       }
 
       class136.rasterAlpha = 0;
@@ -2239,12 +2242,12 @@ public class Region {
          var10 = var1.field1853[var9];
          var11 = var1.field1854[var9];
          var12 = var1.field1852[var9];
-         var13 = class128.field1862[var10];
-         int var14 = class128.field1862[var11];
-         int var15 = class128.field1862[var12];
-         int var16 = class128.field1863[var10];
-         int var17 = class128.field1863[var11];
-         int var18 = class128.field1863[var12];
+         var13 = SceneTileModel.field1862[var10];
+         int var14 = SceneTileModel.field1862[var11];
+         int var15 = SceneTileModel.field1862[var12];
+         int var16 = SceneTileModel.field1863[var10];
+         int var17 = SceneTileModel.field1863[var11];
+         int var18 = SceneTileModel.field1863[var12];
          if((var13 - var14) * (var18 - var17) - (var16 - var17) * (var15 - var14) > 0) {
             class136.rasterClipEnable = false;
             if(var13 < 0 || var14 < 0 || var15 < 0 || var13 > class136.rasterClipX || var14 > class136.rasterClipX || var15 > class136.rasterClipX) {
@@ -2252,16 +2255,16 @@ public class Region {
             }
 
             if(field2107 && this.method2721(field2069, field2094, var16, var17, var18, var13, var14, var15)) {
-               field2095 = var6;
-               field2096 = var7;
+               selectedRegionTileX = var6;
+               selectedRegionTileY = var7;
             }
 
             if(var1.field1856 != null && var1.field1856[var9] != -1) {
                if(!field2115) {
-                  if(var1.field1857) {
-                     class136.rasterTexture(var16, var17, var18, var13, var14, var15, var1.field1858[var9], var1.field1851[var9], var1.field1849[var9], class128.field1864[0], class128.field1864[1], class128.field1864[3], class128.field1865[0], class128.field1865[1], class128.field1865[3], class128.field1855[0], class128.field1855[1], class128.field1855[3], var1.field1856[var9]);
+                  if(var1.flatShade) {
+                     class136.rasterTexture(var16, var17, var18, var13, var14, var15, var1.field1858[var9], var1.field1851[var9], var1.field1849[var9], SceneTileModel.field1864[0], SceneTileModel.field1864[1], SceneTileModel.field1864[3], SceneTileModel.field1865[0], SceneTileModel.field1865[1], SceneTileModel.field1865[3], SceneTileModel.field1855[0], SceneTileModel.field1855[1], SceneTileModel.field1855[3], var1.field1856[var9]);
                   } else {
-                     class136.rasterTexture(var16, var17, var18, var13, var14, var15, var1.field1858[var9], var1.field1851[var9], var1.field1849[var9], class128.field1864[var10], class128.field1864[var11], class128.field1864[var12], class128.field1865[var10], class128.field1865[var11], class128.field1865[var12], class128.field1855[var10], class128.field1855[var11], class128.field1855[var12], var1.field1856[var9]);
+                     class136.rasterTexture(var16, var17, var18, var13, var14, var15, var1.field1858[var9], var1.field1851[var9], var1.field1849[var9], SceneTileModel.field1864[var10], SceneTileModel.field1864[var11], SceneTileModel.field1864[var12], SceneTileModel.field1865[var10], SceneTileModel.field1865[var11], SceneTileModel.field1865[var12], SceneTileModel.field1855[var10], SceneTileModel.field1855[var11], SceneTileModel.field1855[var12], var1.field1856[var9]);
                   }
                } else {
                   int var19 = class136.field2039.vmethod2887(var1.field1856[var9]);
@@ -2279,10 +2282,10 @@ public class Region {
    public void method2793(int[] var1, int var2, int var3, int var4, int var5, int var6) {
       Tile var7 = this.tiles[var4][var5][var6];
       if(var7 != null) {
-         class137 var8 = var7.field1911;
+         SceneTilePaint var8 = var7.paint;
          int var10;
          if(var8 != null) {
-            int var9 = var8.field2051;
+            int var9 = var8.rgb;
             if(var9 != 0) {
                for(var10 = 0; var10 < 4; ++var10) {
                   var1[var2] = var9;
@@ -2294,12 +2297,12 @@ public class Region {
 
             }
          } else {
-            class128 var18 = var7.field1912;
+            SceneTileModel var18 = var7.field1912;
             if(var18 != null) {
-               var10 = var18.field1867;
-               int var11 = var18.field1859;
-               int var12 = var18.field1860;
-               int var13 = var18.field1861;
+               var10 = var18.shape;
+               int var11 = var18.rotation;
+               int var12 = var18.underlay;
+               int var13 = var18.overlay;
                int[] var14 = this.field2113[var10];
                int[] var15 = this.field2101[var11];
                int var16 = 0;

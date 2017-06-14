@@ -142,7 +142,7 @@ public final class class10 extends class9 {
                }
 
                NPC var3 = Client.cachedNPCs[var1];
-               Client.field953[++Client.field952 - 1] = var1;
+               Client.npcIndices[++Client.field952 - 1] = var1;
                var3.field1261 = Client.gameCycle;
                int var4 = Client.secretPacketBuffer2.method3400(1);
                if(var4 == 1) {
@@ -166,7 +166,7 @@ public final class class10 extends class9 {
 
                int var7 = Client.field1043[Client.secretPacketBuffer2.method3400(3)];
                if(var2) {
-                  var3.field1252 = var3.angle = var7;
+                  var3.orientation = var3.angle = var7;
                }
 
                int var8;

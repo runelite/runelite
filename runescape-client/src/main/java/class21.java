@@ -56,7 +56,7 @@ public class class21 {
             if(var4.field1254 != -1) {
                class96.field1505[var1] = var4.field1254;
             } else {
-               class96.field1505[var1] = var4.field1252;
+               class96.field1505[var1] = var4.orientation;
             }
 
             class96.field1495[var1] = var4.interacting;

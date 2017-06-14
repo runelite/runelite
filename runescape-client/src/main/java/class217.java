@@ -11,8 +11,8 @@ public class class217 {
    )
    static final void method4073(boolean var0) {
       for(int var1 = 0; var1 < Client.field952; ++var1) {
-         NPC var2 = Client.cachedNPCs[Client.field953[var1]];
-         int var3 = (Client.field953[var1] << 14) + 536870912;
+         NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
+         int var3 = (Client.npcIndices[var1] << 14) + 536870912;
          if(var2 != null && var2.vmethod1669() && var0 == var2.composition.isVisible && var2.composition.method4667()) {
             int var4 = var2.x >> 7;
             int var5 = var2.y >> 7;

@@ -128,7 +128,8 @@ public abstract class Actor extends Renderable {
    @ObfuscatedGetter(
       intValue = -1342685745
    )
-   int field1252;
+   @Export("orientation")
+   int orientation;
    @ObfuscatedName("bj")
    boolean field1253;
    @ObfuscatedName("bx")
@@ -176,7 +177,8 @@ public abstract class Actor extends Renderable {
    @ObfuscatedName("az")
    int[] field1262;
    @ObfuscatedName("ai")
-   int[] field1263;
+   @Export("hitsplatCycles")
+   int[] hitsplatCycles;
    @ObfuscatedName("be")
    @ObfuscatedGetter(
       intValue = -1054771075
@@ -256,7 +258,8 @@ public abstract class Actor extends Renderable {
    @ObfuscatedGetter(
       intValue = 1688003673
    )
-   int field1280;
+   @Export("queueSize")
+   int queueSize;
    @ObfuscatedName("cv")
    @Export("pathX")
    int[] pathX;
@@ -288,7 +291,7 @@ public abstract class Actor extends Renderable {
       garbageValue = "1910724522"
    )
    final void method1492() {
-      this.field1280 = 0;
+      this.queueSize = 0;
       this.field1285 = 0;
    }
 
@@ -383,7 +386,7 @@ public abstract class Actor extends Renderable {
                   class165.intStackSize -= 2;
                   var4 = class83.intStack[class165.intStackSize];
                   var5 = class83.intStack[class165.intStackSize + 1];
-                  var6 = class233.field3207.getConfigData(var5, 0);
+                  var6 = FileSystem.field3207.getConfigData(var5, 0);
                   var14 = new Font(var6);
                   class83.intStack[++class165.intStackSize - 1] = var14.method4783(var3, var4);
                   return 1;
@@ -392,7 +395,7 @@ public abstract class Actor extends Renderable {
                   class165.intStackSize -= 2;
                   var4 = class83.intStack[class165.intStackSize];
                   var5 = class83.intStack[class165.intStackSize + 1];
-                  var6 = class233.field3207.getConfigData(var5, 0);
+                  var6 = FileSystem.field3207.getConfigData(var5, 0);
                   var14 = new Font(var6);
                   class83.intStack[++class165.intStackSize - 1] = var14.method4794(var3, var4);
                   return 1;
@@ -575,7 +578,7 @@ public abstract class Actor extends Renderable {
 
       int var9;
       for(var9 = 0; var9 < 4; ++var9) {
-         if(this.field1263[var9] > var5) {
+         if(this.hitsplatCycles[var9] > var5) {
             var7 = false;
          } else {
             var8 = false;
@@ -600,16 +603,16 @@ public abstract class Actor extends Renderable {
          var9 = 0;
          var12 = 0;
          if(var10 == 0) {
-            var12 = this.field1263[0];
+            var12 = this.hitsplatCycles[0];
          } else if(var10 == 1) {
             var12 = this.field1251[0];
          }
 
          for(int var13 = 1; var13 < 4; ++var13) {
             if(var10 == 0) {
-               if(this.field1263[var13] < var12) {
+               if(this.hitsplatCycles[var13] < var12) {
                   var9 = var13;
-                  var12 = this.field1263[var13];
+                  var12 = this.hitsplatCycles[var13];
                }
             } else if(var10 == 1 && this.field1251[var13] < var12) {
                var9 = var13;
@@ -628,7 +631,7 @@ public abstract class Actor extends Renderable {
          for(var12 = 0; var12 < 4; ++var12) {
             byte var15 = this.field1226;
             this.field1226 = (byte)((this.field1226 + 1) % 4);
-            if(this.field1263[var15] <= var5) {
+            if(this.hitsplatCycles[var15] <= var5) {
                var9 = var15;
                break;
             }
@@ -640,7 +643,7 @@ public abstract class Actor extends Renderable {
          this.field1251[var9] = var2;
          this.field1262[var9] = var3;
          this.field1250[var9] = var4;
-         this.field1263[var9] = var6 + var5 + var11;
+         this.hitsplatCycles[var9] = var6 + var5 + var11;
       }
    }
 
@@ -663,7 +666,7 @@ public abstract class Actor extends Renderable {
       this.field1226 = 0;
       this.field1246 = new int[4];
       this.field1251 = new int[4];
-      this.field1263 = new int[4];
+      this.hitsplatCycles = new int[4];
       this.field1262 = new int[4];
       this.field1250 = new int[4];
       this.combatInfoList = new CombatInfoList();
@@ -685,7 +688,7 @@ public abstract class Actor extends Renderable {
       this.field1276 = 200;
       this.field1278 = 0;
       this.field1242 = 32;
-      this.field1280 = 0;
+      this.queueSize = 0;
       this.pathX = new int[10];
       this.pathY = new int[10];
       this.field1283 = new byte[10];

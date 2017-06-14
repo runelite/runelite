@@ -54,7 +54,7 @@ public final class GroundObject {
    )
    static final void method2496(int var0, int var1) {
       if(Client.field930 == 2) {
-         class24.method201((Client.field933 - class61.baseX << 7) + Client.field936, Client.field937 + (Client.field1136 - class23.baseY << 7), Client.field979 * 2);
+         class24.method201((Client.hintArrowX - class61.baseX << 7) + Client.field936, Client.field937 + (Client.hintArrowY - class23.baseY << 7), Client.hintArrowType * 2);
          if(Client.field1020 > -1 && Client.gameCycle % 20 < 10) {
             class60.field732[0].method5097(Client.field1020 + var0 - 12, var1 + Client.field1163 - 28);
          }

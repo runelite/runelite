@@ -32,7 +32,8 @@ final class class2 implements class0 {
    @ObfuscatedGetter(
       intValue = -514844899
    )
-   protected static int field21;
+   @Export("canvasHeight")
+   protected static int canvasHeight;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -2031243995
@@ -207,7 +208,7 @@ final class class2 implements class0 {
                int var59;
                if(var9.contentType == 1337) {
                   if(!Client.field921 && !Client.isMenuOpen && var45) {
-                     if(Client.field1068 == 0 && !Client.field1071) {
+                     if(Client.itemSelectionState == 0 && !Client.field1071) {
                         Enum.addMenuEntry("Walk here", "", 23, 0, var16 - var12, var17 - var13);
                      }
 
@@ -232,10 +233,10 @@ final class class2 implements class0 {
                                  continue;
                               }
 
-                              if(Client.field1068 == 1) {
-                                 Enum.addMenuEntry("Use", Client.field988 + " " + "->" + " " + class60.method996('\uffff') + var50.name, 1, var22, var23, var24);
+                              if(Client.itemSelectionState == 1) {
+                                 Enum.addMenuEntry("Use", Client.selectedItemName + " " + "->" + " " + class60.method996('\uffff') + var50.name, 1, var22, var23, var24);
                               } else if(Client.field1071) {
-                                 if((class221.field2836 & 4) == 4) {
+                                 if((class221.spellTargetFlags & 4) == 4) {
                                     Enum.addMenuEntry(Client.field1074, Client.field1075 + " " + "->" + " " + class60.method996('\uffff') + var50.name, 2, var22, var23, var24);
                                  }
                               } else {
@@ -288,9 +289,9 @@ final class class2 implements class0 {
 
                               if(var52.composition.field3577 == 1 && (var52.x & 127) == 64 && (var52.y & 127) == 64) {
                                  for(var39 = 0; var39 < Client.field952; ++var39) {
-                                    var29 = Client.cachedNPCs[Client.field953[var39]];
+                                    var29 = Client.cachedNPCs[Client.npcIndices[var39]];
                                     if(var29 != null && var52 != var29 && var29.composition.field3577 == 1 && var52.x == var29.x && var29.y == var52.y) {
-                                       WorldMapType1.method263(var29.composition, Client.field953[var39], var23, var24);
+                                       WorldMapType1.method263(var29.composition, Client.npcIndices[var39], var23, var24);
                                     }
                                  }
 
@@ -316,9 +317,9 @@ final class class2 implements class0 {
 
                               if((var55.x & 127) == 64 && (var55.y & 127) == 64) {
                                  for(var39 = 0; var39 < Client.field952; ++var39) {
-                                    var29 = Client.cachedNPCs[Client.field953[var39]];
+                                    var29 = Client.cachedNPCs[Client.npcIndices[var39]];
                                     if(var29 != null && var29.composition.field3577 == 1 && var55.x == var29.x && var55.y == var29.y) {
-                                       WorldMapType1.method263(var29.composition, Client.field953[var39], var23, var24);
+                                       WorldMapType1.method263(var29.composition, Client.npcIndices[var39], var23, var24);
                                     }
                                  }
 
@@ -345,10 +346,10 @@ final class class2 implements class0 {
                               if(var57 != null) {
                                  for(Item var49 = (Item)var57.method3629(); var49 != null; var49 = (Item)var57.method3609()) {
                                     ItemComposition var53 = ItemComposition.getItemDefinition(var49.id);
-                                    if(Client.field1068 == 1) {
-                                       Enum.addMenuEntry("Use", Client.field988 + " " + "->" + " " + class60.method996(16748608) + var53.name, 16, var49.id, var23, var24);
+                                    if(Client.itemSelectionState == 1) {
+                                       Enum.addMenuEntry("Use", Client.selectedItemName + " " + "->" + " " + class60.method996(16748608) + var53.name, 16, var49.id, var23, var24);
                                     } else if(Client.field1071) {
-                                       if((class221.field2836 & 1) == 1) {
+                                       if((class221.spellTargetFlags & 1) == 1) {
                                           Enum.addMenuEntry(Client.field1074, Client.field1075 + " " + "->" + " " + class60.method996(16748608) + var53.name, 17, var49.id, var23, var24);
                                        }
                                     } else {
@@ -423,8 +424,8 @@ final class class2 implements class0 {
                         if(var9.field2655 == 2 && !Client.field1071) {
                            if(GameEngine.method844(class251.method4472(var9)) == 0) {
                               var21 = null;
-                           } else if(var9.field2780 != null && var9.field2780.trim().length() != 0) {
-                              var21 = var9.field2780;
+                           } else if(var9.selectedAction != null && var9.selectedAction.trim().length() != 0) {
+                              var21 = var9.selectedAction;
                            } else {
                               var21 = null;
                            }
@@ -464,15 +465,15 @@ final class class2 implements class0 {
 
                                  if(var19 >= var24 && var20 >= var25 && var19 < var24 + 32 && var20 < var25 + 32) {
                                     Client.field1031 = var35;
-                                    class76.field1204 = var9;
+                                    PendingSpawn.field1204 = var9;
                                     if(var9.itemIds[var35] > 0) {
                                        ItemComposition var40 = ItemComposition.getItemDefinition(var9.itemIds[var35] - 1);
-                                       if(Client.field1068 == 1 && XClanMember.method1126(class251.method4472(var9))) {
-                                          if(Frames.field2152 != var9.id || Client.field1090 != var35) {
-                                             Enum.addMenuEntry("Use", Client.field988 + " " + "->" + " " + class60.method996(16748608) + var40.name, 31, var40.id, var35, var9.id);
+                                       if(Client.itemSelectionState == 1 && XClanMember.method1126(class251.method4472(var9))) {
+                                          if(Frames.field2152 != var9.id || Client.selectedItemIndex != var35) {
+                                             Enum.addMenuEntry("Use", Client.selectedItemName + " " + "->" + " " + class60.method996(16748608) + var40.name, 31, var40.id, var35, var9.id);
                                           }
                                        } else if(Client.field1071 && XClanMember.method1126(class251.method4472(var9))) {
-                                          if((class221.field2836 & 16) == 16) {
+                                          if((class221.spellTargetFlags & 16) == 16) {
                                              Enum.addMenuEntry(Client.field1074, Client.field1075 + " " + "->" + " " + class60.method996(16748608) + var40.name, 32, var40.id, var35, var9.id);
                                           }
                                        } else {
@@ -577,7 +578,7 @@ final class class2 implements class0 {
                            if(Client.field1071) {
                               var22 = class251.method4472(var9);
                               var60 = (var22 >> 21 & 1) != 0;
-                              if(var60 && (class221.field2836 & 32) == 32) {
+                              if(var60 && (class221.spellTargetFlags & 32) == 32) {
                                  Enum.addMenuEntry(Client.field1074, Client.field1075 + " " + "->" + " " + var9.name, 58, 0, var9.index, var9.id);
                               }
                            } else {
@@ -590,8 +591,8 @@ final class class2 implements class0 {
 
                               if(GameEngine.method844(class251.method4472(var9)) == 0) {
                                  var21 = null;
-                              } else if(var9.field2780 != null && var9.field2780.trim().length() != 0) {
-                                 var21 = var9.field2780;
+                              } else if(var9.selectedAction != null && var9.selectedAction.trim().length() != 0) {
+                                 var21 = var9.selectedAction;
                               } else {
                                  var21 = null;
                               }
@@ -1137,7 +1138,7 @@ final class class2 implements class0 {
                }
             }
 
-            if(Client.field930 == 1 && Client.field953[var1 - var74] == Client.field931 && Client.gameCycle % 20 < 10) {
+            if(Client.field930 == 1 && Client.npcIndices[var1 - var74] == Client.field931 && Client.gameCycle % 20 < 10) {
                FileOnDisk.method2384(var0, var0.field1276 + 15);
                if(Client.field1020 > -1) {
                   class60.field732[0].method5097(Client.field1020 + var2 - 12, var3 + Client.field1163 - 28);
@@ -1161,7 +1162,7 @@ final class class2 implements class0 {
          }
 
          for(int var77 = 0; var77 < 4; ++var77) {
-            int var81 = var0.field1263[var77];
+            int var81 = var0.hitsplatCycles[var77];
             int var83 = var0.field1246[var77];
             class254 var87 = null;
             int var82 = 0;
@@ -1175,7 +1176,7 @@ final class class2 implements class0 {
                if(var87 != null && var87.field3417 != null) {
                   var87 = var87.method4507();
                   if(var87 == null) {
-                     var0.field1263[var77] = -1;
+                     var0.hitsplatCycles[var77] = -1;
                      continue;
                   }
                }
@@ -1194,7 +1195,7 @@ final class class2 implements class0 {
 
             if(var81 - var82 <= Client.gameCycle) {
                if(var87 == null) {
-                  var0.field1263[var77] = -1;
+                  var0.hitsplatCycles[var77] = -1;
                } else {
                   FileOnDisk.method2384(var0, var0.field1276 / 2);
                   if(Client.field1020 > -1) {
@@ -1435,7 +1436,7 @@ final class class2 implements class0 {
                         }
                      }
 
-                     var61 = var0.field1263[var77] - Client.gameCycle;
+                     var61 = var0.hitsplatCycles[var77] - Client.gameCycle;
                      int var62 = var87.field3431 - var87.field3431 * var61 / var87.field3426;
                      int var63 = var61 * var87.field3432 / var87.field3426 + -var87.field3432;
                      int var64 = var62 + (Client.field1020 + var2 - (var50 >> 1));

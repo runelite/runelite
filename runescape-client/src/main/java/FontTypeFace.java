@@ -540,16 +540,16 @@ public abstract class FontTypeFace extends Rasterizer2D {
       int var8 = 0;
       int var9 = 0;
       int var10;
-      if(var2 < Rasterizer2D.field3755) {
-         var10 = Rasterizer2D.field3755 - var2;
+      if(var2 < Rasterizer2D.drawingAreaTop) {
+         var10 = Rasterizer2D.drawingAreaTop - var2;
          var4 -= var10;
-         var2 = Rasterizer2D.field3755;
+         var2 = Rasterizer2D.drawingAreaTop;
          var9 += var10 * var3;
          var6 += var10 * Rasterizer2D.graphicsPixelsWidth;
       }
 
-      if(var2 + var4 > Rasterizer2D.field3756) {
-         var4 -= var2 + var4 - Rasterizer2D.field3756;
+      if(var2 + var4 > Rasterizer2D.drawingAreaRight) {
+         var4 -= var2 + var4 - Rasterizer2D.drawingAreaRight;
       }
 
       if(var1 < Rasterizer2D.field3754) {
@@ -562,8 +562,8 @@ public abstract class FontTypeFace extends Rasterizer2D {
          var7 += var10;
       }
 
-      if(var1 + var3 > Rasterizer2D.field3758) {
-         var10 = var1 + var3 - Rasterizer2D.field3758;
+      if(var1 + var3 > Rasterizer2D.drawingAreaBottom) {
+         var10 = var1 + var3 - Rasterizer2D.drawingAreaBottom;
          var3 -= var10;
          var8 += var10;
          var7 += var10;
@@ -876,16 +876,16 @@ public abstract class FontTypeFace extends Rasterizer2D {
       int var9 = 0;
       int var10 = 0;
       int var11;
-      if(var2 < Rasterizer2D.field3755) {
-         var11 = Rasterizer2D.field3755 - var2;
+      if(var2 < Rasterizer2D.drawingAreaTop) {
+         var11 = Rasterizer2D.drawingAreaTop - var2;
          var4 -= var11;
-         var2 = Rasterizer2D.field3755;
+         var2 = Rasterizer2D.drawingAreaTop;
          var10 += var11 * var3;
          var7 += var11 * Rasterizer2D.graphicsPixelsWidth;
       }
 
-      if(var2 + var4 > Rasterizer2D.field3756) {
-         var4 -= var2 + var4 - Rasterizer2D.field3756;
+      if(var2 + var4 > Rasterizer2D.drawingAreaRight) {
+         var4 -= var2 + var4 - Rasterizer2D.drawingAreaRight;
       }
 
       if(var1 < Rasterizer2D.field3754) {
@@ -898,8 +898,8 @@ public abstract class FontTypeFace extends Rasterizer2D {
          var8 += var11;
       }
 
-      if(var1 + var3 > Rasterizer2D.field3758) {
-         var11 = var1 + var3 - Rasterizer2D.field3758;
+      if(var1 + var3 > Rasterizer2D.drawingAreaBottom) {
+         var11 = var1 + var3 - Rasterizer2D.drawingAreaBottom;
          var3 -= var11;
          var9 += var11;
          var8 += var11;

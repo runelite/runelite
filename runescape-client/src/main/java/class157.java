@@ -36,11 +36,11 @@ public class class157 {
       byte var2 = 4;
       int var3 = var2 + 6;
       int var4 = var2 + 6;
-      int var5 = WidgetNode.field817.method4794(var0, 250);
-      int var6 = WidgetNode.field817.method4783(var0, 250) * 13;
+      int var5 = WidgetNode.font_p12full.method4794(var0, 250);
+      int var6 = WidgetNode.font_p12full.method4783(var0, 250) * 13;
       Rasterizer2D.method5040(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6, 0);
       Rasterizer2D.method4976(var3 - var2, var4 - var2, var2 + var2 + var5, var2 + var6 + var2, 16777215);
-      WidgetNode.field817.method4792(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
+      WidgetNode.font_p12full.method4792(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
       class69.method1078(var3 - var2, var4 - var2, var2 + var5 + var2, var6 + var2 + var2);
       if(var1) {
          class47.field601.vmethod5052(0, 0);

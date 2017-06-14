@@ -440,7 +440,7 @@ public final class Player extends Actor {
             Model var4;
             Model[] var5;
             if(!this.field895 && super.graphic != -1 && super.field1264 != -1) {
-               var4 = class100.method1840(super.graphic).method4358(super.field1264);
+               var4 = DynamicObject.method1840(super.graphic).method4358(super.field1264);
                if(var4 != null) {
                   var4.method2519(0, -super.field1279, 0);
                   var5 = new Model[]{var3, var4};
@@ -456,25 +456,25 @@ public final class Player extends Actor {
                if(Client.gameCycle >= this.totalLevel2 && Client.gameCycle < this.field879) {
                   var4 = this.model;
                   var4.method2519(this.field880 - super.x, this.field881 - this.field877, this.field882 - super.y);
-                  if(super.field1252 == 512) {
+                  if(super.orientation == 512) {
                      var4.method2522();
                      var4.method2522();
                      var4.method2522();
-                  } else if(super.field1252 == 1024) {
+                  } else if(super.orientation == 1024) {
                      var4.method2522();
                      var4.method2522();
-                  } else if(super.field1252 == 1536) {
+                  } else if(super.orientation == 1536) {
                      var4.method2522();
                   }
 
                   var5 = new Model[]{var3, var4};
                   var3 = new Model(var5, 2);
-                  if(super.field1252 == 512) {
+                  if(super.orientation == 512) {
                      var4.method2522();
-                  } else if(super.field1252 == 1024) {
+                  } else if(super.orientation == 1024) {
                      var4.method2522();
                      var4.method2522();
-                  } else if(super.field1252 == 1536) {
+                  } else if(super.orientation == 1536) {
                      var4.method2522();
                      var4.method2522();
                      var4.method2522();
@@ -659,11 +659,11 @@ public final class Player extends Actor {
       garbageValue = "-1264721382"
    )
    final void method1103(int var1, int var2, byte var3) {
-      if(super.field1280 < 9) {
-         ++super.field1280;
+      if(super.queueSize < 9) {
+         ++super.queueSize;
       }
 
-      for(int var4 = super.field1280; var4 > 0; --var4) {
+      for(int var4 = super.queueSize; var4 > 0; --var4) {
          super.pathX[var4] = super.pathX[var4 - 1];
          super.pathY[var4] = super.pathY[var4 - 1];
          super.field1283[var4] = super.field1283[var4 - 1];
@@ -766,7 +766,7 @@ public final class Player extends Actor {
       this.combatLevel = var1.readUnsignedByte();
       this.totalLevel = var1.readUnsignedShort();
       this.hidden = var1.readUnsignedByte() == 1;
-      if(Client.field915 == 0 && Client.field1132 >= 2) {
+      if(Client.field915 == 0 && Client.rights >= 2) {
          this.hidden = false;
       }
 
@@ -783,7 +783,7 @@ public final class Player extends Actor {
       garbageValue = "2063037693"
    )
    int method1111() {
-      return this.composition != null && this.composition.field2631 != -1?class217.getNpcDefinition(this.composition.field2631).field3577:1;
+      return this.composition != null && this.composition.transformedNpcId != -1?class217.getNpcDefinition(this.composition.transformedNpcId).field3577:1;
    }
 
    @ObfuscatedName("n")
@@ -810,7 +810,7 @@ public final class Player extends Actor {
       garbageValue = "-1141960141"
    )
    void method1123(int var1, int var2) {
-      super.field1280 = 0;
+      super.queueSize = 0;
       super.field1285 = 0;
       super.field1258 = 0;
       super.pathX[0] = var1;

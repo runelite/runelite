@@ -20,29 +20,29 @@ public class class267 {
       signature = "(Lclass76;B)V",
       garbageValue = "0"
    )
-   static final void method4888(class76 var0) {
+   static final void method4888(PendingSpawn var0) {
       int var1 = 0;
       int var2 = -1;
       int var3 = 0;
       int var4 = 0;
-      if(var0.field1199 == 0) {
-         var1 = class61.region.method2701(var0.field1203, var0.field1200, var0.field1201);
+      if(var0.type == 0) {
+         var1 = class61.region.method2701(var0.level, var0.x, var0.y);
       }
 
-      if(var0.field1199 == 1) {
-         var1 = class61.region.method2702(var0.field1203, var0.field1200, var0.field1201);
+      if(var0.type == 1) {
+         var1 = class61.region.method2702(var0.level, var0.x, var0.y);
       }
 
-      if(var0.field1199 == 2) {
-         var1 = class61.region.method2703(var0.field1203, var0.field1200, var0.field1201);
+      if(var0.type == 2) {
+         var1 = class61.region.method2703(var0.level, var0.x, var0.y);
       }
 
-      if(var0.field1199 == 3) {
-         var1 = class61.region.method2704(var0.field1203, var0.field1200, var0.field1201);
+      if(var0.type == 3) {
+         var1 = class61.region.method2704(var0.level, var0.x, var0.y);
       }
 
       if(var1 != 0) {
-         int var5 = class61.region.method2770(var0.field1203, var0.field1200, var0.field1201, var1);
+         int var5 = class61.region.method2770(var0.level, var0.x, var0.y, var1);
          var2 = var1 >> 14 & 32767;
          var3 = var5 & 31;
          var4 = var5 >> 6 & 3;

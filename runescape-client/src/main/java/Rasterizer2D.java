@@ -15,21 +15,24 @@ public class Rasterizer2D extends CacheableNode {
    @ObfuscatedName("aw")
    public static int field3754;
    @ObfuscatedName("ad")
-   public static int field3755;
+   @Export("drawingAreaTop")
+   public static int drawingAreaTop;
    @ObfuscatedName("aa")
-   public static int field3756;
+   @Export("drawingAreaRight")
+   public static int drawingAreaRight;
    @ObfuscatedName("ao")
    @Export("graphicsPixelsHeight")
    public static int graphicsPixelsHeight;
    @ObfuscatedName("an")
-   protected static int field3758;
+   @Export("drawingAreaBottom")
+   protected static int drawingAreaBottom;
 
    @ObfuscatedName("dq")
    public static void method4960() {
       field3754 = 0;
-      field3755 = 0;
-      field3758 = graphicsPixelsWidth;
-      field3756 = graphicsPixelsHeight;
+      drawingAreaTop = 0;
+      drawingAreaBottom = graphicsPixelsWidth;
+      drawingAreaRight = graphicsPixelsHeight;
    }
 
    @ObfuscatedName("dn")
@@ -51,9 +54,9 @@ public class Rasterizer2D extends CacheableNode {
       }
 
       field3754 = var0;
-      field3755 = var1;
-      field3758 = var2;
-      field3756 = var3;
+      drawingAreaTop = var1;
+      drawingAreaBottom = var2;
+      drawingAreaRight = var3;
    }
 
    @ObfuscatedName("dd")
@@ -62,16 +65,16 @@ public class Rasterizer2D extends CacheableNode {
          field3754 = var0;
       }
 
-      if(field3755 < var1) {
-         field3755 = var1;
+      if(drawingAreaTop < var1) {
+         drawingAreaTop = var1;
       }
 
-      if(field3758 > var2) {
-         field3758 = var2;
+      if(drawingAreaBottom > var2) {
+         drawingAreaBottom = var2;
       }
 
-      if(field3756 > var3) {
-         field3756 = var3;
+      if(drawingAreaRight > var3) {
+         drawingAreaRight = var3;
       }
 
    }
@@ -79,9 +82,9 @@ public class Rasterizer2D extends CacheableNode {
    @ObfuscatedName("dc")
    public static void method4963(int[] var0) {
       var0[0] = field3754;
-      var0[1] = field3755;
-      var0[2] = field3758;
-      var0[3] = field3756;
+      var0[1] = drawingAreaTop;
+      var0[2] = drawingAreaBottom;
+      var0[3] = drawingAreaRight;
    }
 
    @ObfuscatedName("dm")
@@ -115,13 +118,13 @@ public class Rasterizer2D extends CacheableNode {
          }
 
          int var4 = var1 - var2;
-         if(var4 < field3755) {
-            var4 = field3755;
+         if(var4 < drawingAreaTop) {
+            var4 = drawingAreaTop;
          }
 
          int var5 = var1 + var2 + 1;
-         if(var5 > field3756) {
-            var5 = field3756;
+         if(var5 > drawingAreaRight) {
+            var5 = drawingAreaRight;
          }
 
          int var6 = var4;
@@ -150,8 +153,8 @@ public class Rasterizer2D extends CacheableNode {
             }
 
             var13 = var0 + var8;
-            if(var13 > field3758) {
-               var13 = field3758;
+            if(var13 > drawingAreaBottom) {
+               var13 = drawingAreaBottom;
             }
 
             var14 = var12 + var6 * graphicsPixelsWidth;
@@ -182,8 +185,8 @@ public class Rasterizer2D extends CacheableNode {
             }
 
             var13 = var0 + var8;
-            if(var13 > field3758 - 1) {
-               var13 = field3758 - 1;
+            if(var13 > drawingAreaBottom - 1) {
+               var13 = drawingAreaBottom - 1;
             }
 
             var14 = var12 + var6 * graphicsPixelsWidth;
@@ -214,13 +217,13 @@ public class Rasterizer2D extends CacheableNode {
             int var7 = (var3 >> 8 & 255) * var4;
             int var8 = (var3 & 255) * var4;
             int var12 = var1 - var2;
-            if(var12 < field3755) {
-               var12 = field3755;
+            if(var12 < drawingAreaTop) {
+               var12 = drawingAreaTop;
             }
 
             int var13 = var1 + var2 + 1;
-            if(var13 > field3756) {
-               var13 = field3756;
+            if(var13 > drawingAreaRight) {
+               var13 = drawingAreaRight;
             }
 
             int var14 = var12;
@@ -253,8 +256,8 @@ public class Rasterizer2D extends CacheableNode {
                }
 
                var21 = var0 + var16;
-               if(var21 > field3758) {
-                  var21 = field3758;
+               if(var21 > drawingAreaBottom) {
+                  var21 = drawingAreaBottom;
                }
 
                var22 = var20 + var14 * graphicsPixelsWidth;
@@ -289,8 +292,8 @@ public class Rasterizer2D extends CacheableNode {
                }
 
                var21 = var0 + var16;
-               if(var21 > field3758 - 1) {
-                  var21 = field3758 - 1;
+               if(var21 > drawingAreaBottom - 1) {
+                  var21 = drawingAreaBottom - 1;
                }
 
                var22 = var20 + var14 * graphicsPixelsWidth;
@@ -350,13 +353,13 @@ public class Rasterizer2D extends CacheableNode {
                var0 = field3754;
             }
 
-            if(var2 >= field3758) {
-               var2 = field3758 - 1;
+            if(var2 >= drawingAreaBottom) {
+               var2 = drawingAreaBottom - 1;
             }
 
             while(var0 <= var2) {
                var6 = var1 >> 16;
-               if(var6 >= field3755 && var6 < field3756) {
+               if(var6 >= drawingAreaTop && var6 < drawingAreaRight) {
                   graphicsPixels[var0 + var6 * graphicsPixelsWidth] = var4;
                }
 
@@ -369,18 +372,18 @@ public class Rasterizer2D extends CacheableNode {
             var2 <<= 16;
             var5 = (int)Math.floor((double)var2 / (double)var3 + 0.5D);
             var3 += var1;
-            if(var1 < field3755) {
-               var0 += var5 * (field3755 - var1);
-               var1 = field3755;
+            if(var1 < drawingAreaTop) {
+               var0 += var5 * (drawingAreaTop - var1);
+               var1 = drawingAreaTop;
             }
 
-            if(var3 >= field3756) {
-               var3 = field3756 - 1;
+            if(var3 >= drawingAreaRight) {
+               var3 = drawingAreaRight - 1;
             }
 
             while(var1 <= var3) {
                var6 = var0 >> 16;
-               if(var6 >= field3754 && var6 < field3758) {
+               if(var6 >= field3754 && var6 < drawingAreaBottom) {
                   graphicsPixels[var6 + var1 * graphicsPixelsWidth] = var4;
                }
 
@@ -404,18 +407,18 @@ public class Rasterizer2D extends CacheableNode {
          var0 = field3754;
       }
 
-      if(var1 < field3755) {
-         var8 += (field3755 - var1) * var9;
-         var3 -= field3755 - var1;
-         var1 = field3755;
+      if(var1 < drawingAreaTop) {
+         var8 += (drawingAreaTop - var1) * var9;
+         var3 -= drawingAreaTop - var1;
+         var1 = drawingAreaTop;
       }
 
-      if(var0 + var2 > field3758) {
-         var2 = field3758 - var0;
+      if(var0 + var2 > drawingAreaBottom) {
+         var2 = drawingAreaBottom - var0;
       }
 
-      if(var1 + var3 > field3756) {
-         var3 = field3756 - var1;
+      if(var1 + var3 > drawingAreaRight) {
+         var3 = drawingAreaRight - var1;
       }
 
       int var13 = graphicsPixelsWidth - var2;
@@ -467,18 +470,18 @@ public class Rasterizer2D extends CacheableNode {
          var0 = field3754;
       }
 
-      if(var1 < field3755) {
-         var8 += (field3755 - var1) * var9;
-         var3 -= field3755 - var1;
-         var1 = field3755;
+      if(var1 < drawingAreaTop) {
+         var8 += (drawingAreaTop - var1) * var9;
+         var3 -= drawingAreaTop - var1;
+         var1 = drawingAreaTop;
       }
 
-      if(var0 + var2 > field3758) {
-         var2 = field3758 - var0;
+      if(var0 + var2 > drawingAreaBottom) {
+         var2 = drawingAreaBottom - var0;
       }
 
-      if(var1 + var3 > field3756) {
-         var3 = field3756 - var1;
+      if(var1 + var3 > drawingAreaRight) {
+         var3 = drawingAreaRight - var1;
       }
 
       int var12 = var4 >> 16;
@@ -545,18 +548,18 @@ public class Rasterizer2D extends CacheableNode {
          var0 = field3754;
       }
 
-      if(var1 < field3755) {
-         var8 += (field3755 - var1) * var9;
-         var3 -= field3755 - var1;
-         var1 = field3755;
+      if(var1 < drawingAreaTop) {
+         var8 += (drawingAreaTop - var1) * var9;
+         var3 -= drawingAreaTop - var1;
+         var1 = drawingAreaTop;
       }
 
-      if(var0 + var2 > field3758) {
-         var2 = field3758 - var0;
+      if(var0 + var2 > drawingAreaBottom) {
+         var2 = drawingAreaBottom - var0;
       }
 
-      if(var1 + var3 > field3756) {
-         var3 = field3756 - var1;
+      if(var1 + var3 > drawingAreaRight) {
+         var3 = drawingAreaRight - var1;
       }
 
       int var12 = var4 & 16711680;
@@ -610,14 +613,14 @@ public class Rasterizer2D extends CacheableNode {
 
    @ObfuscatedName("dr")
    public static void method4973(int var0, int var1, int var2, int var3) {
-      if(var1 >= field3755 && var1 < field3756) {
+      if(var1 >= drawingAreaTop && var1 < drawingAreaRight) {
          if(var0 < field3754) {
             var2 -= field3754 - var0;
             var0 = field3754;
          }
 
-         if(var0 + var2 > field3758) {
-            var2 = field3758 - var0;
+         if(var0 + var2 > drawingAreaBottom) {
+            var2 = drawingAreaBottom - var0;
          }
 
          int var4 = var0 + var1 * graphicsPixelsWidth;
@@ -642,18 +645,18 @@ public class Rasterizer2D extends CacheableNode {
          var0 = field3754;
       }
 
-      if(var1 < field3755) {
-         var6 += (field3755 - var1) * var7;
-         var3 -= field3755 - var1;
-         var1 = field3755;
+      if(var1 < drawingAreaTop) {
+         var6 += (drawingAreaTop - var1) * var7;
+         var3 -= drawingAreaTop - var1;
+         var1 = drawingAreaTop;
       }
 
-      if(var0 + var2 > field3758) {
-         var2 = field3758 - var0;
+      if(var0 + var2 > drawingAreaBottom) {
+         var2 = drawingAreaBottom - var0;
       }
 
-      if(var1 + var3 > field3756) {
-         var3 = field3756 - var1;
+      if(var1 + var3 > drawingAreaRight) {
+         var3 = drawingAreaRight - var1;
       }
 
       int var8 = graphicsPixelsWidth - var2;
@@ -684,14 +687,14 @@ public class Rasterizer2D extends CacheableNode {
 
    @ObfuscatedName("db")
    public static void method4980(int var0, int var1, int var2, int var3) {
-      if(var0 >= field3754 && var0 < field3758) {
-         if(var1 < field3755) {
-            var2 -= field3755 - var1;
-            var1 = field3755;
+      if(var0 >= field3754 && var0 < drawingAreaBottom) {
+         if(var1 < drawingAreaTop) {
+            var2 -= drawingAreaTop - var1;
+            var1 = drawingAreaTop;
          }
 
-         if(var1 + var2 > field3756) {
-            var2 = field3756 - var1;
+         if(var1 + var2 > drawingAreaRight) {
+            var2 = drawingAreaRight - var1;
          }
 
          int var4 = var0 + var1 * graphicsPixelsWidth;
@@ -705,7 +708,7 @@ public class Rasterizer2D extends CacheableNode {
 
    @ObfuscatedName("em")
    static void method4983(int var0, int var1, int var2) {
-      if(var0 >= field3754 && var1 >= field3755 && var0 < field3758 && var1 < field3756) {
+      if(var0 >= field3754 && var1 >= drawingAreaTop && var0 < drawingAreaBottom && var1 < drawingAreaRight) {
          graphicsPixels[var0 + var1 * graphicsPixelsWidth] = var2;
       }
    }
@@ -727,22 +730,22 @@ public class Rasterizer2D extends CacheableNode {
    }
 
    static {
-      field3755 = 0;
-      field3756 = 0;
+      drawingAreaTop = 0;
+      drawingAreaRight = 0;
       field3754 = 0;
-      field3758 = 0;
+      drawingAreaBottom = 0;
    }
 
    @ObfuscatedName("du")
    static void method4990(int var0, int var1, int var2, int var3, int var4) {
-      if(var1 >= field3755 && var1 < field3756) {
+      if(var1 >= drawingAreaTop && var1 < drawingAreaRight) {
          if(var0 < field3754) {
             var2 -= field3754 - var0;
             var0 = field3754;
          }
 
-         if(var0 + var2 > field3758) {
-            var2 = field3758 - var0;
+         if(var0 + var2 > drawingAreaBottom) {
+            var2 = drawingAreaBottom - var0;
          }
 
          int var5 = 256 - var4;
@@ -773,14 +776,14 @@ public class Rasterizer2D extends CacheableNode {
 
    @ObfuscatedName("de")
    static void method5003(int var0, int var1, int var2, int var3, int var4) {
-      if(var0 >= field3754 && var0 < field3758) {
-         if(var1 < field3755) {
-            var2 -= field3755 - var1;
-            var1 = field3755;
+      if(var0 >= field3754 && var0 < drawingAreaBottom) {
+         if(var1 < drawingAreaTop) {
+            var2 -= drawingAreaTop - var1;
+            var1 = drawingAreaTop;
          }
 
-         if(var1 + var2 > field3756) {
-            var2 = field3756 - var1;
+         if(var1 + var2 > drawingAreaRight) {
+            var2 = drawingAreaRight - var1;
          }
 
          int var5 = 256 - var4;
@@ -892,18 +895,18 @@ public class Rasterizer2D extends CacheableNode {
          var0 = field3754;
       }
 
-      if(var1 < field3755) {
-         var8 += (field3755 - var1) * var9;
-         var3 -= field3755 - var1;
-         var1 = field3755;
+      if(var1 < drawingAreaTop) {
+         var8 += (drawingAreaTop - var1) * var9;
+         var3 -= drawingAreaTop - var1;
+         var1 = drawingAreaTop;
       }
 
-      if(var0 + var2 > field3758) {
-         var2 = field3758 - var0;
+      if(var0 + var2 > drawingAreaBottom) {
+         var2 = drawingAreaBottom - var0;
       }
 
-      if(var1 + var3 > field3756) {
-         var3 = field3756 - var1;
+      if(var1 + var3 > drawingAreaRight) {
+         var3 = drawingAreaRight - var1;
       }
 
       int var12 = var4 & 16711680;
@@ -962,17 +965,17 @@ public class Rasterizer2D extends CacheableNode {
          var0 = field3754;
       }
 
-      if(var1 < field3755) {
-         var3 -= field3755 - var1;
-         var1 = field3755;
+      if(var1 < drawingAreaTop) {
+         var3 -= drawingAreaTop - var1;
+         var1 = drawingAreaTop;
       }
 
-      if(var0 + var2 > field3758) {
-         var2 = field3758 - var0;
+      if(var0 + var2 > drawingAreaBottom) {
+         var2 = drawingAreaBottom - var0;
       }
 
-      if(var1 + var3 > field3756) {
-         var3 = field3756 - var1;
+      if(var1 + var3 > drawingAreaRight) {
+         var3 = drawingAreaRight - var1;
       }
 
       var4 = ((var4 & 16711935) * var5 >> 8 & 16711935) + ((var4 & '\uff00') * var5 >> 8 & '\uff00');
@@ -1010,17 +1013,17 @@ public class Rasterizer2D extends CacheableNode {
          var0 = field3754;
       }
 
-      if(var1 < field3755) {
-         var3 -= field3755 - var1;
-         var1 = field3755;
+      if(var1 < drawingAreaTop) {
+         var3 -= drawingAreaTop - var1;
+         var1 = drawingAreaTop;
       }
 
-      if(var0 + var2 > field3758) {
-         var2 = field3758 - var0;
+      if(var0 + var2 > drawingAreaBottom) {
+         var2 = drawingAreaBottom - var0;
       }
 
-      if(var1 + var3 > field3756) {
-         var3 = field3756 - var1;
+      if(var1 + var3 > drawingAreaRight) {
+         var3 = drawingAreaRight - var1;
       }
 
       int var5 = graphicsPixelsWidth - var2;
@@ -1039,8 +1042,8 @@ public class Rasterizer2D extends CacheableNode {
    @ObfuscatedName("dk")
    public static void method5048(int[] var0) {
       field3754 = var0[0];
-      field3755 = var0[1];
-      field3758 = var0[2];
-      field3756 = var0[3];
+      drawingAreaTop = var0[1];
+      drawingAreaBottom = var0[2];
+      drawingAreaRight = var0[3];
    }
 }

@@ -475,7 +475,8 @@ public class Widget extends Node {
    )
    public int field2764;
    @ObfuscatedName("ek")
-   public int[] field2765;
+   @Export("tableActions")
+   public int[] tableActions;
    @ObfuscatedName("ee")
    public int[] field2766;
    @ObfuscatedName("cm")
@@ -532,7 +533,8 @@ public class Widget extends Node {
    )
    public int field2779;
    @ObfuscatedName("ch")
-   public String field2780;
+   @Export("selectedAction")
+   public String selectedAction;
    @ObfuscatedName("eb")
    @ObfuscatedGetter(
       intValue = 1501205965
@@ -599,11 +601,11 @@ public class Widget extends Node {
       int var2 = var1.readUnsignedByte();
       int var3;
       if(var2 > 0) {
-         this.field2765 = new int[var2];
+         this.tableActions = new int[var2];
          this.field2766 = new int[var2];
 
          for(var3 = 0; var3 < var2; ++var3) {
-            this.field2765[var3] = var1.readUnsignedByte();
+            this.tableActions[var3] = var1.readUnsignedByte();
             this.field2766[var3] = var1.readUnsignedShort();
          }
       }
@@ -788,7 +790,7 @@ public class Widget extends Node {
       }
 
       if(this.field2655 == 2 || this.type == 2) {
-         this.field2780 = var1.readString();
+         this.selectedAction = var1.readString();
          this.field2727 = var1.readString();
          var4 = var1.readUnsignedShort() & 63;
          this.field2724 |= var4 << 11;
@@ -942,7 +944,7 @@ public class Widget extends Node {
       this.field2728 = var1.readUnsignedByte();
       this.field2729 = var1.readUnsignedByte();
       this.field2730 = var1.readUnsignedByte() == 1;
-      this.field2780 = var1.readString();
+      this.selectedAction = var1.readString();
       this.field2733 = this.method4045(var1);
       this.field2738 = this.method4045(var1);
       this.field2755 = this.method4045(var1);
@@ -1070,7 +1072,7 @@ public class Widget extends Node {
                   return null;
                }
 
-               var7 = var8.method2437(64, 768, -50, -10, -50);
+               var7 = var8.light(64, 768, -50, -10, -50);
             }
 
             if(var5 == 2) {
@@ -1080,7 +1082,7 @@ public class Widget extends Node {
                   return null;
                }
 
-               var7 = var8.method2437(64, 768, -50, -10, -50);
+               var7 = var8.light(64, 768, -50, -10, -50);
             }
 
             if(var5 == 3) {
@@ -1094,7 +1096,7 @@ public class Widget extends Node {
                   return null;
                }
 
-               var7 = var8.method2437(64, 768, -50, -10, -50);
+               var7 = var8.light(64, 768, -50, -10, -50);
             }
 
             if(var5 == 4) {
@@ -1105,7 +1107,7 @@ public class Widget extends Node {
                   return null;
                }
 
-               var7 = var8.method2437(var9.ambient + 64, var9.contrast + 768, -50, -10, -50);
+               var7 = var8.light(var9.ambient + 64, var9.contrast + 768, -50, -10, -50);
             }
 
             field2647.put(var7, (long)((var5 << 16) + var6));
@@ -1285,7 +1287,7 @@ public class Widget extends Node {
       this.field2728 = 0;
       this.field2729 = 0;
       this.field2730 = false;
-      this.field2780 = "";
+      this.selectedAction = "";
       this.field2732 = false;
       this.field2657 = -1;
       this.field2727 = "";

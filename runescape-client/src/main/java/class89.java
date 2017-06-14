@@ -61,7 +61,7 @@ public class class89 {
                continue;
             }
          } else {
-            var9 = Client.cachedNPCs[Client.field953[var8 - var6]];
+            var9 = Client.cachedNPCs[Client.npcIndices[var8 - var6]];
          }
 
          class2.method7((Actor)var9, var8, var0, var1, var2, var3);

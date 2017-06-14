@@ -22,7 +22,7 @@ public class class150 extends class158 {
          var5 = var3;
       }
 
-      class100.method1842(var5 / 1000000L);
+      DynamicObject.method1842(var5 / 1000000L);
       long var7 = System.nanoTime();
 
       int var9;

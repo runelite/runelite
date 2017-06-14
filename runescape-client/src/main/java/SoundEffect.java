@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -5,32 +6,35 @@ import net.runelite.mapping.ObfuscatedName;
 @Implements("SoundEffect")
 public class SoundEffect {
    @ObfuscatedName("p")
-   SoundEffect1[] field1575;
+   @Export("instruments")
+   AudioInstrument[] instruments;
    @ObfuscatedName("j")
-   int field1576;
+   @Export("end")
+   int end;
    @ObfuscatedName("i")
-   int field1577;
+   @Export("start")
+   int start;
 
    SoundEffect(Buffer var1) {
-      this.field1575 = new SoundEffect1[10];
+      this.instruments = new AudioInstrument[10];
 
       for(int var2 = 0; var2 < 10; ++var2) {
          int var3 = var1.readUnsignedByte();
          if(var3 != 0) {
             --var1.offset;
-            this.field1575[var2] = new SoundEffect1();
-            this.field1575[var2].method2325(var1);
+            this.instruments[var2] = new AudioInstrument();
+            this.instruments[var2].method2325(var1);
          }
       }
 
-      this.field1577 = var1.readUnsignedShort();
-      this.field1576 = var1.readUnsignedShort();
+      this.start = var1.readUnsignedShort();
+      this.end = var1.readUnsignedShort();
    }
 
    @ObfuscatedName("p")
    public class107 method1920() {
       byte[] var1 = this.method1932();
-      return new class107(22050, var1, this.field1577 * 22050 / 1000, this.field1576 * 22050 / 1000);
+      return new class107(22050, var1, this.start * 22050 / 1000, this.end * 22050 / 1000);
    }
 
    @ObfuscatedName("i")
@@ -39,25 +43,25 @@ public class SoundEffect {
 
       int var2;
       for(var2 = 0; var2 < 10; ++var2) {
-         if(this.field1575[var2] != null && this.field1575[var2].field1747 / 20 < var1) {
-            var1 = this.field1575[var2].field1747 / 20;
+         if(this.instruments[var2] != null && this.instruments[var2].field1747 / 20 < var1) {
+            var1 = this.instruments[var2].field1747 / 20;
          }
       }
 
-      if(this.field1577 < this.field1576 && this.field1577 / 20 < var1) {
-         var1 = this.field1577 / 20;
+      if(this.start < this.end && this.start / 20 < var1) {
+         var1 = this.start / 20;
       }
 
       if(var1 != 9999999 && var1 != 0) {
          for(var2 = 0; var2 < 10; ++var2) {
-            if(this.field1575[var2] != null) {
-               this.field1575[var2].field1747 -= var1 * 20;
+            if(this.instruments[var2] != null) {
+               this.instruments[var2].field1747 -= var1 * 20;
             }
          }
 
-         if(this.field1577 < this.field1576) {
-            this.field1577 -= var1 * 20;
-            this.field1576 -= var1 * 20;
+         if(this.start < this.end) {
+            this.start -= var1 * 20;
+            this.end -= var1 * 20;
          }
 
          return var1;
@@ -78,8 +82,8 @@ public class SoundEffect {
 
       int var2;
       for(var2 = 0; var2 < 10; ++var2) {
-         if(this.field1575[var2] != null && this.field1575[var2].field1746 + this.field1575[var2].field1747 > var1) {
-            var1 = this.field1575[var2].field1746 + this.field1575[var2].field1747;
+         if(this.instruments[var2] != null && this.instruments[var2].field1746 + this.instruments[var2].field1747 > var1) {
+            var1 = this.instruments[var2].field1746 + this.instruments[var2].field1747;
          }
       }
 
@@ -90,10 +94,10 @@ public class SoundEffect {
          byte[] var3 = new byte[var2];
 
          for(int var4 = 0; var4 < 10; ++var4) {
-            if(this.field1575[var4] != null) {
-               int var5 = this.field1575[var4].field1746 * 22050 / 1000;
-               int var6 = this.field1575[var4].field1747 * 22050 / 1000;
-               int[] var7 = this.field1575[var4].method2322(var5, this.field1575[var4].field1746);
+            if(this.instruments[var4] != null) {
+               int var5 = this.instruments[var4].field1746 * 22050 / 1000;
+               int var6 = this.instruments[var4].field1747 * 22050 / 1000;
+               int[] var7 = this.instruments[var4].method2322(var5, this.instruments[var4].field1746);
 
                for(int var8 = 0; var8 < var5; ++var8) {
                   int var9 = var3[var8 + var6] + (var7[var8] >> 8);

@@ -192,8 +192,8 @@ public class class83 {
       garbageValue = "-1130539200"
    )
    static final void method1650(class66 var0) {
-      if(class168.localPlayer.x >> 7 == Client.flagX && class168.localPlayer.y >> 7 == Client.flagY) {
-         Client.flagX = 0;
+      if(class168.localPlayer.x >> 7 == Client.detinationX && class168.localPlayer.y >> 7 == Client.destinationY) {
+         Client.detinationX = 0;
       }
 
       int var1 = class96.field1499;

@@ -57,7 +57,7 @@ public class class136 extends Rasterizer2D {
 
    @ObfuscatedName("n")
    public static final void method2594() {
-      setRasterClipping(Rasterizer2D.field3754, Rasterizer2D.field3755, Rasterizer2D.field3758, Rasterizer2D.field3756);
+      setRasterClipping(Rasterizer2D.field3754, Rasterizer2D.drawingAreaTop, Rasterizer2D.drawingAreaBottom, Rasterizer2D.drawingAreaRight);
    }
 
    @ObfuscatedName("p")

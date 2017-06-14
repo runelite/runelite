@@ -52,7 +52,7 @@ public class class71 implements Runnable {
    }
 
    public void run() {
-      for(; this.field849; class100.method1842(50L)) {
+      for(; this.field849; DynamicObject.method1842(50L)) {
          Object var1 = this.field848;
          synchronized(this.field848) {
             if(this.field844 < 500) {

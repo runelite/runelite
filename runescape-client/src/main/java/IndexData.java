@@ -98,11 +98,11 @@ public class IndexData extends IndexDataBase {
          if(this.field3239 != null) {
             int var5 = this.index;
             IndexFile var6 = this.field3239;
-            class233 var7 = new class233();
+            FileSystem var7 = new FileSystem();
             var7.field3204 = 0;
             var7.hash = (long)var5;
             var7.field3200 = var2;
-            var7.field3201 = var6;
+            var7.index = var6;
             Deque var8 = class236.field3233;
             synchronized(class236.field3233) {
                class236.field3233.method3634(var7);
@@ -118,11 +118,11 @@ public class IndexData extends IndexDataBase {
          var2[var2.length - 1] = (byte)super.archiveRevisions[var1];
          if(this.field3240 != null) {
             IndexFile var11 = this.field3240;
-            class233 var14 = new class233();
+            FileSystem var14 = new FileSystem();
             var14.field3204 = 0;
             var14.hash = (long)var1;
             var14.field3200 = var2;
-            var14.field3201 = var11;
+            var14.index = var11;
             Deque var15 = class236.field3233;
             synchronized(class236.field3233) {
                class236.field3233.method3634(var14);
@@ -233,11 +233,11 @@ public class IndexData extends IndexDataBase {
          for(var1 = 0; var1 < this.field3241.length; ++var1) {
             if(super.archiveNumberOfFiles[var1] > 0) {
                IndexFile var2 = this.field3240;
-               class233 var4 = new class233();
+               FileSystem var4 = new FileSystem();
                var4.field3204 = 1;
                var4.hash = (long)var1;
-               var4.field3201 = var2;
-               var4.field3202 = this;
+               var4.index = var2;
+               var4.data = this;
                Deque var5 = class236.field3233;
                synchronized(class236.field3233) {
                   class236.field3233.method3634(var4);

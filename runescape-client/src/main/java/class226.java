@@ -12,8 +12,8 @@ public class class226 {
       byte[] var3 = null;
       Deque var4 = class236.field3233;
       synchronized(class236.field3233) {
-         for(class233 var5 = (class233)class236.field3233.method3622(); var5 != null; var5 = (class233)class236.field3233.method3608()) {
-            if((long)var0 == var5.hash && var5.field3201 == var1 && var5.field3204 == 0) {
+         for(FileSystem var5 = (FileSystem)class236.field3233.method3622(); var5 != null; var5 = (FileSystem)class236.field3233.method3608()) {
+            if((long)var0 == var5.hash && var5.index == var1 && var5.field3204 == 0) {
                var3 = var5.field3200;
                break;
             }

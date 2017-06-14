@@ -31,7 +31,7 @@ public class class73 extends class163 {
          var0.x += (var3 - var0.x) / var2;
          var0.y += (var4 - var0.y) / var2;
          var0.field1258 = 0;
-         var0.field1252 = var0.field1274;
+         var0.orientation = var0.field1274;
       } else {
          int var5;
          int var7;
@@ -48,11 +48,11 @@ public class class73 extends class163 {
             }
 
             var0.field1258 = 0;
-            var0.field1252 = var0.field1274;
-            var0.angle = var0.field1252;
+            var0.orientation = var0.field1274;
+            var0.angle = var0.orientation;
          } else {
             var0.poseAnimation = var0.idlePoseAnimation;
-            if(var0.field1280 == 0) {
+            if(var0.queueSize == 0) {
                var0.field1258 = 0;
             } else {
                label608: {
@@ -71,33 +71,33 @@ public class class73 extends class163 {
 
                   var2 = var0.x;
                   var3 = var0.y;
-                  var4 = var0.pathX[var0.field1280 - 1] * 128 + var0.field1230 * 64;
-                  var5 = var0.field1230 * 64 + var0.pathY[var0.field1280 - 1] * 128;
+                  var4 = var0.pathX[var0.queueSize - 1] * 128 + var0.field1230 * 64;
+                  var5 = var0.field1230 * 64 + var0.pathY[var0.queueSize - 1] * 128;
                   if(var2 < var4) {
                      if(var3 < var5) {
-                        var0.field1252 = 1280;
+                        var0.orientation = 1280;
                      } else if(var3 > var5) {
-                        var0.field1252 = 1792;
+                        var0.orientation = 1792;
                      } else {
-                        var0.field1252 = 1536;
+                        var0.orientation = 1536;
                      }
                   } else if(var2 > var4) {
                      if(var3 < var5) {
-                        var0.field1252 = 768;
+                        var0.orientation = 768;
                      } else if(var3 > var5) {
-                        var0.field1252 = 256;
+                        var0.orientation = 256;
                      } else {
-                        var0.field1252 = 512;
+                        var0.orientation = 512;
                      }
                   } else if(var3 < var5) {
-                     var0.field1252 = 1024;
+                     var0.orientation = 1024;
                   } else if(var3 > var5) {
-                     var0.field1252 = 0;
+                     var0.orientation = 0;
                   }
 
-                  byte var14 = var0.field1283[var0.field1280 - 1];
+                  byte var14 = var0.field1283[var0.queueSize - 1];
                   if(var4 - var2 <= 256 && var4 - var2 >= -256 && var5 - var3 <= 256 && var5 - var3 >= -256) {
-                     var7 = var0.field1252 - var0.angle & 2047;
+                     var7 = var0.orientation - var0.angle & 2047;
                      if(var7 > 1024) {
                         var7 -= 2048;
                      }
@@ -123,32 +123,32 @@ public class class73 extends class163 {
                      }
 
                      if(var10) {
-                        if(var0.angle != var0.field1252 && var0.interacting == -1 && var0.field1242 != 0) {
+                        if(var0.angle != var0.orientation && var0.interacting == -1 && var0.field1242 != 0) {
                            var9 = 2;
                         }
 
-                        if(var0.field1280 > 2) {
+                        if(var0.queueSize > 2) {
                            var9 = 6;
                         }
 
-                        if(var0.field1280 > 3) {
+                        if(var0.queueSize > 3) {
                            var9 = 8;
                         }
 
-                        if(var0.field1258 > 0 && var0.field1280 > 1) {
+                        if(var0.field1258 > 0 && var0.queueSize > 1) {
                            var9 = 8;
                            --var0.field1258;
                         }
                      } else {
-                        if(var0.field1280 > 1) {
+                        if(var0.queueSize > 1) {
                            var9 = 6;
                         }
 
-                        if(var0.field1280 > 2) {
+                        if(var0.queueSize > 2) {
                            var9 = 8;
                         }
 
-                        if(var0.field1258 > 0 && var0.field1280 > 1) {
+                        if(var0.field1258 > 0 && var0.queueSize > 1) {
                            var9 = 8;
                            --var0.field1258;
                         }
@@ -189,7 +189,7 @@ public class class73 extends class163 {
                      }
 
                      if(var4 == var0.x && var5 == var0.y) {
-                        --var0.field1280;
+                        --var0.queueSize;
                         if(var0.field1285 > 0) {
                            --var0.field1285;
                         }
@@ -197,7 +197,7 @@ public class class73 extends class163 {
                   } else {
                      var0.x = var4;
                      var0.y = var5;
-                     --var0.field1280;
+                     --var0.queueSize;
                      if(var0.field1285 > 0) {
                         --var0.field1285;
                      }
@@ -240,7 +240,7 @@ public class class73 extends class163 {
                var3 = var0.x - ((Actor)var15).x;
                var4 = var0.y - ((Actor)var15).y;
                if(var3 != 0 || var4 != 0) {
-                  var0.field1252 = (int)(Math.atan2((double)var3, (double)var4) * 325.949D) & 2047;
+                  var0.orientation = (int)(Math.atan2((double)var3, (double)var4) * 325.949D) & 2047;
                }
             } else if(var0.field1253) {
                var0.interacting = -1;
@@ -248,12 +248,12 @@ public class class73 extends class163 {
             }
          }
 
-         if(var0.field1254 != -1 && (var0.field1280 == 0 || var0.field1258 > 0)) {
-            var0.field1252 = var0.field1254;
+         if(var0.field1254 != -1 && (var0.queueSize == 0 || var0.field1258 > 0)) {
+            var0.orientation = var0.field1254;
             var0.field1254 = -1;
          }
 
-         var2 = var0.field1252 - var0.angle & 2047;
+         var2 = var0.orientation - var0.angle & 2047;
          if(var2 == 0 && var0.field1253) {
             var0.interacting = -1;
             var0.field1253 = false;
@@ -266,7 +266,7 @@ public class class73 extends class163 {
                var0.angle -= var0.field1242;
                var13 = true;
                if(var2 < var0.field1242 || var2 > 2048 - var0.field1242) {
-                  var0.angle = var0.field1252;
+                  var0.angle = var0.orientation;
                   var13 = false;
                }
 
@@ -281,7 +281,7 @@ public class class73 extends class163 {
                var0.angle += var0.field1242;
                var13 = true;
                if(var2 < var0.field1242 || var2 > 2048 - var0.field1242) {
-                  var0.angle = var0.field1252;
+                  var0.angle = var0.orientation;
                   var13 = false;
                }
 
@@ -326,7 +326,7 @@ public class class73 extends class163 {
             var0.field1264 = 0;
          }
 
-         var2 = class100.method1840(var0.graphic).field3340;
+         var2 = DynamicObject.method1840(var0.graphic).field3340;
          if(var2 != -1) {
             Sequence var11 = class169.getAnimation(var2);
             if(var11 != null && var11.frameIDs != null) {

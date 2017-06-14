@@ -131,21 +131,21 @@ public class WorldMapType2 implements WorldMapSectionBase {
       garbageValue = "1004639753"
    )
    static final boolean method512(Widget var0) {
-      if(var0.field2765 == null) {
+      if(var0.tableActions == null) {
          return false;
       } else {
-         for(int var1 = 0; var1 < var0.field2765.length; ++var1) {
+         for(int var1 = 0; var1 < var0.tableActions.length; ++var1) {
             int var2 = class261.method4763(var0, var1);
             int var3 = var0.field2766[var1];
-            if(var0.field2765[var1] == 2) {
+            if(var0.tableActions[var1] == 2) {
                if(var2 >= var3) {
                   return false;
                }
-            } else if(var0.field2765[var1] == 3) {
+            } else if(var0.tableActions[var1] == 3) {
                if(var2 <= var3) {
                   return false;
                }
-            } else if(var0.field2765[var1] == 4) {
+            } else if(var0.tableActions[var1] == 4) {
                if(var2 == var3) {
                   return false;
                }

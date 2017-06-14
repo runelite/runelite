@@ -86,8 +86,8 @@ public class class211 {
                Client.secretPacketBuffer1.putShort(class168.localPlayer.x);
                Client.secretPacketBuffer1.putShort(class168.localPlayer.y);
                Client.secretPacketBuffer1.putByte(63);
-               Client.flagX = var11;
-               Client.flagY = var12;
+               Client.detinationX = var11;
+               Client.destinationY = var12;
             }
          }
 
@@ -156,7 +156,7 @@ public class class211 {
 
       var8 = Client.field1037 + var5 * (Client.field1172 - Client.field1037) / 100;
       Client.scale = var8 * var3 * var6 / 85504 << 1;
-      if(Client.camera2 != var2 || var3 != Client.camera3) {
+      if(Client.viewportHeight != var2 || var3 != Client.viewportWidth) {
          int[] var14 = new int[9];
 
          for(int var10 = 0; var10 < 9; ++var10) {
@@ -171,8 +171,8 @@ public class class211 {
 
       Client.field1177 = var0;
       Client.field1150 = var1;
-      Client.camera2 = var2;
-      Client.camera3 = var3;
+      Client.viewportHeight = var2;
+      Client.viewportWidth = var3;
    }
 
    @ObfuscatedName("n")
@@ -189,7 +189,7 @@ public class class211 {
             int var6 = Model.field1972[var3];
             int var7 = Model.field1972[var4];
             int var8 = Model.field1972[var5];
-            class137.method2671(Model.field1973[var3], Model.field1973[var4], Model.field1973[var5], var6, var7, var8, var1);
+            SceneTilePaint.method2671(Model.field1973[var3], Model.field1973[var4], Model.field1973[var5], var6, var7, var8, var1);
          }
       }
 

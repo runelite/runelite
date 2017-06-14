@@ -205,16 +205,16 @@ public final class SpritePixels extends Rasterizer2D {
       int var7 = Rasterizer2D.graphicsPixelsWidth - var6;
       int var8 = 0;
       int var9;
-      if(var2 < Rasterizer2D.field3755) {
-         var9 = Rasterizer2D.field3755 - var2;
+      if(var2 < Rasterizer2D.drawingAreaTop) {
+         var9 = Rasterizer2D.drawingAreaTop - var2;
          var5 -= var9;
-         var2 = Rasterizer2D.field3755;
+         var2 = Rasterizer2D.drawingAreaTop;
          var4 += var9 * var6;
          var3 += var9 * Rasterizer2D.graphicsPixelsWidth;
       }
 
-      if(var2 + var5 > Rasterizer2D.field3756) {
-         var5 -= var2 + var5 - Rasterizer2D.field3756;
+      if(var2 + var5 > Rasterizer2D.drawingAreaRight) {
+         var5 -= var2 + var5 - Rasterizer2D.drawingAreaRight;
       }
 
       if(var1 < Rasterizer2D.field3754) {
@@ -227,8 +227,8 @@ public final class SpritePixels extends Rasterizer2D {
          var7 += var9;
       }
 
-      if(var1 + var6 > Rasterizer2D.field3758) {
-         var9 = var1 + var6 - Rasterizer2D.field3758;
+      if(var1 + var6 > Rasterizer2D.drawingAreaBottom) {
+         var9 = var1 + var6 - Rasterizer2D.drawingAreaBottom;
          var6 -= var9;
          var8 += var9;
          var7 += var9;
@@ -325,20 +325,20 @@ public final class SpritePixels extends Rasterizer2D {
 
          var13 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
          int var14 = Rasterizer2D.graphicsPixelsWidth - var3;
-         if(var2 + var4 > Rasterizer2D.field3756) {
-            var4 -= var2 + var4 - Rasterizer2D.field3756;
+         if(var2 + var4 > Rasterizer2D.drawingAreaRight) {
+            var4 -= var2 + var4 - Rasterizer2D.drawingAreaRight;
          }
 
          int var15;
-         if(var2 < Rasterizer2D.field3755) {
-            var15 = Rasterizer2D.field3755 - var2;
+         if(var2 < Rasterizer2D.drawingAreaTop) {
+            var15 = Rasterizer2D.drawingAreaTop - var2;
             var4 -= var15;
             var13 += var15 * Rasterizer2D.graphicsPixelsWidth;
             var8 += var12 * var15;
          }
 
-         if(var1 + var3 > Rasterizer2D.field3758) {
-            var15 = var1 + var3 - Rasterizer2D.field3758;
+         if(var1 + var3 > Rasterizer2D.drawingAreaBottom) {
+            var15 = var1 + var3 - Rasterizer2D.drawingAreaBottom;
             var3 -= var15;
             var14 += var15;
          }
@@ -391,16 +391,16 @@ public final class SpritePixels extends Rasterizer2D {
       int var8 = Rasterizer2D.graphicsPixelsWidth - var7;
       int var9 = 0;
       int var10;
-      if(var2 < Rasterizer2D.field3755) {
-         var10 = Rasterizer2D.field3755 - var2;
+      if(var2 < Rasterizer2D.drawingAreaTop) {
+         var10 = Rasterizer2D.drawingAreaTop - var2;
          var6 -= var10;
-         var2 = Rasterizer2D.field3755;
+         var2 = Rasterizer2D.drawingAreaTop;
          var5 += var10 * var7;
          var4 += var10 * Rasterizer2D.graphicsPixelsWidth;
       }
 
-      if(var2 + var6 > Rasterizer2D.field3756) {
-         var6 -= var2 + var6 - Rasterizer2D.field3756;
+      if(var2 + var6 > Rasterizer2D.drawingAreaRight) {
+         var6 -= var2 + var6 - Rasterizer2D.drawingAreaRight;
       }
 
       if(var1 < Rasterizer2D.field3754) {
@@ -413,8 +413,8 @@ public final class SpritePixels extends Rasterizer2D {
          var8 += var10;
       }
 
-      if(var1 + var7 > Rasterizer2D.field3758) {
-         var10 = var1 + var7 - Rasterizer2D.field3758;
+      if(var1 + var7 > Rasterizer2D.drawingAreaBottom) {
+         var10 = var1 + var7 - Rasterizer2D.drawingAreaBottom;
          var7 -= var10;
          var9 += var10;
          var8 += var10;
@@ -480,20 +480,20 @@ public final class SpritePixels extends Rasterizer2D {
 
          var14 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
          int var15 = Rasterizer2D.graphicsPixelsWidth - var3;
-         if(var2 + var4 > Rasterizer2D.field3756) {
-            var4 -= var2 + var4 - Rasterizer2D.field3756;
+         if(var2 + var4 > Rasterizer2D.drawingAreaRight) {
+            var4 -= var2 + var4 - Rasterizer2D.drawingAreaRight;
          }
 
          int var16;
-         if(var2 < Rasterizer2D.field3755) {
-            var16 = Rasterizer2D.field3755 - var2;
+         if(var2 < Rasterizer2D.drawingAreaTop) {
+            var16 = Rasterizer2D.drawingAreaTop - var2;
             var4 -= var16;
             var14 += var16 * Rasterizer2D.graphicsPixelsWidth;
             var9 += var13 * var16;
          }
 
-         if(var1 + var3 > Rasterizer2D.field3758) {
-            var16 = var1 + var3 - Rasterizer2D.field3758;
+         if(var1 + var3 > Rasterizer2D.drawingAreaBottom) {
+            var16 = var1 + var3 - Rasterizer2D.drawingAreaBottom;
             var3 -= var16;
             var15 += var16;
          }
@@ -587,16 +587,16 @@ public final class SpritePixels extends Rasterizer2D {
       int var9 = Rasterizer2D.graphicsPixelsWidth - var8;
       int var10 = 0;
       int var11;
-      if(var2 < Rasterizer2D.field3755) {
-         var11 = Rasterizer2D.field3755 - var2;
+      if(var2 < Rasterizer2D.drawingAreaTop) {
+         var11 = Rasterizer2D.drawingAreaTop - var2;
          var7 -= var11;
-         var2 = Rasterizer2D.field3755;
+         var2 = Rasterizer2D.drawingAreaTop;
          var6 += var11 * var8;
          var5 += var11 * Rasterizer2D.graphicsPixelsWidth;
       }
 
-      if(var2 + var7 > Rasterizer2D.field3756) {
-         var7 -= var2 + var7 - Rasterizer2D.field3756;
+      if(var2 + var7 > Rasterizer2D.drawingAreaRight) {
+         var7 -= var2 + var7 - Rasterizer2D.drawingAreaRight;
       }
 
       if(var1 < Rasterizer2D.field3754) {
@@ -609,8 +609,8 @@ public final class SpritePixels extends Rasterizer2D {
          var9 += var11;
       }
 
-      if(var1 + var8 > Rasterizer2D.field3758) {
-         var11 = var1 + var8 - Rasterizer2D.field3758;
+      if(var1 + var8 > Rasterizer2D.drawingAreaBottom) {
+         var11 = var1 + var8 - Rasterizer2D.drawingAreaBottom;
          var8 -= var11;
          var10 += var11;
          var9 += var11;
@@ -718,16 +718,16 @@ public final class SpritePixels extends Rasterizer2D {
             var19 = Rasterizer2D.field3754;
          }
 
-         if(var20 > Rasterizer2D.field3758) {
-            var20 = Rasterizer2D.field3758;
+         if(var20 > Rasterizer2D.drawingAreaBottom) {
+            var20 = Rasterizer2D.drawingAreaBottom;
          }
 
-         if(var21 < Rasterizer2D.field3755) {
-            var21 = Rasterizer2D.field3755;
+         if(var21 < Rasterizer2D.drawingAreaTop) {
+            var21 = Rasterizer2D.drawingAreaTop;
          }
 
-         if(var22 > Rasterizer2D.field3756) {
-            var22 = Rasterizer2D.field3756;
+         if(var22 > Rasterizer2D.drawingAreaRight) {
+            var22 = Rasterizer2D.drawingAreaRight;
          }
 
          var20 = var19 - var20;
@@ -1114,16 +1114,16 @@ public final class SpritePixels extends Rasterizer2D {
             var5 = Rasterizer2D.field3754;
          }
 
-         if(var6 > Rasterizer2D.field3758) {
-            var6 = Rasterizer2D.field3758;
+         if(var6 > Rasterizer2D.drawingAreaBottom) {
+            var6 = Rasterizer2D.drawingAreaBottom;
          }
 
-         if(var7 < Rasterizer2D.field3755) {
-            var7 = Rasterizer2D.field3755;
+         if(var7 < Rasterizer2D.drawingAreaTop) {
+            var7 = Rasterizer2D.drawingAreaTop;
          }
 
-         if(var8 > Rasterizer2D.field3756) {
-            var8 = Rasterizer2D.field3756;
+         if(var8 > Rasterizer2D.drawingAreaRight) {
+            var8 = Rasterizer2D.drawingAreaRight;
          }
 
          if(var5 < var6 && var7 < var8) {
@@ -1380,16 +1380,16 @@ public final class SpritePixels extends Rasterizer2D {
       int var7 = Rasterizer2D.graphicsPixelsWidth - var6;
       int var8 = 0;
       int var9;
-      if(var2 < Rasterizer2D.field3755) {
-         var9 = Rasterizer2D.field3755 - var2;
+      if(var2 < Rasterizer2D.drawingAreaTop) {
+         var9 = Rasterizer2D.drawingAreaTop - var2;
          var5 -= var9;
-         var2 = Rasterizer2D.field3755;
+         var2 = Rasterizer2D.drawingAreaTop;
          var4 += var9 * var6;
          var3 += var9 * Rasterizer2D.graphicsPixelsWidth;
       }
 
-      if(var2 + var5 > Rasterizer2D.field3756) {
-         var5 -= var2 + var5 - Rasterizer2D.field3756;
+      if(var2 + var5 > Rasterizer2D.drawingAreaRight) {
+         var5 -= var2 + var5 - Rasterizer2D.drawingAreaRight;
       }
 
       if(var1 < Rasterizer2D.field3754) {
@@ -1402,8 +1402,8 @@ public final class SpritePixels extends Rasterizer2D {
          var7 += var9;
       }
 
-      if(var1 + var6 > Rasterizer2D.field3758) {
-         var9 = var1 + var6 - Rasterizer2D.field3758;
+      if(var1 + var6 > Rasterizer2D.drawingAreaBottom) {
+         var9 = var1 + var6 - Rasterizer2D.drawingAreaBottom;
          var6 -= var9;
          var8 += var9;
          var7 += var9;

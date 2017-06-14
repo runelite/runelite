@@ -148,14 +148,14 @@ public class Client
 		return client.getCameraYaw();
 	}
 
-	public int getCamera2()
+	public int getViewportHeight()
 	{
-		return client.getCamera2();
+		return client.getViewportHeight();
 	}
 
-	public int getCamera3()
+	public int getViewportWidth()
 	{
-		return client.getCamera3();
+		return client.getViewportWidth();
 	}
 
 	public int getScale()

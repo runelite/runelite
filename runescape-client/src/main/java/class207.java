@@ -1130,8 +1130,8 @@ public class class207 extends Node {
                                                                                                                   class83.intStack[++class165.intStackSize - 1] = class11.method72(var16, var17);
                                                                                                                   var29 = 1;
                                                                                                                } else if(var40 == 3316) {
-                                                                                                                  if(Client.field1132 >= 2) {
-                                                                                                                     class83.intStack[++class165.intStackSize - 1] = Client.field1132;
+                                                                                                                  if(Client.rights >= 2) {
+                                                                                                                     class83.intStack[++class165.intStackSize - 1] = Client.rights;
                                                                                                                   } else {
                                                                                                                      class83.intStack[++class165.intStackSize - 1] = 0;
                                                                                                                   }
@@ -1403,15 +1403,15 @@ public class class207 extends Node {
                                                                                                                   class83.intStack[++class165.intStackSize - 1] = class7.method29(var52, false)?1:0;
                                                                                                                   var29 = 1;
                                                                                                                } else if(var40 == 3611) {
-                                                                                                                  if(Client.field1141 != null) {
-                                                                                                                     class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = class91.method1702(Client.field1141);
+                                                                                                                  if(Client.clanChatOwner != null) {
+                                                                                                                     class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = class91.method1702(Client.clanChatOwner);
                                                                                                                   } else {
                                                                                                                      class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = "";
                                                                                                                   }
 
                                                                                                                   var29 = 1;
                                                                                                                } else if(var40 == 3612) {
-                                                                                                                  if(Client.field1141 != null) {
+                                                                                                                  if(Client.clanChatOwner != null) {
                                                                                                                      class83.intStack[++class165.intStackSize - 1] = class24.clanChatCount;
                                                                                                                   } else {
                                                                                                                      class83.intStack[++class165.intStackSize - 1] = 0;
@@ -1420,7 +1420,7 @@ public class class207 extends Node {
                                                                                                                   var29 = 1;
                                                                                                                } else if(var40 == 3613) {
                                                                                                                   var16 = class83.intStack[--class165.intStackSize];
-                                                                                                                  if(Client.field1141 != null && var16 < class24.clanChatCount) {
+                                                                                                                  if(Client.clanChatOwner != null && var16 < class24.clanChatCount) {
                                                                                                                      class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = class2.clanMembers[var16].username;
                                                                                                                   } else {
                                                                                                                      class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = "";
@@ -1429,7 +1429,7 @@ public class class207 extends Node {
                                                                                                                   var29 = 1;
                                                                                                                } else if(var40 == 3614) {
                                                                                                                   var16 = class83.intStack[--class165.intStackSize];
-                                                                                                                  if(Client.field1141 != null && var16 < class24.clanChatCount) {
+                                                                                                                  if(Client.clanChatOwner != null && var16 < class24.clanChatCount) {
                                                                                                                      class83.intStack[++class165.intStackSize - 1] = class2.clanMembers[var16].world;
                                                                                                                   } else {
                                                                                                                      class83.intStack[++class165.intStackSize - 1] = 0;
@@ -1438,7 +1438,7 @@ public class class207 extends Node {
                                                                                                                   var29 = 1;
                                                                                                                } else if(var40 == 3615) {
                                                                                                                   var16 = class83.intStack[--class165.intStackSize];
-                                                                                                                  if(Client.field1141 != null && var16 < class24.clanChatCount) {
+                                                                                                                  if(Client.clanChatOwner != null && var16 < class24.clanChatCount) {
                                                                                                                      class83.intStack[++class165.intStackSize - 1] = class2.clanMembers[var16].rank;
                                                                                                                   } else {
                                                                                                                      class83.intStack[++class165.intStackSize - 1] = 0;
@@ -1458,7 +1458,7 @@ public class class207 extends Node {
 
                                                                                                                   var29 = 1;
                                                                                                                } else if(var40 == 3618) {
-                                                                                                                  class83.intStack[++class165.intStackSize - 1] = class116.field1693;
+                                                                                                                  class83.intStack[++class165.intStackSize - 1] = class116.clanChatRank;
                                                                                                                   var29 = 1;
                                                                                                                } else if(var40 == 3619) {
                                                                                                                   var52 = class83.scriptStringStack[--ISAACCipher.scriptStringStackSize];
@@ -1501,8 +1501,8 @@ public class class207 extends Node {
                                                                                                                   var29 = 1;
                                                                                                                } else if(var40 != 3624) {
                                                                                                                   if(var40 == 3625) {
-                                                                                                                     if(Client.clanChatOwner != null) {
-                                                                                                                        class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = class91.method1702(Client.clanChatOwner);
+                                                                                                                     if(Client.clanChatName != null) {
+                                                                                                                        class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = class91.method1702(Client.clanChatName);
                                                                                                                      } else {
                                                                                                                         class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = "";
                                                                                                                      }
@@ -1854,7 +1854,7 @@ public class class207 extends Node {
 
                                                                                                                   var14 = var29;
                                                                                                                } else if(var40 < 5700) {
-                                                                                                                  var14 = class84.method1656(var40, var3, var42);
+                                                                                                                  var14 = GraphicsObject.method1656(var40, var3, var42);
                                                                                                                } else if(var40 < 6300) {
                                                                                                                   var14 = class90.method1697(var40, var3, var42);
                                                                                                                } else if(var40 < 6600) {

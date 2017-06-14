@@ -83,16 +83,16 @@ public class class24 {
          var1 -= XItemContainer.cameraY;
          int var4 = class136.SINE[Client.cameraPitch];
          int var5 = class136.COSINE[Client.cameraPitch];
-         int var6 = class136.SINE[class84.cameraYaw];
-         int var7 = class136.COSINE[class84.cameraYaw];
+         int var6 = class136.SINE[GraphicsObject.cameraYaw];
+         int var7 = class136.COSINE[GraphicsObject.cameraYaw];
          int var8 = var1 * var6 + var7 * var0 >> 16;
          var1 = var1 * var7 - var0 * var6 >> 16;
          var0 = var8;
          var8 = var5 * var3 - var1 * var4 >> 16;
          var1 = var4 * var3 + var1 * var5 >> 16;
          if(var1 >= 50) {
-            Client.field1020 = Client.camera2 / 2 + Client.scale * var0 / var1;
-            Client.field1163 = Client.camera3 / 2 + var8 * Client.scale / var1;
+            Client.field1020 = Client.viewportHeight / 2 + Client.scale * var0 / var1;
+            Client.field1163 = Client.viewportWidth / 2 + var8 * Client.scale / var1;
          } else {
             Client.field1020 = -1;
             Client.field1163 = -1;

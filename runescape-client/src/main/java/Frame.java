@@ -27,7 +27,8 @@ public class Frame {
    @ObfuscatedName("j")
    static int[] field1904;
    @ObfuscatedName("e")
-   boolean field1905;
+   @Export("showing")
+   boolean showing;
    @ObfuscatedName("n")
    static int[] field1906;
 
@@ -41,7 +42,7 @@ public class Frame {
    Frame(byte[] var1, FrameMap var2) {
       this.field1900 = null;
       this.field1901 = -1;
-      this.field1905 = false;
+      this.showing = false;
       this.field1900 = var2;
       Buffer var3 = new Buffer(var1);
       Buffer var4 = new Buffer(var1);
@@ -95,7 +96,7 @@ public class Frame {
             var6 = var8;
             ++var7;
             if(this.field1900.field2055[var8] == 5) {
-               this.field1905 = true;
+               this.showing = true;
             }
          }
       }
