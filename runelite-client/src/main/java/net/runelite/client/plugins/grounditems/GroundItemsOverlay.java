@@ -176,9 +176,9 @@ public class GroundItemsOverlay extends Overlay
 					{
 						int cost = itemPrice.getPrice() * quantity;
 
-						itemStringBuilder.append(" (")
+						itemStringBuilder.append(" (EX: ")
 							.append(ItemManager.quantityToStackSize(cost))
-							.append(")");
+							.append(" gp)");
 					}
 
 					String itemString = itemStringBuilder.toString();
