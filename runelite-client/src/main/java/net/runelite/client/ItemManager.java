@@ -70,18 +70,24 @@ public class ItemManager
 		{
 			try
 			{
-				return client.lookupItemPrice(key);
+				ItemPrice itemPrice = client.lookupItemPrice(key);
+				if (itemPrice == null)
+				{
+					return NONE;
+				}
+				return itemPrice;
 			}
 			catch (IOException ex)
 			{
 				logger.warn("unable to look up item!", ex);
-				return null;
+				return NONE;
 			}
 		}
 	};
 
 	private final LoadingCache<Integer, ItemPrice> itemPrices;
 	private static final ItemPrice EMPTY = new ItemPrice();
+	private static final ItemPrice NONE = new ItemPrice();
 
 	public ItemManager(RuneLite runelite)
 	{
@@ -97,6 +103,11 @@ public class ItemManager
 		ItemPrice itemPrice = itemPrices.getIfPresent(itemId);
 		if (itemPrice != null && itemPrice != EMPTY)
 		{
+			if (itemPrice == NONE)
+			{
+				return null;
+			}
+
 			return itemPrice;
 		}
 
