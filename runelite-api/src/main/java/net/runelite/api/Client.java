@@ -356,11 +356,12 @@ public class Client
 	}
 
 	/**
-	 * Returns the local player's current experience in the specified {@link Skill}.
+	 * Returns the local player's current experience in the specified
+	 * {@link Skill}.
 	 *
 	 * @param skill the {@link Skill} to retrieve the experience for
-	 * @return the local player's current experience in the specified {@link Skill}, or -1 if the {@link Skill} isn't
-	 *         valid
+	 * @return the local player's current experience in the specified
+	 * {@link Skill}, or -1 if the {@link Skill} isn't valid
 	 */
 	public int getSkillExperience(Skill skill)
 	{
@@ -388,5 +389,15 @@ public class Client
 		}
 
 		return experiences[idx];
+	}
+
+	public int getGameDrawingMode()
+	{
+		return client.getGameDrawingMode();
+	}
+
+	public void setGameDrawingMode(int gameDrawingMode)
+	{
+		client.setGameDrawingMode(gameDrawingMode);
 	}
 }
