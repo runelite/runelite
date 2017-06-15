@@ -43,7 +43,6 @@ import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
-import net.runelite.deob.deobfuscators.mapping.PacketHandler;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 import org.objectweb.asm.MethodVisitor;
 

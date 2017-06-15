@@ -50,8 +50,6 @@ public class ParallelExecutorMapping
 	private Multimap<Object, Mapping> map = HashMultimap.create();
 	public Method m1, m2;
 	public boolean crashed;
-	public List<PacketHandler> packetHandler1 = new ArrayList<>();
-	public List<PacketHandler> packetHandler2 = new ArrayList<>();
 	public int same;
 
 	public ParallelExecutorMapping(ClassGroup group, ClassGroup group2)
@@ -351,30 +349,6 @@ public class ParallelExecutorMapping
 		{
 			assert false;
 		}
-	}
-
-	public PacketHandler findPacketHandler1(int id)
-	{
-		for (PacketHandler p : this.packetHandler1)
-		{
-			if (p.getPacketId() == id)
-			{
-				return p;
-			}
-		}
-		return null;
-	}
-
-	public PacketHandler findPacketHandler2(int id)
-	{
-		for (PacketHandler p : this.packetHandler2)
-		{
-			if (p.getPacketId() == id)
-			{
-				return p;
-			}
-		}
-		return null;
 	}
 
 	public int contradicts(ParallelExecutorMapping other)
