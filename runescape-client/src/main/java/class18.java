@@ -14,7 +14,7 @@ final class class18 implements Comparator {
    @ObfuscatedGetter(
       intValue = -1115497397
    )
-   @Export("packetId")
+   //@Export("packetId")
    static int packetId;
    @ObfuscatedName("fu")
    @Export("mapRegions")
