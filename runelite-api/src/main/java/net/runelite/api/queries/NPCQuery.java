@@ -40,4 +40,21 @@ public class NPCQuery extends ActorQuery<NPC, NPCQuery>
 				.filter(predicate)
 				.toArray(NPC[]::new);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public NPCQuery idEquals(int... ids)
+	{
+		predicate = and(object ->
+		{
+			for (int id : ids)
+			{
+				if (object.getId() == id)
+				{
+					return true;
+				}
+			}
+			return false;
+		});
+		return (NPCQuery) this;
+	}
 }
