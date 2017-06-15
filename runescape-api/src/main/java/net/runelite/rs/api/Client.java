@@ -225,4 +225,13 @@ public interface Client extends GameEngine
 
 	@Import("xteaKeys")
 	int[][] getXteaKeys();
+
+	@Import("gameDrawingMode")
+	int getGameDrawingMode();
+
+	@Import(
+		value = "gameDrawingMode",
+		setter = true
+	)
+	void setGameDrawingMode(int gameDrawingMode);
 }
