@@ -69,6 +69,11 @@ public class FPSOverlay extends Overlay
 		String str = String.valueOf(client.getFPS());
 
 		Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_XP_ORG);
+		if (xpOrb == null)
+		{
+			return null;
+		}
+
 		Rectangle2D bounds = xpOrb.getBounds().getBounds2D();
 
 		int x = (int) (bounds.getX() + ((bounds.getWidth() / 2) - (fm.stringWidth(str) / 2)));
