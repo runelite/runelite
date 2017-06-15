@@ -274,6 +274,7 @@ public class ParallelExecutorMapping
 		}
 
 		map = getMap(); // rebuild map now we've inserted classes...
+		reduce();
 
 		/* get leftover classes, they usually contain exclusively static
 		 * fields and methods so they're hard to pinpoint
