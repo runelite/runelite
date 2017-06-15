@@ -614,7 +614,7 @@ public final class ISAACCipher {
                      class136.method2594();
                   }
 
-                  if(Client.isResized || Client.field1123[var11] || Client.field1128 > 1) {
+                  if(Client.isResized || Client.field1123[var11] || Client.gameDrawingMode > 1) {
                      if(var10.type == 0 && !var10.hasScript && var10.scrollHeight > var10.height) {
                         class71.method1081(var10.width + var12, var13, var10.scrollY, var10.height, var10.scrollHeight);
                      }

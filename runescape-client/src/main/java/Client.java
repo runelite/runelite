@@ -871,7 +871,11 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1588323417
    )
-   static int field1128;
+   @Export(
+	   value = "gameDrawingMode",
+	   setter = true
+   )
+   static int gameDrawingMode;
    @ObfuscatedName("dk")
    @ObfuscatedGetter(
       intValue = -231789185
@@ -3347,7 +3351,7 @@ public final class Client extends GameEngine {
          Actor.method1511();
       }
 
-      if(field1128 == 3) {
+      if(gameDrawingMode == 3) {
          for(var1 = 0; var1 < field1119; ++var1) {
             if(field1123[var1]) {
                Rasterizer2D.method5026(widgetPositionX[var1], widgetPositionY[var1], widgetBoundsWidth[var1], widgetBoundsHeight[var1], 16711935, 128);
@@ -6374,7 +6378,7 @@ public final class Client extends GameEngine {
          class3.method9(class241.field3288, class261.field3629, WidgetNode.font_p12full, var1);
       }
 
-      if(gameState == 30 && field1128 == 0 && !var1) {
+      if(gameState == 30 && gameDrawingMode == 0 && !var1) {
          for(var4 = 0; var4 < field1119; ++var4) {
             if(field1122[var4]) {
                class47.field601.vmethod5053(widgetPositionX[var4], widgetPositionY[var4], widgetBoundsWidth[var4], widgetBoundsHeight[var4]);
@@ -6645,7 +6649,7 @@ public final class Client extends GameEngine {
       widgetPositionY = new int[100];
       widgetBoundsWidth = new int[100];
       widgetBoundsHeight = new int[100];
-      field1128 = 0;
+      gameDrawingMode = 0;
       field946 = 0L;
       isResized = true;
       field1063 = new int[]{16776960, 16711680, '\uff00', '\uffff', 16711935, 16777215};
