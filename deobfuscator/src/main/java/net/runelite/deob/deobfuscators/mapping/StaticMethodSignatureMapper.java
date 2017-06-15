@@ -44,7 +44,12 @@ public class StaticMethodSignatureMapper
 		List<Method> methods = new ArrayList<>();
 		for (ClassFile cf : group.getClasses())
 			for (Method m : cf.getMethods().getMethods())
-				if (m.isStatic() && !m.getName().equals("<clinit>"))
+				// this used to check the method wasnt <clinit>,
+				// but fernflower was modified to not remove code
+				// in clinit and place into ConstantValue attriutes
+				// on fields, so the execution order of clinit no longer
+				// depends on field order
+				if (m.isStatic())
 					methods.add(m);
 		return methods;
 	}

@@ -22,12 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
+import net.runelite.asm.attributes.code.instruction.types.ComparisonInstruction;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
@@ -39,72 +39,87 @@ public class IfICmpEq extends If
 	{
 		super(instructions, type);
 	}
-	
+
 	public IfICmpEq(Instructions instructions, Label to)
 	{
 		super(instructions, InstructionType.IF_ICMPEQ, to);
 	}
-	
+
 	static boolean is(StackContext s, int val)
 	{
 		if (s.getPushed().getInstruction() instanceof PushConstantInstruction)
 		{
 			PushConstantInstruction pc = (PushConstantInstruction) s.getPushed().getInstruction();
 			Object o = pc.getConstant();
-			
+
 			if (o instanceof Integer && (int) o == val)
+			{
 				return true;
+			}
 		}
-		
+
 		return false;
 	}
-	
+
 	static boolean isZero(StackContext s)
 	{
 		return is(s, 0);
 	}
-	
+
 	static boolean isOne(StackContext s)
 	{
 		return is(s, 1);
 	}
-	
+
 	@Override
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		if (!this.isSameField(thisIc, otherIc))
+		if (!(otherIc.getInstruction() instanceof ComparisonInstruction))
+		{
 			return false;
-		
+		}
+
+		if (!this.isSameField(thisIc, otherIc))
+		{
+			return false;
+		}
+
 		Integer i1 = this.getConstantInstruction(thisIc);
 		Integer i2 = this.getConstantInstruction(otherIc);
-		
+
 		// this is to help against the scrambling of the icmps. in every case
 		// except for the packet handler ids the constant is the same.
 		// XX it would be better to have the mapper step over ifs and proceed to
 		// the next one instead of halting
 		if (i1 != null && i2 != null && (int) i1 != (int) i2)
+		{
 			return false;
-		
+		}
+
 		if (thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass())
+		{
 			return true;
-		
+		}
+
 		// check for other being ifeq and this has a constant 0
 		if (otherIc.getInstruction() instanceof IfEq || otherIc.getInstruction() instanceof IfNe)
 		{
 			StackContext s1 = thisIc.getPops().get(0),
 				s2 = thisIc.getPops().get(1);
-			
+
 			if (isZero(s1) || isZero(s2))
+			{
 				return true;
+			}
 		}
 		else if (otherIc.getInstruction() instanceof IfICmpNe)
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
