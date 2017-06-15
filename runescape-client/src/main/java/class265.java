@@ -1,47 +1,45 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jk")
+@ObfuscatedName("jr")
 public class class265 {
-   @ObfuscatedName("n")
-   public static class165 field3670;
-
    @ObfuscatedName("p")
+   static class165 field3660;
+
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/CharSequence;III)Ljava/lang/String;",
-      garbageValue = "1440612810"
+      signature = "(LIndexDataBase;IB)LModIcon;",
+      garbageValue = "1"
    )
-   public static String method4872(CharSequence[] var0, int var1, int var2) {
-      if(var2 == 0) {
-         return "";
-      } else if(var2 == 1) {
-         CharSequence var3 = var0[var1];
-         return var3 == null?"null":var3.toString();
+   public static ModIcon method4726(IndexDataBase var0, int var1) {
+      byte[] var3 = var0.method4001(var1);
+      boolean var2;
+      if(var3 == null) {
+         var2 = false;
       } else {
-         int var10 = var2 + var1;
-         int var4 = 0;
+         ISAACCipher.method3321(var3);
+         var2 = true;
+      }
 
-         for(int var9 = var1; var9 < var10; ++var9) {
-            CharSequence var8 = var0[var9];
-            if(var8 == null) {
-               var4 += 4;
-            } else {
-               var4 += var8.length();
-            }
-         }
-
-         StringBuilder var5 = new StringBuilder(var4);
-
-         for(int var6 = var1; var6 < var10; ++var6) {
-            CharSequence var7 = var0[var6];
-            if(var7 == null) {
-               var5.append("null");
-            } else {
-               var5.append(var7);
-            }
-         }
-
-         return var5.toString();
+      if(!var2) {
+         return null;
+      } else {
+         ModIcon var4 = new ModIcon();
+         var4.width = class220.field2818;
+         var4.originalHeight = class286.field3792;
+         var4.offsetX = class286.field3793[0];
+         var4.offsetY = class286.field3794[0];
+         var4.originalWidth = class286.field3791[0];
+         var4.height = class149.field2211[0];
+         var4.palette = class116.field1686;
+         var4.pixels = class286.field3797[0];
+         class286.field3793 = null;
+         class286.field3794 = null;
+         class286.field3791 = null;
+         class149.field2211 = null;
+         class116.field1686 = null;
+         class286.field3797 = null;
+         return var4;
       }
    }
 }

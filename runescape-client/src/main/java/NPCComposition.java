@@ -4,154 +4,162 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ic")
+@ObfuscatedName("ie")
 @Implements("NPCComposition")
 public class NPCComposition extends CacheableNode {
-   @ObfuscatedName("b")
-   short[] field3558;
-   @ObfuscatedName("p")
-   static IndexDataBase field3559;
-   @ObfuscatedName("u")
-   @Export("isVisible")
-   public boolean isVisible;
-   @ObfuscatedName("j")
-   @Export("npcModelCache")
-   public static NodeCache npcModelCache;
-   @ObfuscatedName("f")
+   @ObfuscatedName("d")
+   @Export("isMinimapVisible")
+   public boolean isMinimapVisible;
+   @ObfuscatedName("l")
+   short[] field3554;
+   @ObfuscatedName("m")
+   static IndexDataBase field3555;
+   @ObfuscatedName("r")
+   short[] field3556;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1633181053
+      intValue = 1783599695
    )
    @Export("id")
    public int id;
-   @ObfuscatedName("m")
-   @Export("name")
-   public String name;
-   @ObfuscatedName("aa")
-   @ObfuscatedGetter(
-      intValue = 1993272853
-   )
-   public int field3564;
-   @ObfuscatedName("z")
-   @Export("models")
-   int[] models;
-   @ObfuscatedName("h")
-   int[] field3566;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1055075985
-   )
-   int field3567;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1063829373
-   )
-   public int field3568;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1763574479
-   )
-   public int field3569;
-   @ObfuscatedName("l")
-   @Export("isMinimapVisible")
-   public boolean isMinimapVisible;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -1427753747
-   )
-   public int field3571;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -1143247123
-   )
-   public int field3572;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1700394763
-   )
-   public int field3573;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 143549833
-   )
-   public int field3574;
-   @ObfuscatedName("s")
-   short[] field3575;
-   @ObfuscatedName("v")
-   short[] field3576;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1723805423
+      intValue = -762826523
    )
-   public int field3577;
-   @ObfuscatedName("w")
-   @Export("actions")
-   public String[] actions;
-   @ObfuscatedName("x")
+   public int field3558;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1137261125
+      intValue = -986488077
    )
-   public int field3579;
+   public int field3559;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1544402913
+   )
+   public int field3560;
+   @ObfuscatedName("al")
+   @ObfuscatedGetter(
+      intValue = -1460388671
+   )
+   int field3561;
+   @ObfuscatedName("z")
+   @Export("name")
+   public String name;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 945180297
+   )
+   public int field3563;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 265531115
+      intValue = -1447484277
+   )
+   public int field3564;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -2074016435
+   )
+   public int field3565;
+   @ObfuscatedName("i")
+   @Export("models")
+   int[] models;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1273873781
+   )
+   public int field3567;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -805852043
+   )
+   public int field3568;
+   @ObfuscatedName("s")
+   short[] field3569;
+   @ObfuscatedName("f")
+   int[] field3570;
+   @ObfuscatedName("ak")
+   @ObfuscatedGetter(
+      intValue = 658343235
+   )
+   int field3571;
+   @ObfuscatedName("ar")
+   public boolean field3572;
+   @ObfuscatedName("h")
+   @Export("actions")
+   public String[] actions;
+   @ObfuscatedName("k")
+   short[] field3574;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1115982751
    )
    @Export("combatLevel")
    public int combatLevel;
-   @ObfuscatedName("k")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -196947133
+      intValue = -405566391
    )
-   int field3581;
-   @ObfuscatedName("ak")
-   public boolean field3582;
-   @ObfuscatedName("ad")
+   int field3576;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -232138045
+      intValue = -827932849
    )
-   public int field3583;
+   int field3577;
+   @ObfuscatedName("u")
+   @Export("isVisible")
+   public boolean isVisible;
+   @ObfuscatedName("av")
+   @ObfuscatedGetter(
+      intValue = 2050978431
+   )
+   int field3579;
+   @ObfuscatedName("ax")
+   @ObfuscatedGetter(
+      intValue = -149858895
+   )
+   int field3580;
+   @ObfuscatedName("af")
+   @ObfuscatedGetter(
+      intValue = 113244675
+   )
+   public int field3581;
    @ObfuscatedName("ae")
    @ObfuscatedGetter(
-      intValue = 2073304899
+      intValue = 1169075943
    )
-   int field3584;
-   @ObfuscatedName("n")
-   static IndexDataBase field3585;
-   @ObfuscatedName("ao")
-   @ObfuscatedGetter(
-      intValue = -1251163499
-   )
-   int field3586;
-   @ObfuscatedName("t")
-   short[] field3587;
-   @ObfuscatedName("aw")
+   public int field3582;
+   @ObfuscatedName("ap")
    @Export("configs")
    public int[] configs;
-   @ObfuscatedName("an")
-   @ObfuscatedGetter(
-      intValue = 600646091
-   )
-   int field3589;
-   @ObfuscatedName("al")
-   @ObfuscatedGetter(
-      intValue = -1127483127
-   )
-   int field3590;
-   @ObfuscatedName("at")
-   public boolean field3591;
-   @ObfuscatedName("au")
+   @ObfuscatedName("p")
+   static IndexDataBase field3584;
+   @ObfuscatedName("e")
+   static NodeCache field3585;
+   @ObfuscatedName("ab")
+   public boolean field3586;
+   @ObfuscatedName("am")
    @Export("isClickable")
    public boolean isClickable;
-   @ObfuscatedName("i")
-   public static NodeCache field3593;
-   @ObfuscatedName("as")
-   class186 field3594;
+   @ObfuscatedName("t")
+   @Export("npcModelCache")
+   static NodeCache npcModelCache;
+   @ObfuscatedName("ao")
+   class186 field3589;
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1861882951"
+   )
+   void method4511() {
+   }
+
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(LBuffer;II)V",
-      garbageValue = "926942881"
+      garbageValue = "488426769"
    )
-   void method4663(Buffer var1, int var2) {
+   void method4513(Buffer var1, int var2) {
       int var3;
       int var4;
       if(var2 == 1) {
@@ -164,20 +172,20 @@ public class NPCComposition extends CacheableNode {
       } else if(var2 == 2) {
          this.name = var1.readString();
       } else if(var2 == 12) {
-         this.field3577 = var1.readUnsignedByte();
+         this.field3559 = var1.readUnsignedByte();
       } else if(var2 == 13) {
-         this.field3574 = var1.readUnsignedShort();
+         this.field3558 = var1.readUnsignedShort();
       } else if(var2 == 14) {
-         this.field3579 = var1.readUnsignedShort();
+         this.field3565 = var1.readUnsignedShort();
       } else if(var2 == 15) {
-         this.field3568 = var1.readUnsignedShort();
+         this.field3563 = var1.readUnsignedShort();
       } else if(var2 == 16) {
-         this.field3569 = var1.readUnsignedShort();
+         this.field3564 = var1.readUnsignedShort();
       } else if(var2 == 17) {
-         this.field3579 = var1.readUnsignedShort();
-         this.field3571 = var1.readUnsignedShort();
-         this.field3572 = var1.readUnsignedShort();
-         this.field3573 = var1.readUnsignedShort();
+         this.field3565 = var1.readUnsignedShort();
+         this.field3560 = var1.readUnsignedShort();
+         this.field3567 = var1.readUnsignedShort();
+         this.field3568 = var1.readUnsignedShort();
       } else if(var2 >= 30 && var2 < 35) {
          this.actions[var2 - 30] = var1.readString();
          if(this.actions[var2 - 30].equalsIgnoreCase("Hidden")) {
@@ -185,66 +193,66 @@ public class NPCComposition extends CacheableNode {
          }
       } else if(var2 == 40) {
          var3 = var1.readUnsignedByte();
-         this.field3558 = new short[var3];
-         this.field3575 = new short[var3];
+         this.field3569 = new short[var3];
+         this.field3574 = new short[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3558[var4] = (short)var1.readUnsignedShort();
-            this.field3575[var4] = (short)var1.readUnsignedShort();
+            this.field3569[var4] = (short)var1.readUnsignedShort();
+            this.field3574[var4] = (short)var1.readUnsignedShort();
          }
       } else if(var2 == 41) {
          var3 = var1.readUnsignedByte();
-         this.field3576 = new short[var3];
-         this.field3587 = new short[var3];
+         this.field3556 = new short[var3];
+         this.field3554 = new short[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3576[var4] = (short)var1.readUnsignedShort();
-            this.field3587[var4] = (short)var1.readUnsignedShort();
+            this.field3556[var4] = (short)var1.readUnsignedShort();
+            this.field3554[var4] = (short)var1.readUnsignedShort();
          }
       } else if(var2 == 60) {
          var3 = var1.readUnsignedByte();
-         this.field3566 = new int[var3];
+         this.field3570 = new int[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3566[var4] = var1.readUnsignedShort();
+            this.field3570[var4] = var1.readUnsignedShort();
          }
       } else if(var2 == 93) {
          this.isMinimapVisible = false;
       } else if(var2 == 95) {
          this.combatLevel = var1.readUnsignedShort();
       } else if(var2 == 97) {
-         this.field3581 = var1.readUnsignedShort();
+         this.field3576 = var1.readUnsignedShort();
       } else if(var2 == 98) {
-         this.field3567 = var1.readUnsignedShort();
+         this.field3577 = var1.readUnsignedShort();
       } else if(var2 == 99) {
          this.isVisible = true;
       } else if(var2 == 100) {
-         this.field3584 = var1.readByte();
+         this.field3579 = var1.readByte();
       } else if(var2 == 101) {
-         this.field3586 = var1.readByte() * 5;
+         this.field3580 = var1.readByte() * 5;
       } else if(var2 == 102) {
-         this.field3583 = var1.readUnsignedShort();
+         this.field3581 = var1.readUnsignedShort();
       } else if(var2 == 103) {
-         this.field3564 = var1.readUnsignedShort();
+         this.field3582 = var1.readUnsignedShort();
       } else if(var2 != 106 && var2 != 118) {
          if(var2 == 107) {
-            this.field3591 = false;
+            this.field3586 = false;
          } else if(var2 == 109) {
             this.isClickable = false;
          } else if(var2 == 111) {
-            this.field3582 = true;
+            this.field3572 = true;
          } else if(var2 == 249) {
-            this.field3594 = ChatMessages.method1795(var1, this.field3594);
+            this.field3589 = class172.method3016(var1, this.field3589);
          }
       } else {
-         this.field3589 = var1.readUnsignedShort();
-         if(this.field3589 == '\uffff') {
-            this.field3589 = -1;
+         this.field3571 = var1.readUnsignedShort();
+         if(this.field3571 == '\uffff') {
+            this.field3571 = -1;
          }
 
-         this.field3590 = var1.readUnsignedShort();
-         if(this.field3590 == '\uffff') {
-            this.field3590 = -1;
+         this.field3561 = var1.readUnsignedShort();
+         if(this.field3561 == '\uffff') {
+            this.field3561 = -1;
          }
 
          var3 = -1;
@@ -270,43 +278,27 @@ public class NPCComposition extends CacheableNode {
 
    }
 
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;S)V",
-      garbageValue = "6203"
-   )
-   void method4664(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
-
-         this.method4663(var1, var2);
-      }
-   }
-
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(LSequence;ILSequence;II)LModel;",
-      garbageValue = "685314990"
+      garbageValue = "1972692508"
    )
-   public final Model method4665(Sequence var1, int var2, Sequence var3, int var4) {
+   public final Model method4514(Sequence var1, int var2, Sequence var3, int var4) {
       if(this.configs != null) {
-         NPCComposition var12 = this.method4685();
-         return var12 == null?null:var12.method4665(var1, var2, var3, var4);
+         NPCComposition var12 = this.method4525();
+         return var12 == null?null:var12.method4514(var1, var2, var3, var4);
       } else {
          Model var5 = (Model)npcModelCache.get((long)this.id);
          if(var5 == null) {
-            boolean var10 = false;
+            boolean var6 = false;
 
             for(int var7 = 0; var7 < this.models.length; ++var7) {
-               if(!field3559.method4127(this.models[var7], 0)) {
-                  var10 = true;
+               if(!field3555.method3997(this.models[var7], 0)) {
+                  var6 = true;
                }
             }
 
-            if(var10) {
+            if(var6) {
                return null;
             }
 
@@ -314,7 +306,7 @@ public class NPCComposition extends CacheableNode {
 
             int var9;
             for(var9 = 0; var9 < this.models.length; ++var9) {
-               var8[var9] = ModelData.method2416(field3559, this.models[var9], 0);
+               var8[var9] = ModelData.method2310(field3555, this.models[var9], 0);
             }
 
             ModelData var11;
@@ -324,142 +316,95 @@ public class NPCComposition extends CacheableNode {
                var11 = new ModelData(var8, var8.length);
             }
 
-            if(this.field3558 != null) {
-               for(var9 = 0; var9 < this.field3558.length; ++var9) {
-                  var11.method2490(this.field3558[var9], this.field3575[var9]);
+            if(this.field3569 != null) {
+               for(var9 = 0; var9 < this.field3569.length; ++var9) {
+                  var11.method2322(this.field3569[var9], this.field3574[var9]);
                }
             }
 
-            if(this.field3576 != null) {
-               for(var9 = 0; var9 < this.field3576.length; ++var9) {
-                  var11.method2430(this.field3576[var9], this.field3587[var9]);
+            if(this.field3556 != null) {
+               for(var9 = 0; var9 < this.field3556.length; ++var9) {
+                  var11.method2320(this.field3556[var9], this.field3554[var9]);
                }
             }
 
-            var5 = var11.light(this.field3584 + 64, this.field3586 + 850, -30, -50, -30);
+            var5 = var11.light(this.field3579 + 64, this.field3580 + 850, -30, -50, -30);
             npcModelCache.put(var5, (long)this.id);
          }
 
-         Model var6;
+         Model var10;
          if(var1 != null && var3 != null) {
-            var6 = var1.method4721(var5, var2, var3, var4);
+            var10 = var1.method4585(var5, var2, var3, var4);
          } else if(var1 != null) {
-            var6 = var1.method4718(var5, var2);
+            var10 = var1.method4578(var5, var2);
          } else if(var3 != null) {
-            var6 = var3.method4718(var5, var4);
+            var10 = var3.method4578(var5, var4);
          } else {
-            var6 = var5.method2511(true);
+            var10 = var5.method2393(true);
          }
 
-         if(this.field3581 != 128 || this.field3567 != 128) {
-            var6.method2527(this.field3581, this.field3567, this.field3581);
+         if(this.field3576 != 128 || this.field3577 != 128) {
+            var10.method2409(this.field3576, this.field3577, this.field3576);
          }
 
-         return var6;
+         return var10;
       }
    }
 
-   NPCComposition() {
-      this.name = "null";
-      this.field3577 = 1;
-      this.field3574 = -1;
-      this.field3568 = -1;
-      this.field3569 = -1;
-      this.field3579 = -1;
-      this.field3571 = -1;
-      this.field3572 = -1;
-      this.field3573 = -1;
-      this.actions = new String[5];
-      this.isMinimapVisible = true;
-      this.combatLevel = -1;
-      this.field3581 = 128;
-      this.field3567 = 128;
-      this.isVisible = false;
-      this.field3584 = 0;
-      this.field3586 = 0;
-      this.field3583 = -1;
-      this.field3564 = 32;
-      this.field3589 = -1;
-      this.field3590 = -1;
-      this.field3591 = true;
-      this.isClickable = true;
-      this.field3582 = false;
-   }
-
-   @ObfuscatedName("z")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)[LModIcon;",
-      garbageValue = "-1144263685"
+      signature = "(I)Z",
+      garbageValue = "1987558053"
    )
-   static ModIcon[] method4666() {
-      ModIcon[] var0 = new ModIcon[class286.field3792];
-
-      for(int var1 = 0; var1 < class286.field3792; ++var1) {
-         ModIcon var2 = var0[var1] = new ModIcon();
-         var2.width = NPC.field1377;
-         var2.originalHeight = class286.field3791;
-         var2.offsetX = class95.field1493[var1];
-         var2.offsetY = class286.field3790[var1];
-         var2.originalWidth = class286.field3793[var1];
-         var2.height = class241.field3293[var1];
-         var2.palette = class174.field2410;
-         var2.pixels = class31.field449[var1];
-      }
-
-      VertexNormal.method2592();
-      return var0;
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "-52"
-   )
-   public boolean method4667() {
+   public boolean method4517() {
       if(this.configs == null) {
          return true;
       } else {
          int var1 = -1;
-         if(this.field3589 != -1) {
-            var1 = class205.method3843(this.field3589);
-         } else if(this.field3590 != -1) {
-            var1 = class211.widgetSettings[this.field3590];
+         if(this.field3571 != -1) {
+            var1 = class50.method728(this.field3571);
+         } else if(this.field3561 != -1) {
+            var1 = class211.widgetSettings[this.field3561];
          }
 
          return var1 >= 0 && var1 < this.configs.length?this.configs[var1] != -1:this.configs[this.configs.length - 1] != -1;
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(IIB)I",
-      garbageValue = "55"
+      garbageValue = "84"
    )
-   public int method4668(int var1, int var2) {
-      return class243.method4341(this.field3594, var1, var2);
+   public int method4518(int var1, int var2) {
+      return Script.method1758(this.field3589, var1, var2);
    }
 
-   static {
-      field3593 = new NodeCache(64);
-      npcModelCache = new NodeCache(50);
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(ILjava/lang/String;B)Ljava/lang/String;",
+      garbageValue = "4"
+   )
+   public String method4519(int var1, String var2) {
+      return class165.method2965(this.field3589, var1, var2);
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)LModelData;",
-      garbageValue = "-106996509"
+      garbageValue = "-1473109940"
    )
-   public final ModelData method4675() {
+   public final ModelData method4520() {
       if(this.configs != null) {
-         NPCComposition var1 = this.method4685();
-         return var1 == null?null:var1.method4675();
-      } else if(this.field3566 == null) {
+         NPCComposition var1 = this.method4525();
+         return var1 == null?null:var1.method4520();
+      } else if(this.field3570 == null) {
          return null;
       } else {
          boolean var5 = false;
 
-         for(int var2 = 0; var2 < this.field3566.length; ++var2) {
-            if(!field3559.method4127(this.field3566[var2], 0)) {
+         for(int var2 = 0; var2 < this.field3570.length; ++var2) {
+            if(!field3555.method3997(this.field3570[var2], 0)) {
                var5 = true;
             }
          }
@@ -467,65 +412,48 @@ public class NPCComposition extends CacheableNode {
          if(var5) {
             return null;
          } else {
-            ModelData[] var6 = new ModelData[this.field3566.length];
+            ModelData[] var6 = new ModelData[this.field3570.length];
 
-            for(int var7 = 0; var7 < this.field3566.length; ++var7) {
-               var6[var7] = ModelData.method2416(field3559, this.field3566[var7], 0);
+            for(int var3 = 0; var3 < this.field3570.length; ++var3) {
+               var6[var3] = ModelData.method2310(field3555, this.field3570[var3], 0);
             }
 
-            ModelData var3;
+            ModelData var7;
             if(var6.length == 1) {
-               var3 = var6[0];
+               var7 = var6[0];
             } else {
-               var3 = new ModelData(var6, var6.length);
+               var7 = new ModelData(var6, var6.length);
             }
 
             int var4;
-            if(this.field3558 != null) {
-               for(var4 = 0; var4 < this.field3558.length; ++var4) {
-                  var3.method2490(this.field3558[var4], this.field3575[var4]);
+            if(this.field3569 != null) {
+               for(var4 = 0; var4 < this.field3569.length; ++var4) {
+                  var7.method2322(this.field3569[var4], this.field3574[var4]);
                }
             }
 
-            if(this.field3576 != null) {
-               for(var4 = 0; var4 < this.field3576.length; ++var4) {
-                  var3.method2430(this.field3576[var4], this.field3587[var4]);
+            if(this.field3556 != null) {
+               for(var4 = 0; var4 < this.field3556.length; ++var4) {
+                  var7.method2320(this.field3556[var4], this.field3554[var4]);
                }
             }
 
-            return var3;
+            return var7;
          }
       }
    }
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1735521581"
-   )
-   void method4678() {
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;I)Ljava/lang/String;",
-      garbageValue = "589522047"
-   )
-   public String method4682(int var1, String var2) {
-      return class204.method3838(this.field3594, var1, var2);
-   }
-
-   @ObfuscatedName("z")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(I)LNPCComposition;",
-      garbageValue = "-1907293126"
+      garbageValue = "-1266911967"
    )
-   public final NPCComposition method4685() {
+   public final NPCComposition method4525() {
       int var1 = -1;
-      if(this.field3589 != -1) {
-         var1 = class205.method3843(this.field3589);
-      } else if(this.field3590 != -1) {
-         var1 = class211.widgetSettings[this.field3590];
+      if(this.field3571 != -1) {
+         var1 = class50.method728(this.field3571);
+      } else if(this.field3561 != -1) {
+         var1 = class211.widgetSettings[this.field3561];
       }
 
       int var2;
@@ -535,6 +463,75 @@ public class NPCComposition extends CacheableNode {
          var2 = this.configs[this.configs.length - 1];
       }
 
-      return var2 != -1?class217.getNpcDefinition(var2):null;
+      return var2 != -1?class158.getNpcDefinition(var2):null;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;I)V",
+      garbageValue = "594496052"
+   )
+   void method4534(Buffer var1) {
+      while(true) {
+         int var2 = var1.readUnsignedByte();
+         if(var2 == 0) {
+            return;
+         }
+
+         this.method4513(var1, var2);
+      }
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-73"
+   )
+   public static void method4541() {
+      Object var0 = class236.field3239;
+      synchronized(class236.field3239) {
+         if(class236.field3241 != 0) {
+            class236.field3241 = 1;
+
+            try {
+               class236.field3239.wait();
+            } catch (InterruptedException var3) {
+               ;
+            }
+         }
+
+      }
+   }
+
+   NPCComposition() {
+      this.name = "null";
+      this.field3559 = 1;
+      this.field3558 = -1;
+      this.field3563 = -1;
+      this.field3564 = -1;
+      this.field3565 = -1;
+      this.field3560 = -1;
+      this.field3567 = -1;
+      this.field3568 = -1;
+      this.actions = new String[5];
+      this.isMinimapVisible = true;
+      this.combatLevel = -1;
+      this.field3576 = 128;
+      this.field3577 = 128;
+      this.isVisible = false;
+      this.field3579 = 0;
+      this.field3580 = 0;
+      this.field3581 = -1;
+      this.field3582 = 32;
+      this.field3571 = -1;
+      this.field3561 = -1;
+      this.field3586 = true;
+      this.isClickable = true;
+      this.field3572 = false;
+   }
+
+   static {
+      field3585 = new NodeCache(64);
+      npcModelCache = new NodeCache(50);
    }
 }

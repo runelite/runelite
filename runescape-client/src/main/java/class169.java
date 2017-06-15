@@ -1,73 +1,44 @@
-import net.runelite.mapping.Export;
+import java.io.IOException;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fd")
+@ObfuscatedName("fq")
 public class class169 {
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(ILclass219;I)I",
-      garbageValue = "-1197809163"
-   )
-   public static int method3122(int var0, class219 var1) {
-      return (var0 + '鱀' << 8) + var1.field2799;
-   }
-
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "205609558"
+      signature = "(ZS)V",
+      garbageValue = "-7415"
    )
-   public static void method3123() {
-      FloorUnderlayDefinition.field3343.reset();
-   }
-
-   @ObfuscatedName("jj")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)Z",
-      garbageValue = "1"
-   )
-   static boolean method3124(String var0) {
-      if(var0 == null) {
-         return false;
-      } else {
-         String var1 = CollisionData.method3023(var0, class13.field281);
-
-         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
-            Ignore var3 = Client.ignores[var2];
-            if(var1.equalsIgnoreCase(CollisionData.method3023(var3.name, class13.field281))) {
-               return true;
+   public static void method3002(boolean var0) {
+      if(class238.field3258 != null) {
+         try {
+            Buffer var1 = new Buffer(4);
+            var1.putByte(var0?2:3);
+            var1.put24bitInt(0);
+            class238.field3258.queueForWrite(var1.payload, 0, 4);
+         } catch (IOException var4) {
+            try {
+               class238.field3258.method2879();
+            } catch (Exception var3) {
+               ;
             }
 
-            if(var1.equalsIgnoreCase(CollisionData.method3023(var3.previousName, class13.field281))) {
-               return true;
-            }
+            ++class238.field3276;
+            class238.field3258 = null;
          }
 
-         return false;
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("jo")
    @ObfuscatedSignature(
-      signature = "(II)LSequence;",
-      garbageValue = "1596594692"
+      signature = "(Ljava/lang/String;II)V",
+      garbageValue = "131949608"
    )
-   @Export("getAnimation")
-   public static Sequence getAnimation(int var0) {
-      Sequence var1 = (Sequence)Sequence.field3625.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Sequence.field3610.getConfigData(12, var0);
-         var1 = new Sequence();
-         if(var2 != null) {
-            var1.method4729(new Buffer(var2));
-         }
-
-         var1.method4755();
-         Sequence.field3625.put(var1, (long)var0);
-         return var1;
-      }
+   static final void method3003(String var0, int var1) {
+      Client.secretPacketBuffer1.putOpcode(11);
+      Client.secretPacketBuffer1.putByte(Friend.method1023(var0) + 1);
+      Client.secretPacketBuffer1.method3125(var0);
+      Client.secretPacketBuffer1.method3059(var1);
    }
 }

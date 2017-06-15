@@ -1,119 +1,150 @@
-import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bi")
+@ObfuscatedName("bt")
 public class class69 extends Node {
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 1829463723
-   )
-   int field822;
+   @ObfuscatedName("ea")
+   static class262 field820;
    @ObfuscatedName("p")
-   boolean field823;
-   @ObfuscatedName("i")
-   Widget field824;
-   @ObfuscatedName("f")
+   Object[] field821;
+   @ObfuscatedName("e")
+   Widget field822;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1678525837
+      intValue = -1845261225
    )
-   int field826;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 259733619
-   )
-   int field827;
-   @ObfuscatedName("g")
-   String field828;
+   int field823;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1602397611
+      intValue = 1887699281
    )
-   int field829;
-   @ObfuscatedName("h")
+   int field825;
+   @ObfuscatedName("m")
+   boolean field826;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1960853293
+      intValue = 832886391
+   )
+   int field827;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -136248057
+   )
+   int field828;
+   @ObfuscatedName("j")
+   Widget field829;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1148904247
    )
    int field830;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    class219 field831;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1511355601
-   )
-   int field832;
-   @ObfuscatedName("n")
-   Object[] field833;
-   @ObfuscatedName("ri")
-   static class13 field834;
+   @ObfuscatedName("dl")
+   @Export("indexScripts")
+   static IndexData indexScripts;
    @ObfuscatedName("c")
-   Widget field835;
-   @ObfuscatedName("bc")
-   static ModIcon field836;
-   @ObfuscatedName("ci")
-   @Export("indexInterfaces")
-   static IndexData indexInterfaces;
-
-   @ObfuscatedName("an")
-   @ObfuscatedSignature(
-      signature = "(Lclass103;B)V",
-      garbageValue = "0"
+   String field833;
+   @ObfuscatedName("ca")
+   static class153 field834;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 912032317
    )
-   public static final void method1069(class103 var0) {
-      class109.field1635 = var0;
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/Object;B)V",
-      garbageValue = "-63"
-   )
-   public void method1070(Object[] var1) {
-      this.field833 = var1;
-   }
+   int field835;
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lclass219;I)V",
-      garbageValue = "105996265"
+      signature = "(II)LKitDefinition;",
+      garbageValue = "-1412869385"
    )
-   public void method1071(class219 var1) {
+   @Export("getKitDefinition")
+   public static KitDefinition getKitDefinition(int var0) {
+      KitDefinition var1 = (KitDefinition)KitDefinition.field3362.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = KitDefinition.field3366.getConfigData(3, var0);
+         var1 = new KitDefinition();
+         if(var2 != null) {
+            var1.method4247(new Buffer(var2));
+         }
+
+         KitDefinition.field3362.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("en")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "2094045495"
+   )
+   static final void method1035() {
+      if(Player.field862 != null) {
+         Player.field862.method1912();
+      }
+
+      if(class134.field2003 != null) {
+         class134.field2003.method1912();
+      }
+
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(Lclass219;I)V",
+      garbageValue = "-220189025"
+   )
+   public void method1036(class219 var1) {
       this.field831 = var1;
    }
 
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "1096371298"
+   )
+   public static int method1040(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + class224.method3964(var0.charAt(var3));
+      }
+
+      return var2;
+   }
+
    public class69() {
-      this.field831 = class219.field2788;
+      this.field831 = class219.field2805;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(S)Ljava/lang/String;",
-      garbageValue = "8842"
+      signature = "([Ljava/lang/Object;I)V",
+      garbageValue = "1658502683"
    )
-   static String method1076() {
-      String var0 = "";
-
-      MessageNode var2;
-      for(Iterator var1 = class98.field1524.iterator(); var1.hasNext(); var0 = var0 + var2.name + ':' + var2.value + '\n') {
-         var2 = (MessageNode)var1.next();
-      }
-
-      return var0;
+   public void method1041(Object[] var1) {
+      this.field821 = var1;
    }
 
-   @ObfuscatedName("hu")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "1499716047"
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "2028879275"
    )
-   static final void method1078(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.field1119; ++var4) {
-         if(Client.widgetPositionX[var4] + Client.widgetBoundsWidth[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var1 + var3) {
-            Client.field1121[var4] = true;
-         }
+   public static String method1042(CharSequence var0) {
+      int var2 = var0.length();
+      char[] var3 = new char[var2];
+
+      for(int var4 = 0; var4 < var2; ++var4) {
+         var3[var4] = 42;
       }
 
+      String var1 = new String(var3);
+      return var1;
    }
 }

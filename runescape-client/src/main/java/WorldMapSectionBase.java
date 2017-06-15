@@ -2,48 +2,48 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("av")
+@ObfuscatedName("aq")
 @Implements("WorldMapSectionBase")
 public interface WorldMapSectionBase {
-   @ObfuscatedName("i")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "-203277119"
+      signature = "(LWorldMapData;I)V",
+      garbageValue = "-466828627"
    )
-   boolean vmethod713(int var1, int var2);
+   void vmethod680(WorldMapData var1);
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(IIII)[I",
+      garbageValue = "630255391"
+   )
+   int[] vmethod682(int var1, int var2, int var3);
+
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(III)LCoordinates;",
-      garbageValue = "1721490041"
+      garbageValue = "-1537373407"
    )
-   Coordinates vmethod696(int var1, int var2);
+   Coordinates vmethod685(int var1, int var2);
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;I)V",
+      garbageValue = "-1315256502"
+   )
+   void vmethod684(Buffer var1);
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(IIB)Z",
+      garbageValue = "108"
+   )
+   boolean vmethod679(int var1, int var2);
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "-2062162233"
+      signature = "(IIII)Z",
+      garbageValue = "-2095092414"
    )
-   void vmethod697(Buffer var1);
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(IIIB)Z",
-      garbageValue = "-126"
-   )
-   boolean vmethod693(int var1, int var2, int var3);
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(IIIB)[I",
-      garbageValue = "-1"
-   )
-   int[] vmethod695(int var1, int var2, int var3);
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(LWorldMapData;B)V",
-      garbageValue = "101"
-   )
-   void vmethod692(WorldMapData var1);
+   boolean vmethod678(int var1, int var2, int var3);
 }

@@ -1,85 +1,50 @@
-import java.io.File;
-import java.io.IOException;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fw")
+@ObfuscatedName("fd")
 public abstract class class163 {
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1886445141
-   )
-   public int field2319;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -33677325
+      intValue = -2129138697
    )
    public int field2320;
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1829333717
+      intValue = -913312833
    )
    public int field2321;
-   @ObfuscatedName("ln")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -837280923
+      intValue = 2038947913
    )
-   static int field2323;
-   @ObfuscatedName("j")
+   public int field2322;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1645708105
+      intValue = -132645097
    )
-   public int field2324;
+   public int field2323;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IIILCollisionData;B)Z",
-      garbageValue = "0"
+      signature = "(IIILCollisionData;I)Z",
+      garbageValue = "1848577048"
    )
-   public abstract boolean vmethod3055(int var1, int var2, int var3, CollisionData var4);
+   protected abstract boolean vmethod2950(int var1, int var2, int var3, CollisionData var4);
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;ZS)LFileOnDisk;",
-      garbageValue = "-10271"
+      signature = "(IIIIIII)I",
+      garbageValue = "88494786"
    )
-   @Export("getPreferencesFile")
-   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
-      File var3 = new File(class21.field347, "preferences" + var0 + ".dat");
-      if(var3.exists()) {
-         try {
-            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
-            ;
-         }
+   public static int method2955(int var0, int var1, int var2, int var3, int var4, int var5) {
+      if((var5 & 1) == 1) {
+         int var6 = var3;
+         var3 = var4;
+         var4 = var6;
       }
 
-      String var4 = "";
-      if(class228.field3159 == 33) {
-         var4 = "_rc";
-      } else if(class228.field3159 == 34) {
-         var4 = "_wip";
-      }
-
-      File var5 = new File(class2.field14, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-      FileOnDisk var6;
-      if(!var2 && var5.exists()) {
-         try {
-            var6 = new FileOnDisk(var5, "rw", 10000L);
-            return var6;
-         } catch (IOException var8) {
-            ;
-         }
-      }
-
-      try {
-         var6 = new FileOnDisk(var3, "rw", 10000L);
-         return var6;
-      } catch (IOException var7) {
-         throw new RuntimeException();
-      }
+      var2 &= 3;
+      return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
    }
 }

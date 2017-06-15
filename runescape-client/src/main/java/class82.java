@@ -1,137 +1,130 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cg")
+@ObfuscatedName("ci")
 public final class class82 extends Node {
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -547576971
-   )
-   int field1322;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1592560977
-   )
-   int field1323;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -30282431
-   )
-   int field1324;
-   @ObfuscatedName("n")
-   static Deque field1325;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -660486487
-   )
-   int field1326;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1979363263
-   )
-   int field1327;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1727172199
-   )
-   int field1328;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1862667841
-   )
-   int field1329;
-   @ObfuscatedName("h")
-   class117 field1330;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1705554677
-   )
-   int field1331;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -302871997
-   )
-   int field1332;
-   @ObfuscatedName("o")
-   int[] field1333;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1691605909
+      intValue = 704307743
    )
-   int field1334;
-   @ObfuscatedName("a")
-   class117 field1335;
-   @ObfuscatedName("y")
-   ObjectComposition field1336;
-   @ObfuscatedName("ck")
+   int field1306;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1657330943
+      intValue = 272055805
    )
-   public static int field1337;
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;I)V",
-      garbageValue = "-293782011"
+   int field1307;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 717058801
    )
-   public static void method1575(IndexDataBase var0, IndexDataBase var1) {
-      NPCComposition.field3585 = var0;
-      NPCComposition.field3559 = var1;
-   }
-
+   int field1308;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 573092601
+   )
+   int field1309;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 1512017617
+   )
+   int field1310;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1067688845
+   )
+   int field1311;
+   @ObfuscatedName("as")
+   @Export("authCode")
+   static String authCode;
+   @ObfuscatedName("f")
+   class117 field1313;
    @ObfuscatedName("p")
+   static Deque field1314;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1532687559
+   )
+   int field1315;
+   @ObfuscatedName("q")
+   int[] field1316;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -1282945037
+   )
+   int field1317;
+   @ObfuscatedName("a")
+   class117 field1318;
+   @ObfuscatedName("g")
+   ObjectComposition field1319;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 621215589
+   )
+   int field1320;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -993986701
+   )
+   int field1322;
+
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "987939478"
+      garbageValue = "-753262682"
    )
-   void method1576() {
-      int var1 = this.field1329;
-      ObjectComposition var2 = this.field1336.getImpostor();
+   void method1514() {
+      int var1 = this.field1308;
+      ObjectComposition var2 = this.field1319.getImpostor();
       if(var2 != null) {
-         this.field1329 = var2.ambientSoundId;
-         this.field1328 = var2.field3487 * 128;
-         this.field1331 = var2.field3488;
-         this.field1332 = var2.field3489;
-         this.field1333 = var2.field3479;
+         this.field1308 = var2.ambientSoundId;
+         this.field1311 = var2.field3466 * 128;
+         this.field1307 = var2.field3488;
+         this.field1315 = var2.field3442;
+         this.field1316 = var2.field3490;
       } else {
-         this.field1329 = -1;
-         this.field1328 = 0;
-         this.field1331 = 0;
-         this.field1332 = 0;
-         this.field1333 = null;
+         this.field1308 = -1;
+         this.field1311 = 0;
+         this.field1307 = 0;
+         this.field1315 = 0;
+         this.field1316 = null;
       }
 
-      if(var1 != this.field1329 && this.field1330 != null) {
-         WorldMapType0.field613.method1862(this.field1330);
-         this.field1330 = null;
+      if(var1 != this.field1308 && this.field1313 != null) {
+         WorldMapType1.field442.method1780(this.field1313);
+         this.field1313 = null;
       }
 
    }
 
    static {
-      field1325 = new Deque();
+      field1314 = new Deque();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("ij")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-30"
+      signature = "(IIIILSpritePixels;Lclass210;S)V",
+      garbageValue = "27169"
    )
-   public static void method1583() {
-      PlayerComposition.field2630.reset();
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-424425459"
-   )
-   static void method1584(int var0, int var1) {
-      long var2 = (long)(var1 + (var0 << 16));
-      class234 var4 = (class234)class238.field3258.method3545(var2);
+   static final void method1523(int var0, int var1, int var2, int var3, SpritePixels var4, class210 var5) {
       if(var4 != null) {
-         class238.field3253.method3474(var4);
+         int var6 = Client.mapScale + Client.mapAngle & 2047;
+         int var7 = var2 * var2 + var3 * var3;
+         if(var7 <= 6400) {
+            int var8 = class136.SINE[var6];
+            int var9 = class136.COSINE[var6];
+            var8 = var8 * 256 / (Client.mapScaleDelta + 256);
+            var9 = var9 * 256 / (Client.mapScaleDelta + 256);
+            int var10 = var3 * var8 + var9 * var2 >> 16;
+            int var11 = var9 * var3 - var8 * var2 >> 16;
+            if(var7 > 2500) {
+               var4.method4990(var10 + var5.field2607 / 2 - var4.maxWidth / 2, var5.field2611 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2607, var5.field2611, var5.field2609, var5.field2608);
+            } else {
+               var4.method4950(var0 + var5.field2607 / 2 + var10 - var4.maxWidth / 2, var1 + var5.field2611 / 2 - var11 - var4.maxHeight / 2);
+            }
+
+         }
       }
    }
 }

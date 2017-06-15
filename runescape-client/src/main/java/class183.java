@@ -1,9 +1,9 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gf")
+@ObfuscatedName("gt")
 public class class183 {
-   @ObfuscatedName("n")
-   public static void method3433(byte[] var0, int var1, byte[] var2, int var3, int var4) {
+   @ObfuscatedName("p")
+   public static void method3339(byte[] var0, int var1, byte[] var2, int var3, int var4) {
       if(var0 == var2) {
          if(var1 == var3) {
             return;
@@ -51,8 +51,8 @@ public class class183 {
 
    }
 
-   @ObfuscatedName("g")
-   public static void method3442(int[] var0, int var1, int var2) {
+   @ObfuscatedName("q")
+   public static void method3344(int[] var0, int var1, int var2) {
       for(var2 = var1 + var2 - 7; var1 < var2; var0[var1++] = 0) {
          var0[var1++] = 0;
          var0[var1++] = 0;

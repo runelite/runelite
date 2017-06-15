@@ -4,39 +4,38 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bt")
+@ObfuscatedName("bd")
 @Implements("Friend")
 public class Friend {
-   @ObfuscatedName("j")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1036410893
-   )
-   @Export("rank")
-   int rank;
-   @ObfuscatedName("p")
-   @Export("previousName")
-   String previousName;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1713075
+      intValue = 1617006571
    )
    @Export("world")
    int world;
-   @ObfuscatedName("f")
-   boolean field793;
+   @ObfuscatedName("z")
+   boolean field792;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -505498701
+   )
+   @Export("rank")
+   int rank;
    @ObfuscatedName("m")
-   boolean field794;
-   @ObfuscatedName("n")
+   @Export("previousName")
+   String previousName;
+   @ObfuscatedName("w")
+   boolean field795;
+   @ObfuscatedName("p")
    @Export("name")
    String name;
 
-   @ObfuscatedName("ji")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-79"
+      signature = "(Ljava/lang/String;I)I",
+      garbageValue = "-2138741852"
    )
-   static final void method1060() {
-      Client.secretPacketBuffer1.putOpcode(163);
-      Client.secretPacketBuffer1.putByte(0);
+   public static int method1023(String var0) {
+      return var0.length() + 1;
    }
 }

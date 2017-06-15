@@ -4,81 +4,64 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("eg")
 @Implements("FaceNormal")
 public class FaceNormal {
-   @ObfuscatedName("n")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -383907761
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 970908259
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -854934929
+      intValue = 2031712489
    )
    @Export("z")
    int z;
-   @ObfuscatedName("rn")
-   static RenderOverview field2146;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 1038179007
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1453231937
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("cm")
+   @Export("indexTrack1")
+   static IndexData indexTrack1;
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("ew")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZB)I",
+      signature = "(LSequence;IIII)V",
+      garbageValue = "-2083302659"
+   )
+   static void method2763(Sequence var0, int var1, int var2, int var3) {
+      if(Client.field931 < 50 && Client.field1041 != 0) {
+         if(var0.field3610 != null && var1 < var0.field3610.length) {
+            int var4 = var0.field3610[var1];
+            if(var4 != 0) {
+               int var5 = var4 >> 8;
+               int var6 = var4 >> 4 & 7;
+               int var7 = var4 & 15;
+               Client.field1036[Client.field931] = var5;
+               Client.field1155[Client.field931] = var6;
+               Client.field1150[Client.field931] = 0;
+               Client.audioEffects[Client.field931] = null;
+               int var8 = (var2 - 64) / 128;
+               int var9 = (var3 - 64) / 128;
+               Client.field1170[Client.field931] = (var9 << 8) + (var8 << 16) + var7;
+               ++Client.field931;
+            }
+         }
+      }
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(B)V",
       garbageValue = "2"
    )
-   static int method2877(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class278.field3737:class37.field515;
-      if(var0 == 1600) {
-         class83.intStack[++class165.intStackSize - 1] = var3.scrollX;
-         return 1;
-      } else if(var0 == 1601) {
-         class83.intStack[++class165.intStackSize - 1] = var3.scrollY;
-         return 1;
-      } else if(var0 == 1602) {
-         class83.scriptStringStack[++ISAACCipher.scriptStringStackSize - 1] = var3.text;
-         return 1;
-      } else if(var0 == 1603) {
-         class83.intStack[++class165.intStackSize - 1] = var3.scrollWidth;
-         return 1;
-      } else if(var0 == 1604) {
-         class83.intStack[++class165.intStackSize - 1] = var3.scrollHeight;
-         return 1;
-      } else if(var0 == 1605) {
-         class83.intStack[++class165.intStackSize - 1] = var3.field2706;
-         return 1;
-      } else if(var0 == 1606) {
-         class83.intStack[++class165.intStackSize - 1] = var3.rotationX;
-         return 1;
-      } else if(var0 == 1607) {
-         class83.intStack[++class165.intStackSize - 1] = var3.rotationY;
-         return 1;
-      } else if(var0 == 1608) {
-         class83.intStack[++class165.intStackSize - 1] = var3.rotationZ;
-         return 1;
-      } else if(var0 == 1609) {
-         class83.intStack[++class165.intStackSize - 1] = var3.opacity;
-         return 1;
-      } else if(var0 == 1610) {
-         class83.intStack[++class165.intStackSize - 1] = var3.field2684;
-         return 1;
-      } else if(var0 == 1611) {
-         class83.intStack[++class165.intStackSize - 1] = var3.textColor;
-         return 1;
-      } else if(var0 == 1612) {
-         class83.intStack[++class165.intStackSize - 1] = var3.field2775;
-         return 1;
-      } else if(var0 == 1613) {
-         class83.intStack[++class165.intStackSize - 1] = var3.field2668.vmethod5059();
-         return 1;
-      } else {
-         return 2;
-      }
+   public static void method2764() {
+      NPCComposition.field3585.reset();
+      NPCComposition.npcModelCache.reset();
    }
 }

@@ -1,74 +1,110 @@
-import java.applet.Applet;
+import java.awt.Component;
 import java.util.Comparator;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("r")
+@ObfuscatedName("v")
 final class class15 implements Comparator {
-   @ObfuscatedName("gc")
-   static SpritePixels[] field297;
-   @ObfuscatedName("aa")
-   static java.awt.Font field298;
-   @ObfuscatedName("n")
-   public static Applet field304;
+   @ObfuscatedName("gj")
+   static SpritePixels field300;
+   @ObfuscatedName("lw")
+   @ObfuscatedGetter(
+      intValue = -94330985
+   )
+   static int field303;
+
+   @ObfuscatedName("jr")
+   @ObfuscatedSignature(
+      signature = "(LWidget;I)I",
+      garbageValue = "1273903805"
+   )
+   static int method92(Widget var0) {
+      class198 var1 = (class198)Client.widgetFlags.method3425((long)var0.index + ((long)var0.id << 32));
+      return var1 != null?var1.field2496:var0.field2650;
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method100((class14)var1, (class14)var2);
+   }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   public int compare(Object var1, Object var2) {
-      return this.method107((class14)var1, (class14)var2);
-   }
-
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(Lclass14;Lclass14;I)I",
-      garbageValue = "-1268224513"
+      garbageValue = "-1966408094"
    )
-   int method107(class14 var1, class14 var2) {
-      return var1.field288.totalQuantity < var2.field288.totalQuantity?-1:(var2.field288.totalQuantity == var1.field288.totalQuantity?0:1);
+   int method100(class14 var1, class14 var2) {
+      return var1.field292.totalQuantity < var2.field292.totalQuantity?-1:(var1.field292.totalQuantity == var2.field292.totalQuantity?0:1);
    }
 
-   @ObfuscatedName("jk")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)V",
-      garbageValue = "-1277410199"
+      signature = "(Ljava/awt/Component;I)V",
+      garbageValue = "-1492866595"
    )
-   static final void method111(String var0, int var1) {
-      Client.secretPacketBuffer1.putOpcode(141);
-      Client.secretPacketBuffer1.putByte(Script.method1836(var0) + 1);
-      Client.secretPacketBuffer1.method3184(var1);
-      Client.secretPacketBuffer1.method3150(var0);
+   static void method102(Component var0) {
+      var0.setFocusTraversalKeysEnabled(false);
+      var0.addKeyListener(class50.keyboard);
+      var0.addFocusListener(class50.keyboard);
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1310050706"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
+      garbageValue = "-105"
    )
-   static final int method114(int var0, int var1) {
-      if(var0 == -1) {
-         return 12345678;
-      } else {
-         var1 = var1 * (var0 & 127) / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return (var0 & 'ﾀ') + var1;
+   @Export("addChatMessage")
+   static void addChatMessage(int var0, String var1, String var2, String var3) {
+      ChatLineBuffer var4 = (ChatLineBuffer)class98.chatLineMap.get(Integer.valueOf(var0));
+      if(var4 == null) {
+         var4 = new ChatLineBuffer();
+         class98.chatLineMap.put(Integer.valueOf(var0), var4);
       }
+
+      MessageNode var5 = var4.method1771(var0, var1, var2, var3);
+      class98.field1517.method3394(var5, (long)var5.id);
+      class98.field1523.method3556(var5);
+      Client.field1098 = Client.field1091;
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
-      garbageValue = "-91"
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "2002001395"
    )
-   static void method115(String var0, String var1, String var2) {
-      class92.loginMessage1 = var0;
-      class92.loginMessage2 = var1;
-      class92.loginMessage3 = var2;
+   static String method105(int var0) {
+      return "<col=" + Integer.toHexString(var0) + ">";
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "-543378679"
+   )
+   public static int method106(int var0) {
+      return var0 >> 17 & 7;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)[Lclass231;",
+      garbageValue = "1775373854"
+   )
+   public static class231[] method107() {
+      return new class231[]{class231.field3190, class231.field3198, class231.field3192, class231.field3191};
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)[Lclass276;",
+      garbageValue = "607258951"
+   )
+   static class276[] method109() {
+      return new class276[]{class276.field3734, class276.field3732, class276.field3733};
    }
 }

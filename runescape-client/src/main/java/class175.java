@@ -1,23 +1,18 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("fi")
+@ObfuscatedName("ft")
 public class class175 {
-   @ObfuscatedName("av")
+   @ObfuscatedName("s")
+   static class47 field2423;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 867296797
+      longValue = 4618783650720335871L
    )
-   @Export("authCodeForLogin")
-   static int authCodeForLogin;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      longValue = 776384322671341045L
-   )
-   static long field2414;
+   static long field2424;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      longValue = 3861875877290537749L
+      longValue = 433949531769062963L
    )
-   static long field2416;
+   static long field2426;
 }

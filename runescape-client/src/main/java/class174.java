@@ -1,156 +1,151 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fk")
+@ObfuscatedName("fw")
 public class class174 {
+   @ObfuscatedName("w")
+   static byte[][] field2416;
    @ObfuscatedName("m")
-   static byte[][] field2402;
+   @ObfuscatedGetter(
+      intValue = 572805841
+   )
+   static int field2417;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 631299737
+   )
+   static int field2418;
+   @ObfuscatedName("t")
+   static byte[][] field2419;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -927023337
+      intValue = -1061875211
    )
-   static int field2403;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 230155529
-   )
-   static int field2404;
-   @ObfuscatedName("j")
-   static byte[][] field2405;
-   @ObfuscatedName("f")
-   static byte[][] field2406;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1594219691
-   )
-   @Export("canvasWidth")
-   public static int canvasWidth;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 539241415
-   )
-   static int field2409;
+   static int field2420;
    @ObfuscatedName("z")
-   public static int[] field2410;
+   static byte[][] field2421;
 
-   static {
-      field2404 = 0;
-      field2403 = 0;
-      field2409 = 0;
-      field2405 = new byte[1000][];
-      field2406 = new byte[250][];
-      field2402 = new byte[50][];
-   }
-
-   @ObfuscatedName("j")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)[Lclass283;",
-      garbageValue = "1082451622"
+      signature = "(II)[B",
+      garbageValue = "-962317979"
    )
-   public static class283[] method3356() {
-      return new class283[]{class283.field3766, class283.field3767, class283.field3764, class283.field3765, class283.field3769};
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(IB)[B",
-      garbageValue = "82"
-   )
-   static synchronized byte[] method3357(int var0) {
+   static synchronized byte[] method3248(int var0) {
       byte[] var1;
-      if(var0 == 100 && field2404 > 0) {
-         var1 = field2405[--field2404];
-         field2405[field2404] = null;
+      if(var0 == 100 && field2420 > 0) {
+         var1 = field2419[--field2420];
+         field2419[field2420] = null;
          return var1;
-      } else if(var0 == 5000 && field2403 > 0) {
-         var1 = field2406[--field2403];
-         field2406[field2403] = null;
+      } else if(var0 == 5000 && field2417 > 0) {
+         var1 = field2416[--field2417];
+         field2416[field2417] = null;
          return var1;
-      } else if(var0 == 30000 && field2409 > 0) {
-         var1 = field2402[--field2409];
-         field2402[field2409] = null;
+      } else if(var0 == 30000 && field2418 > 0) {
+         var1 = field2421[--field2418];
+         field2421[field2418] = null;
          return var1;
       } else {
          return new byte[var0];
       }
    }
 
-   @ObfuscatedName("fb")
+   static {
+      field2420 = 0;
+      field2417 = 0;
+      field2418 = 0;
+      field2419 = new byte[1000][];
+      field2416 = new byte[250][];
+      field2421 = new byte[50][];
+   }
+
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)V",
-      garbageValue = "-64"
+      signature = "(IIIII)V",
+      garbageValue = "-1231322464"
    )
-   static final void method3358(String var0) {
-      if(var0.equalsIgnoreCase("toggleroof")) {
-         class66.field801.field1318 = !class66.field801.field1318;
-         WorldMapType3.method232();
-         if(class66.field801.field1318) {
-            class98.sendGameMessage(99, "", "Roofs are now all hidden");
-         } else {
-            class98.sendGameMessage(99, "", "Roofs will only be removed selectively");
-         }
-      }
+   static final void method3250(int var0, int var1, int var2, int var3) {
+      for(int var4 = var1; var4 <= var1 + var3; ++var4) {
+         for(int var5 = var0; var5 <= var2 + var0; ++var5) {
+            if(var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
+               class267.field3669[0][var5][var4] = 127;
+               if(var5 == var0 && var5 > 0) {
+                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5 - 1][var4];
+               }
 
-      if(var0.equalsIgnoreCase("displayfps")) {
-         Client.field928 = !Client.field928;
-      }
+               if(var5 == var0 + var2 && var5 < 103) {
+                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5 + 1][var4];
+               }
 
-      if(var0.equalsIgnoreCase("clickbox")) {
-         Model.field1944 = !Model.field1944;
-         class98.sendGameMessage(99, "", "Clickbox Mode: " + (Model.field1944?"AABB":"Legacy"));
-      }
+               if(var4 == var1 && var4 > 0) {
+                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5][var4 - 1];
+               }
 
-      if(Client.rights >= 2) {
-         if(var0.equalsIgnoreCase("aabb")) {
-            if(!class7.field231) {
-               class7.field231 = true;
-               class7.field234 = class11.field266;
-               class98.sendGameMessage(99, "", "AABB boxes: All");
-            } else if(class11.field266 == class7.field234) {
-               class7.field231 = true;
-               class7.field234 = class11.field268;
-               class98.sendGameMessage(99, "", "AABB boxes: Mouse Over");
-            } else {
-               class7.field231 = false;
-               class98.sendGameMessage(99, "", "AABB boxes: Off");
+               if(var3 + var1 == var4 && var4 < 103) {
+                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5][var4 + 1];
+               }
             }
          }
+      }
 
-         if(var0.equalsIgnoreCase("legacyboxes")) {
-            class7.field232 = !class7.field232;
-            class98.sendGameMessage(99, "", "Show legacy boxes: " + class7.field232);
+   }
+
+   @ObfuscatedName("m")
+   public static String method3252(long var0) {
+      if(var0 > 0L && var0 < 6582952005840035281L) {
+         if(var0 % 37L == 0L) {
+            return null;
+         } else {
+            int var2 = 0;
+
+            for(long var3 = var0; var3 != 0L; var3 /= 37L) {
+               ++var2;
+            }
+
+            StringBuilder var5 = new StringBuilder(var2);
+
+            while(0L != var0) {
+               long var6 = var0;
+               var0 /= 37L;
+               var5.append(class268.field3673[(int)(var6 - var0 * 37L)]);
+            }
+
+            return var5.reverse().toString();
          }
+      } else {
+         return null;
+      }
+   }
 
-         if(var0.equalsIgnoreCase("geotests")) {
-            class7.field235 = !class7.field235;
-            class98.sendGameMessage(99, "", "Show geometry tests: " + class7.field235);
-         }
+   @ObfuscatedName("go")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIIIB)V",
+      garbageValue = "4"
+   )
+   static final void method3253(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      PendingSpawn var9 = null;
 
-         if(var0.equalsIgnoreCase("fpson")) {
-            Client.field928 = true;
-         }
-
-         if(var0.equalsIgnoreCase("fpsoff")) {
-            Client.field928 = false;
-         }
-
-         if(var0.equalsIgnoreCase("gc")) {
-            System.gc();
-         }
-
-         if(var0.equalsIgnoreCase("clientdrop")) {
-            class210.method3941();
-         }
-
-         if(var0.equalsIgnoreCase("errortest") && Client.field915 == 2) {
-            throw new RuntimeException();
+      for(PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.method3487(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.method3512()) {
+         if(var10.level == var0 && var1 == var10.x && var10.y == var2 && var3 == var10.type) {
+            var9 = var10;
+            break;
          }
       }
 
-      Client.secretPacketBuffer1.putOpcode(254);
-      Client.secretPacketBuffer1.putByte(var0.length() + 1);
-      Client.secretPacketBuffer1.method3150(var0);
+      if(var9 == null) {
+         var9 = new PendingSpawn();
+         var9.level = var0;
+         var9.type = var3;
+         var9.x = var1;
+         var9.y = var2;
+         class50.method727(var9);
+         Client.pendingSpawns.method3505(var9);
+      }
+
+      var9.id = var4;
+      var9.field1196 = var5;
+      var9.orientation = var6;
+      var9.delay = var7;
+      var9.hitpoints = var8;
    }
 }

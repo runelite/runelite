@@ -1,52 +1,70 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ig")
+@ObfuscatedName("it")
 public class class240 extends CacheableNode {
-   @ObfuscatedName("n")
-   public static IndexDataBase field3283;
-   @ObfuscatedName("p")
-   static NodeCache field3284;
    @ObfuscatedName("i")
+   @Export("isMembersWorld")
+   public static boolean isMembersWorld;
+   @ObfuscatedName("m")
+   public static NodeCache field3286;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1104678105
+      intValue = -434038259
    )
-   public int field3285;
+   public int field3287;
+   @ObfuscatedName("p")
+   public static IndexDataBase field3288;
 
-   class240() {
-      this.field3285 = 0;
+   public class240() {
+      this.field3287 = 0;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;II)V",
+      garbageValue = "-1155564150"
+   )
+   void method4145(Buffer var1, int var2) {
+      if(var2 == 2) {
+         this.field3287 = var1.readUnsignedShort();
+      }
+
+   }
+
+   static {
+      field3286 = new NodeCache(64);
+   }
+
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
-      garbageValue = "-1464379269"
+      garbageValue = "-965152648"
    )
-   void method4291(Buffer var1) {
+   public void method4152(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4294(var1, var2);
+         this.method4145(var1, var2);
       }
    }
 
-   static {
-      field3284 = new NodeCache(64);
-   }
-
-   @ObfuscatedName("i")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "-704311108"
+      signature = "(ILCoordinates;ZI)V",
+      garbageValue = "-942759661"
    )
-   void method4294(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.field3285 = var1.readUnsignedShort();
-      }
-
+   static void method4157(int var0, Coordinates var1, boolean var2) {
+      WorldMapData var3 = WidgetNode.method1030().method5151(var0);
+      int var4 = class20.localPlayer.field884;
+      int var5 = (class20.localPlayer.x >> 7) + class19.baseX;
+      int var6 = (class20.localPlayer.y >> 7) + class21.baseY;
+      Coordinates var7 = new Coordinates(var4, var5, var6);
+      WidgetNode.method1030().method5207(var3, var7, var1, var2);
    }
 }

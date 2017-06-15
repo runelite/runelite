@@ -3,22 +3,20 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hh")
+@ObfuscatedName("hf")
 @Implements("FileSystem")
 public class FileSystem extends Node {
+   @ObfuscatedName("m")
+   public byte[] field3210;
    @ObfuscatedName("p")
-   public byte[] field3200;
-   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1335806479
+   )
+   int field3211;
+   @ObfuscatedName("e")
    @Export("index")
    public IndexFile index;
-   @ObfuscatedName("j")
+   @ObfuscatedName("t")
    @Export("data")
    public IndexData data;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 343319793
-   )
-   int field3204;
-   @ObfuscatedName("dt")
-   static IndexData field3207;
 }

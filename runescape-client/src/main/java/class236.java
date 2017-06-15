@@ -1,105 +1,194 @@
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Random;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("id")
+@ObfuscatedName("ic")
 public class class236 implements Runnable {
-   @ObfuscatedName("n")
-   public static Deque field3233;
-   @ObfuscatedName("p")
-   public static Deque field3234;
-   @ObfuscatedName("i")
+   @ObfuscatedName("w")
+   static Object field3239;
+   @ObfuscatedName("m")
+   public static Deque field3240;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1937146931
+      intValue = -1337642935
    )
-   static int field3235;
-   @ObfuscatedName("j")
-   static Object field3236;
+   static int field3241;
+   @ObfuscatedName("p")
+   public static Deque field3245;
 
    public void run() {
       try {
          while(true) {
-            Deque var2 = field3233;
+            Deque var2 = field3245;
             FileSystem var1;
-            synchronized(field3233) {
-               var1 = (FileSystem)field3233.method3622();
+            synchronized(field3245) {
+               var1 = (FileSystem)field3245.method3487();
             }
 
             Object var14;
             if(var1 != null) {
-               if(var1.field3204 == 0) {
-                  var1.index.method3009((int)var1.hash, var1.field3200, var1.field3200.length);
-                  var2 = field3233;
-                  synchronized(field3233) {
+               if(var1.field3211 == 0) {
+                  var1.index.method2903((int)var1.hash, var1.field3210, var1.field3210.length);
+                  var2 = field3245;
+                  synchronized(field3245) {
                      var1.unlink();
                   }
-               } else if(var1.field3204 == 1) {
-                  var1.field3200 = var1.index.method3008((int)var1.hash);
-                  var2 = field3233;
-                  synchronized(field3233) {
-                     field3234.method3634(var1);
+               } else if(var1.field3211 == 1) {
+                  var1.field3210 = var1.index.method2902((int)var1.hash);
+                  var2 = field3245;
+                  synchronized(field3245) {
+                     field3240.method3505(var1);
                   }
                }
 
-               var14 = field3236;
-               synchronized(field3236) {
-                  if(field3235 <= 1) {
-                     field3235 = 0;
-                     field3236.notifyAll();
+               var14 = field3239;
+               synchronized(field3239) {
+                  if(field3241 <= 1) {
+                     field3241 = 0;
+                     field3239.notifyAll();
                      return;
                   }
 
-                  field3235 = 600;
+                  field3241 = 600;
                }
             } else {
-               DynamicObject.method1842(100L);
-               var14 = field3236;
-               synchronized(field3236) {
-                  if(field3235 <= 1) {
-                     field3235 = 0;
-                     field3236.notifyAll();
+               class172.method3014(100L);
+               var14 = field3239;
+               synchronized(field3239) {
+                  if(field3241 <= 1) {
+                     field3241 = 0;
+                     field3239.notifyAll();
                      return;
                   }
 
-                  --field3235;
+                  --field3241;
                }
             }
          }
       } catch (Exception var13) {
-         Projectile.method1734((String)null, var13);
+         class8.method43((String)null, var13);
       }
    }
 
    static {
-      field3233 = new Deque();
-      field3234 = new Deque();
-      field3235 = 0;
-      field3236 = new Object();
+      field3245 = new Deque();
+      field3240 = new Deque();
+      field3241 = 0;
+      field3239 = new Object();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "([BILjava/lang/CharSequence;I)I",
-      garbageValue = "332619095"
+      signature = "(JLjava/lang/String;I)I",
+      garbageValue = "-1349636675"
    )
-   public static int method4231(byte[] var0, int var1, CharSequence var2) {
-      int var3 = var2.length();
-      int var4 = var1;
+   static final int method4093(long var0, String var2) {
+      Random var3 = new Random();
+      Buffer var4 = new Buffer(128);
+      Buffer var5 = new Buffer(128);
+      int[] var6 = new int[]{var3.nextInt(), var3.nextInt(), (int)(var0 >> 32), (int)var0};
+      var4.putByte(10);
 
-      for(int var5 = 0; var5 < var3; ++var5) {
-         char var6 = var2.charAt(var5);
-         if(var6 <= 127) {
-            var0[var4++] = (byte)var6;
-         } else if(var6 <= 2047) {
-            var0[var4++] = (byte)(192 | var6 >> 6);
-            var0[var4++] = (byte)(128 | var6 & 63);
-         } else {
-            var0[var4++] = (byte)(224 | var6 >> 12);
-            var0[var4++] = (byte)(128 | var6 >> 6 & 63);
-            var0[var4++] = (byte)(128 | var6 & 63);
-         }
+      int var7;
+      for(var7 = 0; var7 < 4; ++var7) {
+         var4.putInt(var3.nextInt());
       }
 
-      return var4 - var1;
+      var4.putInt(var6[0]);
+      var4.putInt(var6[1]);
+      var4.putLong(var0);
+      var4.putLong(0L);
+
+      for(var7 = 0; var7 < 4; ++var7) {
+         var4.putInt(var3.nextInt());
+      }
+
+      var4.method3054(class87.field1363, class87.field1367);
+      var5.putByte(10);
+
+      for(var7 = 0; var7 < 3; ++var7) {
+         var5.putInt(var3.nextInt());
+      }
+
+      var5.putLong(var3.nextLong());
+      var5.method3022(var3.nextLong());
+      class268.method4754(var5);
+      var5.putLong(var3.nextLong());
+      var5.method3054(class87.field1363, class87.field1367);
+      var7 = Friend.method1023(var2);
+      if(var7 % 8 != 0) {
+         var7 += 8 - var7 % 8;
+      }
+
+      Buffer var8 = new Buffer(var7);
+      var8.method3125(var2);
+      var8.offset = var7;
+      var8.encryptXtea2(var6);
+      Buffer var9 = new Buffer(var5.offset + var4.offset + 5 + var8.offset);
+      var9.putByte(2);
+      var9.putByte(var4.offset);
+      var9.putBytes(var4.payload, 0, var4.offset);
+      var9.putByte(var5.offset);
+      var9.putBytes(var5.payload, 0, var5.offset);
+      var9.putShort(var8.offset);
+      var9.putBytes(var8.payload, 0, var8.offset);
+      String var10 = class214.method3869(var9.payload);
+
+      try {
+         URL var11 = new URL(class73.method1066("services", false) + "m=accountappeal/login.ws");
+         URLConnection var12 = var11.openConnection();
+         var12.setDoInput(true);
+         var12.setDoOutput(true);
+         var12.setConnectTimeout(5000);
+         OutputStreamWriter var13 = new OutputStreamWriter(var12.getOutputStream());
+         var13.write("data2=" + class54.method747(var10) + "&dest=" + class54.method747("passwordchoice.ws"));
+         var13.flush();
+         InputStream var14 = var12.getInputStream();
+         var9 = new Buffer(new byte[1000]);
+
+         do {
+            int var15 = var14.read(var9.payload, var9.offset, 1000 - var9.offset);
+            if(var15 == -1) {
+               var13.close();
+               var14.close();
+               String var16 = new String(var9.payload);
+               if(var16.startsWith("OFFLINE")) {
+                  return 4;
+               } else if(var16.startsWith("WRONG")) {
+                  return 7;
+               } else if(var16.startsWith("RELOAD")) {
+                  return 3;
+               } else if(var16.startsWith("Not permitted for social network accounts.")) {
+                  return 6;
+               } else {
+                  var9.decryptXtea(var6);
+
+                  while(var9.offset > 0 && var9.payload[var9.offset - 1] == 0) {
+                     --var9.offset;
+                  }
+
+                  var16 = new String(var9.payload, 0, var9.offset);
+                  if(class277.method4798(var16)) {
+                     class20.method164(var16, true, false);
+                     return 2;
+                  } else {
+                     return 5;
+                  }
+               }
+            }
+
+            var9.offset += var15;
+         } while(var9.offset < 1000);
+
+         return 5;
+      } catch (Throwable var17) {
+         var17.printStackTrace();
+         return 5;
+      }
    }
 }

@@ -1,12 +1,12 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gg")
+@ObfuscatedName("gd")
 public class class187 {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    int[] field2465;
 
-   @ObfuscatedName("n")
-   public int method3515(int var1) {
+   @ObfuscatedName("p")
+   public int method3403(int var1) {
       int var2 = (this.field2465.length >> 1) - 1;
       int var3 = var1 & var2;
 

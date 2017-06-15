@@ -4,116 +4,102 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("in")
+@ObfuscatedName("ip")
 @Implements("Area")
 public class Area extends CacheableNode {
-   @ObfuscatedName("z")
+   @ObfuscatedName("i")
    @Export("name")
    public String name;
-   @ObfuscatedName("j")
-   public static NodeCache field3295;
-   @ObfuscatedName("c")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1777669767
+      intValue = -2096252019
    )
-   int field3296;
-   @ObfuscatedName("m")
+   int field3299;
+   @ObfuscatedName("t")
+   public static NodeCache field3300;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -90760805
+      intValue = -1032875037
+   )
+   public final int field3301;
+   @ObfuscatedName("a")
+   int[] field3302;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -784938063
+   )
+   int field3303;
+   @ObfuscatedName("m")
+   public static Area[] field3304;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 1761747951
+   )
+   public int field3305;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -588510227
+   )
+   public int field3306;
+   @ObfuscatedName("q")
+   public String[] field3307;
+   @ObfuscatedName("n")
+   public String field3308;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1403716129
+   )
+   int field3309;
+   @ObfuscatedName("l")
+   public class239 field3310;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -933214203
+   )
+   int field3311;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -350717439
    )
    @Export("spriteId")
    public int spriteId;
-   @ObfuscatedName("n")
-   public static IndexDataBase field3298;
-   @ObfuscatedName("b")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -61379385
+      intValue = 149648921
    )
-   int field3299;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1843341993
-   )
-   public int field3300;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -83672717
-   )
-   public int field3301;
-   @ObfuscatedName("o")
-   public String[] field3302;
-   @ObfuscatedName("x")
-   public String field3303;
-   @ObfuscatedName("a")
-   int[] field3304;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -331431277
-   )
-   int field3305;
+   int field3313;
    @ObfuscatedName("r")
+   public class257 field3314;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 392474789
+      intValue = 1398893897
    )
-   int field3306;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1677781099
-   )
-   public final int field3307;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1411287455
-   )
-   int field3308;
-   @ObfuscatedName("v")
-   public class257 field3309;
-   @ObfuscatedName("t")
-   public class239 field3310;
-   @ObfuscatedName("w")
-   int[] field3311;
-   @ObfuscatedName("l")
-   byte[] field3312;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 2015032541
-   )
-   public int field3313;
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "-2133967037"
-   )
-   public void method4310(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
-
-         this.method4311(var1, var2);
-      }
-   }
-
+   public int field3315;
+   @ObfuscatedName("h")
+   int[] field3316;
+   @ObfuscatedName("d")
+   byte[] field3317;
    @ObfuscatedName("p")
+   static IndexDataBase field3318;
+
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "-1785333459"
+      signature = "(LBuffer;IB)V",
+      garbageValue = "96"
    )
-   void method4311(Buffer var1, int var2) {
+   void method4171(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.spriteId = var1.method3338();
+         this.spriteId = var1.method3048();
       } else if(var2 == 2) {
-         this.field3296 = var1.method3338();
+         this.field3303 = var1.method3048();
       } else if(var2 == 3) {
          this.name = var1.readString();
       } else if(var2 == 4) {
-         this.field3300 = var1.read24BitInt();
+         this.field3305 = var1.read24BitInt();
       } else if(var2 == 5) {
          var1.read24BitInt();
       } else if(var2 == 6) {
-         this.field3301 = var1.readUnsignedByte();
+         this.field3315 = var1.readUnsignedByte();
       } else {
          int var3;
          if(var2 == 7) {
@@ -128,37 +114,37 @@ public class Area extends CacheableNode {
          } else if(var2 == 8) {
             var1.readUnsignedByte();
          } else if(var2 >= 10 && var2 <= 14) {
-            this.field3302[var2 - 10] = var1.readString();
+            this.field3307[var2 - 10] = var1.readString();
          } else if(var2 == 15) {
             var3 = var1.readUnsignedByte();
-            this.field3304 = new int[var3 * 2];
+            this.field3302 = new int[var3 * 2];
 
             int var4;
             for(var4 = 0; var4 < var3 * 2; ++var4) {
-               this.field3304[var4] = var1.readShort();
+               this.field3302[var4] = var1.readShort();
             }
 
             var1.readInt();
             var4 = var1.readUnsignedByte();
-            this.field3311 = new int[var4];
+            this.field3316 = new int[var4];
 
             int var5;
-            for(var5 = 0; var5 < this.field3311.length; ++var5) {
-               this.field3311[var5] = var1.readInt();
+            for(var5 = 0; var5 < this.field3316.length; ++var5) {
+               this.field3316[var5] = var1.readInt();
             }
 
-            this.field3312 = new byte[var3];
+            this.field3317 = new byte[var3];
 
             for(var5 = 0; var5 < var3; ++var5) {
-               this.field3312[var5] = var1.readByte();
+               this.field3317[var5] = var1.readByte();
             }
          } else if(var2 != 16) {
             if(var2 == 17) {
-               this.field3303 = var1.readString();
+               this.field3308 = var1.readString();
             } else if(var2 == 18) {
-               var1.method3338();
+               var1.method3048();
             } else if(var2 == 19) {
-               this.field3313 = var1.readUnsignedShort();
+               this.field3306 = var1.readUnsignedShort();
             } else if(var2 == 21) {
                var1.readInt();
             } else if(var2 == 22) {
@@ -171,101 +157,149 @@ public class Area extends CacheableNode {
                var1.readShort();
                var1.readShort();
             } else if(var2 == 25) {
-               var1.method3338();
+               var1.method3048();
             } else if(var2 == 28) {
                var1.readUnsignedByte();
             } else if(var2 == 29) {
-               this.field3309 = (class257)Projectile.method1737(GameEngine.method966(), var1.readUnsignedByte());
+               this.field3314 = (class257)RSCanvas.method735(class7.method30(), var1.readUnsignedByte());
             } else if(var2 == 30) {
-               this.field3310 = (class239)Projectile.method1737(class64.method1059(), var1.readUnsignedByte());
+               class239[] var6 = new class239[]{class239.field3283, class239.field3280, class239.field3281};
+               this.field3310 = (class239)RSCanvas.method735(var6, var1.readUnsignedByte());
             }
          }
       }
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-123138170"
+      garbageValue = "392254657"
    )
-   public void method4312() {
-      if(this.field3304 != null) {
-         for(int var1 = 0; var1 < this.field3304.length; var1 += 2) {
-            if(this.field3304[var1] < this.field3305) {
-               this.field3305 = this.field3304[var1];
-            } else if(this.field3304[var1] > this.field3299) {
-               this.field3299 = this.field3304[var1];
+   void method4172() {
+      if(this.field3302 != null) {
+         for(int var1 = 0; var1 < this.field3302.length; var1 += 2) {
+            if(this.field3302[var1] < this.field3299) {
+               this.field3299 = this.field3302[var1];
+            } else if(this.field3302[var1] > this.field3309) {
+               this.field3309 = this.field3302[var1];
             }
 
-            if(this.field3304[var1 + 1] < this.field3306) {
-               this.field3306 = this.field3304[var1 + 1];
-            } else if(this.field3304[var1 + 1] > this.field3308) {
-               this.field3308 = this.field3304[var1 + 1];
+            if(this.field3302[var1 + 1] < this.field3311) {
+               this.field3311 = this.field3302[var1 + 1];
+            } else if(this.field3302[var1 + 1] > this.field3313) {
+               this.field3313 = this.field3302[var1 + 1];
             }
          }
       }
 
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(IS)LSpritePixels;",
-      garbageValue = "128"
-   )
-   SpritePixels method4314(int var1) {
-      if(var1 < 0) {
-         return null;
-      } else {
-         SpritePixels var2 = (SpritePixels)field3295.get((long)var1);
-         if(var2 != null) {
-            return var2;
-         } else {
-            var2 = WallObject.method2876(field3298, var1, 0);
-            if(var2 != null) {
-               field3295.put(var2, (long)var1);
-            }
-
-            return var2;
-         }
-      }
-   }
-
-   static {
-      field3295 = new NodeCache(256);
-   }
-
-   public Area(int var1) {
-      this.spriteId = -1;
-      this.field3296 = -1;
-      this.field3301 = 0;
-      this.field3302 = new String[5];
-      this.field3305 = Integer.MAX_VALUE;
-      this.field3306 = Integer.MAX_VALUE;
-      this.field3299 = Integer.MIN_VALUE;
-      this.field3308 = Integer.MIN_VALUE;
-      this.field3309 = class257.field3555;
-      this.field3310 = class239.field3274;
-      this.field3313 = -1;
-      this.field3307 = var1;
    }
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(ZI)LSpritePixels;",
-      garbageValue = "462678570"
+      signature = "(B)I",
+      garbageValue = "115"
    )
-   public SpritePixels method4325(boolean var1) {
-      int var2 = this.spriteId;
-      return this.method4314(var2);
+   public int method4175() {
+      return this.field3301;
+   }
+
+   static {
+      field3300 = new NodeCache(256);
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(II)LSpotanim;",
+      garbageValue = "486233142"
+   )
+   public static Spotanim method4176(int var0) {
+      Spotanim var1 = (Spotanim)Spotanim.field3331.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = Spotanim.field3344.getConfigData(13, var0);
+         var1 = new Spotanim();
+         var1.field3339 = var0;
+         if(var2 != null) {
+            var1.method4210(new Buffer(var2));
+         }
+
+         Spotanim.field3331.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   Area(int var1) {
+      this.spriteId = -1;
+      this.field3303 = -1;
+      this.field3315 = 0;
+      this.field3307 = new String[5];
+      this.field3299 = Integer.MAX_VALUE;
+      this.field3311 = Integer.MAX_VALUE;
+      this.field3309 = Integer.MIN_VALUE;
+      this.field3313 = Integer.MIN_VALUE;
+      this.field3314 = class257.field3549;
+      this.field3310 = class239.field3283;
+      this.field3306 = -1;
+      this.field3301 = var1;
    }
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(S)I",
-      garbageValue = "-10524"
+      signature = "(LBuffer;I)V",
+      garbageValue = "800488880"
    )
-   public int method4327() {
-      return this.field3307;
+   void method4178(Buffer var1) {
+      while(true) {
+         int var2 = var1.readUnsignedByte();
+         if(var2 == 0) {
+            return;
+         }
+
+         this.method4171(var1, var2);
+      }
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(II)LSpritePixels;",
+      garbageValue = "784075097"
+   )
+   SpritePixels method4180(int var1) {
+      if(var1 < 0) {
+         return null;
+      } else {
+         SpritePixels var2 = (SpritePixels)field3300.get((long)var1);
+         if(var2 != null) {
+            return var2;
+         } else {
+            var2 = class262.method4613(field3318, var1, 0);
+            if(var2 != null) {
+               field3300.put(var2, (long)var1);
+            }
+
+            return var2;
+         }
+      }
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(ZI)LSpritePixels;",
+      garbageValue = "-56322880"
+   )
+   public SpritePixels method4189(boolean var1) {
+      int var2 = this.spriteId;
+      return this.method4180(var2);
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "10"
+   )
+   static final String method4190(int var0) {
+      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K" + "</col>":"<col=00ff80>" + var0 / 1000000 + "M" + "</col>");
    }
 }

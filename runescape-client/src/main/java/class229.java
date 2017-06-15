@@ -1,14 +1,15 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ha")
+@ObfuscatedName("hh")
 public final class class229 {
-   @ObfuscatedName("n")
+   @ObfuscatedName("hl")
    @ObfuscatedSignature(
-      signature = "([BI)Ljava/lang/String;",
-      garbageValue = "-590566313"
+      signature = "(IIB)Ljava/lang/String;",
+      garbageValue = "-18"
    )
-   public static String method4106(byte[] var0) {
-      return class266.method4883(var0, 0, var0.length);
+   static final String method3972(int var0, int var1) {
+      int var2 = var1 - var0;
+      return var2 < -9?class15.method105(16711680):(var2 < -6?class15.method105(16723968):(var2 < -3?class15.method105(16740352):(var2 < 0?class15.method105(16756736):(var2 > 9?class15.method105('\uff00'):(var2 > 6?class15.method105(4259584):(var2 > 3?class15.method105(8453888):(var2 > 0?class15.method105(12648192):class15.method105(16776960))))))));
    }
 }

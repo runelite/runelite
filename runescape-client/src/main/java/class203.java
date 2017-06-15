@@ -1,37 +1,77 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gd")
+@ObfuscatedName("ge")
 public class class203 {
-   @ObfuscatedName("gd")
-   @ObfuscatedGetter(
-      intValue = -1463923921
-   )
-   @Export("cameraZ")
-   static int cameraZ;
    @ObfuscatedName("p")
-   public static IndexDataBase field2512;
-   @ObfuscatedName("i")
    public static IndexDataBase field2513;
-   @ObfuscatedName("n")
-   public static IndexDataBase field2514;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1073707493
-   )
-   public static int field2515;
    @ObfuscatedName("m")
-   public static IndexDataBase field2516;
-   @ObfuscatedName("j")
-   public static class204 field2517;
-   @ObfuscatedName("ce")
+   public static IndexDataBase field2514;
+   @ObfuscatedName("e")
+   public static IndexDataBase field2515;
+   @ObfuscatedName("t")
+   public static class204 field2516;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      longValue = -7003907960948123805L
+      intValue = -1202646483
    )
-   static long field2518;
+   public static int field2517;
+   @ObfuscatedName("z")
+   public static IndexDataBase field2518;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1840374475
+   )
+   public static int field2519;
+   @ObfuscatedName("gn")
+   @ObfuscatedGetter(
+      intValue = -470040297
+   )
+   @Export("cameraPitch")
+   static int cameraPitch;
 
    static {
-      field2515 = 0;
+      field2517 = 0;
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "([Ljava/lang/CharSequence;III)Ljava/lang/String;",
+      garbageValue = "1933448217"
+   )
+   public static String method3571(CharSequence[] var0, int var1, int var2) {
+      if(var2 == 0) {
+         return "";
+      } else if(var2 == 1) {
+         CharSequence var3 = var0[var1];
+         return var3 == null?"null":var3.toString();
+      } else {
+         int var8 = var1 + var2;
+         int var4 = 0;
+
+         for(int var5 = var1; var5 < var8; ++var5) {
+            CharSequence var6 = var0[var5];
+            if(var6 == null) {
+               var4 += 4;
+            } else {
+               var4 += var6.length();
+            }
+         }
+
+         StringBuilder var9 = new StringBuilder(var4);
+
+         for(int var10 = var1; var10 < var8; ++var10) {
+            CharSequence var7 = var0[var10];
+            if(var7 == null) {
+               var9.append("null");
+            } else {
+               var9.append(var7);
+            }
+         }
+
+         return var9.toString();
+      }
    }
 }

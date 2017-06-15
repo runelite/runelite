@@ -1,47 +1,47 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dp")
+@ObfuscatedName("db")
 public abstract class class119 extends Node {
-   @ObfuscatedName("s")
-   class122 field1723;
-   @ObfuscatedName("b")
-   int field1724;
+   @ObfuscatedName("k")
+   int field1715;
+   @ObfuscatedName("w")
+   volatile boolean field1716;
    @ObfuscatedName("r")
-   class119 field1725;
-   @ObfuscatedName("v")
-   volatile boolean field1726;
+   class122 field1717;
+   @ObfuscatedName("s")
+   class119 field1718;
+
+   @ObfuscatedName("z")
+   protected abstract class119 vmethod3771();
+
+   @ObfuscatedName("j")
+   protected abstract class119 vmethod3780();
 
    @ObfuscatedName("c")
-   protected abstract class119 vmethod3907();
+   protected abstract int vmethod3772();
 
-   @ObfuscatedName("fm")
-   final void method2301(int[] var1, int var2, int var3) {
-      if(this.field1726) {
-         this.vmethod3909(var1, var2, var3);
+   @ObfuscatedName("eh")
+   final void method2204(int[] var1, int var2, int var3) {
+      if(this.field1716) {
+         this.vmethod3775(var1, var2, var3);
       } else {
-         this.vmethod3910(var3);
+         this.vmethod3773(var3);
       }
 
    }
 
-   @ObfuscatedName("z")
-   protected abstract int vmethod3908();
+   @ObfuscatedName("o")
+   protected abstract void vmethod3775(int[] var1, int var2, int var3);
 
-   protected class119() {
-      this.field1726 = true;
-   }
-
-   @ObfuscatedName("e")
-   protected abstract void vmethod3910(int var1);
-
-   @ObfuscatedName("ag")
-   int vmethod2306() {
+   @ObfuscatedName("an")
+   int vmethod2209() {
       return 255;
    }
 
-   @ObfuscatedName("h")
-   protected abstract void vmethod3909(int[] var1, int var2, int var3);
+   protected class119() {
+      this.field1716 = true;
+   }
 
-   @ObfuscatedName("m")
-   protected abstract class119 vmethod3906();
+   @ObfuscatedName("n")
+   protected abstract void vmethod3773(int var1);
 }

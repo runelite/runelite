@@ -1,30 +1,24 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kb")
+@ObfuscatedName("ky")
 public class class286 {
-   @ObfuscatedName("f")
-   public static int[] field3790;
-   @ObfuscatedName("i")
+   @ObfuscatedName("z")
+   static int[] field3791;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1542505197
-   )
-   static int field3791;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -933009211
+      intValue = -329701639
    )
    static int field3792;
-   @ObfuscatedName("m")
-   public static int[] field3793;
-
+   @ObfuscatedName("t")
+   static int[] field3793;
+   @ObfuscatedName("w")
+   static int[] field3794;
    @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "1431928489"
+   @ObfuscatedGetter(
+      intValue = 1301239313
    )
-   public static boolean method5182(int var0, int var1) {
-      return (var0 >> var1 + 1 & 1) != 0;
-   }
+   static int field3796;
+   @ObfuscatedName("f")
+   static byte[][] field3797;
 }

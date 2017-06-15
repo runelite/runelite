@@ -1,32 +1,73 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ce")
+@ObfuscatedName("ck")
 public class class91 implements class178 {
-   @ObfuscatedName("ke")
-   static class89 field1409;
+   @ObfuscatedName("m")
+   static final class91 field1403;
    @ObfuscatedName("p")
-   static final class91 field1410;
-   @ObfuscatedName("i")
-   static final class91 field1411;
-   @ObfuscatedName("n")
-   static final class91 field1412;
-   @ObfuscatedName("f")
+   static final class91 field1404;
+   @ObfuscatedName("e")
+   static final class91 field1405;
+   @ObfuscatedName("km")
    @ObfuscatedGetter(
-      intValue = 160818205
+      intValue = 2073367925
    )
-   final int field1413;
-   @ObfuscatedName("j")
-   static final class91 field1414;
+   @Export("selectedItemIndex")
+   static int selectedItemIndex;
+   @ObfuscatedName("z")
+   public static IndexDataBase field1409;
+   @ObfuscatedName("t")
+   static final class91 field1410;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1008401685
+   )
+   final int field1412;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1469137335"
+      signature = "(IIILObjectComposition;IB)V",
+      garbageValue = "-53"
    )
-   public int vmethod5059() {
-      return this.field1413;
+   static void method1621(int var0, int var1, int var2, ObjectComposition var3, int var4) {
+      class82 var5 = new class82();
+      var5.field1306 = var0;
+      var5.field1322 = var1 * 128;
+      var5.field1310 = var2 * 128;
+      int var6 = var3.sizeX;
+      int var7 = var3.sizeY;
+      if(var4 == 1 || var4 == 3) {
+         var6 = var3.sizeY;
+         var7 = var3.sizeX;
+      }
+
+      var5.field1309 = (var6 + var1) * 128;
+      var5.field1320 = (var2 + var7) * 128;
+      var5.field1308 = var3.ambientSoundId;
+      var5.field1311 = var3.field3466 * 128;
+      var5.field1307 = var3.field3488;
+      var5.field1315 = var3.field3442;
+      var5.field1316 = var3.field3490;
+      if(var3.impostorIds != null) {
+         var5.field1319 = var3;
+         var5.method1514();
+      }
+
+      class82.field1314.method3505(var5);
+      if(var5.field1316 != null) {
+         var5.field1317 = var5.field1307 + (int)(Math.random() * (double)(var5.field1315 - var5.field1307));
+      }
+
+   }
+
+   static {
+      field1404 = new class91(0);
+      field1403 = new class91(1);
+      field1405 = new class91(2);
+      field1410 = new class91(3);
    }
 
    @ObfuscatedSignature(
@@ -34,27 +75,15 @@ public class class91 implements class178 {
       garbageValue = "0"
    )
    class91(int var1) {
-      this.field1413 = var1;
+      this.field1412 = var1;
    }
 
-   static {
-      field1412 = new class91(0);
-      field1410 = new class91(1);
-      field1411 = new class91(2);
-      field1414 = new class91(3);
-   }
-
-   @ObfuscatedName("j")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-2116830759"
+      signature = "(I)I",
+      garbageValue = "665522131"
    )
-   public static String method1702(CharSequence var0) {
-      String var1 = class146.method2902(class77.method1490(var0));
-      if(var1 == null) {
-         var1 = "";
-      }
-
-      return var1;
+   public int vmethod4906() {
+      return this.field1412;
    }
 }

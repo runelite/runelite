@@ -2,29 +2,44 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hd")
+@ObfuscatedName("hk")
 public class class231 {
-   @ObfuscatedName("f")
-   public final String field3184;
-   @ObfuscatedName("n")
-   static final class231 field3185;
-   @ObfuscatedName("i")
-   static final class231 field3186;
-   @ObfuscatedName("j")
-   static final class231 field3187;
-   @ObfuscatedName("p")
-   static final class231 field3188;
+   @ObfuscatedName("t")
+   static final class231 field3190;
    @ObfuscatedName("m")
+   static final class231 field3191;
+   @ObfuscatedName("p")
+   static final class231 field3192;
+   @ObfuscatedName("w")
+   public final String field3194;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 2029967575
+      intValue = -405656807
    )
-   final int field3189;
+   public final int field3195;
+   @ObfuscatedName("e")
+   static final class231 field3198;
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "688824008"
+   )
+   public static int method3979(int var0) {
+      --var0;
+      var0 |= var0 >>> 1;
+      var0 |= var0 >>> 2;
+      var0 |= var0 >>> 4;
+      var0 |= var0 >>> 8;
+      var0 |= var0 >>> 16;
+      return var0 + 1;
+   }
 
    static {
-      field3185 = new class231("LIVE", 0);
-      field3188 = new class231("BUILDLIVE", 3);
-      field3186 = new class231("RC", 1);
-      field3187 = new class231("WIP", 2);
+      field3192 = new class231("LIVE", 0);
+      field3191 = new class231("BUILDLIVE", 3);
+      field3198 = new class231("RC", 1);
+      field3190 = new class231("WIP", 2);
    }
 
    @ObfuscatedSignature(
@@ -32,7 +47,7 @@ public class class231 {
       garbageValue = "0"
    )
    class231(String var1, int var2) {
-      this.field3184 = var1;
-      this.field3189 = var2;
+      this.field3194 = var1;
+      this.field3195 = var2;
    }
 }

@@ -4,94 +4,87 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eo")
+@ObfuscatedName("ej")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("c")
-   @Export("renderable2")
-   public Renderable renderable2;
-   @ObfuscatedName("i")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 802336667
+      intValue = -848540847
    )
-   @Export("y")
-   int y;
-   @ObfuscatedName("p")
+   int field2130;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 842013557
+      intValue = -765934065
    )
    @Export("x")
    int x;
-   @ObfuscatedName("j")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1933807101
+      intValue = 1055437563
    )
-   int field2133;
+   @Export("y")
+   int y;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -421571797
+      intValue = 947079187
    )
    int field2134;
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1846020607
+      intValue = -408430209
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("pw")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1714343833
-   )
-   static int field2136;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1753389133
+      intValue = -2106010175
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1792322677
-   )
-   int field2138;
-   @ObfuscatedName("dx")
-   @Export("host")
-   static String host;
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @Export("renderable1")
    public Renderable renderable1;
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;III)LSpritePixels;",
-      garbageValue = "-2050237947"
+   @ObfuscatedName("ed")
+   @Export("font_p12full")
+   static Font font_p12full;
+   @ObfuscatedName("q")
+   static int[] field2140;
+   @ObfuscatedName("j")
+   @Export("renderable2")
+   public Renderable renderable2;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 1767203635
    )
-   public static SpritePixels method2876(IndexDataBase var0, int var1, int var2) {
-      if(!class112.method2092(var0, var1, var2)) {
-         return null;
-      } else {
-         SpritePixels var4 = new SpritePixels();
-         var4.maxWidth = NPC.field1377;
-         var4.maxHeight = class286.field3791;
-         var4.offsetX = class95.field1493[0];
-         var4.offsetY = class286.field3790[0];
-         var4.width = class286.field3793[0];
-         var4.height = class241.field3293[0];
-         int var5 = var4.height * var4.width;
-         byte[] var6 = class31.field449[0];
-         var4.image = new int[var5];
+   int field2142;
+   @ObfuscatedName("fa")
+   static int[] field2143;
 
-         for(int var7 = 0; var7 < var5; ++var7) {
-            var4.image[var7] = class174.field2410[var6[var7] & 255];
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(CI)Z",
+      garbageValue = "-568035514"
+   )
+   public static boolean method2761(char var0) {
+      return var0 >= 48 && var0 <= 57;
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-54"
+   )
+   static void method2762() {
+      for(class82 var0 = (class82)class82.field1314.method3487(); var0 != null; var0 = (class82)class82.field1314.method3512()) {
+         if(var0.field1319 != null) {
+            var0.method1514();
          }
-
-         VertexNormal.method2592();
-         return var4;
       }
+
    }
 
    WallObject() {
       this.hash = 0;
-      this.field2138 = 0;
+      this.field2134 = 0;
    }
 }

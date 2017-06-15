@@ -1,109 +1,82 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ey")
+@ObfuscatedName("em")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1492151921
+      intValue = -134250751
    )
-   int field2045;
-   @ObfuscatedName("i")
+   int field2040;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 256073115
+      intValue = 1600085737
    )
-   int field2046;
-   @ObfuscatedName("j")
+   int field2041;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 345961737
+      intValue = 1270745717
    )
-   int field2047;
-   @ObfuscatedName("f")
+   int field2042;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1086444817
+      intValue = -427996867
+   )
+   int field2043;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -956757785
    )
    @Export("texture")
    int texture;
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @Export("flatShade")
    boolean flatShade;
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -116004415
-   )
-   int field2050;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -454422451
+      intValue = 157792485
    )
    @Export("rgb")
    int rgb;
-   @ObfuscatedName("pa")
-   @ObfuscatedGetter(
-      intValue = -1295095745
-   )
-   static int field2052;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("gb")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Throwable;I)Ljava/lang/String;",
-      garbageValue = "-128367635"
+      signature = "(B)V",
+      garbageValue = "-31"
    )
-   static String method2670(Throwable var0) throws IOException {
-      String var1;
-      if(var0 instanceof class152) {
-         class152 var2 = (class152)var0;
-         var1 = var2.field2228 + " | ";
-         var0 = var2.field2230;
-      } else {
-         var1 = "";
-      }
+   static final void method2573() {
+      for(PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.method3487(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.method3512()) {
+         if(var0.hitpoints > 0) {
+            --var0.hitpoints;
+         }
 
-      StringWriter var12 = new StringWriter();
-      PrintWriter var3 = new PrintWriter(var12);
-      var0.printStackTrace(var3);
-      var3.close();
-      String var4 = var12.toString();
-      BufferedReader var5 = new BufferedReader(new StringReader(var4));
-      String var6 = var5.readLine();
-
-      while(true) {
-         while(true) {
-            String var7 = var5.readLine();
-            if(var7 == null) {
-               var1 = var1 + "| " + var6;
-               return var1;
+         if(var0.hitpoints == 0) {
+            if(var0.field1191 < 0 || class92.method1636(var0.field1191, var0.field1193)) {
+               class59.method962(var0.level, var0.type, var0.x, var0.y, var0.field1191, var0.field1195, var0.field1193);
+               var0.unlink();
+            }
+         } else {
+            if(var0.delay > 0) {
+               --var0.delay;
             }
 
-            int var8 = var7.indexOf(40);
-            int var9 = var7.indexOf(41, var8 + 1);
-            if(var8 >= 0 && var9 >= 0) {
-               String var10 = var7.substring(var8 + 1, var9);
-               int var11 = var10.indexOf(".java:");
-               if(var11 >= 0) {
-                  var10 = var10.substring(0, var11) + var10.substring(var11 + 5);
-                  var1 = var1 + var10 + ' ';
-                  continue;
+            if(var0.delay == 0 && var0.x >= 1 && var0.y >= 1 && var0.x <= 102 && var0.y <= 102 && (var0.id < 0 || class92.method1636(var0.id, var0.field1196))) {
+               class59.method962(var0.level, var0.type, var0.x, var0.y, var0.id, var0.orientation, var0.field1196);
+               var0.delay = -1;
+               if(var0.field1191 == var0.id && var0.field1191 == -1) {
+                  var0.unlink();
+               } else if(var0.field1191 == var0.id && var0.orientation == var0.field1195 && var0.field1193 == var0.field1196) {
+                  var0.unlink();
                }
-
-               var7 = var7.substring(0, var8);
             }
-
-            var7 = var7.trim();
-            var7 = var7.substring(var7.lastIndexOf(32) + 1);
-            var7 = var7.substring(var7.lastIndexOf(9) + 1);
-            var1 = var1 + var7 + ' ';
          }
       }
+
    }
 
    @ObfuscatedSignature(
@@ -112,10 +85,10 @@ public final class SceneTilePaint {
    )
    SceneTilePaint(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
       this.flatShade = true;
-      this.field2050 = var1;
-      this.field2045 = var2;
-      this.field2046 = var3;
-      this.field2047 = var4;
+      this.field2040 = var1;
+      this.field2041 = var2;
+      this.field2042 = var3;
+      this.field2043 = var4;
       this.texture = var5;
       this.rgb = var6;
       this.flatShade = var7;
@@ -123,14 +96,213 @@ public final class SceneTilePaint {
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "-1557767529"
+      signature = "(B)Z",
+      garbageValue = "44"
    )
-   static final void method2671(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = Math.min(var3, Math.min(var4, var5)) - var6;
-      int var8 = Math.max(var3, Math.max(var4, var5)) + var6;
-      int var9 = Math.min(var0, Math.min(var1, var2)) - var6;
-      int var10 = Math.max(var0, Math.max(var1, var2)) + var6;
-      class28.method251(var7, var9, var8, var10, -49088);
+   public static boolean method2574() {
+      long var0 = class166.method2970();
+      int var2 = (int)(var0 - class238.field3278);
+      class238.field3278 = var0;
+      if(var2 > 200) {
+         var2 = 200;
+      }
+
+      class238.field3266 += var2;
+      if(class238.field3268 == 0 && class238.field3269 == 0 && class238.field3261 == 0 && class238.field3267 == 0) {
+         return true;
+      } else if(class238.field3258 == null) {
+         return false;
+      } else {
+         try {
+            if(class238.field3266 > 30000) {
+               throw new IOException();
+            } else {
+               class234 var3;
+               Buffer var4;
+               while(class238.field3269 < 20 && class238.field3267 > 0) {
+                  var3 = (class234)class238.field3260.method3435();
+                  var4 = new Buffer(4);
+                  var4.putByte(1);
+                  var4.put24bitInt((int)var3.hash);
+                  class238.field3258.queueForWrite(var4.payload, 0, 4);
+                  class238.field3262.method3426(var3, var3.hash);
+                  --class238.field3267;
+                  ++class238.field3269;
+               }
+
+               while(class238.field3268 < 20 && class238.field3261 > 0) {
+                  var3 = (class234)class238.field3259.method3372();
+                  var4 = new Buffer(4);
+                  var4.putByte(0);
+                  var4.put24bitInt((int)var3.hash);
+                  class238.field3258.queueForWrite(var4.payload, 0, 4);
+                  var3.method3520();
+                  class238.field3263.method3426(var3, var3.hash);
+                  --class238.field3261;
+                  ++class238.field3268;
+               }
+
+               for(int var15 = 0; var15 < 100; ++var15) {
+                  int var16 = class238.field3258.available();
+                  if(var16 < 0) {
+                     throw new IOException();
+                  }
+
+                  if(var16 == 0) {
+                     break;
+                  }
+
+                  class238.field3266 = 0;
+                  byte var5 = 0;
+                  if(class51.field668 == null) {
+                     var5 = 8;
+                  } else if(class238.field3264 == 0) {
+                     var5 = 1;
+                  }
+
+                  int var6;
+                  int var7;
+                  int var8;
+                  int var10;
+                  if(var5 > 0) {
+                     var6 = var5 - class238.field3270.offset;
+                     if(var6 > var16) {
+                        var6 = var16;
+                     }
+
+                     class238.field3258.read(class238.field3270.payload, class238.field3270.offset, var6);
+                     if(class238.field3274 != 0) {
+                        for(var7 = 0; var7 < var6; ++var7) {
+                           class238.field3270.payload[var7 + class238.field3270.offset] ^= class238.field3274;
+                        }
+                     }
+
+                     class238.field3270.offset += var6;
+                     if(class238.field3270.offset < var5) {
+                        break;
+                     }
+
+                     if(class51.field668 == null) {
+                        class238.field3270.offset = 0;
+                        var7 = class238.field3270.readUnsignedByte();
+                        var8 = class238.field3270.readUnsignedShort();
+                        int var9 = class238.field3270.readUnsignedByte();
+                        var10 = class238.field3270.readInt();
+                        long var11 = (long)((var7 << 16) + var8);
+                        class234 var13 = (class234)class238.field3262.method3425(var11);
+                        class170.field2362 = true;
+                        if(var13 == null) {
+                           var13 = (class234)class238.field3263.method3425(var11);
+                           class170.field2362 = false;
+                        }
+
+                        if(var13 == null) {
+                           throw new IOException();
+                        }
+
+                        int var14 = var9 == 0?5:9;
+                        class51.field668 = var13;
+                        class77.field1207 = new Buffer(var10 + var14 + class51.field668.field3214);
+                        class77.field1207.putByte(var9);
+                        class77.field1207.putInt(var10);
+                        class238.field3264 = 8;
+                        class238.field3270.offset = 0;
+                     } else if(class238.field3264 == 0) {
+                        if(class238.field3270.payload[0] == -1) {
+                           class238.field3264 = 1;
+                           class238.field3270.offset = 0;
+                        } else {
+                           class51.field668 = null;
+                        }
+                     }
+                  } else {
+                     var6 = class77.field1207.payload.length - class51.field668.field3214;
+                     var7 = 512 - class238.field3264;
+                     if(var7 > var6 - class77.field1207.offset) {
+                        var7 = var6 - class77.field1207.offset;
+                     }
+
+                     if(var7 > var16) {
+                        var7 = var16;
+                     }
+
+                     class238.field3258.read(class77.field1207.payload, class77.field1207.offset, var7);
+                     if(class238.field3274 != 0) {
+                        for(var8 = 0; var8 < var7; ++var8) {
+                           class77.field1207.payload[var8 + class77.field1207.offset] ^= class238.field3274;
+                        }
+                     }
+
+                     class77.field1207.offset += var7;
+                     class238.field3264 += var7;
+                     if(var6 == class77.field1207.offset) {
+                        if(16711935L == class51.field668.hash) {
+                           class238.field3272 = class77.field1207;
+
+                           for(var8 = 0; var8 < 256; ++var8) {
+                              IndexData var17 = class238.field3273[var8];
+                              if(var17 != null) {
+                                 class238.field3272.offset = var8 * 8 + 5;
+                                 var10 = class238.field3272.readInt();
+                                 int var18 = class238.field3272.readInt();
+                                 var17.method4126(var10, var18);
+                              }
+                           }
+                        } else {
+                           class238.field3271.reset();
+                           class238.field3271.update(class77.field1207.payload, 0, var6);
+                           var8 = (int)class238.field3271.getValue();
+                           if(class51.field668.field3215 != var8) {
+                              try {
+                                 class238.field3258.method2879();
+                              } catch (Exception var20) {
+                                 ;
+                              }
+
+                              ++class238.field3275;
+                              class238.field3258 = null;
+                              class238.field3274 = (byte)((int)(Math.random() * 255.0D + 1.0D));
+                              return false;
+                           }
+
+                           class238.field3275 = 0;
+                           class238.field3276 = 0;
+                           class51.field668.field3218.method4117((int)(class51.field668.hash & 65535L), class77.field1207.payload, (class51.field668.hash & 16711680L) == 16711680L, class170.field2362);
+                        }
+
+                        class51.field668.unlink();
+                        if(class170.field2362) {
+                           --class238.field3269;
+                        } else {
+                           --class238.field3268;
+                        }
+
+                        class238.field3264 = 0;
+                        class51.field668 = null;
+                        class77.field1207 = null;
+                     } else {
+                        if(class238.field3264 != 512) {
+                           break;
+                        }
+
+                        class238.field3264 = 0;
+                     }
+                  }
+               }
+
+               return true;
+            }
+         } catch (IOException var21) {
+            try {
+               class238.field3258.method2879();
+            } catch (Exception var19) {
+               ;
+            }
+
+            ++class238.field3276;
+            class238.field3258 = null;
+            return false;
+         }
+      }
    }
 }

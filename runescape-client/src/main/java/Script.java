@@ -4,76 +4,79 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ch")
+@ObfuscatedName("cq")
 @Implements("Script")
 public class Script extends CacheableNode {
    @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1609933409
-   )
-   @Export("localStringCount")
-   int localStringCount;
-   @ObfuscatedName("n")
-   static NodeCache field1534;
-   @ObfuscatedName("j")
+   @Export("instructions")
+   int[] instructions;
+   @ObfuscatedName("e")
+   @Export("intOperands")
+   int[] intOperands;
+   @ObfuscatedName("t")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("f")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -818237471
+      intValue = -928316301
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("p")
-   @Export("instructions")
-   int[] instructions;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1961003509
-   )
-   @Export("intStackCount")
-   int intStackCount;
-   @ObfuscatedName("i")
-   @Export("intOperands")
-   int[] intOperands;
-   @ObfuscatedName("h")
-   @Export("switches")
-   class186[] switches;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1367573717
+      intValue = -1729926335
+   )
+   @Export("localStringCount")
+   int localStringCount;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1120356871
    )
    @Export("stringStackCount")
    int stringStackCount;
+   @ObfuscatedName("p")
+   static NodeCache field1533;
+   @ObfuscatedName("f")
+   @Export("switches")
+   class186[] switches;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 154474411
+   )
+   static int field1535;
+   @ObfuscatedName("u")
+   static int[] field1536;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1403273459
+   )
+   @Export("intStackCount")
+   int intStackCount;
 
    static {
-      field1534 = new NodeCache(128);
+      field1533 = new NodeCache(128);
    }
 
-   @ObfuscatedName("hy")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "389589350"
-   )
-   static final int method1824() {
-      return Client.menuOptionCount <= 0?-1:(Client.field1179 && class50.field624[81] && Client.field1062 != -1?Client.field1062:Client.menuOptionCount - 1);
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)I",
-      garbageValue = "73"
-   )
-   public static int method1836(String var0) {
-      return var0.length() + 1;
-   }
-
-   @ObfuscatedName("f")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(II)[Lclass186;",
-      garbageValue = "-820043518"
+      garbageValue = "50681606"
    )
-   class186[] method1837(int var1) {
+   class186[] method1757(int var1) {
       return new class186[var1];
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(Lclass186;III)I",
+      garbageValue = "-1248114035"
+   )
+   static int method1758(class186 var0, int var1, int var2) {
+      if(var0 == null) {
+         return var2;
+      } else {
+         class198 var3 = (class198)var0.method3389((long)var1);
+         return var3 == null?var2:var3.field2496;
+      }
    }
 }

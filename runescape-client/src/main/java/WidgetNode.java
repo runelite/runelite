@@ -1,74 +1,121 @@
-import java.io.File;
-import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("by")
+@ObfuscatedName("bs")
 @Implements("WidgetNode")
 public class WidgetNode extends Node {
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
+   static int[] field810;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 1233913405
+   )
+   int field811;
+   @ObfuscatedName("h")
+   public static String field812;
+   @ObfuscatedName("fm")
+   static byte[][] field814;
+   @ObfuscatedName("e")
    boolean field815;
+   @ObfuscatedName("ez")
+   @Export("rssocket")
+   static RSSocket rssocket;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1148336583
-   )
-   int field816;
-   @ObfuscatedName("ex")
-   @Export("font_p12full")
-   static Font font_p12full;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1299048029
+      intValue = -346953953
    )
    @Export("id")
    int id;
-   @ObfuscatedName("j")
-   static ModIcon field820;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("eq")
    @ObfuscatedSignature(
-      signature = "(II)Lclass243;",
-      garbageValue = "-1672255627"
+      signature = "(I)LRenderOverview;",
+      garbageValue = "-1980899095"
    )
-   public static class243 method1065(int var0) {
-      class243 var1 = (class243)class243.field3316.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class243.field3318.getConfigData(19, var0);
-         var1 = new class243();
-         if(var2 != null) {
-            var1.method4342(new Buffer(var2));
-         }
-
-         class243.field3316.put(var1, (long)var0);
-         return var1;
-      }
+   static RenderOverview method1030() {
+      return class46.field601;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("gg")
    @ObfuscatedSignature(
-      signature = "(Ljava/io/File;ZI)Z",
-      garbageValue = "2138522478"
+      signature = "(ZI)V",
+      garbageValue = "-1423434307"
    )
-   static boolean method1066(File var0, boolean var1) {
-      try {
-         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
-         int var3 = var2.read();
-         var2.seek(0L);
-         var2.write(var3);
-         var2.seek(0L);
-         var2.close();
-         if(var1) {
-            var0.delete();
+   static final void method1031(boolean var0) {
+      while(true) {
+         if(Client.secretPacketBuffer2.method3294(Client.packetLength) >= 27) {
+            int var1 = Client.secretPacketBuffer2.method3290(15);
+            if(var1 != 32767) {
+               boolean var2 = false;
+               if(Client.cachedNPCs[var1] == null) {
+                  Client.cachedNPCs[var1] = new NPC();
+                  var2 = true;
+               }
+
+               NPC var3 = Client.cachedNPCs[var1];
+               Client.npcIndices[++Client.field930 - 1] = var1;
+               var3.field1240 = Client.gameCycle;
+               int var4;
+               if(var0) {
+                  var4 = Client.secretPacketBuffer2.method3290(8);
+                  if(var4 > 127) {
+                     var4 -= 256;
+                  }
+               } else {
+                  var4 = Client.secretPacketBuffer2.method3290(5);
+                  if(var4 > 15) {
+                     var4 -= 32;
+                  }
+               }
+
+               var3.composition = class158.getNpcDefinition(Client.secretPacketBuffer2.method3290(14));
+               int var5 = Client.secretPacketBuffer2.method3290(1);
+               if(var5 == 1) {
+                  Client.field946[++Client.field1096 - 1] = var1;
+               }
+
+               int var6 = Client.field1154[Client.secretPacketBuffer2.method3290(3)];
+               if(var2) {
+                  var3.orientation = var3.angle = var6;
+               }
+
+               int var7 = Client.secretPacketBuffer2.method3290(1);
+               int var8;
+               if(var0) {
+                  var8 = Client.secretPacketBuffer2.method3290(8);
+                  if(var8 > 127) {
+                     var8 -= 256;
+                  }
+               } else {
+                  var8 = Client.secretPacketBuffer2.method3290(5);
+                  if(var8 > 15) {
+                     var8 -= 32;
+                  }
+               }
+
+               var3.field1212 = var3.composition.field3559;
+               var3.field1227 = var3.composition.field3582;
+               if(var3.field1227 == 0) {
+                  var3.angle = 0;
+               }
+
+               var3.field1216 = var3.composition.field3565;
+               var3.field1217 = var3.composition.field3560;
+               var3.field1218 = var3.composition.field3567;
+               var3.field1219 = var3.composition.field3568;
+               var3.idlePoseAnimation = var3.composition.field3558;
+               var3.field1214 = var3.composition.field3563;
+               var3.field1215 = var3.composition.field3564;
+               var3.method1589(class20.localPlayer.pathX[0] + var4, var8 + class20.localPlayer.pathY[0], var7 == 1);
+               continue;
+            }
          }
 
-         return true;
-      } catch (Exception var4) {
-         return false;
+         Client.secretPacketBuffer2.method3292();
+         return;
       }
    }
 
@@ -76,62 +123,89 @@ public class WidgetNode extends Node {
       this.field815 = false;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LModel;IIIII)V",
-      garbageValue = "-128367635"
+      signature = "(ILScript;ZI)I",
+      garbageValue = "-885350328"
    )
-   public static final void method1067(Model var0, int var1, int var2, int var3, int var4) {
-      class7.field236.method3574(new class10(var0, var1, var2, var3, var4));
+   static int method1032(int var0, Script var1, boolean var2) {
+      int var3;
+      int var4;
+      int var6;
+      if(var0 == 3400) {
+         class83.intStackSize -= 2;
+         var3 = class83.intStack[class83.intStackSize];
+         var4 = class83.intStack[class83.intStackSize + 1];
+         Enum var5 = class176.method3269(var3);
+         if(var5.valType != 115) {
+            ;
+         }
+
+         for(var6 = 0; var6 < var5.size; ++var6) {
+            if(var4 == var5.keys[var6]) {
+               class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var5.stringVals[var6];
+               var5 = null;
+               break;
+            }
+         }
+
+         if(var5 != null) {
+            class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var5.defaultString;
+         }
+
+         return 1;
+      } else if(var0 != 3408) {
+         return 2;
+      } else {
+         class83.intStackSize -= 4;
+         var3 = class83.intStack[class83.intStackSize];
+         var4 = class83.intStack[class83.intStackSize + 1];
+         int var9 = class83.intStack[class83.intStackSize + 2];
+         var6 = class83.intStack[class83.intStackSize + 3];
+         Enum var7 = class176.method3269(var9);
+         if(var7.keyType == var3 && var7.valType == var4) {
+            for(int var8 = 0; var8 < var7.size; ++var8) {
+               if(var6 == var7.keys[var8]) {
+                  if(var4 == 115) {
+                     class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var7.stringVals[var8];
+                  } else {
+                     class83.intStack[++class83.intStackSize - 1] = var7.intVals[var8];
+                  }
+
+                  var7 = null;
+                  break;
+               }
+            }
+
+            if(var7 != null) {
+               if(var4 == 115) {
+                  class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var7.defaultString;
+               } else {
+                  class83.intStack[++class83.intStackSize - 1] = var7.defaultInt;
+               }
+            }
+
+            return 1;
+         } else {
+            if(var4 == 115) {
+               class83.scriptStringStack[++class24.scriptStringStackSize - 1] = "null";
+            } else {
+               class83.intStack[++class83.intStackSize - 1] = 0;
+            }
+
+            return 1;
+         }
+      }
    }
 
-   @ObfuscatedName("is")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(LWidget;IIB)V",
-      garbageValue = "-73"
+      signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;I)[LModIcon;",
+      garbageValue = "1677707536"
    )
-   static void method1068(Widget var0, int var1, int var2) {
-      if(var0.field2681 == 0) {
-         var0.relativeX = var0.originalX;
-      } else if(var0.field2681 == 1) {
-         var0.relativeX = (var1 - var0.width) / 2 + var0.originalX;
-      } else if(var0.field2681 == 2) {
-         var0.relativeX = var1 - var0.width - var0.originalX;
-      } else if(var0.field2681 == 3) {
-         var0.relativeX = var0.originalX * var1 >> 14;
-      } else if(var0.field2681 == 4) {
-         var0.relativeX = (var1 - var0.width) / 2 + (var1 * var0.originalX >> 14);
-      } else {
-         var0.relativeX = var1 - var0.width - (var0.originalX * var1 >> 14);
-      }
-
-      if(var0.field2777 == 0) {
-         var0.relativeY = var0.originalY;
-      } else if(var0.field2777 == 1) {
-         var0.relativeY = var0.originalY + (var2 - var0.height) / 2;
-      } else if(var0.field2777 == 2) {
-         var0.relativeY = var2 - var0.height - var0.originalY;
-      } else if(var0.field2777 == 3) {
-         var0.relativeY = var2 * var0.originalY >> 14;
-      } else if(var0.field2777 == 4) {
-         var0.relativeY = (var2 - var0.height) / 2 + (var2 * var0.originalY >> 14);
-      } else {
-         var0.relativeY = var2 - var0.height - (var0.originalY * var2 >> 14);
-      }
-
-      if(Client.field1086 && var0.type == 0) {
-         if(var0.relativeX < 0) {
-            var0.relativeX = 0;
-         } else if(var0.relativeX + var0.width > var1) {
-            var0.relativeX = var1 - var0.width;
-         }
-
-         if(var0.relativeY < 0) {
-            var0.relativeY = 0;
-         } else if(var0.height + var0.relativeY > var2) {
-            var0.relativeY = var2 - var0.height;
-         }
-      }
-
+   public static ModIcon[] method1033(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.method4055(var1);
+      int var4 = var0.method4020(var3, var2);
+      return class43.method597(var0, var3, var4);
    }
 }

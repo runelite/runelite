@@ -1,8 +1,8 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gh")
+@ObfuscatedName("gc")
 public class class185 extends Node {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    public final Object field2459;
 
    public class185(Object var1) {

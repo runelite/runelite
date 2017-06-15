@@ -3,57 +3,43 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("br")
+@ObfuscatedName("bk")
 @Implements("Ignore")
 public class Ignore {
-   @ObfuscatedName("p")
+   @ObfuscatedName("m")
    @Export("previousName")
    String previousName;
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @Export("name")
    String name;
 
-   @ObfuscatedName("ja")
+   @ObfuscatedName("ge")
    @ObfuscatedSignature(
-      signature = "(LWidget;B)Z",
-      garbageValue = "-11"
+      signature = "(Lclass89;III)V",
+      garbageValue = "-522817105"
    )
-   static boolean method1079(Widget var0) {
-      if(Client.field1086) {
-         if(class251.method4472(var0) != 0) {
-            return false;
-         }
-
-         if(var0.type == 0) {
-            return false;
-         }
-      }
-
-      return var0.isHidden;
+   static final void method1043(class89 var0, int var1, int var2) {
+      class116.menuAction(var0.field1386, var0.field1387, var0.field1388, var0.field1389, var0.field1392, var0.field1392, var1, var2);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(LWorld;I)V",
-      garbageValue = "198590217"
+      signature = "(I)V",
+      garbageValue = "-135220785"
    )
-   static void method1080(World var0) {
-      if(var0.method1518() != Client.isMembers) {
-         Client.isMembers = var0.method1518();
-         boolean var1 = var0.method1518();
-         if(var1 != ItemComposition.isMembersWorld) {
-            ItemComposition.field3501.reset();
-            ItemComposition.itemModelCache.reset();
-            ItemComposition.itemSpriteCache.reset();
-            ItemComposition.isMembersWorld = var1;
-         }
-      }
-
-      WallObject.host = var0.address;
-      Client.world = var0.id;
-      Client.flags = var0.mask;
-      class36.field506 = Client.field915 == 0?'ꩊ':var0.id + '鱀';
-      class177.field2423 = Client.field915 == 0?443:var0.id + '썐';
-      class66.field803 = class36.field506;
+   static void method1044() {
+      class61.field759 = 99;
+      class61.underlayIds = new byte[4][104][104];
+      class61.overlayIds = new byte[4][104][104];
+      class90.overlayPaths = new byte[4][104][104];
+      class275.overlayRotations = new byte[4][104][104];
+      class61.field750 = new int[4][105][105];
+      class267.field3669 = new byte[4][105][105];
+      XItemContainer.field774 = new int[105][105];
+      Widget.field2648 = new int[104];
+      class61.field753 = new int[104];
+      WallObject.field2140 = new int[104];
+      class40.field552 = new int[104];
+      WidgetNode.field810 = new int[104];
    }
 }

@@ -2,66 +2,66 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("db")
+@ObfuscatedName("dy")
 @Implements("SceneTileModel")
 public final class SceneTileModel {
-   @ObfuscatedName("l")
-   static final int[][] field1847;
-   @ObfuscatedName("p")
-   int[] field1848;
-   @ObfuscatedName("m")
-   int[] field1849;
    @ObfuscatedName("w")
-   static final int[][] field1850;
-   @ObfuscatedName("f")
-   int[] field1851;
-   @ObfuscatedName("h")
-   int[] field1852;
-   @ObfuscatedName("c")
-   int[] field1853;
-   @ObfuscatedName("z")
-   int[] field1854;
-   @ObfuscatedName("t")
-   static int[] field1855;
-   @ObfuscatedName("g")
-   int[] field1856;
+   int[] field1841;
+   @ObfuscatedName("m")
+   int[] field1842;
    @ObfuscatedName("e")
-   @Export("flatShade")
-   boolean flatShade;
+   int[] field1843;
+   @ObfuscatedName("t")
+   int[] field1844;
+   @ObfuscatedName("r")
+   static int[] field1845;
+   @ObfuscatedName("z")
+   int[] field1846;
+   @ObfuscatedName("d")
+   static final int[][] field1847;
+   @ObfuscatedName("i")
+   int[] field1848;
+   @ObfuscatedName("f")
+   int[] field1849;
+   @ObfuscatedName("c")
+   int[] field1850;
    @ObfuscatedName("j")
-   int[] field1858;
-   @ObfuscatedName("x")
-   @Export("rotation")
-   int rotation;
+   int[] field1851;
+   @ObfuscatedName("q")
+   @Export("shape")
+   int shape;
+   @ObfuscatedName("s")
+   static int[] field1853;
    @ObfuscatedName("a")
    @Export("underlay")
    int underlay;
-   @ObfuscatedName("y")
+   @ObfuscatedName("g")
    @Export("overlay")
    int overlay;
-   @ObfuscatedName("r")
-   static int[] field1862;
-   @ObfuscatedName("b")
-   static int[] field1863;
-   @ObfuscatedName("s")
-   static int[] field1864;
    @ObfuscatedName("v")
-   static int[] field1865;
+   static int[] field1856;
+   @ObfuscatedName("p")
+   int[] field1857;
+   @ObfuscatedName("k")
+   static int[] field1858;
    @ObfuscatedName("n")
-   int[] field1866;
+   @Export("rotation")
+   int rotation;
+   @ObfuscatedName("l")
+   static int[] field1860;
    @ObfuscatedName("o")
-   @Export("shape")
-   int shape;
-   @ObfuscatedName("i")
-   int[] field1868;
+   @Export("flatShade")
+   boolean flatShade;
+   @ObfuscatedName("h")
+   static final int[][] field1862;
 
    static {
-      field1862 = new int[6];
-      field1863 = new int[6];
-      field1864 = new int[6];
-      field1865 = new int[6];
-      field1855 = new int[6];
-      field1850 = new int[][]{{1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 2, 6}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 13, 14}};
+      field1856 = new int[6];
+      field1853 = new int[6];
+      field1858 = new int[6];
+      field1845 = new int[6];
+      field1860 = new int[6];
+      field1862 = new int[][]{{1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 2, 6}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 13, 14}};
       field1847 = new int[][]{{0, 1, 2, 3, 0, 0, 1, 3}, {1, 1, 2, 3, 1, 0, 1, 3}, {0, 1, 2, 3, 1, 0, 1, 3}, {0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3}, {0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4}, {0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4}, {0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3}, {0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3}, {0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5}, {0, 0, 4, 5, 1, 4, 1, 2, 1, 4, 2, 3, 1, 4, 3, 5}, {0, 0, 1, 5, 0, 1, 4, 5, 0, 1, 2, 4, 1, 0, 5, 3, 1, 5, 4, 3, 1, 4, 2, 3}, {1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3}, {1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5}};
    }
 
@@ -79,11 +79,11 @@ public final class SceneTileModel {
       int var21 = var20 / 2;
       int var22 = var20 / 4;
       int var23 = var20 * 3 / 4;
-      int[] var24 = field1850[var1];
+      int[] var24 = field1862[var1];
       int var25 = var24.length;
-      this.field1866 = new int[var25];
-      this.field1848 = new int[var25];
-      this.field1868 = new int[var25];
+      this.field1857 = new int[var25];
+      this.field1842 = new int[var25];
+      this.field1843 = new int[var25];
       int[] var26 = new int[var25];
       int[] var27 = new int[var25];
       int var28 = var4 * var20;
@@ -207,23 +207,23 @@ public final class SceneTileModel {
             var36 = var17;
          }
 
-         this.field1866[var30] = var32;
-         this.field1848[var30] = var34;
-         this.field1868[var30] = var33;
+         this.field1857[var30] = var32;
+         this.field1842[var30] = var34;
+         this.field1843[var30] = var33;
          var26[var30] = var35;
          var27[var30] = var36;
       }
 
       int[] var38 = field1847[var1];
       var31 = var38.length / 4;
-      this.field1853 = new int[var31];
-      this.field1854 = new int[var31];
-      this.field1852 = new int[var31];
-      this.field1858 = new int[var31];
       this.field1851 = new int[var31];
+      this.field1848 = new int[var31];
       this.field1849 = new int[var31];
+      this.field1844 = new int[var31];
+      this.field1841 = new int[var31];
+      this.field1846 = new int[var31];
       if(var3 != -1) {
-         this.field1856 = new int[var31];
+         this.field1850 = new int[var31];
       }
 
       var32 = 0;
@@ -246,22 +246,22 @@ public final class SceneTileModel {
             var37 = var37 - var2 & 3;
          }
 
-         this.field1853[var33] = var35;
-         this.field1854[var33] = var36;
-         this.field1852[var33] = var37;
+         this.field1851[var33] = var35;
+         this.field1848[var33] = var36;
+         this.field1849[var33] = var37;
          if(var34 == 0) {
-            this.field1858[var33] = var26[var35];
-            this.field1851[var33] = var26[var36];
-            this.field1849[var33] = var26[var37];
-            if(this.field1856 != null) {
-               this.field1856[var33] = -1;
+            this.field1844[var33] = var26[var35];
+            this.field1841[var33] = var26[var36];
+            this.field1846[var33] = var26[var37];
+            if(this.field1850 != null) {
+               this.field1850[var33] = -1;
             }
          } else {
-            this.field1858[var33] = var27[var35];
-            this.field1851[var33] = var27[var36];
-            this.field1849[var33] = var27[var37];
-            if(this.field1856 != null) {
-               this.field1856[var33] = var3;
+            this.field1844[var33] = var27[var35];
+            this.field1841[var33] = var27[var36];
+            this.field1846[var33] = var27[var37];
+            if(this.field1850 != null) {
+               this.field1850[var33] = var3;
             }
          }
       }

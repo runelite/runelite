@@ -1,121 +1,104 @@
+import java.awt.Desktop;
+import java.awt.Desktop.Action;
+import java.net.URI;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ed")
+@ObfuscatedName("eu")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("n")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -727419127
+      intValue = 1683817059
    )
-   int field2053;
+   int field2049;
+   @ObfuscatedName("e")
+   int[] field2050;
+   @ObfuscatedName("t")
+   int[][] field2052;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -357361923
+   )
+   static int field2053;
+   @ObfuscatedName("o")
+   static ModIcon field2055;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1159242553
+      intValue = 155612475
    )
-   int field2054;
-   @ObfuscatedName("i")
-   int[] field2055;
-   @ObfuscatedName("j")
-   int[][] field2057;
+   int field2057;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "424070309"
+      signature = "(Ljava/lang/String;ZLjava/lang/String;ZI)V",
+      garbageValue = "-27182272"
    )
-   public static String method2672(CharSequence var0) {
-      int var1 = var0.length();
-      StringBuilder var2 = new StringBuilder(var1);
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 < 97 || var4 > 122) && (var4 < 65 || var4 > 90) && (var4 < 48 || var4 > 57) && var4 != 46 && var4 != 45 && var4 != 42 && var4 != 95) {
-            if(var4 == 32) {
-               var2.append('+');
-            } else {
-               byte var5 = class10.method68(var4);
-               var2.append('%');
-               int var6 = var5 >> 4 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-
-               var6 = var5 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
+   static void method2575(String var0, boolean var1, String var2, boolean var3) {
+      if(var1) {
+         if(!var3 && Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
+            try {
+               Desktop.getDesktop().browse(new URI(var0));
+               return;
+            } catch (Exception var5) {
+               ;
             }
-         } else {
-            var2.append(var4);
          }
+
+         if(class56.field687.startsWith("win") && !var3) {
+            class50.method725(var0, 0, "openjs");
+            return;
+         }
+
+         if(class56.field687.startsWith("mac")) {
+            class50.method725(var0, 1, var2);
+            return;
+         }
+
+         class50.method725(var0, 2, "openjs");
+      } else {
+         class50.method725(var0, 3, "openjs");
       }
 
-      return var2.toString();
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "776017608"
-   )
-   public static int method2673(int var0) {
-      int var1 = 0;
-      if(var0 < 0 || var0 >= 65536) {
-         var0 >>>= 16;
-         var1 += 16;
-      }
-
-      if(var0 >= 256) {
-         var0 >>>= 8;
-         var1 += 8;
-      }
-
-      if(var0 >= 16) {
-         var0 >>>= 4;
-         var1 += 4;
-      }
-
-      if(var0 >= 4) {
-         var0 >>>= 2;
-         var1 += 2;
-      }
-
-      if(var0 >= 1) {
-         var0 >>>= 1;
-         ++var1;
-      }
-
-      return var0 + var1;
    }
 
    FrameMap(int var1, byte[] var2) {
-      this.field2053 = var1;
+      this.field2057 = var1;
       Buffer var3 = new Buffer(var2);
-      this.field2054 = var3.readUnsignedByte();
-      this.field2055 = new int[this.field2054];
-      this.field2057 = new int[this.field2054][];
+      this.field2049 = var3.readUnsignedByte();
+      this.field2050 = new int[this.field2049];
+      this.field2052 = new int[this.field2049][];
 
       int var4;
-      for(var4 = 0; var4 < this.field2054; ++var4) {
-         this.field2055[var4] = var3.readUnsignedByte();
+      for(var4 = 0; var4 < this.field2049; ++var4) {
+         this.field2050[var4] = var3.readUnsignedByte();
       }
 
-      for(var4 = 0; var4 < this.field2054; ++var4) {
-         this.field2057[var4] = new int[var3.readUnsignedByte()];
+      for(var4 = 0; var4 < this.field2049; ++var4) {
+         this.field2052[var4] = new int[var3.readUnsignedByte()];
       }
 
-      for(var4 = 0; var4 < this.field2054; ++var4) {
-         for(int var5 = 0; var5 < this.field2057[var4].length; ++var5) {
-            this.field2057[var4][var5] = var3.readUnsignedByte();
+      for(var4 = 0; var4 < this.field2049; ++var4) {
+         for(int var5 = 0; var5 < this.field2052[var4].length; ++var5) {
+            this.field2052[var4][var5] = var3.readUnsignedByte();
          }
       }
 
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "1179747000"
+   )
+   public static int method2576(int var0) {
+      var0 = (var0 >>> 1 & 1431655765) + (var0 & 1431655765);
+      var0 = (var0 & 858993459) + (var0 >>> 2 & 858993459);
+      var0 = (var0 >>> 4) + var0 & 252645135;
+      var0 += var0 >>> 8;
+      var0 += var0 >>> 16;
+      return var0 & 255;
    }
 }

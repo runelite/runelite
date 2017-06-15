@@ -4,190 +4,163 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cw")
+@ObfuscatedName("ch")
 @Implements("World")
 public class World {
-   @ObfuscatedName("h")
-   static int[] field1294;
-   @ObfuscatedName("f")
-   @Export("worldList")
-   static World[] worldList;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1326457781
-   )
-   static int field1297;
-   @ObfuscatedName("z")
-   static int[] field1299;
-   @ObfuscatedName("p")
-   public static Area[] field1300;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 957194697
-   )
-   @Export("playerCount")
-   int playerCount;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -910845355
-   )
-   @Export("index")
-   int index;
-   @ObfuscatedName("y")
-   @Export("activity")
-   String activity;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 499653957
-   )
-   @Export("location")
-   int location;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 64786275
+      intValue = 1522516599
    )
    @Export("id")
    int id;
-   @ObfuscatedName("o")
+   @ObfuscatedName("w")
+   @Export("worldList")
+   static World[] worldList;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1453230757
+      intValue = 1687822551
    )
-   @Export("mask")
-   int mask;
-   @ObfuscatedName("gm")
-   static SpritePixels[] field1310;
+   static int field1281;
    @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1401279325
-   )
-   static int field1311;
+   @Export("worldServersDownload")
+   static class77 worldServersDownload;
+   @ObfuscatedName("i")
+   static int[] field1283;
+   @ObfuscatedName("f")
+   static int[] field1284;
    @ObfuscatedName("a")
    @Export("address")
    String address;
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1256762219"
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -286118705
    )
-   boolean method1518() {
+   @Export("playerCount")
+   int playerCount;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 648398151
+   )
+   @Export("mask")
+   int mask;
+   @ObfuscatedName("aq")
+   @ObfuscatedGetter(
+      intValue = 524176219
+   )
+   @Export("authCodeForLogin")
+   static int authCodeForLogin;
+   @ObfuscatedName("g")
+   @Export("activity")
+   String activity;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 1016556063
+   )
+   @Export("location")
+   int location;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 848943803
+   )
+   @Export("index")
+   int index;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1216446893
+   )
+   static int field1293;
+   @ObfuscatedName("aj")
+   public static BufferProvider field1296;
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "1"
+   )
+   boolean method1461() {
       return (1 & this.mask) != 0;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "-63"
+      signature = "(I)Z",
+      garbageValue = "2087575053"
    )
-   boolean method1519() {
+   boolean method1462() {
       return (2 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-1678610055"
+   )
+   boolean method1465() {
+      return (536870912 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-385747484"
+   )
+   boolean method1466() {
+      return (33554432 & this.mask) != 0;
+   }
+
+   static {
+      field1281 = 0;
+      field1293 = 0;
+      field1283 = new int[]{1, 1, 1, 1};
+      field1284 = new int[]{0, 1, 2, 3};
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "2046959771"
+   )
+   boolean method1469() {
+      return (4 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(LPacketBuffer;I)I",
+      garbageValue = "973992588"
+   )
+   static int method1475(PacketBuffer var0) {
+      int var1 = var0.method3290(2);
+      int var2;
+      if(var1 == 0) {
+         var2 = 0;
+      } else if(var1 == 1) {
+         var2 = var0.method3290(5);
+      } else if(var1 == 2) {
+         var2 = var0.method3290(8);
+      } else {
+         var2 = var0.method3290(11);
+      }
+
+      return var2;
    }
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(B)Z",
-      garbageValue = "95"
+      garbageValue = "43"
    )
-   boolean method1521() {
+   boolean method1488() {
       return (8 & this.mask) != 0;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-1176830075"
+      signature = "(LIndexDataBase;II)Lclass207;",
+      garbageValue = "-939152258"
    )
-   boolean method1522() {
-      return (536870912 & this.mask) != 0;
-   }
-
-   static {
-      field1297 = 0;
-      field1311 = 0;
-      field1299 = new int[]{1, 1, 1, 1};
-      field1294 = new int[]{0, 1, 2, 3};
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-2099288440"
-   )
-   boolean method1554() {
-      return (4 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "680765666"
-   )
-   boolean method1560() {
-      return (33554432 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;IIIIIII)V",
-      garbageValue = "2122063009"
-   )
-   static final void method1563(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7;
-      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
-         class61.tileSettings[var1][var2][var3] = 0;
-
-         while(true) {
-            var7 = var0.readUnsignedByte();
-            if(var7 == 0) {
-               if(var1 == 0) {
-                  class61.tileHeights[0][var2][var3] = -class109.method2058(var2 + 932731 + var4, var3 + 556238 + var5) * 8;
-               } else {
-                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
-               }
-               break;
-            }
-
-            if(var7 == 1) {
-               int var8 = var0.readUnsignedByte();
-               if(var8 == 1) {
-                  var8 = 0;
-               }
-
-               if(var1 == 0) {
-                  class61.tileHeights[0][var2][var3] = -var8 * 8;
-               } else {
-                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - var8 * 8;
-               }
-               break;
-            }
-
-            if(var7 <= 49) {
-               class61.overlayIds[var1][var2][var3] = var0.readByte();
-               class21.overlayPaths[var1][var2][var3] = (byte)((var7 - 2) / 4);
-               class61.overlayRotations[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
-            } else if(var7 <= 81) {
-               class61.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
-            } else {
-               class234.underlayIds[var1][var2][var3] = (byte)(var7 - 81);
-            }
-         }
-      } else {
-         while(true) {
-            var7 = var0.readUnsignedByte();
-            if(var7 == 0) {
-               break;
-            }
-
-            if(var7 == 1) {
-               var0.readUnsignedByte();
-               break;
-            }
-
-            if(var7 <= 49) {
-               var0.readUnsignedByte();
-            }
-         }
-      }
-
+   static class207 method1499(IndexDataBase var0, int var1) {
+      byte[] var2 = var0.method4001(var1);
+      return var2 == null?null:new class207(var2);
    }
 }

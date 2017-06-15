@@ -1,30 +1,44 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hs")
+@ObfuscatedName("hd")
 public class class226 {
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(ILIndexFile;LIndexData;B)V",
-      garbageValue = "124"
-   )
-   static void method4100(int var0, IndexFile var1, IndexData var2) {
-      byte[] var3 = null;
-      Deque var4 = class236.field3233;
-      synchronized(class236.field3233) {
-         for(FileSystem var5 = (FileSystem)class236.field3233.method3622(); var5 != null; var5 = (FileSystem)class236.field3233.method3608()) {
-            if((long)var0 == var5.hash && var5.index == var1 && var5.field3204 == 0) {
-               var3 = var5.field3200;
-               break;
-            }
-         }
-      }
+   @ObfuscatedName("gs")
+   static SpritePixels[] field3144;
+   @ObfuscatedName("of")
+   @Export("clanChatRank")
+   static byte clanChatRank;
 
-      if(var3 != null) {
-         var2.method4238(var1, var0, var3, true);
+   @ObfuscatedName("ae")
+   @ObfuscatedSignature(
+      signature = "([BI)[B",
+      garbageValue = "686687893"
+   )
+   static final byte[] method3966(byte[] var0) {
+      Buffer var1 = new Buffer(var0);
+      int var2 = var1.readUnsignedByte();
+      int var3 = var1.readInt();
+      if(var3 < 0 || IndexDataBase.field3222 != 0 && var3 > IndexDataBase.field3222) {
+         throw new RuntimeException();
+      } else if(var2 == 0) {
+         byte[] var4 = new byte[var3];
+         var1.readBytes(var4, 0, var3);
+         return var4;
       } else {
-         byte[] var8 = var1.method3008(var0);
-         var2.method4238(var1, var0, var8, true);
+         int var6 = var1.readInt();
+         if(var6 >= 0 && (IndexDataBase.field3222 == 0 || var6 <= IndexDataBase.field3222)) {
+            byte[] var5 = new byte[var6];
+            if(var2 == 1) {
+               class167.method2976(var5, var6, var0, var3, 9);
+            } else {
+               IndexDataBase.field3234.method2971(var1, var5);
+            }
+
+            return var5;
+         } else {
+            throw new RuntimeException();
+         }
       }
    }
 }

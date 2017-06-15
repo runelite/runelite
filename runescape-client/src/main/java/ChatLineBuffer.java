@@ -4,45 +4,62 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cz")
+@ObfuscatedName("cg")
 @Implements("ChatLineBuffer")
 public class ChatLineBuffer {
-   @ObfuscatedName("p")
+   @ObfuscatedName("m")
    @Export("lines")
    MessageNode[] lines;
-   @ObfuscatedName("gh")
-   static SpritePixels field1558;
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1612574659
+      intValue = -1177989537
    )
    @Export("length")
    int length;
 
-   @ObfuscatedName("p")
+   ChatLineBuffer() {
+      this.lines = new MessageNode[100];
+   }
+
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(IB)LMessageNode;",
-      garbageValue = "-48"
+      garbageValue = "14"
    )
-   MessageNode method1847(int var1) {
+   MessageNode method1765(int var1) {
       return var1 >= 0 && var1 < this.length?this.lines[var1]:null;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(S)I",
-      garbageValue = "-2237"
+      signature = "(B)I",
+      garbageValue = "-3"
    )
-   int method1848() {
+   int method1766() {
       return this.length;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-33547177"
+   )
+   static void method1770() {
+      class96.field1487 = 0;
+
+      for(int var0 = 0; var0 < 2048; ++var0) {
+         class96.field1498[var0] = null;
+         class96.field1494[var0] = 1;
+      }
+
+   }
+
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)LMessageNode;",
-      garbageValue = "-1970851807"
+      garbageValue = "-1356112776"
    )
-   MessageNode method1851(int var1, String var2, String var3, String var4) {
+   MessageNode method1771(int var1, String var2, String var3, String var4) {
       MessageNode var5 = this.lines[99];
 
       for(int var6 = this.length; var6 > 0; --var6) {
@@ -55,8 +72,8 @@ public class ChatLineBuffer {
          var5 = new MessageNode(var1, var2, var4, var3);
       } else {
          var5.unlink();
-         var5.method3641();
-         var5.method1088(var1, var2, var4, var3);
+         var5.method3520();
+         var5.method1053(var1, var2, var4, var3);
       }
 
       this.lines[0] = var5;
@@ -67,29 +84,17 @@ public class ChatLineBuffer {
       return var5;
    }
 
-   ChatLineBuffer() {
-      this.lines = new MessageNode[100];
-   }
-
-   @ObfuscatedName("p")
+   @ObfuscatedName("gu")
    @ObfuscatedSignature(
-      signature = "(IB)Lclass251;",
-      garbageValue = "1"
+      signature = "(IIIIB)V",
+      garbageValue = "-5"
    )
-   public static class251 method1859(int var0) {
-      class251 var1 = (class251)class251.field3388.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class251.field3389.getConfigData(11, var0);
-         var1 = new class251();
-         if(var2 != null) {
-            var1.method4467(new Buffer(var2));
+   static final void method1777(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.field1109; ++var4) {
+         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetBoundsHeight[var4] + Client.widgetPositionY[var4] > var1 && Client.widgetPositionY[var4] < var1 + var3) {
+            Client.field1111[var4] = true;
          }
-
-         var1.method4455();
-         class251.field3388.put(var1, (long)var0);
-         return var1;
       }
+
    }
 }

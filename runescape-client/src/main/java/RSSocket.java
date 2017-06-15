@@ -9,231 +9,103 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fq")
+@ObfuscatedName("fy")
 @Implements("RSSocket")
 public final class RSSocket implements Runnable {
    @ObfuscatedName("p")
-   @Export("outputStream")
-   OutputStream outputStream;
-   @ObfuscatedName("g")
-   boolean field2277;
-   @ObfuscatedName("i")
+   @Export("inputStream")
+   InputStream inputStream;
+   @ObfuscatedName("z")
+   class153 field2279;
+   @ObfuscatedName("e")
    @Export("socket")
    Socket socket;
-   @ObfuscatedName("j")
-   boolean field2279;
-   @ObfuscatedName("f")
-   class154 field2280;
+   @ObfuscatedName("t")
+   boolean field2281;
+   @ObfuscatedName("w")
+   class154 field2282;
    @ObfuscatedName("m")
-   class153 field2281;
-   @ObfuscatedName("c")
+   @Export("outputStream")
+   OutputStream outputStream;
+   @ObfuscatedName("j")
    @Export("outbuffer")
    byte[] outbuffer;
-   @ObfuscatedName("z")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1829986223
+      intValue = 439390587
    )
-   int field2283;
-   @ObfuscatedName("h")
+   int field2285;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1905972573
+      intValue = 1577439597
    )
    @Export("outbufLen")
    int outbufLen;
-   @ObfuscatedName("n")
-   @Export("inputStream")
-   InputStream inputStream;
-   @ObfuscatedName("u")
-   static int[] field2286;
-   @ObfuscatedName("pg")
-   static class109 field2287;
+   @ObfuscatedName("c")
+   boolean field2287;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1246510059"
+      signature = "(B)V",
+      garbageValue = "84"
    )
-   public void method2989() {
-      if(!this.field2279) {
+   public void method2879() {
+      if(!this.field2281) {
          synchronized(this) {
-            this.field2279 = true;
+            this.field2281 = true;
             this.notifyAll();
          }
 
-         if(this.field2281 != null) {
-            while(this.field2281.field2236 == 0) {
-               DynamicObject.method1842(1L);
+         if(this.field2279 != null) {
+            while(this.field2279.field2237 == 0) {
+               class172.method3014(1L);
             }
 
-            if(this.field2281.field2236 == 1) {
+            if(this.field2279.field2237 == 1) {
                try {
-                  ((Thread)this.field2281.field2240).join();
+                  ((Thread)this.field2279.field2241).join();
                } catch (InterruptedException var3) {
                   ;
                }
             }
          }
 
-         this.field2281 = null;
+         this.field2279 = null;
       }
    }
 
    protected void finalize() {
-      this.method2989();
+      this.method2879();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "547326136"
+      garbageValue = "1250416685"
    )
    @Export("readByte")
    public int readByte() throws IOException {
-      return this.field2279?0:this.inputStream.read();
+      return this.field2281?0:this.inputStream.read();
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "0"
+      garbageValue = "-1"
    )
    @Export("available")
    public int available() throws IOException {
-      return this.field2279?0:this.inputStream.available();
+      return this.field2281?0:this.inputStream.available();
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "-1639762423"
-   )
-   @Export("queueForWrite")
-   public void queueForWrite(byte[] var1, int var2, int var3) throws IOException {
-      if(!this.field2279) {
-         if(this.field2277) {
-            this.field2277 = false;
-            throw new IOException();
-         } else {
-            if(this.outbuffer == null) {
-               this.outbuffer = new byte[5000];
-            }
-
-            synchronized(this) {
-               for(int var5 = 0; var5 < var3; ++var5) {
-                  this.outbuffer[this.outbufLen] = var1[var5 + var2];
-                  this.outbufLen = (this.outbufLen + 1) % 5000;
-                  if((this.field2283 + 4900) % 5000 == this.outbufLen) {
-                     throw new IOException();
-                  }
-               }
-
-               if(this.field2281 == null) {
-                  this.field2281 = this.field2280.method2937(this, 3);
-               }
-
-               this.notifyAll();
-            }
-         }
-      }
-   }
-
-   public void run() {
-      try {
-         while(true) {
-            label84: {
-               int var1;
-               int var2;
-               synchronized(this) {
-                  if(this.field2283 == this.outbufLen) {
-                     if(this.field2279) {
-                        break label84;
-                     }
-
-                     try {
-                        this.wait();
-                     } catch (InterruptedException var10) {
-                        ;
-                     }
-                  }
-
-                  var2 = this.field2283;
-                  if(this.outbufLen >= this.field2283) {
-                     var1 = this.outbufLen - this.field2283;
-                  } else {
-                     var1 = 5000 - this.field2283;
-                  }
-               }
-
-               if(var1 <= 0) {
-                  continue;
-               }
-
-               try {
-                  this.outputStream.write(this.outbuffer, var2, var1);
-               } catch (IOException var9) {
-                  this.field2277 = true;
-               }
-
-               this.field2283 = (var1 + this.field2283) % 5000;
-
-               try {
-                  if(this.field2283 == this.outbufLen) {
-                     this.outputStream.flush();
-                  }
-               } catch (IOException var8) {
-                  this.field2277 = true;
-               }
-               continue;
-            }
-
-            try {
-               if(this.inputStream != null) {
-                  this.inputStream.close();
-               }
-
-               if(this.outputStream != null) {
-                  this.outputStream.close();
-               }
-
-               if(this.socket != null) {
-                  this.socket.close();
-               }
-            } catch (IOException var7) {
-               ;
-            }
-
-            this.outbuffer = null;
-            break;
-         }
-      } catch (Exception var12) {
-         Projectile.method1734((String)null, var12);
-      }
-
-   }
-
-   public RSSocket(Socket var1, class154 var2) throws IOException {
-      this.field2279 = false;
-      this.field2283 = 0;
-      this.outbufLen = 0;
-      this.field2277 = false;
-      this.field2280 = var2;
-      this.socket = var1;
-      this.socket.setSoTimeout(30000);
-      this.socket.setTcpNoDelay(true);
-      this.socket.setReceiveBufferSize(16384);
-      this.socket.setSendBufferSize(16384);
-      this.inputStream = this.socket.getInputStream();
-      this.outputStream = this.socket.getOutputStream();
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "-16711936"
+      garbageValue = "-1776816500"
    )
    @Export("read")
    public void read(byte[] var1, int var2, int var3) throws IOException {
-      if(!this.field2279) {
+      if(!this.field2281) {
          while(var3 > 0) {
             int var4 = this.inputStream.read(var1, var2, var3);
             if(var4 <= 0) {
@@ -247,24 +119,135 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(II)Lclass244;",
-      garbageValue = "215712503"
-   )
-   public static class244 method3006(int var0) {
-      class244 var1 = (class244)class244.field3320.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class244.field3324.getConfigData(15, var0);
-         var1 = new class244();
-         if(var2 != null) {
-            var1.method4344(new Buffer(var2));
+   public RSSocket(Socket var1, class154 var2) throws IOException {
+      this.field2281 = false;
+      this.field2285 = 0;
+      this.outbufLen = 0;
+      this.field2287 = false;
+      this.field2282 = var2;
+      this.socket = var1;
+      this.socket.setSoTimeout(30000);
+      this.socket.setTcpNoDelay(true);
+      this.socket.setReceiveBufferSize(16384);
+      this.socket.setSendBufferSize(16384);
+      this.inputStream = this.socket.getInputStream();
+      this.outputStream = this.socket.getOutputStream();
+   }
+
+   public void run() {
+      try {
+         while(true) {
+            int var1;
+            int var2;
+            synchronized(this) {
+               if(this.field2285 == this.outbufLen) {
+                  if(this.field2281) {
+                     break;
+                  }
+
+                  try {
+                     this.wait();
+                  } catch (InterruptedException var10) {
+                     ;
+                  }
+               }
+
+               var2 = this.field2285;
+               if(this.outbufLen >= this.field2285) {
+                  var1 = this.outbufLen - this.field2285;
+               } else {
+                  var1 = 5000 - this.field2285;
+               }
+            }
+
+            if(var1 > 0) {
+               try {
+                  this.outputStream.write(this.outbuffer, var2, var1);
+               } catch (IOException var9) {
+                  this.field2287 = true;
+               }
+
+               this.field2285 = (this.field2285 + var1) % 5000;
+
+               try {
+                  if(this.field2285 == this.outbufLen) {
+                     this.outputStream.flush();
+                  }
+               } catch (IOException var8) {
+                  this.field2287 = true;
+               }
+            }
          }
 
-         class244.field3320.put(var1, (long)var0);
-         return var1;
+         try {
+            if(this.inputStream != null) {
+               this.inputStream.close();
+            }
+
+            if(this.outputStream != null) {
+               this.outputStream.close();
+            }
+
+            if(this.socket != null) {
+               this.socket.close();
+            }
+         } catch (IOException var7) {
+            ;
+         }
+
+         this.outbuffer = null;
+      } catch (Exception var12) {
+         class8.method43((String)null, var12);
       }
+
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "([BIII)V",
+      garbageValue = "1348556689"
+   )
+   @Export("queueForWrite")
+   public void queueForWrite(byte[] var1, int var2, int var3) throws IOException {
+      if(!this.field2281) {
+         if(this.field2287) {
+            this.field2287 = false;
+            throw new IOException();
+         } else {
+            if(this.outbuffer == null) {
+               this.outbuffer = new byte[5000];
+            }
+
+            synchronized(this) {
+               for(int var5 = 0; var5 < var3; ++var5) {
+                  this.outbuffer[this.outbufLen] = var1[var5 + var2];
+                  this.outbufLen = (this.outbufLen + 1) % 5000;
+                  if(this.outbufLen == (this.field2285 + 4900) % 5000) {
+                     throw new IOException();
+                  }
+               }
+
+               if(this.field2279 == null) {
+                  this.field2279 = this.field2282.method2822(this, 3);
+               }
+
+               this.notifyAll();
+            }
+         }
+      }
+   }
+
+   @ObfuscatedName("ed")
+   @ObfuscatedSignature(
+      signature = "(IZZZI)LIndexData;",
+      garbageValue = "1334116791"
+   )
+   static IndexData method2891(int var0, boolean var1, boolean var2, boolean var3) {
+      IndexFile var4 = null;
+      if(class155.field2262 != null) {
+         var4 = new IndexFile(var0, class155.field2262, WorldMapType3.field404[var0], 1000000);
+      }
+
+      return new IndexData(var4, class9.field254, var0, var1, var2, var3);
    }
 }
