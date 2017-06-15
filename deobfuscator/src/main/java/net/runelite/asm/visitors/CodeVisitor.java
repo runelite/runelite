@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.visitors;
 
 import java.lang.reflect.Constructor;
@@ -53,12 +52,17 @@ import net.runelite.asm.pool.Field;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Handle;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CodeVisitor extends MethodVisitor
 {
+	private static final Logger logger = LoggerFactory.getLogger(CodeVisitor.class);
+
 	private final ClassFile classFile;
 	private final Method method;
 	private Code code;
@@ -74,8 +78,12 @@ public class CodeVisitor extends MethodVisitor
 
 		net.runelite.asm.attributes.Exceptions exceptions = method.getExceptions();
 		if (sexceptions != null)
+		{
 			for (String e : sexceptions)
+			{
 				exceptions.addException(new net.runelite.asm.pool.Class(e));
+			}
+		}
 	}
 
 	@Override
@@ -100,7 +108,7 @@ public class CodeVisitor extends MethodVisitor
 		{
 			Constructor<? extends Instruction> con = type.getInstructionClass().getConstructor(Instructions.class, InstructionType.class);
 			Instruction ins = con.newInstance(code.getInstructions(), type);
-			
+
 			ins = ins.makeGeneric();
 
 			code.getInstructions().addInstruction(ins);
@@ -166,6 +174,12 @@ public class CodeVisitor extends MethodVisitor
 		);
 
 		ii.setMethod(entry);
+	}
+
+	@Override
+	public void visitInvokeDynamicInsn(String name, String desc, Handle bsm, Object[] bsmArgs)
+	{
+		logger.error("invokedynamic {}.{} {} {} - this will not work", name, desc, bsm, bsmArgs);
 	}
 
 	@Override
@@ -272,7 +286,9 @@ public class CodeVisitor extends MethodVisitor
 		e.setEnd(endL);
 		e.setHandler(handlerL);
 		if (type != null)
+		{
 			e.setCatchType(new net.runelite.asm.pool.Class(type));
+		}
 
 		exceptions.add(e);
 	}
@@ -289,7 +305,9 @@ public class CodeVisitor extends MethodVisitor
 		if (code != null)
 		{
 			for (Instruction i : code.getInstructions().getInstructions())
+			{
 				i.resolve();
+			}
 
 			method.setCode(code);
 		}
