@@ -93,6 +93,11 @@ final class ClientPanel extends JPanel
 
 		Client client = new Client((net.runelite.rs.api.Client) rs);
 		RuneLite.setClient(client);
+
+		// This causes the whole game frame to be redrawn each frame instead
+		// of only the viewport, so we can hook to MainBufferProvider#draw
+		// and draw anywhere without it leaving artifacts
+		client.setGameDrawingMode(2);
 	}
 
 }

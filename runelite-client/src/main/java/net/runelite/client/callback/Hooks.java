@@ -22,8 +22,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.inject.callbacks;
+package net.runelite.client.callback;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;
@@ -31,6 +33,8 @@ import net.runelite.client.events.MapRegionChanged;
 import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionsChanged;
 import net.runelite.client.events.AnimationChanged;
+import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.rs.api.MainBufferProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +43,24 @@ public class Hooks
 	private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
 
 	private static final RuneLite runelite = RuneLite.getRunelite();
+
+	public static void draw(Object provider, Graphics graphics, int x, int y)
+	{
+		// XXX fix injector to use interface in signature
+		MainBufferProvider mpb = (MainBufferProvider) provider;
+		BufferedImage image = (BufferedImage) mpb.getImage();
+
+		OverlayRenderer renderer = runelite.getRenderer();
+
+		try
+		{
+			renderer.render(image);
+		}
+		catch (Exception ex)
+		{
+			logger.warn("Error during overlay rendering", ex);
+		}
+	}
 
 	public static void callHook(String name, int idx, Object object)
 	{

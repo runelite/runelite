@@ -10,6 +10,7 @@ import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.util.Hashtable;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -47,6 +48,7 @@ public final class MainBufferProvider extends BufferProvider {
       garbageValue = "-52"
    )
    @Export("draw")
+   @Hook("draw")
    final void draw(Graphics var1, int var2, int var3) {
       try {
          var1.drawImage(this.image, var2, var3, this.field673);
