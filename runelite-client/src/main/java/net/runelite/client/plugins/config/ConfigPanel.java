@@ -30,11 +30,13 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import static javax.swing.BoxLayout.Y_AXIS;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
@@ -68,7 +70,7 @@ public class ConfigPanel extends PluginPanel
 
 	public void init()
 	{
-		add(createConfigPanel());
+		add(createConfigPanel(), BorderLayout.CENTER);
 	}
 
 	private Collection<ConfigDescriptor> getConfig()
@@ -84,10 +86,10 @@ public class ConfigPanel extends PluginPanel
 		return list;
 	}
 
-	private JPanel createConfigPanel()
+	private JComponent createConfigPanel()
 	{
 		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, Y_AXIS));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 		ConfigManager configManager = runelite.getConfigManager();
 		Collection<ConfigDescriptor> config = getConfig();
@@ -99,10 +101,13 @@ public class ConfigPanel extends PluginPanel
 			groupPanel.add(new JLabel(cd.getGroup().name()), BorderLayout.NORTH);
 
 			JPanel itemPanel = new JPanel();
+			itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.Y_AXIS));
 
 			for (ConfigItemDescriptor cid : cd.getItems())
 			{
-				itemPanel.add(new JLabel(cid.getItem().name()));
+				JPanel item = new JPanel();
+				item.setLayout(new BoxLayout(item, BoxLayout.X_AXIS));
+				item.add(new JLabel(cid.getItem().name()));
 
 				if (cid.getType() == boolean.class)
 				{
@@ -110,14 +115,22 @@ public class ConfigPanel extends PluginPanel
 					checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
 					checkbox.addActionListener(ae -> changeConfiguration(ae, checkbox, cd, cid));
 
-					itemPanel.add(checkbox);
+					item.add(checkbox);
 				}
+
+				itemPanel.add(item);
 			}
 
 			groupPanel.add(itemPanel, BorderLayout.CENTER);
 			panel.add(groupPanel);
 		}
-		return panel;
+
+		//Make the panel scrollable
+		JScrollPane scrollPane = new JScrollPane(panel);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16); //Otherwise scrollspeed is really slow
+
+		return scrollPane;
 	}
 
 	private void changeConfiguration(ActionEvent ae, JCheckBox checkbox, ConfigDescriptor cd, ConfigItemDescriptor cid)
