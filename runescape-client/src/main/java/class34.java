@@ -319,7 +319,7 @@ public class class34 {
 
       for(int var6 = 0; var6 < var5.length; ++var6) {
          class228 var7 = var5[var6];
-         if(var1[var7.vmethod4906()] != null) {
+         if(var1[var7.ordinal()] != null) {
             byte var8 = 0;
             byte var9 = 0;
             byte var10 = 64;
@@ -368,7 +368,7 @@ public class class34 {
                var11 = 5;
             }
 
-            this.method423(var12, var13, var8, var9, var10, var11, var1[var7.vmethod4906()], var2);
+            this.method423(var12, var13, var8, var9, var10, var11, var1[var7.ordinal()], var2);
          }
       }
 

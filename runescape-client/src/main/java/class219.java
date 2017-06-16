@@ -60,7 +60,7 @@ public class class219 implements class218 {
       signature = "(I)I",
       garbageValue = "665522131"
    )
-   public int vmethod4906() {
+   public int ordinal() {
       return this.field2804;
    }
 

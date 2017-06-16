@@ -219,18 +219,18 @@ public final class class41 {
       boolean var6 = var2 <= 0;
       boolean var7 = var2 >= this.field569[0].length - 1;
       if(var7) {
-         var3[class228.field3160.vmethod4906()] = null;
+         var3[class228.field3160.ordinal()] = null;
       } else {
-         var3[class228.field3160.vmethod4906()] = this.field569[var1][var2 + 1];
+         var3[class228.field3160.ordinal()] = this.field569[var1][var2 + 1];
       }
 
-      var3[class228.field3156.vmethod4906()] = !var7 && !var5?this.field569[var1 + 1][var2 + 1]:null;
-      var3[class228.field3162.vmethod4906()] = !var7 && !var4?this.field569[var1 - 1][var2 + 1]:null;
-      var3[class228.field3157.vmethod4906()] = var5?null:this.field569[var1 + 1][var2];
-      var3[class228.field3161.vmethod4906()] = var4?null:this.field569[var1 - 1][var2];
-      var3[class228.field3165.vmethod4906()] = var6?null:this.field569[var1][var2 - 1];
-      var3[class228.field3155.vmethod4906()] = !var6 && !var5?this.field569[var1 + 1][var2 - 1]:null;
-      var3[class228.field3159.vmethod4906()] = !var6 && !var4?this.field569[var1 - 1][var2 - 1]:null;
+      var3[class228.field3156.ordinal()] = !var7 && !var5?this.field569[var1 + 1][var2 + 1]:null;
+      var3[class228.field3162.ordinal()] = !var7 && !var4?this.field569[var1 - 1][var2 + 1]:null;
+      var3[class228.field3157.ordinal()] = var5?null:this.field569[var1 + 1][var2];
+      var3[class228.field3161.ordinal()] = var4?null:this.field569[var1 - 1][var2];
+      var3[class228.field3165.ordinal()] = var6?null:this.field569[var1][var2 - 1];
+      var3[class228.field3155.ordinal()] = !var6 && !var5?this.field569[var1 + 1][var2 - 1]:null;
+      var3[class228.field3159.ordinal()] = !var6 && !var4?this.field569[var1 - 1][var2 - 1]:null;
    }
 
    @ObfuscatedName("z")

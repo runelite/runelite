@@ -29,12 +29,12 @@ public final class RSCanvas extends Canvas {
       signature = "([Lclass178;II)Lclass178;",
       garbageValue = "1130124460"
    )
-   public static class178 method735(class178[] var0, int var1) {
-      class178[] var2 = var0;
+   public static RSEnum method735(RSEnum[] var0, int var1) {
+      RSEnum[] var2 = var0;
 
       for(int var3 = 0; var3 < var2.length; ++var3) {
-         class178 var4 = var2[var3];
-         if(var1 == var4.vmethod4906()) {
+         RSEnum var4 = var2[var3];
+         if(var1 == var4.ordinal()) {
             return var4;
          }
       }

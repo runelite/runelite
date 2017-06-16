@@ -3,7 +3,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("if")
-public class class239 implements class178 {
+public class class239 implements RSEnum {
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 2118642957
@@ -26,7 +26,7 @@ public class class239 implements class178 {
       signature = "(I)I",
       garbageValue = "665522131"
    )
-   public int vmethod4906() {
+   public int ordinal() {
       return this.field3279;
    }
 

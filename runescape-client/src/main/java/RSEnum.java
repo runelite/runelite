@@ -1,12 +1,16 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fx")
-public interface class178 {
+@Implements("RSEnum")
+public interface RSEnum {
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(I)I",
       garbageValue = "665522131"
    )
-   int vmethod4906();
+   @Export("ordinal")
+   int ordinal();
 }

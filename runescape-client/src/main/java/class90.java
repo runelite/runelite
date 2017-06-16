@@ -228,7 +228,7 @@ public class class90 {
             class83.intStack[++class83.intStackSize - 1] = var67.field2728;
             var3 = 1;
          } else if(var0 == 1613) {
-            class83.intStack[++class83.intStackSize - 1] = var67.field2684.vmethod4906();
+            class83.intStack[++class83.intStackSize - 1] = var67.field2684.ordinal();
             var3 = 1;
          } else {
             var3 = 2;
@@ -363,7 +363,7 @@ public class class90 {
             class83.intStack[++class83.intStackSize - 1] = var67.field2728;
             var3 = 1;
          } else if(var0 == 2613) {
-            class83.intStack[++class83.intStackSize - 1] = var67.field2684.vmethod4906();
+            class83.intStack[++class83.intStackSize - 1] = var67.field2684.ordinal();
             var3 = 1;
          } else {
             var3 = 2;
