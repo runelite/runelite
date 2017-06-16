@@ -42,6 +42,7 @@ import net.runelite.client.plugins.fpsinfo.FPS;
 import net.runelite.client.plugins.grounditems.GroundItems;
 import net.runelite.client.plugins.hiscore.Hiscore;
 import net.runelite.client.plugins.idlenotifier.IdleNotifier;
+import net.runelite.client.plugins.implings.Implings;
 import net.runelite.client.plugins.mousehighlight.MouseHighlight;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 import net.runelite.client.plugins.pestcontrol.PestControl;
@@ -81,6 +82,7 @@ public class PluginManager
 		plugins.add(new AccountPlugin());
 		plugins.add(new ConfigPlugin());
 		plugins.add(new GroundItems());
+		plugins.add(new Implings());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
