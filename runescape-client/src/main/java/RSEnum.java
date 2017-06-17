@@ -11,6 +11,6 @@ public interface RSEnum {
       signature = "(I)I",
       garbageValue = "665522131"
    )
-   @Export("ordinal")
-   int ordinal();
+   @Export("rsOrdinal")
+   int rsOrdinal();
 }

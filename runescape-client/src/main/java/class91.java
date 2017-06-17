@@ -83,7 +83,7 @@ public class class91 implements RSEnum {
       signature = "(I)I",
       garbageValue = "665522131"
    )
-   public int ordinal() {
+   public int rsOrdinal() {
       return this.field1412;
    }
 }

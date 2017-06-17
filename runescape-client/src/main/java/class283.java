@@ -30,7 +30,7 @@ public class class283 implements RSEnum {
       signature = "(I)I",
       garbageValue = "665522131"
    )
-   public int ordinal() {
+   public int rsOrdinal() {
       return this.field3769;
    }
 

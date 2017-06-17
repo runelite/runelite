@@ -34,7 +34,7 @@ public final class RSCanvas extends Canvas {
 
       for(int var3 = 0; var3 < var2.length; ++var3) {
          RSEnum var4 = var2[var3];
-         if(var1 == var4.ordinal()) {
+         if(var1 == var4.rsOrdinal()) {
             return var4;
          }
       }

@@ -1679,7 +1679,7 @@ public final class Client extends GameEngine {
             int[] var6 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(class11.field272 >> 32), (int)(class11.field272 & -1L)};
             secretPacketBuffer1.offset = 0;
             secretPacketBuffer1.putByte(1);
-            secretPacketBuffer1.putByte(class92.field1438.ordinal());
+            secretPacketBuffer1.putByte(class92.field1438.rsOrdinal());
             secretPacketBuffer1.putInt(var6[0]);
             secretPacketBuffer1.putInt(var6[1]);
             secretPacketBuffer1.putInt(var6[2]);
