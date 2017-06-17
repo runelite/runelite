@@ -39,6 +39,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
@@ -230,14 +232,19 @@ public class ConfigManager
 
 		if (client != null)
 		{
-			try
+			Runnable task = () ->
 			{
-				client.set(groupName + "." + key, value);
-			}
-			catch (IOException ex)
-			{
-				logger.warn("unable to set configuration item", ex);
-			}
+				try
+				{
+					client.set(groupName + "." + key, value);
+				}
+				catch (IOException ex)
+				{
+					logger.warn("unable to set configuration item", ex);
+				}
+			};
+			RuneLite.getRunelite().getExecutor().execute(task);
+
 		}
 
 		try
