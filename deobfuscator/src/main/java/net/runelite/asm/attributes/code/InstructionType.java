@@ -163,6 +163,7 @@ import net.runelite.asm.attributes.code.instructions.IfNe;
 import net.runelite.asm.attributes.code.instructions.IfNonNull;
 import net.runelite.asm.attributes.code.instructions.IfNull;
 import net.runelite.asm.attributes.code.instructions.InstanceOf;
+import net.runelite.asm.attributes.code.instructions.InvokeDynamic;
 import net.runelite.asm.attributes.code.instructions.InvokeInterface;
 import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
@@ -404,6 +405,7 @@ public enum InstructionType
 	INVOKESPECIAL(0xb7, "invokespecial", InvokeSpecial.class),
 	INVOKESTATIC(0xb8, "invokestatic", InvokeStatic.class),
 	INVOKEINTERFACE(0xb9, "invokeinterface", InvokeInterface.class),
+	INVOKEDYNAMIC(0xba, "invokedynamic", InvokeDynamic.class),
 	NEW(0xbb, "new", New.class),
 	NEWARRAY(0xbc, "newarray", NewArray.class),
 	ANEWARRAY(0xbd, "anewarray", ANewArray.class),

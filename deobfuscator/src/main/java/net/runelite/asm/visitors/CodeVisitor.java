@@ -42,6 +42,7 @@ import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.TypeInstruction;
 import net.runelite.asm.attributes.code.instructions.IInc;
+import net.runelite.asm.attributes.code.instructions.InvokeDynamic;
 import net.runelite.asm.attributes.code.instructions.InvokeInterface;
 import net.runelite.asm.attributes.code.instructions.LDC2_W;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
@@ -179,7 +180,8 @@ public class CodeVisitor extends MethodVisitor
 	@Override
 	public void visitInvokeDynamicInsn(String name, String desc, Handle bsm, Object[] bsmArgs)
 	{
-		logger.error("invokedynamic {}.{} {} {} - this will not work", name, desc, bsm, bsmArgs);
+		InvokeDynamic id = new InvokeDynamic(code.getInstructions(), name, desc, bsm, bsmArgs);
+		code.getInstructions().addInstruction(id);
 	}
 
 	@Override
