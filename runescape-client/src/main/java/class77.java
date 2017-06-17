@@ -38,7 +38,7 @@ public class class77 {
    @ObfuscatedName("v")
    static Buffer field1207;
 
-   class77(class154 var1, URL var2) {
+   class77(Signlink var1, URL var2) {
       this.field1204 = new byte[4];
       this.field1200 = var1.method2835(var2);
       this.field1206 = 0;
@@ -55,11 +55,11 @@ public class class77 {
          throw new IOException();
       } else {
          if(this.field1206 == 0) {
-            if(this.field1200.field2237 == 2) {
+            if(this.field1200.status == 2) {
                throw new IOException();
             }
 
-            if(this.field1200.field2237 == 1) {
+            if(this.field1200.status == 1) {
                this.field1201 = (DataInputStream)this.field1200.field2241;
                this.field1206 = 1;
             }
@@ -117,7 +117,7 @@ public class class77 {
    static final void method1439() {
       int var0 = class109.menuX;
       int var1 = class24.menuY;
-      int var2 = class154.menuWidth;
+      int var2 = Signlink.menuWidth;
       int var3 = class37.menuHeight;
       int var4 = 6116423;
       Rasterizer2D.method4826(var0, var1, var2, var3, var4);
@@ -152,7 +152,7 @@ public class class77 {
 
       var7 = class109.menuX;
       var8 = class24.menuY;
-      var9 = class154.menuWidth;
+      var9 = Signlink.menuWidth;
       int var12 = class37.menuHeight;
 
       for(int var13 = 0; var13 < Client.field1109; ++var13) {

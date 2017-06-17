@@ -1533,12 +1533,12 @@ public final class Client extends GameEngine {
                }
 
                if(field1185 == 1) {
-                  if(class59.field726.field2237 == 2) {
+                  if(class59.field726.status == 2) {
                      this.method1158(-1);
                      return;
                   }
 
-                  if(class59.field726.field2237 == 1) {
+                  if(class59.field726.status == 1) {
                      ++field1185;
                   }
                }
@@ -1594,7 +1594,7 @@ public final class Client extends GameEngine {
       try {
          if(loginState == 0) {
             if(WidgetNode.rssocket != null) {
-               WidgetNode.rssocket.method2879();
+               WidgetNode.rssocket.close();
                WidgetNode.rssocket = null;
             }
 
@@ -1609,11 +1609,11 @@ public final class Client extends GameEngine {
                class5.field38 = GameEngine.field691.method2842(class40.host, Buffer.field2411);
             }
 
-            if(class5.field38.field2237 == 2) {
+            if(class5.field38.status == 2) {
                throw new IOException();
             }
 
-            if(class5.field38.field2237 == 1) {
+            if(class5.field38.status == 1) {
                WidgetNode.rssocket = new RSSocket((Socket)class5.field38.field2241, GameEngine.field691);
                class5.field38 = null;
                loginState = 2;
@@ -2106,16 +2106,16 @@ public final class Client extends GameEngine {
                if(var5 != 1 && (class221.field2845 || var5 != 4)) {
                   var1 = class59.field730;
                   var6 = class59.field731;
-                  if(var1 < class109.menuX - 10 || var1 > class154.menuWidth + class109.menuX + 10 || var6 < class24.menuY - 10 || var6 > class37.menuHeight + class24.menuY + 10) {
+                  if(var1 < class109.menuX - 10 || var1 > Signlink.menuWidth + class109.menuX + 10 || var6 < class24.menuY - 10 || var6 > class37.menuHeight + class24.menuY + 10) {
                      isMenuOpen = false;
-                     ChatLineBuffer.method1777(class109.menuX, class24.menuY, class154.menuWidth, class37.menuHeight);
+                     ChatLineBuffer.method1777(class109.menuX, class24.menuY, Signlink.menuWidth, class37.menuHeight);
                   }
                }
 
                if(var5 == 1 || !class221.field2845 && var5 == 4) {
                   var1 = class109.menuX;
                   var6 = class24.menuY;
-                  var2 = class154.menuWidth;
+                  var2 = Signlink.menuWidth;
                   var3 = class59.field737;
                   var7 = class59.field732;
                   int var18 = -1;
@@ -2138,7 +2138,7 @@ public final class Client extends GameEngine {
                   }
 
                   isMenuOpen = false;
-                  ChatLineBuffer.method1777(class109.menuX, class24.menuY, class154.menuWidth, class37.menuHeight);
+                  ChatLineBuffer.method1777(class109.menuX, class24.menuY, Signlink.menuWidth, class37.menuHeight);
                }
             } else {
                var1 = class230.method3976();
@@ -2283,7 +2283,7 @@ public final class Client extends GameEngine {
       isMenuOpen = true;
       class109.menuX = var8;
       class24.menuY = var9;
-      class154.menuWidth = var3;
+      Signlink.menuWidth = var3;
       class37.menuHeight = menuOptionCount * 15 + 22;
    }
 
@@ -2545,7 +2545,7 @@ public final class Client extends GameEngine {
 
       field913 = null;
       if(WidgetNode.rssocket != null) {
-         WidgetNode.rssocket.method2879();
+         WidgetNode.rssocket.close();
          WidgetNode.rssocket = null;
       }
 
@@ -2568,7 +2568,7 @@ public final class Client extends GameEngine {
       }
 
       if(class238.field3258 != null) {
-         class238.field3258.method2879();
+         class238.field3258.close();
       }
 
       NPCComposition.method4541();
@@ -5292,7 +5292,7 @@ public final class Client extends GameEngine {
                var1 = secretPacketBuffer2.readInt();
                var89.mask = var1;
                class23.setGameState(45);
-               WidgetNode.rssocket.method2879();
+               WidgetNode.rssocket.close();
                WidgetNode.rssocket = null;
                class2.method6(var89);
                field951 = -1;

@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -11,7 +12,8 @@ public class class153 {
    )
    int field2236;
    @ObfuscatedName("w")
-   public volatile int field2237;
+   @Export("status")
+   public volatile int status;
    @ObfuscatedName("j")
    public int field2238;
    @ObfuscatedName("i")
@@ -20,6 +22,6 @@ public class class153 {
    public volatile Object field2241;
 
    class153() {
-      this.field2237 = 0;
+      this.status = 0;
    }
 }

@@ -313,13 +313,13 @@ public class class24 {
                } else if(Client.field921 == 80) {
                   var0 = 0;
                   if(class158.field2277 == null) {
-                     class158.field2277 = class154.method2820(WorldMapType3.indexSprites, "compass", "");
+                     class158.field2277 = Signlink.method2820(WorldMapType3.indexSprites, "compass", "");
                   } else {
                      ++var0;
                   }
 
                   if(class15.field300 == null) {
-                     class15.field300 = class154.method2820(WorldMapType3.indexSprites, "mapedge", "");
+                     class15.field300 = Signlink.method2820(WorldMapType3.indexSprites, "mapedge", "");
                   } else {
                      ++var0;
                   }

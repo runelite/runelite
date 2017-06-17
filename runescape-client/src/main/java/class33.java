@@ -556,12 +556,12 @@ public class class33 {
 
          class92.field1423[Item.field1481.field1300?1:0].method4923(class92.field1414 + 765 - 40, 463);
          if(Client.gameState > 5 && Client.field1120 == 0) {
-            if(class154.field2253 != null) {
+            if(Signlink.field2253 != null) {
                var12 = class92.field1414 + 5;
                var26 = 463;
                byte var30 = 100;
                byte var31 = 35;
-               class154.field2253.method4923(var12, var26);
+               Signlink.field2253.method4923(var12, var26);
                var0.method4635("World " + Client.world, var30 / 2 + var12, var31 / 2 + var26 - 2, 16777215, 0);
                if(World.worldServersDownload != null) {
                   var1.method4635("Loading...", var30 / 2 + var12, var31 / 2 + var26 + 12, 16777215, 0);
@@ -569,7 +569,7 @@ public class class33 {
                   var1.method4635("Click to switch", var12 + var30 / 2, var26 + var31 / 2 + 12, 16777215, 0);
                }
             } else {
-               class154.field2253 = class273.method4789(WorldMapType3.indexSprites, "sl_button", "");
+               Signlink.field2253 = class273.method4789(WorldMapType3.indexSprites, "sl_button", "");
             }
          }
       }

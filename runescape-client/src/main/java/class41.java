@@ -648,7 +648,7 @@ public final class class41 {
       signature = "(Lclass154;III)Lclass109;",
       garbageValue = "-1654314309"
    )
-   public static final class109 method573(class154 var0, int var1, int var2) {
+   public static final class109 method573(Signlink var0, int var1, int var2) {
       if(class109.field1635 == 0) {
          throw new IllegalStateException();
       } else if(var1 >= 0 && var1 < 2) {

@@ -274,7 +274,7 @@ public final class IndexFile {
       garbageValue = "954316910"
    )
    public static boolean method2910(CharSequence var0) {
-      return class154.method2843(var0, 10, true);
+      return Signlink.method2843(var0, 10, true);
    }
 
    static {
