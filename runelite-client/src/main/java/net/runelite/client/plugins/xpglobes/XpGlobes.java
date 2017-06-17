@@ -57,7 +57,8 @@ public class XpGlobes extends Plugin
 		int currentXp = client.getSkillExperience(skill);
 		int currentLevel = Experience.getLevelForXp(currentXp);
 		int startingXp = 0;
-		if (currentLevel > 1) {
+		if (currentLevel > 1)
+		{
 			startingXp = Experience.getXpForLevel(currentLevel);
 		}
 		int goalXp = Experience.getXpForLevel(currentLevel+1);
