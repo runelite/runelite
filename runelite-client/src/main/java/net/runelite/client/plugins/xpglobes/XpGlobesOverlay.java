@@ -1,46 +1,71 @@
+/*
+ * Copyright (c) 2017, Steve <steve.rs.dev@gmail.com>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package net.runelite.client.plugins.xpglobes;
 
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import javax.imageio.ImageIO;
-import javax.swing.plaf.metal.MetalInternalFrameUI;
-import javax.xml.bind.annotation.XmlType;
-import java.awt.geom.*;
-import java.awt.*;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * Created by Steve on 6/17/2017.
- */
 public class XpGlobesOverlay extends Overlay
 {
 
 	private final XpGlobes plugin;
-	private Client client = RuneLite.getClient();
+	private final Client client = RuneLite.getClient();
 	private final XpGlobesConfig config;
+	private static final Logger logger = LoggerFactory.getLogger(XpGlobesOverlay.class);
 
+	private static final int DEFAULT_CIRCLE_WIDTH = 40;
+	private static final int DEFAULT_CIRCLE_HEIGHT = 40;
+	private static final int MINIMUM_STEP_WIDTH = DEFAULT_CIRCLE_WIDTH + 10;
 
-	private int DEFAULT_CIRCLE_WIDTH = 40;
-	private int DEFAULT_CIRCLE_HEIGHT = 40;
-	private int MINIMUM_STEP_WIDTH = DEFAULT_CIRCLE_WIDTH + 10;
+	private static final int PROGRESS_RADIUS_START = 270;
+	private static final int PROGRESS_RADIUS_REMAINDER = 0;
 
-	private int PROGRESS_RADIUS_START = 270;
-	private int PROGRESS_RADIUS_REMAINDER = 0;
+	private static final Color DEFAULT_XPGLOBE_BACKGROUND_COLOR = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
+	private static final Color DEFAULT_PROGRESS_ARC_COLOR = Color.ORANGE;
+	private static final Color DEFAULT_PROGRESS_REMAINDER_ARC_COLOR = Color.BLACK;
 
-	private Color DEFAULT_XPGLOBE_BACKGROUND_COLOR = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
-	private Color DEFAULT_PROGRESS_ARC_COLOR = new Color(Color.orange.getRed(), Color.orange.getGreen(), Color.orange.getBlue());
-	;
-	private Color DEFAULT_PROGRESS_REMAINDER_ARC_COLOR = new Color(Color.black.getRed(), Color.black.getGreen(), Color.black.getBlue());
+	private static final int DEFAULT_START_Y = 10;
 
-	private int DEFAULT_START_Y = 10;
-
-	private BufferedImage[] imgCache = new BufferedImage[23];
+	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length - 1];
 
 	public XpGlobesOverlay(XpGlobes plugin)
 	{
@@ -62,7 +87,7 @@ public class XpGlobesOverlay extends Overlay
 		int queueSize = plugin.getXpGlobesSize();
 		if (queueSize > 0)
 		{
-			ArrayList<XpGlobe> xpChangedQueue = plugin.getXpGlobes();
+			List<XpGlobe> xpChangedQueue = plugin.getXpGlobes();
 			int markersLength = (queueSize * (DEFAULT_CIRCLE_WIDTH)) + ((MINIMUM_STEP_WIDTH - DEFAULT_CIRCLE_WIDTH) * (queueSize - 1));
 			int startDrawX;
 			if (client.isResized())
@@ -147,7 +172,7 @@ public class XpGlobesOverlay extends Overlay
 			try
 			{
 				String skilLIconPath = "/skill_icons/" + xpGlobe.getSkillName().toLowerCase() + ".png";
-				System.out.println("Loading skill icon from {}" + skilLIconPath);
+				logger.debug("Loading skill icon from {}", skilLIconPath);
 				BufferedImage img = ImageIO.read(XpGlobesOverlay.class.getResourceAsStream(skilLIconPath));
 				graphics.drawImage(
 						img,
@@ -159,7 +184,7 @@ public class XpGlobesOverlay extends Overlay
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace();
+				logger.debug("Error Loading skill icons {}", e);
 			}
 		}
 	}
