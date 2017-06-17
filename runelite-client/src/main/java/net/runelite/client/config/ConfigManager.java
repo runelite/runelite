@@ -230,14 +230,19 @@ public class ConfigManager
 
 		if (client != null)
 		{
-			try
+			Runnable task = () ->
 			{
-				client.set(groupName + "." + key, value);
-			}
-			catch (IOException ex)
-			{
-				logger.warn("unable to set configuration item", ex);
-			}
+				try
+				{
+					client.set(groupName + "." + key, value);
+				}
+				catch (IOException ex)
+				{
+					logger.warn("unable to set configuration item", ex);
+				}
+			};
+			RuneLite.getRunelite().getExecutor().execute(task);
+
 		}
 
 		try
