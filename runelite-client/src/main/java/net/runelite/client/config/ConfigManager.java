@@ -39,8 +39,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
