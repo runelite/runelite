@@ -65,133 +65,133 @@ public abstract class IndexDataBase {
       garbageValue = "-841489721"
    )
    void method3993(byte[] var1) {
-      int var3 = var1.length;
-      int var5 = -1;
+      int var2 = var1.length;
+      int var3 = -1;
 
-      int var6;
-      for(var6 = 0; var6 < var3; ++var6) {
-         var5 = var5 >>> 8 ^ Buffer.field2406[(var5 ^ var1[var6]) & 255];
+      int var4;
+      for(var4 = 0; var4 < var2; ++var4) {
+         var3 = var3 >>> 8 ^ Buffer.field2406[(var3 ^ var1[var4]) & 255];
       }
 
-      var5 = ~var5;
-      this.field3233 = var5;
-      Buffer var15 = new Buffer(class226.method3966(var1));
-      var5 = var15.readUnsignedByte();
-      if(var5 >= 5 && var5 <= 7) {
-         if(var5 >= 6) {
-            var15.readInt();
+      var3 = ~var3;
+      this.field3233 = var3;
+      Buffer var5 = new Buffer(class226.method3966(var1));
+      var3 = var5.readUnsignedByte();
+      if(var3 >= 5 && var3 <= 7) {
+         if(var3 >= 6) {
+            var5.readInt();
          }
 
-         var6 = var15.readUnsignedByte();
-         if(var5 >= 7) {
-            this.validArchivesCount = var15.method3154();
+         var4 = var5.readUnsignedByte();
+         if(var3 >= 7) {
+            this.validArchivesCount = var5.method3154();
          } else {
-            this.validArchivesCount = var15.readUnsignedShort();
+            this.validArchivesCount = var5.readUnsignedShort();
          }
 
-         int var7 = 0;
-         int var8 = -1;
+         int var6 = 0;
+         int var7 = -1;
          this.archiveIds = new int[this.validArchivesCount];
-         int var9;
-         if(var5 >= 7) {
-            for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-               this.archiveIds[var9] = var7 += var15.method3154();
-               if(this.archiveIds[var9] > var8) {
-                  var8 = this.archiveIds[var9];
+         int var8;
+         if(var3 >= 7) {
+            for(var8 = 0; var8 < this.validArchivesCount; ++var8) {
+               this.archiveIds[var8] = var6 += var5.method3154();
+               if(this.archiveIds[var8] > var7) {
+                  var7 = this.archiveIds[var8];
                }
             }
          } else {
-            for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-               this.archiveIds[var9] = var7 += var15.readUnsignedShort();
-               if(this.archiveIds[var9] > var8) {
-                  var8 = this.archiveIds[var9];
+            for(var8 = 0; var8 < this.validArchivesCount; ++var8) {
+               this.archiveIds[var8] = var6 += var5.readUnsignedShort();
+               if(this.archiveIds[var8] > var7) {
+                  var7 = this.archiveIds[var8];
                }
             }
          }
 
-         this.archiveCrcs = new int[var8 + 1];
-         this.archiveRevisions = new int[var8 + 1];
-         this.archiveNumberOfFiles = new int[var8 + 1];
-         this.archiveFileIds = new int[var8 + 1][];
-         this.field3230 = new Object[var8 + 1];
-         this.field3231 = new Object[var8 + 1][];
-         if(var6 != 0) {
-            this.archiveNames = new int[var8 + 1];
+         this.archiveCrcs = new int[var7 + 1];
+         this.archiveRevisions = new int[var7 + 1];
+         this.archiveNumberOfFiles = new int[var7 + 1];
+         this.archiveFileIds = new int[var7 + 1][];
+         this.field3230 = new Object[var7 + 1];
+         this.field3231 = new Object[var7 + 1][];
+         if(var4 != 0) {
+            this.archiveNames = new int[var7 + 1];
 
-            for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-               this.archiveNames[this.archiveIds[var9]] = var15.readInt();
+            for(var8 = 0; var8 < this.validArchivesCount; ++var8) {
+               this.archiveNames[this.archiveIds[var8]] = var5.readInt();
             }
 
             this.field3223 = new class187(this.archiveNames);
          }
 
-         for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-            this.archiveCrcs[this.archiveIds[var9]] = var15.readInt();
+         for(var8 = 0; var8 < this.validArchivesCount; ++var8) {
+            this.archiveCrcs[this.archiveIds[var8]] = var5.readInt();
          }
 
-         for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-            this.archiveRevisions[this.archiveIds[var9]] = var15.readInt();
+         for(var8 = 0; var8 < this.validArchivesCount; ++var8) {
+            this.archiveRevisions[this.archiveIds[var8]] = var5.readInt();
          }
 
-         for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-            this.archiveNumberOfFiles[this.archiveIds[var9]] = var15.readUnsignedShort();
+         for(var8 = 0; var8 < this.validArchivesCount; ++var8) {
+            this.archiveNumberOfFiles[this.archiveIds[var8]] = var5.readUnsignedShort();
          }
 
+         int var9;
          int var10;
          int var11;
          int var12;
          int var13;
-         int var14;
-         if(var5 >= 7) {
-            for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-               var10 = this.archiveIds[var9];
-               var11 = this.archiveNumberOfFiles[var10];
-               var7 = 0;
-               var12 = -1;
-               this.archiveFileIds[var10] = new int[var11];
+         if(var3 >= 7) {
+            for(var8 = 0; var8 < this.validArchivesCount; ++var8) {
+               var9 = this.archiveIds[var8];
+               var10 = this.archiveNumberOfFiles[var9];
+               var6 = 0;
+               var11 = -1;
+               this.archiveFileIds[var9] = new int[var10];
 
-               for(var13 = 0; var13 < var11; ++var13) {
-                  var14 = this.archiveFileIds[var10][var13] = var7 += var15.method3154();
-                  if(var14 > var12) {
-                     var12 = var14;
+               for(var12 = 0; var12 < var10; ++var12) {
+                  var13 = this.archiveFileIds[var9][var12] = var6 += var5.method3154();
+                  if(var13 > var11) {
+                     var11 = var13;
                   }
                }
 
-               this.field3231[var10] = new Object[var12 + 1];
+               this.field3231[var9] = new Object[var11 + 1];
             }
          } else {
-            for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-               var10 = this.archiveIds[var9];
-               var11 = this.archiveNumberOfFiles[var10];
-               var7 = 0;
-               var12 = -1;
-               this.archiveFileIds[var10] = new int[var11];
+            for(var8 = 0; var8 < this.validArchivesCount; ++var8) {
+               var9 = this.archiveIds[var8];
+               var10 = this.archiveNumberOfFiles[var9];
+               var6 = 0;
+               var11 = -1;
+               this.archiveFileIds[var9] = new int[var10];
 
-               for(var13 = 0; var13 < var11; ++var13) {
-                  var14 = this.archiveFileIds[var10][var13] = var7 += var15.readUnsignedShort();
-                  if(var14 > var12) {
-                     var12 = var14;
+               for(var12 = 0; var12 < var10; ++var12) {
+                  var13 = this.archiveFileIds[var9][var12] = var6 += var5.readUnsignedShort();
+                  if(var13 > var11) {
+                     var11 = var13;
                   }
                }
 
-               this.field3231[var10] = new Object[var12 + 1];
+               this.field3231[var9] = new Object[var11 + 1];
             }
          }
 
-         if(var6 != 0) {
-            this.archiveFileNames = new int[var8 + 1][];
-            this.field3224 = new class187[var8 + 1];
+         if(var4 != 0) {
+            this.archiveFileNames = new int[var7 + 1][];
+            this.field3224 = new class187[var7 + 1];
 
-            for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-               var10 = this.archiveIds[var9];
-               var11 = this.archiveNumberOfFiles[var10];
-               this.archiveFileNames[var10] = new int[this.field3231[var10].length];
+            for(var8 = 0; var8 < this.validArchivesCount; ++var8) {
+               var9 = this.archiveIds[var8];
+               var10 = this.archiveNumberOfFiles[var9];
+               this.archiveFileNames[var9] = new int[this.field3231[var9].length];
 
-               for(var12 = 0; var12 < var11; ++var12) {
-                  this.archiveFileNames[var10][this.archiveFileIds[var10][var12]] = var15.readInt();
+               for(var11 = 0; var11 < var10; ++var11) {
+                  this.archiveFileNames[var9][this.archiveFileIds[var9][var11]] = var5.readInt();
                }
 
-               this.field3224[var10] = new class187(this.archiveFileNames[var10]);
+               this.field3224[var9] = new class187(this.archiveFileNames[var9]);
             }
          }
 
@@ -394,6 +394,7 @@ public abstract class IndexDataBase {
       if(var2 >= 0) {
          this.vmethod4096(var2);
       }
+
    }
 
    @ObfuscatedName("r")
@@ -445,63 +446,63 @@ public abstract class IndexDataBase {
                var18 = class228.method3971(this.field3230[var1], false);
             }
 
-            byte[] var20 = class226.method3966(var18);
+            byte[] var19 = class226.method3966(var18);
             if(this.field3238) {
                this.field3230[var1] = null;
             }
 
             if(var3 > 1) {
-               int var9 = var20.length;
+               int var9 = var19.length;
                --var9;
-               int var10 = var20[var9] & 255;
+               int var10 = var19[var9] & 255;
                var9 -= var10 * var3 * 4;
-               Buffer var11 = new Buffer(var20);
+               Buffer var11 = new Buffer(var19);
                int[] var12 = new int[var3];
                var11.offset = var9;
 
+               int var13;
                int var14;
-               int var15;
-               for(int var13 = 0; var13 < var10; ++var13) {
-                  var14 = 0;
+               for(int var15 = 0; var15 < var10; ++var15) {
+                  var13 = 0;
 
-                  for(var15 = 0; var15 < var3; ++var15) {
-                     var14 += var11.readInt();
-                     var12[var15] += var14;
+                  for(var14 = 0; var14 < var3; ++var14) {
+                     var13 += var11.readInt();
+                     var12[var14] += var13;
                   }
                }
 
-               byte[][] var19 = new byte[var3][];
+               byte[][] var20 = new byte[var3][];
 
-               for(var14 = 0; var14 < var3; ++var14) {
-                  var19[var14] = new byte[var12[var14]];
-                  var12[var14] = 0;
+               for(var13 = 0; var13 < var3; ++var13) {
+                  var20[var13] = new byte[var12[var13]];
+                  var12[var13] = 0;
                }
 
                var11.offset = var9;
-               var14 = 0;
+               var13 = 0;
 
-               for(var15 = 0; var15 < var10; ++var15) {
+               for(var14 = 0; var14 < var10; ++var14) {
                   int var16 = 0;
 
                   for(int var17 = 0; var17 < var3; ++var17) {
                      var16 += var11.readInt();
-                     System.arraycopy(var20, var14, var19[var17], var12[var17], var16);
+                     System.arraycopy(var19, var13, var20[var17], var12[var17], var16);
                      var12[var17] += var16;
-                     var14 += var16;
+                     var13 += var16;
                   }
                }
 
-               for(var15 = 0; var15 < var3; ++var15) {
+               for(var14 = 0; var14 < var3; ++var14) {
                   if(!this.field3220) {
-                     var5[var4[var15]] = class20.method166(var19[var15], false);
+                     var5[var4[var14]] = class20.method166(var20[var14], false);
                   } else {
-                     var5[var4[var15]] = var19[var15];
+                     var5[var4[var14]] = var20[var14];
                   }
                }
             } else if(!this.field3220) {
-               var5[var4[0]] = class20.method166(var20, false);
+               var5[var4[0]] = class20.method166(var19, false);
             } else {
-               var5[var4[0]] = var20;
+               var5[var4[0]] = var19;
             }
 
             return true;
@@ -581,11 +582,6 @@ public abstract class IndexDataBase {
       return this.field3224[var1].method3403(class69.method1040(var2));
    }
 
-   static {
-      field3234 = new class166();
-      field3222 = 0;
-   }
-
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;Ljava/lang/String;I)Z",
@@ -633,5 +629,10 @@ public abstract class IndexDataBase {
    )
    public int method4075(int var1) {
       return this.field3231[var1].length;
+   }
+
+   static {
+      field3234 = new class166();
+      field3222 = 0;
    }
 }

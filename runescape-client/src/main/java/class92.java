@@ -114,32 +114,6 @@ public class class92 {
    @ObfuscatedName("t")
    static ModIcon field1447;
 
-   static {
-      field1414 = 0;
-      loginWindowX = field1414 + 202;
-      field1441 = new int[256];
-      field1442 = 0;
-      field1424 = 0;
-      field1425 = 0;
-      field1426 = 0;
-      field1427 = 0;
-      field1428 = 0;
-      field1429 = 10;
-      field1446 = "";
-      loginIndex = 0;
-      field1444 = "";
-      loginMessage1 = "";
-      loginMessage2 = "";
-      loginMessage3 = "";
-      username = "";
-      password = "";
-      field1438 = class149.field2206;
-      field1430 = true;
-      loginIndex2 = 0;
-      worldSelectShown = false;
-      field1445 = -1;
-   }
-
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(IIB)Z",
@@ -230,5 +204,31 @@ public class class92 {
          GameObject.method2787(Player.plane);
       }
 
+   }
+
+   static {
+      field1414 = 0;
+      loginWindowX = field1414 + 202;
+      field1441 = new int[256];
+      field1442 = 0;
+      field1424 = 0;
+      field1425 = 0;
+      field1426 = 0;
+      field1427 = 0;
+      field1428 = 0;
+      field1429 = 10;
+      field1446 = "";
+      loginIndex = 0;
+      field1444 = "";
+      loginMessage1 = "";
+      loginMessage2 = "";
+      loginMessage3 = "";
+      username = "";
+      password = "";
+      field1438 = class149.field2206;
+      field1430 = true;
+      loginIndex2 = 0;
+      worldSelectShown = false;
+      field1445 = -1;
    }
 }

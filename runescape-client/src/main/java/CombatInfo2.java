@@ -117,11 +117,6 @@ public class CombatInfo2 extends CacheableNode {
       }
    }
 
-   static {
-      field3377 = new NodeCache(64);
-      spriteCache = new NodeCache(64);
-   }
-
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(B)V",
@@ -184,5 +179,10 @@ public class CombatInfo2 extends CacheableNode {
          this.field3383 = var1.readUnsignedByte();
       }
 
+   }
+
+   static {
+      field3377 = new NodeCache(64);
+      spriteCache = new NodeCache(64);
    }
 }

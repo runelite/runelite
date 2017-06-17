@@ -4,10 +4,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bi")
 public class class54 {
-   static {
-      ImageIO.setUseCache(false);
-   }
-
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(LIndexDataBase;I)V",
@@ -101,7 +97,11 @@ public class class54 {
             var1.itemIds[var2] = -1;
             var1.stackSizes[var2] = 0;
          }
-
       }
+
+   }
+
+   static {
+      ImageIO.setUseCache(false);
    }
 }

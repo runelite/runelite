@@ -72,6 +72,7 @@ public final class RSSocket implements Runnable {
 
          this.field2279 = null;
       }
+
    }
 
    protected void finalize() {
@@ -115,8 +116,8 @@ public final class RSSocket implements Runnable {
             var2 += var4;
             var3 -= var4;
          }
-
       }
+
    }
 
    public RSSocket(Socket var1, class154 var2) throws IOException {
@@ -137,33 +138,37 @@ public final class RSSocket implements Runnable {
    public void run() {
       try {
          while(true) {
-            int var1;
-            int var2;
-            synchronized(this) {
-               if(this.field2285 == this.outbufLen) {
-                  if(this.field2281) {
-                     break;
+            label84: {
+               int var1;
+               int var2;
+               synchronized(this) {
+                  if(this.field2285 == this.outbufLen) {
+                     if(this.field2281) {
+                        break label84;
+                     }
+
+                     try {
+                        this.wait();
+                     } catch (InterruptedException var9) {
+                        ;
+                     }
                   }
 
-                  try {
-                     this.wait();
-                  } catch (InterruptedException var10) {
-                     ;
+                  var2 = this.field2285;
+                  if(this.outbufLen >= this.field2285) {
+                     var1 = this.outbufLen - this.field2285;
+                  } else {
+                     var1 = 5000 - this.field2285;
                   }
                }
 
-               var2 = this.field2285;
-               if(this.outbufLen >= this.field2285) {
-                  var1 = this.outbufLen - this.field2285;
-               } else {
-                  var1 = 5000 - this.field2285;
+               if(var1 <= 0) {
+                  continue;
                }
-            }
 
-            if(var1 > 0) {
                try {
                   this.outputStream.write(this.outbuffer, var2, var1);
-               } catch (IOException var9) {
+               } catch (IOException var8) {
                   this.field2287 = true;
                }
 
@@ -173,31 +178,33 @@ public final class RSSocket implements Runnable {
                   if(this.field2285 == this.outbufLen) {
                      this.outputStream.flush();
                   }
-               } catch (IOException var8) {
+               } catch (IOException var7) {
                   this.field2287 = true;
                }
+               continue;
             }
+
+            try {
+               if(this.inputStream != null) {
+                  this.inputStream.close();
+               }
+
+               if(this.outputStream != null) {
+                  this.outputStream.close();
+               }
+
+               if(this.socket != null) {
+                  this.socket.close();
+               }
+            } catch (IOException var6) {
+               ;
+            }
+
+            this.outbuffer = null;
+            break;
          }
-
-         try {
-            if(this.inputStream != null) {
-               this.inputStream.close();
-            }
-
-            if(this.outputStream != null) {
-               this.outputStream.close();
-            }
-
-            if(this.socket != null) {
-               this.socket.close();
-            }
-         } catch (IOException var7) {
-            ;
-         }
-
-         this.outbuffer = null;
-      } catch (Exception var12) {
-         class8.method43((String)null, var12);
+      } catch (Exception var11) {
+         class8.method43((String)null, var11);
       }
 
    }
@@ -213,28 +220,29 @@ public final class RSSocket implements Runnable {
          if(this.field2287) {
             this.field2287 = false;
             throw new IOException();
-         } else {
-            if(this.outbuffer == null) {
-               this.outbuffer = new byte[5000];
+         }
+
+         if(this.outbuffer == null) {
+            this.outbuffer = new byte[5000];
+         }
+
+         synchronized(this) {
+            for(int var5 = 0; var5 < var3; ++var5) {
+               this.outbuffer[this.outbufLen] = var1[var5 + var2];
+               this.outbufLen = (this.outbufLen + 1) % 5000;
+               if(this.outbufLen == (this.field2285 + 4900) % 5000) {
+                  throw new IOException();
+               }
             }
 
-            synchronized(this) {
-               for(int var5 = 0; var5 < var3; ++var5) {
-                  this.outbuffer[this.outbufLen] = var1[var5 + var2];
-                  this.outbufLen = (this.outbufLen + 1) % 5000;
-                  if(this.outbufLen == (this.field2285 + 4900) % 5000) {
-                     throw new IOException();
-                  }
-               }
-
-               if(this.field2279 == null) {
-                  this.field2279 = this.field2282.method2822(this, 3);
-               }
-
-               this.notifyAll();
+            if(this.field2279 == null) {
+               this.field2279 = this.field2282.method2822(this, 3);
             }
+
+            this.notifyAll();
          }
       }
+
    }
 
    @ObfuscatedName("ed")

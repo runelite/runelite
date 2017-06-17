@@ -68,8 +68,8 @@ public abstract class class28 {
          } else {
             this.method232(var1, var2, var3, var4);
          }
-
       }
+
    }
 
    @ObfuscatedName("c")
@@ -98,17 +98,17 @@ public abstract class class28 {
       this.field425[0][var1][var2] = (short)var3.readUnsignedByte();
       int var8;
       int var9;
-      int var11;
+      int var10;
       if(var6) {
          var8 = var3.readUnsignedByte();
 
          for(var9 = 0; var9 < var8; ++var9) {
-            int var10 = var3.readUnsignedByte();
-            if(var10 != 0) {
-               this.field419[var9][var1][var2] = (short)var10;
-               var11 = var3.readUnsignedByte();
-               this.field427[var9][var1][var2] = (byte)(var11 >> 2);
-               this.field428[var9][var1][var2] = (byte)(var11 & 3);
+            int var11 = var3.readUnsignedByte();
+            if(var11 != 0) {
+               this.field419[var9][var1][var2] = (short)var11;
+               var10 = var3.readUnsignedByte();
+               this.field427[var9][var1][var2] = (byte)(var10 >> 2);
+               this.field428[var9][var1][var2] = (byte)(var10 & 3);
             }
          }
       }
@@ -119,10 +119,10 @@ public abstract class class28 {
             if(var9 != 0) {
                class31[] var14 = this.field429[var8][var1][var2] = new class31[var9];
 
-               for(var11 = 0; var11 < var9; ++var11) {
+               for(var10 = 0; var10 < var9; ++var10) {
                   int var12 = var3.method3048();
                   int var13 = var3.readUnsignedByte();
-                  var14[var11] = new class31(var12, var13 >> 2, var13 & 3);
+                  var14[var10] = new class31(var12, var13 >> 2, var13 & 3);
                }
             }
          }

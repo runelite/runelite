@@ -49,15 +49,6 @@ public class class134 {
    @ObfuscatedName("p")
    public static boolean field2006;
 
-   static {
-      field2006 = false;
-      field1994 = 0;
-      field1995 = 0;
-      field2004 = false;
-      field2000 = 0;
-      field2002 = new int[1000];
-   }
-
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(LRSSocket;ZB)V",
@@ -67,7 +58,7 @@ public class class134 {
       if(class238.field3258 != null) {
          try {
             class238.field3258.method2879();
-         } catch (Exception var6) {
+         } catch (Exception var7) {
             ;
          }
 
@@ -89,15 +80,15 @@ public class class134 {
                if(var2 == null) {
                   if(class238.field3274 != 0) {
                      try {
-                        Buffer var7 = new Buffer(4);
-                        var7.putByte(4);
-                        var7.putByte(class238.field3274);
-                        var7.putShort(0);
-                        class238.field3258.queueForWrite(var7.payload, 0, 4);
-                     } catch (IOException var5) {
+                        Buffer var3 = new Buffer(4);
+                        var3.putByte(4);
+                        var3.putByte(class238.field3274);
+                        var3.putShort(0);
+                        class238.field3258.queueForWrite(var3.payload, 0, 4);
+                     } catch (IOException var6) {
                         try {
                            class238.field3258.method2879();
-                        } catch (Exception var4) {
+                        } catch (Exception var5) {
                            ;
                         }
 
@@ -122,5 +113,14 @@ public class class134 {
          ++class238.field3267;
          --class238.field3269;
       }
+   }
+
+   static {
+      field2006 = false;
+      field1994 = 0;
+      field1995 = 0;
+      field2004 = false;
+      field2000 = 0;
+      field2002 = new int[1000];
    }
 }

@@ -45,17 +45,15 @@ public class class39 {
       Area var3 = Area.field3304[this.field541];
       switch(var3.field3314.field3551) {
       case 0:
-         if(var1 >= this.field539 - this.field540 / 2 && var1 <= this.field540 / 2 + this.field539) {
-            break;
+         if(var1 < this.field539 - this.field540 / 2 || var1 > this.field540 / 2 + this.field539) {
+            return false;
          }
-
-         return false;
+         break;
       case 1:
-         if(var1 >= this.field539 && var1 < this.field539 + this.field540) {
-            break;
+         if(var1 < this.field539 || var1 >= this.field539 + this.field540) {
+            return false;
          }
-
-         return false;
+         break;
       case 2:
          if(var1 <= this.field539 - this.field540 || var1 > this.field539) {
             return false;
@@ -64,11 +62,10 @@ public class class39 {
 
       switch(var3.field3310.field3282) {
       case 0:
-         if(var2 >= this.field544 - this.field537 / 2 && var2 <= this.field544 + this.field537 / 2) {
-            break;
+         if(var2 < this.field544 - this.field537 / 2 || var2 > this.field544 + this.field537 / 2) {
+            return false;
          }
-
-         return false;
+         break;
       case 1:
          if(var2 < this.field544 || var2 >= this.field544 + this.field537) {
             return false;

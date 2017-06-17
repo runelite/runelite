@@ -22,13 +22,6 @@ public class class98 {
    @ObfuscatedName("e")
    static final class201 field1523;
 
-   static {
-      chatLineMap = new HashMap();
-      field1517 = new class186(1024);
-      field1523 = new class201();
-      field1518 = 0;
-   }
-
    @ObfuscatedName("hj")
    @ObfuscatedSignature(
       signature = "(IB)Ljava/lang/String;",
@@ -41,6 +34,13 @@ public class class98 {
          var1 = var1.substring(0, var2) + "," + var1.substring(var2);
       }
 
-      return var1.length() > 9?" " + class15.method105('ﾀ') + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + class15.method105(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + class15.method105(16776960) + var1 + "</col>");
+      return var1.length() > 9?" " + class15.method105('ﾀ') + var1.substring(0, var1.length() - 8) + "M  (" + var1 + ")</col>":(var1.length() > 6?" " + class15.method105(16777215) + var1.substring(0, var1.length() - 4) + "K  (" + var1 + ")</col>":" " + class15.method105(16776960) + var1 + "</col>");
+   }
+
+   static {
+      chatLineMap = new HashMap();
+      field1517 = new class186(1024);
+      field1523 = new class201();
+      field1518 = 0;
    }
 }

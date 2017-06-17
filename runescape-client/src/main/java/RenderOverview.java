@@ -178,6 +178,7 @@ public class RenderOverview {
             this.field3817 = var11;
          }
       }
+
    }
 
    @ObfuscatedName("t")
@@ -244,8 +245,8 @@ public class RenderOverview {
             this.field3837 = -1;
             this.field3825 = -1;
          }
-
       }
+
    }
 
    @ObfuscatedName("c")
@@ -256,16 +257,14 @@ public class RenderOverview {
    public WorldMapData method5051(int var1, int var2, int var3) {
       Iterator var4 = this.field3816.values().iterator();
 
-      WorldMapData var5;
-      do {
-         if(!var4.hasNext()) {
-            return null;
+      while(var4.hasNext()) {
+         WorldMapData var5 = (WorldMapData)var4.next();
+         if(var5.method282(var1, var2, var3)) {
+            return var5;
          }
+      }
 
-         var5 = (WorldMapData)var4.next();
-      } while(!var5.method282(var1, var2, var3));
-
-      return var5;
+      return null;
    }
 
    @ObfuscatedName("bz")
@@ -332,6 +331,7 @@ public class RenderOverview {
          this.field3846 = null;
          this.field3820.method527();
       }
+
    }
 
    @ObfuscatedName("r")
@@ -385,6 +385,7 @@ public class RenderOverview {
          this.field3829 = var9;
          Rasterizer2D.method4821(var6);
       }
+
    }
 
    @ObfuscatedName("l")
@@ -404,6 +405,7 @@ public class RenderOverview {
 
          this.field3820.method531(var1, var2, var3, var4, this.field3833, this.field3835, this.field3831);
       }
+
    }
 
    @ObfuscatedName("d")
@@ -508,6 +510,7 @@ public class RenderOverview {
          this.field3837 = var1 - this.field3818.method293() * 64;
          this.field3825 = var2 - this.field3818.method305() * 64;
       }
+
    }
 
    @ObfuscatedName("ak")
@@ -521,8 +524,8 @@ public class RenderOverview {
          if(var4 != null) {
             this.method5213(var4[0], var4[1]);
          }
-
       }
+
    }
 
    @ObfuscatedName("al")
@@ -731,26 +734,26 @@ public class RenderOverview {
          if(!var9.isEmpty()) {
             Iterator var10 = var9.iterator();
 
-            boolean var13;
+            boolean var11;
             do {
                if(!var10.hasNext()) {
                   return;
                }
 
-               class39 var11 = (class39)var10.next();
-               Area var12 = Area.field3304[var11.field541];
-               var13 = false;
+               class39 var12 = (class39)var10.next();
+               Area var13 = Area.field3304[var12.field541];
+               var11 = false;
 
                for(int var14 = this.field3844.length - 1; var14 >= 0; --var14) {
-                  if(var12.field3307[var14] != null) {
-                     class44.addMenuEntry(var12.field3307[var14], var12.field3308, this.field3844[var14], var11.field541, var11.field545.method3825(), var11.field538.method3825());
-                     var13 = true;
+                  if(var13.field3307[var14] != null) {
+                     class44.addMenuEntry(var13.field3307[var14], var13.field3308, this.field3844[var14], var12.field541, var12.field545.method3825(), var12.field538.method3825());
+                     var11 = true;
                   }
                }
-            } while(!var13);
-
+            } while(!var11);
          }
       }
+
    }
 
    @ObfuscatedName("bf")
@@ -773,36 +776,26 @@ public class RenderOverview {
             int var6 = -1;
             Iterator var7 = var4.iterator();
 
-            while(true) {
-               class39 var8;
-               int var11;
-               do {
-                  if(!var7.hasNext()) {
-                     return var5.field538;
-                  }
+            while(var7.hasNext()) {
+               class39 var8 = (class39)var7.next();
+               int var10 = var8.field538.worldX - var2.worldX;
+               int var11 = var8.field538.worldY - var2.worldY;
+               int var9 = var10 * var10 + var11 * var11;
+               if(var9 == 0) {
+                  return var8.field538;
+               }
 
-                  var8 = (class39)var7.next();
-                  int var9 = var8.field538.worldX - var2.worldX;
-                  int var10 = var8.field538.worldY - var2.worldY;
-                  var11 = var9 * var9 + var10 * var10;
-                  if(var11 == 0) {
-                     return var8.field538;
-                  }
-               } while(var11 >= var6 && var5 != null);
-
-               var5 = var8;
-               var6 = var11;
+               if(var9 < var6 || var5 == null) {
+                  var5 = var8;
+                  var6 = var9;
+               }
             }
+
+            return var5.field538;
          } else {
             return null;
          }
       }
-   }
-
-   static {
-      field3810 = class261.field3625;
-      field3811 = class261.field3623;
-      field3812 = class261.field3622;
    }
 
    @ObfuscatedName("ar")
@@ -915,16 +908,14 @@ public class RenderOverview {
    public WorldMapData method5151(int var1) {
       Iterator var2 = this.field3816.values().iterator();
 
-      WorldMapData var3;
-      do {
-         if(!var2.hasNext()) {
-            return null;
+      while(var2.hasNext()) {
+         WorldMapData var3 = (WorldMapData)var2.next();
+         if(var3.method287() == var1) {
+            return var3;
          }
+      }
 
-         var3 = (WorldMapData)var2.next();
-      } while(var3.method287() != var1);
-
-      return var3;
+      return null;
    }
 
    @ObfuscatedName("o")
@@ -989,8 +980,8 @@ public class RenderOverview {
          if(var4 != null) {
             this.method5069(var4[0], var4[1]);
          }
-
       }
+
    }
 
    @ObfuscatedName("g")
@@ -1003,6 +994,7 @@ public class RenderOverview {
          this.method5057(var1);
          this.method5059(-1, -1, -1);
       }
+
    }
 
    @ObfuscatedName("s")
@@ -1021,8 +1013,8 @@ public class RenderOverview {
          } else {
             this.method5059(var3.plane, var3.worldX, var3.worldY);
          }
-
       }
+
    }
 
    @ObfuscatedName("ae")
@@ -1037,6 +1029,7 @@ public class RenderOverview {
          this.field3837 = -1;
          this.field3825 = -1;
       }
+
    }
 
    @ObfuscatedName("m")
@@ -1046,5 +1039,11 @@ public class RenderOverview {
    )
    public int method5217() {
       return this.field3809.method4026(this.field3808.method315(), class40.field551.field548)?100:this.field3809.method4018(this.field3808.method315());
+   }
+
+   static {
+      field3810 = class261.field3625;
+      field3811 = class261.field3623;
+      field3812 = class261.field3622;
    }
 }

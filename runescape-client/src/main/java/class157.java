@@ -9,11 +9,6 @@ public class class157 {
    @ObfuscatedName("p")
    static boolean field2270;
 
-   static {
-      field2270 = false;
-      field2269 = new Hashtable(16);
-   }
-
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(CB)Z",
@@ -21,5 +16,10 @@ public class class157 {
    )
    public static boolean method2865(char var0) {
       return var0 >= 65 && var0 <= 90 || var0 >= 97 && var0 <= 122;
+   }
+
+   static {
+      field2270 = false;
+      field2269 = new Hashtable(16);
    }
 }

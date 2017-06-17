@@ -13,8 +13,8 @@ public class class111 implements Runnable {
                var2.method1912();
             }
          }
-      } catch (Exception var4) {
-         class8.method43((String)null, var4);
+      } catch (Exception var3) {
+         class8.method43((String)null, var3);
       }
 
    }

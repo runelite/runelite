@@ -34,10 +34,6 @@ public class class240 extends CacheableNode {
 
    }
 
-   static {
-      field3286 = new NodeCache(64);
-   }
-
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
@@ -66,5 +62,9 @@ public class class240 extends CacheableNode {
       int var6 = (class20.localPlayer.y >> 7) + class21.baseY;
       Coordinates var7 = new Coordinates(var4, var5, var6);
       WidgetNode.method1030().method5207(var3, var7, var1, var2);
+   }
+
+   static {
+      field3286 = new NodeCache(64);
    }
 }

@@ -53,6 +53,7 @@ public class Preferences {
          Client.field1061 = false;
          XItemContainer.method1020(var0);
       }
+
    }
 
    Preferences() {
@@ -90,10 +91,6 @@ public class Preferences {
       }
 
       return var1;
-   }
-
-   static {
-      field1297 = 4;
    }
 
    @ObfuscatedName("c")
@@ -161,5 +158,9 @@ public class Preferences {
          this.method1502(true);
       }
 
+   }
+
+   static {
+      field1297 = 4;
    }
 }

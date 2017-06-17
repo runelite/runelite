@@ -117,10 +117,6 @@ public class KitDefinition extends CacheableNode {
       return var5;
    }
 
-   static {
-      field3362 = new NodeCache(64);
-   }
-
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(LBuffer;II)V",
@@ -226,5 +222,9 @@ public class KitDefinition extends CacheableNode {
 
          return var4;
       }
+   }
+
+   static {
+      field3362 = new NodeCache(64);
    }
 }

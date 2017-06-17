@@ -127,6 +127,7 @@ public class PlayerComposition {
       if(this.isFemale != var1) {
          this.method3840((int[])null, this.bodyPartColours, var1, -1);
       }
+
    }
 
    @ObfuscatedName("w")
@@ -230,14 +231,14 @@ public class PlayerComposition {
          if(var15 == null) {
             boolean var9 = false;
 
-            int var11;
-            for(int var10 = 0; var10 < 12; ++var10) {
-               var11 = var7[var10];
-               if(var11 >= 256 && var11 < 512 && !class69.getKitDefinition(var11 - 256).ready()) {
+            int var10;
+            for(int var11 = 0; var11 < 12; ++var11) {
+               var10 = var7[var11];
+               if(var10 >= 256 && var10 < 512 && !class69.getKitDefinition(var10 - 256).ready()) {
                   var9 = true;
                }
 
-               if(var11 >= 512 && !class224.getItemDefinition(var11 - 512).readyWorn(this.isFemale)) {
+               if(var10 >= 512 && !class224.getItemDefinition(var10 - 512).readyWorn(this.isFemale)) {
                   var9 = true;
                }
             }
@@ -253,37 +254,37 @@ public class PlayerComposition {
             }
 
             if(var15 == null) {
-               ModelData[] var16 = new ModelData[12];
-               var11 = 0;
+               ModelData[] var17 = new ModelData[12];
+               var10 = 0;
 
-               int var13;
-               for(int var12 = 0; var12 < 12; ++var12) {
-                  var13 = var7[var12];
+               int var12;
+               for(int var13 = 0; var13 < 12; ++var13) {
+                  var12 = var7[var13];
                   ModelData var14;
-                  if(var13 >= 256 && var13 < 512) {
-                     var14 = class69.getKitDefinition(var13 - 256).getModelData();
+                  if(var12 >= 256 && var12 < 512) {
+                     var14 = class69.getKitDefinition(var12 - 256).getModelData();
                      if(var14 != null) {
-                        var16[var11++] = var14;
+                        var17[var10++] = var14;
                      }
                   }
 
-                  if(var13 >= 512) {
-                     var14 = class224.getItemDefinition(var13 - 512).getWornModelData(this.isFemale);
+                  if(var12 >= 512) {
+                     var14 = class224.getItemDefinition(var12 - 512).getWornModelData(this.isFemale);
                      if(var14 != null) {
-                        var16[var11++] = var14;
+                        var17[var10++] = var14;
                      }
                   }
                }
 
-               ModelData var18 = new ModelData(var16, var11);
+               ModelData var18 = new ModelData(var17, var10);
 
-               for(var13 = 0; var13 < 5; ++var13) {
-                  if(this.bodyPartColours[var13] < class8.field249[var13].length) {
-                     var18.method2322(field2629[var13], class8.field249[var13][this.bodyPartColours[var13]]);
+               for(var12 = 0; var12 < 5; ++var12) {
+                  if(this.bodyPartColours[var12] < class8.field249[var12].length) {
+                     var18.method2322(field2629[var12], class8.field249[var12][this.bodyPartColours[var12]]);
                   }
 
-                  if(this.bodyPartColours[var13] < class7.field240[var13].length) {
-                     var18.method2322(field2630[var13], class7.field240[var13][this.bodyPartColours[var13]]);
+                  if(this.bodyPartColours[var12] < class7.field240[var12].length) {
+                     var18.method2322(field2630[var12], class7.field240[var12][this.bodyPartColours[var12]]);
                   }
                }
 
@@ -296,16 +297,16 @@ public class PlayerComposition {
          if(var1 == null && var3 == null) {
             return var15;
          } else {
-            Model var17;
+            Model var16;
             if(var1 != null && var3 != null) {
-               var17 = var1.method4585(var15, var2, var3, var4);
+               var16 = var1.method4585(var15, var2, var3, var4);
             } else if(var1 != null) {
-               var17 = var1.method4578(var15, var2);
+               var16 = var1.method4578(var15, var2);
             } else {
-               var17 = var3.method4578(var15, var4);
+               var16 = var3.method4578(var15, var4);
             }
 
-            return var17;
+            return var16;
          }
       }
    }
@@ -321,14 +322,14 @@ public class PlayerComposition {
       } else {
          boolean var1 = false;
 
-         int var3;
-         for(int var2 = 0; var2 < 12; ++var2) {
-            var3 = this.equipmentIds[var2];
-            if(var3 >= 256 && var3 < 512 && !class69.getKitDefinition(var3 - 256).method4250()) {
+         int var2;
+         for(int var3 = 0; var3 < 12; ++var3) {
+            var2 = this.equipmentIds[var3];
+            if(var2 >= 256 && var2 < 512 && !class69.getKitDefinition(var2 - 256).method4250()) {
                var1 = true;
             }
 
-            if(var3 >= 512 && !class224.getItemDefinition(var3 - 512).method4448(this.isFemale)) {
+            if(var2 >= 512 && !class224.getItemDefinition(var2 - 512).method4448(this.isFemale)) {
                var1 = true;
             }
          }
@@ -337,36 +338,36 @@ public class PlayerComposition {
             return null;
          } else {
             ModelData[] var7 = new ModelData[12];
-            var3 = 0;
+            var2 = 0;
 
-            int var5;
-            for(int var4 = 0; var4 < 12; ++var4) {
-               var5 = this.equipmentIds[var4];
+            int var4;
+            for(int var5 = 0; var5 < 12; ++var5) {
+               var4 = this.equipmentIds[var5];
                ModelData var6;
-               if(var5 >= 256 && var5 < 512) {
-                  var6 = class69.getKitDefinition(var5 - 256).method4251();
+               if(var4 >= 256 && var4 < 512) {
+                  var6 = class69.getKitDefinition(var4 - 256).method4251();
                   if(var6 != null) {
-                     var7[var3++] = var6;
+                     var7[var2++] = var6;
                   }
                }
 
-               if(var5 >= 512) {
-                  var6 = class224.getItemDefinition(var5 - 512).method4449(this.isFemale);
+               if(var4 >= 512) {
+                  var6 = class224.getItemDefinition(var4 - 512).method4449(this.isFemale);
                   if(var6 != null) {
-                     var7[var3++] = var6;
+                     var7[var2++] = var6;
                   }
                }
             }
 
-            ModelData var8 = new ModelData(var7, var3);
+            ModelData var8 = new ModelData(var7, var2);
 
-            for(var5 = 0; var5 < 5; ++var5) {
-               if(this.bodyPartColours[var5] < class8.field249[var5].length) {
-                  var8.method2322(field2629[var5], class8.field249[var5][this.bodyPartColours[var5]]);
+            for(var4 = 0; var4 < 5; ++var4) {
+               if(this.bodyPartColours[var4] < class8.field249[var4].length) {
+                  var8.method2322(field2629[var4], class8.field249[var4][this.bodyPartColours[var4]]);
                }
 
-               if(this.bodyPartColours[var5] < class7.field240[var5].length) {
-                  var8.method2322(field2630[var5], class7.field240[var5][this.bodyPartColours[var5]]);
+               if(this.bodyPartColours[var4] < class7.field240[var4].length) {
+                  var8.method2322(field2630[var4], class7.field240[var4][this.bodyPartColours[var4]]);
                }
             }
 
@@ -388,30 +389,30 @@ public class PlayerComposition {
 
             KitDefinition var4;
             do {
-               if(!var2) {
-                  --var3;
-                  if(var3 < 0) {
-                     var3 = KitDefinition.field3359 - 1;
-                  }
-               } else {
-                  ++var3;
-                  if(var3 >= KitDefinition.field3359) {
-                     var3 = 0;
-                  }
-               }
+               do {
+                  do {
+                     if(!var2) {
+                        --var3;
+                        if(var3 < 0) {
+                           var3 = KitDefinition.field3359 - 1;
+                        }
+                     } else {
+                        ++var3;
+                        if(var3 >= KitDefinition.field3359) {
+                           var3 = 0;
+                        }
+                     }
 
-               var4 = class69.getKitDefinition(var3);
-            } while(var4 == null || var4.nonSelectable || var1 + (this.isFemale?7:0) != var4.bodyPartId);
+                     var4 = class69.getKitDefinition(var3);
+                  } while(var4 == null);
+               } while(var4.nonSelectable);
+            } while(var1 + (this.isFemale?7:0) != var4.bodyPartId);
 
             this.equipmentIds[field2631[var1]] = var3 + 256;
             this.method3844();
          }
       }
-   }
 
-   static {
-      field2631 = new int[]{8, 11, 4, 6, 9, 7, 10};
-      field2632 = new NodeCache(260);
    }
 
    @ObfuscatedName("p")
@@ -430,5 +431,10 @@ public class PlayerComposition {
    )
    public int method3868() {
       return this.transformedNpcId == -1?(this.equipmentIds[11] << 5) + (this.bodyPartColours[4] << 20) + (this.bodyPartColours[0] << 25) + (this.equipmentIds[0] << 15) + (this.equipmentIds[8] << 10) + this.equipmentIds[1]:class158.getNpcDefinition(this.transformedNpcId).id + 305419896;
+   }
+
+   static {
+      field2631 = new int[]{8, 11, 4, 6, 9, 7, 10};
+      field2632 = new NodeCache(260);
    }
 }

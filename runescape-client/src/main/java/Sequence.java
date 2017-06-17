@@ -264,11 +264,6 @@ public class Sequence extends CacheableNode {
       }
    }
 
-   static {
-      field3603 = new NodeCache(64);
-      field3606 = new NodeCache(100);
-   }
-
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(LModel;ILSequence;IB)LModel;",
@@ -342,5 +337,10 @@ public class Sequence extends CacheableNode {
       this.precedenceAnimating = -1;
       this.priority = -1;
       this.replyMode = 2;
+   }
+
+   static {
+      field3603 = new NodeCache(64);
+      field3606 = new NodeCache(100);
    }
 }

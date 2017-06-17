@@ -4,13 +4,16 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ck")
-public class class91 implements RSEnum {
-   @ObfuscatedName("m")
-   static final class91 field1403;
+public enum class91 implements RSEnum {
    @ObfuscatedName("p")
-   static final class91 field1404;
+   field1404(0),
+   @ObfuscatedName("m")
+   field1403(1),
    @ObfuscatedName("e")
-   static final class91 field1405;
+   field1405(2),
+   @ObfuscatedName("t")
+   field1410(3);
+
    @ObfuscatedName("km")
    @ObfuscatedGetter(
       intValue = 2073367925
@@ -19,8 +22,6 @@ public class class91 implements RSEnum {
    static int selectedItemIndex;
    @ObfuscatedName("z")
    public static IndexDataBase field1409;
-   @ObfuscatedName("t")
-   static final class91 field1410;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1008401685
@@ -63,19 +64,12 @@ public class class91 implements RSEnum {
 
    }
 
-   static {
-      field1404 = new class91(0);
-      field1403 = new class91(1);
-      field1405 = new class91(2);
-      field1410 = new class91(3);
-   }
-
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "0"
    )
-   class91(int var1) {
-      this.field1412 = var1;
+   class91(int var3) {
+      this.field1412 = var3;
    }
 
    @ObfuscatedName("p")

@@ -3,21 +3,24 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hb")
-public class class228 implements RSEnum {
-   @ObfuscatedName("t")
-   public static final class228 field3155;
-   @ObfuscatedName("m")
-   public static final class228 field3156;
-   @ObfuscatedName("e")
-   public static final class228 field3157;
-   @ObfuscatedName("z")
-   public static final class228 field3159;
+public enum class228 implements RSEnum {
    @ObfuscatedName("p")
-   public static final class228 field3160;
+   field3160(7, 0),
+   @ObfuscatedName("m")
+   field3156(4, 1),
+   @ObfuscatedName("e")
+   field3157(6, 2),
+   @ObfuscatedName("t")
+   field3155(2, 3),
+   @ObfuscatedName("w")
+   field3165(0, 4),
+   @ObfuscatedName("z")
+   field3159(1, 5),
    @ObfuscatedName("j")
-   public static final class228 field3161;
+   field3161(5, 6),
    @ObfuscatedName("i")
-   public static final class228 field3162;
+   field3162(3, 7);
+
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 633818347
@@ -28,16 +31,14 @@ public class class228 implements RSEnum {
       intValue = -1099846007
    )
    final int field3164;
-   @ObfuscatedName("w")
-   public static final class228 field3165;
 
    @ObfuscatedSignature(
       signature = "(II)V",
       garbageValue = "0"
    )
-   class228(int var1, int var2) {
-      this.field3163 = var1;
-      this.field3164 = var2;
+   class228(int var3, int var4) {
+      this.field3163 = var3;
+      this.field3164 = var4;
    }
 
    @ObfuscatedName("p")
@@ -49,17 +50,6 @@ public class class228 implements RSEnum {
       return this.field3164;
    }
 
-   static {
-      field3160 = new class228(7, 0);
-      field3156 = new class228(4, 1);
-      field3157 = new class228(6, 2);
-      field3155 = new class228(2, 3);
-      field3165 = new class228(0, 4);
-      field3159 = new class228(1, 5);
-      field3161 = new class228(5, 6);
-      field3162 = new class228(3, 7);
-   }
-
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/Object;ZI)[B",
@@ -69,14 +59,14 @@ public class class228 implements RSEnum {
       if(var0 == null) {
          return null;
       } else if(var0 instanceof byte[]) {
-         byte[] var6 = (byte[])((byte[])var0);
+         byte[] var5 = (byte[])((byte[])((byte[])var0));
          if(var1) {
-            int var4 = var6.length;
-            byte[] var5 = new byte[var4];
-            System.arraycopy(var6, 0, var5, 0, var4);
-            return var5;
+            int var3 = var5.length;
+            byte[] var4 = new byte[var3];
+            System.arraycopy(var5, 0, var4, 0, var3);
+            return var4;
          } else {
-            return var6;
+            return var5;
          }
       } else if(var0 instanceof class176) {
          class176 var2 = (class176)var0;

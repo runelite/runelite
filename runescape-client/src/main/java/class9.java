@@ -69,7 +69,6 @@ public abstract class class9 extends Node {
                   --class238.field3261;
                   ++class238.field3267;
                }
-
             } else {
                if(!var5) {
                   var8 = (class234)class238.field3263.method3425(var6);
@@ -90,10 +89,10 @@ public abstract class class9 extends Node {
                   class238.field3265.method3426(var8, var6);
                   ++class238.field3261;
                }
-
             }
          }
       }
+
    }
 
    @ObfuscatedName("w")

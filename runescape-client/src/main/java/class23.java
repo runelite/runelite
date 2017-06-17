@@ -86,6 +86,7 @@ public class class23 {
 
          Client.gameState = var0;
       }
+
    }
 
    @ObfuscatedName("fn")
@@ -97,15 +98,74 @@ public class class23 {
    static final void xteaChanged(boolean var0) {
       Client.isDynamicRegion = var0;
       int var1;
+      int var2;
       int var3;
       int var4;
       int var5;
       int var6;
-      int var7;
       if(!Client.isDynamicRegion) {
          var1 = Client.secretPacketBuffer2.readUnsignedShort();
-         int var2 = Client.secretPacketBuffer2.method3023();
+         int var7 = Client.secretPacketBuffer2.method3023();
+         var2 = Client.secretPacketBuffer2.readUnsignedShort();
+         class36.xteaKeys = new int[var2][4];
+
+         for(var3 = 0; var3 < var2; ++var3) {
+            for(var4 = 0; var4 < 4; ++var4) {
+               class36.xteaKeys[var3][var4] = Client.secretPacketBuffer2.readInt();
+            }
+         }
+
+         class13.mapRegions = new int[var2];
+         WallObject.field2143 = new int[var2];
+         class168.field2352 = new int[var2];
+         WidgetNode.field814 = new byte[var2][];
+         class40.field554 = new byte[var2][];
+         boolean var8 = false;
+         if((var7 / 8 == 48 || var7 / 8 == 49) && var1 / 8 == 48) {
+            var8 = true;
+         }
+
+         if(var7 / 8 == 48 && var1 / 8 == 148) {
+            var8 = true;
+         }
+
+         var2 = 0;
+
+         for(var4 = (var7 - 6) / 8; var4 <= (var7 + 6) / 8; ++var4) {
+            for(var5 = (var1 - 6) / 8; var5 <= (var1 + 6) / 8; ++var5) {
+               var6 = var5 + (var4 << 8);
+               if(!var8 || var5 != 49 && var5 != 149 && var5 != 147 && var4 != 50 && (var4 != 49 || var5 != 47)) {
+                  class13.mapRegions[var2] = var6;
+                  WallObject.field2143[var2] = class177.indexMaps.method4055("m" + var4 + "_" + var5);
+                  class168.field2352[var2] = class177.indexMaps.method4055("l" + var4 + "_" + var5);
+                  ++var2;
+               }
+            }
+         }
+
+         class2.method5(var7, var1, true);
+      } else {
+         var1 = Client.secretPacketBuffer2.method3068();
+         boolean var14 = Client.secretPacketBuffer2.method3060() == 1;
+         var2 = Client.secretPacketBuffer2.method3068();
          var3 = Client.secretPacketBuffer2.readUnsignedShort();
+         Client.secretPacketBuffer2.method3291();
+
+         int var15;
+         for(var4 = 0; var4 < 4; ++var4) {
+            for(var5 = 0; var5 < 13; ++var5) {
+               for(var6 = 0; var6 < 13; ++var6) {
+                  var15 = Client.secretPacketBuffer2.method3290(1);
+                  if(var15 == 1) {
+                     Client.field967[var4][var5][var6] = Client.secretPacketBuffer2.method3290(26);
+                  } else {
+                     Client.field967[var4][var5][var6] = -1;
+                  }
+               }
+            }
+         }
+
+         Client.secretPacketBuffer2.method3292();
          class36.xteaKeys = new int[var3][4];
 
          for(var4 = 0; var4 < var3; ++var4) {
@@ -119,78 +179,19 @@ public class class23 {
          class168.field2352 = new int[var3];
          WidgetNode.field814 = new byte[var3][];
          class40.field554 = new byte[var3][];
-         boolean var15 = false;
-         if((var2 / 8 == 48 || var2 / 8 == 49) && var1 / 8 == 48) {
-            var15 = true;
-         }
-
-         if(var2 / 8 == 48 && var1 / 8 == 148) {
-            var15 = true;
-         }
-
          var3 = 0;
 
-         for(var5 = (var2 - 6) / 8; var5 <= (var2 + 6) / 8; ++var5) {
-            for(var6 = (var1 - 6) / 8; var6 <= (var1 + 6) / 8; ++var6) {
-               var7 = var6 + (var5 << 8);
-               if(!var15 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
-                  class13.mapRegions[var3] = var7;
-                  WallObject.field2143[var3] = class177.indexMaps.method4055("m" + var5 + "_" + var6);
-                  class168.field2352[var3] = class177.indexMaps.method4055("l" + var5 + "_" + var6);
-                  ++var3;
-               }
-            }
-         }
-
-         class2.method5(var2, var1, true);
-      } else {
-         var1 = Client.secretPacketBuffer2.method3068();
-         boolean var14 = Client.secretPacketBuffer2.method3060() == 1;
-         var3 = Client.secretPacketBuffer2.method3068();
-         var4 = Client.secretPacketBuffer2.readUnsignedShort();
-         Client.secretPacketBuffer2.method3291();
-
-         int var8;
-         for(var5 = 0; var5 < 4; ++var5) {
-            for(var6 = 0; var6 < 13; ++var6) {
-               for(var7 = 0; var7 < 13; ++var7) {
-                  var8 = Client.secretPacketBuffer2.method3290(1);
-                  if(var8 == 1) {
-                     Client.field967[var5][var6][var7] = Client.secretPacketBuffer2.method3290(26);
-                  } else {
-                     Client.field967[var5][var6][var7] = -1;
-                  }
-               }
-            }
-         }
-
-         Client.secretPacketBuffer2.method3292();
-         class36.xteaKeys = new int[var4][4];
-
-         for(var5 = 0; var5 < var4; ++var5) {
-            for(var6 = 0; var6 < 4; ++var6) {
-               class36.xteaKeys[var5][var6] = Client.secretPacketBuffer2.readInt();
-            }
-         }
-
-         class13.mapRegions = new int[var4];
-         WallObject.field2143 = new int[var4];
-         class168.field2352 = new int[var4];
-         WidgetNode.field814 = new byte[var4][];
-         class40.field554 = new byte[var4][];
-         var4 = 0;
-
-         for(var5 = 0; var5 < 4; ++var5) {
-            for(var6 = 0; var6 < 13; ++var6) {
-               for(var7 = 0; var7 < 13; ++var7) {
-                  var8 = Client.field967[var5][var6][var7];
-                  if(var8 != -1) {
-                     int var9 = var8 >> 14 & 1023;
-                     int var10 = var8 >> 3 & 2047;
+         for(var4 = 0; var4 < 4; ++var4) {
+            for(var5 = 0; var5 < 13; ++var5) {
+               for(var6 = 0; var6 < 13; ++var6) {
+                  var15 = Client.field967[var4][var5][var6];
+                  if(var15 != -1) {
+                     int var9 = var15 >> 14 & 1023;
+                     int var10 = var15 >> 3 & 2047;
                      int var11 = (var9 / 8 << 8) + var10 / 8;
 
                      int var12;
-                     for(var12 = 0; var12 < var4; ++var12) {
+                     for(var12 = 0; var12 < var3; ++var12) {
                         if(class13.mapRegions[var12] == var11) {
                            var11 = -1;
                            break;
@@ -198,19 +199,19 @@ public class class23 {
                      }
 
                      if(var11 != -1) {
-                        class13.mapRegions[var4] = var11;
+                        class13.mapRegions[var3] = var11;
                         var12 = var11 >> 8 & 255;
                         int var13 = var11 & 255;
-                        WallObject.field2143[var4] = class177.indexMaps.method4055("m" + var12 + "_" + var13);
-                        class168.field2352[var4] = class177.indexMaps.method4055("l" + var12 + "_" + var13);
-                        ++var4;
+                        WallObject.field2143[var3] = class177.indexMaps.method4055("m" + var12 + "_" + var13);
+                        class168.field2352[var3] = class177.indexMaps.method4055("l" + var12 + "_" + var13);
+                        ++var3;
                      }
                   }
                }
             }
          }
 
-         class2.method5(var3, var1, !var14);
+         class2.method5(var2, var1, !var14);
       }
 
    }

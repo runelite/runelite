@@ -135,8 +135,8 @@ public final class class172 {
          } else {
             DecorativeObject.method2786(var0);
          }
-
       }
+
    }
 
    class172() {

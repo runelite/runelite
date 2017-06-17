@@ -91,16 +91,14 @@ public class WorldMapData {
    public boolean method282(int var1, int var2, int var3) {
       Iterator var4 = this.field469.iterator();
 
-      WorldMapSectionBase var5;
-      do {
-         if(!var4.hasNext()) {
-            return false;
+      while(var4.hasNext()) {
+         WorldMapSectionBase var5 = (WorldMapSectionBase)var4.next();
+         if(var5.vmethod678(var1, var2, var3)) {
+            return true;
          }
+      }
 
-         var5 = (WorldMapSectionBase)var4.next();
-      } while(!var5.vmethod678(var1, var2, var3));
-
-      return true;
+      return false;
    }
 
    @ObfuscatedName("t")
@@ -115,16 +113,14 @@ public class WorldMapData {
          if(var4 >= this.field466 && var4 <= this.field458) {
             Iterator var5 = this.field469.iterator();
 
-            WorldMapSectionBase var6;
-            do {
-               if(!var5.hasNext()) {
-                  return false;
+            while(var5.hasNext()) {
+               WorldMapSectionBase var6 = (WorldMapSectionBase)var5.next();
+               if(var6.vmethod679(var1, var2)) {
+                  return true;
                }
+            }
 
-               var6 = (WorldMapSectionBase)var5.next();
-            } while(!var6.vmethod679(var1, var2));
-
-            return true;
+            return false;
          } else {
             return false;
          }
@@ -273,16 +269,14 @@ public class WorldMapData {
    public Coordinates method317(int var1, int var2) {
       Iterator var3 = this.field469.iterator();
 
-      WorldMapSectionBase var4;
-      do {
-         if(!var3.hasNext()) {
-            return null;
+      while(var3.hasNext()) {
+         WorldMapSectionBase var4 = (WorldMapSectionBase)var3.next();
+         if(var4.vmethod679(var1, var2)) {
+            return var4.vmethod685(var1, var2);
          }
+      }
 
-         var4 = (WorldMapSectionBase)var3.next();
-      } while(!var4.vmethod679(var1, var2));
-
-      return var4.vmethod685(var1, var2);
+      return null;
    }
 
    public WorldMapData() {
@@ -314,16 +308,14 @@ public class WorldMapData {
    public int[] method346(int var1, int var2, int var3) {
       Iterator var4 = this.field469.iterator();
 
-      WorldMapSectionBase var5;
-      do {
-         if(!var4.hasNext()) {
-            return null;
+      while(var4.hasNext()) {
+         WorldMapSectionBase var5 = (WorldMapSectionBase)var4.next();
+         if(var5.vmethod678(var1, var2, var3)) {
+            return var5.vmethod682(var1, var2, var3);
          }
+      }
 
-         var5 = (WorldMapSectionBase)var4.next();
-      } while(!var5.vmethod678(var1, var2, var3));
-
-      return var5.vmethod682(var1, var2, var3);
+      return null;
    }
 
    @ObfuscatedName("m")

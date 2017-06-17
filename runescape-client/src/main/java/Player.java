@@ -162,13 +162,13 @@ public final class Player extends Actor {
       int var7 = var6 * var3 * 512 / (var2 * 334);
       int var8;
       int var9;
-      short var15;
+      short var10;
       if(var7 < Client.field1164) {
-         var15 = Client.field1164;
-         var6 = var15 * var2 * 334 / (var3 * 512);
+         var10 = Client.field1164;
+         var6 = var10 * var2 * 334 / (var3 * 512);
          if(var6 > Client.field1163) {
             var6 = Client.field1163;
-            var8 = var6 * var3 * 512 / (var15 * 334);
+            var8 = var6 * var3 * 512 / (var10 * 334);
             var9 = (var2 - var8) / 2;
             if(var4) {
                Rasterizer2D.method4880();
@@ -180,11 +180,11 @@ public final class Player extends Actor {
             var2 -= var9 * 2;
          }
       } else if(var7 > Client.field1165) {
-         var15 = Client.field1165;
-         var6 = var15 * var2 * 334 / (var3 * 512);
+         var10 = Client.field1165;
+         var6 = var10 * var2 * 334 / (var3 * 512);
          if(var6 < Client.field1162) {
             var6 = Client.field1162;
-            var8 = var2 * var15 * 334 / (var6 * 512);
+            var8 = var2 * var10 * 334 / (var6 * 512);
             var9 = (var3 - var8) / 2;
             if(var4) {
                Rasterizer2D.method4880();
@@ -200,16 +200,16 @@ public final class Player extends Actor {
       var8 = Client.field1160 + var5 * (Client.field904 - Client.field1160) / 100;
       Client.scale = var8 * var3 * var6 / 85504 << 1;
       if(Client.viewportHeight != var2 || Client.viewportWidth != var3) {
-         int[] var14 = new int[9];
+         int[] var11 = new int[9];
 
-         for(int var10 = 0; var10 < 9; ++var10) {
-            int var11 = var10 * 32 + 128 + 15;
-            int var12 = var11 * 3 + 600;
-            int var13 = class136.SINE[var11];
-            var14[var10] = var12 * var13 >> 16;
+         for(int var12 = 0; var12 < 9; ++var12) {
+            int var13 = var12 * 32 + 128 + 15;
+            int var14 = var13 * 3 + 600;
+            int var15 = class136.SINE[var13];
+            var11[var12] = var14 * var15 >> 16;
          }
 
-         Region.method2738(var14, 500, 800, var2, var3);
+         Region.method2738(var11, 500, 800, var2, var3);
       }
 
       Client.field1166 = var0;
@@ -228,7 +228,7 @@ public final class Player extends Actor {
          return null;
       } else {
          Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?GameEngine.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation == -1 || this.field886 || super.idlePoseAnimation == super.poseAnimation && var1 != null?null:GameEngine.getAnimation(super.poseAnimation);
+         Sequence var2 = super.poseAnimation != -1 && !this.field886 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?GameEngine.getAnimation(super.poseAnimation):null;
          Model var3 = this.composition.method3845(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;
@@ -566,22 +566,22 @@ public final class Player extends Actor {
       this.team = 0;
       int[] var4 = new int[12];
 
+      int var5;
       int var6;
-      int var7;
-      for(int var5 = 0; var5 < 12; ++var5) {
-         var6 = var1.readUnsignedByte();
-         if(var6 == 0) {
-            var4[var5] = 0;
+      for(int var7 = 0; var7 < 12; ++var7) {
+         var5 = var1.readUnsignedByte();
+         if(var5 == 0) {
+            var4[var7] = 0;
          } else {
-            var7 = var1.readUnsignedByte();
-            var4[var5] = (var6 << 8) + var7;
-            if(var5 == 0 && var4[0] == '\uffff') {
+            var6 = var1.readUnsignedByte();
+            var4[var7] = (var5 << 8) + var6;
+            if(var7 == 0 && var4[0] == '\uffff') {
                var3 = var1.readUnsignedShort();
                break;
             }
 
-            if(var4[var5] >= 512) {
-               int var8 = class224.getItemDefinition(var4[var5] - 512).field3540;
+            if(var4[var7] >= 512) {
+               int var8 = class224.getItemDefinition(var4[var7] - 512).field3540;
                if(var8 != 0) {
                   this.team = var8;
                }
@@ -591,13 +591,13 @@ public final class Player extends Actor {
 
       int[] var9 = new int[5];
 
-      for(var6 = 0; var6 < 5; ++var6) {
-         var7 = var1.readUnsignedByte();
-         if(var7 < 0 || var7 >= class8.field249[var6].length) {
-            var7 = 0;
+      for(var5 = 0; var5 < 5; ++var5) {
+         var6 = var1.readUnsignedByte();
+         if(var6 < 0 || var6 >= class8.field249[var5].length) {
+            var6 = 0;
          }
 
-         var9[var6] = var7;
+         var9[var5] = var6;
       }
 
       super.idlePoseAnimation = var1.readUnsignedShort();

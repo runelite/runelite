@@ -3,15 +3,16 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ex")
-public class class149 implements RSEnum {
+public enum class149 implements RSEnum {
    @ObfuscatedName("p")
-   public static final class149 field2204;
+   field2204(3, 0),
    @ObfuscatedName("m")
-   public static final class149 field2205;
+   field2205(2, 1),
    @ObfuscatedName("e")
-   public static final class149 field2206;
+   field2206(1, 2),
    @ObfuscatedName("t")
-   public static final class149 field2207;
+   field2207(0, 3);
+
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = 37572115
@@ -43,15 +44,8 @@ public class class149 implements RSEnum {
       signature = "(II)V",
       garbageValue = "0"
    )
-   class149(int var1, int var2) {
-      this.field2210 = var1;
-      this.field2208 = var2;
-   }
-
-   static {
-      field2204 = new class149(3, 0);
-      field2205 = new class149(2, 1);
-      field2206 = new class149(1, 2);
-      field2207 = new class149(0, 3);
+   class149(int var3, int var4) {
+      this.field2210 = var3;
+      this.field2208 = var4;
    }
 }

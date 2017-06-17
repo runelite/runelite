@@ -177,8 +177,8 @@ public class WorldMapType3 implements WorldMapSectionBase {
                var3.field2758 = 0;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("ht")

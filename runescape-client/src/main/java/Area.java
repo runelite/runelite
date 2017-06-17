@@ -204,10 +204,6 @@ public class Area extends CacheableNode {
       return this.field3301;
    }
 
-   static {
-      field3300 = new NodeCache(256);
-   }
-
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(II)LSpotanim;",
@@ -300,6 +296,10 @@ public class Area extends CacheableNode {
       garbageValue = "10"
    )
    static final String method4190(int var0) {
-      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K" + "</col>":"<col=00ff80>" + var0 / 1000000 + "M" + "</col>");
+      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K</col>":"<col=00ff80>" + var0 / 1000000 + "M</col>");
+   }
+
+   static {
+      field3300 = new NodeCache(256);
    }
 }

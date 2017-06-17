@@ -55,20 +55,20 @@ public final class class10 extends class9 {
       garbageValue = "-4"
    )
    public final void vmethod55() {
-      for(int var4 = 0; var4 < 8; ++var4) {
-         int var1 = (var4 & 1) == 0?this.field266:this.field256;
-         int var2 = (var4 & 2) == 0?this.field257:this.field262;
-         int var3 = (var4 & 4) == 0?this.field258:this.field261;
-         if((var4 & 1) == 0) {
-            class109.method1949(var1, var2, var3, this.field256, var2, var3, this.field259);
+      for(int var1 = 0; var1 < 8; ++var1) {
+         int var2 = (var1 & 1) == 0?this.field266:this.field256;
+         int var3 = (var1 & 2) == 0?this.field257:this.field262;
+         int var4 = (var1 & 4) == 0?this.field258:this.field261;
+         if((var1 & 1) == 0) {
+            class109.method1949(var2, var3, var4, this.field256, var3, var4, this.field259);
          }
 
-         if((var4 & 2) == 0) {
-            class109.method1949(var1, var2, var3, var1, this.field262, var3, this.field259);
+         if((var1 & 2) == 0) {
+            class109.method1949(var2, var3, var4, var2, this.field262, var4, this.field259);
          }
 
-         if((var4 & 4) == 0) {
-            class109.method1949(var1, var2, var3, var1, var2, this.field261, this.field259);
+         if((var1 & 4) == 0) {
+            class109.method1949(var2, var3, var4, var2, var3, this.field261, this.field259);
          }
       }
 
@@ -163,63 +163,63 @@ public final class class10 extends class9 {
          class83.intStack[++class83.intStackSize - 1] = Client.grandExchangeOffers[var3].spent;
          return 1;
       } else {
-         int var12;
+         int var4;
          if(var0 == 3910) {
             var3 = class83.intStack[--class83.intStackSize];
-            var12 = Client.grandExchangeOffers[var3].method113();
-            class83.intStack[++class83.intStackSize - 1] = var12 == 0?1:0;
+            var4 = Client.grandExchangeOffers[var3].method113();
+            class83.intStack[++class83.intStackSize - 1] = var4 == 0?1:0;
             return 1;
          } else if(var0 == 3911) {
             var3 = class83.intStack[--class83.intStackSize];
-            var12 = Client.grandExchangeOffers[var3].method113();
-            class83.intStack[++class83.intStackSize - 1] = var12 == 2?1:0;
+            var4 = Client.grandExchangeOffers[var3].method113();
+            class83.intStack[++class83.intStackSize - 1] = var4 == 2?1:0;
             return 1;
          } else if(var0 == 3912) {
             var3 = class83.intStack[--class83.intStackSize];
-            var12 = Client.grandExchangeOffers[var3].method113();
-            class83.intStack[++class83.intStackSize - 1] = var12 == 5?1:0;
+            var4 = Client.grandExchangeOffers[var3].method113();
+            class83.intStack[++class83.intStackSize - 1] = var4 == 5?1:0;
             return 1;
          } else if(var0 == 3913) {
             var3 = class83.intStack[--class83.intStackSize];
-            var12 = Client.grandExchangeOffers[var3].method113();
-            class83.intStack[++class83.intStackSize - 1] = var12 == 1?1:0;
+            var4 = Client.grandExchangeOffers[var3].method113();
+            class83.intStack[++class83.intStackSize - 1] = var4 == 1?1:0;
             return 1;
          } else {
-            boolean var13;
+            boolean var5;
             if(var0 == 3914) {
-               var13 = class83.intStack[--class83.intStackSize] == 1;
+               var5 = class83.intStack[--class83.intStackSize] == 1;
                if(Client.field1181 != null) {
-                  Client.field1181.method79(class13.field285, var13);
+                  Client.field1181.method79(class13.field285, var5);
                }
 
                return 1;
             } else if(var0 == 3915) {
-               var13 = class83.intStack[--class83.intStackSize] == 1;
+               var5 = class83.intStack[--class83.intStackSize] == 1;
                if(Client.field1181 != null) {
-                  Client.field1181.method79(class13.field283, var13);
+                  Client.field1181.method79(class13.field283, var5);
                }
 
                return 1;
             } else if(var0 == 3916) {
                class83.intStackSize -= 2;
-               var13 = class83.intStack[class83.intStackSize] == 1;
-               boolean var4 = class83.intStack[class83.intStackSize + 1] == 1;
+               var5 = class83.intStack[class83.intStackSize] == 1;
+               boolean var13 = class83.intStack[class83.intStackSize + 1] == 1;
                if(Client.field1181 != null) {
-                  Client.field1181.method79(new class95(var4), var13);
+                  Client.field1181.method79(new class95(var13), var5);
                }
 
                return 1;
             } else if(var0 == 3917) {
-               var13 = class83.intStack[--class83.intStackSize] == 1;
+               var5 = class83.intStack[--class83.intStackSize] == 1;
                if(Client.field1181 != null) {
-                  Client.field1181.method79(class13.field282, var13);
+                  Client.field1181.method79(class13.field282, var5);
                }
 
                return 1;
             } else if(var0 == 3918) {
-               var13 = class83.intStack[--class83.intStackSize] == 1;
+               var5 = class83.intStack[--class83.intStackSize] == 1;
                if(Client.field1181 != null) {
-                  Client.field1181.method79(class13.field288, var13);
+                  Client.field1181.method79(class13.field288, var5);
                }
 
                return 1;
@@ -227,46 +227,46 @@ public final class class10 extends class9 {
                class83.intStack[++class83.intStackSize - 1] = Client.field1181 == null?0:Client.field1181.field287.size();
                return 1;
             } else {
-               class14 var11;
+               class14 var6;
                if(var0 == 3920) {
                   var3 = class83.intStack[--class83.intStackSize];
-                  var11 = (class14)Client.field1181.field287.get(var3);
-                  class83.intStack[++class83.intStackSize - 1] = var11.field297;
+                  var6 = (class14)Client.field1181.field287.get(var3);
+                  class83.intStack[++class83.intStackSize - 1] = var6.field297;
                   return 1;
                } else if(var0 == 3921) {
                   var3 = class83.intStack[--class83.intStackSize];
-                  var11 = (class14)Client.field1181.field287.get(var3);
-                  class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var11.method81();
+                  var6 = (class14)Client.field1181.field287.get(var3);
+                  class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var6.method81();
                   return 1;
                } else if(var0 == 3922) {
                   var3 = class83.intStack[--class83.intStackSize];
-                  var11 = (class14)Client.field1181.field287.get(var3);
-                  class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var11.method80();
+                  var6 = (class14)Client.field1181.field287.get(var3);
+                  class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var6.method80();
                   return 1;
                } else if(var0 == 3923) {
                   var3 = class83.intStack[--class83.intStackSize];
-                  var11 = (class14)Client.field1181.field287.get(var3);
-                  long var5 = class166.method2970() - Tile.field1921 - var11.field291;
-                  int var7 = (int)(var5 / 3600000L);
-                  int var8 = (int)((var5 - (long)(var7 * 3600000)) / 60000L);
-                  int var9 = (int)((var5 - (long)(var7 * 3600000) - (long)(var8 * '\uea60')) / 1000L);
-                  String var10 = var7 + ":" + var8 / 10 + var8 % 10 + ":" + var9 / 10 + var9 % 10;
-                  class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var10;
+                  var6 = (class14)Client.field1181.field287.get(var3);
+                  long var7 = class166.method2970() - Tile.field1921 - var6.field291;
+                  int var9 = (int)(var7 / 3600000L);
+                  int var10 = (int)((var7 - (long)(var9 * 3600000)) / 60000L);
+                  int var11 = (int)((var7 - (long)(var9 * 3600000) - (long)(var10 * '\uea60')) / 1000L);
+                  String var12 = var9 + ":" + var10 / 10 + var10 % 10 + ":" + var11 / 10 + var11 % 10;
+                  class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var12;
                   return 1;
                } else if(var0 == 3924) {
                   var3 = class83.intStack[--class83.intStackSize];
-                  var11 = (class14)Client.field1181.field287.get(var3);
-                  class83.intStack[++class83.intStackSize - 1] = var11.field292.totalQuantity;
+                  var6 = (class14)Client.field1181.field287.get(var3);
+                  class83.intStack[++class83.intStackSize - 1] = var6.field292.totalQuantity;
                   return 1;
                } else if(var0 == 3925) {
                   var3 = class83.intStack[--class83.intStackSize];
-                  var11 = (class14)Client.field1181.field287.get(var3);
-                  class83.intStack[++class83.intStackSize - 1] = var11.field292.price;
+                  var6 = (class14)Client.field1181.field287.get(var3);
+                  class83.intStack[++class83.intStackSize - 1] = var6.field292.price;
                   return 1;
                } else if(var0 == 3926) {
                   var3 = class83.intStack[--class83.intStackSize];
-                  var11 = (class14)Client.field1181.field287.get(var3);
-                  class83.intStack[++class83.intStackSize - 1] = var11.field292.itemId;
+                  var6 = (class14)Client.field1181.field287.get(var3);
+                  class83.intStack[++class83.intStackSize - 1] = var6.field292.itemId;
                   return 1;
                } else {
                   return 2;

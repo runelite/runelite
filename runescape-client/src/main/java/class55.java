@@ -53,13 +53,14 @@ public class class55 extends class109 {
          this.field678.start();
          this.field679 = var1;
       } catch (LineUnavailableException var3) {
-         if(FrameMap.method2576(var1) != 1) {
-            this.vmethod1941(class231.method3979(var1));
-         } else {
+         if(FrameMap.method2576(var1) == 1) {
             this.field678 = null;
             throw var3;
          }
+
+         this.vmethod1941(class231.method3979(var1));
       }
+
    }
 
    @ObfuscatedName("w")

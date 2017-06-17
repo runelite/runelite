@@ -76,12 +76,6 @@ public class class24 {
       return null;
    }
 
-   static {
-      field381 = new class24("SMALL", 2, 0, 4);
-      field373 = new class24("MEDIUM", 1, 1, 2);
-      field374 = new class24("LARGE", 0, 2, 0);
-   }
-
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;III)V",
       garbageValue = "4"
@@ -120,7 +114,7 @@ public class class24 {
       } else {
          try {
             return new Frames(var0, var1, var2, var3);
-         } catch (Exception var11) {
+         } catch (Exception var10) {
             return null;
          }
       }
@@ -172,8 +166,8 @@ public class class24 {
                class92.field1429 = 20;
                Client.field921 = 40;
             } else if(Client.field921 == 40) {
-               byte var23 = 0;
-               var0 = var23 + Client.indexInterfaces.method4095() * 4 / 100;
+               byte var5 = 0;
+               var0 = var5 + Client.indexInterfaces.method4095() * 4 / 100;
                var0 += Client.indexSoundEffects.method4095() * 4 / 100;
                var0 += class3.field24.method4095() * 2 / 100;
                var0 += class9.field255.method4095() * 2 / 100;
@@ -202,22 +196,22 @@ public class class24 {
                   Client.field921 = 45;
                }
             } else {
-               IndexData var19;
-               IndexData var20;
-               IndexData var21;
+               IndexData var6;
+               IndexData var7;
+               IndexData var23;
                if(Client.field921 == 45) {
                   class90.method1618(22050, !Client.field1055, 2);
-                  class204 var28 = new class204();
-                  var28.method3689(9, 128);
+                  class204 var8 = new class204();
+                  var8.method3689(9, 128);
                   class134.field2003 = class41.method573(GameEngine.field691, 0, 22050);
-                  class134.field2003.method1938(var28);
-                  var19 = class164.field2329;
-                  var20 = class219.field2807;
-                  var21 = class66.field799;
-                  class203.field2513 = var19;
-                  class203.field2514 = var20;
-                  class203.field2515 = var21;
-                  class203.field2516 = var28;
+                  class134.field2003.method1938(var8);
+                  var23 = class164.field2329;
+                  var6 = class219.field2807;
+                  var7 = class66.field799;
+                  class203.field2513 = var23;
+                  class203.field2514 = var6;
+                  class203.field2515 = var7;
+                  class203.field2516 = var8;
                   Player.field862 = class41.method573(GameEngine.field691, 1, 2048);
                   WorldMapType1.field442 = new class102();
                   Player.field862.method1938(WorldMapType1.field442);
@@ -227,11 +221,11 @@ public class class24 {
                   Client.field921 = 50;
                   class69.field820 = new class262(WorldMapType3.indexSprites, class33.field476);
                } else if(Client.field921 == 50) {
-                  class261[] var27 = new class261[]{class261.field3625, class261.field3632, class261.field3624, class261.field3623, class261.field3626, class261.field3622};
-                  var1 = var27.length;
-                  class262 var29 = class69.field820;
-                  class261[] var30 = new class261[]{class261.field3625, class261.field3632, class261.field3624, class261.field3623, class261.field3626, class261.field3622};
-                  Client.field1052 = var29.method4611(var30);
+                  class261[] var25 = new class261[]{class261.field3625, class261.field3632, class261.field3624, class261.field3623, class261.field3626, class261.field3622};
+                  var1 = var25.length;
+                  class262 var9 = class69.field820;
+                  class261[] var10 = new class261[]{class261.field3625, class261.field3632, class261.field3624, class261.field3623, class261.field3626, class261.field3622};
+                  Client.field1052 = var9.method4611(var10);
                   if(Client.field1052.size() < var1) {
                      class92.field1446 = "Loading fonts - " + Client.field1052.size() * 100 / var1 + "%";
                      class92.field1429 = 40;
@@ -264,52 +258,52 @@ public class class24 {
                      IndexData var26 = class3.field24;
                      Overlay.field3594 = var26;
                      PlayerComposition.method3867(class3.field24);
-                     var19 = class3.field24;
-                     var20 = class4.indexModels;
-                     KitDefinition.field3366 = var19;
-                     KitDefinition.field3367 = var20;
+                     var23 = class3.field24;
+                     var6 = class4.indexModels;
+                     KitDefinition.field3366 = var23;
+                     KitDefinition.field3367 = var6;
                      KitDefinition.field3359 = KitDefinition.field3366.method4075(3);
-                     var21 = class3.field24;
-                     IndexData var22 = class4.indexModels;
-                     boolean var5 = Client.field1055;
-                     ObjectComposition.field3444 = var21;
-                     ObjectComposition.field3459 = var22;
-                     ObjectComposition.field3467 = var5;
+                     var7 = class3.field24;
+                     IndexData var28 = class4.indexModels;
+                     boolean var30 = Client.field1055;
+                     ObjectComposition.field3444 = var7;
+                     ObjectComposition.field3459 = var28;
+                     ObjectComposition.field3467 = var30;
                      class252.method4337(class3.field24, class4.indexModels);
                      GraphicsObject.method1565(class3.field24);
-                     IndexData var6 = class3.field24;
-                     IndexData var7 = class4.indexModels;
-                     boolean var8 = Client.isMembers;
-                     Font var9 = class5.field39;
-                     class91.field1409 = var6;
-                     class95.field1485 = var7;
-                     class240.isMembersWorld = var8;
+                     IndexData var11 = class3.field24;
+                     IndexData var12 = class4.indexModels;
+                     boolean var13 = Client.isMembers;
+                     Font var14 = class5.field39;
+                     class91.field1409 = var11;
+                     class95.field1485 = var12;
+                     class240.isMembersWorld = var13;
                      class181.field2449 = class91.field1409.method4075(10);
-                     class14.field294 = var9;
+                     class14.field294 = var14;
                      GraphicsObject.method1566(class3.field24, Client.indexInterfaces, Client.indexSoundEffects);
-                     IndexData var10 = class3.field24;
-                     IndexData var11 = class4.indexModels;
-                     Spotanim.field3344 = var10;
-                     class217.field2792 = var11;
+                     IndexData var15 = class3.field24;
+                     IndexData var16 = class4.indexModels;
+                     Spotanim.field3344 = var15;
+                     class217.field2792 = var16;
                      class54.method745(class3.field24);
-                     IndexData var12 = class3.field24;
-                     class241.field3293 = var12;
+                     IndexData var17 = class3.field24;
+                     class241.field3293 = var17;
                      class241.field3292 = class241.field3293.method4075(16);
                      class88.method1614(class9.field255, class4.indexModels, WorldMapType3.indexSprites, class33.field476);
                      class238.method4138(class3.field24);
                      class92.method1651(class3.field24);
-                     IndexData var13 = class3.field24;
-                     class243.field3321 = var13;
+                     IndexData var18 = class3.field24;
+                     class243.field3321 = var18;
                      WorldMapType1.method274(class3.field24);
-                     IndexData var14 = class3.field24;
-                     class251.field3395 = var14;
+                     IndexData var19 = class3.field24;
+                     class251.field3395 = var19;
                      class66.chatMessages = new ChatMessages();
-                     IndexData var15 = class3.field24;
-                     IndexData var16 = WorldMapType3.indexSprites;
-                     IndexData var17 = class33.field476;
-                     class254.field3429 = var15;
-                     class254.field3417 = var16;
-                     class254.field3425 = var17;
+                     IndexData var20 = class3.field24;
+                     IndexData var21 = WorldMapType3.indexSprites;
+                     IndexData var22 = class33.field476;
+                     class254.field3429 = var20;
+                     class254.field3417 = var21;
+                     class254.field3425 = var22;
                      class5.method17(class3.field24, WorldMapType3.indexSprites);
                      class45.method632(class3.field24, WorldMapType3.indexSprites);
                      class92.field1446 = "Loaded config";
@@ -404,8 +398,8 @@ public class class24 {
                      class92.field1446 = "Loading textures - " + class17.indexTextures.method4103() + "%";
                      class92.field1429 = 90;
                   } else {
-                     TextureProvider var25 = new TextureProvider(class17.indexTextures, WorldMapType3.indexSprites, 20, 0.8D, Client.field1055?64:128);
-                     class136.method2497(var25);
+                     TextureProvider var27 = new TextureProvider(class17.indexTextures, WorldMapType3.indexSprites, 20, 0.8D, Client.field1055?64:128);
+                     class136.method2497(var27);
                      class136.method2498(0.8D);
                      class92.field1446 = "Loaded textures";
                      class92.field1429 = 90;
@@ -419,11 +413,11 @@ public class class24 {
                   Client.field921 = 120;
                } else if(Client.field921 == 120) {
                   if(!FileOnDisk.field1763.method4026("huffman", "")) {
-                     class92.field1446 = "Loading wordpack - " + 0 + "%";
+                     class92.field1446 = "Loading wordpack - 0%";
                      class92.field1429 = 96;
                   } else {
-                     class165 var24 = new class165(FileOnDisk.field1763.method4014("huffman", ""));
-                     XGrandExchangeOffer.method128(var24);
+                     class165 var29 = new class165(FileOnDisk.field1763.method4014("huffman", ""));
+                     XGrandExchangeOffer.method128(var29);
                      class92.field1446 = "Loaded wordpack";
                      class92.field1429 = 96;
                      Client.field921 = 130;
@@ -466,21 +460,22 @@ public class class24 {
                }
             }
          } else {
-            int[] var18 = new int[9];
+            int[] var24 = new int[9];
 
             for(var1 = 0; var1 < 9; ++var1) {
                var2 = var1 * 32 + 128 + 15;
                var3 = var2 * 3 + 600;
                var4 = class136.SINE[var2];
-               var18[var1] = var4 * var3 >> 16;
+               var24[var1] = var4 * var3 >> 16;
             }
 
-            Region.method2738(var18, 500, 800, 512, 334);
+            Region.method2738(var24, 500, 800, 512, 334);
             class92.field1446 = "Prepared visibility map";
             class92.field1429 = 10;
             Client.field921 = 30;
          }
       }
+
    }
 
    @ObfuscatedName("p")
@@ -502,5 +497,11 @@ public class class24 {
          class254.field3419.put(var1, (long)var0);
          return var1;
       }
+   }
+
+   static {
+      field381 = new class24("SMALL", 2, 0, 4);
+      field373 = new class24("MEDIUM", 1, 1, 2);
+      field374 = new class24("LARGE", 0, 2, 0);
    }
 }

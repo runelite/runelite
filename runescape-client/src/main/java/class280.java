@@ -8,10 +8,6 @@ public class class280 {
    @ObfuscatedName("m")
    static IndexDataBase field3751;
 
-   static {
-      field3749 = new CombatInfoList();
-   }
-
    @ObfuscatedName("fb")
    @ObfuscatedSignature(
       signature = "(B)V",
@@ -33,5 +29,9 @@ public class class280 {
          Client.field1025 = 0;
       }
 
+   }
+
+   static {
+      field3749 = new CombatInfoList();
    }
 }

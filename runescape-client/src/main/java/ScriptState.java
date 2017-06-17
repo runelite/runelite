@@ -29,21 +29,19 @@ public class ScriptState {
       garbageValue = "1656032233"
    )
    static final void method1009(Widget var0, int var1, int var2) {
-      if(Client.field1079 == null && !Client.isMenuOpen) {
-         if(var0 != null && class47.method675(var0) != null) {
-            Client.field1079 = var0;
-            Client.field1080 = class47.method675(var0);
-            Client.field1081 = var1;
-            Client.field1082 = var2;
-            class33.field478 = 0;
-            Client.field1090 = false;
-            int var3 = class230.method3976();
-            if(var3 != -1) {
-               class10.method58(var3);
-            }
-
+      if(Client.field1079 == null && !Client.isMenuOpen && var0 != null && class47.method675(var0) != null) {
+         Client.field1079 = var0;
+         Client.field1080 = class47.method675(var0);
+         Client.field1081 = var1;
+         Client.field1082 = var2;
+         class33.field478 = 0;
+         Client.field1090 = false;
+         int var3 = class230.method3976();
+         if(var3 != -1) {
+            class10.method58(var3);
          }
       }
+
    }
 
    ScriptState() {

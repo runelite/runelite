@@ -63,16 +63,15 @@ public final class class186 implements Iterable {
          this.field2462 = var1.next;
          return var1;
       } else {
-         do {
-            if(this.field2464 >= this.field2460) {
-               return null;
-            }
-
+         while(this.field2464 < this.field2460) {
             var1 = this.field2461[this.field2464++].next;
-         } while(var1 == this.field2461[this.field2464 - 1]);
+            if(var1 != this.field2461[this.field2464 - 1]) {
+               this.field2462 = var1.next;
+               return var1;
+            }
+         }
 
-         this.field2462 = var1.next;
-         return var1;
+         return null;
       }
    }
 

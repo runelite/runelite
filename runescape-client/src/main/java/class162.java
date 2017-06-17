@@ -18,13 +18,6 @@ public class class162 {
    @ObfuscatedName("f")
    static int[] field2316;
 
-   static {
-      field2314 = new int[128][128];
-      field2311 = new int[128][128];
-      field2315 = new int[4096];
-      field2316 = new int[4096];
-   }
-
    @ObfuscatedName("hu")
    @ObfuscatedSignature(
       signature = "(LWidget;III)V",
@@ -66,127 +59,127 @@ public class class162 {
          class44.addMenuEntry(var0.tooltip, "", 30, 0, -1, var0.id);
       }
 
+      int var4;
       int var5;
       int var6;
-      int var14;
       if(var0.type == 2) {
-         var14 = 0;
+         var6 = 0;
 
-         for(int var15 = 0; var15 < var0.height; ++var15) {
-            for(var5 = 0; var5 < var0.width; ++var5) {
-               var6 = var5 * (var0.paddingX + 32);
-               int var7 = (var0.paddingY + 32) * var15;
-               if(var14 < 20) {
-                  var6 += var0.field2722[var14];
-                  var7 += var0.field2723[var14];
+         for(int var7 = 0; var7 < var0.height; ++var7) {
+            for(var4 = 0; var4 < var0.width; ++var4) {
+               var5 = var4 * (var0.paddingX + 32);
+               int var8 = (var0.paddingY + 32) * var7;
+               if(var6 < 20) {
+                  var5 += var0.field2722[var6];
+                  var8 += var0.field2723[var6];
                }
 
-               if(var1 >= var6 && var2 >= var7 && var1 < var6 + 32 && var2 < var7 + 32) {
-                  Client.field1022 = var14;
+               if(var1 >= var5 && var2 >= var8 && var1 < var5 + 32 && var2 < var8 + 32) {
+                  Client.field1022 = var6;
                   Projectile.field1475 = var0;
-                  if(var0.itemIds[var14] > 0) {
-                     ItemComposition var8 = class224.getItemDefinition(var0.itemIds[var14] - 1);
+                  if(var0.itemIds[var6] > 0) {
+                     ItemComposition var9 = class224.getItemDefinition(var0.itemIds[var6] - 1);
                      if(Client.itemSelectionState == 1 && WorldMapType2.method497(class15.method92(var0))) {
-                        if(var0.id != class33.field480 || var14 != class91.selectedItemIndex) {
-                           class44.addMenuEntry("Use", Client.selectedItemName + " " + "->" + " " + class15.method105(16748608) + var8.name, 31, var8.id, var14, var0.id);
+                        if(var0.id != class33.field480 || var6 != class91.selectedItemIndex) {
+                           class44.addMenuEntry("Use", Client.selectedItemName + " -> " + class15.method105(16748608) + var9.name, 31, var9.id, var6, var0.id);
                         }
                      } else if(Client.field1061 && WorldMapType2.method497(class15.method92(var0))) {
                         if((class232.spellTargetFlags & 16) == 16) {
-                           class44.addMenuEntry(Client.field1064, Client.field1065 + " " + "->" + " " + class15.method105(16748608) + var8.name, 32, var8.id, var14, var0.id);
+                           class44.addMenuEntry(Client.field1064, Client.field1065 + " -> " + class15.method105(16748608) + var9.name, 32, var9.id, var6, var0.id);
                         }
                      } else {
-                        String[] var9 = var8.inventoryActions;
+                        String[] var10 = var9.inventoryActions;
                         if(Client.field1077) {
-                           var9 = class2.method7(var9);
+                           var10 = class2.method7(var10);
                         }
 
-                        int var10 = var8.method4479();
-                        int var11;
-                        boolean var12;
-                        byte var13;
+                        int var11 = var9.method4479();
+                        int var12;
+                        boolean var13;
+                        byte var14;
                         if(WorldMapType2.method497(class15.method92(var0))) {
-                           for(var11 = 4; var11 >= 3; --var11) {
-                              var12 = var10 == var11;
-                              if(var9 != null && var9[var11] != null) {
-                                 if(var11 == 3) {
-                                    var13 = 36;
+                           for(var12 = 4; var12 >= 3; --var12) {
+                              var13 = var11 == var12;
+                              if(var10 != null && var10[var12] != null) {
+                                 if(var12 == 3) {
+                                    var14 = 36;
                                  } else {
-                                    var13 = 37;
+                                    var14 = 37;
                                  }
 
-                                 class87.method1599(var9[var11], class15.method105(16748608) + var8.name, var13, var8.id, var14, var0.id, var12);
-                              } else if(var11 == 4) {
-                                 class87.method1599("Drop", class15.method105(16748608) + var8.name, 37, var8.id, var14, var0.id, var12);
+                                 class87.method1599(var10[var12], class15.method105(16748608) + var9.name, var14, var9.id, var6, var0.id, var13);
+                              } else if(var12 == 4) {
+                                 class87.method1599("Drop", class15.method105(16748608) + var9.name, 37, var9.id, var6, var0.id, var13);
                               }
                            }
                         }
 
                         if(class19.method160(class15.method92(var0))) {
-                           class44.addMenuEntry("Use", class15.method105(16748608) + var8.name, 38, var8.id, var14, var0.id);
+                           class44.addMenuEntry("Use", class15.method105(16748608) + var9.name, 38, var9.id, var6, var0.id);
                         }
 
-                        if(WorldMapType2.method497(class15.method92(var0)) && var9 != null) {
-                           for(var11 = 2; var11 >= 0; --var11) {
-                              var12 = var10 == var11;
-                              if(var9[var11] != null) {
-                                 var13 = 0;
-                                 if(var11 == 0) {
-                                    var13 = 33;
+                        if(WorldMapType2.method497(class15.method92(var0)) && var10 != null) {
+                           for(var12 = 2; var12 >= 0; --var12) {
+                              var13 = var11 == var12;
+                              if(var10[var12] != null) {
+                                 var14 = 0;
+                                 if(var12 == 0) {
+                                    var14 = 33;
                                  }
 
-                                 if(var11 == 1) {
-                                    var13 = 34;
+                                 if(var12 == 1) {
+                                    var14 = 34;
                                  }
 
-                                 if(var11 == 2) {
-                                    var13 = 35;
+                                 if(var12 == 2) {
+                                    var14 = 35;
                                  }
 
-                                 class87.method1599(var9[var11], class15.method105(16748608) + var8.name, var13, var8.id, var14, var0.id, var12);
+                                 class87.method1599(var10[var12], class15.method105(16748608) + var9.name, var14, var9.id, var6, var0.id, var13);
                               }
                            }
                         }
 
-                        var9 = var0.field2725;
+                        var10 = var0.field2725;
                         if(Client.field1077) {
-                           var9 = class2.method7(var9);
+                           var10 = class2.method7(var10);
                         }
 
-                        if(var9 != null) {
-                           for(var11 = 4; var11 >= 0; --var11) {
-                              if(var9[var11] != null) {
-                                 byte var19 = 0;
-                                 if(var11 == 0) {
-                                    var19 = 39;
+                        if(var10 != null) {
+                           for(var12 = 4; var12 >= 0; --var12) {
+                              if(var10[var12] != null) {
+                                 byte var15 = 0;
+                                 if(var12 == 0) {
+                                    var15 = 39;
                                  }
 
-                                 if(var11 == 1) {
-                                    var19 = 40;
+                                 if(var12 == 1) {
+                                    var15 = 40;
                                  }
 
-                                 if(var11 == 2) {
-                                    var19 = 41;
+                                 if(var12 == 2) {
+                                    var15 = 41;
                                  }
 
-                                 if(var11 == 3) {
-                                    var19 = 42;
+                                 if(var12 == 3) {
+                                    var15 = 42;
                                  }
 
-                                 if(var11 == 4) {
-                                    var19 = 43;
+                                 if(var12 == 4) {
+                                    var15 = 43;
                                  }
 
-                                 class44.addMenuEntry(var9[var11], class15.method105(16748608) + var8.name, var19, var8.id, var14, var0.id);
+                                 class44.addMenuEntry(var10[var12], class15.method105(16748608) + var9.name, var15, var9.id, var6, var0.id);
                               }
                            }
                         }
 
-                        class44.addMenuEntry("Examine", class15.method105(16748608) + var8.name, 1005, var8.id, var14, var0.id);
+                        class44.addMenuEntry("Examine", class15.method105(16748608) + var9.name, 1005, var9.id, var6, var0.id);
                      }
                   }
                }
 
-               ++var14;
+               ++var6;
             }
          }
       }
@@ -194,24 +187,24 @@ public class class162 {
       if(var0.hasScript) {
          if(Client.field1061) {
             if(class215.method3878(class15.method92(var0)) && (class232.spellTargetFlags & 32) == 32) {
-               class44.addMenuEntry(Client.field1064, Client.field1065 + " " + "->" + " " + var0.name, 58, 0, var0.index, var0.id);
+               class44.addMenuEntry(Client.field1064, Client.field1065 + " -> " + var0.name, 58, 0, var0.index, var0.id);
             }
          } else {
-            boolean var18;
-            for(var14 = 9; var14 >= 5; --var14) {
-               var6 = class15.method92(var0);
-               var18 = (var6 >> var14 + 1 & 1) != 0;
-               String var4;
-               if(!var18 && var0.field2657 == null) {
-                  var4 = null;
-               } else if(var0.actions != null && var0.actions.length > var14 && var0.actions[var14] != null && var0.actions[var14].trim().length() != 0) {
-                  var4 = var0.actions[var14];
+            boolean var16;
+            String var17;
+            for(var6 = 9; var6 >= 5; --var6) {
+               var5 = class15.method92(var0);
+               var16 = (var5 >> var6 + 1 & 1) != 0;
+               if(!var16 && var0.field2657 == null) {
+                  var17 = null;
+               } else if(var0.actions != null && var0.actions.length > var6 && var0.actions[var6] != null && var0.actions[var6].trim().length() != 0) {
+                  var17 = var0.actions[var6];
                } else {
-                  var4 = null;
+                  var17 = null;
                }
 
-               if(var4 != null) {
-                  class44.addMenuEntry(var4, var0.name, 1007, var14 + 1, var0.index, var0.id);
+               if(var17 != null) {
+                  class44.addMenuEntry(var17, var0.name, 1007, var6 + 1, var0.index, var0.id);
                }
             }
 
@@ -227,16 +220,16 @@ public class class162 {
                class44.addMenuEntry(var3, var0.name, 25, 0, var0.index, var0.id);
             }
 
-            for(var5 = 4; var5 >= 0; --var5) {
-               String var17 = class8.method40(var0, var5);
+            for(var4 = 4; var4 >= 0; --var4) {
+               var17 = class8.method40(var0, var4);
                if(var17 != null) {
-                  class44.addMenuEntry(var17, var0.name, 57, var5 + 1, var0.index, var0.id);
+                  class44.addMenuEntry(var17, var0.name, 57, var4 + 1, var0.index, var0.id);
                }
             }
 
-            var6 = class15.method92(var0);
-            var18 = (var6 & 1) != 0;
-            if(var18) {
+            var5 = class15.method92(var0);
+            var16 = (var5 & 1) != 0;
+            if(var16) {
                class44.addMenuEntry("Continue", "", 30, 0, var0.index, var0.id);
             }
          }
@@ -285,7 +278,7 @@ public class class162 {
          var0.offset += class265.field3660.method2962(var0.payload, var0.offset, var3, 0, var2);
          String var4 = class22.method181(var3, 0, var2);
          return var4;
-      } catch (Exception var6) {
+      } catch (Exception var5) {
          return "Cabbage";
       }
    }
@@ -304,5 +297,12 @@ public class class162 {
 
       var2 &= 3;
       return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0 - (var3 - 1):7 - var1 - (var4 - 1)));
+   }
+
+   static {
+      field2314 = new int[128][128];
+      field2311 = new int[128][128];
+      field2315 = new int[4096];
+      field2316 = new int[4096];
    }
 }

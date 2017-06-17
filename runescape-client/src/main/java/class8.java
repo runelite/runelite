@@ -40,9 +40,9 @@ public final class class8 extends class9 {
       garbageValue = "-1592171908"
    )
    static String method40(Widget var0, int var1) {
-      int var3 = class15.method92(var0);
-      boolean var2 = (var3 >> var1 + 1 & 1) != 0;
-      return !var2 && var0.field2657 == null?null:(var0.actions != null && var0.actions.length > var1 && var0.actions[var1] != null && var0.actions[var1].trim().length() != 0?var0.actions[var1]:null);
+      int var2 = class15.method92(var0);
+      boolean var3 = (var2 >> var1 + 1 & 1) != 0;
+      return !var3 && var0.field2657 == null?null:(var0.actions != null && var0.actions.length > var1 && var0.actions[var1] != null && var0.actions[var1].trim().length() != 0?var0.actions[var1]:null);
    }
 
    @ObfuscatedName("p")

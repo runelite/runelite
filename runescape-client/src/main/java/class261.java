@@ -54,10 +54,10 @@ public class class261 {
                }
 
                if(Client.itemSelectionState == 1) {
-                  class44.addMenuEntry("Use", Client.selectedItemName + " " + "->" + " " + class15.method105('\uffff') + var12.name, 1, var7, var8, var9);
+                  class44.addMenuEntry("Use", Client.selectedItemName + " -> " + class15.method105('\uffff') + var12.name, 1, var7, var8, var9);
                } else if(Client.field1061) {
                   if((class232.spellTargetFlags & 4) == 4) {
-                     class44.addMenuEntry(Client.field1064, Client.field1065 + " " + "->" + " " + class15.method105('\uffff') + var12.name, 2, var7, var8, var9);
+                     class44.addMenuEntry(Client.field1064, Client.field1065 + " -> " + class15.method105('\uffff') + var12.name, 2, var7, var8, var9);
                   }
                } else {
                   String[] var13 = var12.actions;
@@ -98,118 +98,118 @@ public class class261 {
                }
             }
 
-            Player var16;
-            int var19;
-            NPC var20;
-            int var27;
-            int[] var28;
+            int[] var16;
+            Player var24;
+            int var25;
+            NPC var26;
+            int var28;
             if(var10 == 1) {
-               NPC var23 = Client.cachedNPCs[var11];
-               if(var23 == null) {
+               NPC var17 = Client.cachedNPCs[var11];
+               if(var17 == null) {
                   continue;
                }
 
-               if(var23.composition.field3559 == 1 && (var23.x & 127) == 64 && (var23.y & 127) == 64) {
-                  for(var19 = 0; var19 < Client.field930; ++var19) {
-                     var20 = Client.cachedNPCs[Client.npcIndices[var19]];
-                     if(var20 != null && var20 != var23 && var20.composition.field3559 == 1 && var23.x == var20.x && var23.y == var20.y) {
-                        class6.method29(var20.composition, Client.npcIndices[var19], var8, var9);
+               if(var17.composition.field3559 == 1 && (var17.x & 127) == 64 && (var17.y & 127) == 64) {
+                  for(var25 = 0; var25 < Client.field930; ++var25) {
+                     var26 = Client.cachedNPCs[Client.npcIndices[var25]];
+                     if(var26 != null && var26 != var17 && var26.composition.field3559 == 1 && var17.x == var26.x && var17.y == var26.y) {
+                        class6.method29(var26.composition, Client.npcIndices[var25], var8, var9);
                      }
                   }
 
-                  var19 = class96.field1487;
-                  var28 = class96.field1491;
+                  var25 = class96.field1487;
+                  var16 = class96.field1491;
 
-                  for(var27 = 0; var27 < var19; ++var27) {
-                     var16 = Client.cachedPlayers[var28[var27]];
-                     if(var16 != null && var23.x == var16.x && var23.y == var16.y) {
-                        class4.method12(var16, var28[var27], var8, var9);
+                  for(var28 = 0; var28 < var25; ++var28) {
+                     var24 = Client.cachedPlayers[var16[var28]];
+                     if(var24 != null && var17.x == var24.x && var17.y == var24.y) {
+                        class4.method12(var24, var16[var28], var8, var9);
                      }
                   }
                }
 
-               class6.method29(var23.composition, var11, var8, var9);
+               class6.method29(var17.composition, var11, var8, var9);
             }
 
             if(var10 == 0) {
-               Player var24 = Client.cachedPlayers[var11];
-               if(var24 == null) {
+               Player var27 = Client.cachedPlayers[var11];
+               if(var27 == null) {
                   continue;
                }
 
-               if((var24.x & 127) == 64 && (var24.y & 127) == 64) {
-                  for(var19 = 0; var19 < Client.field930; ++var19) {
-                     var20 = Client.cachedNPCs[Client.npcIndices[var19]];
-                     if(var20 != null && var20.composition.field3559 == 1 && var20.x == var24.x && var24.y == var20.y) {
-                        class6.method29(var20.composition, Client.npcIndices[var19], var8, var9);
+               if((var27.x & 127) == 64 && (var27.y & 127) == 64) {
+                  for(var25 = 0; var25 < Client.field930; ++var25) {
+                     var26 = Client.cachedNPCs[Client.npcIndices[var25]];
+                     if(var26 != null && var26.composition.field3559 == 1 && var26.x == var27.x && var27.y == var26.y) {
+                        class6.method29(var26.composition, Client.npcIndices[var25], var8, var9);
                      }
                   }
 
-                  var19 = class96.field1487;
-                  var28 = class96.field1491;
+                  var25 = class96.field1487;
+                  var16 = class96.field1491;
 
-                  for(var27 = 0; var27 < var19; ++var27) {
-                     var16 = Client.cachedPlayers[var28[var27]];
-                     if(var16 != null && var16 != var24 && var24.x == var16.x && var24.y == var16.y) {
-                        class4.method12(var16, var28[var27], var8, var9);
+                  for(var28 = 0; var28 < var25; ++var28) {
+                     var24 = Client.cachedPlayers[var16[var28]];
+                     if(var24 != null && var24 != var27 && var27.x == var24.x && var27.y == var24.y) {
+                        class4.method12(var24, var16[var28], var8, var9);
                      }
                   }
                }
 
                if(Client.field1035 != var11) {
-                  class4.method12(var24, var11, var8, var9);
+                  class4.method12(var27, var11, var8, var9);
                } else {
                   var4 = var7;
                }
             }
 
             if(var10 == 3) {
-               Deque var25 = Client.groundItemDeque[Player.plane][var8][var9];
-               if(var25 != null) {
-                  for(Item var26 = (Item)var25.method3488(); var26 != null; var26 = (Item)var25.method3490()) {
-                     ItemComposition var29 = class224.getItemDefinition(var26.id);
+               Deque var29 = Client.groundItemDeque[Player.plane][var8][var9];
+               if(var29 != null) {
+                  for(Item var18 = (Item)var29.method3488(); var18 != null; var18 = (Item)var29.method3490()) {
+                     ItemComposition var19 = class224.getItemDefinition(var18.id);
                      if(Client.itemSelectionState == 1) {
-                        class44.addMenuEntry("Use", Client.selectedItemName + " " + "->" + " " + class15.method105(16748608) + var29.name, 16, var26.id, var8, var9);
+                        class44.addMenuEntry("Use", Client.selectedItemName + " -> " + class15.method105(16748608) + var19.name, 16, var18.id, var8, var9);
                      } else if(Client.field1061) {
                         if((class232.spellTargetFlags & 1) == 1) {
-                           class44.addMenuEntry(Client.field1064, Client.field1065 + " " + "->" + " " + class15.method105(16748608) + var29.name, 17, var26.id, var8, var9);
+                           class44.addMenuEntry(Client.field1064, Client.field1065 + " -> " + class15.method105(16748608) + var19.name, 17, var18.id, var8, var9);
                         }
                      } else {
-                        String[] var21 = var29.groundActions;
+                        String[] var20 = var19.groundActions;
                         if(Client.field1077) {
-                           var21 = class2.method7(var21);
+                           var20 = class2.method7(var20);
                         }
 
-                        for(int var22 = 4; var22 >= 0; --var22) {
-                           if(var21 != null && var21[var22] != null) {
-                              byte var17 = 0;
-                              if(var22 == 0) {
-                                 var17 = 18;
+                        for(int var21 = 4; var21 >= 0; --var21) {
+                           if(var20 != null && var20[var21] != null) {
+                              byte var22 = 0;
+                              if(var21 == 0) {
+                                 var22 = 18;
                               }
 
-                              if(var22 == 1) {
-                                 var17 = 19;
+                              if(var21 == 1) {
+                                 var22 = 19;
                               }
 
-                              if(var22 == 2) {
-                                 var17 = 20;
+                              if(var21 == 2) {
+                                 var22 = 20;
                               }
 
-                              if(var22 == 3) {
-                                 var17 = 21;
+                              if(var21 == 3) {
+                                 var22 = 21;
                               }
 
-                              if(var22 == 4) {
-                                 var17 = 22;
+                              if(var21 == 4) {
+                                 var22 = 22;
                               }
 
-                              class44.addMenuEntry(var21[var22], class15.method105(16748608) + var29.name, var17, var26.id, var8, var9);
-                           } else if(var22 == 2) {
-                              class44.addMenuEntry("Take", class15.method105(16748608) + var29.name, 20, var26.id, var8, var9);
+                              class44.addMenuEntry(var20[var21], class15.method105(16748608) + var19.name, var22, var18.id, var8, var9);
+                           } else if(var21 == 2) {
+                              class44.addMenuEntry("Take", class15.method105(16748608) + var19.name, 20, var18.id, var8, var9);
                            }
                         }
 
-                        class44.addMenuEntry("Examine", class15.method105(16748608) + var29.name, 1004, var26.id, var8, var9);
+                        class44.addMenuEntry("Examine", class15.method105(16748608) + var19.name, 1004, var18.id, var8, var9);
                      }
                   }
                }
@@ -220,10 +220,15 @@ public class class261 {
       if(var4 != -1) {
          var6 = var4 & 127;
          var7 = var4 >> 7 & 127;
-         Player var18 = Client.cachedPlayers[Client.field1035];
-         class4.method12(var18, Client.field1035, var6, var7);
+         Player var23 = Client.cachedPlayers[Client.field1035];
+         class4.method12(var23, Client.field1035, var6, var7);
       }
 
+   }
+
+   class261(String var1, String var2) {
+      this.field3628 = var1;
+      this.field3629 = var2;
    }
 
    static {
@@ -233,10 +238,5 @@ public class class261 {
       field3625 = new class261("VERDANA11", "verdana_11pt_regular");
       field3623 = new class261("VERDANA13", "verdana_13pt_regular");
       field3622 = new class261("VERDANA15", "verdana_15pt_regular");
-   }
-
-   class261(String var1, String var2) {
-      this.field3628 = var1;
-      this.field3629 = var2;
    }
 }

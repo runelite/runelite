@@ -31,23 +31,21 @@ public class class31 {
       int var4 = var0.pathX[0];
       int var5 = var0.pathY[0];
       int var6 = var0.method1072();
-      if(var4 >= var6 && var4 < 104 - var6 && var5 >= var6 && var5 < 104 - var6) {
-         if(var1 >= var6 && var1 < 104 - var6 && var2 >= var6 && var2 < 104 - var6) {
-            int var9 = var0.method1072();
-            Client.field997.field2320 = var1;
-            Client.field997.field2322 = var2;
-            Client.field997.field2321 = 1;
-            Client.field997.field2323 = 1;
-            class73 var10 = Client.field997;
-            int var11 = class66.method1025(var4, var5, var9, var10, Client.collisionMaps[var0.field884], true, Client.field945, Client.field1034);
-            if(var11 >= 1) {
-               for(int var12 = 0; var12 < var11 - 1; ++var12) {
-                  var0.method1073(Client.field945[var12], Client.field1034[var12], var3);
-               }
-
+      if(var4 >= var6 && var4 < 104 - var6 && var5 >= var6 && var5 < 104 - var6 && var1 >= var6 && var1 < 104 - var6 && var2 >= var6 && var2 < 104 - var6) {
+         int var7 = var0.method1072();
+         Client.field997.field2320 = var1;
+         Client.field997.field2322 = var2;
+         Client.field997.field2321 = 1;
+         Client.field997.field2323 = 1;
+         class73 var8 = Client.field997;
+         int var9 = class66.method1025(var4, var5, var7, var8, Client.collisionMaps[var0.field884], true, Client.field945, Client.field1034);
+         if(var9 >= 1) {
+            for(int var10 = 0; var10 < var9 - 1; ++var10) {
+               var0.method1073(Client.field945[var10], Client.field1034[var10], var3);
             }
          }
       }
+
    }
 
    class31(int var1, int var2, int var3) {

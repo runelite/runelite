@@ -41,14 +41,13 @@ public class CombatInfoListHolder extends Node {
          if(var6 < 4) {
             this.combatInfo1.method3442(new CombatInfo1(var1, var2, var3, var4));
          }
-
       } else {
          CombatInfoList.method3443(new CombatInfo1(var1, var2, var3, var4), var5);
          if(var6 >= 4) {
             this.combatInfo1.method3457().unlink();
          }
-
       }
+
    }
 
    @ObfuscatedName("m")
@@ -184,7 +183,7 @@ public class CombatInfoListHolder extends Node {
       class286.field3791 = null;
       class149.field2211 = null;
       class116.field1686 = null;
-      class286.field3797 = null;
+      class286.field3797 = (byte[][])null;
       return var0;
    }
 
@@ -199,5 +198,6 @@ public class CombatInfoListHolder extends Node {
          Client.secretPacketBuffer1.putByte(Friend.method1023(var0));
          Client.secretPacketBuffer1.method3125(var0);
       }
+
    }
 }

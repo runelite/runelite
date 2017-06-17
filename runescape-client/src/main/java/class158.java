@@ -20,17 +20,14 @@ public abstract class class158 {
             class29.gameDraw(class64.field790, -1412584499, var1, var2, var3, var4, class15.field303, class71.field847, var7);
             class64.field790 = null;
          }
-
+      } else if(var7 != -1) {
+         Client.field1111[var7] = true;
       } else {
-         if(var7 != -1) {
-            Client.field1111[var7] = true;
-         } else {
-            for(int var8 = 0; var8 < 100; ++var8) {
-               Client.field1111[var8] = true;
-            }
+         for(int var8 = 0; var8 < 100; ++var8) {
+            Client.field1111[var8] = true;
          }
-
       }
+
    }
 
    @ObfuscatedName("p")

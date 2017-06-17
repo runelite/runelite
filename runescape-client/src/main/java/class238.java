@@ -76,6 +76,15 @@ public class class238 {
    )
    static long field3278;
 
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;I)V",
+      garbageValue = "1693908992"
+   )
+   public static void method4138(IndexDataBase var0) {
+      class240.field3288 = var0;
+   }
+
    static {
       field3266 = 0;
       field3260 = new XHashTable(4096);
@@ -94,14 +103,5 @@ public class class238 {
       field3274 = 0;
       field3275 = 0;
       field3276 = 0;
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;I)V",
-      garbageValue = "1693908992"
-   )
-   public static void method4138(IndexDataBase var0) {
-      class240.field3288 = var0;
    }
 }

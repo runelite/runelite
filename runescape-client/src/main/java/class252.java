@@ -53,10 +53,6 @@ public class class252 extends CacheableNode {
       return Script.method1758(this.field3401, var1, var2);
    }
 
-   static {
-      field3400 = new NodeCache(64);
-   }
-
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(II)LOverlay;",
@@ -96,5 +92,9 @@ public class class252 extends CacheableNode {
    public static void method4337(IndexDataBase var0, IndexDataBase var1) {
       NPCComposition.field3584 = var0;
       NPCComposition.field3555 = var1;
+   }
+
+   static {
+      field3400 = new NodeCache(64);
    }
 }

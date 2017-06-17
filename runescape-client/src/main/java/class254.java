@@ -229,21 +229,21 @@ public class class254 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            IndexDataBase var3 = field3417;
-            IndexDataBase var4 = field3425;
-            int var5 = this.field3424;
-            Font var2;
-            if(!class1.method3(var3, var5, 0)) {
-               var2 = null;
+            IndexDataBase var2 = field3417;
+            IndexDataBase var3 = field3425;
+            int var4 = this.field3424;
+            Font var5;
+            if(!class1.method3(var2, var4, 0)) {
+               var5 = null;
             } else {
-               var2 = class12.method74(var4.getConfigData(var5, 0));
+               var5 = class12.method74(var3.getConfigData(var4, 0));
             }
 
-            if(var2 != null) {
-               field3421.put(var2, (long)this.field3424);
+            if(var5 != null) {
+               field3421.put(var5, (long)this.field3424);
             }
 
-            return var2;
+            return var5;
          }
       }
    }
@@ -269,12 +269,6 @@ public class class254 extends CacheableNode {
             return var1;
          }
       }
-   }
-
-   static {
-      field3419 = new NodeCache(64);
-      field3420 = new NodeCache(64);
-      field3421 = new NodeCache(20);
    }
 
    class254() {
@@ -362,5 +356,11 @@ public class class254 extends CacheableNode {
             return var1;
          }
       }
+   }
+
+   static {
+      field3419 = new NodeCache(64);
+      field3420 = new NodeCache(64);
+      field3421 = new NodeCache(20);
    }
 }

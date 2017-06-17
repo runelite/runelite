@@ -58,10 +58,6 @@ public class Enum extends CacheableNode {
       }
    }
 
-   static {
-      field3408 = new NodeCache(64);
-   }
-
    Enum() {
       this.defaultString = "null";
       this.size = 0;
@@ -104,5 +100,9 @@ public class Enum extends CacheableNode {
          }
       }
 
+   }
+
+   static {
+      field3408 = new NodeCache(64);
    }
 }

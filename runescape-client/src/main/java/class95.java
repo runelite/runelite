@@ -5,7 +5,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cd")
 final class class95 implements Comparator {
-   // $FF: synthetic field
    final boolean val$preferOwnWorld;
    @ObfuscatedName("p")
    static IndexDataBase field1484;

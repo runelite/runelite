@@ -3,58 +3,59 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hv")
-public class class221 implements RSEnum {
-   @ObfuscatedName("e")
-   public static final class221 field2819;
-   @ObfuscatedName("n")
-   static final class221 field2820;
-   @ObfuscatedName("r")
-   static final class221 field2821;
-   @ObfuscatedName("x")
-   public static final class221 field2822;
-   @ObfuscatedName("w")
-   public static final class221 field2823;
-   @ObfuscatedName("v")
-   static final class221 field2824;
+public enum class221 implements RSEnum {
    @ObfuscatedName("p")
-   public static final class221 field2825;
+   field2825(0, 0),
+   @ObfuscatedName("m")
+   field2835(1, 0),
+   @ObfuscatedName("e")
+   field2819(2, 0),
+   @ObfuscatedName("t")
+   field2841(3, 0),
+   @ObfuscatedName("w")
+   field2823(9, 2),
+   @ObfuscatedName("z")
+   field2837(4, 1),
+   @ObfuscatedName("j")
+   field2842(5, 1),
    @ObfuscatedName("i")
-   static final class221 field2826;
+   field2826(6, 1),
    @ObfuscatedName("f")
-   static final class221 field2827;
+   field2827(7, 1),
    @ObfuscatedName("c")
-   static final class221 field2828;
+   field2828(8, 1),
    @ObfuscatedName("o")
-   static final class221 field2829;
+   field2829(12, 2),
    @ObfuscatedName("q")
-   static final class221 field2830;
-   @ObfuscatedName("s")
-   static final class221 field2831;
+   field2830(13, 2),
+   @ObfuscatedName("n")
+   field2820(14, 2),
    @ObfuscatedName("a")
-   static final class221 field2832;
+   field2832(15, 2),
    @ObfuscatedName("g")
-   static final class221 field2833;
+   field2833(16, 2),
+   @ObfuscatedName("v")
+   field2824(17, 2),
+   @ObfuscatedName("s")
+   field2831(18, 2),
+   @ObfuscatedName("k")
+   field2836(19, 2),
+   @ObfuscatedName("r")
+   field2821(20, 2),
+   @ObfuscatedName("l")
+   field2838(21, 2),
+   @ObfuscatedName("h")
+   field2839(10, 2),
+   @ObfuscatedName("d")
+   field2840(11, 2),
+   @ObfuscatedName("x")
+   field2822(22, 3);
+
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = -1492535623
    )
    public final int field2834;
-   @ObfuscatedName("m")
-   static final class221 field2835;
-   @ObfuscatedName("k")
-   static final class221 field2836;
-   @ObfuscatedName("z")
-   static final class221 field2837;
-   @ObfuscatedName("l")
-   static final class221 field2838;
-   @ObfuscatedName("h")
-   public static final class221 field2839;
-   @ObfuscatedName("d")
-   public static final class221 field2840;
-   @ObfuscatedName("t")
-   public static final class221 field2841;
-   @ObfuscatedName("j")
-   static final class221 field2842;
    @ObfuscatedName("ci")
    static boolean field2845;
 
@@ -67,38 +68,12 @@ public class class221 implements RSEnum {
       return this.field2834;
    }
 
-   static {
-      field2825 = new class221(0, 0);
-      field2835 = new class221(1, 0);
-      field2819 = new class221(2, 0);
-      field2841 = new class221(3, 0);
-      field2823 = new class221(9, 2);
-      field2837 = new class221(4, 1);
-      field2842 = new class221(5, 1);
-      field2826 = new class221(6, 1);
-      field2827 = new class221(7, 1);
-      field2828 = new class221(8, 1);
-      field2829 = new class221(12, 2);
-      field2830 = new class221(13, 2);
-      field2820 = new class221(14, 2);
-      field2832 = new class221(15, 2);
-      field2833 = new class221(16, 2);
-      field2824 = new class221(17, 2);
-      field2831 = new class221(18, 2);
-      field2836 = new class221(19, 2);
-      field2821 = new class221(20, 2);
-      field2838 = new class221(21, 2);
-      field2839 = new class221(10, 2);
-      field2840 = new class221(11, 2);
-      field2822 = new class221(22, 3);
-   }
-
    @ObfuscatedSignature(
       signature = "(II)V",
       garbageValue = "0"
    )
-   class221(int var1, int var2) {
-      this.field2834 = var1;
+   class221(int var3, int var4) {
+      this.field2834 = var3;
    }
 
    @ObfuscatedName("p")

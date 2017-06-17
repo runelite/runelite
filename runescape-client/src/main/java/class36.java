@@ -30,11 +30,6 @@ public class class36 {
       class134.field2000 = 0;
    }
 
-   static {
-      field513 = new class36(0);
-      field514 = new class36(1);
-   }
-
    @ObfuscatedName("iv")
    @ObfuscatedSignature(
       signature = "(IB)V",
@@ -193,8 +188,8 @@ public class class36 {
                Client.field910 = class91.field1404;
             }
          }
-
       }
+
    }
 
    @ObfuscatedSignature(
@@ -203,5 +198,10 @@ public class class36 {
    )
    class36(int var1) {
       this.field518 = var1;
+   }
+
+   static {
+      field513 = new class36(0);
+      field514 = new class36(1);
    }
 }

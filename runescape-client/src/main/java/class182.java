@@ -27,6 +27,7 @@ public class class182 {
       if(class59.method961(var0)) {
          class275.method4791(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6);
       }
+
    }
 
    static {

@@ -31,15 +31,15 @@ public class class40 {
    @ObfuscatedName("e")
    public static final class40 field557;
 
+   class40(String var1) {
+      this.field548 = var1;
+   }
+
    static {
       field556 = new class40("details");
       field547 = new class40("compositemap");
       field557 = new class40("compositetexture");
       field551 = new class40("area");
       field550 = new class40("labels");
-   }
-
-   class40(String var1) {
-      this.field548 = var1;
    }
 }

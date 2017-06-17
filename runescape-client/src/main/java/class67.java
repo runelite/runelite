@@ -26,19 +26,19 @@ public class class67 extends class196 {
       if(var1 && var2 != -1 && class18.validInterfaces[var2]) {
          class2.field15.method4043(var2);
          if(Widget.widgets[var2] != null) {
-            boolean var6 = true;
+            boolean var4 = true;
 
             for(int var5 = 0; var5 < Widget.widgets[var2].length; ++var5) {
                if(Widget.widgets[var2][var5] != null) {
                   if(Widget.widgets[var2][var5].type != 2) {
                      Widget.widgets[var2][var5] = null;
                   } else {
-                     var6 = false;
+                     var4 = false;
                   }
                }
             }
 
-            if(var6) {
+            if(var4) {
                Widget.widgets[var2] = null;
             }
 
@@ -47,9 +47,9 @@ public class class67 extends class196 {
       }
 
       WorldMapType2.method512(var2);
-      Widget var4 = class223.method3959(var3);
-      if(var4 != null) {
-         XItemContainer.method1020(var4);
+      Widget var6 = class223.method3959(var3);
+      if(var6 != null) {
+         XItemContainer.method1020(var6);
       }
 
       DynamicObject.method1762();
@@ -113,26 +113,26 @@ public class class67 extends class196 {
                }
             }
 
-            class69 var5;
+            class69 var6;
             if(var1 == 0 && var3.field2761 != null) {
-               var5 = new class69();
-               var5.field822 = var3;
-               var5.field821 = var3.field2761;
-               class77.method1440(var5);
+               var6 = new class69();
+               var6.field822 = var3;
+               var6.field821 = var3.field2761;
+               class77.method1440(var6);
             }
 
             if(var1 == 1 && var3.field2762 != null) {
                if(var3.index >= 0) {
-                  Widget var6 = class223.method3959(var3.id);
-                  if(var6 == null || var6.children == null || var3.index >= var6.children.length || var6.children[var3.index] != var3) {
+                  Widget var5 = class223.method3959(var3.id);
+                  if(var5 == null || var5.children == null || var3.index >= var5.children.length || var5.children[var3.index] != var3) {
                      continue;
                   }
                }
 
-               var5 = new class69();
-               var5.field822 = var3;
-               var5.field821 = var3.field2762;
-               class77.method1440(var5);
+               var6 = new class69();
+               var6.field822 = var3;
+               var6.field821 = var3.field2762;
+               class77.method1440(var6);
             }
          }
       }

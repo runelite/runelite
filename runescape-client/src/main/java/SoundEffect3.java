@@ -88,11 +88,6 @@ public class SoundEffect3 {
       this.field1707 = new int[2];
    }
 
-   static {
-      field1708 = new float[2][8];
-      field1706 = new int[2][8];
-   }
-
    @ObfuscatedName("p")
    float method2194(int var1, int var2, float var3) {
       float var4 = (float)this.field1703[var1][0][var2] + var3 * (float)(this.field1703[var1][1][var2] - this.field1703[var1][0][var2]);
@@ -140,5 +135,10 @@ public class SoundEffect3 {
          var7[0] = 0;
       }
 
+   }
+
+   static {
+      field1708 = new float[2][8];
+      field1706 = new int[2][8];
    }
 }

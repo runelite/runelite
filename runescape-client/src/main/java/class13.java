@@ -63,14 +63,6 @@ public class class13 {
       return var3 >> 19 & 255;
    }
 
-   static {
-      field282 = new class19();
-      new class12();
-      field283 = new class17();
-      field285 = new class18();
-      field288 = new class15();
-   }
-
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(Ljava/util/Comparator;ZI)V",
@@ -106,5 +98,13 @@ public class class13 {
          this.field287.add(new class14(var1, var5, var3));
       }
 
+   }
+
+   static {
+      field282 = new class19();
+      new class12();
+      field283 = new class17();
+      field285 = new class18();
+      field288 = new class15();
    }
 }

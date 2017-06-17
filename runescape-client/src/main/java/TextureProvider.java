@@ -170,9 +170,9 @@ public class TextureProvider implements class145 {
       File var3 = new File(CombatInfoListHolder.field1357, "preferences" + var0 + ".dat");
       if(var3.exists()) {
          try {
-            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
+            FileOnDisk var11 = new FileOnDisk(var3, "rw", 10000L);
+            return var11;
+         } catch (IOException var10) {
             ;
          }
       }
@@ -190,7 +190,7 @@ public class TextureProvider implements class145 {
          try {
             var6 = new FileOnDisk(var5, "rw", 10000L);
             return var6;
-         } catch (IOException var8) {
+         } catch (IOException var9) {
             ;
          }
       }
@@ -198,7 +198,7 @@ public class TextureProvider implements class145 {
       try {
          var6 = new FileOnDisk(var3, "rw", 10000L);
          return var6;
-      } catch (IOException var7) {
+      } catch (IOException var8) {
          throw new RuntimeException();
       }
    }

@@ -35,13 +35,6 @@ public class class231 {
       return var0 + 1;
    }
 
-   static {
-      field3192 = new class231("LIVE", 0);
-      field3191 = new class231("BUILDLIVE", 3);
-      field3198 = new class231("RC", 1);
-      field3190 = new class231("WIP", 2);
-   }
-
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;I)V",
       garbageValue = "0"
@@ -49,5 +42,12 @@ public class class231 {
    class231(String var1, int var2) {
       this.field3194 = var1;
       this.field3195 = var2;
+   }
+
+   static {
+      field3192 = new class231("LIVE", 0);
+      field3191 = new class231("BUILDLIVE", 3);
+      field3198 = new class231("RC", 1);
+      field3190 = new class231("WIP", 2);
    }
 }

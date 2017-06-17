@@ -33,7 +33,7 @@ public class class25 {
          if(var1 >= 24) {
             throw new IOException();
          }
-      } catch (Exception var4) {
+      } catch (Exception var3) {
          for(int var2 = 0; var2 < 24; ++var2) {
             var0[var2] = -1;
          }

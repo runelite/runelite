@@ -6,10 +6,6 @@ public final class class268 {
    @ObfuscatedName("p")
    static final char[] field3673;
 
-   static {
-      field3673 = new char[]{'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-   }
-
    @ObfuscatedName("jf")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
@@ -22,5 +18,10 @@ public final class class268 {
          byte[] var1 = class25.method201();
          var0.putBytes(var1, 0, var1.length);
       }
+
+   }
+
+   static {
+      field3673 = new char[]{'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
    }
 }

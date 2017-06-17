@@ -167,7 +167,7 @@ public class class109 {
             }
 
             this.field1625 = var3;
-         } catch (Exception var7) {
+         } catch (Exception var6) {
             this.vmethod1923();
             this.field1632 = var1 + 2000L;
          }
@@ -181,11 +181,11 @@ public class class109 {
                this.method1916(256);
                this.field1628 += (long)(256000 / field1635);
             }
-         } catch (Exception var6) {
+         } catch (Exception var5) {
             this.field1628 = var1;
          }
-
       }
+
    }
 
    @ObfuscatedName("u")
@@ -235,36 +235,36 @@ public class class109 {
          int var5 = 255;
 
          int var6;
-         class119 var10;
-         label104:
+         class119 var7;
+         label106:
          for(var6 = 7; var5 != 0; --var6) {
-            int var7;
             int var8;
+            int var9;
             if(var6 < 0) {
-               var7 = var6 & 3;
-               var8 = -(var6 >> 2);
+               var8 = var6 & 3;
+               var9 = -(var6 >> 2);
             } else {
-               var7 = var6;
-               var8 = 0;
+               var8 = var6;
+               var9 = 0;
             }
 
-            for(int var9 = var5 >>> var7 & 286331153; var9 != 0; var9 >>>= 4) {
-               if((var9 & 1) != 0) {
-                  var5 &= ~(1 << var7);
-                  var10 = null;
-                  class119 var11 = this.field1640[var7];
+            for(int var10 = var5 >>> var8 & 286331153; var10 != 0; var10 >>>= 4) {
+               if((var10 & 1) != 0) {
+                  var5 &= ~(1 << var8);
+                  var7 = null;
+                  class119 var11 = this.field1640[var8];
 
-                  label98:
+                  label100:
                   while(true) {
                      while(true) {
                         if(var11 == null) {
-                           break label98;
+                           break label100;
                         }
 
                         class122 var12 = var11.field1717;
-                        if(var12 != null && var12.field1749 > var8) {
-                           var5 |= 1 << var7;
-                           var10 = var11;
+                        if(var12 != null && var12.field1749 > var9) {
+                           var5 |= 1 << var8;
+                           var7 = var11;
                            var11 = var11.field1718;
                         } else {
                            var11.field1716 = true;
@@ -275,7 +275,7 @@ public class class109 {
                            }
 
                            if(var4 >= this.field1627) {
-                              break label104;
+                              break label106;
                            }
 
                            class119 var14 = var11.vmethod3771();
@@ -287,14 +287,14 @@ public class class109 {
 
                            class119 var18 = var11.field1718;
                            var11.field1718 = null;
-                           if(var10 == null) {
-                              this.field1640[var7] = var18;
+                           if(var7 == null) {
+                              this.field1640[var8] = var18;
                            } else {
-                              var10.field1718 = var18;
+                              var7.field1718 = var18;
                            }
 
                            if(var18 == null) {
-                              this.field1636[var7] = var10;
+                              this.field1636[var8] = var7;
                            }
 
                            var11 = var18;
@@ -303,8 +303,8 @@ public class class109 {
                   }
                }
 
-               var7 += 4;
-               ++var8;
+               var8 += 4;
+               ++var9;
             }
          }
 
@@ -313,8 +313,8 @@ public class class109 {
             class119[] var17 = this.field1640;
             this.field1636[var6] = null;
 
-            for(var17[var6] = null; var16 != null; var16 = var10) {
-               var10 = var16.field1718;
+            for(var17[var6] = null; var16 != null; var16 = var7) {
+               var7 = var16.field1718;
                var16.field1718 = null;
             }
          }
@@ -507,65 +507,67 @@ public class class109 {
             --var3;
          }
 
-         int var15 = var3 - var2;
-         if(var15 >= 1 && var15 <= ObjectComposition.method4435(var1)) {
-            StringBuilder var13 = new StringBuilder(var15);
+         int var6 = var3 - var2;
+         if(var6 >= 1 && var6 <= ObjectComposition.method4435(var1)) {
+            StringBuilder var7 = new StringBuilder(var6);
 
-            for(int var6 = var2; var6 < var3; ++var6) {
-               char var7 = var0.charAt(var6);
-               boolean var8;
-               if(Character.isISOControl(var7)) {
-                  var8 = false;
+            for(int var8 = var2; var8 < var3; ++var8) {
+               char var9 = var0.charAt(var8);
+               boolean var10;
+               if(Character.isISOControl(var9)) {
+                  var10 = false;
                } else {
-                  boolean var9 = var7 >= 48 && var7 <= 57 || var7 >= 65 && var7 <= 90 || var7 >= 97 && var7 <= 122;
-                  if(var9) {
-                     var8 = true;
+                  boolean var11 = var9 >= 48 && var9 <= 57 || var9 >= 65 && var9 <= 90 || var9 >= 97 && var9 <= 122;
+                  if(var11) {
+                     var10 = true;
                   } else {
-                     char[] var10 = class267.field3667;
-                     int var11 = 0;
+                     label163: {
+                        char[] var12 = class267.field3667;
 
-                     label123:
-                     while(true) {
-                        char var12;
-                        if(var11 >= var10.length) {
-                           var10 = class267.field3668;
+                        int var13;
+                        char var14;
+                        for(var13 = 0; var13 < var12.length; ++var13) {
+                           var14 = var12[var13];
+                           if(var9 == var14) {
+                              var10 = true;
+                              break label163;
+                           }
+                        }
 
-                           for(var11 = 0; var11 < var10.length; ++var11) {
-                              var12 = var10[var11];
-                              if(var12 == var7) {
-                                 var8 = true;
-                                 break label123;
-                              }
+                        var12 = class267.field3668;
+                        var13 = 0;
+
+                        while(true) {
+                           if(var13 >= var12.length) {
+                              var10 = false;
+                              break;
                            }
 
-                           var8 = false;
-                           break;
-                        }
+                           var14 = var12[var13];
+                           if(var14 == var9) {
+                              var10 = true;
+                              break;
+                           }
 
-                        var12 = var10[var11];
-                        if(var7 == var12) {
-                           var8 = true;
-                           break;
+                           ++var13;
                         }
-
-                        ++var11;
                      }
                   }
                }
 
-               if(var8) {
-                  char var16;
-                  switch(var7) {
+               if(var10) {
+                  char var15;
+                  switch(var9) {
                   case ' ':
                   case '-':
                   case '_':
                   case ' ':
-                     var16 = 95;
+                     var15 = 95;
                      break;
                   case '#':
                   case '[':
                   case ']':
-                     var16 = var7;
+                     var15 = var9;
                      break;
                   case 'À':
                   case 'Á':
@@ -577,11 +579,11 @@ public class class109 {
                   case 'â':
                   case 'ã':
                   case 'ä':
-                     var16 = 97;
+                     var15 = 97;
                      break;
                   case 'Ç':
                   case 'ç':
-                     var16 = 99;
+                     var15 = 99;
                      break;
                   case 'È':
                   case 'É':
@@ -591,7 +593,7 @@ public class class109 {
                   case 'é':
                   case 'ê':
                   case 'ë':
-                     var16 = 101;
+                     var15 = 101;
                      break;
                   case 'Í':
                   case 'Î':
@@ -599,11 +601,11 @@ public class class109 {
                   case 'í':
                   case 'î':
                   case 'ï':
-                     var16 = 105;
+                     var15 = 105;
                      break;
                   case 'Ñ':
                   case 'ñ':
-                     var16 = 110;
+                     var15 = 110;
                      break;
                   case 'Ò':
                   case 'Ó':
@@ -615,7 +617,7 @@ public class class109 {
                   case 'ô':
                   case 'õ':
                   case 'ö':
-                     var16 = 111;
+                     var15 = 111;
                      break;
                   case 'Ù':
                   case 'Ú':
@@ -625,29 +627,29 @@ public class class109 {
                   case 'ú':
                   case 'û':
                   case 'ü':
-                     var16 = 117;
+                     var15 = 117;
                      break;
                   case 'ß':
-                     var16 = 98;
+                     var15 = 98;
                      break;
                   case 'ÿ':
                   case 'Ÿ':
-                     var16 = 121;
+                     var15 = 121;
                      break;
                   default:
-                     var16 = Character.toLowerCase(var7);
+                     var15 = Character.toLowerCase(var9);
                   }
 
-                  if(var16 != 0) {
-                     var13.append(var16);
+                  if(var15 != 0) {
+                     var7.append(var15);
                   }
                }
             }
 
-            if(var13.length() == 0) {
+            if(var7.length() == 0) {
                return null;
             } else {
-               return var13.toString();
+               return var7.toString();
             }
          } else {
             return null;
@@ -678,15 +680,15 @@ public class class109 {
             int var5 = var3.read(var4.payload, var4.offset, 1000 - var4.offset);
             if(var5 == -1) {
                var4.offset = 0;
-               long var7 = var4.readLong();
-               return var7;
+               long var6 = var4.readLong();
+               return var6;
             }
 
             var4.offset += var5;
          } while(var4.offset < 1000);
 
          return 0L;
-      } catch (Exception var9) {
+      } catch (Exception var8) {
          return 0L;
       }
    }

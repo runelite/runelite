@@ -137,14 +137,14 @@ public class class69 extends Node {
       garbageValue = "2028879275"
    )
    public static String method1042(CharSequence var0) {
-      int var2 = var0.length();
-      char[] var3 = new char[var2];
+      int var1 = var0.length();
+      char[] var2 = new char[var1];
 
-      for(int var4 = 0; var4 < var2; ++var4) {
-         var3[var4] = 42;
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2[var3] = 42;
       }
 
-      String var1 = new String(var3);
-      return var1;
+      String var4 = new String(var2);
+      return var4;
    }
 }

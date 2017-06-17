@@ -27,17 +27,16 @@ public class class197 implements Iterator {
          this.field2492 = var1;
          return var1;
       } else {
-         do {
-            if(this.field2494 >= this.field2495.field2460) {
-               return null;
-            }
-
+         while(this.field2494 < this.field2495.field2460) {
             var1 = this.field2495.field2461[this.field2494++].next;
-         } while(var1 == this.field2495.field2461[this.field2494 - 1]);
+            if(var1 != this.field2495.field2461[this.field2494 - 1]) {
+               this.field2493 = var1.next;
+               this.field2492 = var1;
+               return var1;
+            }
+         }
 
-         this.field2493 = var1.next;
-         this.field2492 = var1;
-         return var1;
+         return null;
       }
    }
 

@@ -36,24 +36,6 @@ public class class274 {
    @ObfuscatedName("m")
    public static final class274 field3728;
 
-   static {
-      field3719 = new class274("6", "6");
-      field3728 = new class274("2", "2");
-      field3712 = new class274("13", "13");
-      field3727 = new class274("9", "9");
-      field3714 = new class274("15", "15");
-      field3715 = new class274("1", "1");
-      field3718 = new class274("7", "7");
-      field3717 = new class274("10", "10");
-      field3713 = new class274("12", "12");
-      field3722 = new class274("11", "11");
-      field3724 = new class274("3", "3");
-      field3721 = new class274("14", "14");
-      field3716 = new class274("8", "8");
-      field3723 = new class274("5", "5");
-      field3720 = new class274("4", "4");
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(S)V",
@@ -64,15 +46,15 @@ public class class274 {
       if(class92.username.length() == 0) {
          class47.method674("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
       } else {
-         long var1 = class109.method1967();
-         int var0;
-         if(0L == var1) {
-            var0 = 5;
+         long var0 = class109.method1967();
+         int var2;
+         if(0L == var0) {
+            var2 = 5;
          } else {
-            var0 = class236.method4093(var1, class92.username);
+            var2 = class236.method4093(var0, class92.username);
          }
 
-         switch(var0) {
+         switch(var2) {
          case 2:
             class47.method674("", "Page has opened in a new window.", "(Please check your popup blocker.)");
             class92.loginIndex = 6;
@@ -92,11 +74,29 @@ public class class274 {
          case 7:
             class47.method674("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
          }
-
       }
+
    }
 
    class274(String var1, String var2) {
       this.field3725 = var2;
+   }
+
+   static {
+      field3719 = new class274("6", "6");
+      field3728 = new class274("2", "2");
+      field3712 = new class274("13", "13");
+      field3727 = new class274("9", "9");
+      field3714 = new class274("15", "15");
+      field3715 = new class274("1", "1");
+      field3718 = new class274("7", "7");
+      field3717 = new class274("10", "10");
+      field3713 = new class274("12", "12");
+      field3722 = new class274("11", "11");
+      field3724 = new class274("3", "3");
+      field3721 = new class274("14", "14");
+      field3716 = new class274("8", "8");
+      field3723 = new class274("5", "5");
+      field3720 = new class274("4", "4");
    }
 }

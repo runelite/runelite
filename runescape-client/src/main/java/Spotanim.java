@@ -123,11 +123,6 @@ public class Spotanim extends CacheableNode {
 
    }
 
-   static {
-      field3331 = new NodeCache(64);
-      field3334 = new NodeCache(30);
-   }
-
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(IS)LModel;",
@@ -256,5 +251,10 @@ public class Spotanim extends CacheableNode {
          Client.field1105.method3505(var6);
       }
 
+   }
+
+   static {
+      field3331 = new NodeCache(64);
+      field3334 = new NodeCache(30);
    }
 }

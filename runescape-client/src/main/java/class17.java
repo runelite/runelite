@@ -76,15 +76,15 @@ final class class17 implements Comparator {
                World.field1281 = var1.readUnsignedShort();
                World.worldList = new World[World.field1281];
 
-               World var3;
-               for(int var2 = 0; var2 < World.field1281; var3.index = var2++) {
-                  var3 = World.worldList[var2] = new World();
-                  var3.id = var1.readUnsignedShort();
-                  var3.mask = var1.readInt();
-                  var3.address = var1.readString();
-                  var3.activity = var1.readString();
-                  var3.location = var1.readUnsignedByte();
-                  var3.playerCount = var1.readShort();
+               World var2;
+               for(int var3 = 0; var3 < World.field1281; var2.index = var3++) {
+                  var2 = World.worldList[var3] = new World();
+                  var2.id = var1.readUnsignedShort();
+                  var2.mask = var1.readInt();
+                  var2.address = var1.readString();
+                  var2.activity = var1.readString();
+                  var2.location = var1.readUnsignedByte();
+                  var2.playerCount = var1.readShort();
                }
 
                Player.method1092(World.worldList, 0, World.worldList.length - 1, World.field1284, World.field1283);
@@ -111,8 +111,8 @@ final class class17 implements Comparator {
          if(Client.field1011 > -1 && Client.gameCycle % 20 < 10) {
             class18.field332[0].method4950(Client.field1011 + var0 - 12, Client.field1049 + var1 - 28);
          }
-
       }
+
    }
 
    @ObfuscatedName("p")

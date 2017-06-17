@@ -108,13 +108,6 @@ public class World {
       return (33554432 & this.mask) != 0;
    }
 
-   static {
-      field1281 = 0;
-      field1293 = 0;
-      field1283 = new int[]{1, 1, 1, 1};
-      field1284 = new int[]{0, 1, 2, 3};
-   }
-
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(I)Z",
@@ -162,5 +155,12 @@ public class World {
    static class207 method1499(IndexDataBase var0, int var1) {
       byte[] var2 = var0.method4001(var1);
       return var2 == null?null:new class207(var2);
+   }
+
+   static {
+      field1281 = 0;
+      field1293 = 0;
+      field1283 = new int[]{1, 1, 1, 1};
+      field1284 = new int[]{0, 1, 2, 3};
    }
 }

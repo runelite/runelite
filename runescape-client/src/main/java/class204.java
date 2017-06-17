@@ -124,22 +124,22 @@ public class class204 extends class119 {
       var1.method3797();
       boolean var5 = true;
       Object var6 = null;
-      int[] var10 = new int[]{var4};
+      int[] var7 = new int[]{var4};
 
-      for(class199 var7 = (class199)var1.field2605.method3435(); var7 != null; var7 = (class199)var1.field2605.method3429()) {
-         int var8 = (int)var7.hash;
-         class207 var9 = (class207)this.field2544.method3425((long)var8);
-         if(var9 == null) {
-            var9 = World.method1499(var2, var8);
-            if(var9 == null) {
+      for(class199 var8 = (class199)var1.field2605.method3435(); var8 != null; var8 = (class199)var1.field2605.method3429()) {
+         int var9 = (int)var8.hash;
+         class207 var10 = (class207)this.field2544.method3425((long)var9);
+         if(var10 == null) {
+            var10 = World.method1499(var2, var9);
+            if(var10 == null) {
                var5 = false;
                continue;
             }
 
-            this.field2544.method3426(var9, (long)var8);
+            this.field2544.method3426(var10, (long)var9);
          }
 
-         if(!var9.method3763(var3, var7.field2497, var10)) {
+         if(!var10.method3763(var3, var8.field2497, var7)) {
             var5 = false;
          }
       }
@@ -257,33 +257,33 @@ public class class204 extends class119 {
          }
       }
 
-      class207 var9 = (class207)this.field2544.method3425((long)this.field2546[var1]);
-      if(var9 != null) {
-         class107 var8 = var9.field2591[var2];
-         if(var8 != null) {
+      class207 var8 = (class207)this.field2544.method3425((long)this.field2546[var1]);
+      if(var8 != null) {
+         class107 var9 = var8.field2591[var2];
+         if(var9 != null) {
             class205 var6 = new class205();
             var6.field2575 = var1;
-            var6.field2555 = var9;
-            var6.field2559 = var8;
-            var6.field2557 = var9.field2595[var2];
-            var6.field2558 = var9.field2596[var2];
+            var6.field2555 = var8;
+            var6.field2559 = var9;
+            var6.field2557 = var8.field2595[var2];
+            var6.field2558 = var8.field2596[var2];
             var6.field2574 = var2;
-            var6.field2560 = var9.field2593[var2] * var9.field2597 * var3 * var3 + 1024 >> 11;
-            var6.field2561 = var9.field2592[var2] & 255;
-            var6.field2562 = (var2 << 8) - (var9.field2590[var2] & 32767);
+            var6.field2560 = var8.field2593[var2] * var8.field2597 * var3 * var3 + 1024 >> 11;
+            var6.field2561 = var8.field2592[var2] & 255;
+            var6.field2562 = (var2 << 8) - (var8.field2590[var2] & 32767);
             var6.field2569 = 0;
             var6.field2566 = 0;
             var6.field2567 = 0;
             var6.field2572 = -1;
             var6.field2554 = 0;
             if(this.field2552[var1] == 0) {
-               var6.field2565 = class117.method2039(var8, this.method3663(var6), this.method3598(var6), this.method3638(var6));
+               var6.field2565 = class117.method2039(var9, this.method3663(var6), this.method3598(var6), this.method3638(var6));
             } else {
-               var6.field2565 = class117.method2039(var8, this.method3663(var6), 0, this.method3638(var6));
-               this.method3609(var6, var9.field2590[var2] < 0);
+               var6.field2565 = class117.method2039(var9, this.method3663(var6), 0, this.method3638(var6));
+               this.method3609(var6, var8.field2590[var2] < 0);
             }
 
-            if(var9.field2590[var2] < 0) {
+            if(var8.field2590[var2] < 0) {
                var6.field2565.method2149(-1);
             }
 
@@ -301,6 +301,7 @@ public class class204 extends class119 {
             this.field2543[var1][var2] = var6;
          }
       }
+
    }
 
    @ObfuscatedName("ao")
@@ -408,8 +409,8 @@ public class class204 extends class119 {
          for(var1 = 0; var1 < 16; ++var1) {
             this.method3590(var1);
          }
-
       }
+
    }
 
    @ObfuscatedName("ar")
@@ -792,8 +793,8 @@ public class class204 extends class119 {
          } else {
             var4.field2572 = 0;
          }
-
       }
+
    }
 
    @ObfuscatedName("m")
@@ -869,7 +870,6 @@ public class class204 extends class119 {
          } else {
             this.method3639(var3, var4, 64);
          }
-
       } else if(var2 == 160) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
@@ -1011,7 +1011,6 @@ public class class204 extends class119 {
          if(var4 == 49) {
             this.method3596(var3, var5 + (this.field2535[var3] & -128));
          }
-
       } else if(var2 == 192) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
@@ -1030,6 +1029,7 @@ public class class204 extends class119 {
             this.method3586();
          }
       }
+
    }
 
    @ObfuscatedName("g")

@@ -136,7 +136,7 @@ public class class130 extends Node {
          int var5;
          int var6;
          int var7;
-         int[] var10;
+         int[] var8;
          if(this.field1881 == 1 || this.field1881 == 3) {
             if(field1885 == null || field1885.length < this.field1883.length) {
                field1885 = new int[this.field1883.length];
@@ -160,9 +160,9 @@ public class class130 extends Node {
                field1885[var6] = this.field1883[var7];
             }
 
-            var10 = this.field1883;
+            var8 = this.field1883;
             this.field1883 = field1885;
-            field1885 = var10;
+            field1885 = var8;
          }
 
          if(this.field1881 == 2 || this.field1881 == 4) {
@@ -185,18 +185,18 @@ public class class130 extends Node {
 
             for(var6 = 0; var6 < var3; var6 += var2) {
                for(var7 = 0; var7 < var2; ++var7) {
-                  int var8 = var6 + var7;
-                  int var9 = var6 + (var7 + var4 & var5);
-                  field1885[var8] = this.field1883[var9];
+                  int var9 = var6 + var7;
+                  int var10 = var6 + (var7 + var4 & var5);
+                  field1885[var9] = this.field1883[var10];
                }
             }
 
-            var10 = this.field1883;
+            var8 = this.field1883;
             this.field1883 = field1885;
-            field1885 = var10;
+            field1885 = var8;
          }
-
       }
+
    }
 
    class130(Buffer var1) {

@@ -114,10 +114,10 @@ public class class152 extends RuntimeException {
             Client.field1011 = -1;
             Client.field1049 = -1;
          }
-
       } else {
          Client.field1011 = -1;
          Client.field1049 = -1;
       }
+
    }
 }

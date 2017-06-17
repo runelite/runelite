@@ -480,18 +480,18 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "-2042992658"
    )
    public final ModelData method4445(int var1) {
-      int var3;
+      int var2;
       if(this.countObj != null && var1 > 1) {
-         int var2 = -1;
+         int var3 = -1;
 
-         for(var3 = 0; var3 < 10; ++var3) {
-            if(var1 >= this.countCo[var3] && this.countCo[var3] != 0) {
-               var2 = this.countObj[var3];
+         for(var2 = 0; var2 < 10; ++var2) {
+            if(var1 >= this.countCo[var2] && this.countCo[var2] != 0) {
+               var3 = this.countObj[var2];
             }
          }
 
-         if(var2 != -1) {
-            return class224.getItemDefinition(var2).method4445(1);
+         if(var3 != -1) {
+            return class224.getItemDefinition(var3).method4445(1);
          }
       }
 
@@ -504,14 +504,14 @@ public class ItemComposition extends CacheableNode {
          }
 
          if(this.colourToReplace != null) {
-            for(var3 = 0; var3 < this.colourToReplace.length; ++var3) {
-               var4.method2322(this.colourToReplace[var3], this.colourToReplaceWith[var3]);
+            for(var2 = 0; var2 < this.colourToReplace.length; ++var2) {
+               var4.method2322(this.colourToReplace[var2], this.colourToReplaceWith[var2]);
             }
          }
 
          if(this.textureToReplace != null) {
-            for(var3 = 0; var3 < this.textureToReplace.length; ++var3) {
-               var4.method2320(this.textureToReplace[var3], this.textToReplaceWith[var3]);
+            for(var2 = 0; var2 < this.textureToReplace.length; ++var2) {
+               var4.method2320(this.textureToReplace[var2], this.textToReplaceWith[var2]);
             }
          }
 
@@ -787,12 +787,6 @@ public class ItemComposition extends CacheableNode {
       this.field3513 = false;
    }
 
-   static {
-      field3497 = new NodeCache(64);
-      itemModelCache = new NodeCache(50);
-      itemSpriteCache = new NodeCache(200);
-   }
-
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(B)I",
@@ -854,5 +848,11 @@ public class ItemComposition extends CacheableNode {
             return var5;
          }
       }
+   }
+
+   static {
+      field3497 = new NodeCache(64);
+      itemModelCache = new NodeCache(50);
+      itemSpriteCache = new NodeCache(200);
    }
 }

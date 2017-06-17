@@ -988,14 +988,6 @@ public class Widget extends Node {
       }
    }
 
-   static {
-      field2654 = new NodeCache(200);
-      field2649 = new NodeCache(50);
-      field2658 = new NodeCache(20);
-      field2643 = new NodeCache(8);
-      field2651 = false;
-   }
-
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;B)V",
@@ -1111,23 +1103,23 @@ public class Widget extends Node {
          if(var1 != null) {
             return var1;
          } else {
-            IndexDataBase var3 = class8.field244;
-            IndexDataBase var4 = FileOnDisk.field1769;
-            int var5 = this.fontId;
-            Font var2;
-            if(!class1.method3(var3, var5, 0)) {
-               var2 = null;
+            IndexDataBase var2 = class8.field244;
+            IndexDataBase var3 = FileOnDisk.field1769;
+            int var4 = this.fontId;
+            Font var5;
+            if(!class1.method3(var2, var4, 0)) {
+               var5 = null;
             } else {
-               var2 = class12.method74(var4.getConfigData(var5, 0));
+               var5 = class12.method74(var3.getConfigData(var4, 0));
             }
 
-            if(var2 != null) {
-               field2658.put(var2, (long)this.fontId);
+            if(var5 != null) {
+               field2658.put(var5, (long)this.fontId);
             } else {
                field2651 = true;
             }
 
-            return var2;
+            return var5;
          }
       }
    }
@@ -1245,9 +1237,9 @@ public class Widget extends Node {
          this.field2725 = new String[5];
 
          for(var8 = 0; var8 < 5; ++var8) {
-            String var10 = var1.readString();
-            if(var10.length() > 0) {
-               this.field2725[var8] = var10;
+            String var11 = var1.readString();
+            if(var11.length() > 0) {
+               this.field2725[var8] = var11;
                this.field2650 |= 1 << var8 + 23;
             }
          }
@@ -1338,9 +1330,9 @@ public class Widget extends Node {
          this.field2725 = new String[5];
 
          for(var5 = 0; var5 < 5; ++var5) {
-            String var11 = var1.readString();
-            if(var11.length() > 0) {
-               this.field2725[var5] = var11;
+            String var10 = var1.readString();
+            if(var10.length() > 0) {
+               this.field2725[var5] = var10;
                this.field2650 |= 1 << var5 + 23;
             }
          }
@@ -1400,5 +1392,13 @@ public class Widget extends Node {
       var3 = this.itemQuantities[var2];
       this.itemQuantities[var2] = this.itemQuantities[var1];
       this.itemQuantities[var1] = var3;
+   }
+
+   static {
+      field2654 = new NodeCache(200);
+      field2649 = new NodeCache(50);
+      field2658 = new NodeCache(20);
+      field2643 = new NodeCache(8);
+      field2651 = false;
    }
 }

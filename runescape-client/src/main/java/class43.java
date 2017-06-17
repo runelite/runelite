@@ -33,26 +33,22 @@ public class class43 {
       garbageValue = "-256599896"
    )
    void method589(int var1, int var2, int var3, FloorUnderlayDefinition var4) {
-      if(var4 != null) {
-         if(var3 + var1 >= 0 && var3 + var2 >= 0) {
-            if(var1 - var3 <= this.field577 && var2 - var3 <= this.field584) {
-               int var5 = Math.max(0, var1 - var3);
-               int var6 = Math.min(this.field577, var1 + var3);
-               int var7 = Math.max(0, var2 - var3);
-               int var8 = Math.min(this.field584, var2 + var3);
+      if(var4 != null && var3 + var1 >= 0 && var3 + var2 >= 0 && var1 - var3 <= this.field577 && var2 - var3 <= this.field584) {
+         int var5 = Math.max(0, var1 - var3);
+         int var6 = Math.min(this.field577, var1 + var3);
+         int var7 = Math.max(0, var2 - var3);
+         int var8 = Math.min(this.field584, var2 + var3);
 
-               for(int var9 = var5; var9 < var6; ++var9) {
-                  for(int var10 = var7; var10 < var8; ++var10) {
-                     this.field578[var9][var10] += var4.field3356 * 256 / var4.field3353;
-                     this.field579[var9][var10] += var4.field3350;
-                     this.field580[var9][var10] += var4.field3352;
-                     ++this.field581[var9][var10];
-                  }
-               }
-
+         for(int var9 = var5; var9 < var6; ++var9) {
+            for(int var10 = var7; var10 < var8; ++var10) {
+               this.field578[var9][var10] += var4.field3356 * 256 / var4.field3353;
+               this.field579[var9][var10] += var4.field3350;
+               this.field580[var9][var10] += var4.field3352;
+               ++this.field581[var9][var10];
             }
          }
       }
+
    }
 
    @ObfuscatedName("m")
@@ -146,18 +142,18 @@ public class class43 {
       if(!class1.method3(var0, var1, var2)) {
          return null;
       } else {
-         ModIcon[] var4 = new ModIcon[class286.field3796];
+         ModIcon[] var3 = new ModIcon[class286.field3796];
 
-         for(int var5 = 0; var5 < class286.field3796; ++var5) {
-            ModIcon var6 = var4[var5] = new ModIcon();
-            var6.width = class220.field2818;
-            var6.originalHeight = class286.field3792;
-            var6.offsetX = class286.field3793[var5];
-            var6.offsetY = class286.field3794[var5];
-            var6.originalWidth = class286.field3791[var5];
-            var6.height = class149.field2211[var5];
-            var6.palette = class116.field1686;
-            var6.pixels = class286.field3797[var5];
+         for(int var4 = 0; var4 < class286.field3796; ++var4) {
+            ModIcon var5 = var3[var4] = new ModIcon();
+            var5.width = class220.field2818;
+            var5.originalHeight = class286.field3792;
+            var5.offsetX = class286.field3793[var4];
+            var5.offsetY = class286.field3794[var4];
+            var5.originalWidth = class286.field3791[var4];
+            var5.height = class149.field2211[var4];
+            var5.palette = class116.field1686;
+            var5.pixels = class286.field3797[var4];
          }
 
          class286.field3793 = null;
@@ -165,8 +161,8 @@ public class class43 {
          class286.field3791 = null;
          class149.field2211 = null;
          class116.field1686 = null;
-         class286.field3797 = null;
-         return var4;
+         class286.field3797 = (byte[][])null;
+         return var3;
       }
    }
 }

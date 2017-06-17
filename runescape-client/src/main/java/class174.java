@@ -50,15 +50,6 @@ public class class174 {
       }
    }
 
-   static {
-      field2420 = 0;
-      field2417 = 0;
-      field2418 = 0;
-      field2419 = new byte[1000][];
-      field2416 = new byte[250][];
-      field2421 = new byte[50][];
-   }
-
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(IIIII)V",
@@ -102,15 +93,15 @@ public class class174 {
                ++var2;
             }
 
-            StringBuilder var5 = new StringBuilder(var2);
+            StringBuilder var6 = new StringBuilder(var2);
 
             while(0L != var0) {
-               long var6 = var0;
+               long var4 = var0;
                var0 /= 37L;
-               var5.append(class268.field3673[(int)(var6 - var0 * 37L)]);
+               var6.append(class268.field3673[(int)(var4 - var0 * 37L)]);
             }
 
-            return var5.reverse().toString();
+            return var6.reverse().toString();
          }
       } else {
          return null;
@@ -147,5 +138,14 @@ public class class174 {
       var9.orientation = var6;
       var9.delay = var7;
       var9.hitpoints = var8;
+   }
+
+   static {
+      field2420 = 0;
+      field2417 = 0;
+      field2418 = 0;
+      field2419 = new byte[1000][];
+      field2416 = new byte[250][];
+      field2421 = new byte[50][];
    }
 }

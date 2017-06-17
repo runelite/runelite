@@ -15,5 +15,6 @@ public class class196 {
          this.field2490 = null;
          this.field2491 = null;
       }
+
    }
 }

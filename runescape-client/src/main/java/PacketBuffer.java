@@ -107,10 +107,6 @@ public final class PacketBuffer extends Buffer {
       super(var1);
    }
 
-   static {
-      field2435 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
-   }
-
    @ObfuscatedName("io")
    @ObfuscatedSignature(
       signature = "(B)I",
@@ -119,5 +115,9 @@ public final class PacketBuffer extends Buffer {
    @Export("readOpcode")
    public int readOpcode() {
       return super.payload[++super.offset - 1] - this.cipher.nextInt() & 255;
+   }
+
+   static {
+      field2435 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
    }
 }

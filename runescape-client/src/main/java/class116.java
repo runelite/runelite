@@ -101,6 +101,7 @@ public class class116 {
    public static void method2024() {
       if(class50.keyboard != null) {
          class50 var0 = class50.keyboard;
+         class50 var1 = class50.keyboard;
          synchronized(class50.keyboard) {
             class50.keyboard = null;
          }
@@ -141,8 +142,8 @@ public class class116 {
                var5[var8] = (int)Math.floor(0.5D + var14 * 65536.0D);
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("w")
@@ -243,24 +244,24 @@ public class class116 {
       }
 
       int var9;
-      Widget var17;
+      Widget var10;
       if(var2 == 29) {
          Client.secretPacketBuffer1.putOpcode(26);
          Client.secretPacketBuffer1.putInt(var1);
-         var17 = class223.method3959(var1);
-         if(var17.dynamicValues != null && var17.dynamicValues[0][0] == 5) {
-            var9 = var17.dynamicValues[0][1];
-            if(class211.widgetSettings[var9] != var17.field2768[0]) {
-               class211.widgetSettings[var9] = var17.field2768[0];
+         var10 = class223.method3959(var1);
+         if(var10.dynamicValues != null && var10.dynamicValues[0][0] == 5) {
+            var9 = var10.dynamicValues[0][1];
+            if(class211.widgetSettings[var9] != var10.field2768[0]) {
+               class211.widgetSettings[var9] = var10.field2768[0];
                class36.method483(var9);
             }
          }
       }
 
-      Player var18;
+      Player var11;
       if(var2 == 15) {
-         var18 = Client.cachedPlayers[var3];
-         if(var18 != null) {
+         var11 = Client.cachedPlayers[var3];
+         if(var11 != null) {
             Client.field1013 = var6;
             Client.field1115 = var7;
             Client.cursorState = 2;
@@ -278,41 +279,40 @@ public class class116 {
       if(var2 == 28) {
          Client.secretPacketBuffer1.putOpcode(26);
          Client.secretPacketBuffer1.putInt(var1);
-         var17 = class223.method3959(var1);
-         if(var17.dynamicValues != null && var17.dynamicValues[0][0] == 5) {
-            var9 = var17.dynamicValues[0][1];
+         var10 = class223.method3959(var1);
+         if(var10.dynamicValues != null && var10.dynamicValues[0][0] == 5) {
+            var9 = var10.dynamicValues[0][1];
             class211.widgetSettings[var9] = 1 - class211.widgetSettings[var9];
             class36.method483(var9);
          }
       }
 
       if(var2 == 25) {
-         var17 = class172.method3015(var1, var0);
-         if(var17 != null) {
+         var10 = class172.method3015(var1, var0);
+         if(var10 != null) {
             Preferences.method1501();
-            class25.method202(var1, var0, WorldMapType1.method263(class15.method92(var17)), var17.itemId);
+            class25.method202(var1, var0, WorldMapType1.method263(class15.method92(var10)), var10.itemId);
             Client.itemSelectionState = 0;
-            String var20;
-            if(WorldMapType1.method263(class15.method92(var17)) == 0) {
-               var20 = null;
-            } else if(var17.selectedAction != null && var17.selectedAction.trim().length() != 0) {
-               var20 = var17.selectedAction;
+            String var12;
+            if(WorldMapType1.method263(class15.method92(var10)) == 0) {
+               var12 = null;
+            } else if(var10.selectedAction != null && var10.selectedAction.trim().length() != 0) {
+               var12 = var10.selectedAction;
             } else {
-               var20 = null;
+               var12 = null;
             }
 
-            Client.field1064 = var20;
+            Client.field1064 = var12;
             if(Client.field1064 == null) {
                Client.field1064 = "Null";
             }
 
-            if(var17.hasScript) {
-               Client.field1065 = var17.name + class15.method105(16777215);
+            if(var10.hasScript) {
+               Client.field1065 = var10.name + class15.method105(16777215);
             } else {
-               Client.field1065 = class15.method105('\uff00') + var17.field2741 + class15.method105(16777215);
+               Client.field1065 = class15.method105('\uff00') + var10.field2741 + class15.method105(16777215);
             }
          }
-
       } else {
          if(var2 == 12) {
             var8 = Client.cachedNPCs[var3];
@@ -330,8 +330,8 @@ public class class116 {
          }
 
          if(var2 == 44) {
-            var18 = Client.cachedPlayers[var3];
-            if(var18 != null) {
+            var11 = Client.cachedPlayers[var3];
+            if(var11 != null) {
                Client.field1013 = var6;
                Client.field1115 = var7;
                Client.cursorState = 2;
@@ -345,8 +345,8 @@ public class class116 {
          }
 
          if(var2 == 46) {
-            var18 = Client.cachedPlayers[var3];
-            if(var18 != null) {
+            var11 = Client.cachedPlayers[var3];
+            if(var11 != null) {
                Client.field1013 = var6;
                Client.field1115 = var7;
                Client.cursorState = 2;
@@ -374,8 +374,8 @@ public class class116 {
          }
 
          if(var2 == 50) {
-            var18 = Client.cachedPlayers[var3];
-            if(var18 != null) {
+            var11 = Client.cachedPlayers[var3];
+            if(var11 != null) {
                Client.field1013 = var6;
                Client.field1115 = var7;
                Client.cursorState = 2;
@@ -520,8 +520,8 @@ public class class116 {
          }
 
          if(var2 == 51) {
-            var18 = Client.cachedPlayers[var3];
-            if(var18 != null) {
+            var11 = Client.cachedPlayers[var3];
+            if(var11 != null) {
                Client.field1013 = var6;
                Client.field1115 = var7;
                Client.cursorState = 2;
@@ -550,13 +550,13 @@ public class class116 {
          }
 
          if(var2 == 24) {
-            var17 = class223.method3959(var1);
-            boolean var19 = true;
-            if(var17.contentType > 0) {
-               var19 = class61.method1007(var17);
+            var10 = class223.method3959(var1);
+            boolean var17 = true;
+            if(var10.contentType > 0) {
+               var17 = class61.method1007(var10);
             }
 
-            if(var19) {
+            if(var17) {
                Client.secretPacketBuffer1.putOpcode(26);
                Client.secretPacketBuffer1.putInt(var1);
             }
@@ -624,8 +624,8 @@ public class class116 {
          }
 
          if(var2 == 14) {
-            var18 = Client.cachedPlayers[var3];
-            if(var18 != null) {
+            var11 = Client.cachedPlayers[var3];
+            if(var11 != null) {
                Client.field1013 = var6;
                Client.field1115 = var7;
                Client.cursorState = 2;
@@ -652,9 +652,9 @@ public class class116 {
          }
 
          if(var2 == 1005) {
-            var17 = class223.method3959(var1);
-            if(var17 != null && var17.itemQuantities[var0] >= 100000) {
-               class5.sendGameMessage(27, "", var17.itemQuantities[var0] + " x " + class224.getItemDefinition(var3).name);
+            var10 = class223.method3959(var1);
+            if(var10 != null && var10.itemQuantities[var0] >= 100000) {
+               class5.sendGameMessage(27, "", var10.itemQuantities[var0] + " x " + class224.getItemDefinition(var3).name);
             } else {
                Client.secretPacketBuffer1.putOpcode(104);
                Client.secretPacketBuffer1.putShort(var3);
@@ -682,14 +682,14 @@ public class class116 {
          }
 
          if(var2 == 58) {
-            var17 = class172.method3015(var1, var0);
-            if(var17 != null) {
+            var10 = class172.method3015(var1, var0);
+            if(var10 != null) {
                Client.secretPacketBuffer1.putOpcode(63);
                Client.secretPacketBuffer1.method3066(var0);
                Client.secretPacketBuffer1.method3065(Client.field1062);
                Client.secretPacketBuffer1.putInt(var1);
                Client.secretPacketBuffer1.method3114(class47.field611);
-               Client.secretPacketBuffer1.method3065(var17.itemId);
+               Client.secretPacketBuffer1.method3065(var10.itemId);
                Client.secretPacketBuffer1.method3065(Client.field1157);
             }
          }
@@ -705,8 +705,8 @@ public class class116 {
          }
 
          if(var2 == 49) {
-            var18 = Client.cachedPlayers[var3];
-            if(var18 != null) {
+            var11 = Client.cachedPlayers[var3];
+            if(var11 != null) {
                Client.field1013 = var6;
                Client.field1115 = var7;
                Client.cursorState = 2;
@@ -765,8 +765,8 @@ public class class116 {
          }
 
          if(var2 == 47) {
-            var18 = Client.cachedPlayers[var3];
-            if(var18 != null) {
+            var11 = Client.cachedPlayers[var3];
+            if(var11 != null) {
                Client.field1013 = var6;
                Client.field1115 = var7;
                Client.cursorState = 2;
@@ -861,8 +861,8 @@ public class class116 {
          }
 
          if(var2 == 48) {
-            var18 = Client.cachedPlayers[var3];
-            if(var18 != null) {
+            var11 = Client.cachedPlayers[var3];
+            if(var11 != null) {
                Client.field1013 = var6;
                Client.field1115 = var7;
                Client.cursorState = 2;
@@ -890,8 +890,8 @@ public class class116 {
          }
 
          if(var2 == 45) {
-            var18 = Client.cachedPlayers[var3];
-            if(var18 != null) {
+            var11 = Client.cachedPlayers[var3];
+            if(var11 != null) {
                Client.field1013 = var6;
                Client.field1115 = var7;
                Client.cursorState = 2;
@@ -906,17 +906,16 @@ public class class116 {
 
          if(var2 == 38) {
             Preferences.method1501();
-            var17 = class223.method3959(var1);
+            var10 = class223.method3959(var1);
             Client.itemSelectionState = 1;
             class91.selectedItemIndex = var0;
             class33.field480 = var1;
             XGrandExchangeOffer.field312 = var3;
-            XItemContainer.method1020(var17);
+            XItemContainer.method1020(var10);
             Client.selectedItemName = class15.method105(16748608) + class224.getItemDefinition(var3).name + class15.method105(16777215);
             if(Client.selectedItemName == null) {
                Client.selectedItemName = "null";
             }
-
          } else {
             if(var2 == 23) {
                if(Client.isMenuOpen) {
@@ -933,43 +932,43 @@ public class class116 {
                Client.field906 = 0;
                var8 = Client.cachedNPCs[var3];
                if(var8 != null) {
-                  NPCComposition var15 = var8.composition;
-                  if(var15.configs != null) {
-                     var15 = var15.method4525();
+                  NPCComposition var19 = var8.composition;
+                  if(var19.configs != null) {
+                     var19 = var19.method4525();
                   }
 
-                  if(var15 != null) {
+                  if(var19 != null) {
                      Client.secretPacketBuffer1.putOpcode(109);
-                     Client.secretPacketBuffer1.method3066(var15.id);
+                     Client.secretPacketBuffer1.method3066(var19.id);
                   }
                }
             }
 
             if(var2 == 57 || var2 == 1007) {
-               var17 = class172.method3015(var1, var0);
-               if(var17 != null) {
-                  var9 = var17.itemId;
-                  Widget var10 = class172.method3015(var1, var0);
-                  if(var10 != null) {
-                     if(var10.field2657 != null) {
-                        class69 var11 = new class69();
-                        var11.field822 = var10;
-                        var11.field825 = var3;
-                        var11.field833 = var5;
-                        var11.field821 = var10.field2657;
-                        class77.method1440(var11);
+               var10 = class172.method3015(var1, var0);
+               if(var10 != null) {
+                  var9 = var10.itemId;
+                  Widget var20 = class172.method3015(var1, var0);
+                  if(var20 != null) {
+                     if(var20.field2657 != null) {
+                        class69 var13 = new class69();
+                        var13.field822 = var20;
+                        var13.field825 = var3;
+                        var13.field833 = var5;
+                        var13.field821 = var20.field2657;
+                        class77.method1440(var13);
                      }
 
-                     boolean var16 = true;
-                     if(var10.contentType > 0) {
-                        var16 = class61.method1007(var10);
+                     boolean var18 = true;
+                     if(var20.contentType > 0) {
+                        var18 = class61.method1007(var20);
                      }
 
-                     if(var16) {
-                        int var13 = class15.method92(var10);
-                        int var14 = var3 - 1;
-                        boolean var12 = (var13 >> var14 + 1 & 1) != 0;
-                        if(var12) {
+                     if(var18) {
+                        int var14 = class15.method92(var20);
+                        int var15 = var3 - 1;
+                        boolean var16 = (var14 >> var15 + 1 & 1) != 0;
+                        if(var16) {
                            if(var3 == 1) {
                               Client.secretPacketBuffer1.putOpcode(221);
                               Client.secretPacketBuffer1.putInt(var1);
@@ -1057,8 +1056,8 @@ public class class116 {
             if(class59.field735 != null && Client.field1017 == 0) {
                XItemContainer.method1020(class59.field735);
             }
-
          }
       }
+
    }
 }

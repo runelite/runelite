@@ -32,9 +32,11 @@ final class class2 implements class0 {
       if(var3 == 0) {
          if(var2) {
             var4.field877 = false;
-         } else if(var1 == Client.localInteractingIndex) {
-            throw new RuntimeException();
          } else {
+            if(var1 == Client.localInteractingIndex) {
+               throw new RuntimeException();
+            }
+
             class96.field1490[var1] = (var4.pathY[0] + class21.baseY >> 13) + (var4.field884 << 28) + (class19.baseX + var4.pathX[0] >> 13 << 14);
             if(var4.field1236 != -1) {
                class96.field1497[var1] = var4.field1236;
@@ -47,7 +49,6 @@ final class class2 implements class0 {
             if(var0.method3290(1) != 0) {
                class29.method253(var0, var1);
             }
-
          }
       } else {
          int var5;
@@ -79,20 +80,17 @@ final class class2 implements class0 {
                ++var7;
             }
 
-            if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-               if(var2) {
-                  var4.field877 = true;
-                  var4.field887 = var6;
-                  var4.field888 = var7;
-               } else {
-                  var4.field877 = false;
-                  var4.method1071(var6, var7, class96.field1494[var1]);
-               }
-            } else {
+            if(Client.localInteractingIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
                var4.method1083(var6, var7);
                var4.field877 = false;
+            } else if(var2) {
+               var4.field877 = true;
+               var4.field887 = var6;
+               var4.field888 = var7;
+            } else {
+               var4.field877 = false;
+               var4.method1071(var6, var7, class96.field1494[var1]);
             }
-
          } else if(var3 == 2) {
             var5 = var0.method3290(4);
             var6 = var4.pathX[0];
@@ -143,18 +141,19 @@ final class class2 implements class0 {
                var7 += 2;
             }
 
-            if(var1 == Client.localInteractingIndex && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
+            if(var1 != Client.localInteractingIndex || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
+               if(var2) {
+                  var4.field877 = true;
+                  var4.field887 = var6;
+                  var4.field888 = var7;
+               } else {
+                  var4.field877 = false;
+                  var4.method1071(var6, var7, class96.field1494[var1]);
+               }
+            } else {
                var4.method1083(var6, var7);
                var4.field877 = false;
-            } else if(var2) {
-               var4.field877 = true;
-               var4.field887 = var6;
-               var4.field888 = var7;
-            } else {
-               var4.field877 = false;
-               var4.method1071(var6, var7, class96.field1494[var1]);
             }
-
          } else {
             var5 = var0.method3290(1);
             int var8;
@@ -194,7 +193,6 @@ final class class2 implements class0 {
                if(Client.localInteractingIndex == var1) {
                   Player.plane = var4.field884;
                }
-
             } else {
                var6 = var0.method3290(30);
                var7 = var6 >> 28;
@@ -202,28 +200,26 @@ final class class2 implements class0 {
                var9 = var6 & 16383;
                var10 = (var8 + class19.baseX + var4.pathX[0] & 16383) - class19.baseX;
                var11 = (var9 + var4.pathY[0] + class21.baseY & 16383) - class21.baseY;
-               if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-                  if(var2) {
-                     var4.field877 = true;
-                     var4.field887 = var10;
-                     var4.field888 = var11;
-                  } else {
-                     var4.field877 = false;
-                     var4.method1071(var10, var11, class96.field1494[var1]);
-                  }
-               } else {
+               if(Client.localInteractingIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
                   var4.method1083(var10, var11);
                   var4.field877 = false;
+               } else if(var2) {
+                  var4.field877 = true;
+                  var4.field887 = var10;
+                  var4.field888 = var11;
+               } else {
+                  var4.field877 = false;
+                  var4.method1071(var10, var11, class96.field1494[var1]);
                }
 
                var4.field884 = (byte)(var4.field884 + var7 & 3);
                if(Client.localInteractingIndex == var1) {
                   Player.plane = var4.field884;
                }
-
             }
          }
       }
+
    }
 
    @ObfuscatedName("gq")
@@ -247,72 +243,72 @@ final class class2 implements class0 {
          var4 = class21.baseY;
 
          int var7;
-         int var9;
+         int var8;
          for(var7 = 0; var7 < '耀'; ++var7) {
-            NPC var8 = Client.cachedNPCs[var7];
-            if(var8 != null) {
-               for(var9 = 0; var9 < 10; ++var9) {
-                  var8.pathX[var9] -= var5;
-                  var8.pathY[var9] -= var6;
+            NPC var9 = Client.cachedNPCs[var7];
+            if(var9 != null) {
+               for(var8 = 0; var8 < 10; ++var8) {
+                  var9.pathX[var8] -= var5;
+                  var9.pathY[var8] -= var6;
                }
 
-               var8.x -= var5 * 128;
-               var8.y -= var6 * 128;
+               var9.x -= var5 * 128;
+               var9.y -= var6 * 128;
             }
          }
 
          for(var7 = 0; var7 < 2048; ++var7) {
-            Player var21 = Client.cachedPlayers[var7];
-            if(var21 != null) {
-               for(var9 = 0; var9 < 10; ++var9) {
-                  var21.pathX[var9] -= var5;
-                  var21.pathY[var9] -= var6;
+            Player var20 = Client.cachedPlayers[var7];
+            if(var20 != null) {
+               for(var8 = 0; var8 < 10; ++var8) {
+                  var20.pathX[var8] -= var5;
+                  var20.pathY[var8] -= var6;
                }
 
-               var21.x -= var5 * 128;
-               var21.y -= var6 * 128;
+               var20.x -= var5 * 128;
+               var20.y -= var6 * 128;
             }
          }
 
-         byte var20 = 0;
-         byte var18 = 104;
-         byte var22 = 1;
+         byte var21 = 0;
+         byte var10 = 104;
+         byte var11 = 1;
          if(var5 < 0) {
-            var20 = 103;
-            var18 = -1;
-            var22 = -1;
-         }
-
-         byte var10 = 0;
-         byte var11 = 104;
-         byte var12 = 1;
-         if(var6 < 0) {
-            var10 = 103;
+            var21 = 103;
+            var10 = -1;
             var11 = -1;
-            var12 = -1;
          }
 
-         int var14;
-         for(int var13 = var20; var13 != var18; var13 += var22) {
-            for(var14 = var10; var11 != var14; var14 += var12) {
-               int var15 = var13 + var5;
-               int var16 = var6 + var14;
+         byte var12 = 0;
+         byte var13 = 104;
+         byte var14 = 1;
+         if(var6 < 0) {
+            var12 = 103;
+            var13 = -1;
+            var14 = -1;
+         }
 
-               for(int var17 = 0; var17 < 4; ++var17) {
-                  if(var15 >= 0 && var16 >= 0 && var15 < 104 && var16 < 104) {
-                     Client.groundItemDeque[var17][var13][var14] = Client.groundItemDeque[var17][var15][var16];
+         int var15;
+         for(int var16 = var21; var16 != var10; var16 += var11) {
+            for(var15 = var12; var13 != var15; var15 += var14) {
+               int var17 = var16 + var5;
+               int var18 = var6 + var15;
+
+               for(int var19 = 0; var19 < 4; ++var19) {
+                  if(var17 >= 0 && var18 >= 0 && var17 < 104 && var18 < 104) {
+                     Client.groundItemDeque[var19][var16][var15] = Client.groundItemDeque[var19][var17][var18];
                   } else {
-                     Client.groundItemDeque[var17][var13][var14] = null;
+                     Client.groundItemDeque[var19][var16][var15] = null;
                   }
                }
             }
          }
 
-         for(PendingSpawn var19 = (PendingSpawn)Client.pendingSpawns.method3487(); var19 != null; var19 = (PendingSpawn)Client.pendingSpawns.method3512()) {
-            var19.x -= var5;
-            var19.y -= var6;
-            if(var19.x < 0 || var19.y < 0 || var19.x >= 104 || var19.y >= 104) {
-               var19.unlink();
+         for(PendingSpawn var22 = (PendingSpawn)Client.pendingSpawns.method3487(); var22 != null; var22 = (PendingSpawn)Client.pendingSpawns.method3512()) {
+            var22.x -= var5;
+            var22.y -= var6;
+            if(var22.x < 0 || var22.y < 0 || var22.x >= 104 || var22.y >= 104) {
+               var22.unlink();
             }
          }
 
@@ -327,11 +323,11 @@ final class class2 implements class0 {
          Client.field1033.method3481();
          Client.projectiles.method3481();
 
-         for(var14 = 0; var14 < 4; ++var14) {
-            Client.collisionMaps[var14].method2912();
+         for(var15 = 0; var15 < 4; ++var15) {
+            Client.collisionMaps[var15].method2912();
          }
-
       }
+
    }
 
    @ObfuscatedName("a")

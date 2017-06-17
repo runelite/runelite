@@ -135,10 +135,6 @@ public class FloorUnderlayDefinition extends CacheableNode {
       this.field3356 = (int)(var12 * (double)this.field3353);
    }
 
-   static {
-      field3349 = new NodeCache(64);
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(LBuffer;III)V",
@@ -153,5 +149,9 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
    FloorUnderlayDefinition() {
       this.field3348 = 0;
+   }
+
+   static {
+      field3349 = new NodeCache(64);
    }
 }

@@ -79,13 +79,13 @@ public class class21 {
       CombatInfoListHolder.method1572(class66.field802);
       boolean var4 = false;
       int var5;
-      int var7;
+      int var6;
       if(Client.field1035 >= 0) {
          var5 = class96.field1487;
-         int[] var6 = class96.field1491;
+         int[] var7 = class96.field1491;
 
-         for(var7 = 0; var7 < var5; ++var7) {
-            if(var6[var7] == Client.field1035) {
+         for(var6 = 0; var6 < var5; ++var6) {
+            if(var7[var6] == Client.field1035) {
                var4 = true;
                break;
             }
@@ -100,50 +100,50 @@ public class class21 {
       CombatInfoListHolder.method1572(var4?class66.field798:class66.field800);
       class5.method15(false);
 
-      for(Projectile var28 = (Projectile)Client.projectiles.method3487(); var28 != null; var28 = (Projectile)Client.projectiles.method3512()) {
-         if(Player.plane == var28.floor && Client.gameCycle <= var28.cycle) {
-            if(Client.gameCycle >= var28.startTime) {
-               if(var28.interacting > 0) {
-                  NPC var34 = Client.cachedNPCs[var28.interacting - 1];
-                  if(var34 != null && var34.x >= 0 && var34.x < 13312 && var34.y >= 0 && var34.y < 13312) {
-                     var28.method1653(var34.x, var34.y, class77.method1438(var34.x, var34.y, var28.floor) - var28.field1454, Client.gameCycle);
+      for(Projectile var30 = (Projectile)Client.projectiles.method3487(); var30 != null; var30 = (Projectile)Client.projectiles.method3512()) {
+         if(Player.plane == var30.floor && Client.gameCycle <= var30.cycle) {
+            if(Client.gameCycle >= var30.startTime) {
+               if(var30.interacting > 0) {
+                  NPC var8 = Client.cachedNPCs[var30.interacting - 1];
+                  if(var8 != null && var8.x >= 0 && var8.x < 13312 && var8.y >= 0 && var8.y < 13312) {
+                     var30.method1653(var8.x, var8.y, class77.method1438(var8.x, var8.y, var30.floor) - var30.field1454, Client.gameCycle);
                   }
                }
 
-               if(var28.interacting < 0) {
-                  var7 = -var28.interacting - 1;
-                  Player var35;
-                  if(Client.localInteractingIndex == var7) {
-                     var35 = class20.localPlayer;
+               if(var30.interacting < 0) {
+                  var6 = -var30.interacting - 1;
+                  Player var32;
+                  if(Client.localInteractingIndex == var6) {
+                     var32 = class20.localPlayer;
                   } else {
-                     var35 = Client.cachedPlayers[var7];
+                     var32 = Client.cachedPlayers[var6];
                   }
 
-                  if(var35 != null && var35.x >= 0 && var35.x < 13312 && var35.y >= 0 && var35.y < 13312) {
-                     var28.method1653(var35.x, var35.y, class77.method1438(var35.x, var35.y, var28.floor) - var28.field1454, Client.gameCycle);
+                  if(var32 != null && var32.x >= 0 && var32.x < 13312 && var32.y >= 0 && var32.y < 13312) {
+                     var30.method1653(var32.x, var32.y, class77.method1438(var32.x, var32.y, var30.floor) - var30.field1454, Client.gameCycle);
                   }
                }
 
-               var28.method1654(Client.field1125);
-               class17.region.method2610(Player.plane, (int)var28.x, (int)var28.velocityZ, (int)var28.z, 60, var28, var28.rotationX, -1, false);
+               var30.method1654(Client.field1125);
+               class17.region.method2610(Player.plane, (int)var30.x, (int)var30.velocityZ, (int)var30.z, 60, var30, var30.rotationX, -1, false);
             }
          } else {
-            var28.unlink();
+            var30.unlink();
          }
       }
 
-      for(GraphicsObject var38 = (GraphicsObject)Client.field1033.method3487(); var38 != null; var38 = (GraphicsObject)Client.field1033.method3512()) {
-         if(var38.level == Player.plane && !var38.field1342) {
-            if(Client.gameCycle >= var38.field1343) {
-               var38.method1562(Client.field1125);
-               if(var38.field1342) {
-                  var38.unlink();
+      for(GraphicsObject var31 = (GraphicsObject)Client.field1033.method3487(); var31 != null; var31 = (GraphicsObject)Client.field1033.method3512()) {
+         if(var31.level == Player.plane && !var31.field1342) {
+            if(Client.gameCycle >= var31.field1343) {
+               var31.method1562(Client.field1125);
+               if(var31.field1342) {
+                  var31.unlink();
                } else {
-                  class17.region.method2610(var38.level, var38.x, var38.y, var38.height, 60, var38, 0, -1, false);
+                  class17.region.method2610(var31.level, var31.x, var31.y, var31.height, 60, var31, 0, -1, false);
                }
             }
          } else {
-            var38.unlink();
+            var31.unlink();
          }
       }
 
@@ -154,7 +154,6 @@ public class class21 {
       var3 = Client.viewportWidth;
       Rasterizer2D.method4833(var0, var1, var2 + var0, var3 + var1);
       class136.method2493();
-      int var8;
       int var9;
       int var10;
       int var11;
@@ -163,8 +162,9 @@ public class class21 {
       int var14;
       int var15;
       int var16;
-      int var18;
-      int var29;
+      int var17;
+      int var33;
+      int var34;
       if(!Client.field1152) {
          var5 = Client.field1159;
          if(Client.field998 / 256 > var5) {
@@ -175,127 +175,127 @@ public class class21 {
             var5 = Client.field1015[4] + 128;
          }
 
-         var29 = Client.mapAngle + Client.field1114 & 2047;
-         var7 = class23.field367;
-         var8 = class77.method1438(class20.localPlayer.x, class20.localPlayer.y, Player.plane) - Client.field995;
-         var9 = DecorativeObject.field2178;
-         var10 = var5 * 3 + 600;
-         var11 = 2048 - var5 & 2047;
-         var12 = 2048 - var29 & 2047;
+         var17 = Client.mapAngle + Client.field1114 & 2047;
+         var6 = class23.field367;
+         var33 = class77.method1438(class20.localPlayer.x, class20.localPlayer.y, Player.plane) - Client.field995;
+         var34 = DecorativeObject.field2178;
+         var9 = var5 * 3 + 600;
+         var10 = 2048 - var5 & 2047;
+         var11 = 2048 - var17 & 2047;
+         var12 = 0;
          var13 = 0;
-         var14 = 0;
-         var15 = var10;
-         int var17;
+         var14 = var9;
+         int var18;
+         if(var10 != 0) {
+            var15 = class136.SINE[var10];
+            var18 = class136.COSINE[var10];
+            var16 = var18 * var13 - var15 * var9 >> 16;
+            var14 = var13 * var15 + var18 * var9 >> 16;
+            var13 = var16;
+         }
+
          if(var11 != 0) {
-            var16 = class136.SINE[var11];
-            var17 = class136.COSINE[var11];
-            var18 = var17 * var14 - var16 * var10 >> 16;
-            var15 = var14 * var16 + var17 * var10 >> 16;
-            var14 = var18;
+            var15 = class136.SINE[var11];
+            var18 = class136.COSINE[var11];
+            var16 = var12 * var18 + var14 * var15 >> 16;
+            var14 = var18 * var14 - var15 * var12 >> 16;
+            var12 = var16;
          }
 
-         if(var12 != 0) {
-            var16 = class136.SINE[var12];
-            var17 = class136.COSINE[var12];
-            var18 = var13 * var17 + var15 * var16 >> 16;
-            var15 = var17 * var15 - var16 * var13 >> 16;
-            var13 = var18;
-         }
-
-         class14.cameraX = var7 - var13;
-         class112.cameraZ = var8 - var14;
-         class66.cameraY = var9 - var15;
+         class14.cameraX = var6 - var12;
+         class112.cameraZ = var33 - var13;
+         class66.cameraY = var34 - var14;
          class203.cameraPitch = var5;
-         class13.cameraYaw = var29;
+         class13.cameraYaw = var17;
       }
 
       if(!Client.field1152) {
          if(Item.field1481.field1299) {
-            var29 = Player.plane;
+            var17 = Player.plane;
          } else {
-            label717: {
-               var7 = 3;
+            label534: {
+               var6 = 3;
                if(class203.cameraPitch < 310) {
-                  var8 = class14.cameraX >> 7;
-                  var9 = class66.cameraY >> 7;
-                  var10 = class20.localPlayer.x >> 7;
-                  var11 = class20.localPlayer.y >> 7;
-                  if(var8 < 0 || var9 < 0 || var8 >= 104 || var9 >= 104) {
-                     var29 = Player.plane;
-                     break label717;
+                  var33 = class14.cameraX >> 7;
+                  var34 = class66.cameraY >> 7;
+                  var9 = class20.localPlayer.x >> 7;
+                  var10 = class20.localPlayer.y >> 7;
+                  if(var33 < 0 || var34 < 0 || var33 >= 104 || var34 >= 104) {
+                     var17 = Player.plane;
+                     break label534;
                   }
 
-                  if((class61.tileSettings[Player.plane][var8][var9] & 4) != 0) {
-                     var7 = Player.plane;
+                  if((class61.tileSettings[Player.plane][var33][var34] & 4) != 0) {
+                     var6 = Player.plane;
                   }
 
-                  if(var10 > var8) {
-                     var12 = var10 - var8;
+                  if(var9 > var33) {
+                     var11 = var9 - var33;
                   } else {
-                     var12 = var8 - var10;
+                     var11 = var33 - var9;
                   }
 
-                  if(var11 > var9) {
-                     var13 = var11 - var9;
+                  if(var10 > var34) {
+                     var12 = var10 - var34;
                   } else {
-                     var13 = var9 - var11;
+                     var12 = var34 - var10;
                   }
 
-                  if(var12 > var13) {
-                     var14 = var13 * 65536 / var12;
-                     var15 = '耀';
+                  if(var11 > var12) {
+                     var13 = var12 * 65536 / var11;
+                     var14 = '耀';
 
-                     while(var8 != var10) {
-                        if(var8 < var10) {
-                           ++var8;
-                        } else if(var8 > var10) {
-                           --var8;
+                     while(var33 != var9) {
+                        if(var33 < var9) {
+                           ++var33;
+                        } else if(var33 > var9) {
+                           --var33;
                         }
 
-                        if((class61.tileSettings[Player.plane][var8][var9] & 4) != 0) {
-                           var7 = Player.plane;
+                        if((class61.tileSettings[Player.plane][var33][var34] & 4) != 0) {
+                           var6 = Player.plane;
                         }
 
-                        var15 += var14;
-                        if(var15 >= 65536) {
-                           var15 -= 65536;
-                           if(var9 < var11) {
-                              ++var9;
-                           } else if(var9 > var11) {
-                              --var9;
+                        var14 += var13;
+                        if(var14 >= 65536) {
+                           var14 -= 65536;
+                           if(var34 < var10) {
+                              ++var34;
+                           } else if(var34 > var10) {
+                              --var34;
                            }
 
-                           if((class61.tileSettings[Player.plane][var8][var9] & 4) != 0) {
-                              var7 = Player.plane;
+                           if((class61.tileSettings[Player.plane][var33][var34] & 4) != 0) {
+                              var6 = Player.plane;
                            }
                         }
                      }
                   } else {
-                     var14 = var12 * 65536 / var13;
-                     var15 = '耀';
+                     var13 = var11 * 65536 / var12;
+                     var14 = '耀';
 
-                     while(var9 != var11) {
-                        if(var9 < var11) {
-                           ++var9;
-                        } else if(var9 > var11) {
-                           --var9;
+                     while(var34 != var10) {
+                        if(var34 < var10) {
+                           ++var34;
+                        } else if(var34 > var10) {
+                           --var34;
                         }
 
-                        if((class61.tileSettings[Player.plane][var8][var9] & 4) != 0) {
-                           var7 = Player.plane;
+                        if((class61.tileSettings[Player.plane][var33][var34] & 4) != 0) {
+                           var6 = Player.plane;
                         }
 
-                        var15 += var14;
-                        if(var15 >= 65536) {
-                           var15 -= 65536;
-                           if(var8 < var10) {
-                              ++var8;
-                           } else if(var8 > var10) {
-                              --var8;
+                        var14 += var13;
+                        if(var14 >= 65536) {
+                           var14 -= 65536;
+                           if(var33 < var9) {
+                              ++var33;
+                           } else if(var33 > var9) {
+                              --var33;
                            }
 
-                           if((class61.tileSettings[Player.plane][var8][var9] & 4) != 0) {
-                              var7 = Player.plane;
+                           if((class61.tileSettings[Player.plane][var33][var34] & 4) != 0) {
+                              var6 = Player.plane;
                            }
                         }
                      }
@@ -304,59 +304,59 @@ public class class21 {
 
                if(class20.localPlayer.x >= 0 && class20.localPlayer.y >= 0 && class20.localPlayer.x < 13312 && class20.localPlayer.y < 13312) {
                   if((class61.tileSettings[Player.plane][class20.localPlayer.x >> 7][class20.localPlayer.y >> 7] & 4) != 0) {
-                     var7 = Player.plane;
+                     var6 = Player.plane;
                   }
 
-                  var29 = var7;
+                  var17 = var6;
                } else {
-                  var29 = Player.plane;
+                  var17 = Player.plane;
                }
             }
          }
 
-         var5 = var29;
+         var5 = var17;
       } else {
          if(Item.field1481.field1299) {
-            var29 = Player.plane;
+            var17 = Player.plane;
          } else {
-            var7 = class77.method1438(class14.cameraX, class66.cameraY, Player.plane);
-            if(var7 - class112.cameraZ < 800 && (class61.tileSettings[Player.plane][class14.cameraX >> 7][class66.cameraY >> 7] & 4) != 0) {
-               var29 = Player.plane;
+            var6 = class77.method1438(class14.cameraX, class66.cameraY, Player.plane);
+            if(var6 - class112.cameraZ < 800 && (class61.tileSettings[Player.plane][class14.cameraX >> 7][class66.cameraY >> 7] & 4) != 0) {
+               var17 = Player.plane;
             } else {
-               var29 = 3;
+               var17 = 3;
             }
          }
 
-         var5 = var29;
+         var5 = var17;
       }
 
-      var29 = class14.cameraX;
-      var7 = class112.cameraZ;
-      var8 = class66.cameraY;
-      var9 = class203.cameraPitch;
-      var10 = class13.cameraYaw;
+      var17 = class14.cameraX;
+      var6 = class112.cameraZ;
+      var33 = class66.cameraY;
+      var34 = class203.cameraPitch;
+      var9 = class13.cameraYaw;
 
-      for(var11 = 0; var11 < 5; ++var11) {
-         if(Client.field1153[var11]) {
-            var12 = (int)(Math.random() * (double)(Client.field1129[var11] * 2 + 1) - (double)Client.field1129[var11] + Math.sin((double)Client.field982[var11] * ((double)Client.field1156[var11] / 100.0D)) * (double)Client.field1015[var11]);
-            if(var11 == 0) {
-               class14.cameraX += var12;
+      for(var10 = 0; var10 < 5; ++var10) {
+         if(Client.field1153[var10]) {
+            var11 = (int)(Math.random() * (double)(Client.field1129[var10] * 2 + 1) - (double)Client.field1129[var10] + Math.sin((double)Client.field982[var10] * ((double)Client.field1156[var10] / 100.0D)) * (double)Client.field1015[var10]);
+            if(var10 == 0) {
+               class14.cameraX += var11;
             }
 
-            if(var11 == 1) {
-               class112.cameraZ += var12;
+            if(var10 == 1) {
+               class112.cameraZ += var11;
             }
 
-            if(var11 == 2) {
-               class66.cameraY += var12;
+            if(var10 == 2) {
+               class66.cameraY += var11;
             }
 
-            if(var11 == 3) {
-               class13.cameraYaw = class13.cameraYaw + var12 & 2047;
+            if(var10 == 3) {
+               class13.cameraYaw = class13.cameraYaw + var11 & 2047;
             }
 
-            if(var11 == 4) {
-               class203.cameraPitch += var12;
+            if(var10 == 4) {
+               class203.cameraPitch += var11;
                if(class203.cameraPitch < 128) {
                   class203.cameraPitch = 128;
                }
@@ -368,18 +368,18 @@ public class class21 {
          }
       }
 
-      var11 = class59.field730;
-      var12 = class59.field731;
+      var10 = class59.field730;
+      var11 = class59.field731;
       if(class59.field736 != 0) {
-         var11 = class59.field737;
-         var12 = class59.field732;
+         var10 = class59.field737;
+         var11 = class59.field732;
       }
 
-      if(var11 >= var0 && var11 < var2 + var0 && var12 >= var1 && var12 < var1 + var3) {
-         var13 = var11 - var0;
-         var14 = var12 - var1;
-         class134.field1994 = var13;
-         class134.field1995 = var14;
+      if(var10 >= var0 && var10 < var2 + var0 && var11 >= var1 && var11 < var1 + var3) {
+         var12 = var10 - var0;
+         var13 = var11 - var1;
+         class134.field1994 = var12;
+         class134.field1995 = var13;
          class134.field2006 = true;
          class134.field2000 = 0;
          class134.field2004 = false;
@@ -390,168 +390,168 @@ public class class21 {
       class69.method1035();
       Rasterizer2D.method4826(var0, var1, var2, var3, 0);
       class69.method1035();
-      var13 = class136.field2024;
+      var12 = class136.field2024;
       class136.field2024 = Client.scale;
       class17.region.method2619(class14.cameraX, class112.cameraZ, class66.cameraY, class203.cameraPitch, class13.cameraYaw, var5);
 
       while(true) {
-         class9 var30 = (class9)class7.field237.method3444();
-         if(var30 == null) {
-            class136.field2024 = var13;
+         class9 var35 = (class9)class7.field237.method3444();
+         if(var35 == null) {
+            class136.field2024 = var12;
             class69.method1035();
             class17.region.method2694();
             Client.field1074 = 0;
-            boolean var36 = false;
-            var15 = -1;
-            var16 = class96.field1487;
-            int[] var31 = class96.field1491;
+            boolean var19 = false;
+            var14 = -1;
+            var15 = class96.field1487;
+            int[] var20 = class96.field1491;
 
-            for(var18 = 0; var18 < var16 + Client.field930; ++var18) {
-               Object var19;
-               if(var18 < var16) {
-                  var19 = Client.cachedPlayers[var31[var18]];
-                  if(var31[var18] == Client.field1035) {
-                     var36 = true;
-                     var15 = var18;
+            for(var16 = 0; var16 < var15 + Client.field930; ++var16) {
+               Object var21;
+               if(var16 < var15) {
+                  var21 = Client.cachedPlayers[var20[var16]];
+                  if(var20[var16] == Client.field1035) {
+                     var19 = true;
+                     var14 = var16;
                      continue;
                   }
                } else {
-                  var19 = Client.cachedNPCs[Client.npcIndices[var18 - var16]];
+                  var21 = Client.cachedNPCs[Client.npcIndices[var16 - var15]];
                }
 
-               CombatInfo1.method1456((Actor)var19, var18, var0, var1, var2, var3);
+               CombatInfo1.method1456((Actor)var21, var16, var0, var1, var2, var3);
             }
 
-            if(var36) {
-               CombatInfo1.method1456(Client.cachedPlayers[Client.field1035], var15, var0, var1, var2, var3);
+            if(var19) {
+               CombatInfo1.method1456(Client.cachedPlayers[Client.field1035], var14, var0, var1, var2, var3);
             }
 
-            for(var18 = 0; var18 < Client.field1074; ++var18) {
-               int var32 = Client.field962[var18];
-               int var20 = Client.field1002[var18];
-               int var21 = Client.field1004[var18];
-               int var22 = Client.field1003[var18];
-               boolean var23 = true;
+            for(var16 = 0; var16 < Client.field1074; ++var16) {
+               int var36 = Client.field962[var16];
+               int var22 = Client.field1002[var16];
+               int var23 = Client.field1004[var16];
+               int var24 = Client.field1003[var16];
+               boolean var25 = true;
 
-               while(var23) {
-                  var23 = false;
+               while(var25) {
+                  var25 = false;
 
-                  for(int var24 = 0; var24 < var18; ++var24) {
-                     if(var20 + 2 > Client.field1002[var24] - Client.field1003[var24] && var20 - var22 < Client.field1002[var24] + 2 && var32 - var21 < Client.field1004[var24] + Client.field962[var24] && var21 + var32 > Client.field962[var24] - Client.field1004[var24] && Client.field1002[var24] - Client.field1003[var24] < var20) {
-                        var20 = Client.field1002[var24] - Client.field1003[var24];
-                        var23 = true;
+                  for(int var26 = 0; var26 < var16; ++var26) {
+                     if(var22 + 2 > Client.field1002[var26] - Client.field1003[var26] && var22 - var24 < Client.field1002[var26] + 2 && var36 - var23 < Client.field1004[var26] + Client.field962[var26] && var23 + var36 > Client.field962[var26] - Client.field1004[var26] && Client.field1002[var26] - Client.field1003[var26] < var22) {
+                        var22 = Client.field1002[var26] - Client.field1003[var26];
+                        var25 = true;
                      }
                   }
                }
 
-               Client.field1011 = Client.field962[var18];
-               Client.field1049 = Client.field1002[var18] = var20;
-               String var33 = Client.field903[var18];
+               Client.field1011 = Client.field962[var16];
+               Client.field1049 = Client.field1002[var16] = var22;
+               String var38 = Client.field903[var16];
                if(Client.field1068 == 0) {
-                  int var25 = 16776960;
-                  if(Client.field1005[var18] < 6) {
-                     var25 = Client.field1121[Client.field1005[var18]];
+                  int var27 = 16776960;
+                  if(Client.field1005[var16] < 6) {
+                     var27 = Client.field1121[Client.field1005[var16]];
                   }
 
-                  if(Client.field1005[var18] == 6) {
-                     var25 = Client.field1010 % 20 < 10?16711680:16776960;
+                  if(Client.field1005[var16] == 6) {
+                     var27 = Client.field1010 % 20 < 10?16711680:16776960;
                   }
 
-                  if(Client.field1005[var18] == 7) {
-                     var25 = Client.field1010 % 20 < 10?255:'\uffff';
+                  if(Client.field1005[var16] == 7) {
+                     var27 = Client.field1010 % 20 < 10?255:'\uffff';
                   }
 
-                  if(Client.field1005[var18] == 8) {
-                     var25 = Client.field1010 % 20 < 10?'뀀':8454016;
+                  if(Client.field1005[var16] == 8) {
+                     var27 = Client.field1010 % 20 < 10?'뀀':8454016;
                   }
 
-                  int var26;
-                  if(Client.field1005[var18] == 9) {
-                     var26 = 150 - Client.field1007[var18];
-                     if(var26 < 50) {
-                        var25 = var26 * 1280 + 16711680;
-                     } else if(var26 < 100) {
-                        var25 = 16776960 - (var26 - 50) * 327680;
-                     } else if(var26 < 150) {
-                        var25 = (var26 - 100) * 5 + '\uff00';
+                  int var28;
+                  if(Client.field1005[var16] == 9) {
+                     var28 = 150 - Client.field1007[var16];
+                     if(var28 < 50) {
+                        var27 = var28 * 1280 + 16711680;
+                     } else if(var28 < 100) {
+                        var27 = 16776960 - (var28 - 50) * 327680;
+                     } else if(var28 < 150) {
+                        var27 = (var28 - 100) * 5 + '\uff00';
                      }
                   }
 
-                  if(Client.field1005[var18] == 10) {
-                     var26 = 150 - Client.field1007[var18];
-                     if(var26 < 50) {
-                        var25 = var26 * 5 + 16711680;
-                     } else if(var26 < 100) {
-                        var25 = 16711935 - (var26 - 50) * 327680;
-                     } else if(var26 < 150) {
-                        var25 = (var26 - 100) * 327680 + 255 - (var26 - 100) * 5;
+                  if(Client.field1005[var16] == 10) {
+                     var28 = 150 - Client.field1007[var16];
+                     if(var28 < 50) {
+                        var27 = var28 * 5 + 16711680;
+                     } else if(var28 < 100) {
+                        var27 = 16711935 - (var28 - 50) * 327680;
+                     } else if(var28 < 150) {
+                        var27 = (var28 - 100) * 327680 + 255 - (var28 - 100) * 5;
                      }
                   }
 
-                  if(Client.field1005[var18] == 11) {
-                     var26 = 150 - Client.field1007[var18];
-                     if(var26 < 50) {
-                        var25 = 16777215 - var26 * 327685;
-                     } else if(var26 < 100) {
-                        var25 = (var26 - 50) * 327685 + '\uff00';
-                     } else if(var26 < 150) {
-                        var25 = 16777215 - (var26 - 100) * 327680;
+                  if(Client.field1005[var16] == 11) {
+                     var28 = 150 - Client.field1007[var16];
+                     if(var28 < 50) {
+                        var27 = 16777215 - var28 * 327685;
+                     } else if(var28 < 100) {
+                        var27 = (var28 - 50) * 327685 + '\uff00';
+                     } else if(var28 < 150) {
+                        var27 = 16777215 - (var28 - 100) * 327680;
                      }
                   }
 
-                  if(Client.field1006[var18] == 0) {
-                     class64.field788.method4635(var33, var0 + Client.field1011, Client.field1049 + var1, var25, 0);
+                  if(Client.field1006[var16] == 0) {
+                     class64.field788.method4635(var38, var0 + Client.field1011, Client.field1049 + var1, var27, 0);
                   }
 
-                  if(Client.field1006[var18] == 1) {
-                     class64.field788.method4641(var33, var0 + Client.field1011, var1 + Client.field1049, var25, 0, Client.field1010);
+                  if(Client.field1006[var16] == 1) {
+                     class64.field788.method4641(var38, var0 + Client.field1011, var1 + Client.field1049, var27, 0, Client.field1010);
                   }
 
-                  if(Client.field1006[var18] == 2) {
-                     class64.field788.method4638(var33, var0 + Client.field1011, var1 + Client.field1049, var25, 0, Client.field1010);
+                  if(Client.field1006[var16] == 2) {
+                     class64.field788.method4638(var38, var0 + Client.field1011, var1 + Client.field1049, var27, 0, Client.field1010);
                   }
 
-                  if(Client.field1006[var18] == 3) {
-                     class64.field788.method4639(var33, var0 + Client.field1011, Client.field1049 + var1, var25, 0, Client.field1010, 150 - Client.field1007[var18]);
+                  if(Client.field1006[var16] == 3) {
+                     class64.field788.method4639(var38, var0 + Client.field1011, Client.field1049 + var1, var27, 0, Client.field1010, 150 - Client.field1007[var16]);
                   }
 
-                  if(Client.field1006[var18] == 4) {
-                     var26 = (150 - Client.field1007[var18]) * (class64.field788.method4696(var33) + 100) / 150;
+                  if(Client.field1006[var16] == 4) {
+                     var28 = (150 - Client.field1007[var16]) * (class64.field788.method4696(var38) + 100) / 150;
                      Rasterizer2D.method4862(Client.field1011 + var0 - 50, var1, var0 + Client.field1011 + 50, var1 + var3);
-                     class64.field788.method4647(var33, var0 + Client.field1011 + 50 - var26, var1 + Client.field1049, var25, 0);
+                     class64.field788.method4647(var38, var0 + Client.field1011 + 50 - var28, var1 + Client.field1049, var27, 0);
                      Rasterizer2D.method4833(var0, var1, var2 + var0, var1 + var3);
                   }
 
-                  if(Client.field1006[var18] == 5) {
-                     var26 = 150 - Client.field1007[var18];
-                     int var27 = 0;
-                     if(var26 < 25) {
-                        var27 = var26 - 25;
-                     } else if(var26 > 125) {
-                        var27 = var26 - 125;
+                  if(Client.field1006[var16] == 5) {
+                     var28 = 150 - Client.field1007[var16];
+                     int var29 = 0;
+                     if(var28 < 25) {
+                        var29 = var28 - 25;
+                     } else if(var28 > 125) {
+                        var29 = var28 - 125;
                      }
 
                      Rasterizer2D.method4862(var0, var1 + Client.field1049 - class64.field788.field3643 - 1, var2 + var0, Client.field1049 + var1 + 5);
-                     class64.field788.method4635(var33, var0 + Client.field1011, var27 + Client.field1049 + var1, var25, 0);
+                     class64.field788.method4635(var38, var0 + Client.field1011, var29 + Client.field1049 + var1, var27, 0);
                      Rasterizer2D.method4833(var0, var1, var2 + var0, var1 + var3);
                   }
                } else {
-                  class64.field788.method4635(var33, var0 + Client.field1011, var1 + Client.field1049, 16776960, 0);
+                  class64.field788.method4635(var38, var0 + Client.field1011, var1 + Client.field1049, 16776960, 0);
                }
             }
 
             class17.method139(var0, var1);
             ((TextureProvider)class136.field2028).method2286(Client.field1125);
             class92.method1646(var0, var1, var2, var3);
-            class14.cameraX = var29;
-            class112.cameraZ = var7;
-            class66.cameraY = var8;
-            class203.cameraPitch = var9;
-            class13.cameraYaw = var10;
+            class14.cameraX = var17;
+            class112.cameraZ = var6;
+            class66.cameraY = var33;
+            class203.cameraPitch = var34;
+            class13.cameraYaw = var9;
             if(Client.field960) {
                byte var37 = 0;
-               var15 = var37 + class238.field3267 + class238.field3269;
-               if(var15 == 0) {
+               var14 = var37 + class238.field3267 + class238.field3269;
+               if(var14 == 0) {
                   Client.field960 = false;
                }
             }
@@ -564,7 +564,7 @@ public class class21 {
             return;
          }
 
-         var30.vmethod55();
+         var35.vmethod55();
       }
    }
 }

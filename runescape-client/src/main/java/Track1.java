@@ -17,77 +17,77 @@ public class Track1 extends Node {
          int[] var2 = new int[16];
          var2[9] = 128;
          var1[9] = 128;
-         class206 var4 = new class206(this.field2604);
-         int var5 = var4.method3713();
+         class206 var3 = new class206(this.field2604);
+         int var4 = var3.method3713();
 
-         int var6;
-         for(var6 = 0; var6 < var5; ++var6) {
-            var4.method3714(var6);
-            var4.method3717(var6);
-            var4.method3718(var6);
+         int var5;
+         for(var5 = 0; var5 < var4; ++var5) {
+            var3.method3714(var5);
+            var3.method3717(var5);
+            var3.method3718(var5);
          }
 
-         label52:
+         label56:
          do {
             while(true) {
-               var6 = var4.method3721();
-               int var7 = var4.field2580[var6];
+               var5 = var3.method3721();
+               int var6 = var3.field2580[var5];
 
-               while(var4.field2580[var6] == var7) {
-                  var4.method3714(var6);
-                  int var8 = var4.method3757(var6);
-                  if(var8 == 1) {
-                     var4.method3715();
-                     var4.method3718(var6);
-                     continue label52;
+               while(var3.field2580[var5] == var6) {
+                  var3.method3714(var5);
+                  int var7 = var3.method3757(var5);
+                  if(var7 == 1) {
+                     var3.method3715();
+                     var3.method3718(var5);
+                     continue label56;
                   }
 
-                  int var9 = var8 & 240;
+                  int var8 = var7 & 240;
+                  int var9;
                   int var10;
                   int var11;
-                  int var12;
-                  if(var9 == 176) {
-                     var10 = var8 & 15;
-                     var11 = var8 >> 8 & 127;
-                     var12 = var8 >> 16 & 127;
-                     if(var11 == 0) {
-                        var1[var10] = (var1[var10] & -2080769) + (var12 << 14);
+                  if(var8 == 176) {
+                     var9 = var7 & 15;
+                     var10 = var7 >> 8 & 127;
+                     var11 = var7 >> 16 & 127;
+                     if(var10 == 0) {
+                        var1[var9] = (var1[var9] & -2080769) + (var11 << 14);
                      }
 
-                     if(var11 == 32) {
-                        var1[var10] = (var1[var10] & -16257) + (var12 << 7);
+                     if(var10 == 32) {
+                        var1[var9] = (var1[var9] & -16257) + (var11 << 7);
                      }
                   }
 
-                  if(var9 == 192) {
-                     var10 = var8 & 15;
-                     var11 = var8 >> 8 & 127;
-                     var2[var10] = var1[var10] + var11;
+                  if(var8 == 192) {
+                     var9 = var7 & 15;
+                     var10 = var7 >> 8 & 127;
+                     var2[var9] = var1[var9] + var10;
                   }
 
-                  if(var9 == 144) {
-                     var10 = var8 & 15;
-                     var11 = var8 >> 8 & 127;
-                     var12 = var8 >> 16 & 127;
-                     if(var12 > 0) {
-                        int var13 = var2[var10];
-                        class199 var14 = (class199)this.field2605.method3425((long)var13);
-                        if(var14 == null) {
-                           var14 = new class199(new byte[128]);
-                           this.field2605.method3426(var14, (long)var13);
+                  if(var8 == 144) {
+                     var9 = var7 & 15;
+                     var10 = var7 >> 8 & 127;
+                     var11 = var7 >> 16 & 127;
+                     if(var11 > 0) {
+                        int var12 = var2[var9];
+                        class199 var13 = (class199)this.field2605.method3425((long)var12);
+                        if(var13 == null) {
+                           var13 = new class199(new byte[128]);
+                           this.field2605.method3426(var13, (long)var12);
                         }
 
-                        var14.field2497[var11] = 1;
+                        var13.field2497[var10] = 1;
                      }
                   }
 
-                  var4.method3717(var6);
-                  var4.method3718(var6);
+                  var3.method3717(var5);
+                  var3.method3718(var5);
                }
             }
-         } while(!var4.method3754());
-
+         } while(!var3.method3754());
       }
+
    }
 
    Track1(Buffer var1) {
@@ -267,7 +267,7 @@ public class Track1 extends Node {
       int[] var59 = new int[128];
       var28 = 0;
 
-      label223:
+      label222:
       for(int var60 = 0; var60 < var2; ++var60) {
          var51.putInt(1297379947);
          var51.offset += 4;
@@ -289,7 +289,7 @@ public class Track1 extends Node {
                   var51.putByte(47);
                   var51.putByte(0);
                   var51.method3204(var51.offset - var61);
-                  continue label223;
+                  continue label222;
                }
 
                if(var64 == 23) {

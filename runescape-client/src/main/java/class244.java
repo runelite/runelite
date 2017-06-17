@@ -8,10 +8,6 @@ public class class244 extends CacheableNode {
    @ObfuscatedName("m")
    public static NodeCache field3328;
 
-   static {
-      field3328 = new NodeCache(64);
-   }
-
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
@@ -42,5 +38,9 @@ public class class244 extends CacheableNode {
          this.field3326 = true;
       }
 
+   }
+
+   static {
+      field3328 = new NodeCache(64);
    }
 }

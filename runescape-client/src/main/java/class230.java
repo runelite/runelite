@@ -3,17 +3,20 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ho")
-public class class230 implements RSEnum {
+public enum class230 implements RSEnum {
+   @ObfuscatedName("p")
+   field3187(0, -1, true, false, true),
    @ObfuscatedName("m")
-   public static final class230 field3178;
-   @ObfuscatedName("t")
-   public static final class230 field3179;
+   field3178(1, 0, true, true, true),
    @ObfuscatedName("e")
-   public static final class230 field3180;
+   field3180(2, 1, true, true, false),
+   @ObfuscatedName("t")
+   field3179(3, 2, false, false, true),
    @ObfuscatedName("w")
-   public static final class230 field3181;
+   field3181(4, 3, false, false, true),
    @ObfuscatedName("z")
-   public static final class230 field3182;
+   field3182(5, 10, false, false, true);
+
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 1332333519
@@ -28,8 +31,6 @@ public class class230 implements RSEnum {
    public final boolean field3185;
    @ObfuscatedName("c")
    public final boolean field3186;
-   @ObfuscatedName("p")
-   public static final class230 field3187;
    @ObfuscatedName("ad")
    static SpritePixels[] field3188;
 
@@ -40,15 +41,6 @@ public class class230 implements RSEnum {
    )
    public int rsOrdinal() {
       return this.field3183;
-   }
-
-   static {
-      field3187 = new class230(0, -1, true, false, true);
-      field3178 = new class230(1, 0, true, true, true);
-      field3180 = new class230(2, 1, true, true, false);
-      field3179 = new class230(3, 2, false, false, true);
-      field3181 = new class230(4, 3, false, false, true);
-      field3182 = new class230(5, 10, false, false, true);
    }
 
    @ObfuscatedName("hz")
@@ -86,10 +78,10 @@ public class class230 implements RSEnum {
       signature = "(IIZZZ)V",
       garbageValue = "1"
    )
-   class230(int var1, int var2, boolean var3, boolean var4, boolean var5) {
-      this.field3183 = var1;
-      this.field3184 = var2;
-      this.field3185 = var4;
-      this.field3186 = var5;
+   class230(int var3, int var4, boolean var5, boolean var6, boolean var7) {
+      this.field3183 = var3;
+      this.field3184 = var4;
+      this.field3185 = var6;
+      this.field3186 = var7;
    }
 }

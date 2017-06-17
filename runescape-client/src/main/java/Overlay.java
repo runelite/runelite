@@ -183,14 +183,14 @@ public class Overlay extends CacheableNode {
 
    }
 
-   static {
-      field3597 = new NodeCache(64);
-   }
-
    Overlay() {
       this.color = 0;
       this.texture = -1;
       this.isHidden = true;
       this.field3595 = -1;
+   }
+
+   static {
+      field3597 = new NodeCache(64);
    }
 }

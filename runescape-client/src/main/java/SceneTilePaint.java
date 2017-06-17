@@ -142,69 +142,69 @@ public final class SceneTilePaint {
                   ++class238.field3268;
                }
 
-               for(int var15 = 0; var15 < 100; ++var15) {
-                  int var16 = class238.field3258.available();
-                  if(var16 < 0) {
+               for(int var5 = 0; var5 < 100; ++var5) {
+                  int var6 = class238.field3258.available();
+                  if(var6 < 0) {
                      throw new IOException();
                   }
 
-                  if(var16 == 0) {
+                  if(var6 == 0) {
                      break;
                   }
 
                   class238.field3266 = 0;
-                  byte var5 = 0;
+                  byte var7 = 0;
                   if(class51.field668 == null) {
-                     var5 = 8;
+                     var7 = 8;
                   } else if(class238.field3264 == 0) {
-                     var5 = 1;
+                     var7 = 1;
                   }
 
-                  int var6;
-                  int var7;
                   int var8;
+                  int var9;
                   int var10;
-                  if(var5 > 0) {
-                     var6 = var5 - class238.field3270.offset;
-                     if(var6 > var16) {
-                        var6 = var16;
+                  int var11;
+                  if(var7 > 0) {
+                     var8 = var7 - class238.field3270.offset;
+                     if(var8 > var6) {
+                        var8 = var6;
                      }
 
-                     class238.field3258.read(class238.field3270.payload, class238.field3270.offset, var6);
+                     class238.field3258.read(class238.field3270.payload, class238.field3270.offset, var8);
                      if(class238.field3274 != 0) {
-                        for(var7 = 0; var7 < var6; ++var7) {
-                           class238.field3270.payload[var7 + class238.field3270.offset] ^= class238.field3274;
+                        for(var9 = 0; var9 < var8; ++var9) {
+                           class238.field3270.payload[var9 + class238.field3270.offset] ^= class238.field3274;
                         }
                      }
 
-                     class238.field3270.offset += var6;
-                     if(class238.field3270.offset < var5) {
+                     class238.field3270.offset += var8;
+                     if(class238.field3270.offset < var7) {
                         break;
                      }
 
                      if(class51.field668 == null) {
                         class238.field3270.offset = 0;
-                        var7 = class238.field3270.readUnsignedByte();
-                        var8 = class238.field3270.readUnsignedShort();
-                        int var9 = class238.field3270.readUnsignedByte();
-                        var10 = class238.field3270.readInt();
-                        long var11 = (long)((var7 << 16) + var8);
-                        class234 var13 = (class234)class238.field3262.method3425(var11);
+                        var9 = class238.field3270.readUnsignedByte();
+                        var10 = class238.field3270.readUnsignedShort();
+                        int var12 = class238.field3270.readUnsignedByte();
+                        var11 = class238.field3270.readInt();
+                        long var13 = (long)((var9 << 16) + var10);
+                        class234 var15 = (class234)class238.field3262.method3425(var13);
                         class170.field2362 = true;
-                        if(var13 == null) {
-                           var13 = (class234)class238.field3263.method3425(var11);
+                        if(var15 == null) {
+                           var15 = (class234)class238.field3263.method3425(var13);
                            class170.field2362 = false;
                         }
 
-                        if(var13 == null) {
+                        if(var15 == null) {
                            throw new IOException();
                         }
 
-                        int var14 = var9 == 0?5:9;
-                        class51.field668 = var13;
-                        class77.field1207 = new Buffer(var10 + var14 + class51.field668.field3214);
-                        class77.field1207.putByte(var9);
-                        class77.field1207.putInt(var10);
+                        int var16 = var12 == 0?5:9;
+                        class51.field668 = var15;
+                        class77.field1207 = new Buffer(var11 + var16 + class51.field668.field3214);
+                        class77.field1207.putByte(var12);
+                        class77.field1207.putInt(var11);
                         class238.field3264 = 8;
                         class238.field3270.offset = 0;
                      } else if(class238.field3264 == 0) {
@@ -216,46 +216,46 @@ public final class SceneTilePaint {
                         }
                      }
                   } else {
-                     var6 = class77.field1207.payload.length - class51.field668.field3214;
-                     var7 = 512 - class238.field3264;
-                     if(var7 > var6 - class77.field1207.offset) {
-                        var7 = var6 - class77.field1207.offset;
+                     var8 = class77.field1207.payload.length - class51.field668.field3214;
+                     var9 = 512 - class238.field3264;
+                     if(var9 > var8 - class77.field1207.offset) {
+                        var9 = var8 - class77.field1207.offset;
                      }
 
-                     if(var7 > var16) {
-                        var7 = var16;
+                     if(var9 > var6) {
+                        var9 = var6;
                      }
 
-                     class238.field3258.read(class77.field1207.payload, class77.field1207.offset, var7);
+                     class238.field3258.read(class77.field1207.payload, class77.field1207.offset, var9);
                      if(class238.field3274 != 0) {
-                        for(var8 = 0; var8 < var7; ++var8) {
-                           class77.field1207.payload[var8 + class77.field1207.offset] ^= class238.field3274;
+                        for(var10 = 0; var10 < var9; ++var10) {
+                           class77.field1207.payload[var10 + class77.field1207.offset] ^= class238.field3274;
                         }
                      }
 
-                     class77.field1207.offset += var7;
-                     class238.field3264 += var7;
-                     if(var6 == class77.field1207.offset) {
+                     class77.field1207.offset += var9;
+                     class238.field3264 += var9;
+                     if(var8 == class77.field1207.offset) {
                         if(16711935L == class51.field668.hash) {
                            class238.field3272 = class77.field1207;
 
-                           for(var8 = 0; var8 < 256; ++var8) {
-                              IndexData var17 = class238.field3273[var8];
-                              if(var17 != null) {
-                                 class238.field3272.offset = var8 * 8 + 5;
-                                 var10 = class238.field3272.readInt();
-                                 int var18 = class238.field3272.readInt();
-                                 var17.method4126(var10, var18);
+                           for(var10 = 0; var10 < 256; ++var10) {
+                              IndexData var20 = class238.field3273[var10];
+                              if(var20 != null) {
+                                 class238.field3272.offset = var10 * 8 + 5;
+                                 var11 = class238.field3272.readInt();
+                                 int var21 = class238.field3272.readInt();
+                                 var20.method4126(var11, var21);
                               }
                            }
                         } else {
                            class238.field3271.reset();
-                           class238.field3271.update(class77.field1207.payload, 0, var6);
-                           var8 = (int)class238.field3271.getValue();
-                           if(class51.field668.field3215 != var8) {
+                           class238.field3271.update(class77.field1207.payload, 0, var8);
+                           var10 = (int)class238.field3271.getValue();
+                           if(class51.field668.field3215 != var10) {
                               try {
                                  class238.field3258.method2879();
-                              } catch (Exception var20) {
+                              } catch (Exception var18) {
                                  ;
                               }
 
@@ -292,10 +292,10 @@ public final class SceneTilePaint {
 
                return true;
             }
-         } catch (IOException var21) {
+         } catch (IOException var19) {
             try {
                class238.field3258.method2879();
-            } catch (Exception var19) {
+            } catch (Exception var17) {
                ;
             }
 

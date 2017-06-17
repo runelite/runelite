@@ -128,389 +128,389 @@ public class class207 extends Node {
 
       ++var2.offset;
       ++var9;
-      byte[] var36 = new byte[var9];
+      byte[] var40 = new byte[var9];
       int var12;
-      int var14;
+      int var13;
       if(var9 > 1) {
-         var36[1] = 1;
-         int var13 = 1;
+         var40[1] = 1;
+         int var14 = 1;
          var12 = 2;
 
-         for(var14 = 2; var14 < var9; ++var14) {
+         for(var13 = 2; var13 < var9; ++var13) {
             int var15 = var2.readUnsignedByte();
             if(var15 == 0) {
-               var13 = var12++;
+               var14 = var12++;
             } else {
-               if(var15 <= var13) {
+               if(var15 <= var14) {
                   --var15;
                }
 
-               var13 = var15;
+               var14 = var15;
             }
 
-            var36[var14] = (byte)var13;
+            var40[var13] = (byte)var14;
          }
       } else {
          var12 = var9;
       }
 
-      class202[] var37 = new class202[var12];
+      class202[] var41 = new class202[var12];
 
-      class202 var38;
-      for(var14 = 0; var14 < var37.length; ++var14) {
-         var38 = var37[var14] = new class202();
+      class202 var42;
+      for(var13 = 0; var13 < var41.length; ++var13) {
+         var42 = var41[var13] = new class202();
          int var16 = var2.readUnsignedByte();
          if(var16 > 0) {
-            var38.field2510 = new byte[var16 * 2];
+            var42.field2510 = new byte[var16 * 2];
          }
 
          var16 = var2.readUnsignedByte();
          if(var16 > 0) {
-            var38.field2506 = new byte[var16 * 2 + 2];
-            var38.field2506[1] = 64;
+            var42.field2506 = new byte[var16 * 2 + 2];
+            var42.field2506[1] = 64;
          }
       }
 
-      var14 = var2.readUnsignedByte();
-      byte[] var45 = var14 > 0?new byte[var14 * 2]:null;
-      var14 = var2.readUnsignedByte();
-      byte[] var39 = var14 > 0?new byte[var14 * 2]:null;
+      var13 = var2.readUnsignedByte();
+      byte[] var43 = var13 > 0?new byte[var13 * 2]:null;
+      var13 = var2.readUnsignedByte();
+      byte[] var17 = var13 > 0?new byte[var13 * 2]:null;
 
-      int var17;
-      for(var17 = 0; var2.payload[var2.offset + var17] != 0; ++var17) {
+      int var18;
+      for(var18 = 0; var2.payload[var2.offset + var18] != 0; ++var18) {
          ;
       }
 
-      byte[] var18 = new byte[var17];
+      byte[] var19 = new byte[var18];
 
-      int var19;
-      for(var19 = 0; var19 < var17; ++var19) {
-         var18[var19] = var2.readByte();
+      int var20;
+      for(var20 = 0; var20 < var18; ++var20) {
+         var19[var20] = var2.readByte();
       }
 
       ++var2.offset;
-      ++var17;
-      var19 = 0;
+      ++var18;
+      var20 = 0;
 
-      int var20;
-      for(var20 = 0; var20 < 128; ++var20) {
-         var19 += var2.readUnsignedByte();
-         this.field2590[var20] = (short)var19;
-      }
-
-      var19 = 0;
-
-      for(var20 = 0; var20 < 128; ++var20) {
-         var19 += var2.readUnsignedByte();
-         this.field2590[var20] = (short)(this.field2590[var20] + (var19 << 8));
+      int var21;
+      for(var21 = 0; var21 < 128; ++var21) {
+         var20 += var2.readUnsignedByte();
+         this.field2590[var21] = (short)var20;
       }
 
       var20 = 0;
-      int var21 = 0;
-      int var22 = 0;
 
-      int var23;
-      for(var23 = 0; var23 < 128; ++var23) {
-         if(var20 == 0) {
-            if(var21 < var18.length) {
-               var20 = var18[var21++];
-            } else {
-               var20 = -1;
-            }
-
-            var22 = var2.readVarInt();
-         }
-
-         this.field2590[var23] = (short)(this.field2590[var23] + ((var22 - 1 & 2) << 14));
-         this.field2594[var23] = var22;
-         --var20;
+      for(var21 = 0; var21 < 128; ++var21) {
+         var20 += var2.readUnsignedByte();
+         this.field2590[var21] = (short)(this.field2590[var21] + (var20 << 8));
       }
 
-      var20 = 0;
       var21 = 0;
-      var23 = 0;
+      int var22 = 0;
+      int var23 = 0;
 
       int var24;
       for(var24 = 0; var24 < 128; ++var24) {
-         if(this.field2594[var24] != 0) {
-            if(var20 == 0) {
-               if(var21 < var4.length) {
-                  var20 = var4[var21++];
-               } else {
-                  var20 = -1;
-               }
-
-               var23 = var2.payload[var5++] - 1;
+         if(var21 == 0) {
+            if(var22 < var19.length) {
+               var21 = var19[var22++];
+            } else {
+               var21 = -1;
             }
 
-            this.field2596[var24] = (byte)var23;
-            --var20;
+            var23 = var2.readVarInt();
          }
+
+         this.field2590[var24] = (short)(this.field2590[var24] + ((var23 - 1 & 2) << 14));
+         this.field2594[var24] = var23;
+         --var21;
       }
 
-      var20 = 0;
       var21 = 0;
+      var22 = 0;
       var24 = 0;
 
-      for(int var25 = 0; var25 < 128; ++var25) {
+      int var25;
+      for(var25 = 0; var25 < 128; ++var25) {
          if(this.field2594[var25] != 0) {
-            if(var20 == 0) {
-               if(var21 < var7.length) {
-                  var20 = var7[var21++];
+            if(var21 == 0) {
+               if(var22 < var4.length) {
+                  var21 = var4[var22++];
                } else {
-                  var20 = -1;
+                  var21 = -1;
                }
 
-               var24 = var2.payload[var8++] + 16 << 2;
+               var24 = var2.payload[var5++] - 1;
             }
 
-            this.field2592[var25] = (byte)var24;
-            --var20;
+            this.field2596[var25] = (byte)var24;
+            --var21;
          }
       }
 
-      var20 = 0;
       var21 = 0;
-      class202 var40 = null;
+      var22 = 0;
+      var25 = 0;
 
-      int var26;
-      for(var26 = 0; var26 < 128; ++var26) {
+      for(int var26 = 0; var26 < 128; ++var26) {
          if(this.field2594[var26] != 0) {
-            if(var20 == 0) {
-               var40 = var37[var36[var21]];
-               if(var21 < var10.length) {
-                  var20 = var10[var21++];
+            if(var21 == 0) {
+               if(var22 < var7.length) {
+                  var21 = var7[var22++];
                } else {
-                  var20 = -1;
+                  var21 = -1;
                }
+
+               var25 = var2.payload[var8++] + 16 << 2;
             }
 
-            this.field2595[var26] = var40;
-            --var20;
+            this.field2592[var26] = (byte)var25;
+            --var21;
          }
       }
 
-      var20 = 0;
       var21 = 0;
-      var26 = 0;
+      var22 = 0;
+      class202 var44 = null;
 
       int var27;
       for(var27 = 0; var27 < 128; ++var27) {
-         if(var20 == 0) {
-            if(var21 < var18.length) {
-               var20 = var18[var21++];
-            } else {
-               var20 = -1;
+         if(this.field2594[var27] != 0) {
+            if(var21 == 0) {
+               var44 = var41[var40[var22]];
+               if(var22 < var10.length) {
+                  var21 = var10[var22++];
+               } else {
+                  var21 = -1;
+               }
             }
 
-            if(this.field2594[var27] > 0) {
-               var26 = var2.readUnsignedByte() + 1;
+            this.field2595[var27] = var44;
+            --var21;
+         }
+      }
+
+      var21 = 0;
+      var22 = 0;
+      var27 = 0;
+
+      int var28;
+      for(var28 = 0; var28 < 128; ++var28) {
+         if(var21 == 0) {
+            if(var22 < var19.length) {
+               var21 = var19[var22++];
+            } else {
+               var21 = -1;
+            }
+
+            if(this.field2594[var28] > 0) {
+               var27 = var2.readUnsignedByte() + 1;
             }
          }
 
-         this.field2593[var27] = (byte)var26;
-         --var20;
+         this.field2593[var28] = (byte)var27;
+         --var21;
       }
 
       this.field2597 = var2.readUnsignedByte() + 1;
 
-      class202 var28;
-      int var29;
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var37[var27];
-         if(var28.field2510 != null) {
-            for(var29 = 1; var29 < var28.field2510.length; var29 += 2) {
-               var28.field2510[var29] = var2.readByte();
+      class202 var29;
+      int var30;
+      for(var28 = 0; var28 < var12; ++var28) {
+         var29 = var41[var28];
+         if(var29.field2510 != null) {
+            for(var30 = 1; var30 < var29.field2510.length; var30 += 2) {
+               var29.field2510[var30] = var2.readByte();
             }
          }
 
-         if(var28.field2506 != null) {
-            for(var29 = 3; var29 < var28.field2506.length - 2; var29 += 2) {
-               var28.field2506[var29] = var2.readByte();
-            }
-         }
-      }
-
-      if(var45 != null) {
-         for(var27 = 1; var27 < var45.length; var27 += 2) {
-            var45[var27] = var2.readByte();
-         }
-      }
-
-      if(var39 != null) {
-         for(var27 = 1; var27 < var39.length; var27 += 2) {
-            var39[var27] = var2.readByte();
-         }
-      }
-
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var37[var27];
-         if(var28.field2506 != null) {
-            var19 = 0;
-
-            for(var29 = 2; var29 < var28.field2506.length; var29 += 2) {
-               var19 = var19 + 1 + var2.readUnsignedByte();
-               var28.field2506[var29] = (byte)var19;
+         if(var29.field2506 != null) {
+            for(var30 = 3; var30 < var29.field2506.length - 2; var30 += 2) {
+               var29.field2506[var30] = var2.readByte();
             }
          }
       }
 
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var37[var27];
-         if(var28.field2510 != null) {
-            var19 = 0;
+      if(var43 != null) {
+         for(var28 = 1; var28 < var43.length; var28 += 2) {
+            var43[var28] = var2.readByte();
+         }
+      }
 
-            for(var29 = 2; var29 < var28.field2510.length; var29 += 2) {
-               var19 = var19 + 1 + var2.readUnsignedByte();
-               var28.field2510[var29] = (byte)var19;
+      if(var17 != null) {
+         for(var28 = 1; var28 < var17.length; var28 += 2) {
+            var17[var28] = var2.readByte();
+         }
+      }
+
+      for(var28 = 0; var28 < var12; ++var28) {
+         var29 = var41[var28];
+         if(var29.field2506 != null) {
+            var20 = 0;
+
+            for(var30 = 2; var30 < var29.field2506.length; var30 += 2) {
+               var20 = var20 + 1 + var2.readUnsignedByte();
+               var29.field2506[var30] = (byte)var20;
             }
          }
       }
 
-      byte var30;
+      for(var28 = 0; var28 < var12; ++var28) {
+         var29 = var41[var28];
+         if(var29.field2510 != null) {
+            var20 = 0;
+
+            for(var30 = 2; var30 < var29.field2510.length; var30 += 2) {
+               var20 = var20 + 1 + var2.readUnsignedByte();
+               var29.field2510[var30] = (byte)var20;
+            }
+         }
+      }
+
+      byte var31;
       int var32;
       int var33;
       int var34;
-      int var42;
-      byte var44;
-      if(var45 != null) {
-         var19 = var2.readUnsignedByte();
-         var45[0] = (byte)var19;
+      int var35;
+      byte var36;
+      if(var43 != null) {
+         var20 = var2.readUnsignedByte();
+         var43[0] = (byte)var20;
 
-         for(var27 = 2; var27 < var45.length; var27 += 2) {
-            var19 = var19 + 1 + var2.readUnsignedByte();
-            var45[var27] = (byte)var19;
+         for(var28 = 2; var28 < var43.length; var28 += 2) {
+            var20 = var20 + 1 + var2.readUnsignedByte();
+            var43[var28] = (byte)var20;
          }
 
-         var44 = var45[0];
-         byte var41 = var45[1];
+         var36 = var43[0];
+         byte var37 = var43[1];
 
-         for(var29 = 0; var29 < var44; ++var29) {
-            this.field2593[var29] = (byte)(var41 * this.field2593[var29] + 32 >> 6);
+         for(var30 = 0; var30 < var36; ++var30) {
+            this.field2593[var30] = (byte)(var37 * this.field2593[var30] + 32 >> 6);
          }
 
-         for(var29 = 2; var29 < var45.length; var29 += 2) {
-            var30 = var45[var29];
-            byte var31 = var45[var29 + 1];
-            var32 = (var30 - var44) / 2 + var41 * (var30 - var44);
+         for(var30 = 2; var30 < var43.length; var30 += 2) {
+            var31 = var43[var30];
+            byte var38 = var43[var30 + 1];
+            var32 = (var31 - var36) / 2 + var37 * (var31 - var36);
 
-            for(var33 = var44; var33 < var30; ++var33) {
-               var34 = class116.method2030(var32, var30 - var44);
+            for(var33 = var36; var33 < var31; ++var33) {
+               var34 = class116.method2030(var32, var31 - var36);
                this.field2593[var33] = (byte)(this.field2593[var33] * var34 + 32 >> 6);
-               var32 += var31 - var41;
+               var32 += var38 - var37;
             }
 
-            var44 = var30;
-            var41 = var31;
+            var36 = var31;
+            var37 = var38;
          }
 
-         for(var42 = var44; var42 < 128; ++var42) {
-            this.field2593[var42] = (byte)(this.field2593[var42] * var41 + 32 >> 6);
+         for(var35 = var36; var35 < 128; ++var35) {
+            this.field2593[var35] = (byte)(this.field2593[var35] * var37 + 32 >> 6);
          }
 
-         var38 = null;
+         var42 = null;
       }
 
-      if(var39 != null) {
-         var19 = var2.readUnsignedByte();
-         var39[0] = (byte)var19;
+      if(var17 != null) {
+         var20 = var2.readUnsignedByte();
+         var17[0] = (byte)var20;
 
-         for(var27 = 2; var27 < var39.length; var27 += 2) {
-            var19 = var19 + 1 + var2.readUnsignedByte();
-            var39[var27] = (byte)var19;
+         for(var28 = 2; var28 < var17.length; var28 += 2) {
+            var20 = var20 + 1 + var2.readUnsignedByte();
+            var17[var28] = (byte)var20;
          }
 
-         var44 = var39[0];
-         int var47 = var39[1] << 1;
+         var36 = var17[0];
+         int var45 = var17[1] << 1;
 
-         for(var29 = 0; var29 < var44; ++var29) {
-            var42 = (this.field2592[var29] & 255) + var47;
-            if(var42 < 0) {
-               var42 = 0;
+         for(var30 = 0; var30 < var36; ++var30) {
+            var35 = (this.field2592[var30] & 255) + var45;
+            if(var35 < 0) {
+               var35 = 0;
             }
 
-            if(var42 > 128) {
-               var42 = 128;
+            if(var35 > 128) {
+               var35 = 128;
             }
 
-            this.field2592[var29] = (byte)var42;
+            this.field2592[var30] = (byte)var35;
          }
 
-         int var43;
-         for(var29 = 2; var29 < var39.length; var29 += 2) {
-            var30 = var39[var29];
-            var43 = var39[var29 + 1] << 1;
-            var32 = var47 * (var30 - var44) + (var30 - var44) / 2;
+         int var46;
+         for(var30 = 2; var30 < var17.length; var30 += 2) {
+            var31 = var17[var30];
+            var46 = var17[var30 + 1] << 1;
+            var32 = var45 * (var31 - var36) + (var31 - var36) / 2;
 
-            for(var33 = var44; var33 < var30; ++var33) {
-               var34 = class116.method2030(var32, var30 - var44);
-               int var35 = (this.field2592[var33] & 255) + var34;
-               if(var35 < 0) {
-                  var35 = 0;
+            for(var33 = var36; var33 < var31; ++var33) {
+               var34 = class116.method2030(var32, var31 - var36);
+               int var39 = (this.field2592[var33] & 255) + var34;
+               if(var39 < 0) {
+                  var39 = 0;
                }
 
-               if(var35 > 128) {
-                  var35 = 128;
+               if(var39 > 128) {
+                  var39 = 128;
                }
 
-               this.field2592[var33] = (byte)var35;
-               var32 += var43 - var47;
+               this.field2592[var33] = (byte)var39;
+               var32 += var46 - var45;
             }
 
-            var44 = var30;
-            var47 = var43;
+            var36 = var31;
+            var45 = var46;
          }
 
-         for(var42 = var44; var42 < 128; ++var42) {
-            var43 = var47 + (this.field2592[var42] & 255);
-            if(var43 < 0) {
-               var43 = 0;
+         for(var35 = var36; var35 < 128; ++var35) {
+            var46 = var45 + (this.field2592[var35] & 255);
+            if(var46 < 0) {
+               var46 = 0;
             }
 
-            if(var43 > 128) {
-               var43 = 128;
+            if(var46 > 128) {
+               var46 = 128;
             }
 
-            this.field2592[var42] = (byte)var43;
+            this.field2592[var35] = (byte)var46;
          }
 
-         Object var46 = null;
+         Object var47 = null;
       }
 
-      for(var27 = 0; var27 < var12; ++var27) {
-         var37[var27].field2503 = var2.readUnsignedByte();
+      for(var28 = 0; var28 < var12; ++var28) {
+         var41[var28].field2503 = var2.readUnsignedByte();
       }
 
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var37[var27];
-         if(var28.field2510 != null) {
-            var28.field2511 = var2.readUnsignedByte();
+      for(var28 = 0; var28 < var12; ++var28) {
+         var29 = var41[var28];
+         if(var29.field2510 != null) {
+            var29.field2511 = var2.readUnsignedByte();
          }
 
-         if(var28.field2506 != null) {
-            var28.field2505 = var2.readUnsignedByte();
+         if(var29.field2506 != null) {
+            var29.field2505 = var2.readUnsignedByte();
          }
 
-         if(var28.field2503 > 0) {
-            var28.field2507 = var2.readUnsignedByte();
-         }
-      }
-
-      for(var27 = 0; var27 < var12; ++var27) {
-         var37[var27].field2509 = var2.readUnsignedByte();
-      }
-
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var37[var27];
-         if(var28.field2509 > 0) {
-            var28.field2508 = var2.readUnsignedByte();
+         if(var29.field2503 > 0) {
+            var29.field2507 = var2.readUnsignedByte();
          }
       }
 
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var37[var27];
-         if(var28.field2508 > 0) {
-            var28.field2504 = var2.readUnsignedByte();
+      for(var28 = 0; var28 < var12; ++var28) {
+         var41[var28].field2509 = var2.readUnsignedByte();
+      }
+
+      for(var28 = 0; var28 < var12; ++var28) {
+         var29 = var41[var28];
+         if(var29.field2509 > 0) {
+            var29.field2508 = var2.readUnsignedByte();
+         }
+      }
+
+      for(var28 = 0; var28 < var12; ++var28) {
+         var29 = var41[var28];
+         if(var29.field2508 > 0) {
+            var29.field2504 = var2.readUnsignedByte();
          }
       }
 

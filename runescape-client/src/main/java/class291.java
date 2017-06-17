@@ -158,14 +158,14 @@ public class class291 extends Node {
       String var2;
       try {
          var2 = System.getProperty("os.arch").toLowerCase();
-      } catch (Exception var13) {
+      } catch (Exception var12) {
          var2 = "";
       }
 
       String var3;
       try {
          var3 = System.getProperty("os.version").toLowerCase();
-      } catch (Exception var12) {
+      } catch (Exception var11) {
          var3 = "";
       }
 
@@ -175,7 +175,7 @@ public class class291 extends Node {
       try {
          var4 = System.getProperty("java.vendor");
          var5 = System.getProperty("java.version");
-      } catch (Exception var11) {
+      } catch (Exception var10) {
          ;
       }
 
@@ -251,7 +251,7 @@ public class class291 extends Node {
             var7 = var7 * 10 + (var8 - 48);
             ++var6;
          }
-      } catch (Exception var16) {
+      } catch (Exception var15) {
          ;
       }
 
@@ -269,7 +269,7 @@ public class class291 extends Node {
             var7 = var8 - 48 + var7 * 10;
             ++var6;
          }
-      } catch (Exception var15) {
+      } catch (Exception var14) {
          ;
       }
 
@@ -287,7 +287,7 @@ public class class291 extends Node {
             var7 = var8 - 48 + var7 * 10;
             ++var6;
          }
-      } catch (Exception var14) {
+      } catch (Exception var13) {
          ;
       }
 

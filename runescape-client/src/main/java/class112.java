@@ -134,6 +134,7 @@ public class class112 {
    )
    static void method2005() {
       Object var0 = class236.field3239;
+      Object var1 = class236.field3239;
       synchronized(class236.field3239) {
          if(class236.field3241 == 0) {
             class21.field352 = new Thread(new class236());

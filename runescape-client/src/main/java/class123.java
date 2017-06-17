@@ -93,86 +93,86 @@ public class class123 {
          }
 
          long var4 = this.field1760;
-         int var7 = var3;
-         int var8;
+         int var6 = var3;
+         int var7;
          if(this.field1760 >= this.field1757 && this.field1760 < this.field1757 + (long)this.field1753) {
-            var8 = (int)((long)this.field1753 - (this.field1760 - this.field1757));
-            if(var8 > var3) {
-               var8 = var3;
+            var7 = (int)((long)this.field1753 - (this.field1760 - this.field1757));
+            if(var7 > var3) {
+               var7 = var3;
             }
 
-            System.arraycopy(this.field1751, (int)(this.field1760 - this.field1757), var1, var2, var8);
-            this.field1760 += (long)var8;
-            var2 += var8;
-            var3 -= var8;
+            System.arraycopy(this.field1751, (int)(this.field1760 - this.field1757), var1, var2, var7);
+            this.field1760 += (long)var7;
+            var2 += var7;
+            var3 -= var7;
          }
 
          if(var3 > this.field1751.length) {
             this.field1759.method2263(this.field1760);
 
-            for(this.field1750 = this.field1760; var3 > 0; var3 -= var8) {
-               var8 = this.field1759.method2267(var1, var2, var3);
-               if(var8 == -1) {
+            for(this.field1750 = this.field1760; var3 > 0; var3 -= var7) {
+               var7 = this.field1759.method2267(var1, var2, var3);
+               if(var7 == -1) {
                   break;
                }
 
-               this.field1750 += (long)var8;
-               this.field1760 += (long)var8;
-               var2 += var8;
+               this.field1750 += (long)var7;
+               this.field1760 += (long)var7;
+               var2 += var7;
             }
          } else if(var3 > 0) {
             this.method2240();
-            var8 = var3;
+            var7 = var3;
             if(var3 > this.field1753) {
-               var8 = this.field1753;
+               var7 = this.field1753;
             }
 
-            System.arraycopy(this.field1751, 0, var1, var2, var8);
-            var2 += var8;
-            var3 -= var8;
-            this.field1760 += (long)var8;
+            System.arraycopy(this.field1751, 0, var1, var2, var7);
+            var2 += var7;
+            var3 -= var7;
+            this.field1760 += (long)var7;
          }
 
          if(-1L != this.field1756) {
             if(this.field1756 > this.field1760 && var3 > 0) {
-               var8 = (int)(this.field1756 - this.field1760) + var2;
-               if(var8 > var3 + var2) {
-                  var8 = var3 + var2;
+               var7 = (int)(this.field1756 - this.field1760) + var2;
+               if(var7 > var3 + var2) {
+                  var7 = var3 + var2;
                }
 
-               while(var2 < var8) {
+               while(var2 < var7) {
                   var1[var2++] = 0;
                   --var3;
                   ++this.field1760;
                }
             }
 
-            long var13 = -1L;
+            long var8 = -1L;
             long var10 = -1L;
-            if(this.field1756 >= var4 && this.field1756 < (long)var7 + var4) {
-               var13 = this.field1756;
+            if(this.field1756 >= var4 && this.field1756 < (long)var6 + var4) {
+               var8 = this.field1756;
             } else if(var4 >= this.field1756 && var4 < this.field1756 + (long)this.field1752) {
-               var13 = var4;
+               var8 = var4;
             }
 
-            if((long)this.field1752 + this.field1756 > var4 && this.field1756 + (long)this.field1752 <= var4 + (long)var7) {
+            if((long)this.field1752 + this.field1756 > var4 && this.field1756 + (long)this.field1752 <= var4 + (long)var6) {
                var10 = this.field1756 + (long)this.field1752;
-            } else if(var4 + (long)var7 > this.field1756 && (long)var7 + var4 <= (long)this.field1752 + this.field1756) {
-               var10 = (long)var7 + var4;
+            } else if(var4 + (long)var6 > this.field1756 && (long)var6 + var4 <= (long)this.field1752 + this.field1756) {
+               var10 = (long)var6 + var4;
             }
 
-            if(var13 > -1L && var10 > var13) {
-               int var12 = (int)(var10 - var13);
-               System.arraycopy(this.field1754, (int)(var13 - this.field1756), var1, (int)(var13 - var4) + var2, var12);
+            if(var8 > -1L && var10 > var8) {
+               int var12 = (int)(var10 - var8);
+               System.arraycopy(this.field1754, (int)(var8 - this.field1756), var1, (int)(var8 - var4) + var2, var12);
                if(var10 > this.field1760) {
                   var3 = (int)((long)var3 - (var10 - this.field1760));
                   this.field1760 = var10;
                }
             }
          }
-      } catch (IOException var16) {
+      } catch (IOException var13) {
          this.field1750 = -1L;
-         throw var16;
+         throw var13;
       }
 
       if(var3 > 0) {
@@ -240,7 +240,6 @@ public class class123 {
                if(this.field1760 - this.field1756 > (long)this.field1752) {
                   this.field1752 = (int)(this.field1760 - this.field1756);
                }
-
             }
          } else {
             if(this.field1760 != this.field1750) {
@@ -254,12 +253,12 @@ public class class123 {
                this.field1758 = this.field1750;
             }
 
-            long var9 = -1L;
+            long var10 = -1L;
             long var6 = -1L;
             if(this.field1760 >= this.field1757 && this.field1760 < (long)this.field1753 + this.field1757) {
-               var9 = this.field1760;
+               var10 = this.field1760;
             } else if(this.field1757 >= this.field1760 && this.field1757 < this.field1760 + (long)var3) {
-               var9 = this.field1757;
+               var10 = this.field1757;
             }
 
             if(this.field1760 + (long)var3 > this.field1757 && (long)var3 + this.field1760 <= (long)this.field1753 + this.field1757) {
@@ -268,16 +267,17 @@ public class class123 {
                var6 = (long)this.field1753 + this.field1757;
             }
 
-            if(var9 > -1L && var6 > var9) {
-               int var8 = (int)(var6 - var9);
-               System.arraycopy(var1, (int)((long)var2 + var9 - this.field1760), this.field1751, (int)(var9 - this.field1757), var8);
+            if(var10 > -1L && var6 > var10) {
+               int var8 = (int)(var6 - var10);
+               System.arraycopy(var1, (int)((long)var2 + var10 - this.field1760), this.field1751, (int)(var10 - this.field1757), var8);
             }
 
             this.field1760 += (long)var3;
          }
-      } catch (IOException var12) {
+
+      } catch (IOException var9) {
          this.field1750 = -1L;
-         throw var12;
+         throw var9;
       }
    }
 
@@ -368,36 +368,35 @@ public class class123 {
          if(var3 == 4) {
             class92.loginIndex = 4;
          }
-
       } else {
          class92.loginIndex = var3;
          Rasterizer2D.method4827();
          byte[] var4 = var0.method4014("title.jpg", "");
-         BufferedImage var6 = null;
+         BufferedImage var5 = null;
 
-         SpritePixels var5;
+         SpritePixels var6;
          int var7;
          int var8;
-         label155: {
+         label143: {
             try {
-               var6 = ImageIO.read(new ByteArrayInputStream(var4));
-               var7 = var6.getWidth();
-               var8 = var6.getHeight();
+               var5 = ImageIO.read(new ByteArrayInputStream(var4));
+               var7 = var5.getWidth();
+               var8 = var5.getHeight();
                int[] var9 = new int[var7 * var8];
-               PixelGrabber var10 = new PixelGrabber(var6, 0, 0, var7, var8, var9, 0, var7);
+               PixelGrabber var10 = new PixelGrabber(var5, 0, 0, var7, var8, var9, 0, var7);
                var10.grabPixels();
-               var5 = new SpritePixels(var9, var7, var8);
-               break label155;
-            } catch (IOException var13) {
+               var6 = new SpritePixels(var9, var7, var8);
+               break label143;
+            } catch (IOException var11) {
                ;
-            } catch (InterruptedException var14) {
+            } catch (InterruptedException var12) {
                ;
             }
 
-            var5 = new SpritePixels(0, 0);
+            var6 = new SpritePixels(0, 0);
          }
 
-         class37.field519 = var5;
+         class37.field519 = var6;
          class92.field1419 = class37.field519.method4930();
          if((Client.flags & 536870912) != 0) {
             class92.field1416 = class273.method4789(var1, "logo_deadman_mode", "");
@@ -413,57 +412,57 @@ public class class123 {
          FrameMap.field2055 = class273.method4789(var1, "options_radio_buttons,2", "");
          class48.field629 = new int[256];
 
-         int var11;
-         for(var11 = 0; var11 < 64; ++var11) {
-            class48.field629[var11] = var11 * 262144;
+         int var13;
+         for(var13 = 0; var13 < 64; ++var13) {
+            class48.field629[var13] = var13 * 262144;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class48.field629[var11 + 64] = var11 * 1024 + 16711680;
+         for(var13 = 0; var13 < 64; ++var13) {
+            class48.field629[var13 + 64] = var13 * 1024 + 16711680;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class48.field629[var11 + 128] = var11 * 4 + 16776960;
+         for(var13 = 0; var13 < 64; ++var13) {
+            class48.field629[var13 + 128] = var13 * 4 + 16776960;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class48.field629[var11 + 192] = 16777215;
+         for(var13 = 0; var13 < 64; ++var13) {
+            class48.field629[var13 + 192] = 16777215;
          }
 
          class43.field583 = new int[256];
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class43.field583[var11] = var11 * 1024;
+         for(var13 = 0; var13 < 64; ++var13) {
+            class43.field583[var13] = var13 * 1024;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class43.field583[var11 + 64] = var11 * 4 + '\uff00';
+         for(var13 = 0; var13 < 64; ++var13) {
+            class43.field583[var13 + 64] = var13 * 4 + '\uff00';
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class43.field583[var11 + 128] = var11 * 262144 + '\uffff';
+         for(var13 = 0; var13 < 64; ++var13) {
+            class43.field583[var13 + 128] = var13 * 262144 + '\uffff';
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class43.field583[var11 + 192] = 16777215;
+         for(var13 = 0; var13 < 64; ++var13) {
+            class43.field583[var13 + 192] = 16777215;
          }
 
          XClanMember.field897 = new int[256];
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            XClanMember.field897[var11] = var11 * 4;
+         for(var13 = 0; var13 < 64; ++var13) {
+            XClanMember.field897[var13] = var13 * 4;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            XClanMember.field897[var11 + 64] = var11 * 262144 + 255;
+         for(var13 = 0; var13 < 64; ++var13) {
+            XClanMember.field897[var13 + 64] = var13 * 262144 + 255;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            XClanMember.field897[var11 + 128] = var11 * 1024 + 16711935;
+         for(var13 = 0; var13 < 64; ++var13) {
+            XClanMember.field897[var13 + 128] = var13 * 1024 + 16711935;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            XClanMember.field897[var11 + 192] = 16777215;
+         for(var13 = 0; var13 < 64; ++var13) {
+            XClanMember.field897[var13 + 192] = 16777215;
          }
 
          class277.field3736 = new int[256];
@@ -482,11 +481,11 @@ public class class123 {
          class92.field1430 = true;
          class92.worldSelectShown = false;
          if(!Item.field1481.field1300) {
-            IndexData var15 = FaceNormal.indexTrack1;
-            var7 = var15.method4055("scape main");
-            var8 = var15.method4020(var7, "");
+            IndexData var14 = FaceNormal.indexTrack1;
+            var7 = var14.method4055("scape main");
+            var8 = var14.method4020(var7, "");
             class203.field2517 = 1;
-            class203.field2518 = var15;
+            class203.field2518 = var14;
             class203.field2519 = var7;
             class29.field438 = var8;
             class182.field2455 = 255;
@@ -510,5 +509,6 @@ public class class123 {
          class92.field1419.method4949(class92.field1414 + 382, 0);
          class92.field1416.method4923(class92.field1414 + 382 - class92.field1416.originalWidth / 2, 18);
       }
+
    }
 }

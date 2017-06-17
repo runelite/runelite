@@ -31,21 +31,19 @@ public class class64 {
       garbageValue = "-1988550244"
    )
    static void method1022(int var0) {
-      if(var0 != -1) {
-         if(class59.method961(var0)) {
-            Widget[] var1 = Widget.widgets[var0];
+      if(var0 != -1 && class59.method961(var0)) {
+         Widget[] var1 = Widget.widgets[var0];
 
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               Widget var3 = var1[var2];
-               if(var3.field2735 != null) {
-                  class69 var4 = new class69();
-                  var4.field822 = var3;
-                  var4.field821 = var3.field2735;
-                  class46.method671(var4, 2000000);
-               }
+         for(int var2 = 0; var2 < var1.length; ++var2) {
+            Widget var3 = var1[var2];
+            if(var3.field2735 != null) {
+               class69 var4 = new class69();
+               var4.field822 = var3;
+               var4.field821 = var3.field2735;
+               class46.method671(var4, 2000000);
             }
-
          }
       }
+
    }
 }

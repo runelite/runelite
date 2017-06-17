@@ -21,27 +21,20 @@ public class class87 {
       garbageValue = "-81403821"
    )
    static final void method1599(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
-      if(!Client.isMenuOpen) {
-         if(Client.menuOptionCount < 500) {
-            Client.menuOptions[Client.menuOptionCount] = var0;
-            Client.menuTargets[Client.menuOptionCount] = var1;
-            Client.menuTypes[Client.menuOptionCount] = var2;
-            Client.menuIdentifiers[Client.menuOptionCount] = var3;
-            Client.menuActionParams0[Client.menuOptionCount] = var4;
-            Client.menuActionParams1[Client.menuOptionCount] = var5;
-            if(var6) {
-               Client.field1053 = Client.menuOptionCount;
-            }
-
-            ++Client.menuOptionCount;
+      if(!Client.isMenuOpen && Client.menuOptionCount < 500) {
+         Client.menuOptions[Client.menuOptionCount] = var0;
+         Client.menuTargets[Client.menuOptionCount] = var1;
+         Client.menuTypes[Client.menuOptionCount] = var2;
+         Client.menuIdentifiers[Client.menuOptionCount] = var3;
+         Client.menuActionParams0[Client.menuOptionCount] = var4;
+         Client.menuActionParams1[Client.menuOptionCount] = var5;
+         if(var6) {
+            Client.field1053 = Client.menuOptionCount;
          }
 
+         ++Client.menuOptionCount;
       }
-   }
 
-   static {
-      field1363 = new BigInteger("80782894952180643741752986186714059433953886149239752893425047584684715842049");
-      field1367 = new BigInteger("7237300117305667488707183861728052766358166655052137727439795191253340127955075499635575104901523446809299097934591732635674173519120047404024393881551683");
    }
 
    @ObfuscatedName("ii")
@@ -85,7 +78,7 @@ public class class87 {
 
          class155.field2263.method2246();
          class155.field2256.method2246();
-      } catch (Exception var2) {
+      } catch (Exception var1) {
          ;
       }
 
@@ -103,5 +96,10 @@ public class class87 {
          class203.field2516.method3592(var0);
       }
 
+   }
+
+   static {
+      field1363 = new BigInteger("80782894952180643741752986186714059433953886149239752893425047584684715842049");
+      field1367 = new BigInteger("7237300117305667488707183861728052766358166655052137727439795191253340127955075499635575104901523446809299097934591732635674173519120047404024393881551683");
    }
 }

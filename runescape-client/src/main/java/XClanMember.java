@@ -172,7 +172,6 @@ public class XClanMember extends Node {
                   --var0.field1267;
                }
             }
-
          } else {
             var0.x = var3;
             var0.y = var4;
@@ -180,9 +179,9 @@ public class XClanMember extends Node {
             if(var0.field1267 > 0) {
                --var0.field1267;
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("hd")
@@ -246,7 +245,7 @@ public class XClanMember extends Node {
       class286.field3791 = null;
       class149.field2211 = null;
       class116.field1686 = null;
-      class286.field3797 = null;
+      class286.field3797 = (byte[][])null;
       return var0;
    }
 }

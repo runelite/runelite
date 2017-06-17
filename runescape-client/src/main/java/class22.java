@@ -160,6 +160,7 @@ public class class22 extends class28 {
          class136.setRasterClippingEnabled(var17, var19, var20);
          class136.rasterFlat(var21, var23, var24, var17, var19, var20, var4);
       }
+
    }
 
    @ObfuscatedName("gj")
@@ -173,8 +174,9 @@ public class class22 extends class28 {
       int var7;
       int var8;
       int var9;
+      int var10;
       int var11;
-      int var12;
+      ModIcon var14;
       if(var5 != 0) {
          var6 = class17.region.method2727(var0, var1, var2, var5);
          var7 = var6 >> 6 & 3;
@@ -184,12 +186,12 @@ public class class22 extends class28 {
             var9 = var4;
          }
 
-         int[] var10 = Actor.field1268.image;
-         var11 = (103 - var2) * 2048 + var1 * 4 + 24624;
-         var12 = var5 >> 14 & 32767;
-         ObjectComposition var13 = class29.getObjectDefinition(var12);
+         int[] var12 = Actor.field1268.image;
+         var10 = (103 - var2) * 2048 + var1 * 4 + 24624;
+         var11 = var5 >> 14 & 32767;
+         ObjectComposition var13 = class29.getObjectDefinition(var11);
          if(var13.mapSceneId != -1) {
-            ModIcon var14 = Client.field925[var13.mapSceneId];
+            var14 = Client.field925[var13.mapSceneId];
             if(var14 != null) {
                int var15 = (var13.sizeX * 4 - var14.originalWidth) / 2;
                int var16 = (var13.sizeY * 4 - var14.height) / 2;
@@ -198,99 +200,100 @@ public class class22 extends class28 {
          } else {
             if(var8 == 0 || var8 == 2) {
                if(var7 == 0) {
-                  var10[var11] = var9;
-                  var10[var11 + 512] = var9;
-                  var10[var11 + 1024] = var9;
-                  var10[var11 + 1536] = var9;
+                  var12[var10] = var9;
+                  var12[var10 + 512] = var9;
+                  var12[var10 + 1024] = var9;
+                  var12[var10 + 1536] = var9;
                } else if(var7 == 1) {
-                  var10[var11] = var9;
-                  var10[var11 + 1] = var9;
-                  var10[var11 + 2] = var9;
-                  var10[var11 + 3] = var9;
+                  var12[var10] = var9;
+                  var12[var10 + 1] = var9;
+                  var12[var10 + 2] = var9;
+                  var12[var10 + 3] = var9;
                } else if(var7 == 2) {
-                  var10[var11 + 3] = var9;
-                  var10[var11 + 3 + 512] = var9;
-                  var10[var11 + 3 + 1024] = var9;
-                  var10[var11 + 3 + 1536] = var9;
+                  var12[var10 + 3] = var9;
+                  var12[var10 + 3 + 512] = var9;
+                  var12[var10 + 3 + 1024] = var9;
+                  var12[var10 + 3 + 1536] = var9;
                } else if(var7 == 3) {
-                  var10[var11 + 1536] = var9;
-                  var10[var11 + 1536 + 1] = var9;
-                  var10[var11 + 1536 + 2] = var9;
-                  var10[var11 + 1536 + 3] = var9;
+                  var12[var10 + 1536] = var9;
+                  var12[var10 + 1536 + 1] = var9;
+                  var12[var10 + 1536 + 2] = var9;
+                  var12[var10 + 1536 + 3] = var9;
                }
             }
 
             if(var8 == 3) {
                if(var7 == 0) {
-                  var10[var11] = var9;
+                  var12[var10] = var9;
                } else if(var7 == 1) {
-                  var10[var11 + 3] = var9;
+                  var12[var10 + 3] = var9;
                } else if(var7 == 2) {
-                  var10[var11 + 3 + 1536] = var9;
+                  var12[var10 + 3 + 1536] = var9;
                } else if(var7 == 3) {
-                  var10[var11 + 1536] = var9;
+                  var12[var10 + 1536] = var9;
                }
             }
 
             if(var8 == 2) {
                if(var7 == 3) {
-                  var10[var11] = var9;
-                  var10[var11 + 512] = var9;
-                  var10[var11 + 1024] = var9;
-                  var10[var11 + 1536] = var9;
+                  var12[var10] = var9;
+                  var12[var10 + 512] = var9;
+                  var12[var10 + 1024] = var9;
+                  var12[var10 + 1536] = var9;
                } else if(var7 == 0) {
-                  var10[var11] = var9;
-                  var10[var11 + 1] = var9;
-                  var10[var11 + 2] = var9;
-                  var10[var11 + 3] = var9;
+                  var12[var10] = var9;
+                  var12[var10 + 1] = var9;
+                  var12[var10 + 2] = var9;
+                  var12[var10 + 3] = var9;
                } else if(var7 == 1) {
-                  var10[var11 + 3] = var9;
-                  var10[var11 + 3 + 512] = var9;
-                  var10[var11 + 3 + 1024] = var9;
-                  var10[var11 + 3 + 1536] = var9;
+                  var12[var10 + 3] = var9;
+                  var12[var10 + 3 + 512] = var9;
+                  var12[var10 + 3 + 1024] = var9;
+                  var12[var10 + 3 + 1536] = var9;
                } else if(var7 == 2) {
-                  var10[var11 + 1536] = var9;
-                  var10[var11 + 1536 + 1] = var9;
-                  var10[var11 + 1536 + 2] = var9;
-                  var10[var11 + 1536 + 3] = var9;
+                  var12[var10 + 1536] = var9;
+                  var12[var10 + 1536 + 1] = var9;
+                  var12[var10 + 1536 + 2] = var9;
+                  var12[var10 + 1536 + 3] = var9;
                }
             }
          }
       }
 
       var5 = class17.region.method2606(var0, var1, var2);
+      ObjectComposition var17;
       if(var5 != 0) {
          var6 = class17.region.method2727(var0, var1, var2, var5);
          var7 = var6 >> 6 & 3;
          var8 = var6 & 31;
          var9 = var5 >> 14 & 32767;
-         ObjectComposition var23 = class29.getObjectDefinition(var9);
+         var17 = class29.getObjectDefinition(var9);
          int var18;
-         if(var23.mapSceneId != -1) {
-            ModIcon var17 = Client.field925[var23.mapSceneId];
-            if(var17 != null) {
-               var12 = (var23.sizeX * 4 - var17.originalWidth) / 2;
-               var18 = (var23.sizeY * 4 - var17.height) / 2;
-               var17.method4923(var12 + var1 * 4 + 48, var18 + (104 - var2 - var23.sizeY) * 4 + 48);
+         if(var17.mapSceneId != -1) {
+            var14 = Client.field925[var17.mapSceneId];
+            if(var14 != null) {
+               var11 = (var17.sizeX * 4 - var14.originalWidth) / 2;
+               var18 = (var17.sizeY * 4 - var14.height) / 2;
+               var14.method4923(var11 + var1 * 4 + 48, var18 + (104 - var2 - var17.sizeY) * 4 + 48);
             }
          } else if(var8 == 9) {
-            var11 = 15658734;
+            var10 = 15658734;
             if(var5 > 0) {
-               var11 = 15597568;
+               var10 = 15597568;
             }
 
-            int[] var22 = Actor.field1268.image;
+            int[] var20 = Actor.field1268.image;
             var18 = var1 * 4 + 24624 + (103 - var2) * 2048;
             if(var7 != 0 && var7 != 2) {
-               var22[var18] = var11;
-               var22[var18 + 512 + 1] = var11;
-               var22[var18 + 1024 + 2] = var11;
-               var22[var18 + 1536 + 3] = var11;
+               var20[var18] = var10;
+               var20[var18 + 512 + 1] = var10;
+               var20[var18 + 1024 + 2] = var10;
+               var20[var18 + 1536 + 3] = var10;
             } else {
-               var22[var18 + 1536] = var11;
-               var22[var18 + 1024 + 1] = var11;
-               var22[var18 + 512 + 2] = var11;
-               var22[var18 + 3] = var11;
+               var20[var18 + 1536] = var10;
+               var20[var18 + 1024 + 1] = var10;
+               var20[var18 + 512 + 2] = var10;
+               var20[var18 + 3] = var10;
             }
          }
       }
@@ -298,13 +301,13 @@ public class class22 extends class28 {
       var5 = class17.region.method2659(var0, var1, var2);
       if(var5 != 0) {
          var6 = var5 >> 14 & 32767;
-         ObjectComposition var19 = class29.getObjectDefinition(var6);
-         if(var19.mapSceneId != -1) {
-            ModIcon var20 = Client.field925[var19.mapSceneId];
-            if(var20 != null) {
-               var9 = (var19.sizeX * 4 - var20.originalWidth) / 2;
-               int var21 = (var19.sizeY * 4 - var20.height) / 2;
-               var20.method4923(var1 * 4 + 48 + var9, var21 + (104 - var2 - var19.sizeY) * 4 + 48);
+         var17 = class29.getObjectDefinition(var6);
+         if(var17.mapSceneId != -1) {
+            ModIcon var19 = Client.field925[var17.mapSceneId];
+            if(var19 != null) {
+               var9 = (var17.sizeX * 4 - var19.originalWidth) / 2;
+               int var21 = (var17.sizeY * 4 - var19.height) / 2;
+               var19.method4923(var1 * 4 + 48 + var9, var21 + (104 - var2 - var17.sizeY) * 4 + 48);
             }
          }
       }

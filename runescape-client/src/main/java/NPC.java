@@ -134,7 +134,7 @@ public final class NPC extends Actor {
          return null;
       } else {
          Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?GameEngine.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation != -1 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?GameEngine.getAnimation(super.poseAnimation):null;
+         Sequence var2 = super.poseAnimation == -1 || super.idlePoseAnimation == super.poseAnimation && var1 != null?null:GameEngine.getAnimation(super.poseAnimation);
          Model var3 = this.composition.method4514(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;

@@ -12,16 +12,16 @@ public class class265 {
       garbageValue = "1"
    )
    public static ModIcon method4726(IndexDataBase var0, int var1) {
-      byte[] var3 = var0.method4001(var1);
-      boolean var2;
-      if(var3 == null) {
-         var2 = false;
+      byte[] var2 = var0.method4001(var1);
+      boolean var3;
+      if(var2 == null) {
+         var3 = false;
       } else {
-         ISAACCipher.method3321(var3);
-         var2 = true;
+         ISAACCipher.method3321(var2);
+         var3 = true;
       }
 
-      if(!var2) {
+      if(!var3) {
          return null;
       } else {
          ModIcon var4 = new ModIcon();
@@ -38,7 +38,7 @@ public class class265 {
          class286.field3791 = null;
          class149.field2211 = null;
          class116.field1686 = null;
-         class286.field3797 = null;
+         class286.field3797 = (byte[][])null;
          return var4;
       }
    }

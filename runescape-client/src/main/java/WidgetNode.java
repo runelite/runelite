@@ -131,26 +131,26 @@ public class WidgetNode extends Node {
    static int method1032(int var0, Script var1, boolean var2) {
       int var3;
       int var4;
-      int var6;
+      int var5;
       if(var0 == 3400) {
          class83.intStackSize -= 2;
          var3 = class83.intStack[class83.intStackSize];
          var4 = class83.intStack[class83.intStackSize + 1];
-         Enum var5 = class176.method3269(var3);
-         if(var5.valType != 115) {
+         Enum var9 = class176.method3269(var3);
+         if(var9.valType != 115) {
             ;
          }
 
-         for(var6 = 0; var6 < var5.size; ++var6) {
-            if(var4 == var5.keys[var6]) {
-               class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var5.stringVals[var6];
-               var5 = null;
+         for(var5 = 0; var5 < var9.size; ++var5) {
+            if(var4 == var9.keys[var5]) {
+               class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var9.stringVals[var5];
+               var9 = null;
                break;
             }
          }
 
-         if(var5 != null) {
-            class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var5.defaultString;
+         if(var9 != null) {
+            class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var9.defaultString;
          }
 
          return 1;
@@ -160,12 +160,12 @@ public class WidgetNode extends Node {
          class83.intStackSize -= 4;
          var3 = class83.intStack[class83.intStackSize];
          var4 = class83.intStack[class83.intStackSize + 1];
-         int var9 = class83.intStack[class83.intStackSize + 2];
-         var6 = class83.intStack[class83.intStackSize + 3];
-         Enum var7 = class176.method3269(var9);
+         int var6 = class83.intStack[class83.intStackSize + 2];
+         var5 = class83.intStack[class83.intStackSize + 3];
+         Enum var7 = class176.method3269(var6);
          if(var7.keyType == var3 && var7.valType == var4) {
             for(int var8 = 0; var8 < var7.size; ++var8) {
-               if(var6 == var7.keys[var8]) {
+               if(var5 == var7.keys[var8]) {
                   if(var4 == 115) {
                      class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var7.stringVals[var8];
                   } else {

@@ -35,24 +35,23 @@ public class FaceNormal {
       garbageValue = "-2083302659"
    )
    static void method2763(Sequence var0, int var1, int var2, int var3) {
-      if(Client.field931 < 50 && Client.field1041 != 0) {
-         if(var0.field3610 != null && var1 < var0.field3610.length) {
-            int var4 = var0.field3610[var1];
-            if(var4 != 0) {
-               int var5 = var4 >> 8;
-               int var6 = var4 >> 4 & 7;
-               int var7 = var4 & 15;
-               Client.field1036[Client.field931] = var5;
-               Client.field1155[Client.field931] = var6;
-               Client.field1150[Client.field931] = 0;
-               Client.audioEffects[Client.field931] = null;
-               int var8 = (var2 - 64) / 128;
-               int var9 = (var3 - 64) / 128;
-               Client.field1170[Client.field931] = (var9 << 8) + (var8 << 16) + var7;
-               ++Client.field931;
-            }
+      if(Client.field931 < 50 && Client.field1041 != 0 && var0.field3610 != null && var1 < var0.field3610.length) {
+         int var4 = var0.field3610[var1];
+         if(var4 != 0) {
+            int var5 = var4 >> 8;
+            int var6 = var4 >> 4 & 7;
+            int var7 = var4 & 15;
+            Client.field1036[Client.field931] = var5;
+            Client.field1155[Client.field931] = var6;
+            Client.field1150[Client.field931] = 0;
+            Client.audioEffects[Client.field931] = null;
+            int var8 = (var2 - 64) / 128;
+            int var9 = (var3 - 64) / 128;
+            Client.field1170[Client.field931] = (var9 << 8) + (var8 << 16) + var7;
+            ++Client.field931;
          }
       }
+
    }
 
    @ObfuscatedName("a")

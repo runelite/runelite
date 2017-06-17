@@ -75,11 +75,11 @@ final class class5 implements class0 {
             class83.intStack[++class83.intStackSize - 1] = class43.method596(var3, var4);
             return 1;
          } else {
-            int var10;
+            int var9;
             if(var0 == 3304) {
                var3 = class83.intStack[--class83.intStackSize];
-               int[] var9 = class83.intStack;
-               var10 = ++class83.intStackSize - 1;
+               int[] var10 = class83.intStack;
+               var9 = ++class83.intStackSize - 1;
                class240 var11 = (class240)class240.field3286.get((long)var3);
                class240 var12;
                if(var11 != null) {
@@ -95,7 +95,7 @@ final class class5 implements class0 {
                   var12 = var11;
                }
 
-               var9[var10] = var12.field3287;
+               var10[var9] = var12.field3287;
                return 1;
             } else if(var0 == 3305) {
                var3 = class83.intStack[--class83.intStackSize];
@@ -112,8 +112,8 @@ final class class5 implements class0 {
             } else if(var0 == 3308) {
                var3 = Player.plane;
                var4 = (class20.localPlayer.x >> 7) + class19.baseX;
-               var10 = (class20.localPlayer.y >> 7) + class21.baseY;
-               class83.intStack[++class83.intStackSize - 1] = (var3 << 28) + (var4 << 14) + var10;
+               var9 = (class20.localPlayer.y >> 7) + class21.baseY;
+               class83.intStack[++class83.intStackSize - 1] = (var3 << 28) + (var4 << 14) + var9;
                return 1;
             } else if(var0 == 3309) {
                var3 = class83.intStack[--class83.intStackSize];
@@ -189,10 +189,10 @@ final class class5 implements class0 {
                   class83.intStackSize -= 4;
                   var3 = class83.intStack[class83.intStackSize];
                   var4 = class83.intStack[class83.intStackSize + 1];
-                  var10 = class83.intStack[class83.intStackSize + 2];
+                  var9 = class83.intStack[class83.intStackSize + 2];
                   var6 = class83.intStack[class83.intStackSize + 3];
                   var3 += var4 << 14;
-                  var3 += var10 << 28;
+                  var3 += var9 << 28;
                   var3 += var6;
                   class83.intStack[++class83.intStackSize - 1] = var3;
                   return 1;

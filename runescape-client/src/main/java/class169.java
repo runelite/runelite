@@ -26,8 +26,8 @@ public class class169 {
             ++class238.field3276;
             class238.field3258 = null;
          }
-
       }
+
    }
 
    @ObfuscatedName("jo")

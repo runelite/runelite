@@ -52,17 +52,17 @@ public class Rasterizer2D extends CacheableNode {
          int var6 = (var3 >> 16 & 255) * var4;
          int var7 = (var3 >> 8 & 255) * var4;
          int var8 = (var3 & 255) * var4;
-         int var12 = var0 + var1 * graphicsPixelsWidth;
+         int var9 = var0 + var1 * graphicsPixelsWidth;
 
-         for(int var13 = 0; var13 < var2; ++var13) {
-            int var9 = (graphicsPixels[var12] >> 16 & 255) * var5;
-            int var10 = (graphicsPixels[var12] >> 8 & 255) * var5;
-            int var11 = (graphicsPixels[var12] & 255) * var5;
-            int var14 = (var6 + var9 >> 8 << 16) + (var7 + var10 >> 8 << 8) + (var8 + var11 >> 8);
-            graphicsPixels[var12++] = var14;
+         for(int var10 = 0; var10 < var2; ++var10) {
+            int var11 = (graphicsPixels[var9] >> 16 & 255) * var5;
+            int var12 = (graphicsPixels[var9] >> 8 & 255) * var5;
+            int var13 = (graphicsPixels[var9] & 255) * var5;
+            int var14 = (var6 + var11 >> 8 << 16) + (var7 + var12 >> 8 << 8) + (var8 + var13 >> 8);
+            graphicsPixels[var9++] = var14;
          }
-
       }
+
    }
 
    @ObfuscatedName("dv")
@@ -375,8 +375,8 @@ public class Rasterizer2D extends CacheableNode {
             ++var6;
             var11 += var9 + var9;
          }
-
       }
+
    }
 
    @ObfuscatedName("dx")
@@ -393,102 +393,102 @@ public class Rasterizer2D extends CacheableNode {
             int var6 = (var3 >> 16 & 255) * var4;
             int var7 = (var3 >> 8 & 255) * var4;
             int var8 = (var3 & 255) * var4;
-            int var12 = var1 - var2;
-            if(var12 < drawingAreaTop) {
-               var12 = drawingAreaTop;
+            int var9 = var1 - var2;
+            if(var9 < drawingAreaTop) {
+               var9 = drawingAreaTop;
             }
 
-            int var13 = var1 + var2 + 1;
-            if(var13 > drawingAreaRight) {
-               var13 = drawingAreaRight;
+            int var10 = var1 + var2 + 1;
+            if(var10 > drawingAreaRight) {
+               var10 = drawingAreaRight;
             }
 
-            int var14 = var12;
-            int var15 = var2 * var2;
-            int var16 = 0;
-            int var17 = var1 - var12;
-            int var18 = var17 * var17;
-            int var19 = var18 - var17;
-            if(var1 > var13) {
-               var1 = var13;
+            int var11 = var9;
+            int var12 = var2 * var2;
+            int var13 = 0;
+            int var14 = var1 - var9;
+            int var15 = var14 * var14;
+            int var16 = var15 - var14;
+            if(var1 > var10) {
+               var1 = var10;
             }
 
-            int var9;
-            int var10;
-            int var11;
+            int var17;
+            int var18;
+            int var19;
             int var20;
             int var21;
             int var22;
             int var23;
             int var24;
-            while(var14 < var1) {
-               while(var19 <= var15 || var18 <= var15) {
-                  var18 += var16 + var16;
-                  var19 += var16++ + var16;
+            while(var11 < var1) {
+               while(var16 <= var12 || var15 <= var12) {
+                  var15 += var13 + var13;
+                  var16 += var13++ + var13;
                }
 
-               var20 = var0 - var16 + 1;
+               var20 = var0 - var13 + 1;
                if(var20 < field3752) {
                   var20 = field3752;
                }
 
-               var21 = var0 + var16;
+               var21 = var0 + var13;
                if(var21 > drawingAreaBottom) {
                   var21 = drawingAreaBottom;
                }
 
-               var22 = var20 + var14 * graphicsPixelsWidth;
+               var22 = var20 + var11 * graphicsPixelsWidth;
 
                for(var23 = var20; var23 < var21; ++var23) {
-                  var9 = (graphicsPixels[var22] >> 16 & 255) * var5;
-                  var10 = (graphicsPixels[var22] >> 8 & 255) * var5;
-                  var11 = (graphicsPixels[var22] & 255) * var5;
-                  var24 = (var6 + var9 >> 8 << 16) + (var7 + var10 >> 8 << 8) + (var8 + var11 >> 8);
+                  var17 = (graphicsPixels[var22] >> 16 & 255) * var5;
+                  var18 = (graphicsPixels[var22] >> 8 & 255) * var5;
+                  var19 = (graphicsPixels[var22] & 255) * var5;
+                  var24 = (var6 + var17 >> 8 << 16) + (var7 + var18 >> 8 << 8) + (var8 + var19 >> 8);
                   graphicsPixels[var22++] = var24;
                }
 
-               ++var14;
-               var18 -= var17-- + var17;
-               var19 -= var17 + var17;
+               ++var11;
+               var15 -= var14-- + var14;
+               var16 -= var14 + var14;
             }
 
-            var16 = var2;
-            var17 = -var17;
-            var19 = var17 * var17 + var15;
-            var18 = var19 - var2;
+            var13 = var2;
+            var14 = -var14;
+            var16 = var14 * var14 + var12;
+            var15 = var16 - var2;
 
-            for(var19 -= var17; var14 < var13; var18 += var17++ + var17) {
-               while(var19 > var15 && var18 > var15) {
-                  var19 -= var16-- + var16;
-                  var18 -= var16 + var16;
+            for(var16 -= var14; var11 < var10; var15 += var14++ + var14) {
+               while(var16 > var12 && var15 > var12) {
+                  var16 -= var13-- + var13;
+                  var15 -= var13 + var13;
                }
 
-               var20 = var0 - var16;
+               var20 = var0 - var13;
                if(var20 < field3752) {
                   var20 = field3752;
                }
 
-               var21 = var0 + var16;
+               var21 = var0 + var13;
                if(var21 > drawingAreaBottom - 1) {
                   var21 = drawingAreaBottom - 1;
                }
 
-               var22 = var20 + var14 * graphicsPixelsWidth;
+               var22 = var20 + var11 * graphicsPixelsWidth;
 
                for(var23 = var20; var23 <= var21; ++var23) {
-                  var9 = (graphicsPixels[var22] >> 16 & 255) * var5;
-                  var10 = (graphicsPixels[var22] >> 8 & 255) * var5;
-                  var11 = (graphicsPixels[var22] & 255) * var5;
-                  var24 = (var6 + var9 >> 8 << 16) + (var7 + var10 >> 8 << 8) + (var8 + var11 >> 8);
+                  var17 = (graphicsPixels[var22] >> 16 & 255) * var5;
+                  var18 = (graphicsPixels[var22] >> 8 & 255) * var5;
+                  var19 = (graphicsPixels[var22] & 255) * var5;
+                  var24 = (var6 + var17 >> 8 << 16) + (var7 + var18 >> 8 << 8) + (var8 + var19 >> 8);
                   graphicsPixels[var22++] = var24;
                }
 
-               ++var14;
-               var19 += var17 + var17;
+               ++var11;
+               var16 += var14 + var14;
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("dm")
@@ -633,78 +633,76 @@ public class Rasterizer2D extends CacheableNode {
       garbageValue = "1"
    )
    public static void method4831(int var0, int var1, int var2, int var3, int var4, int var5, byte[] var6, int var7) {
-      if(var0 + var2 >= 0 && var1 + var3 >= 0) {
-         if(var0 < graphicsPixelsWidth && var1 < graphicsPixelsHeight) {
-            int var8 = 0;
-            int var9 = 0;
-            if(var0 < 0) {
-               var8 -= var0;
-               var2 += var0;
+      if(var0 + var2 >= 0 && var1 + var3 >= 0 && var0 < graphicsPixelsWidth && var1 < graphicsPixelsHeight) {
+         int var8 = 0;
+         int var9 = 0;
+         if(var0 < 0) {
+            var8 -= var0;
+            var2 += var0;
+         }
+
+         if(var1 < 0) {
+            var9 -= var1;
+            var3 += var1;
+         }
+
+         if(var0 + var2 > graphicsPixelsWidth) {
+            var2 = graphicsPixelsWidth - var0;
+         }
+
+         if(var1 + var3 > graphicsPixelsHeight) {
+            var3 = graphicsPixelsHeight - var1;
+         }
+
+         int var10 = var6.length / var7;
+         int var11 = graphicsPixelsWidth - var2;
+         int var12 = var4 >>> 24;
+         int var13 = var5 >>> 24;
+         int var14;
+         int var15;
+         int var16;
+         int var17;
+         int var18;
+         if(var12 == 255 && var13 == 255) {
+            var14 = (var1 + var9) * graphicsPixelsWidth + var0 + var8;
+
+            for(var15 = var1 + var9; var15 < var1 + var9 + var3; ++var15) {
+               for(var16 = var0 + var8; var16 < var0 + var8 + var2; ++var16) {
+                  var17 = (var15 - var1) % var10;
+                  var18 = (var16 - var0) % var7;
+                  if(var6[var17 * var7 + var18] != 0) {
+                     graphicsPixels[var14++] = var5;
+                  } else {
+                     graphicsPixels[var14++] = var4;
+                  }
+               }
+
+               var14 += var11;
             }
+         } else {
+            var14 = (var1 + var9) * graphicsPixelsWidth + var0 + var8;
 
-            if(var1 < 0) {
-               var9 -= var1;
-               var3 += var1;
-            }
-
-            if(var0 + var2 > graphicsPixelsWidth) {
-               var2 = graphicsPixelsWidth - var0;
-            }
-
-            if(var1 + var3 > graphicsPixelsHeight) {
-               var3 = graphicsPixelsHeight - var1;
-            }
-
-            int var10 = var6.length / var7;
-            int var11 = graphicsPixelsWidth - var2;
-            int var12 = var4 >>> 24;
-            int var13 = var5 >>> 24;
-            int var14;
-            int var15;
-            int var16;
-            int var17;
-            int var18;
-            if(var12 == 255 && var13 == 255) {
-               var14 = (var1 + var9) * graphicsPixelsWidth + var0 + var8;
-
-               for(var15 = var1 + var9; var15 < var1 + var9 + var3; ++var15) {
-                  for(var16 = var0 + var8; var16 < var0 + var8 + var2; ++var16) {
-                     var17 = (var15 - var1) % var10;
-                     var18 = (var16 - var0) % var7;
-                     if(var6[var17 * var7 + var18] != 0) {
-                        graphicsPixels[var14++] = var5;
-                     } else {
-                        graphicsPixels[var14++] = var4;
-                     }
+            for(var15 = var1 + var9; var15 < var1 + var9 + var3; ++var15) {
+               for(var16 = var0 + var8; var16 < var0 + var8 + var2; ++var16) {
+                  var17 = (var15 - var1) % var10;
+                  var18 = (var16 - var0) % var7;
+                  int var19 = var4;
+                  if(var6[var17 * var7 + var18] != 0) {
+                     var19 = var5;
                   }
 
-                  var14 += var11;
+                  int var20 = var19 >>> 24;
+                  int var21 = 255 - var20;
+                  int var22 = graphicsPixels[var14];
+                  int var23 = ((var19 & 16711935) * var20 + (var22 & 16711935) * var21 & -16711936) + ((var19 & '\uff00') * var20 + (var22 & '\uff00') * var21 & 16711680) >> 8;
+                  graphicsPixels[var14++] = var23;
                }
-            } else {
-               var14 = (var1 + var9) * graphicsPixelsWidth + var0 + var8;
 
-               for(var15 = var1 + var9; var15 < var1 + var9 + var3; ++var15) {
-                  for(var16 = var0 + var8; var16 < var0 + var8 + var2; ++var16) {
-                     var17 = (var15 - var1) % var10;
-                     var18 = (var16 - var0) % var7;
-                     int var19 = var4;
-                     if(var6[var17 * var7 + var18] != 0) {
-                        var19 = var5;
-                     }
-
-                     int var20 = var19 >>> 24;
-                     int var21 = 255 - var20;
-                     int var22 = graphicsPixels[var14];
-                     int var23 = ((var19 & 16711935) * var20 + (var22 & 16711935) * var21 & -16711936) + ((var19 & '\uff00') * var20 + (var22 & '\uff00') * var21 & 16711680) >> 8;
-                     graphicsPixels[var14++] = var23;
-                  }
-
-                  var14 += var11;
-               }
+               var14 += var11;
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("di")
@@ -748,8 +746,8 @@ public class Rasterizer2D extends CacheableNode {
          for(int var5 = 0; var5 < var2; ++var5) {
             graphicsPixels[var4 + var5] = var3;
          }
-
       }
+
    }
 
    @ObfuscatedName("dw")
@@ -769,8 +767,8 @@ public class Rasterizer2D extends CacheableNode {
          for(int var5 = 0; var5 < var2; ++var5) {
             graphicsPixels[var4 + var5 * graphicsPixelsWidth] = var3;
          }
-
       }
+
    }
 
    @ObfuscatedName("ez")
@@ -789,18 +787,18 @@ public class Rasterizer2D extends CacheableNode {
          int var6 = (var3 >> 16 & 255) * var4;
          int var7 = (var3 >> 8 & 255) * var4;
          int var8 = (var3 & 255) * var4;
-         int var12 = var0 + var1 * graphicsPixelsWidth;
+         int var9 = var0 + var1 * graphicsPixelsWidth;
 
-         for(int var13 = 0; var13 < var2; ++var13) {
-            int var9 = (graphicsPixels[var12] >> 16 & 255) * var5;
-            int var10 = (graphicsPixels[var12] >> 8 & 255) * var5;
-            int var11 = (graphicsPixels[var12] & 255) * var5;
-            int var14 = (var6 + var9 >> 8 << 16) + (var7 + var10 >> 8 << 8) + (var8 + var11 >> 8);
-            graphicsPixels[var12] = var14;
-            var12 += graphicsPixelsWidth;
+         for(int var10 = 0; var10 < var2; ++var10) {
+            int var11 = (graphicsPixels[var9] >> 16 & 255) * var5;
+            int var12 = (graphicsPixels[var9] >> 8 & 255) * var5;
+            int var13 = (graphicsPixels[var9] & 255) * var5;
+            int var14 = (var6 + var11 >> 8 << 16) + (var7 + var12 >> 8 << 8) + (var8 + var13 >> 8);
+            graphicsPixels[var9] = var14;
+            var9 += graphicsPixelsWidth;
          }
-
       }
+
    }
 
    @ObfuscatedName("ey")
@@ -813,14 +811,12 @@ public class Rasterizer2D extends CacheableNode {
          } else {
             method4834(var0 + var2, var1, -var2 + 1, var4);
          }
-
       } else if(var2 == 0) {
          if(var3 >= 0) {
             method4836(var0, var1, var3 + 1, var4);
          } else {
             method4836(var0, var1 + var3, -var3 + 1, var4);
          }
-
       } else {
          if(var2 + var3 < 0) {
             var0 += var2;
@@ -880,8 +876,8 @@ public class Rasterizer2D extends CacheableNode {
                ++var1;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("eo")
@@ -889,6 +885,7 @@ public class Rasterizer2D extends CacheableNode {
       if(var0 >= field3752 && var1 >= drawingAreaTop && var0 < drawingAreaBottom && var1 < drawingAreaRight) {
          graphicsPixels[var0 + var1 * graphicsPixelsWidth] = var2;
       }
+
    }
 
    @ObfuscatedName("es")
@@ -905,13 +902,6 @@ public class Rasterizer2D extends CacheableNode {
          var5 += graphicsPixelsWidth;
       }
 
-   }
-
-   static {
-      drawingAreaTop = 0;
-      drawingAreaRight = 0;
-      field3752 = 0;
-      drawingAreaBottom = 0;
    }
 
    @ObfuscatedName("dp")
@@ -973,52 +963,52 @@ public class Rasterizer2D extends CacheableNode {
       int var12 = var4 >> 16;
       int var13 = (var4 & '\uff00') >> 8;
       int var14 = var4 & 255;
-      int var18 = graphicsPixelsWidth - var2;
-      int var19 = var0 + var1 * graphicsPixelsWidth;
+      int var15 = graphicsPixelsWidth - var2;
+      int var16 = var0 + var1 * graphicsPixelsWidth;
 
-      for(int var20 = 0; var20 < var3; ++var20) {
-         int var21;
-         int var22;
-         int var23;
-         for(var21 = -var2; var21 < 0; ++var21) {
-            var22 = graphicsPixels[var19];
-            var23 = var22 >> 16;
-            int var24 = (var22 & '\uff00') >> 8;
-            int var25 = var22 & 255;
-            int var15;
-            int var16;
-            int var17;
+      for(int var17 = 0; var17 < var3; ++var17) {
+         int var18;
+         int var19;
+         int var20;
+         for(var18 = -var2; var18 < 0; ++var18) {
+            var19 = graphicsPixels[var16];
+            var20 = var19 >> 16;
+            int var21 = (var19 & '\uff00') >> 8;
+            int var22 = var19 & 255;
+            int var23;
+            int var24;
+            int var25;
             if(var11 == 0) {
-               var15 = var23 < 127?var12 * var23 >> 7:255 - ((255 - var12) * (255 - var23) >> 7);
-               var16 = var24 < 127?var13 * var24 >> 7:255 - ((255 - var13) * (255 - var24) >> 7);
-               var17 = var25 < 127?var14 * var25 >> 7:255 - ((255 - var14) * (255 - var25) >> 7);
+               var23 = var20 < 127?var12 * var20 >> 7:255 - ((255 - var12) * (255 - var20) >> 7);
+               var24 = var21 < 127?var13 * var21 >> 7:255 - ((255 - var13) * (255 - var21) >> 7);
+               var25 = var22 < 127?var14 * var22 >> 7:255 - ((255 - var14) * (255 - var22) >> 7);
             } else {
-               var15 = var23 < 127?(var12 * var23 * var10 >> 7) + var23 * var11 >> 8:(255 - ((255 - var12) * (255 - var23) >> 7)) * var10 + var23 * var11 >> 8;
-               var16 = var24 < 127?(var13 * var24 * var10 >> 7) + var24 * var11 >> 8:(255 - ((255 - var13) * (255 - var24) >> 7)) * var10 + var24 * var11 >> 8;
-               var17 = var25 < 127?(var14 * var25 * var10 >> 7) + var25 * var11 >> 8:(255 - ((255 - var14) * (255 - var25) >> 7)) * var10 + var25 * var11 >> 8;
+               var23 = var20 < 127?(var12 * var20 * var10 >> 7) + var20 * var11 >> 8:(255 - ((255 - var12) * (255 - var20) >> 7)) * var10 + var20 * var11 >> 8;
+               var24 = var21 < 127?(var13 * var21 * var10 >> 7) + var21 * var11 >> 8:(255 - ((255 - var13) * (255 - var21) >> 7)) * var10 + var21 * var11 >> 8;
+               var25 = var22 < 127?(var14 * var22 * var10 >> 7) + var22 * var11 >> 8:(255 - ((255 - var14) * (255 - var22) >> 7)) * var10 + var22 * var11 >> 8;
             }
 
-            graphicsPixels[var19++] = (var15 << 16) + (var16 << 8) + var17;
+            graphicsPixels[var16++] = (var23 << 16) + (var24 << 8) + var25;
          }
 
          if(var9 > 0) {
             var8 += var9;
-            var21 = 65536 - var8 >> 8;
-            var22 = var8 >> 8;
+            var18 = 65536 - var8 >> 8;
+            var19 = var8 >> 8;
             if(var6 != var7) {
                var10 = var6 * (65536 - var8) + var7 * var8 >> 16;
                var11 = 256 - var10;
             }
 
             if(var4 != var5) {
-               var23 = ((var4 & 16711935) * var21 + (var5 & 16711935) * var22 & -16711936) + ((var4 & '\uff00') * var21 + (var5 & '\uff00') * var22 & 16711680) >>> 8;
-               var12 = var23 >> 16;
-               var13 = (var23 & '\uff00') >> 8;
-               var14 = var23 & 255;
+               var20 = ((var4 & 16711935) * var18 + (var5 & 16711935) * var19 & -16711936) + ((var4 & '\uff00') * var18 + (var5 & '\uff00') * var19 & 16711680) >>> 8;
+               var12 = var20 >> 16;
+               var13 = (var20 & '\uff00') >> 8;
+               var14 = var20 & 255;
             }
          }
 
-         var19 += var18;
+         var16 += var15;
       }
 
    }
@@ -1045,5 +1035,12 @@ public class Rasterizer2D extends CacheableNode {
       method4834(var0, var1 + var3 - 1, var2, var4);
       method4836(var0, var1, var3, var4);
       method4836(var0 + var2 - 1, var1, var3, var4);
+   }
+
+   static {
+      drawingAreaTop = 0;
+      drawingAreaRight = 0;
+      field3752 = 0;
+      drawingAreaBottom = 0;
    }
 }

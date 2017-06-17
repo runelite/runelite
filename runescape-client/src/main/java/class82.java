@@ -98,10 +98,6 @@ public final class class82 extends Node {
 
    }
 
-   static {
-      field1314 = new Deque();
-   }
-
    @ObfuscatedName("ij")
    @ObfuscatedSignature(
       signature = "(IIIILSpritePixels;Lclass210;S)V",
@@ -123,8 +119,12 @@ public final class class82 extends Node {
             } else {
                var4.method4950(var0 + var5.field2607 / 2 + var10 - var4.maxWidth / 2, var1 + var5.field2611 / 2 - var11 - var4.maxHeight / 2);
             }
-
          }
       }
+
+   }
+
+   static {
+      field1314 = new Deque();
    }
 }

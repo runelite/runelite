@@ -146,66 +146,66 @@ public class class205 extends Node {
 
             return 1;
          } else {
-            String var10;
+            String var4;
+            int var5;
             if(var0 == 3604) {
-               var10 = class83.scriptStringStack[--class24.scriptStringStackSize];
-               int var4 = class83.intStack[--class83.intStackSize];
-               class169.method3003(var10, var4);
+               var4 = class83.scriptStringStack[--class24.scriptStringStackSize];
+               var5 = class83.intStack[--class83.intStackSize];
+               class169.method3003(var4, var5);
                return 1;
             } else {
-               int var5;
                Friend var6;
+               String var7;
                String var8;
-               String var15;
-               String var16;
+               String var9;
                if(var0 == 3605) {
-                  var10 = class83.scriptStringStack[--class24.scriptStringStackSize];
-                  if(var10 != null) {
+                  var4 = class83.scriptStringStack[--class24.scriptStringStackSize];
+                  if(var4 != null) {
                      if((Client.friendCount < 200 || Client.field1176 == 1) && Client.friendCount < 400) {
-                        var16 = class109.method1965(var10, class33.field482);
-                        if(var16 != null) {
+                        var9 = class109.method1965(var4, class33.field482);
+                        if(var9 != null) {
                            var5 = 0;
 
                            while(true) {
                               if(var5 >= Client.friendCount) {
                                  for(var5 = 0; var5 < Client.ignoreCount; ++var5) {
-                                    Ignore var14 = Client.ignores[var5];
-                                    var15 = class109.method1965(var14.name, class33.field482);
-                                    if(var15 != null && var15.equals(var16)) {
-                                       class5.sendGameMessage(30, "", "Please remove " + var10 + " from your ignore list first");
+                                    Ignore var15 = Client.ignores[var5];
+                                    var8 = class109.method1965(var15.name, class33.field482);
+                                    if(var8 != null && var8.equals(var9)) {
+                                       class5.sendGameMessage(30, "", "Please remove " + var4 + " from your ignore list first");
                                        return 1;
                                     }
 
-                                    if(var14.previousName != null) {
-                                       var8 = class109.method1965(var14.previousName, class33.field482);
-                                       if(var8 != null && var8.equals(var16)) {
-                                          class5.sendGameMessage(30, "", "Please remove " + var10 + " from your ignore list first");
+                                    if(var15.previousName != null) {
+                                       var7 = class109.method1965(var15.previousName, class33.field482);
+                                       if(var7 != null && var7.equals(var9)) {
+                                          class5.sendGameMessage(30, "", "Please remove " + var4 + " from your ignore list first");
                                           return 1;
                                        }
                                     }
                                  }
 
-                                 if(class109.method1965(class20.localPlayer.name, class33.field482).equals(var16)) {
+                                 if(class109.method1965(class20.localPlayer.name, class33.field482).equals(var9)) {
                                     class5.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
                                  } else {
                                     Client.secretPacketBuffer1.putOpcode(186);
-                                    Client.secretPacketBuffer1.putByte(Friend.method1023(var10));
-                                    Client.secretPacketBuffer1.method3125(var10);
+                                    Client.secretPacketBuffer1.putByte(Friend.method1023(var4));
+                                    Client.secretPacketBuffer1.method3125(var4);
                                  }
                                  break;
                               }
 
                               var6 = Client.friends[var5];
-                              var15 = class109.method1965(var6.name, class33.field482);
-                              if(var15 != null && var15.equals(var16)) {
-                                 class5.sendGameMessage(30, "", var10 + " is already on your friend list");
+                              var8 = class109.method1965(var6.name, class33.field482);
+                              if(var8 != null && var8.equals(var9)) {
+                                 class5.sendGameMessage(30, "", var4 + " is already on your friend list");
                                  break;
                               }
 
                               if(var6.previousName != null) {
-                                 var8 = class109.method1965(var6.previousName, class33.field482);
-                                 if(var8 != null && var8.equals(var16)) {
-                                    class5.sendGameMessage(30, "", var10 + " is already on your friend list");
+                                 var7 = class109.method1965(var6.previousName, class33.field482);
+                                 if(var7 != null && var7.equals(var9)) {
+                                    class5.sendGameMessage(30, "", var4 + " is already on your friend list");
                                     break;
                                  }
                               }
@@ -220,25 +220,25 @@ public class class205 extends Node {
 
                   return 1;
                } else if(var0 == 3606) {
-                  var10 = class83.scriptStringStack[--class24.scriptStringStackSize];
-                  if(var10 != null) {
-                     var16 = class109.method1965(var10, class33.field482);
-                     if(var16 != null) {
+                  var4 = class83.scriptStringStack[--class24.scriptStringStackSize];
+                  if(var4 != null) {
+                     var9 = class109.method1965(var4, class33.field482);
+                     if(var9 != null) {
                         for(var5 = 0; var5 < Client.friendCount; ++var5) {
                            var6 = Client.friends[var5];
-                           var15 = var6.name;
-                           var8 = class109.method1965(var15, class33.field482);
-                           if(class269.method4758(var10, var16, var15, var8)) {
+                           var8 = var6.name;
+                           var7 = class109.method1965(var8, class33.field482);
+                           if(class269.method4758(var4, var9, var8, var7)) {
                               --Client.friendCount;
 
-                              for(int var9 = var5; var9 < Client.friendCount; ++var9) {
-                                 Client.friends[var9] = Client.friends[var9 + 1];
+                              for(int var14 = var5; var14 < Client.friendCount; ++var14) {
+                                 Client.friends[var14] = Client.friends[var14 + 1];
                               }
 
                               Client.field1099 = Client.field1091;
                               Client.secretPacketBuffer1.putOpcode(22);
-                              Client.secretPacketBuffer1.putByte(Friend.method1023(var10));
-                              Client.secretPacketBuffer1.method3125(var10);
+                              Client.secretPacketBuffer1.putByte(Friend.method1023(var4));
+                              Client.secretPacketBuffer1.method3125(var4);
                               break;
                            }
                         }
@@ -247,27 +247,27 @@ public class class205 extends Node {
 
                   return 1;
                } else if(var0 == 3607) {
-                  var10 = class83.scriptStringStack[--class24.scriptStringStackSize];
-                  ItemLayer.method2307(var10, false);
+                  var4 = class83.scriptStringStack[--class24.scriptStringStackSize];
+                  ItemLayer.method2307(var4, false);
                   return 1;
                } else if(var0 == 3608) {
-                  var10 = class83.scriptStringStack[--class24.scriptStringStackSize];
-                  class211.method3820(var10);
+                  var4 = class83.scriptStringStack[--class24.scriptStringStackSize];
+                  class211.method3820(var4);
                   return 1;
                } else if(var0 == 3609) {
-                  var10 = class83.scriptStringStack[--class24.scriptStringStackSize];
-                  class230[] var11 = new class230[]{class230.field3180, class230.field3178, class230.field3187, class230.field3182, class230.field3179, class230.field3181};
-                  class230[] var12 = var11;
+                  var4 = class83.scriptStringStack[--class24.scriptStringStackSize];
+                  class230[] var10 = new class230[]{class230.field3180, class230.field3178, class230.field3187, class230.field3182, class230.field3179, class230.field3181};
+                  class230[] var11 = var10;
 
-                  for(int var13 = 0; var13 < var12.length; ++var13) {
-                     class230 var7 = var12[var13];
-                     if(var7.field3184 != -1 && var10.startsWith(RSCanvas.method741(var7.field3184))) {
-                        var10 = var10.substring(Integer.toString(var7.field3184).length() + 6);
+                  for(int var12 = 0; var12 < var11.length; ++var12) {
+                     class230 var13 = var11[var12];
+                     if(var13.field3184 != -1 && var4.startsWith(RSCanvas.method741(var13.field3184))) {
+                        var4 = var4.substring(Integer.toString(var13.field3184).length() + 6);
                         break;
                      }
                   }
 
-                  class83.intStack[++class83.intStackSize - 1] = class162.method2946(var10, false)?1:0;
+                  class83.intStack[++class83.intStackSize - 1] = class162.method2946(var4, false)?1:0;
                   return 1;
                } else if(var0 == 3611) {
                   if(Client.clanChatOwner != null) {
@@ -316,15 +316,15 @@ public class class205 extends Node {
                   class83.intStack[++class83.intStackSize - 1] = class22.field359;
                   return 1;
                } else if(var0 == 3617) {
-                  var10 = class83.scriptStringStack[--class24.scriptStringStackSize];
-                  Client.method1358(var10);
+                  var4 = class83.scriptStringStack[--class24.scriptStringStackSize];
+                  Client.method1358(var4);
                   return 1;
                } else if(var0 == 3618) {
                   class83.intStack[++class83.intStackSize - 1] = class226.clanChatRank;
                   return 1;
                } else if(var0 == 3619) {
-                  var10 = class83.scriptStringStack[--class24.scriptStringStackSize];
-                  CombatInfoListHolder.method1584(var10);
+                  var4 = class83.scriptStringStack[--class24.scriptStringStackSize];
+                  CombatInfoListHolder.method1584(var4);
                   return 1;
                } else if(var0 == 3620) {
                   MessageNode.method1056();
@@ -349,12 +349,12 @@ public class class205 extends Node {
 
                   return 1;
                } else if(var0 == 3623) {
-                  var10 = class83.scriptStringStack[--class24.scriptStringStackSize];
-                  if(var10.startsWith(RSCanvas.method741(0)) || var10.startsWith(RSCanvas.method741(1))) {
-                     var10 = var10.substring(7);
+                  var4 = class83.scriptStringStack[--class24.scriptStringStackSize];
+                  if(var4.startsWith(RSCanvas.method741(0)) || var4.startsWith(RSCanvas.method741(1))) {
+                     var4 = var4.substring(7);
                   }
 
-                  class83.intStack[++class83.intStackSize - 1] = class87.method1604(var10)?1:0;
+                  class83.intStack[++class83.intStackSize - 1] = class87.method1604(var4)?1:0;
                   return 1;
                } else if(var0 != 3624) {
                   if(var0 == 3625) {
@@ -408,45 +408,45 @@ public class class205 extends Node {
          char var9;
          if(var7 != 0) {
             var9 = (char)var7;
-            boolean var14 = false;
+            boolean var10 = false;
          } else {
             var9 = var0.charAt(var5++);
          }
 
-         char var10;
+         char var14;
          if(var8 != 0) {
-            var10 = (char)var8;
-            boolean var15 = false;
+            var14 = (char)var8;
+            boolean var11 = false;
          } else {
-            var10 = var1.charAt(var6++);
+            var14 = var1.charAt(var6++);
          }
 
-         byte var11;
+         byte var16;
          if(var9 == 198) {
-            var11 = 69;
+            var16 = 69;
          } else if(var9 == 230) {
-            var11 = 101;
+            var16 = 101;
          } else if(var9 == 223) {
-            var11 = 115;
+            var16 = 115;
          } else if(var9 == 338) {
-            var11 = 69;
+            var16 = 69;
          } else if(var9 == 339) {
-            var11 = 101;
+            var16 = 101;
          } else {
-            var11 = 0;
+            var16 = 0;
          }
 
-         var7 = var11;
+         var7 = var16;
          byte var12;
-         if(var10 == 198) {
+         if(var14 == 198) {
             var12 = 69;
-         } else if(var10 == 230) {
+         } else if(var14 == 230) {
             var12 = 101;
-         } else if(var10 == 223) {
+         } else if(var14 == 223) {
             var12 = 115;
-         } else if(var10 == 338) {
+         } else if(var14 == 338) {
             var12 = 69;
-         } else if(var10 == 339) {
+         } else if(var14 == 339) {
             var12 = 101;
          } else {
             var12 = 0;
@@ -454,28 +454,28 @@ public class class205 extends Node {
 
          var8 = var12;
          var9 = PendingSpawn.method1435(var9, var2);
-         var10 = PendingSpawn.method1435(var10, var2);
-         if(var9 != var10 && Character.toUpperCase(var9) != Character.toUpperCase(var10)) {
+         var14 = PendingSpawn.method1435(var14, var2);
+         if(var9 != var14 && Character.toUpperCase(var9) != Character.toUpperCase(var14)) {
             var9 = Character.toLowerCase(var9);
-            var10 = Character.toLowerCase(var10);
-            if(var10 != var9) {
-               return Renderable.method2756(var9, var2) - Renderable.method2756(var10, var2);
+            var14 = Character.toLowerCase(var14);
+            if(var14 != var9) {
+               return Renderable.method2756(var9, var2) - Renderable.method2756(var14, var2);
             }
          }
       }
 
-      int var16 = Math.min(var3, var4);
+      int var15 = Math.min(var3, var4);
 
       int var17;
-      char var20;
-      for(var17 = 0; var17 < var16; ++var17) {
-         char var18 = var0.charAt(var17);
-         var20 = var1.charAt(var17);
-         if(var18 != var20 && Character.toUpperCase(var18) != Character.toUpperCase(var20)) {
+      char var18;
+      for(var17 = 0; var17 < var15; ++var17) {
+         char var19 = var0.charAt(var17);
+         var18 = var1.charAt(var17);
+         if(var19 != var18 && Character.toUpperCase(var19) != Character.toUpperCase(var18)) {
+            var19 = Character.toLowerCase(var19);
             var18 = Character.toLowerCase(var18);
-            var20 = Character.toLowerCase(var20);
-            if(var20 != var18) {
-               return Renderable.method2756(var18, var2) - Renderable.method2756(var20, var2);
+            if(var18 != var19) {
+               return Renderable.method2756(var19, var2) - Renderable.method2756(var18, var2);
             }
          }
       }
@@ -484,11 +484,11 @@ public class class205 extends Node {
       if(var17 != 0) {
          return var17;
       } else {
-         for(int var19 = 0; var19 < var16; ++var19) {
-            var20 = var0.charAt(var19);
-            char var13 = var1.charAt(var19);
-            if(var13 != var20) {
-               return Renderable.method2756(var20, var2) - Renderable.method2756(var13, var2);
+         for(int var20 = 0; var20 < var15; ++var20) {
+            var18 = var0.charAt(var20);
+            char var13 = var1.charAt(var20);
+            if(var13 != var18) {
+               return Renderable.method2756(var18, var2) - Renderable.method2756(var13, var2);
             }
          }
 

@@ -29,10 +29,6 @@ public class XItemContainer extends Node {
       this.stackSizes = new int[]{0};
    }
 
-   static {
-      itemContainers = new XHashTable(32);
-   }
-
    @ObfuscatedName("iu")
    @ObfuscatedSignature(
       signature = "(LWidget;B)V",
@@ -43,5 +39,9 @@ public class XItemContainer extends Node {
          Client.field1111[var0.boundsIndex] = true;
       }
 
+   }
+
+   static {
+      itemContainers = new XHashTable(32);
    }
 }

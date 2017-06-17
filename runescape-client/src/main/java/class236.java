@@ -24,29 +24,35 @@ public class class236 implements Runnable {
    public void run() {
       try {
          while(true) {
-            Deque var2 = field3245;
-            FileSystem var1;
+            Deque var1 = field3245;
+            Deque var3 = field3245;
+            FileSystem var2;
             synchronized(field3245) {
-               var1 = (FileSystem)field3245.method3487();
+               var2 = (FileSystem)field3245.method3487();
             }
 
-            Object var14;
-            if(var1 != null) {
-               if(var1.field3211 == 0) {
-                  var1.index.method2903((int)var1.hash, var1.field3210, var1.field3210.length);
-                  var2 = field3245;
+            Object var4;
+            Object var15;
+            if(var2 != null) {
+               Deque var16;
+               if(var2.field3211 == 0) {
+                  var2.index.method2903((int)var2.hash, var2.field3210, var2.field3210.length);
+                  var1 = field3245;
+                  var16 = field3245;
                   synchronized(field3245) {
-                     var1.unlink();
+                     var2.unlink();
                   }
-               } else if(var1.field3211 == 1) {
-                  var1.field3210 = var1.index.method2902((int)var1.hash);
-                  var2 = field3245;
+               } else if(var2.field3211 == 1) {
+                  var2.field3210 = var2.index.method2902((int)var2.hash);
+                  var1 = field3245;
+                  var16 = field3245;
                   synchronized(field3245) {
-                     field3240.method3505(var1);
+                     field3240.method3505(var2);
                   }
                }
 
-               var14 = field3239;
+               var15 = field3239;
+               var4 = field3239;
                synchronized(field3239) {
                   if(field3241 <= 1) {
                      field3241 = 0;
@@ -58,7 +64,8 @@ public class class236 implements Runnable {
                }
             } else {
                class172.method3014(100L);
-               var14 = field3239;
+               var15 = field3239;
+               var4 = field3239;
                synchronized(field3239) {
                   if(field3241 <= 1) {
                      field3241 = 0;
@@ -70,16 +77,9 @@ public class class236 implements Runnable {
                }
             }
          }
-      } catch (Exception var13) {
-         class8.method43((String)null, var13);
+      } catch (Exception var14) {
+         class8.method43((String)null, var14);
       }
-   }
-
-   static {
-      field3245 = new Deque();
-      field3240 = new Deque();
-      field3241 = 0;
-      field3239 = new Object();
    }
 
    @ObfuscatedName("m")
@@ -190,5 +190,12 @@ public class class236 implements Runnable {
          var17.printStackTrace();
          return 5;
       }
+   }
+
+   static {
+      field3245 = new Deque();
+      field3240 = new Deque();
+      field3241 = 0;
+      field3239 = new Object();
    }
 }

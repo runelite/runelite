@@ -13,10 +13,6 @@ public abstract class class176 {
    )
    abstract byte[] vmethod3256();
 
-   static {
-      field2428 = false;
-   }
-
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "([BB)V",
@@ -43,5 +39,9 @@ public abstract class class176 {
          Enum.field3408.put(var1, (long)var0);
          return var1;
       }
+   }
+
+   static {
+      field2428 = false;
    }
 }

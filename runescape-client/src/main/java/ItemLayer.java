@@ -58,19 +58,19 @@ public final class ItemLayer {
             String var2 = class109.method1965(var0, class33.field482);
             if(var2 != null) {
                int var3;
+               String var4;
                String var5;
-               String var6;
                for(var3 = 0; var3 < Client.ignoreCount; ++var3) {
-                  Ignore var4 = Client.ignores[var3];
-                  var5 = class109.method1965(var4.name, class33.field482);
-                  if(var5 != null && var5.equals(var2)) {
+                  Ignore var6 = Client.ignores[var3];
+                  var4 = class109.method1965(var6.name, class33.field482);
+                  if(var4 != null && var4.equals(var2)) {
                      class5.sendGameMessage(31, "", var0 + " is already on your ignore list");
                      return;
                   }
 
-                  if(var4.previousName != null) {
-                     var6 = class109.method1965(var4.previousName, class33.field482);
-                     if(var6 != null && var6.equals(var2)) {
+                  if(var6.previousName != null) {
+                     var5 = class109.method1965(var6.previousName, class33.field482);
+                     if(var5 != null && var5.equals(var2)) {
                         class5.sendGameMessage(31, "", var0 + " is already on your ignore list");
                         return;
                      }
@@ -79,15 +79,15 @@ public final class ItemLayer {
 
                for(var3 = 0; var3 < Client.friendCount; ++var3) {
                   Friend var7 = Client.friends[var3];
-                  var5 = class109.method1965(var7.name, class33.field482);
-                  if(var5 != null && var5.equals(var2)) {
+                  var4 = class109.method1965(var7.name, class33.field482);
+                  if(var4 != null && var4.equals(var2)) {
                      class5.sendGameMessage(31, "", "Please remove " + var0 + " from your friend list first");
                      return;
                   }
 
                   if(var7.previousName != null) {
-                     var6 = class109.method1965(var7.previousName, class33.field482);
-                     if(var6 != null && var6.equals(var2)) {
+                     var5 = class109.method1965(var7.previousName, class33.field482);
+                     if(var5 != null && var5.equals(var2)) {
                         class5.sendGameMessage(31, "", "Please remove " + var0 + " from your friend list first");
                         return;
                      }
@@ -106,6 +106,7 @@ public final class ItemLayer {
             class5.sendGameMessage(31, "", "Your ignore list is full. Max of 100 for free users, and 400 for members");
          }
       }
+
    }
 
    @ObfuscatedName("j")
@@ -115,8 +116,8 @@ public final class ItemLayer {
    )
    public static String method2308(int var0, boolean var1) {
       if(var1 && var0 >= 0) {
-         int var3 = var0;
-         String var2;
+         int var2 = var0;
+         String var3;
          if(var1 && var0 >= 0) {
             int var4 = 2;
 
@@ -124,26 +125,26 @@ public final class ItemLayer {
                var5 /= 10;
             }
 
-            char[] var6 = new char[var4];
-            var6[0] = 43;
+            char[] var9 = new char[var4];
+            var9[0] = 43;
 
-            for(int var7 = var4 - 1; var7 > 0; --var7) {
-               int var8 = var3;
-               var3 /= 10;
-               int var9 = var8 - var3 * 10;
-               if(var9 >= 10) {
-                  var6[var7] = (char)(var9 + 87);
+            for(int var6 = var4 - 1; var6 > 0; --var6) {
+               int var7 = var2;
+               var2 /= 10;
+               int var8 = var7 - var2 * 10;
+               if(var8 >= 10) {
+                  var9[var6] = (char)(var8 + 87);
                } else {
-                  var6[var7] = (char)(var9 + 48);
+                  var9[var6] = (char)(var8 + 48);
                }
             }
 
-            var2 = new String(var6);
+            var3 = new String(var9);
          } else {
-            var2 = Integer.toString(var0, 10);
+            var3 = Integer.toString(var0, 10);
          }
 
-         return var2;
+         return var3;
       } else {
          return Integer.toString(var0);
       }

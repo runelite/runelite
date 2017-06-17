@@ -110,15 +110,15 @@ public final class class50 implements KeyListener, FocusListener {
             if(var2 > 0 && var2 < 128 || var2 >= 160 && var2 <= 255) {
                var3 = true;
             } else {
-               label58: {
+               label56: {
                   if(var2 != 0) {
-                     char[] var7 = class266.field3665;
+                     char[] var4 = class266.field3665;
 
-                     for(int var5 = 0; var5 < var7.length; ++var5) {
-                        char var6 = var7[var5];
+                     for(int var5 = 0; var5 < var4.length; ++var5) {
+                        char var6 = var4[var5];
                         if(var2 == var6) {
                            var3 = true;
-                           break label58;
+                           break label56;
                         }
                      }
                   }
@@ -128,11 +128,11 @@ public final class class50 implements KeyListener, FocusListener {
             }
 
             if(var3) {
-               int var4 = field659 + 1 & 127;
-               if(field658 != var4) {
+               int var7 = field659 + 1 & 127;
+               if(field658 != var7) {
                   field655[field659] = -1;
                   field654[field659] = var2;
-                  field659 = var4;
+                  field659 = var7;
                }
             }
          }
@@ -146,23 +146,6 @@ public final class class50 implements KeyListener, FocusListener {
          field653 = -1;
       }
 
-   }
-
-   static {
-      keyboard = new class50();
-      field660 = new boolean[112];
-      field634 = new int[128];
-      field652 = 0;
-      field653 = 0;
-      field654 = new char[128];
-      field655 = new int[128];
-      field656 = new int[128];
-      field657 = 0;
-      field658 = 0;
-      field659 = 0;
-      field665 = 0;
-      keyboardIdleTicks = 0;
-      field662 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
    }
 
    public final synchronized void keyReleased(KeyEvent var1) {
@@ -255,13 +238,13 @@ public final class class50 implements KeyListener, FocusListener {
       garbageValue = "-56"
    )
    static void method726() {
-      class61.underlayIds = null;
-      class61.overlayIds = null;
-      class90.overlayPaths = null;
-      class275.overlayRotations = null;
-      class61.field750 = null;
-      class267.field3669 = null;
-      XItemContainer.field774 = null;
+      class61.underlayIds = (byte[][][])null;
+      class61.overlayIds = (byte[][][])null;
+      class90.overlayPaths = (byte[][][])null;
+      class275.overlayRotations = (byte[][][])null;
+      class61.field750 = (int[][][])null;
+      class267.field3669 = (byte[][][])null;
+      XItemContainer.field774 = (int[][])null;
       Widget.field2648 = null;
       class61.field753 = null;
       WallObject.field2140 = null;
@@ -313,25 +296,42 @@ public final class class50 implements KeyListener, FocusListener {
       garbageValue = "1862452562"
    )
    public static int method728(int var0) {
-      Varbit var2 = (Varbit)Varbit.field3389.get((long)var0);
-      Varbit var1;
-      if(var2 != null) {
-         var1 = var2;
+      Varbit var1 = (Varbit)Varbit.field3389.get((long)var0);
+      Varbit var2;
+      if(var1 != null) {
+         var2 = var1;
       } else {
-         byte[] var7 = Varbit.field3390.getConfigData(14, var0);
-         var2 = new Varbit();
-         if(var7 != null) {
-            var2.method4296(new Buffer(var7));
+         byte[] var3 = Varbit.field3390.getConfigData(14, var0);
+         var1 = new Varbit();
+         if(var3 != null) {
+            var1.method4296(new Buffer(var3));
          }
 
-         Varbit.field3389.put(var2, (long)var0);
-         var1 = var2;
+         Varbit.field3389.put(var1, (long)var0);
+         var2 = var1;
       }
 
-      int var3 = var1.configId;
-      int var4 = var1.leastSignificantBit;
-      int var5 = var1.mostSignificantBit;
+      int var7 = var2.configId;
+      int var4 = var2.leastSignificantBit;
+      int var5 = var2.mostSignificantBit;
       int var6 = class211.field2614[var5 - var4];
-      return class211.widgetSettings[var3] >> var4 & var6;
+      return class211.widgetSettings[var7] >> var4 & var6;
+   }
+
+   static {
+      keyboard = new class50();
+      field660 = new boolean[112];
+      field634 = new int[128];
+      field652 = 0;
+      field653 = 0;
+      field654 = new char[128];
+      field655 = new int[128];
+      field656 = new int[128];
+      field657 = 0;
+      field658 = 0;
+      field659 = 0;
+      field665 = 0;
+      keyboardIdleTicks = 0;
+      field662 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
    }
 }

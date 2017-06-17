@@ -30,10 +30,6 @@ public class Varbit extends CacheableNode {
    @Export("configId")
    public int configId;
 
-   static {
-      field3389 = new NodeCache(64);
-   }
-
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
@@ -62,5 +58,9 @@ public class Varbit extends CacheableNode {
          this.mostSignificantBit = var1.readUnsignedByte();
       }
 
+   }
+
+   static {
+      field3389 = new NodeCache(64);
    }
 }

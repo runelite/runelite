@@ -97,10 +97,10 @@ public abstract class Renderable extends CacheableNode {
          class83.intStackSize -= 5;
          var3 = class83.intStack[class83.intStackSize];
          var4 = class83.intStack[class83.intStackSize + 1];
-         int var5 = class83.intStack[class83.intStackSize + 2];
+         int var11 = class83.intStack[class83.intStackSize + 2];
          int var6 = class83.intStack[class83.intStackSize + 3];
-         int var7 = class83.intStack[class83.intStackSize + 4];
-         class83.intStack[++class83.intStackSize - 1] = var3 + (var7 - var5) * (var4 - var3) / (var6 - var5);
+         int var12 = class83.intStack[class83.intStackSize + 4];
+         class83.intStack[++class83.intStackSize - 1] = var3 + (var12 - var11) * (var4 - var3) / (var6 - var11);
          return 1;
       } else if(var0 == 4007) {
          class83.intStackSize -= 2;
@@ -170,10 +170,10 @@ public abstract class Renderable extends CacheableNode {
          return 1;
       } else if(var0 == 4018) {
          class83.intStackSize -= 3;
-         long var9 = (long)class83.intStack[class83.intStackSize];
-         long var11 = (long)class83.intStack[class83.intStackSize + 1];
-         long var13 = (long)class83.intStack[class83.intStackSize + 2];
-         class83.intStack[++class83.intStackSize - 1] = (int)(var13 * var9 / var11);
+         long var5 = (long)class83.intStack[class83.intStackSize];
+         long var7 = (long)class83.intStack[class83.intStackSize + 1];
+         long var9 = (long)class83.intStack[class83.intStackSize + 2];
+         class83.intStack[++class83.intStackSize - 1] = (int)(var9 * var5 / var7);
          return 1;
       } else {
          return 2;
@@ -209,9 +209,9 @@ public abstract class Renderable extends CacheableNode {
             }
          }
 
-         int[] var8 = class14.field296;
+         int[] var6 = class14.field296;
          class14.field296 = Script.field1536;
-         Script.field1536 = var8;
+         Script.field1536 = var6;
       }
 
       if(var0 != null) {
@@ -221,8 +221,8 @@ public abstract class Renderable extends CacheableNode {
             for(var4 = 0; var4 < var0.originalWidth; ++var4) {
                if(var0.pixels[var2++] != 0) {
                   var5 = var4 + 16 + var0.offsetX;
-                  int var6 = var3 + 16 + var0.offsetY;
-                  int var7 = (var6 << 7) + var5;
+                  int var8 = var3 + 16 + var0.offsetY;
+                  int var7 = (var8 << 7) + var5;
                   class14.field296[var7] = 0;
                }
             }

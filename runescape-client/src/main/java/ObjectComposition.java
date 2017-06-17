@@ -405,6 +405,7 @@ public class ObjectComposition extends CacheableNode {
       ModelData var3 = null;
       boolean var4;
       int var5;
+      int var6;
       int var7;
       if(this.objectTypes == null) {
          if(var1 != 10) {
@@ -422,15 +423,15 @@ public class ObjectComposition extends CacheableNode {
 
          var5 = this.objectModels.length;
 
-         for(int var6 = 0; var6 < var5; ++var6) {
-            var7 = this.objectModels[var6];
+         for(var7 = 0; var7 < var5; ++var7) {
+            var6 = this.objectModels[var7];
             if(var4) {
-               var7 += 65536;
+               var6 += 65536;
             }
 
-            var3 = (ModelData)field3453.get((long)var7);
+            var3 = (ModelData)field3453.get((long)var6);
             if(var3 == null) {
-               var3 = ModelData.method2310(field3459, var7 & '\uffff', 0);
+               var3 = ModelData.method2310(field3459, var6 & '\uffff', 0);
                if(var3 == null) {
                   return null;
                }
@@ -439,11 +440,11 @@ public class ObjectComposition extends CacheableNode {
                   var3.method2371();
                }
 
-               field3453.put(var3, (long)var7);
+               field3453.put(var3, (long)var6);
             }
 
             if(var5 > 1) {
-               field3448[var6] = var3;
+               field3448[var7] = var3;
             }
          }
 
@@ -451,22 +452,22 @@ public class ObjectComposition extends CacheableNode {
             var3 = new ModelData(field3448, var5);
          }
       } else {
-         int var9 = -1;
+         var7 = -1;
 
          for(var5 = 0; var5 < this.objectTypes.length; ++var5) {
             if(this.objectTypes[var5] == var1) {
-               var9 = var5;
+               var7 = var5;
                break;
             }
          }
 
-         if(var9 == -1) {
+         if(var7 == -1) {
             return null;
          }
 
-         var5 = this.objectModels[var9];
-         boolean var10 = this.isRotated ^ var2 > 3;
-         if(var10) {
+         var5 = this.objectModels[var7];
+         boolean var8 = this.isRotated ^ var2 > 3;
+         if(var8) {
             var5 += 65536;
          }
 
@@ -477,7 +478,7 @@ public class ObjectComposition extends CacheableNode {
                return null;
             }
 
-            if(var10) {
+            if(var8) {
                var3.method2371();
             }
 
@@ -491,49 +492,49 @@ public class ObjectComposition extends CacheableNode {
          var4 = true;
       }
 
-      boolean var11;
+      boolean var10;
       if(this.offsetX == 0 && this.offsetHeight == 0 && this.offsetY == 0) {
-         var11 = false;
+         var10 = false;
       } else {
-         var11 = true;
+         var10 = true;
       }
 
-      ModelData var8 = new ModelData(var3, var2 == 0 && !var4 && !var11, this.recolorToFind == null, this.textureToFind == null, true);
+      ModelData var9 = new ModelData(var3, var2 == 0 && !var4 && !var10, this.recolorToFind == null, this.textureToFind == null, true);
       if(var1 == 4 && var2 > 3) {
-         var8.method2329(256);
-         var8.method2359(45, 0, -45);
+         var9.method2329(256);
+         var9.method2359(45, 0, -45);
       }
 
       var2 &= 3;
       if(var2 == 1) {
-         var8.method2358();
+         var9.method2358();
       } else if(var2 == 2) {
-         var8.method2316();
+         var9.method2316();
       } else if(var2 == 3) {
-         var8.method2319();
+         var9.method2319();
       }
 
       if(this.recolorToFind != null) {
-         for(var7 = 0; var7 < this.recolorToFind.length; ++var7) {
-            var8.method2322(this.recolorToFind[var7], this.recolorToReplace[var7]);
+         for(var6 = 0; var6 < this.recolorToFind.length; ++var6) {
+            var9.method2322(this.recolorToFind[var6], this.recolorToReplace[var6]);
          }
       }
 
       if(this.textureToFind != null) {
-         for(var7 = 0; var7 < this.textureToFind.length; ++var7) {
-            var8.method2320(this.textureToFind[var7], this.textureToReplace[var7]);
+         for(var6 = 0; var6 < this.textureToFind.length; ++var6) {
+            var9.method2320(this.textureToFind[var6], this.textureToReplace[var6]);
          }
       }
 
       if(var4) {
-         var8.method2325(this.modelSizeX, this.modelSizeHeight, this.modelSizeY);
+         var9.method2325(this.modelSizeX, this.modelSizeHeight, this.modelSizeY);
       }
 
-      if(var11) {
-         var8.method2359(this.offsetX, this.offsetHeight, this.offsetY);
+      if(var10) {
+         var9.method2359(this.offsetX, this.offsetHeight, this.offsetY);
       }
 
-      return var8;
+      return var9;
    }
 
    @ObfuscatedName("g")
@@ -826,15 +827,6 @@ public class ObjectComposition extends CacheableNode {
       }
    }
 
-   static {
-      field3467 = false;
-      field3489 = new NodeCache(4096);
-      field3453 = new NodeCache(500);
-      field3446 = new NodeCache(30);
-      field3441 = new NodeCache(30);
-      field3448 = new ModelData[4];
-   }
-
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(I)Z",
@@ -870,5 +862,14 @@ public class ObjectComposition extends CacheableNode {
             return 12;
          }
       }
+   }
+
+   static {
+      field3467 = false;
+      field3489 = new NodeCache(4096);
+      field3453 = new NodeCache(500);
+      field3446 = new NodeCache(30);
+      field3441 = new NodeCache(30);
+      field3448 = new ModelData[4];
    }
 }

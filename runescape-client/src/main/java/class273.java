@@ -15,22 +15,22 @@ public class class273 {
       if(!class1.method3(var0, var3, var4)) {
          var5 = null;
       } else {
-         ModIcon var7 = new ModIcon();
-         var7.width = class220.field2818;
-         var7.originalHeight = class286.field3792;
-         var7.offsetX = class286.field3793[0];
-         var7.offsetY = class286.field3794[0];
-         var7.originalWidth = class286.field3791[0];
-         var7.height = class149.field2211[0];
-         var7.palette = class116.field1686;
-         var7.pixels = class286.field3797[0];
+         ModIcon var6 = new ModIcon();
+         var6.width = class220.field2818;
+         var6.originalHeight = class286.field3792;
+         var6.offsetX = class286.field3793[0];
+         var6.offsetY = class286.field3794[0];
+         var6.originalWidth = class286.field3791[0];
+         var6.height = class149.field2211[0];
+         var6.palette = class116.field1686;
+         var6.pixels = class286.field3797[0];
          class286.field3793 = null;
          class286.field3794 = null;
          class286.field3791 = null;
          class149.field2211 = null;
          class116.field1686 = null;
-         class286.field3797 = null;
-         var5 = var7;
+         class286.field3797 = (byte[][])null;
+         var5 = var6;
       }
 
       return var5;

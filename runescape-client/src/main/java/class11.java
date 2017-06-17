@@ -32,11 +32,6 @@ public class class11 {
       }
    }
 
-   static {
-      field274 = new class11();
-      field270 = new class11();
-   }
-
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(ILIndexFile;LIndexData;I)V",
@@ -49,6 +44,7 @@ public class class11 {
       var3.index = var1;
       var3.data = var2;
       Deque var4 = class236.field3245;
+      Deque var5 = class236.field3245;
       synchronized(class236.field3245) {
          class236.field3245.method3505(var3);
       }
@@ -69,7 +65,12 @@ public class class11 {
          } else {
             Rasterizer2D.method4840(var1, var2, 0, var4.field2609, var4.field2608);
          }
-
       }
+
+   }
+
+   static {
+      field274 = new class11();
+      field270 = new class11();
    }
 }

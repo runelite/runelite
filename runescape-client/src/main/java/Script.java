@@ -53,10 +53,6 @@ public class Script extends CacheableNode {
    @Export("intStackCount")
    int intStackCount;
 
-   static {
-      field1533 = new NodeCache(128);
-   }
-
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(II)[Lclass186;",
@@ -78,5 +74,9 @@ public class Script extends CacheableNode {
          class198 var3 = (class198)var0.method3389((long)var1);
          return var3 == null?var2:var3.field2496;
       }
+   }
+
+   static {
+      field1533 = new NodeCache(128);
    }
 }

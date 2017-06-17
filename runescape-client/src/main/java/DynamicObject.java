@@ -96,11 +96,11 @@ public class DynamicObject extends Renderable {
             var1 = 100;
          }
 
-         label55: {
+         label47: {
             do {
                do {
                   if(var1 <= this.field1544.frameLenghts[this.field1545]) {
-                     break label55;
+                     break label47;
                   }
 
                   var1 -= this.field1544.frameLenghts[this.field1545];
@@ -190,9 +190,9 @@ public class DynamicObject extends Renderable {
             --var16;
          }
 
-         double var20 = var0 - 0.3333333333333333D;
-         if(var20 < 0.0D) {
-            ++var20;
+         double var18 = var0 - 0.3333333333333333D;
+         if(var18 < 0.0D) {
+            ++var18;
          }
 
          if(var16 * 6.0D < 1.0D) {
@@ -215,21 +215,21 @@ public class DynamicObject extends Renderable {
             var8 = var14;
          }
 
-         if(var20 * 6.0D < 1.0D) {
-            var10 = 6.0D * (var12 - var14) * var20 + var14;
-         } else if(var20 * 2.0D < 1.0D) {
+         if(var18 * 6.0D < 1.0D) {
+            var10 = 6.0D * (var12 - var14) * var18 + var14;
+         } else if(var18 * 2.0D < 1.0D) {
             var10 = var12;
-         } else if(var20 * 3.0D < 2.0D) {
-            var10 = (0.6666666666666666D - var20) * (var12 - var14) * 6.0D + var14;
+         } else if(var18 * 3.0D < 2.0D) {
+            var10 = (0.6666666666666666D - var18) * (var12 - var14) * 6.0D + var14;
          } else {
             var10 = var14;
          }
       }
 
-      int var22 = (int)(256.0D * var6);
+      int var20 = (int)(256.0D * var6);
       int var13 = (int)(256.0D * var8);
-      int var23 = (int)(256.0D * var10);
-      int var15 = var23 + (var22 << 16) + (var13 << 8);
+      int var21 = (int)(256.0D * var10);
+      int var15 = var21 + (var20 << 16) + (var13 << 8);
       return var15;
    }
 }

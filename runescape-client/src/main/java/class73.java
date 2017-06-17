@@ -33,8 +33,8 @@ public class class73 extends class163 {
                Client.field958 = true;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("jc")

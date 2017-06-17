@@ -372,16 +372,16 @@ public class CollisionData {
 
          if(var4 != 0) {
             ++var0.field1230;
-            boolean var6;
+            boolean var5;
             if(var4 > 1024) {
                var0.angle -= var0.field1227;
-               var6 = true;
+               var5 = true;
                if(var4 < var0.field1227 || var4 > 2048 - var0.field1227) {
                   var0.angle = var0.orientation;
-                  var6 = false;
+                  var5 = false;
                }
 
-               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1230 > 25 || var6)) {
+               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1230 > 25 || var5)) {
                   if(var0.field1214 != -1) {
                      var0.poseAnimation = var0.field1214;
                   } else {
@@ -390,13 +390,13 @@ public class CollisionData {
                }
             } else {
                var0.angle += var0.field1227;
-               var6 = true;
+               var5 = true;
                if(var4 < var0.field1227 || var4 > 2048 - var0.field1227) {
                   var0.angle = var0.orientation;
-                  var6 = false;
+                  var5 = false;
                }
 
-               if(var0.poseAnimation == var0.idlePoseAnimation && (var0.field1230 > 25 || var6)) {
+               if(var0.poseAnimation == var0.idlePoseAnimation && (var0.field1230 > 25 || var5)) {
                   if(var0.field1215 != -1) {
                      var0.poseAnimation = var0.field1215;
                   } else {
@@ -409,8 +409,8 @@ public class CollisionData {
          } else {
             var0.field1230 = 0;
          }
-
       }
+
    }
 
    @ObfuscatedName("j")

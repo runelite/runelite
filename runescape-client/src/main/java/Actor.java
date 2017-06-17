@@ -374,6 +374,7 @@ public abstract class Actor extends Renderable {
          this.field1232[var9] = var4;
          this.hitsplatCycles[var9] = var11 + var5 + var6;
       }
+
    }
 
    @ObfuscatedName("ae")
@@ -382,36 +383,36 @@ public abstract class Actor extends Renderable {
       garbageValue = "-1911761116"
    )
    final void method1445(int var1, int var2, int var3, int var4, int var5, int var6) {
-      CombatInfo2 var8 = (CombatInfo2)CombatInfo2.field3377.get((long)var1);
-      CombatInfo2 var7;
-      if(var8 != null) {
-         var7 = var8;
+      CombatInfo2 var7 = (CombatInfo2)CombatInfo2.field3377.get((long)var1);
+      CombatInfo2 var8;
+      if(var7 != null) {
+         var8 = var7;
       } else {
          byte[] var9 = CombatInfo2.field3372.getConfigData(33, var1);
-         var8 = new CombatInfo2();
+         var7 = new CombatInfo2();
          if(var9 != null) {
-            var8.method4276(new Buffer(var9));
+            var7.method4276(new Buffer(var9));
          }
 
-         CombatInfo2.field3377.put(var8, (long)var1);
-         var7 = var8;
+         CombatInfo2.field3377.put(var7, (long)var1);
+         var8 = var7;
       }
 
-      var8 = var7;
+      var7 = var8;
       CombatInfoListHolder var14 = null;
       CombatInfoListHolder var10 = null;
-      int var11 = var7.field3376;
+      int var11 = var8.field3376;
       int var12 = 0;
 
       CombatInfoListHolder var13;
       for(var13 = (CombatInfoListHolder)this.combatInfoList.method3457(); var13 != null; var13 = (CombatInfoListHolder)this.combatInfoList.method3448()) {
          ++var12;
-         if(var8.field3374 == var13.combatInfo2.field3374) {
+         if(var7.field3374 == var13.combatInfo2.field3374) {
             var13.method1568(var4 + var2, var5, var6, var3);
             return;
          }
 
-         if(var13.combatInfo2.field3375 <= var8.field3375) {
+         if(var13.combatInfo2.field3375 <= var7.field3375) {
             var14 = var13;
          }
 
@@ -422,7 +423,7 @@ public abstract class Actor extends Renderable {
       }
 
       if(var10 != null || var12 < 4) {
-         var13 = new CombatInfoListHolder(var8);
+         var13 = new CombatInfoListHolder(var7);
          if(var14 == null) {
             this.combatInfoList.method3442(var13);
          } else {
@@ -433,8 +434,8 @@ public abstract class Actor extends Renderable {
          if(var12 >= 4) {
             var10.unlink();
          }
-
       }
+
    }
 
    @ObfuscatedName("ap")
@@ -443,25 +444,25 @@ public abstract class Actor extends Renderable {
       garbageValue = "-577644750"
    )
    final void method1446(int var1) {
-      CombatInfo2 var3 = (CombatInfo2)CombatInfo2.field3377.get((long)var1);
-      CombatInfo2 var2;
-      if(var3 != null) {
-         var2 = var3;
+      CombatInfo2 var2 = (CombatInfo2)CombatInfo2.field3377.get((long)var1);
+      CombatInfo2 var3;
+      if(var2 != null) {
+         var3 = var2;
       } else {
          byte[] var4 = CombatInfo2.field3372.getConfigData(33, var1);
-         var3 = new CombatInfo2();
+         var2 = new CombatInfo2();
          if(var4 != null) {
-            var3.method4276(new Buffer(var4));
+            var2.method4276(new Buffer(var4));
          }
 
-         CombatInfo2.field3377.put(var3, (long)var1);
-         var2 = var3;
+         CombatInfo2.field3377.put(var2, (long)var1);
+         var3 = var2;
       }
 
-      var3 = var2;
+      var2 = var3;
 
       for(CombatInfoListHolder var5 = (CombatInfoListHolder)this.combatInfoList.method3457(); var5 != null; var5 = (CombatInfoListHolder)this.combatInfoList.method3448()) {
-         if(var3 == var5.combatInfo2) {
+         if(var2 == var5.combatInfo2) {
             var5.unlink();
             return;
          }

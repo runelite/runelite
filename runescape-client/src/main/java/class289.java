@@ -39,18 +39,6 @@ public class class289 {
       return this.field3851;
    }
 
-   static {
-      field3853 = new class289(8, 0, "", "");
-      field3850 = new class289(6, 1, "", "");
-      field3858 = new class289(2, 2, "", "");
-      field3856 = new class289(1, 3, "", "");
-      field3852 = new class289(5, 4, "", "");
-      field3854 = new class289(7, 5, "", "");
-      field3855 = new class289(0, 6, "", "");
-      field3849 = new class289(4, 7, "", "");
-      field3857 = new class289(3, -1, "", "", true, new class289[]{field3853, field3850, field3858, field3852, field3856});
-   }
-
    class289(int var1, int var2, String var3, String var4) {
       this.field3859 = var1;
       this.field3851 = var4;
@@ -64,5 +52,17 @@ public class class289 {
    static final int method5224(int var0, int var1, int var2) {
       int var3 = 256 - var2;
       return (var2 * (var1 & 16711935) + var3 * (var0 & 16711935) & -16711936) + (var3 * (var0 & '\uff00') + (var1 & '\uff00') * var2 & 16711680) >> 8;
+   }
+
+   static {
+      field3853 = new class289(8, 0, "", "");
+      field3850 = new class289(6, 1, "", "");
+      field3858 = new class289(2, 2, "", "");
+      field3856 = new class289(1, 3, "", "");
+      field3852 = new class289(5, 4, "", "");
+      field3854 = new class289(7, 5, "", "");
+      field3855 = new class289(0, 6, "", "");
+      field3849 = new class289(4, 7, "", "");
+      field3857 = new class289(3, -1, "", "", true, new class289[]{field3853, field3850, field3858, field3852, field3856});
    }
 }

@@ -34,19 +34,6 @@ public class class219 implements class218 {
    @ObfuscatedName("bn")
    static String field2810;
 
-   static {
-      field2796 = new class219("", 10);
-      field2797 = new class219("", 11);
-      field2798 = new class219("", 12);
-      field2799 = new class219("", 13);
-      field2800 = new class219("", 14);
-      field2803 = new class219("", 15, new class6[]{class6.field102, class6.field102}, (class6[])null);
-      field2802 = new class219("", 16, new class6[]{class6.field102, class6.field102}, (class6[])null);
-      field2806 = new class219("", 17, new class6[]{class6.field102, class6.field102}, (class6[])null);
-      field2809 = new class219("", 73, true, true);
-      field2805 = new class219("", 76, true, false);
-   }
-
    class219(String var1, int var2, class6[] var3, class6[] var4) {
       this(var1, var2, var3 != null, var3, null != var4, var4);
    }
@@ -194,5 +181,18 @@ public class class219 implements class218 {
          class13.cameraYaw = var8;
       }
 
+   }
+
+   static {
+      field2796 = new class219("", 10);
+      field2797 = new class219("", 11);
+      field2798 = new class219("", 12);
+      field2799 = new class219("", 13);
+      field2800 = new class219("", 14);
+      field2803 = new class219("", 15, new class6[]{class6.field102, class6.field102}, (class6[])null);
+      field2802 = new class219("", 16, new class6[]{class6.field102, class6.field102}, (class6[])null);
+      field2806 = new class219("", 17, new class6[]{class6.field102, class6.field102}, (class6[])null);
+      field2809 = new class219("", 73, true, true);
+      field2805 = new class219("", 76, true, false);
    }
 }

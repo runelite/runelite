@@ -13,19 +13,6 @@ public class class211 {
    @Export("widgetSettings")
    public static int[] widgetSettings;
 
-   static {
-      field2614 = new int[32];
-      int var0 = 2;
-
-      for(int var1 = 0; var1 < 32; ++var1) {
-         field2614[var1] = var0 - 1;
-         var0 += var0;
-      }
-
-      settings = new int[2000];
-      widgetSettings = new int[2000];
-   }
-
    @ObfuscatedName("fc")
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -66,9 +53,9 @@ public class class211 {
                   break;
                }
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("t")
@@ -81,5 +68,19 @@ public class class211 {
       if(var1 != null) {
          var1.unlink();
       }
+
+   }
+
+   static {
+      field2614 = new int[32];
+      int var0 = 2;
+
+      for(int var1 = 0; var1 < 32; ++var1) {
+         field2614[var1] = var0 - 1;
+         var0 += var0;
+      }
+
+      settings = new int[2000];
+      widgetSettings = new int[2000];
    }
 }

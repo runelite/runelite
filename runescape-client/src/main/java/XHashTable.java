@@ -88,16 +88,15 @@ public final class XHashTable {
          this.field2477 = var1.next;
          return var1;
       } else {
-         do {
-            if(this.field2474 >= this.size) {
-               return null;
-            }
-
+         while(this.field2474 < this.size) {
             var1 = this.buckets[this.field2474++].next;
-         } while(var1 == this.buckets[this.field2474 - 1]);
+            if(var1 != this.buckets[this.field2474 - 1]) {
+               this.field2477 = var1.next;
+               return var1;
+            }
+         }
 
-         this.field2477 = var1.next;
-         return var1;
+         return null;
       }
    }
 

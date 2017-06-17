@@ -49,20 +49,6 @@ public final class class61 {
    @Export("tileHeights")
    static int[][][] tileHeights;
 
-   static {
-      tileHeights = new int[4][105][105];
-      tileSettings = new byte[4][104][104];
-      field759 = 99;
-      field748 = new int[]{1, 2, 4, 8};
-      field756 = new int[]{16, 32, 64, 128};
-      field757 = new int[]{1, 0, -1, 0};
-      field758 = new int[]{0, -1, 0, 1};
-      field752 = new int[]{1, -1, -1, 1};
-      field760 = new int[]{-1, -1, 1, 1};
-      field761 = (int)(Math.random() * 17.0D) - 8;
-      field762 = (int)(Math.random() * 33.0D) - 16;
-   }
-
    @ObfuscatedName("jj")
    @ObfuscatedSignature(
       signature = "(LBuffer;IB)V",
@@ -127,5 +113,19 @@ public final class class61 {
             return false;
          }
       }
+   }
+
+   static {
+      tileHeights = new int[4][105][105];
+      tileSettings = new byte[4][104][104];
+      field759 = 99;
+      field748 = new int[]{1, 2, 4, 8};
+      field756 = new int[]{16, 32, 64, 128};
+      field757 = new int[]{1, 0, -1, 0};
+      field758 = new int[]{0, -1, 0, 1};
+      field752 = new int[]{1, -1, -1, 1};
+      field760 = new int[]{-1, -1, 1, 1};
+      field761 = (int)(Math.random() * 17.0D) - 8;
+      field762 = (int)(Math.random() * 33.0D) - 16;
    }
 }
