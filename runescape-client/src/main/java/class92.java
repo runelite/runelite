@@ -57,7 +57,8 @@ public class class92 {
    @ObfuscatedGetter(
       intValue = 985843175
    )
-   static int field1429;
+   @Export("loadingBarPercentage")
+   static int loadingBarPercentage;
    @ObfuscatedName("an")
    static boolean field1430;
    @ObfuscatedName("am")
@@ -110,7 +111,8 @@ public class class92 {
    )
    static int field1445;
    @ObfuscatedName("ab")
-   static String field1446;
+   @Export("loadingText")
+   static String loadingText;
    @ObfuscatedName("t")
    static ModIcon field1447;
 
@@ -216,8 +218,8 @@ public class class92 {
       field1426 = 0;
       field1427 = 0;
       field1428 = 0;
-      field1429 = 10;
-      field1446 = "";
+      loadingBarPercentage = 10;
+      loadingText = "";
       loginIndex = 0;
       field1444 = "";
       loginMessage1 = "";

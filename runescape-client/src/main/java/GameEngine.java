@@ -640,7 +640,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       signature = "(ILjava/lang/String;ZI)V",
       garbageValue = "-1451382188"
    )
-   protected final void method823(int var1, String var2, boolean var3) {
+   @Export("drawLoadingScreen")
+   protected final void drawLoadingScreen(int var1, String var2, boolean var3) {
       try {
          Graphics var4 = this.canvas.getGraphics();
          if(class1.field4 == null) {

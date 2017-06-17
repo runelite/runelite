@@ -105,7 +105,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1805146139
    )
-   static int field921;
+   @Export("loadingStage")
+   static int loadingStage;
    @ObfuscatedName("bj")
    @ObfuscatedGetter(
       intValue = 1499692395
@@ -1325,7 +1326,7 @@ public final class Client extends GameEngine {
             }
 
             if(gameState == 0) {
-               class24.method198();
+               class24.load();
                GameEngine.field707.vmethod2872();
 
                for(var5 = 0; var5 < 32; ++var5) {
@@ -1339,7 +1340,7 @@ public final class Client extends GameEngine {
                GameEngine.field697 = 0;
             } else if(gameState == 5) {
                class7.method35(this);
-               class24.method198();
+               class24.load();
                GameEngine.field707.vmethod2872();
 
                for(var5 = 0; var5 < 32; ++var5) {
@@ -1426,7 +1427,7 @@ public final class Client extends GameEngine {
       }
 
       if((gameState == 10 || gameState == 20 || gameState == 30) && 0L != field1119 && class166.method2970() > field1119) {
-         WorldMapType2.method508(class241.method4167());
+         WorldMapType2.method508(class241.getResizableValue());
       }
 
       int var3;
@@ -1437,12 +1438,12 @@ public final class Client extends GameEngine {
       }
 
       if(gameState == 0) {
-         this.method823(class92.field1429, class92.field1446, var1);
+         this.drawLoadingScreen(class92.loadingBarPercentage, class92.loadingText, var1);
       } else if(gameState == 5) {
-         class33.method352(class64.field788, class5.field39, WallObject.font_p12full, var1);
+         class33.drawLoginScreen(class64.field788, class5.field39, WallObject.font_p12full, var1);
       } else if(gameState != 10 && gameState != 11) {
          if(gameState == 20) {
-            class33.method352(class64.field788, class5.field39, WallObject.font_p12full, var1);
+            class33.drawLoginScreen(class64.field788, class5.field39, WallObject.font_p12full, var1);
          } else if(gameState == 25) {
             if(field1113 == 1) {
                if(field1117 > field961) {
@@ -1450,26 +1451,26 @@ public final class Client extends GameEngine {
                }
 
                var3 = (field961 * 50 - field1117 * 50) / field961;
-               class158.method2877("Loading - please wait.<br> (" + var3 + "%)", false);
+               class158.drawStatusBox("Loading - please wait.<br> (" + var3 + "%)", false);
             } else if(field1113 == 2) {
                if(field1127 > field1023) {
                   field1023 = field1127;
                }
 
                var3 = (field1023 * 50 - field1127 * 50) / field1023 + 50;
-               class158.method2877("Loading - please wait.<br> (" + var3 + "%)", false);
+               class158.drawStatusBox("Loading - please wait.<br> (" + var3 + "%)", false);
             } else {
-               class158.method2877("Loading - please wait.", false);
+               class158.drawStatusBox("Loading - please wait.", false);
             }
          } else if(gameState == 30) {
             this.method1334();
          } else if(gameState == 40) {
-            class158.method2877("Connection lost<br>Please wait - attempting to reestablish", false);
+            class158.drawStatusBox("Connection lost<br>Please wait - attempting to reestablish", false);
          } else if(gameState == 45) {
-            class158.method2877("Please wait...", false);
+            class158.drawStatusBox("Please wait...", false);
          }
       } else {
-         class33.method352(class64.field788, class5.field39, WallObject.font_p12full, var1);
+         class33.drawLoginScreen(class64.field788, class5.field39, WallObject.font_p12full, var1);
       }
 
       if(gameState == 30 && gameDrawingMode == 0 && !var1) {
@@ -2076,7 +2077,7 @@ public final class Client extends GameEngine {
 
       if(Item.field1481 != null) {
          try {
-            class52.method733(class220.field2817, "resize", new Object[]{Integer.valueOf(class241.method4167())});
+            class52.method733(class220.field2817, "resize", new Object[]{Integer.valueOf(class241.getResizableValue())});
          } catch (Throwable var4) {
             ;
          }
@@ -5510,7 +5511,7 @@ public final class Client extends GameEngine {
       Projectile.field1475 = null;
       if(widgetRoot != -1) {
          field1109 = 0;
-         class158.method2866(widgetRoot, 0, 0, class10.canvasWidth, class1.canvasHeight, 0, 0, -1);
+         class158.drawWidget(widgetRoot, 0, 0, class10.canvasWidth, class1.canvasHeight, 0, 0, -1);
       }
 
       Rasterizer2D.method4880();
@@ -5698,7 +5699,7 @@ public final class Client extends GameEngine {
       field1039 = 0;
       field928 = class91.field1410;
       field910 = class91.field1410;
-      field921 = 0;
+      loadingStage = 0;
       field1185 = 0;
       field1021 = 0;
       field936 = 0;

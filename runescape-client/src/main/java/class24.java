@@ -125,9 +125,10 @@ public class class24 {
       signature = "(I)V",
       garbageValue = "-1899723856"
    )
-   static void method198() {
+   @Export("load")
+   static void load() {
       int var0;
-      if(Client.field921 == 0) {
+      if(Client.loadingStage == 0) {
          class17.region = new Region(4, 104, 104, class61.tileHeights);
 
          for(var0 = 0; var0 < 4; ++var0) {
@@ -135,16 +136,16 @@ public class class24 {
          }
 
          Actor.field1268 = new SpritePixels(512, 512);
-         class92.field1446 = "Starting game engine...";
-         class92.field1429 = 5;
-         Client.field921 = 20;
+         class92.loadingText = "Starting game engine...";
+         class92.loadingBarPercentage = 5;
+         Client.loadingStage = 20;
       } else {
          int var1;
          int var2;
          int var3;
          int var4;
-         if(Client.field921 != 20) {
-            if(Client.field921 == 30) {
+         if(Client.loadingStage != 20) {
+            if(Client.loadingStage == 30) {
                Client.indexInterfaces = RSSocket.method2891(0, false, true, true);
                Client.indexSoundEffects = RSSocket.method2891(1, false, true, true);
                class3.field24 = RSSocket.method2891(2, true, false, true);
@@ -162,10 +163,10 @@ public class class24 {
                class219.field2807 = RSSocket.method2891(14, false, true, false);
                class164.field2329 = RSSocket.method2891(15, false, true, true);
                class3.indexWorldMap = RSSocket.method2891(16, false, true, false);
-               class92.field1446 = "Connecting to update server";
-               class92.field1429 = 20;
-               Client.field921 = 40;
-            } else if(Client.field921 == 40) {
+               class92.loadingText = "Connecting to update server";
+               class92.loadingBarPercentage = 20;
+               Client.loadingStage = 40;
+            } else if(Client.loadingStage == 40) {
                byte var5 = 0;
                var0 = var5 + Client.indexInterfaces.method4095() * 4 / 100;
                var0 += Client.indexSoundEffects.method4095() * 4 / 100;
@@ -186,20 +187,20 @@ public class class24 {
                var0 += class3.indexWorldMap.method4095() * 2 / 100;
                if(var0 != 100) {
                   if(var0 != 0) {
-                     class92.field1446 = "Checking for updates - " + var0 + "%";
+                     class92.loadingText = "Checking for updates - " + var0 + "%";
                   }
 
-                  class92.field1429 = 30;
+                  class92.loadingBarPercentage = 30;
                } else {
-                  class92.field1446 = "Loaded update list";
-                  class92.field1429 = 30;
-                  Client.field921 = 45;
+                  class92.loadingText = "Loaded update list";
+                  class92.loadingBarPercentage = 30;
+                  Client.loadingStage = 45;
                }
             } else {
                IndexData var6;
                IndexData var7;
                IndexData var23;
-               if(Client.field921 == 45) {
+               if(Client.loadingStage == 45) {
                   class90.method1618(22050, !Client.field1055, 2);
                   class204 var8 = new class204();
                   var8.method3689(9, 128);
@@ -216,44 +217,44 @@ public class class24 {
                   WorldMapType1.field442 = new class102();
                   Player.field862.method1938(WorldMapType1.field442);
                   class59.field724 = new class116(22050, class109.field1635);
-                  class92.field1446 = "Prepared sound engine";
-                  class92.field1429 = 35;
-                  Client.field921 = 50;
+                  class92.loadingText = "Prepared sound engine";
+                  class92.loadingBarPercentage = 35;
+                  Client.loadingStage = 50;
                   class69.field820 = new class262(WorldMapType3.indexSprites, class33.field476);
-               } else if(Client.field921 == 50) {
+               } else if(Client.loadingStage == 50) {
                   class261[] var25 = new class261[]{class261.field3625, class261.field3632, class261.field3624, class261.field3623, class261.field3626, class261.field3622};
                   var1 = var25.length;
                   class262 var9 = class69.field820;
                   class261[] var10 = new class261[]{class261.field3625, class261.field3632, class261.field3624, class261.field3623, class261.field3626, class261.field3622};
                   Client.field1052 = var9.method4611(var10);
                   if(Client.field1052.size() < var1) {
-                     class92.field1446 = "Loading fonts - " + Client.field1052.size() * 100 / var1 + "%";
-                     class92.field1429 = 40;
+                     class92.loadingText = "Loading fonts - " + Client.field1052.size() * 100 / var1 + "%";
+                     class92.loadingBarPercentage = 40;
                   } else {
                      class5.field39 = (Font)Client.field1052.get(class261.field3626);
                      WallObject.font_p12full = (Font)Client.field1052.get(class261.field3632);
                      class64.field788 = (Font)Client.field1052.get(class261.field3624);
                      class19.field337 = new class291(true);
-                     class92.field1446 = "Loaded fonts";
-                     class92.field1429 = 40;
-                     Client.field921 = 60;
+                     class92.loadingText = "Loaded fonts";
+                     class92.loadingBarPercentage = 40;
+                     Client.loadingStage = 60;
                   }
-               } else if(Client.field921 == 60) {
+               } else if(Client.loadingStage == 60) {
                   var0 = class21.method169(FileOnDisk.field1763, WorldMapType3.indexSprites);
                   var1 = class28.method229();
                   if(var0 < var1) {
-                     class92.field1446 = "Loading title screen - " + var0 * 100 / var1 + "%";
-                     class92.field1429 = 50;
+                     class92.loadingText = "Loading title screen - " + var0 * 100 / var1 + "%";
+                     class92.loadingBarPercentage = 50;
                   } else {
-                     class92.field1446 = "Loaded title screen";
-                     class92.field1429 = 50;
+                     class92.loadingText = "Loaded title screen";
+                     class92.loadingBarPercentage = 50;
                      class23.setGameState(5);
-                     Client.field921 = 70;
+                     Client.loadingStage = 70;
                   }
-               } else if(Client.field921 == 70) {
+               } else if(Client.loadingStage == 70) {
                   if(!class3.field24.method3999()) {
-                     class92.field1446 = "Loading config - " + class3.field24.method4103() + "%";
-                     class92.field1429 = 60;
+                     class92.loadingText = "Loading config - " + class3.field24.method4103() + "%";
+                     class92.loadingBarPercentage = 60;
                   } else {
                      IndexData var26 = class3.field24;
                      Overlay.field3594 = var26;
@@ -306,11 +307,11 @@ public class class24 {
                      class254.field3425 = var22;
                      class5.method17(class3.field24, WorldMapType3.indexSprites);
                      class45.method632(class3.field24, WorldMapType3.indexSprites);
-                     class92.field1446 = "Loaded config";
-                     class92.field1429 = 60;
-                     Client.field921 = 80;
+                     class92.loadingText = "Loaded config";
+                     class92.loadingBarPercentage = 60;
+                     Client.loadingStage = 80;
                   }
-               } else if(Client.field921 == 80) {
+               } else if(Client.loadingStage == 80) {
                   var0 = 0;
                   if(class158.field2277 == null) {
                      class158.field2277 = Signlink.method2820(WorldMapType3.indexSprites, "compass", "");
@@ -379,8 +380,8 @@ public class class24 {
                   }
 
                   if(var0 < 11) {
-                     class92.field1446 = "Loading sprites - " + var0 * 100 / 12 + "%";
-                     class92.field1429 = 70;
+                     class92.loadingText = "Loading sprites - " + var0 * 100 / 12 + "%";
+                     class92.loadingBarPercentage = 70;
                   } else {
                      FontTypeFace.modIcons = class33.field481;
                      class15.field300.method4933();
@@ -389,73 +390,73 @@ public class class24 {
                      var3 = (int)(Math.random() * 21.0D) - 10;
                      var4 = (int)(Math.random() * 41.0D) - 20;
                      Client.field925[0].method4912(var4 + var1, var4 + var2, var4 + var3);
-                     class92.field1446 = "Loaded sprites";
-                     class92.field1429 = 70;
-                     Client.field921 = 90;
+                     class92.loadingText = "Loaded sprites";
+                     class92.loadingBarPercentage = 70;
+                     Client.loadingStage = 90;
                   }
-               } else if(Client.field921 == 90) {
+               } else if(Client.loadingStage == 90) {
                   if(!class17.indexTextures.method3999()) {
-                     class92.field1446 = "Loading textures - " + class17.indexTextures.method4103() + "%";
-                     class92.field1429 = 90;
+                     class92.loadingText = "Loading textures - " + class17.indexTextures.method4103() + "%";
+                     class92.loadingBarPercentage = 90;
                   } else {
                      TextureProvider var27 = new TextureProvider(class17.indexTextures, WorldMapType3.indexSprites, 20, 0.8D, Client.field1055?64:128);
                      class136.method2497(var27);
                      class136.method2498(0.8D);
-                     class92.field1446 = "Loaded textures";
-                     class92.field1429 = 90;
-                     Client.field921 = 110;
+                     class92.loadingText = "Loaded textures";
+                     class92.loadingBarPercentage = 90;
+                     Client.loadingStage = 110;
                   }
-               } else if(Client.field921 == 110) {
+               } else if(Client.loadingStage == 110) {
                   Client.field913 = new class71();
                   GameEngine.field691.method2822(Client.field913, 10);
-                  class92.field1446 = "Loaded input handler";
-                  class92.field1429 = 94;
-                  Client.field921 = 120;
-               } else if(Client.field921 == 120) {
+                  class92.loadingText = "Loaded input handler";
+                  class92.loadingBarPercentage = 94;
+                  Client.loadingStage = 120;
+               } else if(Client.loadingStage == 120) {
                   if(!FileOnDisk.field1763.method4026("huffman", "")) {
-                     class92.field1446 = "Loading wordpack - 0%";
-                     class92.field1429 = 96;
+                     class92.loadingText = "Loading wordpack - 0%";
+                     class92.loadingBarPercentage = 96;
                   } else {
                      class165 var29 = new class165(FileOnDisk.field1763.method4014("huffman", ""));
                      XGrandExchangeOffer.method128(var29);
-                     class92.field1446 = "Loaded wordpack";
-                     class92.field1429 = 96;
-                     Client.field921 = 130;
+                     class92.loadingText = "Loaded wordpack";
+                     class92.loadingBarPercentage = 96;
+                     Client.loadingStage = 130;
                   }
-               } else if(Client.field921 == 130) {
+               } else if(Client.loadingStage == 130) {
                   if(!class9.field255.method3999()) {
-                     class92.field1446 = "Loading interfaces - " + class9.field255.method4103() * 4 / 5 + "%";
-                     class92.field1429 = 100;
+                     class92.loadingText = "Loading interfaces - " + class9.field255.method4103() * 4 / 5 + "%";
+                     class92.loadingBarPercentage = 100;
                   } else if(!class69.indexScripts.method3999()) {
-                     class92.field1446 = "Loading interfaces - " + (class69.indexScripts.method4103() / 6 + 80) + "%";
-                     class92.field1429 = 100;
+                     class92.loadingText = "Loading interfaces - " + (class69.indexScripts.method4103() / 6 + 80) + "%";
+                     class92.loadingBarPercentage = 100;
                   } else if(!class33.field476.method3999()) {
-                     class92.field1446 = "Loading interfaces - " + (class33.field476.method4103() / 50 + 96) + "%";
-                     class92.field1429 = 100;
+                     class92.loadingText = "Loading interfaces - " + (class33.field476.method4103() / 50 + 96) + "%";
+                     class92.loadingBarPercentage = 100;
                   } else {
-                     class92.field1446 = "Loaded interfaces";
-                     class92.field1429 = 98;
-                     Client.field921 = 140;
+                     class92.loadingText = "Loaded interfaces";
+                     class92.loadingBarPercentage = 98;
+                     Client.loadingStage = 140;
                   }
-               } else if(Client.field921 == 140) {
+               } else if(Client.loadingStage == 140) {
                   if(!class3.indexWorldMap.method4016(class40.field556.field548)) {
-                     class92.field1446 = "Loading world map - " + class3.indexWorldMap.method4018(class40.field556.field548) / 10 + "%";
+                     class92.loadingText = "Loading world map - " + class3.indexWorldMap.method4018(class40.field556.field548) / 10 + "%";
                   } else {
-                     if(class46.field601 == null) {
-                        class46.field601 = new RenderOverview();
-                        class46.field601.method5068(class3.indexWorldMap, class64.field788, Client.field1052, Client.field925);
+                     if(class46.renderOverview == null) {
+                        class46.renderOverview = new RenderOverview();
+                        class46.renderOverview.method5068(class3.indexWorldMap, class64.field788, Client.field1052, Client.field925);
                      }
 
-                     var0 = class46.field601.method5217();
+                     var0 = class46.renderOverview.method5217();
                      if(var0 < 100) {
-                        class92.field1446 = "Loading world map - " + (var0 * 9 / 10 + 10) + "%";
+                        class92.loadingText = "Loading world map - " + (var0 * 9 / 10 + 10) + "%";
                      } else {
-                        class92.field1446 = "Loaded world map";
-                        class92.field1429 = 100;
-                        Client.field921 = 150;
+                        class92.loadingText = "Loaded world map";
+                        class92.loadingBarPercentage = 100;
+                        Client.loadingStage = 150;
                      }
                   }
-               } else if(Client.field921 == 150) {
+               } else if(Client.loadingStage == 150) {
                   class23.setGameState(10);
                }
             }
@@ -470,9 +471,9 @@ public class class24 {
             }
 
             Region.method2738(var24, 500, 800, 512, 334);
-            class92.field1446 = "Prepared visibility map";
-            class92.field1429 = 10;
-            Client.field921 = 30;
+            class92.loadingText = "Prepared visibility map";
+            class92.loadingBarPercentage = 10;
+            Client.loadingStage = 30;
          }
       }
 

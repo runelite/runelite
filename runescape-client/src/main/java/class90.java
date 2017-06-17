@@ -1193,7 +1193,7 @@ public class class90 {
                return var3;
             } else if(var0 < 5400) {
                if(var0 == 5306) {
-                  class83.intStack[++class83.intStackSize - 1] = class241.method4167();
+                  class83.intStack[++class83.intStackSize - 1] = class241.getResizableValue();
                   var3 = 1;
                } else if(var0 == 5307) {
                   var4 = class83.intStack[--class83.intStackSize];

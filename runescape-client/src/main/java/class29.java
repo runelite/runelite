@@ -237,11 +237,11 @@ public final class class29 {
                      }
 
                      if(var10.contentType == 1400) {
-                        class46.field601.extractWorldmap(var12, var13, var10.width, var10.height, Client.gameCycle);
+                        class46.renderOverview.extractWorldmap(var12, var13, var10.width, var10.height, Client.gameCycle);
                      }
 
                      if(var10.contentType == 1401) {
-                        class46.field601.extractData(var12, var13, var10.width, var10.height);
+                        class46.renderOverview.extractData(var12, var13, var10.width, var10.height);
                      }
                   }
 
@@ -267,7 +267,7 @@ public final class class29 {
 
                      WidgetNode var23 = (WidgetNode)Client.componentTable.method3425((long)var10.id);
                      if(var23 != null) {
-                        class158.method2866(var23.id, var15, var16, var17, var18, var12, var13, var11);
+                        class158.drawWidget(var23.id, var15, var16, var17, var18, var12, var13, var11);
                      }
 
                      Rasterizer2D.method4833(var2, var3, var4, var5);

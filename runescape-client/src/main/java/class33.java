@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -40,7 +41,8 @@ public class class33 {
       signature = "(LFont;LFont;LFont;ZB)V",
       garbageValue = "65"
    )
-   static void method352(Font var0, Font var1, Font var2, boolean var3) {
+   @Export("drawLoginScreen")
+   static void drawLoginScreen(Font var0, Font var1, Font var2, boolean var3) {
       if(var3) {
          class92.field1414 = (class10.canvasWidth - 765) / 2;
          class92.loginWindowX = class92.field1414 + 202;
@@ -276,9 +278,9 @@ public class class33 {
             var5 = 253 - var4;
             Rasterizer2D.method4888(class92.loginWindowX + 180 - 152, var5, 304, 34, 9179409);
             Rasterizer2D.method4888(class92.loginWindowX + 180 - 151, var5 + 1, 302, 32, 0);
-            Rasterizer2D.method4826(class92.loginWindowX + 180 - 150, var5 + 2, class92.field1429 * 3, 30, 9179409);
-            Rasterizer2D.method4826(class92.loginWindowX + 180 - 150 + class92.field1429 * 3, var5 + 2, 300 - class92.field1429 * 3, 30, 0);
-            var0.method4635(class92.field1446, class92.loginWindowX + 180, 276 - var4, 16777215, -1);
+            Rasterizer2D.method4826(class92.loginWindowX + 180 - 150, var5 + 2, class92.loadingBarPercentage * 3, 30, 9179409);
+            Rasterizer2D.method4826(class92.loginWindowX + 180 - 150 + class92.loadingBarPercentage * 3, var5 + 2, 300 - class92.loadingBarPercentage * 3, 30, 0);
+            var0.method4635(class92.loadingText, class92.loginWindowX + 180, 276 - var4, 16777215, -1);
          }
 
          String var24;

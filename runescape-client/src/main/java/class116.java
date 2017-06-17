@@ -585,7 +585,7 @@ public class class116 {
          }
 
          if(var2 == 1008 || var2 == 1009 || var2 == 1010 || var2 == 1011 || var2 == 1012) {
-            class46.field601.method5130(var2, var3, new Coordinates(var0), new Coordinates(var1));
+            class46.renderOverview.method5130(var2, var3, new Coordinates(var0), new Coordinates(var1));
          }
 
          if(var2 == 6) {

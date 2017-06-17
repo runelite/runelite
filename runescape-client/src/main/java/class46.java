@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -12,7 +13,8 @@ public class class46 {
    @ObfuscatedName("m")
    byte[][][] field600;
    @ObfuscatedName("ra")
-   static RenderOverview field601;
+   @Export("renderOverview")
+   static RenderOverview renderOverview;
    @ObfuscatedName("n")
    public static class112 field604;
 

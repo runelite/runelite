@@ -7,6 +7,8 @@ import java.io.StreamCorruptedException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -142,7 +144,8 @@ public class class241 extends CacheableNode {
       signature = "(I)I",
       garbageValue = "319093460"
    )
-   static int method4167() {
+   @Export("getResizableValue")
+   static int getResizableValue() {
       return Client.isResized?2:1;
    }
 

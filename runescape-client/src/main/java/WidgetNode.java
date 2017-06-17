@@ -36,7 +36,7 @@ public class WidgetNode extends Node {
       garbageValue = "-1980899095"
    )
    static RenderOverview method1030() {
-      return class46.field601;
+      return class46.renderOverview;
    }
 
    @ObfuscatedName("gg")

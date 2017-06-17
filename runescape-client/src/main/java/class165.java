@@ -425,7 +425,7 @@ public class class165 {
             Client.field1113 = 2;
          } else {
             if(Client.field1113 != 0) {
-               class158.method2877("Loading - please wait.<br> (100%)", true);
+               class158.drawStatusBox("Loading - please wait.<br> (100%)", true);
             }
 
             class69.method1035();

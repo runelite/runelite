@@ -558,7 +558,7 @@ public class class21 {
 
             if(Client.field960) {
                Rasterizer2D.method4826(var0, var1, var2, var3, 0);
-               class158.method2877("Loading - please wait.", false);
+               class158.drawStatusBox("Loading - please wait.", false);
             }
 
             return;

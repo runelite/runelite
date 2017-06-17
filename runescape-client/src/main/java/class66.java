@@ -32,7 +32,7 @@ public class class66 {
    )
    static void method1024() {
       Client.secretPacketBuffer1.putOpcode(144);
-      Client.secretPacketBuffer1.putByte(class241.method4167());
+      Client.secretPacketBuffer1.putByte(class241.getResizableValue());
       Client.secretPacketBuffer1.putShort(class10.canvasWidth);
       Client.secretPacketBuffer1.putShort(class1.canvasHeight);
    }
