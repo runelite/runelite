@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.implings;
 
+import com.google.common.eventbus.Subscribe;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import net.runelite.client.RuneLite;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 
@@ -67,6 +69,12 @@ public class Implings extends Plugin
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	@Subscribe
+	public void updateConfig(ConfigChanged event)
+	{
+		overlay.updateConfig();
 	}
 
 }

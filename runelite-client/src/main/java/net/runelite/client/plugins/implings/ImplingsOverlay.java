@@ -24,18 +24,14 @@
  */
 package net.runelite.client.plugins.implings;
 
-import com.google.common.base.Suppliers;
 import com.google.common.primitives.Ints;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -59,7 +55,7 @@ public class ImplingsOverlay extends Overlay
 	private static final int DYNAMIC_SPAWN = 1633;
 
 	private final ImplingsConfig config;
-	private final Supplier<List<Integer>> ids = Suppliers.memoizeWithExpiration(this::checkConfig, 1, TimeUnit.SECONDS);
+	private final List<Integer> ids;
 
 	private final Client client = RuneLite.getClient();
 
@@ -67,6 +63,7 @@ public class ImplingsOverlay extends Overlay
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.config = plugin.getConfig();
+		ids = new LinkedList<>();
 	}
 
 	@Override
@@ -77,7 +74,7 @@ public class ImplingsOverlay extends Overlay
 			return null;
 		}
 
-		NPCQuery implingQuery = new NPCQuery().idEquals(Ints.toArray(ids.get()));
+		NPCQuery implingQuery = new NPCQuery().idEquals(Ints.toArray(ids));
 		NPC[] implings = client.runQuery(implingQuery);
 		for (NPC imp : implings)
 		{
@@ -90,9 +87,9 @@ public class ImplingsOverlay extends Overlay
 	}
 
 	// I am aware this is ugly. As always, feedback is welcome
-	private List<Integer> checkConfig()
+	public void updateConfig()
 	{
-		List<Integer> ids = new LinkedList<>();
+		ids.clear();
 		if (config.showBaby())
 		{
 			ids.add(NpcID.BABY_IMPLING);
@@ -153,7 +150,6 @@ public class ImplingsOverlay extends Overlay
 			ids.add(STATIC_SPAWN);
 			ids.add(DYNAMIC_SPAWN);
 		}
-		return ids;
 	}
 
 	private void drawImp(Graphics2D graphics, Actor actor, String text, Color color)
