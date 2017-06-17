@@ -32,6 +32,7 @@ import net.runelite.asm.execution.Execution;
 import net.runelite.deob.deobfuscators.transformers.GetPathTransformer;
 import net.runelite.deob.deobfuscators.CastNull;
 import net.runelite.deob.deobfuscators.ConstantParameter;
+import net.runelite.deob.deobfuscators.EnumDeobfuscator;
 import net.runelite.deob.deobfuscators.ExprArgOrder;
 import net.runelite.deob.deobfuscators.FieldInliner;
 import net.runelite.deob.deobfuscators.IllegalStateExceptions;
@@ -135,6 +136,8 @@ public class Deob
 		run(group, new Lvt());
 
 		run(group, new CastNull());
+
+		run(group, new EnumDeobfuscator());
 
 		new GetPathTransformer().transform(group);
 		new ClientErrorTransformer().transform(group);

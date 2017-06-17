@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,71 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.asm;
+package net.runelite.deob.deobfuscators;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import net.runelite.asm.pool.Class;
+import java.io.File;
+import java.io.IOException;
+import net.runelite.asm.ClassGroup;
+import net.runelite.deob.DeobProperties;
+import net.runelite.deob.TemporyFolderLocation;
+import net.runelite.deob.util.JarUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
-public class Interfaces
+public class EnumDeobfuscatorTest
 {
-	private final ClassFile classFile;
+	@Rule
+	public DeobProperties properties = new DeobProperties();
 
-	private final List<Class> interfaces = new ArrayList<>();
+	@Rule
+	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
 
-	Interfaces(ClassFile c)
+	private ClassGroup group;
+
+	@Before
+	public void before() throws IOException
 	{
-		classFile = c;
+		group = JarUtil.loadJar(new File(properties.getRsClient()));
 	}
 
-	public void addInterface(Class clazz)
+	@After
+	public void after() throws IOException
 	{
-		if (!interfaces.contains(clazz))
-		{
-			interfaces.add(clazz);
-		}
+		JarUtil.saveJar(group, folder.newFile());
 	}
 
-	public List<Class> getInterfaces()
+	@Test
+	@Ignore
+	public void testRun() throws Exception
 	{
-		return interfaces;
-	}
-
-	public void clear()
-	{
-		interfaces.clear();
-	}
-
-	public List<ClassFile> getMyInterfaces()
-	{
-		List<ClassFile> l = new ArrayList<>();
-		for (Class clazz : interfaces)
-		{
-			ClassFile iface = classFile.getGroup().findClass(clazz.getName());
-			if (iface != null)
-			{
-				l.add(iface);
-			}
-		}
-		return l;
-	}
-
-	public List<Class> getNonMyInterfaces()
-	{
-		return interfaces.stream().filter(clazz -> classFile.getGroup().findClass(clazz.getName()) == null).collect(Collectors.toList());
-	}
-
-	public boolean instanceOf(ClassFile cf)
-	{
-		for (Class clazz : interfaces)
-		{
-			ClassFile iface = classFile.getGroup().findClass(clazz.getName());
-			if (iface.instanceOf(cf))
-			{
-				return true;
-			}
-		}
-		return false;
+		new EnumDeobfuscator().run(group);
 	}
 }

@@ -106,6 +106,11 @@ public class Field
 		return (accessFlags & Opcodes.ACC_SYNTHETIC) != 0;
 	}
 
+	public void setEnum()
+	{
+		accessFlags |= Opcodes.ACC_ENUM;
+	}
+
 	public String getName()
 	{
 		return name;

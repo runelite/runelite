@@ -336,6 +336,16 @@ public class ClassFile
 		return (this.access & Opcodes.ACC_INTERFACE) != 0;
 	}
 
+	public boolean isEnum()
+	{
+		return (this.access & Opcodes.ACC_ENUM) != 0;
+	}
+
+	public void setEnum()
+	{
+		this.access |= Opcodes.ACC_ENUM;
+	}
+
 	public void clearFinal()
 	{
 		this.access &= ~Opcodes.ACC_FINAL;
