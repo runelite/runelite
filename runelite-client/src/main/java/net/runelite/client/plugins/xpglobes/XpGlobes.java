@@ -84,7 +84,7 @@ public class XpGlobes extends Plugin
 		{
 			startingXp = Experience.getXpForLevel(currentLevel);
 		}
-		int goalXp = Experience.getXpForLevel(currentLevel+1);
+		int goalXp = Experience.getXpForLevel(currentLevel + 1);
 
 		int skillIdx = skill.ordinal();
 		XpGlobe cachedGlobe = globeCache[skillIdx];

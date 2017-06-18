@@ -35,7 +35,7 @@ public class Stack
 
 	public Stack(int sz)
 	{
-		stack = new StackContext[sz*2]; // XXX FIXME
+		stack = new StackContext[sz * 2]; // XXX FIXME
 	}
 	
 	public Stack(Stack other)

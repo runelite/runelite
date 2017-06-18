@@ -36,9 +36,7 @@
 			<property name="message" value="Indent must use tab characters"/>
 			<property name="ignoreComments" value="true"/>
 		</module>
-		<module name="WhitespaceAround">
-			<property name="tokens" value="LITERAL_IF, LITERAL_ELSE, LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, DO_WHILE"/>
-		</module>
+		<module name="WhitespaceAround"/>
 	</module>
 	<module name="RegexpMultiline">
 		<property name="format" value="else[ \t]*[\r\n]+[ \t]*if"/>
