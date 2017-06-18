@@ -31,13 +31,9 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Player;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -58,55 +54,11 @@ public class BossTimersOverlay extends Overlay
 	private static final Color BACKGROUND = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
 
 	private final BossTimers bossTimers;
-	private final List<RespawnTimer> timers = new ArrayList<>();
 
 	public BossTimersOverlay(BossTimers bossTimers, OverlayPosition position, OverlayPriority priority)
 	{
 		super(position, priority);
 		this.bossTimers = bossTimers;
-	}
-
-	private Actor getOpponent()
-	{
-		Client client = RuneLite.getClient();
-
-		Player player = client.getLocalPlayer();
-		if (player == null)
-		{
-			return null;
-		}
-
-		return player.getInteracting();
-	}
-
-	private void checkDead()
-	{
-		Actor actor = getOpponent();
-
-		if (actor == null || actor.getHealthRatio() != 0)
-		{
-			return;
-		}
-
-		logger.debug("NPC {} has died", actor.getName());
-
-		Boss boss = bossTimers.findBoss(actor.getName());
-		if (boss == null)
-		{
-			return;
-		}
-
-		if (findTimerFor(actor.getName()) != null)
-		{
-			return;
-		}
-
-		logger.debug("Creating spawn timer for {} ({} seconds)", actor.getName(), boss.getSpawnTime());
-
-		Instant respawnTime = Instant.now().plus(boss.getSpawnTime(), ChronoUnit.SECONDS);
-		RespawnTimer respawnTimer = new RespawnTimer(boss, respawnTime);
-
-		timers.add(respawnTimer);
 	}
 
 	@Override
@@ -117,8 +69,7 @@ public class BossTimersOverlay extends Overlay
 			return null;
 		}
 
-		// find new dead bosses
-		checkDead();
+		List<RespawnTimer> timers = bossTimers.getTimers();
 
 		if (timers.isEmpty())
 		{
@@ -156,17 +107,5 @@ public class BossTimersOverlay extends Overlay
 		}
 
 		return new Dimension(WIDTH, height);
-	}
-
-	private RespawnTimer findTimerFor(String name)
-	{
-		for (RespawnTimer timer : timers)
-		{
-			if (timer.getBoss().getName().equals(name))
-			{
-				return timer;
-			}
-		}
-		return null;
 	}
 }

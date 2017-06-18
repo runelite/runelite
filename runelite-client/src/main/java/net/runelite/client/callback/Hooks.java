@@ -33,6 +33,7 @@ import net.runelite.client.events.MapRegionChanged;
 import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionsChanged;
 import net.runelite.client.events.AnimationChanged;
+import net.runelite.client.game.DeathChecker;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.rs.api.MainBufferProvider;
 import org.slf4j.Logger;
@@ -43,6 +44,7 @@ public class Hooks
 	private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
 
 	private static final RuneLite runelite = RuneLite.getRunelite();
+	private static final DeathChecker death = new DeathChecker(runelite);
 
 	public static void draw(Object provider, Graphics graphics, int x, int y)
 	{
@@ -51,6 +53,15 @@ public class Hooks
 		BufferedImage image = (BufferedImage) mpb.getImage();
 
 		OverlayRenderer renderer = runelite.getRenderer();
+
+		try
+		{
+			death.check();
+		}
+		catch (Exception ex)
+		{
+			logger.warn("error during death check", ex);
+		}
 
 		try
 		{
