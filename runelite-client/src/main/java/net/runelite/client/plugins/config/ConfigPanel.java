@@ -27,16 +27,12 @@ package net.runelite.client.plugins.config;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
+
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
@@ -52,6 +48,8 @@ public class ConfigPanel extends PluginPanel
 	private static final Logger logger = LoggerFactory.getLogger(ConfigPanel.class);
 
 	private final RuneLite runelite = RuneLite.getRunelite();
+
+	private JScrollPane scrollPane;
 
 	public ConfigPanel()
 	{
@@ -70,7 +68,7 @@ public class ConfigPanel extends PluginPanel
 
 	public void init()
 	{
-		add(createConfigPanel(), BorderLayout.CENTER);
+		add(createConfigPanel(), BorderLayout.NORTH);
 	}
 
 	private Collection<ConfigDescriptor> getConfig()
@@ -90,46 +88,23 @@ public class ConfigPanel extends PluginPanel
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
+		panel.add(new JLabel("Plugin configuration"), BorderLayout.NORTH);
 		ConfigManager configManager = runelite.getConfigManager();
 		Collection<ConfigDescriptor> config = getConfig();
 		for (ConfigDescriptor cd : config)
 		{
 			JPanel groupPanel = new JPanel();
 			groupPanel.setLayout(new BorderLayout());
-
-			groupPanel.add(new JLabel(cd.getGroup().name()), BorderLayout.NORTH);
-
-			JPanel itemPanel = new JPanel();
-			itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.Y_AXIS));
-
-			for (ConfigItemDescriptor cid : cd.getItems())
-			{
-				JPanel item = new JPanel();
-				item.setLayout(new BoxLayout(item, BoxLayout.X_AXIS));
-				item.add(new JLabel(cid.getItem().name()));
-
-				if (cid.getType() == boolean.class)
-				{
-					JCheckBox checkbox = new JCheckBox();
-					checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
-					checkbox.addActionListener(ae -> changeConfiguration(ae, checkbox, cd, cid));
-
-					item.add(checkbox);
-				}
-
-				itemPanel.add(item);
-			}
-
-			groupPanel.add(itemPanel, BorderLayout.CENTER);
+			JButton viewGroupItemsButton = new JButton(cd.getGroup().name());
+			viewGroupItemsButton.addActionListener(ae -> openGroupConfigPanel(cd, configManager));
+			groupPanel.add(viewGroupItemsButton, BorderLayout.NORTH);
 			panel.add(groupPanel);
 		}
-
 		//Make the panel scrollable
 		JScrollPane scrollPane = new JScrollPane(panel);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16); //Otherwise scrollspeed is really slow
-
+		this.scrollPane = scrollPane;
 		return scrollPane;
 	}
 
@@ -137,6 +112,55 @@ public class ConfigPanel extends PluginPanel
 	{
 		ConfigManager configManager = runelite.getConfigManager();
 		configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected());
+	}
+
+	private void openGroupConfigPanel (ConfigDescriptor cd, ConfigManager configManager) {
+		JPanel itemPanel = new JPanel();
+		itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.Y_AXIS));
+		itemPanel.add(new JLabel(cd.getGroup().name() + " Configuration"), BorderLayout.NORTH);
+
+		for (ConfigItemDescriptor cid : cd.getItems())
+		{
+			JPanel item = new JPanel();
+			item.setLayout(new BoxLayout(item, BoxLayout.X_AXIS));
+			item.add(new JLabel(cid.getItem().name()));
+
+			if (cid.getType() == boolean.class)
+			{
+				JCheckBox checkbox = new JCheckBox();
+				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
+				checkbox.addActionListener(ae -> changeConfiguration(ae, checkbox, cd, cid));
+
+				item.add(checkbox);
+			}
+
+			itemPanel.add(item);
+		}
+
+		JButton backButton = new JButton("Back");
+		backButton.addActionListener(getBackButtonListener());
+		itemPanel.add(backButton, BorderLayout.NORTH);
+
+		removeAll();
+		updateUI();
+		add(itemPanel, BorderLayout.NORTH);
+	}
+
+	public ActionListener getBackButtonListener() {
+		ConfigPanel self = this;
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeAll();
+				updateUI();
+
+				if (self.scrollPane == null) {
+					init();
+					return;
+				}
+
+				add(self.scrollPane, BorderLayout.NORTH);
+			}
+		};
 	}
 
 }
