@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -428,7 +430,8 @@ public final class class41 {
       signature = "(LPacketBuffer;ILPlayer;IS)V",
       garbageValue = "1024"
    )
-   static final void method572(PacketBuffer var0, int var1, Player var2, int var3) {
+   @Export("updatePlayerFlag")
+   static final void updatePlayerFlag(PacketBuffer var0, int var1, Player var2, int var3) {
       byte var4 = -1;
       int var5;
       if((var3 & 4) != 0) {

@@ -964,8 +964,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 840472499
    )
-   @Export("detinationX")
-   static int detinationX;
+   @Export("destinationX")
+   static int destinationX;
    @ObfuscatedName("or")
    @ObfuscatedGetter(
       intValue = 1151264889
@@ -1934,7 +1934,7 @@ public final class Client extends GameEngine {
                mapAngle = (int)(Math.random() * 20.0D) - 10 & 2047;
                field1087 = 0;
                field944 = -1;
-               detinationX = 0;
+               destinationX = 0;
                destinationY = 0;
                field928 = class91.field1410;
                field910 = class91.field1410;
@@ -3077,7 +3077,7 @@ public final class Client extends GameEngine {
                                                 field1115 = class59.field732;
                                                 cursorState = 1;
                                                 field906 = 0;
-                                                detinationX = var4;
+                                                destinationX = var4;
                                                 destinationY = var5;
                                              }
 
@@ -3714,7 +3714,7 @@ public final class Client extends GameEngine {
                   }
                }
 
-               Item.method1665(var14);
+               Item.updatePlayersFlag(var14);
                if(var14.offset - var5 != var4) {
                   throw new RuntimeException(var14.offset - var5 + " " + var4);
                }
@@ -4290,9 +4290,9 @@ public final class Client extends GameEngine {
             }
 
             if(field951 == 218) {
-               detinationX = secretPacketBuffer2.readUnsignedByte();
-               if(detinationX == 255) {
-                  detinationX = 0;
+               destinationX = secretPacketBuffer2.readUnsignedByte();
+               if(destinationX == 255) {
+                  destinationX = 0;
                }
 
                destinationY = secretPacketBuffer2.readUnsignedByte();
@@ -4969,7 +4969,7 @@ public final class Client extends GameEngine {
                   }
                }
 
-               Item.method1665(var14);
+               Item.updatePlayersFlag(var14);
                if(var4 != var14.offset - var5) {
                   throw new RuntimeException(var14.offset - var5 + " " + var4);
                }
@@ -5160,7 +5160,7 @@ public final class Client extends GameEngine {
                   }
                }
 
-               Item.method1665(var17);
+               Item.updatePlayersFlag(var17);
                if(var1 != var17.offset - var5) {
                   throw new RuntimeException(var17.offset - var5 + " " + var1);
                }
@@ -5903,7 +5903,7 @@ public final class Client extends GameEngine {
       field1180 = new int[1000];
       field900 = new int[1000];
       field1137 = new SpritePixels[1000];
-      detinationX = 0;
+      destinationX = 0;
       destinationY = 0;
       field1087 = 0;
       field1141 = 255;

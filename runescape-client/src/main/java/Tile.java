@@ -120,7 +120,7 @@ public final class Tile extends Node {
       Client.field1053 = -1;
       Client.isMenuOpen = false;
       Client.field1087 = 0;
-      Client.detinationX = 0;
+      Client.destinationX = 0;
 
       int var0;
       for(var0 = 0; var0 < 2048; ++var0) {

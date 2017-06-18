@@ -312,8 +312,8 @@ final class class2 implements class0 {
             }
          }
 
-         if(Client.detinationX != 0) {
-            Client.detinationX -= var5;
+         if(Client.destinationX != 0) {
+            Client.destinationX -= var5;
             Client.destinationY -= var6;
          }
 

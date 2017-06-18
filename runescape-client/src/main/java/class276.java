@@ -137,8 +137,8 @@ public class class276 {
                      }
                   }
 
-                  if(Client.detinationX != 0) {
-                     var10 = Client.detinationX * 4 + 2 - class20.localPlayer.x / 32;
+                  if(Client.destinationX != 0) {
+                     var10 = Client.destinationX * 4 + 2 - class20.localPlayer.x / 32;
                      var11 = Client.destinationY * 4 + 2 - class20.localPlayer.y / 32;
                      class82.method1523(var1, var2, var10, var11, class20.field346[0], var4);
                   }

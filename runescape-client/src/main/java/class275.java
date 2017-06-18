@@ -121,7 +121,7 @@ public class class275 {
                               Client.secretPacketBuffer1.putShort(class20.localPlayer.x);
                               Client.secretPacketBuffer1.putShort(class20.localPlayer.y);
                               Client.secretPacketBuffer1.putByte(63);
-                              Client.detinationX = var39;
+                              Client.destinationX = var39;
                               Client.destinationY = var38;
                            }
                         }

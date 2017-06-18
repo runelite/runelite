@@ -89,8 +89,8 @@ public class CombatInfoListHolder extends Node {
       garbageValue = "-1820838163"
    )
    static final void method1572(class66 var0) {
-      if(class20.localPlayer.x >> 7 == Client.detinationX && class20.localPlayer.y >> 7 == Client.destinationY) {
-         Client.detinationX = 0;
+      if(class20.localPlayer.x >> 7 == Client.destinationX && class20.localPlayer.y >> 7 == Client.destinationY) {
+         Client.destinationX = 0;
       }
 
       int var1 = class96.field1487;
