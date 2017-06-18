@@ -28,7 +28,7 @@ public class class112 {
       garbageValue = "255"
    )
    public static int method1991(CharSequence var0) {
-      return class12.method63(var0, 10, true);
+      return class12.parseInt(var0, 10, true);
    }
 
    @ObfuscatedName("e")

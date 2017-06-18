@@ -5545,7 +5545,7 @@ public final class Client extends GameEngine {
                   var4 = var4 + class15.method105(16777215) + " " + '/' + " " + (menuOptionCount - 2) + " more options";
                }
 
-               class64.field788.method4709(var4, var1 + 4, var2 + 15, 16777215, 0, gameCycle / 1000);
+               class64.field788.drawRandomizedMouseoverText(var4, var1 + 4, var2 + 15, 16777215, 0, gameCycle / 1000);
             }
          }
       } else {
