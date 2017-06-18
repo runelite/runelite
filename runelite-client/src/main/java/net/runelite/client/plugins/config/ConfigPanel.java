@@ -27,7 +27,6 @@ package net.runelite.client.plugins.config;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -89,6 +88,7 @@ public class ConfigPanel extends PluginPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(new JLabel("Plugin configuration"), BorderLayout.NORTH);
+
 		ConfigManager configManager = runelite.getConfigManager();
 		Collection<ConfigDescriptor> config = getConfig();
 		for (ConfigDescriptor cd : config)
@@ -100,11 +100,11 @@ public class ConfigPanel extends PluginPanel
 			groupPanel.add(viewGroupItemsButton, BorderLayout.NORTH);
 			panel.add(groupPanel);
 		}
+
 		//Make the panel scrollable
-		JScrollPane scrollPane = new JScrollPane(panel);
+		scrollPane = new JScrollPane(panel);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16); //Otherwise scrollspeed is really slow
-		this.scrollPane = scrollPane;
 		return scrollPane;
 	}
 
@@ -114,7 +114,8 @@ public class ConfigPanel extends PluginPanel
 		configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected());
 	}
 
-	private void openGroupConfigPanel (ConfigDescriptor cd, ConfigManager configManager) {
+	private void openGroupConfigPanel(ConfigDescriptor cd, ConfigManager configManager)
+	{
 		JPanel itemPanel = new JPanel();
 		itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.Y_AXIS));
 		itemPanel.add(new JLabel(cd.getGroup().name() + " Configuration"), BorderLayout.NORTH);
@@ -138,7 +139,7 @@ public class ConfigPanel extends PluginPanel
 		}
 
 		JButton backButton = new JButton("Back");
-		backButton.addActionListener(getBackButtonListener());
+		backButton.addActionListener(this::getBackButtonListener);
 		itemPanel.add(backButton, BorderLayout.NORTH);
 
 		removeAll();
@@ -146,21 +147,17 @@ public class ConfigPanel extends PluginPanel
 		add(itemPanel, BorderLayout.NORTH);
 	}
 
-	public ActionListener getBackButtonListener() {
-		ConfigPanel self = this;
-		return new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				removeAll();
-				updateUI();
+	public void getBackButtonListener(ActionEvent e)
+	{
+		removeAll();
+		updateUI();
 
-				if (self.scrollPane == null) {
-					init();
-					return;
-				}
+		if (scrollPane == null)
+		{
+			init();
+			return;
+		}
 
-				add(self.scrollPane, BorderLayout.NORTH);
-			}
-		};
+		add(scrollPane, BorderLayout.NORTH);
 	}
-
 }
