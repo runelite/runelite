@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.util.Objects;
 import net.runelite.rs.api.CombatInfo1;
 import net.runelite.rs.api.CombatInfo2;
 import net.runelite.rs.api.CombatInfoList;
@@ -35,7 +36,7 @@ import net.runelite.rs.api.Node;
 public abstract class Actor extends Renderable
 {
 
-	private Client client;
+	private final Client client;
 	private net.runelite.rs.api.Actor actor;
 
 	public Actor(Client client, net.runelite.rs.api.Actor actor)
@@ -44,6 +45,37 @@ public abstract class Actor extends Renderable
 
 		this.client = client;
 		this.actor = actor;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 5;
+		hash = 47 * hash + Objects.hashCode(this.client);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Actor other = (Actor) obj;
+		if (!Objects.equals(this.client, other.client))
+		{
+			return false;
+		}
+		return true;
 	}
 
 	public abstract int getCombatLevel();
