@@ -152,12 +152,6 @@ public class ConfigPanel extends PluginPanel
 		removeAll();
 		updateUI();
 
-		if (scrollPane == null)
-		{
-			init();
-			return;
-		}
-
 		add(scrollPane, BorderLayout.NORTH);
 	}
 }
