@@ -156,36 +156,37 @@ public class XpGlobesOverlay extends Overlay
 
 	private void drawSkillImage(Graphics2D graphics, XpGlobe xpGlobe, int x, int y)
 	{
+		BufferedImage skillImage = getSkillImage(xpGlobe);
+		graphics.drawImage(
+				getSkillImage(xpGlobe),
+				x + (DEFAULT_CIRCLE_WIDTH / 2) - (skillImage.getWidth() / 2),
+				y + (DEFAULT_CIRCLE_HEIGHT / 2) - (skillImage.getHeight() / 2),
+				null
+		);
+	}
+
+	private BufferedImage getSkillImage(XpGlobe xpGlobe)
+	{
 		int skillIdx = xpGlobe.getSkill().ordinal();
+		BufferedImage skillImage = null;
 
 		if (imgCache[skillIdx] != null)
 		{
-			graphics.drawImage(
-					imgCache[skillIdx],
-					x + (DEFAULT_CIRCLE_WIDTH / 2) - (imgCache[skillIdx].getWidth() / 2),
-					y + (DEFAULT_CIRCLE_HEIGHT / 2) - (imgCache[skillIdx].getHeight() / 2),
-					null
-			);
+			return imgCache[skillIdx];
 		}
-		else
+		
+		try
 		{
-			try
-			{
-				String skilLIconPath = "/skill_icons/" + xpGlobe.getSkillName().toLowerCase() + ".png";
-				logger.debug("Loading skill icon from {}", skilLIconPath);
-				BufferedImage img = ImageIO.read(XpGlobesOverlay.class.getResourceAsStream(skilLIconPath));
-				graphics.drawImage(
-						img,
-						x + (DEFAULT_CIRCLE_WIDTH / 2) - (img.getWidth() / 2),
-						y + (DEFAULT_CIRCLE_HEIGHT / 2) - (img.getHeight() / 2),
-						null
-				);
-				imgCache[skillIdx] = img;
-			}
-			catch (IOException e)
-			{
-				logger.debug("Error Loading skill icons {}", e);
-			}
+			String skillIconPath = "/skill_icons/" + xpGlobe.getSkillName().toLowerCase() + ".png";
+			logger.debug("Loading skill icon from {}", skillIconPath);
+			skillImage = ImageIO.read(XpGlobesOverlay.class.getResourceAsStream(skillIconPath));
+			imgCache[skillIdx] = skillImage;
 		}
+		catch (IOException e)
+		{
+			logger.debug("Error Loading skill icons {}", e);
+		}
+
+		return skillImage;
 	}
 }

@@ -37,6 +37,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class XpGlobes extends Plugin
@@ -115,9 +116,10 @@ public class XpGlobes extends Plugin
 	{
 		if (xpGlobes.contains(xpGlobe))
 		{
+			//remove the old globe, allowing it to be readded as the most recent (right) side when drawn
 			xpGlobes.remove(xpGlobe);
 		}
-		if (maxLength == getXpGlobesSize())
+		if (getXpGlobesSize() >= maxLength)
 		{
 			xpGlobes.remove(0);
 		}
@@ -134,16 +136,16 @@ public class XpGlobes extends Plugin
 		if (!xpGlobes.isEmpty())
 		{
 			Instant currentTime = Instant.now();
-			for (int i = 0; i < xpGlobes.size(); i++)
+			for (Iterator<XpGlobe> it = xpGlobes.iterator(); it.hasNext();)
 			{
-				XpGlobe globe = xpGlobes.get(i);
+				XpGlobe globe = it.next();
 				Instant globeCreationTime = globe.getTime();
 				if (currentTime.isBefore(globeCreationTime.plusSeconds(SECONDS_TO_SHOW_GLOBE)))
 				{
 					//if a globe is not expired, stop checking newer globes
 					return;
 				}
-				xpGlobes.remove(globe);
+				it.remove();
 			}
 		}
 	}
