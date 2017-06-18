@@ -1,0 +1,157 @@
+/*
+ * Copyright (c) 2017, Steve <steve.rs.dev@gmail.com>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package net.runelite.client.plugins.xpglobes;
+
+import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Client;
+import net.runelite.api.Experience;
+import net.runelite.api.Skill;
+import net.runelite.client.RuneLite;
+import net.runelite.client.events.ExperienceChanged;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.Overlay;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+public class XpGlobes extends Plugin
+{
+
+	private final XpGlobesConfig config = RuneLite.getRunelite().getConfigManager()
+			.getConfig(XpGlobesConfig.class);
+	private final Overlay overlay = new XpGlobesOverlay(this);
+	private final Client client = RuneLite.getClient();
+	private final XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
+	private final List<XpGlobe> xpGlobes = new ArrayList<>();
+	private static final int SECONDS_TO_SHOW_GLOBE = 10;
+	private static final int MAXIMUM_SHOWN_GLOBES = 5;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+
+	}
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
+
+	@Subscribe
+	private void onExperienceChanged(ExperienceChanged event)
+	{
+		if (!config.enabled())
+		{
+			return;
+		}
+
+		Skill skill = event.getSkill();
+		int currentXp = client.getSkillExperience(skill);
+		int currentLevel = Experience.getLevelForXp(currentXp);
+		int startingXp = 0;
+		if (currentLevel > 1)
+		{
+			startingXp = Experience.getXpForLevel(currentLevel);
+		}
+		int goalXp = Experience.getXpForLevel(currentLevel+1);
+
+		int skillIdx = skill.ordinal();
+		XpGlobe cachedGlobe = globeCache[skillIdx];
+		if (cachedGlobe != null)
+		{
+			cachedGlobe.setSkill(skill);
+			cachedGlobe.setCurrentXp(currentXp);
+			cachedGlobe.setCurrentLevel(currentLevel);
+			cachedGlobe.setGoalXp(goalXp);
+			cachedGlobe.setTime(Instant.now());
+			cachedGlobe.setSkillProgressRadius(startingXp, currentXp, goalXp);
+		}
+		else
+		{
+			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, goalXp, Instant.now());
+		}
+
+		this.addXpGlobe(globeCache[skillIdx], MAXIMUM_SHOWN_GLOBES);
+	}
+
+	public List<XpGlobe> getXpGlobes()
+	{
+		return xpGlobes;
+	}
+
+	public void addXpGlobe(XpGlobe xpGlobe, int maxLength)
+	{
+		if (xpGlobes.contains(xpGlobe))
+		{
+			//remove the old globe, allowing it to be readded as the most recent (right) side when drawn
+			xpGlobes.remove(xpGlobe);
+		}
+		if (getXpGlobesSize() >= maxLength)
+		{
+			xpGlobes.remove(0);
+		}
+		xpGlobes.add(xpGlobe);
+	}
+
+	public int getXpGlobesSize()
+	{
+		return xpGlobes.size();
+	}
+
+	public void removeExpiredXpGlobes()
+	{
+		if (!xpGlobes.isEmpty())
+		{
+			Instant currentTime = Instant.now();
+			for (Iterator<XpGlobe> it = xpGlobes.iterator(); it.hasNext();)
+			{
+				XpGlobe globe = it.next();
+				Instant globeCreationTime = globe.getTime();
+				if (currentTime.isBefore(globeCreationTime.plusSeconds(SECONDS_TO_SHOW_GLOBE)))
+				{
+					//if a globe is not expired, stop checking newer globes
+					return;
+				}
+				it.remove();
+			}
+		}
+	}
+
+	public XpGlobesConfig getConfig()
+	{
+		return config;
+	}
+}
