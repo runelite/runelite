@@ -47,6 +47,7 @@ import net.runelite.client.plugins.mousehighlight.MouseHighlight;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 import net.runelite.client.plugins.pestcontrol.PestControl;
 import net.runelite.client.plugins.runecraft.Runecraft;
+import net.runelite.client.plugins.xpglobes.XpGlobes;
 import net.runelite.client.plugins.xtea.Xtea;
 import net.runelite.client.plugins.zulrah.Zulrah;
 import org.slf4j.Logger;
@@ -83,6 +84,7 @@ public class PluginManager
 		plugins.add(new ConfigPlugin());
 		plugins.add(new GroundItems());
 		plugins.add(new Implings());
+		plugins.add(new XpGlobes());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
