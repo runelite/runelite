@@ -46,11 +46,11 @@ import org.slf4j.LoggerFactory;
 
 public class XpGlobesOverlay extends Overlay
 {
+	private static final Logger logger = LoggerFactory.getLogger(XpGlobesOverlay.class);
 
 	private final XpGlobes plugin;
 	private final Client client = RuneLite.getClient();
 	private final XpGlobesConfig config;
-	private static final Logger logger = LoggerFactory.getLogger(XpGlobesOverlay.class);
 
 	private static final int DEFAULT_CIRCLE_WIDTH = 40;
 	private static final int DEFAULT_CIRCLE_HEIGHT = 40;
@@ -117,20 +117,20 @@ public class XpGlobesOverlay extends Overlay
 
 		drawEllipse(graphics, x, y);
 		drawProgressArc(
-				graphics,
-				x, y,
-				DEFAULT_CIRCLE_WIDTH, DEFAULT_CIRCLE_HEIGHT,
-				PROGRESS_RADIUS_REMAINDER, radiusToGoalXp,
-				5,
-				DEFAULT_PROGRESS_REMAINDER_ARC_COLOR
+			graphics,
+			x, y,
+			DEFAULT_CIRCLE_WIDTH, DEFAULT_CIRCLE_HEIGHT,
+			PROGRESS_RADIUS_REMAINDER, radiusToGoalXp,
+			5,
+			DEFAULT_PROGRESS_REMAINDER_ARC_COLOR
 		);
 		drawProgressArc(
-				graphics,
-				x, y,
-				DEFAULT_CIRCLE_WIDTH, DEFAULT_CIRCLE_HEIGHT,
-				PROGRESS_RADIUS_START, radiusCurrentXp,
-				2,
-				DEFAULT_PROGRESS_ARC_COLOR);
+			graphics,
+			x, y,
+			DEFAULT_CIRCLE_WIDTH, DEFAULT_CIRCLE_HEIGHT,
+			PROGRESS_RADIUS_START, radiusCurrentXp,
+			2,
+			DEFAULT_PROGRESS_ARC_COLOR);
 
 		drawSkillImage(graphics, skillToDraw, x, y);
 	}
@@ -140,10 +140,10 @@ public class XpGlobesOverlay extends Overlay
 		graphics.setStroke(new BasicStroke(strokeWidth));
 		graphics.setColor(color);
 		graphics.draw(new Arc2D.Double(
-				x, y,
-				w, h,
-				radiusStart, radiusEnd,
-				Arc2D.OPEN));
+			x, y,
+			w, h,
+			radiusStart, radiusEnd,
+			Arc2D.OPEN));
 	}
 
 	private void drawEllipse(Graphics2D graphics, int x, int y)
@@ -157,11 +157,17 @@ public class XpGlobesOverlay extends Overlay
 	private void drawSkillImage(Graphics2D graphics, XpGlobe xpGlobe, int x, int y)
 	{
 		BufferedImage skillImage = getSkillImage(xpGlobe);
+
+		if (skillImage == null)
+		{
+			return;
+		}
+
 		graphics.drawImage(
-				getSkillImage(xpGlobe),
-				x + (DEFAULT_CIRCLE_WIDTH / 2) - (skillImage.getWidth() / 2),
-				y + (DEFAULT_CIRCLE_HEIGHT / 2) - (skillImage.getHeight() / 2),
-				null
+			skillImage,
+			x + (DEFAULT_CIRCLE_WIDTH / 2) - (skillImage.getWidth() / 2),
+			y + (DEFAULT_CIRCLE_HEIGHT / 2) - (skillImage.getHeight() / 2),
+			null
 		);
 	}
 
@@ -174,7 +180,7 @@ public class XpGlobesOverlay extends Overlay
 		{
 			return imgCache[skillIdx];
 		}
-		
+
 		try
 		{
 			String skillIconPath = "/skill_icons/" + xpGlobe.getSkillName().toLowerCase() + ".png";

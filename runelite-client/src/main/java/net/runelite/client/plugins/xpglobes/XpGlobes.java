@@ -33,10 +33,8 @@ import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -71,7 +69,7 @@ public class XpGlobes extends Plugin
 	}
 
 	@Subscribe
-	private void onExperienceChanged(ExperienceChanged event)
+	public void onExperienceChanged(ExperienceChanged event)
 	{
 		if (!config.enabled())
 		{
