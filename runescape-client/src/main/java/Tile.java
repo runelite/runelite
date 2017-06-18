@@ -109,7 +109,7 @@ public final class Tile extends Node {
    static void method2390() {
       Client.secretPacketBuffer1.offset = 0;
       Client.secretPacketBuffer2.offset = 0;
-      Client.field951 = -1;
+      Client.packetType = -1;
       Client.field1100 = 1;
       Client.field955 = -1;
       Client.field956 = -1;

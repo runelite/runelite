@@ -1033,7 +1033,7 @@ public class class34 {
       int var4;
       int var5;
       int var6;
-      if(Client.field951 == 37) {
+      if(Client.packetType == 37) {
          var0 = Client.secretPacketBuffer2.readUnsignedByte();
          var6 = class27.field414 + (var0 >> 4 & 7);
          var1 = class29.field437 + (var0 & 7);
@@ -1049,7 +1049,7 @@ public class class34 {
          int var8;
          int var9;
          int var10;
-         if(Client.field951 == 173) {
+         if(Client.packetType == 173) {
             var0 = Client.secretPacketBuffer2.method3070();
             byte var11 = Client.secretPacketBuffer2.method3063();
             var1 = Client.secretPacketBuffer2.method3070();
@@ -1122,7 +1122,7 @@ public class class34 {
             }
          }
 
-         if(Client.field951 == 190) {
+         if(Client.packetType == 190) {
             var0 = Client.secretPacketBuffer2.method3023();
             var6 = Client.secretPacketBuffer2.method3062();
             var1 = (var6 >> 4 & 7) + class27.field414;
@@ -1134,7 +1134,7 @@ public class class34 {
             if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                class174.method3253(Player.plane, var1, var2, var7, var0, var4, var5, 0, -1);
             }
-         } else if(Client.field951 == 66) {
+         } else if(Client.packetType == 66) {
             var0 = Client.secretPacketBuffer2.readUnsignedByte();
             var6 = class27.field414 + (var0 >> 4 & 7);
             var1 = (var0 & 7) + class29.field437;
@@ -1154,7 +1154,7 @@ public class class34 {
                   class47.groundItemSpawned(var6, var1);
                }
             }
-         } else if(Client.field951 == 137) {
+         } else if(Client.packetType == 137) {
             var0 = Client.secretPacketBuffer2.readUnsignedByte();
             var6 = (var0 >> 4 & 7) + class27.field414;
             var1 = class29.field437 + (var0 & 7);
@@ -1168,7 +1168,7 @@ public class class34 {
                Client.field1033.method3505(var31);
             }
          } else {
-            if(Client.field951 == 98) {
+            if(Client.packetType == 98) {
                var0 = Client.secretPacketBuffer2.readUnsignedByte();
                var6 = class27.field414 + (var0 >> 4 & 7);
                var1 = class29.field437 + (var0 & 7);
@@ -1190,7 +1190,7 @@ public class class34 {
                }
             }
 
-            if(Client.field951 == 209) {
+            if(Client.packetType == 209) {
                var0 = Client.secretPacketBuffer2.method3023();
                var6 = Client.secretPacketBuffer2.readUnsignedByte();
                var1 = var6 >> 2;
@@ -1252,7 +1252,7 @@ public class class34 {
                }
             } else {
                Item var38;
-               if(Client.field951 == 4) {
+               if(Client.packetType == 4) {
                   var0 = Client.secretPacketBuffer2.method3068();
                   var6 = Client.secretPacketBuffer2.readUnsignedByte();
                   var1 = class27.field414 + (var6 >> 4 & 7);
@@ -1269,8 +1269,8 @@ public class class34 {
                      Client.groundItemDeque[Player.plane][var1][var2].method3505(var38);
                      class47.groundItemSpawned(var1, var2);
                   }
-               } else if(Client.field951 != 111) {
-                  if(Client.field951 == 165) {
+               } else if(Client.packetType != 111) {
+                  if(Client.packetType == 165) {
                      var0 = Client.secretPacketBuffer2.readUnsignedByte();
                      var6 = class27.field414 + (var0 >> 4 & 7);
                      var1 = (var0 & 7) + class29.field437;
