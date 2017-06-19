@@ -81,7 +81,8 @@ public class InjectHookMethod
 		Instructions instructions = vanillaMethod.getCode().getInstructions();
 
 		Signature.Builder builder = new Signature.Builder()
-			.setReturnType(Type.VOID); // Hooks always return void
+			.setReturnType(Type.VOID) // Hooks always return void
+			.addArguments(deobMethod.getDescriptor().getArguments());
 
 		int index = 0;
 
