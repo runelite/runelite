@@ -35,74 +35,85 @@ public final class IndexFile {
    public byte[] method2902(int var1) {
       class123 var2 = this.field2292;
       class123 var3 = this.field2292;
+      class123 var4 = this.field2292;
       synchronized(this.field2292) {
+         byte[] var10000;
          try {
-            Object var4;
-            byte[] var10000;
+            Object var5;
+            byte[] var6;
             if(this.field2290.method2237() < (long)(var1 * 6 + 6)) {
-               var4 = null;
-               var10000 = (byte[])((byte[])var4);
+               var5 = null;
+               var6 = (byte[])((byte[])((byte[])var5));
+               var10000 = var6;
                return var10000;
-            } else {
-               this.field2290.method2256((long)(var1 * 6));
-               this.field2290.method2239(field2291, 0, 6);
-               int var5 = (field2291[2] & 255) + ((field2291[1] & 255) << 8) + ((field2291[0] & 255) << 16);
-               int var6 = ((field2291[3] & 255) << 16) + ((field2291[4] & 255) << 8) + (field2291[5] & 255);
-               if(var5 < 0 || var5 > this.field2288) {
-                  var4 = null;
-                  var10000 = (byte[])((byte[])var4);
-                  return var10000;
-               } else if(var6 <= 0 || (long)var6 > this.field2292.method2237() / 520L) {
-                  var4 = null;
-                  return (byte[])((byte[])var4);
-               } else {
-                  byte[] var7 = new byte[var5];
-                  int var8 = 0;
+            }
 
-                  for(int var9 = 0; var8 < var5; ++var9) {
-                     if(var6 == 0) {
-                        var4 = null;
-                        var10000 = (byte[])((byte[])var4);
-                        return var10000;
-                     }
+            this.field2290.method2256((long)(var1 * 6));
+            this.field2290.method2239(field2291, 0, 6);
+            int var7 = ((field2291[0] & 255) << 16) + (field2291[2] & 255) + ((field2291[1] & 255) << 8);
+            int var8 = ((field2291[4] & 255) << 8) + ((field2291[3] & 255) << 16) + (field2291[5] & 255);
+            if(var7 < 0 || var7 > this.field2288) {
+               var5 = null;
+               var6 = (byte[])((byte[])((byte[])var5));
+               var10000 = var6;
+               return var10000;
+            }
 
-                     this.field2292.method2256((long)(var6 * 520));
-                     int var10 = var5 - var8;
-                     if(var10 > 512) {
-                        var10 = 512;
-                     }
+            if(var8 > 0 && (long)var8 <= this.field2292.method2237() / 520L) {
+               byte[] var9 = new byte[var7];
+               int var10 = 0;
 
-                     this.field2292.method2239(field2291, 0, var10 + 8);
-                     int var11 = ((field2291[0] & 255) << 8) + (field2291[1] & 255);
-                     int var12 = ((field2291[2] & 255) << 8) + (field2291[3] & 255);
-                     int var13 = (field2291[6] & 255) + ((field2291[4] & 255) << 16) + ((field2291[5] & 255) << 8);
-                     int var14 = field2291[7] & 255;
-                     if(var1 != var11 || var9 != var12 || this.index != var14) {
-                        var4 = null;
-                        var10000 = (byte[])((byte[])var4);
-                        return var10000;
-                     }
-
-                     if(var13 < 0 || (long)var13 > this.field2292.method2237() / 520L) {
-                        var4 = null;
-                        var10000 = (byte[])((byte[])var4);
-                        return var10000;
-                     }
-
-                     for(int var15 = 0; var15 < var10; ++var15) {
-                        var7[var8++] = field2291[var15 + 8];
-                     }
-
-                     var6 = var13;
+               for(int var11 = 0; var10 < var7; ++var11) {
+                  if(var8 == 0) {
+                     var5 = null;
+                     var6 = (byte[])((byte[])((byte[])var5));
+                     var10000 = var6;
+                     return var10000;
                   }
 
-                  var10000 = var7;
-                  return var10000;
+                  this.field2292.method2256((long)(var8 * 520));
+                  int var12 = var7 - var10;
+                  if(var12 > 512) {
+                     var12 = 512;
+                  }
+
+                  this.field2292.method2239(field2291, 0, var12 + 8);
+                  int var13 = ((field2291[0] & 255) << 8) + (field2291[1] & 255);
+                  int var14 = (field2291[3] & 255) + ((field2291[2] & 255) << 8);
+                  int var15 = (field2291[6] & 255) + ((field2291[4] & 255) << 16) + ((field2291[5] & 255) << 8);
+                  int var16 = field2291[7] & 255;
+                  if(var13 != var1 || var11 != var14 || var16 != this.index) {
+                     var5 = null;
+                     var6 = (byte[])((byte[])((byte[])var5));
+                     var10000 = var6;
+                     return var10000;
+                  }
+
+                  if(var15 < 0 || (long)var15 > this.field2292.method2237() / 520L) {
+                     var5 = null;
+                     var6 = (byte[])((byte[])((byte[])var5));
+                     var10000 = var6;
+                     return var10000;
+                  }
+
+                  for(int var17 = 0; var17 < var12; ++var17) {
+                     var9[var10++] = field2291[var17 + 8];
+                  }
+
+                  var8 = var15;
                }
+
+               var10000 = var9;
+               return var10000;
             }
-         } catch (IOException var17) {
+
+            var5 = null;
+            var10000 = (byte[])((byte[])((byte[])var5));
+         } catch (IOException var19) {
             return null;
          }
+
+         return var10000;
       }
    }
 
@@ -114,14 +125,15 @@ public final class IndexFile {
    public boolean method2903(int var1, byte[] var2, int var3) {
       class123 var4 = this.field2292;
       class123 var5 = this.field2292;
+      class123 var6 = this.field2292;
       synchronized(this.field2292) {
          if(var3 >= 0 && var3 <= this.field2288) {
-            boolean var6 = this.method2904(var1, var2, var3, true);
-            if(!var6) {
-               var6 = this.method2904(var1, var2, var3, false);
+            boolean var7 = this.method2904(var1, var2, var3, true);
+            if(!var7) {
+               var7 = this.method2904(var1, var2, var3, false);
             }
 
-            return var6;
+            return var7;
          } else {
             throw new IllegalArgumentException();
          }
@@ -136,119 +148,120 @@ public final class IndexFile {
    boolean method2904(int var1, byte[] var2, int var3, boolean var4) {
       class123 var5 = this.field2292;
       class123 var6 = this.field2292;
+      class123 var7 = this.field2292;
       synchronized(this.field2292) {
          try {
-            int var7;
-            boolean var8;
+            int var8;
+            boolean var9;
             boolean var10000;
             if(var4) {
                if(this.field2290.method2237() < (long)(var1 * 6 + 6)) {
-                  var8 = false;
-                  var10000 = var8;
+                  var9 = false;
+                  var10000 = var9;
                   return var10000;
                }
 
                this.field2290.method2256((long)(var1 * 6));
                this.field2290.method2239(field2291, 0, 6);
-               var7 = (field2291[5] & 255) + ((field2291[3] & 255) << 16) + ((field2291[4] & 255) << 8);
-               if(var7 <= 0 || (long)var7 > this.field2292.method2237() / 520L) {
-                  var8 = false;
-                  var10000 = var8;
+               var8 = ((field2291[4] & 255) << 8) + (field2291[5] & 255) + ((field2291[3] & 255) << 16);
+               if(var8 <= 0 || (long)var8 > this.field2292.method2237() / 520L) {
+                  var9 = false;
+                  var10000 = var9;
                   return var10000;
                }
             } else {
-               var7 = (int)((this.field2292.method2237() + 519L) / 520L);
-               if(var7 == 0) {
-                  var7 = 1;
+               var8 = (int)((this.field2292.method2237() + 519L) / 520L);
+               if(var8 == 0) {
+                  var8 = 1;
                }
             }
 
             field2291[0] = (byte)(var3 >> 16);
             field2291[1] = (byte)(var3 >> 8);
             field2291[2] = (byte)var3;
-            field2291[3] = (byte)(var7 >> 16);
-            field2291[4] = (byte)(var7 >> 8);
-            field2291[5] = (byte)var7;
+            field2291[3] = (byte)(var8 >> 16);
+            field2291[4] = (byte)(var8 >> 8);
+            field2291[5] = (byte)var8;
             this.field2290.method2256((long)(var1 * 6));
             this.field2290.method2241(field2291, 0, 6);
-            int var9 = 0;
-            int var10 = 0;
+            int var11 = 0;
+            int var12 = 0;
 
             while(true) {
-               if(var9 < var3) {
+               if(var11 < var3) {
                   label129: {
-                     int var11 = 0;
-                     int var12;
+                     int var13 = 0;
+                     int var14;
                      if(var4) {
-                        this.field2292.method2256((long)(var7 * 520));
+                        this.field2292.method2256((long)(var8 * 520));
 
                         try {
                            this.field2292.method2239(field2291, 0, 8);
-                        } catch (EOFException var16) {
+                        } catch (EOFException var18) {
                            break label129;
                         }
 
-                        var12 = (field2291[1] & 255) + ((field2291[0] & 255) << 8);
-                        int var13 = ((field2291[2] & 255) << 8) + (field2291[3] & 255);
-                        var11 = ((field2291[4] & 255) << 16) + ((field2291[5] & 255) << 8) + (field2291[6] & 255);
-                        int var14 = field2291[7] & 255;
-                        if(var12 != var1 || var13 != var10 || this.index != var14) {
-                           var8 = false;
-                           var10000 = var8;
+                        var14 = ((field2291[0] & 255) << 8) + (field2291[1] & 255);
+                        int var15 = (field2291[3] & 255) + ((field2291[2] & 255) << 8);
+                        var13 = (field2291[6] & 255) + ((field2291[5] & 255) << 8) + ((field2291[4] & 255) << 16);
+                        int var16 = field2291[7] & 255;
+                        if(var14 != var1 || var15 != var12 || var16 != this.index) {
+                           var9 = false;
+                           var10000 = var9;
                            return var10000;
                         }
 
-                        if(var11 < 0 || (long)var11 > this.field2292.method2237() / 520L) {
-                           var8 = false;
-                           var10000 = var8;
+                        if(var13 < 0 || (long)var13 > this.field2292.method2237() / 520L) {
+                           var9 = false;
+                           var10000 = var9;
                            return var10000;
                         }
                      }
 
-                     if(var11 == 0) {
+                     if(var13 == 0) {
                         var4 = false;
-                        var11 = (int)((this.field2292.method2237() + 519L) / 520L);
-                        if(var11 == 0) {
-                           ++var11;
+                        var13 = (int)((this.field2292.method2237() + 519L) / 520L);
+                        if(var13 == 0) {
+                           ++var13;
                         }
 
-                        if(var11 == var7) {
-                           ++var11;
+                        if(var13 == var8) {
+                           ++var13;
                         }
                      }
 
-                     if(var3 - var9 <= 512) {
-                        var11 = 0;
+                     if(var3 - var11 <= 512) {
+                        var13 = 0;
                      }
 
                      field2291[0] = (byte)(var1 >> 8);
                      field2291[1] = (byte)var1;
-                     field2291[2] = (byte)(var10 >> 8);
-                     field2291[3] = (byte)var10;
-                     field2291[4] = (byte)(var11 >> 16);
-                     field2291[5] = (byte)(var11 >> 8);
-                     field2291[6] = (byte)var11;
+                     field2291[2] = (byte)(var12 >> 8);
+                     field2291[3] = (byte)var12;
+                     field2291[4] = (byte)(var13 >> 16);
+                     field2291[5] = (byte)(var13 >> 8);
+                     field2291[6] = (byte)var13;
                      field2291[7] = (byte)this.index;
-                     this.field2292.method2256((long)(var7 * 520));
+                     this.field2292.method2256((long)(var8 * 520));
                      this.field2292.method2241(field2291, 0, 8);
-                     var12 = var3 - var9;
-                     if(var12 > 512) {
-                        var12 = 512;
+                     var14 = var3 - var11;
+                     if(var14 > 512) {
+                        var14 = 512;
                      }
 
-                     this.field2292.method2241(var2, var9, var12);
-                     var9 += var12;
-                     var7 = var11;
-                     ++var10;
+                     this.field2292.method2241(var2, var11, var14);
+                     var11 += var14;
+                     var8 = var13;
+                     ++var12;
                      continue;
                   }
                }
 
-               var8 = true;
-               var10000 = var8;
+               var9 = true;
+               var10000 = var9;
                return var10000;
             }
-         } catch (IOException var17) {
+         } catch (IOException var19) {
             return false;
          }
       }

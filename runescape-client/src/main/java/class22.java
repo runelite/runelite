@@ -13,7 +13,7 @@ public class class22 extends class28 {
          return false;
       } else {
          class22 var2 = (class22)var1;
-         return super.field421 == var2.field421 && super.field422 == var2.field422;
+         return var2.field421 == super.field421 && var2.field422 == super.field422;
       }
    }
 
@@ -44,7 +44,7 @@ public class class22 extends class28 {
          super.field428 = new byte[super.field430][64][64];
          super.field429 = new class31[super.field430][64][64][];
          var3 = var1.readUnsignedByte();
-         if(class35.field512.field505 != var3) {
+         if(var3 != class35.field512.field505) {
             throw new IllegalStateException("");
          } else {
             int var4 = var1.readUnsignedByte();
@@ -141,17 +141,17 @@ public class class22 extends class28 {
             var12 = -var12;
          }
 
-         int var13 = var12 * var5 >> 17;
-         int var14 = var12 * var5 + 1 >> 17;
-         int var15 = var5 * var11 >> 17;
-         int var16 = var5 * var11 + 1 >> 17;
+         int var13 = var5 * var12 >> 17;
+         int var14 = var5 * var12 + 1 >> 17;
+         int var15 = var11 * var5 >> 17;
+         int var16 = var11 * var5 + 1 >> 17;
          var0 -= Rasterizer2D.field3752;
          var1 -= Rasterizer2D.drawingAreaTop;
-         int var17 = var0 + var13;
+         int var17 = var13 + var0;
          int var18 = var0 - var14;
          int var19 = var0 + var6 - var14;
-         int var20 = var0 + var6 + var13;
-         int var21 = var1 + var15;
+         int var20 = var13 + var0 + var6;
+         int var21 = var15 + var1;
          int var22 = var1 - var16;
          int var23 = var7 + var1 - var16;
          int var24 = var7 + var1 + var15;
@@ -176,7 +176,8 @@ public class class22 extends class28 {
       int var9;
       int var10;
       int var11;
-      ModIcon var14;
+      ModIcon var12;
+      int var15;
       if(var5 != 0) {
          var6 = class17.region.method2727(var0, var1, var2, var5);
          var7 = var6 >> 6 & 3;
@@ -186,75 +187,75 @@ public class class22 extends class28 {
             var9 = var4;
          }
 
-         int[] var12 = Actor.field1268.image;
-         var10 = (103 - var2) * 2048 + var1 * 4 + 24624;
+         int[] var13 = Actor.field1268.image;
+         var10 = var1 * 4 + (103 - var2) * 2048 + 24624;
          var11 = var5 >> 14 & 32767;
-         ObjectComposition var13 = class29.getObjectDefinition(var11);
-         if(var13.mapSceneId != -1) {
-            var14 = Client.field925[var13.mapSceneId];
-            if(var14 != null) {
-               int var15 = (var13.sizeX * 4 - var14.originalWidth) / 2;
-               int var16 = (var13.sizeY * 4 - var14.height) / 2;
-               var14.method4923(var1 * 4 + 48 + var15, var16 + (104 - var2 - var13.sizeY) * 4 + 48);
+         ObjectComposition var14 = class29.getObjectDefinition(var11);
+         if(var14.mapSceneId != -1) {
+            var12 = Client.field925[var14.mapSceneId];
+            if(var12 != null) {
+               var15 = (var14.sizeX * 4 - var12.originalWidth) / 2;
+               int var16 = (var14.sizeY * 4 - var12.height) / 2;
+               var12.method4923(var15 + var1 * 4 + 48, (104 - var2 - var14.sizeY) * 4 + var16 + 48);
             }
          } else {
             if(var8 == 0 || var8 == 2) {
                if(var7 == 0) {
-                  var12[var10] = var9;
-                  var12[var10 + 512] = var9;
-                  var12[var10 + 1024] = var9;
-                  var12[var10 + 1536] = var9;
+                  var13[var10] = var9;
+                  var13[var10 + 512] = var9;
+                  var13[var10 + 1024] = var9;
+                  var13[var10 + 1536] = var9;
                } else if(var7 == 1) {
-                  var12[var10] = var9;
-                  var12[var10 + 1] = var9;
-                  var12[var10 + 2] = var9;
-                  var12[var10 + 3] = var9;
+                  var13[var10] = var9;
+                  var13[var10 + 1] = var9;
+                  var13[var10 + 2] = var9;
+                  var13[var10 + 3] = var9;
                } else if(var7 == 2) {
-                  var12[var10 + 3] = var9;
-                  var12[var10 + 3 + 512] = var9;
-                  var12[var10 + 3 + 1024] = var9;
-                  var12[var10 + 3 + 1536] = var9;
+                  var13[var10 + 3] = var9;
+                  var13[var10 + 3 + 512] = var9;
+                  var13[var10 + 3 + 1024] = var9;
+                  var13[var10 + 3 + 1536] = var9;
                } else if(var7 == 3) {
-                  var12[var10 + 1536] = var9;
-                  var12[var10 + 1536 + 1] = var9;
-                  var12[var10 + 1536 + 2] = var9;
-                  var12[var10 + 1536 + 3] = var9;
+                  var13[var10 + 1536] = var9;
+                  var13[var10 + 1536 + 1] = var9;
+                  var13[var10 + 1536 + 2] = var9;
+                  var13[var10 + 1536 + 3] = var9;
                }
             }
 
             if(var8 == 3) {
                if(var7 == 0) {
-                  var12[var10] = var9;
+                  var13[var10] = var9;
                } else if(var7 == 1) {
-                  var12[var10 + 3] = var9;
+                  var13[var10 + 3] = var9;
                } else if(var7 == 2) {
-                  var12[var10 + 3 + 1536] = var9;
+                  var13[var10 + 3 + 1536] = var9;
                } else if(var7 == 3) {
-                  var12[var10 + 1536] = var9;
+                  var13[var10 + 1536] = var9;
                }
             }
 
             if(var8 == 2) {
                if(var7 == 3) {
-                  var12[var10] = var9;
-                  var12[var10 + 512] = var9;
-                  var12[var10 + 1024] = var9;
-                  var12[var10 + 1536] = var9;
+                  var13[var10] = var9;
+                  var13[var10 + 512] = var9;
+                  var13[var10 + 1024] = var9;
+                  var13[var10 + 1536] = var9;
                } else if(var7 == 0) {
-                  var12[var10] = var9;
-                  var12[var10 + 1] = var9;
-                  var12[var10 + 2] = var9;
-                  var12[var10 + 3] = var9;
+                  var13[var10] = var9;
+                  var13[var10 + 1] = var9;
+                  var13[var10 + 2] = var9;
+                  var13[var10 + 3] = var9;
                } else if(var7 == 1) {
-                  var12[var10 + 3] = var9;
-                  var12[var10 + 3 + 512] = var9;
-                  var12[var10 + 3 + 1024] = var9;
-                  var12[var10 + 3 + 1536] = var9;
+                  var13[var10 + 3] = var9;
+                  var13[var10 + 3 + 512] = var9;
+                  var13[var10 + 3 + 1024] = var9;
+                  var13[var10 + 3 + 1536] = var9;
                } else if(var7 == 2) {
-                  var12[var10 + 1536] = var9;
-                  var12[var10 + 1536 + 1] = var9;
-                  var12[var10 + 1536 + 2] = var9;
-                  var12[var10 + 1536 + 3] = var9;
+                  var13[var10 + 1536] = var9;
+                  var13[var10 + 1536 + 1] = var9;
+                  var13[var10 + 1536 + 2] = var9;
+                  var13[var10 + 1536 + 3] = var9;
                }
             }
          }
@@ -270,11 +271,11 @@ public class class22 extends class28 {
          var17 = class29.getObjectDefinition(var9);
          int var18;
          if(var17.mapSceneId != -1) {
-            var14 = Client.field925[var17.mapSceneId];
-            if(var14 != null) {
-               var11 = (var17.sizeX * 4 - var14.originalWidth) / 2;
-               var18 = (var17.sizeY * 4 - var14.height) / 2;
-               var14.method4923(var11 + var1 * 4 + 48, var18 + (104 - var2 - var17.sizeY) * 4 + 48);
+            var12 = Client.field925[var17.mapSceneId];
+            if(var12 != null) {
+               var11 = (var17.sizeX * 4 - var12.originalWidth) / 2;
+               var18 = (var17.sizeY * 4 - var12.height) / 2;
+               var12.method4923(var11 + var1 * 4 + 48, (104 - var2 - var17.sizeY) * 4 + var18 + 48);
             }
          } else if(var8 == 9) {
             var10 = 15658734;
@@ -306,8 +307,8 @@ public class class22 extends class28 {
             ModIcon var19 = Client.field925[var17.mapSceneId];
             if(var19 != null) {
                var9 = (var17.sizeX * 4 - var19.originalWidth) / 2;
-               int var21 = (var17.sizeY * 4 - var19.height) / 2;
-               var19.method4923(var1 * 4 + 48 + var9, var21 + (104 - var2 - var17.sizeY) * 4 + 48);
+               var15 = (var17.sizeY * 4 - var19.height) / 2;
+               var19.method4923(var9 + var1 * 4 + 48, (104 - var2 - var17.sizeY) * 4 + var15 + 48);
             }
          }
       }

@@ -39,7 +39,7 @@ final class class15 implements Comparator {
       garbageValue = "-1966408094"
    )
    int method100(class14 var1, class14 var2) {
-      return var1.field292.totalQuantity < var2.field292.totalQuantity?-1:(var1.field292.totalQuantity == var2.field292.totalQuantity?0:1);
+      return var1.field292.totalQuantity < var2.field292.totalQuantity?-1:(var2.field292.totalQuantity == var1.field292.totalQuantity?0:1);
    }
 
    @ObfuscatedName("p")

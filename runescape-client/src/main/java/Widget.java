@@ -963,14 +963,14 @@ public class Widget extends Node {
 
                   int var13;
                   for(var13 = 0; var13 < var7.width; ++var13) {
-                     if(var7.image[var13 + var7.width * var10] == 0) {
+                     if(var7.image[var13 + var10 * var7.width] == 0) {
                         var11 = var13;
                         break;
                      }
                   }
 
                   for(var13 = var7.width - 1; var13 >= var11; --var13) {
-                     if(var7.image[var7.width * var10 + var13] == 0) {
+                     if(var7.image[var13 + var10 * var7.width] == 0) {
                         var12 = var13 + 1;
                         break;
                      }
@@ -1030,7 +1030,7 @@ public class Widget extends Node {
       } else if(var5 == 1 && var6 == -1) {
          return null;
       } else {
-         Model var7 = (Model)field2649.get((long)(var6 + (var5 << 16)));
+         Model var7 = (Model)field2649.get((long)((var5 << 16) + var6));
          if(var7 == null) {
             ModelData var8;
             if(var5 == 1) {

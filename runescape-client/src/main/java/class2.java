@@ -33,11 +33,11 @@ final class class2 implements class0 {
          if(var2) {
             var4.field877 = false;
          } else {
-            if(var1 == Client.localInteractingIndex) {
+            if(Client.localInteractingIndex == var1) {
                throw new RuntimeException();
             }
 
-            class96.field1490[var1] = (var4.pathY[0] + class21.baseY >> 13) + (var4.field884 << 28) + (class19.baseX + var4.pathX[0] >> 13 << 14);
+            class96.field1490[var1] = (var4.pathX[0] + class19.baseX >> 13 << 14) + (var4.pathY[0] + class21.baseY >> 13) + (var4.field884 << 28);
             if(var4.field1236 != -1) {
                class96.field1497[var1] = var4.field1236;
             } else {
@@ -80,16 +80,18 @@ final class class2 implements class0 {
                ++var7;
             }
 
-            if(Client.localInteractingIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
+            if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
+               if(var2) {
+                  var4.field877 = true;
+                  var4.field887 = var6;
+                  var4.field888 = var7;
+               } else {
+                  var4.field877 = false;
+                  var4.method1071(var6, var7, class96.field1494[var1]);
+               }
+            } else {
                var4.method1083(var6, var7);
                var4.field877 = false;
-            } else if(var2) {
-               var4.field877 = true;
-               var4.field887 = var6;
-               var4.field888 = var7;
-            } else {
-               var4.field877 = false;
-               var4.method1071(var6, var7, class96.field1494[var1]);
             }
          } else if(var3 == 2) {
             var5 = var0.method3290(4);
@@ -141,7 +143,7 @@ final class class2 implements class0 {
                var7 += 2;
             }
 
-            if(var1 != Client.localInteractingIndex || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
+            if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
                if(var2) {
                   var4.field877 = true;
                   var4.field887 = var6;
@@ -175,7 +177,7 @@ final class class2 implements class0 {
 
                var10 = var8 + var4.pathX[0];
                var11 = var4.pathY[0] + var9;
-               if(var1 != Client.localInteractingIndex || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
+               if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
                   if(var2) {
                      var4.field877 = true;
                      var4.field887 = var10;
@@ -199,7 +201,7 @@ final class class2 implements class0 {
                var8 = var6 >> 14 & 16383;
                var9 = var6 & 16383;
                var10 = (var8 + class19.baseX + var4.pathX[0] & 16383) - class19.baseX;
-               var11 = (var9 + var4.pathY[0] + class21.baseY & 16383) - class21.baseY;
+               var11 = (var4.pathY[0] + var9 + class21.baseY & 16383) - class21.baseY;
                if(Client.localInteractingIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
                   var4.method1083(var10, var11);
                   var4.field877 = false;
@@ -228,7 +230,7 @@ final class class2 implements class0 {
       garbageValue = "-1732530426"
    )
    static final void method5(int var0, int var1, boolean var2) {
-      if(!var2 || class34.field501 != var0 || class13.field289 != var1) {
+      if(!var2 || var0 != class34.field501 || class13.field289 != var1) {
          class34.field501 = var0;
          class13.field289 = var1;
          class23.setGameState(25);
@@ -289,10 +291,10 @@ final class class2 implements class0 {
          }
 
          int var15;
-         for(int var16 = var21; var16 != var10; var16 += var11) {
+         for(int var16 = var21; var10 != var16; var16 += var11) {
             for(var15 = var12; var13 != var15; var15 += var14) {
-               int var17 = var16 + var5;
-               int var18 = var6 + var15;
+               int var17 = var5 + var16;
+               int var18 = var15 + var6;
 
                for(int var19 = 0; var19 < 4; ++var19) {
                   if(var17 >= 0 && var18 >= 0 && var17 < 104 && var18 < 104) {

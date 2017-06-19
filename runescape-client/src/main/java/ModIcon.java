@@ -38,7 +38,7 @@ public final class ModIcon extends Rasterizer2D {
 
          for(int var3 = 0; var3 < this.height; ++var3) {
             for(int var4 = 0; var4 < this.originalWidth; ++var4) {
-               var1[var4 + this.offsetX + (var3 + this.offsetY) * this.width] = this.pixels[var2++];
+               var1[(var3 + this.offsetY) * this.width + this.offsetX + var4] = this.pixels[var2++];
             }
          }
 
@@ -78,7 +78,7 @@ public final class ModIcon extends Rasterizer2D {
             var7 = 255;
          }
 
-         this.palette[var4] = (var5 << 16) + (var6 << 8) + var7;
+         this.palette[var4] = (var6 << 8) + (var5 << 16) + var7;
       }
 
    }
@@ -148,7 +148,7 @@ public final class ModIcon extends Rasterizer2D {
       int var12 = (var10 << 16) / var4;
       int var13;
       if(this.offsetX > 0) {
-         var13 = ((this.offsetX << 16) + var11 - 1) / var11;
+         var13 = (var11 + (this.offsetX << 16) - 1) / var11;
          var1 += var13;
          var7 += var13 * var11 - (this.offsetX << 16);
       }
@@ -160,7 +160,7 @@ public final class ModIcon extends Rasterizer2D {
       }
 
       if(var5 < var9) {
-         var3 = ((var5 << 16) - var7 + var11 - 1) / var11;
+         var3 = (var11 + ((var5 << 16) - var7) - 1) / var11;
       }
 
       if(var6 < var10) {
@@ -178,11 +178,11 @@ public final class ModIcon extends Rasterizer2D {
          var15 = Rasterizer2D.drawingAreaTop - var2;
          var4 -= var15;
          var13 += var15 * Rasterizer2D.graphicsPixelsWidth;
-         var8 += var12 * var15;
+         var8 += var15 * var12;
       }
 
-      if(var1 + var3 > Rasterizer2D.drawingAreaBottom) {
-         var15 = var1 + var3 - Rasterizer2D.drawingAreaBottom;
+      if(var3 + var1 > Rasterizer2D.drawingAreaBottom) {
+         var15 = var3 + var1 - Rasterizer2D.drawingAreaBottom;
          var3 -= var15;
          var14 += var15;
       }
@@ -217,8 +217,8 @@ public final class ModIcon extends Rasterizer2D {
          var3 += var9 * Rasterizer2D.graphicsPixelsWidth;
       }
 
-      if(var2 + var5 > Rasterizer2D.drawingAreaRight) {
-         var5 -= var2 + var5 - Rasterizer2D.drawingAreaRight;
+      if(var5 + var2 > Rasterizer2D.drawingAreaRight) {
+         var5 -= var5 + var2 - Rasterizer2D.drawingAreaRight;
       }
 
       if(var1 < Rasterizer2D.field3752) {
@@ -231,8 +231,8 @@ public final class ModIcon extends Rasterizer2D {
          var7 += var9;
       }
 
-      if(var1 + var6 > Rasterizer2D.drawingAreaBottom) {
-         var9 = var1 + var6 - Rasterizer2D.drawingAreaBottom;
+      if(var6 + var1 > Rasterizer2D.drawingAreaBottom) {
+         var9 = var6 + var1 - Rasterizer2D.drawingAreaBottom;
          var6 -= var9;
          var8 += var9;
          var7 += var9;
@@ -249,7 +249,7 @@ public final class ModIcon extends Rasterizer2D {
       int var12 = var3;
 
       for(int var13 = -var8; var13 < 0; ++var13) {
-         int var14 = (var4 >> 16) * var11;
+         int var14 = var11 * (var4 >> 16);
 
          for(int var15 = -var7; var15 < 0; ++var15) {
             byte var16 = var1[(var3 >> 16) + var14];

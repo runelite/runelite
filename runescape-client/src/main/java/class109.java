@@ -429,7 +429,7 @@ public class class109 {
          boolean var1 = true;
 
          for(int var2 = 0; var2 < 2; ++var2) {
-            if(this == field1624.field1659[var2]) {
+            if(field1624.field1659[var2] == this) {
                field1624.field1659[var2] = null;
             }
 
@@ -521,7 +521,7 @@ public class class109 {
                   if(var11) {
                      var10 = true;
                   } else {
-                     label163: {
+                     label165: {
                         char[] var12 = class267.field3667;
 
                         int var13;
@@ -530,27 +530,21 @@ public class class109 {
                            var14 = var12[var13];
                            if(var9 == var14) {
                               var10 = true;
-                              break label163;
+                              break label165;
                            }
                         }
 
                         var12 = class267.field3668;
-                        var13 = 0;
 
-                        while(true) {
-                           if(var13 >= var12.length) {
-                              var10 = false;
-                              break;
-                           }
-
+                        for(var13 = 0; var13 < var12.length; ++var13) {
                            var14 = var12[var13];
-                           if(var14 == var9) {
+                           if(var9 == var14) {
                               var10 = true;
-                              break;
+                              break label165;
                            }
-
-                           ++var13;
                         }
+
+                        var10 = false;
                      }
                   }
                }
@@ -707,7 +701,7 @@ public class class109 {
             var7 = var0.readUnsignedByte();
             if(var7 == 0) {
                if(var1 == 0) {
-                  class61.tileHeights[0][var2][var3] = -class14.method89(var2 + 932731 + var4, var3 + 556238 + var5) * 8;
+                  class61.tileHeights[0][var2][var3] = -class14.method89(var2 + 932731 + var4, var5 + var3 + 556238) * 8;
                } else {
                   class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
                }

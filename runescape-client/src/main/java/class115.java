@@ -69,8 +69,8 @@ public class class115 {
                   var10 = class106.field1581[this.field1674].method1824();
 
                   for(var11 = var4 - 1; var11 >= 0; --var11) {
-                     if(var9 + var11 < var6) {
-                        var7[var9 + var11] = var10 % this.field1677;
+                     if(var11 + var9 < var6) {
+                        var7[var11 + var9] = var10 % this.field1677;
                      }
 
                      var10 /= this.field1677;
@@ -79,9 +79,9 @@ public class class115 {
 
                for(var10 = 0; var10 < var4; ++var10) {
                   var11 = var7[var9];
-                  int var12 = this.field1673[var11 * 8 + var8];
+                  int var12 = this.field1673[var8 + var11 * 8];
                   if(var12 >= 0) {
-                     int var13 = this.field1678 + var9 * this.field1676;
+                     int var13 = this.field1678 + this.field1676 * var9;
                      class104 var14 = class106.field1581[var12];
                      int var15;
                      if(this.field1679 == 0) {

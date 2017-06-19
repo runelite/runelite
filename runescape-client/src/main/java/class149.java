@@ -44,7 +44,7 @@ public enum class149 implements RSEnum {
       signature = "(II)V",
       garbageValue = "0"
    )
-   class149(int var3, int var4) {
+   private class149(int var3, int var4) {
       this.field2210 = var3;
       this.field2208 = var4;
    }

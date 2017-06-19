@@ -82,7 +82,7 @@ public class class207 extends Node {
       Buffer var2 = new Buffer(var1);
 
       int var3;
-      for(var3 = 0; var2.payload[var2.offset + var3] != 0; ++var3) {
+      for(var3 = 0; var2.payload[var3 + var2.offset] != 0; ++var3) {
          ;
       }
 
@@ -99,7 +99,7 @@ public class class207 extends Node {
       var2.offset += var3;
 
       int var6;
-      for(var6 = 0; var2.payload[var6 + var2.offset] != 0; ++var6) {
+      for(var6 = 0; var2.payload[var2.offset + var6] != 0; ++var6) {
          ;
       }
 
@@ -116,7 +116,7 @@ public class class207 extends Node {
       var2.offset += var6;
 
       int var9;
-      for(var9 = 0; var2.payload[var9 + var2.offset] != 0; ++var9) {
+      for(var9 = 0; var2.payload[var2.offset + var9] != 0; ++var9) {
          ;
       }
 
@@ -177,7 +177,7 @@ public class class207 extends Node {
       byte[] var17 = var13 > 0?new byte[var13 * 2]:null;
 
       int var18;
-      for(var18 = 0; var2.payload[var2.offset + var18] != 0; ++var18) {
+      for(var18 = 0; var2.payload[var18 + var2.offset] != 0; ++var18) {
          ;
       }
 
@@ -392,11 +392,11 @@ public class class207 extends Node {
          for(var30 = 2; var30 < var43.length; var30 += 2) {
             var31 = var43[var30];
             byte var38 = var43[var30 + 1];
-            var32 = (var31 - var36) / 2 + var37 * (var31 - var36);
+            var32 = (var31 - var36) / 2 + (var31 - var36) * var37;
 
             for(var33 = var36; var33 < var31; ++var33) {
                var34 = class116.method2030(var32, var31 - var36);
-               this.field2593[var33] = (byte)(this.field2593[var33] * var34 + 32 >> 6);
+               this.field2593[var33] = (byte)(var34 * this.field2593[var33] + 32 >> 6);
                var32 += var38 - var37;
             }
 
@@ -424,7 +424,7 @@ public class class207 extends Node {
          int var45 = var17[1] << 1;
 
          for(var30 = 0; var30 < var36; ++var30) {
-            var35 = (this.field2592[var30] & 255) + var45;
+            var35 = var45 + (this.field2592[var30] & 255);
             if(var35 < 0) {
                var35 = 0;
             }
@@ -440,11 +440,11 @@ public class class207 extends Node {
          for(var30 = 2; var30 < var17.length; var30 += 2) {
             var31 = var17[var30];
             var46 = var17[var30 + 1] << 1;
-            var32 = var45 * (var31 - var36) + (var31 - var36) / 2;
+            var32 = (var31 - var36) / 2 + (var31 - var36) * var45;
 
             for(var33 = var36; var33 < var31; ++var33) {
                var34 = class116.method2030(var32, var31 - var36);
-               int var39 = (this.field2592[var33] & 255) + var34;
+               int var39 = var34 + (this.field2592[var33] & 255);
                if(var39 < 0) {
                   var39 = 0;
                }

@@ -7,7 +7,6 @@ import java.io.StreamCorruptedException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -75,17 +74,17 @@ public class class241 extends CacheableNode {
          char var7 = var0.charAt(var6 + var1);
          if((var7 <= 0 || var7 >= 128) && (var7 < 160 || var7 > 255)) {
             if(var7 == 8364) {
-               var3[var6 + var4] = -128;
+               var3[var4 + var6] = -128;
             } else if(var7 == 8218) {
-               var3[var6 + var4] = -126;
+               var3[var4 + var6] = -126;
             } else if(var7 == 402) {
                var3[var4 + var6] = -125;
             } else if(var7 == 8222) {
-               var3[var6 + var4] = -124;
+               var3[var4 + var6] = -124;
             } else if(var7 == 8230) {
-               var3[var6 + var4] = -123;
+               var3[var4 + var6] = -123;
             } else if(var7 == 8224) {
-               var3[var6 + var4] = -122;
+               var3[var4 + var6] = -122;
             } else if(var7 == 8225) {
                var3[var4 + var6] = -121;
             } else if(var7 == 710) {
@@ -95,7 +94,7 @@ public class class241 extends CacheableNode {
             } else if(var7 == 352) {
                var3[var4 + var6] = -118;
             } else if(var7 == 8249) {
-               var3[var6 + var4] = -117;
+               var3[var4 + var6] = -117;
             } else if(var7 == 338) {
                var3[var4 + var6] = -116;
             } else if(var7 == 381) {
@@ -105,7 +104,7 @@ public class class241 extends CacheableNode {
             } else if(var7 == 8217) {
                var3[var4 + var6] = -110;
             } else if(var7 == 8220) {
-               var3[var6 + var4] = -109;
+               var3[var4 + var6] = -109;
             } else if(var7 == 8221) {
                var3[var4 + var6] = -108;
             } else if(var7 == 8226) {
@@ -113,23 +112,23 @@ public class class241 extends CacheableNode {
             } else if(var7 == 8211) {
                var3[var4 + var6] = -106;
             } else if(var7 == 8212) {
-               var3[var6 + var4] = -105;
+               var3[var4 + var6] = -105;
             } else if(var7 == 732) {
-               var3[var6 + var4] = -104;
+               var3[var4 + var6] = -104;
             } else if(var7 == 8482) {
-               var3[var6 + var4] = -103;
+               var3[var4 + var6] = -103;
             } else if(var7 == 353) {
-               var3[var6 + var4] = -102;
+               var3[var4 + var6] = -102;
             } else if(var7 == 8250) {
                var3[var4 + var6] = -101;
             } else if(var7 == 339) {
-               var3[var6 + var4] = -100;
+               var3[var4 + var6] = -100;
             } else if(var7 == 382) {
                var3[var4 + var6] = -98;
             } else if(var7 == 376) {
                var3[var4 + var6] = -97;
             } else {
-               var3[var6 + var4] = 63;
+               var3[var4 + var6] = 63;
             }
          } else {
             var3[var4 + var6] = (byte)var7;

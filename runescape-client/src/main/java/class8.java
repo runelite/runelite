@@ -51,7 +51,7 @@ public final class class8 extends class9 {
       garbageValue = "-4"
    )
    public final void vmethod55() {
-      Rasterizer2D.method4888(Rasterizer2D.field3752 + this.field251, Rasterizer2D.drawingAreaTop + this.field243, this.field247 - this.field251, this.field245 - this.field243, this.field246);
+      Rasterizer2D.method4888(this.field251 + Rasterizer2D.field3752, this.field243 + Rasterizer2D.drawingAreaTop, this.field247 - this.field251, this.field245 - this.field243, this.field246);
    }
 
    class8(int var1, int var2, int var3, int var4, int var5) {

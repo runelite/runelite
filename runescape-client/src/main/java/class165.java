@@ -363,7 +363,7 @@ public class class165 {
                var4 = new Buffer(var14);
                var5 = -1;
 
-               label1255:
+               label1242:
                while(true) {
                   var6 = var4.method3046();
                   if(var6 == 0) {
@@ -376,46 +376,37 @@ public class class165 {
                   boolean var16 = false;
 
                   while(true) {
-                     ObjectComposition var17;
-                     do {
-                        do {
-                           do {
-                              do {
-                                 do {
-                                    while(var16) {
-                                       var8 = var4.method3046();
-                                       if(var8 == 0) {
-                                          continue label1255;
-                                       }
+                     while(!var16) {
+                        var8 = var4.method3046();
+                        if(var8 == 0) {
+                           continue label1242;
+                        }
 
-                                       var4.readUnsignedByte();
-                                    }
+                        var7 += var8 - 1;
+                        var9 = var7 & 63;
+                        var10 = var7 >> 6 & 63;
+                        var11 = var4.readUnsignedByte() >> 2;
+                        var12 = var10 + var2;
+                        var13 = var3 + var9;
+                        if(var12 > 0 && var13 > 0 && var12 < 103 && var13 < 103) {
+                           ObjectComposition var17 = class29.getObjectDefinition(var5);
+                           if(var11 != 22 || !Client.field1055 || var17.field3445 != 0 || var17.field3476 == 1 || var17.field3480) {
+                              if(!var17.method4429()) {
+                                 ++Client.field1127;
+                                 var15 = false;
+                              }
 
-                                    var8 = var4.method3046();
-                                    if(var8 == 0) {
-                                       continue label1255;
-                                    }
-
-                                    var7 += var8 - 1;
-                                    var9 = var7 & 63;
-                                    var10 = var7 >> 6 & 63;
-                                    var11 = var4.readUnsignedByte() >> 2;
-                                    var12 = var2 + var10;
-                                    var13 = var3 + var9;
-                                 } while(var12 <= 0);
-                              } while(var13 <= 0);
-                           } while(var12 >= 103);
-                        } while(var13 >= 103);
-
-                        var17 = class29.getObjectDefinition(var5);
-                     } while(var11 == 22 && Client.field1055 && var17.field3445 == 0 && var17.field3476 != 1 && !var17.field3480);
-
-                     if(!var17.method4429()) {
-                        ++Client.field1127;
-                        var15 = false;
+                              var16 = true;
+                           }
+                        }
                      }
 
-                     var16 = true;
+                     var8 = var4.method3046();
+                     if(var8 == 0) {
+                        break;
+                     }
+
+                     var4.readUnsignedByte();
                   }
                }
             }
@@ -463,7 +454,7 @@ public class class165 {
             if(!Client.isDynamicRegion) {
                var48 = 0;
 
-               label1179:
+               label1180:
                while(true) {
                   byte[] var22;
                   if(var48 >= var1) {
@@ -482,13 +473,13 @@ public class class165 {
 
                      while(true) {
                         if(var48 >= var1) {
-                           break label1179;
+                           break label1180;
                         }
 
                         byte[] var53 = class40.field554[var48];
                         if(var53 != null) {
                            var3 = (class13.mapRegions[var48] >> 8) * 64 - class19.baseX;
-                           var49 = (class13.mapRegions[var48] & 255) * 64 - class21.baseY;
+                           var19 = (class13.mapRegions[var48] & 255) * 64 - class21.baseY;
                            class69.method1035();
                            Region var55 = class17.region;
                            CollisionData[] var25 = Client.collisionMaps;
@@ -505,32 +496,32 @@ public class class165 {
                               var7 = 0;
 
                               while(true) {
-                                 var21 = var4.method3046();
-                                 if(var21 == 0) {
+                                 var18 = var4.method3046();
+                                 if(var18 == 0) {
                                     break;
                                  }
 
-                                 var7 += var21 - 1;
+                                 var7 += var18 - 1;
                                  var8 = var7 & 63;
                                  var9 = var7 >> 6 & 63;
                                  var10 = var7 >> 12;
                                  var11 = var4.readUnsignedByte();
                                  var12 = var11 >> 2;
                                  var13 = var11 & 3;
-                                 var19 = var3 + var9;
-                                 var51 = var49 + var8;
-                                 if(var19 > 0 && var51 > 0 && var19 < 103 && var51 < 103) {
-                                    var18 = var10;
-                                    if((class61.tileSettings[1][var19][var51] & 2) == 2) {
-                                       var18 = var10 - 1;
+                                 var50 = var3 + var9;
+                                 var21 = var19 + var8;
+                                 if(var50 > 0 && var21 > 0 && var50 < 103 && var21 < 103) {
+                                    var49 = var10;
+                                    if((class61.tileSettings[1][var50][var21] & 2) == 2) {
+                                       var49 = var10 - 1;
                                     }
 
                                     CollisionData var26 = null;
-                                    if(var18 >= 0) {
-                                       var26 = var25[var18];
+                                    if(var49 >= 0) {
+                                       var26 = var25[var49];
                                     }
 
-                                    class47.method672(var10, var19, var51, var5, var13, var12, var55, var26);
+                                    class47.method672(var10, var50, var21, var5, var13, var12, var55, var26);
                                  }
                               }
                            }
@@ -545,12 +536,12 @@ public class class165 {
                   var22 = WidgetNode.field814[var48];
                   if(var22 != null) {
                      class69.method1035();
-                     var50 = class34.field501 * 8 - 48;
-                     var20 = class13.field289 * 8 - 48;
+                     var20 = class34.field501 * 8 - 48;
+                     var51 = class13.field289 * 8 - 48;
                      CollisionData[] var23 = Client.collisionMaps;
                      var5 = 0;
 
-                     label1176:
+                     label1177:
                      while(true) {
                         if(var5 >= 4) {
                            Buffer var24 = new Buffer(var22);
@@ -558,12 +549,12 @@ public class class165 {
 
                            while(true) {
                               if(var6 >= 4) {
-                                 break label1176;
+                                 break label1177;
                               }
 
                               for(var7 = 0; var7 < 64; ++var7) {
-                                 for(var21 = 0; var21 < 64; ++var21) {
-                                    class109.method1968(var24, var6, var2 + var7, var21 + var3, var50, var20, 0);
+                                 for(var18 = 0; var18 < 64; ++var18) {
+                                    class109.method1968(var24, var6, var2 + var7, var18 + var3, var20, var51, 0);
                                  }
                               }
 
@@ -573,8 +564,8 @@ public class class165 {
 
                         for(var6 = 0; var6 < 64; ++var6) {
                            for(var7 = 0; var7 < 64; ++var7) {
-                              if(var6 + var2 > 0 && var6 + var2 < 103 && var7 + var3 > 0 && var3 + var7 < 103) {
-                                 var23[var5].flags[var6 + var2][var3 + var7] &= -16777217;
+                              if(var2 + var6 > 0 && var2 + var6 < 103 && var3 + var7 > 0 && var3 + var7 < 103) {
+                                 var23[var5].flags[var2 + var6][var3 + var7] &= -16777217;
                               }
                            }
                         }
@@ -602,7 +593,7 @@ public class class165 {
             if(Client.isDynamicRegion) {
                var48 = 0;
 
-               label1112:
+               label1113:
                while(true) {
                   CollisionData[] var34;
                   Buffer var35;
@@ -621,72 +612,72 @@ public class class165 {
 
                      while(true) {
                         if(var48 >= 4) {
-                           break label1112;
+                           break label1113;
                         }
 
                         class69.method1035();
 
                         for(var2 = 0; var2 < 13; ++var2) {
-                           label1001:
+                           label1002:
                            for(var3 = 0; var3 < 13; ++var3) {
-                              var49 = Client.field967[var48][var2][var3];
-                              if(var49 != -1) {
-                                 var50 = var49 >> 24 & 3;
-                                 var20 = var49 >> 1 & 3;
-                                 var31 = var49 >> 14 & 1023;
-                                 var5 = var49 >> 3 & 2047;
-                                 var6 = var5 / 8 + (var31 / 8 << 8);
+                              var19 = Client.field967[var48][var2][var3];
+                              if(var19 != -1) {
+                                 var20 = var19 >> 24 & 3;
+                                 var51 = var19 >> 1 & 3;
+                                 var58 = var19 >> 14 & 1023;
+                                 var5 = var19 >> 3 & 2047;
+                                 var6 = var5 / 8 + (var58 / 8 << 8);
 
                                  for(var7 = 0; var7 < class13.mapRegions.length; ++var7) {
-                                    if(var6 == class13.mapRegions[var7] && class40.field554[var7] != null) {
+                                    if(class13.mapRegions[var7] == var6 && class40.field554[var7] != null) {
                                        byte[] var61 = class40.field554[var7];
                                        var8 = var2 * 8;
                                        var9 = var3 * 8;
-                                       var10 = (var31 & 7) * 8;
+                                       var10 = (var58 & 7) * 8;
                                        var11 = (var5 & 7) * 8;
                                        Region var63 = class17.region;
                                        var34 = Client.collisionMaps;
                                        var35 = new Buffer(var61);
-                                       var51 = -1;
+                                       var21 = -1;
 
                                        while(true) {
-                                          var18 = var35.method3046();
-                                          if(var18 == 0) {
-                                             continue label1001;
+                                          var49 = var35.method3046();
+                                          if(var49 == 0) {
+                                             continue label1002;
                                           }
 
-                                          var51 += var18;
-                                          var32 = 0;
+                                          var21 += var49;
+                                          var27 = 0;
 
                                           while(true) {
-                                             var33 = var35.method3046();
-                                             if(var33 == 0) {
+                                             var28 = var35.method3046();
+                                             if(var28 == 0) {
                                                 break;
                                              }
 
-                                             var32 += var33 - 1;
-                                             var52 = var32 & 63;
-                                             var54 = var32 >> 6 & 63;
-                                             var56 = var32 >> 12;
-                                             var57 = var35.readUnsignedByte();
-                                             var58 = var57 >> 2;
-                                             var27 = var57 & 3;
-                                             if(var50 == var56 && var54 >= var10 && var54 < var10 + 8 && var52 >= var11 && var52 < var11 + 8) {
-                                                ObjectComposition var38 = class29.getObjectDefinition(var51);
-                                                var28 = var8 + class162.method2948(var54 & 7, var52 & 7, var20, var38.sizeX, var38.sizeY, var27);
-                                                var29 = var9 + class163.method2955(var54 & 7, var52 & 7, var20, var38.sizeX, var38.sizeY, var27);
-                                                if(var28 > 0 && var29 > 0 && var28 < 103 && var29 < 103) {
-                                                   var30 = var48;
-                                                   if((class61.tileSettings[1][var28][var29] & 2) == 2) {
-                                                      var30 = var48 - 1;
+                                             var27 += var28 - 1;
+                                             var29 = var27 & 63;
+                                             var30 = var27 >> 6 & 63;
+                                             var31 = var27 >> 12;
+                                             var32 = var35.readUnsignedByte();
+                                             var33 = var32 >> 2;
+                                             var52 = var32 & 3;
+                                             if(var20 == var31 && var30 >= var10 && var30 < var10 + 8 && var29 >= var11 && var29 < var11 + 8) {
+                                                ObjectComposition var38 = class29.getObjectDefinition(var21);
+                                                var54 = var8 + class162.method2948(var30 & 7, var29 & 7, var51, var38.sizeX, var38.sizeY, var52);
+                                                var56 = var9 + class163.method2955(var30 & 7, var29 & 7, var51, var38.sizeX, var38.sizeY, var52);
+                                                if(var54 > 0 && var56 > 0 && var54 < 103 && var56 < 103) {
+                                                   var57 = var48;
+                                                   if((class61.tileSettings[1][var54][var56] & 2) == 2) {
+                                                      var57 = var48 - 1;
                                                    }
 
                                                    CollisionData var39 = null;
-                                                   if(var30 >= 0) {
-                                                      var39 = var34[var30];
+                                                   if(var57 >= 0) {
+                                                      var39 = var34[var57];
                                                    }
 
-                                                   class47.method672(var48, var28, var29, var51, var20 + var27 & 3, var58, var63, var39);
+                                                   class47.method672(var48, var54, var56, var21, var51 + var52 & 3, var33, var63, var39);
                                                 }
                                              }
                                           }
@@ -706,51 +697,51 @@ public class class165 {
                   for(var2 = 0; var2 < 13; ++var2) {
                      for(var3 = 0; var3 < 13; ++var3) {
                         boolean var36 = false;
-                        var50 = Client.field967[var48][var2][var3];
-                        if(var50 != -1) {
-                           var20 = var50 >> 24 & 3;
-                           var31 = var50 >> 1 & 3;
-                           var5 = var50 >> 14 & 1023;
-                           var6 = var50 >> 3 & 2047;
+                        var20 = Client.field967[var48][var2][var3];
+                        if(var20 != -1) {
+                           var51 = var20 >> 24 & 3;
+                           var58 = var20 >> 1 & 3;
+                           var5 = var20 >> 14 & 1023;
+                           var6 = var20 >> 3 & 2047;
                            var7 = (var5 / 8 << 8) + var6 / 8;
 
-                           for(var21 = 0; var21 < class13.mapRegions.length; ++var21) {
-                              if(class13.mapRegions[var21] == var7 && WidgetNode.field814[var21] != null) {
-                                 byte[] var37 = WidgetNode.field814[var21];
+                           for(var18 = 0; var18 < class13.mapRegions.length; ++var18) {
+                              if(class13.mapRegions[var18] == var7 && WidgetNode.field814[var18] != null) {
+                                 byte[] var37 = WidgetNode.field814[var18];
                                  var9 = var2 * 8;
                                  var10 = var3 * 8;
                                  var11 = (var5 & 7) * 8;
                                  var12 = (var6 & 7) * 8;
                                  var34 = Client.collisionMaps;
 
-                                 for(var19 = 0; var19 < 8; ++var19) {
-                                    for(var51 = 0; var51 < 8; ++var51) {
-                                       if(var19 + var9 > 0 && var19 + var9 < 103 && var51 + var10 > 0 && var10 + var51 < 103) {
-                                          var34[var48].flags[var19 + var9][var10 + var51] &= -16777217;
+                                 for(var50 = 0; var50 < 8; ++var50) {
+                                    for(var21 = 0; var21 < 8; ++var21) {
+                                       if(var50 + var9 > 0 && var50 + var9 < 103 && var10 + var21 > 0 && var10 + var21 < 103) {
+                                          var34[var48].flags[var50 + var9][var10 + var21] &= -16777217;
                                        }
                                     }
                                  }
 
                                  var35 = new Buffer(var37);
 
-                                 for(var51 = 0; var51 < 4; ++var51) {
-                                    for(var18 = 0; var18 < 64; ++var18) {
-                                       for(var32 = 0; var32 < 64; ++var32) {
-                                          if(var20 == var51 && var18 >= var11 && var18 < var11 + 8 && var32 >= var12 && var32 < var12 + 8) {
-                                             var57 = var18 & 7;
-                                             var58 = var32 & 7;
-                                             var27 = var31 & 3;
-                                             if(var27 == 0) {
-                                                var56 = var57;
-                                             } else if(var27 == 1) {
-                                                var56 = var58;
-                                             } else if(var27 == 2) {
-                                                var56 = 7 - var57;
+                                 for(var21 = 0; var21 < 4; ++var21) {
+                                    for(var49 = 0; var49 < 64; ++var49) {
+                                       for(var27 = 0; var27 < 64; ++var27) {
+                                          if(var51 == var21 && var49 >= var11 && var49 < var11 + 8 && var27 >= var12 && var27 < var12 + 8) {
+                                             var32 = var49 & 7;
+                                             var33 = var27 & 7;
+                                             var52 = var58 & 3;
+                                             if(var52 == 0) {
+                                                var31 = var32;
+                                             } else if(var52 == 1) {
+                                                var31 = var33;
+                                             } else if(var52 == 2) {
+                                                var31 = 7 - var32;
                                              } else {
-                                                var56 = 7 - var58;
+                                                var31 = 7 - var33;
                                              }
 
-                                             class109.method1968(var35, var48, var56 + var9, var10 + ChatMessages.method1716(var18 & 7, var32 & 7, var31), 0, 0, var31);
+                                             class109.method1968(var35, var48, var9 + var31, var10 + ChatMessages.method1716(var49 & 7, var27 & 7, var58), 0, 0, var58);
                                           } else {
                                              class109.method1968(var35, 0, -1, -1, 0, 0, 0);
                                           }
@@ -765,34 +756,34 @@ public class class165 {
                         }
 
                         if(!var36) {
-                           var20 = var48;
-                           var31 = var2 * 8;
+                           var51 = var48;
+                           var58 = var2 * 8;
                            var5 = var3 * 8;
 
                            for(var6 = 0; var6 < 8; ++var6) {
                               for(var7 = 0; var7 < 8; ++var7) {
-                                 class61.tileHeights[var20][var31 + var6][var7 + var5] = 0;
+                                 class61.tileHeights[var51][var58 + var6][var5 + var7] = 0;
                               }
                            }
 
-                           if(var31 > 0) {
+                           if(var58 > 0) {
                               for(var6 = 1; var6 < 8; ++var6) {
-                                 class61.tileHeights[var20][var31][var6 + var5] = class61.tileHeights[var20][var31 - 1][var6 + var5];
+                                 class61.tileHeights[var51][var58][var5 + var6] = class61.tileHeights[var51][var58 - 1][var5 + var6];
                               }
                            }
 
                            if(var5 > 0) {
                               for(var6 = 1; var6 < 8; ++var6) {
-                                 class61.tileHeights[var20][var6 + var31][var5] = class61.tileHeights[var20][var6 + var31][var5 - 1];
+                                 class61.tileHeights[var51][var58 + var6][var5] = class61.tileHeights[var51][var58 + var6][var5 - 1];
                               }
                            }
 
-                           if(var31 > 0 && class61.tileHeights[var20][var31 - 1][var5] != 0) {
-                              class61.tileHeights[var20][var31][var5] = class61.tileHeights[var20][var31 - 1][var5];
-                           } else if(var5 > 0 && class61.tileHeights[var20][var31][var5 - 1] != 0) {
-                              class61.tileHeights[var20][var31][var5] = class61.tileHeights[var20][var31][var5 - 1];
-                           } else if(var31 > 0 && var5 > 0 && class61.tileHeights[var20][var31 - 1][var5 - 1] != 0) {
-                              class61.tileHeights[var20][var31][var5] = class61.tileHeights[var20][var31 - 1][var5 - 1];
+                           if(var58 > 0 && class61.tileHeights[var51][var58 - 1][var5] != 0) {
+                              class61.tileHeights[var51][var58][var5] = class61.tileHeights[var51][var58 - 1][var5];
+                           } else if(var5 > 0 && class61.tileHeights[var51][var58][var5 - 1] != 0) {
+                              class61.tileHeights[var51][var58][var5] = class61.tileHeights[var51][var58][var5 - 1];
+                           } else if(var58 > 0 && var5 > 0 && class61.tileHeights[var51][var58 - 1][var5 - 1] != 0) {
+                              class61.tileHeights[var51][var58][var5] = class61.tileHeights[var51][var58 - 1][var5 - 1];
                            }
                         }
                      }
@@ -809,16 +800,16 @@ public class class165 {
             CollisionData[] var60 = Client.collisionMaps;
 
             for(var3 = 0; var3 < 4; ++var3) {
-               for(var49 = 0; var49 < 104; ++var49) {
-                  for(var50 = 0; var50 < 104; ++var50) {
-                     if((class61.tileSettings[var3][var49][var50] & 1) == 1) {
-                        var20 = var3;
-                        if((class61.tileSettings[1][var49][var50] & 2) == 2) {
-                           var20 = var3 - 1;
+               for(var19 = 0; var19 < 104; ++var19) {
+                  for(var20 = 0; var20 < 104; ++var20) {
+                     if((class61.tileSettings[var3][var19][var20] & 1) == 1) {
+                        var51 = var3;
+                        if((class61.tileSettings[1][var19][var20] & 2) == 2) {
+                           var51 = var3 - 1;
                         }
 
-                        if(var20 >= 0) {
-                           var60[var20].method2913(var49, var50);
+                        if(var51 >= 0) {
+                           var60[var51].method2913(var19, var20);
                         }
                      }
                   }
@@ -846,7 +837,7 @@ public class class165 {
             for(var3 = 0; var3 < 4; ++var3) {
                byte[][] var62 = class267.field3669[var3];
                var7 = (int)Math.sqrt(5100.0D);
-               var21 = var7 * 768 >> 8;
+               var18 = var7 * 768 >> 8;
 
                for(var8 = 1; var8 < 103; ++var8) {
                   for(var9 = 1; var9 < 103; ++var9) {
@@ -854,11 +845,11 @@ public class class165 {
                      var11 = class61.tileHeights[var3][var9][var8 + 1] - class61.tileHeights[var3][var9][var8 - 1];
                      var12 = (int)Math.sqrt((double)(var10 * var10 + 65536 + var11 * var11));
                      var13 = (var10 << 8) / var12;
-                     var19 = 65536 / var12;
-                     var51 = (var11 << 8) / var12;
-                     var18 = (var13 * -50 + var19 * -10 + var51 * -50) / var21 + 96;
-                     var32 = (var62[var9][var8] >> 1) + (var62[var9 + 1][var8] >> 3) + (var62[var9 - 1][var8] >> 2) + (var62[var9][var8 - 1] >> 2) + (var62[var9][var8 + 1] >> 3);
-                     XItemContainer.field774[var9][var8] = var18 - var32;
+                     var50 = 65536 / var12;
+                     var21 = (var11 << 8) / var12;
+                     var49 = (var21 * -50 + var50 * -10 + var13 * -50) / var18 + 96;
+                     var27 = (var62[var9][var8 + 1] >> 3) + (var62[var9][var8] >> 1) + (var62[var9 + 1][var8] >> 3) + (var62[var9 - 1][var8] >> 2) + (var62[var9][var8 - 1] >> 2);
+                     XItemContainer.field774[var9][var8] = var49 - var27;
                   }
                }
 
@@ -907,51 +898,51 @@ public class class165 {
                      var12 = 0;
                      var13 = 0;
 
-                     for(var19 = -5; var19 < 109; ++var19) {
-                        var51 = var19 + 5;
-                        if(var51 >= 0 && var51 < 104) {
-                           var9 += Widget.field2648[var51];
-                           var10 += class61.field753[var51];
-                           var11 += WallObject.field2140[var51];
-                           var12 += class40.field552[var51];
-                           var13 += WidgetNode.field810[var51];
+                     for(var50 = -5; var50 < 109; ++var50) {
+                        var21 = var50 + 5;
+                        if(var21 >= 0 && var21 < 104) {
+                           var9 += Widget.field2648[var21];
+                           var10 += class61.field753[var21];
+                           var11 += WallObject.field2140[var21];
+                           var12 += class40.field552[var21];
+                           var13 += WidgetNode.field810[var21];
                         }
 
-                        var18 = var19 - 5;
-                        if(var18 >= 0 && var18 < 104) {
-                           var9 -= Widget.field2648[var18];
-                           var10 -= class61.field753[var18];
-                           var11 -= WallObject.field2140[var18];
-                           var12 -= class40.field552[var18];
-                           var13 -= WidgetNode.field810[var18];
+                        var49 = var50 - 5;
+                        if(var49 >= 0 && var49 < 104) {
+                           var9 -= Widget.field2648[var49];
+                           var10 -= class61.field753[var49];
+                           var11 -= WallObject.field2140[var49];
+                           var12 -= class40.field552[var49];
+                           var13 -= WidgetNode.field810[var49];
                         }
 
-                        if(var19 >= 1 && var19 < 103 && (!Client.field1055 || (class61.tileSettings[0][var8][var19] & 2) != 0 || (class61.tileSettings[var3][var8][var19] & 16) == 0)) {
+                        if(var50 >= 1 && var50 < 103 && (!Client.field1055 || (class61.tileSettings[0][var8][var50] & 2) != 0 || (class61.tileSettings[var3][var8][var50] & 16) == 0)) {
                            if(var3 < class61.field759) {
                               class61.field759 = var3;
                            }
 
-                           var32 = class61.underlayIds[var3][var8][var19] & 255;
-                           var33 = class61.overlayIds[var3][var8][var19] & 255;
-                           if(var32 > 0 || var33 > 0) {
-                              var52 = class61.tileHeights[var3][var8][var19];
-                              var54 = class61.tileHeights[var3][var8 + 1][var19];
-                              var56 = class61.tileHeights[var3][var8 + 1][var19 + 1];
-                              var57 = class61.tileHeights[var3][var8][var19 + 1];
-                              var58 = XItemContainer.field774[var8][var19];
-                              var27 = XItemContainer.field774[var8 + 1][var19];
-                              int var67 = XItemContainer.field774[var8 + 1][var19 + 1];
-                              var28 = XItemContainer.field774[var8][var19 + 1];
-                              var29 = -1;
-                              var30 = -1;
+                           var27 = class61.underlayIds[var3][var8][var50] & 255;
+                           var28 = class61.overlayIds[var3][var8][var50] & 255;
+                           if(var27 > 0 || var28 > 0) {
+                              var29 = class61.tileHeights[var3][var8][var50];
+                              var30 = class61.tileHeights[var3][var8 + 1][var50];
+                              var31 = class61.tileHeights[var3][var8 + 1][var50 + 1];
+                              var32 = class61.tileHeights[var3][var8][var50 + 1];
+                              var33 = XItemContainer.field774[var8][var50];
+                              var52 = XItemContainer.field774[var8 + 1][var50];
+                              int var67 = XItemContainer.field774[var8 + 1][var50 + 1];
+                              var54 = XItemContainer.field774[var8][var50 + 1];
+                              var56 = -1;
+                              var57 = -1;
                               int var68;
                               int var69;
-                              if(var32 > 0) {
+                              if(var27 > 0) {
                                  var69 = var9 * 256 / var12;
                                  var68 = var10 / var13;
                                  int var40 = var11 / var13;
-                                 var29 = class9.method47(var69, var68, var40);
-                                 var69 = class61.field761 + var69 & 255;
+                                 var56 = class9.method47(var69, var68, var40);
+                                 var69 = var69 + class61.field761 & 255;
                                  var40 += class61.field762;
                                  if(var40 < 0) {
                                     var40 = 0;
@@ -959,35 +950,35 @@ public class class165 {
                                     var40 = 255;
                                  }
 
-                                 var30 = class9.method47(var69, var68, var40);
+                                 var57 = class9.method47(var69, var68, var40);
                               }
 
                               if(var3 > 0) {
                                  boolean var70 = true;
-                                 if(var32 == 0 && class90.overlayPaths[var3][var8][var19] != 0) {
+                                 if(var27 == 0 && class90.overlayPaths[var3][var8][var50] != 0) {
                                     var70 = false;
                                  }
 
-                                 if(var33 > 0 && !class252.method4319(var33 - 1).isHidden) {
+                                 if(var28 > 0 && !class252.method4319(var28 - 1).isHidden) {
                                     var70 = false;
                                  }
 
-                                 if(var70 && var52 == var54 && var56 == var52 && var52 == var57) {
-                                    class61.field750[var3][var8][var19] |= 2340;
+                                 if(var70 && var30 == var29 && var29 == var31 && var29 == var32) {
+                                    class61.field750[var3][var8][var50] |= 2340;
                                  }
                               }
 
                               var69 = 0;
-                              if(var30 != -1) {
-                                 var69 = class136.colorPalette[class45.method627(var30, 96)];
+                              if(var57 != -1) {
+                                 var69 = class136.colorPalette[class45.method627(var57, 96)];
                               }
 
-                              if(var33 == 0) {
-                                 var59.method2583(var3, var8, var19, 0, 0, -1, var52, var54, var56, var57, class45.method627(var29, var58), class45.method627(var29, var27), class45.method627(var29, var67), class45.method627(var29, var28), 0, 0, 0, 0, var69, 0);
+                              if(var28 == 0) {
+                                 var59.method2583(var3, var8, var50, 0, 0, -1, var29, var30, var31, var32, class45.method627(var56, var33), class45.method627(var56, var52), class45.method627(var56, var67), class45.method627(var56, var54), 0, 0, 0, 0, var69, 0);
                               } else {
-                                 var68 = class90.overlayPaths[var3][var8][var19] + 1;
-                                 byte var71 = class275.overlayRotations[var3][var8][var19];
-                                 Overlay var41 = class252.method4319(var33 - 1);
+                                 var68 = class90.overlayPaths[var3][var8][var50] + 1;
+                                 byte var71 = class275.overlayRotations[var3][var8][var50];
+                                 Overlay var41 = class252.method4319(var28 - 1);
                                  int var42 = var41.texture;
                                  int var43;
                                  int var44;
@@ -1002,8 +993,8 @@ public class class165 {
                                     var44 = -2;
                                  } else {
                                     var43 = class9.method47(var41.hue, var41.saturation, var41.lightness);
-                                    var45 = class61.field761 + var41.hue & 255;
-                                    var46 = class61.field762 + var41.lightness;
+                                    var45 = var41.hue + class61.field761 & 255;
+                                    var46 = var41.lightness + class61.field762;
                                     if(var46 < 0) {
                                        var46 = 0;
                                     } else if(var46 > 255) {
@@ -1019,8 +1010,8 @@ public class class165 {
                                  }
 
                                  if(var41.field3595 != -1) {
-                                    var46 = class61.field761 + var41.field3599 & 255;
-                                    int var47 = class61.field762 + var41.field3598;
+                                    var46 = var41.field3599 + class61.field761 & 255;
+                                    int var47 = var41.field3598 + class61.field762;
                                     if(var47 < 0) {
                                        var47 = 0;
                                     } else if(var47 > 255) {
@@ -1031,7 +1022,7 @@ public class class165 {
                                     var45 = class136.colorPalette[WorldMapType1.method275(var44, 96)];
                                  }
 
-                                 var59.method2583(var3, var8, var19, var68, var71, var42, var52, var54, var56, var57, class45.method627(var29, var58), class45.method627(var29, var27), class45.method627(var29, var67), class45.method627(var29, var28), WorldMapType1.method275(var43, var58), WorldMapType1.method275(var43, var27), WorldMapType1.method275(var43, var67), WorldMapType1.method275(var43, var28), var69, var45);
+                                 var59.method2583(var3, var8, var50, var68, var71, var42, var29, var30, var31, var32, class45.method627(var56, var33), class45.method627(var56, var52), class45.method627(var56, var67), class45.method627(var56, var54), WorldMapType1.method275(var43, var33), WorldMapType1.method275(var43, var52), WorldMapType1.method275(var43, var67), WorldMapType1.method275(var43, var54), var69, var45);
                               }
                            }
                         }
@@ -1045,180 +1036,180 @@ public class class165 {
                   }
                }
 
-               class61.underlayIds[var3] = (byte[][])null;
-               class61.overlayIds[var3] = (byte[][])null;
-               class90.overlayPaths[var3] = (byte[][])null;
-               class275.overlayRotations[var3] = (byte[][])null;
-               class267.field3669[var3] = (byte[][])null;
+               class61.underlayIds[var3] = (byte[][])((byte[][])null);
+               class61.overlayIds[var3] = (byte[][])((byte[][])null);
+               class90.overlayPaths[var3] = (byte[][])((byte[][])null);
+               class275.overlayRotations[var3] = (byte[][])((byte[][])null);
+               class267.field3669[var3] = (byte[][])((byte[][])null);
             }
 
             var59.method2609(-50, -10, -50);
 
             for(var3 = 0; var3 < 104; ++var3) {
-               for(var49 = 0; var49 < 104; ++var49) {
-                  if((class61.tileSettings[1][var3][var49] & 2) == 2) {
-                     var59.method2580(var3, var49);
+               for(var19 = 0; var19 < 104; ++var19) {
+                  if((class61.tileSettings[1][var3][var19] & 2) == 2) {
+                     var59.method2580(var3, var19);
                   }
                }
             }
 
             var3 = 1;
-            var49 = 2;
-            var50 = 4;
+            var19 = 2;
+            var20 = 4;
 
-            for(var20 = 0; var20 < 4; ++var20) {
-               if(var20 > 0) {
+            for(var51 = 0; var51 < 4; ++var51) {
+               if(var51 > 0) {
                   var3 <<= 3;
-                  var49 <<= 3;
-                  var50 <<= 3;
+                  var19 <<= 3;
+                  var20 <<= 3;
                }
 
-               for(var31 = 0; var31 <= var20; ++var31) {
+               for(var58 = 0; var58 <= var51; ++var58) {
                   for(var5 = 0; var5 <= 104; ++var5) {
                      for(var6 = 0; var6 <= 104; ++var6) {
                         short var65;
-                        if((class61.field750[var31][var6][var5] & var3) != 0) {
+                        if((class61.field750[var58][var6][var5] & var3) != 0) {
                            var7 = var5;
-                           var21 = var5;
-                           var8 = var31;
+                           var18 = var5;
+                           var8 = var58;
 
-                           for(var9 = var31; var7 > 0 && (class61.field750[var31][var6][var7 - 1] & var3) != 0; --var7) {
+                           for(var9 = var58; var7 > 0 && (class61.field750[var58][var6][var7 - 1] & var3) != 0; --var7) {
                               ;
                            }
 
-                           while(var21 < 104 && (class61.field750[var31][var6][var21 + 1] & var3) != 0) {
-                              ++var21;
+                           while(var18 < 104 && (class61.field750[var58][var6][var18 + 1] & var3) != 0) {
+                              ++var18;
                            }
 
-                           label727:
+                           label728:
                            while(var8 > 0) {
-                              for(var10 = var7; var10 <= var21; ++var10) {
+                              for(var10 = var7; var10 <= var18; ++var10) {
                                  if((class61.field750[var8 - 1][var6][var10] & var3) == 0) {
-                                    break label727;
+                                    break label728;
                                  }
                               }
 
                               --var8;
                            }
 
-                           label716:
-                           while(var9 < var20) {
-                              for(var10 = var7; var10 <= var21; ++var10) {
+                           label717:
+                           while(var9 < var51) {
+                              for(var10 = var7; var10 <= var18; ++var10) {
                                  if((class61.field750[var9 + 1][var6][var10] & var3) == 0) {
-                                    break label716;
+                                    break label717;
                                  }
                               }
 
                               ++var9;
                            }
 
-                           var10 = (var21 - var7 + 1) * (var9 + 1 - var8);
+                           var10 = (var18 - var7 + 1) * (var9 + 1 - var8);
                            if(var10 >= 8) {
                               var65 = 240;
                               var12 = class61.tileHeights[var9][var6][var7] - var65;
                               var13 = class61.tileHeights[var8][var6][var7];
-                              Region.method2581(var20, 1, var6 * 128, var6 * 128, var7 * 128, var21 * 128 + 128, var12, var13);
+                              Region.method2581(var51, 1, var6 * 128, var6 * 128, var7 * 128, var18 * 128 + 128, var12, var13);
 
-                              for(var19 = var8; var19 <= var9; ++var19) {
-                                 for(var51 = var7; var51 <= var21; ++var51) {
-                                    class61.field750[var19][var6][var51] &= ~var3;
+                              for(var50 = var8; var50 <= var9; ++var50) {
+                                 for(var21 = var7; var21 <= var18; ++var21) {
+                                    class61.field750[var50][var6][var21] &= ~var3;
                                  }
                               }
                            }
                         }
 
-                        if((class61.field750[var31][var6][var5] & var49) != 0) {
+                        if((class61.field750[var58][var6][var5] & var19) != 0) {
                            var7 = var6;
-                           var21 = var6;
-                           var8 = var31;
+                           var18 = var6;
+                           var8 = var58;
 
-                           for(var9 = var31; var7 > 0 && (class61.field750[var31][var7 - 1][var5] & var49) != 0; --var7) {
+                           for(var9 = var58; var7 > 0 && (class61.field750[var58][var7 - 1][var5] & var19) != 0; --var7) {
                               ;
                            }
 
-                           while(var21 < 104 && (class61.field750[var31][var21 + 1][var5] & var49) != 0) {
-                              ++var21;
+                           while(var18 < 104 && (class61.field750[var58][var18 + 1][var5] & var19) != 0) {
+                              ++var18;
                            }
 
-                           label780:
+                           label781:
                            while(var8 > 0) {
-                              for(var10 = var7; var10 <= var21; ++var10) {
-                                 if((class61.field750[var8 - 1][var10][var5] & var49) == 0) {
-                                    break label780;
+                              for(var10 = var7; var10 <= var18; ++var10) {
+                                 if((class61.field750[var8 - 1][var10][var5] & var19) == 0) {
+                                    break label781;
                                  }
                               }
 
                               --var8;
                            }
 
-                           label769:
-                           while(var9 < var20) {
-                              for(var10 = var7; var10 <= var21; ++var10) {
-                                 if((class61.field750[var9 + 1][var10][var5] & var49) == 0) {
-                                    break label769;
+                           label770:
+                           while(var9 < var51) {
+                              for(var10 = var7; var10 <= var18; ++var10) {
+                                 if((class61.field750[var9 + 1][var10][var5] & var19) == 0) {
+                                    break label770;
                                  }
                               }
 
                               ++var9;
                            }
 
-                           var10 = (var21 - var7 + 1) * (var9 + 1 - var8);
+                           var10 = (var18 - var7 + 1) * (var9 + 1 - var8);
                            if(var10 >= 8) {
                               var65 = 240;
                               var12 = class61.tileHeights[var9][var7][var5] - var65;
                               var13 = class61.tileHeights[var8][var7][var5];
-                              Region.method2581(var20, 2, var7 * 128, var21 * 128 + 128, var5 * 128, var5 * 128, var12, var13);
+                              Region.method2581(var51, 2, var7 * 128, var18 * 128 + 128, var5 * 128, var5 * 128, var12, var13);
 
-                              for(var19 = var8; var19 <= var9; ++var19) {
-                                 for(var51 = var7; var51 <= var21; ++var51) {
-                                    class61.field750[var19][var51][var5] &= ~var49;
+                              for(var50 = var8; var50 <= var9; ++var50) {
+                                 for(var21 = var7; var21 <= var18; ++var21) {
+                                    class61.field750[var50][var21][var5] &= ~var19;
                                  }
                               }
                            }
                         }
 
-                        if((class61.field750[var31][var6][var5] & var50) != 0) {
+                        if((class61.field750[var58][var6][var5] & var20) != 0) {
                            var7 = var6;
-                           var21 = var6;
+                           var18 = var6;
                            var8 = var5;
 
-                           for(var9 = var5; var8 > 0 && (class61.field750[var31][var6][var8 - 1] & var50) != 0; --var8) {
+                           for(var9 = var5; var8 > 0 && (class61.field750[var58][var6][var8 - 1] & var20) != 0; --var8) {
                               ;
                            }
 
-                           while(var9 < 104 && (class61.field750[var31][var6][var9 + 1] & var50) != 0) {
+                           while(var9 < 104 && (class61.field750[var58][var6][var9 + 1] & var20) != 0) {
                               ++var9;
                            }
 
-                           label833:
+                           label834:
                            while(var7 > 0) {
                               for(var10 = var8; var10 <= var9; ++var10) {
-                                 if((class61.field750[var31][var7 - 1][var10] & var50) == 0) {
-                                    break label833;
+                                 if((class61.field750[var58][var7 - 1][var10] & var20) == 0) {
+                                    break label834;
                                  }
                               }
 
                               --var7;
                            }
 
-                           label822:
-                           while(var21 < 104) {
+                           label823:
+                           while(var18 < 104) {
                               for(var10 = var8; var10 <= var9; ++var10) {
-                                 if((class61.field750[var31][var21 + 1][var10] & var50) == 0) {
-                                    break label822;
+                                 if((class61.field750[var58][var18 + 1][var10] & var20) == 0) {
+                                    break label823;
                                  }
                               }
 
-                              ++var21;
+                              ++var18;
                            }
 
-                           if((var9 - var8 + 1) * (var21 - var7 + 1) >= 4) {
-                              var10 = class61.tileHeights[var31][var7][var8];
-                              Region.method2581(var20, 4, var7 * 128, var21 * 128 + 128, var8 * 128, var9 * 128 + 128, var10, var10);
+                           if((var9 - var8 + 1) * (var18 - var7 + 1) >= 4) {
+                              var10 = class61.tileHeights[var58][var7][var8];
+                              Region.method2581(var51, 4, var7 * 128, var18 * 128 + 128, var8 * 128, var9 * 128 + 128, var10, var10);
 
-                              for(var11 = var7; var11 <= var21; ++var11) {
+                              for(var11 = var7; var11 <= var18; ++var11) {
                                  for(var12 = var8; var12 <= var9; ++var12) {
-                                    class61.field750[var31][var11][var12] &= ~var50;
+                                    class61.field750[var58][var11][var12] &= ~var20;
                                  }
                               }
                            }
@@ -1244,9 +1235,9 @@ public class class165 {
                class17.region.method2631(0);
             }
 
-            for(var49 = 0; var49 < 104; ++var49) {
-               for(var50 = 0; var50 < 104; ++var50) {
-                  class47.groundItemSpawned(var49, var50);
+            for(var19 = 0; var19 < 104; ++var19) {
+               for(var20 = 0; var20 < 104; ++var20) {
+                  class47.groundItemSpawned(var19, var20);
                }
             }
 
@@ -1268,14 +1259,14 @@ public class class165 {
             }
 
             if(!Client.isDynamicRegion) {
-               var49 = (class34.field501 - 6) / 8;
-               var50 = (class34.field501 + 6) / 8;
-               var20 = (class13.field289 - 6) / 8;
-               var31 = (class13.field289 + 6) / 8;
+               var19 = (class34.field501 - 6) / 8;
+               var20 = (class34.field501 + 6) / 8;
+               var51 = (class13.field289 - 6) / 8;
+               var58 = (class13.field289 + 6) / 8;
 
-               for(var5 = var49 - 1; var5 <= var50 + 1; ++var5) {
-                  for(var6 = var20 - 1; var6 <= var31 + 1; ++var6) {
-                     if(var5 < var49 || var5 > var50 || var6 < var20 || var6 > var31) {
+               for(var5 = var19 - 1; var5 <= var20 + 1; ++var5) {
+                  for(var6 = var51 - 1; var6 <= var58 + 1; ++var6) {
+                     if(var5 < var19 || var5 > var20 || var6 < var51 || var6 > var58) {
                         class177.indexMaps.method4008("m" + var5 + "_" + var6);
                         class177.indexMaps.method4008("l" + var5 + "_" + var6);
                      }
@@ -1289,12 +1280,12 @@ public class class165 {
             Client.secretPacketBuffer1.putOpcode(9);
             GameEngine.field707.vmethod2872();
 
-            for(var49 = 0; var49 < 32; ++var49) {
-               GameEngine.field702[var49] = 0L;
+            for(var19 = 0; var19 < 32; ++var19) {
+               GameEngine.field702[var19] = 0L;
             }
 
-            for(var49 = 0; var49 < 32; ++var49) {
-               GameEngine.field703[var49] = 0L;
+            for(var19 = 0; var19 < 32; ++var19) {
+               GameEngine.field703[var19] = 0L;
             }
 
             GameEngine.field697 = 0;

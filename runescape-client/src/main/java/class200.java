@@ -21,7 +21,7 @@ public class class200 implements Iterator {
 
    public Object next() {
       CacheableNode var1 = this.field2498;
-      if(var1 == this.field2499.field2501) {
+      if(this.field2499.field2501 == var1) {
          var1 = null;
          this.field2498 = null;
       } else {

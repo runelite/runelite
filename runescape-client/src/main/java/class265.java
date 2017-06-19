@@ -38,7 +38,7 @@ public class class265 {
          class286.field3791 = null;
          class149.field2211 = null;
          class116.field1686 = null;
-         class286.field3797 = (byte[][])null;
+         class286.field3797 = (byte[][])((byte[][])null);
          return var4;
       }
    }

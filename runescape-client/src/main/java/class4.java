@@ -26,7 +26,7 @@ public enum class4 implements RSEnum {
    @Export("indexModels")
    static IndexData indexModels;
 
-   class4(int var3, int var4, Class var5, class0 var6) {
+   private class4(int var3, int var4, Class var5, class0 var6) {
       this.field29 = var3;
       this.field32 = var4;
    }

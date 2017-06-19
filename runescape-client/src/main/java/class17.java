@@ -56,7 +56,7 @@ final class class17 implements Comparator {
       garbageValue = "-19"
    )
    int method137(class14 var1, class14 var2) {
-      return var1.field292.price < var2.field292.price?-1:(var1.field292.price == var2.field292.price?0:1);
+      return var1.field292.price < var2.field292.price?-1:(var2.field292.price == var1.field292.price?0:1);
    }
 
    @ObfuscatedName("p")
@@ -109,7 +109,7 @@ final class class17 implements Comparator {
       if(Client.field920 == 2) {
          class152.method2815((Client.hintArrowX - class19.baseX << 7) + Client.field926, (Client.hintArrowY - class21.baseY << 7) + Client.field1039, Client.hintArrowType * 2);
          if(Client.field1011 > -1 && Client.gameCycle % 20 < 10) {
-            class18.field332[0].method4950(Client.field1011 + var0 - 12, Client.field1049 + var1 - 28);
+            class18.field332[0].method4950(var0 + Client.field1011 - 12, Client.field1049 + var1 - 28);
          }
       }
 
@@ -121,6 +121,6 @@ final class class17 implements Comparator {
       garbageValue = "-196602240"
    )
    public static int method140(int var0, class219 var1) {
-      return var1.field2804 + (var0 << 8);
+      return (var0 << 8) + var1.field2804;
    }
 }

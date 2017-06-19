@@ -46,15 +46,15 @@ public class class152 extends RuntimeException {
       if(var0.field2659 == 0) {
          var0.relativeX = var0.originalX;
       } else if(var0.field2659 == 1) {
-         var0.relativeX = (var1 - var0.width) / 2 + var0.originalX;
+         var0.relativeX = var0.originalX + (var1 - var0.width) / 2;
       } else if(var0.field2659 == 2) {
          var0.relativeX = var1 - var0.width - var0.originalX;
       } else if(var0.field2659 == 3) {
          var0.relativeX = var0.originalX * var1 >> 14;
       } else if(var0.field2659 == 4) {
-         var0.relativeX = (var1 - var0.width) / 2 + (var1 * var0.originalX >> 14);
+         var0.relativeX = (var1 * var0.originalX >> 14) + (var1 - var0.width) / 2;
       } else {
-         var0.relativeX = var1 - var0.width - (var1 * var0.originalX >> 14);
+         var0.relativeX = var1 - var0.width - (var0.originalX * var1 >> 14);
       }
 
       if(var0.field2660 == 0) {
@@ -66,9 +66,9 @@ public class class152 extends RuntimeException {
       } else if(var0.field2660 == 3) {
          var0.relativeY = var2 * var0.originalY >> 14;
       } else if(var0.field2660 == 4) {
-         var0.relativeY = (var0.originalY * var2 >> 14) + (var2 - var0.height) / 2;
+         var0.relativeY = (var2 * var0.originalY >> 14) + (var2 - var0.height) / 2;
       } else {
-         var0.relativeY = var2 - var0.height - (var0.originalY * var2 >> 14);
+         var0.relativeY = var2 - var0.height - (var2 * var0.originalY >> 14);
       }
 
       if(Client.field1076 && var0.type == 0) {
@@ -102,14 +102,14 @@ public class class152 extends RuntimeException {
          int var5 = class136.COSINE[class203.cameraPitch];
          int var6 = class136.SINE[class13.cameraYaw];
          int var7 = class136.COSINE[class13.cameraYaw];
-         int var8 = var1 * var6 + var7 * var0 >> 16;
-         var1 = var1 * var7 - var0 * var6 >> 16;
+         int var8 = var0 * var7 + var1 * var6 >> 16;
+         var1 = var7 * var1 - var0 * var6 >> 16;
          var0 = var8;
          var8 = var3 * var5 - var4 * var1 >> 16;
          var1 = var3 * var4 + var5 * var1 >> 16;
          if(var1 >= 50) {
-            Client.field1011 = Client.viewportHeight / 2 + Client.scale * var0 / var1;
-            Client.field1049 = Client.viewportWidth / 2 + Client.scale * var8 / var1;
+            Client.field1011 = Client.scale * var0 / var1 + Client.viewportHeight / 2;
+            Client.field1049 = var8 * Client.scale / var1 + Client.viewportWidth / 2;
          } else {
             Client.field1011 = -1;
             Client.field1049 = -1;

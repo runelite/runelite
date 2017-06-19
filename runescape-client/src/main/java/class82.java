@@ -91,7 +91,7 @@ public final class class82 extends Node {
          this.field1316 = null;
       }
 
-      if(var1 != this.field1308 && this.field1313 != null) {
+      if(this.field1308 != var1 && this.field1313 != null) {
          WorldMapType1.field442.method1780(this.field1313);
          this.field1313 = null;
       }
@@ -106,18 +106,18 @@ public final class class82 extends Node {
    static final void method1523(int var0, int var1, int var2, int var3, SpritePixels var4, class210 var5) {
       if(var4 != null) {
          int var6 = Client.mapScale + Client.mapAngle & 2047;
-         int var7 = var2 * var2 + var3 * var3;
+         int var7 = var3 * var3 + var2 * var2;
          if(var7 <= 6400) {
             int var8 = class136.SINE[var6];
             int var9 = class136.COSINE[var6];
             var8 = var8 * 256 / (Client.mapScaleDelta + 256);
             var9 = var9 * 256 / (Client.mapScaleDelta + 256);
-            int var10 = var3 * var8 + var9 * var2 >> 16;
-            int var11 = var9 * var3 - var8 * var2 >> 16;
+            int var10 = var3 * var8 + var2 * var9 >> 16;
+            int var11 = var3 * var9 - var8 * var2 >> 16;
             if(var7 > 2500) {
                var4.method4990(var10 + var5.field2607 / 2 - var4.maxWidth / 2, var5.field2611 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2607, var5.field2611, var5.field2609, var5.field2608);
             } else {
-               var4.method4950(var0 + var5.field2607 / 2 + var10 - var4.maxWidth / 2, var1 + var5.field2611 / 2 - var11 - var4.maxHeight / 2);
+               var4.method4950(var0 + var5.field2607 / 2 + var10 - var4.maxWidth / 2, var5.field2611 / 2 + var1 - var11 - var4.maxHeight / 2);
             }
          }
       }

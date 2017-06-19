@@ -85,6 +85,7 @@ public class class7 {
    public static final boolean method34() {
       class50 var0 = class50.keyboard;
       class50 var1 = class50.keyboard;
+      class50 var2 = class50.keyboard;
       synchronized(class50.keyboard) {
          if(class50.field665 == class50.field658) {
             return false;
@@ -128,7 +129,7 @@ public class class7 {
                      short var2 = 463;
                      byte var3 = 100;
                      byte var4 = 35;
-                     if(class59.field737 >= var1 && class59.field737 <= var3 + var1 && class59.field732 >= var2 && class59.field732 <= var4 + var2) {
+                     if(class59.field737 >= var1 && class59.field737 <= var3 + var1 && class59.field732 >= var2 && class59.field732 <= var2 + var4) {
                         Item.method1668();
                         return;
                      }
@@ -146,8 +147,8 @@ public class class7 {
                   var1 = 1;
                }
 
-               short var5;
-               int var13;
+               int var5;
+               short var13;
                if(class92.loginIndex == 0) {
                   boolean var6 = false;
 
@@ -157,14 +158,14 @@ public class class7 {
                      }
                   }
 
-                  var13 = class92.loginWindowX + 180 - 80;
-                  var5 = 291;
-                  if(var1 == 1 && var11 >= var13 - 75 && var11 <= var13 + 75 && var12 >= var5 - 20 && var12 <= var5 + 20) {
+                  var5 = class92.loginWindowX + 180 - 80;
+                  var13 = 291;
+                  if(var1 == 1 && var11 >= var5 - 75 && var11 <= var5 + 75 && var12 >= var13 - 20 && var12 <= var13 + 20) {
                      class20.method164(class73.method1066("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws", true, false);
                   }
 
-                  var13 = class92.loginWindowX + 180 + 80;
-                  if(var1 == 1 && var11 >= var13 - 75 && var11 <= var13 + 75 && var12 >= var5 - 20 && var12 <= var5 + 20 || var6) {
+                  var5 = class92.loginWindowX + 180 + 80;
+                  if(var1 == 1 && var11 >= var5 - 75 && var11 <= var5 + 75 && var12 >= var13 - 20 && var12 <= var13 + 20 || var6) {
                      if((Client.flags & 33554432) != 0) {
                         class92.field1444 = "";
                         class92.loginMessage1 = "This is a <col=00ffff>Beta<col=ffffff> world.";
@@ -202,25 +203,25 @@ public class class7 {
                      }
                   }
                } else {
-                  short var7;
-                  int var14;
+                  int var7;
+                  short var14;
                   if(class92.loginIndex != 1) {
                      short var8;
                      boolean var9;
                      int var10;
                      if(class92.loginIndex == 2) {
                         var8 = 231;
-                        var14 = var8 + 30;
-                        if(var1 == 1 && var12 >= var14 - 15 && var12 < var14) {
+                        var7 = var8 + 30;
+                        if(var1 == 1 && var12 >= var7 - 15 && var12 < var7) {
                            class92.loginIndex2 = 0;
                         }
 
-                        var14 += 15;
-                        if(var1 == 1 && var12 >= var14 - 15 && var12 < var14) {
+                        var7 += 15;
+                        if(var1 == 1 && var12 >= var7 - 15 && var12 < var7) {
                            class92.loginIndex2 = 1;
                         }
 
-                        var14 += 15;
+                        var7 += 15;
                         var8 = 361;
                         if(var1 == 1 && var12 >= var8 - 15 && var12 < var8) {
                            class47.method674("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
@@ -228,9 +229,9 @@ public class class7 {
                            return;
                         }
 
-                        var13 = class92.loginWindowX + 180 - 80;
-                        var5 = 321;
-                        if(var1 == 1 && var11 >= var13 - 75 && var11 <= var13 + 75 && var12 >= var5 - 20 && var12 <= var5 + 20) {
+                        var5 = class92.loginWindowX + 180 - 80;
+                        var13 = 321;
+                        if(var1 == 1 && var11 >= var5 - 75 && var11 <= var5 + 75 && var12 >= var13 - 20 && var12 <= var13 + 20) {
                            class92.username = class92.username.trim();
                            if(class92.username.length() == 0) {
                               class47.method674("", "Please enter your username/email address.", "");
@@ -248,8 +249,8 @@ public class class7 {
                            return;
                         }
 
-                        var13 = class92.loginWindowX + 180 + 80;
-                        if(var1 == 1 && var11 >= var13 - 75 && var11 <= var13 + 75 && var12 >= var5 - 20 && var12 <= var5 + 20) {
+                        var5 = class92.loginWindowX + 180 + 80;
+                        if(var1 == 1 && var11 >= var5 - 75 && var11 <= var5 + 75 && var12 >= var13 - 20 && var12 <= var13 + 20) {
                            class92.loginIndex = 0;
                            class92.username = "";
                            class92.password = "";
@@ -326,9 +327,9 @@ public class class7 {
                      }
 
                      if(class92.loginIndex == 3) {
-                        var14 = class92.loginWindowX + 180;
-                        var7 = 276;
-                        if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var7 - 20 && var12 <= var7 + 20) {
+                        var7 = class92.loginWindowX + 180;
+                        var14 = 276;
+                        if(var1 == 1 && var11 >= var7 - 75 && var11 <= var7 + 75 && var12 >= var14 - 20 && var12 <= var14 + 20) {
                            class92.loginMessage1 = "";
                            class92.loginMessage2 = "Enter your username/email & password.";
                            class92.loginMessage3 = "";
@@ -336,17 +337,17 @@ public class class7 {
                            class92.loginIndex2 = 0;
                         }
 
-                        var14 = class92.loginWindowX + 180;
-                        var7 = 326;
-                        if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var7 - 20 && var12 <= var7 + 20) {
+                        var7 = class92.loginWindowX + 180;
+                        var14 = 326;
+                        if(var1 == 1 && var11 >= var7 - 75 && var11 <= var7 + 75 && var12 >= var14 - 20 && var12 <= var14 + 20) {
                            class47.method674("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
                            class92.loginIndex = 5;
                            return;
                         }
                      } else if(class92.loginIndex == 4) {
-                        var14 = class92.loginWindowX + 180 - 80;
-                        var7 = 321;
-                        if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var7 - 20 && var12 <= var7 + 20) {
+                        var7 = class92.loginWindowX + 180 - 80;
+                        var14 = 321;
+                        if(var1 == 1 && var11 >= var7 - 75 && var11 <= var7 + 75 && var12 >= var14 - 20 && var12 <= var14 + 20) {
                            class82.authCode.trim();
                            if(class82.authCode.length() != 6) {
                               class47.method674("", "Please enter a 6-digit PIN.", "");
@@ -369,8 +370,8 @@ public class class7 {
                            class20.method164(class73.method1066("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
                         }
 
-                        var14 = class92.loginWindowX + 180 + 80;
-                        if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var7 - 20 && var12 <= var7 + 20) {
+                        var7 = class92.loginWindowX + 180 + 80;
+                        if(var1 == 1 && var11 >= var7 - 75 && var11 <= var7 + 75 && var12 >= var14 - 20 && var12 <= var14 + 20) {
                            class92.loginIndex = 0;
                            class92.username = "";
                            class92.password = "";
@@ -420,15 +421,15 @@ public class class7 {
                            }
                         }
                      } else if(class92.loginIndex == 5) {
-                        var14 = class92.loginWindowX + 180 - 80;
-                        var7 = 321;
-                        if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var7 - 20 && var12 <= var7 + 20) {
+                        var7 = class92.loginWindowX + 180 - 80;
+                        var14 = 321;
+                        if(var1 == 1 && var11 >= var7 - 75 && var11 <= var7 + 75 && var12 >= var14 - 20 && var12 <= var14 + 20) {
                            class274.method4790();
                            return;
                         }
 
-                        var14 = class92.loginWindowX + 180 + 80;
-                        if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var7 - 20 && var12 <= var7 + 20) {
+                        var7 = class92.loginWindowX + 180 + 80;
+                        if(var1 == 1 && var11 >= var7 - 75 && var11 <= var7 + 75 && var12 >= var14 - 20 && var12 <= var14 + 20) {
                            class92.loginMessage1 = "";
                            class92.loginMessage2 = "Enter your username/email & password.";
                            class92.loginMessage3 = "";
@@ -508,9 +509,9 @@ public class class7 {
                         }
                      }
 
-                     var14 = class92.loginWindowX + 180 - 80;
-                     var7 = 321;
-                     if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var7 - 20 && var12 <= var7 + 20) {
+                     var7 = class92.loginWindowX + 180 - 80;
+                     var14 = 321;
+                     if(var1 == 1 && var11 >= var7 - 75 && var11 <= var7 + 75 && var12 >= var14 - 20 && var12 <= var14 + 20) {
                         class92.loginMessage1 = "";
                         class92.loginMessage2 = "Enter your username/email & password.";
                         class92.loginMessage3 = "";
@@ -518,8 +519,8 @@ public class class7 {
                         class92.loginIndex2 = 0;
                      }
 
-                     var14 = class92.loginWindowX + 180 + 80;
-                     if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var7 - 20 && var12 <= var7 + 20) {
+                     var7 = class92.loginWindowX + 180 + 80;
+                     if(var1 == 1 && var11 >= var7 - 75 && var11 <= var7 + 75 && var12 >= var14 - 20 && var12 <= var14 + 20) {
                         class92.loginIndex = 0;
                      }
                   }

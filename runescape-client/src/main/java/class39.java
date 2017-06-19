@@ -62,10 +62,11 @@ public class class39 {
 
       switch(var3.field3310.field3282) {
       case 0:
-         if(var2 < this.field544 - this.field537 / 2 || var2 > this.field544 + this.field537 / 2) {
-            return false;
+         if(var2 >= this.field544 - this.field537 / 2 && var2 <= this.field537 / 2 + this.field544) {
+            break;
          }
-         break;
+
+         return false;
       case 1:
          if(var2 < this.field544 || var2 >= this.field544 + this.field537) {
             return false;
@@ -112,6 +113,6 @@ public class class39 {
       garbageValue = "-89"
    )
    boolean method524(int var1, int var2) {
-      return this.field542 == null?false:(var1 >= this.field539 - this.field542.field474 / 2 && var1 <= this.field542.field474 / 2 + this.field539?var2 >= this.field544 && var2 <= this.field542.field475 + this.field544:false);
+      return this.field542 == null?false:(var1 >= this.field539 - this.field542.field474 / 2 && var1 <= this.field539 + this.field542.field474 / 2?var2 >= this.field544 && var2 <= this.field544 + this.field542.field475:false);
    }
 }

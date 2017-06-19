@@ -455,7 +455,7 @@ public abstract class IndexDataBase {
                int var9 = var19.length;
                --var9;
                int var10 = var19[var9] & 255;
-               var9 -= var10 * var3 * 4;
+               var9 -= var3 * var10 * 4;
                Buffer var11 = new Buffer(var19);
                int[] var12 = new int[var3];
                var11.offset = var9;

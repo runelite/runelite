@@ -55,7 +55,7 @@ public class Track1 extends Node {
                      }
 
                      if(var10 == 32) {
-                        var1[var9] = (var1[var9] & -16257) + (var11 << 7);
+                        var1[var9] = (var11 << 7) + (var1[var9] & -16257);
                      }
                   }
 
@@ -147,10 +147,10 @@ public class Track1 extends Node {
       }
 
       var4 += var5 * 5;
-      var4 += (var7 + var8 + var6 + var9 + var11) * 2;
+      var4 += (var11 + var7 + var8 + var6 + var9) * 2;
       var4 += var10 + var12;
       var13 = var1.offset;
-      var14 = var2 + var5 + var6 + var7 + var8 + var9 + var10 + var11 + var12;
+      var14 = var11 + var10 + var7 + var5 + var2 + var6 + var8 + var9 + var12;
 
       for(var15 = 0; var15 < var14; ++var15) {
          var1.readVarInt();
@@ -222,7 +222,7 @@ public class Track1 extends Node {
       int var36 = var1.offset;
       var1.offset += var20;
       int var37 = var1.offset;
-      var1.offset += var7 + var8 + var11;
+      var1.offset += var11 + var8 + var7;
       int var38 = var1.offset;
       var1.offset += var7;
       int var39 = var1.offset;

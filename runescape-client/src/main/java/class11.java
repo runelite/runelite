@@ -45,6 +45,7 @@ public class class11 {
       var3.data = var2;
       Deque var4 = class236.field3245;
       Deque var5 = class236.field3245;
+      Deque var6 = class236.field3245;
       synchronized(class236.field3245) {
          class236.field3245.method3505(var3);
       }

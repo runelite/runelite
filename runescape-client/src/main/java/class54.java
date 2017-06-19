@@ -34,10 +34,10 @@ public class class54 {
                   return false;
                }
             } else if(var0.tableActions[var1] == 4) {
-               if(var2 == var3) {
+               if(var3 == var2) {
                   return false;
                }
-            } else if(var2 != var3) {
+            } else if(var3 != var2) {
                return false;
             }
          }

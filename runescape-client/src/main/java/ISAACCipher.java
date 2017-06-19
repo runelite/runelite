@@ -75,8 +75,8 @@ public final class ISAACCipher {
 
          this.field2444 += this.mm[var1 + 128 & 255];
          int var3;
-         this.mm[var1] = var3 = this.field2444 + this.mm[(var2 & 1020) >> 2] + this.field2445;
-         this.randResult[var1] = this.field2445 = var2 + this.mm[(var3 >> 8 & 1020) >> 2];
+         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2444 + this.field2445;
+         this.randResult[var1] = this.field2445 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
@@ -285,7 +285,7 @@ public final class ISAACCipher {
       for(var3 = 0; var3 < class286.field3796; ++var3) {
          int var4 = class286.field3791[var3];
          int var5 = class149.field2211[var3];
-         int var6 = var4 * var5;
+         int var6 = var5 * var4;
          byte[] var7 = new byte[var6];
          class286.field3797[var3] = var7;
          int var8 = var1.readUnsignedByte();
@@ -297,7 +297,7 @@ public final class ISAACCipher {
          } else if(var8 == 1) {
             for(var9 = 0; var9 < var4; ++var9) {
                for(int var10 = 0; var10 < var5; ++var10) {
-                  var7[var9 + var10 * var4] = var1.readByte();
+                  var7[var10 * var4 + var9] = var1.readByte();
                }
             }
          }

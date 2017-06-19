@@ -56,8 +56,8 @@ public class class174 {
       garbageValue = "-1231322464"
    )
    static final void method3250(int var0, int var1, int var2, int var3) {
-      for(int var4 = var1; var4 <= var1 + var3; ++var4) {
-         for(int var5 = var0; var5 <= var2 + var0; ++var5) {
+      for(int var4 = var1; var4 <= var3 + var1; ++var4) {
+         for(int var5 = var0; var5 <= var0 + var2; ++var5) {
             if(var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
                class267.field3669[0][var5][var4] = 127;
                if(var5 == var0 && var5 > 0) {
@@ -117,7 +117,7 @@ public class class174 {
       PendingSpawn var9 = null;
 
       for(PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.method3487(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.method3512()) {
-         if(var10.level == var0 && var1 == var10.x && var10.y == var2 && var3 == var10.type) {
+         if(var0 == var10.level && var1 == var10.x && var2 == var10.y && var3 == var10.type) {
             var9 = var10;
             break;
          }

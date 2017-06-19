@@ -63,7 +63,7 @@ public class CombatInfoListHolder extends Node {
             var2 = var3;
          }
 
-         if(var2.field1271 + var2.field1276 + this.combatInfo2.field3379 > var1) {
+         if(this.combatInfo2.field3379 + var2.field1271 + var2.field1276 > var1) {
             return var2;
          } else {
             var2.unlink();
@@ -96,30 +96,30 @@ public class CombatInfoListHolder extends Node {
       int var1 = class96.field1487;
       int[] var2 = class96.field1491;
       int var3 = var1;
-      if(var0 == class66.field802 || var0 == class66.field804) {
+      if(class66.field802 == var0 || class66.field804 == var0) {
          var3 = 1;
       }
 
       for(int var4 = 0; var4 < var3; ++var4) {
          Player var5;
          int var6;
-         if(var0 == class66.field802) {
+         if(class66.field802 == var0) {
             var5 = class20.localPlayer;
             var6 = class20.localPlayer.field890 << 14;
-         } else if(var0 == class66.field804) {
+         } else if(class66.field804 == var0) {
             var5 = Client.cachedPlayers[Client.field1035];
             var6 = Client.field1035 << 14;
          } else {
             var5 = Client.cachedPlayers[var2[var4]];
             var6 = var2[var4] << 14;
-            if(var0 == class66.field798 && Client.field1035 == var2[var4]) {
+            if(class66.field798 == var0 && var2[var4] == Client.field1035) {
                continue;
             }
          }
 
          if(var5 != null && var5.vmethod1593() && !var5.hidden) {
             var5.field886 = false;
-            if((Client.field1055 && var1 > 50 || var1 > 200) && var0 != class66.field802 && var5.idlePoseAnimation == var5.poseAnimation) {
+            if((Client.field1055 && var1 > 50 || var1 > 200) && class66.field802 != var0 && var5.idlePoseAnimation == var5.poseAnimation) {
                var5.field886 = true;
             }
 
@@ -132,7 +132,7 @@ public class CombatInfoListHolder extends Node {
                   class17.region.method2587(Player.plane, var5.x, var5.y, var5.field879, 60, var5, var5.angle, var6, var5.field870, var5.field878, var5.field885, var5.field880);
                } else {
                   if((var5.x & 127) == 64 && (var5.y & 127) == 64) {
-                     if(Client.field1010 == Client.field1009[var7][var8]) {
+                     if(Client.field1009[var7][var8] == Client.field1010) {
                         continue;
                      }
 
@@ -183,7 +183,7 @@ public class CombatInfoListHolder extends Node {
       class286.field3791 = null;
       class149.field2211 = null;
       class116.field1686 = null;
-      class286.field3797 = (byte[][])null;
+      class286.field3797 = (byte[][])((byte[][])null);
       return var0;
    }
 

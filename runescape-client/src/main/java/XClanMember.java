@@ -50,7 +50,7 @@ public class XClanMember extends Node {
          int var10 = var0.x;
          int var2 = var0.y;
          int var3 = var0.field1212 * 64 + var0.pathX[var0.queueSize - 1] * 128;
-         int var4 = var0.pathY[var0.queueSize - 1] * 128 + var0.field1212 * 64;
+         int var4 = var0.field1212 * 64 + var0.pathY[var0.queueSize - 1] * 128;
          if(var10 < var3) {
             if(var2 < var4) {
                var0.orientation = 1280;
@@ -166,7 +166,7 @@ public class XClanMember extends Node {
                }
             }
 
-            if(var3 == var0.x && var4 == var0.y) {
+            if(var3 == var0.x && var0.y == var4) {
                --var0.queueSize;
                if(var0.field1267 > 0) {
                   --var0.field1267;
@@ -192,7 +192,7 @@ public class XClanMember extends Node {
    static void method1097(Widget[] var0, int var1, int var2, int var3, boolean var4) {
       for(int var5 = 0; var5 < var0.length; ++var5) {
          Widget var6 = var0[var5];
-         if(var6 != null && var1 == var6.parentId) {
+         if(var6 != null && var6.parentId == var1) {
             Spotanim.method4223(var6, var2, var3, var4);
             class152.method2814(var6, var2, var3);
             if(var6.scrollX > var6.scrollWidth - var6.width) {
@@ -245,7 +245,7 @@ public class XClanMember extends Node {
       class286.field3791 = null;
       class149.field2211 = null;
       class116.field1686 = null;
-      class286.field3797 = (byte[][])null;
+      class286.field3797 = (byte[][])((byte[][])null);
       return var0;
    }
 }

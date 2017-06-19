@@ -54,7 +54,7 @@ public class class116 {
 
             int var9;
             for(var9 = 0; var9 < 14; ++var9) {
-               var3[var9 + var4] += var7 * var8[var9];
+               var3[var9 + var4] += var8[var9] * var7;
             }
 
             var5 += this.field1682;
@@ -102,6 +102,7 @@ public class class116 {
       if(class50.keyboard != null) {
          class50 var0 = class50.keyboard;
          class50 var1 = class50.keyboard;
+         class50 var2 = class50.keyboard;
          synchronized(class50.keyboard) {
             class50.keyboard = null;
          }
@@ -110,7 +111,7 @@ public class class116 {
    }
 
    public class116(int var1, int var2) {
-      if(var1 != var2) {
+      if(var2 != var1) {
          int var3 = class46.method670(var1, var2);
          var1 /= var3;
          var2 /= var3;
@@ -153,7 +154,7 @@ public class class116 {
    )
    public static int method2030(int var0, int var1) {
       int var2 = var0 >>> 31;
-      return (var2 + var0) / var1 - var2;
+      return (var0 + var2) / var1 - var2;
    }
 
    @ObfuscatedName("p")
@@ -209,7 +210,7 @@ public class class116 {
          Client.destinationY = var1;
          Client.secretPacketBuffer1.putOpcode(197);
          Client.secretPacketBuffer1.method3196(class50.field660[82]?1:0);
-         Client.secretPacketBuffer1.putShort(var1 + class21.baseY);
+         Client.secretPacketBuffer1.putShort(class21.baseY + var1);
          Client.secretPacketBuffer1.method3066(var0 + class19.baseX);
          Client.secretPacketBuffer1.method3066(var3 >> 14 & 32767);
       }
@@ -228,7 +229,7 @@ public class class116 {
          Client.secretPacketBuffer1.putByte(class50.field660[82]?1:0);
          Client.secretPacketBuffer1.method3114(class33.field480);
          Client.secretPacketBuffer1.method3065(XGrandExchangeOffer.field312);
-         Client.secretPacketBuffer1.method3067(class19.baseX + var0);
+         Client.secretPacketBuffer1.method3067(var0 + class19.baseX);
       }
 
       if(var2 == 32) {
@@ -369,7 +370,7 @@ public class class116 {
             Client.secretPacketBuffer1.putOpcode(7);
             Client.secretPacketBuffer1.method3065(var3);
             Client.secretPacketBuffer1.putByte(class50.field660[82]?1:0);
-            Client.secretPacketBuffer1.method3066(class19.baseX + var0);
+            Client.secretPacketBuffer1.method3066(var0 + class19.baseX);
             Client.secretPacketBuffer1.method3067(class21.baseY + var1);
          }
 
@@ -425,10 +426,10 @@ public class class116 {
             Client.secretPacketBuffer1.putOpcode(0);
             Client.secretPacketBuffer1.putShort(var3);
             Client.secretPacketBuffer1.method3114(class47.field611);
-            Client.secretPacketBuffer1.method3067(var1 + class21.baseY);
+            Client.secretPacketBuffer1.method3067(class21.baseY + var1);
             Client.secretPacketBuffer1.putByte(class50.field660[82]?1:0);
             Client.secretPacketBuffer1.method3065(Client.field1062);
-            Client.secretPacketBuffer1.method3066(class19.baseX + var0);
+            Client.secretPacketBuffer1.method3066(var0 + class19.baseX);
          }
 
          if(var2 == 5) {
@@ -442,7 +443,7 @@ public class class116 {
             Client.secretPacketBuffer1.method3069(class50.field660[82]?1:0);
             Client.secretPacketBuffer1.method3067(var3 >> 14 & 32767);
             Client.secretPacketBuffer1.putShort(class21.baseY + var1);
-            Client.secretPacketBuffer1.putShort(class19.baseX + var0);
+            Client.secretPacketBuffer1.putShort(var0 + class19.baseX);
          }
 
          if(var2 == 40) {
@@ -596,8 +597,8 @@ public class class116 {
             Client.destinationX = var0;
             Client.destinationY = var1;
             Client.secretPacketBuffer1.putOpcode(79);
-            Client.secretPacketBuffer1.method3067(class19.baseX + var0);
-            Client.secretPacketBuffer1.putShort(var1 + class21.baseY);
+            Client.secretPacketBuffer1.method3067(var0 + class19.baseX);
+            Client.secretPacketBuffer1.putShort(class21.baseY + var1);
             Client.secretPacketBuffer1.method3069(class50.field660[82]?1:0);
             Client.secretPacketBuffer1.method3065(var3 >> 14 & 32767);
          }
@@ -788,7 +789,7 @@ public class class116 {
             Client.destinationY = var1;
             Client.secretPacketBuffer1.putOpcode(120);
             Client.secretPacketBuffer1.method3067(var3);
-            Client.secretPacketBuffer1.method3067(var1 + class21.baseY);
+            Client.secretPacketBuffer1.method3067(class21.baseY + var1);
             Client.secretPacketBuffer1.method3067(var0 + class19.baseX);
             Client.secretPacketBuffer1.method3196(class50.field660[82]?1:0);
          }
@@ -811,7 +812,7 @@ public class class116 {
             Client.destinationY = var1;
             Client.secretPacketBuffer1.putOpcode(56);
             Client.secretPacketBuffer1.method3067(class21.baseY + var1);
-            Client.secretPacketBuffer1.putShort(class19.baseX + var0);
+            Client.secretPacketBuffer1.putShort(var0 + class19.baseX);
             Client.secretPacketBuffer1.method3067(var3);
             Client.secretPacketBuffer1.method3059(class50.field660[82]?1:0);
          }
@@ -842,7 +843,7 @@ public class class116 {
             Client.secretPacketBuffer1.putOpcode(198);
             Client.secretPacketBuffer1.putShort(var3 >> 14 & 32767);
             Client.secretPacketBuffer1.method3069(class50.field660[82]?1:0);
-            Client.secretPacketBuffer1.method3066(class19.baseX + var0);
+            Client.secretPacketBuffer1.method3066(var0 + class19.baseX);
             Client.secretPacketBuffer1.method3065(class21.baseY + var1);
          }
 

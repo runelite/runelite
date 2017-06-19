@@ -188,7 +188,7 @@ public final class SceneTilePaint {
                         var10 = class238.field3270.readUnsignedShort();
                         int var12 = class238.field3270.readUnsignedByte();
                         var11 = class238.field3270.readInt();
-                        long var13 = (long)((var9 << 16) + var10);
+                        long var13 = (long)(var10 + (var9 << 16));
                         class234 var15 = (class234)class238.field3262.method3425(var13);
                         class170.field2362 = true;
                         if(var15 == null) {
@@ -252,7 +252,7 @@ public final class SceneTilePaint {
                            class238.field3271.reset();
                            class238.field3271.update(class77.field1207.payload, 0, var8);
                            var10 = (int)class238.field3271.getValue();
-                           if(class51.field668.field3215 != var10) {
+                           if(var10 != class51.field668.field3215) {
                               try {
                                  class238.field3258.close();
                               } catch (Exception var18) {

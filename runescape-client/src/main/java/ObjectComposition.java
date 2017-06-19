@@ -285,7 +285,7 @@ public class ObjectComposition extends CacheableNode {
    public final Renderable method4393(int var1, int var2, int[][] var3, int var4, int var5, int var6) {
       long var7;
       if(this.objectTypes == null) {
-         var7 = (long)(var2 + (this.field3461 << 10));
+         var7 = (long)((this.field3461 << 10) + var2);
       } else {
          var7 = (long)((var1 << 3) + (this.field3461 << 10) + var2);
       }
@@ -332,7 +332,7 @@ public class ObjectComposition extends CacheableNode {
    public final Model method4394(int var1, int var2, int[][] var3, int var4, int var5, int var6) {
       long var7;
       if(this.objectTypes == null) {
-         var7 = (long)(var2 + (this.field3461 << 10));
+         var7 = (long)((this.field3461 << 10) + var2);
       } else {
          var7 = (long)((var1 << 3) + (this.field3461 << 10) + var2);
       }
@@ -363,9 +363,9 @@ public class ObjectComposition extends CacheableNode {
    public final Model method4395(int var1, int var2, int[][] var3, int var4, int var5, int var6, Sequence var7, int var8) {
       long var9;
       if(this.objectTypes == null) {
-         var9 = (long)(var2 + (this.field3461 << 10));
+         var9 = (long)((this.field3461 << 10) + var2);
       } else {
-         var9 = (long)((this.field3461 << 10) + (var1 << 3) + var2);
+         var9 = (long)((var1 << 3) + (this.field3461 << 10) + var2);
       }
 
       Model var11 = (Model)field3441.get(var9);
@@ -407,6 +407,7 @@ public class ObjectComposition extends CacheableNode {
       int var5;
       int var6;
       int var7;
+      boolean var8;
       if(this.objectTypes == null) {
          if(var1 != 10) {
             return null;
@@ -466,7 +467,7 @@ public class ObjectComposition extends CacheableNode {
          }
 
          var5 = this.objectModels[var7];
-         boolean var8 = this.isRotated ^ var2 > 3;
+         var8 = this.isRotated ^ var2 > 3;
          if(var8) {
             var5 += 65536;
          }
@@ -492,14 +493,13 @@ public class ObjectComposition extends CacheableNode {
          var4 = true;
       }
 
-      boolean var10;
       if(this.offsetX == 0 && this.offsetHeight == 0 && this.offsetY == 0) {
-         var10 = false;
+         var8 = false;
       } else {
-         var10 = true;
+         var8 = true;
       }
 
-      ModelData var9 = new ModelData(var3, var2 == 0 && !var4 && !var10, this.recolorToFind == null, this.textureToFind == null, true);
+      ModelData var9 = new ModelData(var3, var2 == 0 && !var4 && !var8, this.recolorToFind == null, this.textureToFind == null, true);
       if(var1 == 4 && var2 > 3) {
          var9.method2329(256);
          var9.method2359(45, 0, -45);
@@ -530,7 +530,7 @@ public class ObjectComposition extends CacheableNode {
          var9.method2325(this.modelSizeX, this.modelSizeHeight, this.modelSizeY);
       }
 
-      if(var10) {
+      if(var8) {
          var9.method2359(this.offsetX, this.offsetHeight, this.offsetY);
       }
 

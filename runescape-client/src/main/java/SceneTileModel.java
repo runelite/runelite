@@ -57,7 +57,7 @@ public final class SceneTileModel {
 
    SceneTileModel(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14, int var15, int var16, int var17, int var18, int var19) {
       this.flatShade = true;
-      if(var6 != var7 || var6 != var8 || var6 != var9) {
+      if(var7 != var6 || var8 != var6 || var9 != var6) {
          this.flatShade = false;
       }
 
@@ -76,7 +76,7 @@ public final class SceneTileModel {
       this.field1843 = new int[var25];
       int[] var26 = new int[var25];
       int[] var27 = new int[var25];
-      int var28 = var4 * var20;
+      int var28 = var20 * var4;
       int var29 = var5 * var20;
 
       int var30;
@@ -108,9 +108,9 @@ public final class SceneTileModel {
          } else if(var30 == 2) {
             var31 = var28 + var21;
             var32 = var29;
-            var33 = var6 + var7 >> 1;
-            var34 = var10 + var11 >> 1;
-            var35 = var14 + var15 >> 1;
+            var33 = var7 + var6 >> 1;
+            var34 = var11 + var10 >> 1;
+            var35 = var15 + var14 >> 1;
          } else if(var30 == 3) {
             var31 = var28 + var20;
             var32 = var29;
@@ -119,79 +119,79 @@ public final class SceneTileModel {
             var35 = var15;
          } else if(var30 == 4) {
             var31 = var28 + var20;
-            var32 = var29 + var21;
-            var33 = var7 + var8 >> 1;
+            var32 = var21 + var29;
+            var33 = var8 + var7 >> 1;
             var34 = var11 + var12 >> 1;
             var35 = var15 + var16 >> 1;
          } else if(var30 == 5) {
             var31 = var28 + var20;
-            var32 = var29 + var20;
+            var32 = var20 + var29;
             var33 = var8;
             var34 = var12;
             var35 = var16;
          } else if(var30 == 6) {
             var31 = var28 + var21;
-            var32 = var29 + var20;
+            var32 = var20 + var29;
             var33 = var8 + var9 >> 1;
-            var34 = var12 + var13 >> 1;
-            var35 = var16 + var17 >> 1;
+            var34 = var13 + var12 >> 1;
+            var35 = var17 + var16 >> 1;
          } else if(var30 == 7) {
             var31 = var28;
-            var32 = var29 + var20;
+            var32 = var20 + var29;
             var33 = var9;
             var34 = var13;
             var35 = var17;
          } else if(var30 == 8) {
             var31 = var28;
-            var32 = var29 + var21;
+            var32 = var21 + var29;
             var33 = var9 + var6 >> 1;
             var34 = var13 + var10 >> 1;
             var35 = var17 + var14 >> 1;
          } else if(var30 == 9) {
             var31 = var28 + var21;
-            var32 = var29 + var22;
-            var33 = var6 + var7 >> 1;
-            var34 = var10 + var11 >> 1;
-            var35 = var14 + var15 >> 1;
+            var32 = var22 + var29;
+            var33 = var7 + var6 >> 1;
+            var34 = var11 + var10 >> 1;
+            var35 = var15 + var14 >> 1;
          } else if(var30 == 10) {
             var31 = var28 + var23;
-            var32 = var29 + var21;
-            var33 = var7 + var8 >> 1;
+            var32 = var21 + var29;
+            var33 = var8 + var7 >> 1;
             var34 = var11 + var12 >> 1;
             var35 = var15 + var16 >> 1;
          } else if(var30 == 11) {
             var31 = var28 + var21;
-            var32 = var29 + var23;
+            var32 = var23 + var29;
             var33 = var8 + var9 >> 1;
-            var34 = var12 + var13 >> 1;
-            var35 = var16 + var17 >> 1;
+            var34 = var13 + var12 >> 1;
+            var35 = var17 + var16 >> 1;
          } else if(var30 == 12) {
-            var31 = var28 + var22;
-            var32 = var29 + var21;
+            var31 = var22 + var28;
+            var32 = var21 + var29;
             var33 = var9 + var6 >> 1;
             var34 = var13 + var10 >> 1;
             var35 = var17 + var14 >> 1;
          } else if(var30 == 13) {
-            var31 = var28 + var22;
-            var32 = var29 + var22;
+            var31 = var22 + var28;
+            var32 = var22 + var29;
             var33 = var6;
             var34 = var10;
             var35 = var14;
          } else if(var30 == 14) {
             var31 = var28 + var23;
-            var32 = var29 + var22;
+            var32 = var22 + var29;
             var33 = var7;
             var34 = var11;
             var35 = var15;
          } else if(var30 == 15) {
             var31 = var28 + var23;
-            var32 = var29 + var23;
+            var32 = var23 + var29;
             var33 = var8;
             var34 = var12;
             var35 = var16;
          } else {
-            var31 = var28 + var22;
-            var32 = var29 + var23;
+            var31 = var22 + var28;
+            var32 = var23 + var29;
             var33 = var9;
             var34 = var13;
             var35 = var17;

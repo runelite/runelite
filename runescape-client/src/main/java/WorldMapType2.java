@@ -67,7 +67,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
       garbageValue = "108"
    )
    public boolean vmethod679(int var1, int var2) {
-      return var1 >> 6 == this.field529 && this.field532 == var2 >> 6;
+      return var1 >> 6 == this.field529 && var2 >> 6 == this.field532;
    }
 
    @ObfuscatedName("t")
@@ -79,7 +79,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
       if(!this.vmethod678(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{var2 + (this.field529 * 64 - this.field536 * 64), this.field532 * 64 - this.field530 * 64 + var3};
+         int[] var4 = new int[]{var2 + (this.field529 * 64 - this.field536 * 64), var3 + (this.field532 * 64 - this.field530 * 64)};
          return var4;
       }
    }
@@ -179,7 +179,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
          return null;
       } else {
          int var3 = this.field536 * 64 - this.field529 * 64 + var1;
-         int var4 = this.field530 * 64 - this.field532 * 64 + var2;
+         int var4 = var2 + (this.field530 * 64 - this.field532 * 64);
          return new Coordinates(this.field531, var3, var4);
       }
    }

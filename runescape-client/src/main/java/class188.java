@@ -16,7 +16,7 @@ public class class188 implements Iterator {
 
    public Object next() {
       Node var1 = this.field2468;
-      if(var1 == this.field2467.node) {
+      if(this.field2467.node == var1) {
          var1 = null;
          this.field2468 = null;
       } else {

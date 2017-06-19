@@ -51,7 +51,7 @@ public final class NodeCache {
          CacheableNode var4 = this.list.method3371();
          var4.unlink();
          var4.method3520();
-         if(var4 == this.field2471) {
+         if(this.field2471 == var4) {
             var4 = this.list.method3371();
             var4.unlink();
             var4.method3520();

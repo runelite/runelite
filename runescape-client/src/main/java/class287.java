@@ -22,7 +22,7 @@ public class class287 {
       garbageValue = "219600729"
    )
    void method5032(String var1) {
-      if(var1 != null && !var1.isEmpty() && var1 != this.field3802) {
+      if(var1 != null && !var1.isEmpty() && this.field3802 != var1) {
          this.field3802 = var1;
          this.field3799 = 0;
          this.field3801 = false;

@@ -16,7 +16,7 @@ public class Deque {
    public void method3481() {
       while(true) {
          Node var1 = this.head.next;
-         if(var1 == this.head) {
+         if(this.head == var1) {
             this.current = null;
             return;
          }
@@ -28,7 +28,7 @@ public class Deque {
    @ObfuscatedName("w")
    public Node method3485() {
       Node var1 = this.head.next;
-      if(var1 == this.head) {
+      if(this.head == var1) {
          return null;
       } else {
          var1.unlink();
@@ -39,7 +39,7 @@ public class Deque {
    @ObfuscatedName("j")
    public Node method3487() {
       Node var1 = this.head.next;
-      if(var1 == this.head) {
+      if(this.head == var1) {
          this.current = null;
          return null;
       } else {
@@ -51,7 +51,7 @@ public class Deque {
    @ObfuscatedName("c")
    public Node method3488() {
       Node var1 = this.head.previous;
-      if(var1 == this.head) {
+      if(this.head == var1) {
          this.current = null;
          return null;
       } else {
@@ -63,7 +63,7 @@ public class Deque {
    @ObfuscatedName("q")
    public Node method3490() {
       Node var1 = this.current;
-      if(var1 == this.head) {
+      if(this.head == var1) {
          this.current = null;
          return null;
       } else {
@@ -105,7 +105,7 @@ public class Deque {
    @ObfuscatedName("o")
    public Node method3512() {
       Node var1 = this.current;
-      if(var1 == this.head) {
+      if(this.head == var1) {
          this.current = null;
          return null;
       } else {
@@ -117,7 +117,7 @@ public class Deque {
    @ObfuscatedName("z")
    public Node method3513() {
       Node var1 = this.head.previous;
-      if(var1 == this.head) {
+      if(this.head == var1) {
          return null;
       } else {
          var1.unlink();

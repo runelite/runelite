@@ -44,7 +44,7 @@ public enum class27 implements RSEnum {
       signature = "(IB)V",
       garbageValue = "0"
    )
-   class27(int var3, byte var4) {
+   private class27(int var3, byte var4) {
       this.field417 = var3;
       this.field407 = var4;
    }
@@ -67,14 +67,14 @@ public enum class27 implements RSEnum {
          var1 = 127 - var1;
          return var1;
       } else {
-         var1 = var1 * (var0 & 127) / 128;
+         var1 = (var0 & 127) * var1 / 128;
          if(var1 < 2) {
             var1 = 2;
          } else if(var1 > 126) {
             var1 = 126;
          }
 
-         return var1 + (var0 & 'ﾀ');
+         return (var0 & 'ﾀ') + var1;
       }
    }
 
@@ -87,6 +87,6 @@ public enum class27 implements RSEnum {
       int var2 = class13.method76(var0 - 1, var1 - 1) + class13.method76(var0 + 1, var1 - 1) + class13.method76(var0 - 1, var1 + 1) + class13.method76(var0 + 1, var1 + 1);
       int var3 = class13.method76(var0 - 1, var1) + class13.method76(var0 + 1, var1) + class13.method76(var0, var1 - 1) + class13.method76(var0, var1 + 1);
       int var4 = class13.method76(var0, var1);
-      return var4 / 4 + var3 / 8 + var2 / 16;
+      return var2 / 16 + var4 / 4 + var3 / 8;
    }
 }

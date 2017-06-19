@@ -18,7 +18,7 @@ public class class140 {
    static final void method2751(Widget[] var0, int var1) {
       for(int var2 = 0; var2 < var0.length; ++var2) {
          Widget var3 = var0[var2];
-         if(var3 != null && var1 == var3.parentId && (!var3.hasScript || !WorldMapType2.method510(var3))) {
+         if(var3 != null && var3.parentId == var1 && (!var3.hasScript || !WorldMapType2.method510(var3))) {
             int var4;
             if(var3.type == 0) {
                if(!var3.hasScript && WorldMapType2.method510(var3) && var3 != Item.field1476) {
@@ -69,8 +69,8 @@ public class class140 {
                   var4 = var3.field2710 << 16 >> 16;
                   var8 *= Client.field1125;
                   var4 *= Client.field1125;
-                  var3.rotationX = var3.rotationX + var8 & 2047;
-                  var3.rotationZ = var4 + var3.rotationZ & 2047;
+                  var3.rotationX = var8 + var3.rotationX & 2047;
+                  var3.rotationZ = var3.rotationZ + var4 & 2047;
                   XItemContainer.method1020(var3);
                }
             }

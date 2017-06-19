@@ -79,7 +79,7 @@ public class Coordinates {
       garbageValue = "1348130088"
    )
    boolean method3826(Coordinates var1) {
-      return var1.plane != this.plane?false:(var1.worldX != this.worldX?false:this.worldY == var1.worldY);
+      return this.plane != var1.plane?false:(this.worldX != var1.worldX?false:this.worldY == var1.worldY);
    }
 
    public int hashCode() {

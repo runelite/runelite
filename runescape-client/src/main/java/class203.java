@@ -44,7 +44,7 @@ public class class203 {
          CharSequence var8 = var0[var1];
          return var8 == null?"null":var8.toString();
       } else {
-         int var3 = var1 + var2;
+         int var3 = var2 + var1;
          int var4 = 0;
 
          for(int var5 = var1; var5 < var3; ++var5) {

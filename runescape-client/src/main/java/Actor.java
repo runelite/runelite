@@ -407,8 +407,8 @@ public abstract class Actor extends Renderable {
       CombatInfoListHolder var13;
       for(var13 = (CombatInfoListHolder)this.combatInfoList.method3457(); var13 != null; var13 = (CombatInfoListHolder)this.combatInfoList.method3448()) {
          ++var12;
-         if(var7.field3374 == var13.combatInfo2.field3374) {
-            var13.method1568(var4 + var2, var5, var6, var3);
+         if(var13.combatInfo2.field3374 == var7.field3374) {
+            var13.method1568(var2 + var4, var5, var6, var3);
             return;
          }
 
@@ -430,7 +430,7 @@ public abstract class Actor extends Renderable {
             CombatInfoList.method3443(var13, var14);
          }
 
-         var13.method1568(var4 + var2, var5, var6, var3);
+         var13.method1568(var2 + var4, var5, var6, var3);
          if(var12 >= 4) {
             var10.unlink();
          }

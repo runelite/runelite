@@ -125,10 +125,10 @@ public abstract class class158 {
       int var4 = var2 + 6;
       int var5 = WallObject.font_p12full.method4629(var0, 250);
       int var6 = WallObject.font_p12full.method4630(var0, 250) * 13;
-      Rasterizer2D.method4826(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 0);
-      Rasterizer2D.method4888(var3 - var2, var4 - var2, var2 + var2 + var5, var6 + var2 + var2, 16777215);
+      Rasterizer2D.method4826(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var6 + var2, 0);
+      Rasterizer2D.method4888(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var6 + var2, 16777215);
       WallObject.font_p12full.method4636(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-      ChatLineBuffer.method1777(var3 - var2, var4 - var2, var2 + var2 + var5, var2 + var6 + var2);
+      ChatLineBuffer.method1777(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var6 + var2);
       if(var1) {
          World.field1296.vmethod4897(0, 0);
       } else {
@@ -138,7 +138,7 @@ public abstract class class158 {
          int var10 = var6;
 
          for(int var11 = 0; var11 < Client.field1109; ++var11) {
-            if(Client.widgetBoundsWidth[var11] + Client.widgetPositionX[var11] > var7 && Client.widgetPositionX[var11] < var7 + var9 && Client.widgetBoundsHeight[var11] + Client.widgetPositionY[var11] > var8 && Client.widgetPositionY[var11] < var8 + var10) {
+            if(Client.widgetBoundsWidth[var11] + Client.widgetPositionX[var11] > var7 && Client.widgetPositionX[var11] < var7 + var9 && Client.widgetBoundsHeight[var11] + Client.widgetPositionY[var11] > var8 && Client.widgetPositionY[var11] < var10 + var8) {
                Client.field1112[var11] = true;
             }
          }

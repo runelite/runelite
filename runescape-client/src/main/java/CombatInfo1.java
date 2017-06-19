@@ -59,80 +59,80 @@ public class CombatInfo1 extends Node {
          int var9;
          int var10;
          int var11;
-         int var22;
-         int var23;
+         int var12;
+         int var13;
          if(!var0.combatInfoList.method3449()) {
             class205.method3706(var0, var0.field1258 + 15);
 
-            for(CombatInfoListHolder var12 = (CombatInfoListHolder)var0.combatInfoList.method3457(); var12 != null; var12 = (CombatInfoListHolder)var0.combatInfoList.method3448()) {
-               CombatInfo1 var13 = var12.method1569(Client.gameCycle);
-               if(var13 == null) {
-                  if(var12.method1570()) {
-                     var12.unlink();
+            for(CombatInfoListHolder var14 = (CombatInfoListHolder)var0.combatInfoList.method3457(); var14 != null; var14 = (CombatInfoListHolder)var0.combatInfoList.method3448()) {
+               CombatInfo1 var15 = var14.method1569(Client.gameCycle);
+               if(var15 == null) {
+                  if(var14.method1570()) {
+                     var14.unlink();
                   }
                } else {
-                  CombatInfo2 var14 = var12.combatInfo2;
-                  SpritePixels var15 = var14.method4278();
-                  SpritePixels var16 = var14.method4280();
-                  int var17 = 0;
-                  if(var15 != null && var16 != null) {
-                     if(var14.field3383 * 2 < var16.width) {
-                        var17 = var14.field3383;
+                  CombatInfo2 var16 = var14.combatInfo2;
+                  SpritePixels var17 = var16.method4278();
+                  SpritePixels var18 = var16.method4280();
+                  int var19 = 0;
+                  if(var17 != null && var18 != null) {
+                     if(var16.field3383 * 2 < var18.width) {
+                        var19 = var16.field3383;
                      }
 
-                     var9 = var16.width - var17 * 2;
+                     var9 = var18.width - var19 * 2;
                   } else {
-                     var9 = var14.healthScale;
+                     var9 = var16.healthScale;
                   }
 
-                  int var18 = 255;
-                  boolean var19 = true;
-                  int var20 = Client.gameCycle - var13.field1276;
-                  int var21 = var13.health * var9 / var14.healthScale;
-                  if(var13.field1271 > var20) {
-                     var22 = var14.field3381 == 0?0:var14.field3381 * (var20 / var14.field3381);
-                     var10 = var9 * var13.healthRatio / var14.healthScale;
-                     var23 = var10 + (var21 - var10) * var22 / var13.field1271;
+                  int var20 = 255;
+                  boolean var21 = true;
+                  int var22 = Client.gameCycle - var15.field1276;
+                  int var23 = var15.health * var9 / var16.healthScale;
+                  if(var15.field1271 > var22) {
+                     var12 = var16.field3381 == 0?0:var22 / var16.field3381 * var16.field3381;
+                     var10 = var15.healthRatio * var9 / var16.healthScale;
+                     var13 = var10 + (var23 - var10) * var12 / var15.field1271;
                   } else {
-                     var23 = var21;
-                     var22 = var14.field3379 + var13.field1271 - var20;
-                     if(var14.field3384 >= 0) {
-                        var18 = (var22 << 8) / (var14.field3379 - var14.field3384);
+                     var13 = var23;
+                     var12 = var15.field1271 + var16.field3379 - var22;
+                     if(var16.field3384 >= 0) {
+                        var20 = (var12 << 8) / (var16.field3379 - var16.field3384);
                      }
                   }
 
-                  if(var13.health > 0 && var23 < 1) {
-                     var23 = 1;
+                  if(var15.health > 0 && var13 < 1) {
+                     var13 = 1;
                   }
 
-                  var22 = var2 + Client.field1011 - (var9 >> 1);
-                  var10 = Client.field1049 + var3 - var8;
-                  if(var15 != null && var16 != null) {
-                     var22 -= var17;
-                     if(var23 == var9) {
-                        var23 += var17 * 2;
+                  var12 = var2 + Client.field1011 - (var9 >> 1);
+                  var10 = var3 + Client.field1049 - var8;
+                  if(var17 != null && var18 != null) {
+                     var12 -= var19;
+                     if(var13 == var9) {
+                        var13 += var19 * 2;
                      } else {
-                        var23 += var17;
+                        var13 += var19;
                      }
 
-                     var11 = var15.height;
+                     var11 = var17.height;
                      var8 += var11;
-                     if(var18 >= 0 && var18 < 255) {
-                        var15.method4955(var22, var10, var18);
-                        Rasterizer2D.method4862(var22, var10, var23 + var22, var11 + var10);
-                        var16.method4955(var22, var10, var18);
+                     if(var20 >= 0 && var20 < 255) {
+                        var17.method4955(var12, var10, var20);
+                        Rasterizer2D.method4862(var12, var10, var13 + var12, var11 + var10);
+                        var18.method4955(var12, var10, var20);
                      } else {
-                        var15.method4950(var22, var10);
-                        Rasterizer2D.method4862(var22, var10, var22 + var23, var11 + var10);
-                        var16.method4950(var22, var10);
+                        var17.method4950(var12, var10);
+                        Rasterizer2D.method4862(var12, var10, var13 + var12, var11 + var10);
+                        var18.method4950(var12, var10);
                      }
 
-                     Rasterizer2D.method4833(var2, var3, var2 + var4, var5 + var3);
+                     Rasterizer2D.method4833(var2, var3, var2 + var4, var3 + var5);
                      var8 += 2;
                   } else {
                      if(Client.field1011 > -1) {
-                        Rasterizer2D.method4826(var22, var10, var23, 5, '\uff00');
-                        Rasterizer2D.method4826(var23 + var22, var10, var9 - var23, 5, 16711680);
+                        Rasterizer2D.method4826(var12, var10, var13, 5, '\uff00');
+                        Rasterizer2D.method4826(var13 + var12, var10, var9 - var13, 5, 16711680);
                      }
 
                      var8 += 7;
@@ -155,21 +155,21 @@ public class CombatInfo1 extends Node {
                class205.method3706(var0, var0.field1258 + 15);
                if(Client.field1011 > -1) {
                   if(var78.skullIcon != -1) {
-                     class226.field3144[var78.skullIcon].method4950(var2 + Client.field1011 - 12, Client.field1049 + var3 - var8);
+                     class226.field3144[var78.skullIcon].method4950(var2 + Client.field1011 - 12, var3 + Client.field1049 - var8);
                      var8 += 25;
                   }
 
                   if(var78.overheadIcon != -1) {
-                     class266.field3661[var78.overheadIcon].method4950(var2 + Client.field1011 - 12, Client.field1049 + var3 - var8);
+                     class266.field3661[var78.overheadIcon].method4950(var2 + Client.field1011 - 12, var3 + Client.field1049 - var8);
                      var8 += 25;
                   }
                }
             }
 
-            if(var1 >= 0 && Client.field920 == 10 && Client.field922 == var7[var1]) {
+            if(var1 >= 0 && Client.field920 == 10 && var7[var1] == Client.field922) {
                class205.method3706(var0, var0.field1258 + 15);
                if(Client.field1011 > -1) {
-                  class18.field332[1].method4950(Client.field1011 + var2 - 12, Client.field1049 + var3 - var8);
+                  class18.field332[1].method4950(var2 + Client.field1011 - 12, var3 + Client.field1049 - var8);
                }
             }
          } else {
@@ -181,14 +181,14 @@ public class CombatInfo1 extends Node {
             if(var76.field3581 >= 0 && var76.field3581 < class266.field3661.length) {
                class205.method3706(var0, var0.field1258 + 15);
                if(Client.field1011 > -1) {
-                  class266.field3661[var76.field3581].method4950(Client.field1011 + var2 - 12, var3 + Client.field1049 - 30);
+                  class266.field3661[var76.field3581].method4950(var2 + Client.field1011 - 12, var3 + Client.field1049 - 30);
                }
             }
 
             if(Client.field920 == 1 && Client.npcIndices[var1 - var75] == Client.field1133 && Client.gameCycle % 20 < 10) {
                class205.method3706(var0, var0.field1258 + 15);
                if(Client.field1011 > -1) {
-                  class18.field332[0].method4950(Client.field1011 + var2 - 12, var3 + Client.field1049 - 28);
+                  class18.field332[0].method4950(var2 + Client.field1011 - 12, var3 + Client.field1049 - 28);
                }
             }
          }
@@ -266,8 +266,8 @@ public class CombatInfo1 extends Node {
                      SpritePixels var87 = null;
                      var10 = 0;
                      var11 = 0;
-                     var22 = 0;
-                     var23 = 0;
+                     var12 = 0;
+                     var13 = 0;
                      int var24 = 0;
                      int var25 = 0;
                      int var26 = 0;
@@ -310,7 +310,7 @@ public class CombatInfo1 extends Node {
 
                      var86 = var81.method4376();
                      if(var86 != null) {
-                        var22 = var86.width;
+                        var12 = var86.width;
                         var41 = var86.height;
                         if(var41 > var40) {
                            var40 = var41;
@@ -321,7 +321,7 @@ public class CombatInfo1 extends Node {
 
                      var87 = var81.method4386();
                      if(var87 != null) {
-                        var23 = var87.width;
+                        var13 = var87.width;
                         var41 = var87.height;
                         if(var41 > var40) {
                            var40 = var41;
@@ -428,15 +428,15 @@ public class CombatInfo1 extends Node {
 
                      var51 += 2;
                      int var53 = var51;
-                     if(var22 > 0) {
-                        var51 += var22;
+                     if(var12 > 0) {
+                        var51 += var12;
                      }
 
                      int var54 = var51;
                      int var55 = var51;
                      int var56;
                      if(var11 > 0) {
-                        var56 = var49 * var11;
+                        var56 = var11 * var49;
                         var51 += var56;
                         var55 += (var56 - var48) / 2;
                      } else {
@@ -444,8 +444,8 @@ public class CombatInfo1 extends Node {
                      }
 
                      var56 = var51;
-                     if(var23 > 0) {
-                        var51 += var23;
+                     if(var13 > 0) {
+                        var51 += var13;
                      }
 
                      int var57 = 0;
@@ -485,14 +485,14 @@ public class CombatInfo1 extends Node {
 
                      var62 = var0.hitsplatCycles[var79] - Client.gameCycle;
                      int var63 = var81.field3416 - var81.field3416 * var62 / var81.field3418;
-                     int var64 = -var81.field3432 + var62 * var81.field3432 / var81.field3418;
-                     int var65 = Client.field1011 + var2 - (var51 >> 1) + var63;
-                     int var66 = var64 + (Client.field1049 + var3 - 12);
+                     int var64 = -var81.field3432 + var81.field3432 * var62 / var81.field3418;
+                     int var65 = var2 + Client.field1011 - (var51 >> 1) + var63;
+                     int var66 = var3 + Client.field1049 - 12 + var64;
                      int var67 = var66;
                      int var68 = var40 + var66;
                      int var69 = var81.field3426 + var66 + 15;
                      int var70 = var69 - var42.field3651;
-                     int var71 = var69 + var42.field3645;
+                     int var71 = var42.field3645 + var69;
                      if(var70 < var66) {
                         var67 = var70;
                      }
@@ -524,16 +524,16 @@ public class CombatInfo1 extends Node {
 
                      if(var73 >= 0 && var73 < 255) {
                         if(var84 != null) {
-                           var84.method4955(var65 + var52 - var24, var66, var73);
+                           var84.method4955(var52 + var65 - var24, var66, var73);
                         }
 
                         if(var86 != null) {
-                           var86.method4955(var53 + var65 - var26, var66, var73);
+                           var86.method4955(var65 + var53 - var26, var66, var73);
                         }
 
                         if(var85 != null) {
                            for(var74 = 0; var74 < var49; ++var74) {
-                              var85.method4955(var74 * var11 + (var65 + var54 - var25), var66, var73);
+                              var85.method4955(var65 + var54 - var25 + var11 * var74, var66, var73);
                            }
                         }
 
@@ -544,16 +544,16 @@ public class CombatInfo1 extends Node {
                         var42.method4633(var44, var65 + var55, var69, var81.field3433, 0, var73);
                         if(var83 != null) {
                            if(var28 != null) {
-                              var28.method4955(var65 + var57 - var36, var66, var73);
+                              var28.method4955(var57 + var65 - var36, var66, var73);
                            }
 
                            if(var30 != null) {
-                              var30.method4955(var58 + var65 - var38, var66, var73);
+                              var30.method4955(var65 + var58 - var38, var66, var73);
                            }
 
                            if(var29 != null) {
                               for(var74 = 0; var74 < var50; ++var74) {
-                                 var29.method4955(var65 + var59 - var37 + var33 * var74, var66, var73);
+                                 var29.method4955(var33 * var74 + (var65 + var59 - var37), var66, var73);
                               }
                            }
 
@@ -561,11 +561,11 @@ public class CombatInfo1 extends Node {
                               var31.method4955(var60 + var65 - var39, var66, var73);
                            }
 
-                           var43.method4633(var45, var61 + var65, var72, var83.field3433, 0, var73);
+                           var43.method4633(var45, var65 + var61, var72, var83.field3433, 0, var73);
                         }
                      } else {
                         if(var84 != null) {
-                           var84.method4950(var65 + var52 - var24, var66);
+                           var84.method4950(var52 + var65 - var24, var66);
                         }
 
                         if(var86 != null) {
@@ -574,7 +574,7 @@ public class CombatInfo1 extends Node {
 
                         if(var85 != null) {
                            for(var74 = 0; var74 < var49; ++var74) {
-                              var85.method4950(var65 + var54 - var25 + var11 * var74, var66);
+                              var85.method4950(var54 + var65 - var25 + var11 * var74, var66);
                            }
                         }
 
@@ -585,7 +585,7 @@ public class CombatInfo1 extends Node {
                         var42.method4647(var44, var65 + var55, var69, var81.field3433 | -16777216, 0);
                         if(var83 != null) {
                            if(var28 != null) {
-                              var28.method4950(var65 + var57 - var36, var66);
+                              var28.method4950(var57 + var65 - var36, var66);
                            }
 
                            if(var30 != null) {
@@ -594,15 +594,15 @@ public class CombatInfo1 extends Node {
 
                            if(var29 != null) {
                               for(var74 = 0; var74 < var50; ++var74) {
-                                 var29.method4950(var74 * var33 + (var65 + var59 - var37), var66);
+                                 var29.method4950(var33 * var74 + (var65 + var59 - var37), var66);
                               }
                            }
 
                            if(var31 != null) {
-                              var31.method4950(var65 + var60 - var39, var66);
+                              var31.method4950(var60 + var65 - var39, var66);
                            }
 
-                           var43.method4647(var45, var61 + var65, var72, var83.field3433 | -16777216, 0);
+                           var43.method4647(var45, var65 + var61, var72, var83.field3433 | -16777216, 0);
                         }
                      }
                   }

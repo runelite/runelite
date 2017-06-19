@@ -116,7 +116,7 @@ public class AudioInstrument {
                var14 = this.field1727.method1975(var1);
                var15 = this.field1728.method1975(var1);
                var13 = var13 * ((this.method2230(var10, var15, this.field1727.field1650) >> 1) + '耀') >> 15;
-               var10 += (var14 * var8 >> 16) + var9;
+               var10 += (var8 * var14 >> 16) + var9;
             }
 
             for(var14 = 0; var14 < 5; ++var14) {
@@ -124,7 +124,7 @@ public class AudioInstrument {
                   var15 = var11 + field1745[var14];
                   if(var15 < var1) {
                      field1740[var15] += this.method2230(field1744[var14], var13 * field1746[var14] >> 15, this.field1729.field1650);
-                     field1744[var14] += (var12 * field1748[var14] >> 16) + field1739[var14];
+                     field1744[var14] += (field1748[var14] * var12 >> 16) + field1739[var14];
                   }
                }
             }
@@ -142,9 +142,9 @@ public class AudioInstrument {
                var15 = this.field1738.method1975(var1);
                var16 = this.field1723.method1975(var1);
                if(var18) {
-                  var12 = this.field1738.start + ((this.field1738.end - this.field1738.start) * var15 >> 8);
+                  var12 = this.field1738.start + (var15 * (this.field1738.end - this.field1738.start) >> 8);
                } else {
-                  var12 = this.field1738.start + ((this.field1738.end - this.field1738.start) * var16 >> 8);
+                  var12 = ((this.field1738.end - this.field1738.start) * var16 >> 8) + this.field1738.start;
                }
 
                var11 += 256;
@@ -172,7 +172,7 @@ public class AudioInstrument {
             var11 = this.field1737.method1975(var1 + 1);
             var12 = this.field1747.method2182(0, (float)var11 / 65536.0F);
             var13 = this.field1747.method2182(1, (float)var11 / 65536.0F);
-            if(var1 >= var12 + var13) {
+            if(var1 >= var13 + var12) {
                var14 = 0;
                var15 = var13;
                if(var13 > var1 - var12) {
@@ -181,10 +181,10 @@ public class AudioInstrument {
 
                int var19;
                while(var14 < var15) {
-                  var16 = (int)((long)field1740[var14 + var12] * (long)SoundEffect3.field1704 >> 16);
+                  var16 = (int)((long)field1740[var12 + var14] * (long)SoundEffect3.field1704 >> 16);
 
                   for(var19 = 0; var19 < var12; ++var19) {
-                     var16 += (int)((long)field1740[var14 + var12 - 1 - var19] * (long)SoundEffect3.field1706[0][var19] >> 16);
+                     var16 += (int)((long)field1740[var12 + var14 - 1 - var19] * (long)SoundEffect3.field1706[0][var19] >> 16);
                   }
 
                   for(var19 = 0; var19 < var14; ++var19) {
@@ -205,10 +205,10 @@ public class AudioInstrument {
 
                   int var20;
                   while(var14 < var15) {
-                     var19 = (int)((long)field1740[var14 + var12] * (long)SoundEffect3.field1704 >> 16);
+                     var19 = (int)((long)field1740[var12 + var14] * (long)SoundEffect3.field1704 >> 16);
 
                      for(var20 = 0; var20 < var12; ++var20) {
-                        var19 += (int)((long)field1740[var14 + var12 - 1 - var20] * (long)SoundEffect3.field1706[0][var20] >> 16);
+                        var19 += (int)((long)field1740[var12 + var14 - 1 - var20] * (long)SoundEffect3.field1706[0][var20] >> 16);
                      }
 
                      for(var20 = 0; var20 < var13; ++var20) {
@@ -224,8 +224,8 @@ public class AudioInstrument {
                      while(var14 < var1) {
                         var19 = 0;
 
-                        for(var20 = var14 + var12 - var1; var20 < var12; ++var20) {
-                           var19 += (int)((long)field1740[var14 + var12 - 1 - var20] * (long)SoundEffect3.field1706[0][var20] >> 16);
+                        for(var20 = var12 + var14 - var1; var20 < var12; ++var20) {
+                           var19 += (int)((long)field1740[var12 + var14 - 1 - var20] * (long)SoundEffect3.field1706[0][var20] >> 16);
                         }
 
                         for(var20 = 0; var20 < var13; ++var20) {
@@ -325,7 +325,7 @@ public class AudioInstrument {
 
    @ObfuscatedName("m")
    final int method2230(int var1, int var2, int var3) {
-      return var3 == 1?((var1 & 32767) < 16384?var2:-var2):(var3 == 2?field1742[var1 & 32767] * var2 >> 14:(var3 == 3?((var1 & 32767) * var2 >> 14) - var2:(var3 == 4?field1741[var1 / 2607 & 32767] * var2:0)));
+      return var3 == 1?((var1 & 32767) < 16384?var2:-var2):(var3 == 2?field1742[var1 & 32767] * var2 >> 14:(var3 == 3?(var2 * (var1 & 32767) >> 14) - var2:(var3 == 4?var2 * field1741[var1 / 2607 & 32767]:0)));
    }
 
    static {

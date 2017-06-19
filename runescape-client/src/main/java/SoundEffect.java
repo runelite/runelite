@@ -39,7 +39,7 @@ public class SoundEffect {
                int[] var7 = this.instruments[var4].method2223(var5, this.instruments[var4].field1726);
 
                for(int var8 = 0; var8 < var5; ++var8) {
-                  int var9 = var3[var8 + var6] + (var7[var8] >> 8);
+                  int var9 = (var7[var8] >> 8) + var3[var8 + var6];
                   if((var9 + 128 & -256) != 0) {
                      var9 = var9 >> 31 ^ 127;
                   }

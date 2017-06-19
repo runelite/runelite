@@ -25,7 +25,7 @@ public final class PacketBuffer extends Buffer {
    )
    static int method3287(int var0) {
       MessageNode var1 = (MessageNode)class98.field1517.method3389((long)var0);
-      return var1 == null?-1:(class98.field1523.field2501 == var1.next?-1:((MessageNode)var1.next).id);
+      return var1 == null?-1:(var1.next == class98.field1523.field2501?-1:((MessageNode)var1.next).id);
    }
 
    @ObfuscatedName("ic")
@@ -63,7 +63,7 @@ public final class PacketBuffer extends Buffer {
          var1 -= var3;
       }
 
-      if(var1 == var3) {
+      if(var3 == var1) {
          var4 += super.payload[var2] & field2435[var3];
       } else {
          var4 += super.payload[var2] >> var3 - var1 & field2435[var1];

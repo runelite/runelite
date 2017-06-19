@@ -159,25 +159,25 @@ public class class33 {
             while(true) {
                var14 = var6;
                var15 = var13;
-               if(var6 * (var13 - 1) >= World.field1281) {
+               if((var13 - 1) * var6 >= World.field1281) {
                   --var13;
                }
 
-               if(var13 * (var6 - 1) >= World.field1281) {
+               if((var6 - 1) * var13 >= World.field1281) {
                   --var6;
                }
 
-               if(var13 * (var6 - 1) >= World.field1281) {
+               if((var6 - 1) * var13 >= World.field1281) {
                   --var6;
                }
 
-               if(var6 == var14 && var15 == var13) {
+               if(var14 == var6 && var13 == var15) {
                   var14 = (765 - var13 * var4) / (var13 + 1);
                   if(var14 > 5) {
                      var14 = 5;
                   }
 
-                  var15 = (480 - var6 * var16) / (var6 + 1);
+                  var15 = (480 - var16 * var6) / (var6 + 1);
                   if(var15 > 5) {
                      var15 = 5;
                   }
@@ -229,7 +229,7 @@ public class class33 {
                         var23 = 0;
                      }
 
-                     if(class59.field730 >= var10 && class59.field731 >= var9 && class59.field730 < var4 + var10 && class59.field731 < var9 + var16 && var20) {
+                     if(class59.field730 >= var10 && class59.field731 >= var9 && class59.field730 < var10 + var4 && class59.field731 < var16 + var9 && var20) {
                         class92.field1445 = var18;
                         class230.field3188[var23].method4944(var10, var9, 128, 16777215);
                         var17 = true;
@@ -242,12 +242,12 @@ public class class33 {
                      }
 
                      var0.method4635(Integer.toString(var19.id), var10 + 15, var16 / 2 + var9 + 5, var22, -1);
-                     var1.method4635(var21, var10 + 60, var9 + var16 / 2 + 5, 268435455, -1);
+                     var1.method4635(var21, var10 + 60, var16 / 2 + var9 + 5, 268435455, -1);
                      var9 += var15 + var16;
                      ++var11;
                      if(var11 >= var6) {
                         var9 = var8 + 23;
-                        var10 += var14 + var4;
+                        var10 += var4 + var14;
                         var11 = 0;
                      }
                   }
@@ -279,7 +279,7 @@ public class class33 {
             Rasterizer2D.method4888(class92.loginWindowX + 180 - 152, var5, 304, 34, 9179409);
             Rasterizer2D.method4888(class92.loginWindowX + 180 - 151, var5 + 1, 302, 32, 0);
             Rasterizer2D.method4826(class92.loginWindowX + 180 - 150, var5 + 2, class92.loadingBarPercentage * 3, 30, 9179409);
-            Rasterizer2D.method4826(class92.loginWindowX + 180 - 150 + class92.loadingBarPercentage * 3, var5 + 2, 300 - class92.loadingBarPercentage * 3, 30, 0);
+            Rasterizer2D.method4826(class92.loadingBarPercentage * 3 + (class92.loginWindowX + 180 - 150), var5 + 2, 300 - class92.loadingBarPercentage * 3, 30, 0);
             var0.method4635(class92.loadingText, class92.loginWindowX + 180, 276 - var4, 16777215, -1);
          }
 
@@ -519,7 +519,7 @@ public class class33 {
                   var10 = 256 - var8;
                   var8 = class277.field3736[var8];
                   var11 = World.field1296.pixels[var13];
-                  World.field1296.pixels[var13++] = ((var8 & 16711935) * var9 + (var11 & 16711935) * var10 & -16711936) + (var9 * (var8 & '\uff00') + var10 * (var11 & '\uff00') & 16711680) >> 8;
+                  World.field1296.pixels[var13++] = (var10 * (var11 & '\uff00') + var9 * (var8 & '\uff00') & 16711680) + (var9 * (var8 & 16711935) + var10 * (var11 & 16711935) & -16711936) >> 8;
                } else {
                   ++var13;
                }
@@ -532,10 +532,10 @@ public class class33 {
          class92.field1419.method4949(class92.field1414 + 382, 0);
          Rasterizer2D.method4880();
          var5 = 0;
-         var13 = class92.field1414 + World.field1296.width * 9 + 24 + 637;
+         var13 = World.field1296.width * 9 + class92.field1414 + 24 + 637;
 
          for(var6 = 1; var6 < var25 - 1; ++var6) {
-            var14 = class92.field1441[var6] * (var25 - var6) / var25;
+            var14 = (var25 - var6) * class92.field1441[var6] / var25;
             var15 = 103 - var14;
             var13 += var14;
 
@@ -546,7 +546,7 @@ public class class33 {
                   var10 = 256 - var8;
                   var8 = class277.field3736[var8];
                   var11 = World.field1296.pixels[var13];
-                  World.field1296.pixels[var13++] = ((var11 & 16711935) * var10 + var9 * (var8 & 16711935) & -16711936) + ((var11 & '\uff00') * var10 + var9 * (var8 & '\uff00') & 16711680) >> 8;
+                  World.field1296.pixels[var13++] = (var9 * (var8 & 16711935) + (var11 & 16711935) * var10 & -16711936) + (var10 * (var11 & '\uff00') + var9 * (var8 & '\uff00') & 16711680) >> 8;
                } else {
                   ++var13;
                }
@@ -564,11 +564,11 @@ public class class33 {
                byte var30 = 100;
                byte var31 = 35;
                Signlink.field2253.method4923(var12, var26);
-               var0.method4635("World " + Client.world, var30 / 2 + var12, var31 / 2 + var26 - 2, 16777215, 0);
+               var0.method4635("World " + Client.world, var30 / 2 + var12, var26 + var31 / 2 - 2, 16777215, 0);
                if(World.worldServersDownload != null) {
-                  var1.method4635("Loading...", var30 / 2 + var12, var31 / 2 + var26 + 12, 16777215, 0);
+                  var1.method4635("Loading...", var30 / 2 + var12, var26 + var31 / 2 + 12, 16777215, 0);
                } else {
-                  var1.method4635("Click to switch", var12 + var30 / 2, var26 + var31 / 2 + 12, 16777215, 0);
+                  var1.method4635("Click to switch", var30 / 2 + var12, var26 + var31 / 2 + 12, 16777215, 0);
                }
             } else {
                Signlink.field2253 = class273.method4789(WorldMapType3.indexSprites, "sl_button", "");

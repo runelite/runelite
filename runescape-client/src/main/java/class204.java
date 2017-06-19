@@ -244,7 +244,7 @@ public class class204 extends class119 {
       this.method3639(var1, var2, 64);
       if((this.field2537[var1] & 2) != 0) {
          for(class205 var4 = (class205)this.field2551.field2599.method3488(); var4 != null; var4 = (class205)this.field2551.field2599.method3490()) {
-            if(var1 == var4.field2575 && var4.field2572 < 0) {
+            if(var4.field2575 == var1 && var4.field2572 < 0) {
                this.field2543[var1][var4.field2574] = null;
                this.field2543[var1][var2] = var4;
                int var5 = var4.field2562 + (var4.field2563 * var4.field2564 >> 12);
@@ -268,7 +268,7 @@ public class class204 extends class119 {
             var6.field2557 = var8.field2595[var2];
             var6.field2558 = var8.field2596[var2];
             var6.field2574 = var2;
-            var6.field2560 = var8.field2593[var2] * var8.field2597 * var3 * var3 + 1024 >> 11;
+            var6.field2560 = var3 * var3 * var8.field2593[var2] * var8.field2597 + 1024 >> 11;
             var6.field2561 = var8.field2592[var2] & 255;
             var6.field2562 = (var2 << 8) - (var8.field2590[var2] & 32767);
             var6.field2569 = 0;
@@ -365,7 +365,7 @@ public class class204 extends class119 {
    )
    void method3589(int var1) {
       for(class205 var2 = (class205)this.field2551.field2599.method3487(); var2 != null; var2 = (class205)this.field2551.field2599.method3512()) {
-         if(var1 < 0 || var1 == var2.field2575) {
+         if(var1 < 0 || var2.field2575 == var1) {
             if(var2.field2565 != null) {
                var2.field2565.method2052(class109.field1635 / 100);
                if(var2.field2565.method2151()) {
@@ -445,7 +445,7 @@ public class class204 extends class119 {
    void method3593(int var1) {
       if((this.field2537[var1] & 2) != 0) {
          for(class205 var2 = (class205)this.field2551.field2599.method3487(); var2 != null; var2 = (class205)this.field2551.field2599.method3512()) {
-            if(var1 == var2.field2575 && this.field2543[var1][var2.field2574] == null && var2.field2572 < 0) {
+            if(var2.field2575 == var1 && this.field2543[var1][var2.field2574] == null && var2.field2572 < 0) {
                var2.field2572 = 0;
             }
          }
@@ -461,7 +461,7 @@ public class class204 extends class119 {
    void method3594(int var1) {
       if((this.field2537[var1] & 4) != 0) {
          for(class205 var2 = (class205)this.field2551.field2599.method3487(); var2 != null; var2 = (class205)this.field2551.field2599.method3512()) {
-            if(var1 == var2.field2575) {
+            if(var2.field2575 == var1) {
                var2.field2568 = 0;
             }
          }
@@ -488,8 +488,8 @@ public class class204 extends class119 {
       class202 var2 = var1.field2557;
       int var3 = this.field2529[var1.field2575] * this.field2528[var1.field2575] + 4096 >> 13;
       var3 = var3 * var3 + 16384 >> 15;
-      var3 = var1.field2560 * var3 + 16384 >> 15;
-      var3 = this.field2524 * var3 + 128 >> 8;
+      var3 = var3 * var1.field2560 + 16384 >> 15;
+      var3 = var3 * this.field2524 + 128 >> 8;
       if(var2.field2503 > 0) {
          var3 = (int)((double)var3 * Math.pow(0.5D, (double)var1.field2569 * 1.953125E-5D * (double)var2.field2503) + 0.5D);
       }
@@ -504,10 +504,10 @@ public class class204 extends class119 {
          if(var1.field2567 < var2.field2510.length - 2) {
             var6 = (var2.field2510[var1.field2567] & 255) << 8;
             var7 = (var2.field2510[var1.field2567 + 2] & 255) << 8;
-            var5 += (var4 - var6) * (var2.field2510[var1.field2567 + 3] - var5) / (var7 - var6);
+            var5 += (var2.field2510[var1.field2567 + 3] - var5) * (var4 - var6) / (var7 - var6);
          }
 
-         var3 = var5 * var3 + 32 >> 6;
+         var3 = var3 * var5 + 32 >> 6;
       }
 
       if(var1.field2572 > 0 && var2.field2506 != null) {
@@ -519,7 +519,7 @@ public class class204 extends class119 {
             var5 += (var2.field2506[var1.field2554 + 3] - var5) * (var4 - var6) / (var7 - var6);
          }
 
-         var3 = var5 * var3 + 32 >> 6;
+         var3 = var3 * var5 + 32 >> 6;
       }
 
       return var3;
@@ -543,7 +543,7 @@ public class class204 extends class119 {
    @ObfuscatedName("o")
    protected synchronized void vmethod3775(int[] var1, int var2, int var3) {
       if(this.field2526.method3712()) {
-         int var4 = this.field2526.field2576 * this.field2525 / class109.field1635;
+         int var4 = this.field2525 * this.field2526.field2576 / class109.field1635;
 
          do {
             long var5 = this.field2549 + (long)var4 * (long)var3;
@@ -597,7 +597,7 @@ public class class204 extends class119 {
       int var2 = this.field2548;
 
       long var3;
-      for(var3 = this.field2550; this.field2548 == var2; var3 = this.field2526.method3716(var2)) {
+      for(var3 = this.field2550; var2 == this.field2548; var3 = this.field2526.method3716(var2)) {
          while(var2 == this.field2526.field2580[var1]) {
             this.field2526.method3714(var1);
             int var5 = this.field2526.method3757(var1);
@@ -656,7 +656,7 @@ public class class204 extends class119 {
          boolean var7 = false;
          ++var1.field2570;
          var1.field2571 += var6.field2509;
-         double var8 = 5.086263020833333E-6D * (double)((var1.field2563 * var1.field2564 >> 12) + (var1.field2574 - 60 << 8));
+         double var8 = 5.086263020833333E-6D * (double)((var1.field2574 - 60 << 8) + (var1.field2563 * var1.field2564 >> 12));
          if(var6.field2503 > 0) {
             if(var6.field2507 > 0) {
                var1.field2569 += (int)(128.0D * Math.pow(2.0D, (double)var6.field2507 * var8) + 0.5D);
@@ -676,12 +676,12 @@ public class class204 extends class119 {
                var1.field2567 += 2;
             }
 
-            if(var1.field2567 == var6.field2510.length - 2 && var6.field2510[var1.field2567 + 1] == 0) {
+            if(var6.field2510.length - 2 == var1.field2567 && var6.field2510[var1.field2567 + 1] == 0) {
                var7 = true;
             }
          }
 
-         if(var1.field2572 >= 0 && var6.field2506 != null && (this.field2537[var1.field2575] & 1) == 0 && (var1.field2558 < 0 || var1 != this.field2547[var1.field2575][var1.field2558])) {
+         if(var1.field2572 >= 0 && var6.field2506 != null && (this.field2537[var1.field2575] & 1) == 0 && (var1.field2558 < 0 || this.field2547[var1.field2575][var1.field2558] != var1)) {
             if(var6.field2505 > 0) {
                var1.field2572 += (int)(128.0D * Math.pow(2.0D, var8 * (double)var6.field2505) + 0.5D);
             } else {
@@ -771,7 +771,7 @@ public class class204 extends class119 {
    )
    int method3638(class205 var1) {
       int var2 = this.field2527[var1.field2575];
-      return var2 < 8192?var1.field2561 * var2 + 32 >> 6:16384 - ((128 - var1.field2561) * (16384 - var2) + 32 >> 6);
+      return var2 < 8192?var2 * var1.field2561 + 32 >> 6:16384 - ((128 - var1.field2561) * (16384 - var2) + 32 >> 6);
    }
 
    @ObfuscatedName("d")
@@ -785,7 +785,7 @@ public class class204 extends class119 {
          this.field2543[var1][var2] = null;
          if((this.field2537[var1] & 2) != 0) {
             for(class205 var5 = (class205)this.field2551.field2599.method3487(); var5 != null; var5 = (class205)this.field2551.field2599.method3512()) {
-               if(var4.field2575 == var5.field2575 && var5.field2572 < 0 && var4 != var5) {
+               if(var5.field2575 == var4.field2575 && var5.field2572 < 0 && var4 != var5) {
                   var4.field2572 = 0;
                   break;
                }
@@ -826,15 +826,15 @@ public class class204 extends class119 {
       garbageValue = "-224203475"
    )
    int method3663(class205 var1) {
-      int var2 = var1.field2562 + (var1.field2563 * var1.field2564 >> 12);
-      var2 += this.field2533[var1.field2575] * (this.field2532[var1.field2575] - 8192) >> 12;
+      int var2 = (var1.field2563 * var1.field2564 >> 12) + var1.field2562;
+      var2 += (this.field2532[var1.field2575] - 8192) * this.field2533[var1.field2575] >> 12;
       class202 var3 = var1.field2557;
       int var4;
       if(var3.field2509 > 0 && (var3.field2508 > 0 || this.field2541[var1.field2575] > 0)) {
          var4 = var3.field2508 << 2;
          int var5 = var3.field2504 << 1;
          if(var1.field2570 < var5) {
-            var4 = var1.field2570 * var4 / var5;
+            var4 = var4 * var1.field2570 / var5;
          }
 
          var4 += this.field2541[var1.field2575] >> 7;
@@ -888,19 +888,19 @@ public class class204 extends class119 {
          }
 
          if(var4 == 1) {
-            this.field2541[var3] = (this.field2541[var3] & -16257) + (var5 << 7);
+            this.field2541[var3] = (var5 << 7) + (this.field2541[var3] & -16257);
          }
 
          if(var4 == 33) {
-            this.field2541[var3] = (this.field2541[var3] & -128) + var5;
+            this.field2541[var3] = var5 + (this.field2541[var3] & -128);
          }
 
          if(var4 == 5) {
-            this.field2545[var3] = (this.field2545[var3] & -16257) + (var5 << 7);
+            this.field2545[var3] = (var5 << 7) + (this.field2545[var3] & -16257);
          }
 
          if(var4 == 37) {
-            this.field2545[var3] = (this.field2545[var3] & -128) + var5;
+            this.field2545[var3] = var5 + (this.field2545[var3] & -128);
          }
 
          if(var4 == 7) {
@@ -908,11 +908,11 @@ public class class204 extends class119 {
          }
 
          if(var4 == 39) {
-            this.field2529[var3] = (this.field2529[var3] & -128) + var5;
+            this.field2529[var3] = var5 + (this.field2529[var3] & -128);
          }
 
          if(var4 == 10) {
-            this.field2527[var3] = (this.field2527[var3] & -16257) + (var5 << 7);
+            this.field2527[var3] = (var5 << 7) + (this.field2527[var3] & -16257);
          }
 
          if(var4 == 42) {
@@ -924,7 +924,7 @@ public class class204 extends class119 {
          }
 
          if(var4 == 43) {
-            this.field2528[var3] = (this.field2528[var3] & -128) + var5;
+            this.field2528[var3] = var5 + (this.field2528[var3] & -128);
          }
 
          if(var4 == 64) {
@@ -949,7 +949,7 @@ public class class204 extends class119 {
          }
 
          if(var4 == 98) {
-            this.field2538[var3] = (this.field2538[var3] & 16256) + var5;
+            this.field2538[var3] = var5 + (this.field2538[var3] & 16256);
          }
 
          if(var4 == 101) {
@@ -992,7 +992,7 @@ public class class204 extends class119 {
          }
 
          if(var4 == 48) {
-            this.field2552[var3] = (this.field2552[var3] & -128) + var5;
+            this.field2552[var3] = var5 + (this.field2552[var3] & -128);
          }
 
          if(var4 == 81) {
@@ -1005,7 +1005,7 @@ public class class204 extends class119 {
          }
 
          if(var4 == 17) {
-            this.method3596(var3, (this.field2535[var3] & -16257) + (var5 << 7));
+            this.method3596(var3, (var5 << 7) + (this.field2535[var3] & -16257));
          }
 
          if(var4 == 49) {

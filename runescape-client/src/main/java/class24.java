@@ -68,7 +68,7 @@ public class class24 {
 
       for(int var3 = 0; var3 < var2.length; ++var3) {
          class24 var4 = var2[var3];
-         if(var0 == var4.field377) {
+         if(var4.field377 == var0) {
             return var4;
          }
       }
@@ -206,12 +206,12 @@ public class class24 {
                   var8.method3689(9, 128);
                   class134.field2003 = class41.method573(GameEngine.field691, 0, 22050);
                   class134.field2003.method1938(var8);
-                  var23 = class164.field2329;
-                  var6 = class219.field2807;
-                  var7 = class66.field799;
-                  class203.field2513 = var23;
-                  class203.field2514 = var6;
-                  class203.field2515 = var7;
+                  var7 = class164.field2329;
+                  var23 = class219.field2807;
+                  var6 = class66.field799;
+                  class203.field2513 = var7;
+                  class203.field2514 = var23;
+                  class203.field2515 = var6;
                   class203.field2516 = var8;
                   Player.field862 = class41.method573(GameEngine.field691, 1, 2048);
                   WorldMapType1.field442 = new class102();
@@ -259,15 +259,15 @@ public class class24 {
                      IndexData var26 = class3.field24;
                      Overlay.field3594 = var26;
                      PlayerComposition.method3867(class3.field24);
-                     var23 = class3.field24;
-                     var6 = class4.indexModels;
-                     KitDefinition.field3366 = var23;
-                     KitDefinition.field3367 = var6;
-                     KitDefinition.field3359 = KitDefinition.field3366.method4075(3);
                      var7 = class3.field24;
+                     var23 = class4.indexModels;
+                     KitDefinition.field3366 = var7;
+                     KitDefinition.field3367 = var23;
+                     KitDefinition.field3359 = KitDefinition.field3366.method4075(3);
+                     var6 = class3.field24;
                      IndexData var28 = class4.indexModels;
                      boolean var30 = Client.field1055;
-                     ObjectComposition.field3444 = var7;
+                     ObjectComposition.field3444 = var6;
                      ObjectComposition.field3459 = var28;
                      ObjectComposition.field3467 = var30;
                      class252.method4337(class3.field24, class4.indexModels);
@@ -389,7 +389,7 @@ public class class24 {
                      var2 = (int)(Math.random() * 21.0D) - 10;
                      var3 = (int)(Math.random() * 21.0D) - 10;
                      var4 = (int)(Math.random() * 41.0D) - 20;
-                     Client.field925[0].method4912(var4 + var1, var4 + var2, var4 + var3);
+                     Client.field925[0].method4912(var4 + var1, var2 + var4, var3 + var4);
                      class92.loadingText = "Loaded sprites";
                      class92.loadingBarPercentage = 70;
                      Client.loadingStage = 90;
@@ -467,7 +467,7 @@ public class class24 {
                var2 = var1 * 32 + 128 + 15;
                var3 = var2 * 3 + 600;
                var4 = class136.SINE[var2];
-               var24[var1] = var4 * var3 >> 16;
+               var24[var1] = var3 * var4 >> 16;
             }
 
             Region.method2738(var24, 500, 800, 512, 334);

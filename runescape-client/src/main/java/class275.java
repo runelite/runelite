@@ -17,7 +17,7 @@ public class class275 {
       for(int var8 = 0; var8 < var0.length; ++var8) {
          Widget var9 = var0[var8];
          if(var9 != null && (!var9.hasScript || var9.type == 0 || var9.field2734 || class15.method92(var9) != 0 || var9 == Client.field1080 || var9.contentType == 1338) && var9.parentId == var1 && (!var9.hasScript || !WorldMapType2.method510(var9))) {
-            int var10 = var6 + var9.relativeX;
+            int var10 = var9.relativeX + var6;
             int var11 = var9.relativeY + var7;
             int var12;
             int var13;
@@ -34,7 +34,7 @@ public class class275 {
             } else if(var9.type == 9) {
                var16 = var10;
                var17 = var11;
-               int var19 = var9.width + var10;
+               int var19 = var10 + var9.width;
                var18 = var11 + var9.height;
                if(var19 < var10) {
                   var16 = var19;
@@ -54,7 +54,7 @@ public class class275 {
                var15 = var18 < var5?var18:var5;
             } else {
                var16 = var10 + var9.width;
-               var17 = var9.height + var11;
+               var17 = var11 + var9.height;
                var12 = var10 > var2?var10:var2;
                var13 = var11 > var3?var11:var3;
                var14 = var16 < var4?var16:var4;
@@ -101,15 +101,15 @@ public class class275 {
                               var21 = class136.SINE[var20];
                               var22 = class136.COSINE[var20];
                               var21 = (Client.mapScaleDelta + 256) * var21 >> 8;
-                              var22 = var22 * (Client.mapScaleDelta + 256) >> 8;
+                              var22 = (Client.mapScaleDelta + 256) * var22 >> 8;
                               var23 = var25 * var21 + var22 * var26 >> 11;
-                              var24 = var25 * var22 - var26 * var21 >> 11;
-                              int var39 = class20.localPlayer.x + var23 >> 7;
+                              var24 = var25 * var22 - var21 * var26 >> 11;
+                              int var39 = var23 + class20.localPlayer.x >> 7;
                               int var38 = class20.localPlayer.y - var24 >> 7;
                               Client.secretPacketBuffer1.putOpcode(220);
                               Client.secretPacketBuffer1.putByte(18);
                               Client.secretPacketBuffer1.method3066(var39 + class19.baseX);
-                              Client.secretPacketBuffer1.method3066(class21.baseY + var38);
+                              Client.secretPacketBuffer1.method3066(var38 + class21.baseY);
                               Client.secretPacketBuffer1.method3196(class50.field660[82]?(class50.field660[81]?2:1):0);
                               Client.secretPacketBuffer1.putByte(var26);
                               Client.secretPacketBuffer1.putByte(var25);
@@ -184,7 +184,7 @@ public class class275 {
                         if(!var9.field2787) {
                            if(var9.field2788 && class59.field730 >= var12 && class59.field731 >= var13 && class59.field730 < var14 && class59.field731 < var15) {
                               for(var34 = (class69)Client.field1105.method3487(); var34 != null; var34 = (class69)Client.field1105.method3512()) {
-                                 if(var34.field826 && var34.field821 == var34.field822.field2672) {
+                                 if(var34.field826 && var34.field822.field2672 == var34.field821) {
                                     var34.unlink();
                                  }
                               }
@@ -234,7 +234,7 @@ public class class275 {
                            class46.renderOverview.method5047(class59.field730, class59.field731, var33 & var36);
                         }
 
-                        if(Client.field1079 != null && Client.field1079 != var9 && var33) {
+                        if(Client.field1079 != null && var9 != Client.field1079 && var33) {
                            var20 = class15.method92(var9);
                            boolean var30 = (var20 >> 20 & 1) != 0;
                            if(var30) {
@@ -242,7 +242,7 @@ public class class275 {
                            }
                         }
 
-                        if(Client.field1080 == var9) {
+                        if(var9 == Client.field1080) {
                            Client.field1084 = true;
                            Client.field1093 = var10;
                            Client.field1086 = var11;
@@ -519,18 +519,18 @@ public class class275 {
                               if(var20 >= var18 && var20 < var18 + 16 && var21 >= var11 && var21 < var11 + 16) {
                                  var9.scrollY -= 4;
                                  XItemContainer.method1020(var9);
-                              } else if(var20 >= var18 && var20 < var18 + 16 && var21 >= var26 + var11 - 16 && var21 < var26 + var11) {
+                              } else if(var20 >= var18 && var20 < var18 + 16 && var21 >= var11 + var26 - 16 && var21 < var11 + var26) {
                                  var9.scrollY += 4;
                                  XItemContainer.method1020(var9);
-                              } else if(var20 >= var18 - Client.field1073 && var20 < Client.field1073 + var18 + 16 && var21 >= var11 + 16 && var21 < var26 + var11 - 16) {
-                                 var22 = var26 * (var26 - 32) / var25;
+                              } else if(var20 >= var18 - Client.field1073 && var20 < var18 + Client.field1073 + 16 && var21 >= var11 + 16 && var21 < var11 + var26 - 16) {
+                                 var22 = (var26 - 32) * var26 / var25;
                                  if(var22 < 8) {
                                     var22 = 8;
                                  }
 
                                  var23 = var21 - var11 - 16 - var22 / 2;
                                  var24 = var26 - 32 - var22;
-                                 var9.scrollY = (var25 - var26) * var23 / var24;
+                                 var9.scrollY = var23 * (var25 - var26) / var24;
                                  XItemContainer.method1020(var9);
                                  Client.field987 = true;
                               }
@@ -538,7 +538,7 @@ public class class275 {
 
                            if(Client.field1186 != 0) {
                               var22 = var9.width;
-                              if(var20 >= var18 - var22 && var21 >= var11 && var20 < var18 + 16 && var21 <= var26 + var11) {
+                              if(var20 >= var18 - var22 && var21 >= var11 && var20 < var18 + 16 && var21 <= var11 + var26) {
                                  var9.scrollY += Client.field1186 * 45;
                                  XItemContainer.method1020(var9);
                               }

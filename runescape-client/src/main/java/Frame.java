@@ -43,7 +43,7 @@ public class Frame {
       int var5 = var3.readUnsignedByte();
       int var6 = -1;
       int var7 = 0;
-      var4.offset = var3.offset + var5;
+      var4.offset = var5 + var3.offset;
 
       int var8;
       for(var8 = 0; var8 < var5; ++var8) {
@@ -94,7 +94,7 @@ public class Frame {
          }
       }
 
-      if(var4.offset != var1.length) {
+      if(var1.length != var4.offset) {
          throw new RuntimeException();
       } else {
          this.field1891 = var7;

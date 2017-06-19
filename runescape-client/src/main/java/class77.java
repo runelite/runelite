@@ -101,9 +101,9 @@ public class class77 {
 
          int var6 = var0 & 127;
          int var7 = var1 & 127;
-         int var8 = class61.tileHeights[var5][var3 + 1][var4] * var6 + (128 - var6) * class61.tileHeights[var5][var3][var4] >> 7;
-         int var9 = var6 * class61.tileHeights[var5][var3 + 1][var4 + 1] + class61.tileHeights[var5][var3][var4 + 1] * (128 - var6) >> 7;
-         return (128 - var7) * var8 + var7 * var9 >> 7;
+         int var8 = (128 - var6) * class61.tileHeights[var5][var3][var4] + class61.tileHeights[var5][var3 + 1][var4] * var6 >> 7;
+         int var9 = class61.tileHeights[var5][var3 + 1][var4 + 1] * var6 + (128 - var6) * class61.tileHeights[var5][var3][var4 + 1] >> 7;
+         return var7 * var9 + var8 * (128 - var7) >> 7;
       } else {
          return 0;
       }
@@ -131,7 +131,7 @@ public class class77 {
       int var8;
       int var9;
       for(var7 = 0; var7 < Client.menuOptionCount; ++var7) {
-         var8 = var1 + 31 + (Client.menuOptionCount - 1 - var7) * 15;
+         var8 = (Client.menuOptionCount - 1 - var7) * 15 + var1 + 31;
          var9 = 16777215;
          if(var5 > var0 && var5 < var0 + var2 && var6 > var8 - 13 && var6 < var8 + 3) {
             var9 = 16776960;
@@ -156,7 +156,7 @@ public class class77 {
       int var12 = class37.menuHeight;
 
       for(int var13 = 0; var13 < Client.field1109; ++var13) {
-         if(Client.widgetPositionX[var13] + Client.widgetBoundsWidth[var13] > var7 && Client.widgetPositionX[var13] < var7 + var9 && Client.widgetPositionY[var13] + Client.widgetBoundsHeight[var13] > var8 && Client.widgetPositionY[var13] < var8 + var12) {
+         if(Client.widgetPositionX[var13] + Client.widgetBoundsWidth[var13] > var7 && Client.widgetPositionX[var13] < var7 + var9 && Client.widgetPositionY[var13] + Client.widgetBoundsHeight[var13] > var8 && Client.widgetPositionY[var13] < var12 + var8) {
             Client.field1112[var13] = true;
          }
       }

@@ -20,7 +20,7 @@ public class class211 {
    )
    static void method3817() {
       if(class46.renderOverview != null) {
-         class46.renderOverview.method5168(Player.plane, class19.baseX + (class20.localPlayer.x >> 7), (class20.localPlayer.y >> 7) + class21.baseY, false);
+         class46.renderOverview.method5168(Player.plane, (class20.localPlayer.x >> 7) + class19.baseX, (class20.localPlayer.y >> 7) + class21.baseY, false);
          class46.renderOverview.method5066();
       }
 

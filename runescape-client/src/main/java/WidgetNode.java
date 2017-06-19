@@ -163,7 +163,7 @@ public class WidgetNode extends Node {
          int var6 = class83.intStack[class83.intStackSize + 2];
          var5 = class83.intStack[class83.intStackSize + 3];
          Enum var7 = class176.method3269(var6);
-         if(var7.keyType == var3 && var7.valType == var4) {
+         if(var3 == var7.keyType && var7.valType == var4) {
             for(int var8 = 0; var8 < var7.size; ++var8) {
                if(var5 == var7.keys[var8]) {
                   if(var4 == 115) {

@@ -12,7 +12,7 @@ public final class Node2LinkedList {
    @ObfuscatedName("e")
    CacheableNode method3371() {
       CacheableNode var1 = this.sentinel.previous;
-      if(var1 == this.sentinel) {
+      if(this.sentinel == var1) {
          return null;
       } else {
          var1.method3520();
@@ -23,7 +23,7 @@ public final class Node2LinkedList {
    @ObfuscatedName("t")
    public CacheableNode method3372() {
       CacheableNode var1 = this.sentinel.previous;
-      return var1 == this.sentinel?null:var1;
+      return this.sentinel == var1?null:var1;
    }
 
    @ObfuscatedName("m")
@@ -48,7 +48,7 @@ public final class Node2LinkedList {
    void method3383() {
       while(true) {
          CacheableNode var1 = this.sentinel.previous;
-         if(var1 == this.sentinel) {
+         if(this.sentinel == var1) {
             return;
          }
 

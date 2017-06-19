@@ -66,7 +66,7 @@ public class class130 extends Node {
 
             for(var13 = 0; var13 < var9.length; ++var13) {
                var14 = var9[var13];
-               if((var14 & '\uffff') == var14 >> 8) {
+               if(var14 >> 8 == (var14 & '\uffff')) {
                   var14 &= 255;
                   var9[var13] = var11 * var14 >> 8 & 16711935 | var12 * var14 & '\uff00';
                }
@@ -84,7 +84,7 @@ public class class130 extends Node {
          }
 
          if(var11 == 0) {
-            if(var7.originalWidth == var3) {
+            if(var3 == var7.originalWidth) {
                for(var12 = 0; var12 < var5; ++var12) {
                   this.field1883[var12] = var9[var8[var12] & 255];
                }
@@ -93,7 +93,7 @@ public class class130 extends Node {
 
                for(var13 = 0; var13 < var3; ++var13) {
                   for(var14 = 0; var14 < var3; ++var14) {
-                     this.field1883[var12++] = var9[var8[(var14 >> 1) + (var13 >> 1 << 6)] & 255];
+                     this.field1883[var12++] = var9[var8[(var13 >> 1 << 6) + (var14 >> 1)] & 255];
                   }
                }
             } else {
@@ -105,7 +105,7 @@ public class class130 extends Node {
 
                for(var13 = 0; var13 < var3; ++var13) {
                   for(var14 = 0; var14 < var3; ++var14) {
-                     this.field1883[var12++] = var9[var8[(var14 << 1) + (var13 << 1 << 7)] & 255];
+                     this.field1883[var12++] = var9[var8[(var13 << 1 << 7) + (var14 << 1)] & 255];
                   }
                }
             }
@@ -156,7 +156,7 @@ public class class130 extends Node {
             }
 
             for(var6 = 0; var6 < var3; ++var6) {
-               var7 = var6 + var4 & var5;
+               var7 = var4 + var6 & var5;
                field1885[var6] = this.field1883[var7];
             }
 
@@ -177,7 +177,7 @@ public class class130 extends Node {
             }
 
             var3 = this.field1883.length;
-            var4 = var1 * this.field1882;
+            var4 = this.field1882 * var1;
             var5 = var2 - 1;
             if(this.field1881 == 2) {
                var4 = -var4;
@@ -185,8 +185,8 @@ public class class130 extends Node {
 
             for(var6 = 0; var6 < var3; var6 += var2) {
                for(var7 = 0; var7 < var2; ++var7) {
-                  int var9 = var6 + var7;
-                  int var10 = var6 + (var7 + var4 & var5);
+                  int var9 = var7 + var6;
+                  int var10 = (var7 + var4 & var5) + var6;
                   field1885[var9] = this.field1883[var10];
                }
             }

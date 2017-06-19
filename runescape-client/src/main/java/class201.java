@@ -8,7 +8,7 @@ public class class201 implements Iterable {
 
    @ObfuscatedName("p")
    public void method3555() {
-      while(this.field2501.previous != this.field2501) {
+      while(this.field2501 != this.field2501.previous) {
          this.field2501.previous.method3520();
       }
 

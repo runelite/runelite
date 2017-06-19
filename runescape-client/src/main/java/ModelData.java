@@ -343,8 +343,8 @@ public class ModelData extends Renderable {
          }
 
          this.vertexX[var49] = var46 + var51;
-         this.vertexY[var49] = var47 + var52;
-         this.vertexZ[var49] = var48 + var53;
+         this.vertexY[var49] = var52 + var47;
+         this.vertexZ[var49] = var53 + var48;
          var46 = this.vertexX[var49];
          var47 = this.vertexY[var49];
          var48 = this.vertexZ[var49];
@@ -564,7 +564,7 @@ public class ModelData extends Renderable {
       var22 += var17;
       int var33 = var22;
       var22 += var18;
-      int var10000 = var22 + var19;
+      int var10000 = var19 + var22;
       this.vertexCount = var9;
       this.triangleFaceCount = var10;
       this.field1809 = var11;
@@ -637,9 +637,9 @@ public class ModelData extends Renderable {
             var42 = var7.readShortSmart();
          }
 
-         this.vertexX[var38] = var35 + var40;
-         this.vertexY[var38] = var36 + var41;
-         this.vertexZ[var38] = var37 + var42;
+         this.vertexX[var38] = var40 + var35;
+         this.vertexY[var38] = var41 + var36;
+         this.vertexZ[var38] = var42 + var37;
          var35 = this.vertexX[var38];
          var36 = this.vertexY[var38];
          var37 = this.vertexZ[var38];
@@ -1120,7 +1120,7 @@ public class ModelData extends Renderable {
 
    @ObfuscatedName("ax")
    static final int method2317(int var0, int var1) {
-      var1 = var1 * (var0 & 127) >> 7;
+      var1 = (var0 & 127) * var1 >> 7;
       if(var1 < 2) {
          var1 = 2;
       } else if(var1 > 126) {
@@ -1157,7 +1157,7 @@ public class ModelData extends Renderable {
    @Export("light")
    public final Model light(int var1, int var2, int var3, int var4, int var5) {
       this.computeNormals();
-      int var6 = (int)Math.sqrt((double)(var3 * var3 + var4 * var4 + var5 * var5));
+      int var6 = (int)Math.sqrt((double)(var5 * var5 + var3 * var3 + var4 * var4));
       int var7 = var2 * var6 >> 8;
       Model var8 = new Model();
       var8.field1935 = new int[this.triangleFaceCount];
@@ -1246,7 +1246,7 @@ public class ModelData extends Renderable {
             if(var18 != 0) {
                if(var18 == 1) {
                   var15 = this.faceNormals[var17];
-                  var14 = var1 + (var3 * var15.x + var4 * var15.y + var5 * var15.z) / (var7 + var7 / 2);
+                  var14 = (var3 * var15.x + var4 * var15.y + var5 * var15.z) / (var7 + var7 / 2) + var1;
                   var8.field1935[var17] = method2317(this.faceColor[var17] & '\uffff', var14);
                   var8.field1964[var17] = -1;
                } else if(var18 == 3) {
@@ -1263,7 +1263,7 @@ public class ModelData extends Renderable {
                   var13 = this.normals[this.trianglePointsX[var17]];
                }
 
-               var14 = var1 + (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude);
+               var14 = (var3 * var13.x + var13.y * var4 + var5 * var13.z) / (var13.magnitude * var7) + var1;
                var8.field1935[var17] = method2317(var16, var14);
                if(this.field1827 != null && this.field1827[this.trianglePointsY[var17]] != null) {
                   var13 = this.field1827[this.trianglePointsY[var17]];
@@ -1271,7 +1271,7 @@ public class ModelData extends Renderable {
                   var13 = this.normals[this.trianglePointsY[var17]];
                }
 
-               var14 = var1 + (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude);
+               var14 = (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude) + var1;
                var8.field1936[var17] = method2317(var16, var14);
                if(this.field1827 != null && this.field1827[this.trianglePointsZ[var17]] != null) {
                   var13 = this.field1827[this.trianglePointsZ[var17]];
@@ -1279,13 +1279,13 @@ public class ModelData extends Renderable {
                   var13 = this.normals[this.trianglePointsZ[var17]];
                }
 
-               var14 = var1 + (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude);
+               var14 = (var5 * var13.z + var3 * var13.x + var13.y * var4) / (var13.magnitude * var7) + var1;
                var8.field1964[var17] = method2317(var16, var14);
             }
          } else if(var18 != 0) {
             if(var18 == 1) {
                var15 = this.faceNormals[var17];
-               var14 = var1 + (var3 * var15.x + var4 * var15.y + var5 * var15.z) / (var7 + var7 / 2);
+               var14 = (var4 * var15.y + var3 * var15.x + var5 * var15.z) / (var7 + var7 / 2) + var1;
                var8.field1935[var17] = method2332(var14);
                var8.field1964[var17] = -1;
             } else {
@@ -1298,7 +1298,7 @@ public class ModelData extends Renderable {
                var13 = this.normals[this.trianglePointsX[var17]];
             }
 
-            var14 = var1 + (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude);
+            var14 = (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var13.magnitude * var7) + var1;
             var8.field1935[var17] = method2332(var14);
             if(this.field1827 != null && this.field1827[this.trianglePointsY[var17]] != null) {
                var13 = this.field1827[this.trianglePointsY[var17]];
@@ -1306,7 +1306,7 @@ public class ModelData extends Renderable {
                var13 = this.normals[this.trianglePointsY[var17]];
             }
 
-            var14 = var1 + (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude);
+            var14 = (var5 * var13.z + var3 * var13.x + var4 * var13.y) / (var13.magnitude * var7) + var1;
             var8.field1936[var17] = method2332(var14);
             if(this.field1827 != null && this.field1827[this.trianglePointsZ[var17]] != null) {
                var13 = this.field1827[this.trianglePointsZ[var17]];
@@ -1314,7 +1314,7 @@ public class ModelData extends Renderable {
                var13 = this.normals[this.trianglePointsZ[var17]];
             }
 
-            var14 = var1 + (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude);
+            var14 = (var5 * var13.z + var3 * var13.x + var4 * var13.y) / (var13.magnitude * var7) + var1;
             var8.field1964[var17] = method2332(var14);
          }
       }
@@ -1394,9 +1394,9 @@ public class ModelData extends Renderable {
    @ObfuscatedName("d")
    public void method2325(int var1, int var2, int var3) {
       for(int var4 = 0; var4 < this.vertexCount; ++var4) {
-         this.vertexX[var4] = this.vertexX[var4] * var1 / 128;
-         this.vertexY[var4] = this.vertexY[var4] * var2 / 128;
-         this.vertexZ[var4] = this.vertexZ[var4] * var3 / 128;
+         this.vertexX[var4] = var1 * this.vertexX[var4] / 128;
+         this.vertexY[var4] = var2 * this.vertexY[var4] / 128;
+         this.vertexZ[var4] = var3 * this.vertexZ[var4] / 128;
       }
 
       this.method2327();
@@ -1423,8 +1423,8 @@ public class ModelData extends Renderable {
             int var8 = this.vertexX[var4] - this.vertexX[var2];
             int var9 = this.vertexY[var4] - this.vertexY[var2];
             int var10 = this.vertexZ[var4] - this.vertexZ[var2];
-            int var11 = var6 * var10 - var9 * var7;
-            int var12 = var7 * var8 - var10 * var5;
+            int var11 = var10 * var6 - var7 * var9;
+            int var12 = var8 * var7 - var5 * var10;
 
             int var13;
             for(var13 = var5 * var9 - var8 * var6; var11 > 8192 || var12 > 8192 || var13 > 8192 || var11 < -8192 || var12 < -8192 || var13 < -8192; var13 >>= 1) {
@@ -1496,8 +1496,8 @@ public class ModelData extends Renderable {
       int var3 = field1810[var1];
 
       for(int var4 = 0; var4 < this.vertexCount; ++var4) {
-         int var5 = this.vertexZ[var4] * var2 + this.vertexX[var4] * var3 >> 16;
-         this.vertexZ[var4] = this.vertexZ[var4] * var3 - this.vertexX[var4] * var2 >> 16;
+         int var5 = var3 * this.vertexX[var4] + this.vertexZ[var4] * var2 >> 16;
+         this.vertexZ[var4] = var3 * this.vertexZ[var4] - var2 * this.vertexX[var4] >> 16;
          this.vertexX[var4] = var5;
       }
 
@@ -1509,14 +1509,14 @@ public class ModelData extends Renderable {
       this.method2324();
       int var7 = var2 + this.field1832;
       int var8 = var2 + this.field1833;
-      int var9 = var4 + this.field1835;
-      int var10 = var4 + this.field1834;
+      int var9 = this.field1835 + var4;
+      int var10 = this.field1834 + var4;
       if(var7 >= 0 && var8 + 128 >> 7 < var1.length && var9 >= 0 && var10 + 128 >> 7 < var1[0].length) {
          var7 >>= 7;
          var8 = var8 + 127 >> 7;
          var9 >>= 7;
          var10 = var10 + 127 >> 7;
-         if(var1[var7][var9] == var3 && var1[var8][var9] == var3 && var1[var7][var10] == var3 && var1[var8][var10] == var3) {
+         if(var3 == var1[var7][var9] && var3 == var1[var8][var9] && var3 == var1[var7][var10] && var3 == var1[var8][var10]) {
             return this;
          } else {
             ModelData var11 = new ModelData();
@@ -1572,8 +1572,8 @@ public class ModelData extends Renderable {
                   var17 = var13 >> 7;
                   var18 = var14 >> 7;
                   var19 = var1[var17][var18] * (128 - var15) + var1[var17 + 1][var18] * var15 >> 7;
-                  var20 = var1[var17][var18 + 1] * (128 - var15) + var1[var17 + 1][var18 + 1] * var15 >> 7;
-                  var21 = var19 * (128 - var16) + var20 * var16 >> 7;
+                  var20 = var15 * var1[var17 + 1][var18 + 1] + var1[var17][var18 + 1] * (128 - var15) >> 7;
+                  var21 = var19 * (128 - var16) + var16 * var20 >> 7;
                   var11.vertexY[var12] = this.vertexY[var12] + var21 - var3;
                }
             } else {
@@ -1586,9 +1586,9 @@ public class ModelData extends Renderable {
                      var17 = var15 & 127;
                      var18 = var14 >> 7;
                      var19 = var15 >> 7;
-                     var20 = var1[var18][var19] * (128 - var16) + var1[var18 + 1][var19] * var16 >> 7;
-                     var21 = var1[var18][var19 + 1] * (128 - var16) + var1[var18 + 1][var19 + 1] * var16 >> 7;
-                     int var22 = var20 * (128 - var17) + var21 * var17 >> 7;
+                     var20 = var1[var18 + 1][var19] * var16 + var1[var18][var19] * (128 - var16) >> 7;
+                     var21 = var1[var18 + 1][var19 + 1] * var16 + var1[var18][var19 + 1] * (128 - var16) >> 7;
+                     int var22 = var21 * var17 + var20 * (128 - var17) >> 7;
                      var11.vertexY[var12] = this.vertexY[var12] + (var22 - var3) * (var6 - var13) / var6;
                   }
                }
@@ -1697,7 +1697,7 @@ public class ModelData extends Renderable {
                   if(var13 >= var1.field1835 && var13 <= var1.field1834) {
                      for(int var14 = 0; var14 < var8; ++var14) {
                         VertexNormal var15 = var1.normals[var14];
-                        if(var12 == var7[var14] && var13 == var1.vertexZ[var14] && var11 == var1.vertexY[var14] && var15.magnitude != 0) {
+                        if(var7[var14] == var12 && var1.vertexZ[var14] == var13 && var1.vertexY[var14] == var11 && var15.magnitude != 0) {
                            if(var0.field1827 == null) {
                               var0.field1827 = new VertexNormal[var0.vertexCount];
                            }

@@ -32,7 +32,7 @@ public class class45 extends class28 {
    )
    void method609(Buffer var1, Buffer var2) {
       int var3 = var2.readUnsignedByte();
-      if(class36.field514.field518 != var3) {
+      if(var3 != class36.field514.field518) {
          throw new IllegalStateException("");
       } else {
          super.field423 = var2.readUnsignedByte();
@@ -52,17 +52,17 @@ public class class45 extends class28 {
          super.field428 = new byte[super.field430][64][64];
          super.field429 = new class31[super.field430][64][64][];
          var3 = var1.readUnsignedByte();
-         if(class35.field504.field505 != var3) {
+         if(var3 != class35.field504.field505) {
             throw new IllegalStateException("");
          } else {
             int var4 = var1.readUnsignedByte();
             int var5 = var1.readUnsignedByte();
             int var6 = var1.readUnsignedByte();
             int var7 = var1.readUnsignedByte();
-            if(var4 == super.field421 && super.field422 == var5 && this.field593 == var6 && this.field594 == var7) {
+            if(super.field421 == var4 && var5 == super.field422 && this.field593 == var6 && this.field594 == var7) {
                for(int var8 = 0; var8 < 8; ++var8) {
                   for(int var9 = 0; var9 < 8; ++var9) {
-                     this.method230(this.field593 * 8 + var8, var9 + this.field594 * 8, var1);
+                     this.method230(var8 + this.field593 * 8, this.field594 * 8 + var9, var1);
                   }
                }
 
@@ -87,7 +87,7 @@ public class class45 extends class28 {
          return false;
       } else {
          class45 var2 = (class45)var1;
-         return super.field421 == var2.field421 && super.field422 == var2.field422?this.field593 == var2.field593 && this.field594 == var2.field594:false;
+         return var2.field421 == super.field421 && var2.field422 == super.field422?var2.field593 == this.field593 && var2.field594 == this.field594:false;
       }
    }
 
@@ -140,7 +140,7 @@ public class class45 extends class28 {
       if(var0 == -1) {
          return 12345678;
       } else {
-         var1 = var1 * (var0 & 127) / 128;
+         var1 = (var0 & 127) * var1 / 128;
          if(var1 < 2) {
             var1 = 2;
          } else if(var1 > 126) {

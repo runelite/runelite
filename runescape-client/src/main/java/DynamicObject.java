@@ -69,7 +69,7 @@ public class DynamicObject extends Renderable {
          this.field1546 = Client.gameCycle - 1;
          if(this.field1544.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
             DynamicObject var10 = (DynamicObject)var9;
-            if(var10.field1544 == this.field1544) {
+            if(this.field1544 == var10.field1544) {
                this.field1545 = var10.field1545;
                this.field1546 = var10.field1546;
                return;
@@ -135,13 +135,13 @@ public class DynamicObject extends Renderable {
          }
 
          int var4 = this.sceneX + (var2 >> 1);
-         int var5 = this.sceneX + (var2 + 1 >> 1);
+         int var5 = (var2 + 1 >> 1) + this.sceneX;
          int var6 = this.sceneY + (var3 >> 1);
          int var7 = (var3 + 1 >> 1) + this.sceneY;
          int[][] var8 = class61.tileHeights[this.level];
          int var9 = var8[var5][var7] + var8[var4][var6] + var8[var5][var6] + var8[var4][var7] >> 2;
          int var10 = (this.sceneX << 7) + (var2 << 6);
-         int var11 = (var3 << 6) + (this.sceneY << 7);
+         int var11 = (this.sceneY << 7) + (var3 << 6);
          return var12.method4395(this.type, this.orientation, var8, var10, var9, var11, this.field1544, this.field1545);
       }
    }
@@ -229,7 +229,7 @@ public class DynamicObject extends Renderable {
       int var20 = (int)(256.0D * var6);
       int var13 = (int)(256.0D * var8);
       int var21 = (int)(256.0D * var10);
-      int var15 = var21 + (var20 << 16) + (var13 << 8);
+      int var15 = (var13 << 8) + (var20 << 16) + var21;
       return var15;
    }
 }

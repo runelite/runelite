@@ -21,27 +21,28 @@ public class class197 implements Iterator {
 
    public Object next() {
       Node var1;
-      if(this.field2493 != this.field2495.field2461[this.field2494 - 1]) {
+      if(this.field2495.field2461[this.field2494 - 1] != this.field2493) {
          var1 = this.field2493;
          this.field2493 = var1.next;
          this.field2492 = var1;
          return var1;
       } else {
-         while(this.field2494 < this.field2495.field2460) {
-            var1 = this.field2495.field2461[this.field2494++].next;
-            if(var1 != this.field2495.field2461[this.field2494 - 1]) {
-               this.field2493 = var1.next;
-               this.field2492 = var1;
-               return var1;
+         do {
+            if(this.field2494 >= this.field2495.field2460) {
+               return null;
             }
-         }
 
-         return null;
+            var1 = this.field2495.field2461[this.field2494++].next;
+         } while(this.field2495.field2461[this.field2494 - 1] == var1);
+
+         this.field2493 = var1.next;
+         this.field2492 = var1;
+         return var1;
       }
    }
 
    public boolean hasNext() {
-      if(this.field2493 != this.field2495.field2461[this.field2494 - 1]) {
+      if(this.field2495.field2461[this.field2494 - 1] != this.field2493) {
          return true;
       } else {
          while(this.field2494 < this.field2495.field2460) {

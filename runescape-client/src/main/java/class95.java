@@ -44,15 +44,15 @@ final class class95 implements Comparator {
       garbageValue = "101"
    )
    int method1671(class14 var1, class14 var2) {
-      if(var1.field297 == var2.field297) {
+      if(var2.field297 == var1.field297) {
          return 0;
       } else {
          if(this.val$preferOwnWorld) {
-            if(var1.field297 == Client.world) {
+            if(Client.world == var1.field297) {
                return -1;
             }
 
-            if(Client.world == var2.field297) {
+            if(var2.field297 == Client.world) {
                return 1;
             }
          }

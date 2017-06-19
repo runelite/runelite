@@ -48,7 +48,7 @@ final class class19 implements Comparator {
    )
    public static void method162(String[] var0, short[] var1, int var2, int var3) {
       if(var2 < var3) {
-         int var4 = (var2 + var3) / 2;
+         int var4 = (var3 + var2) / 2;
          int var5 = var2;
          String var6 = var0[var4];
          var0[var4] = var0[var3];

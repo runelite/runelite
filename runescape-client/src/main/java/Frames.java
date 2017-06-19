@@ -29,7 +29,7 @@ public class Frames extends CacheableNode {
          int var11 = (var9[0] & 255) << 8 | var9[1] & 255;
 
          for(FrameMap var12 = (FrameMap)var5.method3487(); var12 != null; var12 = (FrameMap)var5.method3512()) {
-            if(var12.field2057 == var11) {
+            if(var11 == var12.field2057) {
                var10 = var12;
                break;
             }

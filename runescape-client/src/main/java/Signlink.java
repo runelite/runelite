@@ -2,8 +2,11 @@ import java.io.DataInputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
-
-import net.runelite.mapping.*;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ew")
 @Implements("Signlink")
@@ -237,7 +240,7 @@ public class Signlink implements Runnable {
                var9 = -var9;
             }
 
-            int var10 = var9 + var5 * var1;
+            int var10 = var5 * var1 + var9;
             if(var5 != var10 / var1) {
                return false;
             }

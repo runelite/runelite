@@ -82,8 +82,8 @@ public class class123 {
    )
    public void method2239(byte[] var1, int var2, int var3) throws IOException {
       try {
-         if(var2 + var3 > var1.length) {
-            throw new ArrayIndexOutOfBoundsException(var2 + var3 - var1.length);
+         if(var3 + var2 > var1.length) {
+            throw new ArrayIndexOutOfBoundsException(var3 + var2 - var1.length);
          }
 
          if(this.field1756 != -1L && this.field1760 >= this.field1756 && (long)var3 + this.field1760 <= (long)this.field1752 + this.field1756) {
@@ -382,7 +382,7 @@ public class class123 {
                var5 = ImageIO.read(new ByteArrayInputStream(var4));
                var7 = var5.getWidth();
                var8 = var5.getHeight();
-               int[] var9 = new int[var7 * var8];
+               int[] var9 = new int[var8 * var7];
                PixelGrabber var10 = new PixelGrabber(var5, 0, 0, var7, var8, var9, 0, var7);
                var10.grabPixels();
                var6 = new SpritePixels(var9, var7, var8);

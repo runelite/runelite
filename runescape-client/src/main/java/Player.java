@@ -159,7 +159,7 @@ public final class Player extends Actor {
       }
 
       int var6 = var5 * (Client.field1147 - Client.field988) / 100 + Client.field988;
-      int var7 = var6 * var3 * 512 / (var2 * 334);
+      int var7 = var3 * var6 * 512 / (var2 * 334);
       int var8;
       int var9;
       short var10;
@@ -168,7 +168,7 @@ public final class Player extends Actor {
          var6 = var10 * var2 * 334 / (var3 * 512);
          if(var6 > Client.field1163) {
             var6 = Client.field1163;
-            var8 = var6 * var3 * 512 / (var10 * 334);
+            var8 = var3 * var6 * 512 / (var10 * 334);
             var9 = (var2 - var8) / 2;
             if(var4) {
                Rasterizer2D.method4880();
@@ -184,7 +184,7 @@ public final class Player extends Actor {
          var6 = var10 * var2 * 334 / (var3 * 512);
          if(var6 < Client.field1162) {
             var6 = Client.field1162;
-            var8 = var2 * var10 * 334 / (var6 * 512);
+            var8 = var10 * var2 * 334 / (var6 * 512);
             var9 = (var3 - var8) / 2;
             if(var4) {
                Rasterizer2D.method4880();
@@ -197,16 +197,16 @@ public final class Player extends Actor {
          }
       }
 
-      var8 = Client.field1160 + var5 * (Client.field904 - Client.field1160) / 100;
-      Client.scale = var8 * var3 * var6 / 85504 << 1;
-      if(Client.viewportHeight != var2 || Client.viewportWidth != var3) {
+      var8 = var5 * (Client.field904 - Client.field1160) / 100 + Client.field1160;
+      Client.scale = var3 * var8 * var6 / 85504 << 1;
+      if(var2 != Client.viewportHeight || var3 != Client.viewportWidth) {
          int[] var11 = new int[9];
 
          for(int var12 = 0; var12 < 9; ++var12) {
             int var13 = var12 * 32 + 128 + 15;
             int var14 = var13 * 3 + 600;
             int var15 = class136.SINE[var13];
-            var11[var12] = var14 * var15 >> 16;
+            var11[var12] = var15 * var14 >> 16;
          }
 
          Region.method2738(var11, 500, 800, var2, var3);
@@ -228,7 +228,7 @@ public final class Player extends Actor {
          return null;
       } else {
          Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?GameEngine.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation != -1 && !this.field886 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?GameEngine.getAnimation(super.poseAnimation):null;
+         Sequence var2 = super.poseAnimation == -1 || this.field886 || super.idlePoseAnimation == super.poseAnimation && var1 != null?null:GameEngine.getAnimation(super.poseAnimation);
          Model var3 = this.composition.method3845(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;
@@ -433,7 +433,7 @@ public final class Player extends Actor {
                   var11 = var2[var4++];
                   if(var11 != -1 && (!class224.getItemDefinition(var11).isMembers || Client.isMembers)) {
                      for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(var10.itemIds[var12] == var11 + 1) {
+                        if(var11 + 1 == var10.itemIds[var12]) {
                            var7 += var10.itemQuantities[var12];
                         }
                      }
@@ -637,7 +637,7 @@ public final class Player extends Actor {
       }
 
       this.name = var1.readString();
-      if(this == class20.localPlayer) {
+      if(class20.localPlayer == this) {
          class152.field2223 = this.name;
       }
 
@@ -700,7 +700,7 @@ public final class Player extends Actor {
                      var12 = var8.id;
                   }
 
-                  if(var12 != var11) {
+                  if(var11 != var12) {
                      if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
                         var9 = false;
                      }

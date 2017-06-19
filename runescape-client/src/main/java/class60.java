@@ -32,12 +32,12 @@ public final class class60 {
       class96.field1499 = 0;
 
       for(int var7 = 1; var7 < 2048; ++var7) {
-         if(var1 != var7) {
+         if(var7 != var1) {
             int var8 = var0.method3290(18);
             int var9 = var8 >> 16;
             int var10 = var8 >> 8 & 597;
             int var11 = var8 & 597;
-            class96.field1490[var7] = (var10 << 14) + (var9 << 28) + var11;
+            class96.field1490[var7] = var11 + (var10 << 14) + (var9 << 28);
             class96.field1497[var7] = 0;
             class96.field1492[var7] = -1;
             class96.field1495[++class96.field1499 - 1] = var7;

@@ -142,7 +142,7 @@ public class RenderOverview {
          if(var3) {
             int var8 = (int)Math.ceil((double)((float)var6 / this.field3826));
             int var9 = (int)Math.ceil((double)((float)var7 / this.field3826));
-            List var10 = this.field3820.method561(this.field3822 - var8 / 2 - 1, this.field3840 - var9 / 2 - 1, this.field3822 + var8 / 2 + 1, this.field3840 + var9 / 2 + 1, var4, var5, var6, var7, var1, var2);
+            List var10 = this.field3820.method561(this.field3822 - var8 / 2 - 1, this.field3840 - var9 / 2 - 1, var8 / 2 + this.field3822 + 1, this.field3840 + var9 / 2 + 1, var4, var5, var6, var7, var1, var2);
             HashSet var11 = new HashSet();
 
             Iterator var12;
@@ -257,14 +257,16 @@ public class RenderOverview {
    public WorldMapData method5051(int var1, int var2, int var3) {
       Iterator var4 = this.field3816.values().iterator();
 
-      while(var4.hasNext()) {
-         WorldMapData var5 = (WorldMapData)var4.next();
-         if(var5.method282(var1, var2, var3)) {
-            return var5;
+      WorldMapData var5;
+      do {
+         if(!var4.hasNext()) {
+            return null;
          }
-      }
 
-      return null;
+         var5 = (WorldMapData)var4.next();
+      } while(!var5.method282(var1, var2, var3));
+
+      return var5;
    }
 
    @ObfuscatedName("bz")
@@ -343,7 +345,7 @@ public class RenderOverview {
    public void extractWorldmap(int var1, int var2, int var3, int var4, int var5) {
       int[] var6 = new int[4];
       Rasterizer2D.method4884(var6);
-      Rasterizer2D.method4833(var1, var2, var1 + var3, var2 + var4);
+      Rasterizer2D.method4833(var1, var2, var3 + var1, var2 + var4);
       Rasterizer2D.method4826(var1, var2, var3, var4, -16777216);
       int var7 = this.field3807.method5035();
       if(var7 < 100) {
@@ -370,7 +372,7 @@ public class RenderOverview {
 
          int var8 = (int)Math.ceil((double)((float)var3 / this.field3826));
          int var9 = (int)Math.ceil((double)((float)var4 / this.field3826));
-         this.field3820.method528(this.field3822 - var8 / 2, this.field3840 - var9 / 2, var8 / 2 + this.field3822, var9 / 2 + this.field3840, var1, var2, var1 + var3, var4 + var2);
+         this.field3820.method528(this.field3822 - var8 / 2, this.field3840 - var9 / 2, var8 / 2 + this.field3822, this.field3840 + var9 / 2, var1, var2, var3 + var1, var2 + var4);
          if(!this.field3842) {
             boolean var10 = false;
             if(var5 - this.field3843 > 100) {
@@ -424,8 +426,8 @@ public class RenderOverview {
    )
    void method5063(int var1, int var2, int var3, int var4, int var5) {
       byte var6 = 20;
-      int var7 = var3 / 2 + var1;
-      int var8 = var4 / 2 + var2 - 18 - var6;
+      int var7 = var1 + var3 / 2;
+      int var8 = var2 + var4 / 2 - 18 - var6;
       Rasterizer2D.method4826(var1, var2, var3, var4, -16777216);
       Rasterizer2D.method4888(var7 - 152, var8, 304, 34, -65536);
       Rasterizer2D.method4826(var7 - 150, var8 + 2, var5 * 3, 30, -65536);
@@ -626,7 +628,7 @@ public class RenderOverview {
       this.field3835 = 0;
 
       for(int var2 = 0; var2 < Area.field3304.length; ++var2) {
-         if(Area.field3304[var2] != null && var1 == Area.field3304[var2].field3306) {
+         if(Area.field3304[var2] != null && Area.field3304[var2].field3306 == var1) {
             this.field3833.add(Integer.valueOf(Area.field3304[var2].field3301));
          }
       }
@@ -776,22 +778,26 @@ public class RenderOverview {
             int var6 = -1;
             Iterator var7 = var4.iterator();
 
-            while(var7.hasNext()) {
-               class39 var8 = (class39)var7.next();
-               int var10 = var8.field538.worldX - var2.worldX;
-               int var11 = var8.field538.worldY - var2.worldY;
-               int var9 = var10 * var10 + var11 * var11;
-               if(var9 == 0) {
-                  return var8.field538;
-               }
+            while(true) {
+               class39 var8;
+               int var11;
+               do {
+                  if(!var7.hasNext()) {
+                     return var5.field538;
+                  }
 
-               if(var9 < var6 || var5 == null) {
-                  var5 = var8;
-                  var6 = var9;
-               }
+                  var8 = (class39)var7.next();
+                  int var9 = var8.field538.worldX - var2.worldX;
+                  int var10 = var8.field538.worldY - var2.worldY;
+                  var11 = var10 * var10 + var9 * var9;
+                  if(var11 == 0) {
+                     return var8.field538;
+                  }
+               } while(var11 >= var6 && var5 != null);
+
+               var5 = var8;
+               var6 = var11;
             }
-
-            return var5.field538;
          } else {
             return null;
          }
@@ -908,14 +914,16 @@ public class RenderOverview {
    public WorldMapData method5151(int var1) {
       Iterator var2 = this.field3816.values().iterator();
 
-      while(var2.hasNext()) {
-         WorldMapData var3 = (WorldMapData)var2.next();
-         if(var3.method287() == var1) {
-            return var3;
+      WorldMapData var3;
+      do {
+         if(!var2.hasNext()) {
+            return null;
          }
-      }
 
-      return null;
+         var3 = (WorldMapData)var2.next();
+      } while(var3.method287() != var1);
+
+      return var3;
    }
 
    @ObfuscatedName("o")

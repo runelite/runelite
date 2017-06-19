@@ -10,7 +10,7 @@ public class class195 {
    @ObfuscatedName("e")
    public class196 method3523() {
       class196 var1 = this.field2488;
-      if(var1 == this.field2489) {
+      if(this.field2489 == var1) {
          this.field2488 = null;
          return null;
       } else {
@@ -28,7 +28,7 @@ public class class195 {
    @ObfuscatedName("m")
    public class196 method3524() {
       class196 var1 = this.field2489.field2490;
-      if(var1 == this.field2489) {
+      if(this.field2489 == var1) {
          this.field2488 = null;
          return null;
       } else {

@@ -79,12 +79,12 @@ public final class class10 extends class9 {
       garbageValue = "-65281"
    )
    public class10(Model var1, int var2, int var3, int var4, int var5) {
-      this.field266 = var1.field1955 + var2 - var1.field1958;
+      this.field266 = var2 + var1.field1955 - var1.field1958;
       this.field257 = var3 + var1.field1956 - var1.field1959;
       this.field258 = var4 + var1.field1957 - var1.field1928;
-      this.field256 = var1.field1958 + var2 + var1.field1955;
+      this.field256 = var2 + var1.field1958 + var1.field1955;
       this.field262 = var3 + var1.field1956 + var1.field1959;
-      this.field261 = var1.field1957 + var4 + var1.field1928;
+      this.field261 = var4 + var1.field1957 + var1.field1928;
       this.field259 = var5;
    }
 
@@ -94,7 +94,7 @@ public final class class10 extends class9 {
       garbageValue = "1182131533"
    )
    static void method57(Player var0, int var1, int var2) {
-      if(var1 == var0.animation && var1 != -1) {
+      if(var0.animation == var1 && var1 != -1) {
          int var3 = GameEngine.getAnimation(var1).replyMode;
          if(var3 == 1) {
             var0.actionFrame = 0;

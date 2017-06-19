@@ -133,7 +133,7 @@ public class class23 {
 
          for(var4 = (var7 - 6) / 8; var4 <= (var7 + 6) / 8; ++var4) {
             for(var5 = (var1 - 6) / 8; var5 <= (var1 + 6) / 8; ++var5) {
-               var6 = var5 + (var4 << 8);
+               var6 = (var4 << 8) + var5;
                if(!var8 || var5 != 49 && var5 != 149 && var5 != 147 && var4 != 50 && (var4 != 49 || var5 != 47)) {
                   class13.mapRegions[var2] = var6;
                   WallObject.field2143[var2] = class177.indexMaps.method4055("m" + var4 + "_" + var5);
@@ -192,7 +192,7 @@ public class class23 {
 
                      int var12;
                      for(var12 = 0; var12 < var3; ++var12) {
-                        if(class13.mapRegions[var12] == var11) {
+                        if(var11 == class13.mapRegions[var12]) {
                            var11 = -1;
                            break;
                         }

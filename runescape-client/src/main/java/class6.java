@@ -528,10 +528,10 @@ public class class6 implements RSEnum, class292 {
             var16 = (int)(1.04D * (double)var16);
          }
 
-         int var17 = var16 * class136.SINE[var9.xan2d] >> 16;
+         int var17 = class136.SINE[var9.xan2d] * var16 >> 16;
          int var18 = class136.COSINE[var9.xan2d] * var16 >> 16;
          var19.method2397();
-         var19.method2440(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var9.offsetY2d + var19.modelHeight / 2 + var17, var9.offsetY2d + var18);
+         var19.method2440(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var17 + var9.offsetY2d + var19.modelHeight / 2, var18 + var9.offsetY2d);
          if(var9.field3544 != -1) {
             var20.method4950(0, 0);
          }
@@ -580,7 +580,7 @@ public class class6 implements RSEnum, class292 {
             var0 = var0.method4525();
          }
 
-         if(var0 != null && var0.field3586 && (!var0.field3572 || var1 == Client.field948)) {
+         if(var0 != null && var0.field3586 && (!var0.field3572 || Client.field948 == var1)) {
             String var4 = var0.name;
             if(var0.combatLevel != 0) {
                var4 = var4 + class229.method3972(var0.combatLevel, class20.localPlayer.combatLevel) + "  (level-" + var0.combatLevel + ")";

@@ -77,7 +77,7 @@ public abstract class Renderable extends CacheableNode {
          class83.intStackSize -= 2;
          var3 = class83.intStack[class83.intStackSize];
          var4 = class83.intStack[class83.intStackSize + 1];
-         class83.intStack[++class83.intStackSize - 1] = var4 * var3;
+         class83.intStack[++class83.intStackSize - 1] = var3 * var4;
          return 1;
       } else if(var0 == 4003) {
          class83.intStackSize -= 2;
@@ -100,13 +100,13 @@ public abstract class Renderable extends CacheableNode {
          int var11 = class83.intStack[class83.intStackSize + 2];
          int var6 = class83.intStack[class83.intStackSize + 3];
          int var12 = class83.intStack[class83.intStackSize + 4];
-         class83.intStack[++class83.intStackSize - 1] = var3 + (var12 - var11) * (var4 - var3) / (var6 - var11);
+         class83.intStack[++class83.intStackSize - 1] = var3 + (var4 - var3) * (var12 - var11) / (var6 - var11);
          return 1;
       } else if(var0 == 4007) {
          class83.intStackSize -= 2;
          var3 = class83.intStack[class83.intStackSize];
          var4 = class83.intStack[class83.intStackSize + 1];
-         class83.intStack[++class83.intStackSize - 1] = var4 * var3 / 100 + var3;
+         class83.intStack[++class83.intStackSize - 1] = var3 + var3 * var4 / 100;
          return 1;
       } else if(var0 == 4008) {
          class83.intStackSize -= 2;
@@ -204,7 +204,7 @@ public abstract class Renderable extends CacheableNode {
       for(var2 = 0; var2 < 20; ++var2) {
          for(var3 = 1; var3 < var1 - 1; ++var3) {
             for(var4 = 1; var4 < 127; ++var4) {
-               var5 = var4 + (var3 << 7);
+               var5 = (var3 << 7) + var4;
                Script.field1536[var5] = (class14.field296[var5 + 128] + class14.field296[var5 - 1] + class14.field296[var5 + 1] + class14.field296[var5 - 128]) / 4;
             }
          }
@@ -222,7 +222,7 @@ public abstract class Renderable extends CacheableNode {
                if(var0.pixels[var2++] != 0) {
                   var5 = var4 + 16 + var0.offsetX;
                   int var8 = var3 + 16 + var0.offsetY;
-                  int var7 = (var8 << 7) + var5;
+                  int var7 = var5 + (var8 << 7);
                   class14.field296[var7] = 0;
                }
             }

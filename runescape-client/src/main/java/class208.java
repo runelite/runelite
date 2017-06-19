@@ -19,7 +19,7 @@ public class class208 extends class119 {
       if((this.field2601.field2537[var1.field2575] & 4) != 0 && var1.field2572 < 0) {
          int var3 = this.field2601.field2542[var1.field2575] / class109.field1635;
          int var4 = (var3 + 1048575 - var1.field2568) / var3;
-         var1.field2568 = var1.field2568 + var2 * var3 & 1048575;
+         var1.field2568 = var2 * var3 + var1.field2568 & 1048575;
          if(var4 <= var2) {
             if(this.field2601.field2552[var1.field2575] == 0) {
                var1.field2565 = class117.method2039(var1.field2559, var1.field2565.method2124(), var1.field2565.method2107(), var1.field2565.method2046());
@@ -84,12 +84,12 @@ public class class208 extends class119 {
 
             do {
                if(var6 <= var4.field2573) {
-                  this.method3776(var4, var1, var5, var6, var6 + var5);
+                  this.method3776(var4, var1, var5, var6, var5 + var6);
                   var4.field2573 -= var6;
                   break;
                }
 
-               this.method3776(var4, var1, var5, var4.field2573, var6 + var5);
+               this.method3776(var4, var1, var5, var4.field2573, var5 + var6);
                var5 += var4.field2573;
                var6 -= var4.field2573;
             } while(!this.field2601.method3607(var4, var1, var5, var6));

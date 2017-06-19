@@ -85,11 +85,11 @@ public class class164 {
       int var9 = class27.method228(var3, var5 + 1);
       int var10 = class27.method228(var3 + 1, var5 + 1);
       int var11 = 65536 - class136.COSINE[var4 * 1024 / var2] >> 1;
-      int var12 = (var11 * var8 >> 16) + (var7 * (65536 - var11) >> 16);
+      int var12 = (var7 * (65536 - var11) >> 16) + (var11 * var8 >> 16);
       int var13 = 65536 - class136.COSINE[var4 * 1024 / var2] >> 1;
-      int var14 = (var10 * var13 >> 16) + ((65536 - var13) * var9 >> 16);
+      int var14 = (var13 * var10 >> 16) + ((65536 - var13) * var9 >> 16);
       int var15 = 65536 - class136.COSINE[var6 * 1024 / var2] >> 1;
-      int var16 = (var15 * var14 >> 16) + ((65536 - var15) * var12 >> 16);
+      int var16 = ((65536 - var15) * var12 >> 16) + (var15 * var14 >> 16);
       return var16;
    }
 }

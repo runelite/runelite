@@ -33,7 +33,7 @@ public class class276 {
       class69.method1035();
       class210 var4 = var0.method3888(false);
       if(var4 != null) {
-         Rasterizer2D.method4833(var1, var2, var1 + var4.field2607, var2 + var4.field2611);
+         Rasterizer2D.method4833(var1, var2, var4.field2607 + var1, var4.field2611 + var2);
          if(Client.field1087 != 2 && Client.field1087 != 5) {
             int var5 = Client.mapAngle + Client.mapScale & 2047;
             int var6 = class20.localPlayer.x / 32 + 48;
@@ -77,7 +77,7 @@ public class class276 {
                   Player var21;
                   for(var10 = 0; var10 < var8; ++var10) {
                      var21 = Client.cachedPlayers[var20[var10]];
-                     if(var21 != null && var21.vmethod1593() && !var21.hidden && class20.localPlayer != var21) {
+                     if(var21 != null && var21.vmethod1593() && !var21.hidden && var21 != class20.localPlayer) {
                         var12 = var21.x / 32 - class20.localPlayer.x / 32;
                         int var15 = var21.y / 32 - class20.localPlayer.y / 32;
                         boolean var16 = false;
@@ -144,7 +144,7 @@ public class class276 {
                   }
 
                   if(!class20.localPlayer.hidden) {
-                     Rasterizer2D.method4826(var1 + var4.field2607 / 2 - 1, var4.field2611 / 2 + var2 - 1, 3, 3, 16777215);
+                     Rasterizer2D.method4826(var4.field2607 / 2 + var1 - 1, var2 + var4.field2611 / 2 - 1, 3, 3, 16777215);
                   }
                   break;
                }

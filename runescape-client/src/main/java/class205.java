@@ -455,7 +455,7 @@ public class class205 extends Node {
          var8 = var12;
          var9 = PendingSpawn.method1435(var9, var2);
          var14 = PendingSpawn.method1435(var14, var2);
-         if(var9 != var14 && Character.toUpperCase(var9) != Character.toUpperCase(var14)) {
+         if(var14 != var9 && Character.toUpperCase(var9) != Character.toUpperCase(var14)) {
             var9 = Character.toLowerCase(var9);
             var14 = Character.toLowerCase(var14);
             if(var14 != var9) {
@@ -471,7 +471,7 @@ public class class205 extends Node {
       for(var17 = 0; var17 < var15; ++var17) {
          char var19 = var0.charAt(var17);
          var18 = var1.charAt(var17);
-         if(var19 != var18 && Character.toUpperCase(var19) != Character.toUpperCase(var18)) {
+         if(var18 != var19 && Character.toUpperCase(var19) != Character.toUpperCase(var18)) {
             var19 = Character.toLowerCase(var19);
             var18 = Character.toLowerCase(var18);
             if(var18 != var19) {

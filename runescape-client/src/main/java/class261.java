@@ -41,8 +41,9 @@ public class class261 {
          int var9 = var7 >> 7 & 127;
          int var10 = var7 >> 29 & 3;
          int var11 = var7 >> 14 & 32767;
-         if(var7 != var5) {
+         if(var5 != var7) {
             var5 = var7;
+            int var14;
             if(var10 == 2 && class17.region.method2727(Player.plane, var8, var9, var7) >= 0) {
                ObjectComposition var12 = class29.getObjectDefinition(var11);
                if(var12.impostorIds != null) {
@@ -66,7 +67,7 @@ public class class261 {
                   }
 
                   if(var13 != null) {
-                     for(int var14 = 4; var14 >= 0; --var14) {
+                     for(var14 = 4; var14 >= 0; --var14) {
                         if(var13[var14] != null) {
                            short var15 = 0;
                            if(var14 == 0) {
@@ -98,11 +99,10 @@ public class class261 {
                }
             }
 
-            int[] var16;
-            Player var24;
-            int var25;
-            NPC var26;
-            int var28;
+            int var16;
+            int[] var24;
+            Player var25;
+            NPC var27;
             if(var10 == 1) {
                NPC var17 = Client.cachedNPCs[var11];
                if(var17 == null) {
@@ -110,20 +110,20 @@ public class class261 {
                }
 
                if(var17.composition.field3559 == 1 && (var17.x & 127) == 64 && (var17.y & 127) == 64) {
-                  for(var25 = 0; var25 < Client.field930; ++var25) {
-                     var26 = Client.cachedNPCs[Client.npcIndices[var25]];
-                     if(var26 != null && var26 != var17 && var26.composition.field3559 == 1 && var17.x == var26.x && var17.y == var26.y) {
-                        class6.method29(var26.composition, Client.npcIndices[var25], var8, var9);
+                  for(var14 = 0; var14 < Client.field930; ++var14) {
+                     var27 = Client.cachedNPCs[Client.npcIndices[var14]];
+                     if(var27 != null && var17 != var27 && var27.composition.field3559 == 1 && var27.x == var17.x && var27.y == var17.y) {
+                        class6.method29(var27.composition, Client.npcIndices[var14], var8, var9);
                      }
                   }
 
-                  var25 = class96.field1487;
-                  var16 = class96.field1491;
+                  var14 = class96.field1487;
+                  var24 = class96.field1491;
 
-                  for(var28 = 0; var28 < var25; ++var28) {
-                     var24 = Client.cachedPlayers[var16[var28]];
-                     if(var24 != null && var17.x == var24.x && var17.y == var24.y) {
-                        class4.method12(var24, var16[var28], var8, var9);
+                  for(var16 = 0; var16 < var14; ++var16) {
+                     var25 = Client.cachedPlayers[var24[var16]];
+                     if(var25 != null && var25.x == var17.x && var25.y == var17.y) {
+                        class4.method12(var25, var24[var16], var8, var9);
                      }
                   }
                }
@@ -132,41 +132,41 @@ public class class261 {
             }
 
             if(var10 == 0) {
-               Player var27 = Client.cachedPlayers[var11];
-               if(var27 == null) {
+               Player var26 = Client.cachedPlayers[var11];
+               if(var26 == null) {
                   continue;
                }
 
-               if((var27.x & 127) == 64 && (var27.y & 127) == 64) {
-                  for(var25 = 0; var25 < Client.field930; ++var25) {
-                     var26 = Client.cachedNPCs[Client.npcIndices[var25]];
-                     if(var26 != null && var26.composition.field3559 == 1 && var26.x == var27.x && var27.y == var26.y) {
-                        class6.method29(var26.composition, Client.npcIndices[var25], var8, var9);
+               if((var26.x & 127) == 64 && (var26.y & 127) == 64) {
+                  for(var14 = 0; var14 < Client.field930; ++var14) {
+                     var27 = Client.cachedNPCs[Client.npcIndices[var14]];
+                     if(var27 != null && var27.composition.field3559 == 1 && var27.x == var26.x && var27.y == var26.y) {
+                        class6.method29(var27.composition, Client.npcIndices[var14], var8, var9);
                      }
                   }
 
-                  var25 = class96.field1487;
-                  var16 = class96.field1491;
+                  var14 = class96.field1487;
+                  var24 = class96.field1491;
 
-                  for(var28 = 0; var28 < var25; ++var28) {
-                     var24 = Client.cachedPlayers[var16[var28]];
-                     if(var24 != null && var24 != var27 && var27.x == var24.x && var27.y == var24.y) {
-                        class4.method12(var24, var16[var28], var8, var9);
+                  for(var16 = 0; var16 < var14; ++var16) {
+                     var25 = Client.cachedPlayers[var24[var16]];
+                     if(var25 != null && var26 != var25 && var25.x == var26.x && var25.y == var26.y) {
+                        class4.method12(var25, var24[var16], var8, var9);
                      }
                   }
                }
 
-               if(Client.field1035 != var11) {
-                  class4.method12(var27, var11, var8, var9);
+               if(var11 != Client.field1035) {
+                  class4.method12(var26, var11, var8, var9);
                } else {
                   var4 = var7;
                }
             }
 
             if(var10 == 3) {
-               Deque var29 = Client.groundItemDeque[Player.plane][var8][var9];
-               if(var29 != null) {
-                  for(Item var18 = (Item)var29.method3488(); var18 != null; var18 = (Item)var29.method3490()) {
+               Deque var28 = Client.groundItemDeque[Player.plane][var8][var9];
+               if(var28 != null) {
+                  for(Item var18 = (Item)var28.method3488(); var18 != null; var18 = (Item)var28.method3490()) {
                      ItemComposition var19 = class224.getItemDefinition(var18.id);
                      if(Client.itemSelectionState == 1) {
                         class44.addMenuEntry("Use", Client.selectedItemName + " -> " + class15.method105(16748608) + var19.name, 16, var18.id, var8, var9);

@@ -137,7 +137,7 @@ public class CollisionData {
 
       for(var8 = var1; var8 < var3 + var1; ++var8) {
          if(var8 >= 0 && var8 < this.width) {
-            for(int var9 = var2; var9 < var4 + var2; ++var9) {
+            for(int var9 = var2; var9 < var2 + var4; ++var9) {
                if(var9 >= 0 && var9 < this.height) {
                   this.method2920(var8, var9, var7);
                }

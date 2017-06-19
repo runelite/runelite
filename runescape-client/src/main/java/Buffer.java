@@ -34,7 +34,7 @@ public class Buffer extends Node {
    )
    public int method3017() {
       this.offset += 2;
-      int var1 = ((this.payload[this.offset - 1] & 255) << 8) + (this.payload[this.offset - 2] - 128 & 255);
+      int var1 = (this.payload[this.offset - 2] - 128 & 255) + ((this.payload[this.offset - 1] & 255) << 8);
       if(var1 > 32767) {
          var1 -= 65536;
       }
@@ -89,7 +89,7 @@ public class Buffer extends Node {
    )
    public int method3023() {
       this.offset += 2;
-      return ((this.payload[this.offset - 2] & 255) << 8) + (this.payload[this.offset - 1] - 128 & 255);
+      return (this.payload[this.offset - 1] - 128 & 255) + ((this.payload[this.offset - 2] & 255) << 8);
    }
 
    @ObfuscatedName("j")
@@ -350,8 +350,8 @@ public class Buffer extends Node {
          int var6 = 0;
          int var7 = -1640531527;
 
-         for(int var8 = 32; var8-- > 0; var5 += var4 + (var4 << 4 ^ var4 >>> 5) ^ var6 + var1[var6 >>> 11 & 3]) {
-            var4 += (var5 << 4 ^ var5 >>> 5) + var5 ^ var1[var6 & 3] + var6;
+         for(int var8 = 32; var8-- > 0; var5 += (var4 << 4 ^ var4 >>> 5) + var4 ^ var1[var6 >>> 11 & 3] + var6) {
+            var4 += var5 + (var5 << 4 ^ var5 >>> 5) ^ var1[var6 & 3] + var6;
             var6 += var7;
          }
 
@@ -379,8 +379,8 @@ public class Buffer extends Node {
          int var9 = 0;
          int var10 = -1640531527;
 
-         for(int var11 = 32; var11-- > 0; var8 += var7 + (var7 << 4 ^ var7 >>> 5) ^ var9 + var1[var9 >>> 11 & 3]) {
-            var7 += var8 + (var8 << 4 ^ var8 >>> 5) ^ var1[var9 & 3] + var9;
+         for(int var11 = 32; var11-- > 0; var8 += var7 + (var7 << 4 ^ var7 >>> 5) ^ var1[var9 >>> 11 & 3] + var9) {
+            var7 += (var8 << 4 ^ var8 >>> 5) + var8 ^ var1[var9 & 3] + var9;
             var9 += var10;
          }
 
@@ -408,7 +408,7 @@ public class Buffer extends Node {
          int var9 = -957401312;
          int var10 = -1640531527;
 
-         for(int var11 = 32; var11-- > 0; var7 -= (var8 << 4 ^ var8 >>> 5) + var8 ^ var9 + var1[var9 & 3]) {
+         for(int var11 = 32; var11-- > 0; var7 -= (var8 << 4 ^ var8 >>> 5) + var8 ^ var1[var9 & 3] + var9) {
             var8 -= var7 + (var7 << 4 ^ var7 >>> 5) ^ var1[var9 >>> 11 & 3] + var9;
             var9 -= var10;
          }
@@ -575,7 +575,7 @@ public class Buffer extends Node {
    )
    public int method3070() {
       this.offset += 2;
-      return ((this.payload[this.offset - 1] & 255) << 8) + (this.payload[this.offset - 2] - 128 & 255);
+      return (this.payload[this.offset - 2] - 128 & 255) + ((this.payload[this.offset - 1] & 255) << 8);
    }
 
    @ObfuscatedName("bn")
@@ -585,7 +585,7 @@ public class Buffer extends Node {
    )
    public int method3071() {
       this.offset += 2;
-      int var1 = ((this.payload[this.offset - 1] & 255) << 8) + (this.payload[this.offset - 2] & 255);
+      int var1 = (this.payload[this.offset - 2] & 255) + ((this.payload[this.offset - 1] & 255) << 8);
       if(var1 > 32767) {
          var1 -= 65536;
       }
@@ -612,7 +612,7 @@ public class Buffer extends Node {
    )
    public int method3078() {
       this.offset += 4;
-      return (this.payload[this.offset - 4] & 255) + ((this.payload[this.offset - 2] & 255) << 16) + ((this.payload[this.offset - 1] & 255) << 24) + ((this.payload[this.offset - 3] & 255) << 8);
+      return ((this.payload[this.offset - 3] & 255) << 8) + (this.payload[this.offset - 4] & 255) + ((this.payload[this.offset - 2] & 255) << 16) + ((this.payload[this.offset - 1] & 255) << 24);
    }
 
    @ObfuscatedName("ak")
@@ -636,7 +636,7 @@ public class Buffer extends Node {
             int var7 = var4;
 
             int var8;
-            for(int var9 = var4 + var2; var7 < var9; var5[var6++] = (char)var8) {
+            for(int var9 = var2 + var4; var7 < var9; var5[var6++] = (char)var8) {
                int var10 = var3[var7++] & 255;
                if(var10 < 128) {
                   if(var10 == 0) {
@@ -725,7 +725,7 @@ public class Buffer extends Node {
    )
    public int method3116() {
       this.offset += 4;
-      return ((this.payload[this.offset - 3] & 255) << 24) + ((this.payload[this.offset - 4] & 255) << 16) + ((this.payload[this.offset - 1] & 255) << 8) + (this.payload[this.offset - 2] & 255);
+      return (this.payload[this.offset - 2] & 255) + ((this.payload[this.offset - 3] & 255) << 24) + ((this.payload[this.offset - 4] & 255) << 16) + ((this.payload[this.offset - 1] & 255) << 8);
    }
 
    @ObfuscatedName("o")
@@ -808,7 +808,7 @@ public class Buffer extends Node {
    )
    public int method3160() {
       this.offset += 4;
-      return ((this.payload[this.offset - 1] & 255) << 16) + ((this.payload[this.offset - 2] & 255) << 24) + ((this.payload[this.offset - 4] & 255) << 8) + (this.payload[this.offset - 3] & 255);
+      return (this.payload[this.offset - 3] & 255) + ((this.payload[this.offset - 1] & 255) << 16) + ((this.payload[this.offset - 2] & 255) << 24) + ((this.payload[this.offset - 4] & 255) << 8);
    }
 
    @ObfuscatedName("bg")
@@ -847,8 +847,8 @@ public class Buffer extends Node {
          int var6 = -957401312;
          int var7 = -1640531527;
 
-         for(int var8 = 32; var8-- > 0; var4 -= var5 + (var5 << 4 ^ var5 >>> 5) ^ var6 + var1[var6 & 3]) {
-            var5 -= var4 + (var4 << 4 ^ var4 >>> 5) ^ var1[var6 >>> 11 & 3] + var6;
+         for(int var8 = 32; var8-- > 0; var4 -= var5 + (var5 << 4 ^ var5 >>> 5) ^ var1[var6 & 3] + var6) {
+            var5 -= (var4 << 4 ^ var4 >>> 5) + var4 ^ var1[var6 >>> 11 & 3] + var6;
             var6 -= var7;
          }
 
@@ -922,7 +922,7 @@ public class Buffer extends Node {
    @Export("readShort")
    public int readShort() {
       this.offset += 2;
-      int var1 = (this.payload[this.offset - 1] & 255) + ((this.payload[this.offset - 2] & 255) << 8);
+      int var1 = ((this.payload[this.offset - 2] & 255) << 8) + (this.payload[this.offset - 1] & 255);
       if(var1 > 32767) {
          var1 -= 65536;
       }
@@ -937,7 +937,7 @@ public class Buffer extends Node {
    )
    @Export("readBytes")
    public void readBytes(byte[] var1, int var2, int var3) {
-      for(int var4 = var2; var4 < var2 + var3; ++var4) {
+      for(int var4 = var2; var4 < var3 + var2; ++var4) {
          var1[var4] = this.payload[++this.offset - 1];
       }
 

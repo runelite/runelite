@@ -56,9 +56,9 @@ public class class47 {
 
          int var11;
          int var12;
-         if(var1 + var9 <= 104) {
+         if(var9 + var1 <= 104) {
             var11 = (var9 >> 1) + var1;
-            var12 = var1 + (var9 + 1 >> 1);
+            var12 = (var9 + 1 >> 1) + var1;
          } else {
             var11 = var1;
             var12 = var1 + 1;
@@ -76,9 +76,9 @@ public class class47 {
 
          int[][] var15 = class61.tileHeights[var0];
          int var16 = var15[var12][var14] + var15[var11][var14] + var15[var11][var13] + var15[var12][var13] >> 2;
-         int var17 = (var1 << 7) + (var9 << 6);
-         int var18 = (var10 << 6) + (var2 << 7);
-         int var19 = (var3 << 14) + var1 + (var2 << 7) + 1073741824;
+         int var17 = (var9 << 6) + (var1 << 7);
+         int var18 = (var2 << 7) + (var10 << 6);
+         int var19 = (var2 << 7) + (var3 << 14) + var1 + 1073741824;
          if(var8.field3445 == 0) {
             var19 -= Integer.MIN_VALUE;
          }
@@ -297,7 +297,7 @@ public class class47 {
                         var27 = new DynamicObject(var3, 4, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
                      }
 
-                     var6.method2700(var0, var1, var2, var16, (Renderable)var27, (Renderable)null, class61.field748[var4], 0, var23 * class61.field757[var4], class61.field758[var4] * var23, var19, var20);
+                     var6.method2700(var0, var1, var2, var16, (Renderable)var27, (Renderable)null, class61.field748[var4], 0, var23 * class61.field757[var4], var23 * class61.field758[var4], var19, var20);
                   } else if(var5 == 6) {
                      var23 = 8;
                      var22 = var6.method2584(var0, var1, var2);
@@ -338,7 +338,7 @@ public class class47 {
                         var26 = new DynamicObject(var3, 4, var28 + 4, var0, var1, var2, var8.animationId, true, (Renderable)null);
                      }
 
-                     var6.method2700(var0, var1, var2, var16, (Renderable)var27, (Renderable)var26, 256, var4, var23 * class61.field752[var4], class61.field760[var4] * var23, var19, var20);
+                     var6.method2700(var0, var1, var2, var16, (Renderable)var27, (Renderable)var26, 256, var4, var23 * class61.field752[var4], var23 * class61.field760[var4], var19, var20);
                   }
                }
             } else {
@@ -359,8 +359,8 @@ public class class47 {
 
                   for(var23 = 0; var23 <= var9; ++var23) {
                      for(int var24 = 0; var24 <= var10; ++var24) {
-                        if(var22 > class267.field3669[var0][var23 + var1][var2 + var24]) {
-                           class267.field3669[var0][var23 + var1][var2 + var24] = (byte)var22;
+                        if(var22 > class267.field3669[var0][var23 + var1][var24 + var2]) {
+                           class267.field3669[var0][var23 + var1][var24 + var2] = (byte)var22;
                         }
                      }
                   }
@@ -503,7 +503,7 @@ public class class47 {
                      var10 = var6;
                   }
 
-                  if(var10.id != var6.id && var11 == null) {
+                  if(var6.id != var10.id && var11 == null) {
                      var11 = var6;
                   }
                }

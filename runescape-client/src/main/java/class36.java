@@ -87,7 +87,7 @@ public class class36 {
                var3 = 0;
             }
 
-            if(Client.field1141 != var3) {
+            if(var3 != Client.field1141) {
                if(Client.field1141 == 0 && Client.field1142 != -1) {
                   class13.method75(FaceNormal.indexTrack1, Client.field1142, 0, var3, false);
                   Client.field1143 = false;

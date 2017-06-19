@@ -59,7 +59,7 @@ public class class34 {
    )
    void method354(int var1, int var2, int var3) {
       if(this.field493 != null) {
-         if(this.field498 * 64 == var3) {
+         if(var3 == this.field498 * 64) {
             this.field493.method4949(var1, var2);
          } else {
             this.field493.method4972(var1, var2, var3, var3);
@@ -76,7 +76,7 @@ public class class34 {
    void method357(int var1, int var2, int var3, int var4, class28 var5) {
       for(int var6 = var1; var6 < var3 + var1; ++var6) {
          label49:
-         for(int var7 = var2; var7 < var4 + var2; ++var7) {
+         for(int var7 = var2; var7 < var2 + var4; ++var7) {
             Coordinates var8 = new Coordinates(0, var6, var7);
 
             for(int var9 = 0; var9 < var5.field430; ++var9) {
@@ -88,13 +88,13 @@ public class class34 {
                      class31 var13 = var11[var12];
                      Area var14 = this.method386(var13.field455);
                      if(var14 != null) {
-                        Coordinates var15 = new Coordinates(var9, var6 + this.field483 * 64, this.field487 * 64 + var7);
+                        Coordinates var15 = new Coordinates(var9, this.field483 * 64 + var6, this.field487 * 64 + var7);
                         Coordinates var16 = null;
                         if(this.field488 != null) {
-                           var16 = new Coordinates(var9 + this.field488.field423, this.field488.field424 * 64 + var6, this.field488.field420 * 64 + var7);
+                           var16 = new Coordinates(this.field488.field423 + var9, this.field488.field424 * 64 + var6, this.field488.field420 * 64 + var7);
                         } else {
                            class45 var17 = (class45)var5;
-                           var16 = new Coordinates(var17.field423 + var9, var17.field424 * 64 + var6 + var17.method611() * 8, var7 + var17.field420 * 64 + var17.method612() * 8);
+                           var16 = new Coordinates(var17.field423 + var9, var17.field424 * 64 + var6 + var17.method611() * 8, var17.field420 * 64 + var7 + var17.method612() * 8);
                         }
 
                         class39 var18 = new class39(var14.field3301, var16, var15, this.method378(var14));
@@ -119,7 +119,7 @@ public class class34 {
 
       while(var2.hasNext()) {
          class25 var3 = (class25)var2.next();
-         if(this.field483 == var3.field385.worldX >> 6 && var3.field385.worldY >> 6 == this.field487) {
+         if(var3.field385.worldX >> 6 == this.field483 && var3.field385.worldY >> 6 == this.field487) {
             class39 var4 = new class39(var3.field384, var3.field385, var3.field385, this.method387(var3.field384));
             this.field494.add(var4);
          }
@@ -211,7 +211,7 @@ public class class34 {
                   if(var14.mapSceneId != 46 && var14.mapSceneId != 52) {
                      var4[var14.mapSceneId].method4916(this.field498 * var1, this.field498 * (63 - var2), this.field498 * 2, this.field498 * 2);
                   } else {
-                     var4[var14.mapSceneId].method4916(var1 * this.field498, this.field498 * (63 - var2), this.field498 * 2 + 1, this.field498 * 2 + 1);
+                     var4[var14.mapSceneId].method4916(this.field498 * var1, this.field498 * (63 - var2), this.field498 * 2 + 1, this.field498 * 2 + 1);
                   }
                }
             }
@@ -272,9 +272,9 @@ public class class34 {
          if(var6 > -1) {
             int var7 = class17.method131(var6, this.field490);
             if(var3.field427[var5][var1][var2] == 0) {
-               Rasterizer2D.method4826(var1 * this.field498, (63 - var2) * this.field498, this.field498, this.field498, var7);
+               Rasterizer2D.method4826(this.field498 * var1, this.field498 * (63 - var2), this.field498, this.field498, var7);
             } else {
-               var4.method634(var1 * this.field498, this.field498 * (63 - var2), 0, var7, this.field498, this.field498, var3.field427[var5][var1][var2], var3.field428[var5][var1][var2]);
+               var4.method634(this.field498 * var1, this.field498 * (63 - var2), 0, var7, this.field498, this.field498, var3.field427[var5][var1][var2], var3.field428[var5][var1][var2]);
             }
          }
       }
@@ -380,7 +380,7 @@ public class class34 {
       garbageValue = "-132789688"
    )
    void method371(int var1, int var2, int var3, int var4, class28 var5, class43 var6) {
-      for(int var7 = var1; var7 < var1 + var3; ++var7) {
+      for(int var7 = var1; var7 < var3 + var1; ++var7) {
          for(int var8 = var2; var8 < var2 + var4; ++var8) {
             int var9 = var5.field425[0][var7][var8] - 1;
             if(var9 != -1) {
@@ -433,7 +433,7 @@ public class class34 {
                if(ISAACCipher.method3320(var8.field453)) {
                   ObjectComposition var9 = class29.getObjectDefinition(var8.field455);
                   int var10 = var9.field3445 != 0?-3407872:-3355444;
-                  if(class221.field2825.field2834 == var8.field453) {
+                  if(var8.field453 == class221.field2825.field2834) {
                      this.method396(var1, var2, var8.field454, var10);
                   }
 
@@ -442,21 +442,21 @@ public class class34 {
                      this.method396(var1, var2, var8.field454 + 1, var10);
                   }
 
-                  if(class221.field2841.field2834 == var8.field453) {
+                  if(var8.field453 == class221.field2841.field2834) {
                      if(var8.field454 == 0) {
-                        Rasterizer2D.method4834(var1 * this.field498, this.field498 * (63 - var2), 1, var10);
+                        Rasterizer2D.method4834(this.field498 * var1, this.field498 * (63 - var2), 1, var10);
                      }
 
                      if(var8.field454 == 1) {
-                        Rasterizer2D.method4834(this.field498 + this.field498 * var1 - 1, (63 - var2) * this.field498, 1, var10);
+                        Rasterizer2D.method4834(this.field498 * var1 + this.field498 - 1, this.field498 * (63 - var2), 1, var10);
                      }
 
                      if(var8.field454 == 2) {
-                        Rasterizer2D.method4834(this.field498 * var1 + this.field498 - 1, this.field498 * (63 - var2) + this.field498 - 1, 1, var10);
+                        Rasterizer2D.method4834(this.field498 * var1 + this.field498 - 1, this.field498 + this.field498 * (63 - var2) - 1, 1, var10);
                      }
 
                      if(var8.field454 == 3) {
-                        Rasterizer2D.method4834(this.field498 * var1, this.field498 + (63 - var2) * this.field498 - 1, 1, var10);
+                        Rasterizer2D.method4834(this.field498 * var1, (63 - var2) * this.field498 + this.field498 - 1, 1, var10);
                      }
                   }
 
@@ -465,11 +465,11 @@ public class class34 {
                      int var12;
                      if(var11 == 0) {
                         for(var12 = 0; var12 < this.field498; ++var12) {
-                           Rasterizer2D.method4834(var1 * this.field498 + var12, (64 - var2) * this.field498 - 1 - var12, 1, var10);
+                           Rasterizer2D.method4834(this.field498 * var1 + var12, (64 - var2) * this.field498 - 1 - var12, 1, var10);
                         }
                      } else {
                         for(var12 = 0; var12 < this.field498; ++var12) {
-                           Rasterizer2D.method4834(var1 * this.field498 + var12, var12 + (63 - var2) * this.field498, 1, var10);
+                           Rasterizer2D.method4834(this.field498 * var1 + var12, (63 - var2) * this.field498 + var12, 1, var10);
                         }
                      }
                   }
@@ -494,7 +494,7 @@ public class class34 {
          Entry var8 = (Entry)var7.next();
          Coordinates var9 = (Coordinates)var8.getKey();
          int var10 = (int)(var5 * (float)var9.worldX + (float)var1 - var6);
-         int var11 = (int)((float)(var4 + var2) - var5 * (float)var9.worldY - var6);
+         int var11 = (int)((float)(var2 + var4) - var5 * (float)var9.worldY - var6);
          class39 var12 = (class39)var8.getValue();
          if(var12 != null) {
             var12.field539 = var10;
@@ -683,7 +683,7 @@ public class class34 {
    List method391(int var1, int var2, int var3, int var4, int var5) {
       LinkedList var6 = new LinkedList();
       if(var4 >= var1 && var5 >= var2) {
-         if(var4 < var1 + var3 && var5 < var2 + var3) {
+         if(var4 < var3 + var1 && var5 < var3 + var2) {
             Iterator var7 = this.field491.values().iterator();
 
             class39 var8;
@@ -744,19 +744,19 @@ public class class34 {
    void method396(int var1, int var2, int var3, int var4) {
       var3 %= 4;
       if(var3 == 0) {
-         Rasterizer2D.method4836(this.field498 * var1, (63 - var2) * this.field498, this.field498, var4);
+         Rasterizer2D.method4836(this.field498 * var1, this.field498 * (63 - var2), this.field498, var4);
       }
 
       if(var3 == 1) {
-         Rasterizer2D.method4834(var1 * this.field498, (63 - var2) * this.field498, this.field498, var4);
+         Rasterizer2D.method4834(this.field498 * var1, this.field498 * (63 - var2), this.field498, var4);
       }
 
       if(var3 == 2) {
-         Rasterizer2D.method4836(this.field498 + this.field498 * var1 - 1, this.field498 * (63 - var2), this.field498, var4);
+         Rasterizer2D.method4836(this.field498 * var1 + this.field498 - 1, this.field498 * (63 - var2), this.field498, var4);
       }
 
       if(var3 == 3) {
-         Rasterizer2D.method4834(this.field498 * var1, (63 - var2) * this.field498 + this.field498 - 1, this.field498, var4);
+         Rasterizer2D.method4834(this.field498 * var1, this.field498 * (63 - var2) + this.field498 - 1, this.field498, var4);
       }
 
    }
@@ -780,7 +780,7 @@ public class class34 {
                if(var9 != null) {
                   class39 var10 = (class39)this.field491.get(field497);
                   if(var10 != null) {
-                     if(var10.field541 != var9.field3301) {
+                     if(var9.field3301 != var10.field541) {
                         class39 var15 = new class39(var9.field3301, var10.field545, var10.field538, this.method378(var9));
                         this.field491.put(new Coordinates(field497), var15);
                         var10 = var15;
@@ -792,17 +792,17 @@ public class class34 {
                      return;
                   }
 
-                  Coordinates var11 = new Coordinates(var4, this.field483 * 64 + var1, var2 + this.field487 * 64);
+                  Coordinates var11 = new Coordinates(var4, this.field483 * 64 + var1, this.field487 * 64 + var2);
                   Coordinates var12 = null;
                   if(this.field488 != null) {
-                     var12 = new Coordinates(this.field488.field423 + var4, this.field488.field424 * 64 + var1, var2 + this.field488.field420 * 64);
+                     var12 = new Coordinates(this.field488.field423 + var4, this.field488.field424 * 64 + var1, this.field488.field420 * 64 + var2);
                   } else {
                      Iterator var13 = this.field486.iterator();
 
                      while(var13.hasNext()) {
                         class45 var14 = (class45)var13.next();
                         if(var14.method610(var1, var2)) {
-                           var12 = new Coordinates(var14.field423 + var4, var1 + var14.field424 * 64 + var14.method611() * 8, var14.field420 * 64 + var2 + var14.method612() * 8);
+                           var12 = new Coordinates(var14.field423 + var4, var14.field424 * 64 + var1 + var14.method611() * 8, var14.field420 * 64 + var2 + var14.method612() * 8);
                            break;
                         }
                      }
@@ -827,7 +827,7 @@ public class class34 {
       garbageValue = "-1989471559"
    )
    boolean method412(int var1) {
-      if(this.field493 != null && var1 == this.field498) {
+      if(this.field493 != null && this.field498 == var1) {
          return false;
       } else {
          this.field498 = var1;
@@ -844,7 +844,7 @@ public class class34 {
    void method423(int var1, int var2, int var3, int var4, int var5, int var6, class34 var7, class43 var8) {
       for(int var9 = 0; var9 < var5; ++var9) {
          for(int var10 = 0; var10 < var6; ++var10) {
-            int var11 = var7.method392(var1 + var9, var2 + var10);
+            int var11 = var7.method392(var9 + var1, var10 + var2);
             if(var11 != -1) {
                FloorUnderlayDefinition var12 = Preferences.method1512(var11);
                var8.method589(var3 + var9, var10 + var4, 5, var12);
@@ -977,7 +977,7 @@ public class class34 {
       int var5 = var3.field425[0][var1][var2] - 1;
       int var6 = var3.field419[0][var1][var2] - 1;
       if(var5 == -1 && var6 == -1) {
-         Rasterizer2D.method4826(this.field498 * var1, (63 - var2) * this.field498, this.field498, this.field498, this.field490);
+         Rasterizer2D.method4826(this.field498 * var1, this.field498 * (63 - var2), this.field498, this.field498, this.field490);
       }
 
       int var7 = 16711935;
@@ -986,13 +986,13 @@ public class class34 {
       }
 
       if(var6 > -1 && var3.field427[0][var1][var2] == 0) {
-         Rasterizer2D.method4826(this.field498 * var1, (63 - var2) * this.field498, this.field498, this.field498, var7);
+         Rasterizer2D.method4826(this.field498 * var1, this.field498 * (63 - var2), this.field498, this.field498, var7);
       } else {
          int var8 = this.method373(var1, var2, var3);
          if(var6 == -1) {
-            Rasterizer2D.method4826(var1 * this.field498, (63 - var2) * this.field498, this.field498, this.field498, var8);
+            Rasterizer2D.method4826(this.field498 * var1, this.field498 * (63 - var2), this.field498, this.field498, var8);
          } else {
-            var4.method634(var1 * this.field498, (63 - var2) * this.field498, var8, var7, this.field498, this.field498, var3.field427[0][var1][var2], var3.field428[0][var1][var2]);
+            var4.method634(this.field498 * var1, this.field498 * (63 - var2), var8, var7, this.field498, this.field498, var3.field427[0][var1][var2], var3.field428[0][var1][var2]);
          }
       }
 
@@ -1035,8 +1035,8 @@ public class class34 {
       int var6;
       if(Client.packetType == 37) {
          var0 = Client.secretPacketBuffer2.readUnsignedByte();
-         var6 = class27.field414 + (var0 >> 4 & 7);
-         var1 = class29.field437 + (var0 & 7);
+         var6 = (var0 >> 4 & 7) + class27.field414;
+         var1 = (var0 & 7) + class29.field437;
          var2 = Client.secretPacketBuffer2.readUnsignedByte();
          var3 = var2 >> 2;
          var4 = var2 & 3;
@@ -1054,8 +1054,8 @@ public class class34 {
             byte var11 = Client.secretPacketBuffer2.method3063();
             var1 = Client.secretPacketBuffer2.method3070();
             var2 = Client.secretPacketBuffer2.method3060();
-            var3 = class27.field414 + (var2 >> 4 & 7);
-            var4 = class29.field437 + (var2 & 7);
+            var3 = (var2 >> 4 & 7) + class27.field414;
+            var4 = (var2 & 7) + class29.field437;
             var5 = Client.secretPacketBuffer2.method3201();
             var7 = var5 >> 2;
             var8 = var5 & 3;
@@ -1084,22 +1084,22 @@ public class class34 {
                   var19 = var17.sizeX;
                }
 
-               int var20 = (var18 >> 1) + var3;
+               int var20 = var3 + (var18 >> 1);
                int var21 = var3 + (var18 + 1 >> 1);
-               int var22 = var4 + (var19 >> 1);
+               int var22 = (var19 >> 1) + var4;
                int var23 = (var19 + 1 >> 1) + var4;
                int[][] var24 = class61.tileHeights[Player.plane];
-               int var25 = var24[var20][var22] + var24[var21][var22] + var24[var20][var23] + var24[var21][var23] >> 2;
-               int var26 = (var18 << 6) + (var3 << 7);
+               int var25 = var24[var20][var23] + var24[var20][var22] + var24[var21][var22] + var24[var21][var23] >> 2;
+               int var26 = (var3 << 7) + (var18 << 6);
                int var27 = (var4 << 7) + (var19 << 6);
                Model var28 = var17.method4394(var7, var8, var24, var26, var25, var27);
                if(var28 != null) {
                   class174.method3253(Player.plane, var3, var4, var9, -1, 0, 0, var10 + 1, var1 + 1);
                   var16.field871 = var10 + Client.gameCycle;
-                  var16.field882 = var1 + Client.gameCycle;
+                  var16.field882 = Client.gameCycle + var1;
                   var16.model = var28;
                   var16.field873 = var3 * 128 + var18 * 64;
-                  var16.field875 = var4 * 128 + var19 * 64;
+                  var16.field875 = var19 * 64 + var4 * 128;
                   var16.field874 = var25;
                   byte var29;
                   if(var12 > var13) {
@@ -1114,8 +1114,8 @@ public class class34 {
                      var15 = var29;
                   }
 
-                  var16.field870 = var12 + var3;
-                  var16.field885 = var13 + var3;
+                  var16.field870 = var3 + var12;
+                  var16.field885 = var3 + var13;
                   var16.field878 = var11 + var4;
                   var16.field880 = var15 + var4;
                }
@@ -1126,7 +1126,7 @@ public class class34 {
             var0 = Client.secretPacketBuffer2.method3023();
             var6 = Client.secretPacketBuffer2.method3062();
             var1 = (var6 >> 4 & 7) + class27.field414;
-            var2 = class29.field437 + (var6 & 7);
+            var2 = (var6 & 7) + class29.field437;
             var3 = Client.secretPacketBuffer2.method3201();
             var4 = var3 >> 2;
             var5 = var3 & 3;
@@ -1136,7 +1136,7 @@ public class class34 {
             }
          } else if(Client.packetType == 66) {
             var0 = Client.secretPacketBuffer2.readUnsignedByte();
-            var6 = class27.field414 + (var0 >> 4 & 7);
+            var6 = (var0 >> 4 & 7) + class27.field414;
             var1 = (var0 & 7) + class29.field437;
             var2 = Client.secretPacketBuffer2.readUnsignedShort();
             var3 = Client.secretPacketBuffer2.readUnsignedShort();
@@ -1145,7 +1145,7 @@ public class class34 {
                Deque var30 = Client.groundItemDeque[Player.plane][var6][var1];
                if(var30 != null) {
                   for(Item var33 = (Item)var30.method3487(); var33 != null; var33 = (Item)var30.method3512()) {
-                     if(var33.id == (var2 & 32767) && var3 == var33.quantity) {
+                     if((var2 & 32767) == var33.id && var3 == var33.quantity) {
                         var33.quantity = var4;
                         break;
                      }
@@ -1157,7 +1157,7 @@ public class class34 {
          } else if(Client.packetType == 137) {
             var0 = Client.secretPacketBuffer2.readUnsignedByte();
             var6 = (var0 >> 4 & 7) + class27.field414;
-            var1 = class29.field437 + (var0 & 7);
+            var1 = (var0 & 7) + class29.field437;
             var2 = Client.secretPacketBuffer2.readUnsignedShort();
             var3 = Client.secretPacketBuffer2.readUnsignedByte();
             var4 = Client.secretPacketBuffer2.readUnsignedShort();
@@ -1170,8 +1170,8 @@ public class class34 {
          } else {
             if(Client.packetType == 98) {
                var0 = Client.secretPacketBuffer2.readUnsignedByte();
-               var6 = class27.field414 + (var0 >> 4 & 7);
-               var1 = class29.field437 + (var0 & 7);
+               var6 = (var0 >> 4 & 7) + class27.field414;
+               var1 = (var0 & 7) + class29.field437;
                var2 = Client.secretPacketBuffer2.readUnsignedShort();
                var3 = Client.secretPacketBuffer2.readUnsignedByte();
                var4 = var3 >> 4 & 15;
@@ -1179,12 +1179,12 @@ public class class34 {
                var7 = Client.secretPacketBuffer2.readUnsignedByte();
                if(var6 >= 0 && var1 >= 0 && var6 < 104 && var1 < 104) {
                   var8 = var4 + 1;
-                  if(class20.localPlayer.pathX[0] >= var6 - var8 && class20.localPlayer.pathX[0] <= var6 + var8 && class20.localPlayer.pathY[0] >= var1 - var8 && class20.localPlayer.pathY[0] <= var8 + var1 && Client.field1041 != 0 && var5 > 0 && Client.field931 < 50) {
+                  if(class20.localPlayer.pathX[0] >= var6 - var8 && class20.localPlayer.pathX[0] <= var8 + var6 && class20.localPlayer.pathY[0] >= var1 - var8 && class20.localPlayer.pathY[0] <= var8 + var1 && Client.field1041 != 0 && var5 > 0 && Client.field931 < 50) {
                      Client.field1036[Client.field931] = var2;
                      Client.field1155[Client.field931] = var5;
                      Client.field1150[Client.field931] = var7;
                      Client.audioEffects[Client.field931] = null;
-                     Client.field1170[Client.field931] = (var1 << 8) + (var6 << 16) + var4;
+                     Client.field1170[Client.field931] = var4 + (var1 << 8) + (var6 << 16);
                      ++Client.field931;
                   }
                }
@@ -1197,8 +1197,8 @@ public class class34 {
                var2 = var6 & 3;
                var3 = Client.field968[var1];
                var4 = Client.secretPacketBuffer2.method3201();
-               var5 = class27.field414 + (var4 >> 4 & 7);
-               var7 = (var4 & 7) + class29.field437;
+               var5 = (var4 >> 4 & 7) + class27.field414;
+               var7 = class29.field437 + (var4 & 7);
                if(var5 >= 0 && var7 >= 0 && var5 < 103 && var7 < 103) {
                   if(var3 == 0) {
                      WallObject var32 = class17.region.method2600(Player.plane, var5, var7);
@@ -1255,7 +1255,7 @@ public class class34 {
                if(Client.packetType == 4) {
                   var0 = Client.secretPacketBuffer2.method3068();
                   var6 = Client.secretPacketBuffer2.readUnsignedByte();
-                  var1 = class27.field414 + (var6 >> 4 & 7);
+                  var1 = (var6 >> 4 & 7) + class27.field414;
                   var2 = (var6 & 7) + class29.field437;
                   var3 = Client.secretPacketBuffer2.method3070();
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
@@ -1272,7 +1272,7 @@ public class class34 {
                } else if(Client.packetType != 111) {
                   if(Client.packetType == 165) {
                      var0 = Client.secretPacketBuffer2.readUnsignedByte();
-                     var6 = class27.field414 + (var0 >> 4 & 7);
+                     var6 = (var0 >> 4 & 7) + class27.field414;
                      var1 = (var0 & 7) + class29.field437;
                      var2 = var6 + Client.secretPacketBuffer2.readByte();
                      var3 = var1 + Client.secretPacketBuffer2.readByte();
@@ -1289,21 +1289,21 @@ public class class34 {
                         var1 = var1 * 128 + 64;
                         var2 = var2 * 128 + 64;
                         var3 = var3 * 128 + 64;
-                        Projectile var41 = new Projectile(var5, Player.plane, var6, var1, class77.method1438(var6, var1, Player.plane) - var7, Client.gameCycle + var9, var36 + Client.gameCycle, var40, var10, var4, var8);
-                        var41.method1653(var2, var3, class77.method1438(var2, var3, Player.plane) - var8, Client.gameCycle + var9);
+                        Projectile var41 = new Projectile(var5, Player.plane, var6, var1, class77.method1438(var6, var1, Player.plane) - var7, var9 + Client.gameCycle, var36 + Client.gameCycle, var40, var10, var4, var8);
+                        var41.method1653(var2, var3, class77.method1438(var2, var3, Player.plane) - var8, var9 + Client.gameCycle);
                         Client.projectiles.method3505(var41);
                      }
                   }
                } else {
                   var0 = Client.secretPacketBuffer2.method3062();
                   var6 = (var0 >> 4 & 7) + class27.field414;
-                  var1 = class29.field437 + (var0 & 7);
+                  var1 = (var0 & 7) + class29.field437;
                   var2 = Client.secretPacketBuffer2.method3070();
                   if(var6 >= 0 && var1 >= 0 && var6 < 104 && var1 < 104) {
                      Deque var39 = Client.groundItemDeque[Player.plane][var6][var1];
                      if(var39 != null) {
                         for(var38 = (Item)var39.method3487(); var38 != null; var38 = (Item)var39.method3512()) {
-                           if((var2 & 32767) == var38.id) {
+                           if(var38.id == (var2 & 32767)) {
                               var38.unlink();
                               break;
                            }

@@ -55,7 +55,7 @@ public class CombatInfoList implements Iterable {
    @ObfuscatedName("t")
    public Node method3444() {
       Node var1 = this.node.next;
-      if(var1 == this.node) {
+      if(this.node == var1) {
          return null;
       } else {
          var1.unlink();
@@ -84,7 +84,7 @@ public class CombatInfoList implements Iterable {
    @ObfuscatedName("j")
    public Node method3448() {
       Node var1 = this.field2480;
-      if(var1 == this.node) {
+      if(this.node == var1) {
          this.field2480 = null;
          return null;
       } else {
@@ -95,7 +95,7 @@ public class CombatInfoList implements Iterable {
 
    @ObfuscatedName("c")
    public boolean method3449() {
-      return this.node.next == this.node;
+      return this.node == this.node.next;
    }
 
    public CombatInfoList() {

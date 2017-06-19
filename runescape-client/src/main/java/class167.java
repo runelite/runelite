@@ -14,6 +14,7 @@ public final class class167 {
    public static int method2976(byte[] var0, int var1, byte[] var2, int var3, int var4) {
       class172 var5 = field2345;
       class172 var6 = field2345;
+      class172 var7 = field2345;
       synchronized(field2345) {
          field2345.field2376 = var2;
          field2345.field2374 = var4;
@@ -87,7 +88,7 @@ public final class class167 {
             var12 = (byte)(var6 & 255);
             var6 >>= 8;
             ++var3;
-            if(var12 != var4) {
+            if(var4 != var12) {
                var4 = var12;
                if(var9 == 0) {
                   var2 = 1;
@@ -117,7 +118,7 @@ public final class class167 {
          var6 >>= 8;
          ++var3;
          if(var3 != var10) {
-            if(var12 != var4) {
+            if(var4 != var12) {
                var4 = var12;
             } else {
                var2 = 3;
@@ -126,7 +127,7 @@ public final class class167 {
                var6 >>= 8;
                ++var3;
                if(var3 != var10) {
-                  if(var12 != var4) {
+                  if(var4 != var12) {
                      var4 = var12;
                   } else {
                      var6 = var5[var6];
@@ -241,7 +242,7 @@ public final class class167 {
                   for(var26 = 0; var26 < 16; ++var26) {
                      var24 = method2980(var0);
                      if(var24 == 1) {
-                        var0.field2370[var25 * 16 + var26] = true;
+                        var0.field2370[var26 + var25 * 16] = true;
                      }
                   }
                }
@@ -287,48 +288,48 @@ public final class class167 {
 
             int var33;
             int var50;
-            for(var50 = 0; var50 < var28; ++var50) {
-               var33 = method2990(5, var0);
+            for(var33 = 0; var33 < var28; ++var33) {
+               var50 = method2990(5, var0);
 
                for(var25 = 0; var25 < var27; ++var25) {
                   while(true) {
                      var24 = method2980(var0);
                      if(var24 == 0) {
-                        var0.field2394[var50][var25] = (byte)var33;
+                        var0.field2394[var33][var25] = (byte)var50;
                         break;
                      }
 
                      var24 = method2980(var0);
                      if(var24 == 0) {
-                        ++var33;
+                        ++var50;
                      } else {
-                        --var33;
+                        --var50;
                      }
                   }
                }
             }
 
-            for(var50 = 0; var50 < var28; ++var50) {
-               byte var51 = 32;
-               byte var34 = 0;
+            for(var33 = 0; var33 < var28; ++var33) {
+               byte var34 = 32;
+               byte var35 = 0;
 
                for(var25 = 0; var25 < var27; ++var25) {
-                  if(var0.field2394[var50][var25] > var34) {
-                     var34 = var0.field2394[var50][var25];
+                  if(var0.field2394[var33][var25] > var35) {
+                     var35 = var0.field2394[var33][var25];
                   }
 
-                  if(var0.field2394[var50][var25] < var51) {
-                     var51 = var0.field2394[var50][var25];
+                  if(var0.field2394[var33][var25] < var34) {
+                     var34 = var0.field2394[var33][var25];
                   }
                }
 
-               method2983(var0.field2391[var50], var0.field2401[var50], var0.field2402[var50], var0.field2394[var50], var51, var34, var27);
-               var0.field2403[var50] = var51;
+               method2983(var0.field2391[var33], var0.field2401[var33], var0.field2402[var33], var0.field2394[var33], var34, var35, var27);
+               var0.field2403[var33] = var34;
             }
 
-            var33 = var0.field2405 + 1;
-            int var52 = -1;
-            byte var35 = 0;
+            var50 = var0.field2405 + 1;
+            int var51 = -1;
+            byte var52 = 0;
 
             for(var25 = 0; var25 <= 255; ++var25) {
                var0.field2380[var25] = 0;
@@ -349,17 +350,17 @@ public final class class167 {
 
             int var39 = 0;
             byte var40;
-            if(var35 == 0) {
-               ++var52;
-               var35 = 50;
-               var40 = var0.field2369[var52];
+            if(var52 == 0) {
+               ++var51;
+               var52 = 50;
+               var40 = var0.field2369[var51];
                var19 = var0.field2403[var40];
                var20 = var0.field2391[var40];
                var22 = var0.field2402[var40];
                var21 = var0.field2401[var40];
             }
 
-            int var41 = var35 - 1;
+            int var41 = var52 - 1;
             int var42 = var19;
 
             int var43;
@@ -372,7 +373,7 @@ public final class class167 {
             int var45 = var22[var43 - var21[var42]];
 
             while(true) {
-               while(var45 != var33) {
+               while(var45 != var50) {
                   int var46;
                   int var47;
                   if(var45 != 0 && var45 != 1) {
@@ -381,8 +382,8 @@ public final class class167 {
                      if(var46 < 16) {
                         var47 = var0.field2396[0];
 
-                        for(var24 = var0.field2395[var47 + var46]; var46 > 3; var46 -= 4) {
-                           var48 = var47 + var46;
+                        for(var24 = var0.field2395[var46 + var47]; var46 > 3; var46 -= 4) {
+                           var48 = var46 + var47;
                            var0.field2395[var48] = var0.field2395[var48 - 1];
                            var0.field2395[var48 - 1] = var0.field2395[var48 - 2];
                            var0.field2395[var48 - 2] = var0.field2395[var48 - 3];
@@ -390,7 +391,7 @@ public final class class167 {
                         }
 
                         while(var46 > 0) {
-                           var0.field2395[var47 + var46] = var0.field2395[var47 + var46 - 1];
+                           var0.field2395[var46 + var47] = var0.field2395[var46 + var47 - 1];
                            --var46;
                         }
 
@@ -398,7 +399,7 @@ public final class class167 {
                      } else {
                         var48 = var46 / 16;
                         int var49 = var46 % 16;
-                        var47 = var0.field2396[var48] + var49;
+                        var47 = var49 + var0.field2396[var48];
 
                         for(var24 = var0.field2395[var47]; var47 > var0.field2396[var48]; --var47) {
                            var0.field2395[var47] = var0.field2395[var47 - 1];
@@ -419,7 +420,7 @@ public final class class167 {
 
                            for(var37 = 15; var37 >= 0; --var37) {
                               for(var38 = 15; var38 >= 0; --var38) {
-                                 var0.field2395[var36] = var0.field2395[var0.field2396[var37] + var38];
+                                 var0.field2395[var36] = var0.field2395[var38 + var0.field2396[var37]];
                                  --var36;
                               }
 
@@ -432,9 +433,9 @@ public final class class167 {
                      NPC.field1361[var39] = var0.field2392[var24 & 255] & 255;
                      ++var39;
                      if(var41 == 0) {
-                        ++var52;
+                        ++var51;
                         var41 = 50;
-                        var40 = var0.field2369[var52];
+                        var40 = var0.field2369[var51];
                         var19 = var0.field2403[var40];
                         var20 = var0.field2391[var40];
                         var22 = var0.field2402[var40];
@@ -463,9 +464,9 @@ public final class class167 {
 
                         var47 *= 2;
                         if(var41 == 0) {
-                           ++var52;
+                           ++var51;
                            var41 = 50;
-                           var40 = var0.field2369[var52];
+                           var40 = var0.field2369[var51];
                            var19 = var0.field2403[var40];
                            var20 = var0.field2391[var40];
                            var22 = var0.field2402[var40];
@@ -519,7 +520,7 @@ public final class class167 {
                ++var0.field2389;
                var0.field2404 = var39;
                method2977(var0);
-               if(var0.field2389 == var0.field2404 + 1 && var0.field2381 == 0) {
+               if(var0.field2404 + 1 == var0.field2389 && var0.field2381 == 0) {
                   var23 = true;
                   break;
                }
@@ -559,7 +560,7 @@ public final class class167 {
       int var9;
       for(var8 = var4; var8 <= var5; ++var8) {
          for(var9 = 0; var9 < var6; ++var9) {
-            if(var3[var9] == var8) {
+            if(var8 == var3[var9]) {
                var2[var7] = var9;
                ++var7;
             }

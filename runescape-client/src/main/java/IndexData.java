@@ -88,10 +88,11 @@ public class IndexData extends IndexDataBase {
          byte[] var3 = null;
          Deque var4 = class236.field3245;
          Deque var5 = class236.field3245;
+         Deque var6 = class236.field3245;
          synchronized(class236.field3245) {
-            for(FileSystem var6 = (FileSystem)class236.field3245.method3487(); var6 != null; var6 = (FileSystem)class236.field3245.method3512()) {
-               if((long)var1 == var6.hash && var2 == var6.index && var6.field3211 == 0) {
-                  var3 = var6.field3210;
+            for(FileSystem var7 = (FileSystem)class236.field3245.method3487(); var7 != null; var7 = (FileSystem)class236.field3245.method3512()) {
+               if((long)var1 == var7.hash && var2 == var7.index && var7.field3211 == 0) {
+                  var3 = var7.field3210;
                   break;
                }
             }
@@ -100,8 +101,8 @@ public class IndexData extends IndexDataBase {
          if(var3 != null) {
             this.method4100(var2, var1, var3, true);
          } else {
-            byte[] var9 = var2.method2902(var1);
-            this.method4100(var2, var1, var9, true);
+            byte[] var10 = var2.method2902(var1);
+            this.method4100(var2, var1, var10, true);
          }
       } else {
          class9.method52(this, this.index, var1, super.archiveCrcs[var1], (byte)2, true);
@@ -125,31 +126,33 @@ public class IndexData extends IndexDataBase {
    )
    public void method4100(IndexFile var1, int var2, byte[] var3, boolean var4) {
       int var5;
-      if(var1 == this.field3256) {
+      if(this.field3256 == var1) {
          if(this.field3254) {
             throw new RuntimeException();
-         } else if(var3 == null) {
+         }
+
+         if(var3 == null) {
             class9.method52(this, 255, this.index, this.field3253, (byte)0, true);
          } else {
             field3252.reset();
             field3252.update(var3, 0, var3.length);
             var5 = (int)field3252.getValue();
-            Buffer var9 = new Buffer(class226.method3966(var3));
-            int var7 = var9.readUnsignedByte();
+            Buffer var6 = new Buffer(class226.method3966(var3));
+            int var7 = var6.readUnsignedByte();
             if(var7 != 5 && var7 != 6) {
                throw new RuntimeException(var7 + "," + this.index + "," + var2);
-            } else {
-               int var8 = 0;
-               if(var7 >= 6) {
-                  var8 = var9.readInt();
-               }
+            }
 
-               if(var5 != this.field3253 || this.field3246 != var8) {
-                  class9.method52(this, 255, this.index, this.field3253, (byte)0, true);
-               } else {
-                  this.method3993(var3);
-                  this.method4101();
-               }
+            int var8 = 0;
+            if(var7 >= 6) {
+               var8 = var6.readInt();
+            }
+
+            if(var5 == this.field3253 && var8 == this.field3246) {
+               this.method3993(var3);
+               this.method4101();
+            } else {
+               class9.method52(this, 255, this.index, this.field3253, (byte)0, true);
             }
          }
       } else {
@@ -161,28 +164,26 @@ public class IndexData extends IndexDataBase {
             field3252.reset();
             field3252.update(var3, 0, var3.length - 2);
             var5 = (int)field3252.getValue();
-            int var6 = (var3[var3.length - 1] & 255) + ((var3[var3.length - 2] & 255) << 8);
-            if(super.archiveCrcs[var2] == var5 && super.archiveRevisions[var2] == var6) {
+            int var9 = (var3[var3.length - 1] & 255) + ((var3[var3.length - 2] & 255) << 8);
+            if(var5 == super.archiveCrcs[var2] && super.archiveRevisions[var2] == var9) {
                this.field3251[var2] = true;
                if(var4) {
                   super.field3230[var2] = class20.method166(var3, false);
                }
-
             } else {
                this.field3251[var2] = false;
                if(this.field3249 || var4) {
                   class9.method52(this, this.index, var2, super.archiveCrcs[var2], (byte)2, var4);
                }
-
             }
          } else {
             this.field3251[var2] = false;
             if(this.field3249 || var4) {
                class9.method52(this, this.index, var2, super.archiveCrcs[var2], (byte)2, var4);
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("cg")
@@ -248,29 +249,33 @@ public class IndexData extends IndexDataBase {
       garbageValue = "597528711"
    )
    void method4117(int var1, byte[] var2, boolean var3, boolean var4) {
-      Deque var8;
-      Object var22;
+      Deque var5;
+      Object var6;
+      Deque var10;
+      Object var24;
       if(var3) {
          if(this.field3254) {
             throw new RuntimeException();
          }
 
          if(this.field3256 != null) {
-            int var5 = this.index;
-            IndexFile var6 = this.field3256;
-            FileSystem var7 = new FileSystem();
-            var7.field3211 = 0;
-            var7.hash = (long)var5;
-            var7.field3210 = var2;
-            var7.index = var6;
-            var8 = class236.field3245;
-            Deque var9 = class236.field3245;
+            int var7 = this.index;
+            IndexFile var8 = this.field3256;
+            FileSystem var9 = new FileSystem();
+            var9.field3211 = 0;
+            var9.hash = (long)var7;
+            var9.field3210 = var2;
+            var9.index = var8;
+            var5 = class236.field3245;
+            var10 = class236.field3245;
+            Deque var11 = class236.field3245;
             synchronized(class236.field3245) {
-               class236.field3245.method3505(var7);
+               class236.field3245.method3505(var9);
             }
 
-            var22 = class236.field3239;
-            Object var10 = class236.field3239;
+            var6 = class236.field3239;
+            var24 = class236.field3239;
+            Object var12 = class236.field3239;
             synchronized(class236.field3239) {
                if(class236.field3241 == 0) {
                   class21.field352 = new Thread(new class236());
@@ -289,20 +294,22 @@ public class IndexData extends IndexDataBase {
          var2[var2.length - 2] = (byte)(super.archiveRevisions[var1] >> 8);
          var2[var2.length - 1] = (byte)super.archiveRevisions[var1];
          if(this.field3247 != null) {
-            IndexFile var18 = this.field3247;
-            FileSystem var19 = new FileSystem();
-            var19.field3211 = 0;
-            var19.hash = (long)var1;
-            var19.field3210 = var2;
-            var19.index = var18;
-            Deque var20 = class236.field3245;
-            var8 = class236.field3245;
+            IndexFile var20 = this.field3247;
+            FileSystem var21 = new FileSystem();
+            var21.field3211 = 0;
+            var21.hash = (long)var1;
+            var21.field3210 = var2;
+            var21.index = var20;
+            Deque var22 = class236.field3245;
+            var5 = class236.field3245;
+            var10 = class236.field3245;
             synchronized(class236.field3245) {
-               class236.field3245.method3505(var19);
+               class236.field3245.method3505(var21);
             }
 
-            Object var21 = class236.field3239;
-            var22 = class236.field3239;
+            Object var23 = class236.field3239;
+            var6 = class236.field3239;
+            var24 = class236.field3239;
             synchronized(class236.field3239) {
                if(class236.field3241 == 0) {
                   class21.field352 = new Thread(new class236());
@@ -360,10 +367,11 @@ public class IndexData extends IndexDataBase {
          byte[] var5 = null;
          Deque var6 = class236.field3245;
          Deque var7 = class236.field3245;
+         Deque var8 = class236.field3245;
          synchronized(class236.field3245) {
-            for(FileSystem var8 = (FileSystem)class236.field3245.method3487(); var8 != null; var8 = (FileSystem)class236.field3245.method3512()) {
-               if((long)var3 == var8.hash && var8.index == var4 && var8.field3211 == 0) {
-                  var5 = var8.field3210;
+            for(FileSystem var9 = (FileSystem)class236.field3245.method3487(); var9 != null; var9 = (FileSystem)class236.field3245.method3512()) {
+               if((long)var3 == var9.hash && var9.index == var4 && var9.field3211 == 0) {
+                  var5 = var9.field3210;
                   break;
                }
             }
@@ -372,8 +380,8 @@ public class IndexData extends IndexDataBase {
          if(var5 != null) {
             this.method4100(var4, var3, var5, true);
          } else {
-            byte[] var11 = var4.method2902(var3);
-            this.method4100(var4, var3, var11, true);
+            byte[] var12 = var4.method2902(var3);
+            this.method4100(var4, var3, var12, true);
          }
       } else {
          class9.method52(this, 255, this.index, this.field3253, (byte)0, true);

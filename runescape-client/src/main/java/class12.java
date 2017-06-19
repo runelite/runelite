@@ -1,5 +1,4 @@
 import java.util.Comparator;
-
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -17,49 +16,49 @@ final class class12 implements Comparator {
       garbageValue = "7"
    )
    @Export("parseInt")
-   public static int parseInt(CharSequence characters, int radix, boolean var2) {
-      if(radix >= 2 && radix <= 36) {
-         boolean negative = false;
+   public static int parseInt(CharSequence var0, int var1, boolean var2) {
+      if(var1 >= 2 && var1 <= 36) {
+         boolean var3 = false;
          boolean var4 = false;
          int var5 = 0;
-         int length = characters.length();
+         int var6 = var0.length();
 
-         for(int index = 0; index < length; ++index) {
-            char character = characters.charAt(index);
-            if(index == 0) {
-               if(character == 45) {
-                  negative = true;
+         for(int var7 = 0; var7 < var6; ++var7) {
+            char var8 = var0.charAt(var7);
+            if(var7 == 0) {
+               if(var8 == 45) {
+                  var3 = true;
                   continue;
                }
 
-               if(character == 43) {
+               if(var8 == 43) {
                   continue;
                }
             }
 
             int var9;
-            if(character >= 48 && character <= 57) {
-               var9 = character - 48;
-            } else if(character >= 65 && character <= 90) {
-               var9 = character - 55;
+            if(var8 >= 48 && var8 <= 57) {
+               var9 = var8 - 48;
+            } else if(var8 >= 65 && var8 <= 90) {
+               var9 = var8 - 55;
             } else {
-               if(character < 97 || character > 122) {
+               if(var8 < 97 || var8 > 122) {
                   throw new NumberFormatException();
                }
 
-               var9 = character - 87;
+               var9 = var8 - 87;
             }
 
-            if(var9 >= radix) {
+            if(var9 >= var1) {
                throw new NumberFormatException();
             }
 
-            if(negative) {
+            if(var3) {
                var9 = -var9;
             }
 
-            int var10 = var9 + radix * var5;
-            if(var5 != var10 / radix) {
+            int var10 = var5 * var1 + var9;
+            if(var5 != var10 / var1) {
                throw new NumberFormatException();
             }
 
@@ -83,7 +82,7 @@ final class class12 implements Comparator {
       garbageValue = "1446700114"
    )
    int method64(class14 var1, class14 var2) {
-      return var1.field297 < var2.field297?-1:(var1.field297 == var2.field297?0:1);
+      return var1.field297 < var2.field297?-1:(var2.field297 == var1.field297?0:1);
    }
 
    public boolean equals(Object var1) {
@@ -118,7 +117,7 @@ final class class12 implements Comparator {
          class286.field3791 = null;
          class149.field2211 = null;
          class116.field1686 = null;
-         class286.field3797 = (byte[][])null;
+         class286.field3797 = (byte[][])((byte[][])null);
          return var1;
       }
    }

@@ -241,7 +241,7 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
 
       try {
          class155.field2257 = System.getProperty("os.name");
-      } catch (Exception var22) {
+      } catch (Exception var23) {
          class155.field2257 = "Unknown";
       }
 
@@ -252,7 +252,7 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
          if(class40.field555 != null) {
             class40.field555 = class40.field555 + "/";
          }
-      } catch (Exception var21) {
+      } catch (Exception var22) {
          ;
       }
 
@@ -268,7 +268,7 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
          if(class40.field555 != null) {
             class40.field555 = class40.field555 + "/";
          }
-      } catch (Exception var20) {
+      } catch (Exception var21) {
          ;
       }
 
@@ -281,7 +281,7 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
       int var4 = 0;
 
       File var5;
-      label260:
+      label259:
       while(var4 < 4) {
          String var6 = var4 == 0?"":"" + var4;
          class155.field2259 = new File(class40.field555, "jagex_cl_" + var0 + "_" + var1 + var6 + ".dat");
@@ -290,30 +290,30 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
          boolean var9 = false;
          Buffer var10;
          File var11;
-         int var13;
+         int var12;
          if(class155.field2259.exists()) {
             try {
-               FileOnDisk var12 = new FileOnDisk(class155.field2259, "rw", 10000L);
+               FileOnDisk var13 = new FileOnDisk(class155.field2259, "rw", 10000L);
 
-               for(var10 = new Buffer((int)var12.method2266()); var10.offset < var10.payload.length; var10.offset += var13) {
-                  var13 = var12.method2267(var10.payload, var10.offset, var10.payload.length - var10.offset);
-                  if(var13 == -1) {
+               for(var10 = new Buffer((int)var13.method2266()); var10.offset < var10.payload.length; var10.offset += var12) {
+                  var12 = var13.method2267(var10.payload, var10.offset, var10.payload.length - var10.offset);
+                  if(var12 == -1) {
                      throw new IOException();
                   }
                }
 
                var10.offset = 0;
-               var13 = var10.readUnsignedByte();
-               if(var13 < 1 || var13 > 3) {
-                  throw new IOException("" + var13);
+               var12 = var10.readUnsignedByte();
+               if(var12 < 1 || var12 > 3) {
+                  throw new IOException("" + var12);
                }
 
                int var14 = 0;
-               if(var13 > 1) {
+               if(var12 > 1) {
                   var14 = var10.readUnsignedByte();
                }
 
-               if(var13 <= 2) {
+               if(var12 <= 2) {
                   var7 = var10.method3042();
                   if(var14 == 1) {
                      var8 = var10.method3042();
@@ -325,9 +325,9 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
                   }
                }
 
-               var12.method2274();
-            } catch (IOException var25) {
-               var25.printStackTrace();
+               var13.method2274();
+            } catch (IOException var26) {
+               var26.printStackTrace();
             }
 
             if(var7 != null) {
@@ -345,15 +345,17 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
             }
          }
 
+         int var32;
+         File var33;
          if(var7 == null && var4 == 0) {
-            label234:
-            for(int var31 = 0; var31 < Preferences.field1304.length; ++var31) {
-               for(var13 = 0; var13 < class112.field1664.length; ++var13) {
-                  File var35 = new File(class112.field1664[var13] + Preferences.field1304[var31] + File.separatorChar + var0 + File.separatorChar);
-                  if(var35.exists() && Player.method1093(new File(var35, "test.dat"), true)) {
-                     var7 = var35.toString();
+            label233:
+            for(var32 = 0; var32 < Preferences.field1304.length; ++var32) {
+               for(var12 = 0; var12 < class112.field1664.length; ++var12) {
+                  var33 = new File(class112.field1664[var12] + Preferences.field1304[var32] + File.separatorChar + var0 + File.separatorChar);
+                  if(var33.exists() && Player.method1093(new File(var33, "test.dat"), true)) {
+                     var7 = var33.toString();
                      var9 = true;
-                     break label234;
+                     break label233;
                   }
                }
             }
@@ -364,52 +366,50 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
             var9 = true;
          }
 
-         int var15;
-         File var16;
-         File var32;
-         File[] var33;
-         File[] var36;
+         File var15;
+         File[] var16;
+         File[] var17;
          if(var8 != null) {
-            var32 = new File(var8);
+            var15 = new File(var8);
             var11 = new File(var7);
 
             try {
-               var33 = var32.listFiles();
-               var36 = var33;
+               var16 = var15.listFiles();
+               var17 = var16;
 
-               for(var15 = 0; var15 < var36.length; ++var15) {
-                  var16 = var36[var15];
-                  File var17 = new File(var11, var16.getName());
-                  boolean var18 = var16.renameTo(var17);
-                  if(!var18) {
+               for(var32 = 0; var32 < var17.length; ++var32) {
+                  var33 = var17[var32];
+                  File var18 = new File(var11, var33.getName());
+                  boolean var19 = var33.renameTo(var18);
+                  if(!var19) {
                      throw new IOException();
                   }
                }
-            } catch (Exception var24) {
-               var24.printStackTrace();
+            } catch (Exception var25) {
+               var25.printStackTrace();
             }
 
             var9 = true;
          }
 
          if(var9) {
-            var32 = new File(var7);
+            var15 = new File(var7);
             var10 = null;
 
             try {
                FileOnDisk var34 = new FileOnDisk(class155.field2259, "rw", 10000L);
-               Buffer var37 = new Buffer(500);
-               var37.putByte(3);
-               var37.putByte(var10 != null?1:0);
-               var37.method3153(var32.getPath());
+               Buffer var35 = new Buffer(500);
+               var35.putByte(3);
+               var35.putByte(var10 != null?1:0);
+               var35.method3153(var15.getPath());
                if(var10 != null) {
-                  var37.method3153("");
+                  var35.method3153("");
                }
 
-               var34.method2264(var37.payload, 0, var37.offset);
+               var34.method2264(var35.payload, 0, var35.offset);
                var34.method2274();
-            } catch (IOException var19) {
-               var19.printStackTrace();
+            } catch (IOException var20) {
+               var20.printStackTrace();
             }
          }
 
@@ -419,56 +419,56 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
             CombatInfoListHolder.field1357.mkdirs();
          }
 
-         var33 = CombatInfoListHolder.field1357.listFiles();
-         if(var33 != null) {
-            var36 = var33;
+         var16 = CombatInfoListHolder.field1357.listFiles();
+         if(var16 != null) {
+            var17 = var16;
 
-            for(var15 = 0; var15 < var36.length; ++var15) {
-               var16 = var36[var15];
-               if(!Player.method1093(var16, false)) {
+            for(var32 = 0; var32 < var17.length; ++var32) {
+               var33 = var17[var32];
+               if(!Player.method1093(var33, false)) {
                   ++var4;
-                  continue label260;
+                  continue label259;
                }
             }
          }
          break;
       }
 
-      File var26 = CombatInfoListHolder.field1357;
-      class5.field40 = var26;
+      File var27 = CombatInfoListHolder.field1357;
+      class5.field40 = var27;
       if(!class5.field40.exists()) {
          throw new RuntimeException("");
       } else {
          class157.field2270 = true;
 
-         int var30;
+         int var31;
          try {
             var5 = new File(class40.field555, "random.dat");
             if(var5.exists()) {
                class155.field2256 = new class123(new FileOnDisk(var5, "rw", 25L), 24, 0);
             } else {
-               label185:
-               for(int var27 = 0; var27 < Preferences.field1304.length; ++var27) {
-                  for(var30 = 0; var30 < class112.field1664.length; ++var30) {
-                     File var29 = new File(class112.field1664[var30] + Preferences.field1304[var27] + File.separatorChar + "random.dat");
-                     if(var29.exists()) {
-                        class155.field2256 = new class123(new FileOnDisk(var29, "rw", 25L), 24, 0);
-                        break label185;
+               label184:
+               for(int var28 = 0; var28 < Preferences.field1304.length; ++var28) {
+                  for(var31 = 0; var31 < class112.field1664.length; ++var31) {
+                     File var30 = new File(class112.field1664[var31] + Preferences.field1304[var28] + File.separatorChar + "random.dat");
+                     if(var30.exists()) {
+                        class155.field2256 = new class123(new FileOnDisk(var30, "rw", 25L), 24, 0);
+                        break label184;
                      }
                   }
                }
             }
 
             if(class155.field2256 == null) {
-               RandomAccessFile var28 = new RandomAccessFile(var5, "rw");
-               var30 = var28.read();
-               var28.seek(0L);
-               var28.write(var30);
-               var28.seek(0L);
-               var28.close();
+               RandomAccessFile var29 = new RandomAccessFile(var5, "rw");
+               var31 = var29.read();
+               var29.seek(0L);
+               var29.write(var31);
+               var29.seek(0L);
+               var29.close();
                class155.field2256 = new class123(new FileOnDisk(var5, "rw", 25L), 24, 0);
             }
-         } catch (IOException var23) {
+         } catch (IOException var24) {
             ;
          }
 
@@ -476,8 +476,8 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
          class155.field2263 = new class123(new FileOnDisk(class71.method1049("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
          WorldMapType3.field404 = new class123[XItemContainer.field771];
 
-         for(var30 = 0; var30 < XItemContainer.field771; ++var30) {
-            WorldMapType3.field404[var30] = new class123(new FileOnDisk(class71.method1049("main_file_cache.idx" + var30), "rw", 1048576L), 6000, 0);
+         for(var31 = 0; var31 < XItemContainer.field771; ++var31) {
+            WorldMapType3.field404[var31] = new class123(new FileOnDisk(class71.method1049("main_file_cache.idx" + var31), "rw", 1048576L), 6000, 0);
          }
 
       }
@@ -508,7 +508,7 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
                   byte[] var3 = class2.field15.getConfigData(var0, var2);
                   if(var3 != null) {
                      Widget.widgets[var0][var2] = new Widget();
-                     Widget.widgets[var0][var2].id = var2 + (var0 << 16);
+                     Widget.widgets[var0][var2].id = (var0 << 16) + var2;
                      if(var3[0] == -1) {
                         Widget.widgets[var0][var2].method3881(new Buffer(var3));
                      } else {
@@ -531,7 +531,7 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
    )
    static final void method962(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
       if(var2 >= 1 && var3 >= 1 && var2 <= 102 && var3 <= 102) {
-         if(Client.field1055 && Player.plane != var0) {
+         if(Client.field1055 && var0 != Player.plane) {
             return;
          }
 
@@ -607,18 +607,18 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
             int var16;
             int var36;
             if(var5 != 1 && var5 != 3) {
-               var36 = var35.sizeX;
-               var16 = var35.sizeY;
-            } else {
-               var36 = var35.sizeY;
                var16 = var35.sizeX;
+               var36 = var35.sizeY;
+            } else {
+               var16 = var35.sizeY;
+               var36 = var35.sizeX;
             }
 
             int var17;
             int var18;
-            if(var2 + var36 <= 104) {
-               var17 = (var36 >> 1) + var2;
-               var18 = var2 + (var36 + 1 >> 1);
+            if(var16 + var2 <= 104) {
+               var17 = var2 + (var16 >> 1);
+               var18 = (var16 + 1 >> 1) + var2;
             } else {
                var17 = var2;
                var18 = var2 + 1;
@@ -626,19 +626,19 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
 
             int var19;
             int var20;
-            if(var3 + var16 <= 104) {
-               var19 = (var16 >> 1) + var3;
-               var20 = var3 + (var16 + 1 >> 1);
+            if(var3 + var36 <= 104) {
+               var19 = (var36 >> 1) + var3;
+               var20 = var3 + (var36 + 1 >> 1);
             } else {
                var19 = var3;
                var20 = var3 + 1;
             }
 
             int[][] var21 = class61.tileHeights[var11];
-            int var22 = var21[var18][var20] + var21[var17][var20] + var21[var18][var19] + var21[var17][var19] >> 2;
-            int var23 = (var36 << 6) + (var2 << 7);
-            int var24 = (var16 << 6) + (var3 << 7);
-            int var25 = var2 + (var3 << 7) + (var4 << 14) + 1073741824;
+            int var22 = var21[var17][var19] + var21[var18][var20] + var21[var17][var20] + var21[var18][var19] >> 2;
+            int var23 = (var16 << 6) + (var2 << 7);
+            int var24 = (var3 << 7) + (var36 << 6);
+            int var25 = (var3 << 7) + var2 + (var4 << 14) + 1073741824;
             if(var35.field3445 == 0) {
                var25 -= Integer.MIN_VALUE;
             }
@@ -670,7 +670,7 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
 
                   var33.method2588(var0, var2, var3, var22, 1, 1, (Renderable)var27, 0, var25, var26);
                   if(var35.field3476 != 0) {
-                     var34.method2914(var2, var3, var36, var16, var35.field3468);
+                     var34.method2914(var2, var3, var16, var36, var35.field3468);
                   }
                } else if(var6 == 0) {
                   if(var35.animationId == -1 && var35.impostorIds == null) {
@@ -732,7 +732,7 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
 
                      var33.method2588(var0, var2, var3, var22, 1, 1, (Renderable)var27, 0, var25, var26);
                      if(var35.field3476 != 0) {
-                        var34.method2914(var2, var3, var36, var16, var35.field3468);
+                        var34.method2914(var2, var3, var16, var36, var35.field3468);
                      }
                   } else if(var6 == 4) {
                      if(var35.animationId == -1 && var35.impostorIds == null) {
@@ -757,7 +757,7 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
                            var28 = new DynamicObject(var4, 4, var5, var11, var2, var3, var35.animationId, true, (Renderable)null);
                         }
 
-                        var33.method2700(var0, var2, var3, var22, (Renderable)var28, (Renderable)null, class61.field748[var5], 0, var29 * class61.field757[var5], var29 * class61.field758[var5], var25, var26);
+                        var33.method2700(var0, var2, var3, var22, (Renderable)var28, (Renderable)null, class61.field748[var5], 0, class61.field757[var5] * var29, class61.field758[var5] * var29, var25, var26);
                      } else if(var6 == 6) {
                         var29 = 8;
                         var37 = var33.method2584(var0, var2, var3);
@@ -771,7 +771,7 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
                            var28 = new DynamicObject(var4, 4, var5 + 4, var11, var2, var3, var35.animationId, true, (Renderable)null);
                         }
 
-                        var33.method2700(var0, var2, var3, var22, (Renderable)var28, (Renderable)null, 256, var5, var29 * class61.field752[var5], var29 * class61.field760[var5], var25, var26);
+                        var33.method2700(var0, var2, var3, var22, (Renderable)var28, (Renderable)null, 256, var5, class61.field752[var5] * var29, class61.field760[var5] * var29, var25, var26);
                      } else if(var6 == 7) {
                         var37 = var5 + 2 & 3;
                         if(var35.animationId == -1 && var35.impostorIds == null) {
@@ -810,11 +810,11 @@ public class class59 implements MouseListener, MouseMotionListener, FocusListene
                }
 
                if(var27 != null) {
-                  var33.method2588(var0, var2, var3, var22, var36, var16, (Renderable)var27, var6 == 11?256:0, var25, var26);
+                  var33.method2588(var0, var2, var3, var22, var16, var36, (Renderable)var27, var6 == 11?256:0, var25, var26);
                }
 
                if(var35.field3476 != 0) {
-                  var34.method2914(var2, var3, var36, var16, var35.field3468);
+                  var34.method2914(var2, var3, var16, var36, var35.field3468);
                }
             }
          }

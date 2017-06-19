@@ -38,7 +38,7 @@ public class class102 extends class119 {
 
    @ObfuscatedName("t")
    void method1782(Node var1, class113 var2) {
-      while(var1 != this.field1556.head && ((class113)var1).field1671 <= var2.field1671) {
+      while(this.field1556.head != var1 && ((class113)var1).field1671 <= var2.field1671) {
          var1 = var1.next;
       }
 
@@ -82,7 +82,7 @@ public class class102 extends class119 {
             return;
          }
 
-         if(this.field1557 + var3 < this.field1559) {
+         if(var3 + this.field1557 < this.field1559) {
             this.field1557 += var3;
             this.method1788(var1, var2, var3);
             return;

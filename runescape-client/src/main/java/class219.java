@@ -105,14 +105,14 @@ public class class219 implements class218 {
       }
 
       if(class66.cameraY < var1) {
-         class66.cameraY += XGrandExchangeOffer.field317 + GroundObject.field1870 * (var1 - class66.cameraY) / 1000;
+         class66.cameraY += (var1 - class66.cameraY) * GroundObject.field1870 / 1000 + XGrandExchangeOffer.field317;
          if(class66.cameraY > var1) {
             class66.cameraY = var1;
          }
       }
 
       if(class66.cameraY > var1) {
-         class66.cameraY -= XGrandExchangeOffer.field317 + GroundObject.field1870 * (class66.cameraY - var1) / 1000;
+         class66.cameraY -= GroundObject.field1870 * (class66.cameraY - var1) / 1000 + XGrandExchangeOffer.field317;
          if(class66.cameraY < var1) {
             class66.cameraY = var1;
          }
@@ -143,7 +143,7 @@ public class class219 implements class218 {
       }
 
       if(class203.cameraPitch > var7) {
-         class203.cameraPitch -= MessageNode.field856 + class24.field372 * (class203.cameraPitch - var7) / 1000;
+         class203.cameraPitch -= class24.field372 * (class203.cameraPitch - var7) / 1000 + MessageNode.field856;
          if(class203.cameraPitch < var7) {
             class203.cameraPitch = var7;
          }
@@ -159,7 +159,7 @@ public class class219 implements class218 {
       }
 
       if(var9 > 0) {
-         class13.cameraYaw += class24.field372 * var9 / 1000 + MessageNode.field856;
+         class13.cameraYaw += var9 * class24.field372 / 1000 + MessageNode.field856;
          class13.cameraYaw &= 2047;
       }
 

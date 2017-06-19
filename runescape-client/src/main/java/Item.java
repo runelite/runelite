@@ -37,16 +37,16 @@ public final class Item extends Renderable {
       garbageValue = "74"
    )
    @Export("updatePlayersFlag")
-   static final void updatePlayersFlag(PacketBuffer packetBuffer) {
-      for(int i = 0; i < class96.field1493; ++i) {
-         int playerIndex = class96.field1500[i];
-         Player player = Client.cachedPlayers[playerIndex];
-         int updateFlag = packetBuffer.readUnsignedByte();
-         if((updateFlag & 1) != 0) {
-            updateFlag += packetBuffer.readUnsignedByte() << 8;
+   static final void updatePlayersFlag(PacketBuffer var0) {
+      for(int var1 = 0; var1 < class96.field1493; ++var1) {
+         int var2 = class96.field1500[var1];
+         Player var3 = Client.cachedPlayers[var2];
+         int var4 = var0.readUnsignedByte();
+         if((var4 & 1) != 0) {
+            var4 += var0.readUnsignedByte() << 8;
          }
 
-         class41.updatePlayerFlag(packetBuffer, playerIndex, player, updateFlag);
+         class41.updatePlayerFlag(var0, var2, var3, var4);
       }
 
    }

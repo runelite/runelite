@@ -32,6 +32,7 @@ public class class71 implements Runnable {
       for(; this.field840; class172.method3014(50L)) {
          Object var1 = this.field841;
          Object var2 = this.field841;
+         Object var3 = this.field841;
          synchronized(this.field841) {
             if(this.field843 < 500) {
                this.field842[this.field843] = class59.field730;
@@ -128,7 +129,7 @@ public class class71 implements Runnable {
          int var5;
          if(var0 == 1110) {
             var5 = class83.intStack[--class83.intStackSize];
-            if(var4.field2777 != var5) {
+            if(var5 != var4.field2777) {
                var4.field2777 = var5;
                var4.field2776 = 0;
                var4.field2758 = 0;

@@ -43,22 +43,22 @@ public enum class239 implements RSEnum {
                ++var2;
             }
 
-            char var4;
-            StringBuilder var8;
-            for(var8 = new StringBuilder(var2); 0L != var0; var8.append(var4)) {
+            StringBuilder var4;
+            char var8;
+            for(var4 = new StringBuilder(var2); 0L != var0; var4.append(var8)) {
                long var5 = var0;
                var0 /= 37L;
-               var4 = class268.field3673[(int)(var5 - 37L * var0)];
-               if(var4 == 95) {
-                  int var7 = var8.length() - 1;
-                  var8.setCharAt(var7, Character.toUpperCase(var8.charAt(var7)));
-                  var4 = 160;
+               var8 = class268.field3673[(int)(var5 - 37L * var0)];
+               if(var8 == 95) {
+                  int var7 = var4.length() - 1;
+                  var4.setCharAt(var7, Character.toUpperCase(var4.charAt(var7)));
+                  var8 = 160;
                }
             }
 
-            var8.reverse();
-            var8.setCharAt(0, Character.toUpperCase(var8.charAt(0)));
-            return var8.toString();
+            var4.reverse();
+            var4.setCharAt(0, Character.toUpperCase(var4.charAt(0)));
+            return var4.toString();
          }
       } else {
          return null;
@@ -69,7 +69,7 @@ public enum class239 implements RSEnum {
       signature = "(II)V",
       garbageValue = "0"
    )
-   class239(int var3, int var4) {
+   private class239(int var3, int var4) {
       this.field3282 = var3;
       this.field3279 = var4;
    }

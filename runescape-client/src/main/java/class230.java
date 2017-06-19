@@ -78,7 +78,7 @@ public enum class230 implements RSEnum {
       signature = "(IIZZZ)V",
       garbageValue = "1"
    )
-   class230(int var3, int var4, boolean var5, boolean var6, boolean var7) {
+   private class230(int var3, int var4, boolean var5, boolean var6, boolean var7) {
       this.field3183 = var3;
       this.field3184 = var4;
       this.field3185 = var6;

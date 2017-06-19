@@ -129,14 +129,14 @@ public class Region {
 
    @ObfuscatedName("bz")
    public static final int[] method2579(int var0, int var1, int var2) {
-      int var3 = var2 * field2106 + var0 * field2087 >> 16;
+      int var3 = var0 * field2087 + var2 * field2106 >> 16;
       var2 = var2 * field2087 - var0 * field2106 >> 16;
       var0 = var3;
-      var3 = var1 * field2085 - var2 * field2079 >> 16;
-      var2 = var1 * field2079 + var2 * field2085 >> 16;
+      var3 = field2085 * var1 - var2 * field2079 >> 16;
+      var2 = field2079 * var1 + var2 * field2085 >> 16;
       var2 |= 1;
-      int var4 = class136.field2025 + var0 * class136.field2024 / var2 + Rasterizer2D.field3752;
-      int var5 = class136.field2026 + var3 * class136.field2024 / var2 + Rasterizer2D.drawingAreaTop;
+      int var4 = var0 * class136.field2024 / var2 + class136.field2025 + Rasterizer2D.field3752;
+      int var5 = var3 * class136.field2024 / var2 + class136.field2026 + Rasterizer2D.drawingAreaTop;
       return new int[]{var4, var5};
    }
 
@@ -151,7 +151,7 @@ public class Region {
 
             for(int var6 = 0; var6 < var5.field1907; ++var6) {
                GameObject var7 = var5.objects[var6];
-               if((var7.hash >> 29 & 3) == 2 && var7.relativeX == var1 && var7.relativeY == var2) {
+               if((var7.hash >> 29 & 3) == 2 && var7.relativeX == var1 && var2 == var7.relativeY) {
                   --var7.plane;
                }
             }
@@ -217,7 +217,7 @@ public class Region {
 
          this.tiles[var1][var2][var3].field1901 = var23;
       } else {
-         var21 = new SceneTilePaint(var15, var16, var17, var18, var6, var20, var7 == var8 && var7 == var9 && var7 == var10);
+         var21 = new SceneTilePaint(var15, var16, var17, var18, var6, var20, var8 == var7 && var7 == var9 && var10 == var7);
 
          for(var22 = var1; var22 >= 0; --var22) {
             if(this.tiles[var22][var2][var3] == null) {
@@ -303,8 +303,8 @@ public class Region {
       if(var7 == null) {
          return true;
       } else {
-         int var11 = var2 * 128 + var5 * 64;
-         int var12 = var3 * 128 + var6 * 64;
+         int var11 = var5 * 64 + var2 * 128;
+         int var12 = var6 * 64 + var3 * 128;
          return this.method2591(var1, var2, var3, var5, var6, var11, var12, var4, var7, var8, false, var9, var10);
       }
    }
@@ -349,7 +349,7 @@ public class Region {
       } else {
          for(int var5 = 0; var5 < var4.field1907; ++var5) {
             GameObject var6 = var4.objects[var5];
-            if((var6.hash >> 29 & 3) == 2 && var6.relativeX == var2 && var6.relativeY == var3) {
+            if((var6.hash >> 29 & 3) == 2 && var6.relativeX == var2 && var3 == var6.relativeY) {
                return var6;
             }
          }
@@ -456,7 +456,7 @@ public class Region {
       if(var4 != null) {
          for(int var5 = 0; var5 < var4.field1907; ++var5) {
             GameObject var6 = var4.objects[var5];
-            if((var6.hash >> 29 & 3) == 2 && var6.relativeX == var2 && var6.relativeY == var3) {
+            if((var6.hash >> 29 & 3) == 2 && var6.relativeX == var2 && var3 == var6.relativeY) {
                this.method2724(var6);
                return;
             }
@@ -506,7 +506,7 @@ public class Region {
       } else {
          for(int var5 = 0; var5 < var4.field1907; ++var5) {
             GameObject var6 = var4.objects[var5];
-            if((var6.hash >> 29 & 3) == 2 && var6.relativeX == var2 && var6.relativeY == var3) {
+            if((var6.hash >> 29 & 3) == 2 && var6.relativeX == var2 && var3 == var6.relativeY) {
                return var6.hash;
             }
          }
@@ -570,7 +570,7 @@ public class Region {
       } else {
          int var10 = var2 - var5;
          int var11 = var3 - var5;
-         int var12 = var2 + var5;
+         int var12 = var5 + var2;
          int var13 = var3 + var5;
          if(var9) {
             if(var7 > 640 && var7 < 1408) {
@@ -673,21 +673,21 @@ public class Region {
          return false;
       } else {
          int var9 = (var2 - var3) * (var7 - var6) - (var1 - var6) * (var4 - var3);
-         int var10 = (var2 - var5) * (var6 - var8) - (var1 - var8) * (var3 - var5);
-         int var11 = (var2 - var4) * (var8 - var7) - (var1 - var7) * (var5 - var4);
-         return var9 * var11 > 0 && var11 * var10 > 0;
+         int var10 = (var6 - var8) * (var2 - var5) - (var1 - var8) * (var3 - var5);
+         int var11 = (var8 - var7) * (var2 - var4) - (var1 - var7) * (var5 - var4);
+         return var11 * var9 > 0 && var11 * var10 > 0;
       }
    }
 
    @ObfuscatedName("ay")
    static boolean method2614(int var0, int var1, int var2) {
-      int var3 = var2 * field2106 + var0 * field2087 >> 16;
+      int var3 = var0 * field2087 + var2 * field2106 >> 16;
       int var4 = var2 * field2087 - var0 * field2106 >> 16;
-      int var5 = var1 * field2079 + var4 * field2085 >> 16;
-      int var6 = var1 * field2085 - var4 * field2079 >> 16;
+      int var5 = var4 * field2085 + var1 * field2079 >> 16;
+      int var6 = field2085 * var1 - var4 * field2079 >> 16;
       if(var5 >= 50 && var5 <= 3500) {
-         int var7 = field2115 + var3 * 390 / var5;
-         int var8 = field2086 + var6 * 390 / var5;
+         int var7 = var3 * 390 / var5 + field2115;
+         int var8 = var6 * 390 / var5 + field2086;
          return var7 >= field2117 && var7 <= field2099 && var8 >= field2118 && var8 <= field2120;
       } else {
          return false;
@@ -805,48 +805,48 @@ public class Region {
       }
 
       int var12;
-      int var13;
-      Tile var14;
+      Tile var13;
+      int var14;
       int var15;
       int var16;
       for(var7 = this.field2064; var7 < this.field2059; ++var7) {
          var8 = this.tiles[var7];
 
          for(var9 = -25; var9 <= 0; ++var9) {
-            var10 = field2096 + var9;
-            var15 = field2096 - var9;
-            if(var10 >= field2075 || var15 < field2084) {
-               for(var16 = -25; var16 <= 0; ++var16) {
-                  var12 = field2080 + var16;
-                  var13 = field2080 - var16;
+            var10 = var9 + field2096;
+            var14 = field2096 - var9;
+            if(var10 >= field2075 || var14 < field2084) {
+               for(var15 = -25; var15 <= 0; ++var15) {
+                  var16 = var15 + field2080;
+                  var12 = field2080 - var15;
                   if(var10 >= field2075) {
-                     if(var12 >= field2077) {
-                        var14 = var8[var10][var12];
-                        if(var14 != null && var14.field1912) {
-                           this.method2693(var14, true);
+                     if(var16 >= field2077) {
+                        var13 = var8[var10][var16];
+                        if(var13 != null && var13.field1912) {
+                           this.method2693(var13, true);
                         }
                      }
 
-                     if(var13 < field2094) {
-                        var14 = var8[var10][var13];
-                        if(var14 != null && var14.field1912) {
-                           this.method2693(var14, true);
+                     if(var12 < field2094) {
+                        var13 = var8[var10][var12];
+                        if(var13 != null && var13.field1912) {
+                           this.method2693(var13, true);
                         }
                      }
                   }
 
-                  if(var15 < field2084) {
-                     if(var12 >= field2077) {
-                        var14 = var8[var15][var12];
-                        if(var14 != null && var14.field1912) {
-                           this.method2693(var14, true);
+                  if(var14 < field2084) {
+                     if(var16 >= field2077) {
+                        var13 = var8[var14][var16];
+                        if(var13 != null && var13.field1912) {
+                           this.method2693(var13, true);
                         }
                      }
 
-                     if(var13 < field2094) {
-                        var14 = var8[var15][var13];
-                        if(var14 != null && var14.field1912) {
-                           this.method2693(var14, true);
+                     if(var12 < field2094) {
+                        var13 = var8[var14][var12];
+                        if(var13 != null && var13.field1912) {
+                           this.method2693(var13, true);
                         }
                      }
                   }
@@ -864,40 +864,40 @@ public class Region {
          var8 = this.tiles[var7];
 
          for(var9 = -25; var9 <= 0; ++var9) {
-            var10 = field2096 + var9;
-            var15 = field2096 - var9;
-            if(var10 >= field2075 || var15 < field2084) {
-               for(var16 = -25; var16 <= 0; ++var16) {
-                  var12 = field2080 + var16;
-                  var13 = field2080 - var16;
+            var10 = var9 + field2096;
+            var14 = field2096 - var9;
+            if(var10 >= field2075 || var14 < field2084) {
+               for(var15 = -25; var15 <= 0; ++var15) {
+                  var16 = var15 + field2080;
+                  var12 = field2080 - var15;
                   if(var10 >= field2075) {
-                     if(var12 >= field2077) {
-                        var14 = var8[var10][var12];
-                        if(var14 != null && var14.field1912) {
-                           this.method2693(var14, false);
+                     if(var16 >= field2077) {
+                        var13 = var8[var10][var16];
+                        if(var13 != null && var13.field1912) {
+                           this.method2693(var13, false);
                         }
                      }
 
-                     if(var13 < field2094) {
-                        var14 = var8[var10][var13];
-                        if(var14 != null && var14.field1912) {
-                           this.method2693(var14, false);
+                     if(var12 < field2094) {
+                        var13 = var8[var10][var12];
+                        if(var13 != null && var13.field1912) {
+                           this.method2693(var13, false);
                         }
                      }
                   }
 
-                  if(var15 < field2084) {
-                     if(var12 >= field2077) {
-                        var14 = var8[var15][var12];
-                        if(var14 != null && var14.field1912) {
-                           this.method2693(var14, false);
+                  if(var14 < field2084) {
+                     if(var16 >= field2077) {
+                        var13 = var8[var14][var16];
+                        if(var13 != null && var13.field1912) {
+                           this.method2693(var13, false);
                         }
                      }
 
-                     if(var13 < field2094) {
-                        var14 = var8[var15][var13];
-                        if(var14 != null && var14.field1912) {
-                           this.method2693(var14, false);
+                     if(var12 < field2094) {
+                        var13 = var8[var14][var12];
+                        if(var13 != null && var13.field1912) {
+                           this.method2693(var13, false);
                         }
                      }
                   }
@@ -928,44 +928,44 @@ public class Region {
       int var18 = this.field2078[var2][var7 + 1][var8] - field2082;
       int var19 = this.field2078[var2][var7 + 1][var8 + 1] - field2082;
       int var20 = this.field2078[var2][var7][var8 + 1] - field2082;
-      int var21 = var12 * var5 + var10 * var6 >> 16;
-      var12 = var12 * var6 - var10 * var5 >> 16;
+      int var21 = var5 * var12 + var10 * var6 >> 16;
+      var12 = var12 * var6 - var5 * var10 >> 16;
       var10 = var21;
-      var21 = var17 * var4 - var12 * var3 >> 16;
-      var12 = var17 * var3 + var12 * var4 >> 16;
+      var21 = var17 * var4 - var3 * var12 >> 16;
+      var12 = var4 * var12 + var17 * var3 >> 16;
       var17 = var21;
       if(var12 >= 50) {
          var21 = var11 * var5 + var14 * var6 >> 16;
-         var11 = var11 * var6 - var14 * var5 >> 16;
+         var11 = var11 * var6 - var5 * var14 >> 16;
          var14 = var21;
-         var21 = var18 * var4 - var11 * var3 >> 16;
-         var11 = var18 * var3 + var11 * var4 >> 16;
+         var21 = var18 * var4 - var3 * var11 >> 16;
+         var11 = var11 * var4 + var18 * var3 >> 16;
          var18 = var21;
          if(var11 >= 50) {
-            var21 = var16 * var5 + var13 * var6 >> 16;
+            var21 = var5 * var16 + var13 * var6 >> 16;
             var16 = var16 * var6 - var13 * var5 >> 16;
             var13 = var21;
-            var21 = var19 * var4 - var16 * var3 >> 16;
-            var16 = var19 * var3 + var16 * var4 >> 16;
+            var21 = var19 * var4 - var3 * var16 >> 16;
+            var16 = var3 * var19 + var16 * var4 >> 16;
             var19 = var21;
             if(var16 >= 50) {
-               var21 = var15 * var5 + var9 * var6 >> 16;
-               var15 = var15 * var6 - var9 * var5 >> 16;
+               var21 = var9 * var6 + var15 * var5 >> 16;
+               var15 = var15 * var6 - var5 * var9 >> 16;
                var9 = var21;
-               var21 = var20 * var4 - var15 * var3 >> 16;
-               var15 = var20 * var3 + var15 * var4 >> 16;
+               var21 = var20 * var4 - var3 * var15 >> 16;
+               var15 = var3 * var20 + var15 * var4 >> 16;
                if(var15 >= 50) {
-                  int var22 = class136.field2025 + var10 * class136.field2024 / var12;
-                  int var23 = class136.field2026 + var17 * class136.field2024 / var12;
-                  int var24 = class136.field2025 + var14 * class136.field2024 / var11;
-                  int var25 = class136.field2026 + var18 * class136.field2024 / var11;
-                  int var26 = class136.field2025 + var13 * class136.field2024 / var16;
+                  int var22 = var10 * class136.field2024 / var12 + class136.field2025;
+                  int var23 = var17 * class136.field2024 / var12 + class136.field2026;
+                  int var24 = var14 * class136.field2024 / var11 + class136.field2025;
+                  int var25 = var18 * class136.field2024 / var11 + class136.field2026;
+                  int var26 = var13 * class136.field2024 / var16 + class136.field2025;
                   int var27 = class136.field2026 + var19 * class136.field2024 / var16;
-                  int var28 = class136.field2025 + var9 * class136.field2024 / var15;
-                  int var29 = class136.field2026 + var21 * class136.field2024 / var15;
+                  int var28 = var9 * class136.field2024 / var15 + class136.field2025;
+                  int var29 = var21 * class136.field2024 / var15 + class136.field2026;
                   class136.rasterAlpha = 0;
                   int var30;
-                  if((var26 - var28) * (var25 - var29) - (var27 - var29) * (var24 - var28) > 0) {
+                  if((var25 - var29) * (var26 - var28) - (var24 - var28) * (var27 - var29) > 0) {
                      class136.rasterClipEnable = false;
                      if(var26 < 0 || var28 < 0 || var24 < 0 || var26 > class136.rasterClipX || var28 > class136.rasterClipX || var24 > class136.rasterClipX) {
                         class136.rasterClipEnable = true;
@@ -992,7 +992,7 @@ public class Region {
                      }
                   }
 
-                  if((var22 - var24) * (var29 - var25) - (var23 - var25) * (var28 - var24) > 0) {
+                  if((var22 - var24) * (var29 - var25) - (var28 - var24) * (var23 - var25) > 0) {
                      class136.rasterClipEnable = false;
                      if(var22 < 0 || var24 < 0 || var28 < 0 || var22 > class136.rasterClipX || var24 > class136.rasterClipX || var28 > class136.rasterClipX) {
                         class136.rasterClipEnable = true;
@@ -1034,11 +1034,11 @@ public class Region {
          var10 = var1.field1857[var9] - field2081;
          var11 = var1.field1842[var9] - field2082;
          var12 = var1.field1843[var9] - field2083;
-         var13 = var12 * var4 + var10 * var5 >> 16;
-         var12 = var12 * var5 - var10 * var4 >> 16;
+         var13 = var10 * var5 + var12 * var4 >> 16;
+         var12 = var5 * var12 - var10 * var4 >> 16;
          var10 = var13;
-         var13 = var11 * var3 - var12 * var2 >> 16;
-         var12 = var11 * var2 + var12 * var3 >> 16;
+         var13 = var3 * var11 - var2 * var12 >> 16;
+         var12 = var12 * var3 + var11 * var2 >> 16;
          if(var12 < 50) {
             return;
          }
@@ -1049,8 +1049,8 @@ public class Region {
             SceneTileModel.field1860[var9] = var12;
          }
 
-         SceneTileModel.field1856[var9] = class136.field2025 + var10 * class136.field2024 / var12;
-         SceneTileModel.field1853[var9] = class136.field2026 + var13 * class136.field2024 / var12;
+         SceneTileModel.field1856[var9] = var10 * class136.field2024 / var12 + class136.field2025;
+         SceneTileModel.field1853[var9] = var13 * class136.field2024 / var12 + class136.field2026;
       }
 
       class136.rasterAlpha = 0;
@@ -1066,7 +1066,7 @@ public class Region {
          int var16 = SceneTileModel.field1853[var10];
          int var17 = SceneTileModel.field1853[var11];
          int var18 = SceneTileModel.field1853[var12];
-         if((var13 - var14) * (var18 - var17) - (var16 - var17) * (var15 - var14) > 0) {
+         if((var18 - var17) * (var13 - var14) - (var15 - var14) * (var16 - var17) > 0) {
             class136.rasterClipEnable = false;
             if(var13 < 0 || var14 < 0 || var15 < 0 || var13 > class136.rasterClipX || var14 > class136.rasterClipX || var15 > class136.rasterClipX) {
                class136.rasterClipEnable = true;
@@ -1098,7 +1098,7 @@ public class Region {
 
    @ObfuscatedName("au")
    static final int method2623(int var0, int var1) {
-      var1 = var1 * (var0 & 127) >> 7;
+      var1 = (var0 & 127) * var1 >> 7;
       if(var1 < 2) {
          var1 = 2;
       } else if(var1 > 126) {
@@ -1560,25 +1560,25 @@ public class Region {
       int var11 = var4 + var6;
 
       for(int var12 = var2; var12 <= var2 + 1; ++var12) {
-         if(var12 != this.field2059) {
+         if(this.field2059 != var12) {
             for(int var13 = var8; var13 <= var9; ++var13) {
                if(var13 >= 0 && var13 < this.field2060) {
                   for(int var14 = var10; var14 <= var11; ++var14) {
-                     if(var14 >= 0 && var14 < this.field2109 && (!var7 || var13 >= var9 || var14 >= var11 || var14 < var4 && var13 != var3)) {
+                     if(var14 >= 0 && var14 < this.field2109 && (!var7 || var13 >= var9 || var14 >= var11 || var14 < var4 && var3 != var13)) {
                         Tile var15 = this.tiles[var12][var13][var14];
                         if(var15 != null) {
-                           int var16 = (this.field2078[var12][var13][var14] + this.field2078[var12][var13 + 1][var14] + this.field2078[var12][var13][var14 + 1] + this.field2078[var12][var13 + 1][var14 + 1]) / 4 - (this.field2078[var2][var3][var4] + this.field2078[var2][var3 + 1][var4] + this.field2078[var2][var3][var4 + 1] + this.field2078[var2][var3 + 1][var4 + 1]) / 4;
+                           int var16 = (this.field2078[var12][var13][var14 + 1] + this.field2078[var12][var13][var14] + this.field2078[var12][var13 + 1][var14] + this.field2078[var12][var13 + 1][var14 + 1]) / 4 - (this.field2078[var2][var3 + 1][var4 + 1] + this.field2078[var2][var3][var4] + this.field2078[var2][var3 + 1][var4] + this.field2078[var2][var3][var4 + 1]) / 4;
                            WallObject var17 = var15.wallObject;
                            if(var17 != null) {
                               ModelData var18;
                               if(var17.renderable1 instanceof ModelData) {
                                  var18 = (ModelData)var17.renderable1;
-                                 ModelData.method2354(var1, var18, (var13 - var3) * 128 + (1 - var5) * 64, var16, (var14 - var4) * 128 + (1 - var6) * 64, var7);
+                                 ModelData.method2354(var1, var18, (1 - var5) * 64 + (var13 - var3) * 128, var16, (1 - var6) * 64 + (var14 - var4) * 128, var7);
                               }
 
                               if(var17.renderable2 instanceof ModelData) {
                                  var18 = (ModelData)var17.renderable2;
-                                 ModelData.method2354(var1, var18, (var13 - var3) * 128 + (1 - var5) * 64, var16, (var14 - var4) * 128 + (1 - var6) * 64, var7);
+                                 ModelData.method2354(var1, var18, (1 - var5) * 64 + (var13 - var3) * 128, var16, (1 - var6) * 64 + (var14 - var4) * 128, var7);
                               }
                            }
 
@@ -1588,7 +1588,7 @@ public class Region {
                                  ModelData var20 = (ModelData)var19.renderable;
                                  int var21 = var19.offsetX - var19.relativeX + 1;
                                  int var22 = var19.offsetY - var19.relativeY + 1;
-                                 ModelData.method2354(var1, var20, (var19.relativeX - var3) * 128 + (var21 - var5) * 64, var16, (var19.relativeY - var4) * 128 + (var22 - var6) * 64, var7);
+                                 ModelData.method2354(var1, var20, (var21 - var5) * 64 + (var19.relativeX - var3) * 128, var16, (var22 - var6) * 64 + (var19.relativeY - var4) * 128, var7);
                               }
                            }
                         }
@@ -1772,13 +1772,13 @@ public class Region {
                                  WallObject var23 = var3.wallObject;
                                  DecorativeObject var24 = var3.decorativeObject;
                                  if(var23 != null || var24 != null) {
-                                    if(field2096 == var4) {
+                                    if(var4 == field2096) {
                                        ++var21;
                                     } else if(field2096 < var4) {
                                        var21 += 2;
                                     }
 
-                                    if(field2080 == var5) {
+                                    if(var5 == field2080) {
                                        var21 += 3;
                                     } else if(field2080 > var5) {
                                        var21 += 6;
@@ -1822,7 +1822,7 @@ public class Region {
 
                                  if(var24 != null && !this.method2628(var7, var4, var5, var24.renderable1.modelHeight)) {
                                     if((var24.renderFlag & var10) != 0) {
-                                       var24.renderable1.vmethod2753(0, field2079, field2085, field2106, field2087, var24.x - field2081 + var24.offsetX, var24.floor - field2082, var24.y - field2083 + var24.offsetY, var24.hash);
+                                       var24.renderable1.vmethod2753(0, field2079, field2085, field2106, field2087, var24.offsetX + (var24.x - field2081), var24.floor - field2082, var24.offsetY + (var24.y - field2083), var24.hash);
                                     } else if(var24.renderFlag == 256) {
                                        var12 = var24.x - field2081;
                                        var14 = var24.floor - field2082;
@@ -1842,7 +1842,7 @@ public class Region {
                                        }
 
                                        if(var25 < var19) {
-                                          var24.renderable1.vmethod2753(0, field2079, field2085, field2106, field2087, var12 + var24.offsetX, var14, var13 + var24.offsetY, var24.hash);
+                                          var24.renderable1.vmethod2753(0, field2079, field2085, field2106, field2087, var24.offsetX + var12, var14, var13 + var24.offsetY, var24.hash);
                                        } else if(var24.renderable2 != null) {
                                           var24.renderable2.vmethod2753(0, field2079, field2085, field2106, field2087, var12, var14, var13, var24.hash);
                                        }
@@ -1908,7 +1908,7 @@ public class Region {
                                  var20 = true;
 
                                  for(var21 = 0; var21 < var3.field1907; ++var21) {
-                                    if(var3.objects[var21].field2199 != field2089 && (var3.field1909[var21] & var3.field1904) == var3.field1916) {
+                                    if(var3.objects[var21].field2199 != field2089 && var3.field1916 == (var3.field1909[var21] & var3.field1904)) {
                                        var20 = false;
                                        break;
                                     }
@@ -1981,7 +1981,7 @@ public class Region {
                                        var14 = field2080 - var17.relativeY;
                                        var13 = var17.offsetY - field2080;
                                        if(var13 > var14) {
-                                          var17.field2198 = var11 + var13;
+                                          var17.field2198 = var13 + var11;
                                        } else {
                                           var17.field2198 = var11 + var14;
                                        }
@@ -1999,12 +1999,12 @@ public class Region {
                                           if(var33.field2198 > var10) {
                                              var10 = var33.field2198;
                                              var15 = var11;
-                                          } else if(var33.field2198 == var10) {
+                                          } else if(var10 == var33.field2198) {
                                              var14 = var33.x - field2081;
                                              var13 = var33.y - field2083;
                                              var18 = field2088[var15].x - field2081;
                                              var19 = field2088[var15].y - field2083;
-                                             if(var14 * var14 + var13 * var13 > var18 * var18 + var19 * var19) {
+                                             if(var14 * var14 + var13 * var13 > var19 * var19 + var18 * var18) {
                                                 var15 = var11;
                                              }
                                           }
@@ -2026,7 +2026,7 @@ public class Region {
                                           Tile var35 = var8[var12][var14];
                                           if(var35.field1904 != 0) {
                                              field2063.method3505(var35);
-                                          } else if((var12 != var4 || var14 != var5) && var35.field1913) {
+                                          } else if((var4 != var12 || var5 != var14) && var35.field1913) {
                                              field2063.method3505(var35);
                                           }
                                        }
@@ -2093,7 +2093,7 @@ public class Region {
             DecorativeObject var29 = var3.decorativeObject;
             if(var29 != null && !this.method2628(var7, var4, var5, var29.renderable1.modelHeight)) {
                if((var29.renderFlag & var3.field1899) != 0) {
-                  var29.renderable1.vmethod2753(0, field2079, field2085, field2106, field2087, var29.x - field2081 + var29.offsetX, var29.floor - field2082, var29.y - field2083 + var29.offsetY, var29.hash);
+                  var29.renderable1.vmethod2753(0, field2079, field2085, field2106, field2087, var29.offsetX + (var29.x - field2081), var29.floor - field2082, var29.offsetY + (var29.y - field2083), var29.hash);
                } else if(var29.renderFlag == 256) {
                   var10 = var29.x - field2081;
                   var15 = var29.floor - field2082;
@@ -2211,7 +2211,7 @@ public class Region {
    boolean method2723(int var1, int var2, int var3, int var4, int var5, int var6) {
       int var7;
       int var8;
-      if(var2 == var3 && var4 == var5) {
+      if(var3 == var2 && var5 == var4) {
          if(!this.method2626(var1, var2, var4)) {
             return false;
          } else {
@@ -2337,7 +2337,7 @@ public class Region {
                   boolean var14 = false;
 
                   for(int var15 = -var1; var15 <= var2; var15 += 128) {
-                     if(method2614(var11, var0[var8] + var15, var13)) {
+                     if(method2614(var11, var15 + var0[var8], var13)) {
                         var14 = true;
                         break;
                      }
@@ -2358,22 +2358,22 @@ public class Region {
                   label76:
                   for(var10 = -1; var10 <= 1; ++var10) {
                      for(var11 = -1; var11 <= 1; ++var11) {
-                        if(var5[var6][var7][var8 + var10 + 25 + 1][var9 + var11 + 25 + 1]) {
+                        if(var5[var6][var7][var10 + var8 + 25 + 1][var11 + var9 + 25 + 1]) {
                            var16 = true;
                            break label76;
                         }
 
-                        if(var5[var6][(var7 + 1) % 31][var8 + var10 + 25 + 1][var9 + var11 + 25 + 1]) {
+                        if(var5[var6][(var7 + 1) % 31][var10 + var8 + 25 + 1][var11 + var9 + 25 + 1]) {
                            var16 = true;
                            break label76;
                         }
 
-                        if(var5[var6 + 1][var7][var8 + var10 + 25 + 1][var9 + var11 + 25 + 1]) {
+                        if(var5[var6 + 1][var7][var10 + var8 + 25 + 1][var11 + var9 + 25 + 1]) {
                            var16 = true;
                            break label76;
                         }
 
-                        if(var5[var6 + 1][(var7 + 1) % 31][var8 + var10 + 25 + 1][var9 + var11 + 25 + 1]) {
+                        if(var5[var6 + 1][(var7 + 1) % 31][var10 + var8 + 25 + 1][var11 + var9 + 25 + 1]) {
                            var16 = true;
                            break label76;
                         }

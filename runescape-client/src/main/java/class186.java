@@ -43,7 +43,7 @@ public final class class186 implements Iterable {
 
          while(true) {
             Node var3 = var2.next;
-            if(var3 == var2) {
+            if(var2 == var3) {
                break;
             }
 
@@ -63,15 +63,16 @@ public final class class186 implements Iterable {
          this.field2462 = var1.next;
          return var1;
       } else {
-         while(this.field2464 < this.field2460) {
-            var1 = this.field2461[this.field2464++].next;
-            if(var1 != this.field2461[this.field2464 - 1]) {
-               this.field2462 = var1.next;
-               return var1;
+         do {
+            if(this.field2464 >= this.field2460) {
+               return null;
             }
-         }
 
-         return null;
+            var1 = this.field2461[this.field2464++].next;
+         } while(var1 == this.field2461[this.field2464 - 1]);
+
+         this.field2462 = var1.next;
+         return var1;
       }
    }
 

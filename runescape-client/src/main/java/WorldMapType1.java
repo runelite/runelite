@@ -110,7 +110,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
       if(!this.vmethod678(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{this.field440 * 64 - this.field450 * 64 + var2, var3 + (this.field447 * 64 - this.field443 * 64)};
+         int[] var4 = new int[]{var2 + (this.field440 * 64 - this.field450 * 64), var3 + (this.field447 * 64 - this.field443 * 64)};
          return var4;
       }
    }
@@ -178,7 +178,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
       if(var0.field1254 > Client.gameCycle) {
          var2 = var0.field1254 - Client.gameCycle;
          var3 = var0.field1212 * 64 + var0.field1250 * 128;
-         var4 = var0.field1213 * 128 + var0.field1212 * 64;
+         var4 = var0.field1212 * 64 + var0.field1213 * 128;
          var0.x += (var3 - var0.x) / var2;
          var0.y += (var4 - var0.y) / var2;
          var0.field1266 = 0;
@@ -189,10 +189,10 @@ public class WorldMapType1 implements WorldMapSectionBase {
             var3 = Client.gameCycle - var0.field1254;
             var4 = var0.field1212 * 64 + var0.field1250 * 128;
             int var5 = var0.field1212 * 64 + var0.field1213 * 128;
-            int var6 = var0.field1256 * 128 + var0.field1212 * 64;
-            int var7 = var0.field1253 * 128 + var0.field1212 * 64;
-            var0.x = (var4 * (var2 - var3) + var6 * var3) / var2;
-            var0.y = (var5 * (var2 - var3) + var7 * var3) / var2;
+            int var6 = var0.field1212 * 64 + var0.field1256 * 128;
+            int var7 = var0.field1212 * 64 + var0.field1253 * 128;
+            var0.x = ((var2 - var3) * var4 + var3 * var6) / var2;
+            var0.y = (var5 * (var2 - var3) + var3 * var7) / var2;
          }
 
          var0.field1266 = 0;
@@ -208,17 +208,17 @@ public class WorldMapType1 implements WorldMapSectionBase {
          var0.field1254 = 0;
          var0.field1259 = 0;
          var0.x = var0.field1212 * 64 + var0.pathX[0] * 128;
-         var0.y = var0.pathY[0] * 128 + var0.field1212 * 64;
+         var0.y = var0.field1212 * 64 + var0.pathY[0] * 128;
          var0.method1441();
       }
 
-      if(var0 == class20.localPlayer && (var0.x < 1536 || var0.y < 1536 || var0.x >= 11776 || var0.y >= 11776)) {
+      if(class20.localPlayer == var0 && (var0.x < 1536 || var0.y < 1536 || var0.x >= 11776 || var0.y >= 11776)) {
          var0.animation = -1;
          var0.graphic = -1;
          var0.field1254 = 0;
          var0.field1259 = 0;
          var0.x = var0.field1212 * 64 + var0.pathX[0] * 128;
-         var0.y = var0.pathY[0] * 128 + var0.field1212 * 64;
+         var0.y = var0.field1212 * 64 + var0.pathY[0] * 128;
          var0.method1441();
       }
 
@@ -340,7 +340,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
 
          return var1;
       } else {
-         var1 = var1 * (var0 & 127) / 128;
+         var1 = (var0 & 127) * var1 / 128;
          if(var1 < 2) {
             var1 = 2;
          } else if(var1 > 126) {

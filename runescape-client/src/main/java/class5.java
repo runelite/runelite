@@ -235,7 +235,7 @@ final class class5 implements class0 {
             int var5 = var2.y >> 7;
             if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
                if(var2.field1212 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
-                  if(Client.field1010 == Client.field1009[var4][var5]) {
+                  if(Client.field1009[var4][var5] == Client.field1010) {
                      continue;
                   }
 
@@ -246,7 +246,7 @@ final class class5 implements class0 {
                   var3 -= Integer.MIN_VALUE;
                }
 
-               class17.region.method2610(Player.plane, var2.x, var2.y, class77.method1438(var2.x + (var2.field1212 * 64 - 64), var2.field1212 * 64 - 64 + var2.y, Player.plane), var2.field1212 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1211);
+               class17.region.method2610(Player.plane, var2.x, var2.y, class77.method1438(var2.x + (var2.field1212 * 64 - 64), var2.y + (var2.field1212 * 64 - 64), Player.plane), var2.field1212 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1211);
             }
          }
       }

@@ -36,7 +36,7 @@ public enum class228 implements RSEnum {
       signature = "(II)V",
       garbageValue = "0"
    )
-   class228(int var3, int var4) {
+   private class228(int var3, int var4) {
       this.field3163 = var3;
       this.field3164 = var4;
    }
@@ -59,7 +59,7 @@ public enum class228 implements RSEnum {
       if(var0 == null) {
          return null;
       } else if(var0 instanceof byte[]) {
-         byte[] var5 = (byte[])((byte[])((byte[])var0));
+         byte[] var5 = (byte[])((byte[])((byte[])((byte[])var0)));
          if(var1) {
             int var3 = var5.length;
             byte[] var4 = new byte[var3];

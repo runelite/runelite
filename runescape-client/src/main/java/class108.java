@@ -32,9 +32,9 @@ public class class108 {
       int var6 = var4 - var2;
       int var7 = var3 - var1;
       int var8 = var6 < 0?-var6:var6;
-      int var9 = var8 * (var5 - var1);
+      int var9 = (var5 - var1) * var8;
       int var10 = var9 / var7;
-      return var6 < 0?var2 - var10:var2 + var10;
+      return var6 < 0?var2 - var10:var10 + var2;
    }
 
    @ObfuscatedName("t")
@@ -251,9 +251,9 @@ public class class108 {
             var13[var7] = true;
             field1620[var6] = true;
             if(var10 >= var12) {
-               field1617[var6] = var11 > var9?var10 - var9 + var9:var9 - var10 + var11 - 1;
+               field1617[var6] = var11 > var9?var10 - var9 + var9:var11 + (var9 - var10) - 1;
             } else {
-               field1617[var6] = (var10 & 1) != 0?var9 - (var10 + 1) / 2:var9 + var10 / 2;
+               field1617[var6] = (var10 & 1) != 0?var9 - (var10 + 1) / 2:var10 / 2 + var9;
             }
          } else {
             field1620[var6] = false;
@@ -263,7 +263,7 @@ public class class108 {
 
       this.method1886(0, var3 - 1);
       var6 = 0;
-      var7 = field1617[0] * this.field1612;
+      var7 = this.field1612 * field1617[0];
 
       for(var8 = 1; var8 < var3; ++var8) {
          if(field1620[var8]) {

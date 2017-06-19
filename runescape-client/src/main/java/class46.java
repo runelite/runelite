@@ -654,7 +654,7 @@ public class class46 {
    static void method671(class69 var0, int var1) {
       Object[] var2 = var0.field821;
       class219 var3 = var0.field831;
-      boolean var4 = class219.field2796 == var3 || var3 == class219.field2797 || var3 == class219.field2798 || var3 == class219.field2799 || class219.field2800 == var3 || class219.field2803 == var3 || class219.field2802 == var3 || class219.field2806 == var3;
+      boolean var4 = var3 == class219.field2796 || var3 == class219.field2797 || var3 == class219.field2798 || var3 == class219.field2799 || var3 == class219.field2800 || var3 == class219.field2803 || var3 == class219.field2802 || var3 == class219.field2806;
       Script var5;
       int var6;
       int var7;
@@ -956,7 +956,7 @@ public class class46 {
                                                                                                                                                                String[] var44 = new String[var36.localStringCount];
 
                                                                                                                                                                for(var41 = 0; var41 < var36.intStackCount; ++var41) {
-                                                                                                                                                                  var43[var41] = class83.intStack[class83.intStackSize - var36.intStackCount + var41];
+                                                                                                                                                                  var43[var41] = class83.intStack[var41 + (class83.intStackSize - var36.intStackCount)];
                                                                                                                                                                }
 
                                                                                                                                                                for(var41 = 0; var41 < var36.stringStackCount; ++var41) {
@@ -1074,7 +1074,7 @@ public class class46 {
                                                                                                                   }
                                                                                                                } else {
                                                                                                                   class83.intStackSize -= 2;
-                                                                                                                  if(class83.intStack[class83.intStackSize + 1] == class83.intStack[class83.intStackSize]) {
+                                                                                                                  if(class83.intStack[class83.intStackSize] == class83.intStack[class83.intStackSize + 1]) {
                                                                                                                      var11 += var27[var11];
                                                                                                                   }
                                                                                                                }

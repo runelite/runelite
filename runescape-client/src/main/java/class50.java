@@ -87,7 +87,7 @@ public final class class50 implements KeyListener, FocusListener {
          int var3;
          if(var2 >= 0) {
             var3 = field659 + 1 & 127;
-            if(field658 != var3) {
+            if(var3 != field658) {
                field655[field659] = var2;
                field654[field659] = 0;
                field659 = var3;
@@ -129,7 +129,7 @@ public final class class50 implements KeyListener, FocusListener {
 
             if(var3) {
                int var7 = field659 + 1 & 127;
-               if(field658 != var7) {
+               if(var7 != field658) {
                   field655[field659] = -1;
                   field654[field659] = var2;
                   field659 = var7;
@@ -238,13 +238,13 @@ public final class class50 implements KeyListener, FocusListener {
       garbageValue = "-56"
    )
    static void method726() {
-      class61.underlayIds = (byte[][][])null;
-      class61.overlayIds = (byte[][][])null;
-      class90.overlayPaths = (byte[][][])null;
-      class275.overlayRotations = (byte[][][])null;
-      class61.field750 = (int[][][])null;
-      class267.field3669 = (byte[][][])null;
-      XItemContainer.field774 = (int[][])null;
+      class61.underlayIds = (byte[][][])((byte[][][])null);
+      class61.overlayIds = (byte[][][])((byte[][][])null);
+      class90.overlayPaths = (byte[][][])((byte[][][])null);
+      class275.overlayRotations = (byte[][][])((byte[][][])null);
+      class61.field750 = (int[][][])((int[][][])null);
+      class267.field3669 = (byte[][][])((byte[][][])null);
+      XItemContainer.field774 = (int[][])((int[][])null);
       Widget.field2648 = null;
       class61.field753 = null;
       WallObject.field2140 = null;

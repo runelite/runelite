@@ -27,7 +27,7 @@ public class class210 extends CacheableNode {
    public boolean method3811(int var1, int var2) {
       if(var2 >= 0 && var2 < this.field2609.length) {
          int var3 = this.field2609[var2];
-         if(var1 >= var3 && var1 <= this.field2608[var2] + var3) {
+         if(var1 >= var3 && var1 <= var3 + this.field2608[var2]) {
             return true;
          }
       }

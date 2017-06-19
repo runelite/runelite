@@ -90,7 +90,7 @@ public class class104 {
          } else {
             for(var9 = 0; var9 < this.field1561; ++var9) {
                var10 = 0.0F;
-               var11 = var9 * this.field1562;
+               var11 = this.field1562 * var9;
 
                for(var12 = 0; var12 < this.field1562; ++var12) {
                   float var17 = (float)this.field1563[var11] * var6 + var16 + var10;
@@ -222,7 +222,7 @@ public class class104 {
          int var5;
          for(var5 = 1; var4 > 1; var4 >>= 1) {
             if((var4 & 1) != 0) {
-               var5 *= var3;
+               var5 = var3 * var5;
             }
 
             var3 *= var3;
@@ -230,7 +230,7 @@ public class class104 {
 
          int var6;
          if(var4 == 1) {
-            var6 = var5 * var3;
+            var6 = var3 * var5;
          } else {
             var6 = var5;
          }

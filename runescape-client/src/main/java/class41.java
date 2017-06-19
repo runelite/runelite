@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -91,22 +90,22 @@ public final class class41 {
          this.field569 = new class34[var9][var10];
          Iterator var11 = this.field560.field585.iterator();
 
-         int var13;
+         int var12;
          while(var11.hasNext()) {
-            class22 var12 = (class22)var11.next();
-            var13 = var12.field424;
-            int var14 = var12.field420;
-            int var15 = var13 - this.field560.method293();
+            class22 var13 = (class22)var11.next();
+            var12 = var13.field424;
+            int var14 = var13.field420;
+            int var15 = var12 - this.field560.method293();
             int var16 = var14 - this.field560.method305();
-            this.field569[var15][var16] = new class34(var13, var14, this.field560.method291(), this.field575);
-            this.field569[var15][var16].method436(var12, this.field560.field587);
+            this.field569[var15][var16] = new class34(var12, var14, this.field560.method291(), this.field575);
+            this.field569[var15][var16].method436(var13, this.field560.field587);
          }
 
          for(int var18 = 0; var18 < var9; ++var18) {
-            for(var13 = 0; var13 < var10; ++var13) {
-               if(this.field569[var18][var13] == null) {
-                  this.field569[var18][var13] = new class34(this.field560.method293() + var18, this.field560.method305() + var13, this.field560.method291(), this.field575);
-                  this.field569[var18][var13].method377(this.field560.field586, this.field560.field587);
+            for(var12 = 0; var12 < var10; ++var12) {
+               if(this.field569[var18][var12] == null) {
+                  this.field569[var18][var12] = new class34(this.field560.method293() + var18, this.field560.method305() + var12, this.field560.method291(), this.field575);
+                  this.field569[var18][var12].method377(this.field560.field586, this.field560.field587);
                }
             }
          }
@@ -168,11 +167,11 @@ public final class class41 {
       Rasterizer2D.method4821(var12);
       var17 = (int)(64.0F * var14);
       var18 = this.field567 + var1;
-      int var19 = this.field565 + var2;
+      int var19 = var2 + this.field565;
 
       for(int var20 = var13.field434; var20 < var13.field435 + var13.field434; ++var20) {
          for(int var21 = var13.field432; var21 < var13.field433 + var13.field432; ++var21) {
-            this.field569[var20][var21].method354(var5 + (this.field569[var20][var21].field483 * 64 - var18) * var17 / 64, var8 - var17 * (this.field569[var20][var21].field487 * 64 - var19 + 64) / 64, var17);
+            this.field569[var20][var21].method354(var5 + var17 * (this.field569[var20][var21].field483 * 64 - var18) / 64, var8 - (this.field569[var20][var21].field487 * 64 - var19 + 64) * var17 / 64, var17);
          }
       }
 
@@ -198,7 +197,7 @@ public final class class41 {
                this.field569[var19][var20].method460();
             }
 
-            this.field569[var19][var20].method360(var5 + (this.field569[var19][var20].field483 * 64 - var17) * var16 / 64, var8 - (this.field569[var19][var20].field487 * 64 - var18 + 64) * var16 / 64, var16, var9);
+            this.field569[var19][var20].method360(var5 + var16 * (this.field569[var19][var20].field483 * 64 - var17) / 64, var8 - var16 * (this.field569[var19][var20].field487 * 64 - var18 + 64) / 64, var16, var9);
          }
       }
 
@@ -268,8 +267,8 @@ public final class class41 {
                while(var14.hasNext()) {
                   class39 var11 = (class39)var14.next();
                   int var12 = var3 * (var11.field538.worldX - this.field567) / this.field559;
-                  int var13 = var4 - var4 * (var11.field538.worldY - this.field565) / this.field570;
-                  Rasterizer2D.method4824(var12 + var1, var2 + var13, 2, 16776960, 256);
+                  int var13 = var4 - (var11.field538.worldY - this.field565) * var4 / this.field570;
+                  Rasterizer2D.method4824(var12 + var1, var13 + var2, 2, 16776960, 256);
                }
             }
          }
@@ -327,7 +326,7 @@ public final class class41 {
    )
    class29 method536(int var1, int var2, int var3, int var4) {
       class29 var5 = new class29(this);
-      int var6 = var1 + this.field567;
+      int var6 = this.field567 + var1;
       int var7 = var2 + this.field565;
       int var8 = var3 + this.field567;
       int var9 = this.field565 + var4;
@@ -402,11 +401,11 @@ public final class class41 {
          float var13 = this.method537(var7, var3 - var1);
          int var14 = (int)(var13 * 64.0F);
          int var15 = this.field567 + var1;
-         int var16 = this.field565 + var2;
+         int var16 = var2 + this.field565;
 
          for(int var17 = var12.field434; var17 < var12.field434 + var12.field435; ++var17) {
             for(int var18 = var12.field432; var18 < var12.field433 + var12.field432; ++var18) {
-               List var19 = this.field569[var17][var18].method391(var5 + (this.field569[var17][var18].field483 * 64 - var15) * var14 / 64, var6 + var8 - var14 * (this.field569[var17][var18].field487 * 64 - var16 + 64) / 64, var14, var9, var10);
+               List var19 = this.field569[var17][var18].method391(var5 + (this.field569[var17][var18].field483 * 64 - var15) * var14 / 64, var8 + var6 - (this.field569[var17][var18].field487 * 64 - var16 + 64) * var14 / 64, var14, var9, var10);
                if(!var19.isEmpty()) {
                   var11.addAll(var19);
                }
@@ -486,22 +485,22 @@ public final class class41 {
          if(var5 > 0) {
             for(var17 = 0; var17 < var5; ++var17) {
                var9 = -1;
-               var18 = -1;
                var8 = -1;
+               var18 = -1;
                var11 = var0.method3046();
                if(var11 == 32767) {
                   var11 = var0.method3046();
-                  var18 = var0.method3046();
-                  var9 = var0.method3046();
                   var8 = var0.method3046();
-               } else if(var11 != 32766) {
+                  var9 = var0.method3046();
                   var18 = var0.method3046();
+               } else if(var11 != 32766) {
+                  var8 = var0.method3046();
                } else {
                   var11 = -1;
                }
 
                var10 = var0.method3046();
-               var2.method1443(var11, var18, var9, var8, Client.gameCycle, var10);
+               var2.method1443(var11, var8, var9, var18, Client.gameCycle, var10);
             }
          }
 
@@ -509,12 +508,12 @@ public final class class41 {
          if(var17 > 0) {
             for(var11 = 0; var11 < var17; ++var11) {
                var9 = var0.method3046();
-               var18 = var0.method3046();
-               if(var18 != 32767) {
-                  var8 = var0.method3046();
+               var8 = var0.method3046();
+               if(var8 != 32767) {
+                  var18 = var0.method3046();
                   var10 = var0.readUnsignedByte();
-                  int var12 = var18 > 0?var0.readUnsignedByte():var10;
-                  var2.method1445(var9, Client.gameCycle, var18, var8, var10, var12);
+                  int var12 = var8 > 0?var0.readUnsignedByte():var10;
+                  var2.method1445(var9, Client.gameCycle, var8, var18, var10, var12);
                } else {
                   var2.method1446(var9);
                }
@@ -535,8 +534,8 @@ public final class class41 {
          class230[] var19 = new class230[]{class230.field3180, class230.field3178, class230.field3187, class230.field3182, class230.field3179, class230.field3181};
          class230 var20 = (class230)RSCanvas.method735(var19, var0.readUnsignedByte());
          boolean var23 = var0.readUnsignedByte() == 1;
-         var18 = var0.readUnsignedByte();
-         var8 = var0.offset;
+         var8 = var0.readUnsignedByte();
+         var18 = var0.offset;
          if(var2.name != null && var2.composition != null) {
             boolean var22 = false;
             if(var20.field3186 && class87.method1604(var2.name)) {
@@ -545,7 +544,7 @@ public final class class41 {
 
             if(!var22 && Client.field1025 == 0 && !var2.hidden) {
                class96.field1501.offset = 0;
-               var0.readBytes(class96.field1501.payload, 0, var18);
+               var0.readBytes(class96.field1501.payload, 0, var8);
                class96.field1501.offset = 0;
                Buffer var13 = class96.field1501;
                String var14 = class162.method2947(var13, 32767);
@@ -571,7 +570,7 @@ public final class class41 {
             }
          }
 
-         var0.offset = var18 + var8;
+         var0.offset = var8 + var18;
       }
 
       if((var3 & 2048) != 0) {

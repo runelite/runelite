@@ -111,7 +111,7 @@ public final class NPC extends Actor {
       super.field1266 = 0;
       super.pathX[0] = var1;
       super.pathY[0] = var2;
-      super.x = super.pathX[0] * 128 + super.field1212 * 64;
+      super.x = super.field1212 * 64 + super.pathX[0] * 128;
       super.y = super.field1212 * 64 + super.pathY[0] * 128;
    }
 
@@ -134,7 +134,7 @@ public final class NPC extends Actor {
          return null;
       } else {
          Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?GameEngine.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation == -1 || super.idlePoseAnimation == super.poseAnimation && var1 != null?null:GameEngine.getAnimation(super.poseAnimation);
+         Sequence var2 = super.poseAnimation != -1 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?GameEngine.getAnimation(super.poseAnimation):null;
          Model var3 = this.composition.method4514(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;

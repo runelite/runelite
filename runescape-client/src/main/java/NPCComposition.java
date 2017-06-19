@@ -490,13 +490,14 @@ public class NPCComposition extends CacheableNode {
    public static void method4541() {
       Object var0 = class236.field3239;
       Object var1 = class236.field3239;
+      Object var2 = class236.field3239;
       synchronized(class236.field3239) {
          if(class236.field3241 != 0) {
             class236.field3241 = 1;
 
             try {
                class236.field3239.wait();
-            } catch (InterruptedException var4) {
+            } catch (InterruptedException var5) {
                ;
             }
          }

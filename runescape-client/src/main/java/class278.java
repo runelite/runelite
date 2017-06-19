@@ -88,22 +88,23 @@ public class class278 {
             int var5;
             int var6;
             String var7;
+            boolean var9;
             if(var0 != 3107) {
-               Widget var14;
+               Widget var12;
                if(var0 == 3108) {
                   class83.intStackSize -= 3;
                   var6 = class83.intStack[class83.intStackSize];
                   var4 = class83.intStack[class83.intStackSize + 1];
                   var5 = class83.intStack[class83.intStackSize + 2];
-                  var14 = class223.method3959(var5);
-                  ScriptState.method1009(var14, var6, var4);
+                  var12 = class223.method3959(var5);
+                  ScriptState.method1009(var12, var6, var4);
                   return 1;
                } else if(var0 == 3109) {
                   class83.intStackSize -= 2;
                   var6 = class83.intStack[class83.intStackSize];
                   var4 = class83.intStack[class83.intStackSize + 1];
-                  var14 = var2?class43.field582:class31.field457;
-                  ScriptState.method1009(var14, var6, var4);
+                  var12 = var2?class43.field582:class31.field457;
+                  ScriptState.method1009(var12, var6, var4);
                   return 1;
                } else if(var0 == 3110) {
                   class221.field2845 = class83.intStack[--class83.intStackSize] == 1;
@@ -117,8 +118,8 @@ public class class278 {
                   return 1;
                } else if(var0 == 3113) {
                   var3 = class83.scriptStringStack[--class24.scriptStringStackSize];
-                  boolean var13 = class83.intStack[--class83.intStackSize] == 1;
-                  class20.method164(var3, var13, false);
+                  var9 = class83.intStack[--class83.intStackSize] == 1;
+                  class20.method164(var3, var9, false);
                   return 1;
                } else if(var0 == 3115) {
                   var6 = class83.intStack[--class83.intStackSize];
@@ -129,15 +130,15 @@ public class class278 {
                   var6 = class83.intStack[--class83.intStackSize];
                   class24.scriptStringStackSize -= 2;
                   var7 = class83.scriptStringStack[class24.scriptStringStackSize];
-                  String var12 = class83.scriptStringStack[class24.scriptStringStackSize + 1];
+                  String var13 = class83.scriptStringStack[class24.scriptStringStackSize + 1];
                   if(var7.length() > 500) {
                      return 1;
-                  } else if(var12.length() > 500) {
+                  } else if(var13.length() > 500) {
                      return 1;
                   } else {
                      Client.secretPacketBuffer1.putOpcode(49);
-                     Client.secretPacketBuffer1.putShort(Friend.method1023(var7) + 1 + Friend.method1023(var12));
-                     Client.secretPacketBuffer1.method3125(var12);
+                     Client.secretPacketBuffer1.putShort(Friend.method1023(var7) + 1 + Friend.method1023(var13));
+                     Client.secretPacketBuffer1.method3125(var13);
                      Client.secretPacketBuffer1.method3196(var6);
                      Client.secretPacketBuffer1.method3125(var7);
                      return 1;
@@ -153,11 +154,11 @@ public class class278 {
                var7 = class83.scriptStringStack[--class24.scriptStringStackSize];
                var5 = class96.field1487;
                int[] var8 = class96.field1491;
-               boolean var9 = false;
+               var9 = false;
 
                for(int var10 = 0; var10 < var5; ++var10) {
                   Player var11 = Client.cachedPlayers[var8[var10]];
-                  if(var11 != null && var11 != class20.localPlayer && var11.name != null && var11.name.equalsIgnoreCase(var7)) {
+                  if(var11 != null && class20.localPlayer != var11 && var11.name != null && var11.name.equalsIgnoreCase(var7)) {
                      if(var6 == 1) {
                         Client.secretPacketBuffer1.putOpcode(187);
                         Client.secretPacketBuffer1.method3067(var8[var10]);

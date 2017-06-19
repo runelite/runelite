@@ -206,7 +206,7 @@ public class Spotanim extends CacheableNode {
       } else if(var0.field2661 == 1) {
          var0.width = var1 - var0.originalWidth;
       } else if(var0.field2661 == 2) {
-         var0.width = var1 * var0.originalWidth >> 14;
+         var0.width = var0.originalWidth * var1 >> 14;
       }
 
       if(var0.field2662 == 0) {
@@ -244,7 +244,7 @@ public class Spotanim extends CacheableNode {
          Client.field1078 = var0;
       }
 
-      if(var3 && var0.field2706 != null && (var4 != var0.width || var0.height != var5)) {
+      if(var3 && var0.field2706 != null && (var0.width != var4 || var5 != var0.height)) {
          class69 var6 = new class69();
          var6.field822 = var0;
          var6.field821 = var0.field2706;

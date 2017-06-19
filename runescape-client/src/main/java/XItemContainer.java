@@ -35,7 +35,7 @@ public class XItemContainer extends Node {
       garbageValue = "94"
    )
    static void method1020(Widget var0) {
-      if(Client.field1110 == var0.field2786) {
+      if(var0.field2786 == Client.field1110) {
          Client.field1111[var0.boundsIndex] = true;
       }
 

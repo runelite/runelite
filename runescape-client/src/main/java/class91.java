@@ -68,7 +68,7 @@ public enum class91 implements RSEnum {
       signature = "(I)V",
       garbageValue = "0"
    )
-   class91(int var3) {
+   private class91(int var3) {
       this.field1412 = var3;
    }
 

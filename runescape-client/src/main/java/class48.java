@@ -63,7 +63,7 @@ public class class48 implements WorldMapSectionBase {
       garbageValue = "-2095092414"
    )
    public boolean vmethod678(int var1, int var2, int var3) {
-      return var1 >= this.field618 && var1 < this.field622 + this.field618?var2 >= (this.field623 << 6) + (this.field619 << 3) && var2 <= (this.field619 << 3) + (this.field623 << 6) + 7 && var3 >= (this.field617 << 6) + (this.field620 << 3) && var3 <= (this.field617 << 6) + (this.field620 << 3) + 7:false;
+      return var1 >= this.field618 && var1 < this.field622 + this.field618?var2 >= (this.field623 << 6) + (this.field619 << 3) && var2 <= (this.field623 << 6) + (this.field619 << 3) + 7 && var3 >= (this.field617 << 6) + (this.field620 << 3) && var3 <= (this.field617 << 6) + (this.field620 << 3) + 7:false;
    }
 
    @ObfuscatedName("e")
@@ -72,7 +72,7 @@ public class class48 implements WorldMapSectionBase {
       garbageValue = "108"
    )
    public boolean vmethod679(int var1, int var2) {
-      return var1 >= (this.field621 << 6) + (this.field624 << 3) && var1 <= (this.field621 << 6) + (this.field624 << 3) + 7 && var2 >= (this.field626 << 6) + (this.field625 << 3) && var2 <= (this.field625 << 3) + (this.field626 << 6) + 7;
+      return var1 >= (this.field621 << 6) + (this.field624 << 3) && var1 <= (this.field621 << 6) + (this.field624 << 3) + 7 && var2 >= (this.field626 << 6) + (this.field625 << 3) && var2 <= (this.field626 << 6) + (this.field625 << 3) + 7;
    }
 
    @ObfuscatedName("p")
@@ -116,7 +116,7 @@ public class class48 implements WorldMapSectionBase {
       if(!this.vmethod678(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{this.field624 * 8 - this.field619 * 8 + var2 + (this.field621 * 64 - this.field623 * 64), this.field625 * 8 - this.field620 * 8 + this.field626 * 64 - this.field617 * 64 + var3};
+         int[] var4 = new int[]{var2 + (this.field624 * 8 - this.field619 * 8) + (this.field621 * 64 - this.field623 * 64), var3 + (this.field625 * 8 - this.field620 * 8 + this.field626 * 64 - this.field617 * 64)};
          return var4;
       }
    }
@@ -149,8 +149,8 @@ public class class48 implements WorldMapSectionBase {
       if(!this.vmethod679(var1, var2)) {
          return null;
       } else {
-         int var3 = this.field619 * 8 - this.field624 * 8 + this.field623 * 64 - this.field621 * 64 + var1;
-         int var4 = this.field620 * 8 - this.field625 * 8 + var2 + (this.field617 * 64 - this.field626 * 64);
+         int var3 = this.field623 * 64 + (this.field619 * 8 - this.field624 * 8) - this.field621 * 64 + var1;
+         int var4 = var2 + (this.field620 * 8 - this.field625 * 8) + (this.field617 * 64 - this.field626 * 64);
          return new Coordinates(this.field618, var3, var4);
       }
    }

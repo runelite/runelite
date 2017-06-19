@@ -67,7 +67,7 @@ public class class162 {
 
          for(int var7 = 0; var7 < var0.height; ++var7) {
             for(var4 = 0; var4 < var0.width; ++var4) {
-               var5 = var4 * (var0.paddingX + 32);
+               var5 = (var0.paddingX + 32) * var4;
                int var8 = (var0.paddingY + 32) * var7;
                if(var6 < 20) {
                   var5 += var0.field2722[var6];
@@ -80,7 +80,7 @@ public class class162 {
                   if(var0.itemIds[var6] > 0) {
                      ItemComposition var9 = class224.getItemDefinition(var0.itemIds[var6] - 1);
                      if(Client.itemSelectionState == 1 && WorldMapType2.method497(class15.method92(var0))) {
-                        if(var0.id != class33.field480 || var6 != class91.selectedItemIndex) {
+                        if(var0.id != class33.field480 || class91.selectedItemIndex != var6) {
                            class44.addMenuEntry("Use", Client.selectedItemName + " -> " + class15.method105(16748608) + var9.name, 31, var9.id, var6, var0.id);
                         }
                      } else if(Client.field1061 && WorldMapType2.method497(class15.method92(var0))) {

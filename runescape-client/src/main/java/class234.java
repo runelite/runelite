@@ -39,7 +39,7 @@ public class class234 extends CacheableNode {
             var7 = Region.field2087;
             byte var13 = 50;
             short var14 = 3500;
-            var8 = (class134.field1994 - class136.field2025) * var13 / class136.field2024;
+            var8 = var13 * (class134.field1994 - class136.field2025) / class136.field2024;
             var9 = var13 * (class134.field1995 - class136.field2026) / class136.field2024;
             var10 = (class134.field1994 - class136.field2025) * var14 / class136.field2024;
             int var15 = (class134.field1995 - class136.field2026) * var14 / class136.field2024;
@@ -54,9 +54,9 @@ public class class234 extends CacheableNode {
             var8 = var16;
             var16 = class136.method2512(var10, var12, var7, var6);
             var12 = class136.method2513(var10, var12, var7, var6);
-            class134.field1993 = (var16 + var8) / 2;
-            class134.field1998 = (var9 + var15) / 2;
-            CombatInfo1.field1274 = (var12 + var11) / 2;
+            class134.field1993 = (var8 + var16) / 2;
+            class134.field1998 = (var15 + var9) / 2;
+            CombatInfo1.field1274 = (var11 + var12) / 2;
             BufferProvider.field3759 = (var16 - var8) / 2;
             class134.field1999 = (var15 - var9) / 2;
             Preferences.field1301 = (var12 - var11) / 2;
@@ -65,8 +65,8 @@ public class class234 extends CacheableNode {
             class134.field1997 = Math.abs(Preferences.field1301);
          }
 
-         var4 = var1 + var0.field1955;
-         var5 = var0.field1956 + var2;
+         var4 = var0.field1955 + var1;
+         var5 = var2 + var0.field1956;
          var6 = var3 + var0.field1957;
          var7 = var0.field1958;
          var11 = var0.field1959;
@@ -74,7 +74,7 @@ public class class234 extends CacheableNode {
          var8 = class134.field1993 - var4;
          var9 = class134.field1998 - var5;
          var10 = CombatInfo1.field1274 - var6;
-         return Math.abs(var8) > var7 + Script.field1535?false:(Math.abs(var9) > var11 + class149.field2209?false:(Math.abs(var10) > class134.field1997 + var12?false:(Math.abs(class134.field1999 * var10 - var9 * Preferences.field1301) > class149.field2209 * var12 + class134.field1997 * var11?false:(Math.abs(Preferences.field1301 * var8 - var10 * BufferProvider.field3759) > class134.field1997 * var7 + Script.field1535 * var12?false:Math.abs(BufferProvider.field3759 * var9 - var8 * class134.field1999) <= var7 * class149.field2209 + var11 * Script.field1535))));
+         return Math.abs(var8) > var7 + Script.field1535?false:(Math.abs(var9) > var11 + class149.field2209?false:(Math.abs(var10) > var12 + class134.field1997?false:(Math.abs(var10 * class134.field1999 - var9 * Preferences.field1301) > var11 * class134.field1997 + class149.field2209 * var12?false:(Math.abs(var8 * Preferences.field1301 - var10 * BufferProvider.field3759) > var12 * Script.field1535 + var7 * class134.field1997?false:Math.abs(var9 * BufferProvider.field3759 - var8 * class134.field1999) <= var11 * Script.field1535 + var7 * class149.field2209))));
       }
    }
 }

@@ -39,7 +39,7 @@ public enum class283 implements RSEnum {
       signature = "(II)V",
       garbageValue = "0"
    )
-   class283(int var3, int var4) {
+   private class283(int var3, int var4) {
       this.field3768 = var3;
       this.field3769 = var4;
    }

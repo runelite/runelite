@@ -90,7 +90,7 @@ public final class RSSocket implements Runnable {
    )
    @Export("readByte")
    public int readByte() throws IOException {
-      return this.closed ?0:this.inputStream.read();
+      return this.closed?0:this.inputStream.read();
    }
 
    @ObfuscatedName("e")
@@ -100,7 +100,7 @@ public final class RSSocket implements Runnable {
    )
    @Export("available")
    public int available() throws IOException {
-      return this.closed ?0:this.inputStream.available();
+      return this.closed?0:this.inputStream.available();
    }
 
    @ObfuscatedName("t")

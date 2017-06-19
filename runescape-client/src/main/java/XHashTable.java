@@ -68,7 +68,7 @@ public final class XHashTable {
 
          while(true) {
             Node var3 = var2.next;
-            if(var3 == var2) {
+            if(var2 == var3) {
                break;
             }
 
@@ -88,15 +88,16 @@ public final class XHashTable {
          this.field2477 = var1.next;
          return var1;
       } else {
-         while(this.field2474 < this.size) {
-            var1 = this.buckets[this.field2474++].next;
-            if(var1 != this.buckets[this.field2474 - 1]) {
-               this.field2477 = var1.next;
-               return var1;
+         do {
+            if(this.field2474 >= this.size) {
+               return null;
             }
-         }
 
-         return null;
+            var1 = this.buckets[this.field2474++].next;
+         } while(var1 == this.buckets[this.field2474 - 1]);
+
+         this.field2477 = var1.next;
+         return var1;
       }
    }
 

@@ -101,7 +101,7 @@ public class class21 {
       class5.method15(false);
 
       for(Projectile var30 = (Projectile)Client.projectiles.method3487(); var30 != null; var30 = (Projectile)Client.projectiles.method3512()) {
-         if(Player.plane == var30.floor && Client.gameCycle <= var30.cycle) {
+         if(var30.floor == Player.plane && Client.gameCycle <= var30.cycle) {
             if(Client.gameCycle >= var30.startTime) {
                if(var30.interacting > 0) {
                   NPC var8 = Client.cachedNPCs[var30.interacting - 1];
@@ -152,7 +152,7 @@ public class class21 {
       var1 = Client.field1167;
       var2 = Client.viewportHeight;
       var3 = Client.viewportWidth;
-      Rasterizer2D.method4833(var0, var1, var2 + var0, var3 + var1);
+      Rasterizer2D.method4833(var0, var1, var0 + var2, var3 + var1);
       class136.method2493();
       int var9;
       int var10;
@@ -175,126 +175,126 @@ public class class21 {
             var5 = Client.field1015[4] + 128;
          }
 
-         var17 = Client.mapAngle + Client.field1114 & 2047;
+         var15 = Client.mapAngle + Client.field1114 & 2047;
          var6 = class23.field367;
-         var33 = class77.method1438(class20.localPlayer.x, class20.localPlayer.y, Player.plane) - Client.field995;
-         var34 = DecorativeObject.field2178;
-         var9 = var5 * 3 + 600;
-         var10 = 2048 - var5 & 2047;
-         var11 = 2048 - var17 & 2047;
-         var12 = 0;
-         var13 = 0;
-         var14 = var9;
+         var16 = class77.method1438(class20.localPlayer.x, class20.localPlayer.y, Player.plane) - Client.field995;
+         var17 = DecorativeObject.field2178;
+         var33 = var5 * 3 + 600;
+         var34 = 2048 - var5 & 2047;
+         var9 = 2048 - var15 & 2047;
+         var10 = 0;
+         var11 = 0;
+         var12 = var33;
          int var18;
-         if(var10 != 0) {
-            var15 = class136.SINE[var10];
-            var18 = class136.COSINE[var10];
-            var16 = var18 * var13 - var15 * var9 >> 16;
-            var14 = var13 * var15 + var18 * var9 >> 16;
-            var13 = var16;
+         if(var34 != 0) {
+            var13 = class136.SINE[var34];
+            var18 = class136.COSINE[var34];
+            var14 = var18 * var11 - var13 * var33 >> 16;
+            var12 = var13 * var11 + var18 * var33 >> 16;
+            var11 = var14;
          }
 
-         if(var11 != 0) {
-            var15 = class136.SINE[var11];
-            var18 = class136.COSINE[var11];
-            var16 = var12 * var18 + var14 * var15 >> 16;
-            var14 = var18 * var14 - var15 * var12 >> 16;
-            var12 = var16;
+         if(var9 != 0) {
+            var13 = class136.SINE[var9];
+            var18 = class136.COSINE[var9];
+            var14 = var12 * var13 + var18 * var10 >> 16;
+            var12 = var18 * var12 - var13 * var10 >> 16;
+            var10 = var14;
          }
 
-         class14.cameraX = var6 - var12;
-         class112.cameraZ = var33 - var13;
-         class66.cameraY = var34 - var14;
+         class14.cameraX = var6 - var10;
+         class112.cameraZ = var16 - var11;
+         class66.cameraY = var17 - var12;
          class203.cameraPitch = var5;
-         class13.cameraYaw = var17;
+         class13.cameraYaw = var15;
       }
 
       if(!Client.field1152) {
          if(Item.field1481.field1299) {
-            var17 = Player.plane;
+            var15 = Player.plane;
          } else {
             label534: {
                var6 = 3;
                if(class203.cameraPitch < 310) {
-                  var33 = class14.cameraX >> 7;
-                  var34 = class66.cameraY >> 7;
-                  var9 = class20.localPlayer.x >> 7;
-                  var10 = class20.localPlayer.y >> 7;
-                  if(var33 < 0 || var34 < 0 || var33 >= 104 || var34 >= 104) {
-                     var17 = Player.plane;
+                  var16 = class14.cameraX >> 7;
+                  var17 = class66.cameraY >> 7;
+                  var33 = class20.localPlayer.x >> 7;
+                  var34 = class20.localPlayer.y >> 7;
+                  if(var16 < 0 || var17 < 0 || var16 >= 104 || var17 >= 104) {
+                     var15 = Player.plane;
                      break label534;
                   }
 
-                  if((class61.tileSettings[Player.plane][var33][var34] & 4) != 0) {
+                  if((class61.tileSettings[Player.plane][var16][var17] & 4) != 0) {
                      var6 = Player.plane;
                   }
 
-                  if(var9 > var33) {
-                     var11 = var9 - var33;
+                  if(var33 > var16) {
+                     var9 = var33 - var16;
                   } else {
-                     var11 = var33 - var9;
+                     var9 = var16 - var33;
                   }
 
-                  if(var10 > var34) {
-                     var12 = var10 - var34;
+                  if(var34 > var17) {
+                     var10 = var34 - var17;
                   } else {
-                     var12 = var34 - var10;
+                     var10 = var17 - var34;
                   }
 
-                  if(var11 > var12) {
-                     var13 = var12 * 65536 / var11;
-                     var14 = '耀';
+                  if(var9 > var10) {
+                     var11 = var10 * 65536 / var9;
+                     var12 = '耀';
 
-                     while(var33 != var9) {
-                        if(var33 < var9) {
-                           ++var33;
-                        } else if(var33 > var9) {
-                           --var33;
+                     while(var16 != var33) {
+                        if(var16 < var33) {
+                           ++var16;
+                        } else if(var16 > var33) {
+                           --var16;
                         }
 
-                        if((class61.tileSettings[Player.plane][var33][var34] & 4) != 0) {
+                        if((class61.tileSettings[Player.plane][var16][var17] & 4) != 0) {
                            var6 = Player.plane;
                         }
 
-                        var14 += var13;
-                        if(var14 >= 65536) {
-                           var14 -= 65536;
-                           if(var34 < var10) {
-                              ++var34;
-                           } else if(var34 > var10) {
-                              --var34;
+                        var12 += var11;
+                        if(var12 >= 65536) {
+                           var12 -= 65536;
+                           if(var17 < var34) {
+                              ++var17;
+                           } else if(var17 > var34) {
+                              --var17;
                            }
 
-                           if((class61.tileSettings[Player.plane][var33][var34] & 4) != 0) {
+                           if((class61.tileSettings[Player.plane][var16][var17] & 4) != 0) {
                               var6 = Player.plane;
                            }
                         }
                      }
                   } else {
-                     var13 = var11 * 65536 / var12;
-                     var14 = '耀';
+                     var11 = var9 * 65536 / var10;
+                     var12 = '耀';
 
-                     while(var34 != var10) {
-                        if(var34 < var10) {
-                           ++var34;
-                        } else if(var34 > var10) {
-                           --var34;
+                     while(var17 != var34) {
+                        if(var17 < var34) {
+                           ++var17;
+                        } else if(var17 > var34) {
+                           --var17;
                         }
 
-                        if((class61.tileSettings[Player.plane][var33][var34] & 4) != 0) {
+                        if((class61.tileSettings[Player.plane][var16][var17] & 4) != 0) {
                            var6 = Player.plane;
                         }
 
-                        var14 += var13;
-                        if(var14 >= 65536) {
-                           var14 -= 65536;
-                           if(var33 < var9) {
-                              ++var33;
-                           } else if(var33 > var9) {
-                              --var33;
+                        var12 += var11;
+                        if(var12 >= 65536) {
+                           var12 -= 65536;
+                           if(var16 < var33) {
+                              ++var16;
+                           } else if(var16 > var33) {
+                              --var16;
                            }
 
-                           if((class61.tileSettings[Player.plane][var33][var34] & 4) != 0) {
+                           if((class61.tileSettings[Player.plane][var16][var17] & 4) != 0) {
                               var6 = Player.plane;
                            }
                         }
@@ -307,56 +307,56 @@ public class class21 {
                      var6 = Player.plane;
                   }
 
-                  var17 = var6;
+                  var15 = var6;
                } else {
-                  var17 = Player.plane;
+                  var15 = Player.plane;
                }
             }
          }
 
-         var5 = var17;
+         var5 = var15;
       } else {
          if(Item.field1481.field1299) {
-            var17 = Player.plane;
+            var15 = Player.plane;
          } else {
             var6 = class77.method1438(class14.cameraX, class66.cameraY, Player.plane);
             if(var6 - class112.cameraZ < 800 && (class61.tileSettings[Player.plane][class14.cameraX >> 7][class66.cameraY >> 7] & 4) != 0) {
-               var17 = Player.plane;
+               var15 = Player.plane;
             } else {
-               var17 = 3;
+               var15 = 3;
             }
          }
 
-         var5 = var17;
+         var5 = var15;
       }
 
-      var17 = class14.cameraX;
+      var15 = class14.cameraX;
       var6 = class112.cameraZ;
-      var33 = class66.cameraY;
-      var34 = class203.cameraPitch;
-      var9 = class13.cameraYaw;
+      var16 = class66.cameraY;
+      var17 = class203.cameraPitch;
+      var33 = class13.cameraYaw;
 
-      for(var10 = 0; var10 < 5; ++var10) {
-         if(Client.field1153[var10]) {
-            var11 = (int)(Math.random() * (double)(Client.field1129[var10] * 2 + 1) - (double)Client.field1129[var10] + Math.sin((double)Client.field982[var10] * ((double)Client.field1156[var10] / 100.0D)) * (double)Client.field1015[var10]);
-            if(var10 == 0) {
-               class14.cameraX += var11;
+      for(var34 = 0; var34 < 5; ++var34) {
+         if(Client.field1153[var34]) {
+            var9 = (int)(Math.random() * (double)(Client.field1129[var34] * 2 + 1) - (double)Client.field1129[var34] + Math.sin((double)Client.field982[var34] * ((double)Client.field1156[var34] / 100.0D)) * (double)Client.field1015[var34]);
+            if(var34 == 0) {
+               class14.cameraX += var9;
             }
 
-            if(var10 == 1) {
-               class112.cameraZ += var11;
+            if(var34 == 1) {
+               class112.cameraZ += var9;
             }
 
-            if(var10 == 2) {
-               class66.cameraY += var11;
+            if(var34 == 2) {
+               class66.cameraY += var9;
             }
 
-            if(var10 == 3) {
-               class13.cameraYaw = class13.cameraYaw + var11 & 2047;
+            if(var34 == 3) {
+               class13.cameraYaw = var9 + class13.cameraYaw & 2047;
             }
 
-            if(var10 == 4) {
-               class203.cameraPitch += var11;
+            if(var34 == 4) {
+               class203.cameraPitch += var9;
                if(class203.cameraPitch < 128) {
                   class203.cameraPitch = 128;
                }
@@ -368,18 +368,18 @@ public class class21 {
          }
       }
 
-      var10 = class59.field730;
-      var11 = class59.field731;
+      var34 = class59.field730;
+      var9 = class59.field731;
       if(class59.field736 != 0) {
-         var10 = class59.field737;
-         var11 = class59.field732;
+         var34 = class59.field737;
+         var9 = class59.field732;
       }
 
-      if(var10 >= var0 && var10 < var2 + var0 && var11 >= var1 && var11 < var1 + var3) {
-         var12 = var10 - var0;
-         var13 = var11 - var1;
-         class134.field1994 = var12;
-         class134.field1995 = var13;
+      if(var34 >= var0 && var34 < var0 + var2 && var9 >= var1 && var9 < var3 + var1) {
+         var10 = var34 - var0;
+         var11 = var9 - var1;
+         class134.field1994 = var10;
+         class134.field1995 = var11;
          class134.field2006 = true;
          class134.field2000 = 0;
          class134.field2004 = false;
@@ -390,53 +390,53 @@ public class class21 {
       class69.method1035();
       Rasterizer2D.method4826(var0, var1, var2, var3, 0);
       class69.method1035();
-      var12 = class136.field2024;
+      var10 = class136.field2024;
       class136.field2024 = Client.scale;
       class17.region.method2619(class14.cameraX, class112.cameraZ, class66.cameraY, class203.cameraPitch, class13.cameraYaw, var5);
 
       while(true) {
          class9 var35 = (class9)class7.field237.method3444();
          if(var35 == null) {
-            class136.field2024 = var12;
+            class136.field2024 = var10;
             class69.method1035();
             class17.region.method2694();
             Client.field1074 = 0;
             boolean var19 = false;
-            var14 = -1;
-            var15 = class96.field1487;
+            var12 = -1;
+            var13 = class96.field1487;
             int[] var20 = class96.field1491;
 
-            for(var16 = 0; var16 < var15 + Client.field930; ++var16) {
+            for(var14 = 0; var14 < var13 + Client.field930; ++var14) {
                Object var21;
-               if(var16 < var15) {
-                  var21 = Client.cachedPlayers[var20[var16]];
-                  if(var20[var16] == Client.field1035) {
+               if(var14 < var13) {
+                  var21 = Client.cachedPlayers[var20[var14]];
+                  if(var20[var14] == Client.field1035) {
                      var19 = true;
-                     var14 = var16;
+                     var12 = var14;
                      continue;
                   }
                } else {
-                  var21 = Client.cachedNPCs[Client.npcIndices[var16 - var15]];
+                  var21 = Client.cachedNPCs[Client.npcIndices[var14 - var13]];
                }
 
-               CombatInfo1.method1456((Actor)var21, var16, var0, var1, var2, var3);
+               CombatInfo1.method1456((Actor)var21, var14, var0, var1, var2, var3);
             }
 
             if(var19) {
-               CombatInfo1.method1456(Client.cachedPlayers[Client.field1035], var14, var0, var1, var2, var3);
+               CombatInfo1.method1456(Client.cachedPlayers[Client.field1035], var12, var0, var1, var2, var3);
             }
 
-            for(var16 = 0; var16 < Client.field1074; ++var16) {
-               int var36 = Client.field962[var16];
-               int var22 = Client.field1002[var16];
-               int var23 = Client.field1004[var16];
-               int var24 = Client.field1003[var16];
+            for(var14 = 0; var14 < Client.field1074; ++var14) {
+               int var36 = Client.field962[var14];
+               int var22 = Client.field1002[var14];
+               int var23 = Client.field1004[var14];
+               int var24 = Client.field1003[var14];
                boolean var25 = true;
 
                while(var25) {
                   var25 = false;
 
-                  for(int var26 = 0; var26 < var16; ++var26) {
+                  for(int var26 = 0; var26 < var14; ++var26) {
                      if(var22 + 2 > Client.field1002[var26] - Client.field1003[var26] && var22 - var24 < Client.field1002[var26] + 2 && var36 - var23 < Client.field1004[var26] + Client.field962[var26] && var23 + var36 > Client.field962[var26] - Client.field1004[var26] && Client.field1002[var26] - Client.field1003[var26] < var22) {
                         var22 = Client.field1002[var26] - Client.field1003[var26];
                         var25 = true;
@@ -444,30 +444,30 @@ public class class21 {
                   }
                }
 
-               Client.field1011 = Client.field962[var16];
-               Client.field1049 = Client.field1002[var16] = var22;
-               String var38 = Client.field903[var16];
+               Client.field1011 = Client.field962[var14];
+               Client.field1049 = Client.field1002[var14] = var22;
+               String var38 = Client.field903[var14];
                if(Client.field1068 == 0) {
                   int var27 = 16776960;
-                  if(Client.field1005[var16] < 6) {
-                     var27 = Client.field1121[Client.field1005[var16]];
+                  if(Client.field1005[var14] < 6) {
+                     var27 = Client.field1121[Client.field1005[var14]];
                   }
 
-                  if(Client.field1005[var16] == 6) {
+                  if(Client.field1005[var14] == 6) {
                      var27 = Client.field1010 % 20 < 10?16711680:16776960;
                   }
 
-                  if(Client.field1005[var16] == 7) {
+                  if(Client.field1005[var14] == 7) {
                      var27 = Client.field1010 % 20 < 10?255:'\uffff';
                   }
 
-                  if(Client.field1005[var16] == 8) {
+                  if(Client.field1005[var14] == 8) {
                      var27 = Client.field1010 % 20 < 10?'뀀':8454016;
                   }
 
                   int var28;
-                  if(Client.field1005[var16] == 9) {
-                     var28 = 150 - Client.field1007[var16];
+                  if(Client.field1005[var14] == 9) {
+                     var28 = 150 - Client.field1007[var14];
                      if(var28 < 50) {
                         var27 = var28 * 1280 + 16711680;
                      } else if(var28 < 100) {
@@ -477,8 +477,8 @@ public class class21 {
                      }
                   }
 
-                  if(Client.field1005[var16] == 10) {
-                     var28 = 150 - Client.field1007[var16];
+                  if(Client.field1005[var14] == 10) {
+                     var28 = 150 - Client.field1007[var14];
                      if(var28 < 50) {
                         var27 = var28 * 5 + 16711680;
                      } else if(var28 < 100) {
@@ -488,8 +488,8 @@ public class class21 {
                      }
                   }
 
-                  if(Client.field1005[var16] == 11) {
-                     var28 = 150 - Client.field1007[var16];
+                  if(Client.field1005[var14] == 11) {
+                     var28 = 150 - Client.field1007[var14];
                      if(var28 < 50) {
                         var27 = 16777215 - var28 * 327685;
                      } else if(var28 < 100) {
@@ -499,31 +499,31 @@ public class class21 {
                      }
                   }
 
-                  if(Client.field1006[var16] == 0) {
+                  if(Client.field1006[var14] == 0) {
                      class64.field788.method4635(var38, var0 + Client.field1011, Client.field1049 + var1, var27, 0);
                   }
 
-                  if(Client.field1006[var16] == 1) {
-                     class64.field788.method4641(var38, var0 + Client.field1011, var1 + Client.field1049, var27, 0, Client.field1010);
+                  if(Client.field1006[var14] == 1) {
+                     class64.field788.method4641(var38, var0 + Client.field1011, Client.field1049 + var1, var27, 0, Client.field1010);
                   }
 
-                  if(Client.field1006[var16] == 2) {
-                     class64.field788.method4638(var38, var0 + Client.field1011, var1 + Client.field1049, var27, 0, Client.field1010);
+                  if(Client.field1006[var14] == 2) {
+                     class64.field788.method4638(var38, var0 + Client.field1011, Client.field1049 + var1, var27, 0, Client.field1010);
                   }
 
-                  if(Client.field1006[var16] == 3) {
-                     class64.field788.method4639(var38, var0 + Client.field1011, Client.field1049 + var1, var27, 0, Client.field1010, 150 - Client.field1007[var16]);
+                  if(Client.field1006[var14] == 3) {
+                     class64.field788.method4639(var38, var0 + Client.field1011, Client.field1049 + var1, var27, 0, Client.field1010, 150 - Client.field1007[var14]);
                   }
 
-                  if(Client.field1006[var16] == 4) {
-                     var28 = (150 - Client.field1007[var16]) * (class64.field788.method4696(var38) + 100) / 150;
-                     Rasterizer2D.method4862(Client.field1011 + var0 - 50, var1, var0 + Client.field1011 + 50, var1 + var3);
-                     class64.field788.method4647(var38, var0 + Client.field1011 + 50 - var28, var1 + Client.field1049, var27, 0);
-                     Rasterizer2D.method4833(var0, var1, var2 + var0, var1 + var3);
+                  if(Client.field1006[var14] == 4) {
+                     var28 = (150 - Client.field1007[var14]) * (class64.field788.method4696(var38) + 100) / 150;
+                     Rasterizer2D.method4862(var0 + Client.field1011 - 50, var1, var0 + Client.field1011 + 50, var3 + var1);
+                     class64.field788.method4647(var38, var0 + Client.field1011 + 50 - var28, Client.field1049 + var1, var27, 0);
+                     Rasterizer2D.method4833(var0, var1, var0 + var2, var3 + var1);
                   }
 
-                  if(Client.field1006[var16] == 5) {
-                     var28 = 150 - Client.field1007[var16];
+                  if(Client.field1006[var14] == 5) {
+                     var28 = 150 - Client.field1007[var14];
                      int var29 = 0;
                      if(var28 < 25) {
                         var29 = var28 - 25;
@@ -531,27 +531,27 @@ public class class21 {
                         var29 = var28 - 125;
                      }
 
-                     Rasterizer2D.method4862(var0, var1 + Client.field1049 - class64.field788.field3643 - 1, var2 + var0, Client.field1049 + var1 + 5);
-                     class64.field788.method4635(var38, var0 + Client.field1011, var29 + Client.field1049 + var1, var27, 0);
-                     Rasterizer2D.method4833(var0, var1, var2 + var0, var1 + var3);
+                     Rasterizer2D.method4862(var0, Client.field1049 + var1 - class64.field788.field3643 - 1, var0 + var2, Client.field1049 + var1 + 5);
+                     class64.field788.method4635(var38, var0 + Client.field1011, var1 + var29 + Client.field1049, var27, 0);
+                     Rasterizer2D.method4833(var0, var1, var0 + var2, var3 + var1);
                   }
                } else {
-                  class64.field788.method4635(var38, var0 + Client.field1011, var1 + Client.field1049, 16776960, 0);
+                  class64.field788.method4635(var38, var0 + Client.field1011, Client.field1049 + var1, 16776960, 0);
                }
             }
 
             class17.method139(var0, var1);
             ((TextureProvider)class136.field2028).method2286(Client.field1125);
             class92.method1646(var0, var1, var2, var3);
-            class14.cameraX = var17;
+            class14.cameraX = var15;
             class112.cameraZ = var6;
-            class66.cameraY = var33;
-            class203.cameraPitch = var34;
-            class13.cameraYaw = var9;
+            class66.cameraY = var16;
+            class203.cameraPitch = var17;
+            class13.cameraYaw = var33;
             if(Client.field960) {
                byte var37 = 0;
-               var14 = var37 + class238.field3267 + class238.field3269;
-               if(var14 == 0) {
+               var12 = var37 + class238.field3267 + class238.field3269;
+               if(var12 == 0) {
                   Client.field960 = false;
                }
             }
