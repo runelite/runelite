@@ -86,9 +86,10 @@ public class InjectSetter
 		assert targetClass.findMethod(method.getName()) == null;
 		assert field.isStatic() || field.getFields().getClassFile() == targetClass;
 
-		Signature sig = new Signature();
-		sig.setTypeOfReturnValue(new Type("V"));
-		sig.addArg(new Type(inject.classToType(method.getParameterTypes()[0])));
+		Signature sig = new Signature.Builder()
+			.setReturnType(Type.VOID)
+			.addArgument(inject.classToType(method.getParameterTypes()[0]))
+			.build();
 
 		Method setterMethod = new Method(targetClass.getMethods(), method.getName(), sig);
 		setterMethod.setAccessFlags(Method.ACC_PUBLIC);

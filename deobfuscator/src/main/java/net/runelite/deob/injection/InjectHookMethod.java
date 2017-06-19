@@ -80,8 +80,8 @@ public class InjectHookMethod
 	{
 		Instructions instructions = vanillaMethod.getCode().getInstructions();
 
-		Signature signature = new Signature(deobMethod.getDescriptor()); // vanilla's signature might contain garbage
-		signature.setTypeOfReturnValue(new Type("V")); // Hooks always return void
+		Signature.Builder builder = new Signature.Builder()
+			.setReturnType(Type.VOID); // Hooks always return void
 
 		int index = 0;
 
@@ -90,9 +90,11 @@ public class InjectHookMethod
 		if (!deobMethod.isStatic())
 		{
 			// Add variable to signature
-			signature.insertArg(0, new Type("Ljava/lang/Object;")); // XXX this should be the API class..
+			builder.addArgument(0, new Type("Ljava/lang/Object;")); // XXX this should be the API class..
 			instructions.addInstruction(index++, new ALoad_0(instructions));
 		}
+
+		Signature signature = builder.build();
 
 		for (int i = index; i < signature.size(); ++i)
 		{
@@ -100,7 +102,7 @@ public class InjectHookMethod
 
 			Instruction load = inject.createLoadForTypeIndex(instructions, type, index);
 			instructions.addInstruction(i, load);
-			
+
 			index += type.getSlots();
 		}
 

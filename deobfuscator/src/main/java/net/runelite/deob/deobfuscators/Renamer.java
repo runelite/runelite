@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators;
 
 import java.util.List;
@@ -58,11 +57,14 @@ public class Renamer implements Deobfuscator
 	private void renameClass(ClassFile on, ClassFile old, String name)
 	{
 		if (on.getParentClass().getName().equals(old.getName()))
+		{
 			on.setParentClass(new net.runelite.asm.pool.Class(name));
-		
+		}
+
 		Interfaces interfaces = on.getInterfaces();
 		List<net.runelite.asm.pool.Class> interfaceList = interfaces.getInterfaces();
 		for (net.runelite.asm.pool.Class inter : interfaceList)
+		{
 			if (inter.getName().equals(old.getName()))
 			{
 				int idx = interfaceList.indexOf(inter);
@@ -70,15 +72,16 @@ public class Renamer implements Deobfuscator
 				interfaceList.add(idx, new net.runelite.asm.pool.Class(name));
 				break;
 			}
+		}
 	}
-	
+
 	private void renameClass(ClassGroup group, ClassFile cf, String name)
-	{	
+	{
 		for (ClassFile c : group.getClasses())
 		{
 			// rename on child interfaces and classes
 			renameClass(c, cf, name);
-			
+
 			for (Method method : c.getMethods().getMethods())
 			{
 				// rename on instructions. this includes method calls and field accesses.
@@ -88,36 +91,59 @@ public class Renamer implements Deobfuscator
 
 					// rename on instructions
 					for (Instruction i : code.getInstructions().getInstructions())
+					{
 						i.renameClass(cf.getName(), name);
+					}
 
 					// rename on exception handlers
 					Exceptions exceptions = code.getExceptions();
 					exceptions.renameClass(cf, name);
 				}
-				
+
 				// rename on parameters
+				Signature.Builder builder = new Signature.Builder();
 				Signature signature = method.getDescriptor();
 				for (int i = 0; i < signature.size(); ++i)
 				{
 					Type type = signature.getTypeOfArg(i);
-					
+
 					if (type.getType().equals("L" + cf.getName() + ";"))
-						signature.setTypeOfArg(i, new Type("L" + name + ";", type.getArrayDims())); 
+					{
+						builder.addArgument(new Type("L" + name + ";", type.getArrayDims()));
+					}
+					else
+					{
+						builder.addArgument(type);
+					}
 				}
-				
+
 				// rename return type
 				if (signature.getReturnValue().getType().equals("L" + cf.getName() + ";"))
-					signature.setTypeOfReturnValue(new Type("L" + name + ";", signature.getReturnValue().getArrayDims()));
-				
+				{
+					builder.setReturnType(new Type("L" + name + ";", signature.getReturnValue().getArrayDims()));
+				}
+				else
+				{
+					builder.setReturnType(signature.getReturnValue());
+				}
+
+				method.setDescriptor(builder.build());
+
 				// rename on exceptions thrown
 				if (method.getExceptions() != null)
+				{
 					method.getExceptions().renameClass(cf, name);
+				}
 			}
-			
+
 			// rename on fields
 			for (Field field : c.getFields().getFields())
+			{
 				if (field.getType().getType().equals("L" + cf.getName() + ";"))
+				{
 					field.setType(new Type("L" + name + ";", field.getType().getArrayDims()));
+				}
+			}
 		}
 
 		if (cf.getAnnotations().find(DeobAnnotations.OBFUSCATED_NAME) == null)
@@ -127,18 +153,22 @@ public class Renamer implements Deobfuscator
 
 		cf.setName(name);
 	}
-	
+
 	private void regeneratePool(ClassGroup group)
 	{
 		for (ClassFile cf : group.getClasses())
+		{
 			for (Method m : cf.getMethods().getMethods())
 			{
 				Code c = m.getCode();
 				if (c == null)
+				{
 					continue;
-				
+				}
+
 				c.getInstructions().regeneratePool();
 			}
+		}
 	}
 
 	@Override
@@ -146,16 +176,19 @@ public class Renamer implements Deobfuscator
 	{
 		group.buildClassGraph();
 		group.lookup();
-		
+
 		int classes = 0, fields = 0, methods = 0;
-		
+
 		// rename fields
 		for (ClassFile cf : group.getClasses())
+		{
 			for (Field field : cf.getFields().getFields())
 			{
 				String newName = mappings.get(field.getPoolField());
 				if (newName == null)
+				{
 					continue;
+				}
 
 				if (field.getAnnotations().find(DeobAnnotations.OBFUSCATED_NAME) == null)
 				{
@@ -165,9 +198,11 @@ public class Renamer implements Deobfuscator
 				field.setName(newName);
 				++fields;
 			}
-		
+		}
+
 		// rename methods
 		for (ClassFile cf : group.getClasses())
+		{
 			for (Method method : cf.getMethods().getMethods())
 			{
 				String newName = mappings.get(method.getPoolMethod());
@@ -182,7 +217,9 @@ public class Renamer implements Deobfuscator
 				}
 
 				if (newName == null)
+				{
 					continue;
+				}
 
 				List<Method> virtualMethods = VirtualMethods.getVirtualMethods(method);
 				assert !virtualMethods.isEmpty();
@@ -193,23 +230,26 @@ public class Renamer implements Deobfuscator
 					{
 						m.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_NAME, "value", m.getName());
 					}
-					
+
 					m.setName(newName);
 				}
 
 				methods += virtualMethods.size();
 			}
-		
+		}
+
 		for (ClassFile cf : group.getClasses())
 		{
 			String newName = mappings.get(cf.getPoolClass());
 			if (newName == null)
+			{
 				continue;
+			}
 
 			renameClass(group, cf, newName);
 			++classes;
 		}
-		
+
 		this.regeneratePool(group);
 
 		logger.info("Renamed {} classes, {} fields, and {} methods", classes, fields, methods);
@@ -243,12 +283,12 @@ public class Renamer implements Deobfuscator
 
 	private Signature renameSignature(Signature s)
 	{
-		Signature sig = new Signature();
-		sig.setTypeOfReturnValue(renameType(s.getReturnValue()));
+		Signature.Builder builder = new Signature.Builder()
+			.setReturnType(renameType(s.getReturnValue()));
 		for (Type t : s.getArguments())
 		{
-			sig.addArg(renameType(t));
+			builder.addArgument(renameType(t));
 		}
-		return sig;
+		return builder.build();
 	}
 }

@@ -22,19 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.signature;
 
 import java.util.Objects;
 
 public class Type
 {
+	public static final Type INT = new Type("I");
+	public static final Type VOID = new Type("V");
 	public static final Type STRING = new Type("Ljava/lang/String;");
 	public static final Type THROWABLE = new Type("Ljava/lang/Throwable;");
-	
+
 	private final String type;
 	private int arrayDimms;
-	
+
 	public Type(String str)
 	{
 		while (str.startsWith("["))
@@ -42,47 +43,51 @@ public class Type
 			++arrayDimms;
 			str = str.substring(1);
 		}
-		
+
 		type = str;
 	}
-	
+
 	public Type(String type, int dimms)
 	{
 		this.type = type;
 		this.arrayDimms = dimms;
 	}
-	
+
 	public Type(Type other)
 	{
 		type = other.type;
 		arrayDimms = other.arrayDimms;
 	}
-	
+
 	public String getType()
 	{
 		return type;
 	}
-	
+
 	public String getFullType()
 	{
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < arrayDimms; ++i)
+		{
 			sb.append('[');
+		}
 		sb.append(type);
 		return sb.toString();
 	}
-	
+
 	public int getArrayDims()
 	{
 		return arrayDimms;
 	}
-	
+
 	public int getSlots()
 	{
 		if (arrayDimms == 0)
 		{
 			if (type.equals("D") || type.equals("J"))
+			{
 				return 2;
+			}
 		}
 		return 1;
 	}
@@ -96,18 +101,18 @@ public class Type
 	{
 		return type.equals("J") && arrayDimms == 0;
 	}
-	
+
 	public boolean isPrimitive()
 	{
 		assert type.startsWith("L") == type.endsWith(";");
 		return !type.startsWith("L");
 	}
-	
+
 	public boolean isObfuscatedType()
 	{
 		return type.startsWith("Lclass");
 	}
-	
+
 	public boolean isArray()
 	{
 		return arrayDimms > 0;
@@ -117,8 +122,10 @@ public class Type
 	public boolean equals(Object other)
 	{
 		if (!(other instanceof Type))
+		{
 			return false;
-		
+		}
+
 		Type a = (Type) other;
 		return type.equals(a.type) && arrayDimms == a.arrayDimms;
 	}
@@ -131,13 +138,15 @@ public class Type
 		hash = 23 * hash + this.arrayDimms;
 		return hash;
 	}
-	
+
 	@Override
 	public String toString()
 	{
 		String type = this.type;
 		for (int i = 0; i < this.getArrayDims(); ++i)
+		{
 			type += "[]";
+		}
 		return type;
 	}
 }

@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.osb;
 
 import com.google.gson.Gson;
@@ -55,66 +54,68 @@ public class HookImporter
 {
 	private static final File IN = new File("C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\114.2-SNAPSHOT\\rs-client-114.2-SNAPSHOT.jar");
 	private static final File OUT = new File("c:\\rs\\adamout.jar");
-	
+
 	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
 	private static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
 	private static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
-	
+
 	private Map<String, ClassHook> hooks;
 	private ClassGroup group;
-	
+
 	@Before
 	public void before() throws IOException
 	{
 		InputStream is = HookImporter.class.getResourceAsStream("/osbmappings-114.json");
 		Assert.assertNotNull(is);
-		
+
 		Gson gson = new Gson();
-		java.lang.reflect.Type type = new TypeToken<Map<String, ClassHook>>(){}.getType();
+		java.lang.reflect.Type type = new TypeToken<Map<String, ClassHook>>()
+		{
+		}.getType();
 		hooks = gson.fromJson(new InputStreamReader(is), type);
-		
+
 		group = JarUtil.loadJar(IN);
 	}
-	
+
 	@After
 	public void after() throws IOException
 	{
 		JarUtil.saveJar(group, OUT);
 	}
-	
+
 	@Test
 	@Ignore
 	public void importHooks()
 	{
 		int classes = 0, fields = 0, methods = 0, callbacks = 0;
-		
+
 		for (String deobfuscatedClassName : hooks.keySet())
 		{
 			ClassHook ch = hooks.get(deobfuscatedClassName);
 			ClassFile cf = this.findClassWithObfuscatedName(ch.getClazz());
-			
+
 			assert cf != null;
-			
+
 			String implementsName = getAnnotation(cf.getAnnotations(), IMPLEMENTS);
 			if (implementsName.isEmpty())
 			{
 				cf.getAnnotations().addAnnotation(IMPLEMENTS, "value", deobfuscatedClassName);
 				++classes;
 			}
-			
+
 			for (String deobfuscatedFieldName : ch.getFields().keySet())
 			{
 				FieldHook fh = ch.getFields().get(deobfuscatedFieldName);
-				
+
 				String[] s = fh.getField().split("\\.");
 				Field f;
-				
+
 				if (s.length == 2)
 				{
 					ClassFile cf2 = this.findClassWithObfuscatedName(s[0]);
 					assert cf2 != null;
-					
+
 					f = this.findFieldWithObfuscatedName(cf2, s[1]);
 				}
 				else if (s.length == 1)
@@ -125,9 +126,9 @@ public class HookImporter
 				{
 					throw new RuntimeException();
 				}
-				
+
 				assert f != null;
-				
+
 				String exportedName = getAnnotation(f.getAnnotations(), EXPORT);
 				if (exportedName.isEmpty())
 				{
@@ -135,19 +136,19 @@ public class HookImporter
 					++fields;
 				}
 			}
-			
+
 			for (String deobfuscatedMethodName : ch.getMethods().keySet())
 			{
 				MethodHook mh = ch.getMethods().get(deobfuscatedMethodName);
-				
+
 				String[] s = mh.getMethod().split("\\.");
 				Method m;
-				
+
 				if (s.length == 2)
 				{
 					ClassFile cf2 = this.findClassWithObfuscatedName(s[0]);
 					assert cf2 != null;
-					
+
 					m = this.findMethodWithObfuscatedName(cf2, s[1], mh.getClientDesc());
 				}
 				else if (s.length == 1)
@@ -158,9 +159,9 @@ public class HookImporter
 				{
 					throw new RuntimeException();
 				}
-				
+
 				assert m != null;
-				
+
 				String exportedName = getAnnotation(m.getAnnotations(), EXPORT);
 				if (exportedName.isEmpty())
 				{
@@ -168,19 +169,19 @@ public class HookImporter
 					++methods;
 				}
 			}
-			
+
 			for (String deobfuscatedMethodName : ch.getCallbacks().keySet())
 			{
 				MethodHook mh = ch.getCallbacks().get(deobfuscatedMethodName);
-				
+
 				String[] s = mh.getMethod().split("\\.");
 				Method m;
-				
+
 				if (s.length == 2)
 				{
 					ClassFile cf2 = this.findClassWithObfuscatedName(s[0]);
 					assert cf2 != null;
-					
+
 					m = this.findMethodWithObfuscatedName(cf2, s[1], mh.getClientDesc());
 				}
 				else if (s.length == 1)
@@ -191,9 +192,9 @@ public class HookImporter
 				{
 					throw new RuntimeException();
 				}
-				
+
 				assert m != null;
-				
+
 				String exportedName = getAnnotation(m.getAnnotations(), EXPORT);
 				if (exportedName.isEmpty())
 				{
@@ -202,46 +203,52 @@ public class HookImporter
 				}
 			}
 		}
-		
+
 		System.out.println("Imported " + classes + " classes, " + fields + " fields, " + methods + " methods, " + callbacks + " callbacks");
 	}
-	
+
 	private ClassFile findClassWithObfuscatedName(String name)
 	{
 		for (ClassFile c : group.getClasses())
 		{
 			if (c.getName().equals(name))
+			{
 				return c;
-			
+			}
+
 			Annotations an = c.getAnnotations();
 			if (getAnnotation(an, OBFUSCATED_NAME).equals(name))
+			{
 				return c;
+			}
 		}
 		return null;
 	}
-	
+
 	private Field findFieldWithObfuscatedName(ClassFile c, String name)
 	{
 		for (Field f : c.getFields().getFields())
 		{
 			Annotations an = f.getAnnotations();
 			if (getAnnotation(an, OBFUSCATED_NAME).equals(name))
+			{
 				return f;
+			}
 		}
 		return null;
 	}
-	
+
 	private Method findMethodWithObfuscatedName(ClassFile c, String name, String signature)
 	{
 		Signature sig = new Signature(signature);
-		
+
 		for (Method m : c.getMethods().getMethods())
 		{
 			Annotations an = m.getAnnotations();
 			if (getAnnotation(an, OBFUSCATED_NAME).equals(name))
 			{
 				Signature methodSig = getObfuscatedMethodSignature(m);
-				
+
 				if (methodSig.equals(sig))
 				{
 					return m;
@@ -255,7 +262,7 @@ public class HookImporter
 		}
 		return null;
 	}
-	
+
 	private String getAnnotation(Annotations an, Type type)
 	{
 		if (an == null)
@@ -277,40 +284,50 @@ public class HookImporter
 
 		return "";
 	}
-	
+
 	private Signature getObfuscatedMethodSignature(Method method)
 	{
 		String sig = getAnnotation(method.getAnnotations(), OBFUSCATED_SIGNATURE);
 		if (sig.isEmpty() == false)
+		{
 			return toObSignature(new Signature(sig)); // if it is annoted, use that
+		}
 		else
+		{
 			return toObSignature(method.getDescriptor());
+		}
 	}
-	
+
 	private Type toObType(Type t)
 	{
 		if (t.isPrimitive())
+		{
 			return t;
+		}
 
 		if (!t.isObfuscatedType() && !t.getType().equals("client"))
+		{
 			return t;
-		
+		}
+
 		String className = t.getType();
 		className = className.substring(1, className.length() - 1); // remove L ;
 		ClassFile cf = group.findClass(className);
 		assert cf != null;
-		
+
 		Annotations an = cf.getAnnotations();
 		String obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
 		return new Type("L" + obfuscatedName + ";", t.getArrayDims());
 	}
-	
+
 	private Signature toObSignature(Signature s)
 	{
-		Signature sig = new Signature();
-		sig.setTypeOfReturnValue(toObType(s.getReturnValue()));
+		Signature.Builder builder = new Signature.Builder()
+			.setReturnType(toObType(s.getReturnValue()));
 		for (Type t : s.getArguments())
-			sig.addArg(toObType(t));
-		return sig;
+		{
+			builder.addArgument(toObType(t));
+		}
+		return builder.build();
 	}
 }

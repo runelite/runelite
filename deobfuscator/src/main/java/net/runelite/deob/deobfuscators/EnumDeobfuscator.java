@@ -136,12 +136,16 @@ public class EnumDeobfuscator implements Deobfuscator
 				continue;
 			}
 
-			Signature signature = method.getDescriptor();
-
 			// Add string as first argument, which is the field name,
 			// and ordinal as second argument
-			signature.insertArg(0, Type.STRING);
-			signature.insertArg(1, new Type("I"));
+			Signature signature = new Signature.Builder()
+				.setReturnType(method.getDescriptor().getReturnValue())
+				.addArgument(Type.STRING)
+				.addArgument(Type.INT)
+				.addArguments(method.getDescriptor().getArguments())
+				.build();
+
+			method.setDescriptor(signature);
 
 			// Remove instructions up to invokespecial
 			Instructions ins = method.getCode().getInstructions();
@@ -213,8 +217,18 @@ public class EnumDeobfuscator implements Deobfuscator
 						InvokeSpecial is = (InvokeSpecial) i;
 						PutStatic ps = (PutStatic) next;
 
-						is.getMethod().getType().insertArg(0, Type.STRING);
-						is.getMethod().getType().insertArg(1, new Type("I"));
+						net.runelite.asm.pool.Method pmethod = new net.runelite.asm.pool.Method(
+							is.getMethod().getClazz(),
+							is.getMethod().getName(),
+							new Signature.Builder()
+								.setReturnType(is.getMethod().getType().getReturnValue())
+								.addArgument(Type.STRING)
+								.addArgument(Type.INT)
+								.addArguments(is.getMethod().getType().getArguments())
+								.build()
+						);
+
+						is.setMethod(pmethod);
 
 						Field field = ps.getMyField();
 						assert field != null;

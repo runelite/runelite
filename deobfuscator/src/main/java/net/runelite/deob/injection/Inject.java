@@ -106,11 +106,11 @@ public class Inject
 	
 	public Signature toObSignature(Signature s)
 	{
-		Signature sig = new Signature();
-		sig.setTypeOfReturnValue(toObType(s.getReturnValue()));
+		Signature.Builder builder = new Signature.Builder()
+			.setReturnType(toObType(s.getReturnValue()));
 		for (Type t : s.getArguments())
-			sig.addArg(toObType(t));
-		return sig;
+			builder.addArgument(toObType(t));
+		return builder.build();
 	}
 
 	/**
@@ -176,13 +176,13 @@ public class Inject
 	 */
 	public Signature javaMethodToSignature(java.lang.reflect.Method method)
 	{
-		Signature signature = new Signature();
-		signature.setTypeOfReturnValue(classToType(method.getReturnType()));
+		Signature.Builder builder = new Signature.Builder()
+			.setReturnType(classToType(method.getReturnType()));
 		for (java.lang.Class<?> clazz : method.getParameterTypes())
 		{
-			signature.addArg(classToType(clazz));
+			builder.addArgument(classToType(clazz));
 		}
-		return signature;
+		return builder.build();
 	}
 	
 	public void run()
@@ -346,8 +346,9 @@ public class Inject
 		assert clazz.findMethod(method.getName()) == null;
 		assert field.isStatic() || field.getFields().getClassFile() == clazz;
 		
-		Signature sig = new Signature();
-		sig.setTypeOfReturnValue(classToType(method.getReturnType()));
+		Signature sig = new Signature.Builder()
+			.setReturnType(classToType(method.getReturnType()))
+			.build();
 		Method getterMethod = new Method(clazz.getMethods(), method.getName(), sig);
 		getterMethod.setAccessFlags(Method.ACC_PUBLIC);
 		

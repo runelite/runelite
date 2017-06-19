@@ -27,7 +27,7 @@ package net.runelite.asm.pool;
 
 public class Class
 {
-	private java.lang.String name;
+	private final java.lang.String name;
 	
 	public Class(java.lang.String name)
 	{

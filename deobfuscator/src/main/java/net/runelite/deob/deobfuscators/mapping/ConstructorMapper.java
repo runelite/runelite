@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators.mapping;
 
 import net.runelite.asm.ClassFile;
@@ -36,7 +35,7 @@ import org.slf4j.LoggerFactory;
 public class ConstructorMapper
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConstructorMapper.class);
-	
+
 	private final ClassGroup source, target;
 	private final ParallelExecutorMapping mapping;
 
@@ -46,7 +45,7 @@ public class ConstructorMapper
 		this.target = target;
 		this.mapping = mapping;
 	}
-	
+
 	private Type toOtherType(Type type)
 	{
 		if (type.isPrimitive())
@@ -65,16 +64,18 @@ public class ConstructorMapper
 		ClassFile other = (ClassFile) mapping.get(cf);
 		return new Type("L" + other.getName() + ";");
 	}
-	
+
 	private Signature toOtherSignature(Signature s)
 	{
-		Signature sig = new Signature();
-		sig.setTypeOfReturnValue(toOtherType(s.getReturnValue()));
-		for (int i = 0; i < s.size(); ++i)
-			sig.addArg(toOtherType(s.getTypeOfArg(i)));
-		return sig;
+		Signature.Builder builder = new Signature.Builder()
+			.setReturnType(toOtherType(s.getReturnValue()));
+		for (Type t : s.getArguments())
+		{
+			builder.addArgument(toOtherType(t));
+		}
+		return builder.build();
 	}
-	
+
 	/**
 	 * Map constructors based on the class mappings of the given mapping
 	 */
@@ -85,15 +86,19 @@ public class ConstructorMapper
 			ClassFile other = (ClassFile) mapping.get(cf);
 
 			if (other == null)
+			{
 				continue;
+			}
 
 			for (Method m : cf.getMethods().getMethods())
 			{
 				if (!m.getName().equals("<init>"))
+				{
 					continue;
-				
+				}
+
 				Signature otherSig = toOtherSignature(m.getDescriptor());
-				
+
 				logger.debug("Converted signature {} -> {}", m.getDescriptor(), otherSig);
 
 				Method m2 = other.findMethod(m.getName(), otherSig);

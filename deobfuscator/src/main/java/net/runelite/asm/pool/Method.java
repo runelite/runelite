@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.pool;
 
 import java.util.Objects;
@@ -30,9 +29,9 @@ import net.runelite.asm.signature.Signature;
 
 public class Method
 {
-	private Class clazz;
-	private String name;
-	private Signature type;
+	private final Class clazz;
+	private final String name;
+	private final Signature type;
 
 	public Method(Class clazz, String name, Signature type)
 	{
