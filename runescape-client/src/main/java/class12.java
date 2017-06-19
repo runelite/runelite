@@ -1,4 +1,6 @@
 import java.util.Comparator;
+
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -14,49 +16,50 @@ final class class12 implements Comparator {
       signature = "(Ljava/lang/CharSequence;IZB)I",
       garbageValue = "7"
    )
-   public static int method63(CharSequence var0, int var1, boolean var2) {
-      if(var1 >= 2 && var1 <= 36) {
-         boolean var3 = false;
+   @Export("parseInt")
+   public static int parseInt(CharSequence characters, int radix, boolean var2) {
+      if(radix >= 2 && radix <= 36) {
+         boolean negative = false;
          boolean var4 = false;
          int var5 = 0;
-         int var6 = var0.length();
+         int length = characters.length();
 
-         for(int var7 = 0; var7 < var6; ++var7) {
-            char var8 = var0.charAt(var7);
-            if(var7 == 0) {
-               if(var8 == 45) {
-                  var3 = true;
+         for(int index = 0; index < length; ++index) {
+            char character = characters.charAt(index);
+            if(index == 0) {
+               if(character == 45) {
+                  negative = true;
                   continue;
                }
 
-               if(var8 == 43) {
+               if(character == 43) {
                   continue;
                }
             }
 
             int var9;
-            if(var8 >= 48 && var8 <= 57) {
-               var9 = var8 - 48;
-            } else if(var8 >= 65 && var8 <= 90) {
-               var9 = var8 - 55;
+            if(character >= 48 && character <= 57) {
+               var9 = character - 48;
+            } else if(character >= 65 && character <= 90) {
+               var9 = character - 55;
             } else {
-               if(var8 < 97 || var8 > 122) {
+               if(character < 97 || character > 122) {
                   throw new NumberFormatException();
                }
 
-               var9 = var8 - 87;
+               var9 = character - 87;
             }
 
-            if(var9 >= var1) {
+            if(var9 >= radix) {
                throw new NumberFormatException();
             }
 
-            if(var3) {
+            if(negative) {
                var9 = -var9;
             }
 
-            int var10 = var9 + var1 * var5;
-            if(var5 != var10 / var1) {
+            int var10 = var9 + radix * var5;
+            if(var5 != var10 / radix) {
                throw new NumberFormatException();
             }
 

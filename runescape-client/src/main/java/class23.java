@@ -30,7 +30,7 @@ public class class23 {
          }
 
          if(var0 != 20 && var0 != 40 && class222.field2846 != null) {
-            class222.field2846.method2879();
+            class222.field2846.close();
             class222.field2846 = null;
          }
 
@@ -61,7 +61,7 @@ public class class23 {
                class92.field1418 = null;
                class47.field613 = null;
                WorldMapData.field471 = null;
-               class154.field2253 = null;
+               Signlink.field2253 = null;
                class48.field629 = null;
                class43.field583 = null;
                XClanMember.field897 = null;

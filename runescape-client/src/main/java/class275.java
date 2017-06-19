@@ -121,19 +121,19 @@ public class class275 {
                               Client.secretPacketBuffer1.putShort(class20.localPlayer.x);
                               Client.secretPacketBuffer1.putShort(class20.localPlayer.y);
                               Client.secretPacketBuffer1.putByte(63);
-                              Client.detinationX = var39;
+                              Client.destinationX = var39;
                               Client.destinationY = var38;
                            }
                         }
                      }
                   } else {
                      if(var9.contentType == 1400) {
-                        class46.field601.method5046(class59.field730, class59.field731, var33, var10, var11, var9.width, var9.height);
+                        class46.renderOverview.method5046(class59.field730, class59.field731, var33, var10, var11, var9.width, var9.height);
                      }
 
                      if(!Client.isMenuOpen && var33) {
                         if(var9.contentType == 1400) {
-                           class46.field601.method5093(var10, var11, var9.width, var9.height, var16, var17);
+                           class46.renderOverview.method5093(var10, var11, var9.width, var9.height, var16, var17);
                         } else {
                            class162.method2943(var9, var16 - var10, var17 - var11);
                         }
@@ -231,7 +231,7 @@ public class class275 {
                         }
 
                         if(var9.contentType == 1400) {
-                           class46.field601.method5047(class59.field730, class59.field731, var33 & var36);
+                           class46.renderOverview.method5047(class59.field730, class59.field731, var33 & var36);
                         }
 
                         if(Client.field1079 != null && Client.field1079 != var9 && var33) {

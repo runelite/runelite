@@ -109,7 +109,7 @@ public final class Tile extends Node {
    static void method2390() {
       Client.secretPacketBuffer1.offset = 0;
       Client.secretPacketBuffer2.offset = 0;
-      Client.field951 = -1;
+      Client.packetType = -1;
       Client.field1100 = 1;
       Client.field955 = -1;
       Client.field956 = -1;
@@ -120,7 +120,7 @@ public final class Tile extends Node {
       Client.field1053 = -1;
       Client.isMenuOpen = false;
       Client.field1087 = 0;
-      Client.detinationX = 0;
+      Client.destinationX = 0;
 
       int var0;
       for(var0 = 0; var0 < 2048; ++var0) {

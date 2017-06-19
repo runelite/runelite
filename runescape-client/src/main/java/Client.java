@@ -105,7 +105,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1805146139
    )
-   static int field921;
+   @Export("loadingStage")
+   static int loadingStage;
    @ObfuscatedName("bj")
    @ObfuscatedGetter(
       intValue = 1499692395
@@ -227,7 +228,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -395620443
    )
-   static int field951;
+   @Export("packetType")
+   static int packetType;
    @ObfuscatedName("em")
    @ObfuscatedGetter(
       intValue = -24505051
@@ -963,8 +965,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 840472499
    )
-   @Export("detinationX")
-   static int detinationX;
+   @Export("destinationX")
+   static int destinationX;
    @ObfuscatedName("or")
    @ObfuscatedGetter(
       intValue = 1151264889
@@ -1325,7 +1327,7 @@ public final class Client extends GameEngine {
             }
 
             if(gameState == 0) {
-               class24.method198();
+               class24.load();
                GameEngine.field707.vmethod2872();
 
                for(var5 = 0; var5 < 32; ++var5) {
@@ -1339,7 +1341,7 @@ public final class Client extends GameEngine {
                GameEngine.field697 = 0;
             } else if(gameState == 5) {
                class7.method35(this);
-               class24.method198();
+               class24.load();
                GameEngine.field707.vmethod2872();
 
                for(var5 = 0; var5 < 32; ++var5) {
@@ -1426,7 +1428,7 @@ public final class Client extends GameEngine {
       }
 
       if((gameState == 10 || gameState == 20 || gameState == 30) && 0L != field1119 && class166.method2970() > field1119) {
-         WorldMapType2.method508(class241.method4167());
+         WorldMapType2.method508(class241.getResizableValue());
       }
 
       int var3;
@@ -1437,12 +1439,12 @@ public final class Client extends GameEngine {
       }
 
       if(gameState == 0) {
-         this.method823(class92.field1429, class92.field1446, var1);
+         this.drawLoadingScreen(class92.loadingBarPercentage, class92.loadingText, var1);
       } else if(gameState == 5) {
-         class33.method352(class64.field788, class5.field39, WallObject.font_p12full, var1);
+         class33.drawLoginScreen(class64.field788, class5.field39, WallObject.font_p12full, var1);
       } else if(gameState != 10 && gameState != 11) {
          if(gameState == 20) {
-            class33.method352(class64.field788, class5.field39, WallObject.font_p12full, var1);
+            class33.drawLoginScreen(class64.field788, class5.field39, WallObject.font_p12full, var1);
          } else if(gameState == 25) {
             if(field1113 == 1) {
                if(field1117 > field961) {
@@ -1450,26 +1452,26 @@ public final class Client extends GameEngine {
                }
 
                var3 = (field961 * 50 - field1117 * 50) / field961;
-               class158.method2877("Loading - please wait.<br> (" + var3 + "%)", false);
+               class158.drawStatusBox("Loading - please wait.<br> (" + var3 + "%)", false);
             } else if(field1113 == 2) {
                if(field1127 > field1023) {
                   field1023 = field1127;
                }
 
                var3 = (field1023 * 50 - field1127 * 50) / field1023 + 50;
-               class158.method2877("Loading - please wait.<br> (" + var3 + "%)", false);
+               class158.drawStatusBox("Loading - please wait.<br> (" + var3 + "%)", false);
             } else {
-               class158.method2877("Loading - please wait.", false);
+               class158.drawStatusBox("Loading - please wait.", false);
             }
          } else if(gameState == 30) {
             this.method1334();
          } else if(gameState == 40) {
-            class158.method2877("Connection lost<br>Please wait - attempting to reestablish", false);
+            class158.drawStatusBox("Connection lost<br>Please wait - attempting to reestablish", false);
          } else if(gameState == 45) {
-            class158.method2877("Please wait...", false);
+            class158.drawStatusBox("Please wait...", false);
          }
       } else {
-         class33.method352(class64.field788, class5.field39, WallObject.font_p12full, var1);
+         class33.drawLoginScreen(class64.field788, class5.field39, WallObject.font_p12full, var1);
       }
 
       if(gameState == 30 && gameDrawingMode == 0 && !var1) {
@@ -1533,12 +1535,12 @@ public final class Client extends GameEngine {
                }
 
                if(field1185 == 1) {
-                  if(class59.field726.field2237 == 2) {
+                  if(class59.field726.status == 2) {
                      this.method1158(-1);
                      return;
                   }
 
-                  if(class59.field726.field2237 == 1) {
+                  if(class59.field726.status == 1) {
                      ++field1185;
                   }
                }
@@ -1594,7 +1596,7 @@ public final class Client extends GameEngine {
       try {
          if(loginState == 0) {
             if(WidgetNode.rssocket != null) {
-               WidgetNode.rssocket.method2879();
+               WidgetNode.rssocket.close();
                WidgetNode.rssocket = null;
             }
 
@@ -1609,11 +1611,11 @@ public final class Client extends GameEngine {
                class5.field38 = GameEngine.field691.method2842(class40.host, Buffer.field2411);
             }
 
-            if(class5.field38.field2237 == 2) {
+            if(class5.field38.status == 2) {
                throw new IOException();
             }
 
-            if(class5.field38.field2237 == 1) {
+            if(class5.field38.status == 1) {
                WidgetNode.rssocket = new RSSocket((Socket)class5.field38.field2241, GameEngine.field691);
                class5.field38 = null;
                loginState = 2;
@@ -1821,7 +1823,7 @@ public final class Client extends GameEngine {
                field1176 = WidgetNode.rssocket.readByte();
                WidgetNode.rssocket.read(secretPacketBuffer2.payload, 0, 1);
                secretPacketBuffer2.offset = 0;
-               field951 = secretPacketBuffer2.readOpcode();
+               packetType = secretPacketBuffer2.readOpcode();
                WidgetNode.rssocket.read(secretPacketBuffer2.payload, 0, 2);
                secretPacketBuffer2.offset = 0;
                packetLength = secretPacketBuffer2.readUnsignedShort();
@@ -1906,7 +1908,7 @@ public final class Client extends GameEngine {
                class280.field3749 = new CombatInfoList();
                secretPacketBuffer1.offset = 0;
                secretPacketBuffer2.offset = 0;
-               field951 = -1;
+               packetType = -1;
                field1100 = 1;
                field955 = -1;
                field956 = -1;
@@ -1933,7 +1935,7 @@ public final class Client extends GameEngine {
                mapAngle = (int)(Math.random() * 20.0D) - 10 & 2047;
                field1087 = 0;
                field944 = -1;
-               detinationX = 0;
+               destinationX = 0;
                destinationY = 0;
                field928 = class91.field1410;
                field910 = class91.field1410;
@@ -2038,7 +2040,7 @@ public final class Client extends GameEngine {
                class60.method965(secretPacketBuffer2);
                class34.field501 = -1;
                class23.xteaChanged(false);
-               field951 = -1;
+               packetType = -1;
             }
          }
       } catch (IOException var9) {
@@ -2076,7 +2078,7 @@ public final class Client extends GameEngine {
 
       if(Item.field1481 != null) {
          try {
-            class52.method733(class220.field2817, "resize", new Object[]{Integer.valueOf(class241.method4167())});
+            class52.method733(class220.field2817, "resize", new Object[]{Integer.valueOf(class241.getResizableValue())});
          } catch (Throwable var4) {
             ;
          }
@@ -2106,16 +2108,16 @@ public final class Client extends GameEngine {
                if(var5 != 1 && (class221.field2845 || var5 != 4)) {
                   var1 = class59.field730;
                   var6 = class59.field731;
-                  if(var1 < class109.menuX - 10 || var1 > class154.menuWidth + class109.menuX + 10 || var6 < class24.menuY - 10 || var6 > class37.menuHeight + class24.menuY + 10) {
+                  if(var1 < class109.menuX - 10 || var1 > Signlink.menuWidth + class109.menuX + 10 || var6 < class24.menuY - 10 || var6 > class37.menuHeight + class24.menuY + 10) {
                      isMenuOpen = false;
-                     ChatLineBuffer.method1777(class109.menuX, class24.menuY, class154.menuWidth, class37.menuHeight);
+                     ChatLineBuffer.method1777(class109.menuX, class24.menuY, Signlink.menuWidth, class37.menuHeight);
                   }
                }
 
                if(var5 == 1 || !class221.field2845 && var5 == 4) {
                   var1 = class109.menuX;
                   var6 = class24.menuY;
-                  var2 = class154.menuWidth;
+                  var2 = Signlink.menuWidth;
                   var3 = class59.field737;
                   var7 = class59.field732;
                   int var18 = -1;
@@ -2138,7 +2140,7 @@ public final class Client extends GameEngine {
                   }
 
                   isMenuOpen = false;
-                  ChatLineBuffer.method1777(class109.menuX, class24.menuY, class154.menuWidth, class37.menuHeight);
+                  ChatLineBuffer.method1777(class109.menuX, class24.menuY, Signlink.menuWidth, class37.menuHeight);
                }
             } else {
                var1 = class230.method3976();
@@ -2283,7 +2285,7 @@ public final class Client extends GameEngine {
       isMenuOpen = true;
       class109.menuX = var8;
       class24.menuY = var9;
-      class154.menuWidth = var3;
+      Signlink.menuWidth = var3;
       class37.menuHeight = menuOptionCount * 15 + 22;
    }
 
@@ -2545,7 +2547,7 @@ public final class Client extends GameEngine {
 
       field913 = null;
       if(WidgetNode.rssocket != null) {
-         WidgetNode.rssocket.method2879();
+         WidgetNode.rssocket.close();
          WidgetNode.rssocket = null;
       }
 
@@ -2568,7 +2570,7 @@ public final class Client extends GameEngine {
       }
 
       if(class238.field3258 != null) {
-         class238.field3258.method2879();
+         class238.field3258.close();
       }
 
       NPCComposition.method4541();
@@ -2610,7 +2612,7 @@ public final class Client extends GameEngine {
          }
 
          int var1;
-         for(var1 = 0; var1 < 100 && this.method1278(); ++var1) {
+         for(var1 = 0; var1 < 100 && this.processServerPacket(); ++var1) {
             ;
          }
 
@@ -3076,7 +3078,7 @@ public final class Client extends GameEngine {
                                                 field1115 = class59.field732;
                                                 cursorState = 1;
                                                 field906 = 0;
-                                                detinationX = var4;
+                                                destinationX = var4;
                                                 destinationY = var5;
                                              }
 
@@ -3378,7 +3380,8 @@ public final class Client extends GameEngine {
       signature = "(I)Z",
       garbageValue = "-575158540"
    )
-   final boolean method1278() {
+   @Export("processServerPacket")
+   final boolean processServerPacket() {
       if(WidgetNode.rssocket == null) {
          return false;
       } else {
@@ -3390,11 +3393,11 @@ public final class Client extends GameEngine {
                return false;
             }
 
-            if(field951 == -1) {
+            if(packetType == -1) {
                WidgetNode.rssocket.read(secretPacketBuffer2.payload, 0, 1);
                secretPacketBuffer2.offset = 0;
-               field951 = secretPacketBuffer2.readOpcode();
-               packetLength = class272.field3700[field951];
+               packetType = secretPacketBuffer2.readOpcode();
+               packetLength = class272.field3700[packetType];
                --var3;
             }
 
@@ -3428,11 +3431,11 @@ public final class Client extends GameEngine {
             field952 = 0;
             field956 = field955;
             field955 = field1100 * -1;
-            field1100 = field951 * -1;
+            field1100 = packetType * -1;
             int var4;
             int var5;
             int var6;
-            if(field951 == 206) {
+            if(packetType == 206) {
                var4 = secretPacketBuffer2.readUnsignedByte();
                var1 = secretPacketBuffer2.readUnsignedByte();
                var5 = secretPacketBuffer2.readUnsignedByte();
@@ -3442,20 +3445,20 @@ public final class Client extends GameEngine {
                field1015[var4] = var5;
                field1156[var4] = var6;
                field982[var4] = 0;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 78) {
+            if(packetType == 78) {
                if(widgetRoot != -1) {
                   class4.method13(widgetRoot, 0);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 146) {
+            if(packetType == 146) {
                for(var4 = 0; var4 < class211.widgetSettings.length; ++var4) {
                   if(class211.settings[var4] != class211.widgetSettings[var4]) {
                      class211.widgetSettings[var4] = class211.settings[var4];
@@ -3464,18 +3467,18 @@ public final class Client extends GameEngine {
                   }
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 71) {
+            if(packetType == 71) {
                Item.field1480 = Player.method1095(secretPacketBuffer2.readUnsignedByte());
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             boolean var7;
-            if(field951 == 101) {
+            if(packetType == 101) {
                var7 = secretPacketBuffer2.readUnsignedByte() == 1;
                if(var7) {
                   Tile.field1921 = class166.method2970() - secretPacketBuffer2.readLong();
@@ -3485,27 +3488,27 @@ public final class Client extends GameEngine {
                }
 
                field1102 = field1091;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 24) {
+            if(packetType == 24) {
                class29.field437 = secretPacketBuffer2.method3201();
                class27.field414 = secretPacketBuffer2.method3062();
 
                while(secretPacketBuffer2.offset < packetLength) {
-                  field951 = secretPacketBuffer2.readUnsignedByte();
+                  packetType = secretPacketBuffer2.readUnsignedByte();
                   class34.method479();
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             int var8;
             Widget var9;
             int var10;
-            if(field951 == 33) {
+            if(packetType == 33) {
                var4 = secretPacketBuffer2.readInt();
                var1 = secretPacketBuffer2.readUnsignedShort();
                if(var4 < -70000) {
@@ -3541,19 +3544,19 @@ public final class Client extends GameEngine {
 
                GameEngine.method864();
                interfaceItemTriggers[++field1095 - 1 & 31] = var1 & 32767;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 42) {
+            if(packetType == 42) {
                field1172 = 1;
                field1099 = field1091;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             Widget var11;
-            if(field951 == 72) {
+            if(packetType == 72) {
                var4 = secretPacketBuffer2.readUnsignedShort();
                var1 = secretPacketBuffer2.method3068();
                var5 = secretPacketBuffer2.method3070();
@@ -3566,33 +3569,33 @@ public final class Client extends GameEngine {
                   XItemContainer.method1020(var11);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 136) {
+            if(packetType == 136) {
                field1087 = secretPacketBuffer2.readUnsignedByte();
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 150) {
+            if(packetType == 150) {
                class1.method0(true);
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 55) {
+            if(packetType == 55) {
                var4 = secretPacketBuffer2.method3078();
                class69.field834 = GameEngine.field691.method2838(var4);
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             Player var12;
             int var13;
             PacketBuffer var14;
-            if(field951 == 82) {
+            if(packetType == 82) {
                class23.xteaChanged(true);
                secretPacketBuffer2.readOpcode();
                var4 = secretPacketBuffer2.readUnsignedShort();
@@ -3713,12 +3716,12 @@ public final class Client extends GameEngine {
                   }
                }
 
-               Item.method1665(var14);
+               Item.updatePlayersFlag(var14);
                if(var14.offset - var5 != var4) {
                   throw new RuntimeException(var14.offset - var5 + " " + var4);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
@@ -3727,7 +3730,7 @@ public final class Client extends GameEngine {
             PacketBuffer var17;
             String var18;
             String var22;
-            if(field951 == 109) {
+            if(packetType == 109) {
                var17 = secretPacketBuffer2;
                var1 = packetLength;
                ClassInfo var54 = new ClassInfo();
@@ -3833,20 +3836,20 @@ public final class Client extends GameEngine {
                }
 
                class280.field3749.method3441(var54);
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 236) {
+            if(packetType == 236) {
                GameEngine.method864();
                weight = secretPacketBuffer2.readShort();
                field1103 = field1091;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             WidgetNode var19;
-            if(field951 == 134) {
+            if(packetType == 134) {
                var4 = secretPacketBuffer2.method3078();
                var1 = secretPacketBuffer2.method3068();
                var5 = secretPacketBuffer2.method3060();
@@ -3856,24 +3859,24 @@ public final class Client extends GameEngine {
                }
 
                class67.method1028(var4, var1, var5);
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             Widget var20;
-            if(field951 == 32) {
+            if(packetType == 32) {
                var4 = secretPacketBuffer2.readUnsignedShort();
                var1 = secretPacketBuffer2.method3160();
                var5 = secretPacketBuffer2.method3023();
                var20 = class223.method3959(var1);
                var20.field2710 = var5 + (var4 << 16);
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             boolean var21;
             String var23;
-            if(field951 == 17) {
+            if(packetType == 17) {
                Friend var70;
                while(secretPacketBuffer2.offset < packetLength) {
                   var7 = secretPacketBuffer2.readUnsignedByte() == 1;
@@ -3988,22 +3991,22 @@ public final class Client extends GameEngine {
                   }
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             Widget var24;
-            if(field951 == 127) {
+            if(packetType == 127) {
                var4 = secretPacketBuffer2.method3116();
                var24 = class223.method3959(var4);
                var24.modelType = 3;
                var24.modelId = class20.localPlayer.composition.method3868();
                XItemContainer.method1020(var24);
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 31) {
+            if(packetType == 31) {
                var2 = secretPacketBuffer2.readString();
                var1 = secretPacketBuffer2.method3078();
                var9 = class223.method3959(var1);
@@ -4012,11 +4015,11 @@ public final class Client extends GameEngine {
                   XItemContainer.method1020(var9);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 224) {
+            if(packetType == 224) {
                var4 = secretPacketBuffer2.method3078();
                var1 = secretPacketBuffer2.method3070();
                class211.settings[var1] = var4;
@@ -4026,32 +4029,32 @@ public final class Client extends GameEngine {
 
                class36.method483(var1);
                field1092[++field1026 - 1 & 31] = var1;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 2) {
+            if(packetType == 2) {
                field954 = secretPacketBuffer2.readUnsignedByte();
                field1123 = secretPacketBuffer2.readUnsignedByte();
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 98 || field951 == 66 || field951 == 173 || field951 == 137 || field951 == 165 || field951 == 111 || field951 == 4 || field951 == 209 || field951 == 37 || field951 == 190) {
+            if(packetType == 98 || packetType == 66 || packetType == 173 || packetType == 137 || packetType == 165 || packetType == 111 || packetType == 4 || packetType == 209 || packetType == 37 || packetType == 190) {
                class34.method479();
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 113) {
+            if(packetType == 113) {
                field919 = secretPacketBuffer2.method3023() * 30;
                field1103 = field1091;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             String var25;
-            if(field951 == 13) {
+            if(packetType == 13) {
                var2 = secretPacketBuffer2.readString();
                class219.field2810 = var2;
 
@@ -4072,11 +4075,11 @@ public final class Client extends GameEngine {
                   ;
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 158) {
+            if(packetType == 158) {
                var4 = secretPacketBuffer2.readUnsignedShort();
                var1 = secretPacketBuffer2.readInt();
                var5 = var4 >> 10 & 31;
@@ -4089,11 +4092,11 @@ public final class Client extends GameEngine {
                   XItemContainer.method1020(var64);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 15) {
+            if(packetType == 15) {
                var4 = secretPacketBuffer2.method3023();
                var1 = secretPacketBuffer2.method3160();
                var9 = class223.method3959(var1);
@@ -4112,11 +4115,11 @@ public final class Client extends GameEngine {
                   }
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 141) {
+            if(packetType == 141) {
                var4 = secretPacketBuffer2.readInt();
                var1 = secretPacketBuffer2.readUnsignedShort();
                if(var4 < -70000) {
@@ -4160,11 +4163,11 @@ public final class Client extends GameEngine {
 
                GameEngine.method864();
                interfaceItemTriggers[++field1095 - 1 & 31] = var1 & 32767;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 167) {
+            if(packetType == 167) {
                var4 = secretPacketBuffer2.method3060();
                var23 = secretPacketBuffer2.readString();
                var5 = secretPacketBuffer2.method3060();
@@ -4177,14 +4180,14 @@ public final class Client extends GameEngine {
                   playerOptionsPriorities[var4 - 1] = var5 == 0;
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             long var26;
             long var28;
             long var30;
-            if(field951 == 1) {
+            if(packetType == 1) {
                var4 = secretPacketBuffer2.readInt();
                var1 = secretPacketBuffer2.readInt();
                if(class17.field321 == null || !class17.field321.isValid()) {
@@ -4225,22 +4228,22 @@ public final class Client extends GameEngine {
                secretPacketBuffer1.putInt(var1);
                secretPacketBuffer1.method3069(GameEngine.FPS);
                secretPacketBuffer1.putByte(var10);
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 238) {
+            if(packetType == 238) {
                var2 = secretPacketBuffer2.readString();
                PacketBuffer var76 = secretPacketBuffer2;
                var23 = class162.method2947(var76, 32767);
                var25 = FontTypeFace.method4631(class210.method3816(var23));
                class5.sendGameMessage(6, var2, var25);
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             boolean var32;
-            if(field951 == 63) {
+            if(packetType == 63) {
                while(secretPacketBuffer2.offset < packetLength) {
                   var4 = secretPacketBuffer2.readUnsignedByte();
                   var32 = (var4 & 1) == 1;
@@ -4276,22 +4279,22 @@ public final class Client extends GameEngine {
                }
 
                field1099 = field1091;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 155) {
+            if(packetType == 155) {
                var4 = secretPacketBuffer2.readUnsignedShort();
                class211.method3822(var4);
                interfaceItemTriggers[++field1095 - 1 & 31] = var4 & 32767;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 218) {
-               detinationX = secretPacketBuffer2.readUnsignedByte();
-               if(detinationX == 255) {
-                  detinationX = 0;
+            if(packetType == 218) {
+               destinationX = secretPacketBuffer2.readUnsignedByte();
+               if(destinationX == 255) {
+                  destinationX = 0;
                }
 
                destinationY = secretPacketBuffer2.readUnsignedByte();
@@ -4299,22 +4302,22 @@ public final class Client extends GameEngine {
                   destinationY = 0;
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 114) {
+            if(packetType == 114) {
                field1152 = false;
 
                for(var4 = 0; var4 < 5; ++var4) {
                   field1153[var4] = false;
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 139) {
+            if(packetType == 139) {
                var4 = secretPacketBuffer2.method3070();
                widgetRoot = var4;
                this.method1151(false);
@@ -4325,11 +4328,11 @@ public final class Client extends GameEngine {
                   field1111[var1] = true;
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 103) {
+            if(packetType == 103) {
                for(var4 = 0; var4 < cachedPlayers.length; ++var4) {
                   if(cachedPlayers[var4] != null) {
                      cachedPlayers[var4].animation = -1;
@@ -4342,19 +4345,19 @@ public final class Client extends GameEngine {
                   }
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             boolean var33;
-            if(field951 == 140) {
+            if(packetType == 140) {
                field1063 = field1091;
                if(packetLength == 0) {
                   clanChatOwner = null;
                   clanChatName = null;
                   XGrandExchangeOffer.clanChatCount = 0;
                   class177.clanMembers = null;
-                  field951 = -1;
+                  packetType = -1;
                   return true;
                }
 
@@ -4364,7 +4367,7 @@ public final class Client extends GameEngine {
                class22.field359 = secretPacketBuffer2.readByte();
                var5 = secretPacketBuffer2.readUnsignedByte();
                if(var5 == 255) {
-                  field951 = -1;
+                  packetType = -1;
                   return true;
                }
 
@@ -4405,11 +4408,11 @@ public final class Client extends GameEngine {
                }
 
                class177.clanMembers = var36;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 207) {
+            if(packetType == 207) {
                var4 = secretPacketBuffer2.readInt();
                WidgetNode var86 = (WidgetNode)componentTable.method3425((long)var4);
                if(var86 != null) {
@@ -4421,11 +4424,11 @@ public final class Client extends GameEngine {
                   field1070 = null;
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 64) {
+            if(packetType == 64) {
                var4 = secretPacketBuffer2.method3068();
                var1 = secretPacketBuffer2.method3160();
                var9 = class223.method3959(var1);
@@ -4435,11 +4438,11 @@ public final class Client extends GameEngine {
                   XItemContainer.method1020(var9);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 93) {
+            if(packetType == 93) {
                ChatLineBuffer.method1770();
 
                for(var4 = 0; var4 < 2048; ++var4) {
@@ -4447,11 +4450,11 @@ public final class Client extends GameEngine {
                }
 
                class60.method965(secretPacketBuffer2);
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 107) {
+            if(packetType == 107) {
                field1152 = true;
                class29.field436 = secretPacketBuffer2.readUnsignedByte();
                class2.field19 = secretPacketBuffer2.readUnsignedByte();
@@ -4464,11 +4467,11 @@ public final class Client extends GameEngine {
                   class112.cameraZ = class77.method1438(class14.cameraX, class66.cameraY, Player.plane) - class27.field415;
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 247) {
+            if(packetType == 247) {
                GameEngine.method864();
                var4 = secretPacketBuffer2.method3201();
                var1 = secretPacketBuffer2.method3078();
@@ -4484,21 +4487,21 @@ public final class Client extends GameEngine {
                }
 
                field1174[++field1097 - 1 & 31] = var5;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 240) {
+            if(packetType == 240) {
                secretPacketBuffer2.offset += 28;
                if(secretPacketBuffer2.method3056()) {
                   class61.method979(secretPacketBuffer2, secretPacketBuffer2.offset - 28);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 164) {
+            if(packetType == 164) {
                var4 = secretPacketBuffer2.readUnsignedShort();
                if(var4 == '\uffff') {
                   var4 = -1;
@@ -4521,11 +4524,11 @@ public final class Client extends GameEngine {
                }
 
                field1142 = var4;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 80) {
+            if(packetType == 80) {
                var4 = secretPacketBuffer2.method3023();
                if(var4 == '\uffff') {
                   var4 = -1;
@@ -4533,11 +4536,11 @@ public final class Client extends GameEngine {
 
                var1 = secretPacketBuffer2.read24BitInt();
                GameEngine.method931(var4, var1);
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 210) {
+            if(packetType == 210) {
                var4 = secretPacketBuffer2.readInt();
                var32 = secretPacketBuffer2.method3060() == 1;
                var9 = class223.method3959(var4);
@@ -4546,17 +4549,17 @@ public final class Client extends GameEngine {
                   XItemContainer.method1020(var9);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 239) {
+            if(packetType == 239) {
                TextureProvider.method2306();
-               field951 = -1;
+               packetType = -1;
                return false;
             }
 
-            if(field951 == 120) {
+            if(packetType == 120) {
                var4 = secretPacketBuffer2.readUnsignedShort();
                if(var4 == '\uffff') {
                   var4 = -1;
@@ -4569,7 +4572,7 @@ public final class Client extends GameEngine {
                if(!var20.hasScript) {
                   if(var4 == -1) {
                      var20.modelType = 0;
-                     field951 = -1;
+                     packetType = -1;
                      return true;
                   }
 
@@ -4605,11 +4608,11 @@ public final class Client extends GameEngine {
                   XItemContainer.method1020(var20);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 225) {
+            if(packetType == 225) {
                var4 = secretPacketBuffer2.readUnsignedShort();
                byte var83 = secretPacketBuffer2.method3063();
                class211.settings[var4] = var83;
@@ -4619,11 +4622,11 @@ public final class Client extends GameEngine {
 
                class36.method483(var4);
                field1092[++field1026 - 1 & 31] = var4;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 157) {
+            if(packetType == 157) {
                class29.field437 = secretPacketBuffer2.method3062();
                class27.field414 = secretPacketBuffer2.readUnsignedByte();
 
@@ -4642,12 +4645,12 @@ public final class Client extends GameEngine {
                   }
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             String var34;
-            if(field951 == 119) {
+            if(packetType == 119) {
                var4 = secretPacketBuffer2.method3046();
                var32 = secretPacketBuffer2.readUnsignedByte() == 1;
                var22 = "";
@@ -4664,11 +4667,11 @@ public final class Client extends GameEngine {
                   class5.sendGameMessage(var4, var22, var34);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 59) {
+            if(packetType == 59) {
                var4 = secretPacketBuffer2.method3116();
                var24 = class223.method3959(var4);
 
@@ -4678,11 +4681,11 @@ public final class Client extends GameEngine {
                }
 
                XItemContainer.method1020(var24);
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 204) {
+            if(packetType == 204) {
                field920 = secretPacketBuffer2.readUnsignedByte();
                if(field920 == 1) {
                   field1133 = secretPacketBuffer2.readUnsignedShort();
@@ -4724,11 +4727,11 @@ public final class Client extends GameEngine {
                   field922 = secretPacketBuffer2.readUnsignedShort();
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 249) {
+            if(packetType == 249) {
                field1152 = true;
                Item.field1479 = secretPacketBuffer2.readUnsignedByte();
                class18.field335 = secretPacketBuffer2.readUnsignedByte();
@@ -4754,7 +4757,7 @@ public final class Client extends GameEngine {
                   }
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
@@ -4765,7 +4768,7 @@ public final class Client extends GameEngine {
             class230 var96;
             class230[] var97;
             PacketBuffer var98;
-            if(field951 == 122) {
+            if(packetType == 122) {
                var2 = secretPacketBuffer2.readString();
                var35 = secretPacketBuffer2.readLong();
                var37 = (long)secretPacketBuffer2.readUnsignedShort();
@@ -4799,11 +4802,11 @@ public final class Client extends GameEngine {
                   }
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 188) {
+            if(packetType == 188) {
                var2 = secretPacketBuffer2.readString();
                var35 = (long)secretPacketBuffer2.readUnsignedShort();
                var37 = (long)secretPacketBuffer2.read24BitInt();
@@ -4843,11 +4846,11 @@ public final class Client extends GameEngine {
                   }
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 35) {
+            if(packetType == 35) {
                class23.xteaChanged(false);
                secretPacketBuffer2.readOpcode();
                var4 = secretPacketBuffer2.readUnsignedShort();
@@ -4968,23 +4971,23 @@ public final class Client extends GameEngine {
                   }
                }
 
-               Item.method1665(var14);
+               Item.updatePlayersFlag(var14);
                if(var4 != var14.offset - var5) {
                   throw new RuntimeException(var14.offset - var5 + " " + var4);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 84) {
+            if(packetType == 84) {
                class1.method0(false);
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
             WidgetNode var91;
-            if(field951 == 219) {
+            if(packetType == 219) {
                var4 = secretPacketBuffer2.offset + packetLength;
                var1 = secretPacketBuffer2.readUnsignedShort();
                var5 = secretPacketBuffer2.readUnsignedShort();
@@ -5036,11 +5039,11 @@ public final class Client extends GameEngine {
                   }
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 148) {
+            if(packetType == 148) {
                var17 = secretPacketBuffer2;
                var1 = packetLength;
                var5 = var17.offset;
@@ -5159,16 +5162,16 @@ public final class Client extends GameEngine {
                   }
                }
 
-               Item.method1665(var17);
+               Item.updatePlayersFlag(var17);
                if(var1 != var17.offset - var5) {
                   throw new RuntimeException(var17.offset - var5 + " " + var1);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 244) {
+            if(packetType == 244) {
                var2 = secretPacketBuffer2.readString();
                Object[] var94 = new Object[var2.length() + 1];
 
@@ -5184,19 +5187,19 @@ public final class Client extends GameEngine {
                class69 var92 = new class69();
                var92.field821 = var94;
                class77.method1440(var92);
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 172) {
+            if(packetType == 172) {
                GameEngine.method864();
                energy = secretPacketBuffer2.readUnsignedByte();
                field1103 = field1091;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 160) {
+            if(packetType == 160) {
                for(var4 = 0; var4 < class241.field3292; ++var4) {
                   class241 var93 = class25.method203(var4);
                   if(var93 != null) {
@@ -5207,11 +5210,11 @@ public final class Client extends GameEngine {
 
                GameEngine.method864();
                field1026 += 32;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 121) {
+            if(packetType == 121) {
                var4 = secretPacketBuffer2.readInt();
                var1 = secretPacketBuffer2.method3160();
                var91 = (WidgetNode)componentTable.method3425((long)var1);
@@ -5240,11 +5243,11 @@ public final class Client extends GameEngine {
                   class4.method13(widgetRoot, 1);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 208) {
+            if(packetType == 208) {
                var4 = secretPacketBuffer2.method3078();
                var1 = secretPacketBuffer2.method3116();
                var5 = secretPacketBuffer2.method3068();
@@ -5267,11 +5270,11 @@ public final class Client extends GameEngine {
                   widgetFlags.method3426(new class198(var1), var26);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 86) {
+            if(packetType == 86) {
                var4 = secretPacketBuffer2.method3116();
                var1 = secretPacketBuffer2.method3023();
                var9 = class223.method3959(var4);
@@ -5281,25 +5284,25 @@ public final class Client extends GameEngine {
                   XItemContainer.method1020(var9);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 76) {
+            if(packetType == 76) {
                World var89 = new World();
                var89.address = secretPacketBuffer2.readString();
                var89.id = secretPacketBuffer2.readUnsignedShort();
                var1 = secretPacketBuffer2.readInt();
                var89.mask = var1;
                class23.setGameState(45);
-               WidgetNode.rssocket.method2879();
+               WidgetNode.rssocket.close();
                WidgetNode.rssocket = null;
                class2.method6(var89);
-               field951 = -1;
+               packetType = -1;
                return false;
             }
 
-            if(field951 == 62) {
+            if(packetType == 62) {
                var4 = secretPacketBuffer2.method3017();
                var1 = secretPacketBuffer2.readInt();
                var9 = class223.method3959(var1);
@@ -5310,11 +5313,11 @@ public final class Client extends GameEngine {
                   XItemContainer.method1020(var9);
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 151) {
+            if(packetType == 151) {
                var4 = secretPacketBuffer2.method3197();
                var1 = secretPacketBuffer2.method3160();
                var5 = secretPacketBuffer2.method3071();
@@ -5331,11 +5334,11 @@ public final class Client extends GameEngine {
                   }
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 179) {
+            if(packetType == 179) {
                var4 = secretPacketBuffer2.readUnsignedShort();
                var1 = secretPacketBuffer2.readUnsignedByte();
                var5 = secretPacketBuffer2.readUnsignedShort();
@@ -5348,11 +5351,11 @@ public final class Client extends GameEngine {
                   ++field931;
                }
 
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 36) {
+            if(packetType == 36) {
                var4 = secretPacketBuffer2.readUnsignedByte();
                if(secretPacketBuffer2.readUnsignedByte() == 0) {
                   grandExchangeOffers[var4] = new XGrandExchangeOffer();
@@ -5363,11 +5366,11 @@ public final class Client extends GameEngine {
                }
 
                field1101 = field1091;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 161) {
+            if(packetType == 161) {
                var2 = secretPacketBuffer2.readString();
                var1 = secretPacketBuffer2.readUnsignedShort();
                byte var39 = secretPacketBuffer2.readByte();
@@ -5378,7 +5381,7 @@ public final class Client extends GameEngine {
 
                if(var21) {
                   if(XGrandExchangeOffer.clanChatCount == 0) {
-                     field951 = -1;
+                     packetType = -1;
                      return true;
                   }
 
@@ -5415,7 +5418,7 @@ public final class Client extends GameEngine {
                         }
 
                         field1063 = field1091;
-                        field951 = -1;
+                        packetType = -1;
                         return true;
                      }
 
@@ -5425,7 +5428,7 @@ public final class Client extends GameEngine {
                   }
 
                   if(XGrandExchangeOffer.clanChatCount >= class177.clanMembers.length) {
-                     field951 = -1;
+                     packetType = -1;
                      return true;
                   }
 
@@ -5445,18 +5448,18 @@ public final class Client extends GameEngine {
                }
 
                field1063 = field1091;
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            if(field951 == 70) {
+            if(packetType == 70) {
                class29.field437 = secretPacketBuffer2.method3060();
                class27.field414 = secretPacketBuffer2.method3201();
-               field951 = -1;
+               packetType = -1;
                return true;
             }
 
-            class8.method43("" + field951 + "," + field955 + "," + field956 + "," + packetLength, (Throwable)null);
+            class8.method43("" + packetType + "," + field955 + "," + field956 + "," + packetLength, (Throwable)null);
             TextureProvider.method2306();
          } catch (IOException var52) {
             if(field957 > 0) {
@@ -5467,7 +5470,7 @@ public final class Client extends GameEngine {
                WidgetNode.rssocket = null;
             }
          } catch (Exception var53) {
-            var2 = "" + field951 + "," + field955 + "," + field956 + "," + packetLength + "," + (class20.localPlayer.pathX[0] + class19.baseX) + "," + (class21.baseY + class20.localPlayer.pathY[0]) + ",";
+            var2 = "" + packetType + "," + field955 + "," + field956 + "," + packetLength + "," + (class20.localPlayer.pathX[0] + class19.baseX) + "," + (class21.baseY + class20.localPlayer.pathY[0]) + ",";
 
             for(var1 = 0; var1 < packetLength && var1 < 50; ++var1) {
                var2 = var2 + secretPacketBuffer2.payload[var1] + ",";
@@ -5510,7 +5513,7 @@ public final class Client extends GameEngine {
       Projectile.field1475 = null;
       if(widgetRoot != -1) {
          field1109 = 0;
-         class158.method2866(widgetRoot, 0, 0, class10.canvasWidth, class1.canvasHeight, 0, 0, -1);
+         class158.drawWidget(widgetRoot, 0, 0, class10.canvasWidth, class1.canvasHeight, 0, 0, -1);
       }
 
       Rasterizer2D.method4880();
@@ -5544,7 +5547,7 @@ public final class Client extends GameEngine {
                   var4 = var4 + class15.method105(16777215) + " " + '/' + " " + (menuOptionCount - 2) + " more options";
                }
 
-               class64.field788.method4709(var4, var1 + 4, var2 + 15, 16777215, 0, gameCycle / 1000);
+               class64.field788.drawRandomizedMouseoverText(var4, var1 + 4, var2 + 15, 16777215, 0, gameCycle / 1000);
             }
          }
       } else {
@@ -5698,7 +5701,7 @@ public final class Client extends GameEngine {
       field1039 = 0;
       field928 = class91.field1410;
       field910 = class91.field1410;
-      field921 = 0;
+      loadingStage = 0;
       field1185 = 0;
       field1021 = 0;
       field936 = 0;
@@ -5716,7 +5719,7 @@ public final class Client extends GameEngine {
       field907 = new PacketBuffer(5000);
       secretPacketBuffer2 = new PacketBuffer(15000);
       packetLength = 0;
-      field951 = 0;
+      packetType = 0;
       field952 = 0;
       audioEffectCount = 0;
       field1100 = 0;
@@ -5902,7 +5905,7 @@ public final class Client extends GameEngine {
       field1180 = new int[1000];
       field900 = new int[1000];
       field1137 = new SpritePixels[1000];
-      detinationX = 0;
+      destinationX = 0;
       destinationY = 0;
       field1087 = 0;
       field1141 = 255;

@@ -28,7 +28,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("GameEngine")
 public abstract class GameEngine extends Applet implements Runnable, FocusListener, WindowListener {
    @ObfuscatedName("p")
-   public static class154 field691;
+   public static Signlink field691;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -161655687
@@ -194,7 +194,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       garbageValue = "56"
    )
    protected final void method800() {
-      if(class154.field2242.toLowerCase().indexOf("microsoft") != -1) {
+      if(Signlink.field2242.toLowerCase().indexOf("microsoft") != -1) {
          class50.field662[186] = 57;
          class50.field662[187] = 27;
          class50.field662[188] = 71;
@@ -332,10 +332,10 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
    public void run() {
       try {
-         if(class154.field2242 != null) {
-            String var1 = class154.field2242.toLowerCase();
+         if(Signlink.field2242 != null) {
+            String var1 = Signlink.field2242.toLowerCase();
             if(var1.indexOf("sun") != -1 || var1.indexOf("apple") != -1) {
-               String var2 = class154.field2243;
+               String var2 = Signlink.field2243;
                if(var2.equals("1.1") || var2.startsWith("1.1.") || var2.equals("1.2") || var2.startsWith("1.2.") || var2.equals("1.3") || var2.startsWith("1.3.") || var2.equals("1.4") || var2.startsWith("1.4.") || var2.equals("1.5") || var2.startsWith("1.5.") || var2.equals("1.6.0")) {
                   this.method816("wrongjava");
                   return;
@@ -565,7 +565,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          class152.revision = var3;
          class152.field2225 = this;
          if(field691 == null) {
-            field691 = new class154();
+            field691 = new Signlink();
          }
 
          field691.method2822(this, 1);
@@ -640,7 +640,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       signature = "(ILjava/lang/String;ZI)V",
       garbageValue = "-1451382188"
    )
-   protected final void method823(int var1, String var2, boolean var3) {
+   @Export("drawLoadingScreen")
+   protected final void drawLoadingScreen(int var1, String var2, boolean var3) {
       try {
          Graphics var4 = this.canvas.getGraphics();
          if(class1.field4 == null) {

@@ -210,7 +210,7 @@ public class TextureProvider implements class145 {
    )
    static final void method2306() {
       if(WidgetNode.rssocket != null) {
-         WidgetNode.rssocket.method2879();
+         WidgetNode.rssocket.close();
          WidgetNode.rssocket = null;
       }
 

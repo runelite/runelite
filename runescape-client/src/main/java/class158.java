@@ -12,7 +12,8 @@ public abstract class class158 {
       signature = "(IIIIIIIIB)V",
       garbageValue = "21"
    )
-   static final void method2866(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @Export("drawWidget")
+   static final void drawWidget(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       if(class59.method961(var0)) {
          class64.field790 = null;
          class29.gameDraw(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
@@ -117,7 +118,8 @@ public abstract class class158 {
       signature = "(Ljava/lang/String;ZI)V",
       garbageValue = "685131402"
    )
-   static final void method2877(String var0, boolean var1) {
+   @Export("drawStatusBox")
+   static final void drawStatusBox(String var0, boolean var1) {
       byte var2 = 4;
       int var3 = var2 + 6;
       int var4 = var2 + 6;

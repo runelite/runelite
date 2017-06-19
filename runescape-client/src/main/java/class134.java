@@ -57,7 +57,7 @@ public class class134 {
    public static void method2489(RSSocket var0, boolean var1) {
       if(class238.field3258 != null) {
          try {
-            class238.field3258.method2879();
+            class238.field3258.close();
          } catch (Exception var7) {
             ;
          }
@@ -87,7 +87,7 @@ public class class134 {
                         class238.field3258.queueForWrite(var3.payload, 0, 4);
                      } catch (IOException var6) {
                         try {
-                           class238.field3258.method2879();
+                           class238.field3258.close();
                         } catch (Exception var5) {
                            ;
                         }

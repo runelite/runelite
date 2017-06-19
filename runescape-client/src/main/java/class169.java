@@ -18,7 +18,7 @@ public class class169 {
             class238.field3258.queueForWrite(var1.payload, 0, 4);
          } catch (IOException var4) {
             try {
-               class238.field3258.method2879();
+               class238.field3258.close();
             } catch (Exception var3) {
                ;
             }

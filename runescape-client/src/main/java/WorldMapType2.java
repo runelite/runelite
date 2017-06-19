@@ -138,7 +138,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
          Client.isResized = false;
       }
 
-      if(class241.method4167() == 1) {
+      if(class241.getResizableValue() == 1) {
          class220.field2817.method795(765, 503);
       } else {
          class220.field2817.method795(7680, 2160);

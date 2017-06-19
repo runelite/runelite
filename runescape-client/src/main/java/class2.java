@@ -232,7 +232,7 @@ final class class2 implements class0 {
          class34.field501 = var0;
          class13.field289 = var1;
          class23.setGameState(25);
-         class158.method2877("Loading - please wait.", true);
+         class158.drawStatusBox("Loading - please wait.", true);
          int var3 = class19.baseX;
          int var4 = class21.baseY;
          class19.baseX = (var0 - 6) * 8;
@@ -312,8 +312,8 @@ final class class2 implements class0 {
             }
          }
 
-         if(Client.detinationX != 0) {
-            Client.detinationX -= var5;
+         if(Client.destinationX != 0) {
+            Client.destinationX -= var5;
             Client.destinationY -= var6;
          }
 

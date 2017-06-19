@@ -2,13 +2,12 @@ import java.io.DataInputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
+
+import net.runelite.mapping.*;
 
 @ObfuscatedName("ew")
-public class class154 implements Runnable {
+@Implements("Signlink")
+public class Signlink implements Runnable {
    @ObfuscatedName("p")
    public static String field2242;
    @ObfuscatedName("m")
@@ -153,16 +152,16 @@ public class class154 implements Runnable {
                var1.field2241 = InetAddress.getByName(var9).getHostName();
             }
 
-            var1.field2237 = 1;
+            var1.status = 1;
          } catch (ThreadDeath var5) {
             throw var5;
          } catch (Throwable var6) {
-            var1.field2237 = 2;
+            var1.status = 2;
          }
       }
    }
 
-   public class154() {
+   public Signlink() {
       this.field2246 = null;
       this.field2244 = null;
       this.field2247 = false;

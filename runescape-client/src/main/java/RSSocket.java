@@ -16,14 +16,16 @@ public final class RSSocket implements Runnable {
    @Export("inputStream")
    InputStream inputStream;
    @ObfuscatedName("z")
-   class153 field2279;
+   @Export("socketThread")
+   class153 socketThread;
    @ObfuscatedName("e")
    @Export("socket")
    Socket socket;
    @ObfuscatedName("t")
-   boolean field2281;
+   @Export("closed")
+   boolean closed;
    @ObfuscatedName("w")
-   class154 field2282;
+   Signlink field2282;
    @ObfuscatedName("m")
    @Export("outputStream")
    OutputStream outputStream;
@@ -42,41 +44,43 @@ public final class RSSocket implements Runnable {
    @Export("outbufLen")
    int outbufLen;
    @ObfuscatedName("c")
-   boolean field2287;
+   @Export("throwException")
+   boolean throwException;
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(B)V",
       garbageValue = "84"
    )
-   public void method2879() {
-      if(!this.field2281) {
+   @Export("close")
+   public void close() {
+      if(!this.closed) {
          synchronized(this) {
-            this.field2281 = true;
+            this.closed = true;
             this.notifyAll();
          }
 
-         if(this.field2279 != null) {
-            while(this.field2279.field2237 == 0) {
+         if(this.socketThread != null) {
+            while(this.socketThread.status == 0) {
                class172.method3014(1L);
             }
 
-            if(this.field2279.field2237 == 1) {
+            if(this.socketThread.status == 1) {
                try {
-                  ((Thread)this.field2279.field2241).join();
+                  ((Thread)this.socketThread.field2241).join();
                } catch (InterruptedException var3) {
                   ;
                }
             }
          }
 
-         this.field2279 = null;
+         this.socketThread = null;
       }
 
    }
 
    protected void finalize() {
-      this.method2879();
+      this.close();
    }
 
    @ObfuscatedName("m")
@@ -86,7 +90,7 @@ public final class RSSocket implements Runnable {
    )
    @Export("readByte")
    public int readByte() throws IOException {
-      return this.field2281?0:this.inputStream.read();
+      return this.closed ?0:this.inputStream.read();
    }
 
    @ObfuscatedName("e")
@@ -96,7 +100,7 @@ public final class RSSocket implements Runnable {
    )
    @Export("available")
    public int available() throws IOException {
-      return this.field2281?0:this.inputStream.available();
+      return this.closed ?0:this.inputStream.available();
    }
 
    @ObfuscatedName("t")
@@ -106,7 +110,7 @@ public final class RSSocket implements Runnable {
    )
    @Export("read")
    public void read(byte[] var1, int var2, int var3) throws IOException {
-      if(!this.field2281) {
+      if(!this.closed) {
          while(var3 > 0) {
             int var4 = this.inputStream.read(var1, var2, var3);
             if(var4 <= 0) {
@@ -120,11 +124,11 @@ public final class RSSocket implements Runnable {
 
    }
 
-   public RSSocket(Socket var1, class154 var2) throws IOException {
-      this.field2281 = false;
+   public RSSocket(Socket var1, Signlink var2) throws IOException {
+      this.closed = false;
       this.field2285 = 0;
       this.outbufLen = 0;
-      this.field2287 = false;
+      this.throwException = false;
       this.field2282 = var2;
       this.socket = var1;
       this.socket.setSoTimeout(30000);
@@ -143,7 +147,7 @@ public final class RSSocket implements Runnable {
                int var2;
                synchronized(this) {
                   if(this.field2285 == this.outbufLen) {
-                     if(this.field2281) {
+                     if(this.closed) {
                         break label84;
                      }
 
@@ -169,7 +173,7 @@ public final class RSSocket implements Runnable {
                try {
                   this.outputStream.write(this.outbuffer, var2, var1);
                } catch (IOException var8) {
-                  this.field2287 = true;
+                  this.throwException = true;
                }
 
                this.field2285 = (this.field2285 + var1) % 5000;
@@ -179,7 +183,7 @@ public final class RSSocket implements Runnable {
                      this.outputStream.flush();
                   }
                } catch (IOException var7) {
-                  this.field2287 = true;
+                  this.throwException = true;
                }
                continue;
             }
@@ -216,9 +220,9 @@ public final class RSSocket implements Runnable {
    )
    @Export("queueForWrite")
    public void queueForWrite(byte[] var1, int var2, int var3) throws IOException {
-      if(!this.field2281) {
-         if(this.field2287) {
-            this.field2287 = false;
+      if(!this.closed) {
+         if(this.throwException) {
+            this.throwException = false;
             throw new IOException();
          }
 
@@ -235,8 +239,8 @@ public final class RSSocket implements Runnable {
                }
             }
 
-            if(this.field2279 == null) {
-               this.field2279 = this.field2282.method2822(this, 3);
+            if(this.socketThread == null) {
+               this.socketThread = this.field2282.method2822(this, 3);
             }
 
             this.notifyAll();

@@ -254,7 +254,7 @@ public final class SceneTilePaint {
                            var10 = (int)class238.field3271.getValue();
                            if(class51.field668.field3215 != var10) {
                               try {
-                                 class238.field3258.method2879();
+                                 class238.field3258.close();
                               } catch (Exception var18) {
                                  ;
                               }
@@ -294,7 +294,7 @@ public final class SceneTilePaint {
             }
          } catch (IOException var19) {
             try {
-               class238.field3258.method2879();
+               class238.field3258.close();
             } catch (Exception var17) {
                ;
             }

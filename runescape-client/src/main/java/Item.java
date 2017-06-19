@@ -36,16 +36,17 @@ public final class Item extends Renderable {
       signature = "(LPacketBuffer;B)V",
       garbageValue = "74"
    )
-   static final void method1665(PacketBuffer var0) {
-      for(int var1 = 0; var1 < class96.field1493; ++var1) {
-         int var2 = class96.field1500[var1];
-         Player var3 = Client.cachedPlayers[var2];
-         int var4 = var0.readUnsignedByte();
-         if((var4 & 1) != 0) {
-            var4 += var0.readUnsignedByte() << 8;
+   @Export("updatePlayersFlag")
+   static final void updatePlayersFlag(PacketBuffer packetBuffer) {
+      for(int i = 0; i < class96.field1493; ++i) {
+         int playerIndex = class96.field1500[i];
+         Player player = Client.cachedPlayers[playerIndex];
+         int updateFlag = packetBuffer.readUnsignedByte();
+         if((updateFlag & 1) != 0) {
+            updateFlag += packetBuffer.readUnsignedByte() << 8;
          }
 
-         class41.method572(var0, var2, var3, var4);
+         class41.updatePlayerFlag(packetBuffer, playerIndex, player, updateFlag);
       }
 
    }
