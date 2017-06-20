@@ -56,6 +56,7 @@ public final class Client extends GameEngine {
       intValue = 201737365
    )
    @Export("gameState")
+   @Hook("gameStateChanged")
    static int gameState;
    @ObfuscatedName("cz")
    static class91 field910;

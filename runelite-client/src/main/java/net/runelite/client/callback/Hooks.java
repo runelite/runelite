@@ -33,6 +33,7 @@ import net.runelite.client.events.MapRegionChanged;
 import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionsChanged;
 import net.runelite.client.events.AnimationChanged;
+import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.game.DeathChecker;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.rs.api.MainBufferProvider;
@@ -116,6 +117,12 @@ public class Hooks
 				AnimationChanged animationChange = new AnimationChanged();
 				animationChange.setObject(object);
 				runelite.getEventBus().post(animationChange);
+				break;
+			}
+			case "gameStateChanged":
+			{
+				GameStateChanged gameStateChange = new GameStateChanged();
+				runelite.getEventBus().post(gameStateChange);
 				break;
 			}
 			default:
