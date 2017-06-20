@@ -27,9 +27,11 @@ package net.runelite.client.plugins.xpglobes;
 import com.google.common.eventbus.Subscribe;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;
+import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 
@@ -45,7 +47,7 @@ public class XpGlobes extends Plugin
 			.getConfig(XpGlobesConfig.class);
 	private final Overlay overlay = new XpGlobesOverlay(this);
 	private final Client client = RuneLite.getClient();
-	private final XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
+	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
 	private static final int SECONDS_TO_SHOW_GLOBE = 10;
 	private static final int MAXIMUM_SHOWN_GLOBES = 5;
@@ -79,6 +81,15 @@ public class XpGlobes extends Plugin
 		Skill skill = event.getSkill();
 		int currentXp = client.getSkillExperience(skill);
 		int currentLevel = Experience.getLevelForXp(currentXp);
+		int skillIdx = skill.ordinal();
+		XpGlobe cachedGlobe = globeCache[skillIdx];
+
+		// ExperienceChanged event occurs when stats drain/boost check we have an change to actual xp
+		if (cachedGlobe != null && (cachedGlobe.getCurrentXp() >= currentXp))
+		{
+			return;
+		}
+
 		int startingXp = 0;
 		if (currentLevel > 1)
 		{
@@ -86,8 +97,6 @@ public class XpGlobes extends Plugin
 		}
 		int goalXp = Experience.getXpForLevel(currentLevel + 1);
 
-		int skillIdx = skill.ordinal();
-		XpGlobe cachedGlobe = globeCache[skillIdx];
 		if (cachedGlobe != null)
 		{
 			cachedGlobe.setSkill(skill);
@@ -152,4 +161,23 @@ public class XpGlobes extends Plugin
 	{
 		return config;
 	}
+
+	public void resetGlobeState()
+	{
+		xpGlobes.clear();
+		globeCache = new XpGlobe[Skill.values().length - 1];
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case HOPPING:
+			case LOGGING_IN:
+				resetGlobeState();
+				break;
+		}
+	}
+
 }
