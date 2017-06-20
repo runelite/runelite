@@ -24,7 +24,19 @@
  */
 package net.runelite.client.events;
 
+import net.runelite.api.GameState;
+
 public class GameStateChanged
 {
+	private GameState gameState;
 
+	public void setGameState(GameState gameState)
+	{
+		this.gameState = gameState;
+	}
+
+	public GameState getGameState()
+	{
+		return gameState;
+	}
 }

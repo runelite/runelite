@@ -171,14 +171,11 @@ public class XpGlobes extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		GameState state = client.getGameState();
-		switch (state)
+		switch (event.getGameState())
 		{
 			case HOPPING:
 			case LOGGING_IN:
 				resetGlobeState();
-				break;
-			default:
 				break;
 		}
 	}

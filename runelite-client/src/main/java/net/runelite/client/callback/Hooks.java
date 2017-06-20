@@ -122,6 +122,7 @@ public class Hooks
 			case "gameStateChanged":
 			{
 				GameStateChanged gameStateChange = new GameStateChanged();
+				gameStateChange.setGameState(RuneLite.getClient().getGameState());
 				runelite.getEventBus().post(gameStateChange);
 				break;
 			}
