@@ -94,11 +94,11 @@ public class GroundItemsOverlay extends Overlay
 			return null;
 		}
 
-		Widget bank = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-		if (bank != null && !bank.isHidden())
-		{
-			return null;
-		}
+		//Widget bank = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		//if (bank != null && !bank.isHidden())
+		//{
+		//	return null;
+		//}
 
 		Region region = client.getRegion();
 		Tile[][][] tiles = region.getTiles();
