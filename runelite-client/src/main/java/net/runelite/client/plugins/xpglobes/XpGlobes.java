@@ -79,6 +79,15 @@ public class XpGlobes extends Plugin
 		Skill skill = event.getSkill();
 		int currentXp = client.getSkillExperience(skill);
 		int currentLevel = Experience.getLevelForXp(currentXp);
+		int skillIdx = skill.ordinal();
+		XpGlobe cachedGlobe = globeCache[skillIdx];
+
+		// ExperienceChanged event occurs when stats drain/boost check we have an change to actual xp
+		if (cachedGlobe != null && (cachedGlobe.getCurrentXp() >= currentXp))
+		{
+			return;
+		}
+
 		int startingXp = 0;
 		if (currentLevel > 1)
 		{
@@ -86,8 +95,6 @@ public class XpGlobes extends Plugin
 		}
 		int goalXp = Experience.getXpForLevel(currentLevel + 1);
 
-		int skillIdx = skill.ordinal();
-		XpGlobe cachedGlobe = globeCache[skillIdx];
 		if (cachedGlobe != null)
 		{
 			cachedGlobe.setSkill(skill);
