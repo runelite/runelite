@@ -73,6 +73,8 @@ public class GroundItemsOverlay extends Overlay
 	// Threshold for highlighting items as pink.
 	private static final int INSANE_VALUE = 10_000_000;
 	private static final Color FADED_PINK = new Color(255, 102, 178);
+	// Used when getting High Alchemy value - multiplied by general store price.
+	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
 	private final Client client = RuneLite.getClient();
 	private final GroundItemsConfig config;
@@ -191,7 +193,7 @@ public class GroundItemsOverlay extends Overlay
 
 					Color textColor = Color.WHITE; // Color to use when drawing the ground item
 					ItemPrice itemPrice = itemManager.get(itemId);
-					if (itemPrice != null)
+					if (itemPrice != null && config.showGEPrice())
 					{
 						int cost = itemPrice.getPrice() * quantity;
 						// set the color according to rarity, if possible
@@ -214,6 +216,13 @@ public class GroundItemsOverlay extends Overlay
 
 						itemStringBuilder.append(" (EX: ")
 							.append(ItemManager.quantityToStackSize(cost))
+							.append(" gp)");
+					}
+
+					if (config.showHAValue())
+					{
+						itemStringBuilder.append(" (HA: ")
+							.append(Math.round(item.getPrice() * HIGH_ALCHEMY_CONSTANT))
 							.append(" gp)");
 					}
 
