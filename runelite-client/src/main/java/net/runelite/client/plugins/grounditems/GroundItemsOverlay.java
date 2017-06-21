@@ -183,6 +183,12 @@ public class GroundItemsOverlay extends Overlay
 						}
 					}
 
+					// sets item ID to unnoted version, if noted
+					if (item.getNote() != -1)
+					{
+						itemId = item.getLinkedNoteId();
+					}
+
 					Color textColor = Color.WHITE; // Color to use when drawing the ground item
 					ItemPrice itemPrice = itemManager.get(itemId);
 					if (itemPrice != null)
