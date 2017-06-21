@@ -27,11 +27,61 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
+/**
+ * ItemComposition is an interface that represents the various properties
+ * of an item. Imports several values from rs-client/ItemComposition,
+ * and allows direct access to them by calling these methods.
+ */
 public interface ItemComposition
 {
+	/**
+	 * Returns the item's name as a string.
+	 * @return the name of the item
+	 */
 	@Import("name")
 	String getName();
 
+	/**
+	 * Returns the item's ID. A list of item IDs can be
+	 * found in net.runelite.api.ItemID.
+	 * @return the item's ID as an integer
+	 */
+	@Import("id")
+	int getId();
+
+	/**
+	 * Returns a result that depends on whether the item
+	 * is in noted form or not.
+	 * @return 799 if noted, -1 if unnoted
+	 */
+	@Import("notedTemplate")
+	int getNote();
+
+	/**
+	 * Returns the item ID of the noted/unnoted counterpart.
+	 * For example, if you call this on an unnoted monkfish(ID 7946),
+	 * this method will return the ID of a noted monkfish(ID 7947),
+	 * and vice versa.
+	 * @return the ID that is linked to this item in noted/unnoted form.
+	 */
+	@Import("note")
+	int getLinkedNoteId();
+
+	/**
+	 * Returns the store price of the item. Even if the item cannot
+	 * be found in a store, all items have a store price from which the
+	 * High and Low Alchemy values are calculated. Multiply the price by
+	 * 0.6 to get the High Alchemy value, or 0.4 to get the Low Alchemy
+	 * value.
+	 * @return the general store value of the item
+	 */
+	@Import("price")
+	int getPrice();
+
+	/**
+	 * Returns whether or not the item is members-only.
+	 * @return true if members-only, false otherwise.
+	 */
 	@Import("isMembers")
 	boolean isMembers();
 
