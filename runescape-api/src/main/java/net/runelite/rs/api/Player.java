@@ -35,7 +35,7 @@ public interface Player extends Actor
 	@Import("name")
 	String getName();
 
-	@Import("model")
+	@Import("getModel")
 	Model getModel();
 
 	@Import("combatLevel")

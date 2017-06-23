@@ -155,6 +155,11 @@ public abstract class Actor extends Renderable
 		return actor.getY();
 	}
 
+	public int getOrientation()
+	{
+		return actor.getOrientation();
+	}
+
 	public int getAnimation()
 	{
 		return actor.getAnimation();

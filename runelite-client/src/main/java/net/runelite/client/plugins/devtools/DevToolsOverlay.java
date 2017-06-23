@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -35,7 +34,6 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 
 import java.awt.geom.Rectangle2D;
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
@@ -46,10 +44,8 @@ import net.runelite.api.ItemLayer;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
-import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -147,6 +143,7 @@ public class DevToolsOverlay extends Overlay
 
 		String text = local.getName() + " (A: " + local.getAnimation() + ") (G: " + local.getGraphic() + ")";
 		OverlayUtil.renderActorOverlay(graphics, local, text, CYAN);
+		renderPlayerWireframe(graphics, local, CYAN);
 	}
 
 	private void renderNpcs(Graphics2D graphics)
@@ -368,8 +365,8 @@ public class DevToolsOverlay extends Overlay
 
 		Widget childComponent = widgetChild.getChild(itemIndex);
 		if (childComponent != null && !childComponent.isHidden()
-				&& childComponent.getItemId() != ITEM_EMPTY
-				&& childComponent.getItemId() != ITEM_FILLED)
+			&& childComponent.getItemId() != ITEM_EMPTY
+			&& childComponent.getItemId() != ITEM_FILLED)
 		{
 			Rectangle componentBounds = childComponent.getBounds();
 
@@ -411,6 +408,23 @@ public class DevToolsOverlay extends Overlay
 		graphics.drawString(text, textX + 1, textY + 1);
 		graphics.setColor(color);
 		graphics.drawString(text, textX, textY);
+	}
+
+	private void renderPlayerWireframe(Graphics2D graphics, Player player, Color color)
+	{
+		Polygon[] polys = player.getPolygons();
+
+		if (polys == null)
+		{
+			return;
+		}
+
+		graphics.setColor(color);
+
+		for (Polygon p : polys)
+		{
+			graphics.drawPolygon(p);
+		}
 	}
 
 }
