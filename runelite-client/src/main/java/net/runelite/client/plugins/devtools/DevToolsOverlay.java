@@ -365,8 +365,8 @@ public class DevToolsOverlay extends Overlay
 
 		Widget childComponent = widgetChild.getChild(itemIndex);
 		if (childComponent != null && !childComponent.isHidden()
-				&& childComponent.getItemId() != ITEM_EMPTY
-				&& childComponent.getItemId() != ITEM_FILLED)
+			&& childComponent.getItemId() != ITEM_EMPTY
+			&& childComponent.getItemId() != ITEM_FILLED)
 		{
 			Rectangle componentBounds = childComponent.getBounds();
 
@@ -419,12 +419,12 @@ public class DevToolsOverlay extends Overlay
 			return;
 		}
 
+		graphics.setColor(color);
+
 		for (Polygon p : polys)
 		{
-			graphics.setColor(color);
 			graphics.drawPolygon(p);
 		}
 	}
-
 
 }

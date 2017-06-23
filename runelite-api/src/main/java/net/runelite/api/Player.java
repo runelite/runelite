@@ -31,8 +31,8 @@ import net.runelite.rs.api.Model;
 
 public class Player extends Actor
 {
-	private Client client;
-	private net.runelite.rs.api.Player player;
+	private final Client client;
+	private final net.runelite.rs.api.Player player;
 
 	public Player(Client client, net.runelite.rs.api.Player player)
 	{
@@ -98,11 +98,13 @@ public class Player extends Actor
 			Point y = Perspective.worldToCanvas(client, localX - verticesX[trianglesY[i]], localY - verticesZ[trianglesY[i]], -verticesY[trianglesY[i]]);
 			Point z = Perspective.worldToCanvas(client, localX - verticesX[trianglesZ[i]], localY - verticesZ[trianglesZ[i]], -verticesY[trianglesZ[i]]);
 
-			int xx[] = {
-					x.getX(), y.getX(), z.getX()
+			int xx[] =
+			{
+				x.getX(), y.getX(), z.getX()
 			};
-			int yy[] = {
-					x.getY(), y.getY(), z.getY()
+			int yy[] =
+			{
+				x.getY(), y.getY(), z.getY()
 			};
 			polys.add(new Polygon(xx, yy, 3));
 		}
