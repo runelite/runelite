@@ -40,9 +40,28 @@ public interface GroundItemsConfig
 		name = "Enabled",
 		description = "Configures whether or not item names/quantities are displayed"
 	)
-
 	default boolean enabled()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showGEPrice",
+		name = "Show Grand Exchange Prices",
+		description = "Configures whether or not to draw GE prices alongside ground items"
+	)
+	default boolean showGEPrice()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showHAValue",
+		name = "Show High Alchemy Values",
+		description = "Configure whether or not to draw High Alchemy values alongside ground items"
+	)
+	default boolean showHAValue()
+	{
+		return false;
 	}
 }
