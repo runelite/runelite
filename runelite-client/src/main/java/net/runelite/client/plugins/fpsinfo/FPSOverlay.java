@@ -68,7 +68,7 @@ public class FPSOverlay extends Overlay
 		FontMetrics fm = graphics.getFontMetrics();
 		String str = String.valueOf(client.getFPS());
 
-		Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_XP_ORG);
+		Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_XP_ORB);
 		if (xpOrb == null)
 		{
 			return null;

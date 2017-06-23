@@ -96,6 +96,12 @@ public class GroundItemsOverlay extends Overlay
 			return null;
 		}
 
+		//if the player is logged in but viewing the click to play screen exit
+		if (client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		{
+			return null;
+		}
+
 		//Widget bank = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 		//if (bank != null && !bank.isHidden())
 		//{
