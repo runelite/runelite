@@ -223,6 +223,7 @@ public final class Player extends Actor {
       signature = "(I)LModel;",
       garbageValue = "-2066149273"
    )
+   @Export("getModel")
    protected final Model getModel() {
       if(this.composition == null) {
          return null;

@@ -24,6 +24,11 @@
  */
 package net.runelite.api;
 
+import java.awt.Polygon;
+import java.util.ArrayList;
+import java.util.List;
+import net.runelite.rs.api.Model;
+
 public class Player extends Actor
 {
 	private Client client;
@@ -52,5 +57,71 @@ public class Player extends Actor
 	public PlayerComposition getPlayerComposition()
 	{
 		return new PlayerComposition(player.getComposition());
+	}
+
+	public Model getModel()
+	{
+		return player.getModel();
+	}
+
+	public Polygon[] getPolygons()
+	{
+		List<Polygon> polys = new ArrayList<>();
+		Model model = getModel();
+		int localX = player.getX();
+		int localY = player.getY();
+
+		// models are orientated north (1024) and there are 2048 angles total
+		int orientation = (player.getOrientation() + 1024) % 2048;
+
+		if (model == null)
+		{
+			return null;
+		}
+
+		int[] verticesX = model.getVerticesX().clone();
+		int[] verticesY = model.getVerticesY();
+		int[] verticesZ = model.getVerticesZ().clone();
+
+		int[] trianglesX = model.getTrianglesX();
+		int[] trianglesY = model.getTrianglesY();
+		int[] trianglesZ = model.getTrianglesZ();
+
+		if (orientation != 0)
+		{
+			setOrientation(model, orientation, verticesX, verticesZ);
+		}
+
+		for (int i = 0; i < trianglesX.length; i++)
+		{
+			Point x = Perspective.worldToCanvas(client, localX - verticesX[trianglesX[i]], localY - verticesZ[trianglesX[i]], -verticesY[trianglesX[i]]);
+			Point y = Perspective.worldToCanvas(client, localX - verticesX[trianglesY[i]], localY - verticesZ[trianglesY[i]], -verticesY[trianglesY[i]]);
+			Point z = Perspective.worldToCanvas(client, localX - verticesX[trianglesZ[i]], localY - verticesZ[trianglesZ[i]], -verticesY[trianglesZ[i]]);
+
+			int xx[] = {
+					x.getX(), y.getX(), z.getX()
+			};
+			int yy[] = {
+					x.getY(), y.getY(), z.getY()
+			};
+			polys.add(new Polygon(xx, yy, 3));
+		}
+
+		return polys.toArray(new Polygon[polys.size()]);
+	}
+
+	private void setOrientation(Model model, int orientation, int[] verticesX, int[] verticesZ)
+	{
+		int sin = Perspective.SINE[orientation];
+		int cos = Perspective.COSINE[orientation];
+
+		int[] originalX = model.getVerticesX();
+		int[] originalZ = model.getVerticesZ();
+
+		for (int i = 0; i < originalX.length; ++i)
+		{
+			verticesX[i] = originalX[i] * cos + originalZ[i] * sin >> 16;
+			verticesZ[i] = originalZ[i] * cos - originalX[i] * sin >> 16;
+		}
 	}
 }
