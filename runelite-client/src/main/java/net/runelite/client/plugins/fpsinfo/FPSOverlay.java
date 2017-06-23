@@ -75,6 +75,10 @@ public class FPSOverlay extends Overlay
 		}
 
 		Rectangle2D bounds = xpOrb.getBounds().getBounds2D();
+		if (bounds.getX() <= 0)
+		{
+			return null;
+		}
 
 		int x = (int) (bounds.getX() + ((bounds.getWidth() / 2) - (fm.stringWidth(str) / 2)));
 		int y = (int) (bounds.getY() - (fm.getHeight() / 2));
