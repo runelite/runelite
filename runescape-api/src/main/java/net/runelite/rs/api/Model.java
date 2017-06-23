@@ -25,6 +25,25 @@
 
 package net.runelite.rs.api;
 
+import net.runelite.mapping.Import;
+
 public interface Model
 {
+	@Import("verticesX")
+	int[] getVerticesX();
+
+	@Import("verticesY")
+	int[] getVerticesY();
+
+	@Import("verticesZ")
+	int[] getVerticesZ();
+
+	@Import("indices1")
+	int[] getTrianglesX();
+
+	@Import("indices2")
+	int[] getTrianglesY();
+
+	@Import("indices3")
+	int[] getTrianglesZ();
 }
