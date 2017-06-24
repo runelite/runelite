@@ -84,20 +84,20 @@ public class XpGlobesOverlay extends Overlay
 			return null;
 		}
 
+		//check the width of the client if we can draw properly
+		int clientWidth = client.isResized() ? client.getClientWidth() : client.getViewportHeight();
+		if (clientWidth <= 0)
+		{
+			return null;
+		}
+
 		int queueSize = plugin.getXpGlobesSize();
 		if (queueSize > 0)
 		{
 			List<XpGlobe> xpChangedQueue = plugin.getXpGlobes();
 			int markersLength = (queueSize * (DEFAULT_CIRCLE_WIDTH)) + ((MINIMUM_STEP_WIDTH - DEFAULT_CIRCLE_WIDTH) * (queueSize - 1));
-			int startDrawX;
-			if (client.isResized())
-			{
-				startDrawX = (client.getClientWidth() - markersLength) / 2;
-			}
-			else
-			{
-				startDrawX = (client.getViewportHeight() - markersLength) / 2;
-			}
+			int startDrawX = (clientWidth - markersLength) / 2;
+
 			for (XpGlobe xpGlobe : xpChangedQueue)
 			{
 				renderProgressCircle(graphics, xpGlobe, startDrawX, DEFAULT_START_Y);

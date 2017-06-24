@@ -38,13 +38,12 @@ public class XpGlobe
 	private Instant time;
 	private double skillProgressRadius;
 
-	public XpGlobe(Skill skill, int currentXp, int currentLevel, int goalXp, Instant time)
+	public XpGlobe(Skill skill, int currentXp, int currentLevel, int goalXp)
 	{
 		this.skill = skill;
 		this.currentXp = currentXp;
 		this.currentLevel = currentLevel;
 		this.goalXp = goalXp;
-		this.time = time;
 	}
 
 	public Skill getSkill()
