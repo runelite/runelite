@@ -105,13 +105,14 @@ public class XpGlobes extends Plugin
 			cachedGlobe.setGoalXp(goalXp);
 			cachedGlobe.setTime(Instant.now());
 			cachedGlobe.setSkillProgressRadius(startingXp, currentXp, goalXp);
+
+			this.addXpGlobe(globeCache[skillIdx], MAXIMUM_SHOWN_GLOBES);
 		}
 		else
 		{
-			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, goalXp, Instant.now());
+			//dont draw non cached globes, this is triggered on login to setup all of the initial values
+			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, goalXp);
 		}
-
-		this.addXpGlobe(globeCache[skillIdx], MAXIMUM_SHOWN_GLOBES);
 	}
 
 	public List<XpGlobe> getXpGlobes()

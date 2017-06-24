@@ -49,7 +49,9 @@ public enum WidgetInfo
 
 	BANK_ITEM_CONTAINER(WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER),
 
-	MINIMAP_XP_ORG(WidgetID.MINIMAP_GROUP_ID, WidgetID.Minimap.XP_ORB);
+	MINIMAP_XP_ORB(WidgetID.MINIMAP_GROUP_ID, WidgetID.Minimap.XP_ORB),
+
+	LOGIN_CLICK_TO_PLAY_SCREEN(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 0);
 
 
 	private final int groupId;

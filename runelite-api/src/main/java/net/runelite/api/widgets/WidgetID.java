@@ -31,6 +31,7 @@ class WidgetID
 	static final int PESTRCONTROL_GROUP_ID = 408;
 	static final int CLAN_CHAT_GROUP_ID = 7;
 	static final int MINIMAP_GROUP_ID = 160;
+	static final int LOGIN_CLICK_TO_PLAY_GROUP_ID = 378;
 
 	static class PestControl
 	{
