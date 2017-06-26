@@ -365,6 +365,10 @@ public class ConfigManager
 		{
 			return Boolean.parseBoolean(str);
 		}
+		if (type == int.class)
+		{
+			return Integer.parseInt(str);
+		}
 		return str;
 	}
 }
