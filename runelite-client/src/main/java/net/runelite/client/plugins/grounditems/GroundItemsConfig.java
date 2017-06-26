@@ -58,10 +58,30 @@ public interface GroundItemsConfig
 	@ConfigItem(
 		keyName = "showHAValue",
 		name = "Show High Alchemy Values",
-		description = "Configure whether or not to draw High Alchemy values alongside ground items"
+		description = "Configures whether or not to draw High Alchemy values alongside ground items"
 	)
 	default boolean showHAValue()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hiddenItems",
+		name = "Hidden Items",
+		description = "Configures hidden ground items. Format: (item), (item)"
+	)
+	default String getHiddenItems()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "highlightedItems",
+		name = "Highlighted Items",
+		description = "Configures specifically highlighted ground items. Format: (item), (item)"
+	)
+	default String getHighlightItems()
+	{
+		return "";
 	}
 }

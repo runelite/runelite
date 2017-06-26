@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
@@ -73,8 +74,12 @@ public class GroundItemsOverlay extends Overlay
 	// Threshold for highlighting items as pink.
 	private static final int INSANE_VALUE = 10_000_000;
 	private static final Color FADED_PINK = new Color(255, 102, 178);
+	// Color to use if an item is highlighted in the config.
+	private static final Color PURPLE = new Color(170, 0, 255);
 	// Used when getting High Alchemy value - multiplied by general store price.
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+	// Regex for splitting the hidden items in the config.
+	private static final String DELIMITER_REGEX = "\\s*,\\s*";
 
 	private final Client client = RuneLite.getClient();
 	private final GroundItemsConfig config;
@@ -107,6 +112,13 @@ public class GroundItemsOverlay extends Overlay
 		//{
 		//	return null;
 		//}
+
+		// gets the hidden/highlighted items from the text box in the config
+		String configItems = config.getHiddenItems();
+		List<String> hiddenItems = Arrays.asList(configItems.split(DELIMITER_REGEX));
+		// note: both of these lists are immutable
+		configItems = config.getHighlightItems();
+		List<String> highlightedItems = Arrays.asList(configItems.split(DELIMITER_REGEX));
 
 		Region region = client.getRegion();
 		Tile[][][] tiles = region.getTiles();
@@ -178,6 +190,11 @@ public class GroundItemsOverlay extends Overlay
 						continue;
 					}
 
+					if (hiddenItems.contains(item.getName()))
+					{
+						continue;
+					}
+
 					itemStringBuilder.append(item.getName());
 					if (quantity > 1)
 					{
@@ -230,6 +247,11 @@ public class GroundItemsOverlay extends Overlay
 						itemStringBuilder.append(" (HA: ")
 							.append(Math.round(item.getPrice() * HIGH_ALCHEMY_CONSTANT))
 							.append(" gp)");
+					}
+
+					if (highlightedItems.contains(item.getName()))
+					{
+						textColor = PURPLE;
 					}
 
 					String itemString = itemStringBuilder.toString();
