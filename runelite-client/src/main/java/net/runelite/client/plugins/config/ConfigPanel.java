@@ -25,26 +25,35 @@
 package net.runelite.client.plugins.config;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.swing.*;
 
+import javax.swing.border.EmptyBorder;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.PluginPanel;
-import static net.runelite.client.ui.PluginPanel.PANEL_HEIGHT;
-import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ConfigPanel extends PluginPanel
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigPanel.class);
+
+	private static final EmptyBorder BORDER_PADDING = new EmptyBorder(6, 6, 6, 6);
+	private static final int TEXT_FIELD_WIDTH = 12;
+	private static final int SPINNER_FIELD_WIDTH = 10;
 
 	private final RuneLite runelite = RuneLite.getRunelite();
 
@@ -86,8 +95,9 @@ public class ConfigPanel extends PluginPanel
 	private JComponent createConfigPanel()
 	{
 		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(new JLabel("Plugin configuration"), BorderLayout.NORTH);
+		panel.setBorder(BORDER_PADDING);
+		panel.setLayout(new GridLayout(0, 1, 0, 3));
+		panel.add(new JLabel("Plugin Configuration", SwingConstants.CENTER));
 
 		ConfigManager configManager = runelite.getConfigManager();
 		Collection<ConfigDescriptor> config = getConfig();
@@ -97,7 +107,7 @@ public class ConfigPanel extends PluginPanel
 			groupPanel.setLayout(new BorderLayout());
 			JButton viewGroupItemsButton = new JButton(cd.getGroup().name());
 			viewGroupItemsButton.addActionListener(ae -> openGroupConfigPanel(cd, configManager));
-			groupPanel.add(viewGroupItemsButton, BorderLayout.NORTH);
+			groupPanel.add(viewGroupItemsButton);
 			panel.add(groupPanel);
 		}
 
@@ -108,31 +118,83 @@ public class ConfigPanel extends PluginPanel
 		return scrollPane;
 	}
 
-	private void changeConfiguration(ActionEvent ae, JCheckBox checkbox, ConfigDescriptor cd, ConfigItemDescriptor cid)
+	private void changeConfiguration(JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
 		ConfigManager configManager = runelite.getConfigManager();
-		configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected());
+		if (component instanceof JCheckBox)
+		{
+			JCheckBox checkbox = (JCheckBox) component;
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected());
+		}
+
+		if (component instanceof JSpinner)
+		{
+			JSpinner spinner = (JSpinner) component;
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + spinner.getValue());
+		}
+
+		if (component instanceof JTextField)
+		{
+			JTextField textField = (JTextField) component;
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), textField.getText());
+		}
 	}
 
 	private void openGroupConfigPanel(ConfigDescriptor cd, ConfigManager configManager)
 	{
 		JPanel itemPanel = new JPanel();
-		itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.Y_AXIS));
-		itemPanel.add(new JLabel(cd.getGroup().name() + " Configuration"), BorderLayout.NORTH);
+		itemPanel.setBorder(BORDER_PADDING);
+		itemPanel.setLayout(new GridLayout(0, 1, 0, 6));
+		itemPanel.add(new JLabel(cd.getGroup().name() + " Configuration", SwingConstants.CENTER));
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
 			JPanel item = new JPanel();
-			item.setLayout(new BoxLayout(item, BoxLayout.X_AXIS));
-			item.add(new JLabel(cid.getItem().name()));
+			item.setLayout(new BorderLayout());
+			item.add(new JLabel(cid.getItem().name()), BorderLayout.CENTER);
 
 			if (cid.getType() == boolean.class)
 			{
 				JCheckBox checkbox = new JCheckBox();
 				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
-				checkbox.addActionListener(ae -> changeConfiguration(ae, checkbox, cd, cid));
+				checkbox.addActionListener(ae -> changeConfiguration(checkbox, cd, cid));
 
-				item.add(checkbox);
+				item.add(checkbox, BorderLayout.EAST);
+			}
+
+			if (cid.getType() == int.class)
+			{
+				int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
+
+				SpinnerModel model = new SpinnerNumberModel(value, 0, Integer.MAX_VALUE, 1);
+				JSpinner spinner = new JSpinner(model);
+				Component editor = spinner.getEditor();
+				JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
+				spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
+				spinner.addChangeListener(ce -> changeConfiguration(spinner, cd, cid));
+
+				item.add(spinner, BorderLayout.EAST);
+			}
+
+			if (cid.getType() == String.class)
+			{
+				JTextField textField = new JTextField("", TEXT_FIELD_WIDTH);
+				textField.setText(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
+				textField.addFocusListener(new FocusListener()
+				{
+					@Override
+					public void focusGained(FocusEvent e)
+					{
+					}
+
+					@Override
+					public void focusLost(FocusEvent e)
+					{
+						changeConfiguration(textField, cd, cid);
+					}
+				});
+
+				item.add(textField, BorderLayout.EAST);
 			}
 
 			itemPanel.add(item);
@@ -140,7 +202,7 @@ public class ConfigPanel extends PluginPanel
 
 		JButton backButton = new JButton("Back");
 		backButton.addActionListener(this::getBackButtonListener);
-		itemPanel.add(backButton, BorderLayout.NORTH);
+		itemPanel.add(backButton);
 
 		removeAll();
 		updateUI();
@@ -154,4 +216,5 @@ public class ConfigPanel extends PluginPanel
 
 		add(scrollPane, BorderLayout.NORTH);
 	}
+
 }
