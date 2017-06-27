@@ -161,15 +161,20 @@ public class GroundItemsOverlay extends Overlay
 					Item item = (Item) current;
 					int itemId = item.getId();
 					int itemQuantity = item.getQuantity();
+					// Item does not support getting the name, so we need to get the ItemComposition instead
+					ItemComposition itemDefinition = client.getItemDefinition(itemId);
 
 					Integer currentQuantity = items.get(itemId);
-					if (currentQuantity == null)
+					if (!hiddenItems.contains(itemDefinition.getName()))
 					{
-						items.put(itemId, itemQuantity);
-					}
-					else
-					{
-						items.put(itemId, currentQuantity + itemQuantity);
+						if (currentQuantity == null)
+						{
+							items.put(itemId, itemQuantity);
+						}
+						else
+						{
+							items.put(itemId, currentQuantity + itemQuantity);
+						}
 					}
 
 					current = current.getNext();
@@ -186,11 +191,6 @@ public class GroundItemsOverlay extends Overlay
 					ItemComposition item = client.getItemDefinition(itemId);
 
 					if (item == null)
-					{
-						continue;
-					}
-
-					if (hiddenItems.contains(item.getName()))
 					{
 						continue;
 					}
