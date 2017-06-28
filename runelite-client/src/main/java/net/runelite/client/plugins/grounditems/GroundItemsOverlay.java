@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -34,6 +37,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
@@ -43,7 +47,6 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
-import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ItemManager;
 import net.runelite.client.RuneLite;
@@ -85,6 +88,17 @@ public class GroundItemsOverlay extends Overlay
 	private final GroundItemsConfig config;
 	private final ItemManager itemManager = RuneLite.getRunelite().getItemManager();
 	private final StringBuilder itemStringBuilder = new StringBuilder();
+	private final LoadingCache<Integer, ItemComposition> itemCache = CacheBuilder.newBuilder()
+		.maximumSize(1024L)
+		.expireAfterAccess(1, TimeUnit.MINUTES)
+		.build(new CacheLoader<Integer, ItemComposition>()
+		{
+			@Override
+			public ItemComposition load(Integer key) throws Exception
+			{
+				return client.getItemDefinition(key);
+			}
+		});
 
 	public GroundItemsOverlay(GroundItems plugin)
 	{
@@ -161,8 +175,7 @@ public class GroundItemsOverlay extends Overlay
 					Item item = (Item) current;
 					int itemId = item.getId();
 					int itemQuantity = item.getQuantity();
-					// Item does not support getting the name, so we need to get the ItemComposition instead
-					ItemComposition itemDefinition = client.getItemDefinition(itemId);
+					ItemComposition itemDefinition = itemCache.getUnchecked(itemId);
 
 					Integer currentQuantity = items.get(itemId);
 					if (!hiddenItems.contains(itemDefinition.getName()))
@@ -188,7 +201,7 @@ public class GroundItemsOverlay extends Overlay
 				{
 					int itemId = itemIds.get(i);
 					int quantity = items.get(itemId);
-					ItemComposition item = client.getItemDefinition(itemId);
+					ItemComposition item = itemCache.getUnchecked(itemId);
 
 					if (item == null)
 					{
