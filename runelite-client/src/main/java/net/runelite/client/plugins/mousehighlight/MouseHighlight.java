@@ -24,12 +24,16 @@
  */
 package net.runelite.client.plugins.mousehighlight;
 
+import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.boosts.BoostsConfig;
 import net.runelite.client.ui.overlay.Overlay;
 
 public class MouseHighlight extends Plugin
 {
-	private final Overlay overlay = new MouseHighlightOverlay();
+	private final MouseHighlightConfig config = RuneLite.getRunelite().getConfigManager().getConfig(MouseHighlightConfig.class);
+	private final Overlay overlay = new MouseHighlightOverlay(this);
+
 
 	@Override
 	public Overlay getOverlay()
@@ -47,5 +51,9 @@ public class MouseHighlight extends Plugin
 	protected void shutDown() throws Exception
 	{
 
+	}
+	public MouseHighlightConfig getConfig()
+	{
+		return config;
 	}
 }
