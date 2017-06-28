@@ -25,42 +25,50 @@
 
 package net.runelite.api;
 
+import java.awt.Color;
+
 public enum Skill
 {
-	ATTACK("Attack"),
-	DEFENCE("Defence"),
-	STRENGTH("Strength"),
-	HITPOINTS("Hitpoints"),
-	RANGED("Ranged"),
-	PRAYER("Prayer"),
-	MAGIC("Magic"),
-	COOKING("Cooking"),
-	WOODCUTTING("Woodcutting"),
-	FLETCHING("Fletching"),
-	FISHING("Fishing"),
-	FIREMAKING("Firemaking"),
-	CRAFTING("Crafting"),
-	SMITHING("Smithing"),
-	MINING("Mining"),
-	HERBLORE("Herblore"),
-	AGILITY("Agility"),
-	THIEVING("Thieving"),
-	SLAYER("Slayer"),
-	FARMING("Farming"),
-	RUNECRAFT("Runecraft"),
-	HUNTER("Hunter"),
-	CONSTRUCTION("Construction"),
-	OVERALL("Overall");
+	ATTACK("Attack", new Color(187, 140, 22)),
+	DEFENCE("Defence", new Color(157, 144, 123)),
+	STRENGTH("Strength", new Color(165, 146, 112)),
+	HITPOINTS("Hitpoints", new Color(146, 29, 18)),
+	RANGED("Ranged", new Color(90, 113, 28)),
+	PRAYER("Prayer", new Color(190, 181, 182)),
+	MAGIC("Magic", new Color(9, 13, 101)),
+	COOKING("Cooking", new Color(87, 35, 103)),
+	WOODCUTTING("Woodcutting", new Color(129, 105, 59)),
+	FLETCHING("Fletching", new Color(8, 76, 78)),
+	FISHING("Fishing", new Color(100, 126, 149)),
+	FIREMAKING("Firemaking", new Color(172, 93, 20)),
+	CRAFTING("Crafting", new Color(114, 86, 64)),
+	SMITHING("Smithing", new Color(69, 69, 55)),
+	MINING("Mining", new Color(70, 70, 57)),
+	HERBLORE("Herblore", new Color(10, 86, 10)),
+	AGILITY("Agility", new Color(32, 33, 92)),
+	THIEVING("Thieving", new Color(110, 61, 93)),
+	SLAYER("Slayer", new Color(174, 168, 163)),
+	FARMING("Farming", new Color(34, 77, 37)),
+	RUNECRAFT("Runecraft", new Color(207, 134, 54)),
+	HUNTER("Hunter", new Color(93, 88, 62)),
+	CONSTRUCTION("Construction", new Color(133, 124, 106)),
+	OVERALL("Overall", new Color(133, 41, 33));
 
 	private final String name;
-
-	Skill(String name)
+	private final Color color;
+	Skill(String name, Color color)
 	{
 		this.name = name;
+		this.color = color;
 	}
 
 	public String getName()
 	{
 		return name;
+	}
+
+	public Color getColor()
+	{
+		return color;
 	}
 }

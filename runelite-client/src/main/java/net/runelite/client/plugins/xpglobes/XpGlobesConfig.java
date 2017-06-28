@@ -43,4 +43,14 @@ public interface XpGlobesConfig
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "useSkillColors",
+			name = "Use skill colors",
+			description = "Configures the progress color"
+	)
+	default boolean useSkillColors()
+	{
+		return true;
+	}
 }

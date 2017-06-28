@@ -130,7 +130,7 @@ public class XpGlobesOverlay extends Overlay
 			DEFAULT_CIRCLE_WIDTH, DEFAULT_CIRCLE_HEIGHT,
 			PROGRESS_RADIUS_START, radiusCurrentXp,
 			2,
-			DEFAULT_PROGRESS_ARC_COLOR);
+			config.useSkillColors() ? skillToDraw.getSkill().getColor() : DEFAULT_PROGRESS_ARC_COLOR);
 
 		drawSkillImage(graphics, skillToDraw, x, y);
 	}
