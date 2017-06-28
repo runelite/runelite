@@ -25,14 +25,14 @@
 package net.runelite.client.plugins.idlenotifier;
 
 import com.google.common.eventbus.Subscribe;
+
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
 import static net.runelite.api.AnimationID.*;
+
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
@@ -41,28 +41,23 @@ import net.runelite.client.plugins.Plugin;
 
 public class IdleNotifier extends Plugin
 {
-	private static final String OPERATING_SYSTEM = System.getProperty("os.name");
-	private static final int CHECK_INTERVAL = 2;
-	private static final Duration WAIT_DURATION = Duration.ofMillis(2500L);
+	private static final boolean OS_IS_WINDOWS = System.getProperty("os.name").startsWith("Windows");
+	private static final long WAIT_DURATION = 2500;
 
 	private final Client client = RuneLite.getClient();
 	private final TrayIcon trayIcon = RuneLite.getTrayIcon();
 
-	private ScheduledFuture<?> future;
-	private Instant lastAnimating;
-	private boolean notifyIdle = false;
+	private boolean idling = true;
+	private ScheduledFuture future;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
-		future = executor.scheduleAtFixedRate(this::checkIdle, CHECK_INTERVAL, CHECK_INTERVAL, TimeUnit.SECONDS);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		future.cancel(true);
 	}
 
 	@Subscribe
@@ -140,26 +135,31 @@ public class IdleNotifier extends Plugin
 			case HERBLORE_POTIONMAKING:
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:
-				notifyIdle = true;
-				lastAnimating = Instant.now();
+				idling = false;
+				if (future != null && !future.isCancelled())
+				{
+					future.cancel(true);
+				}
+				break;
+			case IDLE:
+				if (!idling)
+				{
+					idling = true;
+					future = RuneLite.getRunelite().getExecutor().schedule(this::notifyIdle, WAIT_DURATION, TimeUnit.MILLISECONDS);
+				}
 				break;
 		}
 	}
 
-	private void checkIdle()
+	private void notifyIdle()
 	{
-		if (notifyIdle && client.getLocalPlayer().getAnimation() == IDLE
-			&& Instant.now().compareTo(lastAnimating.plus(WAIT_DURATION)) >= 0)
+		if (client.getLocalPlayer().getAnimation() == IDLE)
 		{
 			trayIcon.displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
-
-			if (OPERATING_SYSTEM.startsWith("Windows"))
+			if (OS_IS_WINDOWS)
 			{
 				Toolkit.getDefaultToolkit().beep();
 			}
-
-			notifyIdle = false;
 		}
 	}
-
 }
