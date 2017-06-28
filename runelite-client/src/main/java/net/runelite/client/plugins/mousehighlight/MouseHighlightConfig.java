@@ -28,7 +28,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "mousehighlight",
+    keyName = "mousehighlight",
 	name = "Mouse Highlighting",
 	description = "Configuration for the Mouse Highlight plugin"
 )
