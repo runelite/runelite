@@ -34,10 +34,9 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.boosts.BoostsConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.util.Utilities;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class MouseHighlightOverlay extends Overlay
 {
@@ -131,18 +130,18 @@ class MouseHighlightOverlay extends Overlay
 		graphics.setColor(gray);
 
 		// Draws the rect
-		Utilities.fillRect(graphics, x, y - (height / 2), total_width + 6, height);
+		OverlayUtil.fillRect(graphics, x, y - (height / 2), total_width + 6, height);
 
 		x += 3;
 		y += 5;
 
 		graphics.setColor(Color.white);
 		// Draws the option (Use, Walk here, Wield)
-		Utilities.shadowString(graphics, option + " ", x, y);
+		OverlayUtil.shadowString(graphics, option + " ", x, y);
 		// Sets the string colour to the colour the game uses.
 		graphics.setColor(hex2rgb(colour));
 		// Draws the target (Player, item)
-		Utilities.shadowString(graphics, matchedTarget, x + option_width, y);
+		OverlayUtil.shadowString(graphics, matchedTarget, x + option_width, y);
 
 		return null;
 	}

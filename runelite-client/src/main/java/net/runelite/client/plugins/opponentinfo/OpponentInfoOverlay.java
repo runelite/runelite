@@ -36,7 +36,7 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.util.Utilities;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 import java.text.DecimalFormat;
 import java.time.Duration;
@@ -119,11 +119,11 @@ class OpponentInfoOverlay extends Overlay
 		height += BOTTOM_BORDER;
 
 		graphics.setColor(BACKGROUND);
-		Utilities.fillRect(graphics,0, 0, WIDTH, height);
+		OverlayUtil.fillRect(graphics,0, 0, WIDTH, height);
 
 		int x = (WIDTH - fm.stringWidth(opponentName)) / 2;
 		graphics.setColor(Color.white);
-		Utilities.shadowString(graphics, opponentName, x, fm.getAscent() + TOP_BORDER);
+		OverlayUtil.shadowString(graphics, opponentName, x, fm.getAscent() + TOP_BORDER);
 
 		if (lastRatio >= 0)
 		{
@@ -150,7 +150,7 @@ class OpponentInfoOverlay extends Overlay
 				str = df.format(lastRatio * 100) + "%";
 			}
 
-			Utilities.shadowString(graphics, str, (WIDTH - fm.stringWidth(str)) / 2, barY + fm.getAscent());
+			OverlayUtil.shadowString(graphics, str, (WIDTH - fm.stringWidth(str)) / 2, barY + fm.getAscent());
 		}
 
 		return new Dimension(WIDTH, height);

@@ -33,11 +33,10 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.opponentinfo.OpponentConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.util.Utilities;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class BoostsOverlay extends Overlay
 {
@@ -85,7 +84,7 @@ class BoostsOverlay extends Overlay
 			return null;
 
 		graphics.setColor(BACKGROUND);
-		Utilities.fillRect(graphics,0, 0, WIDTH, height);
+		OverlayUtil.fillRect(graphics,0, 0, WIDTH, height);
 
 		int y = 0;
 		for (Skill skill : SHOW)
@@ -97,7 +96,7 @@ class BoostsOverlay extends Overlay
 				continue;
 
 			graphics.setColor(Color.white);
-			Utilities.shadowString(graphics, skill.getName(), LEFT_BORDER, y + metrics.getHeight());
+			OverlayUtil.shadowString(graphics, skill.getName(), LEFT_BORDER, y + metrics.getHeight());
 			String str1 = boosted + "";
 			String str2 = "/" + base;
 			if (base < boosted)
@@ -109,9 +108,9 @@ class BoostsOverlay extends Overlay
 				graphics.setColor(Color.RED);
 			}
 			String str = boosted + "/" + base;
-			Utilities.shadowString(graphics, str1, WIDTH - RIGHT_BORDER - (metrics.stringWidth(str1) + metrics.stringWidth(str2)), y + metrics.getHeight());
+			OverlayUtil.shadowString(graphics, str1, WIDTH - RIGHT_BORDER - (metrics.stringWidth(str1) + metrics.stringWidth(str2)), y + metrics.getHeight());
 			graphics.setColor(Color.white);
-			Utilities.shadowString(graphics, str2, WIDTH - RIGHT_BORDER - (metrics.stringWidth(str2)), y + metrics.getHeight());
+			OverlayUtil.shadowString(graphics, str2, WIDTH - RIGHT_BORDER - (metrics.stringWidth(str2)), y + metrics.getHeight());
 			y += metrics.getHeight() + SEPARATOR;
 		}
 
