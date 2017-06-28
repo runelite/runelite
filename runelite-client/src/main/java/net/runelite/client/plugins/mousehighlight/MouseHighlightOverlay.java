@@ -34,26 +34,29 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.client.RuneLite;
+import net.runelite.client.plugins.boosts.BoostsConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.util.Utilities;
 
-public class MouseHighlightOverlay extends Overlay
+class MouseHighlightOverlay extends Overlay
 {
 	// Grabs the colour and name from a target string
 	// <col=ffffff>Player1
 	private final Pattern p = Pattern.compile("^<col=([^>]+)>([^<]*)");
+	private final MouseHighlightConfig config;
 
-	public MouseHighlightOverlay()
+	MouseHighlightOverlay(MouseHighlight plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
+		this.config = plugin.getConfig();
 	}
-
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		Client client = RuneLite.getClient();
 
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
 		{
 			return null;
 		}
@@ -124,25 +127,22 @@ public class MouseHighlightOverlay extends Overlay
 			y = 0;
 		}
 
-		Color gray = new Color(Color.darkGray.getRed(), Color.darkGray.getGreen(), Color.darkGray.getBlue(), 190);
+		Color gray = new Color(75, 67, 54, 200);
 		graphics.setColor(gray);
 
-		// Draws the background rect
-		graphics.fillRect(x, y - (height / 2), total_width + 6, height);
+		// Draws the rect
+		Utilities.fillRect(graphics, x, y - (height / 2), total_width + 6, height);
 
-		// Draws the outline of the rect
-		graphics.setColor(Color.cyan);
-		graphics.drawRect(x, y - (height / 2), total_width + 6, height);
 		x += 3;
 		y += 5;
 
 		graphics.setColor(Color.white);
 		// Draws the option (Use, Walk here, Wield)
-		graphics.drawString(option + " ", x, y);
+		Utilities.shadowString(graphics, option + " ", x, y);
 		// Sets the string colour to the colour the game uses.
 		graphics.setColor(hex2rgb(colour));
 		// Draws the target (Player, item)
-		graphics.drawString(matchedTarget, x + option_width, y);
+		Utilities.shadowString(graphics, matchedTarget, x + option_width, y);
 
 		return null;
 	}
