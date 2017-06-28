@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.AnimationChanged;
 import net.runelite.client.plugins.Plugin;
@@ -46,6 +47,7 @@ public class IdleNotifier extends Plugin
 	private static final Duration WAIT_DURATION = Duration.ofMillis(2500L);
 
 	private final Client client = RuneLite.getClient();
+	private final RuneLite runelite = RuneLite.getRunelite();
 	private final TrayIcon trayIcon = RuneLite.getTrayIcon();
 
 	private ScheduledFuture<?> future;
@@ -55,7 +57,7 @@ public class IdleNotifier extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
+		ScheduledExecutorService executor = runelite.getExecutor();
 		future = executor.scheduleAtFixedRate(this::checkIdle, CHECK_INTERVAL, CHECK_INTERVAL, TimeUnit.SECONDS);
 	}
 
@@ -148,16 +150,11 @@ public class IdleNotifier extends Plugin
 
 	private void checkIdle()
 	{
-		if (notifyIdle && client.getLocalPlayer().getAnimation() == IDLE
+		Player local = client.getLocalPlayer();
+		if (notifyIdle && local.getAnimation() == IDLE
 			&& Instant.now().compareTo(lastAnimating.plus(WAIT_DURATION)) >= 0)
 		{
-			trayIcon.displayMessage("RuneLite", "You are now idle.", TrayIcon.MessageType.NONE);
-
-			if (OPERATING_SYSTEM.startsWith("Windows"))
-			{
-				Toolkit.getDefaultToolkit().beep();
-			}
-
+			runelite.notify("[" + local.getName() + "] is now idle!");
 			notifyIdle = false;
 		}
 	}
