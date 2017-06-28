@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.SystemTray;
+import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.io.File;
 import java.io.FileInputStream;
@@ -324,6 +325,17 @@ public class RuneLite
 	public static TrayIcon getTrayIcon()
 	{
 		return trayIcon;
+	}
+
+	public void notify(String message)
+	{
+		notify(message, TrayIcon.MessageType.NONE);
+	}
+
+	public void notify(String message, TrayIcon.MessageType type)
+	{
+		getTrayIcon().displayMessage("RuneLite", message, type);
+		Toolkit.getDefaultToolkit().beep();
 	}
 
 	public AccountSession getAccountSession()

@@ -36,6 +36,7 @@ import net.runelite.client.plugins.account.AccountPlugin;
 import net.runelite.client.plugins.boosts.Boosts;
 import net.runelite.client.plugins.bosstimer.BossTimers;
 import net.runelite.client.plugins.clanchat.ClanChat;
+import net.runelite.client.plugins.combatnotifier.CombatNotifier;
 import net.runelite.client.plugins.config.ConfigPlugin;
 import net.runelite.client.plugins.devtools.DevTools;
 import net.runelite.client.plugins.fpsinfo.FPS;
@@ -85,6 +86,7 @@ public class PluginManager
 		plugins.add(new GroundItems());
 		plugins.add(new Implings());
 		plugins.add(new XpGlobes());
+		plugins.add(new CombatNotifier());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
