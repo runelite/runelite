@@ -114,7 +114,7 @@ public class class236 implements Runnable {
          var4.putInt(var3.nextInt());
       }
 
-      var4.method3054(class87.field1363, class87.field1367);
+      var4.encryptRsa(class87.field1363, class87.field1367);
       var5.putByte(10);
 
       for(var7 = 0; var7 < 3; ++var7) {
@@ -125,7 +125,7 @@ public class class236 implements Runnable {
       var5.method3022(var3.nextLong());
       class268.method4754(var5);
       var5.putLong(var3.nextLong());
-      var5.method3054(class87.field1363, class87.field1367);
+      var5.encryptRsa(class87.field1363, class87.field1367);
       var7 = Friend.method1023(var2);
       if(var7 % 8 != 0) {
          var7 += 8 - var7 % 8;

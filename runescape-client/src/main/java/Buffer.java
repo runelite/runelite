@@ -32,7 +32,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "1396984658"
    )
-   public int method3017() {
+   @Export("readShortOb1")
+   public int readShortOb1() {
       this.offset += 2;
       int var1 = (this.payload[this.offset - 2] - 128 & 255) + ((this.payload[this.offset - 1] & 255) << 8);
       if(var1 > 32767) {
@@ -87,7 +88,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-258390668"
    )
-   public int method3023() {
+   @Export("readUnsignedShortOb1")
+   public int readUnsignedShortOb1() {
       this.offset += 2;
       return (this.payload[this.offset - 1] - 128 & 255) + ((this.payload[this.offset - 2] & 255) << 8);
    }
@@ -150,7 +152,8 @@ public class Buffer extends Node {
       signature = "(IB)V",
       garbageValue = "45"
    )
-   public void method3030(int var1) {
+   @Export("putLength")
+   public void putLength(int var1) {
       this.payload[this.offset - var1 - 1] = (byte)var1;
    }
 
@@ -159,7 +162,8 @@ public class Buffer extends Node {
       signature = "(IB)V",
       garbageValue = "1"
    )
-   public void method3031(int var1) {
+   @Export("putShortSmart")
+   public void putShortSmart(int var1) {
       if(var1 >= 0 && var1 < 128) {
          this.putByte(var1);
       } else {
@@ -397,7 +401,8 @@ public class Buffer extends Node {
       signature = "([IIIB)V",
       garbageValue = "-1"
    )
-   public void method3053(int[] var1, int var2, int var3) {
+   @Export("decryptXtea")
+   public void decryptXtea(int[] var1, int var2, int var3) {
       int var4 = this.offset;
       this.offset = var2;
       int var5 = (var3 - var2) / 8;
@@ -426,7 +431,8 @@ public class Buffer extends Node {
       signature = "(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",
       garbageValue = "-1860077279"
    )
-   public void method3054(BigInteger var1, BigInteger var2) {
+   @Export("encryptRsa")
+   public void encryptRsa(BigInteger var1, BigInteger var2) {
       int var3 = this.offset;
       this.offset = 0;
       byte[] var4 = new byte[var3];
@@ -488,7 +494,8 @@ public class Buffer extends Node {
       signature = "(IB)V",
       garbageValue = "12"
    )
-   public void method3059(int var1) {
+   @Export("putByteOb1")
+   public void putByteOb1(int var1) {
       this.payload[++this.offset - 1] = (byte)(128 - var1);
    }
 
@@ -497,7 +504,8 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "-82"
    )
-   public int method3060() {
+   @Export("readByteOb1")
+   public int readByteOb1() {
       return this.payload[++this.offset - 1] - 128 & 255;
    }
 
@@ -506,7 +514,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-705089113"
    )
-   public int method3062() {
+   @Export("readUnsignedByteOb1")
+   public int readUnsignedByteOb1() {
       return 128 - this.payload[++this.offset - 1] & 255;
    }
 
@@ -515,7 +524,8 @@ public class Buffer extends Node {
       signature = "(I)B",
       garbageValue = "-878540735"
    )
-   public byte method3063() {
+   @Export("readByteOb2")
+   public byte readByteOb2() {
       return (byte)(this.payload[++this.offset - 1] - 128);
    }
 
@@ -524,7 +534,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "1474093505"
    )
-   public void method3065(int var1) {
+   @Export("putShortLE")
+   public void putShortLE(int var1) {
       this.payload[++this.offset - 1] = (byte)var1;
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
    }
@@ -534,7 +545,8 @@ public class Buffer extends Node {
       signature = "(IS)V",
       garbageValue = "-17692"
    )
-   public void method3066(int var1) {
+   @Export("putShortOb1")
+   public void putShortOb1(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
       this.payload[++this.offset - 1] = (byte)(var1 + 128);
    }
@@ -544,7 +556,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-1314320224"
    )
-   public void method3067(int var1) {
+   @Export("putShortOb2")
+   public void putShortOb2(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 + 128);
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
    }
@@ -554,7 +567,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "101443556"
    )
-   public int method3068() {
+   @Export("readShortLE")
+   public int readShortLE() {
       this.offset += 2;
       return (this.payload[this.offset - 2] & 255) + ((this.payload[this.offset - 1] & 255) << 8);
    }
@@ -564,7 +578,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "482403961"
    )
-   public void method3069(int var1) {
+   @Export("readByteOb1")
+   public void readByteOb1(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 + 128);
    }
 
@@ -573,7 +588,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "1250474116"
    )
-   public int method3070() {
+   @Export("readUnsignedShortOb2")
+   public int readUnsignedShortOb2() {
       this.offset += 2;
       return (this.payload[this.offset - 2] - 128 & 255) + ((this.payload[this.offset - 1] & 255) << 8);
    }
@@ -583,7 +599,8 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "42"
    )
-   public int method3071() {
+   @Export("readShortOb2")
+   public int readShortOb2() {
       this.offset += 2;
       int var1 = (this.payload[this.offset - 2] & 255) + ((this.payload[this.offset - 1] & 255) << 8);
       if(var1 > 32767) {
@@ -598,7 +615,8 @@ public class Buffer extends Node {
       signature = "(IB)V",
       garbageValue = "36"
    )
-   public void method3077(int var1) {
+   @Export("putIntOb1")
+   public void putIntOb1(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 >> 16);
       this.payload[++this.offset - 1] = (byte)(var1 >> 24);
       this.payload[++this.offset - 1] = (byte)var1;
@@ -610,7 +628,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-882558088"
    )
-   public int method3078() {
+   @Export("readIntOb1")
+   public int readIntOb1() {
       this.offset += 4;
       return ((this.payload[this.offset - 3] & 255) << 8) + (this.payload[this.offset - 4] & 255) + ((this.payload[this.offset - 2] & 255) << 16) + ((this.payload[this.offset - 1] & 255) << 24);
    }
@@ -711,7 +730,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "1494483935"
    )
-   public void method3114(int var1) {
+   @Export("putIntOb2")
+   public void putIntOb2(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
       this.payload[++this.offset - 1] = (byte)var1;
       this.payload[++this.offset - 1] = (byte)(var1 >> 24);
@@ -723,7 +743,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-784703104"
    )
-   public int method3116() {
+   @Export("readIntOb2")
+   public int readIntOb2() {
       this.offset += 4;
       return (this.payload[this.offset - 2] & 255) + ((this.payload[this.offset - 3] & 255) << 24) + ((this.payload[this.offset - 4] & 255) << 16) + ((this.payload[this.offset - 1] & 255) << 8);
    }
@@ -748,7 +769,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-1239592296"
    )
-   public void method3135(int var1) {
+   //@Export("putMedOb1")
+   public void putMedOb1(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 >> 16);
       this.payload[++this.offset - 1] = (byte)var1;
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
@@ -796,7 +818,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-1941999712"
    )
-   public void method3156(int var1) {
+   @Export("putShortLength")
+   public void putShortLength(int var1) {
       this.payload[this.offset - var1 - 2] = (byte)(var1 >> 8);
       this.payload[this.offset - var1 - 1] = (byte)var1;
    }
@@ -806,7 +829,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-1594731549"
    )
-   public int method3160() {
+   @Export("readIntOb3")
+   public int readIntOb3() {
       this.offset += 4;
       return (this.payload[this.offset - 3] & 255) + ((this.payload[this.offset - 1] & 255) << 16) + ((this.payload[this.offset - 2] & 255) << 24) + ((this.payload[this.offset - 4] & 255) << 8);
    }
@@ -816,7 +840,8 @@ public class Buffer extends Node {
       signature = "(I)B",
       garbageValue = "-644154931"
    )
-   public byte method3165() {
+   @Export("readByteNegated")
+   public byte readByteNegated() {
       return (byte)(0 - this.payload[++this.offset - 1]);
    }
 
@@ -874,7 +899,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "166990732"
    )
-   public void method3196(int var1) {
+   @Export("putByteNegated")
+   public void putByteNegated(int var1) {
       this.payload[++this.offset - 1] = (byte)(0 - var1);
    }
 
@@ -883,7 +909,8 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "1"
    )
-   public int method3197() {
+   @Export("readShortOb3")
+   public int readShortOb3() {
       this.offset += 2;
       int var1 = (this.payload[this.offset - 1] - 128 & 255) + ((this.payload[this.offset - 2] & 255) << 8);
       if(var1 > 32767) {
@@ -898,7 +925,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-1432850691"
    )
-   public int method3201() {
+   @Export("readUnsignedByteNegated")
+   public int readUnsignedByteNegated() {
       return 0 - this.payload[++this.offset - 1] & 255;
    }
 
@@ -907,7 +935,8 @@ public class Buffer extends Node {
       signature = "(IB)V",
       garbageValue = "28"
    )
-   public void method3204(int var1) {
+   @Export("putLengthInt")
+   public void putLengthInt(int var1) {
       this.payload[this.offset - var1 - 4] = (byte)(var1 >> 24);
       this.payload[this.offset - var1 - 3] = (byte)(var1 >> 16);
       this.payload[this.offset - var1 - 2] = (byte)(var1 >> 8);

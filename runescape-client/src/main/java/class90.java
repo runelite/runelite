@@ -1043,7 +1043,7 @@ public class class90 {
                      Client.secretPacketBuffer1.putByte(var50);
                      Client.secretPacketBuffer1.putByte(var45);
                      class208.method3796(Client.secretPacketBuffer1, var13);
-                     Client.secretPacketBuffer1.method3030(Client.secretPacketBuffer1.offset - var6);
+                     Client.secretPacketBuffer1.putLength(Client.secretPacketBuffer1.offset - var6);
                      var3 = 1;
                   } else if(var0 == 5009) {
                      class24.scriptStringStackSize -= 2;
@@ -1054,7 +1054,7 @@ public class class90 {
                      var5 = Client.secretPacketBuffer1.offset;
                      Client.secretPacketBuffer1.method3125(var13);
                      class208.method3796(Client.secretPacketBuffer1, var12);
-                     Client.secretPacketBuffer1.method3156(Client.secretPacketBuffer1.offset - var5);
+                     Client.secretPacketBuffer1.putShortLength(Client.secretPacketBuffer1.offset - var5);
                      var3 = 1;
                   } else if(var0 == 5015) {
                      if(class20.localPlayer != null && class20.localPlayer.name != null) {

@@ -1708,7 +1708,7 @@ public final class Client extends GameEngine {
             }
 
             secretPacketBuffer1.method3125(class92.password);
-            secretPacketBuffer1.method3054(class90.rsaKeyExponent, class90.rsaKeyModulus);
+            secretPacketBuffer1.encryptRsa(class90.rsaKeyExponent, class90.rsaKeyModulus);
             field907.offset = 0;
             if(gameState == 40) {
                field907.putByte(18);
@@ -1751,7 +1751,7 @@ public final class Client extends GameEngine {
             field907.putInt(class164.field2329.field3233);
             field907.putInt(class3.indexWorldMap.field3233);
             field907.encryptXtea(var4, var3, field907.offset);
-            field907.method3156(field907.offset - var2);
+            field907.putShortLength(field907.offset - var2);
             WidgetNode.rssocket.queueForWrite(field907.payload, 0, field907.offset);
             secretPacketBuffer1.seed(var4);
 
@@ -2431,12 +2431,12 @@ public final class Client extends GameEngine {
 
                if(field963 != null && class60.method969(field1079) != null) {
                   secretPacketBuffer1.putOpcode(97);
-                  secretPacketBuffer1.method3077(field963.id);
-                  secretPacketBuffer1.method3065(field963.index);
-                  secretPacketBuffer1.method3067(field1079.index);
-                  secretPacketBuffer1.method3077(field1079.id);
+                  secretPacketBuffer1.putIntOb1(field963.id);
+                  secretPacketBuffer1.putShortLE(field963.index);
+                  secretPacketBuffer1.putShortOb2(field1079.index);
+                  secretPacketBuffer1.putIntOb1(field1079.id);
                   secretPacketBuffer1.putShort(field963.itemId);
-                  secretPacketBuffer1.method3067(field1079.itemId);
+                  secretPacketBuffer1.putShortOb2(field1079.itemId);
                }
             } else {
                label117: {
@@ -2627,7 +2627,7 @@ public final class Client extends GameEngine {
                secretPacketBuffer1.putByte(0);
                var1 = secretPacketBuffer1.offset;
                class241.method4168(secretPacketBuffer1);
-               secretPacketBuffer1.method3030(secretPacketBuffer1.offset - var1);
+               secretPacketBuffer1.putLength(secretPacketBuffer1.offset - var1);
             }
 
             Object var2 = field913.field841;
@@ -2697,7 +2697,7 @@ public final class Client extends GameEngine {
                      }
                   }
 
-                  secretPacketBuffer1.method3030(secretPacketBuffer1.offset - var4);
+                  secretPacketBuffer1.putLength(secretPacketBuffer1.offset - var4);
                   if(var5 >= field913.field843) {
                      field913.field843 = 0;
                   } else {
@@ -2753,11 +2753,11 @@ public final class Client extends GameEngine {
                   }
 
                   field1130 = var26;
-                  secretPacketBuffer1.method3135((int)var14);
-                  secretPacketBuffer1.method3196(class50.field656[var6]);
+                  secretPacketBuffer1.putMedOb1((int)var14);
+                  secretPacketBuffer1.putByteNegated(class50.field656[var6]);
                }
 
-               secretPacketBuffer1.method3156(secretPacketBuffer1.offset - var1);
+               secretPacketBuffer1.putShortLength(secretPacketBuffer1.offset - var1);
             }
 
             if(field996 > 0) {
@@ -2773,7 +2773,7 @@ public final class Client extends GameEngine {
                field1083 = false;
                secretPacketBuffer1.putOpcode(51);
                secretPacketBuffer1.putShort(mapAngle);
-               secretPacketBuffer1.method3065(field1159);
+               secretPacketBuffer1.putShortLE(field1159);
             }
 
             if(class89.field1390 && !field1008) {
@@ -3021,10 +3021,10 @@ public final class Client extends GameEngine {
                                                          }
 
                                                          secretPacketBuffer1.putOpcode(237);
-                                                         secretPacketBuffer1.method3066(field1022);
+                                                         secretPacketBuffer1.putShortOb1(field1022);
                                                          secretPacketBuffer1.putInt(class165.field2335.id);
-                                                         secretPacketBuffer1.method3067(field1019);
-                                                         secretPacketBuffer1.method3059(var22);
+                                                         secretPacketBuffer1.putShortOb2(field1019);
+                                                         secretPacketBuffer1.putByteOb1(var22);
                                                       }
                                                    } else {
                                                       label928: {
@@ -3076,9 +3076,9 @@ public final class Client extends GameEngine {
                                                 var6 = Region.selectedRegionTileY;
                                                 secretPacketBuffer1.putOpcode(203);
                                                 secretPacketBuffer1.putByte(5);
-                                                secretPacketBuffer1.method3066(var5 + class19.baseX);
-                                                secretPacketBuffer1.method3066(class21.baseY + var6);
-                                                secretPacketBuffer1.method3196(class50.field660[82]?(class50.field660[81]?2:1):0);
+                                                secretPacketBuffer1.putShortOb1(var5 + class19.baseX);
+                                                secretPacketBuffer1.putShortOb1(class21.baseY + var6);
+                                                secretPacketBuffer1.putByteNegated(class50.field660[82]?(class50.field660[81]?2:1):0);
                                                 Region.method2618();
                                                 field1013 = class59.field737;
                                                 field1115 = class59.field732;
@@ -3499,8 +3499,8 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 24) {
-               class29.field437 = secretPacketBuffer2.method3201();
-               class27.field414 = secretPacketBuffer2.method3062();
+               class29.field437 = secretPacketBuffer2.readUnsignedByteNegated();
+               class27.field414 = secretPacketBuffer2.readUnsignedByteOb1();
 
                while(secretPacketBuffer2.offset < packetLength) {
                   packetType = secretPacketBuffer2.readUnsignedByte();
@@ -3564,9 +3564,9 @@ public final class Client extends GameEngine {
             Widget var11;
             if(packetType == 72) {
                var4 = secretPacketBuffer2.readUnsignedShort();
-               var1 = secretPacketBuffer2.method3068();
-               var5 = secretPacketBuffer2.method3070();
-               var6 = secretPacketBuffer2.method3078();
+               var1 = secretPacketBuffer2.readShortLE();
+               var5 = secretPacketBuffer2.readUnsignedShortOb2();
+               var6 = secretPacketBuffer2.readIntOb1();
                var11 = class223.method3959(var6);
                if(var11.rotationX != var1 || var11.rotationZ != var4 || var11.field2737 != var5) {
                   var11.rotationX = var1;
@@ -3592,7 +3592,7 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 55) {
-               var4 = secretPacketBuffer2.method3078();
+               var4 = secretPacketBuffer2.readIntOb1();
                class69.field834 = GameEngine.field691.method2838(var4);
                packetType = -1;
                return true;
@@ -3856,9 +3856,9 @@ public final class Client extends GameEngine {
 
             WidgetNode var20;
             if(packetType == 134) {
-               var4 = secretPacketBuffer2.method3078();
-               var1 = secretPacketBuffer2.method3068();
-               var5 = secretPacketBuffer2.method3060();
+               var4 = secretPacketBuffer2.readIntOb1();
+               var1 = secretPacketBuffer2.readShortLE();
+               var5 = secretPacketBuffer2.readByteOb1();
                var20 = (WidgetNode)componentTable.method3425((long)var4);
                if(var20 != null) {
                   class67.method1027(var20, var20.id != var1);
@@ -3872,8 +3872,8 @@ public final class Client extends GameEngine {
             Widget var21;
             if(packetType == 32) {
                var4 = secretPacketBuffer2.readUnsignedShort();
-               var1 = secretPacketBuffer2.method3160();
-               var5 = secretPacketBuffer2.method3023();
+               var1 = secretPacketBuffer2.readIntOb3();
+               var5 = secretPacketBuffer2.readUnsignedShortOb1();
                var21 = class223.method3959(var1);
                var21.field2710 = (var4 << 16) + var5;
                packetType = -1;
@@ -4003,7 +4003,7 @@ public final class Client extends GameEngine {
 
             Widget var24;
             if(packetType == 127) {
-               var4 = secretPacketBuffer2.method3116();
+               var4 = secretPacketBuffer2.readIntOb2();
                var24 = class223.method3959(var4);
                var24.modelType = 3;
                var24.modelId = class20.localPlayer.composition.method3868();
@@ -4014,7 +4014,7 @@ public final class Client extends GameEngine {
 
             if(packetType == 31) {
                var2 = secretPacketBuffer2.readString();
-               var1 = secretPacketBuffer2.method3078();
+               var1 = secretPacketBuffer2.readIntOb1();
                var9 = class223.method3959(var1);
                if(!var2.equals(var9.text)) {
                   var9.text = var2;
@@ -4026,8 +4026,8 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 224) {
-               var4 = secretPacketBuffer2.method3078();
-               var1 = secretPacketBuffer2.method3070();
+               var4 = secretPacketBuffer2.readIntOb1();
+               var1 = secretPacketBuffer2.readUnsignedShortOb2();
                class211.settings[var1] = var4;
                if(class211.widgetSettings[var1] != var4) {
                   class211.widgetSettings[var1] = var4;
@@ -4053,7 +4053,7 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 113) {
-               field919 = secretPacketBuffer2.method3023() * 30;
+               field919 = secretPacketBuffer2.readUnsignedShortOb1() * 30;
                field1103 = field1091;
                packetType = -1;
                return true;
@@ -4103,8 +4103,8 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 15) {
-               var4 = secretPacketBuffer2.method3023();
-               var1 = secretPacketBuffer2.method3160();
+               var4 = secretPacketBuffer2.readUnsignedShortOb1();
+               var1 = secretPacketBuffer2.readIntOb3();
                var9 = class223.method3959(var1);
                if(var9 != null && var9.type == 0) {
                   if(var4 > var9.scrollHeight - var9.height) {
@@ -4149,10 +4149,10 @@ public final class Client extends GameEngine {
                var6 = secretPacketBuffer2.readUnsignedShort();
 
                for(var10 = 0; var10 < var6; ++var10) {
-                  var8 = secretPacketBuffer2.method3070();
-                  var13 = secretPacketBuffer2.method3201();
+                  var8 = secretPacketBuffer2.readUnsignedShortOb2();
+                  var13 = secretPacketBuffer2.readUnsignedByteNegated();
                   if(var13 == 255) {
-                     var13 = secretPacketBuffer2.method3116();
+                     var13 = secretPacketBuffer2.readIntOb2();
                   }
 
                   if(var9 != null && var10 < var9.itemIds.length) {
@@ -4174,9 +4174,9 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 167) {
-               var4 = secretPacketBuffer2.method3060();
+               var4 = secretPacketBuffer2.readByteOb1();
                var23 = secretPacketBuffer2.readString();
-               var5 = secretPacketBuffer2.method3060();
+               var5 = secretPacketBuffer2.readByteOb1();
                if(var4 >= 1 && var4 <= 8) {
                   if(var23.equalsIgnoreCase("null")) {
                      var23 = null;
@@ -4230,9 +4230,9 @@ public final class Client extends GameEngine {
                }
 
                secretPacketBuffer1.putOpcode(126);
-               secretPacketBuffer1.method3114(var4);
+               secretPacketBuffer1.putIntOb2(var4);
                secretPacketBuffer1.putInt(var1);
-               secretPacketBuffer1.method3069(GameEngine.FPS);
+               secretPacketBuffer1.readByteOb1(GameEngine.FPS);
                secretPacketBuffer1.putByte(var10);
                packetType = -1;
                return true;
@@ -4324,7 +4324,7 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 139) {
-               var4 = secretPacketBuffer2.method3070();
+               var4 = secretPacketBuffer2.readUnsignedShortOb2();
                widgetRoot = var4;
                this.method1151(false);
                WorldMapType3.method219(var4);
@@ -4435,8 +4435,8 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 64) {
-               var4 = secretPacketBuffer2.method3068();
-               var1 = secretPacketBuffer2.method3160();
+               var4 = secretPacketBuffer2.readShortLE();
+               var1 = secretPacketBuffer2.readIntOb3();
                var9 = class223.method3959(var1);
                if(var9.modelType != 1 || var9.modelId != var4) {
                   var9.modelType = 1;
@@ -4479,9 +4479,9 @@ public final class Client extends GameEngine {
 
             if(packetType == 247) {
                GameEngine.method864();
-               var4 = secretPacketBuffer2.method3201();
-               var1 = secretPacketBuffer2.method3078();
-               var5 = secretPacketBuffer2.method3201();
+               var4 = secretPacketBuffer2.readUnsignedByteNegated();
+               var1 = secretPacketBuffer2.readIntOb1();
+               var5 = secretPacketBuffer2.readUnsignedByteNegated();
                skillExperiences[var5] = var1;
                boostedSkillLevels[var5] = var4;
                realSkillLevels[var5] = 1;
@@ -4535,7 +4535,7 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 80) {
-               var4 = secretPacketBuffer2.method3023();
+               var4 = secretPacketBuffer2.readUnsignedShortOb1();
                if(var4 == '\uffff') {
                   var4 = -1;
                }
@@ -4548,7 +4548,7 @@ public final class Client extends GameEngine {
 
             if(packetType == 210) {
                var4 = secretPacketBuffer2.readInt();
-               var32 = secretPacketBuffer2.method3060() == 1;
+               var32 = secretPacketBuffer2.readByteOb1() == 1;
                var9 = class223.method3959(var4);
                if(var9.isHidden != var32) {
                   var9.isHidden = var32;
@@ -4572,7 +4572,7 @@ public final class Client extends GameEngine {
                }
 
                var1 = secretPacketBuffer2.readInt();
-               var5 = secretPacketBuffer2.method3078();
+               var5 = secretPacketBuffer2.readIntOb1();
                var21 = class223.method3959(var1);
                ItemComposition var86;
                if(!var21.hasScript) {
@@ -4620,7 +4620,7 @@ public final class Client extends GameEngine {
 
             if(packetType == 225) {
                var4 = secretPacketBuffer2.readUnsignedShort();
-               byte var85 = secretPacketBuffer2.method3063();
+               byte var85 = secretPacketBuffer2.readByteOb2();
                class211.settings[var4] = var85;
                if(var85 != class211.widgetSettings[var4]) {
                   class211.widgetSettings[var4] = var85;
@@ -4633,7 +4633,7 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 157) {
-               class29.field437 = secretPacketBuffer2.method3062();
+               class29.field437 = secretPacketBuffer2.readUnsignedByteOb1();
                class27.field414 = secretPacketBuffer2.readUnsignedByte();
 
                for(var4 = class27.field414; var4 < class27.field414 + 8; ++var4) {
@@ -4678,7 +4678,7 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 59) {
-               var4 = secretPacketBuffer2.method3116();
+               var4 = secretPacketBuffer2.readIntOb2();
                var24 = class223.method3959(var4);
 
                for(var5 = 0; var5 < var24.itemIds.length; ++var5) {
@@ -5222,7 +5222,7 @@ public final class Client extends GameEngine {
 
             if(packetType == 121) {
                var4 = secretPacketBuffer2.readInt();
-               var1 = secretPacketBuffer2.method3160();
+               var1 = secretPacketBuffer2.readIntOb3();
                var44 = (WidgetNode)componentTable.method3425((long)var1);
                var20 = (WidgetNode)componentTable.method3425((long)var4);
                if(var20 != null) {
@@ -5254,9 +5254,9 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 208) {
-               var4 = secretPacketBuffer2.method3078();
-               var1 = secretPacketBuffer2.method3116();
-               var5 = secretPacketBuffer2.method3068();
+               var4 = secretPacketBuffer2.readIntOb1();
+               var1 = secretPacketBuffer2.readIntOb2();
+               var5 = secretPacketBuffer2.readShortLE();
                if(var5 == '\uffff') {
                   var5 = -1;
                }
@@ -5281,8 +5281,8 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 86) {
-               var4 = secretPacketBuffer2.method3116();
-               var1 = secretPacketBuffer2.method3023();
+               var4 = secretPacketBuffer2.readIntOb2();
+               var1 = secretPacketBuffer2.readUnsignedShortOb1();
                var9 = class223.method3959(var4);
                if(var9.modelType != 2 || var9.modelId != var1) {
                   var9.modelType = 2;
@@ -5309,7 +5309,7 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 62) {
-               var4 = secretPacketBuffer2.method3017();
+               var4 = secretPacketBuffer2.readShortOb1();
                var1 = secretPacketBuffer2.readInt();
                var9 = class223.method3959(var1);
                if(var9.field2777 != var4 || var4 == -1) {
@@ -5324,9 +5324,9 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 151) {
-               var4 = secretPacketBuffer2.method3197();
-               var1 = secretPacketBuffer2.method3160();
-               var5 = secretPacketBuffer2.method3071();
+               var4 = secretPacketBuffer2.readShortOb3();
+               var1 = secretPacketBuffer2.readIntOb3();
+               var5 = secretPacketBuffer2.readShortOb2();
                var21 = class223.method3959(var1);
                if(var5 != var21.originalX || var21.originalY != var4 || var21.field2659 != 0 || var21.field2660 != 0) {
                   var21.originalX = var5;
@@ -5459,8 +5459,8 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == 70) {
-               class29.field437 = secretPacketBuffer2.method3060();
-               class27.field414 = secretPacketBuffer2.method3201();
+               class29.field437 = secretPacketBuffer2.readByteOb1();
+               class27.field414 = secretPacketBuffer2.readUnsignedByteNegated();
                packetType = -1;
                return true;
             }

@@ -441,7 +441,7 @@ public abstract class IndexDataBase {
             if(var2 != null && (var2[0] != 0 || var2[1] != 0 || var2[2] != 0 || var2[3] != 0)) {
                var18 = class228.method3971(this.field3230[var1], true);
                Buffer var8 = new Buffer(var18);
-               var8.method3053(var2, 5, var8.payload.length);
+               var8.decryptXtea(var2, 5, var8.payload.length);
             } else {
                var18 = class228.method3971(this.field3230[var1], false);
             }

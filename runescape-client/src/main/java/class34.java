@@ -1050,20 +1050,20 @@ public class class34 {
          int var9;
          int var10;
          if(Client.packetType == 173) {
-            var0 = Client.secretPacketBuffer2.method3070();
-            byte var11 = Client.secretPacketBuffer2.method3063();
-            var1 = Client.secretPacketBuffer2.method3070();
-            var2 = Client.secretPacketBuffer2.method3060();
+            var0 = Client.secretPacketBuffer2.readUnsignedShortOb2();
+            byte var11 = Client.secretPacketBuffer2.readByteOb2();
+            var1 = Client.secretPacketBuffer2.readUnsignedShortOb2();
+            var2 = Client.secretPacketBuffer2.readByteOb1();
             var3 = (var2 >> 4 & 7) + class27.field414;
             var4 = (var2 & 7) + class29.field437;
-            var5 = Client.secretPacketBuffer2.method3201();
+            var5 = Client.secretPacketBuffer2.readUnsignedByteNegated();
             var7 = var5 >> 2;
             var8 = var5 & 3;
             var9 = Client.field968[var7];
-            byte var12 = Client.secretPacketBuffer2.method3165();
-            byte var13 = Client.secretPacketBuffer2.method3165();
-            var10 = Client.secretPacketBuffer2.method3070();
-            int var14 = Client.secretPacketBuffer2.method3068();
+            byte var12 = Client.secretPacketBuffer2.readByteNegated();
+            byte var13 = Client.secretPacketBuffer2.readByteNegated();
+            var10 = Client.secretPacketBuffer2.readUnsignedShortOb2();
+            int var14 = Client.secretPacketBuffer2.readShortLE();
             byte var15 = Client.secretPacketBuffer2.readByte();
             Player var16;
             if(var0 == Client.localInteractingIndex) {
@@ -1123,11 +1123,11 @@ public class class34 {
          }
 
          if(Client.packetType == 190) {
-            var0 = Client.secretPacketBuffer2.method3023();
-            var6 = Client.secretPacketBuffer2.method3062();
+            var0 = Client.secretPacketBuffer2.readUnsignedShortOb1();
+            var6 = Client.secretPacketBuffer2.readUnsignedByteOb1();
             var1 = (var6 >> 4 & 7) + class27.field414;
             var2 = (var6 & 7) + class29.field437;
-            var3 = Client.secretPacketBuffer2.method3201();
+            var3 = Client.secretPacketBuffer2.readUnsignedByteNegated();
             var4 = var3 >> 2;
             var5 = var3 & 3;
             var7 = Client.field968[var4];
@@ -1191,12 +1191,12 @@ public class class34 {
             }
 
             if(Client.packetType == 209) {
-               var0 = Client.secretPacketBuffer2.method3023();
+               var0 = Client.secretPacketBuffer2.readUnsignedShortOb1();
                var6 = Client.secretPacketBuffer2.readUnsignedByte();
                var1 = var6 >> 2;
                var2 = var6 & 3;
                var3 = Client.field968[var1];
-               var4 = Client.secretPacketBuffer2.method3201();
+               var4 = Client.secretPacketBuffer2.readUnsignedByteNegated();
                var5 = (var4 >> 4 & 7) + class27.field414;
                var7 = class29.field437 + (var4 & 7);
                if(var5 >= 0 && var7 >= 0 && var5 < 103 && var7 < 103) {
@@ -1253,11 +1253,11 @@ public class class34 {
             } else {
                Item var38;
                if(Client.packetType == 4) {
-                  var0 = Client.secretPacketBuffer2.method3068();
+                  var0 = Client.secretPacketBuffer2.readShortLE();
                   var6 = Client.secretPacketBuffer2.readUnsignedByte();
                   var1 = (var6 >> 4 & 7) + class27.field414;
                   var2 = (var6 & 7) + class29.field437;
-                  var3 = Client.secretPacketBuffer2.method3070();
+                  var3 = Client.secretPacketBuffer2.readUnsignedShortOb2();
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                      var38 = new Item();
                      var38.id = var3;
@@ -1295,10 +1295,10 @@ public class class34 {
                      }
                   }
                } else {
-                  var0 = Client.secretPacketBuffer2.method3062();
+                  var0 = Client.secretPacketBuffer2.readUnsignedByteOb1();
                   var6 = (var0 >> 4 & 7) + class27.field414;
                   var1 = (var0 & 7) + class29.field437;
-                  var2 = Client.secretPacketBuffer2.method3070();
+                  var2 = Client.secretPacketBuffer2.readUnsignedShortOb2();
                   if(var6 >= 0 && var1 >= 0 && var6 < 104 && var1 < 104) {
                      Deque var39 = Client.groundItemDeque[Player.plane][var6][var1];
                      if(var39 != null) {

@@ -288,7 +288,7 @@ public class Track1 extends Node {
 
                   var51.putByte(47);
                   var51.putByte(0);
-                  var51.method3204(var51.offset - var61);
+                  var51.putLengthInt(var51.offset - var61);
                   continue label222;
                }
 

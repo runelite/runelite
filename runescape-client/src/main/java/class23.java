@@ -105,7 +105,7 @@ public class class23 {
       int var6;
       if(!Client.isDynamicRegion) {
          var1 = Client.secretPacketBuffer2.readUnsignedShort();
-         int var7 = Client.secretPacketBuffer2.method3023();
+         int var7 = Client.secretPacketBuffer2.readUnsignedShortOb1();
          var2 = Client.secretPacketBuffer2.readUnsignedShort();
          class36.xteaKeys = new int[var2][4];
 
@@ -145,9 +145,9 @@ public class class23 {
 
          class2.method5(var7, var1, true);
       } else {
-         var1 = Client.secretPacketBuffer2.method3068();
-         boolean var14 = Client.secretPacketBuffer2.method3060() == 1;
-         var2 = Client.secretPacketBuffer2.method3068();
+         var1 = Client.secretPacketBuffer2.readShortLE();
+         boolean var14 = Client.secretPacketBuffer2.readByteOb1() == 1;
+         var2 = Client.secretPacketBuffer2.readShortLE();
          var3 = Client.secretPacketBuffer2.readUnsignedShort();
          Client.secretPacketBuffer2.method3291();
 
@@ -224,6 +224,6 @@ public class class23 {
    static void method189(int var0, int var1) {
       Client.secretPacketBuffer1.putOpcode(84);
       Client.secretPacketBuffer1.method3057(var0);
-      Client.secretPacketBuffer1.method3065(var1);
+      Client.secretPacketBuffer1.putShortLE(var1);
    }
 }

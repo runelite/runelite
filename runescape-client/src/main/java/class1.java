@@ -57,7 +57,7 @@ public class class1 {
          int var7;
          int var8;
          if((var4 & 16) != 0) {
-            var5 = Client.secretPacketBuffer2.method3023();
+            var5 = Client.secretPacketBuffer2.readUnsignedShortOb1();
             var6 = Client.secretPacketBuffer2.readUnsignedShort();
             var7 = var3.x - (var5 - class19.baseX - class19.baseX) * 64;
             var8 = var3.y - (var6 - class21.baseY - class21.baseY) * 64;
@@ -100,7 +100,7 @@ public class class1 {
                   var9 = Client.secretPacketBuffer2.method3046();
                   if(var9 != 32767) {
                      var10 = Client.secretPacketBuffer2.method3046();
-                     var11 = Client.secretPacketBuffer2.method3201();
+                     var11 = Client.secretPacketBuffer2.readUnsignedByteNegated();
                      int var12 = var9 > 0?Client.secretPacketBuffer2.readUnsignedByte():var11;
                      var3.method1445(var8, Client.gameCycle, var9, var10, var11, var12);
                   } else {
@@ -111,7 +111,7 @@ public class class1 {
          }
 
          if((var4 & 1) != 0) {
-            var3.composition = class158.getNpcDefinition(Client.secretPacketBuffer2.method3068());
+            var3.composition = class158.getNpcDefinition(Client.secretPacketBuffer2.readShortLE());
             var3.field1212 = var3.composition.field3559;
             var3.field1227 = var3.composition.field3582;
             var3.field1216 = var3.composition.field3565;
@@ -129,15 +129,15 @@ public class class1 {
          }
 
          if((var4 & 32) != 0) {
-            var3.interacting = Client.secretPacketBuffer2.method3070();
+            var3.interacting = Client.secretPacketBuffer2.readUnsignedShortOb2();
             if(var3.interacting == '\uffff') {
                var3.interacting = -1;
             }
          }
 
          if((var4 & 4) != 0) {
-            var3.graphic = Client.secretPacketBuffer2.method3023();
-            var5 = Client.secretPacketBuffer2.method3160();
+            var3.graphic = Client.secretPacketBuffer2.readUnsignedShortOb1();
+            var5 = Client.secretPacketBuffer2.readIntOb3();
             var3.field1239 = var5 >> 16;
             var3.field1248 = Client.gameCycle + (var5 & '\uffff');
             var3.field1221 = 0;
@@ -152,12 +152,12 @@ public class class1 {
          }
 
          if((var4 & 64) != 0) {
-            var5 = Client.secretPacketBuffer2.method3023();
+            var5 = Client.secretPacketBuffer2.readUnsignedShortOb1();
             if(var5 == '\uffff') {
                var5 = -1;
             }
 
-            var6 = Client.secretPacketBuffer2.method3201();
+            var6 = Client.secretPacketBuffer2.readUnsignedByteNegated();
             if(var5 == var3.animation && var5 != -1) {
                var7 = GameEngine.getAnimation(var5).replyMode;
                if(var7 == 1) {

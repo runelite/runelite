@@ -39,6 +39,6 @@ public class class169 {
       Client.secretPacketBuffer1.putOpcode(11);
       Client.secretPacketBuffer1.putByte(Friend.method1023(var0) + 1);
       Client.secretPacketBuffer1.method3125(var0);
-      Client.secretPacketBuffer1.method3059(var1);
+      Client.secretPacketBuffer1.putByteOb1(var1);
    }
 }

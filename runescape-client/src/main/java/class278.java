@@ -139,7 +139,7 @@ public class class278 {
                      Client.secretPacketBuffer1.putOpcode(49);
                      Client.secretPacketBuffer1.putShort(Friend.method1023(var7) + 1 + Friend.method1023(var13));
                      Client.secretPacketBuffer1.method3125(var13);
-                     Client.secretPacketBuffer1.method3196(var6);
+                     Client.secretPacketBuffer1.putByteNegated(var6);
                      Client.secretPacketBuffer1.method3125(var7);
                      return 1;
                   }
@@ -161,19 +161,19 @@ public class class278 {
                   if(var11 != null && class20.localPlayer != var11 && var11.name != null && var11.name.equalsIgnoreCase(var7)) {
                      if(var6 == 1) {
                         Client.secretPacketBuffer1.putOpcode(187);
-                        Client.secretPacketBuffer1.method3067(var8[var10]);
-                        Client.secretPacketBuffer1.method3059(0);
+                        Client.secretPacketBuffer1.putShortOb2(var8[var10]);
+                        Client.secretPacketBuffer1.putByteOb1(0);
                      } else if(var6 == 4) {
                         Client.secretPacketBuffer1.putOpcode(90);
-                        Client.secretPacketBuffer1.method3059(0);
-                        Client.secretPacketBuffer1.method3065(var8[var10]);
+                        Client.secretPacketBuffer1.putByteOb1(0);
+                        Client.secretPacketBuffer1.putShortLE(var8[var10]);
                      } else if(var6 == 6) {
                         Client.secretPacketBuffer1.putOpcode(196);
                         Client.secretPacketBuffer1.putShort(var8[var10]);
-                        Client.secretPacketBuffer1.method3069(0);
+                        Client.secretPacketBuffer1.readByteOb1(0);
                      } else if(var6 == 7) {
                         Client.secretPacketBuffer1.putOpcode(165);
-                        Client.secretPacketBuffer1.method3065(var8[var10]);
+                        Client.secretPacketBuffer1.putShortLE(var8[var10]);
                         Client.secretPacketBuffer1.putByte(0);
                      }
 

@@ -242,7 +242,7 @@ public class class208 extends class119 {
          }
       }
 
-      var0.method3031(var4.length);
+      var0.putShortSmart(var4.length);
       var0.offset += class265.field3660.method2963(var4, 0, var4.length, var0.payload, var0.offset);
       return var0.offset - var2;
    }

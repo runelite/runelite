@@ -108,9 +108,9 @@ public class class275 {
                               int var38 = class20.localPlayer.y - var24 >> 7;
                               Client.secretPacketBuffer1.putOpcode(220);
                               Client.secretPacketBuffer1.putByte(18);
-                              Client.secretPacketBuffer1.method3066(var39 + class19.baseX);
-                              Client.secretPacketBuffer1.method3066(var38 + class21.baseY);
-                              Client.secretPacketBuffer1.method3196(class50.field660[82]?(class50.field660[81]?2:1):0);
+                              Client.secretPacketBuffer1.putShortOb1(var39 + class19.baseX);
+                              Client.secretPacketBuffer1.putShortOb1(var38 + class21.baseY);
+                              Client.secretPacketBuffer1.putByteNegated(class50.field660[82]?(class50.field660[81]?2:1):0);
                               Client.secretPacketBuffer1.putByte(var26);
                               Client.secretPacketBuffer1.putByte(var25);
                               Client.secretPacketBuffer1.putShort(Client.mapAngle);
