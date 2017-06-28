@@ -98,11 +98,14 @@ class BoostsOverlay extends Overlay
 
 			graphics.setColor(Color.white);
 			Utilities.shadowString(graphics, skill.getName(), LEFT_BORDER, y + metrics.getHeight());
-			String str1 = boosted+"";
+			String str1 = boosted + "";
 			String str2 = "/" + base;
-			if(base < boosted){
+			if(base < boosted)
+			{
 				graphics.setColor(Color.GREEN);
-			} else {
+			}
+			else
+			{
 				graphics.setColor(Color.RED);
 			}
 			String str = boosted + "/" + base;
