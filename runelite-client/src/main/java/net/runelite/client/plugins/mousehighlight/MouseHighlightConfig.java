@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,9 +28,9 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-    keyName = "mousehighlight",
-	name = "Mouse Highlighting",
-	description = "Configuration for the Mouse Highlight plugin"
+		keyName	= "mousehighlight",
+		name = "Mouse Highlighting",
+		description = "Configuration for the mouse Highlight plugin"
 )
 public interface MouseHighlightConfig
 {

@@ -32,6 +32,7 @@ import java.awt.Graphics2D;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -63,7 +64,7 @@ class BoostsOverlay extends Overlay
 	{
 		Client client = RuneLite.getClient();
 
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled() || client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER) != null)
 			return null;
 		
 		FontMetrics metrics = graphics.getFontMetrics();
@@ -107,7 +108,6 @@ class BoostsOverlay extends Overlay
 			{
 				graphics.setColor(Color.RED);
 			}
-			String str = boosted + "/" + base;
 			OverlayUtil.shadowString(graphics, str1, WIDTH - RIGHT_BORDER - (metrics.stringWidth(str1) + metrics.stringWidth(str2)), y + metrics.getHeight());
 			graphics.setColor(Color.white);
 			OverlayUtil.shadowString(graphics, str2, WIDTH - RIGHT_BORDER - (metrics.stringWidth(str2)), y + metrics.getHeight());
