@@ -1,5 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hn")
+@ObfuscatedName("hi")
 public interface class218 extends RSEnum {
 }

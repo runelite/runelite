@@ -1,45 +1,74 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gj")
+@ObfuscatedName("gn")
 public final class class186 implements Iterable {
-   @ObfuscatedName("p")
-   int field2460;
-   @ObfuscatedName("m")
-   Node[] field2461;
-   @ObfuscatedName("t")
-   Node field2462;
-   @ObfuscatedName("e")
-   Node field2463;
+   @ObfuscatedName("s")
+   int field2451;
    @ObfuscatedName("w")
-   int field2464;
+   Node[] field2452;
+   @ObfuscatedName("a")
+   Node field2453;
+   @ObfuscatedName("t")
+   Node field2454;
+   @ObfuscatedName("i")
+   int field2455;
 
-   @ObfuscatedName("p")
-   public Node method3389(long var1) {
-      Node var3 = this.field2461[(int)(var1 & (long)(this.field2460 - 1))];
+   @ObfuscatedName("s")
+   public Node method3477() {
+      Node var1;
+      if(this.field2451 > 0 && this.field2454 != this.field2452[this.field2451 - 1]) {
+         var1 = this.field2454;
+         this.field2454 = var1.next;
+         return var1;
+      } else {
+         do {
+            if(this.field2451 >= this.field2455) {
+               return null;
+            }
 
-      for(this.field2463 = var3.next; this.field2463 != var3; this.field2463 = this.field2463.next) {
-         if(this.field2463.hash == var1) {
-            Node var4 = this.field2463;
-            this.field2463 = this.field2463.next;
+            var1 = this.field2452[this.field2451++].next;
+         } while(var1 == this.field2452[this.field2451 - 1]);
+
+         this.field2454 = var1.next;
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("i")
+   public Node method3478(long var1) {
+      Node var3 = this.field2452[(int)(var1 & (long)(this.field2455 - 1))];
+
+      for(this.field2453 = var3.next; this.field2453 != var3; this.field2453 = this.field2453.next) {
+         if(this.field2453.hash == var1) {
+            Node var4 = this.field2453;
+            this.field2453 = this.field2453.next;
             return var4;
          }
       }
 
-      this.field2463 = null;
+      this.field2453 = null;
       return null;
    }
 
-   @ObfuscatedName("t")
-   public Node method3390() {
-      this.field2464 = 0;
-      return this.method3392();
+   @ObfuscatedName("w")
+   public void method3479(Node var1, long var2) {
+      if(var1.previous != null) {
+         var1.unlink();
+      }
+
+      Node var4 = this.field2452[(int)(var2 & (long)(this.field2455 - 1))];
+      var1.previous = var4.previous;
+      var1.next = var4;
+      var1.previous.next = var1;
+      var1.next.previous = var1;
+      var1.hash = var2;
    }
 
-   @ObfuscatedName("e")
-   public void method3391() {
-      for(int var1 = 0; var1 < this.field2460; ++var1) {
-         Node var2 = this.field2461[var1];
+   @ObfuscatedName("a")
+   public void method3480() {
+      for(int var1 = 0; var1 < this.field2455; ++var1) {
+         Node var2 = this.field2452[var1];
 
          while(true) {
             Node var3 = var2.next;
@@ -51,29 +80,14 @@ public final class class186 implements Iterable {
          }
       }
 
-      this.field2463 = null;
-      this.field2462 = null;
+      this.field2453 = null;
+      this.field2454 = null;
    }
 
-   @ObfuscatedName("w")
-   public Node method3392() {
-      Node var1;
-      if(this.field2464 > 0 && this.field2462 != this.field2461[this.field2464 - 1]) {
-         var1 = this.field2462;
-         this.field2462 = var1.next;
-         return var1;
-      } else {
-         do {
-            if(this.field2464 >= this.field2460) {
-               return null;
-            }
-
-            var1 = this.field2461[this.field2464++].next;
-         } while(var1 == this.field2461[this.field2464 - 1]);
-
-         this.field2462 = var1.next;
-         return var1;
-      }
+   @ObfuscatedName("t")
+   public Node method3481() {
+      this.field2451 = 0;
+      return this.method3477();
    }
 
    public Iterator iterator() {
@@ -81,29 +95,15 @@ public final class class186 implements Iterable {
    }
 
    public class186(int var1) {
-      this.field2464 = 0;
-      this.field2460 = var1;
-      this.field2461 = new Node[var1];
+      this.field2451 = 0;
+      this.field2455 = var1;
+      this.field2452 = new Node[var1];
 
       for(int var2 = 0; var2 < var1; ++var2) {
-         Node var3 = this.field2461[var2] = new Node();
+         Node var3 = this.field2452[var2] = new Node();
          var3.next = var3;
          var3.previous = var3;
       }
 
-   }
-
-   @ObfuscatedName("m")
-   public void method3394(Node var1, long var2) {
-      if(var1.previous != null) {
-         var1.unlink();
-      }
-
-      Node var4 = this.field2461[(int)(var2 & (long)(this.field2460 - 1))];
-      var1.previous = var4.previous;
-      var1.next = var4;
-      var1.previous.next = var1;
-      var1.next.previous = var1;
-      var1.hash = var2;
    }
 }

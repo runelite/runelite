@@ -3,68 +3,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iz")
+@ObfuscatedName("ia")
 @Implements("FloorUnderlayDefinition")
 public class FloorUnderlayDefinition extends CacheableNode {
-   @ObfuscatedName("e")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1354291957
+      intValue = -1296539987
    )
-   int field3348;
-   @ObfuscatedName("m")
-   public static NodeCache field3349;
+   public int field3348;
    @ObfuscatedName("w")
+   static NodeCache field3349;
+   @ObfuscatedName("i")
+   static IndexDataBase field3350;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 404472127
+      intValue = -1365747369
    )
-   public int field3350;
-   @ObfuscatedName("z")
+   public int field3351;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1588248015
-   )
-   public int field3352;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1527384461
+      intValue = -595513481
    )
    public int field3353;
-   @ObfuscatedName("t")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -510444187
+      intValue = 916749019
    )
-   public int field3356;
+   public int field3354;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 2073712485
+   )
+   int field3355;
 
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "48"
-   )
-   void method4225() {
-      this.method4228(this.field3348);
+   FloorUnderlayDefinition() {
+      this.field3355 = 0;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(LBuffer;IB)V",
+      signature = "(LBuffer;III)V",
+      garbageValue = "1007376124"
+   )
+   void method4359(Buffer var1, int var2, int var3) {
+      if(var2 == 1) {
+         this.field3355 = var1.read24BitInt();
+      }
+
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
       garbageValue = "0"
    )
-   void method4226(Buffer var1, int var2) {
-      while(true) {
-         int var3 = var1.readUnsignedByte();
-         if(var3 == 0) {
-            return;
-         }
-
-         this.method4232(var1, var3, var2);
-      }
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "557796266"
-   )
-   void method4228(int var1) {
+   void method4360(int var1) {
       double var2 = (double)(var1 >> 16 & 255) / 256.0D;
       double var4 = (double)(var1 >> 8 & 255) / 256.0D;
       double var6 = (double)(var1 & 255) / 256.0D;
@@ -91,7 +84,7 @@ public class FloorUnderlayDefinition extends CacheableNode {
       double var16 = (var8 + var10) / 2.0D;
       if(var10 != var8) {
          if(var16 < 0.5D) {
-            var14 = (var10 - var8) / (var8 + var10);
+            var14 = (var10 - var8) / (var10 + var8);
          }
 
          if(var16 >= 0.5D) {
@@ -100,58 +93,67 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
          if(var2 == var10) {
             var12 = (var4 - var6) / (var10 - var8);
-         } else if(var4 == var10) {
-            var12 = (var6 - var2) / (var10 - var8) + 2.0D;
+         } else if(var10 == var4) {
+            var12 = 2.0D + (var6 - var2) / (var10 - var8);
          } else if(var6 == var10) {
-            var12 = 4.0D + (var2 - var4) / (var10 - var8);
+            var12 = (var2 - var4) / (var10 - var8) + 4.0D;
          }
       }
 
       var12 /= 6.0D;
-      this.field3350 = (int)(256.0D * var14);
-      this.field3352 = (int)(var16 * 256.0D);
-      if(this.field3350 < 0) {
-         this.field3350 = 0;
-      } else if(this.field3350 > 255) {
-         this.field3350 = 255;
+      this.field3348 = (int)(256.0D * var14);
+      this.field3353 = (int)(var16 * 256.0D);
+      if(this.field3348 < 0) {
+         this.field3348 = 0;
+      } else if(this.field3348 > 255) {
+         this.field3348 = 255;
       }
 
-      if(this.field3352 < 0) {
-         this.field3352 = 0;
-      } else if(this.field3352 > 255) {
-         this.field3352 = 255;
+      if(this.field3353 < 0) {
+         this.field3353 = 0;
+      } else if(this.field3353 > 255) {
+         this.field3353 = 255;
       }
 
       if(var16 > 0.5D) {
-         this.field3353 = (int)(512.0D * (1.0D - var16) * var14);
+         this.field3354 = (int)(var14 * (1.0D - var16) * 512.0D);
       } else {
-         this.field3353 = (int)(512.0D * var14 * var16);
+         this.field3354 = (int)(512.0D * var16 * var14);
       }
 
-      if(this.field3353 < 1) {
-         this.field3353 = 1;
+      if(this.field3354 < 1) {
+         this.field3354 = 1;
       }
 
-      this.field3356 = (int)(var12 * (double)this.field3353);
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;III)V",
-      garbageValue = "-1726503559"
-   )
-   void method4232(Buffer var1, int var2, int var3) {
-      if(var2 == 1) {
-         this.field3348 = var1.read24BitInt();
-      }
-
-   }
-
-   FloorUnderlayDefinition() {
-      this.field3348 = 0;
+      this.field3351 = (int)((double)this.field3354 * var12);
    }
 
    static {
       field3349 = new NodeCache(64);
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-452961936"
+   )
+   void method4368() {
+      this.method4360(this.field3355);
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;II)V",
+      garbageValue = "1080723488"
+   )
+   void method4378(Buffer var1, int var2) {
+      while(true) {
+         int var3 = var1.readUnsignedByte();
+         if(var3 == 0) {
+            return;
+         }
+
+         this.method4359(var1, var3, var2);
+      }
    }
 }

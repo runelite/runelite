@@ -1,67 +1,115 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("at")
+@ObfuscatedName("aj")
 public class class51 implements class103 {
-   @ObfuscatedName("a")
-   static class234 field668;
-   @ObfuscatedName("p")
-   static IndexDataBase field669;
+   @ObfuscatedName("hi")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "82"
+   )
+   static void method791() {
+      if(Client.field1082) {
+         Widget var0 = class202.method3650(class208.field2598, Client.field1158);
+         if(var0 != null && var0.field2746 != null) {
+            class69 var1 = new class69();
+            var1.field849 = var0;
+            var1.field857 = var0.field2746;
+            class14.method76(var1);
+         }
 
-   @ObfuscatedName("p")
+         Client.field1082 = false;
+         class88.method1714(var0);
+      }
+   }
+
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(B)Lclass109;",
-      garbageValue = "53"
+      garbageValue = "77"
    )
-   public class109 vmethod1820() {
+   public class109 vmethod1927() {
       return new class55();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(LModel;IB)V",
-      garbageValue = "19"
+      signature = "(I)V",
+      garbageValue = "1576687965"
    )
-   public static final void method731(Model var0, int var1) {
-      for(int var2 = 0; var2 < var0.field1930; ++var2) {
-         if(var0.field1964[var2] != -2) {
-            int var3 = var0.indices1[var2];
-            int var4 = var0.indices2[var2];
-            int var5 = var0.indices3[var2];
-            int var6 = Model.field1931[var3];
-            int var7 = Model.field1931[var4];
-            int var8 = Model.field1931[var5];
-            int var9 = Model.field1937[var3];
-            int var10 = Model.field1937[var4];
-            int var11 = Model.field1937[var5];
-            int var12 = Math.min(var6, Math.min(var7, var8)) - var1;
-            int var13 = Math.max(var6, Math.max(var7, var8)) + var1;
-            int var14 = Math.min(var9, Math.min(var10, var11)) - var1;
-            int var15 = Math.max(var9, Math.max(var10, var11)) + var1;
-            class266.method4731(var12, var14, var13, var15, -49088);
-         }
-      }
-
+   static void method794() {
+      class61.underlayIds = null;
+      class61.overlayIds = null;
+      class36.overlayPaths = null;
+      class67.overlayRotations = null;
+      class39.field555 = null;
+      class61.field771 = null;
+      class61.field774 = null;
+      class17.field316 = null;
+      class230.field3190 = null;
+      class10.field258 = null;
+      class158.field2273 = null;
+      Buffer.field2406 = null;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)LFrames;",
-      garbageValue = "1905306874"
+      signature = "(Ljava/lang/CharSequence;IZI)Z",
+      garbageValue = "-1679080523"
    )
-   @Export("getFrames")
-   static Frames getFrames(int var0) {
-      Frames var1 = (Frames)Sequence.field3606.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         var1 = class24.method197(Sequence.field3614, Sequence.field3609, var0, false);
-         if(var1 != null) {
-            Sequence.field3606.put(var1, (long)var0);
+   public static boolean method795(CharSequence var0, int var1, boolean var2) {
+      if(var1 >= 2 && var1 <= 36) {
+         boolean var3 = false;
+         boolean var4 = false;
+         int var5 = 0;
+         int var6 = var0.length();
+
+         for(int var7 = 0; var7 < var6; ++var7) {
+            char var8 = var0.charAt(var7);
+            if(var7 == 0) {
+               if(var8 == 45) {
+                  var3 = true;
+                  continue;
+               }
+
+               if(var8 == 43) {
+                  continue;
+               }
+            }
+
+            int var10;
+            if(var8 >= 48 && var8 <= 57) {
+               var10 = var8 - 48;
+            } else if(var8 >= 65 && var8 <= 90) {
+               var10 = var8 - 55;
+            } else {
+               if(var8 < 97 || var8 > 122) {
+                  return false;
+               }
+
+               var10 = var8 - 87;
+            }
+
+            if(var10 >= var1) {
+               return false;
+            }
+
+            if(var3) {
+               var10 = -var10;
+            }
+
+            int var9 = var10 + var5 * var1;
+            if(var5 != var9 / var1) {
+               return false;
+            }
+
+            var5 = var9;
+            var4 = true;
          }
 
-         return var1;
+         return var4;
+      } else {
+         throw new IllegalArgumentException("");
       }
    }
 }

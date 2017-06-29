@@ -1,27 +1,19 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gr")
+@ObfuscatedName("gx")
 public class class201 implements Iterable {
-   @ObfuscatedName("p")
-   public CacheableNode field2501;
+   @ObfuscatedName("i")
+   public CacheableNode field2492;
 
-   @ObfuscatedName("p")
-   public void method3555() {
-      while(this.field2501 != this.field2501.previous) {
-         this.field2501.previous.method3520();
-      }
-
-   }
-
-   @ObfuscatedName("m")
-   public void method3556(CacheableNode var1) {
+   @ObfuscatedName("w")
+   public void method3642(CacheableNode var1) {
       if(var1.next != null) {
-         var1.method3520();
+         var1.method3604();
       }
 
-      var1.next = this.field2501.next;
-      var1.previous = this.field2501;
+      var1.next = this.field2492.next;
+      var1.previous = this.field2492;
       var1.next.previous = var1;
       var1.previous.next = var1;
    }
@@ -31,8 +23,16 @@ public class class201 implements Iterable {
    }
 
    public class201() {
-      this.field2501 = new CacheableNode();
-      this.field2501.previous = this.field2501;
-      this.field2501.next = this.field2501;
+      this.field2492 = new CacheableNode();
+      this.field2492.previous = this.field2492;
+      this.field2492.next = this.field2492;
+   }
+
+   @ObfuscatedName("i")
+   public void method3645() {
+      while(this.field2492 != this.field2492.previous) {
+         this.field2492.previous.method3604();
+      }
+
    }
 }

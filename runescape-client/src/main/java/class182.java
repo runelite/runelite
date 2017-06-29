@@ -4,36 +4,44 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gq")
+@ObfuscatedName("gr")
 public class class182 {
-   @ObfuscatedName("m")
-   static final String[] field2452;
-   @ObfuscatedName("e")
-   static Calendar field2453;
-   @ObfuscatedName("f")
+   @ObfuscatedName("go")
+   static SpritePixels[] field2442;
+   @ObfuscatedName("w")
+   public static final String[] field2443;
+   @ObfuscatedName("i")
+   public static final String[][] field2444;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1627321657
+      intValue = 1086760671
    )
-   public static int field2455;
-   @ObfuscatedName("p")
-   static final String[][] field2456;
+   public static int field2445;
+   @ObfuscatedName("a")
+   public static Calendar field2446;
 
-   @ObfuscatedName("hf")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IIIIIIIB)V",
-      garbageValue = "55"
+      signature = "(II)V",
+      garbageValue = "-586816226"
    )
-   static final void method3330(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if(class59.method961(var0)) {
-         class275.method4791(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6);
-      }
-
+   static final void method3430(int var0) {
+      class134.field2011[++class134.field2010 - 1] = var0;
    }
 
    static {
-      field2456 = new String[][]{{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, {"Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"}};
-      field2452 = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+      field2444 = new String[][]{{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, {"Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"}};
+      field2443 = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
       Calendar.getInstance(TimeZone.getTimeZone("Europe/London"));
-      field2453 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+      field2446 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(I)[Lclass228;",
+      garbageValue = "-1276316221"
+   )
+   public static class228[] method3431() {
+      return new class228[]{class228.field3157, class228.field3163, class228.field3165, class228.field3164, class228.field3161, class228.field3158, class228.field3162, class228.field3160};
    }
 }

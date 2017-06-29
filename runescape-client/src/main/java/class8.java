@@ -2,72 +2,73 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("f")
+@ObfuscatedName("j")
 public final class class8 extends class9 {
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 480848205
-   )
-   final int field243;
-   @ObfuscatedName("c")
-   static IndexDataBase field244;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1299512575
-   )
-   final int field245;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 668353969
+      intValue = -358101561
    )
-   final int field246;
-   @ObfuscatedName("e")
+   final int field240;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 145028369
+      intValue = -1660793731
    )
-   final int field247;
+   final int field242;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 1436936651
+   )
+   final int field243;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -2075352045
+   )
+   final int field244;
    @ObfuscatedName("i")
-   public static short[][] field249;
-   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1233833441
+      intValue = 95643145
    )
-   final int field251;
+   final int field245;
+   @ObfuscatedName("gk")
+   static ModIcon[] field246;
+   @ObfuscatedName("re")
+   static Preferences field247;
 
-   @ObfuscatedName("jm")
-   @ObfuscatedSignature(
-      signature = "(LWidget;II)Ljava/lang/String;",
-      garbageValue = "-1592171908"
-   )
-   static String method40(Widget var0, int var1) {
-      int var2 = class15.method92(var0);
-      boolean var3 = (var2 >> var1 + 1 & 1) != 0;
-      return !var3 && var0.field2657 == null?null:(var0.actions != null && var0.actions.length > var1 && var0.actions[var1] != null && var0.actions[var1].trim().length() != 0?var0.actions[var1]:null);
+   public class8(int var1, int var2, int var3, int var4, int var5) {
+      this.field245 = var1;
+      this.field240 = var2;
+      this.field242 = var3;
+      this.field243 = var4;
+      this.field244 = var5;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-4"
+      signature = "(LIndexDataBase;IIS)[LSpritePixels;",
+      garbageValue = "9254"
    )
-   public final void vmethod55() {
-      Rasterizer2D.method4888(this.field251 + Rasterizer2D.field3752, this.field243 + Rasterizer2D.drawingAreaTop, this.field247 - this.field251, this.field245 - this.field243, this.field246);
+   static SpritePixels[] method43(IndexDataBase var0, int var1, int var2) {
+      return !class223.method4073(var0, var1, var2)?null:FileOnDisk.method2382();
    }
 
-   class8(int var1, int var2, int var3, int var4, int var5) {
-      this.field251 = var1;
-      this.field243 = var2;
-      this.field247 = var3;
-      this.field245 = var4;
-      this.field246 = var5;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-935931769"
+   )
+   static void method44() {
+      class98.chatLineMap.clear();
+      class98.field1546.method3480();
+      class98.field1548.method3645();
+      class98.field1549 = 0;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/Throwable;I)V",
-      garbageValue = "-764108374"
+      signature = "(I)V",
+      garbageValue = "366399750"
    )
-   public static void method43(String var0, Throwable var1) {
-      var1.printStackTrace();
+   final void vmethod50() {
+      Rasterizer2D.method4958(this.field245 + Rasterizer2D.field3761, this.field240 + Rasterizer2D.drawingAreaTop, this.field242 - this.field245, this.field243 - this.field240, this.field244);
    }
 }

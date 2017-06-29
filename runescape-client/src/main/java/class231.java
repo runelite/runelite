@@ -2,37 +2,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hk")
+@ObfuscatedName("hm")
 public class class231 {
-   @ObfuscatedName("t")
-   static final class231 field3190;
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    static final class231 field3191;
-   @ObfuscatedName("p")
-   static final class231 field3192;
    @ObfuscatedName("w")
+   static final class231 field3192;
+   @ObfuscatedName("i")
+   static final class231 field3193;
+   @ObfuscatedName("s")
    public final String field3194;
-   @ObfuscatedName("z")
+   @ObfuscatedName("t")
+   static final class231 field3195;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -405656807
+      intValue = -892837143
    )
-   public final int field3195;
-   @ObfuscatedName("e")
-   static final class231 field3198;
+   public final int field3196;
 
-   @ObfuscatedName("e")
+   static {
+      field3193 = new class231("LIVE", 0);
+      field3192 = new class231("BUILDLIVE", 3);
+      field3191 = new class231("RC", 1);
+      field3195 = new class231("WIP", 2);
+   }
+
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "688824008"
+      signature = "(B)V",
+      garbageValue = "-22"
    )
-   public static int method3979(int var0) {
-      --var0;
-      var0 |= var0 >>> 1;
-      var0 |= var0 >>> 2;
-      var0 |= var0 >>> 4;
-      var0 |= var0 >>> 8;
-      var0 |= var0 >>> 16;
-      return var0 + 1;
+   public static void method4105() {
+      if(class238.field3272 != null) {
+         class238.field3272.close();
+      }
+
    }
 
    @ObfuscatedSignature(
@@ -41,13 +45,6 @@ public class class231 {
    )
    class231(String var1, int var2) {
       this.field3194 = var1;
-      this.field3195 = var2;
-   }
-
-   static {
-      field3192 = new class231("LIVE", 0);
-      field3191 = new class231("BUILDLIVE", 3);
-      field3198 = new class231("RC", 1);
-      field3190 = new class231("WIP", 2);
+      this.field3196 = var2;
    }
 }

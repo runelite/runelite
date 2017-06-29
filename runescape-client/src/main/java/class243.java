@@ -1,50 +1,64 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iq")
+@ObfuscatedName("if")
 public class class243 extends CacheableNode {
-   @ObfuscatedName("e")
-   public boolean field3320;
-   @ObfuscatedName("p")
-   public static IndexDataBase field3321;
-   @ObfuscatedName("m")
-   static NodeCache field3322;
-   @ObfuscatedName("kt")
-   static class89 field3325;
+   @ObfuscatedName("w")
+   public static NodeCache field3317;
+   @ObfuscatedName("a")
+   public boolean field3318;
+   @ObfuscatedName("i")
+   public static IndexDataBase field3319;
 
-   class243() {
-      this.field3320 = false;
-   }
-
-   @ObfuscatedName("e")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "1470307926"
+      signature = "(II)V",
+      garbageValue = "-1637927214"
    )
-   void method4192(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.field3320 = true;
+   static void method4314(int var0) {
+      XItemContainer var1 = (XItemContainer)XItemContainer.itemContainers.method3530((long)var0);
+      if(var1 != null) {
+         for(int var2 = 0; var2 < var1.itemIds.length; ++var2) {
+            var1.itemIds[var2] = -1;
+            var1.stackSizes[var2] = 0;
+         }
+
       }
-
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
-      garbageValue = "34"
+      signature = "(LBuffer;I)V",
+      garbageValue = "1146509481"
    )
-   void method4200(Buffer var1) {
+   public void method4315(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4192(var1, var2);
+         this.method4318(var1, var2);
       }
    }
 
    static {
-      field3322 = new NodeCache(64);
+      field3317 = new NodeCache(64);
+   }
+
+   public class243() {
+      this.field3318 = false;
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;IB)V",
+      garbageValue = "16"
+   )
+   void method4318(Buffer var1, int var2) {
+      if(var2 == 2) {
+         this.field3318 = true;
+      }
+
    }
 }
