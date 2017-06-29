@@ -69,6 +69,8 @@ public class Mapper
 		mapMemberMethods(finalm);
 
 		new ConstructorMapper(source, target, finalm).mapConstructors();
+		
+		finalm.reduce();
 
 		mapping = finalm;
 	}
