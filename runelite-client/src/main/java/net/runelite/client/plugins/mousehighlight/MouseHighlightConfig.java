@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.mousehighlight;
 
-package net.runelite.client.plugins.boosts;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
-
-public class Boosts extends Plugin
+@ConfigGroup(
+	keyName = "mousehighlight",
+	name = "Mouse Highlighting",
+	description = "Configuration for the mouse Highlight plugin"
+)
+public interface MouseHighlightConfig
 {
-	private final BoostsConfig config = RuneLite.getRunelite().getConfigManager().getConfig(BoostsConfig.class);
-	private final Overlay overlay = new BoostsOverlay(this);
-
-	@Override
-	public Overlay getOverlay()
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Configures whether or not mouse hover info is displayed"
+	)
+	default boolean enabled()
 	{
-		return overlay;
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public BoostsConfig getConfig()
-	{
-		return config;
+		return true;
 	}
 }
