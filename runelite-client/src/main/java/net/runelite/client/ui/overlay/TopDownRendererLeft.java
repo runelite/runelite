@@ -35,7 +35,7 @@ public class TopDownRendererLeft implements Renderer
 {
 	private static final int BORDER_TOP = 25;
 	private static final int BORDER_LEFT = 10;
-	private static final int PADDING = 10;
+	private static final int PADDING = 5;
 
 	private final List<Overlay> overlays = new ArrayList<>();
 

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.boosts;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.opponentinfo.OpponentConfig;
 import net.runelite.client.ui.overlay.Overlay;
 
 public class Boosts extends Plugin

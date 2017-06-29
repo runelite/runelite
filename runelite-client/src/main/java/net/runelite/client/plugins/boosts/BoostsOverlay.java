@@ -32,16 +32,18 @@ import java.awt.Graphics2D;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class BoostsOverlay extends Overlay
 {
 	private static final int WIDTH = 140;
 
-	private static final Color BACKGROUND = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
+	private static final Color BACKGROUND = new Color(75, 67, 54, 200);
 
 	private static final Skill[] SHOW = new Skill[] { Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.MAGIC };
 
@@ -66,6 +68,11 @@ class BoostsOverlay extends Overlay
 
 		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
 			return null;
+
+		if (client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER) != null)
+		{
+			return null;
+		}
 		
 		FontMetrics metrics = graphics.getFontMetrics();
 
@@ -85,9 +92,9 @@ class BoostsOverlay extends Overlay
 			return null;
 
 		graphics.setColor(BACKGROUND);
-		graphics.fillRect(0, 0, WIDTH, height);
+		OverlayUtil.fillRect(graphics,0, 0, WIDTH, height);
 
-		int y = TOP_BORDER;
+		int y = 0;
 		for (Skill skill : SHOW)
 		{
 			int boosted = client.getBoostedSkillLevel(skill),
@@ -97,11 +104,20 @@ class BoostsOverlay extends Overlay
 				continue;
 
 			graphics.setColor(Color.white);
-			graphics.drawString(skill.getName(), LEFT_BORDER, y + metrics.getHeight());
-
-			String str = boosted + "/" + base;
-			graphics.drawString(str, WIDTH - RIGHT_BORDER - metrics.stringWidth(str), y + metrics.getHeight());
-
+			OverlayUtil.shadowString(graphics, skill.getName(), LEFT_BORDER, y + metrics.getHeight());
+			String str1 = boosted + "";
+			String str2 = "/" + base;
+			if (base < boosted)
+			{
+				graphics.setColor(Color.GREEN);
+			}
+			else
+			{
+				graphics.setColor(Color.RED);
+			}
+			OverlayUtil.shadowString(graphics, str1, WIDTH - RIGHT_BORDER - (metrics.stringWidth(str1) + metrics.stringWidth(str2)), y + metrics.getHeight());
+			graphics.setColor(Color.white);
+			OverlayUtil.shadowString(graphics, str2, WIDTH - RIGHT_BORDER - (metrics.stringWidth(str2)), y + metrics.getHeight());
 			y += metrics.getHeight() + SEPARATOR;
 		}
 

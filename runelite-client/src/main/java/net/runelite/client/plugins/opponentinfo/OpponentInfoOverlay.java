@@ -36,6 +36,8 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
+
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
@@ -48,12 +50,12 @@ class OpponentInfoOverlay extends Overlay
 	private static final int TOP_BORDER = 2;
 	private static final int BOTTOM_BORDER = 2;
 
-	private static final int BAR_WIDTH = 124;
-	private static final int BAR_HEIGHT = 20;
+	private static final int BAR_WIDTH = 135;
+	private static final int BAR_HEIGHT = 16;
 
-	private static final Color BACKGROUND = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
-	private static final Color HP_GREEN = new Color(0, 146, 54, 230);
-	private static final Color HP_RED = new Color(102, 15, 16, 230);
+	private static final Color BACKGROUND = new Color(75, 67, 54, 200);
+	private static final Color HP_GREEN = new Color(53, 128, 42, 255);
+	private static final Color HP_RED = new Color(135, 50, 43, 255);
 
 	private static final Duration WAIT = Duration.ofSeconds(3);
 
@@ -87,7 +89,7 @@ class OpponentInfoOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (RuneLite.getClient().getGameState() != GameState.LOGGED_IN || config.enabled() == false)
+		if (RuneLite.getClient().getGameState() != GameState.LOGGED_IN || !config.enabled())
 		{
 			return null;
 		}
@@ -117,22 +119,22 @@ class OpponentInfoOverlay extends Overlay
 		height += BOTTOM_BORDER;
 
 		graphics.setColor(BACKGROUND);
-		graphics.fillRect(0, 0, WIDTH, height);
+		OverlayUtil.fillRect(graphics,0, 0, WIDTH, height);
 
 		int x = (WIDTH - fm.stringWidth(opponentName)) / 2;
 		graphics.setColor(Color.white);
-		graphics.drawString(opponentName, x, fm.getHeight() + TOP_BORDER);
+		OverlayUtil.shadowString(graphics, opponentName, x, fm.getAscent() + TOP_BORDER);
 
 		if (lastRatio >= 0)
 		{
 			int barWidth = (int) (lastRatio * (float) BAR_WIDTH);
-			int barY = TOP_BORDER + fm.getHeight() + 1;
+			int barY = TOP_BORDER + fm.getHeight() + TOP_BORDER;
 
 			graphics.setColor(HP_GREEN);
-			graphics.fillRect((WIDTH - BAR_WIDTH) / 2, barY, barWidth, BAR_HEIGHT);
+			graphics.fillRect((WIDTH - BAR_WIDTH) / 2 + 1, barY, barWidth, BAR_HEIGHT);
 
 			graphics.setColor(HP_RED);
-			graphics.fillRect(((WIDTH - BAR_WIDTH) / 2) + barWidth, barY, BAR_WIDTH - barWidth, BAR_HEIGHT);
+			graphics.fillRect(((WIDTH - BAR_WIDTH) / 2) + barWidth + 1, barY, BAR_WIDTH - barWidth, BAR_HEIGHT);
 
 			graphics.setColor(Color.white);
 
@@ -148,7 +150,7 @@ class OpponentInfoOverlay extends Overlay
 				str = df.format(lastRatio * 100) + "%";
 			}
 
-			graphics.drawString(str, (WIDTH - fm.stringWidth(str)) / 2, barY + fm.getHeight());
+			OverlayUtil.shadowString(graphics, str, (WIDTH - fm.stringWidth(str)) / 2, barY + fm.getAscent());
 		}
 
 		return new Dimension(WIDTH, height);

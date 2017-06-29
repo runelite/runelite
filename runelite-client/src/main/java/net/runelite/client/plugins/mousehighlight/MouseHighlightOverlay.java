@@ -36,6 +36,7 @@ import net.runelite.api.Point;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class MouseHighlightOverlay extends Overlay
 {
@@ -125,25 +126,22 @@ class MouseHighlightOverlay extends Overlay
 			y = 0;
 		}
 
-		Color gray = new Color(Color.darkGray.getRed(), Color.darkGray.getGreen(), Color.darkGray.getBlue(), 190);
+		Color gray = new Color(75, 67, 54, 200);
 		graphics.setColor(gray);
 
-		// Draws the background rect
-		graphics.fillRect(x, y - (height / 2), total_width + 6, height);
+		// Draws the rect
+		OverlayUtil.fillRect(graphics, x, y - (height / 2), total_width + 6, height);
 
-		// Draws the outline of the rect
-		graphics.setColor(Color.cyan);
-		graphics.drawRect(x, y - (height / 2), total_width + 6, height);
 		x += 3;
 		y += 5;
 
 		graphics.setColor(Color.white);
 		// Draws the option (Use, Walk here, Wield)
-		graphics.drawString(option + " ", x, y);
+		OverlayUtil.shadowString(graphics, option + " ", x, y);
 		// Sets the string colour to the colour the game uses.
 		graphics.setColor(hex2rgb(colour));
 		// Draws the target (Player, item)
-		graphics.drawString(matchedTarget, x + option_width, y);
+		OverlayUtil.shadowString(graphics, matchedTarget, x + option_width, y);
 
 		return null;
 	}

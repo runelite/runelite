@@ -24,10 +24,8 @@
  */
 package net.runelite.client.ui.overlay;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
+import java.awt.*;
+
 import net.runelite.api.Actor;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
@@ -108,6 +106,42 @@ public class OverlayUtil
 		{
 			renderTextLocation(graphics, textLocation, text, color);
 		}
+	}
+
+	public static void fillRect(Graphics g, int x, int y, int w, int h)
+	{
+		Color color = g.getColor();
+		//Rect
+		g.setColor(color);
+		g.fillRect(x, y, w, h);
+		//Outline
+		g.setColor(color.darker());
+		g.drawRect(x, y, w, h);
+	}
+
+	public static void outlineString(Graphics g, String text, int x, int y)
+	{
+		Color color = g.getColor();
+		//Outline
+		g.setColor(Color.BLACK);
+		g.drawString(text, x + 1, y + 1);
+		g.drawString(text, x - 1, y - 1);
+		g.drawString(text, x + 1, y - 1);
+		g.drawString(text, x - 1, y + 1);
+		//String
+		g.setColor(color);
+		g.drawString(text, x, y);
+	}
+
+	public static void shadowString(Graphics g, String text, int x, int y)
+	{
+		Color color = g.getColor();
+		//Shadow
+		g.setColor(Color.BLACK);
+		g.drawString(text, x + 1, y + 1);
+		//String
+		g.setColor(color);
+		g.drawString(text, x, y);
 	}
 
 }
