@@ -2,52 +2,68 @@ import java.util.HashMap;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jl")
+@ObfuscatedName("jo")
 public class class262 {
-   @ObfuscatedName("p")
-   IndexDataBase field3633;
-   @ObfuscatedName("m")
-   IndexDataBase field3634;
-   @ObfuscatedName("e")
-   HashMap field3635;
+   @ObfuscatedName("i")
+   IndexDataBase field3636;
+   @ObfuscatedName("w")
+   IndexDataBase field3637;
+   @ObfuscatedName("a")
+   HashMap field3638;
+   @ObfuscatedName("gc")
+   static ModIcon[] field3639;
+   @ObfuscatedName("lp")
+   static Widget[] field3641;
 
-   @ObfuscatedName("p")
+   public class262(IndexDataBase var1, IndexDataBase var2) {
+      this.field3636 = var1;
+      this.field3637 = var2;
+      this.field3638 = new HashMap();
+   }
+
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "([Lclass261;I)Ljava/util/HashMap;",
-      garbageValue = "-1455620912"
+      signature = "([Lclass261;B)Ljava/util/HashMap;",
+      garbageValue = "65"
    )
-   public HashMap method4611(class261[] var1) {
+   public HashMap method4737(class261[] var1) {
       HashMap var2 = new HashMap();
       class261[] var3 = var1;
 
       for(int var4 = 0; var4 < var3.length; ++var4) {
          class261 var5 = var3[var4];
-         if(this.field3635.containsKey(var5)) {
-            var2.put(var5, this.field3635.get(var5));
+         if(this.field3638.containsKey(var5)) {
+            var2.put(var5, this.field3638.get(var5));
          } else {
-            Font var6 = class220.method3950(this.field3633, this.field3634, var5.field3629, "");
-            if(var6 != null) {
-               this.field3635.put(var5, var6);
-               var2.put(var5, var6);
+            IndexDataBase var7 = this.field3636;
+            IndexDataBase var8 = this.field3637;
+            String var9 = var5.field3631;
+            int var10 = var7.method4146(var9);
+            int var11 = var7.method4131(var10, "");
+            Font var12;
+            if(!class223.method4073(var7, var10, var11)) {
+               var12 = null;
+            } else {
+               byte[] var14 = var8.getConfigData(var10, var11);
+               Font var13;
+               if(var14 == null) {
+                  var13 = null;
+               } else {
+                  Font var15 = new Font(var14, class286.field3799, class286.field3800, class7.field239, class226.field3146, class278.field3745, class210.field2609);
+                  XGrandExchangeOffer.method113();
+                  var13 = var15;
+               }
+
+               var12 = var13;
+            }
+
+            if(var12 != null) {
+               this.field3638.put(var5, var12);
+               var2.put(var5, var12);
             }
          }
       }
 
       return var2;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;III)LSpritePixels;",
-      garbageValue = "25042700"
-   )
-   public static SpritePixels method4613(IndexDataBase var0, int var1, int var2) {
-      return !class1.method3(var0, var1, var2)?null:XClanMember.method1098();
-   }
-
-   public class262(IndexDataBase var1, IndexDataBase var2) {
-      this.field3633 = var1;
-      this.field3634 = var2;
-      this.field3635 = new HashMap();
    }
 }

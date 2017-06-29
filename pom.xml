@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.1.31-SNAPSHOT</version>
+	<version>1.1.32-SNAPSHOT</version>
 	<name>Runelite</name>
 	<packaging>pom</packaging>
 
@@ -41,7 +41,7 @@
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
 
-		<rs.version>145</rs.version>
+		<rs.version>148</rs.version>
 	</properties>
 
 	<scm>
@@ -87,6 +87,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.20</version>
 				<configuration>
 					<enableAssertions>true</enableAssertions>
 					<argLine>-Xmx512m</argLine>
@@ -102,6 +103,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.4</version>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -114,6 +116,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.17</version>
 				<executions>
 					<execution>
 						<id>verify-style</id>

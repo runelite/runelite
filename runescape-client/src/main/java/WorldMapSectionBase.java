@@ -2,48 +2,48 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aq")
+@ObfuscatedName("aa")
 @Implements("WorldMapSectionBase")
 public interface WorldMapSectionBase {
-   @ObfuscatedName("p")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LWorldMapData;I)V",
-      garbageValue = "-466828627"
+      signature = "(III)Z",
+      garbageValue = "202348652"
    )
-   void vmethod680(WorldMapData var1);
+   boolean vmethod754(int var1, int var2);
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(IIII)[I",
-      garbageValue = "630255391"
+      garbageValue = "1509988890"
    )
-   int[] vmethod682(int var1, int var2, int var3);
+   int[] vmethod730(int var1, int var2, int var3);
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;I)V",
+      garbageValue = "618655756"
+   )
+   void vmethod732(Buffer var1);
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(LWorldMapData;I)V",
+      garbageValue = "98017718"
+   )
+   void vmethod753(WorldMapData var1);
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(III)LCoordinates;",
+      garbageValue = "-2079571098"
+   )
+   Coordinates vmethod731(int var1, int var2);
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(III)LCoordinates;",
-      garbageValue = "-1537373407"
-   )
-   Coordinates vmethod685(int var1, int var2);
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "-1315256502"
-   )
-   void vmethod684(Buffer var1);
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "108"
-   )
-   boolean vmethod679(int var1, int var2);
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
       signature = "(IIII)Z",
-      garbageValue = "-2095092414"
+      garbageValue = "998947175"
    )
-   boolean vmethod678(int var1, int var2, int var3);
+   boolean vmethod728(int var1, int var2, int var3);
 }

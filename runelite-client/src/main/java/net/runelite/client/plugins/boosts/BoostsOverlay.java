@@ -50,9 +50,11 @@ class BoostsOverlay extends Overlay
 	private static final int TOP_BORDER = 2;
 	private static final int LEFT_BORDER = 2;
 	private static final int RIGHT_BORDER = 2;
-	private final BoostsConfig config;
+
 	private static final int SEPARATOR = 2;
-	
+
+	private final BoostsConfig config;
+
 	BoostsOverlay(Boosts plugin)
 	{
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.MED);
@@ -64,8 +66,13 @@ class BoostsOverlay extends Overlay
 	{
 		Client client = RuneLite.getClient();
 
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled() || client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER) != null)
+		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
 			return null;
+
+		if (client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER) != null)
+		{
+			return null;
+		}
 		
 		FontMetrics metrics = graphics.getFontMetrics();
 

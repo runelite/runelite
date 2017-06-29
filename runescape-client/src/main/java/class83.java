@@ -3,69 +3,68 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("co")
+@ObfuscatedName("ck")
 public class class83 {
+   @ObfuscatedName("o")
+   @Export("scriptStack")
+   static ScriptState[] scriptStack;
    @ObfuscatedName("t")
    @Export("scriptLocalStrings")
    static String[] scriptLocalStrings;
-   @ObfuscatedName("w")
-   static int[] field1327;
-   @ObfuscatedName("g")
-   static Calendar field1328;
-   @ObfuscatedName("j")
+   @ObfuscatedName("s")
+   static int[] field1358;
+   @ObfuscatedName("m")
+   static final String[] field1359;
+   @ObfuscatedName("v")
    @Export("intStack")
    static int[] intStack;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 506278977
-   )
-   @Export("intStackSize")
-   static int intStackSize;
-   @ObfuscatedName("f")
+   @ObfuscatedName("j")
    @Export("scriptStringStack")
    static String[] scriptStringStack;
-   @ObfuscatedName("o")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -834739151
+      intValue = 96172915
    )
    @Export("scriptStackCount")
    static int scriptStackCount;
-   @ObfuscatedName("q")
-   @Export("scriptStack")
-   static ScriptState[] scriptStack;
-   @ObfuscatedName("z")
-   static int[][] field1334;
-   @ObfuscatedName("v")
-   static final String[] field1335;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 2004309725
-   )
-   static int field1336;
-   @ObfuscatedName("e")
+   @ObfuscatedName("r")
+   static int[][] field1363;
+   @ObfuscatedName("l")
+   static Widget field1364;
+   @ObfuscatedName("c")
+   static Calendar field1365;
+   @ObfuscatedName("a")
    @Export("scriptLocalInts")
    static int[] scriptLocalInts;
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)Ljava/lang/Class;",
-      garbageValue = "5"
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1498047889
    )
-   public static Class method1560(String var0) throws ClassNotFoundException {
-      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
-   }
+   static int field1367;
+   @ObfuscatedName("y")
+   static ModIcon field1369;
+   @ObfuscatedName("q")
+   static int[] field1370;
 
    static {
-      field1327 = new int[5];
-      field1334 = new int[5][5000];
+      field1358 = new int[5];
+      field1363 = new int[5][5000];
       intStack = new int[1000];
       scriptStringStack = new String[1000];
       scriptStackCount = 0;
       scriptStack = new ScriptState[50];
-      field1328 = Calendar.getInstance();
-      field1335 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-      field1336 = 0;
+      field1365 = Calendar.getInstance();
+      field1359 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+      field1367 = 0;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1956252938"
+   )
+   public static void method1674(int var0) {
+      class59.mouseIdleTicks = var0;
    }
 }

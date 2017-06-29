@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.1.31-SNAPSHOT</version>
+		<version>1.1.32-SNAPSHOT</version>
 	</parent>
 
 	<groupId>net.runelite</groupId>
@@ -115,16 +115,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<configuration>
-					<nonFilteredFileExtensions>
-						<nonFilteredFileExtension>jar</nonFilteredFileExtension>
-					</nonFilteredFileExtensions>
-					<encoding>UTF-8</encoding>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

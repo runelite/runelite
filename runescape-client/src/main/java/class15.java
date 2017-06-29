@@ -1,110 +1,153 @@
-import java.awt.Component;
 import java.util.Comparator;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("v")
+@ObfuscatedName("m")
 final class class15 implements Comparator {
-   @ObfuscatedName("gj")
-   static SpritePixels field300;
-   @ObfuscatedName("lw")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -94330985
+      intValue = 2048602787
    )
-   static int field303;
+   static int field294;
+   @ObfuscatedName("rs")
+   static short[] field296;
+   @ObfuscatedName("i")
+   static IndexDataBase field298;
 
-   @ObfuscatedName("jr")
+   @ObfuscatedName("ge")
    @ObfuscatedSignature(
-      signature = "(LWidget;I)I",
-      garbageValue = "1273903805"
+      signature = "(IIIIIIIIIB)V",
+      garbageValue = "3"
    )
-   static int method92(Widget var0) {
-      class198 var1 = (class198)Client.widgetFlags.method3425((long)var0.index + ((long)var0.id << 32));
-      return var1 != null?var1.field2496:var0.field2650;
+   static final void method79(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      PendingSpawn var9 = null;
+
+      for(PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.method3584(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.method3578()) {
+         if(var0 == var10.level && var1 == var10.x && var2 == var10.y && var3 == var10.type) {
+            var9 = var10;
+            break;
+         }
+      }
+
+      if(var9 == null) {
+         var9 = new PendingSpawn();
+         var9.level = var0;
+         var9.type = var3;
+         var9.x = var1;
+         var9.y = var2;
+         class3.method10(var9);
+         Client.pendingSpawns.method3603(var9);
+      }
+
+      var9.id = var4;
+      var9.field1223 = var5;
+      var9.orientation = var6;
+      var9.delay = var7;
+      var9.hitpoints = var8;
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method100((class14)var1, (class14)var2);
+      return this.method83((class14)var1, (class14)var2);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lclass14;Lclass14;B)I",
+      garbageValue = "-74"
+   )
+   int method83(class14 var1, class14 var2) {
+      return var1.field285.totalQuantity < var2.field285.totalQuantity?-1:(var2.field285.totalQuantity == var1.field285.totalQuantity?0:1);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("fi")
    @ObfuscatedSignature(
-      signature = "(Lclass14;Lclass14;I)I",
-      garbageValue = "-1966408094"
+      signature = "(II)V",
+      garbageValue = "-1542283489"
    )
-   int method100(class14 var1, class14 var2) {
-      return var1.field292.totalQuantity < var2.field292.totalQuantity?-1:(var2.field292.totalQuantity == var1.field292.totalQuantity?0:1);
-   }
+   static void method86(int var0) {
+      if(var0 == -3) {
+         class13.method64("Connection timed out.", "Please try using a different world.", "");
+      } else if(var0 == -2) {
+         class13.method64("", "Error connecting to server.", "");
+      } else if(var0 == -1) {
+         class13.method64("No response from server.", "Please try using a different world.", "");
+      } else if(var0 == 3) {
+         class92.loginIndex = 3;
+      } else if(var0 == 4) {
+         class13.method64("Your account has been disabled.", "Please check your message-centre for details.", "");
+      } else if(var0 == 5) {
+         class13.method64("Your account has not logged out from its last", "session or the server is too busy right now.", "Please try again in a few minutes.");
+      } else if(var0 == 6) {
+         class13.method64("RuneScape has been updated!", "Please reload this page.", "");
+      } else if(var0 == 7) {
+         class13.method64("This world is full.", "Please use a different world.", "");
+      } else if(var0 == 8) {
+         class13.method64("Unable to connect.", "Login server offline.", "");
+      } else if(var0 == 9) {
+         class13.method64("Login limit exceeded.", "Too many connections from your address.", "");
+      } else if(var0 == 10) {
+         class13.method64("Unable to connect.", "Bad session id.", "");
+      } else if(var0 == 11) {
+         class13.method64("We suspect someone knows your password.", "Press \'change your password\' on front page.", "");
+      } else if(var0 == 12) {
+         class13.method64("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
+      } else if(var0 == 13) {
+         class13.method64("Could not complete login.", "Please try using a different world.", "");
+      } else if(var0 == 14) {
+         class13.method64("The server is being updated.", "Please wait 1 minute and try again.", "");
+      } else if(var0 == 16) {
+         class13.method64("Too many login attempts.", "Please wait a few minutes before trying again.", "");
+      } else if(var0 == 17) {
+         class13.method64("You are standing in a members-only area.", "To play on this world move to a free area first", "");
+      } else if(var0 == 18) {
+         class13.method64("Account locked as we suspect it has been stolen.", "Press \'recover a locked account\' on front page.", "");
+      } else if(var0 == 19) {
+         class13.method64("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
+      } else if(var0 == 20) {
+         class13.method64("Invalid loginserver requested.", "Please try using a different world.", "");
+      } else if(var0 == 22) {
+         class13.method64("Malformed login packet.", "Please try again.", "");
+      } else if(var0 == 23) {
+         class13.method64("No reply from loginserver.", "Please wait 1 minute and try again.", "");
+      } else if(var0 == 24) {
+         class13.method64("Error loading your profile.", "Please contact customer support.", "");
+      } else if(var0 == 25) {
+         class13.method64("Unexpected loginserver response.", "Please try using a different world.", "");
+      } else if(var0 == 26) {
+         class13.method64("This computers address has been blocked", "as it was used to break our rules.", "");
+      } else if(var0 == 27) {
+         class13.method64("", "Service unavailable.", "");
+      } else if(var0 == 31) {
+         class13.method64("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
+      } else if(var0 == 32) {
+         class13.method64("Your attempt to log into your account was", "unsuccessful.  Don\'t worry, you can sort", "this out by visiting the billing system.");
+      } else if(var0 == 37) {
+         class13.method64("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
+      } else if(var0 == 38) {
+         class13.method64("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
+      } else if(var0 == 55) {
+         class13.method64("Sorry, but your account is not eligible to", "play this version of the game.  Please try", "playing the main game instead!");
+      } else {
+         if(var0 == 56) {
+            class13.method64("Enter the 6-digit code generated by your", "authenticator app.", "");
+            TextureProvider.setGameState(11);
+            return;
+         }
 
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;I)V",
-      garbageValue = "-1492866595"
-   )
-   static void method102(Component var0) {
-      var0.setFocusTraversalKeysEnabled(false);
-      var0.addKeyListener(class50.keyboard);
-      var0.addFocusListener(class50.keyboard);
-   }
+         if(var0 == 57) {
+            class13.method64("The code you entered was incorrect.", "Please try again.", "");
+            TextureProvider.setGameState(11);
+            return;
+         }
 
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
-      garbageValue = "-105"
-   )
-   @Export("addChatMessage")
-   static void addChatMessage(int var0, String var1, String var2, String var3) {
-      ChatLineBuffer var4 = (ChatLineBuffer)class98.chatLineMap.get(Integer.valueOf(var0));
-      if(var4 == null) {
-         var4 = new ChatLineBuffer();
-         class98.chatLineMap.put(Integer.valueOf(var0), var4);
+         class13.method64("Unexpected server response", "Please try using a different world.", "");
       }
 
-      MessageNode var5 = var4.method1771(var0, var1, var2, var3);
-      class98.field1517.method3394(var5, (long)var5.id);
-      class98.field1523.method3556(var5);
-      Client.field1098 = Client.field1091;
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "2002001395"
-   )
-   static String method105(int var0) {
-      return "<col=" + Integer.toHexString(var0) + ">";
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-543378679"
-   )
-   public static int method106(int var0) {
-      return var0 >> 17 & 7;
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(I)[Lclass231;",
-      garbageValue = "1775373854"
-   )
-   public static class231[] method107() {
-      return new class231[]{class231.field3190, class231.field3198, class231.field3192, class231.field3191};
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(I)[Lclass276;",
-      garbageValue = "607258951"
-   )
-   static class276[] method109() {
-      return new class276[]{class276.field3734, class276.field3732, class276.field3733};
+      TextureProvider.setGameState(10);
    }
 }

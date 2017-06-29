@@ -1,47 +1,45 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bx")
+@ObfuscatedName("bm")
 @Implements("XItemContainer")
 public class XItemContainer extends Node {
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -264803311
-   )
-   static int field771;
-   @ObfuscatedName("m")
+   @ObfuscatedName("is")
+   @Export("localPlayer")
+   static Player localPlayer;
+   @ObfuscatedName("w")
    @Export("itemIds")
    int[] itemIds;
-   @ObfuscatedName("e")
+   @ObfuscatedName("a")
    @Export("stackSizes")
    int[] stackSizes;
-   @ObfuscatedName("f")
-   static int[][] field774;
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @Export("itemContainers")
    static XHashTable itemContainers;
+   @ObfuscatedName("y")
+   @Export("isMembersWorld")
+   public static boolean isMembersWorld;
+
+   static {
+      itemContainers = new XHashTable(32);
+   }
 
    XItemContainer() {
       this.itemIds = new int[]{-1};
       this.stackSizes = new int[]{0};
    }
 
-   @ObfuscatedName("iu")
-   @ObfuscatedSignature(
-      signature = "(LWidget;B)V",
-      garbageValue = "94"
-   )
-   static void method1020(Widget var0) {
-      if(var0.field2786 == Client.field1110) {
-         Client.field1111[var0.boundsIndex] = true;
+   @ObfuscatedName("i")
+   public static final void method1113(long var0) {
+      if(var0 > 0L) {
+         if(0L == var0 % 10L) {
+            class162.method3046(var0 - 1L);
+            class162.method3046(1L);
+         } else {
+            class162.method3046(var0);
+         }
+
       }
-
-   }
-
-   static {
-      itemContainers = new XHashTable(32);
    }
 }

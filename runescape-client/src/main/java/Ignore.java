@@ -1,45 +1,70 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bk")
+@ObfuscatedName("bn")
 @Implements("Ignore")
 public class Ignore {
-   @ObfuscatedName("m")
+   @ObfuscatedName("hn")
+   @ObfuscatedGetter(
+      intValue = -726961477
+   )
+   static int field860;
+   @ObfuscatedName("ry")
+   static IndexFile field861;
+   @ObfuscatedName("w")
    @Export("previousName")
    String previousName;
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @Export("name")
    String name;
+   @ObfuscatedName("ab")
+   static int[] field864;
+   @ObfuscatedName("rb")
+   static class291 field866;
 
-   @ObfuscatedName("ge")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lclass89;III)V",
-      garbageValue = "-522817105"
+      signature = "(IB)V",
+      garbageValue = "-1"
    )
-   static final void method1043(class89 var0, int var1, int var2) {
-      class116.menuAction(var0.field1386, var0.field1387, var0.field1388, var0.field1389, var0.field1392, var0.field1392, var1, var2);
+   static void method1136(int var0) {
+      if(var0 != -1) {
+         if(class66.method1121(var0)) {
+            Widget[] var1 = class46.widgets[var0];
+
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               Widget var3 = var1[var2];
+               if(var3.field2735 != null) {
+                  class69 var4 = new class69();
+                  var4.field849 = var3;
+                  var4.field857 = var3.field2735;
+                  class31.method267(var4, 2000000);
+               }
+            }
+
+         }
+      }
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-135220785"
+      signature = "(II)Lclass276;",
+      garbageValue = "1025433868"
    )
-   static void method1044() {
-      class61.field759 = 99;
-      class61.underlayIds = new byte[4][104][104];
-      class61.overlayIds = new byte[4][104][104];
-      class90.overlayPaths = new byte[4][104][104];
-      class275.overlayRotations = new byte[4][104][104];
-      class61.field750 = new int[4][105][105];
-      class267.field3669 = new byte[4][105][105];
-      XItemContainer.field774 = new int[105][105];
-      Widget.field2648 = new int[104];
-      class61.field753 = new int[104];
-      WallObject.field2140 = new int[104];
-      class40.field552 = new int[104];
-      WidgetNode.field810 = new int[104];
+   public static class276 method1137(int var0) {
+      class276[] var1 = new class276[]{class276.field3739, class276.field3737, class276.field3740};
+      class276[] var2 = var1;
+
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         class276 var4 = var2[var3];
+         if(var4.field3738 == var0) {
+            return var4;
+         }
+      }
+
+      return null;
    }
 }

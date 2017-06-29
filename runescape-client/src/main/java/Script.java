@@ -4,79 +4,64 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cq")
+@ObfuscatedName("cy")
 @Implements("Script")
 public class Script extends CacheableNode {
-   @ObfuscatedName("m")
-   @Export("instructions")
-   int[] instructions;
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
+   static NodeCache field1551;
+   @ObfuscatedName("a")
    @Export("intOperands")
    int[] intOperands;
    @ObfuscatedName("t")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("w")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -928316301
+      intValue = 346249157
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("z")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1729926335
+      intValue = -2098797789
    )
    @Export("localStringCount")
    int localStringCount;
-   @ObfuscatedName("i")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1120356871
-   )
-   @Export("stringStackCount")
-   int stringStackCount;
-   @ObfuscatedName("p")
-   static NodeCache field1533;
-   @ObfuscatedName("f")
-   @Export("switches")
-   class186[] switches;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 154474411
-   )
-   static int field1535;
-   @ObfuscatedName("u")
-   static int[] field1536;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1403273459
+      intValue = -1393628567
    )
    @Export("intStackCount")
    int intStackCount;
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(II)[Lclass186;",
-      garbageValue = "50681606"
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -1155965441
    )
-   class186[] method1757(int var1) {
-      return new class186[var1];
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lclass186;III)I",
-      garbageValue = "-1248114035"
+   @Export("stringStackCount")
+   int stringStackCount;
+   @ObfuscatedName("j")
+   @Export("switches")
+   class186[] switches;
+   @ObfuscatedName("aa")
+   @ObfuscatedGetter(
+      intValue = -1343832047
    )
-   static int method1758(class186 var0, int var1, int var2) {
-      if(var0 == null) {
-         return var2;
-      } else {
-         class198 var3 = (class198)var0.method3389((long)var1);
-         return var3 == null?var2:var3.field2496;
-      }
-   }
+   @Export("authCodeForLogin")
+   static int authCodeForLogin;
+   @ObfuscatedName("w")
+   @Export("instructions")
+   int[] instructions;
 
    static {
-      field1533 = new NodeCache(128);
+      field1551 = new NodeCache(128);
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(II)[Lclass186;",
+      garbageValue = "-1370797715"
+   )
+   class186[] method1861(int var1) {
+      return new class186[var1];
    }
 }

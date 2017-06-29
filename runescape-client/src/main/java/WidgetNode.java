@@ -7,205 +7,100 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bs")
 @Implements("WidgetNode")
 public class WidgetNode extends Node {
-   @ObfuscatedName("a")
-   static int[] field810;
-   @ObfuscatedName("m")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1233913405
-   )
-   int field811;
-   @ObfuscatedName("h")
-   public static String field812;
-   @ObfuscatedName("fm")
-   static byte[][] field814;
-   @ObfuscatedName("e")
-   boolean field815;
-   @ObfuscatedName("ez")
-   @Export("rssocket")
-   static RSSocket rssocket;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -346953953
+      intValue = -55516781
    )
    @Export("id")
    int id;
-
-   @ObfuscatedName("eq")
-   @ObfuscatedSignature(
-      signature = "(I)LRenderOverview;",
-      garbageValue = "-1980899095"
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 859282669
    )
-   static RenderOverview method1030() {
-      return class46.renderOverview;
-   }
+   int field844;
+   @ObfuscatedName("a")
+   boolean field845;
 
-   @ObfuscatedName("gg")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-1423434307"
+      signature = "(LModel;IIII)V",
+      garbageValue = "-1353774979"
    )
-   static final void method1031(boolean var0) {
-      while(true) {
-         if(Client.secretPacketBuffer2.method3294(Client.packetLength) >= 27) {
-            int var1 = Client.secretPacketBuffer2.method3290(15);
-            if(var1 != 32767) {
-               boolean var2 = false;
-               if(Client.cachedNPCs[var1] == null) {
-                  Client.cachedNPCs[var1] = new NPC();
-                  var2 = true;
-               }
-
-               NPC var3 = Client.cachedNPCs[var1];
-               Client.npcIndices[++Client.field930 - 1] = var1;
-               var3.field1240 = Client.gameCycle;
-               int var4;
-               if(var0) {
-                  var4 = Client.secretPacketBuffer2.method3290(8);
-                  if(var4 > 127) {
-                     var4 -= 256;
-                  }
-               } else {
-                  var4 = Client.secretPacketBuffer2.method3290(5);
-                  if(var4 > 15) {
-                     var4 -= 32;
-                  }
-               }
-
-               var3.composition = class158.getNpcDefinition(Client.secretPacketBuffer2.method3290(14));
-               int var5 = Client.secretPacketBuffer2.method3290(1);
-               if(var5 == 1) {
-                  Client.field946[++Client.field1096 - 1] = var1;
-               }
-
-               int var6 = Client.field1154[Client.secretPacketBuffer2.method3290(3)];
-               if(var2) {
-                  var3.orientation = var3.angle = var6;
-               }
-
-               int var7 = Client.secretPacketBuffer2.method3290(1);
-               int var8;
-               if(var0) {
-                  var8 = Client.secretPacketBuffer2.method3290(8);
-                  if(var8 > 127) {
-                     var8 -= 256;
-                  }
-               } else {
-                  var8 = Client.secretPacketBuffer2.method3290(5);
-                  if(var8 > 15) {
-                     var8 -= 32;
-                  }
-               }
-
-               var3.field1212 = var3.composition.field3559;
-               var3.field1227 = var3.composition.field3582;
-               if(var3.field1227 == 0) {
-                  var3.angle = 0;
-               }
-
-               var3.field1216 = var3.composition.field3565;
-               var3.field1217 = var3.composition.field3560;
-               var3.field1218 = var3.composition.field3567;
-               var3.field1219 = var3.composition.field3568;
-               var3.idlePoseAnimation = var3.composition.field3558;
-               var3.field1214 = var3.composition.field3563;
-               var3.field1215 = var3.composition.field3564;
-               var3.method1589(class20.localPlayer.pathX[0] + var4, var8 + class20.localPlayer.pathY[0], var7 == 1);
-               continue;
-            }
-         }
-
-         Client.secretPacketBuffer2.method3292();
-         return;
+   public static final void method1124(Model var0, int var1, int var2, int var3) {
+      if(method1125(var0, var1, var2, var3)) {
+         class45.method653(var0, var1, var2, var3, -65281);
+      } else if(class7.field233 == class11.field263) {
+         class45.method653(var0, var1, var2, var3, -16776961);
       }
+
    }
 
    WidgetNode() {
-      this.field815 = false;
+      this.field845 = false;
    }
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
-      garbageValue = "-885350328"
+      signature = "(LModel;IIII)Z",
+      garbageValue = "-282869302"
    )
-   static int method1032(int var0, Script var1, boolean var2) {
-      int var3;
-      int var4;
-      int var5;
-      if(var0 == 3400) {
-         class83.intStackSize -= 2;
-         var3 = class83.intStack[class83.intStackSize];
-         var4 = class83.intStack[class83.intStackSize + 1];
-         Enum var9 = class176.method3269(var3);
-         if(var9.valType != 115) {
-            ;
-         }
-
-         for(var5 = 0; var5 < var9.size; ++var5) {
-            if(var4 == var9.keys[var5]) {
-               class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var9.stringVals[var5];
-               var9 = null;
-               break;
-            }
-         }
-
-         if(var9 != null) {
-            class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var9.defaultString;
-         }
-
-         return 1;
-      } else if(var0 != 3408) {
-         return 2;
+   public static final boolean method1125(Model var0, int var1, int var2, int var3) {
+      boolean var4 = class134.field2003;
+      if(!var4) {
+         return false;
       } else {
-         class83.intStackSize -= 4;
-         var3 = class83.intStack[class83.intStackSize];
-         var4 = class83.intStack[class83.intStackSize + 1];
-         int var6 = class83.intStack[class83.intStackSize + 2];
-         var5 = class83.intStack[class83.intStackSize + 3];
-         Enum var7 = class176.method3269(var6);
-         if(var3 == var7.keyType && var7.valType == var4) {
-            for(int var8 = 0; var8 < var7.size; ++var8) {
-               if(var5 == var7.keys[var8]) {
-                  if(var4 == 115) {
-                     class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var7.stringVals[var8];
-                  } else {
-                     class83.intStack[++class83.intStackSize - 1] = var7.intVals[var8];
-                  }
-
-                  var7 = null;
-                  break;
-               }
-            }
-
-            if(var7 != null) {
-               if(var4 == 115) {
-                  class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var7.defaultString;
-               } else {
-                  class83.intStack[++class83.intStackSize - 1] = var7.defaultInt;
-               }
-            }
-
-            return 1;
-         } else {
-            if(var4 == 115) {
-               class83.scriptStringStack[++class24.scriptStringStackSize - 1] = "null";
-            } else {
-               class83.intStack[++class83.intStackSize - 1] = 0;
-            }
-
-            return 1;
+         int var5;
+         int var6;
+         int var7;
+         int var8;
+         int var11;
+         int var12;
+         int var13;
+         int var16;
+         int var17;
+         if(!class134.field2004) {
+            var5 = Region.field2115;
+            var6 = Region.field2095;
+            var7 = Region.field2124;
+            var8 = Region.field2075;
+            byte var9 = 50;
+            short var10 = 3500;
+            var11 = (class134.field2014 - class136.field2034) * var9 / class136.field2031;
+            var12 = (class134.field2008 - class136.field2033) * var9 / class136.field2031;
+            var13 = (class134.field2014 - class136.field2034) * var10 / class136.field2031;
+            int var14 = (class134.field2008 - class136.field2033) * var10 / class136.field2031;
+            int var15 = class136.method2642(var12, var9, var6, var5);
+            var16 = class136.method2586(var12, var9, var6, var5);
+            var12 = var15;
+            var15 = class136.method2642(var14, var10, var6, var5);
+            var17 = class136.method2586(var14, var10, var6, var5);
+            var14 = var15;
+            var15 = class136.method2602(var11, var16, var8, var7);
+            var16 = class136.method2608(var11, var16, var8, var7);
+            var11 = var15;
+            var15 = class136.method2602(var13, var17, var8, var7);
+            var17 = class136.method2608(var13, var17, var8, var7);
+            class134.field2001 = (var15 + var11) / 2;
+            class134.field2006 = (var12 + var14) / 2;
+            class134.field2007 = (var17 + var16) / 2;
+            class27.field397 = (var15 - var11) / 2;
+            class134.field2002 = (var14 - var12) / 2;
+            class207.field2582 = (var17 - var16) / 2;
+            class134.field2009 = Math.abs(class27.field397);
+            class244.field3321 = Math.abs(class134.field2002);
+            ChatLineBuffer.field1576 = Math.abs(class207.field2582);
          }
-      }
-   }
 
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;I)[LModIcon;",
-      garbageValue = "1677707536"
-   )
-   public static ModIcon[] method1033(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.method4055(var1);
-      int var4 = var0.method4020(var3, var2);
-      return class43.method597(var0, var3, var4);
+         var5 = var0.field1969 + var1;
+         var6 = var2 + var0.field1989;
+         var7 = var3 + var0.field1932;
+         var8 = var0.field1966;
+         var16 = var0.field1967;
+         var17 = var0.field1968;
+         var11 = class134.field2001 - var5;
+         var12 = class134.field2006 - var6;
+         var13 = class134.field2007 - var7;
+         return Math.abs(var11) > var8 + class134.field2009?false:(Math.abs(var12) > var16 + class244.field3321?false:(Math.abs(var13) > var17 + ChatLineBuffer.field1576?false:(Math.abs(var13 * class134.field2002 - var12 * class207.field2582) > var16 * ChatLineBuffer.field1576 + var17 * class244.field3321?false:(Math.abs(var11 * class207.field2582 - var13 * class27.field397) > ChatLineBuffer.field1576 * var8 + var17 * class134.field2009?false:Math.abs(var12 * class27.field397 - var11 * class134.field2002) <= var16 * class134.field2009 + var8 * class244.field3321))));
+      }
    }
 }

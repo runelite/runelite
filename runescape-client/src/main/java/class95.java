@@ -1,132 +1,159 @@
-import java.applet.Applet;
 import java.util.Comparator;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cd")
+@ObfuscatedName("ci")
 final class class95 implements Comparator {
+   @ObfuscatedName("ij")
+   static Widget field1513;
+   // $FF: synthetic field
    final boolean val$preferOwnWorld;
-   @ObfuscatedName("p")
-   static IndexDataBase field1484;
-   @ObfuscatedName("j")
-   public static IndexDataBase field1485;
-
-   @ObfuscatedName("hp")
-   @ObfuscatedSignature(
-      signature = "([LWidget;LWidget;ZI)V",
-      garbageValue = "-260685283"
+   @ObfuscatedName("pn")
+   @ObfuscatedGetter(
+      intValue = -483759695
    )
-   static void method1670(Widget[] var0, Widget var1, boolean var2) {
-      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
-      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
-      XClanMember.method1097(var0, var1.id, var3, var4, var2);
-      if(var1.children != null) {
-         XClanMember.method1097(var1.children, var1.id, var3, var4, var2);
-      }
+   static int field1515;
 
-      WidgetNode var5 = (WidgetNode)Client.componentTable.method3425((long)var1.id);
-      if(var5 != null) {
-         int var6 = var5.id;
-         if(class59.method961(var6)) {
-            XClanMember.method1097(Widget.widgets[var6], -1, var3, var4, var2);
-         }
-      }
-
-      if(var1.contentType == 1337) {
-         ;
-      }
-
-   }
-
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lclass14;Lclass14;B)I",
-      garbageValue = "101"
+      signature = "(Lclass14;Lclass14;I)I",
+      garbageValue = "1065819286"
    )
-   int method1671(class14 var1, class14 var2) {
-      if(var2.field297 == var1.field297) {
+   int method1775(class14 var1, class14 var2) {
+      if(var2.field291 == var1.field291) {
          return 0;
       } else {
          if(this.val$preferOwnWorld) {
-            if(Client.world == var1.field297) {
+            if(Client.world == var1.field291) {
                return -1;
             }
 
-            if(var2.field297 == Client.world) {
+            if(var2.field291 == Client.world) {
                return 1;
             }
          }
 
-         return var1.field297 < var2.field297?-1:1;
+         return var1.field291 < var2.field291?-1:1;
       }
    }
 
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)J",
-      garbageValue = "-641662840"
-   )
-   static long method1672(CharSequence var0) {
-      long var1 = 0L;
-      int var3 = var0.length();
+   public int compare(Object var1, Object var2) {
+      return this.method1775((class14)var1, (class14)var2);
+   }
 
-      for(int var4 = 0; var4 < var3; ++var4) {
-         var1 *= 37L;
-         char var5 = var0.charAt(var4);
-         if(var5 >= 65 && var5 <= 90) {
-            var1 += (long)(var5 + 1 - 65);
-         } else if(var5 >= 97 && var5 <= 122) {
-            var1 += (long)(var5 + 1 - 97);
-         } else if(var5 >= 48 && var5 <= 57) {
-            var1 += (long)(var5 + 27 - 48);
-         }
-
-         if(var1 >= 177917621779460413L) {
-            break;
-         }
-      }
-
-      while(0L == var1 % 37L && 0L != var1) {
-         var1 /= 37L;
-      }
-
-      return var1;
+   class95(boolean var1) {
+      this.val$preferOwnWorld = var1;
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   public int compare(Object var1, Object var2) {
-      return this.method1671((class14)var1, (class14)var2);
-   }
-
-   @ObfuscatedName("p")
+   @ObfuscatedName("is")
    @ObfuscatedSignature(
-      signature = "(Ljava/applet/Applet;Ljava/lang/String;B)V",
-      garbageValue = "117"
+      signature = "(LWidgetNode;ZB)V",
+      garbageValue = "-1"
    )
-   public static void method1681(Applet var0, String var1) {
-      class56.field688 = var0;
-      class56.field687 = var1;
-   }
+   static final void method1780(WidgetNode var0, boolean var1) {
+      int var2 = var0.id;
+      int var3 = (int)var0.hash;
+      var0.unlink();
+      int var5;
+      if(var1 && var2 != -1 && class152.validInterfaces[var2]) {
+         Widget.field2646.method4127(var2);
+         if(class46.widgets[var2] != null) {
+            boolean var6 = true;
 
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-612834974"
-   )
-   public static void method1682(boolean var0) {
-      if(var0 != class240.isMembersWorld) {
-         ItemComposition.field3497.reset();
-         ItemComposition.itemModelCache.reset();
-         ItemComposition.itemSpriteCache.reset();
-         class240.isMembersWorld = var0;
+            for(var5 = 0; var5 < class46.widgets[var2].length; ++var5) {
+               if(class46.widgets[var2][var5] != null) {
+                  if(class46.widgets[var2][var5].type != 2) {
+                     class46.widgets[var2][var5] = null;
+                  } else {
+                     var6 = false;
+                  }
+               }
+            }
+
+            if(var6) {
+               class46.widgets[var2] = null;
+            }
+
+            class152.validInterfaces[var2] = false;
+         }
+      }
+
+      class205.method3804(var2);
+      Widget var4 = PacketBuffer.method3403(var3);
+      if(var4 != null) {
+         class88.method1714(var4);
+      }
+
+      class20.method142();
+      if(Client.widgetRoot != -1) {
+         var5 = Client.widgetRoot;
+         if(class66.method1121(var5)) {
+            class5.method22(class46.widgets[var5], 1);
+         }
       }
 
    }
 
-   class95(boolean var1) {
-      this.val$preferOwnWorld = var1;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(IB)LKitDefinition;",
+      garbageValue = "-17"
+   )
+   @Export("getKitDefinition")
+   public static KitDefinition getKitDefinition(int var0) {
+      KitDefinition var1 = (KitDefinition)KitDefinition.field3360.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = KitDefinition.field3369.getConfigData(3, var0);
+         var1 = new KitDefinition();
+         if(var2 != null) {
+            var1.method4382(new Buffer(var2));
+         }
+
+         KitDefinition.field3360.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("as")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "5"
+   )
+   protected static final void method1782() {
+      class46.field625.vmethod2965();
+
+      int var0;
+      for(var0 = 0; var0 < 32; ++var0) {
+         GameEngine.field718[var0] = 0L;
+      }
+
+      for(var0 = 0; var0 < 32; ++var0) {
+         GameEngine.field719[var0] = 0L;
+      }
+
+      class43.field596 = 0;
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;IS)Z",
+      garbageValue = "255"
+   )
+   public static boolean method1783(IndexDataBase var0, int var1) {
+      byte[] var2 = var0.method4120(var1);
+      if(var2 == null) {
+         return false;
+      } else {
+         Spotanim.method4355(var2);
+         return true;
+      }
    }
 }

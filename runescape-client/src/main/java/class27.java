@@ -2,91 +2,83 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ax")
+@ObfuscatedName("ab")
 public enum class27 implements RSEnum {
-   @ObfuscatedName("p")
-   field411(1, (byte)0),
-   @ObfuscatedName("m")
-   field408(0, (byte)1),
-   @ObfuscatedName("e")
-   field409(2, (byte)2),
-   @ObfuscatedName("t")
-   field410(3, (byte)3);
-
-   @ObfuscatedName("z")
-   final byte field407;
-   @ObfuscatedName("fi")
-   @ObfuscatedGetter(
-      intValue = 286250369
-   )
-   static int field414;
-   @ObfuscatedName("pv")
-   @ObfuscatedGetter(
-      intValue = 522438051
-   )
-   static int field415;
+   @ObfuscatedName("i")
+   field396(1, (byte)0),
    @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1934559669
-   )
-   final int field417;
+   field405(0, (byte)1),
+   @ObfuscatedName("a")
+   field395(2, (byte)2),
+   @ObfuscatedName("t")
+   field398(3, (byte)3);
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -1611886361
+   )
+   static int field397;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -81664947
+   )
+   final int field399;
+   @ObfuscatedName("r")
+   final byte field400;
+
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "665522131"
+      garbageValue = "1204543302"
    )
    public int rsOrdinal() {
-      return this.field407;
+      return this.field400;
    }
 
    @ObfuscatedSignature(
       signature = "(IB)V",
       garbageValue = "0"
    )
-   private class27(int var3, byte var4) {
-      this.field417 = var3;
-      this.field407 = var4;
+   class27(int var3, byte var4) {
+      this.field399 = var3;
+      this.field400 = var4;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "-74"
+      signature = "([BIII)I",
+      garbageValue = "-1766136460"
    )
-   static int method227(int var0, int var1) {
-      if(var0 == -2) {
-         return 12345678;
-      } else if(var0 == -1) {
-         if(var1 < 0) {
-            var1 = 0;
-         } else if(var1 > 127) {
-            var1 = 127;
-         }
+   public static int method208(byte[] var0, int var1, int var2) {
+      int var3 = -1;
 
-         var1 = 127 - var1;
-         return var1;
-      } else {
-         var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return (var0 & 'ﾀ') + var1;
+      for(int var4 = var1; var4 < var2; ++var4) {
+         var3 = var3 >>> 8 ^ Buffer.field2399[(var3 ^ var0[var4]) & 255];
       }
+
+      var3 = ~var3;
+      return var3;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IIS)I",
-      garbageValue = "387"
+      signature = "(III)I",
+      garbageValue = "-2067755467"
    )
-   static final int method228(int var0, int var1) {
-      int var2 = class13.method76(var0 - 1, var1 - 1) + class13.method76(var0 + 1, var1 - 1) + class13.method76(var0 - 1, var1 + 1) + class13.method76(var0 + 1, var1 + 1);
-      int var3 = class13.method76(var0 - 1, var1) + class13.method76(var0 + 1, var1) + class13.method76(var0, var1 - 1) + class13.method76(var0, var1 + 1);
-      int var4 = class13.method76(var0, var1);
-      return var2 / 16 + var4 / 4 + var3 / 8;
+   public static int method209(int var0, int var1) {
+      int var2;
+      for(var2 = 1; var1 > 1; var1 >>= 1) {
+         if((var1 & 1) != 0) {
+            var2 = var0 * var2;
+         }
+
+         var0 *= var0;
+      }
+
+      if(var1 == 1) {
+         return var0 * var2;
+      } else {
+         return var2;
+      }
    }
 }

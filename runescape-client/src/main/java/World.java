@@ -4,163 +4,141 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ch")
+@ObfuscatedName("cw")
 @Implements("World")
 public class World {
-   @ObfuscatedName("o")
+   @ObfuscatedName("s")
+   @Export("worldList")
+   static World[] worldList;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1522516599
+      intValue = -1589696071
+   )
+   static int field1309;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 2098490881
+   )
+   static int field1310;
+   @ObfuscatedName("k")
+   @Export("worldServersDownload")
+   static class77 worldServersDownload;
+   @ObfuscatedName("j")
+   static int[] field1312;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 917448495
    )
    @Export("id")
    int id;
-   @ObfuscatedName("w")
-   @Export("worldList")
-   static World[] worldList;
-   @ObfuscatedName("z")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1687822551
-   )
-   static int field1281;
-   @ObfuscatedName("c")
-   @Export("worldServersDownload")
-   static class77 worldServersDownload;
-   @ObfuscatedName("i")
-   static int[] field1283;
-   @ObfuscatedName("f")
-   static int[] field1284;
-   @ObfuscatedName("a")
-   @Export("address")
-   String address;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -286118705
-   )
-   @Export("playerCount")
-   int playerCount;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 648398151
+      intValue = 1604665787
    )
    @Export("mask")
    int mask;
-   @ObfuscatedName("aq")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 524176219
+      intValue = -1375983603
    )
-   @Export("authCodeForLogin")
-   static int authCodeForLogin;
-   @ObfuscatedName("g")
-   @Export("activity")
-   String activity;
-   @ObfuscatedName("v")
+   @Export("playerCount")
+   int playerCount;
+   @ObfuscatedName("l")
+   @Export("address")
+   String address;
+   @ObfuscatedName("y")
+   static int[] field1318;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1016556063
+      intValue = -615678529
    )
    @Export("location")
    int location;
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 848943803
+      intValue = -1727811119
    )
    @Export("index")
    int index;
-   @ObfuscatedName("j")
+   @ObfuscatedName("eh")
    @ObfuscatedGetter(
-      intValue = -1216446893
+      intValue = 440944993
    )
-   static int field1293;
-   @ObfuscatedName("aj")
-   public static BufferProvider field1296;
+   static int field1321;
+   @ObfuscatedName("ea")
+   static Font field1322;
+   @ObfuscatedName("c")
+   @Export("activity")
+   String activity;
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(B)Z",
-      garbageValue = "1"
+      garbageValue = "41"
    )
-   boolean method1461() {
-      return (1 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "2087575053"
-   )
-   boolean method1462() {
-      return (2 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-1678610055"
-   )
-   boolean method1465() {
-      return (536870912 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-385747484"
-   )
-   boolean method1466() {
-      return (33554432 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "2046959771"
-   )
-   boolean method1469() {
+   boolean method1565() {
       return (4 & this.mask) != 0;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LPacketBuffer;I)I",
-      garbageValue = "973992588"
+      signature = "(I)Z",
+      garbageValue = "-1169534180"
    )
-   static int method1475(PacketBuffer var0) {
-      int var1 = var0.method3290(2);
-      int var2;
-      if(var1 == 0) {
-         var2 = 0;
-      } else if(var1 == 1) {
-         var2 = var0.method3290(5);
-      } else if(var1 == 2) {
-         var2 = var0.method3290(8);
-      } else {
-         var2 = var0.method3290(11);
-      }
+   boolean method1566() {
+      return (1 & this.mask) != 0;
+   }
 
-      return var2;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "1069686959"
+   )
+   boolean method1567() {
+      return (2 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(IIII)I",
+      garbageValue = "732834487"
+   )
+   public static int method1568(int var0, int var1, int var2) {
+      var2 &= 3;
+      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0:7 - var1));
    }
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(B)Z",
-      garbageValue = "43"
+      garbageValue = "10"
    )
-   boolean method1488() {
+   boolean method1569() {
       return (8 & this.mask) != 0;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;II)Lclass207;",
-      garbageValue = "-939152258"
+      signature = "(I)Z",
+      garbageValue = "1964107651"
    )
-   static class207 method1499(IndexDataBase var0, int var1) {
-      byte[] var2 = var0.method4001(var1);
-      return var2 == null?null:new class207(var2);
+   boolean method1571() {
+      return (33554432 & this.mask) != 0;
    }
 
    static {
-      field1281 = 0;
-      field1293 = 0;
-      field1283 = new int[]{1, 1, 1, 1};
-      field1284 = new int[]{0, 1, 2, 3};
+      field1309 = 0;
+      field1310 = 0;
+      field1318 = new int[]{1, 1, 1, 1};
+      field1312 = new int[]{0, 1, 2, 3};
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-282428090"
+   )
+   boolean method1577() {
+      return (536870912 & this.mask) != 0;
    }
 }

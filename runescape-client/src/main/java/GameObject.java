@@ -4,182 +4,342 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eh")
+@ObfuscatedName("ey")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 266933475
-   )
-   @Export("offsetX")
-   int offsetX;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 599141107
-   )
-   @Export("height")
-   int height;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 46362487
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1325697613
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 1037185751
-   )
-   @Export("relativeX")
-   int relativeX;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 756850879
-   )
-   @Export("plane")
-   int plane;
-   @ObfuscatedName("z")
-   @Export("renderable")
-   public Renderable renderable;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -2043310025
+      intValue = 1552726169
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("f")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 225441389
+      intValue = 432430245
    )
-   @Export("relativeY")
-   int relativeY;
-   @ObfuscatedName("o")
+   @Export("height")
+   int height;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1193165665
+      intValue = -1580449221
    )
-   int field2198;
-   @ObfuscatedName("q")
+   @Export("plane")
+   int plane;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 325538583
+      intValue = 141445187
    )
-   int field2199;
-   @ObfuscatedName("n")
+   @Export("y")
+   int y;
+   @ObfuscatedName("s")
+   @Export("renderable")
+   public Renderable renderable;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 973085917
-   )
-   @Export("hash")
-   public int hash;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -409014757
-   )
-   @Export("flags")
-   int flags;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 665329847
+      intValue = -2040205609
    )
    @Export("orientation")
    int orientation;
-
-   @ObfuscatedName("gc")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-2134850141"
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1165554559
    )
-   static final void method2787(int var0) {
-      int[] var1 = Actor.field1268.image;
-      int var2 = var1.length;
+   int field2201;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 1278992915
+   )
+   @Export("relativeX")
+   int relativeX;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -916577623
+   )
+   @Export("relativeY")
+   int relativeY;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 458224183
+   )
+   @Export("flags")
+   int flags;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1214179713
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 2106641225
+   )
+   @Export("offsetX")
+   int offsetX;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -115111159
+   )
+   @Export("hash")
+   public int hash;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -2083386589
+   )
+   int field2208;
 
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(ILScript;ZI)I",
+      garbageValue = "1657890590"
+   )
+   static int method2890(int var0, Script var1, boolean var2) {
       int var3;
-      for(var3 = 0; var3 < var2; ++var3) {
-         var1[var3] = 0;
-      }
-
       int var4;
-      int var5;
-      for(var3 = 1; var3 < 103; ++var3) {
-         var4 = (103 - var3) * 2048 + 24628;
-
-         for(var5 = 1; var5 < 103; ++var5) {
-            if((class61.tileSettings[var0][var5][var3] & 24) == 0) {
-               class17.region.method2612(var1, var4, 512, var0, var5, var3);
-            }
-
-            if(var0 < 3 && (class61.tileSettings[var0 + 1][var5][var3] & 8) != 0) {
-               class17.region.method2612(var1, var4, 512, var0 + 1, var5, var3);
-            }
-
-            var4 += 4;
+      if(var0 == 4000) {
+         class46.intStackSize -= 2;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         class83.intStack[++class46.intStackSize - 1] = var3 + var4;
+         return 1;
+      } else if(var0 == 4001) {
+         class46.intStackSize -= 2;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         class83.intStack[++class46.intStackSize - 1] = var3 - var4;
+         return 1;
+      } else if(var0 == 4002) {
+         class46.intStackSize -= 2;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         class83.intStack[++class46.intStackSize - 1] = var3 * var4;
+         return 1;
+      } else if(var0 == 4003) {
+         class46.intStackSize -= 2;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         class83.intStack[++class46.intStackSize - 1] = var3 / var4;
+         return 1;
+      } else if(var0 == 4004) {
+         var3 = class83.intStack[--class46.intStackSize];
+         class83.intStack[++class46.intStackSize - 1] = (int)(Math.random() * (double)var3);
+         return 1;
+      } else if(var0 == 4005) {
+         var3 = class83.intStack[--class46.intStackSize];
+         class83.intStack[++class46.intStackSize - 1] = (int)(Math.random() * (double)(var3 + 1));
+         return 1;
+      } else if(var0 == 4006) {
+         class46.intStackSize -= 5;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         int var5 = class83.intStack[class46.intStackSize + 2];
+         int var6 = class83.intStack[class46.intStackSize + 3];
+         int var7 = class83.intStack[class46.intStackSize + 4];
+         class83.intStack[++class46.intStackSize - 1] = var3 + (var4 - var3) * (var7 - var5) / (var6 - var5);
+         return 1;
+      } else if(var0 == 4007) {
+         class46.intStackSize -= 2;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         class83.intStack[++class46.intStackSize - 1] = var3 + var3 * var4 / 100;
+         return 1;
+      } else if(var0 == 4008) {
+         class46.intStackSize -= 2;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         class83.intStack[++class46.intStackSize - 1] = var3 | 1 << var4;
+         return 1;
+      } else if(var0 == 4009) {
+         class46.intStackSize -= 2;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         class83.intStack[++class46.intStackSize - 1] = var3 & -1 - (1 << var4);
+         return 1;
+      } else if(var0 == 4010) {
+         class46.intStackSize -= 2;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         class83.intStack[++class46.intStackSize - 1] = (var3 & 1 << var4) != 0?1:0;
+         return 1;
+      } else if(var0 == 4011) {
+         class46.intStackSize -= 2;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         class83.intStack[++class46.intStackSize - 1] = var3 % var4;
+         return 1;
+      } else if(var0 == 4012) {
+         class46.intStackSize -= 2;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         if(var3 == 0) {
+            class83.intStack[++class46.intStackSize - 1] = 0;
+         } else {
+            class83.intStack[++class46.intStackSize - 1] = (int)Math.pow((double)var3, (double)var4);
          }
-      }
 
-      var3 = ((int)(Math.random() * 20.0D) + 238 - 10 << 16) + ((int)(Math.random() * 20.0D) + 238 - 10 << 8) + ((int)(Math.random() * 20.0D) + 238 - 10);
-      var4 = (int)(Math.random() * 20.0D) + 238 - 10 << 16;
-      Actor.field1268.method4932();
-
-      int var6;
-      for(var5 = 1; var5 < 103; ++var5) {
-         for(var6 = 1; var6 < 103; ++var6) {
-            if((class61.tileSettings[var0][var6][var5] & 24) == 0) {
-               class22.method186(var0, var6, var5, var3, var4);
-            }
-
-            if(var0 < 3 && (class61.tileSettings[var0 + 1][var6][var5] & 8) != 0) {
-               class22.method186(var0 + 1, var6, var5, var3, var4);
-            }
+         return 1;
+      } else if(var0 == 4013) {
+         class46.intStackSize -= 2;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         if(var3 == 0) {
+            class83.intStack[++class46.intStackSize - 1] = 0;
+         } else if(var4 == 0) {
+            class83.intStack[++class46.intStackSize - 1] = Integer.MAX_VALUE;
+         } else {
+            class83.intStack[++class46.intStackSize - 1] = (int)Math.pow((double)var3, 1.0D / (double)var4);
          }
+
+         return 1;
+      } else if(var0 == 4014) {
+         class46.intStackSize -= 2;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         class83.intStack[++class46.intStackSize - 1] = var3 & var4;
+         return 1;
+      } else if(var0 == 4015) {
+         class46.intStackSize -= 2;
+         var3 = class83.intStack[class46.intStackSize];
+         var4 = class83.intStack[class46.intStackSize + 1];
+         class83.intStack[++class46.intStackSize - 1] = var3 | var4;
+         return 1;
+      } else if(var0 == 4018) {
+         class46.intStackSize -= 3;
+         long var9 = (long)class83.intStack[class46.intStackSize];
+         long var11 = (long)class83.intStack[class46.intStackSize + 1];
+         long var13 = (long)class83.intStack[class46.intStackSize + 2];
+         class83.intStack[++class46.intStackSize - 1] = (int)(var13 * var9 / var11);
+         return 1;
+      } else {
+         return 2;
       }
+   }
 
-      Client.field1134 = 0;
-
-      for(var5 = 0; var5 < 104; ++var5) {
-         for(var6 = 0; var6 < 104; ++var6) {
-            int var7 = class17.region.method2659(Player.plane, var5, var6);
-            if(var7 != 0) {
-               var7 = var7 >> 14 & 32767;
-               int var8 = class29.getObjectDefinition(var7).mapIconId;
-               if(var8 >= 0) {
-                  int var9 = var5;
-                  int var10 = var6;
-                  if(var8 != 22 && var8 != 29 && var8 != 34 && var8 != 36 && var8 != 46 && var8 != 47 && var8 != 48) {
-                     int[][] var11 = Client.collisionMaps[Player.plane].flags;
-
-                     for(int var12 = 0; var12 < 10; ++var12) {
-                        int var13 = (int)(Math.random() * 4.0D);
-                        if(var13 == 0 && var9 > 0 && var9 > var5 - 3 && (var11[var9 - 1][var10] & 19136776) == 0) {
-                           --var9;
-                        }
-
-                        if(var13 == 1 && var9 < 103 && var9 < var5 + 3 && (var11[var9 + 1][var10] & 19136896) == 0) {
-                           ++var9;
-                        }
-
-                        if(var13 == 2 && var10 > 0 && var10 > var6 - 3 && (var11[var9][var10 - 1] & 19136770) == 0) {
-                           --var10;
-                        }
-
-                        if(var13 == 3 && var10 < 103 && var10 < var6 + 3 && (var11[var9][var10 + 1] & 19136800) == 0) {
-                           ++var10;
-                        }
-                     }
+   @ObfuscatedName("jf")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZI)V",
+      garbageValue = "1118630535"
+   )
+   static final void method2891(String var0, boolean var1) {
+      if(var0 != null) {
+         if((Client.ignoreCount < 100 || Client.field1049 == 1) && Client.ignoreCount < 400) {
+            String var2 = Player.method1179(var0, Client.field928);
+            if(var2 != null) {
+               int var3;
+               String var5;
+               String var6;
+               for(var3 = 0; var3 < Client.ignoreCount; ++var3) {
+                  Ignore var4 = Client.ignores[var3];
+                  var5 = Player.method1179(var4.name, Client.field928);
+                  if(var5 != null && var5.equals(var2)) {
+                     class152.sendGameMessage(31, "", var0 + " is already on your ignore list");
+                     return;
                   }
 
-                  Client.field1137[Client.field1134] = Area.field3304[var8].method4189(false);
-                  Client.field1180[Client.field1134] = var9;
-                  Client.field900[Client.field1134] = var10;
-                  ++Client.field1134;
+                  if(var4.previousName != null) {
+                     var6 = Player.method1179(var4.previousName, Client.field928);
+                     if(var6 != null && var6.equals(var2)) {
+                        class152.sendGameMessage(31, "", var0 + " is already on your ignore list");
+                        return;
+                     }
+                  }
+               }
+
+               for(var3 = 0; var3 < Client.friendCount; ++var3) {
+                  Friend var7 = Client.friends[var3];
+                  var5 = Player.method1179(var7.name, Client.field928);
+                  if(var5 != null && var5.equals(var2)) {
+                     class152.sendGameMessage(31, "", "Please remove " + var0 + " from your friend list first");
+                     return;
+                  }
+
+                  if(var7.previousName != null) {
+                     var6 = Player.method1179(var7.previousName, Client.field928);
+                     if(var6 != null && var6.equals(var2)) {
+                        class152.sendGameMessage(31, "", "Please remove " + var0 + " from your friend list first");
+                        return;
+                     }
+                  }
+               }
+
+               if(Player.method1179(XItemContainer.localPlayer.name, Client.field928).equals(var2)) {
+                  class152.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
+               } else {
+                  Client.secretPacketBuffer1.putOpcode(33);
+                  Client.secretPacketBuffer1.putByte(class261.method4734(var0));
+                  Client.secretPacketBuffer1.method3137(var0);
                }
             }
+         } else {
+            class152.sendGameMessage(31, "", "Your ignore list is full. Max of 100 for free users, and 400 for members");
          }
       }
+   }
 
-      World.field1296.method4898();
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(LWorld;LWorld;IZI)I",
+      garbageValue = "-848726571"
+   )
+   static int method2892(World var0, World var1, int var2, boolean var3) {
+      if(var2 == 1) {
+         int var4 = var0.playerCount;
+         int var5 = var1.playerCount;
+         if(!var3) {
+            if(var4 == -1) {
+               var4 = 2001;
+            }
+
+            if(var5 == -1) {
+               var5 = 2001;
+            }
+         }
+
+         return var4 - var5;
+      } else {
+         return var2 == 2?var0.location - var1.location:(var2 == 3?(var0.activity.equals("-")?(var1.activity.equals("-")?0:(var3?-1:1)):(var1.activity.equals("-")?(var3?1:-1):var0.activity.compareTo(var1.activity))):(var2 == 4?(var0.method1569()?(var1.method1569()?0:1):(var1.method1569()?-1:0)):(var2 == 5?(var0.method1567()?(var1.method1567()?0:1):(var1.method1567()?-1:0)):(var2 == 6?(var0.method1565()?(var1.method1565()?0:1):(var1.method1565()?-1:0)):(var2 == 7?(var0.method1566()?(var1.method1566()?0:1):(var1.method1566()?-1:0)):var0.id - var1.id)))));
+      }
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "805916230"
+   )
+   static void method2893() {
+      class92.username = class92.username.trim();
+      if(class92.username.length() == 0) {
+         class13.method64("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
+      } else {
+         long var1 = class239.method4263();
+         int var0;
+         if(0L == var1) {
+            var0 = 5;
+         } else {
+            var0 = class134.method2576(var1, class92.username);
+         }
+
+         switch(var0) {
+         case 2:
+            class13.method64("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+            class92.loginIndex = 6;
+            break;
+         case 3:
+            class13.method64("", "Error connecting to server.", "");
+            break;
+         case 4:
+            class13.method64("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
+            break;
+         case 5:
+            class13.method64("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
+            break;
+         case 6:
+            class13.method64("", "Error connecting to server.", "");
+            break;
+         case 7:
+            class13.method64("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
+         }
+
+      }
    }
 
    GameObject() {

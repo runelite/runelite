@@ -1,124 +1,47 @@
 import java.util.Comparator;
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("n")
+@ObfuscatedName("z")
 final class class12 implements Comparator {
-   @ObfuscatedName("at")
-   static class231 field275;
-   @ObfuscatedName("kp")
-   static Widget field280;
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;IZB)I",
-      garbageValue = "7"
+   @ObfuscatedName("ah")
+   static int[] field270;
+   @ObfuscatedName("og")
+   static byte field271;
+   @ObfuscatedName("cp")
+   @ObfuscatedGetter(
+      longValue = 1733588494741998649L
    )
-   @Export("parseInt")
-   public static int parseInt(CharSequence var0, int var1, boolean var2) {
-      if(var1 >= 2 && var1 <= 36) {
-         boolean var3 = false;
-         boolean var4 = false;
-         int var5 = 0;
-         int var6 = var0.length();
+   static long field272;
+   @ObfuscatedName("dr")
+   static IndexData field274;
 
-         for(int var7 = 0; var7 < var6; ++var7) {
-            char var8 = var0.charAt(var7);
-            if(var7 == 0) {
-               if(var8 == 45) {
-                  var3 = true;
-                  continue;
-               }
-
-               if(var8 == 43) {
-                  continue;
-               }
-            }
-
-            int var9;
-            if(var8 >= 48 && var8 <= 57) {
-               var9 = var8 - 48;
-            } else if(var8 >= 65 && var8 <= 90) {
-               var9 = var8 - 55;
-            } else {
-               if(var8 < 97 || var8 > 122) {
-                  throw new NumberFormatException();
-               }
-
-               var9 = var8 - 87;
-            }
-
-            if(var9 >= var1) {
-               throw new NumberFormatException();
-            }
-
-            if(var3) {
-               var9 = -var9;
-            }
-
-            int var10 = var5 * var1 + var9;
-            if(var5 != var10 / var1) {
-               throw new NumberFormatException();
-            }
-
-            var5 = var10;
-            var4 = true;
-         }
-
-         if(!var4) {
-            throw new NumberFormatException();
-         } else {
-            return var5;
-         }
-      } else {
-         throw new IllegalArgumentException("");
-      }
-   }
-
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(Lclass14;Lclass14;I)I",
-      garbageValue = "1446700114"
+      garbageValue = "-586781839"
    )
-   int method64(class14 var1, class14 var2) {
-      return var1.field297 < var2.field297?-1:(var2.field297 == var1.field297?0:1);
+   int method52(class14 var1, class14 var2) {
+      return var1.field291 < var2.field291?-1:(var2.field291 == var1.field291?0:1);
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method52((class14)var1, (class14)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-435327105"
+      signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;I)LSpritePixels;",
+      garbageValue = "-689833724"
    )
-   static int method70(int var0, int var1, int var2) {
-      return (class61.tileSettings[var0][var1][var2] & 8) != 0?0:(var0 > 0 && (class61.tileSettings[1][var1][var2] & 2) != 0?var0 - 1:var0);
-   }
-
-   public int compare(Object var1, Object var2) {
-      return this.method64((class14)var1, (class14)var2);
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "([BI)LFont;",
-      garbageValue = "249954231"
-   )
-   public static Font method74(byte[] var0) {
-      if(var0 == null) {
-         return null;
-      } else {
-         Font var1 = new Font(var0, class286.field3793, class286.field3794, class286.field3791, class149.field2211, class116.field1686, class286.field3797);
-         class286.field3793 = null;
-         class286.field3794 = null;
-         class286.field3791 = null;
-         class149.field2211 = null;
-         class116.field1686 = null;
-         class286.field3797 = (byte[][])((byte[][])null);
-         return var1;
-      }
+   public static SpritePixels method59(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.method4146(var1);
+      int var4 = var0.method4131(var3, var2);
+      return ObjectComposition.method4574(var0, var3, var4);
    }
 }

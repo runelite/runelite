@@ -1,23 +1,30 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hr")
+@ObfuscatedName("hq")
 public class class223 {
-   @ObfuscatedName("m")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(II)LWidget;",
-      garbageValue = "-1062239128"
+      signature = "(I)Z",
+      garbageValue = "-675489132"
    )
-   public static Widget method3959(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & '\uffff';
-      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
-         boolean var3 = class59.method961(var1);
-         if(!var3) {
-            return null;
-         }
-      }
+   public static boolean method4072() {
+      ClassInfo var0 = (ClassInfo)class280.field3755.method3547();
+      return var0 != null;
+   }
 
-      return Widget.widgets[var1][var2];
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;III)Z",
+      garbageValue = "-2010276353"
+   )
+   public static boolean method4073(IndexDataBase var0, int var1, int var2) {
+      byte[] var3 = var0.getConfigData(var1, var2);
+      if(var3 == null) {
+         return false;
+      } else {
+         Spotanim.method4355(var3);
+         return true;
+      }
    }
 }

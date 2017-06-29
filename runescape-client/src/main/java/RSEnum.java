@@ -6,10 +6,10 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fx")
 @Implements("RSEnum")
 public interface RSEnum {
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "665522131"
+      garbageValue = "1204543302"
    )
    @Export("rsOrdinal")
    int rsOrdinal();

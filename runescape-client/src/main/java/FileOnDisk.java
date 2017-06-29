@@ -8,42 +8,40 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dd")
+@ObfuscatedName("dp")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("m")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      longValue = 6171799702701076863L
+      longValue = 5572046021208202383L
    )
    @Export("length")
    long length;
-   @ObfuscatedName("cv")
-   static IndexData field1763;
-   @ObfuscatedName("e")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      longValue = -2661727364008696793L
+      longValue = -1707267051185505401L
    )
    @Export("position")
    long position;
-   @ObfuscatedName("p")
+   @ObfuscatedName("cv")
+   @Export("rssocket")
+   static RSSocket rssocket;
+   @ObfuscatedName("eo")
+   @ObfuscatedGetter(
+      intValue = -499958675
+   )
+   static int field1777;
+   @ObfuscatedName("i")
    @Export("file")
    RandomAccessFile file;
-   @ObfuscatedName("o")
-   static IndexDataBase field1769;
 
-   @ObfuscatedName("p")
-   final void method2263(long var1) throws IOException {
-      this.file.seek(var1);
-      this.position = var1;
-   }
-
-   @ObfuscatedName("m")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "874059073"
+      garbageValue = "167165863"
    )
-   public final void method2264(byte[] var1, int var2, int var3) throws IOException {
-      if(this.position + (long)var3 > this.length) {
+   public final void method2363(byte[] var1, int var2, int var3) throws IOException {
+      if((long)var3 + this.position > this.length) {
          this.file.seek(this.length + 1L);
          this.file.write(1);
          throw new EOFException();
@@ -53,21 +51,51 @@ public final class FileOnDisk {
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "415244951"
+      signature = "(ILScript;ZI)I",
+      garbageValue = "748090705"
    )
-   public final long method2266() throws IOException {
-      return this.file.length();
+   static int method2366(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class83.field1364:class60.field766;
+      if(var0 == 1800) {
+         int[] var4 = class83.intStack;
+         int var5 = ++class46.intStackSize - 1;
+         int var7 = WorldMapType3.method199(var3);
+         int var6 = var7 >> 11 & 63;
+         var4[var5] = var6;
+         return 1;
+      } else if(var0 != 1801) {
+         if(var0 == 1802) {
+            if(var3.name == null) {
+               class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+            } else {
+               class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var3.name;
+            }
+
+            return 1;
+         } else {
+            return 2;
+         }
+      } else {
+         int var8 = class83.intStack[--class46.intStackSize];
+         --var8;
+         if(var3.actions != null && var8 < var3.actions.length && var3.actions[var8] != null) {
+            class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var3.actions[var8];
+         } else {
+            class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+         }
+
+         return 1;
+      }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "([BIII)I",
-      garbageValue = "-755587131"
+      garbageValue = "1897591308"
    )
-   public final int method2267(byte[] var1, int var2, int var3) throws IOException {
+   public final int method2367(byte[] var1, int var2, int var3) throws IOException {
       int var4 = this.file.read(var1, var2, var3);
       if(var4 > 0) {
          this.position += (long)var4;
@@ -79,13 +107,28 @@ public final class FileOnDisk {
    protected void finalize() throws Throwable {
       if(this.file != null) {
          System.out.println("");
-         this.method2274();
+         this.method2381();
       }
 
    }
 
+   @ObfuscatedName("i")
+   final void method2374(long var1) throws IOException {
+      this.file.seek(var1);
+      this.position = var1;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(I)J",
+      garbageValue = "-1398584935"
+   )
+   public final long method2379() throws IOException {
+      return this.file.length();
+   }
+
    public FileOnDisk(File var1, String var2, long var3) throws IOException {
-      if(var3 == -1L) {
+      if(-1L == var3) {
          var3 = Long.MAX_VALUE;
       }
 
@@ -105,12 +148,12 @@ public final class FileOnDisk {
       this.file.seek(0L);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1327545018"
+      garbageValue = "1605625791"
    )
-   public final void method2274() throws IOException {
+   public final void method2381() throws IOException {
       if(this.file != null) {
          this.file.close();
          this.file = null;
@@ -118,12 +161,32 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IS)V",
-      garbageValue = "147"
+      signature = "(I)[LSpritePixels;",
+      garbageValue = "2086255941"
    )
-   static final void method2278(int var0) {
-      class134.field2002[++class134.field2000 - 1] = var0;
+   static SpritePixels[] method2382() {
+      SpritePixels[] var0 = new SpritePixels[class286.field3798];
+
+      for(int var1 = 0; var1 < class286.field3798; ++var1) {
+         SpritePixels var2 = var0[var1] = new SpritePixels();
+         var2.maxWidth = class286.field3801;
+         var2.maxHeight = class286.field3796;
+         var2.offsetX = class286.field3799[var1];
+         var2.offsetY = class286.field3800[var1];
+         var2.width = class7.field239[var1];
+         var2.height = class226.field3146[var1];
+         int var3 = var2.height * var2.width;
+         byte[] var4 = class210.field2609[var1];
+         var2.image = new int[var3];
+
+         for(int var5 = 0; var5 < var3; ++var5) {
+            var2.image[var5] = class278.field3745[var4[var5] & 255];
+         }
+      }
+
+      XGrandExchangeOffer.method113();
+      return var0;
    }
 }

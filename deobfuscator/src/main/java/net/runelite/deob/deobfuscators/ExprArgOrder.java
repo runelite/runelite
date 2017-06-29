@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
@@ -51,6 +52,8 @@ import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.execution.StackContext;
+import net.runelite.asm.signature.Signature;
+import net.runelite.asm.signature.Type;
 import net.runelite.deob.Deobfuscator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -180,14 +183,14 @@ public class ExprArgOrder implements Deobfuscator
 		ins.addInstruction(idx, i);
 	}
 
-	private int hash(InstructionContext ic)
+	private int hash(Method method, InstructionContext ic)
 	{
-		hash(sha256, ic);
+		hash(method, sha256, ic);
 		byte[] res = sha256.digest();
 		return Ints.fromByteArray(res);
 	}
 
-	private void hash(MessageDigest sha256, InstructionContext ic)
+	private void hash(Method method, MessageDigest sha256, InstructionContext ic)
 	{
 		sha256.update((byte) ic.getInstruction().getType().getCode());
 
@@ -205,12 +208,25 @@ public class ExprArgOrder implements Deobfuscator
 		else if (i instanceof LVTInstruction)
 		{
 			int idx = ((LVTInstruction) i).getVariableIndex();
-			sha256.update(Ints.toByteArray(idx));
+			Signature signature = method.getDescriptor();
+			
+			int lvt = method.isStatic() ? 0 : 1;
+			for (Type type : signature.getArguments())
+			{
+				if (idx == lvt)
+				{
+					// Accessing a method parameter
+					sha256.update(Ints.toByteArray(idx));
+					break;
+				}
+				
+				lvt += type.getSlots();
+			}
 		}
 
 		for (StackContext sctx : ic.getPops())
 		{
-			hash(sha256, sctx.getPushed());
+			hash(method, sha256, sctx.getPushed());
 		}
 	}
 
@@ -245,7 +261,7 @@ public class ExprArgOrder implements Deobfuscator
 		return c.size() <= 1;
 	}
 
-	private int compare(Instruction ins, InstructionContext ic1, InstructionContext ic2)
+	private int compare(Method method, Instruction ins, InstructionContext ic1, InstructionContext ic2)
 	{
 		Instruction i1 = ic1.getInstruction();
 		Instruction i2 = ic2.getInstruction();
@@ -281,8 +297,8 @@ public class ExprArgOrder implements Deobfuscator
 			}
 		}
 
-		int hash1 = hash(ic1);
-		int hash2 = hash(ic2);
+		int hash1 = hash(method, ic1);
+		int hash2 = hash(method, ic2);
 
 		if (hash1 == hash2)
 		{
@@ -325,7 +341,7 @@ public class ExprArgOrder implements Deobfuscator
 			assert ins.getInstructions().contains(i1);
 			assert ins.getInstructions().contains(i2);
 
-			int cval = compare(i, ic1, ic2);
+			int cval = compare(ctx.getMethod(), i, ic1, ic2);
 			if (cval <= 0)
 			{
 				continue;

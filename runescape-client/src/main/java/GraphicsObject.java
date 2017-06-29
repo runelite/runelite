@@ -4,134 +4,203 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cz")
+@ObfuscatedName("ch")
 @Implements("GraphicsObject")
 public final class GraphicsObject extends Renderable {
-   @ObfuscatedName("c")
-   boolean field1342;
-   @ObfuscatedName("m")
+   @ObfuscatedName("k")
+   boolean field1372;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 655361033
+      intValue = 215620871
    )
-   int field1343;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 281170273
-   )
-   @Export("level")
-   int level;
+   int field1373;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -785575623
+      intValue = 1079143615
    )
    @Export("x")
    int x;
-   @ObfuscatedName("p")
+   @ObfuscatedName("v")
+   Sequence field1375;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1214162851
-   )
-   @Export("id")
-   int id;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1710281423
-   )
-   @Export("height")
-   int height;
-   @ObfuscatedName("j")
-   Sequence field1348;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1030930641
-   )
-   int field1349;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -593223415
+      intValue = -143170019
    )
    @Export("y")
    int y;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 1742573381
+   )
+   @Export("height")
+   int height;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -1599757631
+   )
+   int field1378;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1626903793
+   )
+   @Export("level")
+   int level;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 217125579
+   )
+   int field1380;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1176910351
+      intValue = 1366002557
    )
-   int field1351;
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1857156594"
-   )
-   final void method1562(int var1) {
-      if(!this.field1342) {
-         this.field1349 += var1;
-
-         while(this.field1349 > this.field1348.frameLenghts[this.field1351]) {
-            this.field1349 -= this.field1348.frameLenghts[this.field1351];
-            ++this.field1351;
-            if(this.field1351 >= this.field1348.frameIDs.length) {
-               this.field1342 = true;
-               break;
-            }
-         }
-      }
-
-   }
+   @Export("id")
+   int id;
+   @ObfuscatedName("g")
+   static int[] field1382;
+   @ObfuscatedName("d")
+   public static String field1383;
 
    GraphicsObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      this.field1351 = 0;
-      this.field1349 = 0;
-      this.field1342 = false;
+      this.field1378 = 0;
+      this.field1380 = 0;
+      this.field1372 = false;
       this.id = var1;
       this.level = var2;
       this.x = var3;
       this.y = var4;
       this.height = var5;
-      this.field1343 = var7 + var6;
-      int var8 = Area.method4176(this.id).field3335;
+      this.field1373 = var7 + var6;
+      int var8 = Renderable.method2864(this.id).field3332;
       if(var8 != -1) {
-         this.field1342 = false;
-         this.field1348 = GameEngine.getAnimation(var8);
+         this.field1372 = false;
+         this.field1375 = class224.getAnimation(var8);
       } else {
-         this.field1342 = true;
+         this.field1372 = true;
       }
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)LModel;",
-      garbageValue = "-2066149273"
+      garbageValue = "-1914243094"
    )
    protected final Model getModel() {
-      Spotanim var1 = Area.method4176(this.id);
+      Spotanim var1 = Renderable.method2864(this.id);
       Model var2;
-      if(!this.field1342) {
-         var2 = var1.method4213(this.field1351);
+      if(!this.field1372) {
+         var2 = var1.method4338(this.field1378);
       } else {
-         var2 = var1.method4213(-1);
+         var2 = var1.method4338(-1);
       }
 
       return var2 == null?null:var2;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("gm")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;I)V",
-      garbageValue = "-222148195"
+      signature = "(LActor;II)V",
+      garbageValue = "-664573438"
    )
-   public static void method1565(IndexDataBase var0) {
-      class217.field2793 = var0;
+   static final void method1678(Actor var0, int var1) {
+      class82.method1626(var0.x, var0.y, var1);
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;LIndexDataBase;I)V",
-      garbageValue = "-44243372"
+      signature = "(II)V",
+      garbageValue = "579623850"
    )
-   public static void method1566(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2) {
-      class95.field1484 = var0;
-      Sequence.field3614 = var1;
-      Sequence.field3609 = var2;
+   final void method1682(int var1) {
+      if(!this.field1372) {
+         this.field1380 += var1;
+
+         while(this.field1380 > this.field1375.frameLenghts[this.field1378]) {
+            this.field1380 -= this.field1375.frameLenghts[this.field1378];
+            ++this.field1378;
+            if(this.field1378 >= this.field1375.frameIDs.length) {
+               this.field1372 = true;
+               break;
+            }
+         }
+
+      }
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;IIIIIII)V",
+      garbageValue = "2012927795"
+   )
+   static final void method1683(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7;
+      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
+         class61.tileSettings[var1][var2][var3] = 0;
+
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               if(var1 == 0) {
+                  int[] var8 = class61.tileHeights[0][var2];
+                  int var11 = var4 + var2 + 932731;
+                  int var12 = var5 + var3 + 556238;
+                  int var13 = class48.method743(var11 + '넵', var12 + 91923, 4) - 128 + (class48.method743(var11 + 10294, var12 + '鎽', 2) - 128 >> 1) + (class48.method743(var11, var12, 1) - 128 >> 2);
+                  var13 = (int)((double)var13 * 0.3D) + 35;
+                  if(var13 < 10) {
+                     var13 = 10;
+                  } else if(var13 > 60) {
+                     var13 = 60;
+                  }
+
+                  var8[var3] = -var13 * 8;
+               } else {
+                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
+               }
+               break;
+            }
+
+            if(var7 == 1) {
+               int var14 = var0.readUnsignedByte();
+               if(var14 == 1) {
+                  var14 = 0;
+               }
+
+               if(var1 == 0) {
+                  class61.tileHeights[0][var2][var3] = -var14 * 8;
+               } else {
+                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - var14 * 8;
+               }
+               break;
+            }
+
+            if(var7 <= 49) {
+               class61.overlayIds[var1][var2][var3] = var0.readByte();
+               class36.overlayPaths[var1][var2][var3] = (byte)((var7 - 2) / 4);
+               class67.overlayRotations[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
+            } else if(var7 <= 81) {
+               class61.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
+            } else {
+               class61.underlayIds[var1][var2][var3] = (byte)(var7 - 81);
+            }
+         }
+      } else {
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               break;
+            }
+
+            if(var7 == 1) {
+               var0.readUnsignedByte();
+               break;
+            }
+
+            if(var7 <= 49) {
+               var0.readUnsignedByte();
+            }
+         }
+      }
+
    }
 }

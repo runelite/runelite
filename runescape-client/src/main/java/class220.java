@@ -2,31 +2,42 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hq")
+@ObfuscatedName("hs")
 public class class220 {
-   @ObfuscatedName("aw")
-   static Client field2817;
-   @ObfuscatedName("m")
+   @ObfuscatedName("lx")
    @ObfuscatedGetter(
-      intValue = -1369744893
+      intValue = -1075620353
    )
-   static int field2818;
+   static int field2809;
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;Ljava/lang/String;Ljava/lang/String;I)LFont;",
-      garbageValue = "-1654028162"
+      signature = "(IB)LFloorUnderlayDefinition;",
+      garbageValue = "-10"
    )
-   public static Font method3950(IndexDataBase var0, IndexDataBase var1, String var2, String var3) {
-      int var4 = var0.method4055(var2);
-      int var5 = var0.method4020(var4, var3);
-      Font var6;
-      if(!class1.method3(var0, var4, var5)) {
-         var6 = null;
+   public static FloorUnderlayDefinition method4054(int var0) {
+      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.field3349.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         var6 = class12.method74(var1.getConfigData(var4, var5));
-      }
+         byte[] var2 = FloorUnderlayDefinition.field3350.getConfigData(1, var0);
+         var1 = new FloorUnderlayDefinition();
+         if(var2 != null) {
+            var1.method4378(new Buffer(var2), var0);
+         }
 
-      return var6;
+         var1.method4368();
+         FloorUnderlayDefinition.field3349.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "1871425042"
+   )
+   static String method4055(int var0) {
+      return "<col=" + Integer.toHexString(var0) + ">";
    }
 }
