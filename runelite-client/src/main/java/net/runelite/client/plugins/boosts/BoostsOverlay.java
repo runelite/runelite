@@ -50,10 +50,13 @@ class BoostsOverlay extends Overlay
 	private static final int RIGHT_BORDER = 2;
 
 	private static final int SEPARATOR = 2;
-	
-	BoostsOverlay()
+
+	private final BoostsConfig config;
+
+	BoostsOverlay(Boosts plugin)
 	{
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.MED);
+		this.config = plugin.getConfig();
 	}
 
 	@Override
@@ -61,7 +64,7 @@ class BoostsOverlay extends Overlay
 	{
 		Client client = RuneLite.getClient();
 
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
 			return null;
 		
 		FontMetrics metrics = graphics.getFontMetrics();
