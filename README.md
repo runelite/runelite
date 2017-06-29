@@ -26,3 +26,7 @@ For more information visit the [RuneLite Wiki](https://github.com/runelite/runel
 
 Most of Runelite is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
 Some of the code, like everything in runescape-client, is automatically generated, and is not licensed.
+
+## Contribute and Develop
+
+We've set up a separate document for our [contribution guidelines](https://github.com/runelite/runelite/blob/master/CONTRIBUTING.md).
