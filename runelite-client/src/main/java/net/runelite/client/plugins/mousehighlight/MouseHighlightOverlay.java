@@ -37,23 +37,24 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-public class MouseHighlightOverlay extends Overlay
+class MouseHighlightOverlay extends Overlay
 {
 	// Grabs the colour and name from a target string
 	// <col=ffffff>Player1
 	private final Pattern p = Pattern.compile("^<col=([^>]+)>([^<]*)");
+	private final MouseHighlightConfig config;
 
-	public MouseHighlightOverlay()
+	MouseHighlightOverlay(MouseHighlight plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
+		this.config = plugin.getConfig();
 	}
-
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		Client client = RuneLite.getClient();
 
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
 		{
 			return null;
 		}
