@@ -43,4 +43,14 @@ public interface BoostsConfig
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "enableSkill",
+		name = "Enable Skill Boosts",
+		description = "Configures whether or not to display skill boost information"
+	)
+	default boolean enableSkill()
+	{
+		return true;
+	}
 }
