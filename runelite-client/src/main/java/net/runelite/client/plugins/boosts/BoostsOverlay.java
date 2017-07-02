@@ -22,13 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.boosts;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import com.google.common.collect.ObjectArrays;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
@@ -43,7 +43,16 @@ class BoostsOverlay extends Overlay
 
 	private static final Color BACKGROUND = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
 
-	private static final Skill[] SHOW = new Skill[] { Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.MAGIC };
+	private static final Skill[] COMBAT = new Skill[]
+	{
+		Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.MAGIC
+	};
+	private static final Skill[] SKILLING = new Skill[]
+	{
+		Skill.COOKING, Skill.WOODCUTTING, Skill.FLETCHING, Skill.FISHING, Skill.FIREMAKING, Skill.CRAFTING,
+		Skill.SMITHING, Skill.HERBLORE, Skill.AGILITY, Skill.THIEVING, Skill.SLAYER, Skill.FARMING, Skill.RUNECRAFT,
+		Skill.HUNTER, Skill.CONSTRUCTION
+	};
 
 	private static final int TOP_BORDER = 2;
 	private static final int LEFT_BORDER = 2;
@@ -65,36 +74,54 @@ class BoostsOverlay extends Overlay
 		Client client = RuneLite.getClient();
 
 		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		{
 			return null;
-		
+		}
+
+		Skill[] show;
+		if (config.enableSkill())
+		{
+			show = ObjectArrays.concat(COMBAT, SKILLING, Skill.class);
+		}
+		else
+		{
+			show = COMBAT;
+		}
+
 		FontMetrics metrics = graphics.getFontMetrics();
 
 		int height = TOP_BORDER;
-		for (Skill skill : SHOW)
+		for (Skill skill : show)
 		{
 			int boosted = client.getBoostedSkillLevel(skill),
 				base = client.getRealSkillLevel(skill);
 
 			if (boosted == base)
+			{
 				continue;
+			}
 
 			height += metrics.getHeight() + SEPARATOR;
 		}
 
 		if (height == TOP_BORDER)
+		{
 			return null;
+		}
 
 		graphics.setColor(BACKGROUND);
 		graphics.fillRect(0, 0, WIDTH, height);
 
 		int y = TOP_BORDER;
-		for (Skill skill : SHOW)
+		for (Skill skill : show)
 		{
 			int boosted = client.getBoostedSkillLevel(skill),
 				base = client.getRealSkillLevel(skill);
 
 			if (boosted == base)
+			{
 				continue;
+			}
 
 			graphics.setColor(Color.white);
 			graphics.drawString(skill.getName(), LEFT_BORDER, y + metrics.getHeight());
