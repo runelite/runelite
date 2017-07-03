@@ -126,6 +126,14 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 			execution.invoke(ins, method);
 		}
 
+		if (myMethods != null)
+		{
+			for (net.runelite.asm.Method method : myMethods)
+			{
+				frame.getExecution().order(frame, method);
+			}
+		}
+
 		return ins;
 	}
 

@@ -84,6 +84,11 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 
+		if (myField != null)
+		{
+			frame.getExecution().order(frame, myField);
+		}
+
 		return ins;
 	}
 

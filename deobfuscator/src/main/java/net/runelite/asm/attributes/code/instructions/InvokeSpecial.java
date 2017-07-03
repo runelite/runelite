@@ -118,6 +118,8 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 			// add possible method call to execution
 			Execution execution = frame.getExecution();
 			execution.invoke(ins, myMethod);
+
+			frame.getExecution().order(frame, myMethod);
 		}
 
 		return ins;

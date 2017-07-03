@@ -85,6 +85,11 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 
 		ins.push(ctx);
 
+		if (myField != null)
+		{
+			frame.getExecution().order(frame, myField);
+		}
+
 		return ins;
 	}
 

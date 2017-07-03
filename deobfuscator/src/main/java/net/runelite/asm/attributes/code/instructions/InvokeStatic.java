@@ -40,6 +40,7 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
+import static net.runelite.asm.execution.StaticStep.stepInto;
 import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.pool.Method;
@@ -118,9 +119,31 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 
 			assert myMethod.getCode() != null;
 
-			// add possible method call to execution
 			Execution execution = frame.getExecution();
-			execution.invoke(ins, myMethod);
+
+			if (execution.staticStep)
+			{
+				Frame staticFrame = stepInto(frame, ins);
+
+				if (staticFrame != null)
+				{
+					// this invokestatic instruction hasn't been added to this frame yet.. so it
+					// is not yet in the return frame
+					staticFrame.returnTo.addInstructionContext(ins);
+					staticFrame.returnTo.nextInstruction();
+
+					// returnTo has already be duped from frame which is why executing remains
+					// true and it is able to resume later
+					frame.stop();
+				}
+			}
+			else
+			{
+				// add possible method call to execution
+				execution.invoke(ins, myMethod);
+			}
+
+			frame.getExecution().order(frame, myMethod);
 		}
 
 		return ins;

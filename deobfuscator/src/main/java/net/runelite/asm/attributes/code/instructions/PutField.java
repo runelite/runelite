@@ -86,6 +86,11 @@ public class PutField extends Instruction implements SetFieldInstruction
 		StackContext object = stack.pop();
 		ins.pop(value, object);
 
+		if (myField != null)
+		{
+			frame.getExecution().order(frame, myField);
+		}
+
 		return ins;
 	}
 
