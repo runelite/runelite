@@ -24,8 +24,8 @@
  */
 package net.runelite.asm.attributes.code.instructions;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
@@ -51,7 +51,7 @@ import org.objectweb.asm.MethodVisitor;
 public class InvokeSpecial extends Instruction implements InvokeInstruction
 {
 	private Method method;
-	private List<net.runelite.asm.Method> myMethods;
+	private net.runelite.asm.Method myMethod;
 
 	public InvokeSpecial(Instructions instructions, InstructionType type)
 	{
@@ -78,7 +78,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 	@Override
 	public List<net.runelite.asm.Method> getMethods()
 	{
-		return myMethods != null ? myMethods : Arrays.asList();
+		return myMethod != null ? Arrays.asList(myMethod) : Collections.EMPTY_LIST;
 	}
 
 	@Override
@@ -109,19 +109,15 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 			ins.push(ctx);
 		}
 
-		for (net.runelite.asm.Method method : getMethods())
+		if (myMethod != null)
 		{
-			ins.invoke(method);
+			ins.invoke(myMethod);
 
-			if (method.getCode() == null)
-			{
-				frame.getExecution().methods.add(method);
-				continue;
-			}
+			assert myMethod.getCode() != null;
 
 			// add possible method call to execution
 			Execution execution = frame.getExecution();
-			execution.invoke(ins, method);
+			execution.invoke(ins, myMethod);
 		}
 
 		return ins;
@@ -161,7 +157,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 	@Override
 	public void lookup()
 	{
-		myMethods = null;
+		myMethod = null;
 		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
 
 		ClassFile otherClass = group.findClass(method.getClazz().getName());
@@ -176,17 +172,15 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 			return;
 		}
 
-		List<net.runelite.asm.Method> list = new ArrayList<>();
-		list.add(other);
-		myMethods = list;
+		myMethod = other;
 	}
 
 	@Override
 	public void regeneratePool()
 	{
-		if (myMethods != null && !myMethods.isEmpty())
+		if (myMethod != null)
 		{
-			method = myMethods.get(0).getPoolMethod();
+			method = myMethod.getPoolMethod();
 		}
 	}
 
