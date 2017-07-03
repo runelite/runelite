@@ -25,6 +25,7 @@
 package net.runelite.asm.attributes.code.instructions;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
@@ -83,7 +84,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 	@Override
 	public List<net.runelite.asm.Method> getMethods()
 	{
-		return myMethod != null ? Arrays.asList(myMethod) : Arrays.asList();
+		return myMethod != null ? Arrays.asList(myMethod) : Collections.EMPTY_LIST;
 	}
 
 	@Override
@@ -111,19 +112,15 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 			ins.push(ctx);
 		}
 
-		for (net.runelite.asm.Method method : getMethods())
+		if (myMethod != null)
 		{
-			ins.invoke(method);
+			ins.invoke(myMethod);
 
-			if (method.getCode() == null)
-			{
-				frame.getExecution().methods.add(method);
-				continue;
-			}
+			assert myMethod.getCode() != null;
 
 			// add possible method call to execution
 			Execution execution = frame.getExecution();
-			execution.invoke(ins, method);
+			execution.invoke(ins, myMethod);
 		}
 
 		return ins;
