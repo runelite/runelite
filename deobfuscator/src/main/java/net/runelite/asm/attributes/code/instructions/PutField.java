@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.ClassFile;
@@ -82,11 +81,11 @@ public class PutField extends Instruction implements SetFieldInstruction
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
-		
+
 		StackContext value = stack.pop();
 		StackContext object = stack.pop();
 		ins.pop(value, object);
-		
+
 		return ins;
 	}
 
@@ -95,7 +94,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 	{
 		return field;
 	}
-	
+
 	@Override
 	public net.runelite.asm.Field getMyField()
 	{
@@ -104,24 +103,30 @@ public class PutField extends Instruction implements SetFieldInstruction
 		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
 		ClassFile cf = group.findClass(clazz.getName());
 		if (cf == null)
+		{
 			return null;
+		}
 
 		net.runelite.asm.Field f2 = cf.findFieldDeep(field.getName(), field.getType());
 		return f2;
 	}
-	
+
 	@Override
 	public void lookup()
 	{
 		myField = getMyField();
 	}
-	
+
 	@Override
 	public void regeneratePool()
 	{
 		if (myField != null)
+		{
 			if (getMyField() != myField)
+			{
 				field = myField.getPoolField();
+			}
+		}
 	}
 
 	@Override
@@ -129,13 +134,12 @@ public class PutField extends Instruction implements SetFieldInstruction
 	{
 		net.runelite.asm.Field myField = this.getMyField();
 		net.runelite.asm.Field otherField = ((PutField) other.getInstruction()).getMyField();
-		
+
 		assert MappingExecutorUtil.isMaybeEqual(myField.getType(), otherField.getType());
-		
+
 		mapping.map(this, myField, otherField);
-		
+
 		// map assignment
-		
 		StackContext object1 = ctx.getPops().get(1),
 			object2 = other.getPops().get(1);
 
@@ -145,7 +149,6 @@ public class PutField extends Instruction implements SetFieldInstruction
 		mapGetFieldInstructrions(mapping, base1, base2);
 
 		// map value
-
 		object1 = ctx.getPops().get(0);
 		object2 = other.getPops().get(0);
 
@@ -171,7 +174,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 			}
 		}
 	}
-	
+
 	private boolean isMaybeEqual(InstructionContext base1, InstructionContext base2)
 	{
 		if (base1.getInstruction() instanceof GetFieldInstruction && base2.getInstruction() instanceof GetFieldInstruction)
@@ -181,10 +184,10 @@ public class PutField extends Instruction implements SetFieldInstruction
 
 			net.runelite.asm.Field f1 = gf1.getMyField();
 			net.runelite.asm.Field f2 = gf2.getMyField();
-			
+
 			return MappingExecutorUtil.isMaybeEqual(f1, f2);
 		}
-		
+
 		return true;
 	}
 
@@ -192,23 +195,28 @@ public class PutField extends Instruction implements SetFieldInstruction
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
 		if (thisIc.getInstruction().getClass() != otherIc.getInstruction().getClass())
+		{
 			return false;
-		
+		}
+
 		PutField thisPf = (PutField) thisIc.getInstruction(),
 			otherPf = (PutField) otherIc.getInstruction();
-		
+
 		net.runelite.asm.Field f1 = thisPf.getMyField();
 		net.runelite.asm.Field f2 = otherPf.getMyField();
-		
+
 		if ((f1 != null) != (f2 != null))
+		{
 			return false;
+		}
 
 		if (!MappingExecutorUtil.isMaybeEqual(f1.getFields().getClassFile(), f2.getFields().getClassFile())
 			|| !MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType()))
+		{
 			return false;
+		}
 
 		// check assignment
-		
 		StackContext object1 = thisIc.getPops().get(1),
 			object2 = otherIc.getPops().get(1);
 
@@ -221,7 +229,6 @@ public class PutField extends Instruction implements SetFieldInstruction
 		}
 
 		// check value
-
 		object1 = thisIc.getPops().get(0);
 		object2 = otherIc.getPops().get(0);
 
@@ -232,22 +239,26 @@ public class PutField extends Instruction implements SetFieldInstruction
 		{
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public boolean canMap(InstructionContext thisIc)
 	{
 		StackContext value = thisIc.getPops().get(0);
 		Instruction i = value.getPushed().getInstruction();
-		
+
 		// sometimes ConstantValue field attributes and inlined into the constructor,
 		// which are all constants, so we ignore those mappings here
 		if (thisIc.getFrame().getMethod().getName().equals("<init>"))
+		{
 			if (i instanceof PushConstantInstruction || i instanceof AConstNull)
+			{
 				return false;
-		
+			}
+		}
+
 		return true;
 	}
 
