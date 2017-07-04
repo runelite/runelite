@@ -22,74 +22,89 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.runelite.asm.attributes.Code;
 
 public class ClassGroup
 {
-	private final List<ClassFile> classes = new ArrayList<>();
-
-	public ClassGroup()
-	{
-	}
+	private final List<ClassFile> classes = new ArrayList<>(); // to keep order
+	private final Map<String, ClassFile> classMap = new HashMap<>();
 
 	public void addClass(ClassFile cf)
 	{
 		assert cf.getGroup() == this || cf.getGroup() == null;
 		cf.setGroup(this);
+
 		classes.add(cf);
+		classMap.put(cf.getName(), cf);
 	}
-	
+
 	public void removeClass(ClassFile cf)
 	{
 		classes.remove(cf);
+		classMap.remove(cf.getName());
 	}
-	
+
+	public void renameClass(ClassFile cf, String newName)
+	{
+		assert classes.contains(cf);
+		assert classMap.get(cf.getName()) == cf;
+
+		classMap.remove(cf.getName());
+		cf.setName(newName);
+		classMap.put(cf.getName(), cf);
+	}
+
 	public List<ClassFile> getClasses()
 	{
-		return classes;
+		return Collections.unmodifiableList(classes);
 	}
 
 	public ClassFile findClass(String name)
 	{
-		// XXX handle arrays?
-		for (ClassFile c : classes)
-			if (c.getName().equals(name))
-				return c;
-		return null;
+		return classMap.get(name);
 	}
-	
+
 	public void initialize()
 	{
 		buildClassGraph();
 		lookup();
 	}
-	
+
 	public void buildClassGraph()
 	{
 		for (ClassFile c : classes)
+		{
 			c.clearClassGraph();
-		
+		}
+
 		for (ClassFile c : classes)
+		{
 			c.buildClassGraph();
+		}
 	}
-	
+
 	public void lookup()
 	{
 		for (ClassFile cf : this.getClasses())
+		{
 			for (Method m : cf.getMethods().getMethods())
 			{
 				Code code = m.getCode();
-				
+
 				if (code == null)
+				{
 					continue;
-				
+				}
+
 				code.getInstructions().lookup();
 			}
-		
+		}
 	}
 }

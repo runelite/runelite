@@ -151,7 +151,7 @@ public class Renamer implements Deobfuscator
 			cf.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_NAME, "value", cf.getName());
 		}
 
-		cf.setName(name);
+		group.renameClass(cf, name);
 	}
 
 	private void regeneratePool(ClassGroup group)
