@@ -44,6 +44,7 @@ import net.runelite.client.plugins.grounditems.GroundItems;
 import net.runelite.client.plugins.hiscore.Hiscore;
 import net.runelite.client.plugins.idlenotifier.IdleNotifier;
 import net.runelite.client.plugins.implings.Implings;
+import net.runelite.client.plugins.jewelrycount.JewelryCount;
 import net.runelite.client.plugins.mousehighlight.MouseHighlight;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 import net.runelite.client.plugins.pestcontrol.PestControl;
@@ -87,6 +88,7 @@ public class PluginManager
 		plugins.add(new Implings());
 		plugins.add(new XpGlobes());
 		plugins.add(new CombatNotifier());
+		plugins.add(new JewelryCount());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
