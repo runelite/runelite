@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.jewelrycount;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
+
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.widgets.Widget;
@@ -58,36 +60,74 @@ class JewelryCountOverlay extends Overlay
 
 		Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
 
-		if (inventory == null || inventory.isHidden())
+		if (inventory == null)
 		{
 			return null;
 		}
 
-		for (WidgetItem item : inventory.getWidgetItems())
+		if (!inventory.isHidden())
 		{
-			JewelryCharges charges = JewelryCharges.getCharges(item.getId());
+			for (WidgetItem item : inventory.getWidgetItems())
+			{
+				JewelryCharges charges = JewelryCharges.getCharges(item.getId());
 
-			if (charges == null)
+				if (charges == null)
+				{
+					continue;
+				}
+
+				renderWidgetText(graphics, item.getCanvasBounds(), charges.getCharges(), Color.white);
+
+			}
+		}
+
+		Widget[] equipment =
+		{
+			client.getWidget(WidgetInfo.EQUIPMENT_AMULET).getChild(1), client.getWidget(WidgetInfo.EQUIPMENT_RING).getChild(1)
+		};
+
+		if (equipment == null)
+		{
+			return null;
+		}
+
+		for (Widget widget : equipment)
+		{
+			JewelryCharges charges = JewelryCharges.getCharges(widget.getItemId());
+
+			if (charges == null || widget.isHidden())
 			{
 				continue;
 			}
 
-			Rectangle slotBounds = item.getCanvasBounds();
-			FontMetrics fm = graphics.getFontMetrics();
-			String jewelryCharge = Integer.toString(charges.getCharges());
+			Rectangle widgetBounds = widget.getBounds();
 
-			int x = (int) (slotBounds.getX() + slotBounds.getWidth()) - fm.stringWidth(jewelryCharge);
-			int y = (int) (slotBounds.getY() + fm.getHeight());
+			//to match inventory text
+			widgetBounds.x -= -5;
+			widgetBounds.y -= -1;
 
-			//text shadow
-			graphics.setColor(Color.black);
-			graphics.drawString(jewelryCharge, x + 1, y + 1);
+			renderWidgetText(graphics, widgetBounds, charges.getCharges(), Color.white);
 
-			graphics.setColor(Color.white);
-			graphics.drawString(jewelryCharge, x, y);
 		}
 
 		return null;
+	}
+
+	private void renderWidgetText(Graphics2D graphics, Rectangle bounds, int charges, Color color)
+	{
+		String text = charges + "";
+		FontMetrics fm = graphics.getFontMetrics();
+		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
+
+		int textX = (int) (bounds.getX() + bounds.getWidth() - textBounds.getWidth());
+		int textY = (int) (bounds.getY() + (textBounds.getHeight()));
+
+		//text shadow
+		graphics.setColor(Color.BLACK);
+		graphics.drawString(text, textX + 1, textY + 1);
+
+		graphics.setColor(color);
+		graphics.drawString(text, textX, textY);
 	}
 
 }
