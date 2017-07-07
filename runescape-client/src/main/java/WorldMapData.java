@@ -1,11 +1,8 @@
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
+
+import net.runelite.mapping.*;
 
 @ObfuscatedName("ar")
 @Implements("WorldMapData")
@@ -443,6 +440,7 @@ public class WorldMapData {
       garbageValue = "263872365"
    )
    @Export("addChatMessage")
+   @Hook("addChatMessage")
    static void addChatMessage(int var0, String var1, String var2, String var3) {
       ChatLineBuffer var4 = (ChatLineBuffer)class98.chatLineMap.get(Integer.valueOf(var0));
       if(var4 == null) {
