@@ -103,8 +103,8 @@ class JewelryCountOverlay extends Overlay
 			Rectangle widgetBounds = widget.getBounds();
 
 			//to match inventory text
-			widgetBounds.x -= -5;
-			widgetBounds.y -= -1;
+			widgetBounds.x -= 5;
+			widgetBounds.y -= 1;
 
 			renderWidgetText(graphics, widgetBounds, charges.getCharges(), Color.white);
 
