@@ -28,12 +28,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
-import net.runelite.client.events.ExperienceChanged;
-import net.runelite.client.events.MapRegionChanged;
-import net.runelite.client.events.MenuOptionClicked;
-import net.runelite.client.events.PlayerMenuOptionsChanged;
-import net.runelite.client.events.AnimationChanged;
-import net.runelite.client.events.GameStateChanged;
+import net.runelite.client.events.*;
 import net.runelite.client.game.DeathChecker;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.rs.api.MainBufferProvider;
@@ -159,5 +154,12 @@ public class Hooks
 		playerMenuOptionClicked.setMenuAction(menuAction);
 
 		runelite.getEventBus().post(playerMenuOptionClicked);
+	}
+
+	public static void addChatMessage(int type, String sender, String message, String clan)
+	{
+		ChatMessage chatMessage = new ChatMessage(type, sender, message, clan);
+
+		runelite.getEventBus().post(chatMessage);
 	}
 }
