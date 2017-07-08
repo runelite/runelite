@@ -30,6 +30,7 @@ import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.service.account.AccountService;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.config.ConfigService;
+import net.runelite.http.service.examine.ExamineService;
 import net.runelite.http.service.hiscore.HiscoreService;
 import net.runelite.http.service.item.ItemService;
 import net.runelite.http.service.updatecheck.UpdateCheckService;
@@ -37,6 +38,8 @@ import net.runelite.http.service.worlds.WorldsService;
 import net.runelite.http.service.xtea.XteaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.Request;
+import spark.Response;
 import spark.servlet.SparkApplication;
 import static spark.Spark.*;
 
@@ -54,6 +57,9 @@ public class Service implements SparkApplication
 
 	@Inject
 	private ConfigService config;
+
+	@Inject
+	private ExamineService examine;
 
 	@Inject
 	private HiscoreService hiscores;
@@ -83,6 +89,7 @@ public class Service implements SparkApplication
 		accounts.init();
 		config.init();
 		item.init();
+		examine.init();
 
 		get("/version", (request, response) -> RuneliteAPI.getVersion());
 		get("/update-check", updateCheck::check, transformer);
@@ -118,6 +125,16 @@ public class Service implements SparkApplication
 			get("/:id/icon/large", item::getIconLarge);
 			get("/:id/price", item::getPrice, transformer);
 			get("/:id/price/:time", item::getPrice, transformer);
+		});
+		path("/examine", () ->
+		{
+			get("/npc/:id", examine::getNpc);
+			get("/object/:id", examine::getObject);
+			get("/item/:id", examine::getItem);
+
+			post("/npc/:id", examine::submitNpc);
+			post("/object/:id", examine::submitObject);
+			post("/item/:id", examine::submitItem);
 		});
 
 		exception(Exception.class, this::handleException);
