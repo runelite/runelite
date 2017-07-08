@@ -30,91 +30,128 @@ import net.runelite.client.ui.PluginPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class XPPanel extends PluginPanel
 {
-    private static final Logger logger = LoggerFactory.getLogger(XPPanel.class);
-    private static HashMap<Skill, JLabel> labelMap = new HashMap<>();
-    private static final XPTracker xpTracker = new XPTracker();
+	private static final Logger logger = LoggerFactory.getLogger(XPPanel.class);
+	private static HashMap<Skill, JPanel> labelMap = new HashMap<>();
+	private final XPTracker xpTracker;
+	private static JPanel statsPanel;
 
-    public XPPanel(RuneLite runelite)
-    {
-        setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        setSize(PANEL_WIDTH, PANEL_HEIGHT);
-        setVisible(true);
+	public XPPanel(RuneLite runelite, XPTracker xpTracker)
+	{
+		this.xpTracker = xpTracker;
 
-        JPanel statsPanel = new JPanel();
-        statsPanel.setLayout(new GridLayout(24, 1));
+		UIManager.put("Button.font", new FontUIResource("RuneScape Chat", Font.BOLD, 20));
+		UIManager.put("Label.font", new FontUIResource("RuneScape Chat", Font.BOLD, 16));
 
-        try
-        {
-            for (Skill skill : Skill.values())
-            {
-                if (skill == Skill.OVERALL)
-                    break;
+		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		setSize(PANEL_WIDTH, PANEL_HEIGHT);
+		setVisible(true);
+		statsPanel = new JPanel();
+		statsPanel.setLayout(new GridLayout(24, 1));
 
-                JLabel skillLabel = new JLabel("--");
-                labelMap.put(skill, skillLabel);
-                statsPanel.add(makeSkillPanel(skill, skillLabel));
-            }
-        } catch (IOException e)
-        {
-            e.printStackTrace();
+		try
+		{
+			for (Skill skill : Skill.values())
+			{
+				if (skill == Skill.OVERALL)
+					break;
 
-        }
-        JButton resetButton = new JButton("Reset");
+				JLabel skillLabel = new JLabel();
+				labelMap.put(skill, makeSkillPanel(skill, skillLabel));
+			}
+		} catch (IOException e)
+		{
+			e.printStackTrace();
 
-        resetButton.addActionListener((ActionEvent e) ->
-        {
-            ScheduledExecutorService executor = runelite.getExecutor();
-            executor.execute(this::reset);
-        });
-        statsPanel.add(resetButton);
+		}
+		JButton resetButton = new JButton("Reset All");
+		resetButton.setPreferredSize(new Dimension(PANEL_WIDTH, 32));
+		resetButton.addActionListener((ActionEvent e) ->
+				runelite.getExecutor().execute(this::resetAllSkillXpHr));
 
-        add(statsPanel);
-    }
+		statsPanel.add(resetButton);
+		JScrollPane scroll = new JScrollPane(statsPanel);
+		scroll.add(statsPanel);
 
-    private JPanel makeSkillPanel(Skill skill, JLabel levelLabel) throws IOException
-    {
-        JPanel iconLevel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        iconLevel.setPreferredSize(new Dimension(PANEL_WIDTH, 32));
+		add(statsPanel);
+	}
 
-        String skillIcon = "/skill_icons/" + skill.getName().toLowerCase() + ".png";
-        logger.debug("Loading skill icon from {}", skillIcon);
+	private JButton makeSkillResetButton(Skill skill) throws IOException
+	{
+		ImageIcon resetIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("reset.png")));
+		JButton resetButton = new JButton(resetIcon);
+		resetButton.setPreferredSize(new Dimension(32, 32));
+		resetButton.addActionListener(actionEvent -> resetSkillXpHr(skill));
+		return resetButton;
+	}
 
-        JLabel icon = new JLabel(new ImageIcon(ImageIO.read(XPPanel.class.getResourceAsStream(skillIcon))));
-        iconLevel.add(icon);
+	private JPanel makeSkillPanel(Skill skill, JLabel levelLabel) throws IOException
+	{
+		BorderLayout borderLayout = new BorderLayout();
+		borderLayout.setHgap(12);
+		JPanel iconLevel = new JPanel(borderLayout);
+		iconLevel.setPreferredSize(new Dimension(PANEL_WIDTH, 32));
 
-        iconLevel.add(levelLabel);
+		String skillIcon = "/skill_icons/" + skill.getName().toLowerCase() + ".png";
+		logger.debug("Loading skill icon from {}", skillIcon);
+		JLabel icon = new JLabel(new ImageIcon(ImageIO.read(XPPanel.class.getResourceAsStream(skillIcon))));
+		iconLevel.add(icon, BorderLayout.LINE_START);
 
-        return iconLevel;
-    }
+		iconLevel.add(levelLabel, BorderLayout.CENTER);
+		iconLevel.add(makeSkillResetButton(skill), BorderLayout.LINE_END);
 
-    private void reset()
-    {
-        xpTracker.resetAll();
-    }
+		return iconLevel;
+	}
 
-    public void resetSkillXpHr(Skill skill)
-    {
-        labelMap.get(skill).setText("--");
-    }
+	public void resetSkillXpHr(Skill skill)
+	{
+		xpTracker.getXpInfos()[skill.ordinal()].reset();
+		statsPanel.remove(labelMap.get(skill));
+		statsPanel.revalidate();
+		statsPanel.repaint();
+	}
 
-    public void updateSkillXpHr(Skill skill, Double xp)
-    {
-        labelMap.get(skill).setText(String.format("%.2f", xp));
-    }
+	public void resetAllSkillXpHr()
+	{
+		for (SkillXPInfo skillInfo : xpTracker.getXpInfos())
+		{
+			if (skillInfo != null && skillInfo.getSkillTimeStart() != null)
+				resetSkillXpHr(skillInfo.getSkill());
+		}
+	}
+
+	public void updateAllSkillXpHr()
+	{
+		for (SkillXPInfo skillInfo : xpTracker.getXpInfos())
+		{
+			if (skillInfo != null && skillInfo.getSkillTimeStart() != null)
+				updateSkillXpHr(skillInfo);
+		}
+	}
+
+	public void updateSkillXpHr(SkillXPInfo skillXPInfo)
+	{
+		JPanel skillPanel = labelMap.get(skillXPInfo.getSkill());
+		JLabel xpHr = (JLabel) skillPanel.getComponent(1);
+		xpHr.setText(NumberFormat.getInstance().format(skillXPInfo.getXpHr()) + " xp/hr");
+
+		if (skillPanel.getParent() != statsPanel)
+		{
+			statsPanel.add(labelMap.get(skillXPInfo.getSkill()));
+		}
+	}
 }
 

@@ -33,106 +33,74 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.RunnableExceptionLogger;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class XPTracker extends Plugin
 {
-    private static final int NUMBER_OF_SKILLS = Skill.values().length - 1;
-    private static Instant[] skillTimeStarted = new Instant[NUMBER_OF_SKILLS]; //no overall
-    private static int[] xpGained = new int[NUMBER_OF_SKILLS];
-    private static int[] beginXp = new int[NUMBER_OF_SKILLS];
+	private static final int NUMBER_OF_SKILLS = Skill.values().length - 1; //ignore overall
 
-    private final RuneLite runeLite = RuneLite.getRunelite();
-    private Client client = RuneLite.getClient();
-    private ScheduledFuture<?> future;
+	private final RuneLite runeLite = RuneLite.getRunelite();
+	private final ClientUI ui = runeLite.getGui();
+	private Client client = RuneLite.getClient();
+	private ScheduledFuture<?> future;
 
-    private final NavigationButton navButton = new NavigationButton("XP Tracker");
-    private final ClientUI ui = runeLite.getGui();
+	private final NavigationButton navButton = new NavigationButton("XP Tracker");
+	private final XPPanel xpPanel = new XPPanel(runeLite, this);
+	private SkillXPInfo[] xpInfos = new SkillXPInfo[NUMBER_OF_SKILLS];
 
-    private final XPPanel xpPanel = new XPPanel(runeLite);
+	@Subscribe
+	public void onXpChanged(ExperienceChanged event)
+	{
+		Skill skill = event.getSkill();
+		int skillIdx = skill.ordinal();
 
+		//To catch login ExperienceChanged event.
+		if (xpInfos[skillIdx] != null)
+		{
+			xpInfos[skillIdx].update();
+		} else
+		{
+			xpInfos[skillIdx] = new SkillXPInfo(client.getSkillExperience(skill), skill);
+		}
+	}
 
-    @Subscribe
-    public void onXpChanged(ExperienceChanged event)
-    {
-        Skill skill = event.getSkill();
-        int skillIdx = skill.ordinal();
+	private void setPluginPanel(ActionEvent e)
+	{
+		ui.expand(xpPanel);
+	}
 
-        //To catch login ExperienceChanged event.
-        if (beginXp[skillIdx] == 0)
-        {
-            beginXp[skillIdx] = client.getSkillExperience(skill);
-        } else if (skillTimeStarted[skillIdx] == null)
-        {
-            //record starting time of skill.
-            skillTimeStarted[skillIdx] = Instant.now();
-            int xpDiff = client.getSkillExperience(skill) - beginXp[skillIdx];
-            xpGained[skillIdx] = xpDiff;
-        } else
-        {
-            //calculate how much xp has been gained.
-            int xpDiff = client.getSkillExperience(skill) - beginXp[skillIdx];
-            xpGained[skillIdx] = xpDiff;
-        }
-    }
+	@Override
+	protected void startUp() throws Exception
+	{
+		navButton.getButton().addActionListener(this::setPluginPanel);
 
-    public double getXpPerHour(Skill skill)
-    {
-        int skillIdx = skill.ordinal();
-        long timeElapsedInSeconds = Duration.between(
-                skillTimeStarted[skillIdx], Instant.now()).getSeconds();
-        return (1.0 / (timeElapsedInSeconds / 3600.0)) * xpGained[skillIdx];
-    }
+		navButton.getButton().setText("XP");
+		ui.getNavigationPanel().addNavigation(navButton);
 
-    private void setPluginPanel(ActionEvent e)
-    {
-        ui.expand(xpPanel);
-    }
+		ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
+		future = executor.scheduleAtFixedRate(RunnableExceptionLogger.wrap(
+				xpPanel::updateAllSkillXpHr), 0, 600, TimeUnit.MILLISECONDS);
 
-    @Override
-    protected void startUp() throws Exception
-    {
-        navButton.getButton().addActionListener(this::setPluginPanel);
+		Font font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape.ttf"));
+		font = font.deriveFont(Font.BOLD, 16);
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		ge.registerFont(font);
+	}
 
-        //ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("hiscore.gif")));
-        navButton.getButton().setText("XP");
-        ui.getNavigationPanel().addNavigation(navButton);
+	@Override
+	protected void shutDown() throws Exception
+	{
+		future.cancel(true);
+	}
 
-        ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
-        future = executor.scheduleAtFixedRate(RunnableExceptionLogger.wrap(this::updateXpHr), 0, 600, TimeUnit.MILLISECONDS);
-    }
+	public SkillXPInfo[] getXpInfos()
+	{
+		return xpInfos;
+	}
 
-    @Override
-    protected void shutDown() throws Exception
-    {
-        future.cancel(true);
-    }
-
-    private void updateXpHr()
-    {
-        for (int i = 0; i < NUMBER_OF_SKILLS; i++)
-        {
-            if (xpGained[i] != 0)
-            {
-                Skill skill = Skill.values()[i];
-                xpPanel.updateSkillXpHr(skill, getXpPerHour(skill));
-            }
-        }
-    }
-
-    public void resetAll()
-    {
-        for (int i = 0; i < NUMBER_OF_SKILLS; i++)
-        {
-            beginXp[i] = client.getSkillExperience(Skill.values()[i]);
-            skillTimeStarted[i] = null;
-            xpGained[i] = 0;
-            xpPanel.resetSkillXpHr(Skill.values()[i]);
-        }
-    }
 }
