@@ -39,6 +39,7 @@ import net.runelite.client.plugins.clanchat.ClanChat;
 import net.runelite.client.plugins.combatnotifier.CombatNotifier;
 import net.runelite.client.plugins.config.ConfigPlugin;
 import net.runelite.client.plugins.devtools.DevTools;
+import net.runelite.client.plugins.examine.ExaminePlugin;
 import net.runelite.client.plugins.fpsinfo.FPS;
 import net.runelite.client.plugins.grounditems.GroundItems;
 import net.runelite.client.plugins.hiscore.Hiscore;
@@ -89,6 +90,7 @@ public class PluginManager
 		plugins.add(new XpGlobes());
 		plugins.add(new CombatNotifier());
 		plugins.add(new JewelryCount());
+		plugins.add(new ExaminePlugin());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
