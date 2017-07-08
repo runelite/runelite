@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,59 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.http.api.examine;
 
-import net.runelite.api.MenuAction;
+import java.io.IOException;
+import net.runelite.http.api.RuneliteAPI;
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author robin
- */
-public class MenuOptionClicked
+public class ExamineClient
 {
-	private String menuOption;
-	private String menuTarget;
-	private MenuAction menuAction;
-	private int id;
+	private static final Logger logger = LoggerFactory.getLogger(ExamineClient.class);
 
-	public String getMenuOption()
+	private static final MediaType TEXT = MediaType.parse("text");
+
+	public void submitObject(int id, String text) throws IOException
 	{
-		return menuOption;
+		submit("object", id, text);
 	}
 
-	public void setMenuOption(String menuOption)
+	public void submitNpc(int id, String text) throws IOException
 	{
-		this.menuOption = menuOption;
+		submit("npc", id, text);
 	}
 
-	public String getMenuTarget()
+	public void submitItem(int id, String text) throws IOException
 	{
-		return menuTarget;
+		submit("item", id, text);
 	}
 
-	public void setMenuTarget(String menuTarget)
+	private void submit(String type, int id, String text) throws IOException
 	{
-		this.menuTarget = menuTarget;
-	}
+		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+			.addPathSegment("examine")
+			.addPathSegment(type)
+			.addPathSegment(Integer.toString(id))
+			.build();
 
-	public MenuAction getMenuAction()
-	{
-		return menuAction;
-	}
+		logger.debug("Built URI: {}", url);
 
-	public void setMenuAction(MenuAction menuAction)
-	{
-		this.menuAction = menuAction;
-	}
+		Request request = new Request.Builder()
+			.url(url)
+			.post(RequestBody.create(TEXT, text))
+			.build();
 
-	public int getId()
-	{
-		return id;
+		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		{
+			logger.debug("Submitted examine info for {} {}: {}",
+				type, id, text);
+		}
 	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
 }

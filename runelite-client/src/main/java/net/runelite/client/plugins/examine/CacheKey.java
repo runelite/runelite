@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,59 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.client.plugins.examine;
 
-import net.runelite.api.MenuAction;
+import java.util.Objects;
 
-/**
- *
- * @author robin
- */
-public class MenuOptionClicked
+class CacheKey
 {
-	private String menuOption;
-	private String menuTarget;
-	private MenuAction menuAction;
-	private int id;
+	private final ExamineType type;
+	private final int id;
 
-	public String getMenuOption()
+	public CacheKey(ExamineType type, int id)
 	{
-		return menuOption;
-	}
-
-	public void setMenuOption(String menuOption)
-	{
-		this.menuOption = menuOption;
-	}
-
-	public String getMenuTarget()
-	{
-		return menuTarget;
-	}
-
-	public void setMenuTarget(String menuTarget)
-	{
-		this.menuTarget = menuTarget;
-	}
-
-	public MenuAction getMenuAction()
-	{
-		return menuAction;
-	}
-
-	public void setMenuAction(MenuAction menuAction)
-	{
-		this.menuAction = menuAction;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
+		this.type = type;
 		this.id = id;
 	}
 
+	@Override
+	public int hashCode()
+	{
+		int hash = 3;
+		hash = 23 * hash + Objects.hashCode(this.type);
+		hash = 23 * hash + this.id;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final CacheKey other = (CacheKey) obj;
+		if (this.id != other.id)
+		{
+			return false;
+		}
+		if (this.type != other.type)
+		{
+			return false;
+		}
+		return true;
+	}
 }

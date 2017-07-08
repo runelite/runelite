@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.client.plugins.examine;
 
-import net.runelite.api.MenuAction;
+import java.time.Instant;
 
-/**
- *
- * @author robin
- */
-public class MenuOptionClicked
+public class PendingExamine
 {
-	private String menuOption;
-	private String menuTarget;
-	private MenuAction menuAction;
-	private int id;
+	private final ExamineType type;
+	private final int id;
+	private final Instant created;
 
-	public String getMenuOption()
+	public PendingExamine(ExamineType type, int id, Instant created)
 	{
-		return menuOption;
+		this.type = type;
+		this.id = id;
+		this.created = created;
 	}
 
-	public void setMenuOption(String menuOption)
+	public ExamineType getType()
 	{
-		this.menuOption = menuOption;
-	}
-
-	public String getMenuTarget()
-	{
-		return menuTarget;
-	}
-
-	public void setMenuTarget(String menuTarget)
-	{
-		this.menuTarget = menuTarget;
-	}
-
-	public MenuAction getMenuAction()
-	{
-		return menuAction;
-	}
-
-	public void setMenuAction(MenuAction menuAction)
-	{
-		this.menuAction = menuAction;
+		return type;
 	}
 
 	public int getId()
@@ -72,9 +49,8 @@ public class MenuOptionClicked
 		return id;
 	}
 
-	public void setId(int id)
+	public Instant getCreated()
 	{
-		this.id = id;
+		return created;
 	}
-
 }

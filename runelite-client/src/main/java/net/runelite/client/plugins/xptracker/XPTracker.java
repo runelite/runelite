@@ -26,9 +26,12 @@ package net.runelite.client.plugins.xptracker;
 
 import com.google.common.eventbus.Subscribe;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;
+import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
@@ -46,7 +49,7 @@ public class XPTracker extends Plugin
 
 	private final RuneLite runeLite = RuneLite.getRunelite();
 	private final ClientUI ui = runeLite.getGui();
-	private Client client = RuneLite.getClient();
+	private final Client client = RuneLite.getClient();
 	private ScheduledFuture<?> future;
 
 	private final NavigationButton navButton = new NavigationButton("XP Tracker");
@@ -54,18 +57,28 @@ public class XPTracker extends Plugin
 	private SkillXPInfo[] xpInfos = new SkillXPInfo[NUMBER_OF_SKILLS];
 
 	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() != GameState.LOGGED_IN)
+			xpPanel.resetAllSkillXpHr();
+	}
+
+	@Subscribe
 	public void onXpChanged(ExperienceChanged event)
 	{
 		Skill skill = event.getSkill();
+		String currentUser = client.getLocalPlayer().getName();
 		int skillIdx = skill.ordinal();
 
 		//To catch login ExperienceChanged event.
 		if (xpInfos[skillIdx] != null)
 		{
-			xpInfos[skillIdx].update();
-		} else
+			xpInfos[skillIdx].update(client.getSkillExperience(skill));
+		}
+		else
 		{
-			xpInfos[skillIdx] = new SkillXPInfo(client.getSkillExperience(skill), skill);
+			xpInfos[skillIdx] = new SkillXPInfo(client.getSkillExperience(skill),
+					skill);
 		}
 	}
 

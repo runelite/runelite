@@ -29,6 +29,7 @@ import com.google.common.eventbus.Subscribe;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionClicked;
@@ -39,12 +40,6 @@ import org.slf4j.LoggerFactory;
 public class MenuManager
 {
 	private static final Logger logger = LoggerFactory.getLogger(MenuManager.class);
-
-	/* 1007 is the highest number the rs client uses for actions. There is no way to see which ones are used,
-         * so im starting from 1500. Its just a number well over their maximum, so if a new action gets added, chances are little
-         * it interferes with the action the MenuManager uses.
-	 */
-	private static final int MENU_ACTION = 1500;
 
 	/*
 	 * The index needs to be between 4 and 7,
@@ -103,7 +98,7 @@ public class MenuManager
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction() != MENU_ACTION)
+		if (event.getMenuAction() != MenuAction.RUNELITE)
 		{
 			return; // not a player menu
 		}
@@ -124,7 +119,7 @@ public class MenuManager
 
 		client.getPlayerOptions()[playerOptionIndex] = menuText;
 		client.getPlayerOptionsPriorities()[playerOptionIndex] = true;
-		client.getPlayerMenuType()[playerOptionIndex] = MENU_ACTION;
+		client.getPlayerMenuType()[playerOptionIndex] = MenuAction.RUNELITE.getId();
 
 		playerMenuIndexMap.put(playerOptionIndex, menuText);
 	}

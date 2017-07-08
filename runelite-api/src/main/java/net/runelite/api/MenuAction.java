@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.api;
 
-import net.runelite.api.MenuAction;
-
-/**
- *
- * @author robin
- */
-public class MenuOptionClicked
+public enum MenuAction
 {
-	private String menuOption;
-	private String menuTarget;
-	private MenuAction menuAction;
-	private int id;
+	EXAMINE_OBJECT(1002),
+	EXAMINE_NPC(1003),
+	EXAMINE_ITEM(1005),
+	/**
+	 * Menu action injected by runelite for its menu items
+	 */
+	RUNELITE(1500),
+	UNKNOWN(-1);
 
-	public String getMenuOption()
-	{
-		return menuOption;
-	}
+	private final int id;
 
-	public void setMenuOption(String menuOption)
+	MenuAction(int id)
 	{
-		this.menuOption = menuOption;
-	}
-
-	public String getMenuTarget()
-	{
-		return menuTarget;
-	}
-
-	public void setMenuTarget(String menuTarget)
-	{
-		this.menuTarget = menuTarget;
-	}
-
-	public MenuAction getMenuAction()
-	{
-		return menuAction;
-	}
-
-	public void setMenuAction(MenuAction menuAction)
-	{
-		this.menuAction = menuAction;
+		this.id = id;
 	}
 
 	public int getId()
@@ -72,9 +47,15 @@ public class MenuOptionClicked
 		return id;
 	}
 
-	public void setId(int id)
+	public static MenuAction of(int id)
 	{
-		this.id = id;
+		for (MenuAction action : values())
+		{
+			if (action.id == id)
+			{
+				return action;
+			}
+		}
+		return UNKNOWN;
 	}
-
 }

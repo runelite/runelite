@@ -26,6 +26,8 @@ package net.runelite.client.callback;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.MenuAction;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.*;
@@ -136,7 +138,7 @@ public class Hooks
 		}
 	}
 
-	public static void menuActionHook(int var0, int var1, int menuAction, int var3, String menuOption, String menuTarget, int var6, int var7)
+	public static void menuActionHook(int var0, int var1, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
                  * I have no idea why, but it does. Their code contains the same conditional statement.
@@ -146,18 +148,24 @@ public class Hooks
 			menuAction -= 2000;
 		}
 
-		logger.debug("Menu action clicked: {} ({}) on {}", menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget);
+		logger.debug("Menu action clicked: {} ({}) on {} ({})", menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget, id);
 
-		MenuOptionClicked playerMenuOptionClicked = new MenuOptionClicked();
-		playerMenuOptionClicked.setMenuOption(menuOption);
-		playerMenuOptionClicked.setMenuTarget(menuTarget);
-		playerMenuOptionClicked.setMenuAction(menuAction);
+		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
+		menuOptionClicked.setMenuOption(menuOption);
+		menuOptionClicked.setMenuTarget(menuTarget);
+		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
+		menuOptionClicked.setId(id);
 
-		runelite.getEventBus().post(playerMenuOptionClicked);
+		runelite.getEventBus().post(menuOptionClicked);
 	}
 
 	public static void addChatMessage(int type, String sender, String message, String clan)
 	{
+		if (logger.isDebugEnabled())
+		{
+			logger.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
+		}
+
 		ChatMessage chatMessage = new ChatMessage(type, sender, message, clan);
 
 		runelite.getEventBus().post(chatMessage);
