@@ -120,7 +120,13 @@ public class Service implements SparkApplication
 			get("/:id/price/:time", item::getPrice, transformer);
 		});
 
-		exception(Exception.class, (exception, request, response) -> logger.warn(null, exception));
+		exception(Exception.class, this::handleException);
+	}
+
+	private void handleException(Exception ex, Request request, Response response)
+	{
+		logger.warn("error processing request", ex);
+		response.status(500);
 	}
 
 }

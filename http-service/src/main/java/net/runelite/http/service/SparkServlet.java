@@ -75,7 +75,11 @@ public class SparkServlet extends HttpServlet
 		FilterChain chain = (req2, resp2) ->
 		{
 			// Called if the matcherFilter ends up not setting a body
-			resp.setStatus(404);
+			// something might have changed changed the error from 200
+			if (resp.getStatus() == 200)
+			{
+				resp.setStatus(404);
+			}
 		};
 
 		matcherFilter.doFilter(requestWrapper, resp, chain);
