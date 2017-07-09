@@ -28,6 +28,8 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.image.BufferedImage;
+
 import net.runelite.api.Actor;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
@@ -68,6 +70,14 @@ public class OverlayUtil
 		graphics.drawString(text, x, y);
 	}
 
+	public static void renderImageLocation(Graphics2D graphics, Point imgLoc, BufferedImage image)
+	{
+		int x = imgLoc.getX();
+		int y = imgLoc.getY();
+
+		graphics.drawImage(image, x, y, null);
+	}
+
 	public static void renderActorOverlay(Graphics2D graphics, Actor actor, String text, Color color)
 	{
 		Polygon poly = actor.getCanvasTilePoly();
@@ -86,6 +96,27 @@ public class OverlayUtil
 		if (textLocation != null)
 		{
 			renderTextLocation(graphics, textLocation, text, color);
+		}
+	}
+
+	public static void renderActorOverlay(Graphics2D graphics, Actor actor, BufferedImage image, Color color)
+	{
+		Polygon poly = actor.getCanvasTilePoly();
+		if (poly != null)
+		{
+			renderPolygon(graphics, poly, color);
+		}
+
+		Point minimapLocation = actor.getMinimapLocation();
+		if (minimapLocation != null)
+		{
+			renderMinimapLocation(graphics, minimapLocation, color);
+		}
+
+		Point imageLocation = actor.getCanvasImageLocation(graphics, image, actor.getModelHeight());
+		if (imageLocation != null)
+		{
+			renderImageLocation(graphics, imageLocation, image);
 		}
 	}
 
