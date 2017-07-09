@@ -64,15 +64,15 @@ public class PluginManager
 
 	private final RuneLite runelite;
 	private ServiceManager manager;
+	private final List<Plugin> plugins = new ArrayList<>();
 
 	public PluginManager(RuneLite runelite)
 	{
 		this.runelite = runelite;
 	}
 
-	public void loadAll()
+	public void loadPlugins()
 	{
-		List<Plugin> plugins = new ArrayList<>();
 		plugins.add(new Boosts());
 		plugins.add(new OpponentInfo());
 		plugins.add(new FPS());
@@ -101,7 +101,10 @@ public class PluginManager
 			logger.info("Loading developer plugins");
 			plugins.add(new DevTools());
 		}
+	}
 
+	public void start()
+	{
 		// Add plugin listeners
 		for (Plugin plugin : plugins)
 		{
