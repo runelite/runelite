@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.image.BufferedImage;
 import java.util.Objects;
 import net.runelite.rs.api.CombatInfo1;
 import net.runelite.rs.api.CombatInfo2;
@@ -183,6 +184,11 @@ public abstract class Actor extends Renderable
 	public Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset)
 	{
 		return Perspective.getCanvasTextLocation(client, graphics, getLocalLocation(), text, zOffset);
+	}
+
+	public Point getCanvasImageLocation(Graphics2D graphics, BufferedImage image, int zOffset)
+	{
+		return Perspective.getCanvasImageLocation(client, graphics, getLocalLocation(), image, zOffset);
 	}
 
 	public Point getMinimapLocation()
