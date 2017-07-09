@@ -31,7 +31,7 @@ public class Namer
 {
 	private final Set<String> used = new HashSet<>();
 
-	public String name(String name)
+	public String name(String name, int id)
 	{
 		name = sanitize(name);
 
@@ -40,20 +40,12 @@ public class Namer
 			return null;
 		}
 
-		String suffix = "";
-		while (used.contains(name + suffix))
+		if (used.contains(name))
 		{
-			if (suffix.isEmpty())
-			{
-				suffix = "_2";
-			}
-			else
-			{
-				suffix = "_" + (Integer.parseInt(suffix.substring(1)) + 1);
-			}
+			name = name + "_" + id;
+			assert !used.contains(name);
 		}
 
-		name += suffix;
 		used.add(name);
 
 		return name;
