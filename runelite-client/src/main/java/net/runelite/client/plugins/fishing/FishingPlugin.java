@@ -40,7 +40,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class Fishing extends Plugin
+public class FishingPlugin extends Plugin
 {
 	private static final int CHECK_INTERVAL = 1;
 

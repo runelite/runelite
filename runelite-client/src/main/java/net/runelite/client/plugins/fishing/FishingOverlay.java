@@ -59,7 +59,7 @@ class FishingOverlay extends Overlay
 	private final FishingConfig config;
 	private final static Client client = RuneLite.getClient();
 
-	public FishingOverlay(Fishing plugin)
+	public FishingOverlay(FishingPlugin plugin)
 	{
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
 		this.config = plugin.getConfig();

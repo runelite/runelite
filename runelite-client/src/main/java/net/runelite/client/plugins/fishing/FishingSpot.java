@@ -87,10 +87,11 @@ public enum FishingSpot
 		FISHING_SPOT_7730, FISHING_SPOT_7731, FISHING_SPOT_7732, FISHING_SPOT_7733, FISHING_SPOT_7734
 	);
 
+	private static final Map<Integer, FishingSpot> fishingSpots = new HashMap<>();
+
 	private final String name;
 	private final String image;
 	private final int[] spots;
-	private static final Map<Integer, FishingSpot> fishingSpots = new HashMap<>();
 
 	static
 	{

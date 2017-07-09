@@ -24,17 +24,20 @@
  */
 package net.runelite.client.plugins.fishing;
 
+import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
+import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -46,18 +49,17 @@ class FishingSpotOverlay extends Overlay
 {
 	private static final Logger logger = LoggerFactory.getLogger(FishingSpotOverlay.class);
 
-	private final BufferedImage[] imgCache = new BufferedImage[FishingSpot.values().length - 1];
+	private final BufferedImage[] imgCache = new BufferedImage[FishingSpot.values().length];
 
-	public List<int[]> ids = null;
+	private List<Integer> ids = null;
 
 	private final FishingConfig config;
 	private final static Client client = RuneLite.getClient();
 
-	public FishingSpotOverlay(Fishing plugin)
+	public FishingSpotOverlay(FishingPlugin plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.config = plugin.getConfig();
-
 	}
 
 	@Override
@@ -70,35 +72,32 @@ class FishingSpotOverlay extends Overlay
 
 		if (ids == null)
 		{
-			ids = new LinkedList<int[]>();
+			ids = new ArrayList<>();
 			updateConfig();
 		}
 
-		NPC[] npcs = client.getNpcs();
-		if (npcs != null && (npcs.length - 1) > 0)
+		NPCQuery query = new NPCQuery()
+			.idEquals(Ints.toArray(ids));
+		NPC[] npcs = client.runQuery(query);
+
+		for (NPC npc : npcs)
 		{
-			for (NPC npc : npcs)
+			FishingSpot spot = FishingSpot.getSpot(npc.getId());
+
+			if (spot == null)
 			{
-				if (npc != null)
-				{
-					FishingSpot spot = FishingSpot.getSpot(npc.getId());
+				continue;
+			}
 
-					if (spot == null || !ids.contains(spot.getIds()))
-					{
-						continue;
-					}
-
-					if (config.showIcons())
-					{
-						BufferedImage fishImage = getFishImage(spot);
-						OverlayUtil.renderActorOverlay(graphics, npc, fishImage, Color.cyan.darker());
-					}
-					else
-					{
-						String text = spot.getName();
-						OverlayUtil.renderActorOverlay(graphics, npc, text, Color.cyan.darker());
-					}
-				}
+			if (config.showIcons())
+			{
+				BufferedImage fishImage = getFishImage(spot);
+				OverlayUtil.renderActorOverlay(graphics, npc, fishImage, Color.cyan.darker());
+			}
+			else
+			{
+				String text = spot.getName();
+				OverlayUtil.renderActorOverlay(graphics, npc, text, Color.cyan.darker());
 			}
 		}
 
@@ -117,14 +116,13 @@ class FishingSpotOverlay extends Overlay
 
 		try
 		{
-			String fishIconPath = "/skills/fishing/" + spot.getImage() + ".png";
-			logger.debug("Loading fish icon from {}", fishIconPath);
-			fishImage = ImageIO.read(FishingSpotOverlay.class.getResourceAsStream(fishIconPath));
+			InputStream in = FishingSpotOverlay.class.getResourceAsStream(spot.getImage() + ".png");
+			fishImage = ImageIO.read(in);
 			imgCache[fishIdx] = fishImage;
 		}
 		catch (IOException e)
 		{
-			logger.debug("Error Loading fish icons {}", e);
+			logger.warn("Error Loading fish icon", e);
 		}
 
 		return fishImage;
@@ -135,35 +133,35 @@ class FishingSpotOverlay extends Overlay
 		ids.clear();
 		if (config.showShrimp())
 		{
-			ids.add(FishingSpot.SHRIMP.getIds());
+			ids.addAll(Ints.asList(FishingSpot.SHRIMP.getIds()));
 		}
 		if (config.showLobster())
 		{
-			ids.add(FishingSpot.LOBSTER.getIds());
+			ids.addAll(Ints.asList(FishingSpot.LOBSTER.getIds()));
 		}
 		if (config.showShark())
 		{
-			ids.add(FishingSpot.SHARK.getIds());
+			ids.addAll(Ints.asList(FishingSpot.SHARK.getIds()));
 		}
 		if (config.showMonkfish())
 		{
-			ids.add(FishingSpot.MONKFISH.getIds());
+			ids.addAll(Ints.asList(FishingSpot.MONKFISH.getIds()));
 		}
 		if (config.showSalmon())
 		{
-			ids.add(FishingSpot.SALMON.getIds());
+			ids.addAll(Ints.asList(FishingSpot.SALMON.getIds()));
 		}
 		if (config.showBarb())
 		{
-			ids.add(FishingSpot.BARB_FISH.getIds());
+			ids.addAll(Ints.asList(FishingSpot.BARB_FISH.getIds()));
 		}
 		if (config.showAngler())
 		{
-			ids.add(FishingSpot.ANGLERFISH.getIds());
+			ids.addAll(Ints.asList(FishingSpot.ANGLERFISH.getIds()));
 		}
 		if (config.showMinnow())
 		{
-			ids.add(FishingSpot.MINNOW.getIds());
+			ids.addAll(Ints.asList(FishingSpot.MINNOW.getIds()));
 		}
 	}
 }
