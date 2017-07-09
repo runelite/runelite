@@ -52,6 +52,9 @@ public class Implings extends Plugin
 		font = font.deriveFont(Font.BOLD, 16);
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		ge.registerFont(font);
+
+		// Initialize overlay config
+		overlay.updateConfig();
 	}
 
 	@Override

@@ -63,6 +63,9 @@ public class FishingPlugin extends Plugin
 	{
 		ScheduledExecutorService executor = runelite.getExecutor();
 		future = executor.scheduleAtFixedRate(this::checkFishing, CHECK_INTERVAL, CHECK_INTERVAL, TimeUnit.SECONDS);
+
+		// Initialize overlay config
+		spotOverlay.updateConfig();
 	}
 
 	@Override
