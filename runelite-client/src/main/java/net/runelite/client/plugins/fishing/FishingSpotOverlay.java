@@ -51,7 +51,7 @@ class FishingSpotOverlay extends Overlay
 
 	private final BufferedImage[] imgCache = new BufferedImage[FishingSpot.values().length];
 
-	private List<Integer> ids = null;
+	private final List<Integer> ids = new ArrayList<>();
 
 	private final FishingConfig config;
 	private final static Client client = RuneLite.getClient();
@@ -70,12 +70,6 @@ class FishingSpotOverlay extends Overlay
 			return null;
 		}
 
-		if (ids == null)
-		{
-			ids = new ArrayList<>();
-			updateConfig();
-		}
-
 		NPCQuery query = new NPCQuery()
 			.idEquals(Ints.toArray(ids));
 		NPC[] npcs = client.runQuery(query);
@@ -92,7 +86,10 @@ class FishingSpotOverlay extends Overlay
 			if (config.showIcons())
 			{
 				BufferedImage fishImage = getFishImage(spot);
-				OverlayUtil.renderActorOverlay(graphics, npc, fishImage, Color.cyan.darker());
+				if (fishImage != null)
+				{
+					OverlayUtil.renderActorOverlayImage(graphics, npc, fishImage, Color.cyan.darker());
+				}
 			}
 			else
 			{

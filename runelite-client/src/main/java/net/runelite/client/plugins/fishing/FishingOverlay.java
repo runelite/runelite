@@ -48,20 +48,17 @@ class FishingOverlay extends Overlay
 	private static final int SEPARATOR = 2;
 
 	private static final Color BACKGROUND = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
+	private static final String FISHING_SPOT = "Fishing spot";
 
-	public int perHour;
-	public int totalFished;
-	public int recentFished;
+	private final Client client = RuneLite.getClient();
 
-	public Instant lastFishCaught;
-	public Instant recentFishCaught;
-
+	private final FishingPlugin plugin;
 	private final FishingConfig config;
-	private final static Client client = RuneLite.getClient();
 
 	public FishingOverlay(FishingPlugin plugin)
 	{
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
+		this.plugin = plugin;
 		this.config = plugin.getConfig();
 	}
 
@@ -73,7 +70,17 @@ class FishingOverlay extends Overlay
 			return null;
 		}
 
-		if (lastFishCaught == null || Instant.now().compareTo(lastFishCaught.plus(Duration.ofMinutes(config.statTimeout()))) >= 0)
+		FishingSession session = plugin.getSession();
+
+		if (session.getLastFishCaught() == null)
+		{
+			return null;
+		}
+
+		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+		Duration sinceCaught = Duration.between(session.getLastFishCaught(), Instant.now());
+
+		if (sinceCaught.compareTo(statTimeout) >= 0)
 		{
 			return null;
 		}
@@ -86,8 +93,7 @@ class FishingOverlay extends Overlay
 		graphics.setColor(BACKGROUND);
 		graphics.fillRect(0, 0, WIDTH, height);
 
-
-		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().getName().equals("Fishing spot"))
+		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().getName().equals(FISHING_SPOT))
 		{
 			graphics.setColor(Color.green);
 			String str = "You are fishing";
@@ -105,23 +111,23 @@ class FishingOverlay extends Overlay
 		graphics.setColor(Color.white);
 		graphics.drawString("Caught Fish:", LEFT_BORDER, y);
 
-		String str1 = totalFished + "";
-		graphics.drawString(str1, WIDTH - RIGHT_BORDER - metrics.stringWidth(str1), y);
+		String totalFishedStr = Integer.toString(session.getTotalFished());
+		graphics.drawString(totalFishedStr, WIDTH - RIGHT_BORDER - metrics.stringWidth(totalFishedStr), y);
 
 		y += metrics.getHeight() + SEPARATOR;
 
 		graphics.drawString("Fish/hr:", LEFT_BORDER, y);
 
-		String str2;
-		if (recentFished > 2)
+		String perHourStr;
+		if (session.getRecentFished() > 2)
 		{
-			str2 = perHour + "";
+			perHourStr = Integer.toString(session.getPerHour());
 		}
 		else
 		{
-			str2 = "~";
+			perHourStr = "~";
 		}
-		graphics.drawString(str2, WIDTH - RIGHT_BORDER - metrics.stringWidth(str2), y);
+		graphics.drawString(perHourStr, WIDTH - RIGHT_BORDER - metrics.stringWidth(perHourStr), y);
 
 		return new Dimension(WIDTH, height);
 	}

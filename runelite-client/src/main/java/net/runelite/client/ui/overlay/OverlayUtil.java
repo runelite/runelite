@@ -99,7 +99,7 @@ public class OverlayUtil
 		}
 	}
 
-	public static void renderActorOverlay(Graphics2D graphics, Actor actor, BufferedImage image, Color color)
+	public static void renderActorOverlayImage(Graphics2D graphics, Actor actor, BufferedImage image, Color color)
 	{
 		Polygon poly = actor.getCanvasTilePoly();
 		if (poly != null)

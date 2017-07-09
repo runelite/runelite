@@ -49,6 +49,7 @@ public class FishingPlugin extends Plugin
 	private final FishingOverlay overlay = new FishingOverlay(this);
 	private final FishingSpotOverlay spotOverlay = new FishingSpotOverlay(this);
 
+	private FishingSession session = new FishingSession();
 	private ScheduledFuture<?> future;
 
 	@Override
@@ -75,6 +76,11 @@ public class FishingPlugin extends Plugin
 		return config;
 	}
 
+	public FishingSession getSession()
+	{
+		return session;
+	}
+
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
@@ -85,19 +91,7 @@ public class FishingPlugin extends Plugin
 
 		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some"))
 		{
-			overlay.lastFishCaught = Instant.now();
-			overlay.totalFished++;
-
-			if (overlay.recentFished == 0)
-			{
-				overlay.recentFishCaught = Instant.now();
-			}
-			overlay.recentFished++;
-
-			if (overlay.recentFishCaught != null)
-			{
-				overlay.perHour = (int) ((double) overlay.recentFished * 3600000.0D / ((double) Instant.now().toEpochMilli() - overlay.recentFishCaught.toEpochMilli()));
-			}
+			session.incrementFishCaught();
 		}
 	}
 
@@ -109,10 +103,19 @@ public class FishingPlugin extends Plugin
 
 	private void checkFishing()
 	{
-		//reset recentcaught if you haven't caught anything in 5 minutes
-		if (overlay.lastFishCaught == null || Instant.now().compareTo(overlay.lastFishCaught.plus(Duration.ofMinutes(config.statTimeout()))) >= 0 && overlay.recentFished != 0)
+		Instant lastFishCaught = session.getLastFishCaught();
+		if (lastFishCaught == null)
 		{
-			overlay.recentFished = 0;
+			return;
+		}
+
+		// reset recentcaught if you haven't caught anything recently
+		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+		Duration sinceCaught = Duration.between(lastFishCaught, Instant.now());
+
+		if (sinceCaught.compareTo(statTimeout) >= 0)
+		{
+			session.resetRecent();
 		}
 	}
 }
