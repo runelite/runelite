@@ -28,6 +28,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 public class Perspective
 {
@@ -279,6 +280,34 @@ public class Perspective
 		int xOffset = p.getX() - (int) (bounds.getWidth() / 2);
 
 		return new Point(xOffset, p.getY());
+	}
+
+	/**
+	 * Calculates image position and centers depending on image size.
+	 *
+	 * @param client
+	 * @param graphics
+	 * @param localLocation local location of the tile
+	 * @param image image for size measurement
+	 * @param zOffset offset from ground plane
+	 * @return a {@link Point} on screen corresponding to the given
+	 * localLocation.
+	 */
+	public static Point getCanvasImageLocation(Client client, Graphics2D graphics, Point localLocation, BufferedImage image, int zOffset)
+	{
+		int plane = client.getPlane();
+
+		Point p = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
+
+		if (p == null)
+		{
+			return null;
+		}
+
+		int xOffset = p.getX() - image.getWidth() / 2;
+		int yOffset = p.getY() - image.getHeight() / 2;
+
+		return new Point(xOffset, yOffset);
 	}
 
 }
