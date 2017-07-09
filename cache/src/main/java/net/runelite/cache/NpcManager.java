@@ -77,6 +77,7 @@ public class NpcManager
 
 	public void java(File java) throws IOException
 	{
+		System.setProperty("line.separator", "\n");
 		java.mkdirs();
 		File targ = new File(java, "NpcID.java");
 		try (PrintWriter fw = new PrintWriter(targ))
@@ -93,7 +94,7 @@ public class NpcManager
 					continue;
 				}
 
-				String name = namer.name(def.name);
+				String name = namer.name(def.name, def.id);
 				if (name == null)
 				{
 					continue;

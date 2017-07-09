@@ -82,6 +82,7 @@ public class ObjectManager
 
 	public void java(File java) throws IOException
 	{
+		System.setProperty("line.separator", "\n");
 		java.mkdirs();
 		File targ = new File(java, "ObjectID.java");
 		try (PrintWriter fw = new PrintWriter(targ))
@@ -98,7 +99,7 @@ public class ObjectManager
 					continue;
 				}
 
-				String name = namer.name(def.getName());
+				String name = namer.name(def.getName(), def.getId());
 				if (name == null)
 				{
 					continue;
