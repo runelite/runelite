@@ -59,7 +59,8 @@ public class XPTracker extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() != GameState.LOGGED_IN)
+		//reset upon login
+		if (event.getGameState() == GameState.LOGGED_IN)
 			xpPanel.resetAllSkillXpHr();
 	}
 
