@@ -121,12 +121,17 @@ public class RuneLite
 
 		eventBus.register(menuManager);
 
+		// Load the plugins, but does not start them yet.
+		// This will initialize configuration
 		pluginManager = new PluginManager(this);
-		pluginManager.loadAll();
+		pluginManager.loadPlugins();
 
 		// Plugins have registered their config, so set default config
 		// to main settings
 		configManager.loadDefault();
+
+		// Start plugins
+		pluginManager.start();
 
 		renderer = new OverlayRenderer();
 
