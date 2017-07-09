@@ -43,13 +43,13 @@ import java.util.concurrent.TimeUnit;
 public class Fishing extends Plugin
 {
 	private static final int CHECK_INTERVAL = 1;
-	private ScheduledFuture<?> future;
 
 	private final RuneLite runelite = RuneLite.getRunelite();
-	private final FishingConfig config = RuneLite.getRunelite().getConfigManager().getConfig(FishingConfig.class);
+	private final FishingConfig config = runelite.getConfigManager().getConfig(FishingConfig.class);
 	private final FishingOverlay overlay = new FishingOverlay(this);
 	private final FishingSpotOverlay spotOverlay = new FishingSpotOverlay(this);
 
+	private ScheduledFuture<?> future;
 
 	@Override
 	public Collection<Overlay> getOverlays()
@@ -78,23 +78,25 @@ public class Fishing extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() == ChatMessageType.FILTERED)
+		if (event.getType() != ChatMessageType.FILTERED)
 		{
-			if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some"))
+			return;
+		}
+
+		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some"))
+		{
+			overlay.lastFishCaught = Instant.now();
+			overlay.totalFished++;
+
+			if (overlay.recentFished == 0)
 			{
-				overlay.lastFishCaught = Instant.now();
-				overlay.totalFished++;
+				overlay.recentFishCaught = Instant.now();
+			}
+			overlay.recentFished++;
 
-				if (overlay.recentFished == 0)
-				{
-					overlay.recentFishCaught = Instant.now();
-				}
-				overlay.recentFished++;
-
-				if (overlay.recentFishCaught != null)
-				{
-					overlay.perHour = (int) ((double) overlay.recentFished * 3600000.0D / ((double) Instant.now().toEpochMilli() - overlay.recentFishCaught.toEpochMilli()));
-				}
+			if (overlay.recentFishCaught != null)
+			{
+				overlay.perHour = (int) ((double) overlay.recentFished * 3600000.0D / ((double) Instant.now().toEpochMilli() - overlay.recentFishCaught.toEpochMilli()));
 			}
 		}
 	}

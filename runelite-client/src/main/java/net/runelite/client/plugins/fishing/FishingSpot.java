@@ -27,37 +27,55 @@ package net.runelite.client.plugins.fishing;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum  FishingSpot
+public enum FishingSpot
 {
-	SHRIMP("Shrimp, Anchovies", "shrimp", new int[]{1518, 1525, 1528, 1530, 1544, 7155, 7469}),
-	LOBSTER("Lobster, Swordfish, Tuna", "lobster", new int[]{1510, 1519, 1521, 1522, 7199, 7470}),
-	SHARK("Shark, Bass", "shark", new int[]{1511, 1520, 7200}),
-	MONKFISH("Monkfish", "monkfish", new int[]{4316}),
-	SALMON("Salmon, Trout", "salmon", new int[]{1506, 1508, 1515, 1526, 1527, }),
-	BARB_FISH("Sturgeon, Salmon, Trout", "barb", new int[]{1542}),
-	ANGLERFISH("Anglerfish", "anglerfish", new int[]{6825}),
-	MINNOW("Minnow", "minnow", new int[] {7730, 7731, 7732, 7733, 7734});
+	SHRIMP("Shrimp, Anchovies", "shrimp", new int[]
+	{
+		1518, 1525, 1528, 1530, 1544, 7155, 7469
+	}),
+	LOBSTER("Lobster, Swordfish, Tuna", "lobster", new int[]
+	{
+		1510, 1519, 1521, 1522, 7199, 7470
+	}),
+	SHARK("Shark, Bass", "shark", new int[]
+	{
+		1511, 1520, 7200
+	}),
+	MONKFISH("Monkfish", "monkfish", new int[]
+	{
+		4316
+	}),
+	SALMON("Salmon, Trout", "salmon", new int[]
+	{
+		1506, 1508, 1515, 1526, 1527,
+	}),
+	BARB_FISH("Sturgeon, Salmon, Trout", "barb", new int[]
+	{
+		1542
+	}),
+	ANGLERFISH("Anglerfish", "anglerfish", new int[]
+	{
+		6825
+	}),
+	MINNOW("Minnow", "minnow", new int[]
+	{
+		7730, 7731, 7732, 7733, 7734
+	});
 
-	public String name;
-	public String image;
-	public int[] spots;
-	private static Map fishingSpots;
+	private final String name;
+	private final String image;
+	private final int[] spots;
+	private static final Map<Integer, FishingSpot> fishingSpots = new HashMap<>();
 
 	static
 	{
-		fishingSpots = new HashMap();
 		FishingSpot[] spots = values();
-		int spotsSize = spots.length;
 
 		for (FishingSpot spot : spots)
 		{
-			int[] spotIds = spot.getIds();
-			int size = spot.getIds().length;
-
-			for (int j = 0; j < size; ++j)
+			for (int spotId : spot.getIds())
 			{
-				int spotID = spotIds[j];
-				fishingSpots.put(spotID, spot);
+				fishingSpots.put(spotId, spot);
 			}
 		}
 	}
@@ -84,8 +102,8 @@ public enum  FishingSpot
 		return spots;
 	}
 
-	public static FishingSpot getSpot(int id)
+	public static FishingSpot getSpot(int npcId)
 	{
-		return (FishingSpot) fishingSpots.get(id);
+		return fishingSpots.get(npcId);
 	}
 }

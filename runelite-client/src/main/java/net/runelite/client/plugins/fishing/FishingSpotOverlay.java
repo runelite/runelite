@@ -24,6 +24,14 @@
  */
 package net.runelite.client.plugins.fishing;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import javax.imageio.ImageIO;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -33,13 +41,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.*;
-import java.util.List;
 
 class FishingSpotOverlay extends Overlay
 {

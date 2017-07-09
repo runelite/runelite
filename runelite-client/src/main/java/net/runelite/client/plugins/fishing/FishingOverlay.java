@@ -24,19 +24,18 @@
  */
 package net.runelite.client.plugins.fishing;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.time.Duration;
+import java.time.Instant;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.NPC;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-
-import java.awt.*;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.*;
-import java.util.List;
 
 class FishingOverlay extends Overlay
 {
