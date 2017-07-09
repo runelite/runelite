@@ -26,41 +26,66 @@ package net.runelite.client.plugins.fishing;
 
 import java.util.HashMap;
 import java.util.Map;
+import static net.runelite.api.NpcID.FISHING_SPOT_1506;
+import static net.runelite.api.NpcID.FISHING_SPOT_1508;
+import static net.runelite.api.NpcID.FISHING_SPOT_1510;
+import static net.runelite.api.NpcID.FISHING_SPOT_1511;
+import static net.runelite.api.NpcID.FISHING_SPOT_1515;
+import static net.runelite.api.NpcID.FISHING_SPOT_1518;
+import static net.runelite.api.NpcID.FISHING_SPOT_1519;
+import static net.runelite.api.NpcID.FISHING_SPOT_1520;
+import static net.runelite.api.NpcID.FISHING_SPOT_1521;
+import static net.runelite.api.NpcID.FISHING_SPOT_1522;
+import static net.runelite.api.NpcID.FISHING_SPOT_1525;
+import static net.runelite.api.NpcID.FISHING_SPOT_1526;
+import static net.runelite.api.NpcID.FISHING_SPOT_1527;
+import static net.runelite.api.NpcID.FISHING_SPOT_1528;
+import static net.runelite.api.NpcID.FISHING_SPOT_1530;
+import static net.runelite.api.NpcID.FISHING_SPOT_1542;
+import static net.runelite.api.NpcID.FISHING_SPOT_1544;
+import static net.runelite.api.NpcID.FISHING_SPOT_4316;
+import static net.runelite.api.NpcID.FISHING_SPOT_6825;
+import static net.runelite.api.NpcID.FISHING_SPOT_7155;
+import static net.runelite.api.NpcID.FISHING_SPOT_7199;
+import static net.runelite.api.NpcID.FISHING_SPOT_7200;
+import static net.runelite.api.NpcID.FISHING_SPOT_7469;
+import static net.runelite.api.NpcID.FISHING_SPOT_7470;
+import static net.runelite.api.NpcID.FISHING_SPOT_7730;
+import static net.runelite.api.NpcID.FISHING_SPOT_7731;
+import static net.runelite.api.NpcID.FISHING_SPOT_7732;
+import static net.runelite.api.NpcID.FISHING_SPOT_7733;
+import static net.runelite.api.NpcID.FISHING_SPOT_7734;
 
 public enum FishingSpot
 {
-	SHRIMP("Shrimp, Anchovies", "shrimp", new int[]
-	{
-		1518, 1525, 1528, 1530, 1544, 7155, 7469
-	}),
-	LOBSTER("Lobster, Swordfish, Tuna", "lobster", new int[]
-	{
-		1510, 1519, 1521, 1522, 7199, 7470
-	}),
-	SHARK("Shark, Bass", "shark", new int[]
-	{
-		1511, 1520, 7200
-	}),
-	MONKFISH("Monkfish", "monkfish", new int[]
-	{
-		4316
-	}),
-	SALMON("Salmon, Trout", "salmon", new int[]
-	{
-		1506, 1508, 1515, 1526, 1527,
-	}),
-	BARB_FISH("Sturgeon, Salmon, Trout", "barb", new int[]
-	{
-		1542
-	}),
-	ANGLERFISH("Anglerfish", "anglerfish", new int[]
-	{
-		6825
-	}),
-	MINNOW("Minnow", "minnow", new int[]
-	{
-		7730, 7731, 7732, 7733, 7734
-	});
+	SHRIMP("Shrimp, Anchovies", "shrimp",
+		FISHING_SPOT_1518, FISHING_SPOT_1525, FISHING_SPOT_1528,
+		FISHING_SPOT_1530, FISHING_SPOT_1544, FISHING_SPOT_7155,
+		FISHING_SPOT_7469
+	),
+	LOBSTER("Lobster, Swordfish, Tuna", "lobster",
+		FISHING_SPOT_1510, FISHING_SPOT_1519, FISHING_SPOT_1521,
+		FISHING_SPOT_1522, FISHING_SPOT_7199, FISHING_SPOT_7470
+	),
+	SHARK("Shark, Bass", "shark",
+		FISHING_SPOT_1511, FISHING_SPOT_1520, FISHING_SPOT_7200
+	),
+	MONKFISH("Monkfish", "monkfish",
+		FISHING_SPOT_4316
+	),
+	SALMON("Salmon, Trout", "salmon",
+		FISHING_SPOT_1506, FISHING_SPOT_1508, FISHING_SPOT_1515,
+		FISHING_SPOT_1526, FISHING_SPOT_1527
+	),
+	BARB_FISH("Sturgeon, Salmon, Trout", "barb",
+		FISHING_SPOT_1542
+	),
+	ANGLERFISH("Anglerfish", "anglerfish",
+		FISHING_SPOT_6825
+	),
+	MINNOW("Minnow", "minnow",
+		FISHING_SPOT_7730, FISHING_SPOT_7731, FISHING_SPOT_7732, FISHING_SPOT_7733, FISHING_SPOT_7734
+	);
 
 	private final String name;
 	private final String image;
@@ -80,7 +105,7 @@ public enum FishingSpot
 		}
 	}
 
-	FishingSpot(String spot, String image, int[] spots)
+	FishingSpot(String spot, String image, int... spots)
 	{
 		this.name = spot;
 		this.image = image;
