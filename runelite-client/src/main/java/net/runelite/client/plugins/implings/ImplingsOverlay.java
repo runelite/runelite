@@ -93,57 +93,57 @@ public class ImplingsOverlay extends Overlay
 		if (config.showBaby())
 		{
 			ids.add(NpcID.BABY_IMPLING);
-			ids.add(NpcID.BABY_IMPLING_2);
+			ids.add(NpcID.BABY_IMPLING_1645);
 		}
 		if (config.showYoung())
 		{
 			ids.add(NpcID.YOUNG_IMPLING);
-			ids.add(NpcID.YOUNG_IMPLING_2);
+			ids.add(NpcID.YOUNG_IMPLING_1646);
 		}
 		if (config.showGourmet())
 		{
 			ids.add(NpcID.GOURMET_IMPLING);
-			ids.add(NpcID.GOURMET_IMPLING_2);
+			ids.add(NpcID.GOURMET_IMPLING_1647);
 		}
 		if (config.showEarth())
 		{
 			ids.add(NpcID.EARTH_IMPLING);
-			ids.add(NpcID.EARTH_IMPLING_2);
+			ids.add(NpcID.EARTH_IMPLING_1648);
 		}
 		if (config.showEssence())
 		{
 			ids.add(NpcID.ESSENCE_IMPLING);
-			ids.add(NpcID.ESSENCE_IMPLING_2);
+			ids.add(NpcID.ESSENCE_IMPLING_1649);
 		}
 		if (config.showEclectic())
 		{
 			ids.add(NpcID.ECLECTIC_IMPLING);
-			ids.add(NpcID.ECLECTIC_IMPLING_2);
+			ids.add(NpcID.ECLECTIC_IMPLING_1650);
 		}
 		if (config.showNature())
 		{
 			ids.add(NpcID.NATURE_IMPLING);
-			ids.add(NpcID.NATURE_IMPLING_2);
+			ids.add(NpcID.NATURE_IMPLING_1651);
 		}
 		if (config.showMagpie())
 		{
 			ids.add(NpcID.MAGPIE_IMPLING);
-			ids.add(NpcID.MAGPIE_IMPLING_2);
+			ids.add(NpcID.MAGPIE_IMPLING_1652);
 		}
 		if (config.showNinja())
 		{
 			ids.add(NpcID.NINJA_IMPLING);
-			ids.add(NpcID.NINJA_IMPLING_2);
+			ids.add(NpcID.NINJA_IMPLING_1653);
 		}
 		if (config.showDragon())
 		{
 			ids.add(NpcID.DRAGON_IMPLING);
-			ids.add(NpcID.DRAGON_IMPLING_2);
+			ids.add(NpcID.DRAGON_IMPLING_1654);
 		}
 		if (config.showLucky())
 		{
 			ids.add(NpcID.LUCKY_IMPLING);
-			ids.add(NpcID.LUCKY_IMPLING_2);
+			ids.add(NpcID.LUCKY_IMPLING_7302);
 		}
 		if (config.showSpawn())
 		{

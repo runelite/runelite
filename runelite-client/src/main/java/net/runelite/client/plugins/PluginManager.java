@@ -52,6 +52,7 @@ import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 import net.runelite.client.plugins.pestcontrol.PestControl;
 import net.runelite.client.plugins.runecraft.Runecraft;
 import net.runelite.client.plugins.xpglobes.XpGlobes;
+import net.runelite.client.plugins.xptracker.XPTracker;
 import net.runelite.client.plugins.xtea.Xtea;
 import net.runelite.client.plugins.zulrah.Zulrah;
 import org.slf4j.Logger;
@@ -91,6 +92,7 @@ public class PluginManager
 		plugins.add(new XpGlobes());
 		plugins.add(new CombatNotifier());
 		plugins.add(new JewelryCount());
+		plugins.add(new XPTracker());
 		plugins.add(new ExaminePlugin());
 		plugins.add(new Fishing());
 

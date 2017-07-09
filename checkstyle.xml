@@ -30,6 +30,9 @@
 		<module name="LeftCurly">
 			<property name="option" value="nl"/>
 		</module>
+		<module name="RightCurly">
+			<property name="option" value="alone"/>
+		</module>
 		<!-- require tabs for indenting - https://stackoverflow.com/a/28550141 -->
 		<module name="RegexpSinglelineJava">
 			<property name="format" value="^\t* "/>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Cameron <moberg@tuta.io>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,51 +22,64 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.util;
+package net.runelite.client.plugins.xptracker;
 
-import java.util.HashSet;
-import java.util.Set;
+import net.runelite.api.Skill;
+import java.time.Duration;
+import java.time.Instant;
 
-public class Namer
+public class SkillXPInfo
 {
-	private final Set<String> used = new HashSet<>();
+	private Skill skill;
+	private Instant skillTimeStart = null;
+	private int xpGained = 0;
+	private int loginXp = 0;
 
-	public String name(String name, int id)
+	public SkillXPInfo(int loginXp, Skill skill)
 	{
-		name = sanitize(name);
-
-		if (name == null)
-		{
-			return null;
-		}
-
-		if (used.contains(name))
-		{
-			name = name + "_" + id;
-			assert !used.contains(name);
-		}
-
-		used.add(name);
-
-		return name;
+		this.skill = skill;
+		this.loginXp = loginXp;
 	}
 
-	private static String sanitize(String in)
+	public int getXpHr()
 	{
-		String s = in.toUpperCase()
-			.replace(' ', '_')
-			.replaceAll("[^a-zA-Z0-9_]", "");
-		if (s.isEmpty())
-		{
-			return null;
-		}
-		if (Character.isDigit(s.charAt(0)))
-		{
-			return "_" + s;
-		}
-		else
-		{
-			return s;
-		}
+		long timeElapsedInSeconds = Duration.between(
+				skillTimeStart, Instant.now()).getSeconds();
+		return (int) ((1.0 / (timeElapsedInSeconds / 3600.0)) * xpGained);
+
+	}
+
+	public void reset(int loginXp)
+	{
+		xpGained = 0;
+		this.loginXp = loginXp;
+		skillTimeStart = null;
+	}
+
+	public void update(int currentXp)
+	{
+		xpGained = currentXp - loginXp;
+		if (skillTimeStart == null)
+			skillTimeStart = Instant.now();
+	}
+
+	public Instant getSkillTimeStart()
+	{
+		return skillTimeStart;
+	}
+
+	public int getXpGained()
+	{
+		return xpGained;
+	}
+
+	public int getLoginXp()
+	{
+		return loginXp;
+	}
+
+	public Skill getSkill()
+	{
+		return this.skill;
 	}
 }
