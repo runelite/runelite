@@ -1,66 +1,71 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ar")
+@ObfuscatedName("as")
 public class class35 {
-   @ObfuscatedName("w")
-   static ModIcon[] field503;
-   @ObfuscatedName("m")
-   static final class35 field504;
-   @ObfuscatedName("e")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1642752991
+      intValue = 1304039067
    )
-   final int field505;
-   @ObfuscatedName("p")
-   static final class35 field512;
-
+   final int field506;
+   @ObfuscatedName("w")
+   static final class35 field507;
+   @ObfuscatedName("od")
+   @Export("clanChatRank")
+   static byte clanChatRank;
+   @ObfuscatedName("i")
+   static final class35 field511;
    @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "([BILjava/lang/CharSequence;I)I",
-      garbageValue = "308488042"
+   @ObfuscatedGetter(
+      intValue = 187222449
    )
-   public static int method480(byte[] var0, int var1, CharSequence var2) {
-      int var3 = var2.length();
-      int var4 = var1;
-
-      for(int var5 = 0; var5 < var3; ++var5) {
-         char var6 = var2.charAt(var5);
-         if(var6 <= 127) {
-            var0[var4++] = (byte)var6;
-         } else if(var6 <= 2047) {
-            var0[var4++] = (byte)(192 | var6 >> 6);
-            var0[var4++] = (byte)(128 | var6 & 63);
-         } else {
-            var0[var4++] = (byte)(224 | var6 >> 12);
-            var0[var4++] = (byte)(128 | var6 >> 6 & 63);
-            var0[var4++] = (byte)(128 | var6 & 63);
-         }
-      }
-
-      return var4 - var1;
-   }
+   public static int field514;
 
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "0"
    )
    class35(int var1) {
-      this.field505 = var1;
+      this.field506 = var1;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "2088805487"
+      signature = "(I)[Lclass231;",
+      garbageValue = "1933463881"
    )
-   public static void method481(int var0) {
-      class59.mouseIdleTicks = var0;
+   public static class231[] method507() {
+      return new class231[]{class231.field3191, class231.field3193, class231.field3195, class231.field3192};
    }
 
    static {
-      field512 = new class35(0);
-      field504 = new class35(1);
+      field511 = new class35(0);
+      field507 = new class35(1);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(II)LNPCComposition;",
+      garbageValue = "1890011737"
+   )
+   @Export("getNpcDefinition")
+   public static NPCComposition getNpcDefinition(int var0) {
+      NPCComposition var1 = (NPCComposition)NPCComposition.field3557.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = NPCComposition.field3567.getConfigData(9, var0);
+         var1 = new NPCComposition();
+         var1.id = var0;
+         if(var2 != null) {
+            var1.method4642(new Buffer(var2));
+         }
+
+         var1.method4661();
+         NPCComposition.field3557.put(var1, (long)var0);
+         return var1;
+      }
    }
 }

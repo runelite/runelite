@@ -1,166 +1,166 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("cv")
+@ObfuscatedName("cs")
 public class class102 extends class119 {
-   @ObfuscatedName("m")
-   Deque field1556;
-   @ObfuscatedName("e")
-   int field1557;
-   @ObfuscatedName("p")
-   Deque field1558;
+   @ObfuscatedName("i")
+   Deque field1581;
+   @ObfuscatedName("s")
+   int field1582;
    @ObfuscatedName("t")
-   int field1559;
+   int field1583;
+   @ObfuscatedName("a")
+   Deque field1584;
 
    public class102() {
-      this.field1558 = new Deque();
-      this.field1556 = new Deque();
-      this.field1557 = 0;
-      this.field1559 = -1;
-   }
-
-   @ObfuscatedName("m")
-   public final synchronized void method1780(class119 var1) {
-      var1.unlink();
-   }
-
-   @ObfuscatedName("e")
-   void method1781() {
-      if(this.field1557 > 0) {
-         for(class113 var1 = (class113)this.field1556.method3487(); var1 != null; var1 = (class113)this.field1556.method3512()) {
-            var1.field1671 -= this.field1557;
-         }
-
-         this.field1559 -= this.field1557;
-         this.field1557 = 0;
-      }
-
-   }
-
-   @ObfuscatedName("t")
-   void method1782(Node var1, class113 var2) {
-      while(this.field1556.head != var1 && ((class113)var1).field1671 <= var2.field1671) {
-         var1 = var1.next;
-      }
-
-      Deque.method3518(var2, var1);
-      this.field1559 = ((class113)this.field1556.head.next).field1671;
+      this.field1581 = new Deque();
+      this.field1584 = new Deque();
+      this.field1583 = 0;
+      this.field1582 = -1;
    }
 
    @ObfuscatedName("w")
-   void method1783(class113 var1) {
+   public final synchronized void method1887(class119 var1) {
       var1.unlink();
-      var1.method2014();
-      Node var2 = this.field1556.head.next;
-      if(var2 == this.field1556.head) {
-         this.field1559 = -1;
-      } else {
-         this.field1559 = ((class113)var2).field1671;
+   }
+
+   @ObfuscatedName("a")
+   void method1888() {
+      if(this.field1583 > 0) {
+         for(class113 var1 = (class113)this.field1584.method3584(); var1 != null; var1 = (class113)this.field1584.method3578()) {
+            var1.field1683 -= this.field1583;
+         }
+
+         this.field1582 -= this.field1583;
+         this.field1583 = 0;
       }
 
    }
 
-   @ObfuscatedName("z")
-   protected class119 vmethod3771() {
-      return (class119)this.field1558.method3487();
+   @ObfuscatedName("t")
+   void method1889(Node var1, class113 var2) {
+      while(this.field1584.head != var1 && ((class113)var1).field1683 <= var2.field1683) {
+         var1 = var1.next;
+      }
+
+      Deque.method3581(var2, var1);
+      this.field1582 = ((class113)this.field1584.head.next).field1683;
+   }
+
+   @ObfuscatedName("i")
+   public final synchronized void method1890(class119 var1) {
+      this.field1581.method3580(var1);
+   }
+
+   @ObfuscatedName("r")
+   protected class119 vmethod3864() {
+      return (class119)this.field1581.method3584();
+   }
+
+   @ObfuscatedName("s")
+   void method1892(class113 var1) {
+      var1.unlink();
+      var1.method2099();
+      Node var2 = this.field1584.head.next;
+      if(var2 == this.field1584.head) {
+         this.field1582 = -1;
+      } else {
+         this.field1582 = ((class113)var2).field1683;
+      }
+
    }
 
    @ObfuscatedName("j")
-   protected class119 vmethod3780() {
-      return (class119)this.field1558.method3512();
-   }
-
-   @ObfuscatedName("c")
-   protected int vmethod3772() {
-      return 0;
-   }
-
-   @ObfuscatedName("o")
-   public final synchronized void vmethod3775(int[] var1, int var2, int var3) {
+   public final synchronized void vmethod3889(int[] var1, int var2, int var3) {
       do {
-         if(this.field1559 < 0) {
-            this.method1788(var1, var2, var3);
+         if(this.field1582 < 0) {
+            this.method1902(var1, var2, var3);
             return;
          }
 
-         if(var3 + this.field1557 < this.field1559) {
-            this.field1557 += var3;
-            this.method1788(var1, var2, var3);
+         if(var3 + this.field1583 < this.field1582) {
+            this.field1583 += var3;
+            this.method1902(var1, var2, var3);
             return;
          }
 
-         int var4 = this.field1559 - this.field1557;
-         this.method1788(var1, var2, var4);
+         int var4 = this.field1582 - this.field1583;
+         this.method1902(var1, var2, var4);
          var2 += var4;
          var3 -= var4;
-         this.field1557 += var4;
-         this.method1781();
-         class113 var5 = (class113)this.field1556.method3487();
+         this.field1583 += var4;
+         this.method1888();
+         class113 var5 = (class113)this.field1584.method3584();
          synchronized(var5) {
-            int var7 = var5.method2008(this);
+            int var7 = var5.method2098(this);
             if(var7 < 0) {
-               var5.field1671 = 0;
-               this.method1783(var5);
+               var5.field1683 = 0;
+               this.method1892(var5);
             } else {
-               var5.field1671 = var7;
-               this.method1782(var5.next, var5);
+               var5.field1683 = var7;
+               this.method1889(var5.next, var5);
             }
          }
       } while(var3 != 0);
 
    }
 
-   @ObfuscatedName("q")
-   void method1788(int[] var1, int var2, int var3) {
-      for(class119 var4 = (class119)this.field1558.method3487(); var4 != null; var4 = (class119)this.field1558.method3512()) {
-         var4.method2204(var1, var2, var3);
-      }
-
-   }
-
-   @ObfuscatedName("n")
-   public final synchronized void vmethod3773(int var1) {
+   @ObfuscatedName("e")
+   public final synchronized void vmethod3885(int var1) {
       do {
-         if(this.field1559 < 0) {
-            this.method1790(var1);
+         if(this.field1582 < 0) {
+            this.method1897(var1);
             return;
          }
 
-         if(this.field1557 + var1 < this.field1559) {
-            this.field1557 += var1;
-            this.method1790(var1);
+         if(this.field1583 + var1 < this.field1582) {
+            this.field1583 += var1;
+            this.method1897(var1);
             return;
          }
 
-         int var2 = this.field1559 - this.field1557;
-         this.method1790(var2);
+         int var2 = this.field1582 - this.field1583;
+         this.method1897(var2);
          var1 -= var2;
-         this.field1557 += var2;
-         this.method1781();
-         class113 var3 = (class113)this.field1556.method3487();
+         this.field1583 += var2;
+         this.method1888();
+         class113 var3 = (class113)this.field1584.method3584();
          synchronized(var3) {
-            int var5 = var3.method2008(this);
+            int var5 = var3.method2098(this);
             if(var5 < 0) {
-               var3.field1671 = 0;
-               this.method1783(var3);
+               var3.field1683 = 0;
+               this.method1892(var3);
             } else {
-               var3.field1671 = var5;
-               this.method1782(var3.next, var3);
+               var3.field1683 = var5;
+               this.method1889(var3.next, var3);
             }
          }
       } while(var1 != 0);
 
    }
 
-   @ObfuscatedName("a")
-   void method1790(int var1) {
-      for(class119 var2 = (class119)this.field1558.method3487(); var2 != null; var2 = (class119)this.field1558.method3512()) {
-         var2.vmethod3773(var1);
+   @ObfuscatedName("o")
+   void method1897(int var1) {
+      for(class119 var2 = (class119)this.field1581.method3584(); var2 != null; var2 = (class119)this.field1581.method3578()) {
+         var2.vmethod3885(var1);
       }
 
    }
 
-   @ObfuscatedName("p")
-   public final synchronized void method1806(class119 var1) {
-      this.field1558.method3501(var1);
+   @ObfuscatedName("v")
+   protected class119 vmethod3865() {
+      return (class119)this.field1581.method3578();
+   }
+
+   @ObfuscatedName("k")
+   void method1902(int[] var1, int var2, int var3) {
+      for(class119 var4 = (class119)this.field1581.method3584(); var4 != null; var4 = (class119)this.field1581.method3578()) {
+         var4.method2295(var1, var2, var3);
+      }
+
+   }
+
+   @ObfuscatedName("y")
+   protected int vmethod3888() {
+      return 0;
    }
 }

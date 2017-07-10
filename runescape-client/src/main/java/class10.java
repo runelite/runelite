@@ -1,278 +1,97 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("o")
+@ObfuscatedName("e")
 public final class class10 extends class9 {
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 519706483
-   )
-   final int field256;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 942166233
-   )
-   final int field257;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1809797043
-   )
-   final int field258;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 1041797315
-   )
-   final int field259;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1243762901
-   )
-   final int field261;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -2016354523
+      intValue = 231072645
    )
-   final int field262;
-   @ObfuscatedName("d")
+   final int field252;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -2016378267
+      intValue = 1567545477
    )
-   @Export("canvasWidth")
-   public static int canvasWidth;
-   @ObfuscatedName("p")
+   final int field253;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1072603023
+      intValue = 1125016273
    )
-   final int field266;
-   @ObfuscatedName("av")
-   static int[] field268;
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-4"
+   final int field254;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 577740585
    )
-   public final void vmethod55() {
-      for(int var1 = 0; var1 < 8; ++var1) {
-         int var2 = (var1 & 1) == 0?this.field266:this.field256;
-         int var3 = (var1 & 2) == 0?this.field257:this.field262;
-         int var4 = (var1 & 4) == 0?this.field258:this.field261;
-         if((var1 & 1) == 0) {
-            class109.method1949(var2, var3, var4, this.field256, var3, var4, this.field259);
-         }
-
-         if((var1 & 2) == 0) {
-            class109.method1949(var2, var3, var4, var2, this.field262, var4, this.field259);
-         }
-
-         if((var1 & 4) == 0) {
-            class109.method1949(var2, var3, var4, var2, var3, this.field261, this.field259);
-         }
-      }
-
-   }
-
-   @ObfuscatedSignature(
-      signature = "(LModel;IIII)V",
-      garbageValue = "-65281"
+   final int field255;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 953326563
    )
-   public class10(Model var1, int var2, int var3, int var4, int var5) {
-      this.field266 = var2 + var1.field1955 - var1.field1958;
-      this.field257 = var3 + var1.field1956 - var1.field1959;
-      this.field258 = var4 + var1.field1957 - var1.field1928;
-      this.field256 = var2 + var1.field1958 + var1.field1955;
-      this.field262 = var3 + var1.field1956 + var1.field1959;
-      this.field261 = var4 + var1.field1957 + var1.field1928;
-      this.field259 = var5;
-   }
-
-   @ObfuscatedName("fd")
-   @ObfuscatedSignature(
-      signature = "(LPlayer;III)V",
-      garbageValue = "1182131533"
-   )
-   static void method57(Player var0, int var1, int var2) {
-      if(var0.animation == var1 && var1 != -1) {
-         int var3 = GameEngine.getAnimation(var1).replyMode;
-         if(var3 == 1) {
-            var0.actionFrame = 0;
-            var0.field1242 = 0;
-            var0.actionAnimationDisable = var2;
-            var0.field1244 = 0;
-         }
-
-         if(var3 == 2) {
-            var0.field1244 = 0;
-         }
-      } else if(var1 == -1 || var0.animation == -1 || GameEngine.getAnimation(var1).forcedPriority >= GameEngine.getAnimation(var0.animation).forcedPriority) {
-         var0.animation = var1;
-         var0.actionFrame = 0;
-         var0.field1242 = 0;
-         var0.actionAnimationDisable = var2;
-         var0.field1244 = 0;
-         var0.field1267 = var0.queueSize;
-      }
-
-   }
-
-   @ObfuscatedName("if")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1515121386"
-   )
-   static void method58(int var0) {
-      class243.field3325 = new class89();
-      class243.field3325.field1386 = Client.menuActionParams0[var0];
-      class243.field3325.field1387 = Client.menuActionParams1[var0];
-      class243.field3325.field1388 = Client.menuTypes[var0];
-      class243.field3325.field1389 = Client.menuIdentifiers[var0];
-      class243.field3325.field1392 = Client.menuOptions[var0];
-   }
-
+   final int field256;
    @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
-      garbageValue = "-1830600342"
+   @ObfuscatedGetter(
+      intValue = 1595372943
    )
-   static int method59(int var0, Script var1, boolean var2) {
-      int var3;
-      if(var0 == 3903) {
-         var3 = class83.intStack[--class83.intStackSize];
-         class83.intStack[++class83.intStackSize - 1] = Client.grandExchangeOffers[var3].method114();
-         return 1;
-      } else if(var0 == 3904) {
-         var3 = class83.intStack[--class83.intStackSize];
-         class83.intStack[++class83.intStackSize - 1] = Client.grandExchangeOffers[var3].itemId;
-         return 1;
-      } else if(var0 == 3905) {
-         var3 = class83.intStack[--class83.intStackSize];
-         class83.intStack[++class83.intStackSize - 1] = Client.grandExchangeOffers[var3].price;
-         return 1;
-      } else if(var0 == 3906) {
-         var3 = class83.intStack[--class83.intStackSize];
-         class83.intStack[++class83.intStackSize - 1] = Client.grandExchangeOffers[var3].totalQuantity;
-         return 1;
-      } else if(var0 == 3907) {
-         var3 = class83.intStack[--class83.intStackSize];
-         class83.intStack[++class83.intStackSize - 1] = Client.grandExchangeOffers[var3].quantitySold;
-         return 1;
-      } else if(var0 == 3908) {
-         var3 = class83.intStack[--class83.intStackSize];
-         class83.intStack[++class83.intStackSize - 1] = Client.grandExchangeOffers[var3].spent;
-         return 1;
-      } else {
-         int var4;
-         if(var0 == 3910) {
-            var3 = class83.intStack[--class83.intStackSize];
-            var4 = Client.grandExchangeOffers[var3].method113();
-            class83.intStack[++class83.intStackSize - 1] = var4 == 0?1:0;
-            return 1;
-         } else if(var0 == 3911) {
-            var3 = class83.intStack[--class83.intStackSize];
-            var4 = Client.grandExchangeOffers[var3].method113();
-            class83.intStack[++class83.intStackSize - 1] = var4 == 2?1:0;
-            return 1;
-         } else if(var0 == 3912) {
-            var3 = class83.intStack[--class83.intStackSize];
-            var4 = Client.grandExchangeOffers[var3].method113();
-            class83.intStack[++class83.intStackSize - 1] = var4 == 5?1:0;
-            return 1;
-         } else if(var0 == 3913) {
-            var3 = class83.intStack[--class83.intStackSize];
-            var4 = Client.grandExchangeOffers[var3].method113();
-            class83.intStack[++class83.intStackSize - 1] = var4 == 1?1:0;
-            return 1;
-         } else {
-            boolean var5;
-            if(var0 == 3914) {
-               var5 = class83.intStack[--class83.intStackSize] == 1;
-               if(Client.field1181 != null) {
-                  Client.field1181.method79(class13.field285, var5);
-               }
+   final int field257;
+   @ObfuscatedName("o")
+   static int[] field258;
+   @ObfuscatedName("ci")
+   static IndexData field259;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 992425755
+   )
+   final int field260;
 
-               return 1;
-            } else if(var0 == 3915) {
-               var5 = class83.intStack[--class83.intStackSize] == 1;
-               if(Client.field1181 != null) {
-                  Client.field1181.method79(class13.field283, var5);
-               }
+   class10(Model var1, int var2, int var3, int var4, int var5) {
+      this.field260 = var2 + var1.field1969 - var1.field1966;
+      this.field252 = var3 + var1.field1989 - var1.field1967;
+      this.field253 = var4 + var1.field1932 - var1.field1968;
+      this.field254 = var2 + var1.field1969 + var1.field1966;
+      this.field255 = var3 + var1.field1989 + var1.field1967;
+      this.field256 = var4 + var1.field1932 + var1.field1968;
+      this.field257 = var5;
+   }
 
-               return 1;
-            } else if(var0 == 3916) {
-               class83.intStackSize -= 2;
-               var5 = class83.intStack[class83.intStackSize] == 1;
-               boolean var13 = class83.intStack[class83.intStackSize + 1] == 1;
-               if(Client.field1181 != null) {
-                  Client.field1181.method79(new class95(var13), var5);
-               }
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "366399750"
+   )
+   final void vmethod50() {
+      for(int var4 = 0; var4 < 8; ++var4) {
+         int var1 = (var4 & 1) == 0?this.field260:this.field254;
+         int var2 = (var4 & 2) == 0?this.field252:this.field255;
+         int var3 = (var4 & 4) == 0?this.field253:this.field256;
+         int var5;
+         int var6;
+         int[] var7;
+         int[] var8;
+         if((var4 & 1) == 0) {
+            var5 = this.field254;
+            var6 = this.field257;
+            var7 = Region.method2796(var1, var2, var3);
+            var8 = Region.method2796(var5, var2, var3);
+            Rasterizer2D.method4945(var7[0], var7[1], var8[0], var8[1], var6);
+         }
 
-               return 1;
-            } else if(var0 == 3917) {
-               var5 = class83.intStack[--class83.intStackSize] == 1;
-               if(Client.field1181 != null) {
-                  Client.field1181.method79(class13.field282, var5);
-               }
+         if((var4 & 2) == 0) {
+            var5 = this.field255;
+            var6 = this.field257;
+            var7 = Region.method2796(var1, var2, var3);
+            var8 = Region.method2796(var1, var5, var3);
+            Rasterizer2D.method4945(var7[0], var7[1], var8[0], var8[1], var6);
+         }
 
-               return 1;
-            } else if(var0 == 3918) {
-               var5 = class83.intStack[--class83.intStackSize] == 1;
-               if(Client.field1181 != null) {
-                  Client.field1181.method79(class13.field288, var5);
-               }
-
-               return 1;
-            } else if(var0 == 3919) {
-               class83.intStack[++class83.intStackSize - 1] = Client.field1181 == null?0:Client.field1181.field287.size();
-               return 1;
-            } else {
-               class14 var6;
-               if(var0 == 3920) {
-                  var3 = class83.intStack[--class83.intStackSize];
-                  var6 = (class14)Client.field1181.field287.get(var3);
-                  class83.intStack[++class83.intStackSize - 1] = var6.field297;
-                  return 1;
-               } else if(var0 == 3921) {
-                  var3 = class83.intStack[--class83.intStackSize];
-                  var6 = (class14)Client.field1181.field287.get(var3);
-                  class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var6.method81();
-                  return 1;
-               } else if(var0 == 3922) {
-                  var3 = class83.intStack[--class83.intStackSize];
-                  var6 = (class14)Client.field1181.field287.get(var3);
-                  class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var6.method80();
-                  return 1;
-               } else if(var0 == 3923) {
-                  var3 = class83.intStack[--class83.intStackSize];
-                  var6 = (class14)Client.field1181.field287.get(var3);
-                  long var7 = class166.method2970() - Tile.field1921 - var6.field291;
-                  int var9 = (int)(var7 / 3600000L);
-                  int var10 = (int)((var7 - (long)(var9 * 3600000)) / 60000L);
-                  int var11 = (int)((var7 - (long)(var9 * 3600000) - (long)(var10 * '\uea60')) / 1000L);
-                  String var12 = var9 + ":" + var10 / 10 + var10 % 10 + ":" + var11 / 10 + var11 % 10;
-                  class83.scriptStringStack[++class24.scriptStringStackSize - 1] = var12;
-                  return 1;
-               } else if(var0 == 3924) {
-                  var3 = class83.intStack[--class83.intStackSize];
-                  var6 = (class14)Client.field1181.field287.get(var3);
-                  class83.intStack[++class83.intStackSize - 1] = var6.field292.totalQuantity;
-                  return 1;
-               } else if(var0 == 3925) {
-                  var3 = class83.intStack[--class83.intStackSize];
-                  var6 = (class14)Client.field1181.field287.get(var3);
-                  class83.intStack[++class83.intStackSize - 1] = var6.field292.price;
-                  return 1;
-               } else if(var0 == 3926) {
-                  var3 = class83.intStack[--class83.intStackSize];
-                  var6 = (class14)Client.field1181.field287.get(var3);
-                  class83.intStack[++class83.intStackSize - 1] = var6.field292.itemId;
-                  return 1;
-               } else {
-                  return 2;
-               }
-            }
+         if((var4 & 4) == 0) {
+            var5 = this.field256;
+            var6 = this.field257;
+            var7 = Region.method2796(var1, var2, var3);
+            var8 = Region.method2796(var1, var2, var5);
+            Rasterizer2D.method4945(var7[0], var7[1], var8[0], var8[1], var6);
          }
       }
+
    }
 }

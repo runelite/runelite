@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.ClassFile;
@@ -50,14 +49,14 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 	{
 		super(instructions, type);
 	}
-	
+
 	public GetStatic(Instructions instructions, Field field)
 	{
 		super(instructions, InstructionType.GETSTATIC);
-		
+
 		this.field = field;
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -80,12 +79,17 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
-		
+
 		StackContext ctx = new StackContext(ins, new Type(field.getType()), Value.UNKNOWN);
 		stack.push(ctx);
-		
+
 		ins.push(ctx);
-		
+
+		if (myField != null)
+		{
+			frame.getExecution().order(frame, myField);
+		}
+
 		return ins;
 	}
 
@@ -94,7 +98,7 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 	{
 		return field;
 	}
-	
+
 	@Override
 	public net.runelite.asm.Field getMyField()
 	{
@@ -102,24 +106,30 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 
 		ClassFile cf = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup().findClass(clazz.getName());
 		if (cf == null)
+		{
 			return null;
+		}
 
 		net.runelite.asm.Field f2 = cf.findFieldDeep(field.getName(), field.getType());
 		return f2;
 	}
-	
+
 	@Override
 	public void lookup()
 	{
 		myField = this.getMyField();
 	}
-	
+
 	@Override
 	public void regeneratePool()
 	{
 		if (myField != null)
+		{
 			if (getMyField() != myField)
+			{
 				field = myField.getPoolField();
+			}
+		}
 	}
 
 	@Override

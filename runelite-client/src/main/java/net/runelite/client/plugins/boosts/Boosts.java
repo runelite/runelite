@@ -25,12 +25,14 @@
 
 package net.runelite.client.plugins.boosts;
 
+import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 
 public class Boosts extends Plugin
 {
-	private final Overlay overlay = new BoostsOverlay();
+	private final BoostsConfig config = RuneLite.getRunelite().getConfigManager().getConfig(BoostsConfig.class);
+	private final Overlay overlay = new BoostsOverlay(this);
 
 	@Override
 	public Overlay getOverlay()
@@ -46,5 +48,10 @@ public class Boosts extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+	}
+
+	public BoostsConfig getConfig()
+	{
+		return config;
 	}
 }

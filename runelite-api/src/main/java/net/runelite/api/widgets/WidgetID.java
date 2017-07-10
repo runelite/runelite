@@ -28,6 +28,7 @@ class WidgetID
 {
 	static final int BANK_GROUP_ID = 12;
 	static final int INVENTORY_GROUP_ID = 149;
+	static final int EQUIPMENT_GROUP_ID = 387;
 	static final int PESTRCONTROL_GROUP_ID = 408;
 	static final int CLAN_CHAT_GROUP_ID = 7;
 	static final int MINIMAP_GROUP_ID = 160;
@@ -64,6 +65,21 @@ class WidgetID
 	static class Bank
 	{
 		static final int ITEM_CONTAINER = 12;
+	}
+
+	static class Equipment
+	{
+		static final int HELMET = 6;
+		static final int CAPE = 7;
+		static final int AMULET = 8;
+		static final int WEAPON = 9;
+		static final int BODY = 10;
+		static final int SHIELD = 11;
+		static final int LEGS = 12;
+		static final int GLOVES = 13;
+		static final int BOOTS = 14;
+		static final int RING = 15;
+		static final int AMMO = 16;
 	}
 
 	static class Minimap

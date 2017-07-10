@@ -26,20 +26,28 @@ package net.runelite.asm.execution;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
+import static net.runelite.asm.execution.StaticStep.popStack;
 import net.runelite.deob.Deob;
 import org.apache.commons.collections4.map.MultiValueMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Execution
 {
-	private ClassGroup group;
+	private static final Logger logger = LoggerFactory.getLogger(Execution.class);
+
+	private final ClassGroup group;
 	public List<Frame> frames = new ArrayList<>(), framesOther = new ArrayList<>();
 	public Set<Method> methods = new HashSet<>(); // all methods
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
@@ -51,6 +59,9 @@ public class Execution
 	private List<ExecutionVisitor> visitors = new ArrayList<>();
 	private List<FrameVisitor> frameVisitors = new ArrayList<>();
 	private List<MethodContextVisitor> methodContextVisitors = new ArrayList<>();
+	private final Map<Object, Integer> order = new HashMap<>(); // field,method -> order encountered
+	private final Map<Object, Integer> accesses = new HashMap<>();
+	public boolean staticStep; // whether to step through static methods
 
 	public Execution(ClassGroup group)
 	{
@@ -77,6 +88,7 @@ public class Execution
 					}
 
 					methods.add(m); // I guess this method name is overriding a jre interface (init, run, ?).
+					logger.debug("Adding initial method {}", m);
 				}
 
 				if (m.getName().equals("<init>") && cf.getSuperName().equals("java/applet/Applet"))
@@ -99,15 +111,13 @@ public class Execution
 				continue;
 			}
 
-			Frame frame = new Frame(this, m);
-			frame.initialize();
-			addFrame(frame); // I guess this method name is overriding a jre interface (init, run, ?).
+			addMethod(m); // I guess this method name is overriding a jre interface (init, run, ?).
 		}
 	}
 
 	public boolean hasInvoked(InstructionContext from, Method to)
 	{
-		if (!step)
+		if (!step && !staticStep)
 		{
 			if (invokes.contains(to))
 			{
@@ -123,7 +133,7 @@ public class Execution
 		// the lvt to the caller which invoked the method.
 		//
 		// So, check that the stack is unique too. invoke() doesn't get this
-		// far in the step executor, so this is only called from stepInto
+		// far in the step executor, but does for staticStep
 		Collection<Method> methods = stepInvokes.getCollection(from.toWeak());
 		if (methods != null && methods.contains(to))
 		{
@@ -136,6 +146,7 @@ public class Execution
 
 	public void addFrame(Frame frame)
 	{
+		// this is to keep frames with same methodcontext together to reduce memory
 		if (frames.isEmpty() || frames.get(0).getMethod() == frame.getMethod())
 		{
 			frames.add(frame);
@@ -190,12 +201,19 @@ public class Execution
 			++fcount;
 			frame.execute();
 
-			assert frames.get(0) == frame;
+			if (!staticStep)
+			{
+				// static step inserts stepped static function frames
+				assert frames.get(0) == frame;
+			}
 			assert !frame.isExecuting();
 
 			accept(frame);
 
 			frames.remove(frame);
+
+			// Return to caller
+			popStack(frame);
 
 			if (frames.isEmpty())
 			{
@@ -217,7 +235,7 @@ public class Execution
 			}
 		}
 
-		System.out.println("Processed " + fcount + " frames");
+		logger.info("Processed {} frames", fcount);
 	}
 
 	public void addExecutionVisitor(ExecutionVisitor ev)
@@ -248,5 +266,51 @@ public class Execution
 	public void accept(MethodContext m)
 	{
 		methodContextVisitors.forEach(mc -> mc.visit(m));
+	}
+
+	public void order(Frame frame, Method method)
+	{
+		order(frame, (Object) method);
+	}
+
+	public void order(Frame frame, Field field)
+	{
+		order(frame, (Object) field);
+	}
+
+	private void order(Frame frame, Object m)
+	{
+		if (!staticStep)
+		{
+			return; // no sense keeping track of this
+		}
+
+		Integer i;
+		i = order.get(m);
+		int next = frame.getNextOrder();
+		if (i == null || next < i)
+		{
+			order.put(m, next);
+		}
+
+		i = accesses.get(m);
+		if (i == null)
+		{
+			accesses.put(m, 1);
+		}
+		else
+		{
+			accesses.put(m, i + 1);
+		}
+	}
+
+	public Integer getOrder(Object m)
+	{
+		return order.get(m);
+	}
+
+	public Integer getAccesses(Object m)
+	{
+		return accesses.get(m);
 	}
 }

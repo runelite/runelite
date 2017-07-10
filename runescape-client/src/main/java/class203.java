@@ -1,77 +1,55 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ge")
 public class class203 {
-   @ObfuscatedName("p")
-   public static IndexDataBase field2513;
-   @ObfuscatedName("m")
-   public static IndexDataBase field2514;
-   @ObfuscatedName("e")
-   public static IndexDataBase field2515;
-   @ObfuscatedName("t")
-   public static class204 field2516;
-   @ObfuscatedName("w")
+   @ObfuscatedName("i")
+   public static IndexDataBase field2506;
+   @ObfuscatedName("a")
+   public static IndexDataBase field2507;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1202646483
+      intValue = 1406754967
    )
-   public static int field2517;
-   @ObfuscatedName("z")
-   public static IndexDataBase field2518;
+   public static int field2508;
+   @ObfuscatedName("t")
+   public static class204 field2509;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -2057629755
+   )
+   public static int field2511;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 269689881
+   )
+   public static int field2512;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1840374475
+      intValue = 692889359
    )
-   public static int field2519;
-   @ObfuscatedName("gn")
+   public static int field2513;
+   @ObfuscatedName("w")
+   public static IndexDataBase field2514;
+   @ObfuscatedName("e")
+   public static boolean field2515;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -470040297
+      intValue = 1235465649
    )
-   @Export("cameraPitch")
-   static int cameraPitch;
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/CharSequence;III)Ljava/lang/String;",
-      garbageValue = "1933448217"
-   )
-   public static String method3571(CharSequence[] var0, int var1, int var2) {
-      if(var2 == 0) {
-         return "";
-      } else if(var2 == 1) {
-         CharSequence var8 = var0[var1];
-         return var8 == null?"null":var8.toString();
-      } else {
-         int var3 = var2 + var1;
-         int var4 = 0;
-
-         for(int var5 = var1; var5 < var3; ++var5) {
-            CharSequence var6 = var0[var5];
-            if(var6 == null) {
-               var4 += 4;
-            } else {
-               var4 += var6.length();
-            }
-         }
-
-         StringBuilder var9 = new StringBuilder(var4);
-
-         for(int var10 = var1; var10 < var3; ++var10) {
-            CharSequence var7 = var0[var10];
-            if(var7 == null) {
-               var9.append("null");
-            } else {
-               var9.append(var7);
-            }
-         }
-
-         return var9.toString();
-      }
-   }
+   public static int field2517;
 
    static {
-      field2517 = 0;
+      field2508 = 0;
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-2081800942"
+   )
+   public static boolean method3665(int var0) {
+      return var0 >= class221.field2839.field2842 && var0 <= class221.field2819.field2842;
    }
 }

@@ -4,119 +4,91 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cc")
+@ObfuscatedName("co")
 @Implements("DynamicObject")
 public class DynamicObject extends Renderable {
-   @ObfuscatedName("w")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1415515943
-   )
-   @Export("sceneX")
-   int sceneX;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1160229935
-   )
-   @Export("type")
-   int type;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -528657293
+      intValue = -1898134511
    )
    @Export("id")
    int id;
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 7318589
+      intValue = -1889787191
    )
-   @Export("orientation")
-   int orientation;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1995687351
-   )
-   @Export("sceneY")
-   int sceneY;
-   @ObfuscatedName("j")
-   Sequence field1544;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 868437739
-   )
-   int field1545;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1262643903
-   )
-   int field1546;
+   @Export("type")
+   int type;
+   @ObfuscatedName("v")
+   Sequence field1563;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 848916855
+      intValue = -1711485319
    )
    @Export("level")
    int level;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -849978763
+   )
+   @Export("sceneX")
+   int sceneX;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 3985011
+   )
+   @Export("sceneY")
+   int sceneY;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 64664663
+   )
+   int field1568;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1945526093
+   )
+   int field1569;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 1645815089
+   )
+   @Export("orientation")
+   int orientation;
 
-   DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
-      this.id = var1;
-      this.type = var2;
-      this.orientation = var3;
-      this.level = var4;
-      this.sceneX = var5;
-      this.sceneY = var6;
-      if(var7 != -1) {
-         this.field1544 = GameEngine.getAnimation(var7);
-         this.field1545 = 0;
-         this.field1546 = Client.gameCycle - 1;
-         if(this.field1544.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
-            DynamicObject var10 = (DynamicObject)var9;
-            if(this.field1544 == var10.field1544) {
-               this.field1545 = var10.field1545;
-               this.field1546 = var10.field1546;
-               return;
-            }
-         }
-
-         if(var8 && this.field1544.frameStep != -1) {
-            this.field1545 = (int)(Math.random() * (double)this.field1544.frameIDs.length);
-            this.field1546 -= (int)(Math.random() * (double)this.field1544.frameLenghts[this.field1545]);
-         }
-      }
-
-   }
-
-   @ObfuscatedName("e")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)LModel;",
-      garbageValue = "-2066149273"
+      garbageValue = "-1914243094"
    )
    protected final Model getModel() {
-      if(this.field1544 != null) {
-         int var1 = Client.gameCycle - this.field1546;
-         if(var1 > 100 && this.field1544.frameStep > 0) {
+      if(this.field1563 != null) {
+         int var1 = Client.gameCycle - this.field1569;
+         if(var1 > 100 && this.field1563.frameStep > 0) {
             var1 = 100;
          }
 
-         label47: {
+         label53: {
             do {
                do {
-                  if(var1 <= this.field1544.frameLenghts[this.field1545]) {
-                     break label47;
+                  if(var1 <= this.field1563.frameLenghts[this.field1568]) {
+                     break label53;
                   }
 
-                  var1 -= this.field1544.frameLenghts[this.field1545];
-                  ++this.field1545;
-               } while(this.field1545 < this.field1544.frameIDs.length);
+                  var1 -= this.field1563.frameLenghts[this.field1568];
+                  ++this.field1568;
+               } while(this.field1568 < this.field1563.frameIDs.length);
 
-               this.field1545 -= this.field1544.frameStep;
-            } while(this.field1545 >= 0 && this.field1545 < this.field1544.frameIDs.length);
+               this.field1568 -= this.field1563.frameStep;
+            } while(this.field1568 >= 0 && this.field1568 < this.field1563.frameIDs.length);
 
-            this.field1544 = null;
+            this.field1563 = null;
          }
 
-         this.field1546 = Client.gameCycle - var1;
+         this.field1569 = Client.gameCycle - var1;
       }
 
-      ObjectComposition var12 = class29.getObjectDefinition(this.id);
+      ObjectComposition var12 = class251.getObjectDefinition(this.id);
       if(var12.impostorIds != null) {
          var12 = var12.getImpostor();
       }
@@ -139,97 +111,103 @@ public class DynamicObject extends Renderable {
          int var6 = this.sceneY + (var3 >> 1);
          int var7 = (var3 + 1 >> 1) + this.sceneY;
          int[][] var8 = class61.tileHeights[this.level];
-         int var9 = var8[var5][var7] + var8[var4][var6] + var8[var5][var6] + var8[var4][var7] >> 2;
+         int var9 = var8[var4][var6] + var8[var5][var6] + var8[var4][var7] + var8[var5][var7] >> 2;
          int var10 = (this.sceneX << 7) + (var2 << 6);
          int var11 = (this.sceneY << 7) + (var3 << 6);
-         return var12.method4395(this.type, this.orientation, var8, var10, var9, var11, this.field1544, this.field1545);
+         return var12.method4519(this.type, this.orientation, var8, var10, var9, var11, this.field1563, this.field1568);
       }
    }
 
-   @ObfuscatedName("hg")
+   DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
+      this.id = var1;
+      this.type = var2;
+      this.orientation = var3;
+      this.level = var4;
+      this.sceneX = var5;
+      this.sceneY = var6;
+      if(var7 != -1) {
+         this.field1563 = class224.getAnimation(var7);
+         this.field1568 = 0;
+         this.field1569 = Client.gameCycle - 1;
+         if(this.field1563.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
+            DynamicObject var10 = (DynamicObject)var9;
+            if(this.field1563 == var10.field1563) {
+               this.field1568 = var10.field1568;
+               this.field1569 = var10.field1569;
+               return;
+            }
+         }
+
+         if(var8 && this.field1563.frameStep != -1) {
+            this.field1568 = (int)(Math.random() * (double)this.field1563.frameIDs.length);
+            this.field1569 -= (int)(Math.random() * (double)this.field1563.frameLenghts[this.field1568]);
+         }
+      }
+
+   }
+
+   @ObfuscatedName("ju")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1048477201"
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "868881172"
    )
-   static void method1762() {
-      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
-         if(class28.method248(Client.menuTypes[var0])) {
-            if(var0 < Client.menuOptionCount - 1) {
-               for(int var1 = var0; var1 < Client.menuOptionCount - 1; ++var1) {
-                  Client.menuOptions[var1] = Client.menuOptions[var1 + 1];
-                  Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
-                  Client.menuTypes[var1] = Client.menuTypes[var1 + 1];
-                  Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
-                  Client.menuActionParams0[var1] = Client.menuActionParams0[var1 + 1];
-                  Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
+   static final void method1873(String var0) {
+      if(var0 != null) {
+         String var1 = Player.method1179(var0, Client.field928);
+         if(var1 != null) {
+            for(int var2 = 0; var2 < Client.friendCount; ++var2) {
+               Friend var3 = Client.friends[var2];
+               String var4 = var3.name;
+               String var5 = Player.method1179(var4, Client.field928);
+               if(class272.method4895(var0, var1, var4, var5)) {
+                  --Client.friendCount;
+
+                  for(int var6 = var2; var6 < Client.friendCount; ++var6) {
+                     Client.friends[var6] = Client.friends[var6 + 1];
+                  }
+
+                  Client.field1025 = Client.field1112;
+                  Client.secretPacketBuffer1.putOpcode(87);
+                  Client.secretPacketBuffer1.putByte(class261.method4734(var0));
+                  Client.secretPacketBuffer1.method3137(var0);
+                  break;
                }
             }
 
-            --Client.menuOptionCount;
          }
       }
-
    }
 
-   @ObfuscatedName("p")
-   static final int method1763(double var0, double var2, double var4) {
-      double var6 = var4;
-      double var8 = var4;
-      double var10 = var4;
-      if(0.0D != var2) {
-         double var12;
-         if(var4 < 0.5D) {
-            var12 = (var2 + 1.0D) * var4;
-         } else {
-            var12 = var2 + var4 - var4 * var2;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "338399108"
+   )
+   public static void method1874(int var0, int var1) {
+      Varbit var3 = (Varbit)Varbit.field3390.get((long)var0);
+      Varbit var2;
+      if(var3 != null) {
+         var2 = var3;
+      } else {
+         byte[] var8 = Varbit.field3391.getConfigData(14, var0);
+         var3 = new Varbit();
+         if(var8 != null) {
+            var3.method4426(new Buffer(var8));
          }
 
-         double var14 = var4 * 2.0D - var12;
-         double var16 = var0 + 0.3333333333333333D;
-         if(var16 > 1.0D) {
-            --var16;
-         }
-
-         double var18 = var0 - 0.3333333333333333D;
-         if(var18 < 0.0D) {
-            ++var18;
-         }
-
-         if(var16 * 6.0D < 1.0D) {
-            var6 = var14 + (var12 - var14) * 6.0D * var16;
-         } else if(var16 * 2.0D < 1.0D) {
-            var6 = var12;
-         } else if(3.0D * var16 < 2.0D) {
-            var6 = var14 + (0.6666666666666666D - var16) * (var12 - var14) * 6.0D;
-         } else {
-            var6 = var14;
-         }
-
-         if(var0 * 6.0D < 1.0D) {
-            var8 = var0 * (var12 - var14) * 6.0D + var14;
-         } else if(var0 * 2.0D < 1.0D) {
-            var8 = var12;
-         } else if(3.0D * var0 < 2.0D) {
-            var8 = 6.0D * (var12 - var14) * (0.6666666666666666D - var0) + var14;
-         } else {
-            var8 = var14;
-         }
-
-         if(var18 * 6.0D < 1.0D) {
-            var10 = 6.0D * (var12 - var14) * var18 + var14;
-         } else if(var18 * 2.0D < 1.0D) {
-            var10 = var12;
-         } else if(var18 * 3.0D < 2.0D) {
-            var10 = (0.6666666666666666D - var18) * (var12 - var14) * 6.0D + var14;
-         } else {
-            var10 = var14;
-         }
+         Varbit.field3390.put(var3, (long)var0);
+         var2 = var3;
       }
 
-      int var20 = (int)(256.0D * var6);
-      int var13 = (int)(256.0D * var8);
-      int var21 = (int)(256.0D * var10);
-      int var15 = (var13 << 8) + (var20 << 16) + var21;
-      return var15;
+      int var4 = var2.configId;
+      int var5 = var2.leastSignificantBit;
+      int var6 = var2.mostSignificantBit;
+      int var7 = class211.field2613[var6 - var5];
+      if(var1 < 0 || var1 > var7) {
+         var1 = 0;
+      }
+
+      var7 <<= var5;
+      class211.widgetSettings[var4] = class211.widgetSettings[var4] & ~var7 | var1 << var5 & var7;
    }
 }

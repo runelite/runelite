@@ -4,48 +4,51 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fa")
+@ObfuscatedName("ft")
 @Implements("CollisionData")
 public class CollisionData {
-   @ObfuscatedName("am")
+   @ObfuscatedName("ay")
    @ObfuscatedGetter(
-      intValue = 1479730493
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("ab")
-   @ObfuscatedGetter(
-      intValue = -1885778109
+      intValue = -693160353
    )
    @Export("x")
    int x;
-   @ObfuscatedName("c")
+   @ObfuscatedName("ao")
    @ObfuscatedGetter(
-      intValue = -588541847
+      intValue = 1322749499
    )
-   public static int field2304;
-   @ObfuscatedName("ar")
+   @Export("y")
+   int y;
+   @ObfuscatedName("as")
    @ObfuscatedGetter(
-      intValue = 1915834989
+      intValue = 384750531
    )
    @Export("width")
    int width;
-   @ObfuscatedName("ac")
-   @Export("flags")
-   public int[][] flags;
-   @ObfuscatedName("ao")
+   @ObfuscatedName("ak")
    @ObfuscatedGetter(
-      intValue = 1264027297
+      intValue = 1922262653
    )
    @Export("height")
    int height;
+   @ObfuscatedName("aq")
+   @Export("flags")
+   public int[][] flags;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1407266445
+   )
+   @Export("canvasHeight")
+   protected static int canvasHeight;
+   @ObfuscatedName("k")
+   public static IndexDataBase field2309;
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-605740638"
+      garbageValue = "-289288660"
    )
-   public void method2912() {
+   public void method3007() {
       for(int var1 = 0; var1 < this.width; ++var1) {
          for(int var2 = 0; var2 < this.height; ++var2) {
             if(var1 != 0 && var2 != 0 && var1 < this.width - 5 && var2 < this.height - 5) {
@@ -58,23 +61,12 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "463173653"
+      signature = "(IIIIZB)V",
+      garbageValue = "-94"
    )
-   public void method2913(int var1, int var2) {
-      var1 -= this.x;
-      var2 -= this.y;
-      this.flags[var1][var2] |= 2097152;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(IIIIZI)V",
-      garbageValue = "187615115"
-   )
-   public void method2914(int var1, int var2, int var3, int var4, boolean var5) {
+   public void method3008(int var1, int var2, int var3, int var4, boolean var5) {
       int var6 = 256;
       if(var5) {
          var6 += 131072;
@@ -87,7 +79,7 @@ public class CollisionData {
          if(var7 >= 0 && var7 < this.width) {
             for(int var8 = var2; var8 < var2 + var4; ++var8) {
                if(var8 >= 0 && var8 < this.height) {
-                  this.method2917(var7, var8, var6);
+                  this.method3012(var7, var8, var6);
                }
             }
          }
@@ -95,32 +87,184 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "6"
+      signature = "(III)V",
+      garbageValue = "-1345282488"
    )
-   public void method2916(int var1, int var2) {
+   public void method3010(int var1, int var2) {
       var1 -= this.x;
       var2 -= this.y;
-      this.flags[var1][var2] |= 262144;
+      this.flags[var1][var2] |= 2097152;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "-56728300"
+      garbageValue = "1623920011"
    )
-   void method2917(int var1, int var2, int var3) {
+   void method3012(int var1, int var2, int var3) {
       this.flags[var1][var2] |= var3;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(IIIIZI)V",
+      garbageValue = "1699262104"
+   )
+   public void method3013(int var1, int var2, int var3, int var4, boolean var5) {
+      var1 -= this.x;
+      var2 -= this.y;
+      if(var3 == 0) {
+         if(var4 == 0) {
+            this.method3015(var1, var2, 128);
+            this.method3015(var1 - 1, var2, 8);
+         }
+
+         if(var4 == 1) {
+            this.method3015(var1, var2, 2);
+            this.method3015(var1, var2 + 1, 32);
+         }
+
+         if(var4 == 2) {
+            this.method3015(var1, var2, 8);
+            this.method3015(var1 + 1, var2, 128);
+         }
+
+         if(var4 == 3) {
+            this.method3015(var1, var2, 32);
+            this.method3015(var1, var2 - 1, 2);
+         }
+      }
+
+      if(var3 == 1 || var3 == 3) {
+         if(var4 == 0) {
+            this.method3015(var1, var2, 1);
+            this.method3015(var1 - 1, var2 + 1, 16);
+         }
+
+         if(var4 == 1) {
+            this.method3015(var1, var2, 4);
+            this.method3015(var1 + 1, var2 + 1, 64);
+         }
+
+         if(var4 == 2) {
+            this.method3015(var1, var2, 16);
+            this.method3015(var1 + 1, var2 - 1, 1);
+         }
+
+         if(var4 == 3) {
+            this.method3015(var1, var2, 64);
+            this.method3015(var1 - 1, var2 - 1, 4);
+         }
+      }
+
+      if(var3 == 2) {
+         if(var4 == 0) {
+            this.method3015(var1, var2, 130);
+            this.method3015(var1 - 1, var2, 8);
+            this.method3015(var1, var2 + 1, 32);
+         }
+
+         if(var4 == 1) {
+            this.method3015(var1, var2, 10);
+            this.method3015(var1, var2 + 1, 32);
+            this.method3015(var1 + 1, var2, 128);
+         }
+
+         if(var4 == 2) {
+            this.method3015(var1, var2, 40);
+            this.method3015(var1 + 1, var2, 128);
+            this.method3015(var1, var2 - 1, 2);
+         }
+
+         if(var4 == 3) {
+            this.method3015(var1, var2, 160);
+            this.method3015(var1, var2 - 1, 2);
+            this.method3015(var1 - 1, var2, 8);
+         }
+      }
+
+      if(var5) {
+         if(var3 == 0) {
+            if(var4 == 0) {
+               this.method3015(var1, var2, 65536);
+               this.method3015(var1 - 1, var2, 4096);
+            }
+
+            if(var4 == 1) {
+               this.method3015(var1, var2, 1024);
+               this.method3015(var1, var2 + 1, 16384);
+            }
+
+            if(var4 == 2) {
+               this.method3015(var1, var2, 4096);
+               this.method3015(var1 + 1, var2, 65536);
+            }
+
+            if(var4 == 3) {
+               this.method3015(var1, var2, 16384);
+               this.method3015(var1, var2 - 1, 1024);
+            }
+         }
+
+         if(var3 == 1 || var3 == 3) {
+            if(var4 == 0) {
+               this.method3015(var1, var2, 512);
+               this.method3015(var1 - 1, var2 + 1, 8192);
+            }
+
+            if(var4 == 1) {
+               this.method3015(var1, var2, 2048);
+               this.method3015(var1 + 1, var2 + 1, '耀');
+            }
+
+            if(var4 == 2) {
+               this.method3015(var1, var2, 8192);
+               this.method3015(var1 + 1, var2 - 1, 512);
+            }
+
+            if(var4 == 3) {
+               this.method3015(var1, var2, '耀');
+               this.method3015(var1 - 1, var2 - 1, 2048);
+            }
+         }
+
+         if(var3 == 2) {
+            if(var4 == 0) {
+               this.method3015(var1, var2, 66560);
+               this.method3015(var1 - 1, var2, 4096);
+               this.method3015(var1, var2 + 1, 16384);
+            }
+
+            if(var4 == 1) {
+               this.method3015(var1, var2, 5120);
+               this.method3015(var1, var2 + 1, 16384);
+               this.method3015(var1 + 1, var2, 65536);
+            }
+
+            if(var4 == 2) {
+               this.method3015(var1, var2, 20480);
+               this.method3015(var1 + 1, var2, 65536);
+               this.method3015(var1, var2 - 1, 1024);
+            }
+
+            if(var4 == 3) {
+               this.method3015(var1, var2, 81920);
+               this.method3015(var1, var2 - 1, 1024);
+               this.method3015(var1 - 1, var2, 4096);
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(IIIIIZI)V",
-      garbageValue = "1089857816"
+      garbageValue = "-1672916031"
    )
-   public void method2919(int var1, int var2, int var3, int var4, int var5, boolean var6) {
+   public void method3014(int var1, int var2, int var3, int var4, int var5, boolean var6) {
       int var7 = 256;
       if(var6) {
          var7 += 131072;
@@ -139,7 +283,7 @@ public class CollisionData {
          if(var8 >= 0 && var8 < this.width) {
             for(int var9 = var2; var9 < var2 + var4; ++var9) {
                if(var9 >= 0 && var9 < this.height) {
-                  this.method2920(var8, var9, var7);
+                  this.method3015(var8, var9, var7);
                }
             }
          }
@@ -147,12 +291,12 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "1228035357"
+      garbageValue = "1363804105"
    )
-   void method2920(int var1, int var2, int var3) {
+   void method3015(int var1, int var2, int var3) {
       this.flags[var1][var2] &= ~var3;
    }
 
@@ -166,402 +310,180 @@ public class CollisionData {
       this.width = var1;
       this.height = var2;
       this.flags = new int[this.width][this.height];
-      this.method2912();
+      this.method3007();
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "-1908902507"
+      garbageValue = "78651291"
    )
-   public void method2921(int var1, int var2) {
+   public void method3019(int var1, int var2) {
+      var1 -= this.x;
+      var2 -= this.y;
+      this.flags[var1][var2] |= 262144;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IIIIZB)V",
+      garbageValue = "2"
+   )
+   public void method3023(int var1, int var2, int var3, int var4, boolean var5) {
+      var1 -= this.x;
+      var2 -= this.y;
+      if(var3 == 0) {
+         if(var4 == 0) {
+            this.method3012(var1, var2, 128);
+            this.method3012(var1 - 1, var2, 8);
+         }
+
+         if(var4 == 1) {
+            this.method3012(var1, var2, 2);
+            this.method3012(var1, var2 + 1, 32);
+         }
+
+         if(var4 == 2) {
+            this.method3012(var1, var2, 8);
+            this.method3012(var1 + 1, var2, 128);
+         }
+
+         if(var4 == 3) {
+            this.method3012(var1, var2, 32);
+            this.method3012(var1, var2 - 1, 2);
+         }
+      }
+
+      if(var3 == 1 || var3 == 3) {
+         if(var4 == 0) {
+            this.method3012(var1, var2, 1);
+            this.method3012(var1 - 1, var2 + 1, 16);
+         }
+
+         if(var4 == 1) {
+            this.method3012(var1, var2, 4);
+            this.method3012(var1 + 1, var2 + 1, 64);
+         }
+
+         if(var4 == 2) {
+            this.method3012(var1, var2, 16);
+            this.method3012(var1 + 1, var2 - 1, 1);
+         }
+
+         if(var4 == 3) {
+            this.method3012(var1, var2, 64);
+            this.method3012(var1 - 1, var2 - 1, 4);
+         }
+      }
+
+      if(var3 == 2) {
+         if(var4 == 0) {
+            this.method3012(var1, var2, 130);
+            this.method3012(var1 - 1, var2, 8);
+            this.method3012(var1, var2 + 1, 32);
+         }
+
+         if(var4 == 1) {
+            this.method3012(var1, var2, 10);
+            this.method3012(var1, var2 + 1, 32);
+            this.method3012(var1 + 1, var2, 128);
+         }
+
+         if(var4 == 2) {
+            this.method3012(var1, var2, 40);
+            this.method3012(var1 + 1, var2, 128);
+            this.method3012(var1, var2 - 1, 2);
+         }
+
+         if(var4 == 3) {
+            this.method3012(var1, var2, 160);
+            this.method3012(var1, var2 - 1, 2);
+            this.method3012(var1 - 1, var2, 8);
+         }
+      }
+
+      if(var5) {
+         if(var3 == 0) {
+            if(var4 == 0) {
+               this.method3012(var1, var2, 65536);
+               this.method3012(var1 - 1, var2, 4096);
+            }
+
+            if(var4 == 1) {
+               this.method3012(var1, var2, 1024);
+               this.method3012(var1, var2 + 1, 16384);
+            }
+
+            if(var4 == 2) {
+               this.method3012(var1, var2, 4096);
+               this.method3012(var1 + 1, var2, 65536);
+            }
+
+            if(var4 == 3) {
+               this.method3012(var1, var2, 16384);
+               this.method3012(var1, var2 - 1, 1024);
+            }
+         }
+
+         if(var3 == 1 || var3 == 3) {
+            if(var4 == 0) {
+               this.method3012(var1, var2, 512);
+               this.method3012(var1 - 1, var2 + 1, 8192);
+            }
+
+            if(var4 == 1) {
+               this.method3012(var1, var2, 2048);
+               this.method3012(var1 + 1, var2 + 1, '耀');
+            }
+
+            if(var4 == 2) {
+               this.method3012(var1, var2, 8192);
+               this.method3012(var1 + 1, var2 - 1, 512);
+            }
+
+            if(var4 == 3) {
+               this.method3012(var1, var2, '耀');
+               this.method3012(var1 - 1, var2 - 1, 2048);
+            }
+         }
+
+         if(var3 == 2) {
+            if(var4 == 0) {
+               this.method3012(var1, var2, 66560);
+               this.method3012(var1 - 1, var2, 4096);
+               this.method3012(var1, var2 + 1, 16384);
+            }
+
+            if(var4 == 1) {
+               this.method3012(var1, var2, 5120);
+               this.method3012(var1, var2 + 1, 16384);
+               this.method3012(var1 + 1, var2, 65536);
+            }
+
+            if(var4 == 2) {
+               this.method3012(var1, var2, 20480);
+               this.method3012(var1 + 1, var2, 65536);
+               this.method3012(var1, var2 - 1, 1024);
+            }
+
+            if(var4 == 3) {
+               this.method3012(var1, var2, 81920);
+               this.method3012(var1, var2 - 1, 1024);
+               this.method3012(var1 - 1, var2, 4096);
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "128039295"
+   )
+   public void method3024(int var1, int var2) {
       var1 -= this.x;
       var2 -= this.y;
       this.flags[var1][var2] &= -262145;
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(IIIIZI)V",
-      garbageValue = "409914806"
-   )
-   public void method2922(int var1, int var2, int var3, int var4, boolean var5) {
-      var1 -= this.x;
-      var2 -= this.y;
-      if(var3 == 0) {
-         if(var4 == 0) {
-            this.method2917(var1, var2, 128);
-            this.method2917(var1 - 1, var2, 8);
-         }
-
-         if(var4 == 1) {
-            this.method2917(var1, var2, 2);
-            this.method2917(var1, var2 + 1, 32);
-         }
-
-         if(var4 == 2) {
-            this.method2917(var1, var2, 8);
-            this.method2917(var1 + 1, var2, 128);
-         }
-
-         if(var4 == 3) {
-            this.method2917(var1, var2, 32);
-            this.method2917(var1, var2 - 1, 2);
-         }
-      }
-
-      if(var3 == 1 || var3 == 3) {
-         if(var4 == 0) {
-            this.method2917(var1, var2, 1);
-            this.method2917(var1 - 1, var2 + 1, 16);
-         }
-
-         if(var4 == 1) {
-            this.method2917(var1, var2, 4);
-            this.method2917(var1 + 1, var2 + 1, 64);
-         }
-
-         if(var4 == 2) {
-            this.method2917(var1, var2, 16);
-            this.method2917(var1 + 1, var2 - 1, 1);
-         }
-
-         if(var4 == 3) {
-            this.method2917(var1, var2, 64);
-            this.method2917(var1 - 1, var2 - 1, 4);
-         }
-      }
-
-      if(var3 == 2) {
-         if(var4 == 0) {
-            this.method2917(var1, var2, 130);
-            this.method2917(var1 - 1, var2, 8);
-            this.method2917(var1, var2 + 1, 32);
-         }
-
-         if(var4 == 1) {
-            this.method2917(var1, var2, 10);
-            this.method2917(var1, var2 + 1, 32);
-            this.method2917(var1 + 1, var2, 128);
-         }
-
-         if(var4 == 2) {
-            this.method2917(var1, var2, 40);
-            this.method2917(var1 + 1, var2, 128);
-            this.method2917(var1, var2 - 1, 2);
-         }
-
-         if(var4 == 3) {
-            this.method2917(var1, var2, 160);
-            this.method2917(var1, var2 - 1, 2);
-            this.method2917(var1 - 1, var2, 8);
-         }
-      }
-
-      if(var5) {
-         if(var3 == 0) {
-            if(var4 == 0) {
-               this.method2917(var1, var2, 65536);
-               this.method2917(var1 - 1, var2, 4096);
-            }
-
-            if(var4 == 1) {
-               this.method2917(var1, var2, 1024);
-               this.method2917(var1, var2 + 1, 16384);
-            }
-
-            if(var4 == 2) {
-               this.method2917(var1, var2, 4096);
-               this.method2917(var1 + 1, var2, 65536);
-            }
-
-            if(var4 == 3) {
-               this.method2917(var1, var2, 16384);
-               this.method2917(var1, var2 - 1, 1024);
-            }
-         }
-
-         if(var3 == 1 || var3 == 3) {
-            if(var4 == 0) {
-               this.method2917(var1, var2, 512);
-               this.method2917(var1 - 1, var2 + 1, 8192);
-            }
-
-            if(var4 == 1) {
-               this.method2917(var1, var2, 2048);
-               this.method2917(var1 + 1, var2 + 1, '耀');
-            }
-
-            if(var4 == 2) {
-               this.method2917(var1, var2, 8192);
-               this.method2917(var1 + 1, var2 - 1, 512);
-            }
-
-            if(var4 == 3) {
-               this.method2917(var1, var2, '耀');
-               this.method2917(var1 - 1, var2 - 1, 2048);
-            }
-         }
-
-         if(var3 == 2) {
-            if(var4 == 0) {
-               this.method2917(var1, var2, 66560);
-               this.method2917(var1 - 1, var2, 4096);
-               this.method2917(var1, var2 + 1, 16384);
-            }
-
-            if(var4 == 1) {
-               this.method2917(var1, var2, 5120);
-               this.method2917(var1, var2 + 1, 16384);
-               this.method2917(var1 + 1, var2, 65536);
-            }
-
-            if(var4 == 2) {
-               this.method2917(var1, var2, 20480);
-               this.method2917(var1 + 1, var2, 65536);
-               this.method2917(var1, var2 - 1, 1024);
-            }
-
-            if(var4 == 3) {
-               this.method2917(var1, var2, 81920);
-               this.method2917(var1, var2 - 1, 1024);
-               this.method2917(var1 - 1, var2, 4096);
-            }
-         }
-      }
-
-   }
-
-   @ObfuscatedName("fa")
-   @ObfuscatedSignature(
-      signature = "(LActor;S)V",
-      garbageValue = "12734"
-   )
-   static final void method2924(Actor var0) {
-      if(var0.field1227 != 0) {
-         if(var0.interacting != -1) {
-            Object var1 = null;
-            if(var0.interacting < '耀') {
-               var1 = Client.cachedNPCs[var0.interacting];
-            } else if(var0.interacting >= '耀') {
-               var1 = Client.cachedPlayers[var0.interacting - '耀'];
-            }
-
-            if(var1 != null) {
-               int var2 = var0.x - ((Actor)var1).x;
-               int var3 = var0.y - ((Actor)var1).y;
-               if(var2 != 0 || var3 != 0) {
-                  var0.orientation = (int)(Math.atan2((double)var2, (double)var3) * 325.949D) & 2047;
-               }
-            } else if(var0.field1226) {
-               var0.interacting = -1;
-               var0.field1226 = false;
-            }
-         }
-
-         if(var0.field1236 != -1 && (var0.queueSize == 0 || var0.field1266 > 0)) {
-            var0.orientation = var0.field1236;
-            var0.field1236 = -1;
-         }
-
-         int var4 = var0.orientation - var0.angle & 2047;
-         if(var4 == 0 && var0.field1226) {
-            var0.interacting = -1;
-            var0.field1226 = false;
-         }
-
-         if(var4 != 0) {
-            ++var0.field1230;
-            boolean var5;
-            if(var4 > 1024) {
-               var0.angle -= var0.field1227;
-               var5 = true;
-               if(var4 < var0.field1227 || var4 > 2048 - var0.field1227) {
-                  var0.angle = var0.orientation;
-                  var5 = false;
-               }
-
-               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1230 > 25 || var5)) {
-                  if(var0.field1214 != -1) {
-                     var0.poseAnimation = var0.field1214;
-                  } else {
-                     var0.poseAnimation = var0.field1216;
-                  }
-               }
-            } else {
-               var0.angle += var0.field1227;
-               var5 = true;
-               if(var4 < var0.field1227 || var4 > 2048 - var0.field1227) {
-                  var0.angle = var0.orientation;
-                  var5 = false;
-               }
-
-               if(var0.poseAnimation == var0.idlePoseAnimation && (var0.field1230 > 25 || var5)) {
-                  if(var0.field1215 != -1) {
-                     var0.poseAnimation = var0.field1215;
-                  } else {
-                     var0.poseAnimation = var0.field1216;
-                  }
-               }
-            }
-
-            var0.angle &= 2047;
-         } else {
-            var0.field1230 = 0;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(IIIIZI)V",
-      garbageValue = "1646594124"
-   )
-   public void method2931(int var1, int var2, int var3, int var4, boolean var5) {
-      var1 -= this.x;
-      var2 -= this.y;
-      if(var3 == 0) {
-         if(var4 == 0) {
-            this.method2920(var1, var2, 128);
-            this.method2920(var1 - 1, var2, 8);
-         }
-
-         if(var4 == 1) {
-            this.method2920(var1, var2, 2);
-            this.method2920(var1, var2 + 1, 32);
-         }
-
-         if(var4 == 2) {
-            this.method2920(var1, var2, 8);
-            this.method2920(var1 + 1, var2, 128);
-         }
-
-         if(var4 == 3) {
-            this.method2920(var1, var2, 32);
-            this.method2920(var1, var2 - 1, 2);
-         }
-      }
-
-      if(var3 == 1 || var3 == 3) {
-         if(var4 == 0) {
-            this.method2920(var1, var2, 1);
-            this.method2920(var1 - 1, var2 + 1, 16);
-         }
-
-         if(var4 == 1) {
-            this.method2920(var1, var2, 4);
-            this.method2920(var1 + 1, var2 + 1, 64);
-         }
-
-         if(var4 == 2) {
-            this.method2920(var1, var2, 16);
-            this.method2920(var1 + 1, var2 - 1, 1);
-         }
-
-         if(var4 == 3) {
-            this.method2920(var1, var2, 64);
-            this.method2920(var1 - 1, var2 - 1, 4);
-         }
-      }
-
-      if(var3 == 2) {
-         if(var4 == 0) {
-            this.method2920(var1, var2, 130);
-            this.method2920(var1 - 1, var2, 8);
-            this.method2920(var1, var2 + 1, 32);
-         }
-
-         if(var4 == 1) {
-            this.method2920(var1, var2, 10);
-            this.method2920(var1, var2 + 1, 32);
-            this.method2920(var1 + 1, var2, 128);
-         }
-
-         if(var4 == 2) {
-            this.method2920(var1, var2, 40);
-            this.method2920(var1 + 1, var2, 128);
-            this.method2920(var1, var2 - 1, 2);
-         }
-
-         if(var4 == 3) {
-            this.method2920(var1, var2, 160);
-            this.method2920(var1, var2 - 1, 2);
-            this.method2920(var1 - 1, var2, 8);
-         }
-      }
-
-      if(var5) {
-         if(var3 == 0) {
-            if(var4 == 0) {
-               this.method2920(var1, var2, 65536);
-               this.method2920(var1 - 1, var2, 4096);
-            }
-
-            if(var4 == 1) {
-               this.method2920(var1, var2, 1024);
-               this.method2920(var1, var2 + 1, 16384);
-            }
-
-            if(var4 == 2) {
-               this.method2920(var1, var2, 4096);
-               this.method2920(var1 + 1, var2, 65536);
-            }
-
-            if(var4 == 3) {
-               this.method2920(var1, var2, 16384);
-               this.method2920(var1, var2 - 1, 1024);
-            }
-         }
-
-         if(var3 == 1 || var3 == 3) {
-            if(var4 == 0) {
-               this.method2920(var1, var2, 512);
-               this.method2920(var1 - 1, var2 + 1, 8192);
-            }
-
-            if(var4 == 1) {
-               this.method2920(var1, var2, 2048);
-               this.method2920(var1 + 1, var2 + 1, '耀');
-            }
-
-            if(var4 == 2) {
-               this.method2920(var1, var2, 8192);
-               this.method2920(var1 + 1, var2 - 1, 512);
-            }
-
-            if(var4 == 3) {
-               this.method2920(var1, var2, '耀');
-               this.method2920(var1 - 1, var2 - 1, 2048);
-            }
-         }
-
-         if(var3 == 2) {
-            if(var4 == 0) {
-               this.method2920(var1, var2, 66560);
-               this.method2920(var1 - 1, var2, 4096);
-               this.method2920(var1, var2 + 1, 16384);
-            }
-
-            if(var4 == 1) {
-               this.method2920(var1, var2, 5120);
-               this.method2920(var1, var2 + 1, 16384);
-               this.method2920(var1 + 1, var2, 65536);
-            }
-
-            if(var4 == 2) {
-               this.method2920(var1, var2, 20480);
-               this.method2920(var1 + 1, var2, 65536);
-               this.method2920(var1, var2 - 1, 1024);
-            }
-
-            if(var4 == 3) {
-               this.method2920(var1, var2, 81920);
-               this.method2920(var1, var2 - 1, 1024);
-               this.method2920(var1 - 1, var2, 4096);
-            }
-         }
-      }
-
    }
 }

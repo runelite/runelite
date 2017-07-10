@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.ClassFile;
@@ -59,7 +58,7 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		this.field = field.getPoolField();
 		this.myField = field;
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -81,10 +80,15 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
-		
+
 		StackContext object = stack.pop();
 		ins.pop(object);
-		
+
+		if (myField != null)
+		{
+			frame.getExecution().order(frame, myField);
+		}
+
 		return ins;
 	}
 
@@ -93,7 +97,7 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 	{
 		return field;
 	}
-	
+
 	@Override
 	public net.runelite.asm.Field getMyField()
 	{
@@ -102,24 +106,30 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
 		ClassFile cf = group.findClass(clazz.getName());
 		if (cf == null)
+		{
 			return null;
+		}
 
 		net.runelite.asm.Field f2 = cf.findFieldDeep(field.getName(), field.getType());
 		return f2;
 	}
-	
+
 	@Override
 	public void lookup()
 	{
 		myField = getMyField();
 	}
-	
+
 	@Override
 	public void regeneratePool()
 	{
 		if (myField != null)
+		{
 			if (getMyField() != myField)
+			{
 				field = myField.getPoolField();
+			}
+		}
 	}
 
 	@Override
@@ -129,12 +139,12 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		net.runelite.asm.Field otherField = ((PutStatic) other.getInstruction()).getMyField();
 
 		assert MappingExecutorUtil.isMaybeEqual(myField.getType(), otherField.getType());
-		
+
 		mapping.map(this, myField, otherField);
-		
+
 		StackContext object1 = ctx.getPops().get(0),
 			object2 = other.getPops().get(0);
-		
+
 		InstructionContext base1 = MappingExecutorUtil.resolve(object1.getPushed(), object1);
 		InstructionContext base2 = MappingExecutorUtil.resolve(object2.getPushed(), object2);
 
@@ -152,13 +162,15 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
 		if (thisIc.getInstruction().getClass() != otherIc.getInstruction().getClass())
+		{
 			return false;
-		
+		}
+
 		PutStatic thisPf = (PutStatic) thisIc.getInstruction(),
 			otherPf = (PutStatic) otherIc.getInstruction();
 
@@ -166,12 +178,14 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		net.runelite.asm.Field f2 = otherPf.getMyField();
 
 		if ((f1 != null) != (f2 != null))
+		{
 			return false;
-		
+		}
+
 		/* The class names are random */
 		return MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());
 	}
-	
+
 	@Override
 	public boolean canMap(InstructionContext thisIc)
 	{
