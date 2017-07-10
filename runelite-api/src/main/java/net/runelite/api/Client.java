@@ -103,6 +103,16 @@ public class Client
 		return GameState.of(client.getGameState());
 	}
 
+	public String getUsername()
+	{
+		return client.getUsername();
+	}
+
+	public void setUsername(String name)
+	{
+		client.setUsername(name);
+	}
+
 	public Canvas getCanvas()
 	{
 		return client.getCanvas();
