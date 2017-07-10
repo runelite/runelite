@@ -24,15 +24,12 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import net.runelite.api.Client;
 import net.runelite.api.Skill;
-import net.runelite.client.RuneLite;
 import java.time.Duration;
 import java.time.Instant;
 
 public class SkillXPInfo
 {
-	private static final Client client = RuneLite.getClient();
 	private Skill skill;
 	private Instant skillTimeStart = null;
 	private int xpGained = 0;
@@ -52,16 +49,16 @@ public class SkillXPInfo
 
 	}
 
-	public void reset()
+	public void reset(int loginXp)
 	{
 		xpGained = 0;
-		loginXp = client.getSkillExperience(skill);
+		this.loginXp = loginXp;
 		skillTimeStart = null;
 	}
 
-	public void update()
+	public void update(int currentXp)
 	{
-		xpGained = client.getSkillExperience(skill) - loginXp;
+		xpGained = currentXp - loginXp;
 		if (skillTimeStart == null)
 			skillTimeStart = Instant.now();
 	}

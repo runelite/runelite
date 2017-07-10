@@ -39,6 +39,8 @@ import net.runelite.client.plugins.clanchat.ClanChat;
 import net.runelite.client.plugins.combatnotifier.CombatNotifier;
 import net.runelite.client.plugins.config.ConfigPlugin;
 import net.runelite.client.plugins.devtools.DevTools;
+import net.runelite.client.plugins.examine.ExaminePlugin;
+import net.runelite.client.plugins.fishing.FishingPlugin;
 import net.runelite.client.plugins.fpsinfo.FPS;
 import net.runelite.client.plugins.grounditems.GroundItems;
 import net.runelite.client.plugins.hiscore.Hiscore;
@@ -62,15 +64,15 @@ public class PluginManager
 
 	private final RuneLite runelite;
 	private ServiceManager manager;
+	private final List<Plugin> plugins = new ArrayList<>();
 
 	public PluginManager(RuneLite runelite)
 	{
 		this.runelite = runelite;
 	}
 
-	public void loadAll()
+	public void loadPlugins()
 	{
-		List<Plugin> plugins = new ArrayList<>();
 		plugins.add(new Boosts());
 		plugins.add(new OpponentInfo());
 		plugins.add(new FPS());
@@ -91,13 +93,18 @@ public class PluginManager
 		plugins.add(new CombatNotifier());
 		plugins.add(new JewelryCount());
 		plugins.add(new XPTracker());
+		plugins.add(new ExaminePlugin());
+		plugins.add(new FishingPlugin());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
 			logger.info("Loading developer plugins");
 			plugins.add(new DevTools());
 		}
+	}
 
+	public void start()
+	{
 		// Add plugin listeners
 		for (Plugin plugin : plugins)
 		{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,57 +24,41 @@
  */
 package net.runelite.client.events;
 
-import net.runelite.api.MenuAction;
+import net.runelite.api.ChatMessageType;
 
-/**
- *
- * @author robin
- */
-public class MenuOptionClicked
+public class ChatMessage
 {
-	private String menuOption;
-	private String menuTarget;
-	private MenuAction menuAction;
-	private int id;
+	private ChatMessageType type;
+	private String sender;
+	private String message;
+	private String clan;
 
-	public String getMenuOption()
+	public ChatMessage(int type, String sender, String message, String clan)
 	{
-		return menuOption;
+		this.type = ChatMessageType.of(type);
+		this.sender = sender;
+		this.message = message;
+		this.clan = clan;
 	}
 
-	public void setMenuOption(String menuOption)
+	public ChatMessageType getType()
 	{
-		this.menuOption = menuOption;
+		return this.type;
 	}
 
-	public String getMenuTarget()
+	public String getSender()
 	{
-		return menuTarget;
+		return this.sender;
 	}
 
-	public void setMenuTarget(String menuTarget)
+	public String getMessage()
 	{
-		this.menuTarget = menuTarget;
+		return this.message;
 	}
 
-	public MenuAction getMenuAction()
+	public String getClan()
 	{
-		return menuAction;
-	}
-
-	public void setMenuAction(MenuAction menuAction)
-	{
-		this.menuAction = menuAction;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
+		return this.clan;
 	}
 
 }

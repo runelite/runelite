@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,59 +22,72 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.client.plugins.fishing;
 
-import net.runelite.api.MenuAction;
+import java.time.Duration;
+import java.time.Instant;
 
-/**
- *
- * @author robin
- */
-public class MenuOptionClicked
+public class FishingSession
 {
-	private String menuOption;
-	private String menuTarget;
-	private MenuAction menuAction;
-	private int id;
+	private static final Duration HOUR = Duration.ofHours(1);
 
-	public String getMenuOption()
+	private int perHour;
+
+	private Instant lastFishCaught;
+	private int totalFished;
+
+	private Instant recentFishCaught;
+	private int recentFished;
+
+	public void incrementFishCaught()
 	{
-		return menuOption;
+		Instant now = Instant.now();
+
+		lastFishCaught = now;
+		++totalFished;
+
+		if (recentFished == 0)
+		{
+			recentFishCaught = now;
+		}
+		++recentFished;
+
+		Duration timeSinceStart = Duration.between(recentFishCaught, now);
+		if (!timeSinceStart.isZero())
+		{
+			perHour = (int) ((double) recentFished * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+		}
 	}
 
-	public void setMenuOption(String menuOption)
+	public void resetRecent()
 	{
-		this.menuOption = menuOption;
+		recentFishCaught = null;
+		recentFished = 0;
 	}
 
-	public String getMenuTarget()
+	public int getPerHour()
 	{
-		return menuTarget;
+		return perHour;
 	}
 
-	public void setMenuTarget(String menuTarget)
+	public Instant getLastFishCaught()
 	{
-		this.menuTarget = menuTarget;
+		return lastFishCaught;
 	}
 
-	public MenuAction getMenuAction()
+	public int getTotalFished()
 	{
-		return menuAction;
+		return totalFished;
 	}
 
-	public void setMenuAction(MenuAction menuAction)
+	public Instant getRecentFishCaught()
 	{
-		this.menuAction = menuAction;
+		return recentFishCaught;
 	}
 
-	public int getId()
+	public int getRecentFished()
 	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
+		return recentFished;
 	}
 
 }

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.PluginPanel;
@@ -31,29 +32,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.FontUIResource;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.Map;
 
 public class XPPanel extends PluginPanel
 {
+	private static final Client client = RuneLite.getClient();
 	private static final Logger logger = LoggerFactory.getLogger(XPPanel.class);
-	private static HashMap<Skill, JPanel> labelMap = new HashMap<>();
+	private Map<Skill, JPanel> labelMap = new HashMap<>();
 	private final XPTracker xpTracker;
-	private static JPanel statsPanel;
+	private JPanel statsPanel;
 
 	public XPPanel(RuneLite runelite, XPTracker xpTracker)
 	{
 		this.xpTracker = xpTracker;
-
-		UIManager.put("Button.font", new FontUIResource("RuneScape Chat", Font.BOLD, 20));
-		UIManager.put("Label.font", new FontUIResource("RuneScape Chat", Font.BOLD, 16));
 
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -72,11 +70,12 @@ public class XPPanel extends PluginPanel
 				JLabel skillLabel = new JLabel();
 				labelMap.put(skill, makeSkillPanel(skill, skillLabel));
 			}
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-
 		}
+		catch (IOException e)
+		{
+			logger.warn(null, e);
+		}
+
 		JButton resetButton = new JButton("Reset All");
 		resetButton.setPreferredSize(new Dimension(PANEL_WIDTH, 32));
 		resetButton.addActionListener((ActionEvent e) ->
@@ -118,7 +117,8 @@ public class XPPanel extends PluginPanel
 
 	public void resetSkillXpHr(Skill skill)
 	{
-		xpTracker.getXpInfos()[skill.ordinal()].reset();
+		int skillIdx = skill.ordinal();
+		xpTracker.getXpInfos()[skillIdx].reset(client.getSkillExperience(skill));
 		statsPanel.remove(labelMap.get(skill));
 		statsPanel.revalidate();
 		statsPanel.repaint();
@@ -137,7 +137,8 @@ public class XPPanel extends PluginPanel
 	{
 		for (SkillXPInfo skillInfo : xpTracker.getXpInfos())
 		{
-			if (skillInfo != null && skillInfo.getSkillTimeStart() != null)
+			if (skillInfo != null && skillInfo.getSkillTimeStart() != null &&
+					skillInfo.getXpGained() != 0)
 				updateSkillXpHr(skillInfo);
 		}
 	}
@@ -150,7 +151,9 @@ public class XPPanel extends PluginPanel
 
 		if (skillPanel.getParent() != statsPanel)
 		{
-			statsPanel.add(labelMap.get(skillXPInfo.getSkill()));
+			statsPanel.add(skillPanel);
+			statsPanel.revalidate();
+			statsPanel.repaint();
 		}
 	}
 }

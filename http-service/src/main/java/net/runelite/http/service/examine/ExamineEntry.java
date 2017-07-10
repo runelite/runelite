@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.http.service.examine;
 
-import net.runelite.api.MenuAction;
+import java.time.Instant;
 
-/**
- *
- * @author robin
- */
-public class MenuOptionClicked
+public class ExamineEntry
 {
-	private String menuOption;
-	private String menuTarget;
-	private MenuAction menuAction;
+	private ExamineType type;
 	private int id;
+	private Instant time;
+	private int count;
+	private String text;
 
-	public String getMenuOption()
+	public ExamineType getType()
 	{
-		return menuOption;
+		return type;
 	}
 
-	public void setMenuOption(String menuOption)
+	public void setType(ExamineType type)
 	{
-		this.menuOption = menuOption;
-	}
-
-	public String getMenuTarget()
-	{
-		return menuTarget;
-	}
-
-	public void setMenuTarget(String menuTarget)
-	{
-		this.menuTarget = menuTarget;
-	}
-
-	public MenuAction getMenuAction()
-	{
-		return menuAction;
-	}
-
-	public void setMenuAction(MenuAction menuAction)
-	{
-		this.menuAction = menuAction;
+		this.type = type;
 	}
 
 	public int getId()
@@ -77,4 +54,33 @@ public class MenuOptionClicked
 		this.id = id;
 	}
 
+	public Instant getTime()
+	{
+		return time;
+	}
+
+	public void setTime(Instant time)
+	{
+		this.time = time;
+	}
+
+	public int getCount()
+	{
+		return count;
+	}
+
+	public void setCount(int count)
+	{
+		this.count = count;
+	}
+
+	public String getText()
+	{
+		return text;
+	}
+
+	public void setText(String text)
+	{
+		this.text = text;
+	}
 }

@@ -91,7 +91,7 @@ class BoostsOverlay extends Overlay
 		FontMetrics metrics = graphics.getFontMetrics();
 
 		int height = TOP_BORDER;
-		for (Skill skill : SHOW)
+		for (Skill skill : show)
 		{
 			int boosted = client.getBoostedSkillLevel(skill),
 				base = client.getRealSkillLevel(skill);
@@ -113,7 +113,7 @@ class BoostsOverlay extends Overlay
 		graphics.fillRect(0, 0, WIDTH, height);
 
 		int y = TOP_BORDER;
-		for (Skill skill : SHOW)
+		for (Skill skill : show)
 		{
 			int boosted = client.getBoostedSkillLevel(skill),
 				base = client.getRealSkillLevel(skill);

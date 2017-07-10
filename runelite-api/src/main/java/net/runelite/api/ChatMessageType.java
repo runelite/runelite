@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,59 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.api;
 
-import net.runelite.api.MenuAction;
-
-/**
- *
- * @author robin
- */
-public class MenuOptionClicked
+public enum ChatMessageType
 {
-	private String menuOption;
-	private String menuTarget;
-	private MenuAction menuAction;
-	private int id;
+	SERVER(0),
+	PUBLIC(2),
+	PRIVATE_MESSAGE_RECEIVED(3),
+	TRADE_RECEIVED(4),
+	PRIVATE_MESSAGE_INFO(5),
+	PRIVATE_MESSAGE_SENT(6),
+	CLANCHAT(9),
+	TRADE_SENT(12),
+	EXAMINE_ITEM(27),
+	EXAMINE_NPC(28),
+	EXAMINE_OBJECT(29),
+	TRADE(101),
+	DUEL(103),
+	FILTERED(105),
+	ACTION(109),
+	UNKNOWN(-1);
 
-	public String getMenuOption()
+	private final int type;
+
+	ChatMessageType(int type)
 	{
-		return menuOption;
+		this.type = type;
 	}
 
-	public void setMenuOption(String menuOption)
+	public static ChatMessageType of(int type)
 	{
-		this.menuOption = menuOption;
+		for (ChatMessageType ct : ChatMessageType.values())
+		{
+			if (ct.type == type)
+			{
+				return ct;
+			}
+		}
+		return UNKNOWN;
 	}
-
-	public String getMenuTarget()
-	{
-		return menuTarget;
-	}
-
-	public void setMenuTarget(String menuTarget)
-	{
-		this.menuTarget = menuTarget;
-	}
-
-	public MenuAction getMenuAction()
-	{
-		return menuAction;
-	}
-
-	public void setMenuAction(MenuAction menuAction)
-	{
-		this.menuAction = menuAction;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
 }

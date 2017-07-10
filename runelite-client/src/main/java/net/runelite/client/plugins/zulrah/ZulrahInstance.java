@@ -41,8 +41,8 @@ public class ZulrahInstance
 	private static final Logger logger = LoggerFactory.getLogger(ZulrahInstance.class);
 
 	private static final int ZULRAH_RANGE = NpcID.ZULRAH;
-	private static final int ZULRAH_MELEE = NpcID.ZULRAH_2;
-	private static final int ZULRAH_MAGIC = NpcID.ZULRAH_3;
+	private static final int ZULRAH_MELEE = NpcID.ZULRAH_2043;
+	private static final int ZULRAH_MAGIC = NpcID.ZULRAH_2044;
 
 	private final ZulrahLocation loc;
 	private final ZulrahType type;
