@@ -51,6 +51,7 @@ import net.runelite.client.plugins.mousehighlight.MouseHighlight;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 import net.runelite.client.plugins.pestcontrol.PestControl;
 import net.runelite.client.plugins.runecraft.Runecraft;
+import net.runelite.client.plugins.timers.TimersPlugin;
 import net.runelite.client.plugins.xpglobes.XpGlobes;
 import net.runelite.client.plugins.xptracker.XPTracker;
 import net.runelite.client.plugins.xtea.Xtea;
@@ -95,6 +96,7 @@ public class PluginManager
 		plugins.add(new XPTracker());
 		plugins.add(new ExaminePlugin());
 		plugins.add(new FishingPlugin());
+		plugins.add(new TimersPlugin());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
