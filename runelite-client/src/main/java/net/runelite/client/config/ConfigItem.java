@@ -38,4 +38,6 @@ public @interface ConfigItem
 	String name();
 
 	String description();
+
+	boolean hidden() default false;
 }

@@ -149,6 +149,11 @@ public class ConfigPanel extends PluginPanel
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
+			if (cid.getItem().hidden())
+			{
+				continue;
+			}
+
 			JPanel item = new JPanel();
 			item.setLayout(new BorderLayout());
 			item.add(new JLabel(cid.getItem().name()), BorderLayout.CENTER);
