@@ -25,13 +25,9 @@
 package net.runelite.client.plugins.idlenotifier;
 
 import com.google.common.eventbus.Subscribe;
-import java.awt.Toolkit;
-import java.awt.TrayIcon;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import java.time.temporal.ChronoUnit;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -39,32 +35,26 @@ import net.runelite.api.Player;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.AnimationChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.task.Schedule;
 
 public class IdleNotifier extends Plugin
 {
-	private static final String OPERATING_SYSTEM = System.getProperty("os.name");
-	private static final int CHECK_INTERVAL = 2;
 	private static final Duration WAIT_DURATION = Duration.ofMillis(2500L);
 
 	private final Client client = RuneLite.getClient();
 	private final RuneLite runelite = RuneLite.getRunelite();
-	private final TrayIcon trayIcon = RuneLite.getTrayIcon();
 
-	private ScheduledFuture<?> future;
 	private Instant lastAnimating;
 	private boolean notifyIdle = false;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		ScheduledExecutorService executor = runelite.getExecutor();
-		future = executor.scheduleAtFixedRate(this::checkIdle, CHECK_INTERVAL, CHECK_INTERVAL, TimeUnit.SECONDS);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		future.cancel(true);
 	}
 
 	@Subscribe
@@ -74,6 +64,7 @@ public class IdleNotifier extends Plugin
 		{
 			return;
 		}
+
 		int animation = client.getLocalPlayer().getAnimation();
 		switch (animation)
 		{
@@ -148,7 +139,11 @@ public class IdleNotifier extends Plugin
 		}
 	}
 
-	private void checkIdle()
+	@Schedule(
+		period = 2,
+		unit = ChronoUnit.SECONDS
+	)
+	public void checkIdle()
 	{
 		Player local = client.getLocalPlayer();
 		if (notifyIdle && local.getAnimation() == IDLE

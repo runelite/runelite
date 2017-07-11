@@ -55,31 +55,26 @@ class StatusOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		ZulrahInstance current, next;
+		Fight fight = plugin.getFight();
 
-		synchronized (plugin)
+		if (client.getGameState() != GameState.LOGGED_IN || fight == null)
 		{
-			Fight fight = plugin.getFight();
-
-			if (client.getGameState() != GameState.LOGGED_IN || fight == null)
-			{
-				return null;
-			}
-
-			//TODO: Add prayer checking and health warning
-			graphics.setColor(Color.WHITE);
-
-			ZulrahPattern pattern = fight.getPattern();
-			if (pattern == null)
-			{
-				// can draw at least the starting place here?
-				return null;
-			}
-
-			// Show current type, next type, and jad
-			current = fight.getZulrah();
-			next = pattern.get(fight.getStage() + 1);
+			return null;
 		}
+
+		//TODO: Add prayer checking and health warning
+		graphics.setColor(Color.WHITE);
+
+		ZulrahPattern pattern = fight.getPattern();
+		if (pattern == null)
+		{
+			// can draw at least the starting place here?
+			return null;
+		}
+
+		// Show current type, next type, and jad
+		ZulrahInstance current = fight.getZulrah();
+		ZulrahInstance next = pattern.get(fight.getStage() + 1);
 
 		String currentStr = "Current: " + current.getType();
 		String nextStr = "Next: " + (next != null ? next.getType() : "Restart");

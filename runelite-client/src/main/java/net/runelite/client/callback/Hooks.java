@@ -32,6 +32,7 @@ import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.*;
 import net.runelite.client.game.DeathChecker;
+import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.rs.api.MainBufferProvider;
 import org.slf4j.Logger;
@@ -41,16 +42,23 @@ public class Hooks
 {
 	private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
 
+	private static final long CHECK = 600; // ms - how often to run checks
+
 	private static final RuneLite runelite = RuneLite.getRunelite();
 	private static final DeathChecker death = new DeathChecker(runelite);
 
-	public static void draw(Object provider, Graphics graphics, int x, int y)
-	{
-		// XXX fix injector to use interface in signature
-		MainBufferProvider mpb = (MainBufferProvider) provider;
-		BufferedImage image = (BufferedImage) mpb.getImage();
+	private static long lastCheck;
 
-		OverlayRenderer renderer = runelite.getRenderer();
+	public static void clientMainLoop(Object client, boolean arg1)
+	{
+		long now = System.currentTimeMillis();
+
+		if (now - lastCheck < CHECK)
+		{
+			return;
+		}
+
+		lastCheck = now;
 
 		try
 		{
@@ -60,6 +68,18 @@ public class Hooks
 		{
 			logger.warn("error during death check", ex);
 		}
+
+		Scheduler scheduler = runelite.getScheduler();
+		scheduler.tick();
+	}
+
+	public static void draw(Object provider, Graphics graphics, int x, int y)
+	{
+		// XXX fix injector to use interface in signature
+		MainBufferProvider mpb = (MainBufferProvider) provider;
+		BufferedImage image = (BufferedImage) mpb.getImage();
+
+		OverlayRenderer renderer = runelite.getRenderer();
 
 		try
 		{

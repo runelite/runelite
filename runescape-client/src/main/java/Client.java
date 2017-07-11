@@ -5654,6 +5654,7 @@ public final class Client extends GameEngine {
       signature = "(ZB)V",
       garbageValue = "0"
    )
+   @Hook("clientMainLoop")
    protected final void vmethod1455(boolean var1) {
       boolean var2;
       label193: {
