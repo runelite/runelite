@@ -25,11 +25,11 @@
 package net.runelite.client.plugins;
 
 import com.google.common.util.concurrent.AbstractIdleService;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Executor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
 public abstract class Plugin extends AbstractIdleService
 {
@@ -41,7 +41,7 @@ public abstract class Plugin extends AbstractIdleService
 	public Collection<Overlay> getOverlays()
 	{
 		Overlay overlay = getOverlay();
-		return overlay != null ? Arrays.asList(overlay) : Collections.EMPTY_LIST;
+		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
 	}
 
 	/**

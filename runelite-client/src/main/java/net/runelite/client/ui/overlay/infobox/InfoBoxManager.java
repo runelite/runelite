@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.ui.overlay.infobox;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
+import java.util.function.Predicate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class OverlayRenderer
+public class InfoBoxManager
 {
-	private final InfoBoxOverlay infoBoxOverlay = new InfoBoxOverlay();
+	private static final Logger logger = LoggerFactory.getLogger(InfoBoxManager.class);
 
-	public void render(BufferedImage clientBuffer)
+	private final List<InfoBox> infoBoxes = new ArrayList<>();
+
+	public void addInfoBox(InfoBox infoBox)
 	{
-		TopDownRendererLeft tdl = new TopDownRendererLeft();
-		TopDownRendererRight tdr = new TopDownRendererRight();
-		DynamicRenderer dr = new DynamicRenderer();
+		logger.debug("Adding InfoBox {}", infoBox);
+		infoBoxes.add(infoBox);
+	}
 
-		for (Plugin plugin : RuneLite.getRunelite().getPluginManager().getPlugins())
+	public void removeInfoBox(InfoBox infoBox)
+	{
+		logger.debug("Removing InfoBox {}", infoBox);
+		infoBoxes.remove(infoBox);
+	}
+
+	public void removeIf(Predicate<InfoBox> filter)
+	{
+		logger.debug("Removing InfoBoxs for filter {}", filter);
+		infoBoxes.removeIf(filter);
+	}
+
+	public List<InfoBox> getInfoBoxes()
+	{
+		return Collections.unmodifiableList(infoBoxes);
+	}
+
+	public void cull()
+	{
+		for (Iterator<InfoBox> it = infoBoxes.iterator(); it.hasNext();)
 		{
-			for (Overlay overlay : plugin.getOverlays())
+			InfoBox box = it.next();
+
+			if (box.cull())
 			{
-				switch (overlay.getPosition())
-				{
-					case TOP_RIGHT:
-						tdr.add(overlay);
-						break;
-					case TOP_LEFT:
-						tdl.add(overlay);
-						break;
-					case DYNAMIC:
-						dr.add(overlay);
-						break;
-				}
+				logger.debug("Culling InfoBox {}", box);
+				it.remove();
 			}
 		}
-
-		tdl.add(infoBoxOverlay);
-
-		tdl.render(clientBuffer);
-		tdr.render(clientBuffer);
-		dr.render(clientBuffer);
 	}
 }

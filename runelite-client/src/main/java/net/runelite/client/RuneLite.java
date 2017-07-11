@@ -53,6 +53,7 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.http.api.account.AccountClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,6 +85,7 @@ public class RuneLite
 	private AccountSession accountSession;
 	private final ConfigManager configManager = new ConfigManager(eventBus);
 	private final ItemManager itemManager = new ItemManager(this);
+	private final InfoBoxManager infoBoxManager = new InfoBoxManager();
 
 	static
 	{
@@ -364,5 +366,10 @@ public class RuneLite
 	public ItemManager getItemManager()
 	{
 		return itemManager;
+	}
+
+	public InfoBoxManager getInfoBoxManager()
+	{
+		return infoBoxManager;
 	}
 }

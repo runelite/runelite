@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.plugins.timers;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
+import java.time.temporal.ChronoUnit;
+import net.runelite.client.ui.overlay.infobox.Timer;
 
-public class OverlayRenderer
+public class TimerTimer extends Timer
 {
-	private final InfoBoxOverlay infoBoxOverlay = new InfoBoxOverlay();
+	private final GameTimer timer;
 
-	public void render(BufferedImage clientBuffer)
+	public TimerTimer(GameTimer timer)
 	{
-		TopDownRendererLeft tdl = new TopDownRendererLeft();
-		TopDownRendererRight tdr = new TopDownRendererRight();
-		DynamicRenderer dr = new DynamicRenderer();
-
-		for (Plugin plugin : RuneLite.getRunelite().getPluginManager().getPlugins())
-		{
-			for (Overlay overlay : plugin.getOverlays())
-			{
-				switch (overlay.getPosition())
-				{
-					case TOP_RIGHT:
-						tdr.add(overlay);
-						break;
-					case TOP_LEFT:
-						tdl.add(overlay);
-						break;
-					case DYNAMIC:
-						dr.add(overlay);
-						break;
-				}
-			}
-		}
-
-		tdl.add(infoBoxOverlay);
-
-		tdl.render(clientBuffer);
-		tdr.render(clientBuffer);
-		dr.render(clientBuffer);
+		super(timer.getDuration().toMillis(), ChronoUnit.MILLIS, timer.getImage());
+		this.timer = timer;
 	}
+
+	public GameTimer getTimer()
+	{
+		return timer;
+	}
+
 }

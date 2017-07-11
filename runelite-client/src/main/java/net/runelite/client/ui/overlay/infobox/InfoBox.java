@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.ui.overlay.infobox;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 
-public class OverlayRenderer
+public abstract class InfoBox
 {
-	private final InfoBoxOverlay infoBoxOverlay = new InfoBoxOverlay();
+	private final BufferedImage image;
 
-	public void render(BufferedImage clientBuffer)
+	public InfoBox(BufferedImage image)
 	{
-		TopDownRendererLeft tdl = new TopDownRendererLeft();
-		TopDownRendererRight tdr = new TopDownRendererRight();
-		DynamicRenderer dr = new DynamicRenderer();
+		this.image = image;
+	}
 
-		for (Plugin plugin : RuneLite.getRunelite().getPluginManager().getPlugins())
-		{
-			for (Overlay overlay : plugin.getOverlays())
-			{
-				switch (overlay.getPosition())
-				{
-					case TOP_RIGHT:
-						tdr.add(overlay);
-						break;
-					case TOP_LEFT:
-						tdl.add(overlay);
-						break;
-					case DYNAMIC:
-						dr.add(overlay);
-						break;
-				}
-			}
-		}
+	public BufferedImage getImage()
+	{
+		return image;
+	}
 
-		tdl.add(infoBoxOverlay);
+	public abstract String getText();
 
-		tdl.render(clientBuffer);
-		tdr.render(clientBuffer);
-		dr.render(clientBuffer);
+	public abstract Color getTextColor();
+
+	public boolean render()
+	{
+		return true;
+	}
+
+	public boolean cull()
+	{
+		return false;
 	}
 }
