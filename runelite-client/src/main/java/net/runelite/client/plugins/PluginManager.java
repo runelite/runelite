@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins;
 
+import net.runelite.client.task.ScheduledMethod;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.Service;
 import com.google.common.util.concurrent.ServiceManager;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -56,6 +58,7 @@ import net.runelite.client.plugins.xpglobes.XpGlobes;
 import net.runelite.client.plugins.xptracker.XPTracker;
 import net.runelite.client.plugins.xtea.Xtea;
 import net.runelite.client.plugins.zulrah.Zulrah;
+import net.runelite.client.task.Schedule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -117,6 +120,8 @@ public class PluginManager
 				{
 					logger.debug("Plugin {} is now running", plugin);
 					runelite.getEventBus().register(plugin);
+
+					schedule(plugin);
 				}
 
 				@Override
@@ -124,6 +129,7 @@ public class PluginManager
 				{
 					logger.debug("Plugin {} is stopping", plugin);
 					runelite.getEventBus().unregister(plugin);
+					unschedule(plugin);
 				}
 
 				@Override
@@ -134,6 +140,7 @@ public class PluginManager
 					if (from == Service.State.RUNNING)
 					{
 						runelite.getEventBus().unregister(plugin);
+						unschedule(plugin);
 					}
 				}
 			};
@@ -153,5 +160,39 @@ public class PluginManager
 			.stream()
 			.map(s -> (Plugin) s)
 			.collect(Collectors.toList());
+	}
+
+	private void schedule(Plugin plugin)
+	{
+		for (Method method : plugin.getClass().getMethods())
+		{
+			Schedule schedule = method.getAnnotation(Schedule.class);
+
+			if (schedule == null)
+			{
+				continue;
+			}
+
+			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, plugin);
+			logger.debug("Scheduled task {}", scheduledMethod);
+
+			runelite.getScheduler().addScheduledMethod(scheduledMethod);
+		}
+	}
+
+	private void unschedule(Plugin plugin)
+	{
+		List<ScheduledMethod> methods = new ArrayList<>(runelite.getScheduler().getScheduledMethods());
+
+		for (ScheduledMethod method : methods)
+		{
+			if (method.getObject() != plugin)
+			{
+				continue;
+			}
+
+			logger.debug("Removing scheduled task {}", method);
+			runelite.getScheduler().removeScheduledMethod(method);
+		}
 	}
 }

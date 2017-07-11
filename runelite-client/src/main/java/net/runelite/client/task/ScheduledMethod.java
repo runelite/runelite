@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.clanchat;
+package net.runelite.client.task;
 
-import java.time.temporal.ChronoUnit;
-import net.runelite.api.GameState;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.task.Schedule;
+import java.lang.reflect.Method;
+import java.time.Instant;
 
-public class ClanChat extends Plugin
+public class ScheduledMethod
 {
-	@Override
-	protected void startUp() throws Exception
+	private final Schedule schedule;
+	private final Method method;
+	private final Object object;
+	private Instant last = Instant.now();
+
+	public ScheduledMethod(Schedule schedule, Method method, Object object)
 	{
+		this.schedule = schedule;
+		this.method = method;
+		this.object = object;
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	public String toString()
 	{
+		return "ScheduledMethod{" + "schedule=" + schedule + ", method=" + method + ", object=" + object + '}';
 	}
 
-	@Schedule(
-		period = 600,
-		unit = ChronoUnit.MILLIS
-	)
-	public void updateClanChatTitle()
+	public Schedule getSchedule()
 	{
-		if (RuneLite.getClient().getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
+		return schedule;
+	}
 
-		Widget clanChatTitleWidget = RuneLite.getClient().getWidget(WidgetInfo.CLAN_CHAT_TITLE);
-		if (clanChatTitleWidget != null)
-		{
-			clanChatTitleWidget.setText("Clan Chat (" + RuneLite.getClient().getClanChatCount() + "/100)");
-		}
+	public Method getMethod()
+	{
+		return method;
+	}
+
+	public Object getObject()
+	{
+		return object;
+	}
+
+	public Instant getLast()
+	{
+		return last;
+	}
+
+	public void setLast(Instant last)
+	{
+		this.last = last;
 	}
 }

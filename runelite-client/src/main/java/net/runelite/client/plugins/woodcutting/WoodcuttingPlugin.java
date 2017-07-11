@@ -27,25 +27,21 @@ package net.runelite.client.plugins.woodcutting;
 import com.google.common.eventbus.Subscribe;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import java.time.temporal.ChronoUnit;
 import net.runelite.api.ChatMessageType;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 public class WoodcuttingPlugin extends Plugin
 {
-	private static final int CHECK_INTERVAL = 1;
-
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final WoodcuttingConfig config = runelite.getConfigManager().getConfig(WoodcuttingConfig.class);
 	private final WoodcuttingOverlay overlay = new WoodcuttingOverlay(this);
 
 	private WoodcuttingSession session = new WoodcuttingSession();
-	private ScheduledFuture<?> future;
 
 	@Override
 	public Overlay getOverlay()
@@ -56,14 +52,11 @@ public class WoodcuttingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		ScheduledExecutorService executor = runelite.getExecutor();
-		future = executor.scheduleAtFixedRate(this::checkCutting, CHECK_INTERVAL, CHECK_INTERVAL, TimeUnit.SECONDS);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		future.cancel(true);
 	}
 
 	public WoodcuttingConfig getConfig()
@@ -90,7 +83,11 @@ public class WoodcuttingPlugin extends Plugin
 		}
 	}
 
-	private void checkCutting()
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.SECONDS
+	)
+	public void checkCutting()
 	{
 		Instant lastLogCut = session.getLastLogCut();
 		if (lastLogCut == null)

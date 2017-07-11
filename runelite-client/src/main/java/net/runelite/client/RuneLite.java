@@ -49,6 +49,7 @@ import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.http.api.account.AccountClient;
@@ -75,7 +76,8 @@ public class RuneLite
 	private final MenuManager menuManager = new MenuManager(this);
 	private OverlayRenderer renderer;
 	private final EventBus eventBus = new EventBus(this::eventExceptionHandler);
-	private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
+	private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+	private final Scheduler scheduler = new Scheduler(this);
 	private WSClient wsclient;
 
 	private AccountSession accountSession;
@@ -325,6 +327,11 @@ public class RuneLite
 	public ScheduledExecutorService getExecutor()
 	{
 		return executor;
+	}
+
+	public Scheduler getScheduler()
+	{
+		return scheduler;
 	}
 
 	public static TrayIcon getTrayIcon()

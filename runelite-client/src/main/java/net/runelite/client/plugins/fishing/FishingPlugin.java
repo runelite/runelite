@@ -25,32 +25,27 @@
 package net.runelite.client.plugins.fishing;
 
 import com.google.common.eventbus.Subscribe;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Collection;
 import net.runelite.api.ChatMessageType;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 public class FishingPlugin extends Plugin
 {
-	private static final int CHECK_INTERVAL = 1;
-
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final FishingConfig config = runelite.getConfigManager().getConfig(FishingConfig.class);
 	private final FishingOverlay overlay = new FishingOverlay(this);
 	private final FishingSpotOverlay spotOverlay = new FishingSpotOverlay(this);
 
 	private FishingSession session = new FishingSession();
-	private ScheduledFuture<?> future;
 
 	@Override
 	public Collection<Overlay> getOverlays()
@@ -61,9 +56,6 @@ public class FishingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		ScheduledExecutorService executor = runelite.getExecutor();
-		future = executor.scheduleAtFixedRate(this::checkFishing, CHECK_INTERVAL, CHECK_INTERVAL, TimeUnit.SECONDS);
-
 		// Initialize overlay config
 		spotOverlay.updateConfig();
 	}
@@ -71,7 +63,6 @@ public class FishingPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		future.cancel(true);
 	}
 
 	public FishingConfig getConfig()
@@ -104,7 +95,11 @@ public class FishingPlugin extends Plugin
 		spotOverlay.updateConfig();
 	}
 
-	private void checkFishing()
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.SECONDS
+	)
+	public void checkFishing()
 	{
 		Instant lastFishCaught = session.getLastFishCaught();
 		if (lastFishCaught == null)
