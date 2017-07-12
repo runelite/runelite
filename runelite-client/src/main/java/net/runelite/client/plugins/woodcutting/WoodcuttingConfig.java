@@ -53,4 +53,14 @@ public interface WoodcuttingConfig
 	{
 		return 5;
 	}
+
+	@ConfigItem(
+		keyName = "showNestNotification",
+		name = "Bird nest notification",
+		description = "Configures whether to notify you of a bird nest spawn"
+	)
+	default boolean showNestNotification()
+	{
+		return true;
+	}
 }
