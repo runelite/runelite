@@ -93,6 +93,11 @@ public class InjectMojo extends AbstractMojo
 		InjectorValidator iv = new InjectorValidator(vanilla);
 		iv.validate();
 
+		if (iv.getError() > 0)
+		{
+			throw new MojoExecutionException("Error building injected jar");
+		}
+
 		if (iv.getMissing() > 0)
 		{
 			throw new MojoExecutionException("Unable to inject all methods");
