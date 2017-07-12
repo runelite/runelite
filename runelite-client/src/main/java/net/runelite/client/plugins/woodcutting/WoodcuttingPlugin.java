@@ -72,14 +72,17 @@ public class WoodcuttingPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.FILTERED)
+		if (event.getType() == ChatMessageType.FILTERED || event.getType() == ChatMessageType.SERVER)
 		{
-			return;
-		}
+			if (event.getMessage().startsWith("You get some") && event.getMessage().endsWith("logs."))
+			{
+				session.incrementLogCut();
+			}
 
-		if (event.getMessage().startsWith("You get some"))
-		{
-			session.incrementLogCut();
+			if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification())
+			{
+				runelite.notify("A bird nest has spawned!");
+			}
 		}
 	}
 
