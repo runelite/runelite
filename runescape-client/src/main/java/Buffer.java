@@ -15,9 +15,11 @@ public class Buffer extends Node {
    @Export("offset")
    public int offset;
    @ObfuscatedName("a")
-   static int[] field2399;
+   @Export("crc32Table")
+   static int[] crc32Table;
    @ObfuscatedName("s")
-   static long[] field2401;
+   @Export("crc64Table")
+   static long[] crc64Table;
    @ObfuscatedName("i")
    @Export("payload")
    public byte[] payload;
@@ -108,7 +110,8 @@ public class Buffer extends Node {
       signature = "(Ljava/lang/String;I)V",
       garbageValue = "2086193595"
    )
-   public void method3137(String var1) {
+   @Export("putString")
+   public void putString(String var1) {
       int var2 = var1.indexOf(0);
       if(var2 >= 0) {
          throw new IllegalArgumentException("");
@@ -123,7 +126,8 @@ public class Buffer extends Node {
       signature = "(Ljava/lang/String;I)V",
       garbageValue = "-896120651"
    )
-   public void method3138(String var1) {
+   @Export("putJagString")
+   public void putJagString(String var1) {
       int var2 = var1.indexOf(0);
       if(var2 >= 0) {
          throw new IllegalArgumentException("");
@@ -139,7 +143,8 @@ public class Buffer extends Node {
       signature = "(Ljava/lang/CharSequence;I)V",
       garbageValue = "1746134262"
    )
-   public void method3139(CharSequence var1) {
+   @Export("putCESU8")
+   public void putCESU8(CharSequence var1) {
       int var2 = class227.method4083(var1);
       this.payload[++this.offset - 1] = 0;
       this.putVarInt(var2);
@@ -179,11 +184,14 @@ public class Buffer extends Node {
    public void putShortSmart(int var1) {
       if(var1 >= 0 && var1 < 128) {
          this.putByte(var1);
-      } else if(var1 >= 0 && var1 < '耀') {
-         this.putShort(var1 + '耀');
       } else {
-         throw new IllegalArgumentException();
+         if(var1 < 0 || var1 >= '耀') {
+            throw new IllegalArgumentException();
+         }
+
+         this.putShort(var1 + '耀');
       }
+
    }
 
    @ObfuscatedName("n")
@@ -250,7 +258,7 @@ public class Buffer extends Node {
       }
 
       int var2 = this.offset - var1 - 1;
-      return var2 == 0?"":class48.method755(this.payload, var1, var2);
+      return var2 == 0?"":class48.getString(this.payload, var1, var2);
    }
 
    @ObfuscatedName("g")
@@ -269,7 +277,8 @@ public class Buffer extends Node {
       signature = "(II)I",
       garbageValue = "649471868"
    )
-   public int method3154(int var1) {
+   @Export("putCrc")
+   public int putCrc(int var1) {
       int var2 = class27.method208(this.payload, var1, this.offset);
       this.putInt(var2);
       return var2;
@@ -280,7 +289,8 @@ public class Buffer extends Node {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "2123080036"
    )
-   public String method3155() {
+   @Export("getJagString")
+   public String getJagString() {
       byte var1 = this.payload[++this.offset - 1];
       if(var1 != 0) {
          throw new IllegalStateException("");
@@ -292,7 +302,7 @@ public class Buffer extends Node {
          }
 
          int var3 = this.offset - var2 - 1;
-         return var3 == 0?"":class48.method755(this.payload, var2, var3);
+         return var3 == 0?"":class48.getString(this.payload, var2, var3);
       }
    }
 
@@ -301,7 +311,8 @@ public class Buffer extends Node {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "899145730"
    )
-   public String method3156() {
+   @Export("getCESU8")
+   public String getCESU8() {
       byte var1 = this.payload[++this.offset - 1];
       if(var1 != 0) {
          throw new IllegalStateException("");
@@ -310,7 +321,7 @@ public class Buffer extends Node {
          if(var2 + this.offset > this.payload.length) {
             throw new IllegalStateException("");
          } else {
-            String var3 = class37.method513(this.payload, this.offset, var2);
+            String var3 = class37.decodeCESU8(this.payload, this.offset, var2);
             this.offset += var2;
             return var3;
          }
@@ -346,7 +357,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "284628155"
    )
-   public int method3159() {
+   @Export("getUSmart")
+   public int getUSmart() {
       int var1 = this.payload[this.offset] & 255;
       return var1 < 128?this.readUnsignedByte():this.readUnsignedShort() - '耀';
    }
@@ -477,7 +489,8 @@ public class Buffer extends Node {
       signature = "(I)Z",
       garbageValue = "-1826459633"
    )
-   public boolean method3168() {
+   @Export("checkCrc")
+   public boolean checkCrc() {
       this.offset -= 4;
       int var1 = class27.method208(this.payload, 0, this.offset);
       int var2 = this.readInt();
@@ -550,7 +563,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "587444852"
    )
-   public void method3179(int var1) {
+   @Export("putLEShortA")
+   public void putLEShortA(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 + 128);
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
    }
@@ -604,7 +618,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-68951579"
    )
-   public int method3186() {
+   @Export("getLargeSmart")
+   public int getLargeSmart() {
       return this.payload[this.offset] < 0?this.readInt() & Integer.MAX_VALUE:this.readUnsignedShort();
    }
 
@@ -613,7 +628,8 @@ public class Buffer extends Node {
       signature = "(IB)V",
       garbageValue = "9"
    )
-   public void method3187(int var1) {
+   @Export("putLEInt")
+   public void putLEInt(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 >> 16);
       this.payload[++this.offset - 1] = (byte)(var1 >> 24);
       this.payload[++this.offset - 1] = (byte)var1;
@@ -704,42 +720,6 @@ public class Buffer extends Node {
 
    }
 
-   static {
-      field2399 = new int[256];
-
-      int var2;
-      for(int var1 = 0; var1 < 256; ++var1) {
-         int var0 = var1;
-
-         for(var2 = 0; var2 < 8; ++var2) {
-            if((var0 & 1) == 1) {
-               var0 = var0 >>> 1 ^ -306674912;
-            } else {
-               var0 >>>= 1;
-            }
-         }
-
-         field2399[var1] = var0;
-      }
-
-      field2401 = new long[256];
-
-      for(var2 = 0; var2 < 256; ++var2) {
-         long var4 = (long)var2;
-
-         for(int var3 = 0; var3 < 8; ++var3) {
-            if(1L == (var4 & 1L)) {
-               var4 = var4 >>> 1 ^ -3932672073523589310L;
-            } else {
-               var4 >>>= 1;
-            }
-         }
-
-         field2401[var2] = var4;
-      }
-
-   }
-
    @ObfuscatedName("ax")
    @ObfuscatedSignature(
       signature = "(I)I",
@@ -816,7 +796,8 @@ public class Buffer extends Node {
       signature = "(B)Ljava/lang/String;",
       garbageValue = "-119"
    )
-   public String method3277() {
+   @Export("getNullString")
+   public String getNullString() {
       if(this.payload[this.offset] == 0) {
          ++this.offset;
          return null;
@@ -888,5 +869,41 @@ public class Buffer extends Node {
    @Export("readUnsignedByte")
    public int readUnsignedByte() {
       return this.payload[++this.offset - 1] & 255;
+   }
+
+   static {
+      crc32Table = new int[256];
+
+      int var0;
+      for(int var1 = 0; var1 < 256; ++var1) {
+         int var2 = var1;
+
+         for(var0 = 0; var0 < 8; ++var0) {
+            if((var2 & 1) == 1) {
+               var2 = var2 >>> 1 ^ -306674912;
+            } else {
+               var2 >>>= 1;
+            }
+         }
+
+         crc32Table[var1] = var2;
+      }
+
+      crc64Table = new long[256];
+
+      for(var0 = 0; var0 < 256; ++var0) {
+         long var4 = (long)var0;
+
+         for(int var3 = 0; var3 < 8; ++var3) {
+            if(1L == (var4 & 1L)) {
+               var4 = var4 >>> 1 ^ -3932672073523589310L;
+            } else {
+               var4 >>>= 1;
+            }
+         }
+
+         crc64Table[var0] = var4;
+      }
+
    }
 }

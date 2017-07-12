@@ -18,7 +18,8 @@ public class KitDefinition extends CacheableNode {
    )
    public static int field3359;
    @ObfuscatedName("t")
-   public static NodeCache field3360;
+   @Export("identKits")
+   public static NodeCache identKits;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 305547911
@@ -46,7 +47,8 @@ public class KitDefinition extends CacheableNode {
    @Export("nonSelectable")
    public boolean nonSelectable;
    @ObfuscatedName("i")
-   public static IndexDataBase field3369;
+   @Export("identKit_ref")
+   public static IndexDataBase identKit_ref;
    @ObfuscatedName("kk")
    static Widget field3371;
 
@@ -55,7 +57,8 @@ public class KitDefinition extends CacheableNode {
       signature = "(LBuffer;B)V",
       garbageValue = "2"
    )
-   void method4382(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
@@ -159,7 +162,7 @@ public class KitDefinition extends CacheableNode {
          int var3;
          if(this.recolorToFind != null) {
             for(var3 = 0; var3 < this.recolorToFind.length; ++var3) {
-               var4.method2422(this.recolorToFind[var3], this.recolorToReplace[var3]);
+               var4.recolor(this.recolorToFind[var3], this.recolorToReplace[var3]);
             }
          }
 
@@ -192,7 +195,7 @@ public class KitDefinition extends CacheableNode {
       int var4;
       if(this.recolorToFind != null) {
          for(var4 = 0; var4 < this.recolorToFind.length; ++var4) {
-            var5.method2422(this.recolorToFind[var4], this.recolorToReplace[var4]);
+            var5.recolor(this.recolorToFind[var4], this.recolorToReplace[var4]);
          }
       }
 
@@ -248,6 +251,6 @@ public class KitDefinition extends CacheableNode {
    }
 
    static {
-      field3360 = new NodeCache(64);
+      identKits = new NodeCache(64);
    }
 }

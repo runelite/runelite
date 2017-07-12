@@ -21,10 +21,6 @@ public class XItemContainer extends Node {
    @Export("isMembersWorld")
    public static boolean isMembersWorld;
 
-   static {
-      itemContainers = new XHashTable(32);
-   }
-
    XItemContainer() {
       this.itemIds = new int[]{-1};
       this.stackSizes = new int[]{0};
@@ -39,7 +35,11 @@ public class XItemContainer extends Node {
          } else {
             class162.method3046(var0);
          }
-
       }
+
+   }
+
+   static {
+      itemContainers = new XHashTable(32);
    }
 }

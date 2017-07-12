@@ -22,21 +22,21 @@ public class class98 {
    )
    static int field1549;
 
-   static {
-      chatLineMap = new HashMap();
-      field1546 = new class186(1024);
-      field1548 = new class201();
-      field1549 = 0;
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;IZI)V",
       garbageValue = "1958401174"
    )
    public static void method1859(IndexDataBase var0, String var1, String var2, int var3, boolean var4) {
-      int var5 = var0.method4146(var1);
-      int var6 = var0.method4131(var5, var2);
+      int var5 = var0.getFile(var1);
+      int var6 = var0.getChild(var5, var2);
       class29.method232(var0, var5, var6, var3, var4);
+   }
+
+   static {
+      chatLineMap = new HashMap();
+      field1546 = new class186(1024);
+      field1548 = new class201();
+      field1549 = 0;
    }
 }

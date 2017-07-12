@@ -16,15 +16,17 @@ public final class PacketBuffer extends Buffer {
    @ObfuscatedGetter(
       intValue = -1652269775
    )
-   int field2428;
+   @Export("bitPosition")
+   int bitPosition;
 
    @ObfuscatedName("hq")
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "-1328481773"
    )
-   public void method3384() {
-      super.offset = (this.field2428 + 7) / 8;
+   @Export("byteAccess")
+   public void byteAccess() {
+      super.offset = (this.bitPosition + 7) / 8;
    }
 
    @ObfuscatedName("hi")
@@ -60,12 +62,13 @@ public final class PacketBuffer extends Buffer {
       signature = "(II)I",
       garbageValue = "1743072488"
    )
-   public int method3388(int var1) {
-      int var2 = this.field2428 >> 3;
-      int var3 = 8 - (this.field2428 & 7);
+   @Export("getBits")
+   public int getBits(int var1) {
+      int var2 = this.bitPosition >> 3;
+      int var3 = 8 - (this.bitPosition & 7);
       int var4 = 0;
 
-      for(this.field2428 += var1; var1 > var3; var3 = 8) {
+      for(this.bitPosition += var1; var1 > var3; var3 = 8) {
          var4 += (super.payload[var2++] & field2426[var3]) << var1 - var3;
          var1 -= var3;
       }
@@ -84,12 +87,9 @@ public final class PacketBuffer extends Buffer {
       signature = "(II)I",
       garbageValue = "1327121237"
    )
-   public int method3390(int var1) {
-      return var1 * 8 - this.field2428;
-   }
-
-   static {
-      field2426 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
+   @Export("bitsAvail")
+   public int bitsAvail(int var1) {
+      return var1 * 8 - this.bitPosition;
    }
 
    @ObfuscatedName("hh")
@@ -120,7 +120,7 @@ public final class PacketBuffer extends Buffer {
       int var1 = var0 >> 16;
       int var2 = var0 & '\uffff';
       if(class46.widgets[var1] == null || class46.widgets[var1][var2] == null) {
-         boolean var3 = class66.method1121(var1);
+         boolean var3 = class66.loadWidget(var1);
          if(!var3) {
             return null;
          }
@@ -134,8 +134,9 @@ public final class PacketBuffer extends Buffer {
       signature = "(I)V",
       garbageValue = "480268066"
    )
-   public void method3410() {
-      this.field2428 = super.offset * 8;
+   @Export("bitAccess")
+   public void bitAccess() {
+      this.bitPosition = super.offset * 8;
    }
 
    @ObfuscatedName("t")
@@ -144,30 +145,29 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "-274694405"
    )
    public static void method3411(int var0) {
-      if(var0 != -1) {
-         if(class152.validInterfaces[var0]) {
-            Widget.field2646.method4127(var0);
-            if(class46.widgets[var0] != null) {
-               boolean var1 = true;
+      if(var0 != -1 && class152.validInterfaces[var0]) {
+         Widget.widgetIndex.method4127(var0);
+         if(class46.widgets[var0] != null) {
+            boolean var1 = true;
 
-               for(int var2 = 0; var2 < class46.widgets[var0].length; ++var2) {
-                  if(class46.widgets[var0][var2] != null) {
-                     if(class46.widgets[var0][var2].type != 2) {
-                        class46.widgets[var0][var2] = null;
-                     } else {
-                        var1 = false;
-                     }
+            for(int var2 = 0; var2 < class46.widgets[var0].length; ++var2) {
+               if(class46.widgets[var0][var2] != null) {
+                  if(class46.widgets[var0][var2].type != 2) {
+                     class46.widgets[var0][var2] = null;
+                  } else {
+                     var1 = false;
                   }
                }
-
-               if(var1) {
-                  class46.widgets[var0] = null;
-               }
-
-               class152.validInterfaces[var0] = false;
             }
+
+            if(var1) {
+               class46.widgets[var0] = null;
+            }
+
+            class152.validInterfaces[var0] = false;
          }
       }
+
    }
 
    @ObfuscatedName("a")
@@ -177,43 +177,42 @@ public final class PacketBuffer extends Buffer {
    )
    static void method3413(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
       long var6 = (long)((var1 << 16) + var2);
-      class234 var8 = (class234)class238.field3260.method3530(var6);
+      FileRequest var8 = (FileRequest)class238.field3260.get(var6);
       if(var8 == null) {
-         var8 = (class234)class238.field3275.method3530(var6);
+         var8 = (FileRequest)class238.field3275.get(var6);
          if(var8 == null) {
-            var8 = (class234)class238.field3268.method3530(var6);
+            var8 = (FileRequest)class238.field3268.get(var6);
             if(var8 != null) {
                if(var5) {
-                  var8.method3604();
-                  class238.field3260.method3529(var8, var6);
+                  var8.unlinkDual();
+                  class238.field3260.put(var8, var6);
                   --class238.field3269;
                   ++class238.field3266;
                }
-
             } else {
                if(!var5) {
-                  var8 = (class234)class238.field3270.method3530(var6);
+                  var8 = (FileRequest)class238.field3270.get(var6);
                   if(var8 != null) {
                      return;
                   }
                }
 
-               var8 = new class234();
-               var8.field3217 = var0;
-               var8.field3220 = var3;
-               var8.field3218 = var4;
+               var8 = new FileRequest();
+               var8.index = var0;
+               var8.crc = var3;
+               var8.padding = var4;
                if(var5) {
-                  class238.field3260.method3529(var8, var6);
+                  class238.field3260.put(var8, var6);
                   ++class238.field3266;
                } else {
-                  class238.field3267.method3460(var8);
-                  class238.field3268.method3529(var8, var6);
+                  class238.field3267.push(var8);
+                  class238.field3268.put(var8, var6);
                   ++class238.field3269;
                }
-
             }
          }
       }
+
    }
 
    @ObfuscatedName("r")
@@ -249,13 +248,13 @@ public final class PacketBuffer extends Buffer {
          int var5 = class83.intStack[class46.intStackSize + 1];
          var3.itemId = var4;
          var3.itemQuantity = var5;
-         ItemComposition var6 = class176.getItemDefinition(var4);
+         ItemComposition var6 = AbstractByteBuffer.getItemDefinition(var4);
          var3.rotationX = var6.xan2d;
          var3.rotationZ = var6.yan2d;
          var3.rotationY = var6.zan2d;
          var3.field2703 = var6.offsetX2d;
          var3.field2704 = var6.offsetY2d;
-         var3.field2650 = var6.zoom2d;
+         var3.modelZoom = var6.zoom2d;
          if(var0 == 1205) {
             var3.field2784 = 0;
          } else if(var0 == 1212 | var6.isStackable == 1) {
@@ -265,12 +264,16 @@ public final class PacketBuffer extends Buffer {
          }
 
          if(var3.field2709 > 0) {
-            var3.field2650 = var3.field2650 * 32 / var3.field2709;
+            var3.modelZoom = var3.modelZoom * 32 / var3.field2709;
          } else if(var3.originalWidth > 0) {
-            var3.field2650 = var3.field2650 * 32 / var3.originalWidth;
+            var3.modelZoom = var3.modelZoom * 32 / var3.originalWidth;
          }
 
          return 1;
       }
+   }
+
+   static {
+      field2426 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
    }
 }

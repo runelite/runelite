@@ -4,10 +4,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("be")
 public class class54 {
-   static {
-      ImageIO.setUseCache(false);
-   }
-
    @ObfuscatedName("hl")
    @ObfuscatedSignature(
       signature = "(IS)Z",
@@ -31,5 +27,9 @@ public class class54 {
 
       var2 &= 3;
       return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
+   }
+
+   static {
+      ImageIO.setUseCache(false);
    }
 }

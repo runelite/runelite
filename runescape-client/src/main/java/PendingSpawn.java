@@ -83,11 +83,12 @@ public final class PendingSpawn extends Node {
       signature = "(IIIII)V",
       garbageValue = "1296306927"
    )
-   static void method1528(int var0, int var1, int var2, int var3) {
-      XItemContainer var4 = (XItemContainer)XItemContainer.itemContainers.method3530((long)var0);
+   @Export("setItemTableSlot")
+   static void setItemTableSlot(int var0, int var1, int var2, int var3) {
+      XItemContainer var4 = (XItemContainer)XItemContainer.itemContainers.get((long)var0);
       if(var4 == null) {
          var4 = new XItemContainer();
-         XItemContainer.itemContainers.method3529(var4, (long)var0);
+         XItemContainer.itemContainers.put(var4, (long)var0);
       }
 
       if(var4.itemIds.length <= var1) {

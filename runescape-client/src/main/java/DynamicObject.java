@@ -68,11 +68,11 @@ public class DynamicObject extends Renderable {
             var1 = 100;
          }
 
-         label53: {
+         label47: {
             do {
                do {
                   if(var1 <= this.field1563.frameLenghts[this.field1568]) {
-                     break label53;
+                     break label47;
                   }
 
                   var1 -= this.field1563.frameLenghts[this.field1568];
@@ -168,14 +168,14 @@ public class DynamicObject extends Renderable {
 
                   Client.field1025 = Client.field1112;
                   Client.secretPacketBuffer1.putOpcode(87);
-                  Client.secretPacketBuffer1.putByte(class261.method4734(var0));
-                  Client.secretPacketBuffer1.method3137(var0);
+                  Client.secretPacketBuffer1.putByte(class261.getLength(var0));
+                  Client.secretPacketBuffer1.putString(var0);
                   break;
                }
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("w")
@@ -184,30 +184,30 @@ public class DynamicObject extends Renderable {
       garbageValue = "338399108"
    )
    public static void method1874(int var0, int var1) {
-      Varbit var3 = (Varbit)Varbit.field3390.get((long)var0);
-      Varbit var2;
-      if(var3 != null) {
-         var2 = var3;
+      Varbit var2 = (Varbit)Varbit.varbits.get((long)var0);
+      Varbit var3;
+      if(var2 != null) {
+         var3 = var2;
       } else {
-         byte[] var8 = Varbit.field3391.getConfigData(14, var0);
-         var3 = new Varbit();
-         if(var8 != null) {
-            var3.method4426(new Buffer(var8));
+         byte[] var4 = Varbit.varbit_ref.getConfigData(14, var0);
+         var2 = new Varbit();
+         if(var4 != null) {
+            var2.decode(new Buffer(var4));
          }
 
-         Varbit.field3390.put(var3, (long)var0);
-         var2 = var3;
+         Varbit.varbits.put(var2, (long)var0);
+         var3 = var2;
       }
 
-      int var4 = var2.configId;
-      int var5 = var2.leastSignificantBit;
-      int var6 = var2.mostSignificantBit;
+      int var8 = var3.configId;
+      int var5 = var3.leastSignificantBit;
+      int var6 = var3.mostSignificantBit;
       int var7 = class211.field2613[var6 - var5];
       if(var1 < 0 || var1 > var7) {
          var1 = 0;
       }
 
       var7 <<= var5;
-      class211.widgetSettings[var4] = class211.widgetSettings[var4] & ~var7 | var1 << var5 & var7;
+      class211.widgetSettings[var8] = class211.widgetSettings[var8] & ~var7 | var1 << var5 & var7;
    }
 }

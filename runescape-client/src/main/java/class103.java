@@ -5,8 +5,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 public interface class103 {
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(B)Lclass109;",
+      signature = "(B)LAbstractSoundSystem;",
       garbageValue = "77"
    )
-   class109 vmethod1927();
+   AbstractSoundSystem vmethod1927();
 }

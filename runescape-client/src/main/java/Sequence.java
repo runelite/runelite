@@ -14,11 +14,14 @@ public class Sequence extends CacheableNode {
    @Export("forcedPriority")
    public int forcedPriority;
    @ObfuscatedName("s")
-   public static NodeCache field3606;
+   @Export("skeletons")
+   public static NodeCache skeletons;
    @ObfuscatedName("a")
-   static IndexDataBase field3607;
+   @Export("skin_ref")
+   static IndexDataBase skin_ref;
    @ObfuscatedName("t")
-   public static NodeCache field3608;
+   @Export("sequences")
+   public static NodeCache sequences;
    @ObfuscatedName("r")
    @Export("frameIDs")
    public int[] frameIDs;
@@ -48,7 +51,8 @@ public class Sequence extends CacheableNode {
    @Export("stretches")
    public boolean stretches;
    @ObfuscatedName("i")
-   static IndexDataBase field3617;
+   @Export("seq_ref")
+   static IndexDataBase seq_ref;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 290861403
@@ -74,7 +78,8 @@ public class Sequence extends CacheableNode {
    @Export("replyMode")
    public int replyMode;
    @ObfuscatedName("w")
-   static IndexDataBase field3622;
+   @Export("skel_ref")
+   static IndexDataBase skel_ref;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -984122893
@@ -87,7 +92,8 @@ public class Sequence extends CacheableNode {
       signature = "(LBuffer;I)V",
       garbageValue = "16711935"
    )
-   void method4689(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
@@ -117,7 +123,7 @@ public class Sequence extends CacheableNode {
    )
    Model method4693(Model var1, int var2) {
       var2 = this.frameIDs[var2];
-      Frames var3 = class59.getFrames(var2 >> 16);
+      Frames var3 = MouseInput.getFrames(var2 >> 16);
       var2 &= '\uffff';
       if(var3 == null) {
          return var1.method2500(true);
@@ -135,13 +141,13 @@ public class Sequence extends CacheableNode {
    )
    public Model method4694(Model var1, int var2, Sequence var3, int var4) {
       var2 = this.frameIDs[var2];
-      Frames var5 = class59.getFrames(var2 >> 16);
+      Frames var5 = MouseInput.getFrames(var2 >> 16);
       var2 &= '\uffff';
       if(var5 == null) {
          return var3.method4704(var1, var4);
       } else {
          var4 = var3.frameIDs[var4];
-         Frames var6 = class59.getFrames(var4 >> 16);
+         Frames var6 = MouseInput.getFrames(var4 >> 16);
          var4 &= '\uffff';
          Model var7;
          if(var6 == null) {
@@ -163,7 +169,7 @@ public class Sequence extends CacheableNode {
    )
    public Model method4695(Model var1, int var2) {
       int var3 = this.frameIDs[var2];
-      Frames var4 = class59.getFrames(var3 >> 16);
+      Frames var4 = MouseInput.getFrames(var3 >> 16);
       var3 &= '\uffff';
       if(var4 == null) {
          return var1.method2530(true);
@@ -172,7 +178,7 @@ public class Sequence extends CacheableNode {
          int var6 = 0;
          if(this.field3611 != null && var2 < this.field3611.length) {
             var6 = this.field3611[var2];
-            var5 = class59.getFrames(var6 >> 16);
+            var5 = MouseInput.getFrames(var6 >> 16);
             var6 &= '\uffff';
          }
 
@@ -190,11 +196,6 @@ public class Sequence extends CacheableNode {
       }
    }
 
-   static {
-      field3608 = new NodeCache(64);
-      field3606 = new NodeCache(100);
-   }
-
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(LModel;II)LModel;",
@@ -202,7 +203,7 @@ public class Sequence extends CacheableNode {
    )
    public Model method4704(Model var1, int var2) {
       var2 = this.frameIDs[var2];
-      Frames var3 = class59.getFrames(var2 >> 16);
+      Frames var3 = MouseInput.getFrames(var2 >> 16);
       var2 &= '\uffff';
       if(var3 == null) {
          return var1.method2530(true);
@@ -294,7 +295,7 @@ public class Sequence extends CacheableNode {
    )
    Model method4709(Model var1, int var2, int var3) {
       var2 = this.frameIDs[var2];
-      Frames var4 = class59.getFrames(var2 >> 16);
+      Frames var4 = MouseInput.getFrames(var2 >> 16);
       var2 &= '\uffff';
       if(var4 == null) {
          return var1.method2530(true);
@@ -337,7 +338,8 @@ public class Sequence extends CacheableNode {
       signature = "(I)V",
       garbageValue = "1316751504"
    )
-   void method4732() {
+   @Export("post")
+   void post() {
       if(this.precedenceAnimating == -1) {
          if(this.interleaveLeave != null) {
             this.precedenceAnimating = 2;
@@ -354,5 +356,10 @@ public class Sequence extends CacheableNode {
          }
       }
 
+   }
+
+   static {
+      sequences = new NodeCache(64);
+      skeletons = new NodeCache(100);
    }
 }

@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -32,7 +33,8 @@ public class WorldMapType2 implements WorldMapSectionBase {
    )
    int field542;
    @ObfuscatedName("j")
-   static ModIcon[] field543;
+   @Export("titlemuteSprite")
+   static ModIcon[] titlemuteSprite;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1604656279
@@ -163,12 +165,12 @@ public class WorldMapType2 implements WorldMapSectionBase {
    static void method546(Widget[] var0, Widget var1, boolean var2) {
       int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
       int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
-      class69.method1131(var0, var1.id, var3, var4, var2);
+      ScriptEvent.method1131(var0, var1.id, var3, var4, var2);
       if(var1.children != null) {
-         class69.method1131(var1.children, var1.id, var3, var4, var2);
+         ScriptEvent.method1131(var1.children, var1.id, var3, var4, var2);
       }
 
-      WidgetNode var5 = (WidgetNode)Client.componentTable.method3530((long)var1.id);
+      WidgetNode var5 = (WidgetNode)Client.componentTable.get((long)var1.id);
       if(var5 != null) {
          WorldMapType3.method202(var5.id, var3, var4, var2);
       }

@@ -15,21 +15,17 @@ public class class155 {
    @ObfuscatedName("t")
    public static File field2257;
    @ObfuscatedName("o")
-   public static class123 field2258;
+   public static CacheFile field2258;
    @ObfuscatedName("z")
-   public static class123 field2259;
+   public static CacheFile field2259;
    @ObfuscatedName("p")
-   public static String field2261;
+   @Export("osNameLC")
+   public static String osNameLC;
    @ObfuscatedName("l")
-   public static class123 field2262;
+   public static CacheFile field2262;
    @ObfuscatedName("q")
-   public static String field2263;
-
-   static {
-      field2258 = null;
-      field2259 = null;
-      field2262 = null;
-   }
+   @Export("osName")
+   public static String osName;
 
    @ObfuscatedName("y")
    @ObfuscatedSignature(
@@ -44,14 +40,20 @@ public class class155 {
          var2.width = class286.field3801;
          var2.originalHeight = class286.field3796;
          var2.offsetX = class286.field3799[var1];
-         var2.offsetY = class286.field3800[var1];
+         var2.offsetY = class286.offsetsY[var1];
          var2.originalWidth = class7.field239[var1];
          var2.height = class226.field3146[var1];
          var2.palette = class278.field3745;
-         var2.pixels = class210.field2609[var1];
+         var2.pixels = class210.spritePixels[var1];
       }
 
       XGrandExchangeOffer.method113();
       return var0;
+   }
+
+   static {
+      field2258 = null;
+      field2259 = null;
+      field2262 = null;
    }
 }

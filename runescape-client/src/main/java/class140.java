@@ -9,92 +9,80 @@ public class class140 {
       garbageValue = "805176549"
    )
    static final void method2856(Widget var0, int var1, int var2) {
-      if(Client.field1100 == null && !Client.isMenuOpen) {
-         if(var0 != null) {
-            Widget var5 = var0;
-            int var7 = WorldMapType3.method199(var0);
-            int var6 = var7 >> 17 & 7;
-            int var8 = var6;
-            Widget var4;
-            int var9;
-            if(var6 == 0) {
-               var4 = null;
-            } else {
-               var9 = 0;
-
-               while(true) {
-                  if(var9 >= var8) {
-                     var4 = var5;
-                     break;
-                  }
-
-                  var5 = PacketBuffer.method3403(var5.parentId);
-                  if(var5 == null) {
-                     var4 = null;
-                     break;
-                  }
-
-                  ++var9;
-               }
-            }
-
-            Widget var10 = var4;
-            if(var4 == null) {
-               var10 = var0.dragParent;
-            }
-
-            if(var10 != null) {
-               Client.field1100 = var0;
-               var5 = var0;
-               var7 = WorldMapType3.method199(var0);
-               var6 = var7 >> 17 & 7;
-               var8 = var6;
-               if(var6 == 0) {
-                  var4 = null;
-               } else {
-                  var9 = 0;
-
-                  while(true) {
-                     if(var9 >= var8) {
-                        var4 = var5;
-                        break;
-                     }
-
-                     var5 = PacketBuffer.method3403(var5.parentId);
-                     if(var5 == null) {
-                        var4 = null;
-                        break;
-                     }
-
-                     ++var9;
+      if(Client.field1100 == null && !Client.isMenuOpen && var0 != null) {
+         Widget var3 = var0;
+         int var4 = WorldMapType3.getWidgetConfig(var0);
+         int var5 = var4 >> 17 & 7;
+         int var6 = var5;
+         Widget var7;
+         int var8;
+         if(var5 == 0) {
+            var7 = null;
+         } else {
+            label72: {
+               for(var8 = 0; var8 < var6; ++var8) {
+                  var3 = PacketBuffer.method3403(var3.parentId);
+                  if(var3 == null) {
+                     var7 = null;
+                     break label72;
                   }
                }
 
-               var10 = var4;
-               if(var4 == null) {
-                  var10 = var0.dragParent;
-               }
-
-               Client.field1101 = var10;
-               Client.field1102 = var1;
-               Client.field1103 = var2;
-               class220.field2809 = 0;
-               Client.field1111 = false;
-               int var11 = class2.method7();
-               if(var11 != -1) {
-                  class13.field281 = new class89();
-                  class13.field281.field1433 = Client.menuActionParams0[var11];
-                  class13.field281.field1429 = Client.menuActionParams1[var11];
-                  class13.field281.field1427 = Client.menuTypes[var11];
-                  class13.field281.field1428 = Client.menuIdentifiers[var11];
-                  class13.field281.field1425 = Client.menuOptions[var11];
-               }
-
-               return;
+               var7 = var3;
             }
          }
 
+         Widget var9 = var7;
+         if(var7 == null) {
+            var9 = var0.dragParent;
+         }
+
+         if(var9 != null) {
+            Client.field1100 = var0;
+            var3 = var0;
+            var4 = WorldMapType3.getWidgetConfig(var0);
+            var5 = var4 >> 17 & 7;
+            var6 = var5;
+            if(var5 == 0) {
+               var7 = null;
+            } else {
+               label70: {
+                  for(var8 = 0; var8 < var6; ++var8) {
+                     var3 = PacketBuffer.method3403(var3.parentId);
+                     if(var3 == null) {
+                        var7 = null;
+                        break label70;
+                     }
+                  }
+
+                  var7 = var3;
+               }
+            }
+
+            var9 = var7;
+            if(var7 == null) {
+               var9 = var0.dragParent;
+            }
+
+            Client.field1101 = var9;
+            Client.field1102 = var1;
+            Client.field1103 = var2;
+            class220.field2809 = 0;
+            Client.field1111 = false;
+            int var10 = class2.method7();
+            if(var10 != -1) {
+               class13.field281 = new class89();
+               class13.field281.field1433 = Client.menuActionParams0[var10];
+               class13.field281.field1429 = Client.menuActionParams1[var10];
+               class13.field281.field1427 = Client.menuTypes[var10];
+               class13.field281.field1428 = Client.menuIdentifiers[var10];
+               class13.field281.field1425 = Client.menuOptions[var10];
+            }
+
+            return;
+         }
       }
+
    }
 
    @ObfuscatedName("a")
@@ -107,25 +95,24 @@ public class class140 {
          if(var3 == 4) {
             class92.loginIndex = 4;
          }
-
       } else {
          class92.loginIndex = var3;
-         Rasterizer2D.method4928();
+         Rasterizer2D.reset();
          byte[] var4 = var0.method4145("title.jpg", "");
          class92.field1451 = Coordinates.method3928(var4);
          class3.field19 = class92.field1451.method5040();
          if((Client.flags & 536870912) != 0) {
-            class83.field1369 = class172.method3129(var1, "logo_deadman_mode", "");
+            class83.logoSprite = DState.getSprite(var1, "logo_deadman_mode", "");
          } else {
-            class83.field1369 = class172.method3129(var1, "logo", "");
+            class83.logoSprite = DState.getSprite(var1, "logo", "");
          }
 
-         class92.field1461 = class172.method3129(var1, "titlebox", "");
-         class92.field1475 = class172.method3129(var1, "titlebutton", "");
+         class92.field1461 = DState.getSprite(var1, "titlebox", "");
+         class92.field1475 = DState.getSprite(var1, "titlebutton", "");
          class266.field3669 = class64.method1117(var1, "runes", "");
-         WorldMapType2.field543 = class64.method1117(var1, "title_mute", "");
-         class5.field40 = class172.method3129(var1, "options_radio_buttons,0", "");
-         class224.field2855 = class172.method3129(var1, "options_radio_buttons,2", "");
+         WorldMapType2.titlemuteSprite = class64.method1117(var1, "title_mute", "");
+         class5.field40 = DState.getSprite(var1, "options_radio_buttons,0", "");
+         class224.field2855 = DState.getSprite(var1, "options_radio_buttons,2", "");
          class41.field586 = new int[256];
 
          int var5;
@@ -184,7 +171,7 @@ public class class140 {
          WorldMapType3.field375 = new int[256];
          GraphicsObject.field1382 = new int['耀'];
          class14.field293 = new int['耀'];
-         class123.method2346((ModIcon)null);
+         CacheFile.method2346((ModIcon)null);
          class12.field270 = new int['耀'];
          Ignore.field864 = new int['耀'];
          if(var2) {
@@ -196,19 +183,20 @@ public class class140 {
          class36.authCode = "";
          class92.field1473 = true;
          class92.worldSelectShown = false;
-         if(!class8.field247.field1328) {
-            class158.method2968(2, class44.indexTrack1, "scape main", "", 255, false);
+         if(!class8.settings.muted) {
+            Timer.method2968(2, class44.indexTrack1, "scape main", "", 255, false);
          } else {
             class174.method3343(2);
          }
 
-         class170.method3115(false);
+         class170.sendConInfo(false);
          class17.field317 = true;
          class92.field1470 = (class45.canvasWidth - 765) / 2;
          class92.loginWindowX = class92.field1470 + 202;
          class92.field1451.method5074(class92.field1470, 0);
          class3.field19.method5074(class92.field1470 + 382, 0);
-         class83.field1369.method5025(class92.field1470 + 382 - class83.field1369.originalWidth / 2, 18);
+         class83.logoSprite.method5025(class92.field1470 + 382 - class83.logoSprite.originalWidth / 2, 18);
       }
+
    }
 }

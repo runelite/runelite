@@ -13,7 +13,7 @@ public class class71 implements Runnable {
    int[] field872;
    @ObfuscatedName("mc")
    @Export("chatMessages")
-   static ChatMessages chatMessages;
+   static Varcs chatMessages;
    @ObfuscatedName("i")
    boolean field874;
    @ObfuscatedName("a")
@@ -25,10 +25,11 @@ public class class71 implements Runnable {
    public void run() {
       for(; this.field874; XItemContainer.method1113(50L)) {
          Object var1 = this.field869;
+         Object var2 = this.field869;
          synchronized(this.field869) {
             if(this.field878 < 500) {
-               this.field871[this.field878] = class59.field748;
-               this.field872[this.field878] = class59.field749;
+               this.field871[this.field878] = MouseInput.field748;
+               this.field872[this.field878] = MouseInput.field749;
                ++this.field878;
             }
          }
@@ -50,7 +51,7 @@ public class class71 implements Runnable {
          class83.intStack[++class46.intStackSize - 1] = var3.scrollY;
          return 1;
       } else if(var0 == 2602) {
-         class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var3.text;
+         class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var3.text;
          return 1;
       } else if(var0 == 2603) {
          class83.intStack[++class46.intStackSize - 1] = var3.scrollWidth;
@@ -59,7 +60,7 @@ public class class71 implements Runnable {
          class83.intStack[++class46.intStackSize - 1] = var3.scrollHeight;
          return 1;
       } else if(var0 == 2605) {
-         class83.intStack[++class46.intStackSize - 1] = var3.field2650;
+         class83.intStack[++class46.intStackSize - 1] = var3.modelZoom;
          return 1;
       } else if(var0 == 2606) {
          class83.intStack[++class46.intStackSize - 1] = var3.rotationX;

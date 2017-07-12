@@ -17,7 +17,7 @@ public class class168 {
       garbageValue = "1747149636"
    )
    static void method3108() {
-      for(class82 var0 = (class82)class82.field1349.method3584(); var0 != null; var0 = (class82)class82.field1349.method3578()) {
+      for(class82 var0 = (class82)class82.field1349.getFront(); var0 != null; var0 = (class82)class82.field1349.getNext()) {
          if(var0.field1346 != null) {
             class19.field328.method1887(var0.field1346);
             var0.field1346 = null;
@@ -29,7 +29,7 @@ public class class168 {
          }
       }
 
-      class82.field1349.method3582();
+      class82.field1349.clear();
    }
 
    static {

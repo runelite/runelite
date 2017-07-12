@@ -38,7 +38,7 @@ public class VertexNormal {
       garbageValue = "1806394361"
    )
    public static void method2580() {
-      FloorUnderlayDefinition.field3349.reset();
+      FloorUnderlayDefinition.underlays.reset();
    }
 
    VertexNormal(VertexNormal var1) {

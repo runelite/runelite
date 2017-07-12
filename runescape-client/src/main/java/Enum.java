@@ -47,7 +47,8 @@ public class Enum extends CacheableNode {
       signature = "(LBuffer;B)V",
       garbageValue = "4"
    )
-   public void method4473(Buffer var1) {
+   @Export("decode")
+   public void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {

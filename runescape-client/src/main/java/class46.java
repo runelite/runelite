@@ -13,7 +13,8 @@ public class class46 {
    @ObfuscatedName("w")
    byte[][][] field624;
    @ObfuscatedName("z")
-   static class158 field625;
+   @Export("timer")
+   static Timer timer;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = 1499830683
@@ -39,6 +40,7 @@ public class class46 {
          var7 = this.method687(var7);
          Rasterizer2D.method4938(var1, var2, var5, var6, var3, var4, this.field624[var7 - 1][var8], this.field623);
       }
+
    }
 
    @ObfuscatedName("a")
@@ -59,59 +61,59 @@ public class class46 {
       byte[] var1 = new byte[this.field623 * this.field623];
       boolean var2 = false;
       var1 = new byte[this.field623 * this.field623];
-      int var5 = 0;
+      int var3 = 0;
 
-      int var3;
       int var4;
-      for(var3 = 0; var3 < this.field623; ++var3) {
-         for(var4 = 0; var4 < this.field623; ++var4) {
-            if(var4 >= var3 - this.field623 / 2) {
-               var1[var5] = -1;
+      int var5;
+      for(var4 = 0; var4 < this.field623; ++var4) {
+         for(var5 = 0; var5 < this.field623; ++var5) {
+            if(var5 >= var4 - this.field623 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field624[7][0] = var1;
       var1 = new byte[this.field623 * this.field623];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = this.field623 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field623; ++var4) {
-            if(var4 >= var3 - this.field623 / 2) {
-               var1[var5] = -1;
+      for(var4 = this.field623 - 1; var4 >= 0; --var4) {
+         for(var5 = 0; var5 < this.field623; ++var5) {
+            if(var5 >= var4 - this.field623 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field624[7][1] = var1;
       var1 = new byte[this.field623 * this.field623];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = this.field623 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field623 - 1; var4 >= 0; --var4) {
-            if(var4 >= var3 - this.field623 / 2) {
-               var1[var5] = -1;
+      for(var4 = this.field623 - 1; var4 >= 0; --var4) {
+         for(var5 = this.field623 - 1; var5 >= 0; --var5) {
+            if(var5 >= var4 - this.field623 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field624[7][2] = var1;
       var1 = new byte[this.field623 * this.field623];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = 0; var3 < this.field623; ++var3) {
-         for(var4 = this.field623 - 1; var4 >= 0; --var4) {
-            if(var4 >= var3 - this.field623 / 2) {
-               var1[var5] = -1;
+      for(var4 = 0; var4 < this.field623; ++var4) {
+         for(var5 = this.field623 - 1; var5 >= 0; --var5) {
+            if(var5 >= var4 - this.field623 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
@@ -461,59 +463,59 @@ public class class46 {
       byte[] var1 = new byte[this.field623 * this.field623];
       boolean var2 = false;
       var1 = new byte[this.field623 * this.field623];
-      int var5 = 0;
+      int var3 = 0;
 
-      int var3;
       int var4;
-      for(var3 = 0; var3 < this.field623; ++var3) {
-         for(var4 = 0; var4 < this.field623; ++var4) {
-            if(var4 <= this.field623 / 2) {
-               var1[var5] = -1;
+      int var5;
+      for(var4 = 0; var4 < this.field623; ++var4) {
+         for(var5 = 0; var5 < this.field623; ++var5) {
+            if(var5 <= this.field623 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field624[5][0] = var1;
       var1 = new byte[this.field623 * this.field623];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = 0; var3 < this.field623; ++var3) {
-         for(var4 = 0; var4 < this.field623; ++var4) {
-            if(var3 <= this.field623 / 2) {
-               var1[var5] = -1;
+      for(var4 = 0; var4 < this.field623; ++var4) {
+         for(var5 = 0; var5 < this.field623; ++var5) {
+            if(var4 <= this.field623 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field624[5][1] = var1;
       var1 = new byte[this.field623 * this.field623];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = 0; var3 < this.field623; ++var3) {
-         for(var4 = 0; var4 < this.field623; ++var4) {
-            if(var4 >= this.field623 / 2) {
-               var1[var5] = -1;
+      for(var4 = 0; var4 < this.field623; ++var4) {
+         for(var5 = 0; var5 < this.field623; ++var5) {
+            if(var5 >= this.field623 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field624[5][2] = var1;
       var1 = new byte[this.field623 * this.field623];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = 0; var3 < this.field623; ++var3) {
-         for(var4 = 0; var4 < this.field623; ++var4) {
-            if(var3 >= this.field623 / 2) {
-               var1[var5] = -1;
+      for(var4 = 0; var4 < this.field623; ++var4) {
+         for(var5 = 0; var5 < this.field623; ++var5) {
+            if(var4 >= this.field623 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
@@ -529,59 +531,59 @@ public class class46 {
       byte[] var1 = new byte[this.field623 * this.field623];
       boolean var2 = false;
       var1 = new byte[this.field623 * this.field623];
-      int var5 = 0;
+      int var3 = 0;
 
-      int var3;
       int var4;
-      for(var3 = 0; var3 < this.field623; ++var3) {
-         for(var4 = 0; var4 < this.field623; ++var4) {
-            if(var4 <= var3 - this.field623 / 2) {
-               var1[var5] = -1;
+      int var5;
+      for(var4 = 0; var4 < this.field623; ++var4) {
+         for(var5 = 0; var5 < this.field623; ++var5) {
+            if(var5 <= var4 - this.field623 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field624[6][0] = var1;
       var1 = new byte[this.field623 * this.field623];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = this.field623 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field623; ++var4) {
-            if(var4 <= var3 - this.field623 / 2) {
-               var1[var5] = -1;
+      for(var4 = this.field623 - 1; var4 >= 0; --var4) {
+         for(var5 = 0; var5 < this.field623; ++var5) {
+            if(var5 <= var4 - this.field623 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field624[6][1] = var1;
       var1 = new byte[this.field623 * this.field623];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = this.field623 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field623 - 1; var4 >= 0; --var4) {
-            if(var4 <= var3 - this.field623 / 2) {
-               var1[var5] = -1;
+      for(var4 = this.field623 - 1; var4 >= 0; --var4) {
+         for(var5 = this.field623 - 1; var5 >= 0; --var5) {
+            if(var5 <= var4 - this.field623 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
       this.field624[6][2] = var1;
       var1 = new byte[this.field623 * this.field623];
-      var5 = 0;
+      var3 = 0;
 
-      for(var3 = 0; var3 < this.field623; ++var3) {
-         for(var4 = this.field623 - 1; var4 >= 0; --var4) {
-            if(var4 <= var3 - this.field623 / 2) {
-               var1[var5] = -1;
+      for(var4 = 0; var4 < this.field623; ++var4) {
+         for(var5 = this.field623 - 1; var5 >= 0; --var5) {
+            if(var5 <= var4 - this.field623 / 2) {
+               var1[var3] = -1;
             }
 
-            ++var5;
+            ++var3;
          }
       }
 
@@ -626,6 +628,7 @@ public class class46 {
          this.method695();
          this.method688();
       }
+
    }
 
    @ObfuscatedName("s")

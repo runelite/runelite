@@ -35,28 +35,15 @@ public class class219 implements class218 {
       garbageValue = "1"
    )
    class219(String var1, int var2, boolean var3, boolean var4) {
-      this(var1, var2, var3, (class6[])null, var4, (class6[])null);
+      this(var1, var2, var3, (ScriptVarType[])null, var4, (ScriptVarType[])null);
    }
 
-   class219(String var1, int var2, boolean var3, class6[] var4, boolean var5, class6[] var6) {
+   class219(String var1, int var2, boolean var3, ScriptVarType[] var4, boolean var5, ScriptVarType[] var6) {
       this.field2804 = var2;
    }
 
-   class219(String var1, int var2, class6[] var3, class6[] var4) {
+   class219(String var1, int var2, ScriptVarType[] var3, ScriptVarType[] var4) {
       this(var1, var2, var3 != null, var3, var4 != null, var4);
-   }
-
-   static {
-      field2801 = new class219("", 10);
-      field2795 = new class219("", 11);
-      field2796 = new class219("", 12);
-      field2797 = new class219("", 13);
-      field2798 = new class219("", 14);
-      field2799 = new class219("", 15, new class6[]{class6.field64, class6.field64}, (class6[])null);
-      field2800 = new class219("", 16, new class6[]{class6.field64, class6.field64}, (class6[])null);
-      field2794 = new class219("", 17, new class6[]{class6.field64, class6.field64}, (class6[])null);
-      field2802 = new class219("", 73, true, true);
-      field2803 = new class219("", 76, true, false);
    }
 
    @ObfuscatedName("i")
@@ -73,6 +60,19 @@ public class class219 implements class218 {
       garbageValue = "10"
    )
    class219(String var1, int var2) {
-      this(var1, var2, false, (class6[])null, false, (class6[])null);
+      this(var1, var2, false, (ScriptVarType[])null, false, (ScriptVarType[])null);
+   }
+
+   static {
+      field2801 = new class219("", 10);
+      field2795 = new class219("", 11);
+      field2796 = new class219("", 12);
+      field2797 = new class219("", 13);
+      field2798 = new class219("", 14);
+      field2799 = new class219("", 15, new ScriptVarType[]{ScriptVarType.field64, ScriptVarType.field64}, (ScriptVarType[])null);
+      field2800 = new class219("", 16, new ScriptVarType[]{ScriptVarType.field64, ScriptVarType.field64}, (ScriptVarType[])null);
+      field2794 = new class219("", 17, new ScriptVarType[]{ScriptVarType.field64, ScriptVarType.field64}, (ScriptVarType[])null);
+      field2802 = new class219("", 73, true, true);
+      field2803 = new class219("", 76, true, false);
    }
 }

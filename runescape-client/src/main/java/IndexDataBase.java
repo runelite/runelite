@@ -16,9 +16,11 @@ public abstract class IndexDataBase {
    @Export("archiveFileNames")
    int[][] archiveFileNames;
    @ObfuscatedName("k")
-   class187[] field3223;
+   @Export("childIdentifiers")
+   Identifiers[] childIdentifiers;
    @ObfuscatedName("t")
-   class187 field3224;
+   @Export("identifiers")
+   Identifiers identifiers;
    @ObfuscatedName("s")
    @Export("archiveCrcs")
    int[] archiveCrcs;
@@ -43,11 +45,14 @@ public abstract class IndexDataBase {
    @ObfuscatedGetter(
       intValue = 1818639637
    )
-   public int field3231;
+   @Export("crc")
+   public int crc;
    @ObfuscatedName("o")
-   Object[][] field3232;
+   @Export("childs")
+   Object[][] childs;
    @ObfuscatedName("z")
-   static class166 field3233;
+   @Export("gzip")
+   static GZipDecompressor gzip;
    @ObfuscatedName("y")
    @Export("archiveFileIds")
    int[][] archiveFileIds;
@@ -93,10 +98,10 @@ public abstract class IndexDataBase {
       garbageValue = "97"
    )
    void method4112(byte[] var1) {
-      int var3 = var1.length;
-      int var2 = class27.method208(var1, 0, var3);
-      this.field3231 = var2;
-      Buffer var4 = new Buffer(class162.method3047(var1));
+      int var2 = var1.length;
+      int var3 = class27.method208(var1, 0, var2);
+      this.crc = var3;
+      Buffer var4 = new Buffer(class162.decodeContainer(var1));
       int var5 = var4.readUnsignedByte();
       if(var5 >= 5 && var5 <= 7) {
          if(var5 >= 6) {
@@ -105,7 +110,7 @@ public abstract class IndexDataBase {
 
          int var6 = var4.readUnsignedByte();
          if(var5 >= 7) {
-            this.validArchivesCount = var4.method3186();
+            this.validArchivesCount = var4.getLargeSmart();
          } else {
             this.validArchivesCount = var4.readUnsignedShort();
          }
@@ -116,7 +121,7 @@ public abstract class IndexDataBase {
          int var9;
          if(var5 >= 7) {
             for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-               this.archiveIds[var9] = var7 += var4.method3186();
+               this.archiveIds[var9] = var7 += var4.getLargeSmart();
                if(this.archiveIds[var9] > var8) {
                   var8 = this.archiveIds[var9];
                }
@@ -135,7 +140,7 @@ public abstract class IndexDataBase {
          this.archiveNumberOfFiles = new int[var8 + 1];
          this.archiveFileIds = new int[var8 + 1][];
          this.field3235 = new Object[var8 + 1];
-         this.field3232 = new Object[var8 + 1][];
+         this.childs = new Object[var8 + 1][];
          if(var6 != 0) {
             this.archiveNames = new int[var8 + 1];
 
@@ -143,7 +148,7 @@ public abstract class IndexDataBase {
                this.archiveNames[this.archiveIds[var9]] = var4.readInt();
             }
 
-            this.field3224 = new class187(this.archiveNames);
+            this.identifiers = new Identifiers(this.archiveNames);
          }
 
          for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
@@ -172,13 +177,13 @@ public abstract class IndexDataBase {
                this.archiveFileIds[var10] = new int[var11];
 
                for(var13 = 0; var13 < var11; ++var13) {
-                  var14 = this.archiveFileIds[var10][var13] = var7 += var4.method3186();
+                  var14 = this.archiveFileIds[var10][var13] = var7 += var4.getLargeSmart();
                   if(var14 > var12) {
                      var12 = var14;
                   }
                }
 
-               this.field3232[var10] = new Object[var12 + 1];
+               this.childs[var10] = new Object[var12 + 1];
             }
          } else {
             for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
@@ -195,24 +200,24 @@ public abstract class IndexDataBase {
                   }
                }
 
-               this.field3232[var10] = new Object[var12 + 1];
+               this.childs[var10] = new Object[var12 + 1];
             }
          }
 
          if(var6 != 0) {
             this.archiveFileNames = new int[var8 + 1][];
-            this.field3223 = new class187[var8 + 1];
+            this.childIdentifiers = new Identifiers[var8 + 1];
 
             for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
                var10 = this.archiveIds[var9];
                var11 = this.archiveNumberOfFiles[var10];
-               this.archiveFileNames[var10] = new int[this.field3232[var10].length];
+               this.archiveFileNames[var10] = new int[this.childs[var10].length];
 
                for(var12 = 0; var12 < var11; ++var12) {
                   this.archiveFileNames[var10][this.archiveFileIds[var10][var12]] = var4.readInt();
                }
 
-               this.field3223[var10] = new class187(this.archiveFileNames[var10]);
+               this.childIdentifiers[var10] = new Identifiers(this.archiveFileNames[var10]);
             }
          }
 
@@ -246,8 +251,8 @@ public abstract class IndexDataBase {
    )
    @Export("getConfigData")
    public byte[] getConfigData(int var1, int var2, int[] var3) {
-      if(var1 >= 0 && var1 < this.field3232.length && this.field3232[var1] != null && var2 >= 0 && var2 < this.field3232[var1].length) {
-         if(this.field3232[var1][var2] == null) {
+      if(var1 >= 0 && var1 < this.childs.length && this.childs[var1] != null && var2 >= 0 && var2 < this.childs[var1].length) {
+         if(this.childs[var1][var2] == null) {
             boolean var4 = this.method4129(var1, var3);
             if(!var4) {
                this.vmethod4217(var1);
@@ -258,9 +263,9 @@ public abstract class IndexDataBase {
             }
          }
 
-         byte[] var5 = class69.method1134(this.field3232[var1][var2], false);
+         byte[] var5 = ScriptEvent.toByteArray(this.childs[var1][var2], false);
          if(this.field3236) {
-            this.field3232[var1][var2] = null;
+            this.childs[var1][var2] = null;
          }
 
          return var5;
@@ -275,8 +280,8 @@ public abstract class IndexDataBase {
       garbageValue = "173080625"
    )
    public boolean method4116(int var1, int var2) {
-      if(var1 >= 0 && var1 < this.field3232.length && this.field3232[var1] != null && var2 >= 0 && var2 < this.field3232[var1].length) {
-         if(this.field3232[var1][var2] != null) {
+      if(var1 >= 0 && var1 < this.childs.length && this.childs[var1] != null && var2 >= 0 && var2 < this.childs[var1].length) {
+         if(this.childs[var1][var2] != null) {
             return true;
          } else if(this.field3235[var1] != null) {
             return true;
@@ -294,7 +299,8 @@ public abstract class IndexDataBase {
       signature = "(II)Z",
       garbageValue = "1850334098"
    )
-   public boolean method4117(int var1) {
+   @Export("containsFile")
+   public boolean containsFile(int var1) {
       if(this.field3235[var1] != null) {
          return true;
       } else {
@@ -310,7 +316,7 @@ public abstract class IndexDataBase {
    )
    public int method4118(String var1) {
       var1 = var1.toLowerCase();
-      int var2 = this.field3224.method3500(class60.method1053(var1));
+      int var2 = this.identifiers.getFile(class60.djb2Hash(var1));
       return this.vmethod4226(var2);
    }
 
@@ -320,9 +326,9 @@ public abstract class IndexDataBase {
       garbageValue = "-106443138"
    )
    public byte[] method4120(int var1) {
-      if(this.field3232.length == 1) {
+      if(this.childs.length == 1) {
          return this.getConfigData(0, var1);
-      } else if(this.field3232[var1].length == 1) {
+      } else if(this.childs[var1].length == 1) {
          return this.getConfigData(var1, 0);
       } else {
          throw new RuntimeException();
@@ -334,7 +340,8 @@ public abstract class IndexDataBase {
       signature = "(II)[I",
       garbageValue = "-551342685"
    )
-   public int[] method4121(int var1) {
+   @Export("getChilds")
+   public int[] getChilds(int var1) {
       return this.archiveFileIds[var1];
    }
 
@@ -344,10 +351,10 @@ public abstract class IndexDataBase {
       garbageValue = "-576103713"
    )
    public byte[] method4122(int var1) {
-      if(this.field3232.length == 1) {
-         return this.method4185(0, var1);
-      } else if(this.field3232[var1].length == 1) {
-         return this.method4185(var1, 0);
+      if(this.childs.length == 1) {
+         return this.getChild(0, var1);
+      } else if(this.childs[var1].length == 1) {
+         return this.getChild(var1, 0);
       } else {
          throw new RuntimeException();
       }
@@ -359,8 +366,8 @@ public abstract class IndexDataBase {
       garbageValue = "160969676"
    )
    public void method4127(int var1) {
-      for(int var2 = 0; var2 < this.field3232[var1].length; ++var2) {
-         this.field3232[var1][var2] = null;
+      for(int var2 = 0; var2 < this.childs[var1].length; ++var2) {
+         this.childs[var1][var2] = null;
       }
 
    }
@@ -376,7 +383,7 @@ public abstract class IndexDataBase {
       } else {
          int var3 = this.archiveNumberOfFiles[var1];
          int[] var4 = this.archiveFileIds[var1];
-         Object[] var5 = this.field3232[var1];
+         Object[] var5 = this.childs[var1];
          boolean var6 = true;
 
          for(int var7 = 0; var7 < var3; ++var7) {
@@ -391,70 +398,70 @@ public abstract class IndexDataBase {
          } else {
             byte[] var18;
             if(var2 != null && (var2[0] != 0 || var2[1] != 0 || var2[2] != 0 || var2[3] != 0)) {
-               var18 = class69.method1134(this.field3235[var1], true);
+               var18 = ScriptEvent.toByteArray(this.field3235[var1], true);
                Buffer var8 = new Buffer(var18);
                var8.decryptXtea(var2, 5, var8.payload.length);
             } else {
-               var18 = class69.method1134(this.field3235[var1], false);
+               var18 = ScriptEvent.toByteArray(this.field3235[var1], false);
             }
 
-            byte[] var20 = class162.method3047(var18);
+            byte[] var19 = class162.decodeContainer(var18);
             if(this.field3229) {
                this.field3235[var1] = null;
             }
 
             if(var3 > 1) {
-               int var9 = var20.length;
+               int var9 = var19.length;
                --var9;
-               int var10 = var20[var9] & 255;
+               int var10 = var19[var9] & 255;
                var9 -= var10 * var3 * 4;
-               Buffer var11 = new Buffer(var20);
+               Buffer var11 = new Buffer(var19);
                int[] var12 = new int[var3];
                var11.offset = var9;
 
+               int var13;
                int var14;
-               int var15;
-               for(int var13 = 0; var13 < var10; ++var13) {
-                  var14 = 0;
+               for(int var15 = 0; var15 < var10; ++var15) {
+                  var13 = 0;
 
-                  for(var15 = 0; var15 < var3; ++var15) {
-                     var14 += var11.readInt();
-                     var12[var15] += var14;
+                  for(var14 = 0; var14 < var3; ++var14) {
+                     var13 += var11.readInt();
+                     var12[var14] += var13;
                   }
                }
 
-               byte[][] var19 = new byte[var3][];
+               byte[][] var20 = new byte[var3][];
 
-               for(var14 = 0; var14 < var3; ++var14) {
-                  var19[var14] = new byte[var12[var14]];
-                  var12[var14] = 0;
+               for(var13 = 0; var13 < var3; ++var13) {
+                  var20[var13] = new byte[var12[var13]];
+                  var12[var13] = 0;
                }
 
                var11.offset = var9;
-               var14 = 0;
+               var13 = 0;
 
-               for(var15 = 0; var15 < var10; ++var15) {
+               for(var14 = 0; var14 < var10; ++var14) {
                   int var16 = 0;
 
                   for(int var17 = 0; var17 < var3; ++var17) {
                      var16 += var11.readInt();
-                     System.arraycopy(var20, var14, var19[var17], var12[var17], var16);
+                     System.arraycopy(var19, var13, var20[var17], var12[var17], var16);
                      var12[var17] += var16;
-                     var14 += var16;
+                     var13 += var16;
                   }
                }
 
-               for(var15 = 0; var15 < var3; ++var15) {
+               for(var14 = 0; var14 < var3; ++var14) {
                   if(!this.field3236) {
-                     var5[var4[var15]] = FrameMap.method2665(var19[var15], false);
+                     var5[var4[var14]] = FrameMap.method2665(var20[var14], false);
                   } else {
-                     var5[var4[var15]] = var19[var15];
+                     var5[var4[var14]] = var20[var14];
                   }
                }
             } else if(!this.field3236) {
-               var5[var4[0]] = FrameMap.method2665(var20, false);
+               var5[var4[0]] = FrameMap.method2665(var19, false);
             } else {
-               var5[var4[0]] = var20;
+               var5[var4[0]] = var19;
             }
 
             return true;
@@ -467,9 +474,10 @@ public abstract class IndexDataBase {
       signature = "(ILjava/lang/String;B)I",
       garbageValue = "-48"
    )
-   public int method4131(int var1, String var2) {
+   @Export("getChild")
+   public int getChild(int var1, String var2) {
       var2 = var2.toLowerCase();
-      return this.field3223[var1].method3500(class60.method1053(var2));
+      return this.childIdentifiers[var1].getFile(class60.djb2Hash(var2));
    }
 
    @ObfuscatedName("l")
@@ -477,8 +485,9 @@ public abstract class IndexDataBase {
       signature = "(II)I",
       garbageValue = "-2141591179"
    )
-   public int method4133(int var1) {
-      return this.field3232[var1].length;
+   @Export("fileCount")
+   public int fileCount(int var1) {
+      return this.childs[var1].length;
    }
 
    @ObfuscatedName("h")
@@ -489,8 +498,8 @@ public abstract class IndexDataBase {
    public boolean method4134(String var1, String var2) {
       var1 = var1.toLowerCase();
       var2 = var2.toLowerCase();
-      int var3 = this.field3224.method3500(class60.method1053(var1));
-      int var4 = this.field3223[var3].method3500(class60.method1053(var2));
+      int var3 = this.identifiers.getFile(class60.djb2Hash(var1));
+      int var4 = this.childIdentifiers[var3].getFile(class60.djb2Hash(var2));
       return this.method4116(var3, var4);
    }
 
@@ -501,8 +510,8 @@ public abstract class IndexDataBase {
    )
    public boolean method4135(String var1) {
       var1 = var1.toLowerCase();
-      int var2 = this.field3224.method3500(class60.method1053(var1));
-      return this.method4117(var2);
+      int var2 = this.identifiers.getFile(class60.djb2Hash(var1));
+      return this.containsFile(var2);
    }
 
    IndexDataBase(boolean var1, boolean var2) {
@@ -515,8 +524,9 @@ public abstract class IndexDataBase {
       signature = "(I)I",
       garbageValue = "-1120779352"
    )
-   public int method4136() {
-      return this.field3232.length;
+   @Export("size")
+   public int size() {
+      return this.childs.length;
    }
 
    @ObfuscatedName("x")
@@ -526,10 +536,11 @@ public abstract class IndexDataBase {
    )
    public void method4143(String var1) {
       var1 = var1.toLowerCase();
-      int var2 = this.field3224.method3500(class60.method1053(var1));
+      int var2 = this.identifiers.getFile(class60.djb2Hash(var1));
       if(var2 >= 0) {
          this.vmethod4243(var2);
       }
+
    }
 
    @ObfuscatedName("d")
@@ -540,8 +551,8 @@ public abstract class IndexDataBase {
    public byte[] method4145(String var1, String var2) {
       var1 = var1.toLowerCase();
       var2 = var2.toLowerCase();
-      int var3 = this.field3224.method3500(class60.method1053(var1));
-      int var4 = this.field3223[var3].method3500(class60.method1053(var2));
+      int var3 = this.identifiers.getFile(class60.djb2Hash(var1));
+      int var4 = this.childIdentifiers[var3].getFile(class60.djb2Hash(var2));
       return this.getConfigData(var3, var4);
    }
 
@@ -550,14 +561,10 @@ public abstract class IndexDataBase {
       signature = "(Ljava/lang/String;I)I",
       garbageValue = "24496090"
    )
-   public int method4146(String var1) {
+   @Export("getFile")
+   public int getFile(String var1) {
       var1 = var1.toLowerCase();
-      return this.field3224.method3500(class60.method1053(var1));
-   }
-
-   static {
-      field3233 = new class166();
-      field3237 = 0;
+      return this.identifiers.getFile(class60.djb2Hash(var1));
    }
 
    @ObfuscatedName("f")
@@ -565,11 +572,12 @@ public abstract class IndexDataBase {
       signature = "(I)V",
       garbageValue = "375185060"
    )
-   public void method4176() {
-      for(int var1 = 0; var1 < this.field3232.length; ++var1) {
-         if(this.field3232[var1] != null) {
-            for(int var2 = 0; var2 < this.field3232[var1].length; ++var2) {
-               this.field3232[var1][var2] = null;
+   @Export("reset")
+   public void reset() {
+      for(int var1 = 0; var1 < this.childs.length; ++var1) {
+         if(this.childs[var1] != null) {
+            for(int var2 = 0; var2 < this.childs[var1].length; ++var2) {
+               this.childs[var1][var2] = null;
             }
          }
       }
@@ -581,9 +589,10 @@ public abstract class IndexDataBase {
       signature = "(III)[B",
       garbageValue = "388386437"
    )
-   public byte[] method4185(int var1, int var2) {
-      if(var1 >= 0 && var1 < this.field3232.length && this.field3232[var1] != null && var2 >= 0 && var2 < this.field3232[var1].length) {
-         if(this.field3232[var1][var2] == null) {
+   @Export("getChild")
+   public byte[] getChild(int var1, int var2) {
+      if(var1 >= 0 && var1 < this.childs.length && this.childs[var1] != null && var2 >= 0 && var2 < this.childs[var1].length) {
+         if(this.childs[var1][var2] == null) {
             boolean var3 = this.method4129(var1, (int[])null);
             if(!var3) {
                this.vmethod4217(var1);
@@ -594,7 +603,7 @@ public abstract class IndexDataBase {
             }
          }
 
-         byte[] var4 = class69.method1134(this.field3232[var1][var2], false);
+         byte[] var4 = ScriptEvent.toByteArray(this.childs[var1][var2], false);
          return var4;
       } else {
          return null;
@@ -609,11 +618,11 @@ public abstract class IndexDataBase {
    public boolean method4190(String var1, String var2) {
       var1 = var1.toLowerCase();
       var2 = var2.toLowerCase();
-      int var3 = this.field3224.method3500(class60.method1053(var1));
+      int var3 = this.identifiers.getFile(class60.djb2Hash(var1));
       if(var3 < 0) {
          return false;
       } else {
-         int var4 = this.field3223[var3].method3500(class60.method1053(var2));
+         int var4 = this.childIdentifiers[var3].getFile(class60.djb2Hash(var2));
          return var4 >= 0;
       }
    }
@@ -633,5 +642,10 @@ public abstract class IndexDataBase {
    )
    int vmethod4226(int var1) {
       return this.field3235[var1] != null?100:0;
+   }
+
+   static {
+      gzip = new GZipDecompressor();
+      field3237 = 0;
    }
 }

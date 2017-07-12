@@ -48,6 +48,7 @@ public final class ModIcon extends Rasterizer2D {
          this.offsetX = 0;
          this.offsetY = 0;
       }
+
    }
 
    @ObfuscatedName("w")
@@ -105,10 +106,10 @@ public final class ModIcon extends Rasterizer2D {
          var5 -= var5 + var2 - Rasterizer2D.drawingAreaRight;
       }
 
-      if(var1 < Rasterizer2D.field3761) {
-         var9 = Rasterizer2D.field3761 - var1;
+      if(var1 < Rasterizer2D.draw_region_x) {
+         var9 = Rasterizer2D.draw_region_x - var1;
          var6 -= var9;
-         var1 = Rasterizer2D.field3761;
+         var1 = Rasterizer2D.draw_region_x;
          var4 += var9;
          var3 += var9;
          var8 += var9;
@@ -125,6 +126,7 @@ public final class ModIcon extends Rasterizer2D {
       if(var6 > 0 && var5 > 0) {
          method5026(Rasterizer2D.graphicsPixels, this.pixels, this.palette, var4, var3, var6, var5, var7, var8);
       }
+
    }
 
    @ObfuscatedName("t")
@@ -231,8 +233,8 @@ public final class ModIcon extends Rasterizer2D {
          var14 += var15;
       }
 
-      if(var1 < Rasterizer2D.field3761) {
-         var15 = Rasterizer2D.field3761 - var1;
+      if(var1 < Rasterizer2D.draw_region_x) {
+         var15 = Rasterizer2D.draw_region_x - var1;
          var3 -= var15;
          var13 += var15;
          var7 += var11 * var15;

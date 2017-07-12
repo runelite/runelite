@@ -101,7 +101,7 @@ public final class NPC extends Actor {
          return null;
       } else {
          Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?class224.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation != -1 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?class224.getAnimation(super.poseAnimation):null;
+         Sequence var2 = super.poseAnimation == -1 || super.idlePoseAnimation == super.poseAnimation && var1 != null?null:class224.getAnimation(super.poseAnimation);
          Model var3 = this.composition.method4651(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;
@@ -109,7 +109,7 @@ public final class NPC extends Actor {
             var3.method2493();
             super.field1288 = var3.modelHeight;
             if(super.graphic != -1 && super.field1244 != -1) {
-               Model var4 = Renderable.method2864(super.graphic).method4338(super.field1244);
+               Model var4 = Renderable.getSpotAnimType(super.graphic).method4338(super.field1244);
                if(var4 != null) {
                   var4.method2504(0, -super.field1238, 0);
                   Model[] var5 = new Model[]{var3, var4};
@@ -131,7 +131,8 @@ public final class NPC extends Actor {
       signature = "(I)Z",
       garbageValue = "-2061214073"
    )
-   final boolean vmethod1695() {
+   @Export("hasConfig")
+   final boolean hasConfig() {
       return this.composition != null;
    }
 
@@ -204,7 +205,7 @@ public final class NPC extends Actor {
       garbageValue = "1723086244"
    )
    public static void method1704() {
-      class241.field3290.reset();
+      VarPlayerType.varplayers.reset();
    }
 
    @ObfuscatedName("w")
@@ -213,18 +214,18 @@ public final class NPC extends Actor {
       garbageValue = "76"
    )
    public static Overlay method1706(int var0) {
-      Overlay var1 = (Overlay)Overlay.field3593.get((long)var0);
+      Overlay var1 = (Overlay)Overlay.overlays.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = Overlay.field3595.getConfigData(4, var0);
+         byte[] var2 = Overlay.overlay_ref.getConfigData(4, var0);
          var1 = new Overlay();
          if(var2 != null) {
-            var1.method4669(new Buffer(var2), var0);
+            var1.decode(new Buffer(var2), var0);
          }
 
-         var1.method4680();
-         Overlay.field3593.put(var1, (long)var0);
+         var1.post();
+         Overlay.overlays.put(var1, (long)var0);
          return var1;
       }
    }

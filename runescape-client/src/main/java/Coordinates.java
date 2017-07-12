@@ -140,9 +140,9 @@ public class Coordinates {
          PixelGrabber var5 = new PixelGrabber(var1, 0, 0, var2, var3, var4, 0, var2);
          var5.grabPixels();
          return new SpritePixels(var4, var2, var3);
-      } catch (IOException var7) {
+      } catch (IOException var6) {
          ;
-      } catch (InterruptedException var8) {
+      } catch (InterruptedException var7) {
          ;
       }
 

@@ -8,7 +8,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bi")
 public class class77 {
    @ObfuscatedName("a")
-   class153 field1227;
+   Task field1227;
    @ObfuscatedName("t")
    DataInputStream field1228;
    @ObfuscatedName("i")
@@ -47,7 +47,7 @@ public class class77 {
       garbageValue = "9"
    )
    byte[] method1530() throws IOException {
-      if(class172.method3128() > this.field1230) {
+      if(DState.currentTimeMs() > this.field1230) {
          throw new IOException();
       } else {
          if(this.field1231 == 0) {
@@ -56,7 +56,7 @@ public class class77 {
             }
 
             if(this.field1227.status == 1) {
-               this.field1228 = (DataInputStream)this.field1227.field2239;
+               this.field1228 = (DataInputStream)this.field1227.value;
                this.field1231 = 1;
             }
          }
@@ -83,8 +83,8 @@ public class class77 {
 
    class77(Signlink var1, URL var2) {
       this.field1229 = new byte[4];
-      this.field1227 = var1.method2928(var2);
+      this.field1227 = var1.createURL(var2);
       this.field1231 = 0;
-      this.field1230 = class172.method3128() + 30000L;
+      this.field1230 = DState.currentTimeMs() + 30000L;
    }
 }

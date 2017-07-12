@@ -60,20 +60,6 @@ public final class class61 {
    @ObfuscatedName("nh")
    static class276 field787;
 
-   static {
-      tileHeights = new int[4][105][105];
-      tileSettings = new byte[4][104][104];
-      field770 = 99;
-      field775 = new int[]{1, 2, 4, 8};
-      field776 = new int[]{16, 32, 64, 128};
-      field777 = new int[]{1, 0, -1, 0};
-      field778 = new int[]{0, -1, 0, 1};
-      field772 = new int[]{1, -1, -1, 1};
-      field786 = new int[]{-1, -1, 1, 1};
-      field779 = (int)(Math.random() * 17.0D) - 8;
-      field782 = (int)(Math.random() * 33.0D) - 16;
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(Ljava/io/File;ZI)Z",
@@ -111,7 +97,7 @@ public final class class61 {
          class83.intStack[++class46.intStackSize - 1] = var3.scrollY;
          return 1;
       } else if(var0 == 1602) {
-         class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var3.text;
+         class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var3.text;
          return 1;
       } else if(var0 == 1603) {
          class83.intStack[++class46.intStackSize - 1] = var3.scrollWidth;
@@ -120,7 +106,7 @@ public final class class61 {
          class83.intStack[++class46.intStackSize - 1] = var3.scrollHeight;
          return 1;
       } else if(var0 == 1605) {
-         class83.intStack[++class46.intStackSize - 1] = var3.field2650;
+         class83.intStack[++class46.intStackSize - 1] = var3.modelZoom;
          return 1;
       } else if(var0 == 1606) {
          class83.intStack[++class46.intStackSize - 1] = var3.rotationX;
@@ -169,5 +155,19 @@ public final class class61 {
 
          return (var0 & 'ﾀ') + var1;
       }
+   }
+
+   static {
+      tileHeights = new int[4][105][105];
+      tileSettings = new byte[4][104][104];
+      field770 = 99;
+      field775 = new int[]{1, 2, 4, 8};
+      field776 = new int[]{16, 32, 64, 128};
+      field777 = new int[]{1, 0, -1, 0};
+      field778 = new int[]{0, -1, 0, 1};
+      field772 = new int[]{1, -1, -1, 1};
+      field786 = new int[]{-1, -1, 1, 1};
+      field779 = (int)(Math.random() * 17.0D) - 8;
+      field782 = (int)(Math.random() * 33.0D) - 16;
    }
 }

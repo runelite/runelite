@@ -38,16 +38,6 @@ public class class1 {
       XItemContainer.itemContainers = new XHashTable(32);
    }
 
-   static {
-      field12 = new class1(6);
-      field1 = new class1(3);
-      field2 = new class1(4);
-      field3 = new class1(5);
-      field4 = new class1(1);
-      field7 = new class1(0);
-      field6 = new class1(2);
-   }
-
    @ObfuscatedName("gy")
    @ObfuscatedSignature(
       signature = "(ZI)V",
@@ -58,14 +48,73 @@ public class class1 {
       Client.isDynamicRegion = var0;
       int var1;
       int var2;
+      int var3;
       int var4;
       int var5;
       int var6;
-      int var7;
       if(!Client.isDynamicRegion) {
          var1 = Client.secretPacketBuffer2.readByteOb1();
          var2 = Client.secretPacketBuffer2.readByteOb1();
-         int var3 = Client.secretPacketBuffer2.readUnsignedShort();
+         int var7 = Client.secretPacketBuffer2.readUnsignedShort();
+         class28.xteaKeys = new int[var7][4];
+
+         for(var3 = 0; var3 < var7; ++var3) {
+            for(var4 = 0; var4 < 4; ++var4) {
+               class28.xteaKeys[var3][var4] = Client.secretPacketBuffer2.readInt();
+            }
+         }
+
+         RSCanvas.mapRegions = new int[var7];
+         WorldMapType3.field394 = new int[var7];
+         class45.landRegionFielIds = new int[var7];
+         ISAACCipher.field2429 = new byte[var7][];
+         class14.field290 = new byte[var7][];
+         boolean var8 = false;
+         if((var2 / 8 == 48 || var2 / 8 == 49) && var1 / 8 == 48) {
+            var8 = true;
+         }
+
+         if(var2 / 8 == 48 && var1 / 8 == 148) {
+            var8 = true;
+         }
+
+         var7 = 0;
+
+         for(var4 = (var2 - 6) / 8; var4 <= (var2 + 6) / 8; ++var4) {
+            for(var5 = (var1 - 6) / 8; var5 <= (var1 + 6) / 8; ++var5) {
+               var6 = (var4 << 8) + var5;
+               if(!var8 || var5 != 49 && var5 != 149 && var5 != 147 && var4 != 50 && (var4 != 49 || var5 != 47)) {
+                  RSCanvas.mapRegions[var7] = var6;
+                  WorldMapType3.field394[var7] = Frames.indexMaps.getFile("m" + var4 + "_" + var5);
+                  class45.landRegionFielIds[var7] = Frames.indexMaps.getFile("l" + var4 + "_" + var5);
+                  ++var7;
+               }
+            }
+         }
+
+         class112.method2095(var2, var1, true);
+      } else {
+         var1 = Client.secretPacketBuffer2.readUnsignedShortOb1();
+         var2 = Client.secretPacketBuffer2.readByteOb1();
+         boolean var14 = Client.secretPacketBuffer2.method3292() == 1;
+         var3 = Client.secretPacketBuffer2.readUnsignedShort();
+         Client.secretPacketBuffer2.bitAccess();
+
+         int var15;
+         for(var4 = 0; var4 < 4; ++var4) {
+            for(var5 = 0; var5 < 13; ++var5) {
+               for(var6 = 0; var6 < 13; ++var6) {
+                  var15 = Client.secretPacketBuffer2.getBits(1);
+                  if(var15 == 1) {
+                     Client.field988[var4][var5][var6] = Client.secretPacketBuffer2.getBits(26);
+                  } else {
+                     Client.field988[var4][var5][var6] = -1;
+                  }
+               }
+            }
+         }
+
+         Client.secretPacketBuffer2.byteAccess();
          class28.xteaKeys = new int[var3][4];
 
          for(var4 = 0; var4 < var3; ++var4) {
@@ -76,81 +125,22 @@ public class class1 {
 
          RSCanvas.mapRegions = new int[var3];
          WorldMapType3.field394 = new int[var3];
-         class45.field616 = new int[var3];
+         class45.landRegionFielIds = new int[var3];
          ISAACCipher.field2429 = new byte[var3][];
          class14.field290 = new byte[var3][];
-         boolean var15 = false;
-         if((var2 / 8 == 48 || var2 / 8 == 49) && var1 / 8 == 48) {
-            var15 = true;
-         }
-
-         if(var2 / 8 == 48 && var1 / 8 == 148) {
-            var15 = true;
-         }
-
          var3 = 0;
 
-         for(var5 = (var2 - 6) / 8; var5 <= (var2 + 6) / 8; ++var5) {
-            for(var6 = (var1 - 6) / 8; var6 <= (var1 + 6) / 8; ++var6) {
-               var7 = (var5 << 8) + var6;
-               if(!var15 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
-                  RSCanvas.mapRegions[var3] = var7;
-                  WorldMapType3.field394[var3] = Frames.indexMaps.method4146("m" + var5 + "_" + var6);
-                  class45.field616[var3] = Frames.indexMaps.method4146("l" + var5 + "_" + var6);
-                  ++var3;
-               }
-            }
-         }
-
-         class112.method2095(var2, var1, true);
-      } else {
-         var1 = Client.secretPacketBuffer2.readUnsignedShortOb1();
-         var2 = Client.secretPacketBuffer2.readByteOb1();
-         boolean var14 = Client.secretPacketBuffer2.method3292() == 1;
-         var4 = Client.secretPacketBuffer2.readUnsignedShort();
-         Client.secretPacketBuffer2.method3410();
-
-         int var8;
-         for(var5 = 0; var5 < 4; ++var5) {
-            for(var6 = 0; var6 < 13; ++var6) {
-               for(var7 = 0; var7 < 13; ++var7) {
-                  var8 = Client.secretPacketBuffer2.method3388(1);
-                  if(var8 == 1) {
-                     Client.field988[var5][var6][var7] = Client.secretPacketBuffer2.method3388(26);
-                  } else {
-                     Client.field988[var5][var6][var7] = -1;
-                  }
-               }
-            }
-         }
-
-         Client.secretPacketBuffer2.method3384();
-         class28.xteaKeys = new int[var4][4];
-
-         for(var5 = 0; var5 < var4; ++var5) {
-            for(var6 = 0; var6 < 4; ++var6) {
-               class28.xteaKeys[var5][var6] = Client.secretPacketBuffer2.readInt();
-            }
-         }
-
-         RSCanvas.mapRegions = new int[var4];
-         WorldMapType3.field394 = new int[var4];
-         class45.field616 = new int[var4];
-         ISAACCipher.field2429 = new byte[var4][];
-         class14.field290 = new byte[var4][];
-         var4 = 0;
-
-         for(var5 = 0; var5 < 4; ++var5) {
-            for(var6 = 0; var6 < 13; ++var6) {
-               for(var7 = 0; var7 < 13; ++var7) {
-                  var8 = Client.field988[var5][var6][var7];
-                  if(var8 != -1) {
-                     int var9 = var8 >> 14 & 1023;
-                     int var10 = var8 >> 3 & 2047;
+         for(var4 = 0; var4 < 4; ++var4) {
+            for(var5 = 0; var5 < 13; ++var5) {
+               for(var6 = 0; var6 < 13; ++var6) {
+                  var15 = Client.field988[var4][var5][var6];
+                  if(var15 != -1) {
+                     int var9 = var15 >> 14 & 1023;
+                     int var10 = var15 >> 3 & 2047;
                      int var11 = (var9 / 8 << 8) + var10 / 8;
 
                      int var12;
-                     for(var12 = 0; var12 < var4; ++var12) {
+                     for(var12 = 0; var12 < var3; ++var12) {
                         if(var11 == RSCanvas.mapRegions[var12]) {
                            var11 = -1;
                            break;
@@ -158,12 +148,12 @@ public class class1 {
                      }
 
                      if(var11 != -1) {
-                        RSCanvas.mapRegions[var4] = var11;
+                        RSCanvas.mapRegions[var3] = var11;
                         var12 = var11 >> 8 & 255;
                         int var13 = var11 & 255;
-                        WorldMapType3.field394[var4] = Frames.indexMaps.method4146("m" + var12 + "_" + var13);
-                        class45.field616[var4] = Frames.indexMaps.method4146("l" + var12 + "_" + var13);
-                        ++var4;
+                        WorldMapType3.field394[var3] = Frames.indexMaps.getFile("m" + var12 + "_" + var13);
+                        class45.landRegionFielIds[var3] = Frames.indexMaps.getFile("l" + var12 + "_" + var13);
+                        ++var3;
                      }
                   }
                }
@@ -180,7 +170,8 @@ public class class1 {
       signature = "(Ljava/lang/String;I)Z",
       garbageValue = "-2032702023"
    )
-   static boolean method2(String var0) {
+   @Export("isIgnored")
+   static boolean isIgnored(String var0) {
       if(var0 == null) {
          return false;
       } else {
@@ -219,15 +210,15 @@ public class class1 {
 
       try {
          var0 = class22.getPreferencesFile("", Client.field1207.field3203, true);
-         Buffer var1 = class8.field247.method1609();
-         var0.method2363(var1.payload, 0, var1.offset);
+         Buffer var1 = class8.settings.serialize();
+         var0.write(var1.payload, 0, var1.offset);
       } catch (Exception var3) {
          ;
       }
 
       try {
          if(var0 != null) {
-            var0.method2381();
+            var0.close();
          }
       } catch (Exception var2) {
          ;
@@ -244,23 +235,23 @@ public class class1 {
    static boolean loadWorlds() {
       try {
          if(World.worldServersDownload == null) {
-            World.worldServersDownload = new class77(GameEngine.field720, new URL(WorldMapType1.field443));
+            World.worldServersDownload = new class77(GameEngine.taskManager, new URL(WorldMapType1.field443));
          } else {
             byte[] var0 = World.worldServersDownload.method1530();
             if(var0 != null) {
                Buffer var1 = new Buffer(var0);
-               World.field1309 = var1.readUnsignedShort();
-               World.worldList = new World[World.field1309];
+               World.worldCount = var1.readUnsignedShort();
+               World.worldList = new World[World.worldCount];
 
-               World var3;
-               for(int var2 = 0; var2 < World.field1309; var3.index = var2++) {
-                  var3 = World.worldList[var2] = new World();
-                  var3.id = var1.readUnsignedShort();
-                  var3.mask = var1.readInt();
-                  var3.address = var1.readString();
-                  var3.activity = var1.readString();
-                  var3.location = var1.readUnsignedByte();
-                  var3.playerCount = var1.readShort();
+               World var2;
+               for(int var3 = 0; var3 < World.worldCount; var2.index = var3++) {
+                  var2 = World.worldList[var3] = new World();
+                  var2.id = var1.readUnsignedShort();
+                  var2.mask = var1.readInt();
+                  var2.address = var1.readString();
+                  var2.activity = var1.readString();
+                  var2.location = var1.readUnsignedByte();
+                  var2.playerCount = var1.readShort();
                }
 
                class9.method48(World.worldList, 0, World.worldList.length - 1, World.field1312, World.field1318);
@@ -316,16 +307,16 @@ public class class1 {
 
          if(var4 != 0) {
             ++var0.field1252;
-            boolean var6;
+            boolean var5;
             if(var4 > 1024) {
                var0.angle -= var0.field1291;
-               var6 = true;
+               var5 = true;
                if(var4 < var0.field1291 || var4 > 2048 - var0.field1291) {
                   var0.angle = var0.orientation;
-                  var6 = false;
+                  var5 = false;
                }
 
-               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1252 > 25 || var6)) {
+               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1252 > 25 || var5)) {
                   if(var0.field1290 != -1) {
                      var0.poseAnimation = var0.field1290;
                   } else {
@@ -334,13 +325,13 @@ public class class1 {
                }
             } else {
                var0.angle += var0.field1291;
-               var6 = true;
+               var5 = true;
                if(var4 < var0.field1291 || var4 > 2048 - var0.field1291) {
                   var0.angle = var0.orientation;
-                  var6 = false;
+                  var5 = false;
                }
 
-               if(var0.poseAnimation == var0.idlePoseAnimation && (var0.field1252 > 25 || var6)) {
+               if(var0.poseAnimation == var0.idlePoseAnimation && (var0.field1252 > 25 || var5)) {
                   if(var0.field1245 != -1) {
                      var0.poseAnimation = var0.field1245;
                   } else {
@@ -353,7 +344,17 @@ public class class1 {
          } else {
             var0.field1252 = 0;
          }
-
       }
+
+   }
+
+   static {
+      field12 = new class1(6);
+      field1 = new class1(3);
+      field2 = new class1(4);
+      field3 = new class1(5);
+      field4 = new class1(1);
+      field7 = new class1(0);
+      field6 = new class1(2);
    }
 }

@@ -1,10 +1,12 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("kq")
 public class class289 {
    @ObfuscatedName("e")
-   final String field3853;
+   @Export("identifier")
+   final String identifier;
    @ObfuscatedName("t")
    static final class289 field3854;
    @ObfuscatedName("a")
@@ -29,6 +31,20 @@ public class class289 {
    @ObfuscatedName("w")
    static final class289 field3863;
 
+   public String toString() {
+      return this.identifier;
+   }
+
+   class289(int var1, int var2, String var3, String var4) {
+      this.field3859 = var1;
+      this.identifier = var4;
+   }
+
+   class289(int var1, int var2, String var3, String var4, boolean var5, class289[] var6) {
+      this.field3859 = var1;
+      this.identifier = var4;
+   }
+
    static {
       field3862 = new class289(0, 0, "", "");
       field3863 = new class289(2, 1, "", "");
@@ -39,19 +55,5 @@ public class class289 {
       field3856 = new class289(6, 6, "", "");
       field3860 = new class289(7, 7, "", "");
       field3861 = new class289(3, -1, "", "", true, new class289[]{field3862, field3863, field3855, field3857, field3854});
-   }
-
-   public String toString() {
-      return this.field3853;
-   }
-
-   class289(int var1, int var2, String var3, String var4) {
-      this.field3859 = var1;
-      this.field3853 = var4;
-   }
-
-   class289(int var1, int var2, String var3, String var4, boolean var5, class289[] var6) {
-      this.field3859 = var1;
-      this.field3853 = var4;
    }
 }

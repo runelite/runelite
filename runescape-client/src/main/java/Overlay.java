@@ -11,19 +11,23 @@ public class Overlay extends CacheableNode {
    @Export("isHidden")
    public boolean isHidden;
    @ObfuscatedName("w")
-   public static NodeCache field3593;
+   @Export("overlays")
+   public static NodeCache overlays;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 955412321
    )
-   public int field3594;
+   @Export("otherLightness")
+   public int otherLightness;
    @ObfuscatedName("i")
-   static IndexDataBase field3595;
+   @Export("overlay_ref")
+   static IndexDataBase overlay_ref;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 1140633221
    )
-   public int field3596;
+   @Export("otherHue")
+   public int otherHue;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -575555131
@@ -52,12 +56,14 @@ public class Overlay extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 815523175
    )
-   public int field3601;
+   @Export("otherRgbColor")
+   public int otherRgbColor;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -972520587
    )
-   public int field3602;
+   @Export("otherSaturation")
+   public int otherSaturation;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -46483283
@@ -70,7 +76,8 @@ public class Overlay extends CacheableNode {
       signature = "(LBuffer;II)V",
       garbageValue = "-2082295894"
    )
-   void method4669(Buffer var1, int var2) {
+   @Export("decode")
+   void decode(Buffer var1, int var2) {
       while(true) {
          int var3 = var1.readUnsignedByte();
          if(var3 == 0) {
@@ -86,7 +93,8 @@ public class Overlay extends CacheableNode {
       signature = "(II)V",
       garbageValue = "-208891006"
    )
-   void method4673(int var1) {
+   @Export("setHSL")
+   void setHSL(int var1) {
       double var2 = (double)(var1 >> 16 & 255) / 256.0D;
       double var4 = (double)(var1 >> 8 & 255) / 256.0D;
       double var6 = (double)(var1 & 255) / 256.0D;
@@ -147,10 +155,6 @@ public class Overlay extends CacheableNode {
 
    }
 
-   static {
-      field3593 = new NodeCache(64);
-   }
-
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(LBuffer;IIB)V",
@@ -164,7 +168,7 @@ public class Overlay extends CacheableNode {
       } else if(var2 == 5) {
          this.isHidden = false;
       } else if(var2 == 7) {
-         this.field3601 = var1.read24BitInt();
+         this.otherRgbColor = var1.read24BitInt();
       } else if(var2 == 8) {
          ;
       }
@@ -176,21 +180,26 @@ public class Overlay extends CacheableNode {
       signature = "(B)V",
       garbageValue = "-37"
    )
-   void method4680() {
-      if(this.field3601 != -1) {
-         this.method4673(this.field3601);
-         this.field3596 = this.hue;
-         this.field3602 = this.saturation;
-         this.field3594 = this.lightness;
+   @Export("post")
+   void post() {
+      if(this.otherRgbColor != -1) {
+         this.setHSL(this.otherRgbColor);
+         this.otherHue = this.hue;
+         this.otherSaturation = this.saturation;
+         this.otherLightness = this.lightness;
       }
 
-      this.method4673(this.color);
+      this.setHSL(this.color);
    }
 
    Overlay() {
       this.color = 0;
       this.texture = -1;
       this.isHidden = true;
-      this.field3601 = -1;
+      this.otherRgbColor = -1;
+   }
+
+   static {
+      overlays = new NodeCache(64);
    }
 }

@@ -12,6 +12,6 @@ public class class225 {
       garbageValue = "72"
    )
    public static void method4082() {
-      Area.field3296.reset();
+      Area.skeletonsIndex.reset();
    }
 }

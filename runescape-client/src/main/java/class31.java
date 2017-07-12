@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -5,7 +6,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("au")
 public class class31 {
    @ObfuscatedName("gn")
-   static SpritePixels field452;
+   @Export("mapedge")
+   static SpritePixels mapedge;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 1253884571
@@ -41,10 +43,11 @@ public class class31 {
    )
    static void method265(int var0, int var1) {
       long var2 = (long)((var0 << 16) + var1);
-      class234 var4 = (class234)class238.field3268.method3530(var2);
+      FileRequest var4 = (FileRequest)class238.field3268.get(var2);
       if(var4 != null) {
-         class238.field3267.method3467(var4);
+         class238.field3267.setHead(var4);
       }
+
    }
 
    class31(int var1, int var2, int var3) {
@@ -62,9 +65,9 @@ public class class31 {
       Client.secretPacketBuffer1.offset = 0;
       Client.secretPacketBuffer2.offset = 0;
       Client.packetType = -1;
-      Client.field964 = 1;
-      Client.field976 = -1;
-      Client.field977 = -1;
+      Client.lastFrameId = 1;
+      Client.secondLastFrameId = -1;
+      Client.thridLastFrameId = -1;
       Client.packetLength = 0;
       Client.field973 = 0;
       Client.field942 = 0;
@@ -99,60 +102,60 @@ public class class31 {
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lclass69;II)V",
+      signature = "(LScriptEvent;II)V",
       garbageValue = "-1681320379"
    )
-   static void method267(class69 var0, int var1) {
+   static void method267(ScriptEvent var0, int var1) {
       Object[] var2 = var0.field857;
-      class219 var5 = var0.field858;
-      boolean var4 = var5 == class219.field2801 || var5 == class219.field2795 || var5 == class219.field2796 || var5 == class219.field2797 || var5 == class219.field2798 || var5 == class219.field2799 || var5 == class219.field2800 || var5 == class219.field2794;
-      Script var3;
-      int var24;
+      class219 var3 = var0.field858;
+      boolean var4 = var3 == class219.field2801 || var3 == class219.field2795 || var3 == class219.field2796 || var3 == class219.field2797 || var3 == class219.field2798 || var3 == class219.field2799 || var3 == class219.field2800 || var3 == class219.field2794;
+      Script var5;
+      int var6;
       if(var4) {
          WorldMapType1.field449 = (class47)var2[0];
-         Area var6 = Area.field3303[WorldMapType1.field449.field633];
-         var3 = Client.method1231(var0.field858, var6.field3297, var6.field3307);
+         Area var7 = Area.field3303[WorldMapType1.field449.field633];
+         var5 = Client.method1231(var0.field858, var7.field3297, var7.field3307);
       } else {
-         var24 = ((Integer)var2[0]).intValue();
-         Script var8 = (Script)Script.field1551.get((long)var24);
-         Script var7;
-         if(var8 != null) {
-            var7 = var8;
+         var6 = ((Integer)var2[0]).intValue();
+         Script var46 = (Script)Script.field1551.get((long)var6);
+         Script var8;
+         if(var46 != null) {
+            var8 = var46;
          } else {
-            byte[] var37 = class169.indexScripts.getConfigData(var24, 0);
-            if(var37 == null) {
-               var7 = null;
+            byte[] var9 = class169.indexScripts.getConfigData(var6, 0);
+            if(var9 == null) {
+               var8 = null;
             } else {
-               var8 = class48.method738(var37);
-               Script.field1551.put(var8, (long)var24);
-               var7 = var8;
+               var46 = class48.method738(var9);
+               Script.field1551.put(var46, (long)var6);
+               var8 = var46;
             }
          }
 
-         var3 = var7;
+         var5 = var8;
       }
 
-      if(var3 != null) {
+      if(var5 != null) {
          class46.intStackSize = 0;
-         class50.scriptStringStackSize = 0;
-         var24 = -1;
-         int[] var41 = var3.instructions;
-         int[] var42 = var3.intOperands;
-         byte var9 = -1;
+         KeyFocusListener.scriptStringStackSize = 0;
+         var6 = -1;
+         int[] var47 = var5.instructions;
+         int[] var48 = var5.intOperands;
+         byte var49 = -1;
          class83.scriptStackCount = 0;
 
-         int var12;
+         int var10;
          try {
-            class83.scriptLocalInts = new int[var3.localIntCount];
-            int var10 = 0;
-            class83.scriptLocalStrings = new String[var3.localStringCount];
+            class83.scriptLocalInts = new int[var5.localIntCount];
             int var11 = 0;
+            class83.scriptLocalStrings = new String[var5.localStringCount];
+            int var50 = 0;
 
             int var13;
-            String var25;
-            for(var12 = 1; var12 < var2.length; ++var12) {
-               if(var2[var12] instanceof Integer) {
-                  var13 = ((Integer)var2[var12]).intValue();
+            String var14;
+            for(var10 = 1; var10 < var2.length; ++var10) {
+               if(var2[var10] instanceof Integer) {
+                  var13 = ((Integer)var2[var10]).intValue();
                   if(var13 == -2147483647) {
                      var13 = var0.field850;
                   }
@@ -162,7 +165,7 @@ public class class31 {
                   }
 
                   if(var13 == -2147483645) {
-                     var13 = var0.field849 != null?var0.field849.id:-1;
+                     var13 = var0.widget != null?var0.widget.id:-1;
                   }
 
                   if(var13 == -2147483644) {
@@ -170,7 +173,7 @@ public class class31 {
                   }
 
                   if(var13 == -2147483643) {
-                     var13 = var0.field849 != null?var0.field849.index:-1;
+                     var13 = var0.widget != null?var0.widget.index:-1;
                   }
 
                   if(var13 == -2147483642) {
@@ -189,18 +192,18 @@ public class class31 {
                      var13 = var0.field855;
                   }
 
-                  class83.scriptLocalInts[var10++] = var13;
-               } else if(var2[var12] instanceof String) {
-                  var25 = (String)var2[var12];
-                  if(var25.equals("event_opbase")) {
-                     var25 = var0.field856;
+                  class83.scriptLocalInts[var11++] = var13;
+               } else if(var2[var10] instanceof String) {
+                  var14 = (String)var2[var10];
+                  if(var14.equals("event_opbase")) {
+                     var14 = var0.field856;
                   }
 
-                  class83.scriptLocalStrings[var11++] = var25;
+                  class83.scriptLocalStrings[var50++] = var14;
                }
             }
 
-            var12 = 0;
+            var10 = 0;
             class83.field1367 = var0.field851;
 
             while(true) {
@@ -228,240 +231,240 @@ public class class31 {
                                                                               while(true) {
                                                                                  while(true) {
                                                                                     while(true) {
-                                                                                       label2630:
+                                                                                       label2058:
                                                                                        while(true) {
-                                                                                          ++var12;
-                                                                                          if(var12 > var1) {
+                                                                                          ++var10;
+                                                                                          if(var10 > var1) {
                                                                                              throw new RuntimeException();
                                                                                           }
 
-                                                                                          ++var24;
-                                                                                          int var43 = var41[var24];
-                                                                                          int var14;
+                                                                                          ++var6;
+                                                                                          int var15 = var47[var6];
                                                                                           int var16;
+                                                                                          int var17;
                                                                                           int var18;
+                                                                                          int var19;
                                                                                           int var20;
-                                                                                          int var28;
-                                                                                          int var31;
-                                                                                          String var32;
-                                                                                          String var48;
-                                                                                          String var56;
-                                                                                          if(var43 < 100) {
-                                                                                             if(var43 != 0) {
-                                                                                                if(var43 != 1) {
-                                                                                                   if(var43 != 2) {
-                                                                                                      if(var43 != 3) {
-                                                                                                         if(var43 != 6) {
-                                                                                                            if(var43 != 7) {
-                                                                                                               if(var43 != 8) {
-                                                                                                                  if(var43 != 9) {
-                                                                                                                     if(var43 != 10) {
-                                                                                                                        if(var43 != 21) {
-                                                                                                                           if(var43 != 25) {
-                                                                                                                              if(var43 != 27) {
-                                                                                                                                 if(var43 != 31) {
-                                                                                                                                    if(var43 != 32) {
-                                                                                                                                       if(var43 != 33) {
-                                                                                                                                          if(var43 != 34) {
-                                                                                                                                             if(var43 != 35) {
-                                                                                                                                                if(var43 != 36) {
-                                                                                                                                                   if(var43 != 37) {
-                                                                                                                                                      if(var43 != 38) {
-                                                                                                                                                         if(var43 != 39) {
-                                                                                                                                                            if(var43 != 40) {
-                                                                                                                                                               if(var43 != 42) {
-                                                                                                                                                                  if(var43 != 43) {
-                                                                                                                                                                     if(var43 == 44) {
-                                                                                                                                                                        var13 = var42[var24] >> 16;
-                                                                                                                                                                        var14 = var42[var24] & '\uffff';
-                                                                                                                                                                        int var91 = class83.intStack[--class46.intStackSize];
-                                                                                                                                                                        if(var91 >= 0 && var91 <= 5000) {
-                                                                                                                                                                           class83.field1358[var13] = var91;
-                                                                                                                                                                           byte var86 = -1;
-                                                                                                                                                                           if(var14 == 105) {
-                                                                                                                                                                              var86 = 0;
+                                                                                          int var21;
+                                                                                          String var22;
+                                                                                          String var23;
+                                                                                          String var24;
+                                                                                          if(var15 < 100) {
+                                                                                             if(var15 != 0) {
+                                                                                                if(var15 != 1) {
+                                                                                                   if(var15 != 2) {
+                                                                                                      if(var15 != 3) {
+                                                                                                         if(var15 != 6) {
+                                                                                                            if(var15 != 7) {
+                                                                                                               if(var15 != 8) {
+                                                                                                                  if(var15 != 9) {
+                                                                                                                     if(var15 != 10) {
+                                                                                                                        if(var15 != 21) {
+                                                                                                                           if(var15 != 25) {
+                                                                                                                              if(var15 != 27) {
+                                                                                                                                 if(var15 != 31) {
+                                                                                                                                    if(var15 != 32) {
+                                                                                                                                       if(var15 != 33) {
+                                                                                                                                          if(var15 != 34) {
+                                                                                                                                             if(var15 != 35) {
+                                                                                                                                                if(var15 != 36) {
+                                                                                                                                                   if(var15 != 37) {
+                                                                                                                                                      if(var15 != 38) {
+                                                                                                                                                         if(var15 != 39) {
+                                                                                                                                                            if(var15 != 40) {
+                                                                                                                                                               if(var15 != 42) {
+                                                                                                                                                                  if(var15 != 43) {
+                                                                                                                                                                     if(var15 == 44) {
+                                                                                                                                                                        var13 = var48[var6] >> 16;
+                                                                                                                                                                        var16 = var48[var6] & '\uffff';
+                                                                                                                                                                        int var64 = class83.intStack[--class46.intStackSize];
+                                                                                                                                                                        if(var64 >= 0 && var64 <= 5000) {
+                                                                                                                                                                           class83.field1358[var13] = var64;
+                                                                                                                                                                           byte var88 = -1;
+                                                                                                                                                                           if(var16 == 105) {
+                                                                                                                                                                              var88 = 0;
                                                                                                                                                                            }
 
-                                                                                                                                                                           var31 = 0;
+                                                                                                                                                                           var21 = 0;
 
                                                                                                                                                                            while(true) {
-                                                                                                                                                                              if(var31 >= var91) {
-                                                                                                                                                                                 continue label2630;
+                                                                                                                                                                              if(var21 >= var64) {
+                                                                                                                                                                                 continue label2058;
                                                                                                                                                                               }
 
-                                                                                                                                                                              class83.field1363[var13][var31] = var86;
-                                                                                                                                                                              ++var31;
+                                                                                                                                                                              class83.SHAPE_VERTICIES[var13][var21] = var88;
+                                                                                                                                                                              ++var21;
                                                                                                                                                                            }
                                                                                                                                                                         }
 
                                                                                                                                                                         throw new RuntimeException();
-                                                                                                                                                                     } else if(var43 == 45) {
-                                                                                                                                                                        var13 = var42[var24];
-                                                                                                                                                                        var14 = class83.intStack[--class46.intStackSize];
-                                                                                                                                                                        if(var14 < 0 || var14 >= class83.field1358[var13]) {
+                                                                                                                                                                     } else if(var15 == 45) {
+                                                                                                                                                                        var13 = var48[var6];
+                                                                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
+                                                                                                                                                                        if(var16 < 0 || var16 >= class83.field1358[var13]) {
                                                                                                                                                                            throw new RuntimeException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class83.intStack[++class46.intStackSize - 1] = class83.field1363[var13][var14];
-                                                                                                                                                                     } else if(var43 == 46) {
-                                                                                                                                                                        var13 = var42[var24];
+                                                                                                                                                                        class83.intStack[++class46.intStackSize - 1] = class83.SHAPE_VERTICIES[var13][var16];
+                                                                                                                                                                     } else if(var15 == 46) {
+                                                                                                                                                                        var13 = var48[var6];
                                                                                                                                                                         class46.intStackSize -= 2;
-                                                                                                                                                                        var14 = class83.intStack[class46.intStackSize];
-                                                                                                                                                                        if(var14 < 0 || var14 >= class83.field1358[var13]) {
+                                                                                                                                                                        var16 = class83.intStack[class46.intStackSize];
+                                                                                                                                                                        if(var16 < 0 || var16 >= class83.field1358[var13]) {
                                                                                                                                                                            throw new RuntimeException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class83.field1363[var13][var14] = class83.intStack[class46.intStackSize + 1];
-                                                                                                                                                                     } else if(var43 == 47) {
-                                                                                                                                                                        var25 = class71.chatMessages.method1806(var42[var24]);
-                                                                                                                                                                        if(var25 == null) {
-                                                                                                                                                                           var25 = "null";
+                                                                                                                                                                        class83.SHAPE_VERTICIES[var13][var16] = class83.intStack[class46.intStackSize + 1];
+                                                                                                                                                                     } else if(var15 == 47) {
+                                                                                                                                                                        var14 = class71.chatMessages.getVarcString(var48[var6]);
+                                                                                                                                                                        if(var14 == null) {
+                                                                                                                                                                           var14 = "null";
                                                                                                                                                                         }
 
-                                                                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var25;
-                                                                                                                                                                     } else if(var43 == 48) {
-                                                                                                                                                                        class71.chatMessages.method1805(var42[var24], class83.scriptStringStack[--class50.scriptStringStackSize]);
+                                                                                                                                                                        class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var14;
+                                                                                                                                                                     } else if(var15 == 48) {
+                                                                                                                                                                        class71.chatMessages.putVarcString(var48[var6], class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize]);
                                                                                                                                                                      } else {
-                                                                                                                                                                        if(var43 != 60) {
+                                                                                                                                                                        if(var15 != 60) {
                                                                                                                                                                            throw new IllegalStateException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class186 var66 = var3.switches[var42[var24]];
-                                                                                                                                                                        class198 var80 = (class198)var66.method3478((long)class83.intStack[--class46.intStackSize]);
-                                                                                                                                                                        if(var80 != null) {
-                                                                                                                                                                           var24 += var80.field2487;
+                                                                                                                                                                        class186 var63 = var5.switches[var48[var6]];
+                                                                                                                                                                        WidgetConfig var87 = (WidgetConfig)var63.method3478((long)class83.intStack[--class46.intStackSize]);
+                                                                                                                                                                        if(var87 != null) {
+                                                                                                                                                                           var6 += var87.config;
                                                                                                                                                                         }
                                                                                                                                                                      }
                                                                                                                                                                   } else {
-                                                                                                                                                                     class71.chatMessages.method1803(var42[var24], class83.intStack[--class46.intStackSize]);
+                                                                                                                                                                     class71.chatMessages.putVarc(var48[var6], class83.intStack[--class46.intStackSize]);
                                                                                                                                                                   }
                                                                                                                                                                } else {
-                                                                                                                                                                  class83.intStack[++class46.intStackSize - 1] = class71.chatMessages.method1804(var42[var24]);
+                                                                                                                                                                  class83.intStack[++class46.intStackSize - 1] = class71.chatMessages.getVarc(var48[var6]);
                                                                                                                                                                }
                                                                                                                                                             } else {
-                                                                                                                                                               var13 = var42[var24];
-                                                                                                                                                               Script var70 = (Script)Script.field1551.get((long)var13);
-                                                                                                                                                               Script var76;
-                                                                                                                                                               if(var70 != null) {
-                                                                                                                                                                  var76 = var70;
+                                                                                                                                                               var13 = var48[var6];
+                                                                                                                                                               Script var61 = (Script)Script.field1551.get((long)var13);
+                                                                                                                                                               Script var86;
+                                                                                                                                                               if(var61 != null) {
+                                                                                                                                                                  var86 = var61;
                                                                                                                                                                } else {
-                                                                                                                                                                  byte[] var89 = class169.indexScripts.getConfigData(var13, 0);
-                                                                                                                                                                  if(var89 == null) {
-                                                                                                                                                                     var76 = null;
+                                                                                                                                                                  byte[] var52 = class169.indexScripts.getConfigData(var13, 0);
+                                                                                                                                                                  if(var52 == null) {
+                                                                                                                                                                     var86 = null;
                                                                                                                                                                   } else {
-                                                                                                                                                                     var70 = class48.method738(var89);
-                                                                                                                                                                     Script.field1551.put(var70, (long)var13);
-                                                                                                                                                                     var76 = var70;
+                                                                                                                                                                     var61 = class48.method738(var52);
+                                                                                                                                                                     Script.field1551.put(var61, (long)var13);
+                                                                                                                                                                     var86 = var61;
                                                                                                                                                                   }
                                                                                                                                                                }
 
-                                                                                                                                                               var70 = var76;
-                                                                                                                                                               int[] var90 = new int[var76.localIntCount];
-                                                                                                                                                               String[] var77 = new String[var76.localStringCount];
+                                                                                                                                                               var61 = var86;
+                                                                                                                                                               int[] var53 = new int[var86.localIntCount];
+                                                                                                                                                               String[] var55 = new String[var86.localStringCount];
 
-                                                                                                                                                               for(var18 = 0; var18 < var70.intStackCount; ++var18) {
-                                                                                                                                                                  var90[var18] = class83.intStack[var18 + (class46.intStackSize - var70.intStackCount)];
+                                                                                                                                                               for(var18 = 0; var18 < var61.intStackCount; ++var18) {
+                                                                                                                                                                  var53[var18] = class83.intStack[var18 + (class46.intStackSize - var61.intStackCount)];
                                                                                                                                                                }
 
-                                                                                                                                                               for(var18 = 0; var18 < var70.stringStackCount; ++var18) {
-                                                                                                                                                                  var77[var18] = class83.scriptStringStack[var18 + (class50.scriptStringStackSize - var70.stringStackCount)];
+                                                                                                                                                               for(var18 = 0; var18 < var61.stringStackCount; ++var18) {
+                                                                                                                                                                  var55[var18] = class83.scriptStringStack[var18 + (KeyFocusListener.scriptStringStackSize - var61.stringStackCount)];
                                                                                                                                                                }
 
-                                                                                                                                                               class46.intStackSize -= var70.intStackCount;
-                                                                                                                                                               class50.scriptStringStackSize -= var70.stringStackCount;
-                                                                                                                                                               ScriptState var81 = new ScriptState();
-                                                                                                                                                               var81.invokedFromScript = var3;
-                                                                                                                                                               var81.invokedFromPc = var24;
-                                                                                                                                                               var81.savedLocalInts = class83.scriptLocalInts;
-                                                                                                                                                               var81.savedLocalStrings = class83.scriptLocalStrings;
-                                                                                                                                                               class83.scriptStack[++class83.scriptStackCount - 1] = var81;
-                                                                                                                                                               var3 = var70;
-                                                                                                                                                               var41 = var70.instructions;
-                                                                                                                                                               var42 = var70.intOperands;
-                                                                                                                                                               var24 = -1;
-                                                                                                                                                               class83.scriptLocalInts = var90;
-                                                                                                                                                               class83.scriptLocalStrings = var77;
+                                                                                                                                                               class46.intStackSize -= var61.intStackCount;
+                                                                                                                                                               KeyFocusListener.scriptStringStackSize -= var61.stringStackCount;
+                                                                                                                                                               ScriptState var54 = new ScriptState();
+                                                                                                                                                               var54.invokedFromScript = var5;
+                                                                                                                                                               var54.invokedFromPc = var6;
+                                                                                                                                                               var54.savedLocalInts = class83.scriptLocalInts;
+                                                                                                                                                               var54.savedLocalStrings = class83.scriptLocalStrings;
+                                                                                                                                                               class83.scriptStack[++class83.scriptStackCount - 1] = var54;
+                                                                                                                                                               var5 = var61;
+                                                                                                                                                               var47 = var61.instructions;
+                                                                                                                                                               var48 = var61.intOperands;
+                                                                                                                                                               var6 = -1;
+                                                                                                                                                               class83.scriptLocalInts = var53;
+                                                                                                                                                               class83.scriptLocalStrings = var55;
                                                                                                                                                             }
                                                                                                                                                          } else {
-                                                                                                                                                            --class50.scriptStringStackSize;
+                                                                                                                                                            --KeyFocusListener.scriptStringStackSize;
                                                                                                                                                          }
                                                                                                                                                       } else {
                                                                                                                                                          --class46.intStackSize;
                                                                                                                                                       }
                                                                                                                                                    } else {
-                                                                                                                                                      var13 = var42[var24];
-                                                                                                                                                      class50.scriptStringStackSize -= var13;
-                                                                                                                                                      String[] var29 = class83.scriptStringStack;
-                                                                                                                                                      var16 = class50.scriptStringStackSize;
-                                                                                                                                                      String var30;
+                                                                                                                                                      var13 = var48[var6];
+                                                                                                                                                      KeyFocusListener.scriptStringStackSize -= var13;
+                                                                                                                                                      String[] var59 = class83.scriptStringStack;
+                                                                                                                                                      var17 = KeyFocusListener.scriptStringStackSize;
+                                                                                                                                                      String var85;
                                                                                                                                                       if(var13 == 0) {
-                                                                                                                                                         var30 = "";
+                                                                                                                                                         var85 = "";
                                                                                                                                                       } else if(var13 == 1) {
-                                                                                                                                                         var48 = var29[var16];
-                                                                                                                                                         if(var48 == null) {
-                                                                                                                                                            var30 = "null";
+                                                                                                                                                         var23 = var59[var17];
+                                                                                                                                                         if(var23 == null) {
+                                                                                                                                                            var85 = "null";
                                                                                                                                                          } else {
-                                                                                                                                                            var30 = var48.toString();
+                                                                                                                                                            var85 = var23.toString();
                                                                                                                                                          }
                                                                                                                                                       } else {
-                                                                                                                                                         var31 = var13 + var16;
+                                                                                                                                                         var21 = var13 + var17;
                                                                                                                                                          var18 = 0;
 
-                                                                                                                                                         for(var28 = var16; var28 < var31; ++var28) {
-                                                                                                                                                            var32 = var29[var28];
-                                                                                                                                                            if(var32 == null) {
+                                                                                                                                                         for(var20 = var17; var20 < var21; ++var20) {
+                                                                                                                                                            var22 = var59[var20];
+                                                                                                                                                            if(var22 == null) {
                                                                                                                                                                var18 += 4;
                                                                                                                                                             } else {
-                                                                                                                                                               var18 += var32.length();
+                                                                                                                                                               var18 += var22.length();
                                                                                                                                                             }
                                                                                                                                                          }
 
-                                                                                                                                                         StringBuilder var55 = new StringBuilder(var18);
+                                                                                                                                                         StringBuilder var51 = new StringBuilder(var18);
 
-                                                                                                                                                         for(var20 = var16; var20 < var31; ++var20) {
-                                                                                                                                                            var56 = var29[var20];
-                                                                                                                                                            if(var56 == null) {
-                                                                                                                                                               var55.append("null");
+                                                                                                                                                         for(var19 = var17; var19 < var21; ++var19) {
+                                                                                                                                                            var24 = var59[var19];
+                                                                                                                                                            if(var24 == null) {
+                                                                                                                                                               var51.append("null");
                                                                                                                                                             } else {
-                                                                                                                                                               var55.append(var56);
+                                                                                                                                                               var51.append(var24);
                                                                                                                                                             }
                                                                                                                                                          }
 
-                                                                                                                                                         var30 = var55.toString();
+                                                                                                                                                         var85 = var51.toString();
                                                                                                                                                       }
 
-                                                                                                                                                      class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var30;
+                                                                                                                                                      class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var85;
                                                                                                                                                    }
                                                                                                                                                 } else {
-                                                                                                                                                   class83.scriptLocalStrings[var42[var24]] = class83.scriptStringStack[--class50.scriptStringStackSize];
+                                                                                                                                                   class83.scriptLocalStrings[var48[var6]] = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
                                                                                                                                                 }
                                                                                                                                              } else {
-                                                                                                                                                class83.scriptStringStack[++class50.scriptStringStackSize - 1] = class83.scriptLocalStrings[var42[var24]];
+                                                                                                                                                class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = class83.scriptLocalStrings[var48[var6]];
                                                                                                                                              }
                                                                                                                                           } else {
-                                                                                                                                             class83.scriptLocalInts[var42[var24]] = class83.intStack[--class46.intStackSize];
+                                                                                                                                             class83.scriptLocalInts[var48[var6]] = class83.intStack[--class46.intStackSize];
                                                                                                                                           }
                                                                                                                                        } else {
-                                                                                                                                          class83.intStack[++class46.intStackSize - 1] = class83.scriptLocalInts[var42[var24]];
+                                                                                                                                          class83.intStack[++class46.intStackSize - 1] = class83.scriptLocalInts[var48[var6]];
                                                                                                                                        }
                                                                                                                                     } else {
                                                                                                                                        class46.intStackSize -= 2;
                                                                                                                                        if(class83.intStack[class46.intStackSize] >= class83.intStack[class46.intStackSize + 1]) {
-                                                                                                                                          var24 += var42[var24];
+                                                                                                                                          var6 += var48[var6];
                                                                                                                                        }
                                                                                                                                     }
                                                                                                                                  } else {
                                                                                                                                     class46.intStackSize -= 2;
                                                                                                                                     if(class83.intStack[class46.intStackSize] <= class83.intStack[class46.intStackSize + 1]) {
-                                                                                                                                       var24 += var42[var24];
+                                                                                                                                       var6 += var48[var6];
                                                                                                                                     }
                                                                                                                                  }
                                                                                                                               } else {
-                                                                                                                                 var13 = var42[var24];
+                                                                                                                                 var13 = var48[var6];
                                                                                                                                  DynamicObject.method1874(var13, class83.intStack[--class46.intStackSize]);
                                                                                                                               }
                                                                                                                            } else {
-                                                                                                                              var13 = var42[var24];
+                                                                                                                              var13 = var48[var6];
                                                                                                                               class83.intStack[++class46.intStackSize - 1] = WorldMapType1.method264(var13);
                                                                                                                            }
                                                                                                                         } else {
@@ -469,578 +472,578 @@ public class class31 {
                                                                                                                               return;
                                                                                                                            }
 
-                                                                                                                           ScriptState var61 = class83.scriptStack[--class83.scriptStackCount];
-                                                                                                                           var3 = var61.invokedFromScript;
-                                                                                                                           var41 = var3.instructions;
-                                                                                                                           var42 = var3.intOperands;
-                                                                                                                           var24 = var61.invokedFromPc;
-                                                                                                                           class83.scriptLocalInts = var61.savedLocalInts;
-                                                                                                                           class83.scriptLocalStrings = var61.savedLocalStrings;
+                                                                                                                           ScriptState var58 = class83.scriptStack[--class83.scriptStackCount];
+                                                                                                                           var5 = var58.invokedFromScript;
+                                                                                                                           var47 = var5.instructions;
+                                                                                                                           var48 = var5.intOperands;
+                                                                                                                           var6 = var58.invokedFromPc;
+                                                                                                                           class83.scriptLocalInts = var58.savedLocalInts;
+                                                                                                                           class83.scriptLocalStrings = var58.savedLocalStrings;
                                                                                                                         }
                                                                                                                      } else {
                                                                                                                         class46.intStackSize -= 2;
                                                                                                                         if(class83.intStack[class46.intStackSize] > class83.intStack[class46.intStackSize + 1]) {
-                                                                                                                           var24 += var42[var24];
+                                                                                                                           var6 += var48[var6];
                                                                                                                         }
                                                                                                                      }
                                                                                                                   } else {
                                                                                                                      class46.intStackSize -= 2;
                                                                                                                      if(class83.intStack[class46.intStackSize] < class83.intStack[class46.intStackSize + 1]) {
-                                                                                                                        var24 += var42[var24];
+                                                                                                                        var6 += var48[var6];
                                                                                                                      }
                                                                                                                   }
                                                                                                                } else {
                                                                                                                   class46.intStackSize -= 2;
                                                                                                                   if(class83.intStack[class46.intStackSize] == class83.intStack[class46.intStackSize + 1]) {
-                                                                                                                     var24 += var42[var24];
+                                                                                                                     var6 += var48[var6];
                                                                                                                   }
                                                                                                                }
                                                                                                             } else {
                                                                                                                class46.intStackSize -= 2;
                                                                                                                if(class83.intStack[class46.intStackSize] != class83.intStack[1 + class46.intStackSize]) {
-                                                                                                                  var24 += var42[var24];
+                                                                                                                  var6 += var48[var6];
                                                                                                                }
                                                                                                             }
                                                                                                          } else {
-                                                                                                            var24 += var42[var24];
+                                                                                                            var6 += var48[var6];
                                                                                                          }
                                                                                                       } else {
-                                                                                                         class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var3.stringOperands[var24];
+                                                                                                         class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var5.stringOperands[var6];
                                                                                                       }
                                                                                                    } else {
-                                                                                                      var13 = var42[var24];
+                                                                                                      var13 = var48[var6];
                                                                                                       class211.widgetSettings[var13] = class83.intStack[--class46.intStackSize];
                                                                                                       Preferences.method1614(var13);
                                                                                                    }
                                                                                                 } else {
-                                                                                                   var13 = var42[var24];
+                                                                                                   var13 = var48[var6];
                                                                                                    class83.intStack[++class46.intStackSize - 1] = class211.widgetSettings[var13];
                                                                                                 }
                                                                                              } else {
-                                                                                                class83.intStack[++class46.intStackSize - 1] = var42[var24];
+                                                                                                class83.intStack[++class46.intStackSize - 1] = var48[var6];
                                                                                              }
                                                                                           } else {
-                                                                                             boolean var47;
-                                                                                             if(var3.intOperands[var24] == 1) {
-                                                                                                var47 = true;
+                                                                                             boolean var25;
+                                                                                             if(var5.intOperands[var6] == 1) {
+                                                                                                var25 = true;
                                                                                              } else {
-                                                                                                var47 = false;
+                                                                                                var25 = false;
                                                                                              }
 
-                                                                                             if(var43 < 1000) {
-                                                                                                var14 = class33.method345(var43, var3, var47);
-                                                                                             } else if(var43 < 1100) {
-                                                                                                var14 = class170.method3117(var43, var3, var47);
-                                                                                             } else if(var43 < 1200) {
-                                                                                                var14 = class261.method4736(var43, var3, var47);
-                                                                                             } else if(var43 < 1300) {
-                                                                                                var14 = PacketBuffer.method3414(var43, var3, var47);
-                                                                                             } else if(var43 < 1400) {
-                                                                                                var14 = class39.method559(var43, var3, var47);
-                                                                                             } else if(var43 < 1500) {
-                                                                                                var14 = class111.method2081(var43, var3, var47);
+                                                                                             if(var15 < 1000) {
+                                                                                                var16 = class33.method345(var15, var5, var25);
+                                                                                             } else if(var15 < 1100) {
+                                                                                                var16 = class170.method3117(var15, var5, var25);
+                                                                                             } else if(var15 < 1200) {
+                                                                                                var16 = class261.method4736(var15, var5, var25);
+                                                                                             } else if(var15 < 1300) {
+                                                                                                var16 = PacketBuffer.method3414(var15, var5, var25);
+                                                                                             } else if(var15 < 1400) {
+                                                                                                var16 = class39.method559(var15, var5, var25);
+                                                                                             } else if(var15 < 1500) {
+                                                                                                var16 = SoundTask.method2081(var15, var5, var25);
                                                                                              } else {
-                                                                                                byte var15;
-                                                                                                Widget var19;
-                                                                                                if(var43 < 1600) {
-                                                                                                   var19 = var47?class83.field1364:class60.field766;
-                                                                                                   if(var43 == 1500) {
-                                                                                                      class83.intStack[++class46.intStackSize - 1] = var19.relativeX;
-                                                                                                      var15 = 1;
-                                                                                                   } else if(var43 == 1501) {
-                                                                                                      class83.intStack[++class46.intStackSize - 1] = var19.relativeY;
-                                                                                                      var15 = 1;
-                                                                                                   } else if(var43 == 1502) {
-                                                                                                      class83.intStack[++class46.intStackSize - 1] = var19.width;
-                                                                                                      var15 = 1;
-                                                                                                   } else if(var43 == 1503) {
-                                                                                                      class83.intStack[++class46.intStackSize - 1] = var19.height;
-                                                                                                      var15 = 1;
-                                                                                                   } else if(var43 == 1504) {
-                                                                                                      class83.intStack[++class46.intStackSize - 1] = var19.isHidden?1:0;
-                                                                                                      var15 = 1;
-                                                                                                   } else if(var43 == 1505) {
-                                                                                                      class83.intStack[++class46.intStackSize - 1] = var19.parentId;
-                                                                                                      var15 = 1;
+                                                                                                byte var26;
+                                                                                                Widget var27;
+                                                                                                if(var15 < 1600) {
+                                                                                                   var27 = var25?class83.field1364:class60.field766;
+                                                                                                   if(var15 == 1500) {
+                                                                                                      class83.intStack[++class46.intStackSize - 1] = var27.relativeX;
+                                                                                                      var26 = 1;
+                                                                                                   } else if(var15 == 1501) {
+                                                                                                      class83.intStack[++class46.intStackSize - 1] = var27.relativeY;
+                                                                                                      var26 = 1;
+                                                                                                   } else if(var15 == 1502) {
+                                                                                                      class83.intStack[++class46.intStackSize - 1] = var27.width;
+                                                                                                      var26 = 1;
+                                                                                                   } else if(var15 == 1503) {
+                                                                                                      class83.intStack[++class46.intStackSize - 1] = var27.height;
+                                                                                                      var26 = 1;
+                                                                                                   } else if(var15 == 1504) {
+                                                                                                      class83.intStack[++class46.intStackSize - 1] = var27.isHidden?1:0;
+                                                                                                      var26 = 1;
+                                                                                                   } else if(var15 == 1505) {
+                                                                                                      class83.intStack[++class46.intStackSize - 1] = var27.parentId;
+                                                                                                      var26 = 1;
                                                                                                    } else {
-                                                                                                      var15 = 2;
+                                                                                                      var26 = 2;
                                                                                                    }
 
-                                                                                                   var14 = var15;
-                                                                                                } else if(var43 < 1700) {
-                                                                                                   var14 = class61.method1101(var43, var3, var47);
-                                                                                                } else if(var43 < 1800) {
-                                                                                                   var19 = var47?class83.field1364:class60.field766;
-                                                                                                   if(var43 == 1700) {
-                                                                                                      class83.intStack[++class46.intStackSize - 1] = var19.itemId;
-                                                                                                      var15 = 1;
-                                                                                                   } else if(var43 == 1701) {
-                                                                                                      if(var19.itemId != -1) {
-                                                                                                         class83.intStack[++class46.intStackSize - 1] = var19.itemQuantity;
+                                                                                                   var16 = var26;
+                                                                                                } else if(var15 < 1700) {
+                                                                                                   var16 = class61.method1101(var15, var5, var25);
+                                                                                                } else if(var15 < 1800) {
+                                                                                                   var27 = var25?class83.field1364:class60.field766;
+                                                                                                   if(var15 == 1700) {
+                                                                                                      class83.intStack[++class46.intStackSize - 1] = var27.itemId;
+                                                                                                      var26 = 1;
+                                                                                                   } else if(var15 == 1701) {
+                                                                                                      if(var27.itemId != -1) {
+                                                                                                         class83.intStack[++class46.intStackSize - 1] = var27.itemQuantity;
                                                                                                       } else {
                                                                                                          class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                       }
 
-                                                                                                      var15 = 1;
-                                                                                                   } else if(var43 == 1702) {
-                                                                                                      class83.intStack[++class46.intStackSize - 1] = var19.index;
-                                                                                                      var15 = 1;
+                                                                                                      var26 = 1;
+                                                                                                   } else if(var15 == 1702) {
+                                                                                                      class83.intStack[++class46.intStackSize - 1] = var27.index;
+                                                                                                      var26 = 1;
                                                                                                    } else {
-                                                                                                      var15 = 2;
+                                                                                                      var26 = 2;
                                                                                                    }
 
-                                                                                                   var14 = var15;
-                                                                                                } else if(var43 < 1900) {
-                                                                                                   var14 = FileOnDisk.method2366(var43, var3, var47);
+                                                                                                   var16 = var26;
+                                                                                                } else if(var15 < 1900) {
+                                                                                                   var16 = FileOnDisk.method2366(var15, var5, var25);
                                                                                                 } else {
-                                                                                                   Widget var17;
-                                                                                                   class69 var26;
-                                                                                                   if(var43 < 2000) {
-                                                                                                      var16 = var43;
-                                                                                                      if(var43 >= 2000) {
-                                                                                                         var16 = var43 - 1000;
-                                                                                                         var17 = PacketBuffer.method3403(class83.intStack[--class46.intStackSize]);
+                                                                                                   Widget var28;
+                                                                                                   ScriptEvent var29;
+                                                                                                   if(var15 < 2000) {
+                                                                                                      var17 = var15;
+                                                                                                      if(var15 >= 2000) {
+                                                                                                         var17 = var15 - 1000;
+                                                                                                         var28 = PacketBuffer.method3403(class83.intStack[--class46.intStackSize]);
                                                                                                       } else {
-                                                                                                         var17 = var47?class83.field1364:class60.field766;
+                                                                                                         var28 = var25?class83.field1364:class60.field766;
                                                                                                       }
 
-                                                                                                      if(var16 == 1927) {
+                                                                                                      if(var17 == 1927) {
                                                                                                          if(class83.field1367 >= 10) {
                                                                                                             throw new RuntimeException();
                                                                                                          }
 
-                                                                                                         if(var17.field2763 == null) {
-                                                                                                            var15 = 0;
+                                                                                                         if(var28.field2763 == null) {
+                                                                                                            var26 = 0;
                                                                                                          } else {
-                                                                                                            var26 = new class69();
-                                                                                                            var26.field849 = var17;
-                                                                                                            var26.field857 = var17.field2763;
-                                                                                                            var26.field851 = class83.field1367 + 1;
-                                                                                                            Client.field1035.method3603(var26);
-                                                                                                            var15 = 1;
+                                                                                                            var29 = new ScriptEvent();
+                                                                                                            var29.widget = var28;
+                                                                                                            var29.field857 = var28.field2763;
+                                                                                                            var29.field851 = class83.field1367 + 1;
+                                                                                                            Client.field1035.addFront(var29);
+                                                                                                            var26 = 1;
                                                                                                          }
                                                                                                       } else {
-                                                                                                         var15 = 2;
+                                                                                                         var26 = 2;
                                                                                                       }
 
-                                                                                                      var14 = var15;
-                                                                                                   } else if(var43 < 2100) {
-                                                                                                      var14 = class170.method3117(var43, var3, var47);
-                                                                                                   } else if(var43 < 2200) {
-                                                                                                      var14 = class261.method4736(var43, var3, var47);
-                                                                                                   } else if(var43 < 2300) {
-                                                                                                      var14 = PacketBuffer.method3414(var43, var3, var47);
-                                                                                                   } else if(var43 < 2400) {
-                                                                                                      var14 = class39.method559(var43, var3, var47);
-                                                                                                   } else if(var43 < 2500) {
-                                                                                                      var14 = class111.method2081(var43, var3, var47);
-                                                                                                   } else if(var43 < 2600) {
-                                                                                                      var14 = class207.method3862(var43, var3, var47);
-                                                                                                   } else if(var43 < 2700) {
-                                                                                                      var14 = class71.method1141(var43, var3, var47);
+                                                                                                      var16 = var26;
+                                                                                                   } else if(var15 < 2100) {
+                                                                                                      var16 = class170.method3117(var15, var5, var25);
+                                                                                                   } else if(var15 < 2200) {
+                                                                                                      var16 = class261.method4736(var15, var5, var25);
+                                                                                                   } else if(var15 < 2300) {
+                                                                                                      var16 = PacketBuffer.method3414(var15, var5, var25);
+                                                                                                   } else if(var15 < 2400) {
+                                                                                                      var16 = class39.method559(var15, var5, var25);
+                                                                                                   } else if(var15 < 2500) {
+                                                                                                      var16 = SoundTask.method2081(var15, var5, var25);
+                                                                                                   } else if(var15 < 2600) {
+                                                                                                      var16 = class207.method3862(var15, var5, var25);
+                                                                                                   } else if(var15 < 2700) {
+                                                                                                      var16 = class71.method1141(var15, var5, var25);
                                                                                                    } else {
-                                                                                                      Widget var27;
-                                                                                                      if(var43 < 2800) {
-                                                                                                         if(var43 == 2700) {
-                                                                                                            var27 = PacketBuffer.method3403(class83.intStack[--class46.intStackSize]);
-                                                                                                            class83.intStack[++class46.intStackSize - 1] = var27.itemId;
-                                                                                                            var15 = 1;
-                                                                                                         } else if(var43 == 2701) {
-                                                                                                            var27 = PacketBuffer.method3403(class83.intStack[--class46.intStackSize]);
-                                                                                                            if(var27.itemId != -1) {
-                                                                                                               class83.intStack[++class46.intStackSize - 1] = var27.itemQuantity;
+                                                                                                      Widget var30;
+                                                                                                      if(var15 < 2800) {
+                                                                                                         if(var15 == 2700) {
+                                                                                                            var30 = PacketBuffer.method3403(class83.intStack[--class46.intStackSize]);
+                                                                                                            class83.intStack[++class46.intStackSize - 1] = var30.itemId;
+                                                                                                            var26 = 1;
+                                                                                                         } else if(var15 == 2701) {
+                                                                                                            var30 = PacketBuffer.method3403(class83.intStack[--class46.intStackSize]);
+                                                                                                            if(var30.itemId != -1) {
+                                                                                                               class83.intStack[++class46.intStackSize - 1] = var30.itemQuantity;
                                                                                                             } else {
                                                                                                                class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                             }
 
-                                                                                                            var15 = 1;
-                                                                                                         } else if(var43 == 2702) {
-                                                                                                            var16 = class83.intStack[--class46.intStackSize];
-                                                                                                            WidgetNode var44 = (WidgetNode)Client.componentTable.method3530((long)var16);
-                                                                                                            if(var44 != null) {
+                                                                                                            var26 = 1;
+                                                                                                         } else if(var15 == 2702) {
+                                                                                                            var17 = class83.intStack[--class46.intStackSize];
+                                                                                                            WidgetNode var31 = (WidgetNode)Client.componentTable.get((long)var17);
+                                                                                                            if(var31 != null) {
                                                                                                                class83.intStack[++class46.intStackSize - 1] = 1;
                                                                                                             } else {
                                                                                                                class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                             }
 
-                                                                                                            var15 = 1;
-                                                                                                         } else if(var43 == 2706) {
+                                                                                                            var26 = 1;
+                                                                                                         } else if(var15 == 2706) {
                                                                                                             class83.intStack[++class46.intStackSize - 1] = Client.widgetRoot;
-                                                                                                            var15 = 1;
+                                                                                                            var26 = 1;
                                                                                                          } else {
-                                                                                                            var15 = 2;
+                                                                                                            var26 = 2;
                                                                                                          }
 
-                                                                                                         var14 = var15;
-                                                                                                      } else if(var43 < 2900) {
-                                                                                                         var27 = PacketBuffer.method3403(class83.intStack[--class46.intStackSize]);
-                                                                                                         if(var43 == 2800) {
-                                                                                                            int[] var45 = class83.intStack;
+                                                                                                         var16 = var26;
+                                                                                                      } else if(var15 < 2900) {
+                                                                                                         var30 = PacketBuffer.method3403(class83.intStack[--class46.intStackSize]);
+                                                                                                         if(var15 == 2800) {
+                                                                                                            int[] var56 = class83.intStack;
                                                                                                             var18 = ++class46.intStackSize - 1;
-                                                                                                            var20 = WorldMapType3.method199(var27);
-                                                                                                            var28 = var20 >> 11 & 63;
-                                                                                                            var45[var18] = var28;
-                                                                                                            var15 = 1;
-                                                                                                         } else if(var43 != 2801) {
-                                                                                                            if(var43 == 2802) {
-                                                                                                               if(var27.name == null) {
-                                                                                                                  class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                            var19 = WorldMapType3.getWidgetConfig(var30);
+                                                                                                            var20 = var19 >> 11 & 63;
+                                                                                                            var56[var18] = var20;
+                                                                                                            var26 = 1;
+                                                                                                         } else if(var15 != 2801) {
+                                                                                                            if(var15 == 2802) {
+                                                                                                               if(var30.name == null) {
+                                                                                                                  class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                } else {
-                                                                                                                  class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var27.name;
+                                                                                                                  class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var30.name;
                                                                                                                }
 
-                                                                                                               var15 = 1;
+                                                                                                               var26 = 1;
                                                                                                             } else {
-                                                                                                               var15 = 2;
+                                                                                                               var26 = 2;
                                                                                                             }
                                                                                                          } else {
-                                                                                                            var31 = class83.intStack[--class46.intStackSize];
-                                                                                                            --var31;
-                                                                                                            if(var27.actions != null && var31 < var27.actions.length && var27.actions[var31] != null) {
-                                                                                                               class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var27.actions[var31];
+                                                                                                            var21 = class83.intStack[--class46.intStackSize];
+                                                                                                            --var21;
+                                                                                                            if(var30.actions != null && var21 < var30.actions.length && var30.actions[var21] != null) {
+                                                                                                               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var30.actions[var21];
                                                                                                             } else {
-                                                                                                               class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                             }
 
-                                                                                                            var15 = 1;
+                                                                                                            var26 = 1;
                                                                                                          }
 
-                                                                                                         var14 = var15;
-                                                                                                      } else if(var43 < 3000) {
-                                                                                                         var16 = var43;
-                                                                                                         if(var43 >= 2000) {
-                                                                                                            var16 = var43 - 1000;
-                                                                                                            var17 = PacketBuffer.method3403(class83.intStack[--class46.intStackSize]);
+                                                                                                         var16 = var26;
+                                                                                                      } else if(var15 < 3000) {
+                                                                                                         var17 = var15;
+                                                                                                         if(var15 >= 2000) {
+                                                                                                            var17 = var15 - 1000;
+                                                                                                            var28 = PacketBuffer.method3403(class83.intStack[--class46.intStackSize]);
                                                                                                          } else {
-                                                                                                            var17 = var47?class83.field1364:class60.field766;
+                                                                                                            var28 = var25?class83.field1364:class60.field766;
                                                                                                          }
 
-                                                                                                         if(var16 == 1927) {
+                                                                                                         if(var17 == 1927) {
                                                                                                             if(class83.field1367 >= 10) {
                                                                                                                throw new RuntimeException();
                                                                                                             }
 
-                                                                                                            if(var17.field2763 == null) {
-                                                                                                               var15 = 0;
+                                                                                                            if(var28.field2763 == null) {
+                                                                                                               var26 = 0;
                                                                                                             } else {
-                                                                                                               var26 = new class69();
-                                                                                                               var26.field849 = var17;
-                                                                                                               var26.field857 = var17.field2763;
-                                                                                                               var26.field851 = class83.field1367 + 1;
-                                                                                                               Client.field1035.method3603(var26);
-                                                                                                               var15 = 1;
+                                                                                                               var29 = new ScriptEvent();
+                                                                                                               var29.widget = var28;
+                                                                                                               var29.field857 = var28.field2763;
+                                                                                                               var29.field851 = class83.field1367 + 1;
+                                                                                                               Client.field1035.addFront(var29);
+                                                                                                               var26 = 1;
                                                                                                             }
                                                                                                          } else {
-                                                                                                            var15 = 2;
+                                                                                                            var26 = 2;
                                                                                                          }
 
-                                                                                                         var14 = var15;
+                                                                                                         var16 = var26;
                                                                                                       } else {
-                                                                                                         String var65;
-                                                                                                         String var68;
-                                                                                                         boolean var82;
-                                                                                                         if(var43 < 3200) {
-                                                                                                            if(var43 == 3100) {
-                                                                                                               var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                               class152.sendGameMessage(0, "", var68);
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3101) {
+                                                                                                         String var32;
+                                                                                                         boolean var33;
+                                                                                                         String var57;
+                                                                                                         if(var15 < 3200) {
+                                                                                                            if(var15 == 3100) {
+                                                                                                               var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                               class152.sendGameMessage(0, "", var32);
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3101) {
                                                                                                                class46.intStackSize -= 2;
                                                                                                                RSCanvas.method810(XItemContainer.localPlayer, class83.intStack[class46.intStackSize], class83.intStack[class46.intStackSize + 1]);
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3103) {
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3103) {
                                                                                                                class112.method2097();
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3104) {
-                                                                                                               var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                               var31 = 0;
-                                                                                                               boolean var46 = class51.method795(var68, 10, true);
-                                                                                                               if(var46) {
-                                                                                                                  var31 = ScriptState.method1103(var68);
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3104) {
+                                                                                                               var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                               var21 = 0;
+                                                                                                               boolean var34 = class51.method795(var32, 10, true);
+                                                                                                               if(var34) {
+                                                                                                                  var21 = ScriptState.method1103(var32);
                                                                                                                }
 
                                                                                                                Client.secretPacketBuffer1.putOpcode(205);
-                                                                                                               Client.secretPacketBuffer1.putInt(var31);
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3105) {
-                                                                                                               var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
+                                                                                                               Client.secretPacketBuffer1.putInt(var21);
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3105) {
+                                                                                                               var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
                                                                                                                Client.secretPacketBuffer1.putOpcode(43);
-                                                                                                               Client.secretPacketBuffer1.putByte(var68.length() + 1);
-                                                                                                               Client.secretPacketBuffer1.method3137(var68);
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3106) {
-                                                                                                               var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
+                                                                                                               Client.secretPacketBuffer1.putByte(var32.length() + 1);
+                                                                                                               Client.secretPacketBuffer1.putString(var32);
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3106) {
+                                                                                                               var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
                                                                                                                Client.secretPacketBuffer1.putOpcode(107);
-                                                                                                               Client.secretPacketBuffer1.putByte(var68.length() + 1);
-                                                                                                               Client.secretPacketBuffer1.method3137(var68);
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3107) {
-                                                                                                               var16 = class83.intStack[--class46.intStackSize];
-                                                                                                               var48 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                               class60.method1051(var16, var48);
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3108) {
+                                                                                                               Client.secretPacketBuffer1.putByte(var32.length() + 1);
+                                                                                                               Client.secretPacketBuffer1.putString(var32);
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3107) {
+                                                                                                               var17 = class83.intStack[--class46.intStackSize];
+                                                                                                               var23 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                               class60.method1051(var17, var23);
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3108) {
                                                                                                                class46.intStackSize -= 3;
-                                                                                                               var16 = class83.intStack[class46.intStackSize];
-                                                                                                               var31 = class83.intStack[class46.intStackSize + 1];
+                                                                                                               var17 = class83.intStack[class46.intStackSize];
+                                                                                                               var21 = class83.intStack[class46.intStackSize + 1];
                                                                                                                var18 = class83.intStack[class46.intStackSize + 2];
-                                                                                                               var19 = PacketBuffer.method3403(var18);
-                                                                                                               class140.method2856(var19, var16, var31);
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3109) {
+                                                                                                               var27 = PacketBuffer.method3403(var18);
+                                                                                                               class140.method2856(var27, var17, var21);
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3109) {
                                                                                                                class46.intStackSize -= 2;
-                                                                                                               var16 = class83.intStack[class46.intStackSize];
-                                                                                                               var31 = class83.intStack[class46.intStackSize + 1];
-                                                                                                               Widget var64 = var47?class83.field1364:class60.field766;
-                                                                                                               class140.method2856(var64, var16, var31);
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3110) {
+                                                                                                               var17 = class83.intStack[class46.intStackSize];
+                                                                                                               var21 = class83.intStack[class46.intStackSize + 1];
+                                                                                                               Widget var60 = var25?class83.field1364:class60.field766;
+                                                                                                               class140.method2856(var60, var17, var21);
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3110) {
                                                                                                                class34.field499 = class83.intStack[--class46.intStackSize] == 1;
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3111) {
-                                                                                                               class83.intStack[++class46.intStackSize - 1] = class8.field247.field1335?1:0;
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3112) {
-                                                                                                               class8.field247.field1335 = class83.intStack[--class46.intStackSize] == 1;
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3111) {
+                                                                                                               class83.intStack[++class46.intStackSize - 1] = class8.settings.hideRoofs?1:0;
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3112) {
+                                                                                                               class8.settings.hideRoofs = class83.intStack[--class46.intStackSize] == 1;
                                                                                                                class1.method3();
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3113) {
-                                                                                                               var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                               var82 = class83.intStack[--class46.intStackSize] == 1;
-                                                                                                               Player.method1175(var68, var82, false);
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3115) {
-                                                                                                               var16 = class83.intStack[--class46.intStackSize];
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3113) {
+                                                                                                               var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                               var33 = class83.intStack[--class46.intStackSize] == 1;
+                                                                                                               Player.method1175(var32, var33, false);
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3115) {
+                                                                                                               var17 = class83.intStack[--class46.intStackSize];
                                                                                                                Client.secretPacketBuffer1.putOpcode(55);
-                                                                                                               Client.secretPacketBuffer1.putShort(var16);
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3116) {
-                                                                                                               var16 = class83.intStack[--class46.intStackSize];
-                                                                                                               class50.scriptStringStackSize -= 2;
-                                                                                                               var48 = class83.scriptStringStack[class50.scriptStringStackSize];
-                                                                                                               var65 = class83.scriptStringStack[class50.scriptStringStackSize + 1];
-                                                                                                               if(var48.length() > 500) {
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var65.length() > 500) {
-                                                                                                                  var15 = 1;
+                                                                                                               Client.secretPacketBuffer1.putShort(var17);
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3116) {
+                                                                                                               var17 = class83.intStack[--class46.intStackSize];
+                                                                                                               KeyFocusListener.scriptStringStackSize -= 2;
+                                                                                                               var23 = class83.scriptStringStack[KeyFocusListener.scriptStringStackSize];
+                                                                                                               var57 = class83.scriptStringStack[KeyFocusListener.scriptStringStackSize + 1];
+                                                                                                               if(var23.length() > 500) {
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var57.length() > 500) {
+                                                                                                                  var26 = 1;
                                                                                                                } else {
                                                                                                                   Client.secretPacketBuffer1.putOpcode(102);
-                                                                                                                  Client.secretPacketBuffer1.putShort(1 + class261.method4734(var48) + class261.method4734(var65));
-                                                                                                                  Client.secretPacketBuffer1.method3137(var65);
-                                                                                                                  Client.secretPacketBuffer1.method3137(var48);
-                                                                                                                  Client.secretPacketBuffer1.putByte(var16);
-                                                                                                                  var15 = 1;
+                                                                                                                  Client.secretPacketBuffer1.putShort(1 + class261.getLength(var23) + class261.getLength(var57));
+                                                                                                                  Client.secretPacketBuffer1.putString(var57);
+                                                                                                                  Client.secretPacketBuffer1.putString(var23);
+                                                                                                                  Client.secretPacketBuffer1.putByte(var17);
+                                                                                                                  var26 = 1;
                                                                                                                }
-                                                                                                            } else if(var43 == 3117) {
+                                                                                                            } else if(var15 == 3117) {
                                                                                                                Client.field1075 = class83.intStack[--class46.intStackSize] == 1;
-                                                                                                               var15 = 1;
+                                                                                                               var26 = 1;
                                                                                                             } else {
-                                                                                                               var15 = 2;
+                                                                                                               var26 = 2;
                                                                                                             }
 
-                                                                                                            var14 = var15;
-                                                                                                         } else if(var43 < 3300) {
-                                                                                                            if(var43 == 3200) {
+                                                                                                            var16 = var26;
+                                                                                                         } else if(var15 < 3300) {
+                                                                                                            if(var15 == 3200) {
                                                                                                                class46.intStackSize -= 3;
                                                                                                                class34.method356(class83.intStack[class46.intStackSize], class83.intStack[class46.intStackSize + 1], class83.intStack[class46.intStackSize + 2]);
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3201) {
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3201) {
                                                                                                                class266.method4842(class83.intStack[--class46.intStackSize]);
-                                                                                                               var15 = 1;
-                                                                                                            } else if(var43 == 3202) {
+                                                                                                               var26 = 1;
+                                                                                                            } else if(var15 == 3202) {
                                                                                                                class46.intStackSize -= 2;
-                                                                                                               var16 = class83.intStack[class46.intStackSize];
-                                                                                                               var31 = class83.intStack[class46.intStackSize + 1];
-                                                                                                               if(Client.field1162 != 0 && var16 != -1) {
-                                                                                                                  class29.method232(XGrandExchangeOffer.indexTrack2, var16, 0, Client.field1162, false);
+                                                                                                               var17 = class83.intStack[class46.intStackSize];
+                                                                                                               var21 = class83.intStack[class46.intStackSize + 1];
+                                                                                                               if(Client.field1162 != 0 && var17 != -1) {
+                                                                                                                  class29.method232(XGrandExchangeOffer.indexTrack2, var17, 0, Client.field1162, false);
                                                                                                                   Client.field1014 = true;
                                                                                                                }
 
-                                                                                                               var15 = 1;
+                                                                                                               var26 = 1;
                                                                                                             } else {
-                                                                                                               var15 = 2;
+                                                                                                               var26 = 2;
                                                                                                             }
 
-                                                                                                            var14 = var15;
+                                                                                                            var16 = var26;
                                                                                                          } else {
-                                                                                                            int[] var67;
-                                                                                                            if(var43 < 3400) {
-                                                                                                               if(var43 == 3300) {
+                                                                                                            int[] var62;
+                                                                                                            if(var15 < 3400) {
+                                                                                                               if(var15 == 3300) {
                                                                                                                   class83.intStack[++class46.intStackSize - 1] = Client.gameCycle;
-                                                                                                                  var15 = 1;
+                                                                                                                  var26 = 1;
                                                                                                                } else {
-                                                                                                                  XItemContainer var21;
-                                                                                                                  if(var43 == 3301) {
+                                                                                                                  XItemContainer var35;
+                                                                                                                  if(var15 == 3301) {
                                                                                                                      class46.intStackSize -= 2;
-                                                                                                                     var16 = class83.intStack[class46.intStackSize];
-                                                                                                                     var31 = class83.intStack[class46.intStackSize + 1];
-                                                                                                                     var67 = class83.intStack;
-                                                                                                                     var28 = ++class46.intStackSize - 1;
-                                                                                                                     var21 = (XItemContainer)XItemContainer.itemContainers.method3530((long)var16);
-                                                                                                                     if(var21 == null) {
-                                                                                                                        var20 = -1;
-                                                                                                                     } else if(var31 >= 0 && var31 < var21.itemIds.length) {
-                                                                                                                        var20 = var21.itemIds[var31];
+                                                                                                                     var17 = class83.intStack[class46.intStackSize];
+                                                                                                                     var21 = class83.intStack[class46.intStackSize + 1];
+                                                                                                                     var62 = class83.intStack;
+                                                                                                                     var20 = ++class46.intStackSize - 1;
+                                                                                                                     var35 = (XItemContainer)XItemContainer.itemContainers.get((long)var17);
+                                                                                                                     if(var35 == null) {
+                                                                                                                        var19 = -1;
+                                                                                                                     } else if(var21 >= 0 && var21 < var35.itemIds.length) {
+                                                                                                                        var19 = var35.itemIds[var21];
                                                                                                                      } else {
-                                                                                                                        var20 = -1;
+                                                                                                                        var19 = -1;
                                                                                                                      }
 
-                                                                                                                     var67[var28] = var20;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3302) {
+                                                                                                                     var62[var20] = var19;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3302) {
                                                                                                                      class46.intStackSize -= 2;
-                                                                                                                     var16 = class83.intStack[class46.intStackSize];
-                                                                                                                     var31 = class83.intStack[class46.intStackSize + 1];
-                                                                                                                     var67 = class83.intStack;
-                                                                                                                     var28 = ++class46.intStackSize - 1;
-                                                                                                                     var21 = (XItemContainer)XItemContainer.itemContainers.method3530((long)var16);
-                                                                                                                     if(var21 == null) {
-                                                                                                                        var20 = 0;
-                                                                                                                     } else if(var31 >= 0 && var31 < var21.stackSizes.length) {
-                                                                                                                        var20 = var21.stackSizes[var31];
+                                                                                                                     var17 = class83.intStack[class46.intStackSize];
+                                                                                                                     var21 = class83.intStack[class46.intStackSize + 1];
+                                                                                                                     var62 = class83.intStack;
+                                                                                                                     var20 = ++class46.intStackSize - 1;
+                                                                                                                     var35 = (XItemContainer)XItemContainer.itemContainers.get((long)var17);
+                                                                                                                     if(var35 == null) {
+                                                                                                                        var19 = 0;
+                                                                                                                     } else if(var21 >= 0 && var21 < var35.stackSizes.length) {
+                                                                                                                        var19 = var35.stackSizes[var21];
                                                                                                                      } else {
-                                                                                                                        var20 = 0;
+                                                                                                                        var19 = 0;
                                                                                                                      }
 
-                                                                                                                     var67[var28] = var20;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3303) {
+                                                                                                                     var62[var20] = var19;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3303) {
                                                                                                                      class46.intStackSize -= 2;
-                                                                                                                     var16 = class83.intStack[class46.intStackSize];
-                                                                                                                     var31 = class83.intStack[class46.intStackSize + 1];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = class4.method17(var16, var31);
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3304) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = class211.method3908(var16).field3287;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3305) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.boostedSkillLevels[var16];
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3306) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.realSkillLevels[var16];
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3307) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.skillExperiences[var16];
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3308) {
-                                                                                                                     var16 = WallObject.plane;
-                                                                                                                     var31 = (XItemContainer.localPlayer.x >> 7) + class50.baseX;
+                                                                                                                     var17 = class83.intStack[class46.intStackSize];
+                                                                                                                     var21 = class83.intStack[class46.intStackSize + 1];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = BaseVarType.method17(var17, var21);
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3304) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = class211.method3908(var17).field3287;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3305) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.boostedSkillLevels[var17];
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3306) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.realSkillLevels[var17];
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3307) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.skillExperiences[var17];
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3308) {
+                                                                                                                     var17 = WallObject.plane;
+                                                                                                                     var21 = (XItemContainer.localPlayer.x >> 7) + KeyFocusListener.baseX;
                                                                                                                      var18 = (XItemContainer.localPlayer.y >> 7) + class266.baseY;
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var18 + (var31 << 14) + (var16 << 28);
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3309) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var16 >> 14 & 16383;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3310) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var16 >> 28;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3311) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var16 & 16383;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3312) {
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var18 + (var21 << 14) + (var17 << 28);
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3309) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var17 >> 14 & 16383;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3310) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var17 >> 28;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3311) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var17 & 16383;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3312) {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = Client.isMembers?1:0;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3313) {
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3313) {
                                                                                                                      class46.intStackSize -= 2;
-                                                                                                                     var16 = class83.intStack[class46.intStackSize] + '耀';
-                                                                                                                     var31 = class83.intStack[class46.intStackSize + 1];
-                                                                                                                     var67 = class83.intStack;
-                                                                                                                     var28 = ++class46.intStackSize - 1;
-                                                                                                                     var21 = (XItemContainer)XItemContainer.itemContainers.method3530((long)var16);
-                                                                                                                     if(var21 == null) {
-                                                                                                                        var20 = -1;
-                                                                                                                     } else if(var31 >= 0 && var31 < var21.itemIds.length) {
-                                                                                                                        var20 = var21.itemIds[var31];
+                                                                                                                     var17 = class83.intStack[class46.intStackSize] + '耀';
+                                                                                                                     var21 = class83.intStack[class46.intStackSize + 1];
+                                                                                                                     var62 = class83.intStack;
+                                                                                                                     var20 = ++class46.intStackSize - 1;
+                                                                                                                     var35 = (XItemContainer)XItemContainer.itemContainers.get((long)var17);
+                                                                                                                     if(var35 == null) {
+                                                                                                                        var19 = -1;
+                                                                                                                     } else if(var21 >= 0 && var21 < var35.itemIds.length) {
+                                                                                                                        var19 = var35.itemIds[var21];
                                                                                                                      } else {
-                                                                                                                        var20 = -1;
+                                                                                                                        var19 = -1;
                                                                                                                      }
 
-                                                                                                                     var67[var28] = var20;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 != 3314) {
-                                                                                                                     if(var43 == 3315) {
+                                                                                                                     var62[var20] = var19;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 != 3314) {
+                                                                                                                     if(var15 == 3315) {
                                                                                                                         class46.intStackSize -= 2;
-                                                                                                                        var16 = class83.intStack[class46.intStackSize] + '耀';
-                                                                                                                        var31 = class83.intStack[class46.intStackSize + 1];
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = class4.method17(var16, var31);
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3316) {
+                                                                                                                        var17 = class83.intStack[class46.intStackSize] + '耀';
+                                                                                                                        var21 = class83.intStack[class46.intStackSize + 1];
+                                                                                                                        class83.intStack[++class46.intStackSize - 1] = BaseVarType.method17(var17, var21);
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3316) {
                                                                                                                         if(Client.rights >= 2) {
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = Client.rights;
                                                                                                                         } else {
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                                         }
 
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3317) {
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3317) {
                                                                                                                         class83.intStack[++class46.intStackSize - 1] = Client.field942;
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3318) {
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3318) {
                                                                                                                         class83.intStack[++class46.intStackSize - 1] = Client.world;
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3321) {
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3321) {
                                                                                                                         class83.intStack[++class46.intStackSize - 1] = Client.energy;
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3322) {
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3322) {
                                                                                                                         class83.intStack[++class46.intStackSize - 1] = Client.weight;
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3323) {
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3323) {
                                                                                                                         if(Client.field1096) {
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = 1;
                                                                                                                         } else {
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                                         }
 
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3324) {
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3324) {
                                                                                                                         class83.intStack[++class46.intStackSize - 1] = Client.flags;
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3325) {
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3325) {
                                                                                                                         class46.intStackSize -= 4;
-                                                                                                                        var16 = class83.intStack[class46.intStackSize];
-                                                                                                                        var31 = class83.intStack[class46.intStackSize + 1];
+                                                                                                                        var17 = class83.intStack[class46.intStackSize];
+                                                                                                                        var21 = class83.intStack[class46.intStackSize + 1];
                                                                                                                         var18 = class83.intStack[class46.intStackSize + 2];
-                                                                                                                        var28 = class83.intStack[class46.intStackSize + 3];
-                                                                                                                        var16 += var31 << 14;
-                                                                                                                        var16 += var18 << 28;
-                                                                                                                        var16 += var28;
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var16;
-                                                                                                                        var15 = 1;
+                                                                                                                        var20 = class83.intStack[class46.intStackSize + 3];
+                                                                                                                        var17 += var21 << 14;
+                                                                                                                        var17 += var18 << 28;
+                                                                                                                        var17 += var20;
+                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var17;
+                                                                                                                        var26 = 1;
                                                                                                                      } else {
-                                                                                                                        var15 = 2;
+                                                                                                                        var26 = 2;
                                                                                                                      }
                                                                                                                   } else {
                                                                                                                      class46.intStackSize -= 2;
-                                                                                                                     var16 = class83.intStack[class46.intStackSize] + '耀';
-                                                                                                                     var31 = class83.intStack[class46.intStackSize + 1];
-                                                                                                                     var67 = class83.intStack;
-                                                                                                                     var28 = ++class46.intStackSize - 1;
-                                                                                                                     var21 = (XItemContainer)XItemContainer.itemContainers.method3530((long)var16);
-                                                                                                                     if(var21 == null) {
-                                                                                                                        var20 = 0;
-                                                                                                                     } else if(var31 >= 0 && var31 < var21.stackSizes.length) {
-                                                                                                                        var20 = var21.stackSizes[var31];
+                                                                                                                     var17 = class83.intStack[class46.intStackSize] + '耀';
+                                                                                                                     var21 = class83.intStack[class46.intStackSize + 1];
+                                                                                                                     var62 = class83.intStack;
+                                                                                                                     var20 = ++class46.intStackSize - 1;
+                                                                                                                     var35 = (XItemContainer)XItemContainer.itemContainers.get((long)var17);
+                                                                                                                     if(var35 == null) {
+                                                                                                                        var19 = 0;
+                                                                                                                     } else if(var21 >= 0 && var21 < var35.stackSizes.length) {
+                                                                                                                        var19 = var35.stackSizes[var21];
                                                                                                                      } else {
-                                                                                                                        var20 = 0;
+                                                                                                                        var19 = 0;
                                                                                                                      }
 
-                                                                                                                     var67[var28] = var20;
-                                                                                                                     var15 = 1;
+                                                                                                                     var62[var20] = var19;
+                                                                                                                     var26 = 1;
                                                                                                                   }
                                                                                                                }
 
-                                                                                                               var14 = var15;
-                                                                                                            } else if(var43 < 3500) {
-                                                                                                               var14 = class96.method1800(var43, var3, var47);
-                                                                                                            } else if(var43 < 3700) {
-                                                                                                               if(var43 == 3600) {
+                                                                                                               var16 = var26;
+                                                                                                            } else if(var15 < 3500) {
+                                                                                                               var16 = class96.method1800(var15, var5, var25);
+                                                                                                            } else if(var15 < 3700) {
+                                                                                                               if(var15 == 3600) {
                                                                                                                   if(Client.field1193 == 0) {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = -2;
                                                                                                                   } else if(Client.field1193 == 1) {
@@ -1049,93 +1052,93 @@ public class class31 {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = Client.friendCount;
                                                                                                                   }
 
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3601) {
-                                                                                                                  var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                  if(Client.field1193 == 2 && var16 < Client.friendCount) {
-                                                                                                                     class83.scriptStringStack[++class50.scriptStringStackSize - 1] = Client.friends[var16].name;
-                                                                                                                     class83.scriptStringStack[++class50.scriptStringStackSize - 1] = Client.friends[var16].previousName;
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3601) {
+                                                                                                                  var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                  if(Client.field1193 == 2 && var17 < Client.friendCount) {
+                                                                                                                     class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = Client.friends[var17].name;
+                                                                                                                     class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = Client.friends[var17].previousName;
                                                                                                                   } else {
-                                                                                                                     class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
-                                                                                                                     class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                     class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
+                                                                                                                     class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                   }
 
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3602) {
-                                                                                                                  var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                  if(Client.field1193 == 2 && var16 < Client.friendCount) {
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.friends[var16].world;
-                                                                                                                  } else {
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                  }
-
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3603) {
-                                                                                                                  var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                  if(Client.field1193 == 2 && var16 < Client.friendCount) {
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.friends[var16].rank;
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3602) {
+                                                                                                                  var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                  if(Client.field1193 == 2 && var17 < Client.friendCount) {
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.friends[var17].world;
                                                                                                                   } else {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                                   }
 
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3604) {
-                                                                                                                  var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                                  var31 = class83.intStack[--class46.intStackSize];
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3603) {
+                                                                                                                  var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                  if(Client.field1193 == 2 && var17 < Client.friendCount) {
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.friends[var17].rank;
+                                                                                                                  } else {
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = 0;
+                                                                                                                  }
+
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3604) {
+                                                                                                                  var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                                  var21 = class83.intStack[--class46.intStackSize];
                                                                                                                   Client.secretPacketBuffer1.putOpcode(136);
-                                                                                                                  Client.secretPacketBuffer1.putByte(class261.method4734(var68) + 1);
-                                                                                                                  Client.secretPacketBuffer1.method3137(var68);
-                                                                                                                  Client.secretPacketBuffer1.putByte(var31);
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3605) {
-                                                                                                                  var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                                  if(var68 != null) {
+                                                                                                                  Client.secretPacketBuffer1.putByte(class261.getLength(var32) + 1);
+                                                                                                                  Client.secretPacketBuffer1.putString(var32);
+                                                                                                                  Client.secretPacketBuffer1.putByte(var21);
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3605) {
+                                                                                                                  var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                                  if(var32 != null) {
                                                                                                                      if((Client.friendCount < 200 || Client.field1049 == 1) && Client.friendCount < 400) {
-                                                                                                                        var48 = Player.method1179(var68, Client.field928);
-                                                                                                                        if(var48 != null) {
+                                                                                                                        var23 = Player.method1179(var32, Client.field928);
+                                                                                                                        if(var23 != null) {
                                                                                                                            var18 = 0;
 
-                                                                                                                           label2446:
+                                                                                                                           label1874:
                                                                                                                            while(true) {
                                                                                                                               if(var18 >= Client.friendCount) {
                                                                                                                                  for(var18 = 0; var18 < Client.ignoreCount; ++var18) {
-                                                                                                                                    Ignore var52 = Client.ignores[var18];
-                                                                                                                                    var32 = Player.method1179(var52.name, Client.field928);
-                                                                                                                                    if(var32 != null && var32.equals(var48)) {
-                                                                                                                                       class152.sendGameMessage(30, "", "Please remove " + var68 + " from your ignore list first");
-                                                                                                                                       break label2446;
+                                                                                                                                    Ignore var68 = Client.ignores[var18];
+                                                                                                                                    var22 = Player.method1179(var68.name, Client.field928);
+                                                                                                                                    if(var22 != null && var22.equals(var23)) {
+                                                                                                                                       class152.sendGameMessage(30, "", "Please remove " + var32 + " from your ignore list first");
+                                                                                                                                       break label1874;
                                                                                                                                     }
 
-                                                                                                                                    if(var52.previousName != null) {
-                                                                                                                                       var56 = Player.method1179(var52.previousName, Client.field928);
-                                                                                                                                       if(var56 != null && var56.equals(var48)) {
-                                                                                                                                          class152.sendGameMessage(30, "", "Please remove " + var68 + " from your ignore list first");
-                                                                                                                                          break label2446;
+                                                                                                                                    if(var68.previousName != null) {
+                                                                                                                                       var24 = Player.method1179(var68.previousName, Client.field928);
+                                                                                                                                       if(var24 != null && var24.equals(var23)) {
+                                                                                                                                          class152.sendGameMessage(30, "", "Please remove " + var32 + " from your ignore list first");
+                                                                                                                                          break label1874;
                                                                                                                                        }
                                                                                                                                     }
                                                                                                                                  }
 
-                                                                                                                                 if(Player.method1179(XItemContainer.localPlayer.name, Client.field928).equals(var48)) {
+                                                                                                                                 if(Player.method1179(XItemContainer.localPlayer.name, Client.field928).equals(var23)) {
                                                                                                                                     class152.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
                                                                                                                                  } else {
                                                                                                                                     Client.secretPacketBuffer1.putOpcode(240);
-                                                                                                                                    Client.secretPacketBuffer1.putByte(class261.method4734(var68));
-                                                                                                                                    Client.secretPacketBuffer1.method3137(var68);
+                                                                                                                                    Client.secretPacketBuffer1.putByte(class261.getLength(var32));
+                                                                                                                                    Client.secretPacketBuffer1.putString(var32);
                                                                                                                                  }
                                                                                                                                  break;
                                                                                                                               }
 
-                                                                                                                              Friend var51 = Client.friends[var18];
-                                                                                                                              var32 = Player.method1179(var51.name, Client.field928);
-                                                                                                                              if(var32 != null && var32.equals(var48)) {
-                                                                                                                                 class152.sendGameMessage(30, "", var68 + " is already on your friend list");
+                                                                                                                              Friend var67 = Client.friends[var18];
+                                                                                                                              var22 = Player.method1179(var67.name, Client.field928);
+                                                                                                                              if(var22 != null && var22.equals(var23)) {
+                                                                                                                                 class152.sendGameMessage(30, "", var32 + " is already on your friend list");
                                                                                                                                  break;
                                                                                                                               }
 
-                                                                                                                              if(var51.previousName != null) {
-                                                                                                                                 var56 = Player.method1179(var51.previousName, Client.field928);
-                                                                                                                                 if(var56 != null && var56.equals(var48)) {
-                                                                                                                                    class152.sendGameMessage(30, "", var68 + " is already on your friend list");
+                                                                                                                              if(var67.previousName != null) {
+                                                                                                                                 var24 = Player.method1179(var67.previousName, Client.field928);
+                                                                                                                                 if(var24 != null && var24.equals(var23)) {
+                                                                                                                                    class152.sendGameMessage(30, "", var32 + " is already on your friend list");
                                                                                                                                     break;
                                                                                                                                  }
                                                                                                                               }
@@ -1148,291 +1151,291 @@ public class class31 {
                                                                                                                      }
                                                                                                                   }
 
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3606) {
-                                                                                                                  var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                                  DynamicObject.method1873(var68);
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3607) {
-                                                                                                                  var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                                  GameObject.method2891(var68, false);
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3608) {
-                                                                                                                  var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                                  class50.method789(var68);
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3609) {
-                                                                                                                  var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                                  class230[] var50 = Widget.method4032();
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3606) {
+                                                                                                                  var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                                  DynamicObject.method1873(var32);
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3607) {
+                                                                                                                  var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                                  GameObject.method2891(var32, false);
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3608) {
+                                                                                                                  var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                                  KeyFocusListener.method789(var32);
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3609) {
+                                                                                                                  var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                                  Permission[] var65 = Widget.method4032();
 
-                                                                                                                  for(var18 = 0; var18 < var50.length; ++var18) {
-                                                                                                                     class230 var49 = var50[var18];
-                                                                                                                     if(var49.field3186 != -1 && var68.startsWith(class41.method609(var49.field3186))) {
-                                                                                                                        var68 = var68.substring(6 + Integer.toString(var49.field3186).length());
+                                                                                                                  for(var18 = 0; var18 < var65.length; ++var18) {
+                                                                                                                     Permission var36 = var65[var18];
+                                                                                                                     if(var36.field3186 != -1 && var32.startsWith(class41.method609(var36.field3186))) {
+                                                                                                                        var32 = var32.substring(6 + Integer.toString(var36.field3186).length());
                                                                                                                         break;
                                                                                                                      }
                                                                                                                   }
 
-                                                                                                                  class83.intStack[++class46.intStackSize - 1] = class25.method167(var68, false)?1:0;
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3611) {
+                                                                                                                  class83.intStack[++class46.intStackSize - 1] = class25.isFriended(var32, false)?1:0;
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3611) {
                                                                                                                   if(Client.clanChatOwner != null) {
-                                                                                                                     class83.scriptStringStack[++class50.scriptStringStackSize - 1] = CombatInfoListHolder.method1690(Client.clanChatOwner);
+                                                                                                                     class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = CombatInfoListHolder.method1690(Client.clanChatOwner);
                                                                                                                   } else {
-                                                                                                                     class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                     class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                   }
 
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3612) {
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3612) {
                                                                                                                   if(Client.clanChatOwner != null) {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = class28.clanChatCount;
                                                                                                                   } else {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                                   }
 
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3613) {
-                                                                                                                  var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                  if(Client.clanChatOwner != null && var16 < class28.clanChatCount) {
-                                                                                                                     class83.scriptStringStack[++class50.scriptStringStackSize - 1] = class11.clanMembers[var16].username;
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3613) {
+                                                                                                                  var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                  if(Client.clanChatOwner != null && var17 < class28.clanChatCount) {
+                                                                                                                     class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = class11.clanMembers[var17].username;
                                                                                                                   } else {
-                                                                                                                     class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                     class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                   }
 
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3614) {
-                                                                                                                  var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                  if(Client.clanChatOwner != null && var16 < class28.clanChatCount) {
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = class11.clanMembers[var16].world;
-                                                                                                                  } else {
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                  }
-
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3615) {
-                                                                                                                  var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                  if(Client.clanChatOwner != null && var16 < class28.clanChatCount) {
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = class11.clanMembers[var16].rank;
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3614) {
+                                                                                                                  var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                  if(Client.clanChatOwner != null && var17 < class28.clanChatCount) {
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = class11.clanMembers[var17].world;
                                                                                                                   } else {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                                   }
 
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3616) {
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3615) {
+                                                                                                                  var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                  if(Client.clanChatOwner != null && var17 < class28.clanChatCount) {
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = class11.clanMembers[var17].rank;
+                                                                                                                  } else {
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = 0;
+                                                                                                                  }
+
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3616) {
                                                                                                                   class83.intStack[++class46.intStackSize - 1] = class12.field271;
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3617) {
-                                                                                                                  var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                                  XGrandExchangeOffer.method111(var68);
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3618) {
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3617) {
+                                                                                                                  var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                                  XGrandExchangeOffer.method111(var32);
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3618) {
                                                                                                                   class83.intStack[++class46.intStackSize - 1] = class35.clanChatRank;
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3619) {
-                                                                                                                  var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                                  class96.method1797(var68);
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3620) {
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3619) {
+                                                                                                                  var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                                  class96.method1797(var32);
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3620) {
                                                                                                                   Actor.method1548();
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3621) {
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3621) {
                                                                                                                   if(Client.field1193 == 0) {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                   } else {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = Client.ignoreCount;
                                                                                                                   }
 
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3622) {
-                                                                                                                  var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                  if(Client.field1193 != 0 && var16 < Client.ignoreCount) {
-                                                                                                                     class83.scriptStringStack[++class50.scriptStringStackSize - 1] = Client.ignores[var16].name;
-                                                                                                                     class83.scriptStringStack[++class50.scriptStringStackSize - 1] = Client.ignores[var16].previousName;
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3622) {
+                                                                                                                  var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                  if(Client.field1193 != 0 && var17 < Client.ignoreCount) {
+                                                                                                                     class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = Client.ignores[var17].name;
+                                                                                                                     class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = Client.ignores[var17].previousName;
                                                                                                                   } else {
-                                                                                                                     class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
-                                                                                                                     class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                     class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
+                                                                                                                     class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                   }
 
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 == 3623) {
-                                                                                                                  var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                                  if(var68.startsWith(class41.method609(0)) || var68.startsWith(class41.method609(1))) {
-                                                                                                                     var68 = var68.substring(7);
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 == 3623) {
+                                                                                                                  var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                                  if(var32.startsWith(class41.method609(0)) || var32.startsWith(class41.method609(1))) {
+                                                                                                                     var32 = var32.substring(7);
                                                                                                                   }
 
-                                                                                                                  class83.intStack[++class46.intStackSize - 1] = class1.method2(var68)?1:0;
-                                                                                                                  var15 = 1;
-                                                                                                               } else if(var43 != 3624) {
-                                                                                                                  if(var43 == 3625) {
+                                                                                                                  class83.intStack[++class46.intStackSize - 1] = class1.isIgnored(var32)?1:0;
+                                                                                                                  var26 = 1;
+                                                                                                               } else if(var15 != 3624) {
+                                                                                                                  if(var15 == 3625) {
                                                                                                                      if(Client.clanChatName != null) {
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = CombatInfoListHolder.method1690(Client.clanChatName);
+                                                                                                                        class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = CombatInfoListHolder.method1690(Client.clanChatName);
                                                                                                                      } else {
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                        class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                      }
 
-                                                                                                                     var15 = 1;
+                                                                                                                     var26 = 1;
                                                                                                                   } else {
-                                                                                                                     var15 = 2;
+                                                                                                                     var26 = 2;
                                                                                                                   }
                                                                                                                } else {
-                                                                                                                  var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                  if(class11.clanMembers != null && var16 < class28.clanChatCount && class11.clanMembers[var16].username.equalsIgnoreCase(XItemContainer.localPlayer.name)) {
+                                                                                                                  var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                  if(class11.clanMembers != null && var17 < class28.clanChatCount && class11.clanMembers[var17].username.equalsIgnoreCase(XItemContainer.localPlayer.name)) {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = 1;
                                                                                                                   } else {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                                   }
 
-                                                                                                                  var15 = 1;
+                                                                                                                  var26 = 1;
                                                                                                                }
 
-                                                                                                               var14 = var15;
+                                                                                                               var16 = var26;
                                                                                                             } else {
-                                                                                                               int var33;
-                                                                                                               boolean var79;
-                                                                                                               if(var43 < 4000) {
-                                                                                                                  if(var43 == 3903) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.grandExchangeOffers[var16].method91();
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3904) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.grandExchangeOffers[var16].itemId;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3905) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.grandExchangeOffers[var16].price;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3906) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.grandExchangeOffers[var16].totalQuantity;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3907) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.grandExchangeOffers[var16].quantitySold;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3908) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.grandExchangeOffers[var16].spent;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3910) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     var31 = Client.grandExchangeOffers[var16].method87();
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var31 == 0?1:0;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3911) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     var31 = Client.grandExchangeOffers[var16].method87();
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var31 == 2?1:0;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3912) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     var31 = Client.grandExchangeOffers[var16].method87();
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var31 == 5?1:0;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3913) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     var31 = Client.grandExchangeOffers[var16].method87();
-                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var31 == 1?1:0;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3914) {
-                                                                                                                     var79 = class83.intStack[--class46.intStackSize] == 1;
+                                                                                                               boolean var66;
+                                                                                                               int var69;
+                                                                                                               if(var15 < 4000) {
+                                                                                                                  if(var15 == 3903) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.grandExchangeOffers[var17].method91();
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3904) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.grandExchangeOffers[var17].itemId;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3905) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.grandExchangeOffers[var17].price;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3906) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.grandExchangeOffers[var17].totalQuantity;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3907) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.grandExchangeOffers[var17].quantitySold;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3908) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = Client.grandExchangeOffers[var17].spent;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3910) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     var21 = Client.grandExchangeOffers[var17].method87();
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var21 == 0?1:0;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3911) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     var21 = Client.grandExchangeOffers[var17].method87();
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var21 == 2?1:0;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3912) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     var21 = Client.grandExchangeOffers[var17].method87();
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var21 == 5?1:0;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3913) {
+                                                                                                                     var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                     var21 = Client.grandExchangeOffers[var17].method87();
+                                                                                                                     class83.intStack[++class46.intStackSize - 1] = var21 == 1?1:0;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3914) {
+                                                                                                                     var66 = class83.intStack[--class46.intStackSize] == 1;
                                                                                                                      if(class66.field833 != null) {
-                                                                                                                        class66.field833.method61(class13.field279, var79);
+                                                                                                                        class66.field833.method61(class13.field279, var66);
                                                                                                                      }
 
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3915) {
-                                                                                                                     var79 = class83.intStack[--class46.intStackSize] == 1;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3915) {
+                                                                                                                     var66 = class83.intStack[--class46.intStackSize] == 1;
                                                                                                                      if(class66.field833 != null) {
-                                                                                                                        class66.field833.method61(class13.field278, var79);
+                                                                                                                        class66.field833.method61(class13.field278, var66);
                                                                                                                      }
 
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3916) {
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3916) {
                                                                                                                      class46.intStackSize -= 2;
-                                                                                                                     var79 = class83.intStack[class46.intStackSize] == 1;
-                                                                                                                     var82 = class83.intStack[class46.intStackSize + 1] == 1;
+                                                                                                                     var66 = class83.intStack[class46.intStackSize] == 1;
+                                                                                                                     var33 = class83.intStack[class46.intStackSize + 1] == 1;
                                                                                                                      if(class66.field833 != null) {
-                                                                                                                        class66.field833.method61(new class95(var82), var79);
+                                                                                                                        class66.field833.method61(new class95(var33), var66);
                                                                                                                      }
 
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3917) {
-                                                                                                                     var79 = class83.intStack[--class46.intStackSize] == 1;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3917) {
+                                                                                                                     var66 = class83.intStack[--class46.intStackSize] == 1;
                                                                                                                      if(class66.field833 != null) {
-                                                                                                                        class66.field833.method61(class13.field277, var79);
+                                                                                                                        class66.field833.method61(class13.field277, var66);
                                                                                                                      }
 
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3918) {
-                                                                                                                     var79 = class83.intStack[--class46.intStackSize] == 1;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3918) {
+                                                                                                                     var66 = class83.intStack[--class46.intStackSize] == 1;
                                                                                                                      if(class66.field833 != null) {
-                                                                                                                        class66.field833.method61(class13.field280, var79);
+                                                                                                                        class66.field833.method61(class13.field280, var66);
                                                                                                                      }
 
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 3919) {
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 3919) {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = class66.field833 == null?0:class66.field833.field283.size();
-                                                                                                                     var15 = 1;
+                                                                                                                     var26 = 1;
                                                                                                                   } else {
-                                                                                                                     class14 var53;
-                                                                                                                     if(var43 == 3920) {
-                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                        var53 = (class14)class66.field833.field283.get(var16);
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var53.field291;
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3921) {
-                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                        var53 = (class14)class66.field833.field283.get(var16);
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var53.method66();
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3922) {
-                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                        var53 = (class14)class66.field833.field283.get(var16);
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var53.method78();
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3923) {
-                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                        var53 = (class14)class66.field833.field283.get(var16);
-                                                                                                                        long var34 = class172.method3128() - class43.field599 - var53.field286;
-                                                                                                                        var20 = (int)(var34 / 3600000L);
-                                                                                                                        var33 = (int)((var34 - (long)(var20 * 3600000)) / 60000L);
-                                                                                                                        int var22 = (int)((var34 - (long)(var20 * 3600000) - (long)(var33 * '\uea60')) / 1000L);
-                                                                                                                        String var23 = var20 + ":" + var33 / 10 + var33 % 10 + ":" + var22 / 10 + var22 % 10;
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var23;
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3924) {
-                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                        var53 = (class14)class66.field833.field283.get(var16);
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var53.field285.totalQuantity;
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3925) {
-                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                        var53 = (class14)class66.field833.field283.get(var16);
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var53.field285.price;
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 3926) {
-                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                        var53 = (class14)class66.field833.field283.get(var16);
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var53.field285.itemId;
-                                                                                                                        var15 = 1;
+                                                                                                                     class14 var37;
+                                                                                                                     if(var15 == 3920) {
+                                                                                                                        var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                        var37 = (class14)class66.field833.field283.get(var17);
+                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var37.field291;
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3921) {
+                                                                                                                        var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                        var37 = (class14)class66.field833.field283.get(var17);
+                                                                                                                        class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var37.method66();
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3922) {
+                                                                                                                        var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                        var37 = (class14)class66.field833.field283.get(var17);
+                                                                                                                        class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var37.method78();
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3923) {
+                                                                                                                        var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                        var37 = (class14)class66.field833.field283.get(var17);
+                                                                                                                        long var38 = DState.currentTimeMs() - class43.field599 - var37.field286;
+                                                                                                                        var19 = (int)(var38 / 3600000L);
+                                                                                                                        var69 = (int)((var38 - (long)(var19 * 3600000)) / 60000L);
+                                                                                                                        int var40 = (int)((var38 - (long)(var19 * 3600000) - (long)(var69 * '\uea60')) / 1000L);
+                                                                                                                        String var41 = var19 + ":" + var69 / 10 + var69 % 10 + ":" + var40 / 10 + var40 % 10;
+                                                                                                                        class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var41;
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3924) {
+                                                                                                                        var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                        var37 = (class14)class66.field833.field283.get(var17);
+                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var37.field285.totalQuantity;
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3925) {
+                                                                                                                        var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                        var37 = (class14)class66.field833.field283.get(var17);
+                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var37.field285.price;
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 3926) {
+                                                                                                                        var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                        var37 = (class14)class66.field833.field283.get(var17);
+                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var37.field285.itemId;
+                                                                                                                        var26 = 1;
                                                                                                                      } else {
-                                                                                                                        var15 = 2;
+                                                                                                                        var26 = 2;
                                                                                                                      }
                                                                                                                   }
 
-                                                                                                                  var14 = var15;
-                                                                                                               } else if(var43 < 4100) {
-                                                                                                                  var14 = GameObject.method2890(var43, var3, var47);
-                                                                                                               } else if(var43 < 4200) {
-                                                                                                                  var14 = class261.method4735(var43, var3, var47);
-                                                                                                               } else if(var43 < 4300) {
-                                                                                                                  var14 = class24.method163(var43, var3, var47);
-                                                                                                               } else if(var43 < 5100) {
-                                                                                                                  if(var43 == 5000) {
+                                                                                                                  var16 = var26;
+                                                                                                               } else if(var15 < 4100) {
+                                                                                                                  var16 = GameObject.method2890(var15, var5, var25);
+                                                                                                               } else if(var15 < 4200) {
+                                                                                                                  var16 = class261.method4735(var15, var5, var25);
+                                                                                                               } else if(var15 < 4300) {
+                                                                                                                  var16 = class24.method163(var15, var5, var25);
+                                                                                                               } else if(var15 < 5100) {
+                                                                                                                  if(var15 == 5000) {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = Client.field1143;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 5001) {
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 5001) {
                                                                                                                      class46.intStackSize -= 3;
                                                                                                                      Client.field1143 = class83.intStack[class46.intStackSize];
                                                                                                                      class61.field787 = Ignore.method1137(class83.intStack[class46.intStackSize + 1]);
@@ -1445,356 +1448,359 @@ public class class31 {
                                                                                                                      Client.secretPacketBuffer1.putByte(Client.field1143);
                                                                                                                      Client.secretPacketBuffer1.putByte(class61.field787.field3738);
                                                                                                                      Client.secretPacketBuffer1.putByte(Client.field1032);
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 5002) {
-                                                                                                                     var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 5002) {
+                                                                                                                     var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
                                                                                                                      class46.intStackSize -= 2;
-                                                                                                                     var31 = class83.intStack[class46.intStackSize];
+                                                                                                                     var21 = class83.intStack[class46.intStackSize];
                                                                                                                      var18 = class83.intStack[class46.intStackSize + 1];
                                                                                                                      Client.secretPacketBuffer1.putOpcode(153);
-                                                                                                                     Client.secretPacketBuffer1.putByte(class261.method4734(var68) + 2);
-                                                                                                                     Client.secretPacketBuffer1.method3137(var68);
-                                                                                                                     Client.secretPacketBuffer1.putByte(var31 - 1);
+                                                                                                                     Client.secretPacketBuffer1.putByte(class261.getLength(var32) + 2);
+                                                                                                                     Client.secretPacketBuffer1.putString(var32);
+                                                                                                                     Client.secretPacketBuffer1.putByte(var21 - 1);
                                                                                                                      Client.secretPacketBuffer1.putByte(var18);
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 5003) {
-                                                                                                                     class46.intStackSize -= 2;
-                                                                                                                     var16 = class83.intStack[class46.intStackSize];
-                                                                                                                     var31 = class83.intStack[class46.intStackSize + 1];
-                                                                                                                     MessageNode var71 = class50.method790(var16, var31);
-                                                                                                                     if(var71 != null) {
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var71.id;
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var71.tick;
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var71.name != null?var71.name:"";
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var71.sender != null?var71.sender:"";
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var71.value != null?var71.value:"";
-                                                                                                                     } else {
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = -1;
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
-                                                                                                                     }
-
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 5004) {
-                                                                                                                     var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                     MessageNode var59 = (MessageNode)class98.field1546.method3478((long)var16);
-                                                                                                                     if(var59 != null) {
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var59.type;
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = var59.tick;
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var59.name != null?var59.name:"";
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var59.sender != null?var59.sender:"";
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var59.value != null?var59.value:"";
-                                                                                                                     } else {
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = -1;
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
-                                                                                                                     }
-
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 5005) {
-                                                                                                                     if(class61.field787 == null) {
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = -1;
-                                                                                                                     } else {
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = class61.field787.field3738;
-                                                                                                                     }
-
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 5008) {
-                                                                                                                     var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                                     var31 = class83.intStack[--class46.intStackSize];
-                                                                                                                     var65 = var68.toLowerCase();
-                                                                                                                     byte var73 = 0;
-                                                                                                                     if(var65.startsWith("yellow:")) {
-                                                                                                                        var73 = 0;
-                                                                                                                        var68 = var68.substring("yellow:".length());
-                                                                                                                     } else if(var65.startsWith("red:")) {
-                                                                                                                        var73 = 1;
-                                                                                                                        var68 = var68.substring("red:".length());
-                                                                                                                     } else if(var65.startsWith("green:")) {
-                                                                                                                        var73 = 2;
-                                                                                                                        var68 = var68.substring("green:".length());
-                                                                                                                     } else if(var65.startsWith("cyan:")) {
-                                                                                                                        var73 = 3;
-                                                                                                                        var68 = var68.substring("cyan:".length());
-                                                                                                                     } else if(var65.startsWith("purple:")) {
-                                                                                                                        var73 = 4;
-                                                                                                                        var68 = var68.substring("purple:".length());
-                                                                                                                     } else if(var65.startsWith("white:")) {
-                                                                                                                        var73 = 5;
-                                                                                                                        var68 = var68.substring("white:".length());
-                                                                                                                     } else if(var65.startsWith("flash1:")) {
-                                                                                                                        var73 = 6;
-                                                                                                                        var68 = var68.substring("flash1:".length());
-                                                                                                                     } else if(var65.startsWith("flash2:")) {
-                                                                                                                        var73 = 7;
-                                                                                                                        var68 = var68.substring("flash2:".length());
-                                                                                                                     } else if(var65.startsWith("flash3:")) {
-                                                                                                                        var73 = 8;
-                                                                                                                        var68 = var68.substring("flash3:".length());
-                                                                                                                     } else if(var65.startsWith("glow1:")) {
-                                                                                                                        var73 = 9;
-                                                                                                                        var68 = var68.substring("glow1:".length());
-                                                                                                                     } else if(var65.startsWith("glow2:")) {
-                                                                                                                        var73 = 10;
-                                                                                                                        var68 = var68.substring("glow2:".length());
-                                                                                                                     } else if(var65.startsWith("glow3:")) {
-                                                                                                                        var73 = 11;
-                                                                                                                        var68 = var68.substring("glow3:".length());
-                                                                                                                     } else if(Client.field931 != 0) {
-                                                                                                                        if(var65.startsWith("yellow:")) {
-                                                                                                                           var73 = 0;
-                                                                                                                           var68 = var68.substring("yellow:".length());
-                                                                                                                        } else if(var65.startsWith("red:")) {
-                                                                                                                           var73 = 1;
-                                                                                                                           var68 = var68.substring("red:".length());
-                                                                                                                        } else if(var65.startsWith("green:")) {
-                                                                                                                           var73 = 2;
-                                                                                                                           var68 = var68.substring("green:".length());
-                                                                                                                        } else if(var65.startsWith("cyan:")) {
-                                                                                                                           var73 = 3;
-                                                                                                                           var68 = var68.substring("cyan:".length());
-                                                                                                                        } else if(var65.startsWith("purple:")) {
-                                                                                                                           var73 = 4;
-                                                                                                                           var68 = var68.substring("purple:".length());
-                                                                                                                        } else if(var65.startsWith("white:")) {
-                                                                                                                           var73 = 5;
-                                                                                                                           var68 = var68.substring("white:".length());
-                                                                                                                        } else if(var65.startsWith("flash1:")) {
-                                                                                                                           var73 = 6;
-                                                                                                                           var68 = var68.substring("flash1:".length());
-                                                                                                                        } else if(var65.startsWith("flash2:")) {
-                                                                                                                           var73 = 7;
-                                                                                                                           var68 = var68.substring("flash2:".length());
-                                                                                                                        } else if(var65.startsWith("flash3:")) {
-                                                                                                                           var73 = 8;
-                                                                                                                           var68 = var68.substring("flash3:".length());
-                                                                                                                        } else if(var65.startsWith("glow1:")) {
-                                                                                                                           var73 = 9;
-                                                                                                                           var68 = var68.substring("glow1:".length());
-                                                                                                                        } else if(var65.startsWith("glow2:")) {
-                                                                                                                           var73 = 10;
-                                                                                                                           var68 = var68.substring("glow2:".length());
-                                                                                                                        } else if(var65.startsWith("glow3:")) {
-                                                                                                                           var73 = 11;
-                                                                                                                           var68 = var68.substring("glow3:".length());
+                                                                                                                     var26 = 1;
+                                                                                                                  } else {
+                                                                                                                     MessageNode var82;
+                                                                                                                     if(var15 == 5003) {
+                                                                                                                        class46.intStackSize -= 2;
+                                                                                                                        var17 = class83.intStack[class46.intStackSize];
+                                                                                                                        var21 = class83.intStack[class46.intStackSize + 1];
+                                                                                                                        var82 = KeyFocusListener.method790(var17, var21);
+                                                                                                                        if(var82 != null) {
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var82.id;
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var82.tick;
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var82.name != null?var82.name:"";
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var82.sender != null?var82.sender:"";
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var82.value != null?var82.value:"";
+                                                                                                                        } else {
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = -1;
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = 0;
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                         }
-                                                                                                                     }
 
-                                                                                                                     var65 = var68.toLowerCase();
-                                                                                                                     byte var62 = 0;
-                                                                                                                     if(var65.startsWith("wave:")) {
-                                                                                                                        var62 = 1;
-                                                                                                                        var68 = var68.substring("wave:".length());
-                                                                                                                     } else if(var65.startsWith("wave2:")) {
-                                                                                                                        var62 = 2;
-                                                                                                                        var68 = var68.substring("wave2:".length());
-                                                                                                                     } else if(var65.startsWith("shake:")) {
-                                                                                                                        var62 = 3;
-                                                                                                                        var68 = var68.substring("shake:".length());
-                                                                                                                     } else if(var65.startsWith("scroll:")) {
-                                                                                                                        var62 = 4;
-                                                                                                                        var68 = var68.substring("scroll:".length());
-                                                                                                                     } else if(var65.startsWith("slide:")) {
-                                                                                                                        var62 = 5;
-                                                                                                                        var68 = var68.substring("slide:".length());
-                                                                                                                     } else if(Client.field931 != 0) {
-                                                                                                                        if(var65.startsWith("wave:")) {
-                                                                                                                           var62 = 1;
-                                                                                                                           var68 = var68.substring("wave:".length());
-                                                                                                                        } else if(var65.startsWith("wave2:")) {
-                                                                                                                           var62 = 2;
-                                                                                                                           var68 = var68.substring("wave2:".length());
-                                                                                                                        } else if(var65.startsWith("shake:")) {
-                                                                                                                           var62 = 3;
-                                                                                                                           var68 = var68.substring("shake:".length());
-                                                                                                                        } else if(var65.startsWith("scroll:")) {
-                                                                                                                           var62 = 4;
-                                                                                                                           var68 = var68.substring("scroll:".length());
-                                                                                                                        } else if(var65.startsWith("slide:")) {
-                                                                                                                           var62 = 5;
-                                                                                                                           var68 = var68.substring("slide:".length());
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 5004) {
+                                                                                                                        var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                        var82 = (MessageNode)class98.field1546.method3478((long)var17);
+                                                                                                                        if(var82 != null) {
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var82.type;
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var82.tick;
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var82.name != null?var82.name:"";
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var82.sender != null?var82.sender:"";
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var82.value != null?var82.value:"";
+                                                                                                                        } else {
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = -1;
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = 0;
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                         }
-                                                                                                                     }
 
-                                                                                                                     Client.secretPacketBuffer1.putOpcode(213);
-                                                                                                                     Client.secretPacketBuffer1.putByte(0);
-                                                                                                                     var33 = Client.secretPacketBuffer1.offset;
-                                                                                                                     Client.secretPacketBuffer1.putByte(var31);
-                                                                                                                     Client.secretPacketBuffer1.putByte(var73);
-                                                                                                                     Client.secretPacketBuffer1.putByte(var62);
-                                                                                                                     MessageNode.method1142(Client.secretPacketBuffer1, var68);
-                                                                                                                     Client.secretPacketBuffer1.putLength(Client.secretPacketBuffer1.offset - var33);
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 5009) {
-                                                                                                                     class50.scriptStringStackSize -= 2;
-                                                                                                                     var68 = class83.scriptStringStack[class50.scriptStringStackSize];
-                                                                                                                     var48 = class83.scriptStringStack[class50.scriptStringStackSize + 1];
-                                                                                                                     Client.secretPacketBuffer1.putOpcode(239);
-                                                                                                                     Client.secretPacketBuffer1.putShort(0);
-                                                                                                                     var18 = Client.secretPacketBuffer1.offset;
-                                                                                                                     Client.secretPacketBuffer1.method3137(var68);
-                                                                                                                     MessageNode.method1142(Client.secretPacketBuffer1, var48);
-                                                                                                                     Client.secretPacketBuffer1.putShortLength(Client.secretPacketBuffer1.offset - var18);
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 != 5015) {
-                                                                                                                     if(var43 == 5016) {
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = Client.field1032;
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 5017) {
-                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = KitDefinition.method4399(var16);
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 5018) {
-                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = class166.method3076(var16);
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 5019) {
-                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                        class83.intStack[++class46.intStackSize - 1] = class269.method4863(var16);
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 5020) {
-                                                                                                                        var68 = class83.scriptStringStack[--class50.scriptStringStackSize];
-                                                                                                                        if(var68.equalsIgnoreCase("toggleroof")) {
-                                                                                                                           class8.field247.field1335 = !class8.field247.field1335;
-                                                                                                                           class1.method3();
-                                                                                                                           if(class8.field247.field1335) {
-                                                                                                                              class152.sendGameMessage(99, "", "Roofs are now all hidden");
-                                                                                                                           } else {
-                                                                                                                              class152.sendGameMessage(99, "", "Roofs will only be removed selectively");
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 5005) {
+                                                                                                                        if(class61.field787 == null) {
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = -1;
+                                                                                                                        } else {
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = class61.field787.field3738;
+                                                                                                                        }
+
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 5008) {
+                                                                                                                        var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                                        var21 = class83.intStack[--class46.intStackSize];
+                                                                                                                        var57 = var32.toLowerCase();
+                                                                                                                        byte var71 = 0;
+                                                                                                                        if(var57.startsWith("yellow:")) {
+                                                                                                                           var71 = 0;
+                                                                                                                           var32 = var32.substring("yellow:".length());
+                                                                                                                        } else if(var57.startsWith("red:")) {
+                                                                                                                           var71 = 1;
+                                                                                                                           var32 = var32.substring("red:".length());
+                                                                                                                        } else if(var57.startsWith("green:")) {
+                                                                                                                           var71 = 2;
+                                                                                                                           var32 = var32.substring("green:".length());
+                                                                                                                        } else if(var57.startsWith("cyan:")) {
+                                                                                                                           var71 = 3;
+                                                                                                                           var32 = var32.substring("cyan:".length());
+                                                                                                                        } else if(var57.startsWith("purple:")) {
+                                                                                                                           var71 = 4;
+                                                                                                                           var32 = var32.substring("purple:".length());
+                                                                                                                        } else if(var57.startsWith("white:")) {
+                                                                                                                           var71 = 5;
+                                                                                                                           var32 = var32.substring("white:".length());
+                                                                                                                        } else if(var57.startsWith("flash1:")) {
+                                                                                                                           var71 = 6;
+                                                                                                                           var32 = var32.substring("flash1:".length());
+                                                                                                                        } else if(var57.startsWith("flash2:")) {
+                                                                                                                           var71 = 7;
+                                                                                                                           var32 = var32.substring("flash2:".length());
+                                                                                                                        } else if(var57.startsWith("flash3:")) {
+                                                                                                                           var71 = 8;
+                                                                                                                           var32 = var32.substring("flash3:".length());
+                                                                                                                        } else if(var57.startsWith("glow1:")) {
+                                                                                                                           var71 = 9;
+                                                                                                                           var32 = var32.substring("glow1:".length());
+                                                                                                                        } else if(var57.startsWith("glow2:")) {
+                                                                                                                           var71 = 10;
+                                                                                                                           var32 = var32.substring("glow2:".length());
+                                                                                                                        } else if(var57.startsWith("glow3:")) {
+                                                                                                                           var71 = 11;
+                                                                                                                           var32 = var32.substring("glow3:".length());
+                                                                                                                        } else if(Client.languageId != 0) {
+                                                                                                                           if(var57.startsWith("yellow:")) {
+                                                                                                                              var71 = 0;
+                                                                                                                              var32 = var32.substring("yellow:".length());
+                                                                                                                           } else if(var57.startsWith("red:")) {
+                                                                                                                              var71 = 1;
+                                                                                                                              var32 = var32.substring("red:".length());
+                                                                                                                           } else if(var57.startsWith("green:")) {
+                                                                                                                              var71 = 2;
+                                                                                                                              var32 = var32.substring("green:".length());
+                                                                                                                           } else if(var57.startsWith("cyan:")) {
+                                                                                                                              var71 = 3;
+                                                                                                                              var32 = var32.substring("cyan:".length());
+                                                                                                                           } else if(var57.startsWith("purple:")) {
+                                                                                                                              var71 = 4;
+                                                                                                                              var32 = var32.substring("purple:".length());
+                                                                                                                           } else if(var57.startsWith("white:")) {
+                                                                                                                              var71 = 5;
+                                                                                                                              var32 = var32.substring("white:".length());
+                                                                                                                           } else if(var57.startsWith("flash1:")) {
+                                                                                                                              var71 = 6;
+                                                                                                                              var32 = var32.substring("flash1:".length());
+                                                                                                                           } else if(var57.startsWith("flash2:")) {
+                                                                                                                              var71 = 7;
+                                                                                                                              var32 = var32.substring("flash2:".length());
+                                                                                                                           } else if(var57.startsWith("flash3:")) {
+                                                                                                                              var71 = 8;
+                                                                                                                              var32 = var32.substring("flash3:".length());
+                                                                                                                           } else if(var57.startsWith("glow1:")) {
+                                                                                                                              var71 = 9;
+                                                                                                                              var32 = var32.substring("glow1:".length());
+                                                                                                                           } else if(var57.startsWith("glow2:")) {
+                                                                                                                              var71 = 10;
+                                                                                                                              var32 = var32.substring("glow2:".length());
+                                                                                                                           } else if(var57.startsWith("glow3:")) {
+                                                                                                                              var71 = 11;
+                                                                                                                              var32 = var32.substring("glow3:".length());
                                                                                                                            }
                                                                                                                         }
 
-                                                                                                                        if(var68.equalsIgnoreCase("displayfps")) {
-                                                                                                                           Client.field941 = !Client.field941;
+                                                                                                                        var57 = var32.toLowerCase();
+                                                                                                                        byte var70 = 0;
+                                                                                                                        if(var57.startsWith("wave:")) {
+                                                                                                                           var70 = 1;
+                                                                                                                           var32 = var32.substring("wave:".length());
+                                                                                                                        } else if(var57.startsWith("wave2:")) {
+                                                                                                                           var70 = 2;
+                                                                                                                           var32 = var32.substring("wave2:".length());
+                                                                                                                        } else if(var57.startsWith("shake:")) {
+                                                                                                                           var70 = 3;
+                                                                                                                           var32 = var32.substring("shake:".length());
+                                                                                                                        } else if(var57.startsWith("scroll:")) {
+                                                                                                                           var70 = 4;
+                                                                                                                           var32 = var32.substring("scroll:".length());
+                                                                                                                        } else if(var57.startsWith("slide:")) {
+                                                                                                                           var70 = 5;
+                                                                                                                           var32 = var32.substring("slide:".length());
+                                                                                                                        } else if(Client.languageId != 0) {
+                                                                                                                           if(var57.startsWith("wave:")) {
+                                                                                                                              var70 = 1;
+                                                                                                                              var32 = var32.substring("wave:".length());
+                                                                                                                           } else if(var57.startsWith("wave2:")) {
+                                                                                                                              var70 = 2;
+                                                                                                                              var32 = var32.substring("wave2:".length());
+                                                                                                                           } else if(var57.startsWith("shake:")) {
+                                                                                                                              var70 = 3;
+                                                                                                                              var32 = var32.substring("shake:".length());
+                                                                                                                           } else if(var57.startsWith("scroll:")) {
+                                                                                                                              var70 = 4;
+                                                                                                                              var32 = var32.substring("scroll:".length());
+                                                                                                                           } else if(var57.startsWith("slide:")) {
+                                                                                                                              var70 = 5;
+                                                                                                                              var32 = var32.substring("slide:".length());
+                                                                                                                           }
                                                                                                                         }
 
-                                                                                                                        if(var68.equalsIgnoreCase("clickbox")) {
-                                                                                                                           Model.field1992 = !Model.field1992;
-                                                                                                                           class152.sendGameMessage(99, "", "Clickbox Mode: " + (Model.field1992?"AABB":"Legacy"));
-                                                                                                                        }
-
-                                                                                                                        if(Client.rights >= 2) {
-                                                                                                                           if(var68.equalsIgnoreCase("aabb")) {
-                                                                                                                              if(!class7.field236) {
-                                                                                                                                 class7.field236 = true;
-                                                                                                                                 class7.field233 = class11.field263;
-                                                                                                                                 class152.sendGameMessage(99, "", "AABB boxes: All");
-                                                                                                                              } else if(class7.field233 == class11.field263) {
-                                                                                                                                 class7.field236 = true;
-                                                                                                                                 class7.field233 = class11.field268;
-                                                                                                                                 class152.sendGameMessage(99, "", "AABB boxes: Mouse Over");
+                                                                                                                        Client.secretPacketBuffer1.putOpcode(213);
+                                                                                                                        Client.secretPacketBuffer1.putByte(0);
+                                                                                                                        var69 = Client.secretPacketBuffer1.offset;
+                                                                                                                        Client.secretPacketBuffer1.putByte(var21);
+                                                                                                                        Client.secretPacketBuffer1.putByte(var71);
+                                                                                                                        Client.secretPacketBuffer1.putByte(var70);
+                                                                                                                        MessageNode.method1142(Client.secretPacketBuffer1, var32);
+                                                                                                                        Client.secretPacketBuffer1.putLength(Client.secretPacketBuffer1.offset - var69);
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 5009) {
+                                                                                                                        KeyFocusListener.scriptStringStackSize -= 2;
+                                                                                                                        var32 = class83.scriptStringStack[KeyFocusListener.scriptStringStackSize];
+                                                                                                                        var23 = class83.scriptStringStack[KeyFocusListener.scriptStringStackSize + 1];
+                                                                                                                        Client.secretPacketBuffer1.putOpcode(239);
+                                                                                                                        Client.secretPacketBuffer1.putShort(0);
+                                                                                                                        var18 = Client.secretPacketBuffer1.offset;
+                                                                                                                        Client.secretPacketBuffer1.putString(var32);
+                                                                                                                        MessageNode.method1142(Client.secretPacketBuffer1, var23);
+                                                                                                                        Client.secretPacketBuffer1.putShortLength(Client.secretPacketBuffer1.offset - var18);
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 != 5015) {
+                                                                                                                        if(var15 == 5016) {
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = Client.field1032;
+                                                                                                                           var26 = 1;
+                                                                                                                        } else if(var15 == 5017) {
+                                                                                                                           var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = KitDefinition.method4399(var17);
+                                                                                                                           var26 = 1;
+                                                                                                                        } else if(var15 == 5018) {
+                                                                                                                           var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = GZipDecompressor.method3076(var17);
+                                                                                                                           var26 = 1;
+                                                                                                                        } else if(var15 == 5019) {
+                                                                                                                           var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = class269.method4863(var17);
+                                                                                                                           var26 = 1;
+                                                                                                                        } else if(var15 == 5020) {
+                                                                                                                           var32 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                                                                                                                           if(var32.equalsIgnoreCase("toggleroof")) {
+                                                                                                                              class8.settings.hideRoofs = !class8.settings.hideRoofs;
+                                                                                                                              class1.method3();
+                                                                                                                              if(class8.settings.hideRoofs) {
+                                                                                                                                 class152.sendGameMessage(99, "", "Roofs are now all hidden");
                                                                                                                               } else {
-                                                                                                                                 class7.field236 = false;
-                                                                                                                                 class152.sendGameMessage(99, "", "AABB boxes: Off");
+                                                                                                                                 class152.sendGameMessage(99, "", "Roofs will only be removed selectively");
                                                                                                                               }
                                                                                                                            }
 
-                                                                                                                           if(var68.equalsIgnoreCase("legacyboxes")) {
-                                                                                                                              class7.field238 = !class7.field238;
-                                                                                                                              class152.sendGameMessage(99, "", "Show legacy boxes: " + class7.field238);
+                                                                                                                           if(var32.equalsIgnoreCase("displayfps")) {
+                                                                                                                              Client.displayFps = !Client.displayFps;
                                                                                                                            }
 
-                                                                                                                           if(var68.equalsIgnoreCase("geotests")) {
-                                                                                                                              class7.field232 = !class7.field232;
-                                                                                                                              class152.sendGameMessage(99, "", "Show geometry tests: " + class7.field232);
+                                                                                                                           if(var32.equalsIgnoreCase("clickbox")) {
+                                                                                                                              Model.field1992 = !Model.field1992;
+                                                                                                                              class152.sendGameMessage(99, "", "Clickbox Mode: " + (Model.field1992?"AABB":"Legacy"));
                                                                                                                            }
 
-                                                                                                                           if(var68.equalsIgnoreCase("fpson")) {
-                                                                                                                              Client.field941 = true;
+                                                                                                                           if(Client.rights >= 2) {
+                                                                                                                              if(var32.equalsIgnoreCase("aabb")) {
+                                                                                                                                 if(!class7.field236) {
+                                                                                                                                    class7.field236 = true;
+                                                                                                                                    class7.field233 = class11.field263;
+                                                                                                                                    class152.sendGameMessage(99, "", "AABB boxes: All");
+                                                                                                                                 } else if(class7.field233 == class11.field263) {
+                                                                                                                                    class7.field236 = true;
+                                                                                                                                    class7.field233 = class11.field268;
+                                                                                                                                    class152.sendGameMessage(99, "", "AABB boxes: Mouse Over");
+                                                                                                                                 } else {
+                                                                                                                                    class7.field236 = false;
+                                                                                                                                    class152.sendGameMessage(99, "", "AABB boxes: Off");
+                                                                                                                                 }
+                                                                                                                              }
+
+                                                                                                                              if(var32.equalsIgnoreCase("legacyboxes")) {
+                                                                                                                                 class7.field238 = !class7.field238;
+                                                                                                                                 class152.sendGameMessage(99, "", "Show legacy boxes: " + class7.field238);
+                                                                                                                              }
+
+                                                                                                                              if(var32.equalsIgnoreCase("geotests")) {
+                                                                                                                                 class7.field232 = !class7.field232;
+                                                                                                                                 class152.sendGameMessage(99, "", "Show geometry tests: " + class7.field232);
+                                                                                                                              }
+
+                                                                                                                              if(var32.equalsIgnoreCase("fpson")) {
+                                                                                                                                 Client.displayFps = true;
+                                                                                                                              }
+
+                                                                                                                              if(var32.equalsIgnoreCase("fpsoff")) {
+                                                                                                                                 Client.displayFps = false;
+                                                                                                                              }
+
+                                                                                                                              if(var32.equalsIgnoreCase("gc")) {
+                                                                                                                                 System.gc();
+                                                                                                                              }
+
+                                                                                                                              if(var32.equalsIgnoreCase("clientdrop")) {
+                                                                                                                                 class13.method60();
+                                                                                                                              }
+
+                                                                                                                              if(var32.equalsIgnoreCase("errortest") && Client.socketType == 2) {
+                                                                                                                                 throw new RuntimeException();
+                                                                                                                              }
                                                                                                                            }
 
-                                                                                                                           if(var68.equalsIgnoreCase("fpsoff")) {
-                                                                                                                              Client.field941 = false;
-                                                                                                                           }
-
-                                                                                                                           if(var68.equalsIgnoreCase("gc")) {
-                                                                                                                              System.gc();
-                                                                                                                           }
-
-                                                                                                                           if(var68.equalsIgnoreCase("clientdrop")) {
-                                                                                                                              class13.method60();
-                                                                                                                           }
-
-                                                                                                                           if(var68.equalsIgnoreCase("errortest") && Client.field1202 == 2) {
-                                                                                                                              throw new RuntimeException();
-                                                                                                                           }
+                                                                                                                           Client.secretPacketBuffer1.putOpcode(232);
+                                                                                                                           Client.secretPacketBuffer1.putByte(var32.length() + 1);
+                                                                                                                           Client.secretPacketBuffer1.putString(var32);
+                                                                                                                           var26 = 1;
+                                                                                                                        } else if(var15 == 5021) {
+                                                                                                                           Client.field1145 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize].toLowerCase().trim();
+                                                                                                                           var26 = 1;
+                                                                                                                        } else if(var15 == 5022) {
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = Client.field1145;
+                                                                                                                           var26 = 1;
+                                                                                                                        } else {
+                                                                                                                           var26 = 2;
+                                                                                                                        }
+                                                                                                                     } else {
+                                                                                                                        if(XItemContainer.localPlayer != null && XItemContainer.localPlayer.name != null) {
+                                                                                                                           var32 = XItemContainer.localPlayer.name;
+                                                                                                                        } else {
+                                                                                                                           var32 = "";
                                                                                                                         }
 
-                                                                                                                        Client.secretPacketBuffer1.putOpcode(232);
-                                                                                                                        Client.secretPacketBuffer1.putByte(var68.length() + 1);
-                                                                                                                        Client.secretPacketBuffer1.method3137(var68);
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 5021) {
-                                                                                                                        Client.field1145 = class83.scriptStringStack[--class50.scriptStringStackSize].toLowerCase().trim();
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 5022) {
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = Client.field1145;
-                                                                                                                        var15 = 1;
-                                                                                                                     } else {
-                                                                                                                        var15 = 2;
+                                                                                                                        class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var32;
+                                                                                                                        var26 = 1;
                                                                                                                      }
-                                                                                                                  } else {
-                                                                                                                     if(XItemContainer.localPlayer != null && XItemContainer.localPlayer.name != null) {
-                                                                                                                        var68 = XItemContainer.localPlayer.name;
-                                                                                                                     } else {
-                                                                                                                        var68 = "";
-                                                                                                                     }
-
-                                                                                                                     class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var68;
-                                                                                                                     var15 = 1;
                                                                                                                   }
 
-                                                                                                                  var14 = var15;
-                                                                                                               } else if(var43 < 5400) {
-                                                                                                                  var14 = class37.method510(var43, var3, var47);
-                                                                                                               } else if(var43 < 5600) {
-                                                                                                                  if(var43 == 5504) {
+                                                                                                                  var16 = var26;
+                                                                                                               } else if(var15 < 5400) {
+                                                                                                                  var16 = class37.method510(var15, var5, var25);
+                                                                                                               } else if(var15 < 5600) {
+                                                                                                                  if(var15 == 5504) {
                                                                                                                      class46.intStackSize -= 2;
-                                                                                                                     var28 = class83.intStack[class46.intStackSize];
-                                                                                                                     var20 = class83.intStack[class46.intStackSize + 1];
+                                                                                                                     var20 = class83.intStack[class46.intStackSize];
+                                                                                                                     var19 = class83.intStack[class46.intStackSize + 1];
                                                                                                                      if(!Client.field1173) {
-                                                                                                                        Client.field1052 = var28;
-                                                                                                                        Client.mapAngle = var20;
+                                                                                                                        Client.field1052 = var20;
+                                                                                                                        Client.mapAngle = var19;
                                                                                                                      }
 
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 5505) {
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 5505) {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = Client.field1052;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 5506) {
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 5506) {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = Client.mapAngle;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 5530) {
-                                                                                                                     var28 = class83.intStack[--class46.intStackSize];
-                                                                                                                     if(var28 < 0) {
-                                                                                                                        var28 = 0;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 5530) {
+                                                                                                                     var20 = class83.intStack[--class46.intStackSize];
+                                                                                                                     if(var20 < 0) {
+                                                                                                                        var20 = 0;
                                                                                                                      }
 
-                                                                                                                     Client.field1015 = var28;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 5531) {
+                                                                                                                     Client.field1015 = var20;
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 5531) {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = Client.field1015;
-                                                                                                                     var15 = 1;
+                                                                                                                     var26 = 1;
                                                                                                                   } else {
-                                                                                                                     var15 = 2;
+                                                                                                                     var26 = 2;
                                                                                                                   }
 
-                                                                                                                  var14 = var15;
-                                                                                                               } else if(var43 < 5700) {
-                                                                                                                  if(var43 == 5630) {
+                                                                                                                  var16 = var26;
+                                                                                                               } else if(var15 < 5700) {
+                                                                                                                  if(var15 == 5630) {
                                                                                                                      Client.field978 = 250;
-                                                                                                                     var15 = 1;
+                                                                                                                     var26 = 1;
                                                                                                                   } else {
-                                                                                                                     var15 = 2;
+                                                                                                                     var26 = 2;
                                                                                                                   }
 
-                                                                                                                  var14 = var15;
-                                                                                                               } else if(var43 < 6300) {
-                                                                                                                  if(var43 == 6200) {
+                                                                                                                  var16 = var26;
+                                                                                                               } else if(var15 < 6300) {
+                                                                                                                  if(var15 == 6200) {
                                                                                                                      class46.intStackSize -= 2;
                                                                                                                      Client.field1179 = (short)class83.intStack[class46.intStackSize];
                                                                                                                      if(Client.field1179 <= 0) {
@@ -1806,8 +1812,8 @@ public class class31 {
                                                                                                                         Client.field1180 = 205;
                                                                                                                      }
 
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 6201) {
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 6201) {
                                                                                                                      class46.intStackSize -= 2;
                                                                                                                      Client.field1126 = (short)class83.intStack[class46.intStackSize];
                                                                                                                      if(Client.field1126 <= 0) {
@@ -1819,8 +1825,8 @@ public class class31 {
                                                                                                                         Client.field1182 = 320;
                                                                                                                      }
 
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 6202) {
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 6202) {
                                                                                                                      class46.intStackSize -= 4;
                                                                                                                      Client.field1166 = (short)class83.intStack[class46.intStackSize];
                                                                                                                      if(Client.field1166 <= 0) {
@@ -1846,8 +1852,8 @@ public class class31 {
                                                                                                                         Client.field1186 = Client.field1185;
                                                                                                                      }
 
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 6203) {
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 6203) {
                                                                                                                      if(Client.field1099 != null) {
                                                                                                                         Item.method1773(0, 0, Client.field1099.width, Client.field1099.height, false);
                                                                                                                         class83.intStack[++class46.intStackSize - 1] = Client.viewportHeight;
@@ -1857,552 +1863,552 @@ public class class31 {
                                                                                                                         class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                      }
 
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 6204) {
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 6204) {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = Client.field1126;
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = Client.field1182;
-                                                                                                                     var15 = 1;
-                                                                                                                  } else if(var43 == 6205) {
+                                                                                                                     var26 = 1;
+                                                                                                                  } else if(var15 == 6205) {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = Client.field1179;
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = Client.field1180;
-                                                                                                                     var15 = 1;
+                                                                                                                     var26 = 1;
                                                                                                                   } else {
-                                                                                                                     var15 = 2;
+                                                                                                                     var26 = 2;
                                                                                                                   }
 
-                                                                                                                  var14 = var15;
-                                                                                                               } else if(var43 < 6600) {
-                                                                                                                  if(var43 == 6500) {
+                                                                                                                  var16 = var26;
+                                                                                                               } else if(var15 < 6600) {
+                                                                                                                  if(var15 == 6500) {
                                                                                                                      class83.intStack[++class46.intStackSize - 1] = class1.loadWorlds()?1:0;
-                                                                                                                     var15 = 1;
+                                                                                                                     var26 = 1;
                                                                                                                   } else {
-                                                                                                                     World var85;
-                                                                                                                     if(var43 == 6501) {
-                                                                                                                        var85 = Preferences.method1615();
-                                                                                                                        if(var85 != null) {
-                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var85.id;
-                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var85.mask;
-                                                                                                                           class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var85.activity;
-                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var85.location;
-                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var85.playerCount;
-                                                                                                                           class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var85.address;
+                                                                                                                     World var83;
+                                                                                                                     if(var15 == 6501) {
+                                                                                                                        var83 = Preferences.method1615();
+                                                                                                                        if(var83 != null) {
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var83.id;
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var83.mask;
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var83.activity;
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var83.location;
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var83.playerCount;
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var83.address;
                                                                                                                         } else {
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                           class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                           class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                         }
 
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 6502) {
-                                                                                                                        var85 = Actor.method1556();
-                                                                                                                        if(var85 != null) {
-                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var85.id;
-                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var85.mask;
-                                                                                                                           class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var85.activity;
-                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var85.location;
-                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var85.playerCount;
-                                                                                                                           class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var85.address;
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 6502) {
+                                                                                                                        var83 = Actor.method1556();
+                                                                                                                        if(var83 != null) {
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var83.id;
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var83.mask;
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var83.activity;
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var83.location;
+                                                                                                                           class83.intStack[++class46.intStackSize - 1] = var83.playerCount;
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var83.address;
                                                                                                                         } else {
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                           class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                           class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                           class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                         }
 
-                                                                                                                        var15 = 1;
+                                                                                                                        var26 = 1;
                                                                                                                      } else {
-                                                                                                                        World var60;
-                                                                                                                        if(var43 == 6506) {
-                                                                                                                           var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                           var60 = null;
+                                                                                                                        World var78;
+                                                                                                                        if(var15 == 6506) {
+                                                                                                                           var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                           var78 = null;
 
-                                                                                                                           for(var18 = 0; var18 < World.field1309; ++var18) {
-                                                                                                                              if(World.worldList[var18].id == var16) {
-                                                                                                                                 var60 = World.worldList[var18];
+                                                                                                                           for(var18 = 0; var18 < World.worldCount; ++var18) {
+                                                                                                                              if(World.worldList[var18].id == var17) {
+                                                                                                                                 var78 = World.worldList[var18];
                                                                                                                                  break;
                                                                                                                               }
                                                                                                                            }
 
-                                                                                                                           if(var60 != null) {
-                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var60.id;
-                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var60.mask;
-                                                                                                                              class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var60.activity;
-                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var60.location;
-                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var60.playerCount;
-                                                                                                                              class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var60.address;
+                                                                                                                           if(var78 != null) {
+                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var78.id;
+                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var78.mask;
+                                                                                                                              class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var78.activity;
+                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var78.location;
+                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var78.playerCount;
+                                                                                                                              class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var78.address;
                                                                                                                            } else {
                                                                                                                               class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                               class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                              class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                              class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                               class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                                               class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                              class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                              class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                            }
 
-                                                                                                                           var15 = 1;
-                                                                                                                        } else if(var43 == 6507) {
+                                                                                                                           var26 = 1;
+                                                                                                                        } else if(var15 == 6507) {
                                                                                                                            class46.intStackSize -= 4;
-                                                                                                                           var16 = class83.intStack[class46.intStackSize];
-                                                                                                                           var82 = class83.intStack[1 + class46.intStackSize] == 1;
+                                                                                                                           var17 = class83.intStack[class46.intStackSize];
+                                                                                                                           var33 = class83.intStack[1 + class46.intStackSize] == 1;
                                                                                                                            var18 = class83.intStack[class46.intStackSize + 2];
-                                                                                                                           boolean var84 = class83.intStack[class46.intStackSize + 3] == 1;
+                                                                                                                           boolean var72 = class83.intStack[class46.intStackSize + 3] == 1;
                                                                                                                            if(World.worldList != null) {
-                                                                                                                              XGrandExchangeOffer.method112(0, World.worldList.length - 1, var16, var82, var18, var84);
+                                                                                                                              XGrandExchangeOffer.method112(0, World.worldList.length - 1, var17, var33, var18, var72);
                                                                                                                            }
 
-                                                                                                                           var15 = 1;
-                                                                                                                        } else if(var43 != 6511) {
-                                                                                                                           if(var43 == 6512) {
+                                                                                                                           var26 = 1;
+                                                                                                                        } else if(var15 != 6511) {
+                                                                                                                           if(var15 == 6512) {
                                                                                                                               Client.field1073 = class83.intStack[--class46.intStackSize] == 1;
-                                                                                                                              var15 = 1;
+                                                                                                                              var26 = 1;
                                                                                                                            } else {
-                                                                                                                              class251 var72;
-                                                                                                                              if(var43 == 6513) {
+                                                                                                                              class251 var39;
+                                                                                                                              if(var15 == 6513) {
                                                                                                                                  class46.intStackSize -= 2;
-                                                                                                                                 var16 = class83.intStack[class46.intStackSize];
-                                                                                                                                 var31 = class83.intStack[class46.intStackSize + 1];
-                                                                                                                                 var72 = FaceNormal.method2869(var31);
-                                                                                                                                 if(var72.method4440()) {
-                                                                                                                                    class83.scriptStringStack[++class50.scriptStringStackSize - 1] = class35.getNpcDefinition(var16).method4649(var31, var72.field3401);
+                                                                                                                                 var17 = class83.intStack[class46.intStackSize];
+                                                                                                                                 var21 = class83.intStack[class46.intStackSize + 1];
+                                                                                                                                 var39 = FaceNormal.method2869(var21);
+                                                                                                                                 if(var39.method4440()) {
+                                                                                                                                    class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = class35.getNpcDefinition(var17).method4649(var21, var39.field3401);
                                                                                                                                  } else {
-                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = class35.getNpcDefinition(var16).method4648(var31, var72.field3398);
+                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = class35.getNpcDefinition(var17).method4648(var21, var39.field3398);
                                                                                                                                  }
 
-                                                                                                                                 var15 = 1;
-                                                                                                                              } else if(var43 == 6514) {
+                                                                                                                                 var26 = 1;
+                                                                                                                              } else if(var15 == 6514) {
                                                                                                                                  class46.intStackSize -= 2;
-                                                                                                                                 var16 = class83.intStack[class46.intStackSize];
-                                                                                                                                 var31 = class83.intStack[class46.intStackSize + 1];
-                                                                                                                                 var72 = FaceNormal.method2869(var31);
-                                                                                                                                 if(var72.method4440()) {
-                                                                                                                                    class83.scriptStringStack[++class50.scriptStringStackSize - 1] = class251.getObjectDefinition(var16).method4525(var31, var72.field3401);
+                                                                                                                                 var17 = class83.intStack[class46.intStackSize];
+                                                                                                                                 var21 = class83.intStack[class46.intStackSize + 1];
+                                                                                                                                 var39 = FaceNormal.method2869(var21);
+                                                                                                                                 if(var39.method4440()) {
+                                                                                                                                    class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = class251.getObjectDefinition(var17).method4525(var21, var39.field3401);
                                                                                                                                  } else {
-                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = class251.getObjectDefinition(var16).method4548(var31, var72.field3398);
+                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = class251.getObjectDefinition(var17).method4548(var21, var39.field3398);
                                                                                                                                  }
 
-                                                                                                                                 var15 = 1;
-                                                                                                                              } else if(var43 == 6515) {
+                                                                                                                                 var26 = 1;
+                                                                                                                              } else if(var15 == 6515) {
                                                                                                                                  class46.intStackSize -= 2;
-                                                                                                                                 var16 = class83.intStack[class46.intStackSize];
-                                                                                                                                 var31 = class83.intStack[class46.intStackSize + 1];
-                                                                                                                                 var72 = FaceNormal.method2869(var31);
-                                                                                                                                 if(var72.method4440()) {
-                                                                                                                                    class83.scriptStringStack[++class50.scriptStringStackSize - 1] = class176.getItemDefinition(var16).method4589(var31, var72.field3401);
+                                                                                                                                 var17 = class83.intStack[class46.intStackSize];
+                                                                                                                                 var21 = class83.intStack[class46.intStackSize + 1];
+                                                                                                                                 var39 = FaceNormal.method2869(var21);
+                                                                                                                                 if(var39.method4440()) {
+                                                                                                                                    class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = AbstractByteBuffer.getItemDefinition(var17).method4589(var21, var39.field3401);
                                                                                                                                  } else {
-                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = class176.getItemDefinition(var16).method4586(var31, var72.field3398);
+                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = AbstractByteBuffer.getItemDefinition(var17).method4586(var21, var39.field3398);
                                                                                                                                  }
 
-                                                                                                                                 var15 = 1;
-                                                                                                                              } else if(var43 == 6516) {
+                                                                                                                                 var26 = 1;
+                                                                                                                              } else if(var15 == 6516) {
                                                                                                                                  class46.intStackSize -= 2;
-                                                                                                                                 var16 = class83.intStack[class46.intStackSize];
-                                                                                                                                 var31 = class83.intStack[class46.intStackSize + 1];
-                                                                                                                                 var72 = FaceNormal.method2869(var31);
-                                                                                                                                 if(var72.method4440()) {
-                                                                                                                                    String[] var54 = class83.scriptStringStack;
-                                                                                                                                    var20 = ++class50.scriptStringStackSize - 1;
-                                                                                                                                    class252 var36 = (class252)class252.field3402.get((long)var16);
-                                                                                                                                    class252 var57;
-                                                                                                                                    if(var36 != null) {
-                                                                                                                                       var57 = var36;
+                                                                                                                                 var17 = class83.intStack[class46.intStackSize];
+                                                                                                                                 var21 = class83.intStack[class46.intStackSize + 1];
+                                                                                                                                 var39 = FaceNormal.method2869(var21);
+                                                                                                                                 if(var39.method4440()) {
+                                                                                                                                    String[] var73 = class83.scriptStringStack;
+                                                                                                                                    var19 = ++KeyFocusListener.scriptStringStackSize - 1;
+                                                                                                                                    class252 var76 = (class252)class252.field3402.get((long)var17);
+                                                                                                                                    class252 var42;
+                                                                                                                                    if(var76 != null) {
+                                                                                                                                       var42 = var76;
                                                                                                                                     } else {
-                                                                                                                                       byte[] var58 = class252.field3406.getConfigData(34, var16);
-                                                                                                                                       var36 = new class252();
-                                                                                                                                       if(var58 != null) {
-                                                                                                                                          var36.method4459(new Buffer(var58));
+                                                                                                                                       byte[] var43 = class252.field3406.getConfigData(34, var17);
+                                                                                                                                       var76 = new class252();
+                                                                                                                                       if(var43 != null) {
+                                                                                                                                          var76.method4459(new Buffer(var43));
                                                                                                                                        }
 
-                                                                                                                                       var36.method4458();
-                                                                                                                                       class252.field3402.put(var36, (long)var16);
-                                                                                                                                       var57 = var36;
+                                                                                                                                       var76.method4458();
+                                                                                                                                       class252.field3402.put(var76, (long)var17);
+                                                                                                                                       var42 = var76;
                                                                                                                                     }
 
-                                                                                                                                    var54[var20] = var57.method4462(var31, var72.field3401);
+                                                                                                                                    var73[var19] = var42.method4462(var21, var39.field3401);
                                                                                                                                  } else {
-                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = class17.method115(var16).method4457(var31, var72.field3398);
+                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = class17.method115(var17).method4457(var21, var39.field3398);
                                                                                                                                  }
 
-                                                                                                                                 var15 = 1;
+                                                                                                                                 var26 = 1;
                                                                                                                               } else {
-                                                                                                                                 var15 = 2;
+                                                                                                                                 var26 = 2;
                                                                                                                               }
                                                                                                                            }
                                                                                                                         } else {
-                                                                                                                           var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                           if(var16 >= 0 && var16 < World.field1309) {
-                                                                                                                              var60 = World.worldList[var16];
-                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var60.id;
-                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var60.mask;
-                                                                                                                              class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var60.activity;
-                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var60.location;
-                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var60.playerCount;
-                                                                                                                              class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var60.address;
+                                                                                                                           var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                           if(var17 >= 0 && var17 < World.worldCount) {
+                                                                                                                              var78 = World.worldList[var17];
+                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var78.id;
+                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var78.mask;
+                                                                                                                              class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var78.activity;
+                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var78.location;
+                                                                                                                              class83.intStack[++class46.intStackSize - 1] = var78.playerCount;
+                                                                                                                              class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var78.address;
                                                                                                                            } else {
                                                                                                                               class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                               class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                              class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                              class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                               class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                                               class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                              class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                              class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                            }
 
-                                                                                                                           var15 = 1;
+                                                                                                                           var26 = 1;
                                                                                                                         }
                                                                                                                      }
                                                                                                                   }
 
-                                                                                                                  var14 = var15;
-                                                                                                               } else if(var43 < 6700) {
-                                                                                                                  if(var43 == 6600) {
-                                                                                                                     var16 = WallObject.plane;
-                                                                                                                     var31 = (XItemContainer.localPlayer.x >> 7) + class50.baseX;
+                                                                                                                  var16 = var26;
+                                                                                                               } else if(var15 < 6700) {
+                                                                                                                  if(var15 == 6600) {
+                                                                                                                     var17 = WallObject.plane;
+                                                                                                                     var21 = (XItemContainer.localPlayer.x >> 7) + KeyFocusListener.baseX;
                                                                                                                      var18 = (XItemContainer.localPlayer.y >> 7) + class266.baseY;
-                                                                                                                     class44.method651().method5187(var16, var31, var18, true);
-                                                                                                                     var15 = 1;
+                                                                                                                     class44.method651().method5187(var17, var21, var18, true);
+                                                                                                                     var26 = 1;
                                                                                                                   } else {
-                                                                                                                     WorldMapData var75;
-                                                                                                                     if(var43 == 6601) {
-                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                        var48 = "";
-                                                                                                                        var75 = class44.method651().method5179(var16);
-                                                                                                                        if(var75 != null) {
-                                                                                                                           var48 = var75.method283();
+                                                                                                                     WorldMapData var84;
+                                                                                                                     if(var15 == 6601) {
+                                                                                                                        var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                        var23 = "";
+                                                                                                                        var84 = class44.method651().method5179(var17);
+                                                                                                                        if(var84 != null) {
+                                                                                                                           var23 = var84.method283();
                                                                                                                         }
 
-                                                                                                                        class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var48;
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 6602) {
-                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                        class44.method651().method5188(var16);
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 6603) {
+                                                                                                                        class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var23;
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 6602) {
+                                                                                                                        var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                        class44.method651().method5188(var17);
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 6603) {
                                                                                                                         class83.intStack[++class46.intStackSize - 1] = class44.method651().method5325();
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 6604) {
-                                                                                                                        var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                        class44.method651().method5250(var16);
-                                                                                                                        var15 = 1;
-                                                                                                                     } else if(var43 == 6605) {
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 6604) {
+                                                                                                                        var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                        class44.method651().method5250(var17);
+                                                                                                                        var26 = 1;
+                                                                                                                     } else if(var15 == 6605) {
                                                                                                                         class83.intStack[++class46.intStackSize - 1] = class44.method651().method5202()?1:0;
-                                                                                                                        var15 = 1;
+                                                                                                                        var26 = 1;
                                                                                                                      } else {
-                                                                                                                        Coordinates var87;
-                                                                                                                        if(var43 == 6606) {
-                                                                                                                           var87 = new Coordinates(class83.intStack[--class46.intStackSize]);
-                                                                                                                           class44.method651().method5204(var87.worldX, var87.worldY);
-                                                                                                                           var15 = 1;
-                                                                                                                        } else if(var43 == 6607) {
-                                                                                                                           var87 = new Coordinates(class83.intStack[--class46.intStackSize]);
-                                                                                                                           class44.method651().method5205(var87.worldX, var87.worldY);
-                                                                                                                           var15 = 1;
-                                                                                                                        } else if(var43 == 6608) {
-                                                                                                                           var87 = new Coordinates(class83.intStack[--class46.intStackSize]);
-                                                                                                                           class44.method651().method5206(var87.plane, var87.worldX, var87.worldY);
-                                                                                                                           var15 = 1;
-                                                                                                                        } else if(var43 == 6609) {
-                                                                                                                           var87 = new Coordinates(class83.intStack[--class46.intStackSize]);
-                                                                                                                           class44.method651().method5212(var87.plane, var87.worldX, var87.worldY);
-                                                                                                                           var15 = 1;
-                                                                                                                        } else if(var43 == 6610) {
+                                                                                                                        Coordinates var81;
+                                                                                                                        if(var15 == 6606) {
+                                                                                                                           var81 = new Coordinates(class83.intStack[--class46.intStackSize]);
+                                                                                                                           class44.method651().method5204(var81.worldX, var81.worldY);
+                                                                                                                           var26 = 1;
+                                                                                                                        } else if(var15 == 6607) {
+                                                                                                                           var81 = new Coordinates(class83.intStack[--class46.intStackSize]);
+                                                                                                                           class44.method651().method5205(var81.worldX, var81.worldY);
+                                                                                                                           var26 = 1;
+                                                                                                                        } else if(var15 == 6608) {
+                                                                                                                           var81 = new Coordinates(class83.intStack[--class46.intStackSize]);
+                                                                                                                           class44.method651().method5206(var81.plane, var81.worldX, var81.worldY);
+                                                                                                                           var26 = 1;
+                                                                                                                        } else if(var15 == 6609) {
+                                                                                                                           var81 = new Coordinates(class83.intStack[--class46.intStackSize]);
+                                                                                                                           class44.method651().method5212(var81.plane, var81.worldX, var81.worldY);
+                                                                                                                           var26 = 1;
+                                                                                                                        } else if(var15 == 6610) {
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = class44.method651().method5299();
                                                                                                                            class83.intStack[++class46.intStackSize - 1] = class44.method651().method5209();
-                                                                                                                           var15 = 1;
+                                                                                                                           var26 = 1;
                                                                                                                         } else {
-                                                                                                                           WorldMapData var63;
-                                                                                                                           if(var43 == 6611) {
-                                                                                                                              var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                              var63 = class44.method651().method5179(var16);
-                                                                                                                              if(var63 == null) {
+                                                                                                                           WorldMapData var74;
+                                                                                                                           if(var15 == 6611) {
+                                                                                                                              var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                              var74 = class44.method651().method5179(var17);
+                                                                                                                              if(var74 == null) {
                                                                                                                                  class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                                               } else {
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var63.method334().method3913();
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var74.method334().method3913();
                                                                                                                               }
 
-                                                                                                                              var15 = 1;
-                                                                                                                           } else if(var43 == 6612) {
-                                                                                                                              var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                              var63 = class44.method651().method5179(var16);
-                                                                                                                              if(var63 == null) {
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                              } else {
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = (var63.method287() - var63.method305() + 1) * 64;
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = (var63.method289() - var63.method288() + 1) * 64;
-                                                                                                                              }
-
-                                                                                                                              var15 = 1;
-                                                                                                                           } else if(var43 == 6613) {
-                                                                                                                              var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                              var63 = class44.method651().method5179(var16);
-                                                                                                                              if(var63 == null) {
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = 0;
+                                                                                                                              var26 = 1;
+                                                                                                                           } else if(var15 == 6612) {
+                                                                                                                              var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                              var74 = class44.method651().method5179(var17);
+                                                                                                                              if(var74 == null) {
                                                                                                                                  class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                                                  class83.intStack[++class46.intStackSize - 1] = 0;
                                                                                                                               } else {
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var63.method305() * 64;
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var63.method288() * 64;
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var63.method287() * 64 + 64 - 1;
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var63.method289() * 64 + 64 - 1;
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = (var74.method287() - var74.method305() + 1) * 64;
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = (var74.method289() - var74.method288() + 1) * 64;
                                                                                                                               }
 
-                                                                                                                              var15 = 1;
-                                                                                                                           } else if(var43 == 6614) {
-                                                                                                                              var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                              var63 = class44.method651().method5179(var16);
-                                                                                                                              if(var63 == null) {
+                                                                                                                              var26 = 1;
+                                                                                                                           } else if(var15 == 6613) {
+                                                                                                                              var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                              var74 = class44.method651().method5179(var17);
+                                                                                                                              if(var74 == null) {
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = 0;
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = 0;
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = 0;
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = 0;
+                                                                                                                              } else {
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var74.method305() * 64;
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var74.method288() * 64;
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var74.method287() * 64 + 64 - 1;
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var74.method289() * 64 + 64 - 1;
+                                                                                                                              }
+
+                                                                                                                              var26 = 1;
+                                                                                                                           } else if(var15 == 6614) {
+                                                                                                                              var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                              var74 = class44.method651().method5179(var17);
+                                                                                                                              if(var74 == null) {
                                                                                                                                  class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                               } else {
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var63.method285();
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var74.method285();
                                                                                                                               }
 
-                                                                                                                              var15 = 1;
-                                                                                                                           } else if(var43 == 6615) {
-                                                                                                                              var87 = class44.method651().method5210();
-                                                                                                                              if(var87 == null) {
+                                                                                                                              var26 = 1;
+                                                                                                                           } else if(var15 == 6615) {
+                                                                                                                              var81 = class44.method651().method5210();
+                                                                                                                              if(var81 == null) {
                                                                                                                                  class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                  class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                               } else {
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var87.worldX;
-                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var87.worldY;
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var81.worldX;
+                                                                                                                                 class83.intStack[++class46.intStackSize - 1] = var81.worldY;
                                                                                                                               }
 
-                                                                                                                              var15 = 1;
-                                                                                                                           } else if(var43 == 6616) {
+                                                                                                                              var26 = 1;
+                                                                                                                           } else if(var15 == 6616) {
                                                                                                                               class83.intStack[++class46.intStackSize - 1] = class44.method651().method5189();
-                                                                                                                              var15 = 1;
-                                                                                                                           } else if(var43 == 6617) {
-                                                                                                                              var87 = new Coordinates(class83.intStack[--class46.intStackSize]);
-                                                                                                                              var63 = class44.method651().method5260();
-                                                                                                                              if(var63 == null) {
+                                                                                                                              var26 = 1;
+                                                                                                                           } else if(var15 == 6617) {
+                                                                                                                              var81 = new Coordinates(class83.intStack[--class46.intStackSize]);
+                                                                                                                              var74 = class44.method651().method5260();
+                                                                                                                              if(var74 == null) {
                                                                                                                                  class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                  class83.intStack[++class46.intStackSize - 1] = -1;
-                                                                                                                                 var15 = 1;
+                                                                                                                                 var26 = 1;
                                                                                                                               } else {
-                                                                                                                                 var67 = var63.method317(var87.plane, var87.worldX, var87.worldY);
-                                                                                                                                 if(var67 == null) {
+                                                                                                                                 var62 = var74.method317(var81.plane, var81.worldX, var81.worldY);
+                                                                                                                                 if(var62 == null) {
                                                                                                                                     class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                     class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                  } else {
-                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = var67[0];
-                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = var67[1];
+                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = var62[0];
+                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = var62[1];
                                                                                                                                  }
 
-                                                                                                                                 var15 = 1;
+                                                                                                                                 var26 = 1;
                                                                                                                               }
                                                                                                                            } else {
-                                                                                                                              Coordinates var78;
-                                                                                                                              if(var43 == 6618) {
-                                                                                                                                 var87 = new Coordinates(class83.intStack[--class46.intStackSize]);
-                                                                                                                                 var63 = class44.method651().method5260();
-                                                                                                                                 if(var63 == null) {
+                                                                                                                              Coordinates var75;
+                                                                                                                              if(var15 == 6618) {
+                                                                                                                                 var81 = new Coordinates(class83.intStack[--class46.intStackSize]);
+                                                                                                                                 var74 = class44.method651().method5260();
+                                                                                                                                 if(var74 == null) {
                                                                                                                                     class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                     class83.intStack[++class46.intStackSize - 1] = -1;
-                                                                                                                                    var15 = 1;
+                                                                                                                                    var26 = 1;
                                                                                                                                  } else {
-                                                                                                                                    var78 = var63.method278(var87.worldX, var87.worldY);
-                                                                                                                                    if(var78 == null) {
+                                                                                                                                    var75 = var74.method278(var81.worldX, var81.worldY);
+                                                                                                                                    if(var75 == null) {
                                                                                                                                        class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                     } else {
-                                                                                                                                       class83.intStack[++class46.intStackSize - 1] = var78.method3913();
+                                                                                                                                       class83.intStack[++class46.intStackSize - 1] = var75.method3913();
                                                                                                                                     }
 
-                                                                                                                                    var15 = 1;
+                                                                                                                                    var26 = 1;
                                                                                                                                  }
                                                                                                                               } else {
-                                                                                                                                 Coordinates var69;
-                                                                                                                                 Coordinates var83;
-                                                                                                                                 if(var43 == 6619) {
+                                                                                                                                 Coordinates var77;
+                                                                                                                                 Coordinates var79;
+                                                                                                                                 if(var15 == 6619) {
                                                                                                                                     class46.intStackSize -= 2;
-                                                                                                                                    var16 = class83.intStack[class46.intStackSize];
-                                                                                                                                    var69 = new Coordinates(class83.intStack[class46.intStackSize + 1]);
-                                                                                                                                    var75 = class44.method651().method5179(var16);
-                                                                                                                                    var28 = XItemContainer.localPlayer.field911;
-                                                                                                                                    var20 = (XItemContainer.localPlayer.x >> 7) + class50.baseX;
-                                                                                                                                    var33 = (XItemContainer.localPlayer.y >> 7) + class266.baseY;
-                                                                                                                                    var83 = new Coordinates(var28, var20, var33);
-                                                                                                                                    class44.method651().method5193(var75, var83, var69, false);
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6620) {
+                                                                                                                                    var17 = class83.intStack[class46.intStackSize];
+                                                                                                                                    var77 = new Coordinates(class83.intStack[class46.intStackSize + 1]);
+                                                                                                                                    var84 = class44.method651().method5179(var17);
+                                                                                                                                    var20 = XItemContainer.localPlayer.field911;
+                                                                                                                                    var19 = (XItemContainer.localPlayer.x >> 7) + KeyFocusListener.baseX;
+                                                                                                                                    var69 = (XItemContainer.localPlayer.y >> 7) + class266.baseY;
+                                                                                                                                    var79 = new Coordinates(var20, var19, var69);
+                                                                                                                                    class44.method651().method5193(var84, var79, var77, false);
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6620) {
                                                                                                                                     class46.intStackSize -= 2;
-                                                                                                                                    var16 = class83.intStack[class46.intStackSize];
-                                                                                                                                    var69 = new Coordinates(class83.intStack[class46.intStackSize + 1]);
-                                                                                                                                    var75 = class44.method651().method5179(var16);
-                                                                                                                                    var28 = XItemContainer.localPlayer.field911;
-                                                                                                                                    var20 = (XItemContainer.localPlayer.x >> 7) + class50.baseX;
-                                                                                                                                    var33 = (XItemContainer.localPlayer.y >> 7) + class266.baseY;
-                                                                                                                                    var83 = new Coordinates(var28, var20, var33);
-                                                                                                                                    class44.method651().method5193(var75, var83, var69, true);
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6621) {
+                                                                                                                                    var17 = class83.intStack[class46.intStackSize];
+                                                                                                                                    var77 = new Coordinates(class83.intStack[class46.intStackSize + 1]);
+                                                                                                                                    var84 = class44.method651().method5179(var17);
+                                                                                                                                    var20 = XItemContainer.localPlayer.field911;
+                                                                                                                                    var19 = (XItemContainer.localPlayer.x >> 7) + KeyFocusListener.baseX;
+                                                                                                                                    var69 = (XItemContainer.localPlayer.y >> 7) + class266.baseY;
+                                                                                                                                    var79 = new Coordinates(var20, var19, var69);
+                                                                                                                                    class44.method651().method5193(var84, var79, var77, true);
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6621) {
                                                                                                                                     class46.intStackSize -= 2;
-                                                                                                                                    var16 = class83.intStack[class46.intStackSize];
-                                                                                                                                    var69 = new Coordinates(class83.intStack[class46.intStackSize + 1]);
-                                                                                                                                    var75 = class44.method651().method5179(var16);
-                                                                                                                                    if(var75 == null) {
+                                                                                                                                    var17 = class83.intStack[class46.intStackSize];
+                                                                                                                                    var77 = new Coordinates(class83.intStack[class46.intStackSize + 1]);
+                                                                                                                                    var84 = class44.method651().method5179(var17);
+                                                                                                                                    if(var84 == null) {
                                                                                                                                        class83.intStack[++class46.intStackSize - 1] = 0;
-                                                                                                                                       var15 = 1;
+                                                                                                                                       var26 = 1;
                                                                                                                                     } else {
-                                                                                                                                       class83.intStack[++class46.intStackSize - 1] = var75.method275(var69.plane, var69.worldX, var69.worldY)?1:0;
-                                                                                                                                       var15 = 1;
+                                                                                                                                       class83.intStack[++class46.intStackSize - 1] = var84.method275(var77.plane, var77.worldX, var77.worldY)?1:0;
+                                                                                                                                       var26 = 1;
                                                                                                                                     }
-                                                                                                                                 } else if(var43 == 6622) {
+                                                                                                                                 } else if(var15 == 6622) {
                                                                                                                                     class83.intStack[++class46.intStackSize - 1] = class44.method651().method5284();
                                                                                                                                     class83.intStack[++class46.intStackSize - 1] = class44.method651().method5333();
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6623) {
-                                                                                                                                    var87 = new Coordinates(class83.intStack[--class46.intStackSize]);
-                                                                                                                                    var63 = class44.method651().method5214(var87.plane, var87.worldX, var87.worldY);
-                                                                                                                                    if(var63 == null) {
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6623) {
+                                                                                                                                    var81 = new Coordinates(class83.intStack[--class46.intStackSize]);
+                                                                                                                                    var74 = class44.method651().method5214(var81.plane, var81.worldX, var81.worldY);
+                                                                                                                                    if(var74 == null) {
                                                                                                                                        class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                     } else {
-                                                                                                                                       class83.intStack[++class46.intStackSize - 1] = var63.method280();
+                                                                                                                                       class83.intStack[++class46.intStackSize - 1] = var74.method280();
                                                                                                                                     }
 
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6624) {
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6624) {
                                                                                                                                     class44.method651().method5254(class83.intStack[--class46.intStackSize]);
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6625) {
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6625) {
                                                                                                                                     class44.method651().method5181();
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6626) {
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6626) {
                                                                                                                                     class44.method651().method5319(class83.intStack[--class46.intStackSize]);
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6627) {
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6627) {
                                                                                                                                     class44.method651().method5283();
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6628) {
-                                                                                                                                    var79 = class83.intStack[--class46.intStackSize] == 1;
-                                                                                                                                    class44.method651().method5217(var79);
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6629) {
-                                                                                                                                    var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                                    class44.method651().method5339(var16);
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6630) {
-                                                                                                                                    var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                                    class44.method651().method5219(var16);
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6631) {
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6628) {
+                                                                                                                                    var66 = class83.intStack[--class46.intStackSize] == 1;
+                                                                                                                                    class44.method651().method5217(var66);
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6629) {
+                                                                                                                                    var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                                    class44.method651().method5339(var17);
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6630) {
+                                                                                                                                    var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                                    class44.method651().method5219(var17);
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6631) {
                                                                                                                                     class44.method651().method5220();
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6632) {
-                                                                                                                                    var79 = class83.intStack[--class46.intStackSize] == 1;
-                                                                                                                                    class44.method651().method5365(var79);
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6633) {
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6632) {
+                                                                                                                                    var66 = class83.intStack[--class46.intStackSize] == 1;
+                                                                                                                                    class44.method651().method5365(var66);
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6633) {
                                                                                                                                     class46.intStackSize -= 2;
-                                                                                                                                    var16 = class83.intStack[class46.intStackSize];
-                                                                                                                                    var82 = class83.intStack[class46.intStackSize + 1] == 1;
-                                                                                                                                    class44.method651().method5222(var16, var82);
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6634) {
+                                                                                                                                    var17 = class83.intStack[class46.intStackSize];
+                                                                                                                                    var33 = class83.intStack[class46.intStackSize + 1] == 1;
+                                                                                                                                    class44.method651().method5222(var17, var33);
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6634) {
                                                                                                                                     class46.intStackSize -= 2;
-                                                                                                                                    var16 = class83.intStack[class46.intStackSize];
-                                                                                                                                    var82 = class83.intStack[class46.intStackSize + 1] == 1;
-                                                                                                                                    class44.method651().method5223(var16, var82);
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6635) {
+                                                                                                                                    var17 = class83.intStack[class46.intStackSize];
+                                                                                                                                    var33 = class83.intStack[class46.intStackSize + 1] == 1;
+                                                                                                                                    class44.method651().method5223(var17, var33);
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6635) {
                                                                                                                                     class83.intStack[++class46.intStackSize - 1] = class44.method651().method5224()?1:0;
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6636) {
-                                                                                                                                    var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = class44.method651().method5225(var16)?1:0;
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6637) {
-                                                                                                                                    var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = class44.method651().method5226(var16)?1:0;
-                                                                                                                                    var15 = 1;
-                                                                                                                                 } else if(var43 == 6638) {
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6636) {
+                                                                                                                                    var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = class44.method651().method5225(var17)?1:0;
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6637) {
+                                                                                                                                    var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                                    class83.intStack[++class46.intStackSize - 1] = class44.method651().method5226(var17)?1:0;
+                                                                                                                                    var26 = 1;
+                                                                                                                                 } else if(var15 == 6638) {
                                                                                                                                     class46.intStackSize -= 2;
-                                                                                                                                    var16 = class83.intStack[class46.intStackSize];
-                                                                                                                                    var69 = new Coordinates(class83.intStack[class46.intStackSize + 1]);
-                                                                                                                                    var78 = class44.method651().method5321(var16, var69);
-                                                                                                                                    if(var78 == null) {
+                                                                                                                                    var17 = class83.intStack[class46.intStackSize];
+                                                                                                                                    var77 = new Coordinates(class83.intStack[class46.intStackSize + 1]);
+                                                                                                                                    var75 = class44.method651().method5321(var17, var77);
+                                                                                                                                    if(var75 == null) {
                                                                                                                                        class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                     } else {
-                                                                                                                                       class83.intStack[++class46.intStackSize - 1] = var78.method3913();
+                                                                                                                                       class83.intStack[++class46.intStackSize - 1] = var75.method3913();
                                                                                                                                     }
 
-                                                                                                                                    var15 = 1;
+                                                                                                                                    var26 = 1;
                                                                                                                                  } else {
-                                                                                                                                    class39 var88;
-                                                                                                                                    if(var43 == 6639) {
-                                                                                                                                       var88 = class44.method651().method5231();
-                                                                                                                                       if(var88 == null) {
+                                                                                                                                    class39 var80;
+                                                                                                                                    if(var15 == 6639) {
+                                                                                                                                       var80 = class44.method651().method5231();
+                                                                                                                                       if(var80 == null) {
                                                                                                                                           class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                           class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                        } else {
-                                                                                                                                          class83.intStack[++class46.intStackSize - 1] = var88.field548;
-                                                                                                                                          class83.intStack[++class46.intStackSize - 1] = var88.field550.method3913();
+                                                                                                                                          class83.intStack[++class46.intStackSize - 1] = var80.field548;
+                                                                                                                                          class83.intStack[++class46.intStackSize - 1] = var80.field550.method3913();
                                                                                                                                        }
 
-                                                                                                                                       var15 = 1;
-                                                                                                                                    } else if(var43 == 6640) {
-                                                                                                                                       var88 = class44.method651().method5232();
-                                                                                                                                       if(var88 == null) {
+                                                                                                                                       var26 = 1;
+                                                                                                                                    } else if(var15 == 6640) {
+                                                                                                                                       var80 = class44.method651().method5232();
+                                                                                                                                       if(var80 == null) {
                                                                                                                                           class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                           class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                        } else {
-                                                                                                                                          class83.intStack[++class46.intStackSize - 1] = var88.field548;
-                                                                                                                                          class83.intStack[++class46.intStackSize - 1] = var88.field550.method3913();
+                                                                                                                                          class83.intStack[++class46.intStackSize - 1] = var80.field548;
+                                                                                                                                          class83.intStack[++class46.intStackSize - 1] = var80.field550.method3913();
                                                                                                                                        }
 
-                                                                                                                                       var15 = 1;
+                                                                                                                                       var26 = 1;
                                                                                                                                     } else {
-                                                                                                                                       Area var74;
-                                                                                                                                       if(var43 == 6693) {
-                                                                                                                                          var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                                          var74 = Area.field3303[var16];
-                                                                                                                                          if(var74.name == null) {
-                                                                                                                                             class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+                                                                                                                                       Area var44;
+                                                                                                                                       if(var15 == 6693) {
+                                                                                                                                          var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                                          var44 = Area.field3303[var17];
+                                                                                                                                          if(var44.name == null) {
+                                                                                                                                             class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
                                                                                                                                           } else {
-                                                                                                                                             class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var74.name;
+                                                                                                                                             class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var44.name;
                                                                                                                                           }
 
-                                                                                                                                          var15 = 1;
-                                                                                                                                       } else if(var43 == 6694) {
-                                                                                                                                          var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                                          var74 = Area.field3303[var16];
-                                                                                                                                          class83.intStack[++class46.intStackSize - 1] = var74.field3302;
-                                                                                                                                          var15 = 1;
-                                                                                                                                       } else if(var43 == 6695) {
-                                                                                                                                          var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                                          var74 = Area.field3303[var16];
-                                                                                                                                          if(var74 == null) {
+                                                                                                                                          var26 = 1;
+                                                                                                                                       } else if(var15 == 6694) {
+                                                                                                                                          var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                                          var44 = Area.field3303[var17];
+                                                                                                                                          class83.intStack[++class46.intStackSize - 1] = var44.field3302;
+                                                                                                                                          var26 = 1;
+                                                                                                                                       } else if(var15 == 6695) {
+                                                                                                                                          var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                                          var44 = Area.field3303[var17];
+                                                                                                                                          if(var44 == null) {
                                                                                                                                              class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                           } else {
-                                                                                                                                             class83.intStack[++class46.intStackSize - 1] = var74.field3307;
+                                                                                                                                             class83.intStack[++class46.intStackSize - 1] = var44.field3307;
                                                                                                                                           }
 
-                                                                                                                                          var15 = 1;
-                                                                                                                                       } else if(var43 == 6696) {
-                                                                                                                                          var16 = class83.intStack[--class46.intStackSize];
-                                                                                                                                          var74 = Area.field3303[var16];
-                                                                                                                                          if(var74 == null) {
+                                                                                                                                          var26 = 1;
+                                                                                                                                       } else if(var15 == 6696) {
+                                                                                                                                          var17 = class83.intStack[--class46.intStackSize];
+                                                                                                                                          var44 = Area.field3303[var17];
+                                                                                                                                          if(var44 == null) {
                                                                                                                                              class83.intStack[++class46.intStackSize - 1] = -1;
                                                                                                                                           } else {
-                                                                                                                                             class83.intStack[++class46.intStackSize - 1] = var74.spriteId;
+                                                                                                                                             class83.intStack[++class46.intStackSize - 1] = var44.spriteId;
                                                                                                                                           }
 
-                                                                                                                                          var15 = 1;
-                                                                                                                                       } else if(var43 == 6697) {
+                                                                                                                                          var26 = 1;
+                                                                                                                                       } else if(var15 == 6697) {
                                                                                                                                           class83.intStack[++class46.intStackSize - 1] = WorldMapType1.field449.field633;
-                                                                                                                                          var15 = 1;
-                                                                                                                                       } else if(var43 == 6698) {
+                                                                                                                                          var26 = 1;
+                                                                                                                                       } else if(var15 == 6698) {
                                                                                                                                           class83.intStack[++class46.intStackSize - 1] = WorldMapType1.field449.field635.method3913();
-                                                                                                                                          var15 = 1;
-                                                                                                                                       } else if(var43 == 6699) {
+                                                                                                                                          var26 = 1;
+                                                                                                                                       } else if(var15 == 6699) {
                                                                                                                                           class83.intStack[++class46.intStackSize - 1] = WorldMapType1.field449.field632.method3913();
-                                                                                                                                          var15 = 1;
+                                                                                                                                          var26 = 1;
                                                                                                                                        } else {
-                                                                                                                                          var15 = 2;
+                                                                                                                                          var26 = 2;
                                                                                                                                        }
                                                                                                                                     }
                                                                                                                                  }
@@ -2412,9 +2418,9 @@ public class class31 {
                                                                                                                      }
                                                                                                                   }
 
-                                                                                                                  var14 = var15;
+                                                                                                                  var16 = var26;
                                                                                                                } else {
-                                                                                                                  var14 = 2;
+                                                                                                                  var16 = 2;
                                                                                                                }
                                                                                                             }
                                                                                                          }
@@ -2423,7 +2429,7 @@ public class class31 {
                                                                                                 }
                                                                                              }
 
-                                                                                             switch(var14) {
+                                                                                             switch(var16) {
                                                                                              case 0:
                                                                                                 return;
                                                                                              case 1:
@@ -2459,18 +2465,19 @@ public class class31 {
                   }
                }
             }
-         } catch (Exception var40) {
-            StringBuilder var39 = new StringBuilder(30);
-            var39.append("").append(var3.hash).append(" ");
+         } catch (Exception var45) {
+            StringBuilder var12 = new StringBuilder(30);
+            var12.append("").append(var5.hash).append(" ");
 
-            for(var12 = class83.scriptStackCount - 1; var12 >= 0; --var12) {
-               var39.append("").append(class83.scriptStack[var12].invokedFromScript.hash).append(" ");
+            for(var10 = class83.scriptStackCount - 1; var10 >= 0; --var10) {
+               var12.append("").append(class83.scriptStack[var10].invokedFromScript.hash).append(" ");
             }
 
-            var39.append("").append(var9);
-            class151.method2912(var39.toString(), var40);
+            var12.append("").append(var49);
+            MilliTimer.method2912(var12.toString(), var45);
          }
       }
+
    }
 
    @ObfuscatedName("r")
@@ -2492,7 +2499,7 @@ public class class31 {
       if(!var0.method4111()) {
          return false;
       } else {
-         Area.field3295 = var0.method4133(35);
+         Area.field3295 = var0.fileCount(35);
          Area.field3303 = new Area[Area.field3295];
 
          for(int var2 = 0; var2 < Area.field3295; ++var2) {
@@ -2528,13 +2535,13 @@ public class class31 {
       class43.method642(class66.field830);
       boolean var4 = false;
       int var5;
-      int var7;
+      int var6;
       if(Client.field1056 >= 0) {
          var5 = class96.field1521;
-         int[] var6 = class96.field1531;
+         int[] var7 = class96.field1531;
 
-         for(var7 = 0; var7 < var5; ++var7) {
-            if(var6[var7] == Client.field1056) {
+         for(var6 = 0; var6 < var5; ++var6) {
+            if(var7[var6] == Client.field1056) {
                var4 = true;
                break;
             }
@@ -2549,50 +2556,50 @@ public class class31 {
       class43.method642(var4?class66.field829:class66.field834);
       class82.method1616(false);
 
-      for(Projectile var28 = (Projectile)Client.projectiles.method3584(); var28 != null; var28 = (Projectile)Client.projectiles.method3578()) {
-         if(var28.floor == WallObject.plane && Client.gameCycle <= var28.cycle) {
-            if(Client.gameCycle >= var28.startTime) {
-               if(var28.interacting > 0) {
-                  NPC var32 = Client.cachedNPCs[var28.interacting - 1];
-                  if(var32 != null && var32.x >= 0 && var32.x < 13312 && var32.y >= 0 && var32.y < 13312) {
-                     var28.method1758(var32.x, var32.y, WorldMapData.method343(var32.x, var32.y, var28.floor) - var28.field1481, Client.gameCycle);
+      for(Projectile var29 = (Projectile)Client.projectiles.getFront(); var29 != null; var29 = (Projectile)Client.projectiles.getNext()) {
+         if(var29.floor == WallObject.plane && Client.gameCycle <= var29.cycle) {
+            if(Client.gameCycle >= var29.startTime) {
+               if(var29.interacting > 0) {
+                  NPC var8 = Client.cachedNPCs[var29.interacting - 1];
+                  if(var8 != null && var8.x >= 0 && var8.x < 13312 && var8.y >= 0 && var8.y < 13312) {
+                     var29.method1758(var8.x, var8.y, WorldMapData.getTileHeight(var8.x, var8.y, var29.floor) - var29.endHeight, Client.gameCycle);
                   }
                }
 
-               if(var28.interacting < 0) {
-                  var7 = -var28.interacting - 1;
-                  Player var33;
-                  if(var7 == Client.localInteractingIndex) {
-                     var33 = XItemContainer.localPlayer;
+               if(var29.interacting < 0) {
+                  var6 = -var29.interacting - 1;
+                  Player var31;
+                  if(var6 == Client.localInteractingIndex) {
+                     var31 = XItemContainer.localPlayer;
                   } else {
-                     var33 = Client.cachedPlayers[var7];
+                     var31 = Client.cachedPlayers[var6];
                   }
 
-                  if(var33 != null && var33.x >= 0 && var33.x < 13312 && var33.y >= 0 && var33.y < 13312) {
-                     var28.method1758(var33.x, var33.y, WorldMapData.method343(var33.x, var33.y, var28.floor) - var28.field1481, Client.gameCycle);
+                  if(var31 != null && var31.x >= 0 && var31.x < 13312 && var31.y >= 0 && var31.y < 13312) {
+                     var29.method1758(var31.x, var31.y, WorldMapData.getTileHeight(var31.x, var31.y, var29.floor) - var29.endHeight, Client.gameCycle);
                   }
                }
 
-               var28.method1759(Client.field1002);
-               class2.region.method2677(WallObject.plane, (int)var28.x, (int)var28.velocityZ, (int)var28.z, 60, var28, var28.rotationX, -1, false);
+               var29.method1759(Client.field1002);
+               class2.region.method2677(WallObject.plane, (int)var29.x, (int)var29.velocityZ, (int)var29.z, 60, var29, var29.rotationX, -1, false);
             }
          } else {
-            var28.unlink();
+            var29.unlink();
          }
       }
 
-      for(GraphicsObject var36 = (GraphicsObject)Client.field1060.method3584(); var36 != null; var36 = (GraphicsObject)Client.field1060.method3578()) {
-         if(var36.level == WallObject.plane && !var36.field1372) {
-            if(Client.gameCycle >= var36.field1373) {
-               var36.method1682(Client.field1002);
-               if(var36.field1372) {
-                  var36.unlink();
+      for(GraphicsObject var30 = (GraphicsObject)Client.graphicsObjectDeque.getFront(); var30 != null; var30 = (GraphicsObject)Client.graphicsObjectDeque.getNext()) {
+         if(var30.level == WallObject.plane && !var30.finished) {
+            if(Client.gameCycle >= var30.startCycle) {
+               var30.method1682(Client.field1002);
+               if(var30.finished) {
+                  var30.unlink();
                } else {
-                  class2.region.method2677(var36.level, var36.x, var36.y, var36.height, 60, var36, 0, -1, false);
+                  class2.region.method2677(var30.level, var30.x, var30.y, var30.height, 60, var30, 0, -1, false);
                }
             }
          } else {
-            var36.unlink();
+            var30.unlink();
          }
       }
 
@@ -2601,9 +2608,9 @@ public class class31 {
       var1 = Client.field1188;
       var2 = Client.viewportHeight;
       var3 = Client.viewportWidth;
-      Rasterizer2D.method4999(var0, var1, var0 + var2, var3 + var1);
-      class136.method2582();
-      int var29;
+      Rasterizer2D.setDrawRegion(var0, var1, var0 + var2, var3 + var1);
+      Graphics3D.method2582();
+      int var32;
       if(!Client.field1173) {
          var5 = Client.field1052;
          if(Client.field1018 / 256 > var5) {
@@ -2614,11 +2621,10 @@ public class class31 {
             var5 = Client.field996[4] + 128;
          }
 
-         var29 = Client.mapAngle + Client.field951 & 2047;
-         class69.method1126(Ignore.field860, WorldMapData.method343(XItemContainer.localPlayer.x, XItemContainer.localPlayer.y, WallObject.plane) - Client.field1015, field456, var5, var29, var5 * 3 + 600);
+         var32 = Client.mapAngle + Client.field951 & 2047;
+         ScriptEvent.method1126(Ignore.field860, WorldMapData.getTileHeight(XItemContainer.localPlayer.x, XItemContainer.localPlayer.y, WallObject.plane) - Client.field1015, field456, var5, var32, var5 * 3 + 600);
       }
 
-      int var8;
       int var9;
       int var10;
       int var11;
@@ -2626,30 +2632,31 @@ public class class31 {
       int var13;
       int var14;
       int var15;
+      int var33;
       if(!Client.field1173) {
-         if(class8.field247.field1335) {
-            var29 = WallObject.plane;
+         if(class8.settings.hideRoofs) {
+            var32 = WallObject.plane;
          } else {
-            label684: {
-               var7 = 3;
+            label511: {
+               var6 = 3;
                if(Player.cameraPitch < 310) {
-                  var8 = class155.cameraX >> 7;
+                  var33 = class155.cameraX >> 7;
                   var9 = class157.cameraY >> 7;
                   var10 = XItemContainer.localPlayer.x >> 7;
                   var11 = XItemContainer.localPlayer.y >> 7;
-                  if(var8 < 0 || var9 < 0 || var8 >= 104 || var9 >= 104) {
-                     var29 = WallObject.plane;
-                     break label684;
+                  if(var33 < 0 || var9 < 0 || var33 >= 104 || var9 >= 104) {
+                     var32 = WallObject.plane;
+                     break label511;
                   }
 
-                  if((class61.tileSettings[WallObject.plane][var8][var9] & 4) != 0) {
-                     var7 = WallObject.plane;
+                  if((class61.tileSettings[WallObject.plane][var33][var9] & 4) != 0) {
+                     var6 = WallObject.plane;
                   }
 
-                  if(var10 > var8) {
-                     var12 = var10 - var8;
+                  if(var10 > var33) {
+                     var12 = var10 - var33;
                   } else {
-                     var12 = var8 - var10;
+                     var12 = var33 - var10;
                   }
 
                   if(var11 > var9) {
@@ -2662,15 +2669,15 @@ public class class31 {
                      var14 = var13 * 65536 / var12;
                      var15 = '耀';
 
-                     while(var10 != var8) {
-                        if(var8 < var10) {
-                           ++var8;
-                        } else if(var8 > var10) {
-                           --var8;
+                     while(var10 != var33) {
+                        if(var33 < var10) {
+                           ++var33;
+                        } else if(var33 > var10) {
+                           --var33;
                         }
 
-                        if((class61.tileSettings[WallObject.plane][var8][var9] & 4) != 0) {
-                           var7 = WallObject.plane;
+                        if((class61.tileSettings[WallObject.plane][var33][var9] & 4) != 0) {
+                           var6 = WallObject.plane;
                         }
 
                         var15 += var14;
@@ -2682,8 +2689,8 @@ public class class31 {
                               --var9;
                            }
 
-                           if((class61.tileSettings[WallObject.plane][var8][var9] & 4) != 0) {
-                              var7 = WallObject.plane;
+                           if((class61.tileSettings[WallObject.plane][var33][var9] & 4) != 0) {
+                              var6 = WallObject.plane;
                            }
                         }
                      }
@@ -2698,21 +2705,21 @@ public class class31 {
                            --var9;
                         }
 
-                        if((class61.tileSettings[WallObject.plane][var8][var9] & 4) != 0) {
-                           var7 = WallObject.plane;
+                        if((class61.tileSettings[WallObject.plane][var33][var9] & 4) != 0) {
+                           var6 = WallObject.plane;
                         }
 
                         var15 += var14;
                         if(var15 >= 65536) {
                            var15 -= 65536;
-                           if(var8 < var10) {
-                              ++var8;
-                           } else if(var8 > var10) {
-                              --var8;
+                           if(var33 < var10) {
+                              ++var33;
+                           } else if(var33 > var10) {
+                              --var33;
                            }
 
-                           if((class61.tileSettings[WallObject.plane][var8][var9] & 4) != 0) {
-                              var7 = WallObject.plane;
+                           if((class61.tileSettings[WallObject.plane][var33][var9] & 4) != 0) {
+                              var6 = WallObject.plane;
                            }
                         }
                      }
@@ -2721,35 +2728,35 @@ public class class31 {
 
                if(XItemContainer.localPlayer.x >= 0 && XItemContainer.localPlayer.y >= 0 && XItemContainer.localPlayer.x < 13312 && XItemContainer.localPlayer.y < 13312) {
                   if((class61.tileSettings[WallObject.plane][XItemContainer.localPlayer.x >> 7][XItemContainer.localPlayer.y >> 7] & 4) != 0) {
-                     var7 = WallObject.plane;
+                     var6 = WallObject.plane;
                   }
 
-                  var29 = var7;
+                  var32 = var6;
                } else {
-                  var29 = WallObject.plane;
+                  var32 = WallObject.plane;
                }
             }
          }
 
-         var5 = var29;
+         var5 = var32;
       } else {
-         if(class8.field247.field1335) {
-            var29 = WallObject.plane;
+         if(class8.settings.hideRoofs) {
+            var32 = WallObject.plane;
          } else {
-            var7 = WorldMapData.method343(class155.cameraX, class157.cameraY, WallObject.plane);
-            if(var7 - class60.cameraZ < 800 && (class61.tileSettings[WallObject.plane][class155.cameraX >> 7][class157.cameraY >> 7] & 4) != 0) {
-               var29 = WallObject.plane;
+            var6 = WorldMapData.getTileHeight(class155.cameraX, class157.cameraY, WallObject.plane);
+            if(var6 - class60.cameraZ < 800 && (class61.tileSettings[WallObject.plane][class155.cameraX >> 7][class157.cameraY >> 7] & 4) != 0) {
+               var32 = WallObject.plane;
             } else {
-               var29 = 3;
+               var32 = 3;
             }
          }
 
-         var5 = var29;
+         var5 = var32;
       }
 
-      var29 = class155.cameraX;
-      var7 = class60.cameraZ;
-      var8 = class157.cameraY;
+      var32 = class155.cameraX;
+      var6 = class60.cameraZ;
+      var33 = class157.cameraY;
       var9 = Player.cameraPitch;
       var10 = class22.cameraYaw;
 
@@ -2785,11 +2792,11 @@ public class class31 {
          }
       }
 
-      var11 = class59.field748;
-      var12 = class59.field749;
-      if(class59.field742 != 0) {
-         var11 = class59.field747;
-         var12 = class59.field756;
+      var11 = MouseInput.field748;
+      var12 = MouseInput.field749;
+      if(MouseInput.field742 != 0) {
+         var11 = MouseInput.field747;
+         var12 = MouseInput.field756;
       }
 
       if(var11 >= var0 && var11 < var0 + var2 && var12 >= var1 && var12 < var3 + var1) {
@@ -2807,166 +2814,166 @@ public class class31 {
       class14.method67();
       Rasterizer2D.method4983(var0, var1, var2, var3, 0);
       class14.method67();
-      var13 = class136.field2031;
-      class136.field2031 = Client.scale;
-      class2.region.method2707(class155.cameraX, class60.cameraZ, class157.cameraY, Player.cameraPitch, class22.cameraYaw, var5);
-      class6.method28();
-      class136.field2031 = var13;
+      var13 = Graphics3D.field2031;
+      Graphics3D.field2031 = Client.scale;
+      class2.region.draw(class155.cameraX, class60.cameraZ, class157.cameraY, Player.cameraPitch, class22.cameraYaw, var5);
+      ScriptVarType.method28();
+      Graphics3D.field2031 = var13;
       class14.method67();
-      class2.region.method2680();
+      class2.region.clearEntities();
       Client.field1046 = 0;
-      boolean var34 = false;
+      boolean var16 = false;
       var15 = -1;
-      int var16 = class96.field1521;
-      int[] var17 = class96.field1531;
+      int var17 = class96.field1521;
+      int[] var18 = class96.field1531;
 
-      int var18;
-      for(var18 = 0; var18 < var16 + Client.field937; ++var18) {
-         Object var19;
-         if(var18 < var16) {
-            var19 = Client.cachedPlayers[var17[var18]];
-            if(var17[var18] == Client.field1056) {
-               var34 = true;
-               var15 = var18;
+      int var19;
+      for(var19 = 0; var19 < var17 + Client.field937; ++var19) {
+         Object var20;
+         if(var19 < var17) {
+            var20 = Client.cachedPlayers[var18[var19]];
+            if(var18[var19] == Client.field1056) {
+               var16 = true;
+               var15 = var19;
                continue;
             }
          } else {
-            var19 = Client.cachedNPCs[Client.npcIndices[var18 - var16]];
+            var20 = Client.cachedNPCs[Client.npcIndices[var19 - var17]];
          }
 
-         WorldMapType3.method200((Actor)var19, var18, var0, var1, var2, var3);
+         WorldMapType3.method200((Actor)var20, var19, var0, var1, var2, var3);
       }
 
-      if(var34) {
+      if(var16) {
          WorldMapType3.method200(Client.cachedPlayers[Client.field1056], var15, var0, var1, var2, var3);
       }
 
-      for(var18 = 0; var18 < Client.field1046; ++var18) {
-         int var30 = Client.field1021[var18];
-         int var20 = Client.field1022[var18];
-         int var21 = Client.field1024[var18];
-         int var22 = Client.field1009[var18];
-         boolean var23 = true;
+      for(var19 = 0; var19 < Client.field1046; ++var19) {
+         int var34 = Client.field1021[var19];
+         int var21 = Client.field1022[var19];
+         int var22 = Client.field1024[var19];
+         int var23 = Client.field1009[var19];
+         boolean var24 = true;
 
-         while(var23) {
-            var23 = false;
+         while(var24) {
+            var24 = false;
 
-            for(int var24 = 0; var24 < var18; ++var24) {
-               if(var20 + 2 > Client.field1022[var24] - Client.field1009[var24] && var20 - var22 < Client.field1022[var24] + 2 && var30 - var21 < Client.field1021[var24] + Client.field1024[var24] && var30 + var21 > Client.field1021[var24] - Client.field1024[var24] && Client.field1022[var24] - Client.field1009[var24] < var20) {
-                  var20 = Client.field1022[var24] - Client.field1009[var24];
-                  var23 = true;
+            for(int var25 = 0; var25 < var19; ++var25) {
+               if(var21 + 2 > Client.field1022[var25] - Client.field1009[var25] && var21 - var23 < Client.field1022[var25] + 2 && var34 - var22 < Client.field1021[var25] + Client.field1024[var25] && var34 + var22 > Client.field1021[var25] - Client.field1024[var25] && Client.field1022[var25] - Client.field1009[var25] < var21) {
+                  var21 = Client.field1022[var25] - Client.field1009[var25];
+                  var24 = true;
                }
             }
          }
 
-         Client.field1031 = Client.field1021[var18];
-         Client.field992 = Client.field1022[var18] = var20;
-         String var31 = Client.field1028[var18];
+         Client.screenY = Client.field1021[var19];
+         Client.screenX = Client.field1022[var19] = var21;
+         String var36 = Client.field1028[var19];
          if(Client.field1089 == 0) {
-            int var25 = 16776960;
-            if(Client.field938[var18] < 6) {
-               var25 = Client.field1142[Client.field938[var18]];
+            int var26 = 16776960;
+            if(Client.field938[var19] < 6) {
+               var26 = Client.field1142[Client.field938[var19]];
             }
 
-            if(Client.field938[var18] == 6) {
-               var25 = Client.field957 % 20 < 10?16711680:16776960;
+            if(Client.field938[var19] == 6) {
+               var26 = Client.field957 % 20 < 10?16711680:16776960;
             }
 
-            if(Client.field938[var18] == 7) {
-               var25 = Client.field957 % 20 < 10?255:'\uffff';
+            if(Client.field938[var19] == 7) {
+               var26 = Client.field957 % 20 < 10?255:'\uffff';
             }
 
-            if(Client.field938[var18] == 8) {
-               var25 = Client.field957 % 20 < 10?'뀀':8454016;
+            if(Client.field938[var19] == 8) {
+               var26 = Client.field957 % 20 < 10?'뀀':8454016;
             }
 
-            int var26;
-            if(Client.field938[var18] == 9) {
-               var26 = 150 - Client.field1027[var18];
-               if(var26 < 50) {
-                  var25 = var26 * 1280 + 16711680;
-               } else if(var26 < 100) {
-                  var25 = 16776960 - (var26 - 50) * 327680;
-               } else if(var26 < 150) {
-                  var25 = (var26 - 100) * 5 + '\uff00';
+            int var27;
+            if(Client.field938[var19] == 9) {
+               var27 = 150 - Client.field1027[var19];
+               if(var27 < 50) {
+                  var26 = var27 * 1280 + 16711680;
+               } else if(var27 < 100) {
+                  var26 = 16776960 - (var27 - 50) * 327680;
+               } else if(var27 < 150) {
+                  var26 = (var27 - 100) * 5 + '\uff00';
                }
             }
 
-            if(Client.field938[var18] == 10) {
-               var26 = 150 - Client.field1027[var18];
-               if(var26 < 50) {
-                  var25 = var26 * 5 + 16711680;
-               } else if(var26 < 100) {
-                  var25 = 16711935 - (var26 - 50) * 327680;
-               } else if(var26 < 150) {
-                  var25 = (var26 - 100) * 327680 + 255 - (var26 - 100) * 5;
+            if(Client.field938[var19] == 10) {
+               var27 = 150 - Client.field1027[var19];
+               if(var27 < 50) {
+                  var26 = var27 * 5 + 16711680;
+               } else if(var27 < 100) {
+                  var26 = 16711935 - (var27 - 50) * 327680;
+               } else if(var27 < 150) {
+                  var26 = (var27 - 100) * 327680 + 255 - (var27 - 100) * 5;
                }
             }
 
-            if(Client.field938[var18] == 11) {
-               var26 = 150 - Client.field1027[var18];
-               if(var26 < 50) {
-                  var25 = 16777215 - var26 * 327685;
-               } else if(var26 < 100) {
-                  var25 = (var26 - 50) * 327685 + '\uff00';
-               } else if(var26 < 150) {
-                  var25 = 16777215 - (var26 - 100) * 327680;
+            if(Client.field938[var19] == 11) {
+               var27 = 150 - Client.field1027[var19];
+               if(var27 < 50) {
+                  var26 = 16777215 - var27 * 327685;
+               } else if(var27 < 100) {
+                  var26 = (var27 - 50) * 327685 + '\uff00';
+               } else if(var27 < 150) {
+                  var26 = 16777215 - (var27 - 100) * 327680;
                }
             }
 
-            if(Client.field1151[var18] == 0) {
-               World.field1322.method4757(var31, var0 + Client.field1031, Client.field992 + var1, var25, 0);
+            if(Client.field1151[var19] == 0) {
+               World.field1322.method4757(var36, var0 + Client.screenY, Client.screenX + var1, var26, 0);
             }
 
-            if(Client.field1151[var18] == 1) {
-               World.field1322.method4759(var31, var0 + Client.field1031, Client.field992 + var1, var25, 0, Client.field957);
+            if(Client.field1151[var19] == 1) {
+               World.field1322.method4759(var36, var0 + Client.screenY, Client.screenX + var1, var26, 0, Client.field957);
             }
 
-            if(Client.field1151[var18] == 2) {
-               World.field1322.method4760(var31, var0 + Client.field1031, Client.field992 + var1, var25, 0, Client.field957);
+            if(Client.field1151[var19] == 2) {
+               World.field1322.method4760(var36, var0 + Client.screenY, Client.screenX + var1, var26, 0, Client.field957);
             }
 
-            if(Client.field1151[var18] == 3) {
-               World.field1322.method4770(var31, var0 + Client.field1031, Client.field992 + var1, var25, 0, Client.field957, 150 - Client.field1027[var18]);
+            if(Client.field1151[var19] == 3) {
+               World.field1322.method4770(var36, var0 + Client.screenY, Client.screenX + var1, var26, 0, Client.field957, 150 - Client.field1027[var19]);
             }
 
-            if(Client.field1151[var18] == 4) {
-               var26 = (150 - Client.field1027[var18]) * (World.field1322.method4773(var31) + 100) / 150;
-               Rasterizer2D.method4925(var0 + Client.field1031 - 50, var1, var0 + Client.field1031 + 50, var3 + var1);
-               World.field1322.method4790(var31, var0 + Client.field1031 + 50 - var26, Client.field992 + var1, var25, 0);
-               Rasterizer2D.method4999(var0, var1, var0 + var2, var3 + var1);
+            if(Client.field1151[var19] == 4) {
+               var27 = (150 - Client.field1027[var19]) * (World.field1322.method4773(var36) + 100) / 150;
+               Rasterizer2D.setInnerDrawRegion(var0 + Client.screenY - 50, var1, var0 + Client.screenY + 50, var3 + var1);
+               World.field1322.method4790(var36, var0 + Client.screenY + 50 - var27, Client.screenX + var1, var26, 0);
+               Rasterizer2D.setDrawRegion(var0, var1, var0 + var2, var3 + var1);
             }
 
-            if(Client.field1151[var18] == 5) {
-               var26 = 150 - Client.field1027[var18];
-               int var27 = 0;
-               if(var26 < 25) {
-                  var27 = var26 - 25;
-               } else if(var26 > 125) {
-                  var27 = var26 - 125;
+            if(Client.field1151[var19] == 5) {
+               var27 = 150 - Client.field1027[var19];
+               int var28 = 0;
+               if(var27 < 25) {
+                  var28 = var27 - 25;
+               } else if(var27 > 125) {
+                  var28 = var27 - 125;
                }
 
-               Rasterizer2D.method4925(var0, Client.field992 + var1 - World.field1322.field3649 - 1, var0 + var2, Client.field992 + var1 + 5);
-               World.field1322.method4757(var31, var0 + Client.field1031, Client.field992 + var1 + var27, var25, 0);
-               Rasterizer2D.method4999(var0, var1, var0 + var2, var3 + var1);
+               Rasterizer2D.setInnerDrawRegion(var0, Client.screenX + var1 - World.field1322.verticalSpace - 1, var0 + var2, Client.screenX + var1 + 5);
+               World.field1322.method4757(var36, var0 + Client.screenY, Client.screenX + var1 + var28, var26, 0);
+               Rasterizer2D.setDrawRegion(var0, var1, var0 + var2, var3 + var1);
             }
          } else {
-            World.field1322.method4757(var31, var0 + Client.field1031, Client.field992 + var1, 16776960, 0);
+            World.field1322.method4757(var36, var0 + Client.screenY, Client.screenX + var1, 16776960, 0);
          }
       }
 
       if(Client.field943 == 2) {
-         class82.method1626((Client.hintArrowX - class50.baseX << 7) + Client.field980, (Client.hintArrowY - class266.baseY << 7) + Client.field950, Client.hintArrowType * 2);
-         if(Client.field1031 > -1 && Client.gameCycle % 20 < 10) {
-            class43.field601[0].method5042(var0 + Client.field1031 - 12, Client.field992 + var1 - 28);
+         class82.method1626((Client.hintArrowX - KeyFocusListener.baseX << 7) + Client.field980, (Client.hintArrowY - class266.baseY << 7) + Client.field950, Client.hintArrowType * 2);
+         if(Client.screenY > -1 && Client.gameCycle % 20 < 10) {
+            class43.pkIcons[0].method5042(var0 + Client.screenY - 12, Client.screenX + var1 - 28);
          }
       }
 
-      ((TextureProvider)class136.field2028).method2390(Client.field1002);
+      ((TextureProvider)Graphics3D.textureLoader).method2390(Client.field1002);
       class270.method4894(var0, var1, var2, var3);
-      class155.cameraX = var29;
-      class60.cameraZ = var7;
-      class157.cameraY = var8;
+      class155.cameraX = var32;
+      class60.cameraZ = var6;
+      class157.cameraY = var33;
       Player.cameraPitch = var9;
       class22.cameraYaw = var10;
       if(Client.field934) {

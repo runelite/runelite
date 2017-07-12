@@ -33,16 +33,11 @@ public class class35 {
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)[Lclass231;",
+      signature = "(I)[LBuildType;",
       garbageValue = "1933463881"
    )
-   public static class231[] method507() {
-      return new class231[]{class231.field3191, class231.field3193, class231.field3195, class231.field3192};
-   }
-
-   static {
-      field511 = new class35(0);
-      field507 = new class35(1);
+   public static BuildType[] method507() {
+      return new BuildType[]{BuildType.LIVE, BuildType.RC, BuildType.BUILD_LIVE, BuildType.WIP};
    }
 
    @ObfuscatedName("i")
@@ -52,7 +47,7 @@ public class class35 {
    )
    @Export("getNpcDefinition")
    public static NPCComposition getNpcDefinition(int var0) {
-      NPCComposition var1 = (NPCComposition)NPCComposition.field3557.get((long)var0);
+      NPCComposition var1 = (NPCComposition)NPCComposition.npcs.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
@@ -60,12 +55,17 @@ public class class35 {
          var1 = new NPCComposition();
          var1.id = var0;
          if(var2 != null) {
-            var1.method4642(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
-         var1.method4661();
-         NPCComposition.field3557.put(var1, (long)var0);
+         var1.post();
+         NPCComposition.npcs.put(var1, (long)var0);
          return var1;
       }
+   }
+
+   static {
+      field511 = new class35(0);
+      field507 = new class35(1);
    }
 }

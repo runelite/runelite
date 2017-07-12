@@ -38,7 +38,7 @@ public class FaceNormal {
       garbageValue = "-1959014692"
    )
    static final boolean method2868() {
-      return Client.menuOptionCount <= 0?false:Client.field1075 && class50.field659[81] && Client.field1074 != -1;
+      return Client.menuOptionCount <= 0?false:Client.field1075 && KeyFocusListener.field659[81] && Client.field1074 != -1;
    }
 
    @ObfuscatedName("i")

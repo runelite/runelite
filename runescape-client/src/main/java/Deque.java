@@ -13,7 +13,8 @@ public class Deque {
    public Node head;
 
    @ObfuscatedName("j")
-   public Node method3578() {
+   @Export("getNext")
+   public Node getNext() {
       Node var1 = this.current;
       if(this.head == var1) {
          this.current = null;
@@ -25,7 +26,8 @@ public class Deque {
    }
 
    @ObfuscatedName("a")
-   public void method3580(Node var1) {
+   @Export("addTail")
+   public void addTail(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -49,7 +51,8 @@ public class Deque {
    }
 
    @ObfuscatedName("i")
-   public void method3582() {
+   @Export("clear")
+   public void clear() {
       while(true) {
          Node var1 = this.head.next;
          if(this.head == var1) {
@@ -62,7 +65,8 @@ public class Deque {
    }
 
    @ObfuscatedName("r")
-   public Node method3583() {
+   @Export("popTail")
+   public Node popTail() {
       Node var1 = this.head.previous;
       if(this.head == var1) {
          return null;
@@ -73,7 +77,8 @@ public class Deque {
    }
 
    @ObfuscatedName("v")
-   public Node method3584() {
+   @Export("getFront")
+   public Node getFront() {
       Node var1 = this.head.next;
       if(this.head == var1) {
          this.current = null;
@@ -85,7 +90,8 @@ public class Deque {
    }
 
    @ObfuscatedName("y")
-   public Node method3585() {
+   @Export("getTail")
+   public Node getTail() {
       Node var1 = this.head.previous;
       if(this.head == var1) {
          this.current = null;
@@ -97,7 +103,8 @@ public class Deque {
    }
 
    @ObfuscatedName("s")
-   public Node method3587() {
+   @Export("popFront")
+   public Node popFront() {
       Node var1 = this.head.next;
       if(this.head == var1) {
          return null;
@@ -114,7 +121,8 @@ public class Deque {
    }
 
    @ObfuscatedName("k")
-   public Node method3591() {
+   @Export("getPrevious")
+   public Node getPrevious() {
       Node var1 = this.current;
       if(this.head == var1) {
          this.current = null;
@@ -126,7 +134,8 @@ public class Deque {
    }
 
    @ObfuscatedName("w")
-   public void method3603(Node var1) {
+   @Export("addFront")
+   public void addFront(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
       }

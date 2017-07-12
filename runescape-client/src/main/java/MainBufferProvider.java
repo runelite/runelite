@@ -67,7 +67,7 @@ public final class MainBufferProvider extends BufferProvider {
       WritableRaster var6 = Raster.createWritableRaster(var5.createCompatibleSampleModel(super.width, super.height), var4, (Point)null);
       this.image = new BufferedImage(var5, var6, false, new Hashtable());
       this.method852(var3);
-      this.method5006();
+      this.setRaster();
    }
 
    @ObfuscatedName("s")

@@ -18,7 +18,8 @@ public class FileSystem extends Node {
    @ObfuscatedGetter(
       intValue = 1633923949
    )
-   public static int field3211;
+   @Export("sampleRate")
+   public static int sampleRate;
    @ObfuscatedName("kw")
    @ObfuscatedGetter(
       intValue = -551144227

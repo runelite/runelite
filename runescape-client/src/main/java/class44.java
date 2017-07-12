@@ -36,7 +36,7 @@ public class class44 extends WorldMapData {
 
          try {
             var8.method156(var2, var3);
-         } catch (IllegalStateException var13) {
+         } catch (IllegalStateException var12) {
             continue;
          }
 
@@ -46,12 +46,12 @@ public class class44 extends WorldMapData {
       var7 = var3.readUnsignedShort();
       this.field608 = new HashSet(var7);
 
-      for(int var11 = 0; var11 < var7; ++var11) {
+      for(int var13 = 0; var13 < var7; ++var13) {
          class45 var9 = new class45();
 
          try {
             var9.method655(var2, var3);
-         } catch (IllegalStateException var12) {
+         } catch (IllegalStateException var11) {
             continue;
          }
 

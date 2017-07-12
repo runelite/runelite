@@ -4,7 +4,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("jq")
 public class class265 {
    @ObfuscatedName("i")
-   public static class165 field3665;
+   public static Huffman field3665;
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(

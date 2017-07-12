@@ -11,17 +11,20 @@ public final class SceneTilePaint {
    @ObfuscatedGetter(
       intValue = 618716109
    )
-   int field2047;
+   @Export("nwColor")
+   int nwColor;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 1458413775
    )
-   int field2049;
+   @Export("neColor")
+   int neColor;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -78544361
    )
-   int field2050;
+   @Export("swColor")
+   int swColor;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 102543291
@@ -41,7 +44,8 @@ public final class SceneTilePaint {
    @ObfuscatedGetter(
       intValue = 267379915
    )
-   int field2055;
+   @Export("seColor")
+   int seColor;
 
    @ObfuscatedSignature(
       signature = "(IIIIIIZ)V",
@@ -49,10 +53,10 @@ public final class SceneTilePaint {
    )
    SceneTilePaint(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
       this.flatShade = true;
-      this.field2050 = var1;
-      this.field2055 = var2;
-      this.field2049 = var3;
-      this.field2047 = var4;
+      this.swColor = var1;
+      this.seColor = var2;
+      this.neColor = var3;
+      this.nwColor = var4;
       this.texture = var5;
       this.rgb = var6;
       this.flatShade = var7;

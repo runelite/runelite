@@ -138,16 +138,14 @@ public class RenderOverview {
    public WorldMapData method5179(int var1) {
       Iterator var2 = this.field3824.values().iterator();
 
-      WorldMapData var3;
-      do {
-         if(!var2.hasNext()) {
-            return null;
+      while(var2.hasNext()) {
+         WorldMapData var3 = (WorldMapData)var2.next();
+         if(var3.method280() == var1) {
+            return var3;
          }
+      }
 
-         var3 = (WorldMapData)var2.next();
-      } while(var3.method280() != var1);
-
-      return var3;
+      return null;
    }
 
    @ObfuscatedName("w")
@@ -253,6 +251,7 @@ public class RenderOverview {
          this.method5192(var1);
          this.method5194(-1, -1, -1);
       }
+
    }
 
    @ObfuscatedName("l")
@@ -282,8 +281,8 @@ public class RenderOverview {
          } else {
             this.method5194(var3.plane, var3.worldX, var3.worldY);
          }
-
       }
+
    }
 
    @ObfuscatedName("b")
@@ -308,6 +307,7 @@ public class RenderOverview {
          this.field3851 = null;
          this.field3825.method567();
       }
+
    }
 
    @ObfuscatedName("f")
@@ -318,8 +318,8 @@ public class RenderOverview {
    @Export("extractWorldmap")
    public void extractWorldmap(int var1, int var2, int var3, int var4, int var5) {
       int[] var6 = new int[4];
-      Rasterizer2D.method4924(var6);
-      Rasterizer2D.method4999(var1, var2, var3 + var1, var2 + var4);
+      Rasterizer2D.copyDrawRegion(var6);
+      Rasterizer2D.setDrawRegion(var1, var2, var3 + var1, var2 + var4);
       Rasterizer2D.method4983(var1, var2, var3, var4, -16777216);
       int var7 = this.field3823.method5164();
       if(var7 < 100) {
@@ -359,8 +359,9 @@ public class RenderOverview {
 
          this.field3833 = var8;
          this.field3834 = var9;
-         Rasterizer2D.method4921(var6);
+         Rasterizer2D.setDrawRegion(var6);
       }
+
    }
 
    @ObfuscatedName("s")
@@ -416,7 +417,7 @@ public class RenderOverview {
       int var7 = var1 + var3 / 2;
       int var8 = var2 + var4 / 2 - 18 - var6;
       Rasterizer2D.method4983(var1, var2, var3, var4, -16777216);
-      Rasterizer2D.method4958(var7 - 152, var8, 304, 34, -65536);
+      Rasterizer2D.drawRectangle(var7 - 152, var8, 304, 34, -65536);
       Rasterizer2D.method4983(var7 - 150, var8 + 2, var5 * 3, 30, -65536);
       this.field3818.method4757("Loading...", var7, var8 + var6, -1, -1);
    }
@@ -431,6 +432,7 @@ public class RenderOverview {
          this.field3836 = var1 - this.field3852.method305() * 64;
          this.field3830 = var2 - this.field3852.method288() * 64;
       }
+
    }
 
    @ObfuscatedName("an")
@@ -445,6 +447,7 @@ public class RenderOverview {
          this.field3836 = -1;
          this.field3830 = -1;
       }
+
    }
 
    @ObfuscatedName("au")
@@ -458,8 +461,8 @@ public class RenderOverview {
          if(var4 != null) {
             this.method5204(var4[0], var4[1]);
          }
-
       }
+
    }
 
    @ObfuscatedName("ao")
@@ -491,8 +494,8 @@ public class RenderOverview {
          if(var4 != null) {
             this.method5205(var4[0], var4[1]);
          }
-
       }
+
    }
 
    @ObfuscatedName("y")
@@ -503,16 +506,14 @@ public class RenderOverview {
    public WorldMapData method5214(int var1, int var2, int var3) {
       Iterator var4 = this.field3824.values().iterator();
 
-      WorldMapData var5;
-      do {
-         if(!var4.hasNext()) {
-            return null;
+      while(var4.hasNext()) {
+         WorldMapData var5 = (WorldMapData)var4.next();
+         if(var5.method275(var1, var2, var3)) {
+            return var5;
          }
+      }
 
-         var5 = (WorldMapData)var4.next();
-      } while(!var5.method275(var1, var2, var3));
-
-      return var5;
+      return null;
    }
 
    @ObfuscatedName("n")
@@ -532,6 +533,7 @@ public class RenderOverview {
 
          this.field3825.method571(var1, var2, var3, var4, this.field3832, this.field3838, this.field3826);
       }
+
    }
 
    @ObfuscatedName("aa")
@@ -662,26 +664,26 @@ public class RenderOverview {
          if(!var9.isEmpty()) {
             Iterator var10 = var9.iterator();
 
-            boolean var13;
+            boolean var11;
             do {
                if(!var10.hasNext()) {
                   return;
                }
 
-               class39 var11 = (class39)var10.next();
-               Area var12 = Area.field3303[var11.field548];
-               var13 = false;
+               class39 var12 = (class39)var10.next();
+               Area var13 = Area.field3303[var12.field548];
+               var11 = false;
 
                for(int var14 = this.field3817.length - 1; var14 >= 0; --var14) {
-                  if(var12.field3304[var14] != null) {
-                     class175.addMenuEntry(var12.field3304[var14], var12.field3305, this.field3817[var14], var11.field548, var11.field547.method3913(), var11.field550.method3913());
-                     var13 = true;
+                  if(var13.field3304[var14] != null) {
+                     class175.addMenuEntry(var13.field3304[var14], var13.field3305, this.field3817[var14], var12.field548, var12.field547.method3913(), var12.field550.method3913());
+                     var11 = true;
                   }
                }
-            } while(!var13);
-
+            } while(!var11);
          }
       }
+
    }
 
    @ObfuscatedName("bv")
@@ -690,7 +692,7 @@ public class RenderOverview {
       garbageValue = "2"
    )
    public void method5230(int var1, int var2, Coordinates var3, Coordinates var4) {
-      class69 var5 = new class69();
+      ScriptEvent var5 = new ScriptEvent();
       class47 var6 = new class47(var2, var3, var4);
       var5.method1133(new Object[]{var6});
       switch(var1) {
@@ -747,12 +749,6 @@ public class RenderOverview {
       return this.field3851 == null?null:(!this.field3851.hasNext()?null:(class39)this.field3851.next());
    }
 
-   static {
-      field3815 = class261.field3635;
-      field3816 = class261.field3628;
-      field3837 = class261.field3629;
-   }
-
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(IIZIIIII)V",
@@ -770,12 +766,12 @@ public class RenderOverview {
 
             Iterator var12;
             class39 var13;
-            class69 var14;
+            ScriptEvent var14;
             class47 var15;
             for(var12 = var10.iterator(); var12.hasNext(); class14.method76(var14)) {
                var13 = (class39)var12.next();
                var11.add(var13);
-               var14 = new class69();
+               var14 = new ScriptEvent();
                var15 = new class47(var13.field548, var13.field547, var13.field550);
                var14.method1133(new Object[]{var15, Integer.valueOf(var1), Integer.valueOf(var2)});
                if(this.field3812.contains(var13)) {
@@ -790,7 +786,7 @@ public class RenderOverview {
             while(var12.hasNext()) {
                var13 = (class39)var12.next();
                if(!var11.contains(var13)) {
-                  var14 = new class69();
+                  var14 = new ScriptEvent();
                   var15 = new class47(var13.field548, var13.field547, var13.field550);
                   var14.method1133(new Object[]{var15, Integer.valueOf(var1), Integer.valueOf(var2)});
                   var14.method1128(class219.field2800);
@@ -801,6 +797,7 @@ public class RenderOverview {
             this.field3812 = var11;
          }
       }
+
    }
 
    @ObfuscatedName("u")
@@ -888,8 +885,8 @@ public class RenderOverview {
       this.field3819.put(class24.field358, var3.get(field3816));
       this.field3819.put(class24.field359, var3.get(field3837));
       this.field3823 = new class287(var1);
-      int var5 = this.field3814.method4146(class40.field564.field566);
-      int[] var6 = this.field3814.method4121(var5);
+      int var5 = this.field3814.getFile(class40.field564.field566);
+      int[] var6 = this.field3814.getChilds(var5);
       this.field3824 = new HashMap(var6.length);
 
       for(int var7 = 0; var7 < var6.length; ++var7) {
@@ -956,26 +953,22 @@ public class RenderOverview {
             int var6 = -1;
             Iterator var7 = var4.iterator();
 
-            while(true) {
-               class39 var8;
-               int var11;
-               do {
-                  if(!var7.hasNext()) {
-                     return var5.field550;
-                  }
+            while(var7.hasNext()) {
+               class39 var8 = (class39)var7.next();
+               int var10 = var8.field550.worldX - var2.worldX;
+               int var11 = var8.field550.worldY - var2.worldY;
+               int var9 = var11 * var11 + var10 * var10;
+               if(var9 == 0) {
+                  return var8.field550;
+               }
 
-                  var8 = (class39)var7.next();
-                  int var9 = var8.field550.worldX - var2.worldX;
-                  int var10 = var8.field550.worldY - var2.worldY;
-                  var11 = var10 * var10 + var9 * var9;
-                  if(var11 == 0) {
-                     return var8.field550;
-                  }
-               } while(var11 >= var6 && var5 != null);
-
-               var5 = var8;
-               var6 = var11;
+               if(var9 < var6 || var5 == null) {
+                  var5 = var8;
+                  var6 = var9;
+               }
             }
+
+            return var5.field550;
          } else {
             return null;
          }
@@ -1023,8 +1016,8 @@ public class RenderOverview {
             this.field3836 = -1;
             this.field3830 = -1;
          }
-
       }
+
    }
 
    @ObfuscatedName("am")
@@ -1046,5 +1039,11 @@ public class RenderOverview {
    )
    public void method5365(boolean var1) {
       this.field3847 = !var1;
+   }
+
+   static {
+      field3815 = class261.field3635;
+      field3816 = class261.field3628;
+      field3837 = class261.field3629;
    }
 }

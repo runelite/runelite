@@ -44,14 +44,13 @@ public class CombatInfoListHolder extends Node {
          if(var6 < 4) {
             this.combatInfo1.method3544(new CombatInfo1(var1, var2, var3, var4));
          }
-
       } else {
          CombatInfoList.method3545(new CombatInfo1(var1, var2, var3, var4), var5);
          if(var6 >= 4) {
             this.combatInfo1.method3547().unlink();
          }
-
       }
+
    }
 
    @ObfuscatedName("w")

@@ -88,13 +88,12 @@ public class class287 {
       garbageValue = "-186137854"
    )
    void method5176(String var1) {
-      if(var1 != null && !var1.isEmpty()) {
-         if(this.field3807 != var1) {
-            this.field3807 = var1;
-            this.field3809 = 0;
-            this.field3810 = false;
-            this.method5170();
-         }
+      if(var1 != null && !var1.isEmpty() && this.field3807 != var1) {
+         this.field3807 = var1;
+         this.field3809 = 0;
+         this.field3810 = false;
+         this.method5170();
       }
+
    }
 }

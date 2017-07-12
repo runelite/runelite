@@ -90,12 +90,12 @@ public class class14 {
       garbageValue = "823660554"
    )
    static final void method67() {
-      if(class59.field755 != null) {
-         class59.field755.method2022();
+      if(MouseInput.soundSystem1 != null) {
+         MouseInput.soundSystem1.method2022();
       }
 
-      if(FrameMap.field2065 != null) {
-         FrameMap.field2065.method2022();
+      if(FrameMap.soundSystem0 != null) {
+         FrameMap.soundSystem0.method2022();
       }
 
    }
@@ -128,23 +128,23 @@ public class class14 {
          }
       }
 
-      if(var0.graphic != -1 && Client.gameCycle >= var0.field1278) {
+      if(var0.graphic != -1 && Client.gameCycle >= var0.graphicsDelay) {
          if(var0.field1244 < 0) {
             var0.field1244 = 0;
          }
 
-         int var3 = Renderable.method2864(var0.graphic).field3332;
-         if(var3 != -1) {
-            Sequence var2 = class224.getAnimation(var3);
-            if(var2 != null && var2.frameIDs != null) {
+         int var2 = Renderable.getSpotAnimType(var0.graphic).field3332;
+         if(var2 != -1) {
+            Sequence var3 = class224.getAnimation(var2);
+            if(var3 != null && var3.frameIDs != null) {
                ++var0.field1277;
-               if(var0.field1244 < var2.frameIDs.length && var0.field1277 > var2.frameLenghts[var0.field1244]) {
+               if(var0.field1244 < var3.frameIDs.length && var0.field1277 > var3.frameLenghts[var0.field1244]) {
                   var0.field1277 = 1;
                   ++var0.field1244;
-                  class67.method1123(var2, var0.field1244, var0.x, var0.y);
+                  class67.method1123(var3, var0.field1244, var0.x, var0.y);
                }
 
-               if(var0.field1244 >= var2.frameIDs.length && (var0.field1244 < 0 || var0.field1244 >= var2.frameIDs.length)) {
+               if(var0.field1244 >= var3.frameIDs.length && (var0.field1244 < 0 || var0.field1244 >= var3.frameIDs.length)) {
                   var0.graphic = -1;
                }
             } else {
@@ -345,7 +345,6 @@ public class class14 {
                   --var0.field1269;
                }
             }
-
          } else {
             var0.x = var3;
             var0.y = var4;
@@ -353,17 +352,17 @@ public class class14 {
             if(var0.field1269 > 0) {
                --var0.field1269;
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lclass69;I)V",
+      signature = "(LScriptEvent;I)V",
       garbageValue = "-1910023906"
    )
-   public static void method76(class69 var0) {
+   public static void method76(ScriptEvent var0) {
       class31.method267(var0, 200000);
    }
 
@@ -373,14 +372,15 @@ public class class14 {
       garbageValue = "-48"
    )
    public static final boolean method77() {
-      class50 var0 = class50.keyboard;
-      synchronized(class50.keyboard) {
-         if(class50.field674 == class50.field672) {
+      KeyFocusListener var0 = KeyFocusListener.keyboard;
+      KeyFocusListener var1 = KeyFocusListener.keyboard;
+      synchronized(KeyFocusListener.keyboard) {
+         if(KeyFocusListener.field674 == KeyFocusListener.field672) {
             return false;
          } else {
-            class168.field2346 = class50.field669[class50.field672];
-            IndexDataBase.field3238 = class50.field660[class50.field672];
-            class50.field672 = class50.field672 + 1 & 127;
+            class168.field2346 = KeyFocusListener.field669[KeyFocusListener.field672];
+            IndexDataBase.field3238 = KeyFocusListener.field660[KeyFocusListener.field672];
+            KeyFocusListener.field672 = KeyFocusListener.field672 + 1 & 127;
             return true;
          }
       }

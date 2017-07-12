@@ -21,7 +21,7 @@ public final class NodeCache {
    @ObfuscatedName("t")
    @Export("reset")
    public void reset() {
-      this.list.method3464();
+      this.list.clear();
       this.table.method3532();
       this.field2461 = new CacheableNode();
       this.field2462 = this.field2460;
@@ -30,10 +30,10 @@ public final class NodeCache {
    @ObfuscatedName("w")
    @Export("remove")
    public void remove(long var1) {
-      CacheableNode var3 = (CacheableNode)this.table.method3530(var1);
+      CacheableNode var3 = (CacheableNode)this.table.get(var1);
       if(var3 != null) {
          var3.unlink();
-         var3.method3604();
+         var3.unlinkDual();
          ++this.field2462;
       }
 
@@ -43,20 +43,20 @@ public final class NodeCache {
    @Export("put")
    public void put(CacheableNode var1, long var2) {
       if(this.field2462 == 0) {
-         CacheableNode var4 = this.list.method3462();
+         CacheableNode var4 = this.list.pop();
          var4.unlink();
-         var4.method3604();
+         var4.unlinkDual();
          if(this.field2461 == var4) {
-            var4 = this.list.method3462();
+            var4 = this.list.pop();
             var4.unlink();
-            var4.method3604();
+            var4.unlinkDual();
          }
       } else {
          --this.field2462;
       }
 
-      this.table.method3529(var1, var2);
-      this.list.method3460(var1);
+      this.table.put(var1, var2);
+      this.list.push(var1);
    }
 
    public NodeCache(int var1) {
@@ -76,9 +76,9 @@ public final class NodeCache {
    @ObfuscatedName("i")
    @Export("get")
    public CacheableNode get(long var1) {
-      CacheableNode var3 = (CacheableNode)this.table.method3530(var1);
+      CacheableNode var3 = (CacheableNode)this.table.get(var1);
       if(var3 != null) {
-         this.list.method3460(var3);
+         this.list.push(var3);
       }
 
       return var3;

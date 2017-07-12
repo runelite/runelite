@@ -23,7 +23,7 @@ public class Ignore {
    @ObfuscatedName("ab")
    static int[] field864;
    @ObfuscatedName("rb")
-   static class291 field866;
+   static MachineInfo field866;
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
@@ -31,22 +31,20 @@ public class Ignore {
       garbageValue = "-1"
    )
    static void method1136(int var0) {
-      if(var0 != -1) {
-         if(class66.method1121(var0)) {
-            Widget[] var1 = class46.widgets[var0];
+      if(var0 != -1 && class66.loadWidget(var0)) {
+         Widget[] var1 = class46.widgets[var0];
 
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               Widget var3 = var1[var2];
-               if(var3.field2735 != null) {
-                  class69 var4 = new class69();
-                  var4.field849 = var3;
-                  var4.field857 = var3.field2735;
-                  class31.method267(var4, 2000000);
-               }
+         for(int var2 = 0; var2 < var1.length; ++var2) {
+            Widget var3 = var1[var2];
+            if(var3.field2735 != null) {
+               ScriptEvent var4 = new ScriptEvent();
+               var4.widget = var3;
+               var4.field857 = var3.field2735;
+               class31.method267(var4, 2000000);
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("i")

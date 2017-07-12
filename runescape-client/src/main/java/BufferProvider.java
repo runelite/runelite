@@ -28,7 +28,8 @@ public abstract class BufferProvider {
       signature = "(I)V",
       garbageValue = "1671840633"
    )
-   public final void method5006() {
+   @Export("setRaster")
+   public final void setRaster() {
       Rasterizer2D.setRasterBuffer(this.pixels, this.width, this.height);
    }
 

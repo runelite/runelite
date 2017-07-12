@@ -52,10 +52,6 @@ public class Script extends CacheableNode {
    @Export("instructions")
    int[] instructions;
 
-   static {
-      field1551 = new NodeCache(128);
-   }
-
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(II)[Lclass186;",
@@ -63,5 +59,9 @@ public class Script extends CacheableNode {
    )
    class186[] method1861(int var1) {
       return new class186[var1];
+   }
+
+   static {
+      field1551 = new NodeCache(128);
    }
 }

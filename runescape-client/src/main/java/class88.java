@@ -9,7 +9,7 @@ public class class88 {
       garbageValue = "-890638746"
    )
    static void method1714(Widget var0) {
-      if(var0.field2786 == Client.field1131) {
+      if(var0.loopCycle == Client.field1131) {
          Client.field1132[var0.boundsIndex] = true;
       }
 

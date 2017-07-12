@@ -16,17 +16,17 @@ public class class276 {
    @ObfuscatedName("w")
    public static final class276 field3740;
 
-   static {
-      field3737 = new class276(0);
-      field3740 = new class276(1);
-      field3739 = new class276(2);
-   }
-
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "0"
    )
    class276(int var1) {
       this.field3738 = var1;
+   }
+
+   static {
+      field3737 = new class276(0);
+      field3740 = new class276(1);
+      field3739 = new class276(2);
    }
 }

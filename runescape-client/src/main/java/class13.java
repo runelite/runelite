@@ -33,6 +33,7 @@ public class class13 {
          class215.field2640 = class244.rssocket;
          class244.rssocket = null;
       }
+
    }
 
    @ObfuscatedName("i")
@@ -47,14 +48,6 @@ public class class13 {
          Collections.sort(this.field283, Collections.reverseOrder(var1));
       }
 
-   }
-
-   static {
-      field277 = new class19();
-      new class12();
-      field278 = new class17();
-      field279 = new class18();
-      field280 = new class15();
    }
 
    @ObfuscatedSignature(
@@ -89,5 +82,13 @@ public class class13 {
       class92.loginMessage1 = var0;
       class92.loginMessage2 = var1;
       class92.loginMessage3 = var2;
+   }
+
+   static {
+      field277 = new class19();
+      new class12();
+      field278 = new class17();
+      field279 = new class18();
+      field280 = new class15();
    }
 }

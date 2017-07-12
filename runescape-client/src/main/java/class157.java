@@ -18,14 +18,10 @@ public class class157 {
    @Export("cameraY")
    static int cameraY;
    @ObfuscatedName("k")
-   static class111 field2270;
+   @Export("task")
+   static SoundTask task;
    @ObfuscatedName("i")
    public static boolean field2271;
-
-   static {
-      field2271 = false;
-      field2267 = new Hashtable(16);
-   }
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
@@ -34,5 +30,10 @@ public class class157 {
    )
    public static boolean method2963(int var0) {
       return (var0 >> 30 & 1) != 0;
+   }
+
+   static {
+      field2271 = false;
+      field2267 = new Hashtable(16);
    }
 }

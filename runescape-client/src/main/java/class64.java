@@ -15,10 +15,10 @@ public class class64 {
       }
 
       class28.method231();
-      class2.region.method2667();
+      class2.region.reset();
 
       for(int var0 = 0; var0 < 4; ++var0) {
-         Client.collisionMaps[var0].method3007();
+         Client.collisionMaps[var0].reset();
       }
 
       System.gc();
@@ -35,8 +35,8 @@ public class class64 {
       garbageValue = "-1694823004"
    )
    public static ModIcon[] method1117(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.method4146(var1);
-      int var4 = var0.method4131(var3, var2);
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
       return class25.method168(var0, var3, var4);
    }
 }

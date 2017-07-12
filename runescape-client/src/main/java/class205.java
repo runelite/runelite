@@ -7,6 +7,7 @@ import java.io.StreamCorruptedException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -113,7 +114,8 @@ public class class205 extends Node {
       signature = "(IIII)I",
       garbageValue = "-1084482843"
    )
-   static final int method3801(int var0, int var1, int var2) {
+   @Export("hsl24to16")
+   static final int hsl24to16(int var0, int var1, int var2) {
       if(var2 > 179) {
          var1 /= 2;
       }
@@ -151,7 +153,8 @@ public class class205 extends Node {
       signature = "(IB)Lclass244;",
       garbageValue = "0"
    )
-   public static class244 method3803(int var0) {
+   @Export("getVarClientStringType")
+   public static class244 getVarClientStringType(int var0) {
       class244 var1 = (class244)class244.field3322.get((long)var0);
       if(var1 != null) {
          return var1;
@@ -173,7 +176,7 @@ public class class205 extends Node {
       garbageValue = "-7"
    )
    static void method3804(int var0) {
-      for(class198 var1 = (class198)Client.widgetFlags.method3533(); var1 != null; var1 = (class198)Client.widgetFlags.method3538()) {
+      for(WidgetConfig var1 = (WidgetConfig)Client.widgetFlags.method3533(); var1 != null; var1 = (WidgetConfig)Client.widgetFlags.method3538()) {
          if((long)var0 == (var1.hash >> 48 & 65535L)) {
             var1.unlink();
          }
@@ -186,18 +189,19 @@ public class class205 extends Node {
       signature = "(LPacketBuffer;I)V",
       garbageValue = "-707775963"
    )
-   public static void method3805(PacketBuffer var0) {
+   @Export("encodeClassVerifier")
+   public static void encodeClassVerifier(PacketBuffer var0) {
       ClassInfo var1 = (ClassInfo)class280.field3755.method3547();
       if(var1 != null) {
          int var2 = var0.offset;
          var0.putInt(var1.field3750);
 
-         for(int var3 = 0; var3 < var1.field3748; ++var3) {
-            if(var1.field3752[var3] != 0) {
-               var0.putByte(var1.field3752[var3]);
+         for(int var3 = 0; var3 < var1.count; ++var3) {
+            if(var1.errorIdentifiers[var3] != 0) {
+               var0.putByte(var1.errorIdentifiers[var3]);
             } else {
                try {
-                  int var4 = var1.field3749[var3];
+                  int var4 = var1.type[var3];
                   Field var5;
                   int var6;
                   if(var4 == 0) {
@@ -207,7 +211,7 @@ public class class205 extends Node {
                      var0.putInt(var6);
                   } else if(var4 == 1) {
                      var5 = var1.fields[var3];
-                     Reflection.setInt(var5, (Object)null, var1.field3754[var3]);
+                     Reflection.setInt(var5, (Object)null, var1.fieldValues[var3]);
                      var0.putByte(0);
                   } else if(var4 == 2) {
                      var5 = var1.fields[var3];
@@ -216,67 +220,68 @@ public class class205 extends Node {
                      var0.putInt(var6);
                   }
 
-                  Method var25;
+                  Method var7;
                   if(var4 != 3) {
                      if(var4 == 4) {
-                        var25 = var1.methods[var3];
-                        var6 = var25.getModifiers();
+                        var7 = var1.methods[var3];
+                        var6 = var7.getModifiers();
                         var0.putByte(0);
                         var0.putInt(var6);
                      }
                   } else {
-                     var25 = var1.methods[var3];
-                     byte[][] var10 = var1.args[var3];
-                     Object[] var7 = new Object[var10.length];
+                     var7 = var1.methods[var3];
+                     byte[][] var8 = var1.args[var3];
+                     Object[] var9 = new Object[var8.length];
 
-                     for(int var8 = 0; var8 < var10.length; ++var8) {
-                        ObjectInputStream var9 = new ObjectInputStream(new ByteArrayInputStream(var10[var8]));
-                        var7[var8] = var9.readObject();
+                     for(int var10 = 0; var10 < var8.length; ++var10) {
+                        ObjectInputStream var11 = new ObjectInputStream(new ByteArrayInputStream(var8[var10]));
+                        var9[var10] = var11.readObject();
                      }
 
-                     Object var11 = Reflection.invoke(var25, (Object)null, var7);
-                     if(var11 == null) {
+                     Object var24 = Reflection.invoke(var7, (Object)null, var9);
+                     if(var24 == null) {
                         var0.putByte(0);
-                     } else if(var11 instanceof Number) {
+                     } else if(var24 instanceof Number) {
                         var0.putByte(1);
-                        var0.putLong(((Number)var11).longValue());
-                     } else if(var11 instanceof String) {
+                        var0.putLong(((Number)var24).longValue());
+                     } else if(var24 instanceof String) {
                         var0.putByte(2);
-                        var0.method3137((String)var11);
+                        var0.putString((String)var24);
                      } else {
                         var0.putByte(4);
                      }
                   }
-               } catch (ClassNotFoundException var13) {
+               } catch (ClassNotFoundException var12) {
                   var0.putByte(-10);
-               } catch (InvalidClassException var14) {
+               } catch (InvalidClassException var13) {
                   var0.putByte(-11);
-               } catch (StreamCorruptedException var15) {
+               } catch (StreamCorruptedException var14) {
                   var0.putByte(-12);
-               } catch (OptionalDataException var16) {
+               } catch (OptionalDataException var15) {
                   var0.putByte(-13);
-               } catch (IllegalAccessException var17) {
+               } catch (IllegalAccessException var16) {
                   var0.putByte(-14);
-               } catch (IllegalArgumentException var18) {
+               } catch (IllegalArgumentException var17) {
                   var0.putByte(-15);
-               } catch (InvocationTargetException var19) {
+               } catch (InvocationTargetException var18) {
                   var0.putByte(-16);
-               } catch (SecurityException var20) {
+               } catch (SecurityException var19) {
                   var0.putByte(-17);
-               } catch (IOException var21) {
+               } catch (IOException var20) {
                   var0.putByte(-18);
-               } catch (NullPointerException var22) {
+               } catch (NullPointerException var21) {
                   var0.putByte(-19);
-               } catch (Exception var23) {
+               } catch (Exception var22) {
                   var0.putByte(-20);
-               } catch (Throwable var24) {
+               } catch (Throwable var23) {
                   var0.putByte(-21);
                }
             }
          }
 
-         var0.method3154(var2);
+         var0.putCrc(var2);
          var1.unlink();
       }
+
    }
 }

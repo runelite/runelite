@@ -26,7 +26,7 @@ public class class102 extends class119 {
    @ObfuscatedName("a")
    void method1888() {
       if(this.field1583 > 0) {
-         for(class113 var1 = (class113)this.field1584.method3584(); var1 != null; var1 = (class113)this.field1584.method3578()) {
+         for(class113 var1 = (class113)this.field1584.getFront(); var1 != null; var1 = (class113)this.field1584.getNext()) {
             var1.field1683 -= this.field1583;
          }
 
@@ -48,12 +48,12 @@ public class class102 extends class119 {
 
    @ObfuscatedName("i")
    public final synchronized void method1890(class119 var1) {
-      this.field1581.method3580(var1);
+      this.field1581.addTail(var1);
    }
 
    @ObfuscatedName("r")
    protected class119 vmethod3864() {
-      return (class119)this.field1581.method3584();
+      return (class119)this.field1581.getFront();
    }
 
    @ObfuscatedName("s")
@@ -89,7 +89,7 @@ public class class102 extends class119 {
          var3 -= var4;
          this.field1583 += var4;
          this.method1888();
-         class113 var5 = (class113)this.field1584.method3584();
+         class113 var5 = (class113)this.field1584.getFront();
          synchronized(var5) {
             int var7 = var5.method2098(this);
             if(var7 < 0) {
@@ -123,7 +123,7 @@ public class class102 extends class119 {
          var1 -= var2;
          this.field1583 += var2;
          this.method1888();
-         class113 var3 = (class113)this.field1584.method3584();
+         class113 var3 = (class113)this.field1584.getFront();
          synchronized(var3) {
             int var5 = var3.method2098(this);
             if(var5 < 0) {
@@ -140,7 +140,7 @@ public class class102 extends class119 {
 
    @ObfuscatedName("o")
    void method1897(int var1) {
-      for(class119 var2 = (class119)this.field1581.method3584(); var2 != null; var2 = (class119)this.field1581.method3578()) {
+      for(class119 var2 = (class119)this.field1581.getFront(); var2 != null; var2 = (class119)this.field1581.getNext()) {
          var2.vmethod3885(var1);
       }
 
@@ -148,12 +148,12 @@ public class class102 extends class119 {
 
    @ObfuscatedName("v")
    protected class119 vmethod3865() {
-      return (class119)this.field1581.method3578();
+      return (class119)this.field1581.getNext();
    }
 
    @ObfuscatedName("k")
    void method1902(int[] var1, int var2, int var3) {
-      for(class119 var4 = (class119)this.field1581.method3584(); var4 != null; var4 = (class119)this.field1581.method3578()) {
+      for(class119 var4 = (class119)this.field1581.getFront(); var4 != null; var4 = (class119)this.field1581.getNext()) {
          var4.method2295(var1, var2, var3);
       }
 

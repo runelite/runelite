@@ -55,15 +55,6 @@ public class class174 {
       }
    }
 
-   static {
-      field2410 = 0;
-      field2408 = 0;
-      field2411 = 0;
-      field2412 = new byte[1000][];
-      field2407 = new byte[250][];
-      field2409 = new byte[50][];
-   }
-
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(II)V",
@@ -77,5 +68,14 @@ public class class174 {
       class203.field2513 = 0;
       class203.field2515 = false;
       class203.field2517 = var0;
+   }
+
+   static {
+      field2410 = 0;
+      field2408 = 0;
+      field2411 = 0;
+      field2412 = new byte[1000][];
+      field2407 = new byte[250][];
+      field2409 = new byte[50][];
    }
 }

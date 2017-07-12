@@ -29,7 +29,8 @@ public class class83 {
    @Export("scriptStackCount")
    static int scriptStackCount;
    @ObfuscatedName("r")
-   static int[][] field1363;
+   @Export("SHAPE_VERTICIES")
+   static int[][] SHAPE_VERTICIES;
    @ObfuscatedName("l")
    static Widget field1364;
    @ObfuscatedName("c")
@@ -43,21 +44,10 @@ public class class83 {
    )
    static int field1367;
    @ObfuscatedName("y")
-   static ModIcon field1369;
+   @Export("logoSprite")
+   static ModIcon logoSprite;
    @ObfuscatedName("q")
    static int[] field1370;
-
-   static {
-      field1358 = new int[5];
-      field1363 = new int[5][5000];
-      intStack = new int[1000];
-      scriptStringStack = new String[1000];
-      scriptStackCount = 0;
-      scriptStack = new ScriptState[50];
-      field1365 = Calendar.getInstance();
-      field1359 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-      field1367 = 0;
-   }
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -65,6 +55,18 @@ public class class83 {
       garbageValue = "1956252938"
    )
    public static void method1674(int var0) {
-      class59.mouseIdleTicks = var0;
+      MouseInput.mouseIdleTicks = var0;
+   }
+
+   static {
+      field1358 = new int[5];
+      SHAPE_VERTICIES = new int[5][5000];
+      intStack = new int[1000];
+      scriptStringStack = new String[1000];
+      scriptStackCount = 0;
+      scriptStack = new ScriptState[50];
+      field1365 = Calendar.getInstance();
+      field1359 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+      field1367 = 0;
    }
 }

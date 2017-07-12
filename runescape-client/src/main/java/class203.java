@@ -40,10 +40,6 @@ public class class203 {
    )
    public static int field2517;
 
-   static {
-      field2508 = 0;
-   }
-
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(II)Z",
@@ -51,5 +47,9 @@ public class class203 {
    )
    public static boolean method3665(int var0) {
       return var0 >= class221.field2839.field2842 && var0 <= class221.field2819.field2842;
+   }
+
+   static {
+      field2508 = 0;
    }
 }

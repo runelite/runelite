@@ -18,7 +18,7 @@ public class class208 extends class119 {
 
    @ObfuscatedName("r")
    protected class119 vmethod3864() {
-      class205 var1 = (class205)this.field2594.method3584();
+      class205 var1 = (class205)this.field2594.getFront();
       return (class119)(var1 == null?null:(var1.field2564 != null?var1.field2564:this.vmethod3865()));
    }
 
@@ -26,7 +26,7 @@ public class class208 extends class119 {
    protected class119 vmethod3865() {
       class205 var1;
       do {
-         var1 = (class205)this.field2594.method3578();
+         var1 = (class205)this.field2594.getNext();
          if(var1 == null) {
             return null;
          }
@@ -42,7 +42,7 @@ public class class208 extends class119 {
    )
    void method3869(class205 var1, int[] var2, int var3, int var4, int var5) {
       if((this.field2593.field2531[var1.field2559] & 4) != 0 && var1.field2560 < 0) {
-         int var6 = this.field2593.field2535[var1.field2559] / FileSystem.field3211;
+         int var6 = this.field2593.field2535[var1.field2559] / FileSystem.sampleRate;
 
          while(true) {
             int var7 = (var6 + 1048575 - var1.field2556) / var6;
@@ -55,7 +55,7 @@ public class class208 extends class119 {
             var3 += var7;
             var4 -= var7;
             var1.field2556 += var7 * var6 - 1048576;
-            int var8 = FileSystem.field3211 / 100;
+            int var8 = FileSystem.sampleRate / 100;
             int var9 = 262144 / var6;
             if(var9 < var8) {
                var8 = var9;
@@ -92,7 +92,7 @@ public class class208 extends class119 {
    )
    void method3870(class205 var1, int var2) {
       if((this.field2593.field2531[var1.field2559] & 4) != 0 && var1.field2560 < 0) {
-         int var3 = this.field2593.field2535[var1.field2559] / FileSystem.field3211;
+         int var3 = this.field2593.field2535[var1.field2559] / FileSystem.sampleRate;
          int var4 = (var3 + 1048575 - var1.field2556) / var3;
          var1.field2556 = var3 * var2 + var1.field2556 & 1048575;
          if(var4 <= var2) {
@@ -118,20 +118,20 @@ public class class208 extends class119 {
    protected void vmethod3885(int var1) {
       this.field2595.vmethod3885(var1);
 
-      for(class205 var3 = (class205)this.field2594.method3584(); var3 != null; var3 = (class205)this.field2594.method3578()) {
-         if(!this.field2593.method3700(var3)) {
-            int var2 = var1;
+      for(class205 var2 = (class205)this.field2594.getFront(); var2 != null; var2 = (class205)this.field2594.getNext()) {
+         if(!this.field2593.method3700(var2)) {
+            int var3 = var1;
 
             do {
-               if(var2 <= var3.field2563) {
-                  this.method3870(var3, var2);
-                  var3.field2563 -= var2;
+               if(var3 <= var2.field2563) {
+                  this.method3870(var2, var3);
+                  var2.field2563 -= var3;
                   break;
                }
 
-               this.method3870(var3, var3.field2563);
-               var2 -= var3.field2563;
-            } while(!this.field2593.method3701(var3, (int[])null, 0, var2));
+               this.method3870(var2, var2.field2563);
+               var3 -= var2.field2563;
+            } while(!this.field2593.method3701(var2, (int[])null, 0, var3));
          }
       }
 
@@ -152,22 +152,22 @@ public class class208 extends class119 {
    protected void vmethod3889(int[] var1, int var2, int var3) {
       this.field2595.vmethod3889(var1, var2, var3);
 
-      for(class205 var6 = (class205)this.field2594.method3584(); var6 != null; var6 = (class205)this.field2594.method3578()) {
-         if(!this.field2593.method3700(var6)) {
-            int var4 = var2;
-            int var5 = var3;
+      for(class205 var4 = (class205)this.field2594.getFront(); var4 != null; var4 = (class205)this.field2594.getNext()) {
+         if(!this.field2593.method3700(var4)) {
+            int var5 = var2;
+            int var6 = var3;
 
             do {
-               if(var5 <= var6.field2563) {
-                  this.method3869(var6, var1, var4, var5, var5 + var4);
-                  var6.field2563 -= var5;
+               if(var6 <= var4.field2563) {
+                  this.method3869(var4, var1, var5, var6, var6 + var5);
+                  var4.field2563 -= var6;
                   break;
                }
 
-               this.method3869(var6, var1, var4, var6.field2563, var5 + var4);
-               var4 += var6.field2563;
-               var5 -= var6.field2563;
-            } while(!this.field2593.method3701(var6, var1, var4, var5));
+               this.method3869(var4, var1, var5, var4.field2563, var6 + var5);
+               var5 += var4.field2563;
+               var6 -= var4.field2563;
+            } while(!this.field2593.method3701(var4, var1, var5, var6));
          }
       }
 

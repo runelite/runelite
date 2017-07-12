@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -15,15 +16,16 @@ public class class243 extends CacheableNode {
       signature = "(II)V",
       garbageValue = "-1637927214"
    )
-   static void method4314(int var0) {
-      XItemContainer var1 = (XItemContainer)XItemContainer.itemContainers.method3530((long)var0);
+   @Export("resetItemTable")
+   static void resetItemTable(int var0) {
+      XItemContainer var1 = (XItemContainer)XItemContainer.itemContainers.get((long)var0);
       if(var1 != null) {
          for(int var2 = 0; var2 < var1.itemIds.length; ++var2) {
             var1.itemIds[var2] = -1;
             var1.stackSizes[var2] = 0;
          }
-
       }
+
    }
 
    @ObfuscatedName("w")
@@ -42,10 +44,6 @@ public class class243 extends CacheableNode {
       }
    }
 
-   static {
-      field3317 = new NodeCache(64);
-   }
-
    public class243() {
       this.field3318 = false;
    }
@@ -60,5 +58,9 @@ public class class243 extends CacheableNode {
          this.field3318 = true;
       }
 
+   }
+
+   static {
+      field3317 = new NodeCache(64);
    }
 }

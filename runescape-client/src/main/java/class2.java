@@ -23,7 +23,7 @@ final class class2 implements class0 {
       int var5 = class37.font_p12full.method4751(var0, 250);
       int var6 = class37.font_p12full.method4752(var0, 250) * 13;
       Rasterizer2D.method4983(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var6 + var2, 0);
-      Rasterizer2D.method4958(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var6 + var2, 16777215);
+      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var6 + var2, 16777215);
       class37.font_p12full.method4788(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
       Coordinates.method3911(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var6 + var2);
       if(var1) {
@@ -49,7 +49,7 @@ final class class2 implements class0 {
       garbageValue = "-5277"
    )
    static final int method7() {
-      return Client.menuOptionCount <= 0?-1:(Client.field1075 && class50.field659[81] && Client.field1074 != -1?Client.field1074:Client.menuOptionCount - 1);
+      return Client.menuOptionCount <= 0?-1:(Client.field1075 && KeyFocusListener.field659[81] && Client.field1074 != -1?Client.field1074:Client.menuOptionCount - 1);
    }
 
    @ObfuscatedName("r")
@@ -58,8 +58,8 @@ final class class2 implements class0 {
       garbageValue = "1564820534"
    )
    public static SpritePixels[] method8(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.method4146(var1);
-      int var4 = var0.method4131(var3, var2);
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
       return class8.method43(var0, var3, var4);
    }
 }

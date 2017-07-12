@@ -152,7 +152,7 @@ public final class Player extends Actor {
          return null;
       } else {
          Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?class224.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation == -1 || this.field908 || super.poseAnimation == super.idlePoseAnimation && var1 != null?null:class224.getAnimation(super.poseAnimation);
+         Sequence var2 = super.poseAnimation != -1 && !this.field908 && (super.poseAnimation != super.idlePoseAnimation || var1 == null)?class224.getAnimation(super.poseAnimation):null;
          Model var3 = this.composition.method3936(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;
@@ -162,7 +162,7 @@ public final class Player extends Actor {
             Model var4;
             Model[] var5;
             if(!this.field908 && super.graphic != -1 && super.field1244 != -1) {
-               var4 = Renderable.method2864(super.graphic).method4338(super.field1244);
+               var4 = Renderable.getSpotAnimType(super.graphic).method4338(super.field1244);
                if(var4 != null) {
                   var4.method2504(0, -super.field1238, 0);
                   var5 = new Model[]{var3, var4};
@@ -217,7 +217,8 @@ public final class Player extends Actor {
       signature = "(LBuffer;I)V",
       garbageValue = "1318527070"
    )
-   final void method1154(Buffer var1) {
+   @Export("decodeApperance")
+   final void decodeApperance(Buffer var1) {
       var1.offset = 0;
       int var2 = var1.readUnsignedByte();
       this.skullIcon = var1.readByte();
@@ -226,22 +227,22 @@ public final class Player extends Actor {
       this.team = 0;
       int[] var4 = new int[12];
 
+      int var5;
       int var6;
-      int var7;
-      for(int var5 = 0; var5 < 12; ++var5) {
-         var6 = var1.readUnsignedByte();
-         if(var6 == 0) {
-            var4[var5] = 0;
+      for(int var7 = 0; var7 < 12; ++var7) {
+         var5 = var1.readUnsignedByte();
+         if(var5 == 0) {
+            var4[var7] = 0;
          } else {
-            var7 = var1.readUnsignedByte();
-            var4[var5] = (var6 << 8) + var7;
-            if(var5 == 0 && var4[0] == '\uffff') {
+            var6 = var1.readUnsignedByte();
+            var4[var7] = (var5 << 8) + var6;
+            if(var7 == 0 && var4[0] == '\uffff') {
                var3 = var1.readUnsignedShort();
                break;
             }
 
-            if(var4[var5] >= 512) {
-               int var8 = class176.getItemDefinition(var4[var5] - 512).field3542;
+            if(var4[var7] >= 512) {
+               int var8 = AbstractByteBuffer.getItemDefinition(var4[var7] - 512).field3542;
                if(var8 != 0) {
                   this.team = var8;
                }
@@ -251,13 +252,13 @@ public final class Player extends Actor {
 
       int[] var9 = new int[5];
 
-      for(var6 = 0; var6 < 5; ++var6) {
-         var7 = var1.readUnsignedByte();
-         if(var7 < 0 || var7 >= PlayerComposition.field2627[var6].length) {
-            var7 = 0;
+      for(var5 = 0; var5 < 5; ++var5) {
+         var6 = var1.readUnsignedByte();
+         if(var6 < 0 || var6 >= PlayerComposition.colorsToReplace[var5].length) {
+            var6 = 0;
          }
 
-         var9[var6] = var7;
+         var9[var5] = var6;
       }
 
       super.idlePoseAnimation = var1.readUnsignedShort();
@@ -304,7 +305,7 @@ public final class Player extends Actor {
       this.combatLevel = var1.readUnsignedByte();
       this.totalLevel = var1.readUnsignedShort();
       this.hidden = var1.readUnsignedByte() == 1;
-      if(Client.field1202 == 0 && Client.rights >= 2) {
+      if(Client.socketType == 0 && Client.rights >= 2) {
          this.hidden = false;
       }
 
@@ -320,7 +321,8 @@ public final class Player extends Actor {
       signature = "(I)Z",
       garbageValue = "-2061214073"
    )
-   final boolean vmethod1695() {
+   @Export("hasConfig")
+   final boolean hasConfig() {
       return this.composition != null;
    }
 
@@ -329,7 +331,8 @@ public final class Player extends Actor {
       signature = "(B)I",
       garbageValue = "109"
    )
-   int method1156() {
+   @Export("getSize")
+   int getSize() {
       return this.composition != null && this.composition.transformedNpcId != -1?class35.getNpcDefinition(this.composition.transformedNpcId).field3561:1;
    }
 
@@ -350,18 +353,18 @@ public final class Player extends Actor {
                Player var4 = this;
                int var5 = super.pathX[0];
                int var6 = super.pathY[0];
-               int var7 = this.method1156();
+               int var7 = this.getSize();
                if(var5 >= var7 && var5 < 104 - var7 && var6 >= var7 && var6 < 104 - var7 && var1 >= var7 && var1 < 104 - var7 && var2 >= var7 && var2 < 104 - var7) {
-                  int var10 = this.method1156();
+                  int var8 = this.getSize();
                   Client.field1204.field2325 = var1;
                   Client.field1204.field2323 = var2;
                   Client.field1204.field2324 = 1;
                   Client.field1204.field2322 = 1;
-                  class73 var11 = Client.field1204;
-                  int var12 = ChatLineBuffer.method1883(var5, var6, var10, var11, Client.collisionMaps[this.field911], true, Client.field1205, Client.field1053);
-                  if(var12 >= 1) {
-                     for(int var13 = 0; var13 < var12 - 1; ++var13) {
-                        var4.method1159(Client.field1205[var13], Client.field1053[var13], (byte)2);
+                  class73 var9 = Client.field1204;
+                  int var10 = ChatLineBuffer.method1883(var5, var6, var8, var9, Client.collisionMaps[this.field911], true, Client.field1205, Client.field1053);
+                  if(var10 >= 1) {
+                     for(int var11 = 0; var11 < var10 - 1; ++var11) {
+                        var4.method1159(Client.field1205[var11], Client.field1053[var11], (byte)2);
                      }
                   }
                }
@@ -437,7 +440,7 @@ public final class Player extends Actor {
       super.field1275 = 0;
       super.pathX[0] = var1;
       super.pathY[0] = var2;
-      int var3 = this.method1156();
+      int var3 = this.getSize();
       super.x = super.pathX[0] * 128 + var3 * 64;
       super.y = 128 * super.pathY[0] + var3 * 64;
    }
@@ -449,33 +452,33 @@ public final class Player extends Actor {
    )
    public static void method1177() {
       try {
-         File var0 = new File(GraphicsObject.field1383, "random.dat");
-         int var2;
+         File var0 = new File(GraphicsObject.userHome, "random.dat");
+         int var1;
          if(var0.exists()) {
-            class155.field2258 = new class123(new FileOnDisk(var0, "rw", 25L), 24, 0);
+            class155.field2258 = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
          } else {
-            label38:
-            for(int var4 = 0; var4 < FaceNormal.field2153.length; ++var4) {
-               for(var2 = 0; var2 < class37.field533.length; ++var2) {
-                  File var3 = new File(class37.field533[var2] + FaceNormal.field2153[var4] + File.separatorChar + "random.dat");
+            label34:
+            for(int var2 = 0; var2 < FaceNormal.field2153.length; ++var2) {
+               for(var1 = 0; var1 < class37.cacheLocations.length; ++var1) {
+                  File var3 = new File(class37.cacheLocations[var1] + FaceNormal.field2153[var2] + File.separatorChar + "random.dat");
                   if(var3.exists()) {
-                     class155.field2258 = new class123(new FileOnDisk(var3, "rw", 25L), 24, 0);
-                     break label38;
+                     class155.field2258 = new CacheFile(new FileOnDisk(var3, "rw", 25L), 24, 0);
+                     break label34;
                   }
                }
             }
          }
 
          if(class155.field2258 == null) {
-            RandomAccessFile var1 = new RandomAccessFile(var0, "rw");
-            var2 = var1.read();
-            var1.seek(0L);
-            var1.write(var2);
-            var1.seek(0L);
-            var1.close();
-            class155.field2258 = new class123(new FileOnDisk(var0, "rw", 25L), 24, 0);
+            RandomAccessFile var5 = new RandomAccessFile(var0, "rw");
+            var1 = var5.read();
+            var5.seek(0L);
+            var5.write(var1);
+            var5.seek(0L);
+            var5.close();
+            class155.field2258 = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
          }
-      } catch (IOException var5) {
+      } catch (IOException var4) {
          ;
       }
 
@@ -513,77 +516,79 @@ public final class Player extends Actor {
 
          int var4 = var3 - var2;
          if(var4 >= 1) {
-            byte var6;
+            byte var5;
             if(var1 == null) {
-               var6 = 12;
+               var5 = 12;
             } else {
                switch(var1.field3859) {
                case 4:
-                  var6 = 20;
+                  var5 = 20;
                   break;
                default:
-                  var6 = 12;
+                  var5 = 12;
                }
             }
 
-            if(var4 <= var6) {
-               StringBuilder var13 = new StringBuilder(var4);
+            if(var4 <= var5) {
+               StringBuilder var6 = new StringBuilder(var4);
 
-               for(int var15 = var2; var15 < var3; ++var15) {
-                  char var7 = var0.charAt(var15);
-                  boolean var8;
-                  if(Character.isISOControl(var7)) {
-                     var8 = false;
+               for(int var7 = var2; var7 < var3; ++var7) {
+                  char var8 = var0.charAt(var7);
+                  boolean var9;
+                  if(Character.isISOControl(var8)) {
+                     var9 = false;
                   } else {
-                     boolean var9 = var7 >= 48 && var7 <= 57 || var7 >= 65 && var7 <= 90 || var7 >= 97 && var7 <= 122;
-                     if(var9) {
-                        var8 = true;
+                     boolean var10 = var8 >= 48 && var8 <= 57 || var8 >= 65 && var8 <= 90 || var8 >= 97 && var8 <= 122;
+                     if(var10) {
+                        var9 = true;
                      } else {
-                        char[] var14 = class267.field3674;
-                        int var11 = 0;
+                        label143: {
+                           char[] var11 = class267.field3674;
 
-                        label108:
-                        while(true) {
-                           char var12;
-                           if(var11 >= var14.length) {
-                              var14 = class267.field3677;
+                           int var12;
+                           char var13;
+                           for(var12 = 0; var12 < var11.length; ++var12) {
+                              var13 = var11[var12];
+                              if(var8 == var13) {
+                                 var9 = true;
+                                 break label143;
+                              }
+                           }
 
-                              for(var11 = 0; var11 < var14.length; ++var11) {
-                                 var12 = var14[var11];
-                                 if(var7 == var12) {
-                                    var8 = true;
-                                    break label108;
-                                 }
+                           var11 = class267.field3677;
+                           var12 = 0;
+
+                           while(true) {
+                              if(var12 >= var11.length) {
+                                 var9 = false;
+                                 break;
                               }
 
-                              var8 = false;
-                              break;
-                           }
+                              var13 = var11[var12];
+                              if(var8 == var13) {
+                                 var9 = true;
+                                 break;
+                              }
 
-                           var12 = var14[var11];
-                           if(var7 == var12) {
-                              var8 = true;
-                              break;
+                              ++var12;
                            }
-
-                           ++var11;
                         }
                      }
                   }
 
-                  if(var8) {
-                     char var16;
-                     switch(var7) {
+                  if(var9) {
+                     char var14;
+                     switch(var8) {
                      case ' ':
                      case '-':
                      case '_':
                      case ' ':
-                        var16 = 95;
+                        var14 = 95;
                         break;
                      case '#':
                      case '[':
                      case ']':
-                        var16 = var7;
+                        var14 = var8;
                         break;
                      case 'À':
                      case 'Á':
@@ -595,11 +600,11 @@ public final class Player extends Actor {
                      case 'â':
                      case 'ã':
                      case 'ä':
-                        var16 = 97;
+                        var14 = 97;
                         break;
                      case 'Ç':
                      case 'ç':
-                        var16 = 99;
+                        var14 = 99;
                         break;
                      case 'È':
                      case 'É':
@@ -609,7 +614,7 @@ public final class Player extends Actor {
                      case 'é':
                      case 'ê':
                      case 'ë':
-                        var16 = 101;
+                        var14 = 101;
                         break;
                      case 'Í':
                      case 'Î':
@@ -617,11 +622,11 @@ public final class Player extends Actor {
                      case 'í':
                      case 'î':
                      case 'ï':
-                        var16 = 105;
+                        var14 = 105;
                         break;
                      case 'Ñ':
                      case 'ñ':
-                        var16 = 110;
+                        var14 = 110;
                         break;
                      case 'Ò':
                      case 'Ó':
@@ -633,7 +638,7 @@ public final class Player extends Actor {
                      case 'ô':
                      case 'õ':
                      case 'ö':
-                        var16 = 111;
+                        var14 = 111;
                         break;
                      case 'Ù':
                      case 'Ú':
@@ -643,30 +648,30 @@ public final class Player extends Actor {
                      case 'ú':
                      case 'û':
                      case 'ü':
-                        var16 = 117;
+                        var14 = 117;
                         break;
                      case 'ß':
-                        var16 = 98;
+                        var14 = 98;
                         break;
                      case 'ÿ':
                      case 'Ÿ':
-                        var16 = 121;
+                        var14 = 121;
                         break;
                      default:
-                        var16 = Character.toLowerCase(var7);
+                        var14 = Character.toLowerCase(var8);
                      }
 
-                     if(var16 != 0) {
-                        var13.append(var16);
+                     if(var14 != 0) {
+                        var6.append(var14);
                      }
                   }
                }
 
-               if(var13.length() == 0) {
+               if(var6.length() == 0) {
                   return null;
                }
 
-               return var13.toString();
+               return var6.toString();
             }
          }
 

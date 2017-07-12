@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -153,13 +154,13 @@ public class class48 implements WorldMapSectionBase {
             while(var8-- > 0) {
                int var10 = var2.readInt();
                int var11 = var2.readInt();
-               var9.method3479(new class198(var11), (long)var10);
+               var9.method3479(new WidgetConfig(var11), (long)var10);
             }
          }
       }
 
       var2.offset = 0;
-      var2.method3277();
+      var2.getNullString();
       var1.instructions = new int[var5];
       var1.intOperands = new int[var5];
       var1.stringOperands = new String[var5];
@@ -192,22 +193,23 @@ public class class48 implements WorldMapSectionBase {
       signature = "(IIII)I",
       garbageValue = "-1478645957"
    )
-   static final int method743(int var0, int var1, int var2) {
+   @Export("getSmoothNoise")
+   static final int getSmoothNoise(int var0, int var1, int var2) {
       int var3 = var0 / var2;
       int var4 = var0 & var2 - 1;
       int var5 = var1 / var2;
       int var6 = var1 & var2 - 1;
-      int var7 = class17.method122(var3, var5);
-      int var8 = class17.method122(var3 + 1, var5);
-      int var9 = class17.method122(var3, var5 + 1);
-      int var10 = class17.method122(var3 + 1, var5 + 1);
-      int var12 = 65536 - class136.COSINE[var4 * 1024 / var2] >> 1;
-      int var11 = (var8 * var12 >> 16) + (var7 * (65536 - var12) >> 16);
-      int var14 = 65536 - class136.COSINE[var4 * 1024 / var2] >> 1;
-      int var13 = ((65536 - var14) * var9 >> 16) + (var10 * var14 >> 16);
-      int var16 = 65536 - class136.COSINE[var6 * 1024 / var2] >> 1;
-      int var15 = (var16 * var13 >> 16) + ((65536 - var16) * var11 >> 16);
-      return var15;
+      int var7 = class17.getSmoothNoise2D(var3, var5);
+      int var8 = class17.getSmoothNoise2D(var3 + 1, var5);
+      int var9 = class17.getSmoothNoise2D(var3, var5 + 1);
+      int var10 = class17.getSmoothNoise2D(var3 + 1, var5 + 1);
+      int var11 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
+      int var12 = (var8 * var11 >> 16) + (var7 * (65536 - var11) >> 16);
+      int var13 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
+      int var14 = ((65536 - var13) * var9 >> 16) + (var10 * var13 >> 16);
+      int var15 = 65536 - Graphics3D.COSINE[var6 * 1024 / var2] >> 1;
+      int var16 = (var15 * var14 >> 16) + ((65536 - var15) * var12 >> 16);
+      return var16;
    }
 
    @ObfuscatedName("i")
@@ -248,7 +250,8 @@ public class class48 implements WorldMapSectionBase {
       signature = "([BIII)Ljava/lang/String;",
       garbageValue = "-2135132767"
    )
-   public static String method755(byte[] var0, int var1, int var2) {
+   @Export("getString")
+   public static String getString(byte[] var0, int var1, int var2) {
       char[] var3 = new char[var2];
       int var4 = 0;
 

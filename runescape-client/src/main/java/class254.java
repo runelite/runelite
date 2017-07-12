@@ -190,7 +190,7 @@ public class class254 extends CacheableNode {
       } else if(var2 == 7) {
          this.field3433 = var1.readShort();
       } else if(var2 == 8) {
-         this.field3436 = var1.method3155();
+         this.field3436 = var1.getJagString();
       } else if(var2 == 9) {
          this.field3428 = var1.readUnsignedShort();
       } else if(var2 == 10) {
@@ -235,12 +235,6 @@ public class class254 extends CacheableNode {
          this.field3439[var4 + 1] = var3;
       }
 
-   }
-
-   static {
-      field3421 = new NodeCache(64);
-      field3422 = new NodeCache(64);
-      field3423 = new NodeCache(20);
    }
 
    class254() {
@@ -297,31 +291,31 @@ public class class254 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            IndexDataBase var3 = field3419;
-            IndexDataBase var4 = class215.field2639;
-            int var5 = this.field3431;
-            Font var2;
-            if(!class223.method4073(var3, var5, 0)) {
-               var2 = null;
+            IndexDataBase var2 = field3419;
+            IndexDataBase var3 = class215.field2639;
+            int var4 = this.field3431;
+            Font var5;
+            if(!class223.method4073(var2, var4, 0)) {
+               var5 = null;
             } else {
-               byte[] var7 = var4.getConfigData(var5, 0);
-               Font var6;
-               if(var7 == null) {
-                  var6 = null;
+               byte[] var6 = var3.getConfigData(var4, 0);
+               Font var7;
+               if(var6 == null) {
+                  var7 = null;
                } else {
-                  Font var8 = new Font(var7, class286.field3799, class286.field3800, class7.field239, class226.field3146, class278.field3745, class210.field2609);
+                  Font var8 = new Font(var6, class286.field3799, class286.offsetsY, class7.field239, class226.field3146, class278.field3745, class210.spritePixels);
                   XGrandExchangeOffer.method113();
-                  var6 = var8;
+                  var7 = var8;
                }
 
-               var2 = var6;
+               var5 = var7;
             }
 
-            if(var2 != null) {
-               field3423.put(var2, (long)this.field3431);
+            if(var5 != null) {
+               field3423.put(var5, (long)this.field3431);
             }
 
-            return var2;
+            return var5;
          }
       }
    }
@@ -370,5 +364,11 @@ public class class254 extends CacheableNode {
             return var1;
          }
       }
+   }
+
+   static {
+      field3421 = new NodeCache(64);
+      field3422 = new NodeCache(64);
+      field3423 = new NodeCache(20);
    }
 }

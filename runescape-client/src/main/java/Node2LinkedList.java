@@ -10,9 +10,10 @@ public final class Node2LinkedList {
    CacheableNode sentinel;
 
    @ObfuscatedName("i")
-   public void method3460(CacheableNode var1) {
+   @Export("push")
+   public void push(CacheableNode var1) {
       if(var1.next != null) {
-         var1.method3604();
+         var1.unlinkDual();
       }
 
       var1.next = this.sentinel.next;
@@ -22,38 +23,42 @@ public final class Node2LinkedList {
    }
 
    @ObfuscatedName("a")
-   CacheableNode method3462() {
+   @Export("pop")
+   CacheableNode pop() {
       CacheableNode var1 = this.sentinel.previous;
       if(this.sentinel == var1) {
          return null;
       } else {
-         var1.method3604();
+         var1.unlinkDual();
          return var1;
       }
    }
 
    @ObfuscatedName("t")
-   public CacheableNode method3463() {
+   @Export("peek")
+   public CacheableNode peek() {
       CacheableNode var1 = this.sentinel.previous;
       return this.sentinel == var1?null:var1;
    }
 
    @ObfuscatedName("s")
-   void method3464() {
+   @Export("clear")
+   void clear() {
       while(true) {
          CacheableNode var1 = this.sentinel.previous;
          if(this.sentinel == var1) {
             return;
          }
 
-         var1.method3604();
+         var1.unlinkDual();
       }
    }
 
    @ObfuscatedName("w")
-   public void method3467(CacheableNode var1) {
+   @Export("setHead")
+   public void setHead(CacheableNode var1) {
       if(var1.next != null) {
-         var1.method3604();
+         var1.unlinkDual();
       }
 
       var1.next = this.sentinel;

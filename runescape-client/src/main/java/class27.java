@@ -39,7 +39,7 @@ public enum class27 implements RSEnum {
       signature = "(IB)V",
       garbageValue = "0"
    )
-   class27(int var3, byte var4) {
+   private class27(int var3, byte var4) {
       this.field399 = var3;
       this.field400 = var4;
    }
@@ -53,7 +53,7 @@ public enum class27 implements RSEnum {
       int var3 = -1;
 
       for(int var4 = var1; var4 < var2; ++var4) {
-         var3 = var3 >>> 8 ^ Buffer.field2399[(var3 ^ var0[var4]) & 255];
+         var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
       }
 
       var3 = ~var3;

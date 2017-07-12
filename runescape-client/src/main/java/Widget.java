@@ -12,7 +12,8 @@ public class Widget extends Node {
    @ObfuscatedName("ex")
    public int[] field2645;
    @ObfuscatedName("y")
-   public static IndexDataBase field2646;
+   @Export("widgetIndex")
+   public static IndexDataBase widgetIndex;
    @ObfuscatedName("ad")
    public boolean field2647;
    @ObfuscatedName("at")
@@ -27,7 +28,8 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 1160972463
    )
-   public int field2650;
+   @Export("modelZoom")
+   public int modelZoom;
    @ObfuscatedName("cw")
    @ObfuscatedGetter(
       intValue = 1677050925
@@ -82,7 +84,8 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 46432693
    )
-   public int field2662;
+   @Export("buttonType")
+   public int buttonType;
    @ObfuscatedName("ee")
    public Object[] field2663;
    @ObfuscatedName("ab")
@@ -221,7 +224,8 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 420465513
    )
-   public int field2691;
+   @Export("textureId")
+   public int textureId;
    @ObfuscatedName("bv")
    public boolean field2692;
    @ObfuscatedName("bt")
@@ -234,7 +238,8 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -2083141059
    )
-   public int field2694;
+   @Export("config")
+   public int config;
    @ObfuscatedName("bp")
    @Export("flippedVertically")
    public boolean flippedVertically;
@@ -347,9 +352,11 @@ public class Widget extends Node {
    )
    public int field2717;
    @ObfuscatedName("df")
-   public Object[] field2718;
+   @Export("tableListenerArgs")
+   public Object[] tableListenerArgs;
    @ObfuscatedName("cq")
-   public boolean field2719;
+   @Export("textShadowed")
+   public boolean textShadowed;
    @ObfuscatedName("ce")
    @ObfuscatedGetter(
       intValue = 611626757
@@ -390,7 +397,8 @@ public class Widget extends Node {
    @ObfuscatedName("do")
    public Object[] field2731;
    @ObfuscatedName("dw")
-   public Object[] field2732;
+   @Export("scrollListener")
+   public Object[] scrollListener;
    @ObfuscatedName("cy")
    @Export("selectedAction")
    public String selectedAction;
@@ -408,13 +416,17 @@ public class Widget extends Node {
    @ObfuscatedName("dn")
    public Object[] field2738;
    @ObfuscatedName("cv")
-   public String[] field2739;
+   @Export("configActions")
+   public String[] configActions;
    @ObfuscatedName("dr")
-   public Object[] field2740;
+   @Export("mouseEnterListener")
+   public Object[] mouseEnterListener;
    @ObfuscatedName("dx")
-   public Object[] field2741;
+   @Export("mouseHoverListener")
+   public Object[] mouseHoverListener;
    @ObfuscatedName("di")
-   public Object[] field2742;
+   @Export("mouseExitListener")
+   public Object[] mouseExitListener;
    @ObfuscatedName("bn")
    @ObfuscatedGetter(
       intValue = 78610437
@@ -428,9 +440,11 @@ public class Widget extends Node {
    @ObfuscatedName("dt")
    public Object[] field2746;
    @ObfuscatedName("ds")
-   public Object[] field2747;
+   @Export("configListenerArgs")
+   public Object[] configListenerArgs;
    @ObfuscatedName("de")
-   public int[] field2748;
+   @Export("configTriggers")
+   public int[] configTriggers;
    @ObfuscatedName("ar")
    @ObfuscatedGetter(
       intValue = 35622705
@@ -440,11 +454,14 @@ public class Widget extends Node {
    @ObfuscatedName("j")
    public static IndexDataBase field2750;
    @ObfuscatedName("dy")
-   public Object[] field2751;
+   @Export("skillListenerArgs")
+   public Object[] skillListenerArgs;
    @ObfuscatedName("dc")
-   public int[] field2752;
+   @Export("skillTriggers")
+   public int[] skillTriggers;
    @ObfuscatedName("dq")
-   public Object[] field2753;
+   @Export("renderListener")
+   public Object[] renderListener;
    @ObfuscatedName("dz")
    public Object[] field2754;
    @ObfuscatedName("o")
@@ -506,7 +523,8 @@ public class Widget extends Node {
    @Export("itemId")
    public int itemId;
    @ObfuscatedName("cn")
-   public int[] field2775;
+   @Export("xSprites")
+   public int[] xSprites;
    @ObfuscatedName("el")
    public boolean field2776;
    @ObfuscatedName("en")
@@ -548,9 +566,11 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 2063238307
    )
-   public int field2786;
+   @Export("loopCycle")
+   public int loopCycle;
    @ObfuscatedName("da")
-   public int[] field2787;
+   @Export("tableModTriggers")
+   public int[] tableModTriggers;
    @ObfuscatedName("ej")
    @ObfuscatedGetter(
       intValue = -1281555433
@@ -580,7 +600,7 @@ public class Widget extends Node {
             if(var6 == null) {
                return null;
             } else {
-               SpritePixels var7 = var6.method5041();
+               SpritePixels var7 = var6.copy();
                int[] var8 = new int[var7.height];
                int[] var9 = new int[var7.height];
 
@@ -620,7 +640,8 @@ public class Widget extends Node {
       signature = "(LBuffer;I)V",
       garbageValue = "-1125990096"
    )
-   void method3982(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       this.hasScript = false;
       this.type = var1.readUnsignedByte();
       this.field2697 = var1.readUnsignedByte();
@@ -689,27 +710,27 @@ public class Widget extends Node {
          this.itemQuantities = new int[this.originalWidth * this.field2707];
          var4 = var1.readUnsignedByte();
          if(var4 == 1) {
-            this.field2694 |= 268435456;
+            this.config |= 268435456;
          }
 
          var5 = var1.readUnsignedByte();
          if(var5 == 1) {
-            this.field2694 |= 1073741824;
+            this.config |= 1073741824;
          }
 
          var6 = var1.readUnsignedByte();
          if(var6 == 1) {
-            this.field2694 |= Integer.MIN_VALUE;
+            this.config |= Integer.MIN_VALUE;
          }
 
          int var7 = var1.readUnsignedByte();
          if(var7 == 1) {
-            this.field2694 |= 536870912;
+            this.config |= 536870912;
          }
 
          this.paddingX = var1.readUnsignedByte();
          this.paddingY = var1.readUnsignedByte();
-         this.field2775 = new int[20];
+         this.xSprites = new int[20];
          this.field2723 = new int[20];
          this.field2724 = new int[20];
 
@@ -717,7 +738,7 @@ public class Widget extends Node {
          for(var8 = 0; var8 < 20; ++var8) {
             int var9 = var1.readUnsignedByte();
             if(var9 == 1) {
-               this.field2775[var8] = var1.readShort();
+               this.xSprites[var8] = var1.readShort();
                this.field2723[var8] = var1.readShort();
                this.field2724[var8] = var1.readInt();
             } else {
@@ -725,13 +746,13 @@ public class Widget extends Node {
             }
          }
 
-         this.field2739 = new String[5];
+         this.configActions = new String[5];
 
          for(var8 = 0; var8 < 5; ++var8) {
-            String var10 = var1.readString();
-            if(var10.length() > 0) {
-               this.field2739[var8] = var10;
-               this.field2694 |= 1 << var8 + 23;
+            String var11 = var1.readString();
+            if(var11.length() > 0) {
+               this.configActions[var8] = var11;
+               this.config |= 1 << var8 + 23;
             }
          }
       }
@@ -749,7 +770,7 @@ public class Widget extends Node {
             this.fontId = -1;
          }
 
-         this.field2719 = var1.readUnsignedByte() == 1;
+         this.textShadowed = var1.readUnsignedByte() == 1;
       }
 
       if(this.type == 4) {
@@ -795,7 +816,7 @@ public class Widget extends Node {
             this.field2702 = -1;
          }
 
-         this.field2650 = var1.readUnsignedShort();
+         this.modelZoom = var1.readUnsignedShort();
          this.rotationX = var1.readUnsignedShort();
          this.rotationZ = var1.readUnsignedShort();
       }
@@ -809,22 +830,22 @@ public class Widget extends Node {
             this.fontId = -1;
          }
 
-         this.field2719 = var1.readUnsignedByte() == 1;
+         this.textShadowed = var1.readUnsignedByte() == 1;
          this.textColor = var1.readInt();
          this.paddingX = var1.readShort();
          this.paddingY = var1.readShort();
          var4 = var1.readUnsignedByte();
          if(var4 == 1) {
-            this.field2694 |= 1073741824;
+            this.config |= 1073741824;
          }
 
-         this.field2739 = new String[5];
+         this.configActions = new String[5];
 
          for(var5 = 0; var5 < 5; ++var5) {
-            String var11 = var1.readString();
-            if(var11.length() > 0) {
-               this.field2739[var5] = var11;
-               this.field2694 |= 1 << var5 + 23;
+            String var10 = var1.readString();
+            if(var10.length() > 0) {
+               this.configActions[var5] = var10;
+               this.config |= 1 << var5 + 23;
             }
          }
       }
@@ -837,7 +858,7 @@ public class Widget extends Node {
          this.selectedAction = var1.readString();
          this.field2766 = var1.readString();
          var4 = var1.readUnsignedShort() & 63;
-         this.field2694 |= var4 << 11;
+         this.config |= var4 << 11;
       }
 
       if(this.field2697 == 1 || this.field2697 == 4 || this.field2697 == 5 || this.field2697 == 6) {
@@ -862,11 +883,11 @@ public class Widget extends Node {
       }
 
       if(this.field2697 == 1 || this.field2697 == 4 || this.field2697 == 5) {
-         this.field2694 |= 4194304;
+         this.config |= 4194304;
       }
 
       if(this.field2697 == 6) {
-         this.field2694 |= 1;
+         this.config |= 1;
       }
 
    }
@@ -876,7 +897,8 @@ public class Widget extends Node {
       signature = "(LBuffer;B)V",
       garbageValue = "79"
    )
-   void method3983(Buffer var1) {
+   @Export("decodeActive")
+   void decodeActive(Buffer var1) {
       var1.readUnsignedByte();
       this.hasScript = true;
       this.type = var1.readUnsignedByte();
@@ -891,7 +913,7 @@ public class Widget extends Node {
       }
 
       this.field2683 = var1.readByte();
-      this.field2662 = var1.readByte();
+      this.buttonType = var1.readByte();
       this.field2659 = var1.readByte();
       this.field2660 = var1.readByte();
       this.parentId = var1.readUnsignedShort();
@@ -910,7 +932,7 @@ public class Widget extends Node {
 
       if(this.type == 5) {
          this.spriteId = var1.readInt();
-         this.field2691 = var1.readUnsignedShort();
+         this.textureId = var1.readUnsignedShort();
          this.field2692 = var1.readUnsignedByte() == 1;
          this.opacity = var1.readUnsignedByte();
          this.borderThickness = var1.readUnsignedByte();
@@ -931,7 +953,7 @@ public class Widget extends Node {
          this.rotationX = var1.readUnsignedShort();
          this.rotationZ = var1.readUnsignedShort();
          this.rotationY = var1.readUnsignedShort();
-         this.field2650 = var1.readUnsignedShort();
+         this.modelZoom = var1.readUnsignedShort();
          this.field2717 = var1.readUnsignedShort();
          if(this.field2717 == '\uffff') {
             this.field2717 = -1;
@@ -943,7 +965,7 @@ public class Widget extends Node {
             this.field2709 = var1.readUnsignedShort();
          }
 
-         if(this.field2662 != 0) {
+         if(this.buttonType != 0) {
             var1.readUnsignedShort();
          }
       }
@@ -958,7 +980,7 @@ public class Widget extends Node {
          this.field2716 = var1.readUnsignedByte();
          this.field2652 = var1.readUnsignedByte();
          this.field2726 = var1.readUnsignedByte();
-         this.field2719 = var1.readUnsignedByte() == 1;
+         this.textShadowed = var1.readUnsignedByte() == 1;
          this.textColor = var1.readInt();
       }
 
@@ -974,7 +996,7 @@ public class Widget extends Node {
          this.field2688 = var1.readUnsignedByte() == 1;
       }
 
-      this.field2694 = var1.read24BitInt();
+      this.config = var1.read24BitInt();
       this.name = var1.readString();
       int var2 = var1.readUnsignedByte();
       if(var2 > 0) {
@@ -990,26 +1012,26 @@ public class Widget extends Node {
       this.field2737 = var1.readUnsignedByte() == 1;
       this.selectedAction = var1.readString();
       this.field2735 = this.method3984(var1);
-      this.field2740 = this.method3984(var1);
-      this.field2742 = this.method3984(var1);
+      this.mouseEnterListener = this.method3984(var1);
+      this.mouseExitListener = this.method3984(var1);
       this.field2746 = this.method3984(var1);
       this.field2745 = this.method3984(var1);
-      this.field2747 = this.method3984(var1);
-      this.field2718 = this.method3984(var1);
-      this.field2751 = this.method3984(var1);
-      this.field2753 = this.method3984(var1);
+      this.configListenerArgs = this.method3984(var1);
+      this.tableListenerArgs = this.method3984(var1);
+      this.skillListenerArgs = this.method3984(var1);
+      this.renderListener = this.method3984(var1);
       this.field2754 = this.method3984(var1);
-      this.field2741 = this.method3984(var1);
+      this.mouseHoverListener = this.method3984(var1);
       this.field2725 = this.method3984(var1);
       this.field2677 = this.method3984(var1);
       this.field2738 = this.method3984(var1);
       this.field2722 = this.method3984(var1);
       this.field2643 = this.method3984(var1);
       this.field2744 = this.method3984(var1);
-      this.field2732 = this.method3984(var1);
-      this.field2748 = this.method3985(var1);
-      this.field2787 = this.method3985(var1);
-      this.field2752 = this.method3985(var1);
+      this.scrollListener = this.method3984(var1);
+      this.configTriggers = this.method3985(var1);
+      this.tableModTriggers = this.method3985(var1);
+      this.skillTriggers = this.method3985(var1);
    }
 
    @ObfuscatedName("v")
@@ -1072,33 +1094,33 @@ public class Widget extends Node {
          if(var1 != null) {
             return var1;
          } else {
-            IndexDataBase var3 = CollisionData.field2309;
-            IndexDataBase var4 = GroundObject.field1876;
-            int var5 = this.fontId;
-            Font var2;
-            if(!class223.method4073(var3, var5, 0)) {
-               var2 = null;
+            IndexDataBase var2 = CollisionData.field2309;
+            IndexDataBase var3 = GroundObject.field1876;
+            int var4 = this.fontId;
+            Font var5;
+            if(!class223.method4073(var2, var4, 0)) {
+               var5 = null;
             } else {
-               byte[] var7 = var4.getConfigData(var5, 0);
-               Font var6;
-               if(var7 == null) {
-                  var6 = null;
+               byte[] var6 = var3.getConfigData(var4, 0);
+               Font var7;
+               if(var6 == null) {
+                  var7 = null;
                } else {
-                  Font var8 = new Font(var7, class286.field3799, class286.field3800, class7.field239, class226.field3146, class278.field3745, class210.field2609);
+                  Font var8 = new Font(var6, class286.field3799, class286.offsetsY, class7.field239, class226.field3146, class278.field3745, class210.spritePixels);
                   XGrandExchangeOffer.method113();
-                  var6 = var8;
+                  var7 = var8;
                }
 
-               var2 = var6;
+               var5 = var7;
             }
 
-            if(var2 != null) {
-               field2779.put(var2, (long)this.fontId);
+            if(var5 != null) {
+               field2779.put(var5, (long)this.fontId);
             } else {
                field2684 = true;
             }
 
-            return var2;
+            return var5;
          }
       }
    }
@@ -1194,7 +1216,7 @@ public class Widget extends Node {
             }
 
             if(var5 == 4) {
-               ItemComposition var9 = class176.getItemDefinition(var6);
+               ItemComposition var9 = AbstractByteBuffer.getItemDefinition(var6);
                var8 = var9.method4582(10);
                if(var8 == null) {
                   field2684 = true;
@@ -1293,21 +1315,13 @@ public class Widget extends Node {
       this.actions[var1] = var2;
    }
 
-   static {
-      field2755 = new NodeCache(200);
-      field2649 = new NodeCache(50);
-      field2779 = new NodeCache(20);
-      field2657 = new NodeCache(8);
-      field2684 = false;
-   }
-
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(B)[Lclass274;",
+      signature = "(B)[LParameters;",
       garbageValue = "-125"
    )
-   public static class274[] method3999() {
-      return new class274[]{class274.field3721, class274.field3730, class274.field3724, class274.field3728, class274.field3725, class274.field3734, class274.field3719, class274.field3722, class274.field3733, class274.field3727, class274.field3732, class274.field3731, class274.field3720, class274.field3729, class274.field3723};
+   public static Parameters[] method3999() {
+      return new Parameters[]{Parameters.field3721, Parameters.field3730, Parameters.field3724, Parameters.field3728, Parameters.field3725, Parameters.field3734, Parameters.field3719, Parameters.field3722, Parameters.field3733, Parameters.field3727, Parameters.field3732, Parameters.field3731, Parameters.field3720, Parameters.field3729, Parameters.field3723};
    }
 
    @ObfuscatedName("j")
@@ -1333,7 +1347,7 @@ public class Widget extends Node {
       this.field2659 = 0;
       this.field2660 = 0;
       this.field2683 = 0;
-      this.field2662 = 0;
+      this.buttonType = 0;
       this.originalX = 0;
       this.originalY = 0;
       this.originalWidth = 0;
@@ -1362,7 +1376,7 @@ public class Widget extends Node {
       this.field2688 = false;
       this.spriteId = -1;
       this.field2690 = -1;
-      this.field2691 = 0;
+      this.textureId = 0;
       this.field2692 = false;
       this.borderThickness = 0;
       this.sprite2 = 0;
@@ -1377,7 +1391,7 @@ public class Widget extends Node {
       this.rotationX = 0;
       this.rotationZ = 0;
       this.rotationY = 0;
-      this.field2650 = 100;
+      this.modelZoom = 100;
       this.field2709 = 0;
       this.field2710 = 0;
       this.field2711 = false;
@@ -1388,10 +1402,10 @@ public class Widget extends Node {
       this.field2716 = 0;
       this.field2652 = 0;
       this.field2726 = 0;
-      this.field2719 = false;
+      this.textShadowed = false;
       this.paddingX = 0;
       this.paddingY = 0;
-      this.field2694 = 0;
+      this.config = 0;
       this.name = "";
       this.dragParent = null;
       this.field2730 = 0;
@@ -1413,17 +1427,25 @@ public class Widget extends Node {
       this.field2669 = 0;
       this.field2666 = 0;
       this.boundsIndex = -1;
-      this.field2786 = -1;
+      this.loopCycle = -1;
       this.field2685 = false;
       this.field2783 = false;
    }
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(I)[Lclass230;",
+      signature = "(I)[LPermission;",
       garbageValue = "-419021928"
    )
-   public static class230[] method4032() {
-      return new class230[]{class230.field3182, class230.field3181, class230.field3180, class230.field3189, class230.field3183, class230.field3185};
+   public static Permission[] method4032() {
+      return new Permission[]{Permission.field3182, Permission.field3181, Permission.field3180, Permission.field3189, Permission.field3183, Permission.field3185};
+   }
+
+   static {
+      field2755 = new NodeCache(200);
+      field2649 = new NodeCache(50);
+      field2779 = new NodeCache(20);
+      field2657 = new NodeCache(8);
+      field2684 = false;
    }
 }

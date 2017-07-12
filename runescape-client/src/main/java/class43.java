@@ -32,7 +32,8 @@ public class class43 {
    @Export("renderOverview")
    static RenderOverview renderOverview;
    @ObfuscatedName("gs")
-   static SpritePixels[] field601;
+   @Export("pkIcons")
+   static SpritePixels[] pkIcons;
    @ObfuscatedName("at")
    public static BufferProvider field602;
    @ObfuscatedName("w")
@@ -47,26 +48,22 @@ public class class43 {
       garbageValue = "-22"
    )
    void method635(int var1, int var2, int var3, FloorUnderlayDefinition var4) {
-      if(var4 != null) {
-         if(var3 + var1 >= 0 && var3 + var2 >= 0) {
-            if(var1 - var3 <= this.field590 && var2 - var3 <= this.field603) {
-               int var5 = Math.max(0, var1 - var3);
-               int var6 = Math.min(this.field590, var3 + var1);
-               int var7 = Math.max(0, var2 - var3);
-               int var8 = Math.min(this.field603, var3 + var2);
+      if(var4 != null && var3 + var1 >= 0 && var3 + var2 >= 0 && var1 - var3 <= this.field590 && var2 - var3 <= this.field603) {
+         int var5 = Math.max(0, var1 - var3);
+         int var6 = Math.min(this.field590, var3 + var1);
+         int var7 = Math.max(0, var2 - var3);
+         int var8 = Math.min(this.field603, var3 + var2);
 
-               for(int var9 = var5; var9 < var6; ++var9) {
-                  for(int var10 = var7; var10 < var8; ++var10) {
-                     this.field592[var9][var10] += var4.field3351 * 256 / var4.field3354;
-                     this.field593[var9][var10] += var4.field3348;
-                     this.field594[var9][var10] += var4.field3353;
-                     ++this.field595[var9][var10];
-                  }
-               }
-
+         for(int var9 = var5; var9 < var6; ++var9) {
+            for(int var10 = var7; var10 < var8; ++var10) {
+               this.field592[var9][var10] += var4.hue * 256 / var4.hueMultiplier;
+               this.field593[var9][var10] += var4.saturation;
+               this.field594[var9][var10] += var4.lightness;
+               ++this.field595[var9][var10];
             }
          }
       }
+
    }
 
    @ObfuscatedName("w")
@@ -136,9 +133,9 @@ public class class43 {
             }
          }
 
-         if(var5 != null && var5.vmethod1695() && !var5.hidden) {
+         if(var5 != null && var5.hasConfig() && !var5.hidden) {
             var5.field908 = false;
-            if((Client.field930 && var1 > 50 || var1 > 200) && class66.field830 != var0 && var5.idlePoseAnimation == var5.poseAnimation) {
+            if((Client.lowMemory && var1 > 50 || var1 > 200) && class66.field830 != var0 && var5.idlePoseAnimation == var5.poseAnimation) {
                var5.field908 = true;
             }
 
@@ -147,7 +144,7 @@ public class class43 {
             if(var7 >= 0 && var7 < 104 && var8 >= 0 && var8 < 104) {
                if(var5.model != null && Client.gameCycle >= var5.field898 && Client.gameCycle < var5.field905) {
                   var5.field908 = false;
-                  var5.field897 = WorldMapData.method343(var5.x, var5.y, WallObject.plane);
+                  var5.field897 = WorldMapData.getTileHeight(var5.x, var5.y, WallObject.plane);
                   class2.region.method2678(WallObject.plane, var5.x, var5.y, var5.field897, 60, var5, var5.angle, var6, var5.field891, var5.field899, var5.field906, var5.field907);
                } else {
                   if((var5.x & 127) == 64 && (var5.y & 127) == 64) {
@@ -158,7 +155,7 @@ public class class43 {
                      Client.field1058[var7][var8] = Client.field957;
                   }
 
-                  var5.field897 = WorldMapData.method343(var5.x, var5.y, WallObject.plane);
+                  var5.field897 = WorldMapData.getTileHeight(var5.x, var5.y, WallObject.plane);
                   class2.region.method2677(WallObject.plane, var5.x, var5.y, var5.field897, 60, var5, var5.angle, var6, var5.field1267);
                }
             }
@@ -199,6 +196,7 @@ public class class43 {
    )
    static void method644() {
       Object var0 = class236.field3244;
+      Object var1 = class236.field3244;
       synchronized(class236.field3244) {
          if(class236.field3243 == 0) {
             class236.field3245 = new Thread(new class236());

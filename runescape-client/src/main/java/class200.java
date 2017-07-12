@@ -21,7 +21,7 @@ public class class200 implements Iterator {
       if(this.field2491 == null) {
          throw new IllegalStateException();
       } else {
-         this.field2491.method3604();
+         this.field2491.unlinkDual();
          this.field2491 = null;
       }
    }

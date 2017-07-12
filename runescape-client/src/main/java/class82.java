@@ -74,7 +74,7 @@ public final class class82 extends Node {
       for(int var1 = 0; var1 < Client.field937; ++var1) {
          NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
          int var3 = (Client.npcIndices[var1] << 14) + 536870912;
-         if(var2 != null && var2.vmethod1695() && var0 == var2.composition.isVisible && var2.composition.method4666()) {
+         if(var2 != null && var2.hasConfig() && var0 == var2.composition.isVisible && var2.composition.method4666()) {
             int var4 = var2.x >> 7;
             int var5 = var2.y >> 7;
             if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
@@ -90,7 +90,7 @@ public final class class82 extends Node {
                   var3 -= Integer.MIN_VALUE;
                }
 
-               class2.region.method2677(WallObject.plane, var2.x, var2.y, WorldMapData.method343(var2.field1242 * 64 - 64 + var2.x, var2.field1242 * 64 - 64 + var2.y, WallObject.plane), var2.field1242 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1267);
+               class2.region.method2677(WallObject.plane, var2.x, var2.y, WorldMapData.getTileHeight(var2.field1242 * 64 - 64 + var2.x, var2.field1242 * 64 - 64 + var2.y, WallObject.plane), var2.field1242 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1267);
             }
          }
       }
@@ -126,10 +126,6 @@ public final class class82 extends Node {
 
    }
 
-   static {
-      field1349 = new Deque();
-   }
-
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(B)V",
@@ -149,31 +145,31 @@ public final class class82 extends Node {
    )
    static final void method1626(int var0, int var1, int var2) {
       if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
-         int var3 = WorldMapData.method343(var0, var1, WallObject.plane) - var2;
+         int var3 = WorldMapData.getTileHeight(var0, var1, WallObject.plane) - var2;
          var0 -= class155.cameraX;
          var3 -= class60.cameraZ;
          var1 -= class157.cameraY;
-         int var4 = class136.SINE[Player.cameraPitch];
-         int var5 = class136.COSINE[Player.cameraPitch];
-         int var6 = class136.SINE[class22.cameraYaw];
-         int var7 = class136.COSINE[class22.cameraYaw];
+         int var4 = Graphics3D.SINE[Player.cameraPitch];
+         int var5 = Graphics3D.COSINE[Player.cameraPitch];
+         int var6 = Graphics3D.SINE[class22.cameraYaw];
+         int var7 = Graphics3D.COSINE[class22.cameraYaw];
          int var8 = var6 * var1 + var0 * var7 >> 16;
          var1 = var7 * var1 - var0 * var6 >> 16;
          var0 = var8;
          var8 = var3 * var5 - var4 * var1 >> 16;
          var1 = var3 * var4 + var5 * var1 >> 16;
          if(var1 >= 50) {
-            Client.field1031 = var0 * Client.scale / var1 + Client.viewportHeight / 2;
-            Client.field992 = var8 * Client.scale / var1 + Client.viewportWidth / 2;
+            Client.screenY = var0 * Client.scale / var1 + Client.viewportHeight / 2;
+            Client.screenX = var8 * Client.scale / var1 + Client.viewportWidth / 2;
          } else {
-            Client.field1031 = -1;
-            Client.field992 = -1;
+            Client.screenY = -1;
+            Client.screenX = -1;
          }
-
       } else {
-         Client.field1031 = -1;
-         Client.field992 = -1;
+         Client.screenY = -1;
+         Client.screenX = -1;
       }
+
    }
 
    @ObfuscatedName("r")
@@ -189,5 +185,9 @@ public final class class82 extends Node {
       class203.field2513 = var4;
       class203.field2515 = var5;
       class203.field2517 = var0;
+   }
+
+   static {
+      field1349 = new Deque();
    }
 }

@@ -17,7 +17,8 @@ public class WidgetNode extends Node {
    @ObfuscatedGetter(
       intValue = 859282669
    )
-   int field844;
+   @Export("owner")
+   int owner;
    @ObfuscatedName("a")
    boolean field845;
 
@@ -53,39 +54,39 @@ public class WidgetNode extends Node {
          int var6;
          int var7;
          int var8;
+         int var9;
+         int var10;
          int var11;
          int var12;
          int var13;
-         int var16;
-         int var17;
          if(!class134.field2004) {
-            var5 = Region.field2115;
-            var6 = Region.field2095;
-            var7 = Region.field2124;
-            var8 = Region.field2075;
-            byte var9 = 50;
-            short var10 = 3500;
-            var11 = (class134.field2014 - class136.field2034) * var9 / class136.field2031;
-            var12 = (class134.field2008 - class136.field2033) * var9 / class136.field2031;
-            var13 = (class134.field2014 - class136.field2034) * var10 / class136.field2031;
-            int var14 = (class134.field2008 - class136.field2033) * var10 / class136.field2031;
-            int var15 = class136.method2642(var12, var9, var6, var5);
-            var16 = class136.method2586(var12, var9, var6, var5);
-            var12 = var15;
-            var15 = class136.method2642(var14, var10, var6, var5);
-            var17 = class136.method2586(var14, var10, var6, var5);
-            var14 = var15;
-            var15 = class136.method2602(var11, var16, var8, var7);
-            var16 = class136.method2608(var11, var16, var8, var7);
-            var11 = var15;
-            var15 = class136.method2602(var13, var17, var8, var7);
-            var17 = class136.method2608(var13, var17, var8, var7);
-            class134.field2001 = (var15 + var11) / 2;
-            class134.field2006 = (var12 + var14) / 2;
-            class134.field2007 = (var17 + var16) / 2;
-            class27.field397 = (var15 - var11) / 2;
-            class134.field2002 = (var14 - var12) / 2;
-            class207.field2582 = (var17 - var16) / 2;
+            var5 = Region.pitchSin;
+            var6 = Region.pitchCos;
+            var7 = Region.yawSin;
+            var8 = Region.yawCos;
+            byte var14 = 50;
+            short var15 = 3500;
+            var9 = (class134.field2014 - Graphics3D.centerX) * var14 / Graphics3D.field2031;
+            var10 = (class134.field2008 - Graphics3D.centerY) * var14 / Graphics3D.field2031;
+            var11 = (class134.field2014 - Graphics3D.centerX) * var15 / Graphics3D.field2031;
+            int var16 = (class134.field2008 - Graphics3D.centerY) * var15 / Graphics3D.field2031;
+            int var17 = Graphics3D.method2642(var10, var14, var6, var5);
+            var12 = Graphics3D.method2586(var10, var14, var6, var5);
+            var10 = var17;
+            var17 = Graphics3D.method2642(var16, var15, var6, var5);
+            var13 = Graphics3D.method2586(var16, var15, var6, var5);
+            var16 = var17;
+            var17 = Graphics3D.method2602(var9, var12, var8, var7);
+            var12 = Graphics3D.method2608(var9, var12, var8, var7);
+            var9 = var17;
+            var17 = Graphics3D.method2602(var11, var13, var8, var7);
+            var13 = Graphics3D.method2608(var11, var13, var8, var7);
+            class134.field2001 = (var17 + var9) / 2;
+            class134.field2006 = (var10 + var16) / 2;
+            class134.field2007 = (var13 + var12) / 2;
+            class27.field397 = (var17 - var9) / 2;
+            class134.field2002 = (var16 - var10) / 2;
+            class207.field2582 = (var13 - var12) / 2;
             class134.field2009 = Math.abs(class27.field397);
             class244.field3321 = Math.abs(class134.field2002);
             ChatLineBuffer.field1576 = Math.abs(class207.field2582);
@@ -95,12 +96,12 @@ public class WidgetNode extends Node {
          var6 = var2 + var0.field1989;
          var7 = var3 + var0.field1932;
          var8 = var0.field1966;
-         var16 = var0.field1967;
-         var17 = var0.field1968;
-         var11 = class134.field2001 - var5;
-         var12 = class134.field2006 - var6;
-         var13 = class134.field2007 - var7;
-         return Math.abs(var11) > var8 + class134.field2009?false:(Math.abs(var12) > var16 + class244.field3321?false:(Math.abs(var13) > var17 + ChatLineBuffer.field1576?false:(Math.abs(var13 * class134.field2002 - var12 * class207.field2582) > var16 * ChatLineBuffer.field1576 + var17 * class244.field3321?false:(Math.abs(var11 * class207.field2582 - var13 * class27.field397) > ChatLineBuffer.field1576 * var8 + var17 * class134.field2009?false:Math.abs(var12 * class27.field397 - var11 * class134.field2002) <= var16 * class134.field2009 + var8 * class244.field3321))));
+         var12 = var0.field1967;
+         var13 = var0.field1968;
+         var9 = class134.field2001 - var5;
+         var10 = class134.field2006 - var6;
+         var11 = class134.field2007 - var7;
+         return Math.abs(var9) > var8 + class134.field2009?false:(Math.abs(var10) > var12 + class244.field3321?false:(Math.abs(var11) > var13 + ChatLineBuffer.field1576?false:(Math.abs(var11 * class134.field2002 - var10 * class207.field2582) > var12 * ChatLineBuffer.field1576 + var13 * class244.field3321?false:(Math.abs(var9 * class207.field2582 - var11 * class27.field397) > ChatLineBuffer.field1576 * var8 + var13 * class134.field2009?false:Math.abs(var10 * class27.field397 - var9 * class134.field2002) <= var12 * class134.field2009 + var8 * class244.field3321))));
       }
    }
 }

@@ -1,4 +1,5 @@
 import java.util.Comparator;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -7,7 +8,8 @@ final class class19 implements Comparator {
    @ObfuscatedName("pe")
    static class102 field328;
    @ObfuscatedName("gp")
-   static SpritePixels field329;
+   @Export("compass")
+   static SpritePixels compass;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(

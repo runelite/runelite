@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -19,7 +20,8 @@ public class class210 extends CacheableNode {
    @ObfuscatedName("a")
    public final int[] field2608;
    @ObfuscatedName("j")
-   public static byte[][] field2609;
+   @Export("spritePixels")
+   public static byte[][] spritePixels;
 
    class210(int var1, int var2, int[] var3, int[] var4, int var5) {
       this.field2607 = var1;

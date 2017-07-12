@@ -1,4 +1,5 @@
 import java.lang.management.GarbageCollectorMXBean;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -57,21 +58,21 @@ public class class39 {
                var4 /= var1;
             }
 
-            char[] var5 = new char[var3];
-            var5[0] = 43;
+            char[] var8 = new char[var3];
+            var8[0] = 43;
 
-            for(int var6 = var3 - 1; var6 > 0; --var6) {
-               int var7 = var0;
+            for(int var5 = var3 - 1; var5 > 0; --var5) {
+               int var6 = var0;
                var0 /= var1;
-               int var8 = var7 - var0 * var1;
-               if(var8 >= 10) {
-                  var5[var6] = (char)(var8 + 87);
+               int var7 = var6 - var0 * var1;
+               if(var7 >= 10) {
+                  var8[var5] = (char)(var7 + 87);
                } else {
-                  var5[var6] = (char)(var8 + 48);
+                  var8[var5] = (char)(var7 + 48);
                }
             }
 
-            return new String(var5);
+            return new String(var8);
          } else {
             return Integer.toString(var0, var1);
          }
@@ -89,17 +90,15 @@ public class class39 {
       Area var3 = Area.field3303[this.field548];
       switch(var3.field3311.field3550) {
       case 0:
-         if(var1 >= this.field549 && var1 < this.field551 + this.field549) {
-            break;
+         if(var1 < this.field549 || var1 >= this.field551 + this.field549) {
+            return false;
          }
-
-         return false;
+         break;
       case 1:
-         if(var1 >= this.field549 - this.field551 / 2 && var1 <= this.field551 / 2 + this.field549) {
-            break;
+         if(var1 < this.field549 - this.field551 / 2 || var1 > this.field551 / 2 + this.field549) {
+            return false;
          }
-
-         return false;
+         break;
       case 2:
          if(var1 <= this.field549 - this.field551 || var1 > this.field549) {
             return false;
@@ -108,11 +107,10 @@ public class class39 {
 
       switch(var3.field3309.field3282) {
       case 0:
-         if(var2 >= this.field560 - this.field554 / 2 && var2 <= this.field554 / 2 + this.field560) {
-            break;
+         if(var2 < this.field560 - this.field554 / 2 || var2 > this.field554 / 2 + this.field560) {
+            return false;
          }
-
-         return false;
+         break;
       case 1:
          if(var2 <= this.field560 - this.field554 || var2 > this.field560) {
             return false;
@@ -169,7 +167,7 @@ public class class39 {
    )
    static boolean method555(Widget var0) {
       if(Client.field1097) {
-         if(WorldMapType3.method199(var0) != 0) {
+         if(WorldMapType3.getWidgetConfig(var0) != 0) {
             return false;
          }
 
@@ -195,8 +193,8 @@ public class class39 {
       class183.method3449(var2, var1, Client.field961, 0, 24);
       if(class155.field2258 != null) {
          try {
-            class155.field2258.method2338(0L);
-            class155.field2258.method2339(var0.payload, var1, 24);
+            class155.field2258.seek(0L);
+            class155.field2258.write(var0.payload, var1, 24);
          } catch (Exception var4) {
             ;
          }
@@ -209,7 +207,8 @@ public class class39 {
       signature = "(III)I",
       garbageValue = "992557555"
    )
-   static final int method557(int var0, int var1) {
+   @Export("adjustHSLListness0")
+   static final int adjustHSLListness0(int var0, int var1) {
       if(var0 == -2) {
          return 12345678;
       } else if(var0 == -1) {
@@ -250,10 +249,10 @@ public class class39 {
       if(var0 == 1300) {
          var4 = class83.intStack[--class46.intStackSize] - 1;
          if(var4 >= 0 && var4 <= 9) {
-            var3.method3992(var4, class83.scriptStringStack[--class50.scriptStringStackSize]);
+            var3.method3992(var4, class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize]);
             return 1;
          } else {
-            --class50.scriptStringStackSize;
+            --KeyFocusListener.scriptStringStackSize;
             return 1;
          }
       } else if(var0 == 1301) {
@@ -272,10 +271,10 @@ public class class39 {
          var3.field2720 = class83.intStack[--class46.intStackSize];
          return 1;
       } else if(var0 == 1305) {
-         var3.name = class83.scriptStringStack[--class50.scriptStringStackSize];
+         var3.name = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
          return 1;
       } else if(var0 == 1306) {
-         var3.selectedAction = class83.scriptStringStack[--class50.scriptStringStackSize];
+         var3.selectedAction = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
          return 1;
       } else if(var0 == 1307) {
          var3.actions = null;

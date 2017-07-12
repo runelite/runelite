@@ -1,5 +1,6 @@
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -29,11 +30,11 @@ public class class25 {
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(LSignlink;III)Lclass109;",
+      signature = "(LSignlink;III)LAbstractSoundSystem;",
       garbageValue = "1241684721"
    )
-   public static final class109 method166(Signlink var0, int var1, int var2) {
-      if(FileSystem.field3211 == 0) {
+   public static final AbstractSoundSystem method166(Signlink var0, int var1, int var2) {
+      if(FileSystem.sampleRate == 0) {
          throw new IllegalStateException();
       } else if(var1 >= 0 && var1 < 2) {
          if(var2 < 256) {
@@ -41,33 +42,33 @@ public class class25 {
          }
 
          try {
-            class109 var3 = class109.field1660.vmethod1927();
-            var3.field1649 = new int[256 * (class109.field1664?2:1)];
+            AbstractSoundSystem var3 = AbstractSoundSystem.field1660.vmethod1927();
+            var3.samples = new int[256 * (AbstractSoundSystem.highMemory?2:1)];
             var3.field1650 = var2;
             var3.vmethod2029();
-            var3.field1653 = (var2 & -1024) + 1024;
-            if(var3.field1653 > 16384) {
-               var3.field1653 = 16384;
+            var3.offset = (var2 & -1024) + 1024;
+            if(var3.offset > 16384) {
+               var3.offset = 16384;
             }
 
-            var3.vmethod2057(var3.field1653);
-            if(class109.field1647 > 0 && class157.field2270 == null) {
-               class157.field2270 = new class111();
+            var3.create(var3.offset);
+            if(AbstractSoundSystem.priority > 0 && class157.task == null) {
+               class157.task = new SoundTask();
                class170.field2356 = Executors.newScheduledThreadPool(1);
-               class170.field2356.scheduleAtFixedRate(class157.field2270, 0L, 10L, TimeUnit.MILLISECONDS);
+               class170.field2356.scheduleAtFixedRate(class157.task, 0L, 10L, TimeUnit.MILLISECONDS);
             }
 
-            if(class157.field2270 != null) {
-               if(class157.field2270.field1678[var1] != null) {
+            if(class157.task != null) {
+               if(class157.task.systems[var1] != null) {
                   throw new IllegalArgumentException();
                }
 
-               class157.field2270.field1678[var1] = var3;
+               class157.task.systems[var1] = var3;
             }
 
             return var3;
          } catch (Throwable var4) {
-            return new class109();
+            return new AbstractSoundSystem();
          }
       } else {
          throw new IllegalArgumentException();
@@ -79,7 +80,8 @@ public class class25 {
       signature = "(Ljava/lang/String;ZI)Z",
       garbageValue = "-1952921574"
    )
-   static boolean method167(String var0, boolean var1) {
+   @Export("isFriended")
+   static boolean isFriended(String var0, boolean var1) {
       if(var0 == null) {
          return false;
       } else {

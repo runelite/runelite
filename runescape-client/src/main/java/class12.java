@@ -1,4 +1,5 @@
 import java.util.Comparator;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -15,7 +16,8 @@ final class class12 implements Comparator {
    )
    static long field272;
    @ObfuscatedName("dr")
-   static IndexData field274;
+   @Export("vorbisIndex")
+   static IndexData vorbisIndex;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
@@ -40,8 +42,8 @@ final class class12 implements Comparator {
       garbageValue = "-689833724"
    )
    public static SpritePixels method59(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.method4146(var1);
-      int var4 = var0.method4131(var3, var2);
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
       return ObjectComposition.method4574(var0, var3, var4);
    }
 }

@@ -6,7 +6,8 @@ import net.runelite.mapping.ObfuscatedName;
 @Implements("Frame")
 public class Frame {
    @ObfuscatedName("s")
-   FrameMap field1894;
+   @Export("skin")
+   FrameMap skin;
    @ObfuscatedName("e")
    @Export("showing")
    boolean showing;
@@ -33,10 +34,10 @@ public class Frame {
    static int[] field1904;
 
    Frame(byte[] var1, FrameMap var2) {
-      this.field1894 = null;
+      this.skin = null;
       this.field1899 = -1;
       this.showing = false;
-      this.field1894 = var2;
+      this.skin = var2;
       Buffer var3 = new Buffer(var1);
       Buffer var4 = new Buffer(var1);
       var3.offset = 2;
@@ -49,9 +50,9 @@ public class Frame {
       for(var8 = 0; var8 < var5; ++var8) {
          int var9 = var3.readUnsignedByte();
          if(var9 > 0) {
-            if(this.field1894.field2062[var8] != 0) {
+            if(this.skin.types[var8] != 0) {
                for(int var10 = var8 - 1; var10 > var6; --var10) {
-                  if(this.field1894.field2062[var10] == 0) {
+                  if(this.skin.types[var10] == 0) {
                      field1904[var7] = var10;
                      field1903[var7] = 0;
                      field1896[var7] = 0;
@@ -64,7 +65,7 @@ public class Frame {
 
             field1904[var7] = var8;
             short var11 = 0;
-            if(this.field1894.field2062[var8] == 3) {
+            if(this.skin.types[var8] == 3) {
                var11 = 128;
             }
 
@@ -88,7 +89,7 @@ public class Frame {
 
             var6 = var8;
             ++var7;
-            if(this.field1894.field2062[var8] == 5) {
+            if(this.skin.types[var8] == 5) {
                this.showing = true;
             }
          }

@@ -48,7 +48,8 @@ public class CollisionData {
       signature = "(I)V",
       garbageValue = "-289288660"
    )
-   public void method3007() {
+   @Export("reset")
+   public void reset() {
       for(int var1 = 0; var1 < this.width; ++var1) {
          for(int var2 = 0; var2 < this.height; ++var2) {
             if(var1 != 0 && var2 != 0 && var1 < this.width - 5 && var2 < this.height - 5) {
@@ -66,7 +67,8 @@ public class CollisionData {
       signature = "(IIIIZB)V",
       garbageValue = "-94"
    )
-   public void method3008(int var1, int var2, int var3, int var4, boolean var5) {
+   @Export("addObject")
+   public void addObject(int var1, int var2, int var3, int var4, boolean var5) {
       int var6 = 256;
       if(var5) {
          var6 += 131072;
@@ -79,7 +81,7 @@ public class CollisionData {
          if(var7 >= 0 && var7 < this.width) {
             for(int var8 = var2; var8 < var2 + var4; ++var8) {
                if(var8 >= 0 && var8 < this.height) {
-                  this.method3012(var7, var8, var6);
+                  this.add(var7, var8, var6);
                }
             }
          }
@@ -103,7 +105,8 @@ public class CollisionData {
       signature = "(IIII)V",
       garbageValue = "1623920011"
    )
-   void method3012(int var1, int var2, int var3) {
+   @Export("add")
+   void add(int var1, int var2, int var3) {
       this.flags[var1][var2] |= var3;
    }
 
@@ -112,147 +115,148 @@ public class CollisionData {
       signature = "(IIIIZI)V",
       garbageValue = "1699262104"
    )
-   public void method3013(int var1, int var2, int var3, int var4, boolean var5) {
+   @Export("removeWall")
+   public void removeWall(int var1, int var2, int var3, int var4, boolean var5) {
       var1 -= this.x;
       var2 -= this.y;
       if(var3 == 0) {
          if(var4 == 0) {
-            this.method3015(var1, var2, 128);
-            this.method3015(var1 - 1, var2, 8);
+            this.remove(var1, var2, 128);
+            this.remove(var1 - 1, var2, 8);
          }
 
          if(var4 == 1) {
-            this.method3015(var1, var2, 2);
-            this.method3015(var1, var2 + 1, 32);
+            this.remove(var1, var2, 2);
+            this.remove(var1, var2 + 1, 32);
          }
 
          if(var4 == 2) {
-            this.method3015(var1, var2, 8);
-            this.method3015(var1 + 1, var2, 128);
+            this.remove(var1, var2, 8);
+            this.remove(var1 + 1, var2, 128);
          }
 
          if(var4 == 3) {
-            this.method3015(var1, var2, 32);
-            this.method3015(var1, var2 - 1, 2);
+            this.remove(var1, var2, 32);
+            this.remove(var1, var2 - 1, 2);
          }
       }
 
       if(var3 == 1 || var3 == 3) {
          if(var4 == 0) {
-            this.method3015(var1, var2, 1);
-            this.method3015(var1 - 1, var2 + 1, 16);
+            this.remove(var1, var2, 1);
+            this.remove(var1 - 1, var2 + 1, 16);
          }
 
          if(var4 == 1) {
-            this.method3015(var1, var2, 4);
-            this.method3015(var1 + 1, var2 + 1, 64);
+            this.remove(var1, var2, 4);
+            this.remove(var1 + 1, var2 + 1, 64);
          }
 
          if(var4 == 2) {
-            this.method3015(var1, var2, 16);
-            this.method3015(var1 + 1, var2 - 1, 1);
+            this.remove(var1, var2, 16);
+            this.remove(var1 + 1, var2 - 1, 1);
          }
 
          if(var4 == 3) {
-            this.method3015(var1, var2, 64);
-            this.method3015(var1 - 1, var2 - 1, 4);
+            this.remove(var1, var2, 64);
+            this.remove(var1 - 1, var2 - 1, 4);
          }
       }
 
       if(var3 == 2) {
          if(var4 == 0) {
-            this.method3015(var1, var2, 130);
-            this.method3015(var1 - 1, var2, 8);
-            this.method3015(var1, var2 + 1, 32);
+            this.remove(var1, var2, 130);
+            this.remove(var1 - 1, var2, 8);
+            this.remove(var1, var2 + 1, 32);
          }
 
          if(var4 == 1) {
-            this.method3015(var1, var2, 10);
-            this.method3015(var1, var2 + 1, 32);
-            this.method3015(var1 + 1, var2, 128);
+            this.remove(var1, var2, 10);
+            this.remove(var1, var2 + 1, 32);
+            this.remove(var1 + 1, var2, 128);
          }
 
          if(var4 == 2) {
-            this.method3015(var1, var2, 40);
-            this.method3015(var1 + 1, var2, 128);
-            this.method3015(var1, var2 - 1, 2);
+            this.remove(var1, var2, 40);
+            this.remove(var1 + 1, var2, 128);
+            this.remove(var1, var2 - 1, 2);
          }
 
          if(var4 == 3) {
-            this.method3015(var1, var2, 160);
-            this.method3015(var1, var2 - 1, 2);
-            this.method3015(var1 - 1, var2, 8);
+            this.remove(var1, var2, 160);
+            this.remove(var1, var2 - 1, 2);
+            this.remove(var1 - 1, var2, 8);
          }
       }
 
       if(var5) {
          if(var3 == 0) {
             if(var4 == 0) {
-               this.method3015(var1, var2, 65536);
-               this.method3015(var1 - 1, var2, 4096);
+               this.remove(var1, var2, 65536);
+               this.remove(var1 - 1, var2, 4096);
             }
 
             if(var4 == 1) {
-               this.method3015(var1, var2, 1024);
-               this.method3015(var1, var2 + 1, 16384);
+               this.remove(var1, var2, 1024);
+               this.remove(var1, var2 + 1, 16384);
             }
 
             if(var4 == 2) {
-               this.method3015(var1, var2, 4096);
-               this.method3015(var1 + 1, var2, 65536);
+               this.remove(var1, var2, 4096);
+               this.remove(var1 + 1, var2, 65536);
             }
 
             if(var4 == 3) {
-               this.method3015(var1, var2, 16384);
-               this.method3015(var1, var2 - 1, 1024);
+               this.remove(var1, var2, 16384);
+               this.remove(var1, var2 - 1, 1024);
             }
          }
 
          if(var3 == 1 || var3 == 3) {
             if(var4 == 0) {
-               this.method3015(var1, var2, 512);
-               this.method3015(var1 - 1, var2 + 1, 8192);
+               this.remove(var1, var2, 512);
+               this.remove(var1 - 1, var2 + 1, 8192);
             }
 
             if(var4 == 1) {
-               this.method3015(var1, var2, 2048);
-               this.method3015(var1 + 1, var2 + 1, '耀');
+               this.remove(var1, var2, 2048);
+               this.remove(var1 + 1, var2 + 1, '耀');
             }
 
             if(var4 == 2) {
-               this.method3015(var1, var2, 8192);
-               this.method3015(var1 + 1, var2 - 1, 512);
+               this.remove(var1, var2, 8192);
+               this.remove(var1 + 1, var2 - 1, 512);
             }
 
             if(var4 == 3) {
-               this.method3015(var1, var2, '耀');
-               this.method3015(var1 - 1, var2 - 1, 2048);
+               this.remove(var1, var2, '耀');
+               this.remove(var1 - 1, var2 - 1, 2048);
             }
          }
 
          if(var3 == 2) {
             if(var4 == 0) {
-               this.method3015(var1, var2, 66560);
-               this.method3015(var1 - 1, var2, 4096);
-               this.method3015(var1, var2 + 1, 16384);
+               this.remove(var1, var2, 66560);
+               this.remove(var1 - 1, var2, 4096);
+               this.remove(var1, var2 + 1, 16384);
             }
 
             if(var4 == 1) {
-               this.method3015(var1, var2, 5120);
-               this.method3015(var1, var2 + 1, 16384);
-               this.method3015(var1 + 1, var2, 65536);
+               this.remove(var1, var2, 5120);
+               this.remove(var1, var2 + 1, 16384);
+               this.remove(var1 + 1, var2, 65536);
             }
 
             if(var4 == 2) {
-               this.method3015(var1, var2, 20480);
-               this.method3015(var1 + 1, var2, 65536);
-               this.method3015(var1, var2 - 1, 1024);
+               this.remove(var1, var2, 20480);
+               this.remove(var1 + 1, var2, 65536);
+               this.remove(var1, var2 - 1, 1024);
             }
 
             if(var4 == 3) {
-               this.method3015(var1, var2, 81920);
-               this.method3015(var1, var2 - 1, 1024);
-               this.method3015(var1 - 1, var2, 4096);
+               this.remove(var1, var2, 81920);
+               this.remove(var1, var2 - 1, 1024);
+               this.remove(var1 - 1, var2, 4096);
             }
          }
       }
@@ -264,7 +268,8 @@ public class CollisionData {
       signature = "(IIIIIZI)V",
       garbageValue = "-1672916031"
    )
-   public void method3014(int var1, int var2, int var3, int var4, int var5, boolean var6) {
+   @Export("removeObject")
+   public void removeObject(int var1, int var2, int var3, int var4, int var5, boolean var6) {
       int var7 = 256;
       if(var6) {
          var7 += 131072;
@@ -283,7 +288,7 @@ public class CollisionData {
          if(var8 >= 0 && var8 < this.width) {
             for(int var9 = var2; var9 < var2 + var4; ++var9) {
                if(var9 >= 0 && var9 < this.height) {
-                  this.method3015(var8, var9, var7);
+                  this.remove(var8, var9, var7);
                }
             }
          }
@@ -296,7 +301,8 @@ public class CollisionData {
       signature = "(IIII)V",
       garbageValue = "1363804105"
    )
-   void method3015(int var1, int var2, int var3) {
+   @Export("remove")
+   void remove(int var1, int var2, int var3) {
       this.flags[var1][var2] &= ~var3;
    }
 
@@ -310,7 +316,7 @@ public class CollisionData {
       this.width = var1;
       this.height = var2;
       this.flags = new int[this.width][this.height];
-      this.method3007();
+      this.reset();
    }
 
    @ObfuscatedName("s")
@@ -318,7 +324,8 @@ public class CollisionData {
       signature = "(III)V",
       garbageValue = "78651291"
    )
-   public void method3019(int var1, int var2) {
+   @Export("block")
+   public void block(int var1, int var2) {
       var1 -= this.x;
       var2 -= this.y;
       this.flags[var1][var2] |= 262144;
@@ -329,147 +336,148 @@ public class CollisionData {
       signature = "(IIIIZB)V",
       garbageValue = "2"
    )
-   public void method3023(int var1, int var2, int var3, int var4, boolean var5) {
+   @Export("addWall")
+   public void addWall(int var1, int var2, int var3, int var4, boolean var5) {
       var1 -= this.x;
       var2 -= this.y;
       if(var3 == 0) {
          if(var4 == 0) {
-            this.method3012(var1, var2, 128);
-            this.method3012(var1 - 1, var2, 8);
+            this.add(var1, var2, 128);
+            this.add(var1 - 1, var2, 8);
          }
 
          if(var4 == 1) {
-            this.method3012(var1, var2, 2);
-            this.method3012(var1, var2 + 1, 32);
+            this.add(var1, var2, 2);
+            this.add(var1, var2 + 1, 32);
          }
 
          if(var4 == 2) {
-            this.method3012(var1, var2, 8);
-            this.method3012(var1 + 1, var2, 128);
+            this.add(var1, var2, 8);
+            this.add(var1 + 1, var2, 128);
          }
 
          if(var4 == 3) {
-            this.method3012(var1, var2, 32);
-            this.method3012(var1, var2 - 1, 2);
+            this.add(var1, var2, 32);
+            this.add(var1, var2 - 1, 2);
          }
       }
 
       if(var3 == 1 || var3 == 3) {
          if(var4 == 0) {
-            this.method3012(var1, var2, 1);
-            this.method3012(var1 - 1, var2 + 1, 16);
+            this.add(var1, var2, 1);
+            this.add(var1 - 1, var2 + 1, 16);
          }
 
          if(var4 == 1) {
-            this.method3012(var1, var2, 4);
-            this.method3012(var1 + 1, var2 + 1, 64);
+            this.add(var1, var2, 4);
+            this.add(var1 + 1, var2 + 1, 64);
          }
 
          if(var4 == 2) {
-            this.method3012(var1, var2, 16);
-            this.method3012(var1 + 1, var2 - 1, 1);
+            this.add(var1, var2, 16);
+            this.add(var1 + 1, var2 - 1, 1);
          }
 
          if(var4 == 3) {
-            this.method3012(var1, var2, 64);
-            this.method3012(var1 - 1, var2 - 1, 4);
+            this.add(var1, var2, 64);
+            this.add(var1 - 1, var2 - 1, 4);
          }
       }
 
       if(var3 == 2) {
          if(var4 == 0) {
-            this.method3012(var1, var2, 130);
-            this.method3012(var1 - 1, var2, 8);
-            this.method3012(var1, var2 + 1, 32);
+            this.add(var1, var2, 130);
+            this.add(var1 - 1, var2, 8);
+            this.add(var1, var2 + 1, 32);
          }
 
          if(var4 == 1) {
-            this.method3012(var1, var2, 10);
-            this.method3012(var1, var2 + 1, 32);
-            this.method3012(var1 + 1, var2, 128);
+            this.add(var1, var2, 10);
+            this.add(var1, var2 + 1, 32);
+            this.add(var1 + 1, var2, 128);
          }
 
          if(var4 == 2) {
-            this.method3012(var1, var2, 40);
-            this.method3012(var1 + 1, var2, 128);
-            this.method3012(var1, var2 - 1, 2);
+            this.add(var1, var2, 40);
+            this.add(var1 + 1, var2, 128);
+            this.add(var1, var2 - 1, 2);
          }
 
          if(var4 == 3) {
-            this.method3012(var1, var2, 160);
-            this.method3012(var1, var2 - 1, 2);
-            this.method3012(var1 - 1, var2, 8);
+            this.add(var1, var2, 160);
+            this.add(var1, var2 - 1, 2);
+            this.add(var1 - 1, var2, 8);
          }
       }
 
       if(var5) {
          if(var3 == 0) {
             if(var4 == 0) {
-               this.method3012(var1, var2, 65536);
-               this.method3012(var1 - 1, var2, 4096);
+               this.add(var1, var2, 65536);
+               this.add(var1 - 1, var2, 4096);
             }
 
             if(var4 == 1) {
-               this.method3012(var1, var2, 1024);
-               this.method3012(var1, var2 + 1, 16384);
+               this.add(var1, var2, 1024);
+               this.add(var1, var2 + 1, 16384);
             }
 
             if(var4 == 2) {
-               this.method3012(var1, var2, 4096);
-               this.method3012(var1 + 1, var2, 65536);
+               this.add(var1, var2, 4096);
+               this.add(var1 + 1, var2, 65536);
             }
 
             if(var4 == 3) {
-               this.method3012(var1, var2, 16384);
-               this.method3012(var1, var2 - 1, 1024);
+               this.add(var1, var2, 16384);
+               this.add(var1, var2 - 1, 1024);
             }
          }
 
          if(var3 == 1 || var3 == 3) {
             if(var4 == 0) {
-               this.method3012(var1, var2, 512);
-               this.method3012(var1 - 1, var2 + 1, 8192);
+               this.add(var1, var2, 512);
+               this.add(var1 - 1, var2 + 1, 8192);
             }
 
             if(var4 == 1) {
-               this.method3012(var1, var2, 2048);
-               this.method3012(var1 + 1, var2 + 1, '耀');
+               this.add(var1, var2, 2048);
+               this.add(var1 + 1, var2 + 1, '耀');
             }
 
             if(var4 == 2) {
-               this.method3012(var1, var2, 8192);
-               this.method3012(var1 + 1, var2 - 1, 512);
+               this.add(var1, var2, 8192);
+               this.add(var1 + 1, var2 - 1, 512);
             }
 
             if(var4 == 3) {
-               this.method3012(var1, var2, '耀');
-               this.method3012(var1 - 1, var2 - 1, 2048);
+               this.add(var1, var2, '耀');
+               this.add(var1 - 1, var2 - 1, 2048);
             }
          }
 
          if(var3 == 2) {
             if(var4 == 0) {
-               this.method3012(var1, var2, 66560);
-               this.method3012(var1 - 1, var2, 4096);
-               this.method3012(var1, var2 + 1, 16384);
+               this.add(var1, var2, 66560);
+               this.add(var1 - 1, var2, 4096);
+               this.add(var1, var2 + 1, 16384);
             }
 
             if(var4 == 1) {
-               this.method3012(var1, var2, 5120);
-               this.method3012(var1, var2 + 1, 16384);
-               this.method3012(var1 + 1, var2, 65536);
+               this.add(var1, var2, 5120);
+               this.add(var1, var2 + 1, 16384);
+               this.add(var1 + 1, var2, 65536);
             }
 
             if(var4 == 2) {
-               this.method3012(var1, var2, 20480);
-               this.method3012(var1 + 1, var2, 65536);
-               this.method3012(var1, var2 - 1, 1024);
+               this.add(var1, var2, 20480);
+               this.add(var1 + 1, var2, 65536);
+               this.add(var1, var2 - 1, 1024);
             }
 
             if(var4 == 3) {
-               this.method3012(var1, var2, 81920);
-               this.method3012(var1, var2 - 1, 1024);
-               this.method3012(var1 - 1, var2, 4096);
+               this.add(var1, var2, 81920);
+               this.add(var1, var2 - 1, 1024);
+               this.add(var1 - 1, var2, 4096);
             }
          }
       }
@@ -481,7 +489,8 @@ public class CollisionData {
       signature = "(III)V",
       garbageValue = "128039295"
    )
-   public void method3024(int var1, int var2) {
+   @Export("unblock")
+   public void unblock(int var1, int var2) {
       var1 -= this.x;
       var2 -= this.y;
       this.flags[var1][var2] &= -262145;

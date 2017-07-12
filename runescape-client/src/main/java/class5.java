@@ -28,10 +28,11 @@ final class class5 implements class0 {
    static void method19(int var0, IndexFile var1, IndexData var2) {
       byte[] var3 = null;
       Deque var4 = class236.field3247;
+      Deque var5 = class236.field3247;
       synchronized(class236.field3247) {
-         for(FileSystem var5 = (FileSystem)class236.field3247.method3584(); var5 != null; var5 = (FileSystem)class236.field3247.method3578()) {
-            if((long)var0 == var5.hash && var5.index == var1 && var5.field3213 == 0) {
-               var3 = var5.field3215;
+         for(FileSystem var6 = (FileSystem)class236.field3247.getFront(); var6 != null; var6 = (FileSystem)class236.field3247.getNext()) {
+            if((long)var0 == var6.hash && var6.index == var1 && var6.field3213 == 0) {
+               var3 = var6.field3215;
                break;
             }
          }
@@ -40,9 +41,10 @@ final class class5 implements class0 {
       if(var3 != null) {
          var2.method4220(var1, var0, var3, true);
       } else {
-         byte[] var8 = var1.method2997(var0);
-         var2.method4220(var1, var0, var8, true);
+         byte[] var9 = var1.method2997(var0);
+         var2.method4220(var1, var0, var9, true);
       }
+
    }
 
    @ObfuscatedName("a")
@@ -51,7 +53,7 @@ final class class5 implements class0 {
       garbageValue = "-35"
    )
    static void method20(int var0, int var1, int var2, int var3) {
-      for(class82 var4 = (class82)class82.field1349.method3584(); var4 != null; var4 = (class82)class82.field1349.method3578()) {
+      for(class82 var4 = (class82)class82.field1349.getFront(); var4 != null; var4 = (class82)class82.field1349.getNext()) {
          if(var4.field1338 != -1 || var4.field1353 != null) {
             int var5 = 0;
             if(var1 > var4.field1352) {
@@ -75,7 +77,7 @@ final class class5 implements class0 {
                int var6 = (var4.field1344 - var5) * Client.field1098 / var4.field1344;
                if(var4.field1346 == null) {
                   if(var4.field1338 >= 0) {
-                     SoundEffect var7 = SoundEffect.method1954(class98.field1545, var4.field1338, 0);
+                     SoundEffect var7 = SoundEffect.getTrack(class98.field1545, var4.field1338, 0);
                      if(var7 != null) {
                         class107 var8 = var7.method1942().method1989(class225.field2896);
                         class117 var9 = class117.method2229(var8, 100, var6);
@@ -91,7 +93,7 @@ final class class5 implements class0 {
                if(var4.field1351 == null) {
                   if(var4.field1353 != null && (var4.field1350 -= var3) <= 0) {
                      int var11 = (int)(Math.random() * (double)var4.field1353.length);
-                     SoundEffect var12 = SoundEffect.method1954(class98.field1545, var4.field1353[var11], 0);
+                     SoundEffect var12 = SoundEffect.getTrack(class98.field1545, var4.field1353[var11], 0);
                      if(var12 != null) {
                         class107 var13 = var12.method1942().method1989(class225.field2896);
                         class117 var10 = class117.method2229(var13, 100, var6);
@@ -129,7 +131,7 @@ final class class5 implements class0 {
       garbageValue = "1708901919"
    )
    public static void method21(IndexDataBase var0) {
-      FloorUnderlayDefinition.field3350 = var0;
+      FloorUnderlayDefinition.underlay_ref = var0;
    }
 
    @ObfuscatedName("ir")
@@ -146,19 +148,19 @@ final class class5 implements class0 {
                   method22(var3.children, var1);
                }
 
-               WidgetNode var4 = (WidgetNode)Client.componentTable.method3530((long)var3.id);
+               WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var3.id);
                if(var4 != null) {
                   int var5 = var4.id;
-                  if(class66.method1121(var5)) {
+                  if(class66.loadWidget(var5)) {
                      method22(class46.widgets[var5], var1);
                   }
                }
             }
 
-            class69 var6;
+            ScriptEvent var6;
             if(var1 == 0 && var3.field2731 != null) {
-               var6 = new class69();
-               var6.field849 = var3;
+               var6 = new ScriptEvent();
+               var6.widget = var3;
                var6.field857 = var3.field2731;
                class14.method76(var6);
             }
@@ -171,8 +173,8 @@ final class class5 implements class0 {
                   }
                }
 
-               var6 = new class69();
-               var6.field849 = var3;
+               var6 = new ScriptEvent();
+               var6.widget = var3;
                var6.field857 = var3.field2762;
                class14.method76(var6);
             }

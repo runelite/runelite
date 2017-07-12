@@ -1,14 +1,17 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dt")
 public class class112 {
    @ObfuscatedName("w")
-   IndexDataBase field1679;
+   @Export("vorbis_index")
+   IndexDataBase vorbis_index;
    @ObfuscatedName("a")
    XHashTable field1680;
    @ObfuscatedName("i")
-   IndexDataBase field1681;
+   @Export("sfx_index")
+   IndexDataBase sfx_index;
    @ObfuscatedName("t")
    XHashTable field1682;
 
@@ -18,9 +21,9 @@ public class class112 {
       garbageValue = "1270483995"
    )
    public class107 method2085(int var1, int[] var2) {
-      if(this.field1679.method4136() == 1) {
+      if(this.vorbis_index.size() == 1) {
          return this.method2086(0, var1, var2);
-      } else if(this.field1679.method4133(var1) == 1) {
+      } else if(this.vorbis_index.fileCount(var1) == 1) {
          return this.method2086(var1, 0, var2);
       } else {
          throw new RuntimeException();
@@ -36,20 +39,20 @@ public class class112 {
       int var4 = var2 ^ (var1 << 4 & '\uffff' | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4 ^ 4294967296L;
-      class107 var7 = (class107)this.field1682.method3530(var5);
+      class107 var7 = (class107)this.field1682.get(var5);
       if(var7 != null) {
          return var7;
       } else if(var3 != null && var3[0] <= 0) {
          return null;
       } else {
-         class106 var8 = (class106)this.field1680.method3530(var5);
+         class106 var8 = (class106)this.field1680.get(var5);
          if(var8 == null) {
-            var8 = class106.method1964(this.field1679, var1, var2);
+            var8 = class106.method1964(this.vorbis_index, var1, var2);
             if(var8 == null) {
                return null;
             }
 
-            this.field1680.method3529(var8, var5);
+            this.field1680.put(var8, var5);
          }
 
          var7 = var8.method1965(var3);
@@ -57,7 +60,7 @@ public class class112 {
             return null;
          } else {
             var8.unlink();
-            this.field1682.method3529(var7, var5);
+            this.field1682.put(var7, var5);
             return var7;
          }
       }
@@ -69,9 +72,9 @@ public class class112 {
       garbageValue = "1916602576"
    )
    public class107 method2087(int var1, int[] var2) {
-      if(this.field1681.method4136() == 1) {
+      if(this.sfx_index.size() == 1) {
          return this.method2088(0, var1, var2);
-      } else if(this.field1681.method4133(var1) == 1) {
+      } else if(this.sfx_index.fileCount(var1) == 1) {
          return this.method2088(var1, 0, var2);
       } else {
          throw new RuntimeException();
@@ -87,18 +90,18 @@ public class class112 {
       int var4 = var2 ^ (var1 << 4 & '\uffff' | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4;
-      class107 var7 = (class107)this.field1682.method3530(var5);
+      class107 var7 = (class107)this.field1682.get(var5);
       if(var7 != null) {
          return var7;
       } else if(var3 != null && var3[0] <= 0) {
          return null;
       } else {
-         SoundEffect var8 = SoundEffect.method1954(this.field1681, var1, var2);
+         SoundEffect var8 = SoundEffect.getTrack(this.sfx_index, var1, var2);
          if(var8 == null) {
             return null;
          } else {
             var7 = var8.method1942();
-            this.field1682.method3529(var7, var5);
+            this.field1682.put(var7, var5);
             if(var3 != null) {
                var3[0] -= var7.field1630.length;
             }
@@ -111,8 +114,8 @@ public class class112 {
    public class112(IndexDataBase var1, IndexDataBase var2) {
       this.field1680 = new XHashTable(256);
       this.field1682 = new XHashTable(256);
-      this.field1681 = var1;
-      this.field1679 = var2;
+      this.sfx_index = var1;
+      this.vorbis_index = var2;
    }
 
    @ObfuscatedName("gj")
@@ -126,82 +129,82 @@ public class class112 {
          FileOnDisk.field1777 = var1;
          TextureProvider.setGameState(25);
          class2.drawStatusBox("Loading - please wait.", true);
-         int var3 = class50.baseX;
+         int var3 = KeyFocusListener.baseX;
          int var4 = class266.baseY;
-         class50.baseX = (var0 - 6) * 8;
+         KeyFocusListener.baseX = (var0 - 6) * 8;
          class266.baseY = (var1 - 6) * 8;
-         int var5 = class50.baseX - var3;
+         int var5 = KeyFocusListener.baseX - var3;
          int var6 = class266.baseY - var4;
-         var3 = class50.baseX;
+         var3 = KeyFocusListener.baseX;
          var4 = class266.baseY;
 
          int var7;
-         int var9;
+         int var8;
          for(var7 = 0; var7 < '耀'; ++var7) {
-            NPC var8 = Client.cachedNPCs[var7];
-            if(var8 != null) {
-               for(var9 = 0; var9 < 10; ++var9) {
-                  var8.pathX[var9] -= var5;
-                  var8.pathY[var9] -= var6;
+            NPC var9 = Client.cachedNPCs[var7];
+            if(var9 != null) {
+               for(var8 = 0; var8 < 10; ++var8) {
+                  var9.pathX[var8] -= var5;
+                  var9.pathY[var8] -= var6;
                }
 
-               var8.x -= var5 * 128;
-               var8.y -= var6 * 128;
+               var9.x -= var5 * 128;
+               var9.y -= var6 * 128;
             }
          }
 
          for(var7 = 0; var7 < 2048; ++var7) {
-            Player var21 = Client.cachedPlayers[var7];
-            if(var21 != null) {
-               for(var9 = 0; var9 < 10; ++var9) {
-                  var21.pathX[var9] -= var5;
-                  var21.pathY[var9] -= var6;
+            Player var20 = Client.cachedPlayers[var7];
+            if(var20 != null) {
+               for(var8 = 0; var8 < 10; ++var8) {
+                  var20.pathX[var8] -= var5;
+                  var20.pathY[var8] -= var6;
                }
 
-               var21.x -= var5 * 128;
-               var21.y -= var6 * 128;
+               var20.x -= var5 * 128;
+               var20.y -= var6 * 128;
             }
          }
 
-         byte var20 = 0;
-         byte var18 = 104;
-         byte var22 = 1;
+         byte var21 = 0;
+         byte var10 = 104;
+         byte var11 = 1;
          if(var5 < 0) {
-            var20 = 103;
-            var18 = -1;
-            var22 = -1;
-         }
-
-         byte var10 = 0;
-         byte var11 = 104;
-         byte var12 = 1;
-         if(var6 < 0) {
-            var10 = 103;
+            var21 = 103;
+            var10 = -1;
             var11 = -1;
-            var12 = -1;
          }
 
-         int var14;
-         for(int var13 = var20; var13 != var18; var13 += var22) {
-            for(var14 = var10; var11 != var14; var14 += var12) {
-               int var15 = var13 + var5;
-               int var16 = var14 + var6;
+         byte var12 = 0;
+         byte var13 = 104;
+         byte var14 = 1;
+         if(var6 < 0) {
+            var12 = 103;
+            var13 = -1;
+            var14 = -1;
+         }
 
-               for(int var17 = 0; var17 < 4; ++var17) {
-                  if(var15 >= 0 && var16 >= 0 && var15 < 104 && var16 < 104) {
-                     Client.groundItemDeque[var17][var13][var14] = Client.groundItemDeque[var17][var15][var16];
+         int var15;
+         for(int var16 = var21; var16 != var10; var16 += var11) {
+            for(var15 = var12; var13 != var15; var15 += var14) {
+               int var17 = var16 + var5;
+               int var18 = var15 + var6;
+
+               for(int var19 = 0; var19 < 4; ++var19) {
+                  if(var17 >= 0 && var18 >= 0 && var17 < 104 && var18 < 104) {
+                     Client.groundItemDeque[var19][var16][var15] = Client.groundItemDeque[var19][var17][var18];
                   } else {
-                     Client.groundItemDeque[var17][var13][var14] = null;
+                     Client.groundItemDeque[var19][var16][var15] = null;
                   }
                }
             }
          }
 
-         for(PendingSpawn var19 = (PendingSpawn)Client.pendingSpawns.method3584(); var19 != null; var19 = (PendingSpawn)Client.pendingSpawns.method3578()) {
-            var19.x -= var5;
-            var19.y -= var6;
-            if(var19.x < 0 || var19.y < 0 || var19.x >= 104 || var19.y >= 104) {
-               var19.unlink();
+         for(PendingSpawn var22 = (PendingSpawn)Client.pendingSpawns.getFront(); var22 != null; var22 = (PendingSpawn)Client.pendingSpawns.getNext()) {
+            var22.x -= var5;
+            var22.y -= var6;
+            if(var22.x < 0 || var22.y < 0 || var22.x >= 104 || var22.y >= 104) {
+               var22.unlink();
             }
          }
 
@@ -213,14 +216,14 @@ public class class112 {
          Client.field1181 = 0;
          Client.field1173 = false;
          Client.field1154 = -1;
-         Client.field1060.method3582();
-         Client.projectiles.method3582();
+         Client.graphicsObjectDeque.clear();
+         Client.projectiles.clear();
 
-         for(var14 = 0; var14 < 4; ++var14) {
-            Client.collisionMaps[var14].method3007();
+         for(var15 = 0; var15 < 4; ++var15) {
+            Client.collisionMaps[var15].reset();
          }
-
       }
+
    }
 
    @ObfuscatedName("t")
@@ -235,13 +238,13 @@ public class class112 {
          class266.field3669 = null;
          class92.field1451 = null;
          class3.field19 = null;
-         class83.field1369 = null;
-         WorldMapType2.field543 = null;
+         class83.logoSprite = null;
+         WorldMapType2.titlemuteSprite = null;
          class5.field40 = null;
          class224.field2855 = null;
          KitDefinition.field3367 = null;
          class48.field651 = null;
-         class176.field2422 = null;
+         AbstractByteBuffer.field2422 = null;
          class61.field768 = null;
          class91.field1445 = null;
          class41.field586 = null;
@@ -253,9 +256,10 @@ public class class112 {
          class12.field270 = null;
          Ignore.field864 = null;
          class174.method3343(2);
-         class170.method3115(true);
+         class170.sendConInfo(true);
          class17.field317 = false;
       }
+
    }
 
    @ObfuscatedName("ig")
@@ -267,7 +271,7 @@ public class class112 {
       Client.secretPacketBuffer1.putOpcode(131);
 
       for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3533(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3538()) {
-         if(var0.field844 == 0 || var0.field844 == 3) {
+         if(var0.owner == 0 || var0.owner == 3) {
             class95.method1780(var0, true);
          }
       }

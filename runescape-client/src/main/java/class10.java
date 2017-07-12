@@ -60,36 +60,36 @@ public final class class10 extends class9 {
       garbageValue = "366399750"
    )
    final void vmethod50() {
-      for(int var4 = 0; var4 < 8; ++var4) {
-         int var1 = (var4 & 1) == 0?this.field260:this.field254;
-         int var2 = (var4 & 2) == 0?this.field252:this.field255;
-         int var3 = (var4 & 4) == 0?this.field253:this.field256;
+      for(int var1 = 0; var1 < 8; ++var1) {
+         int var2 = (var1 & 1) == 0?this.field260:this.field254;
+         int var3 = (var1 & 2) == 0?this.field252:this.field255;
+         int var4 = (var1 & 4) == 0?this.field253:this.field256;
          int var5;
          int var6;
          int[] var7;
          int[] var8;
-         if((var4 & 1) == 0) {
+         if((var1 & 1) == 0) {
             var5 = this.field254;
             var6 = this.field257;
-            var7 = Region.method2796(var1, var2, var3);
-            var8 = Region.method2796(var5, var2, var3);
-            Rasterizer2D.method4945(var7[0], var7[1], var8[0], var8[1], var6);
+            var7 = Region.method2796(var2, var3, var4);
+            var8 = Region.method2796(var5, var3, var4);
+            Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
          }
 
-         if((var4 & 2) == 0) {
+         if((var1 & 2) == 0) {
             var5 = this.field255;
             var6 = this.field257;
-            var7 = Region.method2796(var1, var2, var3);
-            var8 = Region.method2796(var1, var5, var3);
-            Rasterizer2D.method4945(var7[0], var7[1], var8[0], var8[1], var6);
+            var7 = Region.method2796(var2, var3, var4);
+            var8 = Region.method2796(var2, var5, var4);
+            Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
          }
 
-         if((var4 & 4) == 0) {
+         if((var1 & 4) == 0) {
             var5 = this.field256;
             var6 = this.field257;
-            var7 = Region.method2796(var1, var2, var3);
-            var8 = Region.method2796(var1, var2, var5);
-            Rasterizer2D.method4945(var7[0], var7[1], var8[0], var8[1], var6);
+            var7 = Region.method2796(var2, var3, var4);
+            var8 = Region.method2796(var2, var3, var5);
+            Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
          }
       }
 

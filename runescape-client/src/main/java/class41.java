@@ -60,8 +60,8 @@ public final class class41 {
          this.field583 = false;
          this.field574 = true;
          System.nanoTime();
-         int var4 = var1.method4146(class40.field564.field566);
-         int var5 = var1.method4131(var4, var2);
+         int var4 = var1.getFile(class40.field564.field566);
+         int var5 = var1.getChild(var4, var2);
          Buffer var6 = new Buffer(var1.method4145(class40.field564.field566, var2));
          Buffer var7 = new Buffer(var1.method4145(class40.field562.field566, var2));
          Buffer var8 = new Buffer(var1.method4145(var2, class40.field561.field566));
@@ -71,7 +71,7 @@ public final class class41 {
 
          try {
             this.field575.method645(var6, var8, var7, var5, var3);
-         } catch (IllegalStateException var20) {
+         } catch (IllegalStateException var17) {
             return;
          }
 
@@ -89,9 +89,10 @@ public final class class41 {
          this.field587 = new class34[var9][var10];
          Iterator var11 = this.field575.field607.iterator();
 
+         int var13;
          while(var11.hasNext()) {
             class22 var12 = (class22)var11.next();
-            int var13 = var12.field420;
+            var13 = var12.field420;
             int var14 = var12.field409;
             int var15 = var13 - this.field575.method305();
             int var16 = var14 - this.field575.method288();
@@ -99,11 +100,11 @@ public final class class41 {
             this.field587[var15][var16].method503(var12, this.field575.field606);
          }
 
-         for(int var17 = 0; var17 < var9; ++var17) {
-            for(int var18 = 0; var18 < var10; ++var18) {
-               if(this.field587[var17][var18] == null) {
-                  this.field587[var17][var18] = new class34(this.field575.method305() + var17, this.field575.method288() + var18, this.field575.method294(), this.field581);
-                  this.field587[var17][var18].method352(this.field575.field608, this.field575.field606);
+         for(int var18 = 0; var18 < var9; ++var18) {
+            for(var13 = 0; var13 < var10; ++var13) {
+               if(this.field587[var18][var13] == null) {
+                  this.field587[var18][var13] = new class34(this.field575.method305() + var18, this.field575.method288() + var13, this.field575.method294(), this.field581);
+                  this.field587[var18][var13].method352(this.field575.field608, this.field575.field606);
                }
             }
          }
@@ -111,13 +112,14 @@ public final class class41 {
          System.nanoTime();
          System.nanoTime();
          if(var1.method4190(class40.field567.field566, var2)) {
-            byte[] var21 = var1.method4145(class40.field567.field566, var2);
-            this.field576 = Coordinates.method3928(var21);
+            byte[] var19 = var1.method4145(class40.field567.field566, var2);
+            this.field576 = Coordinates.method3928(var19);
          }
 
          System.nanoTime();
          this.field583 = true;
       }
+
    }
 
    @ObfuscatedName("w")
@@ -139,7 +141,7 @@ public final class class41 {
       int var10 = Rasterizer2D.graphicsPixelsWidth;
       int var11 = Rasterizer2D.graphicsPixelsHeight;
       int[] var12 = new int[4];
-      Rasterizer2D.method4924(var12);
+      Rasterizer2D.copyDrawRegion(var12);
       class29 var13 = this.method573(var1, var2, var3, var4);
       float var14 = this.method594(var7 - var5, var3 - var1);
       int var15 = (int)Math.ceil((double)var14);
@@ -161,7 +163,7 @@ public final class class41 {
       }
 
       Rasterizer2D.setRasterBuffer(var9, var10, var11);
-      Rasterizer2D.method4921(var12);
+      Rasterizer2D.setDrawRegion(var12);
       var17 = (int)(var14 * 64.0F);
       var18 = this.field578 + var1;
       int var19 = var2 + this.field579;
@@ -190,27 +192,28 @@ public final class class41 {
             Iterator var8 = var5.iterator();
 
             while(true) {
-               List var10;
+               List var9;
                do {
                   if(!var8.hasNext()) {
                      return;
                   }
 
-                  int var9 = ((Integer)var8.next()).intValue();
-                  var10 = (List)this.field582.get(Integer.valueOf(var9));
-               } while(var10 == null);
+                  int var10 = ((Integer)var8.next()).intValue();
+                  var9 = (List)this.field582.get(Integer.valueOf(var10));
+               } while(var9 == null);
 
-               Iterator var11 = var10.iterator();
+               Iterator var14 = var9.iterator();
 
-               while(var11.hasNext()) {
-                  class39 var12 = (class39)var11.next();
-                  int var13 = var3 * (var12.field550.worldX - this.field578) / this.field584;
-                  int var14 = var4 - (var12.field550.worldY - this.field579) * var4 / this.field577;
-                  Rasterizer2D.method4930(var13 + var1, var2 + var14, 2, 16776960, 256);
+               while(var14.hasNext()) {
+                  class39 var11 = (class39)var14.next();
+                  int var12 = var3 * (var11.field550.worldX - this.field578) / this.field584;
+                  int var13 = var4 - (var11.field550.worldY - this.field579) * var4 / this.field577;
+                  Rasterizer2D.method4930(var12 + var1, var2 + var13, 2, 16776960, 256);
                }
             }
          }
       }
+
    }
 
    @ObfuscatedName("v")

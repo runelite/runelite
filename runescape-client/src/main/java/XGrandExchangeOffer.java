@@ -111,9 +111,10 @@ public class XGrandExchangeOffer {
    static final void method111(String var0) {
       if(class11.clanMembers != null) {
          Client.secretPacketBuffer1.putOpcode(34);
-         Client.secretPacketBuffer1.putByte(class261.method4734(var0));
-         Client.secretPacketBuffer1.method3137(var0);
+         Client.secretPacketBuffer1.putByte(class261.getLength(var0));
+         Client.secretPacketBuffer1.putString(var0);
       }
+
    }
 
    @ObfuscatedName("t")
@@ -152,10 +153,10 @@ public class XGrandExchangeOffer {
    )
    public static void method113() {
       class286.field3799 = null;
-      class286.field3800 = null;
+      class286.offsetsY = null;
       class7.field239 = null;
       class226.field3146 = null;
       class278.field3745 = null;
-      class210.field2609 = null;
+      class210.spritePixels = (byte[][])null;
    }
 }

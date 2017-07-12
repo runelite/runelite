@@ -17,18 +17,19 @@ public class SoundEffect {
 
    @ObfuscatedName("w")
    public class107 method1942() {
-      byte[] var1 = this.method1946();
+      byte[] var1 = this.mix();
       return new class107(22050, var1, this.start * 22050 / 1000, this.end * 22050 / 1000);
    }
 
    @ObfuscatedName("a")
-   public final int method1944() {
+   @Export("calculateDelay")
+   public final int calculateDelay() {
       int var1 = 9999999;
 
       int var2;
       for(var2 = 0; var2 < 10; ++var2) {
-         if(this.instruments[var2] != null && this.instruments[var2].field1749 / 20 < var1) {
-            var1 = this.instruments[var2].field1749 / 20;
+         if(this.instruments[var2] != null && this.instruments[var2].offset / 20 < var1) {
+            var1 = this.instruments[var2].offset / 20;
          }
       }
 
@@ -39,7 +40,7 @@ public class SoundEffect {
       if(var1 != 9999999 && var1 != 0) {
          for(var2 = 0; var2 < 10; ++var2) {
             if(this.instruments[var2] != null) {
-               this.instruments[var2].field1749 -= var1 * 20;
+               this.instruments[var2].offset -= var1 * 20;
             }
          }
 
@@ -55,13 +56,14 @@ public class SoundEffect {
    }
 
    @ObfuscatedName("t")
-   final byte[] method1946() {
+   @Export("mix")
+   final byte[] mix() {
       int var1 = 0;
 
       int var2;
       for(var2 = 0; var2 < 10; ++var2) {
-         if(this.instruments[var2] != null && this.instruments[var2].field1748 + this.instruments[var2].field1749 > var1) {
-            var1 = this.instruments[var2].field1748 + this.instruments[var2].field1749;
+         if(this.instruments[var2] != null && this.instruments[var2].duration + this.instruments[var2].offset > var1) {
+            var1 = this.instruments[var2].duration + this.instruments[var2].offset;
          }
       }
 
@@ -73,9 +75,9 @@ public class SoundEffect {
 
          for(int var4 = 0; var4 < 10; ++var4) {
             if(this.instruments[var4] != null) {
-               int var5 = this.instruments[var4].field1748 * 22050 / 1000;
-               int var6 = this.instruments[var4].field1749 * 22050 / 1000;
-               int[] var7 = this.instruments[var4].method2331(var5, this.instruments[var4].field1748);
+               int var5 = this.instruments[var4].duration * 22050 / 1000;
+               int var6 = this.instruments[var4].offset * 22050 / 1000;
+               int[] var7 = this.instruments[var4].synthesize(var5, this.instruments[var4].duration);
 
                for(int var8 = 0; var8 < var5; ++var8) {
                   int var9 = (var7[var8] >> 8) + var3[var8 + var6];
@@ -93,7 +95,8 @@ public class SoundEffect {
    }
 
    @ObfuscatedName("i")
-   public static SoundEffect method1954(IndexDataBase var0, int var1, int var2) {
+   @Export("getTrack")
+   public static SoundEffect getTrack(IndexDataBase var0, int var1, int var2) {
       byte[] var3 = var0.getConfigData(var1, var2);
       return var3 == null?null:new SoundEffect(new Buffer(var3));
    }
@@ -106,7 +109,7 @@ public class SoundEffect {
          if(var3 != 0) {
             --var1.offset;
             this.instruments[var2] = new AudioInstrument();
-            this.instruments[var2].method2323(var1);
+            this.instruments[var2].decode(var1);
          }
       }
 

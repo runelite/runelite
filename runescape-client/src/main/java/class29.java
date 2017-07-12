@@ -29,7 +29,6 @@ public final class class29 {
       intValue = 114895345
    )
    int field432;
-   // $FF: synthetic field
    final class41 this$0;
 
    @ObfuscatedName("a")
@@ -55,8 +54,8 @@ public final class class29 {
    static final WidgetNode method233(int var0, int var1, int var2) {
       WidgetNode var3 = new WidgetNode();
       var3.id = var1;
-      var3.field844 = var2;
-      Client.componentTable.method3529(var3, (long)var0);
+      var3.owner = var2;
+      Client.componentTable.put(var3, (long)var0);
       class222.method4070(var1);
       Widget var4 = PacketBuffer.method3403(var0);
       class88.method1714(var4);
@@ -70,7 +69,7 @@ public final class class29 {
       Ignore.method1136(var1);
       if(Client.widgetRoot != -1) {
          int var5 = Client.widgetRoot;
-         if(class66.method1121(var5)) {
+         if(class66.loadWidget(var5)) {
             class5.method22(class46.widgets[var5], 1);
          }
       }

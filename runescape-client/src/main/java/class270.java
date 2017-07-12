@@ -25,7 +25,7 @@ public final class class270 {
       }
 
       Client.field1045 = 0;
-      int var4 = (XItemContainer.localPlayer.x >> 7) + class50.baseX;
+      int var4 = (XItemContainer.localPlayer.x >> 7) + KeyFocusListener.baseX;
       int var5 = (XItemContainer.localPlayer.y >> 7) + class266.baseY;
       if(var4 >= 3053 && var4 <= 3156 && var5 >= 3056 && var5 <= 3136) {
          Client.field1045 = 1;

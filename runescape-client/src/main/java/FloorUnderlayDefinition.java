@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -10,34 +11,41 @@ public class FloorUnderlayDefinition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -1296539987
    )
-   public int field3348;
+   @Export("saturation")
+   public int saturation;
    @ObfuscatedName("w")
-   static NodeCache field3349;
+   @Export("underlays")
+   static NodeCache underlays;
    @ObfuscatedName("i")
-   static IndexDataBase field3350;
+   @Export("underlay_ref")
+   static IndexDataBase underlay_ref;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -1365747369
    )
-   public int field3351;
+   @Export("hue")
+   public int hue;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -595513481
    )
-   public int field3353;
+   @Export("lightness")
+   public int lightness;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 916749019
    )
-   public int field3354;
+   @Export("hueMultiplier")
+   public int hueMultiplier;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 2073712485
    )
-   int field3355;
+   @Export("rgbColor")
+   int rgbColor;
 
    FloorUnderlayDefinition() {
-      this.field3355 = 0;
+      this.rgbColor = 0;
    }
 
    @ObfuscatedName("s")
@@ -45,9 +53,10 @@ public class FloorUnderlayDefinition extends CacheableNode {
       signature = "(LBuffer;III)V",
       garbageValue = "1007376124"
    )
-   void method4359(Buffer var1, int var2, int var3) {
+   @Export("decode")
+   void decode(Buffer var1, int var2, int var3) {
       if(var2 == 1) {
-         this.field3355 = var1.read24BitInt();
+         this.rgbColor = var1.read24BitInt();
       }
 
    }
@@ -57,7 +66,8 @@ public class FloorUnderlayDefinition extends CacheableNode {
       signature = "(IB)V",
       garbageValue = "0"
    )
-   void method4360(int var1) {
+   @Export("setHSL")
+   void setHSL(int var1) {
       double var2 = (double)(var1 >> 16 & 255) / 256.0D;
       double var4 = (double)(var1 >> 8 & 255) / 256.0D;
       double var6 = (double)(var1 & 255) / 256.0D;
@@ -101,35 +111,31 @@ public class FloorUnderlayDefinition extends CacheableNode {
       }
 
       var12 /= 6.0D;
-      this.field3348 = (int)(256.0D * var14);
-      this.field3353 = (int)(var16 * 256.0D);
-      if(this.field3348 < 0) {
-         this.field3348 = 0;
-      } else if(this.field3348 > 255) {
-         this.field3348 = 255;
+      this.saturation = (int)(256.0D * var14);
+      this.lightness = (int)(var16 * 256.0D);
+      if(this.saturation < 0) {
+         this.saturation = 0;
+      } else if(this.saturation > 255) {
+         this.saturation = 255;
       }
 
-      if(this.field3353 < 0) {
-         this.field3353 = 0;
-      } else if(this.field3353 > 255) {
-         this.field3353 = 255;
+      if(this.lightness < 0) {
+         this.lightness = 0;
+      } else if(this.lightness > 255) {
+         this.lightness = 255;
       }
 
       if(var16 > 0.5D) {
-         this.field3354 = (int)(var14 * (1.0D - var16) * 512.0D);
+         this.hueMultiplier = (int)(var14 * (1.0D - var16) * 512.0D);
       } else {
-         this.field3354 = (int)(512.0D * var16 * var14);
+         this.hueMultiplier = (int)(512.0D * var16 * var14);
       }
 
-      if(this.field3354 < 1) {
-         this.field3354 = 1;
+      if(this.hueMultiplier < 1) {
+         this.hueMultiplier = 1;
       }
 
-      this.field3351 = (int)((double)this.field3354 * var12);
-   }
-
-   static {
-      field3349 = new NodeCache(64);
+      this.hue = (int)((double)this.hueMultiplier * var12);
    }
 
    @ObfuscatedName("a")
@@ -137,8 +143,9 @@ public class FloorUnderlayDefinition extends CacheableNode {
       signature = "(I)V",
       garbageValue = "-452961936"
    )
-   void method4368() {
-      this.method4360(this.field3355);
+   @Export("post")
+   void post() {
+      this.setHSL(this.rgbColor);
    }
 
    @ObfuscatedName("t")
@@ -146,14 +153,19 @@ public class FloorUnderlayDefinition extends CacheableNode {
       signature = "(LBuffer;II)V",
       garbageValue = "1080723488"
    )
-   void method4378(Buffer var1, int var2) {
+   @Export("decode")
+   void decode(Buffer var1, int var2) {
       while(true) {
          int var3 = var1.readUnsignedByte();
          if(var3 == 0) {
             return;
          }
 
-         this.method4359(var1, var3, var2);
+         this.decode(var1, var3, var2);
       }
+   }
+
+   static {
+      underlays = new NodeCache(64);
    }
 }

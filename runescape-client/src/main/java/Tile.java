@@ -8,7 +8,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Tile")
 public final class Tile extends Node {
    @ObfuscatedName("z")
-   int[] field1905;
+   @Export("entityFlags")
+   int[] entityFlags;
    @ObfuscatedName("o")
    @Export("objects")
    GameObject[] objects;
@@ -16,17 +17,20 @@ public final class Tile extends Node {
    @ObfuscatedGetter(
       intValue = 1069686959
    )
-   int field1907;
+   @Export("wallCullDirection")
+   int wallCullDirection;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = 768199681
    )
-   int field1908;
+   @Export("renderLevel")
+   int renderLevel;
    @ObfuscatedName("s")
    @Export("paint")
    SceneTilePaint paint;
    @ObfuscatedName("r")
-   SceneTileModel field1910;
+   @Export("overlay")
+   SceneTileModel overlay;
    @ObfuscatedName("v")
    @Export("wallObject")
    WallObject wallObject;
@@ -43,12 +47,14 @@ public final class Tile extends Node {
    @ObfuscatedGetter(
       intValue = 137325067
    )
-   int field1914;
+   @Export("wallDrawFlags")
+   int wallDrawFlags;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 413710941
    )
-   int field1915;
+   @Export("entityCount")
+   int entityCount;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 180766603
@@ -59,36 +65,44 @@ public final class Tile extends Node {
    @ObfuscatedGetter(
       intValue = 1475565547
    )
-   int field1918;
+   @Export("flags")
+   int flags;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = 1103038989
    )
-   int field1919;
+   @Export("physicalLevel")
+   int physicalLevel;
    @ObfuscatedName("m")
-   boolean field1920;
+   @Export("draw")
+   boolean draw;
    @ObfuscatedName("f")
-   boolean field1921;
+   @Export("drawEntities")
+   boolean drawEntities;
    @ObfuscatedName("k")
    @Export("itemLayer")
    ItemLayer itemLayer;
    @ObfuscatedName("b")
-   boolean field1923;
+   @Export("visible")
+   boolean visible;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -726971605
    )
-   int field1924;
+   @Export("wallUncullDirection")
+   int wallUncullDirection;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 760069959
    )
-   int field1925;
+   @Export("wallCullOppositeDirection")
+   int wallCullOppositeDirection;
    @ObfuscatedName("y")
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
    @ObfuscatedName("d")
-   Tile field1927;
+   @Export("bridge")
+   Tile bridge;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 587710695
@@ -98,9 +112,9 @@ public final class Tile extends Node {
 
    Tile(int var1, int var2, int var3) {
       this.objects = new GameObject[5];
-      this.field1905 = new int[5];
-      this.field1918 = 0;
-      this.field1908 = this.plane = var1;
+      this.entityFlags = new int[5];
+      this.flags = 0;
+      this.renderLevel = this.plane = var1;
       this.x = var2;
       this.y = var3;
    }

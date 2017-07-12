@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -54,10 +55,6 @@ public class class34 {
    )
    static int field500;
 
-   static {
-      field496 = new Coordinates();
-   }
-
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(Ljava/util/HashSet;Ljava/util/List;I)V",
@@ -85,7 +82,7 @@ public class class34 {
    )
    void method353(int var1, int var2, int var3, int var4, class28 var5) {
       for(int var6 = var1; var6 < var3 + var1; ++var6) {
-         label57:
+         label49:
          for(int var7 = var2; var7 < var2 + var4; ++var7) {
             Coordinates var8 = new Coordinates(0, var6, var7);
 
@@ -109,7 +106,7 @@ public class class34 {
 
                         class39 var18 = new class39(var14.field3297, var16, var15, this.method395(var14));
                         this.field498.put(var8, var18);
-                        continue label57;
+                        continue label49;
                      }
                   }
                }
@@ -419,8 +416,8 @@ public class class34 {
             Rasterizer2D.method4930(var2, var3, 15, 16776960, 128);
             Rasterizer2D.method4930(var2, var3, 7, 16777215, 256);
          }
-
       }
+
    }
 
    @ObfuscatedName("ai")
@@ -455,12 +452,11 @@ public class class34 {
       garbageValue = "2"
    )
    void method377(class39 var1, Area var2, int var3, int var4, float var5) {
-      if(var1.field553 != null) {
-         if(var1.field553.field478.method161(var5)) {
-            Font var6 = (Font)this.field494.get(var1.field553.field478);
-            var6.method4788(var1.field553.field476, var3 - var1.field553.field475 / 2, var4, var1.field553.field475, var1.field553.field477, -16777216 | var2.field3301, 0, 1, 0, var6.field3649 / 2);
-         }
+      if(var1.field553 != null && var1.field553.field478.method161(var5)) {
+         Font var6 = (Font)this.field494.get(var1.field553.field478);
+         var6.method4788(var1.field553.field476, var3 - var1.field553.field475 / 2, var4, var1.field553.field475, var1.field553.field477, -16777216 | var2.field3301, 0, 1, 0, var6.verticalSpace / 2);
       }
+
    }
 
    @ObfuscatedName("ay")
@@ -503,8 +499,8 @@ public class class34 {
          } else {
             this.field490.method5066(var1, var2, var3, var3);
          }
-
       }
+
    }
 
    @ObfuscatedName("ak")
@@ -724,50 +720,50 @@ public class class34 {
    )
    class33 method395(Area var1) {
       if(var1.name != null && this.field494 != null && this.field494.get(class24.field364) != null) {
-         int var3 = var1.field3302;
-         class24[] var4 = new class24[]{class24.field364, class24.field358, class24.field359};
-         class24[] var5 = var4;
-         int var6 = 0;
+         int var2 = var1.field3302;
+         class24[] var3 = new class24[]{class24.field364, class24.field358, class24.field359};
+         class24[] var4 = var3;
+         int var5 = 0;
 
-         class24 var2;
+         class24 var6;
          while(true) {
-            if(var6 >= var5.length) {
-               var2 = null;
+            if(var5 >= var4.length) {
+               var6 = null;
                break;
             }
 
-            class24 var7 = var5[var6];
-            if(var3 == var7.field367) {
-               var2 = var7;
+            class24 var7 = var4[var5];
+            if(var2 == var7.field367) {
+               var6 = var7;
                break;
             }
 
-            ++var6;
+            ++var5;
          }
 
-         if(var2 == null) {
+         if(var6 == null) {
             return null;
          } else {
-            Font var14 = (Font)this.field494.get(var2);
-            if(var14 == null) {
+            Font var15 = (Font)this.field494.get(var6);
+            if(var15 == null) {
                return null;
             } else {
-               var6 = var14.method4752(var1.name, 1000000);
-               String[] var15 = new String[var6];
-               var14.method4750(var1.name, (int[])null, var15);
-               int var8 = var14.field3649 * var15.length / 2;
-               int var9 = 0;
-               String[] var10 = var15;
+               var5 = var15.method4752(var1.name, 1000000);
+               String[] var8 = new String[var5];
+               var15.method4750(var1.name, (int[])null, var8);
+               int var9 = var15.verticalSpace * var8.length / 2;
+               int var10 = 0;
+               String[] var11 = var8;
 
-               for(int var11 = 0; var11 < var10.length; ++var11) {
-                  String var12 = var10[var11];
-                  int var13 = var14.method4773(var12);
-                  if(var13 > var9) {
-                     var9 = var13;
+               for(int var12 = 0; var12 < var11.length; ++var12) {
+                  String var13 = var11[var12];
+                  int var14 = var15.method4773(var13);
+                  if(var14 > var10) {
+                     var10 = var14;
                   }
                }
 
-               return new class33(var1.name, var9, var8, var2);
+               return new class33(var1.name, var10, var9, var6);
             }
          }
       } else {
@@ -794,36 +790,39 @@ public class class34 {
          Overlay var10 = NPC.method1706(var6);
          if(var10 == null) {
             var8 = var9;
-         } else if(var10.field3601 >= 0) {
-            var8 = var10.field3601 | -16777216;
-         } else if(var10.texture >= 0) {
-            int var11 = ChatLineBuffer.method1877(class136.field2028.vmethod2876(var10.texture), 96);
-            var8 = class136.colorPalette[var11] | -16777216;
-         } else if(var10.color == 16711935) {
-            var8 = var9;
+         } else if(var10.otherRgbColor >= 0) {
+            var8 = var10.otherRgbColor | -16777216;
          } else {
-            int var12 = var10.hue;
-            int var13 = var10.saturation;
-            int var14 = var10.lightness;
-            if(var14 > 179) {
-               var13 /= 2;
-            }
+            int var11;
+            if(var10.texture >= 0) {
+               var11 = ChatLineBuffer.method1877(Graphics3D.textureLoader.getAverageTextureRGB(var10.texture), 96);
+               var8 = Graphics3D.colorPalette[var11] | -16777216;
+            } else if(var10.color == 16711935) {
+               var8 = var9;
+            } else {
+               var11 = var10.hue;
+               int var12 = var10.saturation;
+               int var13 = var10.lightness;
+               if(var13 > 179) {
+                  var12 /= 2;
+               }
 
-            if(var14 > 192) {
-               var13 /= 2;
-            }
+               if(var13 > 192) {
+                  var12 /= 2;
+               }
 
-            if(var14 > 217) {
-               var13 /= 2;
-            }
+               if(var13 > 217) {
+                  var12 /= 2;
+               }
 
-            if(var14 > 243) {
-               var13 /= 2;
-            }
+               if(var13 > 243) {
+                  var12 /= 2;
+               }
 
-            int var15 = var14 / 2 + (var12 / 4 << 10) + (var13 / 32 << 7);
-            int var16 = ChatLineBuffer.method1877(var15, 96);
-            var8 = class136.colorPalette[var16] | -16777216;
+               int var14 = var13 / 2 + (var11 / 4 << 10) + (var12 / 32 << 7);
+               int var15 = ChatLineBuffer.method1877(var14, 96);
+               var8 = Graphics3D.colorPalette[var15] | -16777216;
+            }
          }
 
          var7 = var8;
@@ -839,6 +838,7 @@ public class class34 {
             var4.method685(this.field493 * var1, this.field493 * (63 - var2), var8, var7, this.field493, this.field493, var3.field408[0][var1][var2], var3.field419[0][var1][var2]);
          }
       }
+
    }
 
    @ObfuscatedName("ar")
@@ -872,47 +872,50 @@ public class class34 {
       for(int var5 = 1; var5 < var3.field413; ++var5) {
          int var6 = var3.field421[var5][var1][var2] - 1;
          if(var6 > -1) {
-            int var8 = this.field489;
-            Overlay var9 = NPC.method1706(var6);
-            int var7;
-            if(var9 == null) {
-               var7 = var8;
-            } else if(var9.field3601 >= 0) {
-               var7 = var9.field3601 | -16777216;
-            } else if(var9.texture >= 0) {
-               int var10 = ChatLineBuffer.method1877(class136.field2028.vmethod2876(var9.texture), 96);
-               var7 = class136.colorPalette[var10] | -16777216;
-            } else if(var9.color == 16711935) {
-               var7 = var8;
+            int var7 = this.field489;
+            Overlay var8 = NPC.method1706(var6);
+            int var9;
+            if(var8 == null) {
+               var9 = var7;
+            } else if(var8.otherRgbColor >= 0) {
+               var9 = var8.otherRgbColor | -16777216;
             } else {
-               int var11 = var9.hue;
-               int var12 = var9.saturation;
-               int var13 = var9.lightness;
-               if(var13 > 179) {
-                  var12 /= 2;
-               }
+               int var10;
+               if(var8.texture >= 0) {
+                  var10 = ChatLineBuffer.method1877(Graphics3D.textureLoader.getAverageTextureRGB(var8.texture), 96);
+                  var9 = Graphics3D.colorPalette[var10] | -16777216;
+               } else if(var8.color == 16711935) {
+                  var9 = var7;
+               } else {
+                  var10 = var8.hue;
+                  int var11 = var8.saturation;
+                  int var12 = var8.lightness;
+                  if(var12 > 179) {
+                     var11 /= 2;
+                  }
 
-               if(var13 > 192) {
-                  var12 /= 2;
-               }
+                  if(var12 > 192) {
+                     var11 /= 2;
+                  }
 
-               if(var13 > 217) {
-                  var12 /= 2;
-               }
+                  if(var12 > 217) {
+                     var11 /= 2;
+                  }
 
-               if(var13 > 243) {
-                  var12 /= 2;
-               }
+                  if(var12 > 243) {
+                     var11 /= 2;
+                  }
 
-               int var14 = var13 / 2 + (var12 / 32 << 7) + (var11 / 4 << 10);
-               int var15 = ChatLineBuffer.method1877(var14, 96);
-               var7 = class136.colorPalette[var15] | -16777216;
+                  int var13 = var12 / 2 + (var11 / 32 << 7) + (var10 / 4 << 10);
+                  int var14 = ChatLineBuffer.method1877(var13, 96);
+                  var9 = Graphics3D.colorPalette[var14] | -16777216;
+               }
             }
 
             if(var3.field408[var5][var1][var2] == 0) {
-               Rasterizer2D.method4983(this.field493 * var1, this.field493 * (63 - var2), this.field493, this.field493, var7);
+               Rasterizer2D.method4983(this.field493 * var1, this.field493 * (63 - var2), this.field493, this.field493, var9);
             } else {
-               var4.method685(this.field493 * var1, this.field493 * (63 - var2), 0, var7, this.field493, this.field493, var3.field408[var5][var1][var2], var3.field419[var5][var1][var2]);
+               var4.method685(this.field493 * var1, this.field493 * (63 - var2), 0, var9, this.field493, this.field493, var3.field408[var5][var1][var2], var3.field419[var5][var1][var2]);
             }
          }
       }
@@ -997,14 +1000,14 @@ public class class34 {
                   class39 var10 = (class39)this.field498.get(field496);
                   if(var10 != null) {
                      if(var9.field3297 != var10.field548) {
-                        class39 var16 = new class39(var9.field3297, var10.field547, var10.field550, this.method395(var9));
-                        this.field498.put(new Coordinates(field496), var16);
-                        var10 = var16;
+                        class39 var15 = new class39(var9.field3297, var10.field547, var10.field550, this.method395(var9));
+                        this.field498.put(new Coordinates(field496), var15);
+                        var10 = var15;
                      }
 
-                     int var15 = var10.field547.plane - var10.field550.plane;
+                     int var16 = var10.field547.plane - var10.field550.plane;
                      var10.field550.plane = var4;
-                     var10.field547.plane = var15 + var4;
+                     var10.field547.plane = var16 + var4;
                      return;
                   }
 
@@ -1133,21 +1136,24 @@ public class class34 {
       signature = "(LPacketBuffer;IS)V",
       garbageValue = "1407"
    )
-   static void method505(PacketBuffer var0, int var1) {
-      boolean var2 = var0.method3388(1) == 1;
+   @Export("decodeMovement")
+   static void decodeMovement(PacketBuffer var0, int var1) {
+      boolean var2 = var0.getBits(1) == 1;
       if(var2) {
          class96.field1529[++class96.field1525 - 1] = var1;
       }
 
-      int var3 = var0.method3388(2);
+      int var3 = var0.getBits(2);
       Player var4 = Client.cachedPlayers[var1];
       if(var3 == 0) {
          if(var2) {
             var4.field913 = false;
-         } else if(Client.localInteractingIndex == var1) {
-            throw new RuntimeException();
          } else {
-            class96.field1522[var1] = (var4.pathY[0] + class266.baseY >> 13) + (var4.pathX[0] + class50.baseX >> 13 << 14) + (var4.field911 << 28);
+            if(Client.localInteractingIndex == var1) {
+               throw new RuntimeException();
+            }
+
+            class96.field1522[var1] = (var4.pathY[0] + class266.baseY >> 13) + (var4.pathX[0] + KeyFocusListener.baseX >> 13 << 14) + (var4.field911 << 28);
             if(var4.field1266 != -1) {
                class96.field1526[var1] = var4.field1266;
             } else {
@@ -1156,17 +1162,16 @@ public class class34 {
 
             class96.field1527[var1] = var4.interacting;
             Client.cachedPlayers[var1] = null;
-            if(var0.method3388(1) != 0) {
-               class149.method2899(var0, var1);
+            if(var0.getBits(1) != 0) {
+               class149.decodeRegionHash(var0, var1);
             }
-
          }
       } else {
          int var5;
          int var6;
          int var7;
          if(var3 == 1) {
-            var5 = var0.method3388(3);
+            var5 = var0.getBits(3);
             var6 = var4.pathX[0];
             var7 = var4.pathY[0];
             if(var5 == 0) {
@@ -1191,20 +1196,21 @@ public class class34 {
                ++var7;
             }
 
-            if(Client.localInteractingIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
+            if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
+               if(var2) {
+                  var4.field913 = true;
+                  var4.field917 = var6;
+                  var4.field915 = var7;
+               } else {
+                  var4.field913 = false;
+                  var4.method1158(var6, var7, class96.field1519[var1]);
+               }
+            } else {
                var4.method1176(var6, var7);
                var4.field913 = false;
-            } else if(var2) {
-               var4.field913 = true;
-               var4.field917 = var6;
-               var4.field915 = var7;
-            } else {
-               var4.field913 = false;
-               var4.method1158(var6, var7, class96.field1519[var1]);
             }
-
          } else if(var3 == 2) {
-            var5 = var0.method3388(4);
+            var5 = var0.getBits(4);
             var6 = var4.pathX[0];
             var7 = var4.pathY[0];
             if(var5 == 0) {
@@ -1253,26 +1259,27 @@ public class class34 {
                var7 += 2;
             }
 
-            if(Client.localInteractingIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
+            if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
+               if(var2) {
+                  var4.field913 = true;
+                  var4.field917 = var6;
+                  var4.field915 = var7;
+               } else {
+                  var4.field913 = false;
+                  var4.method1158(var6, var7, class96.field1519[var1]);
+               }
+            } else {
                var4.method1176(var6, var7);
                var4.field913 = false;
-            } else if(var2) {
-               var4.field913 = true;
-               var4.field917 = var6;
-               var4.field915 = var7;
-            } else {
-               var4.field913 = false;
-               var4.method1158(var6, var7, class96.field1519[var1]);
             }
-
          } else {
-            var5 = var0.method3388(1);
+            var5 = var0.getBits(1);
             int var8;
             int var9;
             int var10;
             int var11;
             if(var5 == 0) {
-               var6 = var0.method3388(12);
+               var6 = var0.getBits(12);
                var7 = var6 >> 10;
                var8 = var6 >> 5 & 31;
                if(var8 > 15) {
@@ -1302,36 +1309,33 @@ public class class34 {
                if(Client.localInteractingIndex == var1) {
                   WallObject.plane = var4.field911;
                }
-
             } else {
-               var6 = var0.method3388(30);
+               var6 = var0.getBits(30);
                var7 = var6 >> 28;
                var8 = var6 >> 14 & 16383;
                var9 = var6 & 16383;
-               var10 = (var8 + var4.pathX[0] + class50.baseX & 16383) - class50.baseX;
+               var10 = (var8 + var4.pathX[0] + KeyFocusListener.baseX & 16383) - KeyFocusListener.baseX;
                var11 = (var9 + var4.pathY[0] + class266.baseY & 16383) - class266.baseY;
-               if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-                  if(var2) {
-                     var4.field913 = true;
-                     var4.field917 = var10;
-                     var4.field915 = var11;
-                  } else {
-                     var4.field913 = false;
-                     var4.method1158(var10, var11, class96.field1519[var1]);
-                  }
-               } else {
+               if(Client.localInteractingIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
                   var4.method1176(var10, var11);
                   var4.field913 = false;
+               } else if(var2) {
+                  var4.field913 = true;
+                  var4.field917 = var10;
+                  var4.field915 = var11;
+               } else {
+                  var4.field913 = false;
+                  var4.method1158(var10, var11, class96.field1519[var1]);
                }
 
                var4.field911 = (byte)(var4.field911 + var7 & 3);
                if(Client.localInteractingIndex == var1) {
                   WallObject.plane = var4.field911;
                }
-
             }
          }
       }
+
    }
 
    @ObfuscatedName("i")
@@ -1348,10 +1352,14 @@ public class class34 {
       class39.field555 = new int[4][105][105];
       class61.field771 = new byte[4][105][105];
       class61.field774 = new int[105][105];
-      class17.field316 = new int[104];
-      class230.field3190 = new int[104];
+      class17.blendedHue = new int[104];
+      Permission.blendedSaturation = new int[104];
       class10.field258 = new int[104];
-      class158.field2273 = new int[104];
+      Timer.field2273 = new int[104];
       Buffer.field2406 = new int[104];
+   }
+
+   static {
+      field496 = new Coordinates();
    }
 }

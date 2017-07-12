@@ -21,7 +21,8 @@ public class class45 extends class28 {
    )
    int field615;
    @ObfuscatedName("fc")
-   static int[] field616;
+   @Export("landRegionFielIds")
+   static int[] landRegionFielIds;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 1160863115
@@ -163,6 +164,6 @@ public class class45 extends class28 {
          var1 = var1.substring(0, var2) + "," + var1.substring(var2);
       }
 
-      return var1.length() > 9?" " + class220.method4055('ﾀ') + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + class220.method4055(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + class220.method4055(16776960) + var1 + "</col>");
+      return var1.length() > 9?" " + class220.getColTags('ﾀ') + var1.substring(0, var1.length() - 8) + "M  (" + var1 + ")</col>":(var1.length() > 6?" " + class220.getColTags(16777215) + var1.substring(0, var1.length() - 4) + "K  (" + var1 + ")</col>":" " + class220.getColTags(16776960) + var1 + "</col>");
    }
 }

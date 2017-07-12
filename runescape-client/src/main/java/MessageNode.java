@@ -50,7 +50,7 @@ public class MessageNode extends CacheableNode {
       int var2 = var0.offset;
       byte[] var3 = ItemComposition.method4634(var1);
       var0.putShortSmart(var3.length);
-      var0.offset += class265.field3665.method3065(var3, 0, var3.length, var0.payload, var0.offset);
+      var0.offset += class265.field3665.compress(var3, 0, var3.length, var0.payload, var0.offset);
       return var0.offset - var2;
    }
 
@@ -73,8 +73,8 @@ public class MessageNode extends CacheableNode {
       int var6 = var3 * var3 + var2 * var2;
       if(var6 > 4225 && var6 < 90000) {
          int var7 = Client.mapScale + Client.mapAngle & 2047;
-         int var8 = class136.SINE[var7];
-         int var9 = class136.COSINE[var7];
+         int var8 = Graphics3D.SINE[var7];
+         int var9 = Graphics3D.COSINE[var7];
          var8 = var8 * 256 / (Client.mapScaleDelta + 256);
          var9 = var9 * 256 / (Client.mapScaleDelta + 256);
          int var10 = var3 * var8 + var2 * var9 >> 16;
@@ -82,9 +82,9 @@ public class MessageNode extends CacheableNode {
          double var12 = Math.atan2((double)var10, (double)var11);
          int var14 = (int)(Math.sin(var12) * 63.0D);
          int var15 = (int)(Math.cos(var12) * 57.0D);
-         class31.field452.method5118(var0 + 94 + var14 + 4 - 10, var1 + 83 - var15 - 20, 20, 20, 15, 15, var12, 256);
+         class31.mapedge.method5118(var0 + 94 + var14 + 4 - 10, var1 + 83 - var15 - 20, 20, 20, 15, 15, var12, 256);
       } else {
-         class40.method560(var0, var1, var2, var3, var4, var5);
+         class40.drawDot(var0, var1, var2, var3, var4, var5);
       }
 
    }

@@ -45,7 +45,7 @@ public class class177 {
                   var9 += var2[var4++];
                   var10 = PacketBuffer.method3403(var9);
                   var11 = var2[var4++];
-                  if(var11 != -1 && (!class176.getItemDefinition(var11).isMembers || Client.isMembers)) {
+                  if(var11 != -1 && (!AbstractByteBuffer.getItemDefinition(var11).isMembers || Client.isMembers)) {
                      for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
                         if(1 + var11 == var10.itemIds[var12]) {
                            var7 += var10.itemQuantities[var12];
@@ -83,7 +83,7 @@ public class class177 {
                   var9 += var2[var4++];
                   var10 = PacketBuffer.method3403(var9);
                   var11 = var2[var4++];
-                  if(var11 != -1 && (!class176.getItemDefinition(var11).isMembers || Client.isMembers)) {
+                  if(var11 != -1 && (!AbstractByteBuffer.getItemDefinition(var11).isMembers || Client.isMembers)) {
                      for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
                         if(var11 + 1 == var10.itemIds[var12]) {
                            var7 = 999999999;
@@ -125,7 +125,7 @@ public class class177 {
                }
 
                if(var6 == 18) {
-                  var7 = (XItemContainer.localPlayer.x >> 7) + class50.baseX;
+                  var7 = (XItemContainer.localPlayer.x >> 7) + KeyFocusListener.baseX;
                }
 
                if(var6 == 19) {

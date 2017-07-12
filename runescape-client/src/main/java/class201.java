@@ -9,7 +9,7 @@ public class class201 implements Iterable {
    @ObfuscatedName("w")
    public void method3642(CacheableNode var1) {
       if(var1.next != null) {
-         var1.method3604();
+         var1.unlinkDual();
       }
 
       var1.next = this.field2492.next;
@@ -31,7 +31,7 @@ public class class201 implements Iterable {
    @ObfuscatedName("i")
    public void method3645() {
       while(this.field2492 != this.field2492.previous) {
-         this.field2492.previous.method3604();
+         this.field2492.previous.unlinkDual();
       }
 
    }

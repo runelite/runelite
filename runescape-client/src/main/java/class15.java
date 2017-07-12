@@ -23,7 +23,7 @@ final class class15 implements Comparator {
    static final void method79(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       PendingSpawn var9 = null;
 
-      for(PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.method3584(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.method3578()) {
+      for(PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.getFront(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.getNext()) {
          if(var0 == var10.level && var1 == var10.x && var2 == var10.y && var3 == var10.type) {
             var9 = var10;
             break;
@@ -37,7 +37,7 @@ final class class15 implements Comparator {
          var9.x = var1;
          var9.y = var2;
          class3.method10(var9);
-         Client.pendingSpawns.method3603(var9);
+         Client.pendingSpawns.addFront(var9);
       }
 
       var9.id = var4;

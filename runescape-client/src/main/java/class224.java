@@ -20,18 +20,18 @@ public class class224 {
    )
    @Export("getAnimation")
    public static Sequence getAnimation(int var0) {
-      Sequence var1 = (Sequence)Sequence.field3608.get((long)var0);
+      Sequence var1 = (Sequence)Sequence.sequences.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = Sequence.field3617.getConfigData(12, var0);
+         byte[] var2 = Sequence.seq_ref.getConfigData(12, var0);
          var1 = new Sequence();
          if(var2 != null) {
-            var1.method4689(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
-         var1.method4732();
-         Sequence.field3608.put(var1, (long)var0);
+         var1.post();
+         Sequence.sequences.put(var1, (long)var0);
          return var1;
       }
    }

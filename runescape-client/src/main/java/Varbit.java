@@ -14,9 +14,11 @@ public class Varbit extends CacheableNode {
    @Export("configId")
    public int configId;
    @ObfuscatedName("w")
-   public static NodeCache field3390;
+   @Export("varbits")
+   public static NodeCache varbits;
    @ObfuscatedName("i")
-   public static IndexDataBase field3391;
+   @Export("varbit_ref")
+   public static IndexDataBase varbit_ref;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = 1582991053
@@ -35,7 +37,8 @@ public class Varbit extends CacheableNode {
       signature = "(LBuffer;B)V",
       garbageValue = "0"
    )
-   public void method4426(Buffer var1) {
+   @Export("decode")
+   public void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
@@ -56,10 +59,6 @@ public class Varbit extends CacheableNode {
       return var2 == 0?var1:(var2 == 1?7 - var0:(var2 == 2?7 - var1:var0));
    }
 
-   static {
-      field3390 = new NodeCache(64);
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(LBuffer;II)V",
@@ -72,5 +71,9 @@ public class Varbit extends CacheableNode {
          this.mostSignificantBit = var1.readUnsignedByte();
       }
 
+   }
+
+   static {
+      varbits = new NodeCache(64);
    }
 }

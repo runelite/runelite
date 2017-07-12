@@ -23,7 +23,7 @@ public class class223 {
       if(var3 == null) {
          return false;
       } else {
-         Spotanim.method4355(var3);
+         Spotanim.decodeSprite(var3);
          return true;
       }
    }

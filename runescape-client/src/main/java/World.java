@@ -14,7 +14,8 @@ public class World {
    @ObfuscatedGetter(
       intValue = -1589696071
    )
-   static int field1309;
+   @Export("worldCount")
+   static int worldCount;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 2098490881
@@ -126,13 +127,6 @@ public class World {
       return (33554432 & this.mask) != 0;
    }
 
-   static {
-      field1309 = 0;
-      field1310 = 0;
-      field1318 = new int[]{1, 1, 1, 1};
-      field1312 = new int[]{0, 1, 2, 3};
-   }
-
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(I)Z",
@@ -140,5 +134,12 @@ public class World {
    )
    boolean method1577() {
       return (536870912 & this.mask) != 0;
+   }
+
+   static {
+      worldCount = 0;
+      field1310 = 0;
+      field1318 = new int[]{1, 1, 1, 1};
+      field1312 = new int[]{0, 1, 2, 3};
    }
 }

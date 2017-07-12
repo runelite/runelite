@@ -1,0 +1,131 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedName;
+
+@ObfuscatedName("df")
+@Implements("Residue")
+public class Residue {
+   @ObfuscatedName("r")
+   @Export("classBook")
+   int classBook;
+   @ObfuscatedName("i")
+   @Export("type")
+   int type;
+   @ObfuscatedName("a")
+   @Export("end")
+   int end;
+   @ObfuscatedName("t")
+   @Export("partitionSize")
+   int partitionSize;
+   @ObfuscatedName("s")
+   @Export("classification")
+   int classification;
+   @ObfuscatedName("w")
+   @Export("begin")
+   int begin;
+   @ObfuscatedName("v")
+   int[] field1691;
+
+   Residue() {
+      this.type = class106.getInt(16);
+      this.begin = class106.getInt(24);
+      this.end = class106.getInt(24);
+      this.partitionSize = class106.getInt(24) + 1;
+      this.classification = class106.getInt(6) + 1;
+      this.classBook = class106.getInt(8);
+      int[] var1 = new int[this.classification];
+
+      int var2;
+      for(var2 = 0; var2 < this.classification; ++var2) {
+         int var3 = 0;
+         int var4 = class106.getInt(3);
+         boolean var5 = class106.getBit() != 0;
+         if(var5) {
+            var3 = class106.getInt(5);
+         }
+
+         var1[var2] = var3 << 3 | var4;
+      }
+
+      this.field1691 = new int[this.classification * 8];
+
+      for(var2 = 0; var2 < this.classification * 8; ++var2) {
+         this.field1691[var2] = (var1[var2 >> 3] & 1 << (var2 & 7)) != 0?class106.getInt(8):-1;
+      }
+
+   }
+
+   @ObfuscatedName("i")
+   @Export("decodeResidue")
+   void decodeResidue(float[] var1, int var2, boolean var3) {
+      int var4;
+      for(var4 = 0; var4 < var2; ++var4) {
+         var1[var4] = 0.0F;
+      }
+
+      if(!var3) {
+         var4 = class106.codeBooks[this.classBook].dimensions;
+         int var5 = this.end - this.begin;
+         int var6 = var5 / this.partitionSize;
+         int[] var7 = new int[var6];
+
+         for(int var8 = 0; var8 < 8; ++var8) {
+            int var9 = 0;
+
+            while(var9 < var6) {
+               int var10;
+               int var11;
+               if(var8 == 0) {
+                  var10 = class106.codeBooks[this.classBook].getHuffmanRoot();
+
+                  for(var11 = var4 - 1; var11 >= 0; --var11) {
+                     if(var11 + var9 < var6) {
+                        var7[var11 + var9] = var10 % this.classification;
+                     }
+
+                     var10 /= this.classification;
+                  }
+               }
+
+               for(var10 = 0; var10 < var4; ++var10) {
+                  var11 = var7[var9];
+                  int var12 = this.field1691[var8 + var11 * 8];
+                  if(var12 >= 0) {
+                     int var13 = this.begin + this.partitionSize * var9;
+                     CodeBook var14 = class106.codeBooks[var12];
+                     int var15;
+                     if(this.type == 0) {
+                        var15 = this.partitionSize / var14.dimensions;
+
+                        for(int var19 = 0; var19 < var15; ++var19) {
+                           float[] var20 = var14.method1933();
+
+                           for(int var18 = 0; var18 < var14.dimensions; ++var18) {
+                              var1[var13 + var19 + var18 * var15] += var20[var18];
+                           }
+                        }
+                     } else {
+                        var15 = 0;
+
+                        while(var15 < this.partitionSize) {
+                           float[] var16 = var14.method1933();
+
+                           for(int var17 = 0; var17 < var14.dimensions; ++var17) {
+                              var1[var13 + var15] += var16[var17];
+                              ++var15;
+                           }
+                        }
+                     }
+                  }
+
+                  ++var9;
+                  if(var9 >= var6) {
+                     break;
+                  }
+               }
+            }
+         }
+      }
+
+   }
+}

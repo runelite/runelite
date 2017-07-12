@@ -107,30 +107,30 @@ public class class204 extends class119 {
       var1.method3892();
       boolean var5 = true;
       Object var6 = null;
-      int[] var12 = new int[]{var4};
+      int[] var7 = new int[]{var4};
 
-      for(class199 var7 = (class199)var1.field2600.method3533(); var7 != null; var7 = (class199)var1.field2600.method3538()) {
-         int var8 = (int)var7.hash;
-         class207 var9 = (class207)this.field2530.method3530((long)var8);
-         if(var9 == null) {
-            byte[] var11 = var2.method4120(var8);
-            class207 var10;
+      for(class199 var8 = (class199)var1.field2600.method3533(); var8 != null; var8 = (class199)var1.field2600.method3538()) {
+         int var9 = (int)var8.hash;
+         class207 var10 = (class207)this.field2530.get((long)var9);
+         if(var10 == null) {
+            byte[] var11 = var2.method4120(var9);
+            class207 var12;
             if(var11 == null) {
-               var10 = null;
+               var12 = null;
             } else {
-               var10 = new class207(var11);
+               var12 = new class207(var11);
             }
 
-            var9 = var10;
-            if(var10 == null) {
+            var10 = var12;
+            if(var12 == null) {
                var5 = false;
                continue;
             }
 
-            this.field2530.method3529(var10, (long)var8);
+            this.field2530.put(var12, (long)var9);
          }
 
-         if(!var9.method3859(var3, var7.field2488, var12)) {
+         if(!var10.method3859(var3, var8.field2488, var7)) {
             var5 = false;
          }
       }
@@ -221,7 +221,7 @@ public class class204 extends class119 {
       if(var4 != null) {
          this.field2536[var1][var2] = null;
          if((this.field2531[var1] & 2) != 0) {
-            for(class205 var5 = (class205)this.field2544.field2594.method3584(); var5 != null; var5 = (class205)this.field2544.field2594.method3578()) {
+            for(class205 var5 = (class205)this.field2544.field2594.getFront(); var5 != null; var5 = (class205)this.field2544.field2594.getNext()) {
                if(var5.field2559 == var4.field2559 && var5.field2560 < 0 && var4 != var5) {
                   var4.field2560 = 0;
                   break;
@@ -230,8 +230,8 @@ public class class204 extends class119 {
          } else {
             var4.field2560 = 0;
          }
-
       }
+
    }
 
    @ObfuscatedName("q")
@@ -257,10 +257,10 @@ public class class204 extends class119 {
       garbageValue = "1195279213"
    )
    void method3684(int var1) {
-      for(class205 var2 = (class205)this.field2544.field2594.method3584(); var2 != null; var2 = (class205)this.field2544.field2594.method3578()) {
+      for(class205 var2 = (class205)this.field2544.field2594.getFront(); var2 != null; var2 = (class205)this.field2544.field2594.getNext()) {
          if(var1 < 0 || var2.field2559 == var1) {
             if(var2.field2564 != null) {
-               var2.field2564.method2140(FileSystem.field3211 / 100);
+               var2.field2564.method2140(FileSystem.sampleRate / 100);
                if(var2.field2564.method2251()) {
                   this.field2544.field2595.method1890(var2.field2564);
                }
@@ -302,8 +302,8 @@ public class class204 extends class119 {
          for(var1 = 0; var1 < 16; ++var1) {
             this.method3685(var1);
          }
-
       }
+
    }
 
    @ObfuscatedName("x")
@@ -312,7 +312,7 @@ public class class204 extends class119 {
       garbageValue = "1"
    )
    void method3686(int var1) {
-      for(class205 var2 = (class205)this.field2544.field2594.method3584(); var2 != null; var2 = (class205)this.field2544.field2594.method3578()) {
+      for(class205 var2 = (class205)this.field2544.field2594.getFront(); var2 != null; var2 = (class205)this.field2544.field2594.getNext()) {
          if((var1 < 0 || var2.field2559 == var1) && var2.field2560 < 0) {
             this.field2536[var2.field2559][var2.field2551] = null;
             var2.field2560 = 0;
@@ -348,7 +348,7 @@ public class class204 extends class119 {
    )
    void method3689(int var1) {
       if((this.field2531[var1] & 4) != 0) {
-         for(class205 var2 = (class205)this.field2544.field2594.method3584(); var2 != null; var2 = (class205)this.field2544.field2594.method3578()) {
+         for(class205 var2 = (class205)this.field2544.field2594.getFront(); var2 != null; var2 = (class205)this.field2544.field2594.getNext()) {
             if(var2.field2559 == var1) {
                var2.field2556 = 0;
             }
@@ -389,7 +389,7 @@ public class class204 extends class119 {
          var2 += (int)(var6 * (double)var4);
       }
 
-      var4 = (int)((double)(var1.field2548.field1633 * 256) * Math.pow(2.0D, (double)var2 * 3.255208333333333E-4D) / (double)FileSystem.field3211 + 0.5D);
+      var4 = (int)((double)(var1.field2548.field1633 * 256) * Math.pow(2.0D, (double)var2 * 3.255208333333333E-4D) / (double)FileSystem.sampleRate + 0.5D);
       return var4 < 1?1:var4;
    }
 
@@ -498,7 +498,7 @@ public class class204 extends class119 {
    @ObfuscatedName("j")
    protected synchronized void vmethod3889(int[] var1, int var2, int var3) {
       if(this.field2538.method3809()) {
-         int var4 = this.field2520 * this.field2538.field2568 / FileSystem.field3211;
+         int var4 = this.field2520 * this.field2538.field2568 / FileSystem.sampleRate;
 
          do {
             long var5 = (long)var4 * (long)var3 + this.field2524;
@@ -591,7 +591,7 @@ public class class204 extends class119 {
       garbageValue = "953991035"
    )
    boolean method3701(class205 var1, int[] var2, int var3, int var4) {
-      var1.field2563 = FileSystem.field3211 / 100;
+      var1.field2563 = FileSystem.sampleRate / 100;
       if(var1.field2560 < 0 || var1.field2564 != null && !var1.field2564.method2135()) {
          int var5 = var1.field2549;
          if(var5 > 0) {
@@ -711,7 +711,7 @@ public class class204 extends class119 {
    @ObfuscatedName("e")
    protected synchronized void vmethod3885(int var1) {
       if(this.field2538.method3809()) {
-         int var2 = this.field2520 * this.field2538.field2568 / FileSystem.field3211;
+         int var2 = this.field2520 * this.field2538.field2568 / FileSystem.sampleRate;
 
          do {
             long var3 = this.field2524 + (long)var2 * (long)var1;
@@ -739,7 +739,7 @@ public class class204 extends class119 {
    void method3732(int var1, int var2, int var3) {
       this.method3680(var1, var2, 64);
       if((this.field2531[var1] & 2) != 0) {
-         for(class205 var4 = (class205)this.field2544.field2594.method3585(); var4 != null; var4 = (class205)this.field2544.field2594.method3591()) {
+         for(class205 var4 = (class205)this.field2544.field2594.getTail(); var4 != null; var4 = (class205)this.field2544.field2594.getPrevious()) {
             if(var4.field2559 == var1 && var4.field2560 < 0) {
                this.field2536[var1][var4.field2551] = null;
                this.field2536[var1][var2] = var4;
@@ -753,33 +753,33 @@ public class class204 extends class119 {
          }
       }
 
-      class207 var9 = (class207)this.field2530.method3530((long)this.field2528[var1]);
-      if(var9 != null) {
-         class107 var8 = var9.field2586[var2];
-         if(var8 != null) {
+      class207 var8 = (class207)this.field2530.get((long)this.field2528[var1]);
+      if(var8 != null) {
+         class107 var9 = var8.field2586[var2];
+         if(var9 != null) {
             class205 var6 = new class205();
             var6.field2559 = var1;
-            var6.field2547 = var9;
-            var6.field2548 = var8;
-            var6.field2566 = var9.field2581[var2];
-            var6.field2550 = var9.field2583[var2];
+            var6.field2547 = var8;
+            var6.field2548 = var9;
+            var6.field2566 = var8.field2581[var2];
+            var6.field2550 = var8.field2583[var2];
             var6.field2551 = var2;
-            var6.field2552 = var9.field2588 * var3 * var3 * var9.field2584[var2] + 1024 >> 11;
-            var6.field2553 = var9.field2585[var2] & 255;
-            var6.field2554 = (var2 << 8) - (var9.field2590[var2] & 32767);
+            var6.field2552 = var8.field2588 * var3 * var3 * var8.field2584[var2] + 1024 >> 11;
+            var6.field2553 = var8.field2585[var2] & 255;
+            var6.field2554 = (var2 << 8) - (var8.field2590[var2] & 32767);
             var6.field2557 = 0;
             var6.field2558 = 0;
             var6.field2546 = 0;
             var6.field2560 = -1;
             var6.field2561 = 0;
             if(this.field2533[var1] == 0) {
-               var6.field2564 = class117.method2127(var8, this.method3692(var6), this.method3693(var6), this.method3799(var6));
+               var6.field2564 = class117.method2127(var9, this.method3692(var6), this.method3693(var6), this.method3799(var6));
             } else {
-               var6.field2564 = class117.method2127(var8, this.method3692(var6), 0, this.method3799(var6));
-               this.method3720(var6, var9.field2590[var2] < 0);
+               var6.field2564 = class117.method2127(var9, this.method3692(var6), 0, this.method3799(var6));
+               this.method3720(var6, var8.field2590[var2] < 0);
             }
 
-            if(var9.field2590[var2] < 0) {
+            if(var8.field2590[var2] < 0) {
                var6.field2564.method2126(-1);
             }
 
@@ -793,10 +793,11 @@ public class class204 extends class119 {
                this.field2539[var1][var6.field2550] = var6;
             }
 
-            this.field2544.field2594.method3603(var6);
+            this.field2544.field2594.addFront(var6);
             this.field2536[var1][var2] = var6;
          }
       }
+
    }
 
    @ObfuscatedName("o")
@@ -830,7 +831,7 @@ public class class204 extends class119 {
    )
    void method3745(int var1) {
       if((this.field2531[var1] & 2) != 0) {
-         for(class205 var2 = (class205)this.field2544.field2594.method3584(); var2 != null; var2 = (class205)this.field2544.field2594.method3578()) {
+         for(class205 var2 = (class205)this.field2544.field2594.getFront(); var2 != null; var2 = (class205)this.field2544.field2594.getNext()) {
             if(var2.field2559 == var1 && this.field2536[var1][var2.field2551] == null && var2.field2560 < 0) {
                var2.field2560 = 0;
             }
@@ -863,7 +864,6 @@ public class class204 extends class119 {
          } else {
             this.method3680(var3, var4, 64);
          }
-
       } else if(var2 == 160) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
@@ -1005,7 +1005,6 @@ public class class204 extends class119 {
          if(var4 == 49) {
             this.method3691(var3, var5 + (this.field2529[var3] & -128));
          }
-
       } else if(var2 == 192) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
@@ -1024,6 +1023,7 @@ public class class204 extends class119 {
             this.method3687();
          }
       }
+
    }
 
    @ObfuscatedName("p")

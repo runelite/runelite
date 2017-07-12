@@ -70,7 +70,7 @@ final class class3 implements class0 {
       int var11 = -1;
 
       while(true) {
-         int var12 = var10.method3159();
+         int var12 = var10.getUSmart();
          if(var12 == 0) {
             return;
          }
@@ -79,7 +79,7 @@ final class class3 implements class0 {
          int var13 = 0;
 
          while(true) {
-            int var14 = var10.method3159();
+            int var14 = var10.getUSmart();
             if(var14 == 0) {
                break;
             }
@@ -106,7 +106,7 @@ final class class3 implements class0 {
                      var25 = var9[var24];
                   }
 
-                  class211.method3906(var1, var22, var23, var11, var20 + var7 & 3, var19, var8, var25);
+                  class211.addObject(var1, var22, var23, var11, var20 + var7 & 3, var19, var8, var25);
                }
             }
          }

@@ -13,12 +13,12 @@ public class class217 {
          class155.field2259.method2333();
 
          for(int var0 = 0; var0 < class182.field2445; ++var0) {
-            class4.field32[var0].method2333();
+            BaseVarType.field32[var0].method2333();
          }
 
          class155.field2262.method2333();
          class155.field2258.method2333();
-      } catch (Exception var2) {
+      } catch (Exception var1) {
          ;
       }
 

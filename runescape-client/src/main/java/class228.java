@@ -39,14 +39,14 @@ public enum class228 implements RSEnum {
    )
    static int method4084(int var0, int var1) {
       long var2 = (long)((var0 << 16) + var1);
-      return class7.field237 != null && class7.field237.hash == var2?class39.field559.offset * 99 / (class39.field559.payload.length - class7.field237.field3218) + 1:0;
+      return class7.currentRequest != null && class7.currentRequest.hash == var2?class39.field559.offset * 99 / (class39.field559.payload.length - class7.currentRequest.padding) + 1:0;
    }
 
    @ObfuscatedSignature(
       signature = "(II)V",
       garbageValue = "0"
    )
-   class228(int var3, int var4) {
+   private class228(int var3, int var4) {
       this.field3167 = var3;
       this.field3156 = var4;
    }
@@ -66,7 +66,7 @@ public enum class228 implements RSEnum {
       garbageValue = "-721249226"
    )
    public static void method4093() {
-      Spotanim.field3330.reset();
+      Spotanim.spotanims.reset();
       Spotanim.field3333.reset();
    }
 }

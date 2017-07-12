@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -13,7 +14,8 @@ public class class170 {
       signature = "(ZI)V",
       garbageValue = "1202154413"
    )
-   public static void method3115(boolean var0) {
+   @Export("sendConInfo")
+   public static void sendConInfo(boolean var0) {
       if(class238.field3272 != null) {
          try {
             Buffer var1 = new Buffer(4);
@@ -30,8 +32,8 @@ public class class170 {
             ++class238.field3278;
             class238.field3272 = null;
          }
-
       }
+
    }
 
    @ObfuscatedName("i")
@@ -40,10 +42,10 @@ public class class170 {
       garbageValue = "-1488226804"
    )
    public static void method3116(IndexDataBase var0, IndexDataBase var1, boolean var2, Font var3) {
-      class229.field3172 = var0;
+      class229.item_ref = var0;
       FileSystem.field3207 = var1;
       XItemContainer.isMembersWorld = var2;
-      CombatInfoListHolder.field1389 = class229.field3172.method4133(10);
+      CombatInfoListHolder.field1389 = class229.item_ref.fileCount(10);
       class252.field3407 = var3;
    }
 
@@ -70,7 +72,7 @@ public class class170 {
          var4.field2659 = class83.intStack[class46.intStackSize + 2];
          var4.field2660 = class83.intStack[class46.intStackSize + 3];
          class88.method1714(var4);
-         class261.field3632.method1343(var4);
+         class261.clientInstance.method1343(var4);
          if(var3 != -1 && var4.type == 0) {
             WorldMapType2.method546(class46.widgets[var3 >> 16], var4, false);
          }
@@ -81,9 +83,9 @@ public class class170 {
          var4.originalWidth = class83.intStack[class46.intStackSize];
          var4.field2707 = class83.intStack[class46.intStackSize + 1];
          var4.field2683 = class83.intStack[class46.intStackSize + 2];
-         var4.field2662 = class83.intStack[class46.intStackSize + 3];
+         var4.buttonType = class83.intStack[class46.intStackSize + 3];
          class88.method1714(var4);
-         class261.field3632.method1343(var4);
+         class261.clientInstance.method1343(var4);
          if(var3 != -1 && var4.type == 0) {
             WorldMapType2.method546(class46.widgets[var3 >> 16], var4, false);
          }

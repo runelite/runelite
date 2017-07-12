@@ -11,7 +11,8 @@ public final class Projectile extends Renderable {
    @ObfuscatedGetter(
       intValue = 1736306513
    )
-   int field1481;
+   @Export("endHeight")
+   int endHeight;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -1817799481
@@ -192,7 +193,7 @@ public final class Projectile extends Renderable {
       garbageValue = "-1914243094"
    )
    protected final Model getModel() {
-      Spotanim var1 = Renderable.method2864(this.id);
+      Spotanim var1 = Renderable.getSpotAnimType(this.id);
       Model var2 = var1.method4338(this.field1504);
       if(var2 == null) {
          return null;
@@ -216,9 +217,9 @@ public final class Projectile extends Renderable {
       this.slope = var8;
       this.start = var9;
       this.interacting = var10;
-      this.field1481 = var11;
+      this.endHeight = var11;
       this.isMoving = false;
-      int var12 = Renderable.method2864(this.id).field3332;
+      int var12 = Renderable.getSpotAnimType(this.id).field3332;
       if(var12 != -1) {
          this.animationSequence = class224.getAnimation(var12);
       } else {
@@ -271,9 +272,9 @@ public final class Projectile extends Renderable {
             --var16;
          }
 
-         double var20 = var0 - 0.3333333333333333D;
-         if(var20 < 0.0D) {
-            ++var20;
+         double var18 = var0 - 0.3333333333333333D;
+         if(var18 < 0.0D) {
+            ++var18;
          }
 
          if(var16 * 6.0D < 1.0D) {
@@ -296,21 +297,21 @@ public final class Projectile extends Renderable {
             var8 = var14;
          }
 
-         if(6.0D * var20 < 1.0D) {
-            var10 = var14 + 6.0D * (var12 - var14) * var20;
-         } else if(var20 * 2.0D < 1.0D) {
+         if(6.0D * var18 < 1.0D) {
+            var10 = var14 + 6.0D * (var12 - var14) * var18;
+         } else if(var18 * 2.0D < 1.0D) {
             var10 = var12;
-         } else if(var20 * 3.0D < 2.0D) {
-            var10 = (var12 - var14) * (0.6666666666666666D - var20) * 6.0D + var14;
+         } else if(var18 * 3.0D < 2.0D) {
+            var10 = (var12 - var14) * (0.6666666666666666D - var18) * 6.0D + var14;
          } else {
             var10 = var14;
          }
       }
 
-      int var22 = (int)(256.0D * var6);
+      int var20 = (int)(256.0D * var6);
       int var13 = (int)(var8 * 256.0D);
-      int var23 = (int)(var10 * 256.0D);
-      int var15 = var23 + (var13 << 8) + (var22 << 16);
+      int var21 = (int)(var10 * 256.0D);
+      int var15 = var21 + (var13 << 8) + (var20 << 16);
       return var15;
    }
 }

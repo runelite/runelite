@@ -12,7 +12,8 @@ final class class18 implements Comparator {
    @Export("indexSprites")
    static IndexData indexSprites;
    @ObfuscatedName("v")
-   public static short[] field323;
+   @Export("colorsToFind")
+   public static short[] colorsToFind;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
@@ -73,7 +74,7 @@ final class class18 implements Comparator {
       if(WallObject.plane != Client.field1154) {
          Client.field1154 = WallObject.plane;
          int var0 = WallObject.plane;
-         int[] var1 = class59.field758.image;
+         int[] var1 = MouseInput.field758.image;
          int var2 = var1.length;
 
          int var3;
@@ -101,7 +102,7 @@ final class class18 implements Comparator {
 
          var3 = (238 + (int)(Math.random() * 20.0D) - 10 << 16) + (238 + (int)(Math.random() * 20.0D) - 10 << 8) + (238 + (int)(Math.random() * 20.0D) - 10);
          var4 = 238 + (int)(Math.random() * 20.0D) - 10 << 16;
-         class59.field758.method5059();
+         MouseInput.field758.method5059();
 
          int var6;
          for(var5 = 1; var5 < 103; ++var5) {
@@ -128,23 +129,23 @@ final class class18 implements Comparator {
                      int var9 = var5;
                      int var10 = var6;
                      if(var8 != 22 && var8 != 29 && var8 != 34 && var8 != 36 && var8 != 46 && var8 != 47 && var8 != 48) {
-                        int[][] var13 = Client.collisionMaps[WallObject.plane].flags;
+                        int[][] var11 = Client.collisionMaps[WallObject.plane].flags;
 
-                        for(int var14 = 0; var14 < 10; ++var14) {
-                           int var15 = (int)(Math.random() * 4.0D);
-                           if(var15 == 0 && var9 > 0 && var9 > var5 - 3 && (var13[var9 - 1][var10] & 19136776) == 0) {
+                        for(int var12 = 0; var12 < 10; ++var12) {
+                           int var13 = (int)(Math.random() * 4.0D);
+                           if(var13 == 0 && var9 > 0 && var9 > var5 - 3 && (var11[var9 - 1][var10] & 19136776) == 0) {
                               --var9;
                            }
 
-                           if(var15 == 1 && var9 < 103 && var9 < var5 + 3 && (var13[var9 + 1][var10] & 19136896) == 0) {
+                           if(var13 == 1 && var9 < 103 && var9 < var5 + 3 && (var11[var9 + 1][var10] & 19136896) == 0) {
                               ++var9;
                            }
 
-                           if(var15 == 2 && var10 > 0 && var10 > var6 - 3 && (var13[var9][var10 - 1] & 19136770) == 0) {
+                           if(var13 == 2 && var10 > 0 && var10 > var6 - 3 && (var11[var9][var10 - 1] & 19136770) == 0) {
                               --var10;
                            }
 
-                           if(var15 == 3 && var10 < 103 && var10 < var6 + 3 && (var13[var9][var10 + 1] & 19136800) == 0) {
+                           if(var13 == 3 && var10 < 103 && var10 < var6 + 3 && (var11[var9][var10 + 1] & 19136800) == 0) {
                               ++var10;
                            }
                         }
@@ -159,7 +160,7 @@ final class class18 implements Comparator {
             }
          }
 
-         class43.field602.method5006();
+         class43.field602.setRaster();
       }
 
    }
@@ -171,15 +172,15 @@ final class class18 implements Comparator {
    )
    public static Frames method133(IndexDataBase var0, IndexDataBase var1, int var2, boolean var3) {
       boolean var4 = true;
-      int[] var5 = var0.method4121(var2);
+      int[] var5 = var0.getChilds(var2);
 
       for(int var6 = 0; var6 < var5.length; ++var6) {
-         byte[] var7 = var0.method4185(var2, var5[var6]);
+         byte[] var7 = var0.getChild(var2, var5[var6]);
          if(var7 == null) {
             var4 = false;
          } else {
             int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
-            byte[] var9 = var1.method4185(var8, 0);
+            byte[] var9 = var1.getChild(var8, 0);
             if(var9 == null) {
                var4 = false;
             }
@@ -191,7 +192,7 @@ final class class18 implements Comparator {
       } else {
          try {
             return new Frames(var0, var1, var2, var3);
-         } catch (Exception var11) {
+         } catch (Exception var10) {
             return null;
          }
       }

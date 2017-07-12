@@ -11,7 +11,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("RSCanvas")
 public final class RSCanvas extends Canvas {
    @ObfuscatedName("i")
-   Component field688;
+   @Export("component")
+   Component component;
    @ObfuscatedName("fv")
    @Export("mapRegions")
    @Hook("mapRegionsChanged")
@@ -20,7 +21,7 @@ public final class RSCanvas extends Canvas {
    static IndexData field693;
 
    public final void paint(Graphics var1) {
-      this.field688.paint(var1);
+      this.component.paint(var1);
    }
 
    @ObfuscatedName("r")
@@ -33,11 +34,11 @@ public final class RSCanvas extends Canvas {
    }
 
    RSCanvas(Component var1) {
-      this.field688 = var1;
+      this.component = var1;
    }
 
    public final void update(Graphics var1) {
-      this.field688.update(var1);
+      this.component.update(var1);
    }
 
    @ObfuscatedName("fa")
@@ -118,10 +119,11 @@ public final class RSCanvas extends Canvas {
       signature = "(IZZZI)LIndexData;",
       garbageValue = "-2044150389"
    )
-   static IndexData method811(int var0, boolean var1, boolean var2, boolean var3) {
+   @Export("openCacheIndex")
+   static IndexData openCacheIndex(int var0, boolean var1, boolean var2, boolean var3) {
       IndexFile var4 = null;
       if(class155.field2259 != null) {
-         var4 = new IndexFile(var0, class155.field2259, class4.field32[var0], 1000000);
+         var4 = new IndexFile(var0, class155.field2259, BaseVarType.field32[var0], 1000000);
       }
 
       return new IndexData(var4, Ignore.field861, var0, var1, var2, var3);

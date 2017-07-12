@@ -72,11 +72,11 @@ public class class269 {
          field3685[var0] = var0 - 48 + 52;
       }
 
-      int[] var2 = field3685;
-      field3685[43] = 62;
-      var2[42] = 62;
       int[] var1 = field3685;
+      field3685[43] = 62;
+      var1[42] = 62;
+      int[] var2 = field3685;
       field3685[47] = 63;
-      var1[45] = 63;
+      var2[45] = 63;
    }
 }

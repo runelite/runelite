@@ -44,7 +44,8 @@ public final class GameObject {
    @ObfuscatedGetter(
       intValue = 1165554559
    )
-   int field2201;
+   @Export("drawPriority")
+   int drawPriority;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 1278992915
@@ -85,7 +86,8 @@ public final class GameObject {
    @ObfuscatedGetter(
       intValue = -2083386589
    )
-   int field2208;
+   @Export("cycle")
+   int cycle;
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
@@ -131,10 +133,10 @@ public final class GameObject {
          class46.intStackSize -= 5;
          var3 = class83.intStack[class46.intStackSize];
          var4 = class83.intStack[class46.intStackSize + 1];
-         int var5 = class83.intStack[class46.intStackSize + 2];
+         int var11 = class83.intStack[class46.intStackSize + 2];
          int var6 = class83.intStack[class46.intStackSize + 3];
-         int var7 = class83.intStack[class46.intStackSize + 4];
-         class83.intStack[++class46.intStackSize - 1] = var3 + (var4 - var3) * (var7 - var5) / (var6 - var5);
+         int var12 = class83.intStack[class46.intStackSize + 4];
+         class83.intStack[++class46.intStackSize - 1] = var3 + (var4 - var3) * (var12 - var11) / (var6 - var11);
          return 1;
       } else if(var0 == 4007) {
          class46.intStackSize -= 2;
@@ -204,10 +206,10 @@ public final class GameObject {
          return 1;
       } else if(var0 == 4018) {
          class46.intStackSize -= 3;
-         long var9 = (long)class83.intStack[class46.intStackSize];
-         long var11 = (long)class83.intStack[class46.intStackSize + 1];
-         long var13 = (long)class83.intStack[class46.intStackSize + 2];
-         class83.intStack[++class46.intStackSize - 1] = (int)(var13 * var9 / var11);
+         long var5 = (long)class83.intStack[class46.intStackSize];
+         long var7 = (long)class83.intStack[class46.intStackSize + 1];
+         long var9 = (long)class83.intStack[class46.intStackSize + 2];
+         class83.intStack[++class46.intStackSize - 1] = (int)(var9 * var5 / var7);
          return 1;
       } else {
          return 2;
@@ -225,19 +227,19 @@ public final class GameObject {
             String var2 = Player.method1179(var0, Client.field928);
             if(var2 != null) {
                int var3;
+               String var4;
                String var5;
-               String var6;
                for(var3 = 0; var3 < Client.ignoreCount; ++var3) {
-                  Ignore var4 = Client.ignores[var3];
-                  var5 = Player.method1179(var4.name, Client.field928);
-                  if(var5 != null && var5.equals(var2)) {
+                  Ignore var6 = Client.ignores[var3];
+                  var4 = Player.method1179(var6.name, Client.field928);
+                  if(var4 != null && var4.equals(var2)) {
                      class152.sendGameMessage(31, "", var0 + " is already on your ignore list");
                      return;
                   }
 
-                  if(var4.previousName != null) {
-                     var6 = Player.method1179(var4.previousName, Client.field928);
-                     if(var6 != null && var6.equals(var2)) {
+                  if(var6.previousName != null) {
+                     var5 = Player.method1179(var6.previousName, Client.field928);
+                     if(var5 != null && var5.equals(var2)) {
                         class152.sendGameMessage(31, "", var0 + " is already on your ignore list");
                         return;
                      }
@@ -246,15 +248,15 @@ public final class GameObject {
 
                for(var3 = 0; var3 < Client.friendCount; ++var3) {
                   Friend var7 = Client.friends[var3];
-                  var5 = Player.method1179(var7.name, Client.field928);
-                  if(var5 != null && var5.equals(var2)) {
+                  var4 = Player.method1179(var7.name, Client.field928);
+                  if(var4 != null && var4.equals(var2)) {
                      class152.sendGameMessage(31, "", "Please remove " + var0 + " from your friend list first");
                      return;
                   }
 
                   if(var7.previousName != null) {
-                     var6 = Player.method1179(var7.previousName, Client.field928);
-                     if(var6 != null && var6.equals(var2)) {
+                     var5 = Player.method1179(var7.previousName, Client.field928);
+                     if(var5 != null && var5.equals(var2)) {
                         class152.sendGameMessage(31, "", "Please remove " + var0 + " from your friend list first");
                         return;
                      }
@@ -265,14 +267,15 @@ public final class GameObject {
                   class152.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
                } else {
                   Client.secretPacketBuffer1.putOpcode(33);
-                  Client.secretPacketBuffer1.putByte(class261.method4734(var0));
-                  Client.secretPacketBuffer1.method3137(var0);
+                  Client.secretPacketBuffer1.putByte(class261.getLength(var0));
+                  Client.secretPacketBuffer1.putString(var0);
                }
             }
          } else {
             class152.sendGameMessage(31, "", "Your ignore list is full. Max of 100 for free users, and 400 for members");
          }
       }
+
    }
 
    @ObfuscatedName("r")
@@ -310,15 +313,15 @@ public final class GameObject {
       if(class92.username.length() == 0) {
          class13.method64("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
       } else {
-         long var1 = class239.method4263();
-         int var0;
-         if(0L == var1) {
-            var0 = 5;
+         long var0 = class239.method4263();
+         int var2;
+         if(0L == var0) {
+            var2 = 5;
          } else {
-            var0 = class134.method2576(var1, class92.username);
+            var2 = class134.method2576(var0, class92.username);
          }
 
-         switch(var0) {
+         switch(var2) {
          case 2:
             class13.method64("", "Page has opened in a new window.", "(Please check your popup blocker.)");
             class92.loginIndex = 6;
@@ -338,8 +341,8 @@ public final class GameObject {
          case 7:
             class13.method64("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
          }
-
       }
+
    }
 
    GameObject() {

@@ -18,7 +18,8 @@ public class Area extends CacheableNode {
    )
    static int field3295;
    @ObfuscatedName("t")
-   static NodeCache field3296;
+   @Export("skeletonsIndex")
+   static NodeCache skeletonsIndex;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1188109863
@@ -129,22 +130,18 @@ public class Area extends CacheableNode {
       if(var1 < 0) {
          return null;
       } else {
-         SpritePixels var2 = (SpritePixels)field3296.get((long)var1);
+         SpritePixels var2 = (SpritePixels)skeletonsIndex.get((long)var1);
          if(var2 != null) {
             return var2;
          } else {
             var2 = ObjectComposition.method4574(class15.field298, var1, 0);
             if(var2 != null) {
-               field3296.put(var2, (long)var1);
+               skeletonsIndex.put(var2, (long)var1);
             }
 
             return var2;
          }
       }
-   }
-
-   static {
-      field3296 = new NodeCache(256);
    }
 
    Area(int var1) {
@@ -242,10 +239,10 @@ public class Area extends CacheableNode {
                var1.readUnsignedByte();
             } else if(var2 == 29) {
                class257[] var6 = new class257[]{class257.field3552, class257.field3553, class257.field3551};
-               this.field3311 = (class257)class134.method2577(var6, var1.readUnsignedByte());
+               this.field3311 = (class257)class134.forOrdinal(var6, var1.readUnsignedByte());
             } else if(var2 == 30) {
                class239[] var7 = new class239[]{class239.field3280, class239.field3283, class239.field3279};
-               this.field3309 = (class239)class134.method2577(var7, var1.readUnsignedByte());
+               this.field3309 = (class239)class134.forOrdinal(var7, var1.readUnsignedByte());
             }
          }
       }
@@ -282,7 +279,7 @@ public class Area extends CacheableNode {
       garbageValue = "-775668954"
    )
    public static void method4312(IndexDataBase var0, IndexDataBase var1, boolean var2) {
-      ObjectComposition.field3446 = var0;
+      ObjectComposition.objects_ref = var0;
       ObjectComposition.field3447 = var1;
       ObjectComposition.field3464 = var2;
    }
@@ -294,5 +291,9 @@ public class Area extends CacheableNode {
    )
    public static int method4313(String var0) {
       return var0.length() + 2;
+   }
+
+   static {
+      skeletonsIndex = new NodeCache(256);
    }
 }

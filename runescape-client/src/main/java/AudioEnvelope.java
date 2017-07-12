@@ -9,7 +9,8 @@ public class AudioEnvelope {
    @Export("step")
    int step;
    @ObfuscatedName("w")
-   int[] field1668;
+   @Export("durations")
+   int[] durations;
    @ObfuscatedName("s")
    @Export("end")
    int end;
@@ -17,9 +18,11 @@ public class AudioEnvelope {
    @Export("start")
    int start;
    @ObfuscatedName("i")
-   int field1671;
+   @Export("segments")
+   int segments;
    @ObfuscatedName("r")
-   int field1672;
+   @Export("form")
+   int form;
    @ObfuscatedName("v")
    @Export("ticks")
    int ticks;
@@ -37,45 +40,48 @@ public class AudioEnvelope {
    int max;
 
    @ObfuscatedName("i")
-   final void method2066(Buffer var1) {
-      this.field1672 = var1.readUnsignedByte();
+   @Export("decode")
+   final void decode(Buffer var1) {
+      this.form = var1.readUnsignedByte();
       this.start = var1.readInt();
       this.end = var1.readInt();
-      this.method2067(var1);
+      this.decodeSegments(var1);
    }
 
    @ObfuscatedName("w")
-   final void method2067(Buffer var1) {
-      this.field1671 = var1.readUnsignedByte();
-      this.field1668 = new int[this.field1671];
-      this.phases = new int[this.field1671];
+   @Export("decodeSegments")
+   final void decodeSegments(Buffer var1) {
+      this.segments = var1.readUnsignedByte();
+      this.durations = new int[this.segments];
+      this.phases = new int[this.segments];
 
-      for(int var2 = 0; var2 < this.field1671; ++var2) {
-         this.field1668[var2] = var1.readUnsignedShort();
+      for(int var2 = 0; var2 < this.segments; ++var2) {
+         this.durations[var2] = var1.readUnsignedShort();
          this.phases[var2] = var1.readUnsignedShort();
       }
 
    }
 
    AudioEnvelope() {
-      this.field1671 = 2;
-      this.field1668 = new int[2];
+      this.segments = 2;
+      this.durations = new int[2];
       this.phases = new int[2];
-      this.field1668[0] = 0;
-      this.field1668[1] = '\uffff';
+      this.durations[0] = 0;
+      this.durations[1] = '\uffff';
       this.phases[0] = 0;
       this.phases[1] = '\uffff';
    }
 
    @ObfuscatedName("t")
-   final int method2068(int var1) {
+   @Export("step")
+   final int step(int var1) {
       if(this.max >= this.ticks) {
          this.amplitude = this.phases[this.phaseIndex++] << 15;
-         if(this.phaseIndex >= this.field1671) {
-            this.phaseIndex = this.field1671 - 1;
+         if(this.phaseIndex >= this.segments) {
+            this.phaseIndex = this.segments - 1;
          }
 
-         this.ticks = (int)((double)this.field1668[this.phaseIndex] / 65536.0D * (double)var1);
+         this.ticks = (int)((double)this.durations[this.phaseIndex] / 65536.0D * (double)var1);
          if(this.ticks > this.max) {
             this.step = ((this.phases[this.phaseIndex] << 15) - this.amplitude) / (this.ticks - this.max);
          }
@@ -87,7 +93,8 @@ public class AudioEnvelope {
    }
 
    @ObfuscatedName("a")
-   final void method2079() {
+   @Export("reset")
+   final void reset() {
       this.ticks = 0;
       this.phaseIndex = 0;
       this.step = 0;

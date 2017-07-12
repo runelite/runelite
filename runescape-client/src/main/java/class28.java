@@ -115,17 +115,17 @@ public abstract class class28 {
       this.field414[0][var1][var2] = (short)var3.readUnsignedByte();
       int var8;
       int var9;
-      int var11;
+      int var10;
       if(var6) {
          var8 = var3.readUnsignedByte();
 
          for(var9 = 0; var9 < var8; ++var9) {
-            int var10 = var3.readUnsignedByte();
-            if(var10 != 0) {
-               this.field421[var9][var1][var2] = (short)var10;
-               var11 = var3.readUnsignedByte();
-               this.field408[var9][var1][var2] = (byte)(var11 >> 2);
-               this.field419[var9][var1][var2] = (byte)(var11 & 3);
+            int var11 = var3.readUnsignedByte();
+            if(var11 != 0) {
+               this.field421[var9][var1][var2] = (short)var11;
+               var10 = var3.readUnsignedByte();
+               this.field408[var9][var1][var2] = (byte)(var10 >> 2);
+               this.field419[var9][var1][var2] = (byte)(var10 & 3);
             }
          }
       }
@@ -136,10 +136,10 @@ public abstract class class28 {
             if(var9 != 0) {
                class31[] var14 = this.field418[var8][var1][var2] = new class31[var9];
 
-               for(var11 = 0; var11 < var9; ++var11) {
+               for(var10 = 0; var10 < var9; ++var10) {
                   int var12 = var3.method3130();
                   int var13 = var3.readUnsignedByte();
-                  var14[var11] = new class31(var12, var13 >> 2, var13 & 3);
+                  var14[var10] = new class31(var12, var13 >> 2, var13 & 3);
                }
             }
          }
@@ -160,8 +160,8 @@ public abstract class class28 {
          } else {
             this.method222(var1, var2, var3, var4);
          }
-
       }
+
    }
 
    @ObfuscatedName("fq")
@@ -170,17 +170,17 @@ public abstract class class28 {
       garbageValue = "-391"
    )
    static final void method231() {
-      Overlay.field3593.reset();
+      Overlay.overlays.reset();
       VertexNormal.method2580();
-      KitDefinition.field3360.reset();
-      class230.method4098();
-      NPCComposition.field3557.reset();
+      KitDefinition.identKits.reset();
+      Permission.method4098();
+      NPCComposition.npcs.reset();
       NPCComposition.npcModelCache.reset();
-      ItemComposition.field3497.reset();
+      ItemComposition.items.reset();
       ItemComposition.itemModelCache.reset();
       ItemComposition.itemSpriteCache.reset();
-      Sequence.field3608.reset();
-      Sequence.field3606.reset();
+      Sequence.sequences.reset();
+      Sequence.skeletons.reset();
       class228.method4093();
       TextureProvider.method2399();
       NPC.method1704();
@@ -195,19 +195,19 @@ public abstract class class28 {
       Widget.field2649.reset();
       Widget.field2779.reset();
       Widget.field2657.reset();
-      ((TextureProvider)class136.field2028).method2389();
+      ((TextureProvider)Graphics3D.textureLoader).reset();
       Script.field1551.reset();
-      class44.indexInterfaces.method4176();
-      class261.indexSoundEffects.method4176();
-      class10.field259.method4176();
-      class98.field1545.method4176();
-      Frames.indexMaps.method4176();
-      class44.indexTrack1.method4176();
-      class1.indexModels.method4176();
-      class18.indexSprites.method4176();
-      class87.indexTextures.method4176();
-      DecorativeObject.field2194.method4176();
-      XGrandExchangeOffer.indexTrack2.method4176();
-      class169.indexScripts.method4176();
+      class44.indexInterfaces.reset();
+      class261.indexSoundEffects.reset();
+      class10.field259.reset();
+      class98.field1545.reset();
+      Frames.indexMaps.reset();
+      class44.indexTrack1.reset();
+      class1.indexModels.reset();
+      class18.indexSprites.reset();
+      class87.indexTextures.reset();
+      DecorativeObject.field2194.reset();
+      XGrandExchangeOffer.indexTrack2.reset();
+      class169.indexScripts.reset();
    }
 }

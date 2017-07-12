@@ -33,7 +33,8 @@ public class PlayerComposition {
    )
    long field2625;
    @ObfuscatedName("y")
-   public static short[][] field2627;
+   @Export("colorsToReplace")
+   public static short[][] colorsToReplace;
    @ObfuscatedName("e")
    static final int[] field2628;
    @ObfuscatedName("i")
@@ -51,6 +52,7 @@ public class PlayerComposition {
       if(this.isFemale != var1) {
          this.method3962((int[])null, this.bodyPartColours, var1, -1);
       }
+
    }
 
    @ObfuscatedName("a")
@@ -65,7 +67,7 @@ public class PlayerComposition {
          do {
             --var3;
             if(var3 < 0) {
-               var3 = field2627[var1].length - 1;
+               var3 = colorsToReplace[var1].length - 1;
             }
 
             if(var1 == 4 && var3 >= 8) {
@@ -77,7 +79,7 @@ public class PlayerComposition {
       } else {
          do {
             ++var3;
-            if(var3 >= field2627[var1].length) {
+            if(var3 >= colorsToReplace[var1].length) {
                var3 = 0;
             }
 
@@ -90,7 +92,7 @@ public class PlayerComposition {
       }
 
       this.bodyPartColours[var1] = var3;
-      this.method3957();
+      this.setHash();
    }
 
    @ObfuscatedName("gg")
@@ -100,9 +102,9 @@ public class PlayerComposition {
    )
    static final void method3933(boolean var0) {
       Client.field1050 = 0;
-      Client.field965 = 0;
-      Client.secretPacketBuffer2.method3410();
-      int var1 = Client.secretPacketBuffer2.method3388(8);
+      Client.pendingNpcFlagsCount = 0;
+      Client.secretPacketBuffer2.bitAccess();
+      int var1 = Client.secretPacketBuffer2.getBits(8);
       int var2;
       if(var1 < Client.field937) {
          for(var2 = var1; var2 < Client.field937; ++var2) {
@@ -115,80 +117,80 @@ public class PlayerComposition {
       } else {
          Client.field937 = 0;
 
+         int var3;
+         int var4;
          int var5;
          int var6;
          int var7;
-         int var8;
-         int var9;
          for(var2 = 0; var2 < var1; ++var2) {
-            int var3 = Client.npcIndices[var2];
-            NPC var4 = Client.cachedNPCs[var3];
-            var5 = Client.secretPacketBuffer2.method3388(1);
-            if(var5 == 0) {
-               Client.npcIndices[++Client.field937 - 1] = var3;
-               var4.field1287 = Client.gameCycle;
+            int var8 = Client.npcIndices[var2];
+            NPC var9 = Client.cachedNPCs[var8];
+            var3 = Client.secretPacketBuffer2.getBits(1);
+            if(var3 == 0) {
+               Client.npcIndices[++Client.field937 - 1] = var8;
+               var9.field1287 = Client.gameCycle;
             } else {
-               var6 = Client.secretPacketBuffer2.method3388(2);
-               if(var6 == 0) {
-                  Client.npcIndices[++Client.field937 - 1] = var3;
-                  var4.field1287 = Client.gameCycle;
-                  Client.field1026[++Client.field965 - 1] = var3;
-               } else if(var6 == 1) {
-                  Client.npcIndices[++Client.field937 - 1] = var3;
-                  var4.field1287 = Client.gameCycle;
-                  var7 = Client.secretPacketBuffer2.method3388(3);
-                  var4.method1696(var7, (byte)1);
-                  var8 = Client.secretPacketBuffer2.method3388(1);
-                  if(var8 == 1) {
-                     Client.field1026[++Client.field965 - 1] = var3;
+               var4 = Client.secretPacketBuffer2.getBits(2);
+               if(var4 == 0) {
+                  Client.npcIndices[++Client.field937 - 1] = var8;
+                  var9.field1287 = Client.gameCycle;
+                  Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var8;
+               } else if(var4 == 1) {
+                  Client.npcIndices[++Client.field937 - 1] = var8;
+                  var9.field1287 = Client.gameCycle;
+                  var5 = Client.secretPacketBuffer2.getBits(3);
+                  var9.method1696(var5, (byte)1);
+                  var6 = Client.secretPacketBuffer2.getBits(1);
+                  if(var6 == 1) {
+                     Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var8;
                   }
-               } else if(var6 == 2) {
-                  Client.npcIndices[++Client.field937 - 1] = var3;
-                  var4.field1287 = Client.gameCycle;
-                  var7 = Client.secretPacketBuffer2.method3388(3);
-                  var4.method1696(var7, (byte)2);
-                  var8 = Client.secretPacketBuffer2.method3388(3);
-                  var4.method1696(var8, (byte)2);
-                  var9 = Client.secretPacketBuffer2.method3388(1);
-                  if(var9 == 1) {
-                     Client.field1026[++Client.field965 - 1] = var3;
+               } else if(var4 == 2) {
+                  Client.npcIndices[++Client.field937 - 1] = var8;
+                  var9.field1287 = Client.gameCycle;
+                  var5 = Client.secretPacketBuffer2.getBits(3);
+                  var9.method1696(var5, (byte)2);
+                  var6 = Client.secretPacketBuffer2.getBits(3);
+                  var9.method1696(var6, (byte)2);
+                  var7 = Client.secretPacketBuffer2.getBits(1);
+                  if(var7 == 1) {
+                     Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var8;
                   }
-               } else if(var6 == 3) {
-                  Client.field1051[++Client.field1050 - 1] = var3;
+               } else if(var4 == 3) {
+                  Client.field1051[++Client.field1050 - 1] = var8;
                }
             }
          }
 
          class40.method562(var0);
 
-         for(var1 = 0; var1 < Client.field965; ++var1) {
-            var2 = Client.field1026[var1];
+         for(var1 = 0; var1 < Client.pendingNpcFlagsCount; ++var1) {
+            var2 = Client.pendingNpcFlagsIndices[var1];
             NPC var13 = Client.cachedNPCs[var2];
             int var14 = Client.secretPacketBuffer2.readUnsignedByte();
             if((var14 & 4) != 0) {
-               var5 = Client.secretPacketBuffer2.readByteOb1();
-               if(var5 == '\uffff') {
-                  var5 = -1;
+               var3 = Client.secretPacketBuffer2.readByteOb1();
+               if(var3 == '\uffff') {
+                  var3 = -1;
                }
 
-               var6 = Client.secretPacketBuffer2.method3173();
-               if(var5 == var13.animation && var5 != -1) {
-                  var7 = class224.getAnimation(var5).replyMode;
-                  if(var7 == 1) {
+               var4 = Client.secretPacketBuffer2.method3173();
+               if(var3 == var13.animation && var3 != -1) {
+                  var5 = class224.getAnimation(var3).replyMode;
+                  if(var5 == 1) {
                      var13.actionFrame = 0;
                      var13.field1247 = 0;
-                     var13.actionAnimationDisable = var6;
+                     var13.actionAnimationDisable = var4;
                      var13.field1262 = 0;
                   }
 
-                  if(var7 == 2) {
+                  if(var5 == 2) {
                      var13.field1262 = 0;
                   }
-               } else if(var5 == -1 || var13.animation == -1 || class224.getAnimation(var5).forcedPriority >= class224.getAnimation(var13.animation).forcedPriority) {
-                  var13.animation = var5;
+               } else if(var3 == -1 || var13.animation == -1 || class224.getAnimation(var3).forcedPriority >= class224.getAnimation(var13.animation).forcedPriority) {
+                  var13.animation = var3;
                   var13.actionFrame = 0;
                   var13.field1247 = 0;
-                  var13.actionAnimationDisable = var6;
+                  var13.actionAnimationDisable = var4;
                   var13.field1262 = 0;
                   var13.field1269 = var13.queueSize;
                }
@@ -196,12 +198,12 @@ public class PlayerComposition {
 
             if((var14 & 2) != 0) {
                var13.graphic = Client.secretPacketBuffer2.readUnsignedShort();
-               var5 = Client.secretPacketBuffer2.readIntOb3();
-               var13.field1238 = var5 >> 16;
-               var13.field1278 = Client.gameCycle + (var5 & '\uffff');
+               var3 = Client.secretPacketBuffer2.readIntOb3();
+               var13.field1238 = var3 >> 16;
+               var13.graphicsDelay = Client.gameCycle + (var3 & '\uffff');
                var13.field1244 = 0;
                var13.field1277 = 0;
-               if(var13.field1278 > Client.gameCycle) {
+               if(var13.graphicsDelay > Client.gameCycle) {
                   var13.field1244 = -1;
                }
 
@@ -223,43 +225,43 @@ public class PlayerComposition {
             }
 
             if((var14 & 16) != 0) {
-               var5 = Client.secretPacketBuffer2.readUnsignedByte();
+               var3 = Client.secretPacketBuffer2.readUnsignedByte();
                int var10;
                int var11;
-               if(var5 > 0) {
-                  for(var6 = 0; var6 < var5; ++var6) {
-                     var8 = -1;
-                     var9 = -1;
+               if(var3 > 0) {
+                  for(var4 = 0; var4 < var3; ++var4) {
+                     var6 = -1;
+                     var7 = -1;
                      var10 = -1;
-                     var7 = Client.secretPacketBuffer2.method3159();
-                     if(var7 == 32767) {
-                        var7 = Client.secretPacketBuffer2.method3159();
-                        var9 = Client.secretPacketBuffer2.method3159();
-                        var8 = Client.secretPacketBuffer2.method3159();
-                        var10 = Client.secretPacketBuffer2.method3159();
-                     } else if(var7 != 32766) {
-                        var9 = Client.secretPacketBuffer2.method3159();
+                     var5 = Client.secretPacketBuffer2.getUSmart();
+                     if(var5 == 32767) {
+                        var5 = Client.secretPacketBuffer2.getUSmart();
+                        var7 = Client.secretPacketBuffer2.getUSmart();
+                        var6 = Client.secretPacketBuffer2.getUSmart();
+                        var10 = Client.secretPacketBuffer2.getUSmart();
+                     } else if(var5 != 32766) {
+                        var7 = Client.secretPacketBuffer2.getUSmart();
                      } else {
-                        var7 = -1;
+                        var5 = -1;
                      }
 
-                     var11 = Client.secretPacketBuffer2.method3159();
-                     var13.method1536(var7, var9, var8, var10, Client.gameCycle, var11);
+                     var11 = Client.secretPacketBuffer2.getUSmart();
+                     var13.method1536(var5, var7, var6, var10, Client.gameCycle, var11);
                   }
                }
 
-               var6 = Client.secretPacketBuffer2.method3292();
-               if(var6 > 0) {
-                  for(var7 = 0; var7 < var6; ++var7) {
-                     var8 = Client.secretPacketBuffer2.method3159();
-                     var9 = Client.secretPacketBuffer2.method3159();
-                     if(var9 != 32767) {
-                        var10 = Client.secretPacketBuffer2.method3159();
+               var4 = Client.secretPacketBuffer2.method3292();
+               if(var4 > 0) {
+                  for(var5 = 0; var5 < var4; ++var5) {
+                     var6 = Client.secretPacketBuffer2.getUSmart();
+                     var7 = Client.secretPacketBuffer2.getUSmart();
+                     if(var7 != 32767) {
+                        var10 = Client.secretPacketBuffer2.getUSmart();
                         var11 = Client.secretPacketBuffer2.readUnsignedByte();
-                        int var12 = var9 > 0?Client.secretPacketBuffer2.method3324():var11;
-                        var13.method1537(var8, Client.gameCycle, var9, var10, var11, var12);
+                        int var12 = var7 > 0?Client.secretPacketBuffer2.method3324():var11;
+                        var13.method1537(var6, Client.gameCycle, var7, var10, var11, var12);
                      } else {
-                        var13.method1550(var8);
+                        var13.method1550(var6);
                      }
                   }
                }
@@ -279,12 +281,12 @@ public class PlayerComposition {
             }
 
             if((var14 & 32) != 0) {
-               var5 = Client.secretPacketBuffer2.readUnsignedShortOb1();
-               var6 = Client.secretPacketBuffer2.readUnsignedShort();
-               var7 = var13.x - (var5 - class50.baseX - class50.baseX) * 64;
-               var8 = var13.y - (var6 - class266.baseY - class266.baseY) * 64;
-               if(var7 != 0 || var8 != 0) {
-                  var13.field1266 = (int)(Math.atan2((double)var7, (double)var8) * 325.949D) & 2047;
+               var3 = Client.secretPacketBuffer2.readUnsignedShortOb1();
+               var4 = Client.secretPacketBuffer2.readUnsignedShort();
+               var5 = var13.x - (var3 - KeyFocusListener.baseX - KeyFocusListener.baseX) * 64;
+               var6 = var13.y - (var4 - class266.baseY - class266.baseY) * 64;
+               if(var5 != 0 || var6 != 0) {
+                  var13.field1266 = (int)(Math.atan2((double)var5, (double)var6) * 325.949D) & 2047;
                }
             }
          }
@@ -367,14 +369,14 @@ public class PlayerComposition {
          if(var15 == null) {
             boolean var9 = false;
 
-            int var11;
-            for(int var10 = 0; var10 < 12; ++var10) {
-               var11 = var7[var10];
-               if(var11 >= 256 && var11 < 512 && !class95.getKitDefinition(var11 - 256).ready()) {
+            int var10;
+            for(int var11 = 0; var11 < 12; ++var11) {
+               var10 = var7[var11];
+               if(var10 >= 256 && var10 < 512 && !class95.getKitDefinition(var10 - 256).ready()) {
                   var9 = true;
                }
 
-               if(var11 >= 512 && !class176.getItemDefinition(var11 - 512).readyWorn(this.isFemale)) {
+               if(var10 >= 512 && !AbstractByteBuffer.getItemDefinition(var10 - 512).readyWorn(this.isFemale)) {
                   var9 = true;
                }
             }
@@ -390,37 +392,37 @@ public class PlayerComposition {
             }
 
             if(var15 == null) {
-               ModelData[] var16 = new ModelData[12];
-               var11 = 0;
+               ModelData[] var17 = new ModelData[12];
+               var10 = 0;
 
-               int var13;
-               for(int var12 = 0; var12 < 12; ++var12) {
-                  var13 = var7[var12];
+               int var12;
+               for(int var13 = 0; var13 < 12; ++var13) {
+                  var12 = var7[var13];
                   ModelData var14;
-                  if(var13 >= 256 && var13 < 512) {
-                     var14 = class95.getKitDefinition(var13 - 256).getModelData();
+                  if(var12 >= 256 && var12 < 512) {
+                     var14 = class95.getKitDefinition(var12 - 256).getModelData();
                      if(var14 != null) {
-                        var16[var11++] = var14;
+                        var17[var10++] = var14;
                      }
                   }
 
-                  if(var13 >= 512) {
-                     var14 = class176.getItemDefinition(var13 - 512).getWornModelData(this.isFemale);
+                  if(var12 >= 512) {
+                     var14 = AbstractByteBuffer.getItemDefinition(var12 - 512).getWornModelData(this.isFemale);
                      if(var14 != null) {
-                        var16[var11++] = var14;
+                        var17[var10++] = var14;
                      }
                   }
                }
 
-               ModelData var18 = new ModelData(var16, var11);
+               ModelData var18 = new ModelData(var17, var10);
 
-               for(var13 = 0; var13 < 5; ++var13) {
-                  if(this.bodyPartColours[var13] < field2627[var13].length) {
-                     var18.method2422(class18.field323[var13], field2627[var13][this.bodyPartColours[var13]]);
+               for(var12 = 0; var12 < 5; ++var12) {
+                  if(this.bodyPartColours[var12] < colorsToReplace[var12].length) {
+                     var18.recolor(class18.colorsToFind[var12], colorsToReplace[var12][this.bodyPartColours[var12]]);
                   }
 
-                  if(this.bodyPartColours[var13] < field2620[var13].length) {
-                     var18.method2422(NPC.field1398[var13], field2620[var13][this.bodyPartColours[var13]]);
+                  if(this.bodyPartColours[var12] < field2620[var12].length) {
+                     var18.recolor(NPC.field1398[var12], field2620[var12][this.bodyPartColours[var12]]);
                   }
                }
 
@@ -433,16 +435,16 @@ public class PlayerComposition {
          if(var1 == null && var3 == null) {
             return var15;
          } else {
-            Model var17;
+            Model var16;
             if(var1 != null && var3 != null) {
-               var17 = var1.method4694(var15, var2, var3, var4);
+               var16 = var1.method4694(var15, var2, var3, var4);
             } else if(var1 != null) {
-               var17 = var1.method4704(var15, var2);
+               var16 = var1.method4704(var15, var2);
             } else {
-               var17 = var3.method4704(var15, var4);
+               var16 = var3.method4704(var15, var4);
             }
 
-            return var17;
+            return var16;
          }
       }
    }
@@ -456,17 +458,13 @@ public class PlayerComposition {
       return this.transformedNpcId == -1?this.equipmentIds[1] + (this.equipmentIds[11] << 5) + (this.equipmentIds[8] << 10) + (this.bodyPartColours[4] << 20) + (this.bodyPartColours[0] << 25) + (this.equipmentIds[0] << 15):305419896 + class35.getNpcDefinition(this.transformedNpcId).id;
    }
 
-   static {
-      field2628 = new int[]{8, 11, 4, 6, 9, 7, 10};
-      field2630 = new NodeCache(260);
-   }
-
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "119651624"
    )
-   void method3957() {
+   @Export("setHash")
+   void setHash() {
       long var1 = this.hash;
       int var3 = this.equipmentIds[5];
       int var4 = this.equipmentIds[9];
@@ -518,25 +516,30 @@ public class PlayerComposition {
 
             KitDefinition var4;
             do {
-               if(!var2) {
-                  --var3;
-                  if(var3 < 0) {
-                     var3 = KitDefinition.field3359 - 1;
-                  }
-               } else {
-                  ++var3;
-                  if(var3 >= KitDefinition.field3359) {
-                     var3 = 0;
-                  }
-               }
+               do {
+                  do {
+                     if(!var2) {
+                        --var3;
+                        if(var3 < 0) {
+                           var3 = KitDefinition.field3359 - 1;
+                        }
+                     } else {
+                        ++var3;
+                        if(var3 >= KitDefinition.field3359) {
+                           var3 = 0;
+                        }
+                     }
 
-               var4 = class95.getKitDefinition(var3);
-            } while(var4 == null || var4.nonSelectable || var4.bodyPartId != var1 + (this.isFemale?7:0));
+                     var4 = class95.getKitDefinition(var3);
+                  } while(var4 == null);
+               } while(var4.nonSelectable);
+            } while(var4.bodyPartId != var1 + (this.isFemale?7:0));
 
             this.equipmentIds[field2628[var1]] = var3 + 256;
-            this.method3957();
+            this.setHash();
          }
       }
+
    }
 
    @ObfuscatedName("y")
@@ -550,14 +553,14 @@ public class PlayerComposition {
       } else {
          boolean var1 = false;
 
-         int var3;
-         for(int var2 = 0; var2 < 12; ++var2) {
-            var3 = this.equipmentIds[var2];
-            if(var3 >= 256 && var3 < 512 && !class95.getKitDefinition(var3 - 256).method4396()) {
+         int var2;
+         for(int var3 = 0; var3 < 12; ++var3) {
+            var2 = this.equipmentIds[var3];
+            if(var2 >= 256 && var2 < 512 && !class95.getKitDefinition(var2 - 256).method4396()) {
                var1 = true;
             }
 
-            if(var3 >= 512 && !class176.getItemDefinition(var3 - 512).method4587(this.isFemale)) {
+            if(var2 >= 512 && !AbstractByteBuffer.getItemDefinition(var2 - 512).method4587(this.isFemale)) {
                var1 = true;
             }
          }
@@ -566,36 +569,36 @@ public class PlayerComposition {
             return null;
          } else {
             ModelData[] var7 = new ModelData[12];
-            var3 = 0;
+            var2 = 0;
 
-            int var5;
-            for(int var4 = 0; var4 < 12; ++var4) {
-               var5 = this.equipmentIds[var4];
+            int var4;
+            for(int var5 = 0; var5 < 12; ++var5) {
+               var4 = this.equipmentIds[var5];
                ModelData var6;
-               if(var5 >= 256 && var5 < 512) {
-                  var6 = class95.getKitDefinition(var5 - 256).method4387();
+               if(var4 >= 256 && var4 < 512) {
+                  var6 = class95.getKitDefinition(var4 - 256).method4387();
                   if(var6 != null) {
-                     var7[var3++] = var6;
+                     var7[var2++] = var6;
                   }
                }
 
-               if(var5 >= 512) {
-                  var6 = class176.getItemDefinition(var5 - 512).method4588(this.isFemale);
+               if(var4 >= 512) {
+                  var6 = AbstractByteBuffer.getItemDefinition(var4 - 512).method4588(this.isFemale);
                   if(var6 != null) {
-                     var7[var3++] = var6;
+                     var7[var2++] = var6;
                   }
                }
             }
 
-            ModelData var8 = new ModelData(var7, var3);
+            ModelData var8 = new ModelData(var7, var2);
 
-            for(var5 = 0; var5 < 5; ++var5) {
-               if(this.bodyPartColours[var5] < field2627[var5].length) {
-                  var8.method2422(class18.field323[var5], field2627[var5][this.bodyPartColours[var5]]);
+            for(var4 = 0; var4 < 5; ++var4) {
+               if(this.bodyPartColours[var4] < colorsToReplace[var4].length) {
+                  var8.recolor(class18.colorsToFind[var4], colorsToReplace[var4][this.bodyPartColours[var4]]);
                }
 
-               if(this.bodyPartColours[var5] < field2620[var5].length) {
-                  var8.method2422(NPC.field1398[var5], field2620[var5][this.bodyPartColours[var5]]);
+               if(this.bodyPartColours[var4] < field2620[var4].length) {
+                  var8.recolor(NPC.field1398[var4], field2620[var4][this.bodyPartColours[var4]]);
                }
             }
 
@@ -628,6 +631,11 @@ public class PlayerComposition {
       this.bodyPartColours = var2;
       this.isFemale = var3;
       this.transformedNpcId = var4;
-      this.method3957();
+      this.setHash();
+   }
+
+   static {
+      field2628 = new int[]{8, 11, 4, 6, 9, 7, 10};
+      field2630 = new NodeCache(260);
    }
 }

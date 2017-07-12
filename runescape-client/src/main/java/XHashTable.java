@@ -9,7 +9,8 @@ public final class XHashTable {
    @Export("buckets")
    Node[] buckets;
    @ObfuscatedName("s")
-   int field2466;
+   @Export("index")
+   int index;
    @ObfuscatedName("a")
    Node field2467;
    @ObfuscatedName("t")
@@ -19,7 +20,8 @@ public final class XHashTable {
    int size;
 
    @ObfuscatedName("w")
-   public void method3529(Node var1, long var2) {
+   @Export("put")
+   public void put(Node var1, long var2) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -33,7 +35,8 @@ public final class XHashTable {
    }
 
    @ObfuscatedName("i")
-   public Node method3530(long var1) {
+   @Export("get")
+   public Node get(long var1) {
       Node var3 = this.buckets[(int)(var1 & (long)(this.size - 1))];
 
       for(this.field2467 = var3.next; this.field2467 != var3; this.field2467 = this.field2467.next) {
@@ -69,12 +72,12 @@ public final class XHashTable {
 
    @ObfuscatedName("t")
    public Node method3533() {
-      this.field2466 = 0;
+      this.index = 0;
       return this.method3538();
    }
 
    public XHashTable(int var1) {
-      this.field2466 = 0;
+      this.index = 0;
       this.size = var1;
       this.buckets = new Node[var1];
 
@@ -89,21 +92,20 @@ public final class XHashTable {
    @ObfuscatedName("s")
    public Node method3538() {
       Node var1;
-      if(this.field2466 > 0 && this.field2468 != this.buckets[this.field2466 - 1]) {
+      if(this.index > 0 && this.field2468 != this.buckets[this.index - 1]) {
          var1 = this.field2468;
          this.field2468 = var1.next;
          return var1;
       } else {
-         do {
-            if(this.field2466 >= this.size) {
-               return null;
+         while(this.index < this.size) {
+            var1 = this.buckets[this.index++].next;
+            if(var1 != this.buckets[this.index - 1]) {
+               this.field2468 = var1.next;
+               return var1;
             }
+         }
 
-            var1 = this.buckets[this.field2466++].next;
-         } while(var1 == this.buckets[this.field2466 - 1]);
-
-         this.field2468 = var1.next;
-         return var1;
+         return null;
       }
    }
 }

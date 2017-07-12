@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -7,7 +8,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Spotanim")
 public class Spotanim extends CacheableNode {
    @ObfuscatedName("a")
-   static NodeCache field3330;
+   @Export("spotanims")
+   static NodeCache spotanims;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 699885181
@@ -19,7 +21,8 @@ public class Spotanim extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 2136317673
    )
-   int field3334;
+   @Export("id")
+   int id;
    @ObfuscatedName("j")
    short[] field3335;
    @ObfuscatedName("k")
@@ -115,7 +118,7 @@ public class Spotanim extends CacheableNode {
       garbageValue = "92"
    )
    public final Model method4338(int var1) {
-      Model var2 = (Model)field3333.get((long)this.field3334);
+      Model var2 = (Model)field3333.get((long)this.id);
       if(var2 == null) {
          ModelData var3 = ModelData.method2414(field3338, this.field3345, 0);
          if(var3 == null) {
@@ -125,7 +128,7 @@ public class Spotanim extends CacheableNode {
          int var4;
          if(this.field3337 != null) {
             for(var4 = 0; var4 < this.field3337.length; ++var4) {
-               var3.method2422(this.field3337[var4], this.field3335[var4]);
+               var3.recolor(this.field3337[var4], this.field3335[var4]);
             }
          }
 
@@ -136,7 +139,7 @@ public class Spotanim extends CacheableNode {
          }
 
          var2 = var3.light(this.field3344 + 64, this.field3339 + 850, -30, -50, -30);
-         field3333.put(var2, (long)this.field3334);
+         field3333.put(var2, (long)this.id);
       }
 
       Model var5;
@@ -175,7 +178,8 @@ public class Spotanim extends CacheableNode {
       signature = "(LBuffer;I)V",
       garbageValue = "-1744372001"
    )
-   void method4341(Buffer var1) {
+   @Export("decode")
+   void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
@@ -184,11 +188,6 @@ public class Spotanim extends CacheableNode {
 
          this.method4337(var1, var2);
       }
-   }
-
-   static {
-      field3330 = new NodeCache(64);
-      field3333 = new NodeCache(30);
    }
 
    Spotanim() {
@@ -205,15 +204,16 @@ public class Spotanim extends CacheableNode {
       signature = "([BI)V",
       garbageValue = "-1799643911"
    )
-   static void method4355(byte[] var0) {
+   @Export("decodeSprite")
+   static void decodeSprite(byte[] var0) {
       Buffer var1 = new Buffer(var0);
       var1.offset = var0.length - 2;
       class286.field3798 = var1.readUnsignedShort();
       class286.field3799 = new int[class286.field3798];
-      class286.field3800 = new int[class286.field3798];
+      class286.offsetsY = new int[class286.field3798];
       class7.field239 = new int[class286.field3798];
       class226.field3146 = new int[class286.field3798];
-      class210.field2609 = new byte[class286.field3798][];
+      class210.spritePixels = new byte[class286.field3798][];
       var1.offset = var0.length - 7 - class286.field3798 * 8;
       class286.field3801 = var1.readUnsignedShort();
       class286.field3796 = var1.readUnsignedShort();
@@ -225,7 +225,7 @@ public class Spotanim extends CacheableNode {
       }
 
       for(var3 = 0; var3 < class286.field3798; ++var3) {
-         class286.field3800[var3] = var1.readUnsignedShort();
+         class286.offsetsY[var3] = var1.readUnsignedShort();
       }
 
       for(var3 = 0; var3 < class286.field3798; ++var3) {
@@ -253,7 +253,7 @@ public class Spotanim extends CacheableNode {
          int var5 = class226.field3146[var3];
          int var6 = var5 * var4;
          byte[] var7 = new byte[var6];
-         class210.field2609[var3] = var7;
+         class210.spritePixels[var3] = var7;
          int var8 = var1.readUnsignedByte();
          int var9;
          if(var8 == 0) {
@@ -286,5 +286,10 @@ public class Spotanim extends CacheableNode {
          int var7 = GameObject.method2892(var0, var1, var4, var5);
          return var5?-var7:var7;
       }
+   }
+
+   static {
+      spotanims = new NodeCache(64);
+      field3333 = new NodeCache(30);
    }
 }

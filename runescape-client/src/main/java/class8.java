@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -32,7 +33,8 @@ public final class class8 extends class9 {
    @ObfuscatedName("gk")
    static ModIcon[] field246;
    @ObfuscatedName("re")
-   static Preferences field247;
+   @Export("settings")
+   static Preferences settings;
 
    public class8(int var1, int var2, int var3, int var4, int var5) {
       this.field245 = var1;
@@ -69,6 +71,6 @@ public final class class8 extends class9 {
       garbageValue = "366399750"
    )
    final void vmethod50() {
-      Rasterizer2D.method4958(this.field245 + Rasterizer2D.field3761, this.field240 + Rasterizer2D.drawingAreaTop, this.field242 - this.field245, this.field243 - this.field240, this.field244);
+      Rasterizer2D.drawRectangle(this.field245 + Rasterizer2D.draw_region_x, this.field240 + Rasterizer2D.drawingAreaTop, this.field242 - this.field245, this.field243 - this.field240, this.field244);
    }
 }

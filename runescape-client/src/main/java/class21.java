@@ -29,7 +29,7 @@ public class class21 {
          }
       }
 
-      ItemComposition var9 = class176.getItemDefinition(var0);
+      ItemComposition var9 = AbstractByteBuffer.getItemDefinition(var0);
       if(var1 > 1 && var9.countObj != null) {
          int var10 = -1;
 
@@ -40,7 +40,7 @@ public class class21 {
          }
 
          if(var10 != -1) {
-            var9 = class176.getItemDefinition(var10);
+            var9 = AbstractByteBuffer.getItemDefinition(var10);
          }
       }
 
@@ -54,8 +54,8 @@ public class class21 {
             if(var22 == null) {
                return null;
             }
-         } else if(var9.field3537 != -1) {
-            var22 = createSprite(var9.field3515, var1, var2, var3, 0, false);
+         } else if(var9.notedId != -1) {
+            var22 = createSprite(var9.unnotedId, var1, var2, var3, 0, false);
             if(var22 == null) {
                return null;
             }
@@ -70,13 +70,13 @@ public class class21 {
          int var13 = Rasterizer2D.graphicsPixelsWidth;
          int var14 = Rasterizer2D.graphicsPixelsHeight;
          int[] var15 = new int[4];
-         Rasterizer2D.method4924(var15);
+         Rasterizer2D.copyDrawRegion(var15);
          var8 = new SpritePixels(36, 32);
          Rasterizer2D.setRasterBuffer(var8.image, 36, 32);
-         Rasterizer2D.method4928();
-         class136.method2582();
-         class136.method2585(16, 16);
-         class136.rasterGouraudLowRes = false;
+         Rasterizer2D.reset();
+         Graphics3D.method2582();
+         Graphics3D.method2585(16, 16);
+         Graphics3D.rasterGouraudLowRes = false;
          if(var9.field3501 != -1) {
             var22.method5042(0, 0);
          }
@@ -88,11 +88,11 @@ public class class21 {
             var16 = (int)((double)var16 * 1.04D);
          }
 
-         int var17 = class136.SINE[var9.xan2d] * var16 >> 16;
-         int var18 = class136.COSINE[var9.xan2d] * var16 >> 16;
+         int var17 = Graphics3D.SINE[var9.xan2d] * var16 >> 16;
+         int var18 = Graphics3D.COSINE[var9.xan2d] * var16 >> 16;
          var21.method2493();
          var21.method2506(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var9.offsetY2d + var21.modelHeight / 2 + var17, var18 + var9.offsetY2d);
-         if(var9.field3537 != -1) {
+         if(var9.notedId != -1) {
             var22.method5042(0, 0);
          }
 
@@ -119,9 +119,9 @@ public class class21 {
             if(var1 < 100000) {
                var20 = "<col=ffff00>" + var1 + "</col>";
             } else if(var1 < 10000000) {
-               var20 = "<col=ffffff>" + var1 / 1000 + "K" + "</col>";
+               var20 = "<col=ffffff>" + var1 / 1000 + "K</col>";
             } else {
-               var20 = "<col=00ff80>" + var1 / 1000000 + "M" + "</col>";
+               var20 = "<col=00ff80>" + var1 / 1000000 + "M</col>";
             }
 
             var19.method4790(var20, 0, 9, 16776960, 1);
@@ -132,9 +132,9 @@ public class class21 {
          }
 
          Rasterizer2D.setRasterBuffer(var12, var13, var14);
-         Rasterizer2D.method4921(var15);
-         class136.method2582();
-         class136.rasterGouraudLowRes = true;
+         Rasterizer2D.setDrawRegion(var15);
+         Graphics3D.method2582();
+         Graphics3D.rasterGouraudLowRes = true;
          return var8;
       }
    }

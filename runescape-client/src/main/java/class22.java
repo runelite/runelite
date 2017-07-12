@@ -81,9 +81,9 @@ public class class22 extends class28 {
       File var3 = new File(Frames.field2158, "preferences" + var0 + ".dat");
       if(var3.exists()) {
          try {
-            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
+            FileOnDisk var11 = new FileOnDisk(var3, "rw", 10000L);
+            return var11;
+         } catch (IOException var10) {
             ;
          }
       }
@@ -95,13 +95,13 @@ public class class22 extends class28 {
          var4 = "_wip";
       }
 
-      File var5 = new File(GraphicsObject.field1383, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
+      File var5 = new File(GraphicsObject.userHome, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
       FileOnDisk var6;
       if(!var2 && var5.exists()) {
          try {
             var6 = new FileOnDisk(var5, "rw", 10000L);
             return var6;
-         } catch (IOException var8) {
+         } catch (IOException var9) {
             ;
          }
       }
@@ -109,7 +109,7 @@ public class class22 extends class28 {
       try {
          var6 = new FileOnDisk(var3, "rw", 10000L);
          return var6;
-      } catch (IOException var7) {
+      } catch (IOException var8) {
          throw new RuntimeException();
       }
    }

@@ -70,7 +70,7 @@ public enum class221 implements RSEnum {
       signature = "(II)V",
       garbageValue = "0"
    )
-   class221(int var3, int var4) {
+   private class221(int var3, int var4) {
       this.field2842 = var3;
    }
 }

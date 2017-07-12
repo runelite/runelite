@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -10,20 +11,26 @@ public class FrameMap extends Node {
    @ObfuscatedGetter(
       intValue = 468508233
    )
-   int field2057;
+   @Export("id")
+   int id;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 891823307
    )
-   int field2058;
+   @Export("count")
+   int count;
    @ObfuscatedName("t")
-   int[][] field2061;
+   @Export("list")
+   int[][] list;
    @ObfuscatedName("a")
-   int[] field2062;
+   @Export("types")
+   int[] types;
    @ObfuscatedName("g")
-   static int[] field2064;
+   @Export("tt")
+   static int[] tt;
    @ObfuscatedName("pq")
-   static class109 field2065;
+   @Export("soundSystem0")
+   static AbstractSoundSystem soundSystem0;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
@@ -40,7 +47,7 @@ public class FrameMap extends Node {
       garbageValue = "-1479443479"
    )
    public static int method2662() {
-      return ++class59.mouseIdleTicks - 1;
+      return ++MouseInput.mouseIdleTicks - 1;
    }
 
    @ObfuscatedName("l")
@@ -70,13 +77,13 @@ public class FrameMap extends Node {
       if(var0 == null) {
          return null;
       } else {
-         if(var0.length > 136 && !class176.field2420) {
+         if(var0.length > 136 && !AbstractByteBuffer.field2420) {
             try {
-               class171 var2 = new class171();
-               var2.vmethod3351(var0);
+               DirectByteBuffer var2 = new DirectByteBuffer();
+               var2.put(var0);
                return var2;
             } catch (Throwable var3) {
-               class176.field2420 = true;
+               AbstractByteBuffer.field2420 = true;
             }
          }
 
@@ -85,24 +92,24 @@ public class FrameMap extends Node {
    }
 
    FrameMap(int var1, byte[] var2) {
-      this.field2057 = var1;
+      this.id = var1;
       Buffer var3 = new Buffer(var2);
-      this.field2058 = var3.readUnsignedByte();
-      this.field2062 = new int[this.field2058];
-      this.field2061 = new int[this.field2058][];
+      this.count = var3.readUnsignedByte();
+      this.types = new int[this.count];
+      this.list = new int[this.count][];
 
       int var4;
-      for(var4 = 0; var4 < this.field2058; ++var4) {
-         this.field2062[var4] = var3.readUnsignedByte();
+      for(var4 = 0; var4 < this.count; ++var4) {
+         this.types[var4] = var3.readUnsignedByte();
       }
 
-      for(var4 = 0; var4 < this.field2058; ++var4) {
-         this.field2061[var4] = new int[var3.readUnsignedByte()];
+      for(var4 = 0; var4 < this.count; ++var4) {
+         this.list[var4] = new int[var3.readUnsignedByte()];
       }
 
-      for(var4 = 0; var4 < this.field2058; ++var4) {
-         for(int var5 = 0; var5 < this.field2061[var4].length; ++var5) {
-            this.field2061[var4][var5] = var3.readUnsignedByte();
+      for(var4 = 0; var4 < this.count; ++var4) {
+         for(int var5 = 0; var5 < this.list[var4].length; ++var5) {
+            this.list[var4][var5] = var3.readUnsignedByte();
          }
       }
 

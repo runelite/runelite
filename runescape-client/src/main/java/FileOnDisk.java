@@ -40,7 +40,8 @@ public final class FileOnDisk {
       signature = "([BIII)V",
       garbageValue = "167165863"
    )
-   public final void method2363(byte[] var1, int var2, int var3) throws IOException {
+   @Export("write")
+   public final void write(byte[] var1, int var2, int var3) throws IOException {
       if((long)var3 + this.position > this.length) {
          this.file.seek(this.length + 1L);
          this.file.write(1);
@@ -59,18 +60,18 @@ public final class FileOnDisk {
    static int method2366(int var0, Script var1, boolean var2) {
       Widget var3 = var2?class83.field1364:class60.field766;
       if(var0 == 1800) {
-         int[] var4 = class83.intStack;
+         int[] var8 = class83.intStack;
          int var5 = ++class46.intStackSize - 1;
-         int var7 = WorldMapType3.method199(var3);
-         int var6 = var7 >> 11 & 63;
-         var4[var5] = var6;
+         int var6 = WorldMapType3.getWidgetConfig(var3);
+         int var7 = var6 >> 11 & 63;
+         var8[var5] = var7;
          return 1;
       } else if(var0 != 1801) {
          if(var0 == 1802) {
             if(var3.name == null) {
-               class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
             } else {
-               class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var3.name;
+               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var3.name;
             }
 
             return 1;
@@ -78,12 +79,12 @@ public final class FileOnDisk {
             return 2;
          }
       } else {
-         int var8 = class83.intStack[--class46.intStackSize];
-         --var8;
-         if(var3.actions != null && var8 < var3.actions.length && var3.actions[var8] != null) {
-            class83.scriptStringStack[++class50.scriptStringStackSize - 1] = var3.actions[var8];
+         int var4 = class83.intStack[--class46.intStackSize];
+         --var4;
+         if(var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
+            class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var3.actions[var4];
          } else {
-            class83.scriptStringStack[++class50.scriptStringStackSize - 1] = "";
+            class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
          }
 
          return 1;
@@ -95,7 +96,8 @@ public final class FileOnDisk {
       signature = "([BIII)I",
       garbageValue = "1897591308"
    )
-   public final int method2367(byte[] var1, int var2, int var3) throws IOException {
+   @Export("read")
+   public final int read(byte[] var1, int var2, int var3) throws IOException {
       int var4 = this.file.read(var1, var2, var3);
       if(var4 > 0) {
          this.position += (long)var4;
@@ -107,13 +109,14 @@ public final class FileOnDisk {
    protected void finalize() throws Throwable {
       if(this.file != null) {
          System.out.println("");
-         this.method2381();
+         this.close();
       }
 
    }
 
    @ObfuscatedName("i")
-   final void method2374(long var1) throws IOException {
+   @Export("seek")
+   final void seek(long var1) throws IOException {
       this.file.seek(var1);
       this.position = var1;
    }
@@ -123,7 +126,8 @@ public final class FileOnDisk {
       signature = "(I)J",
       garbageValue = "-1398584935"
    )
-   public final long method2379() throws IOException {
+   @Export("length")
+   public final long length() throws IOException {
       return this.file.length();
    }
 
@@ -153,7 +157,8 @@ public final class FileOnDisk {
       signature = "(I)V",
       garbageValue = "1605625791"
    )
-   public final void method2381() throws IOException {
+   @Export("close")
+   public final void close() throws IOException {
       if(this.file != null) {
          this.file.close();
          this.file = null;
@@ -174,11 +179,11 @@ public final class FileOnDisk {
          var2.maxWidth = class286.field3801;
          var2.maxHeight = class286.field3796;
          var2.offsetX = class286.field3799[var1];
-         var2.offsetY = class286.field3800[var1];
+         var2.offsetY = class286.offsetsY[var1];
          var2.width = class7.field239[var1];
          var2.height = class226.field3146[var1];
          int var3 = var2.height * var2.width;
-         byte[] var4 = class210.field2609[var1];
+         byte[] var4 = class210.spritePixels[var1];
          var2.image = new int[var3];
 
          for(int var5 = 0; var5 < var3; ++var5) {

@@ -1,11 +1,13 @@
 import java.util.Comparator;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("f")
 final class class17 implements Comparator {
    @ObfuscatedName("k")
-   static int[] field316;
+   @Export("blendedHue")
+   static int[] blendedHue;
    @ObfuscatedName("i")
    static boolean field317;
 
@@ -15,7 +17,7 @@ final class class17 implements Comparator {
       garbageValue = "-1496050479"
    )
    static final void method114() {
-      WorldMapData.method341(false);
+      WorldMapData.flush(false);
       Client.field1083 = 0;
       boolean var0 = true;
 
@@ -29,8 +31,8 @@ final class class17 implements Comparator {
             }
          }
 
-         if(class45.field616[var1] != -1 && class14.field290[var1] == null) {
-            class14.field290[var1] = Frames.indexMaps.getConfigData(class45.field616[var1], 0, class28.xteaKeys[var1]);
+         if(class45.landRegionFielIds[var1] != -1 && class14.field290[var1] == null) {
+            class14.field290[var1] = Frames.indexMaps.getConfigData(class45.landRegionFielIds[var1], 0, class28.xteaKeys[var1]);
             if(class14.field290[var1] == null) {
                var0 = false;
                ++Client.field1083;
@@ -44,19 +46,19 @@ final class class17 implements Comparator {
          Client.field983 = 0;
          var0 = true;
 
+         int var2;
          int var3;
-         int var4;
          for(var1 = 0; var1 < ISAACCipher.field2429.length; ++var1) {
-            byte[] var2 = class14.field290[var1];
-            if(var2 != null) {
-               var3 = (RSCanvas.mapRegions[var1] >> 8) * 64 - class50.baseX;
-               var4 = (RSCanvas.mapRegions[var1] & 255) * 64 - class266.baseY;
+            byte[] var4 = class14.field290[var1];
+            if(var4 != null) {
+               var2 = (RSCanvas.mapRegions[var1] >> 8) * 64 - KeyFocusListener.baseX;
+               var3 = (RSCanvas.mapRegions[var1] & 255) * 64 - class266.baseY;
                if(Client.isDynamicRegion) {
+                  var2 = 10;
                   var3 = 10;
-                  var4 = 10;
                }
 
-               var0 &= class261.method4733(var2, var3, var4);
+               var0 &= class261.method4733(var4, var2, var3);
             }
          }
 
@@ -64,25 +66,25 @@ final class class17 implements Comparator {
             Client.field1104 = 2;
          } else {
             if(Client.field1104 != 0) {
-               class2.drawStatusBox("Loading - please wait." + "<br>" + " (" + 100 + "%" + ")", true);
+               class2.drawStatusBox("Loading - please wait.<br> (100%)", true);
             }
 
             class14.method67();
             class28.method231();
             class14.method67();
-            class2.region.method2667();
+            class2.region.reset();
             class14.method67();
             System.gc();
 
             for(var1 = 0; var1 < 4; ++var1) {
-               Client.collisionMaps[var1].method3007();
+               Client.collisionMaps[var1].reset();
             }
 
-            int var23;
+            int var27;
             for(var1 = 0; var1 < 4; ++var1) {
-               for(var23 = 0; var23 < 104; ++var23) {
-                  for(var3 = 0; var3 < 104; ++var3) {
-                     class61.tileSettings[var1][var23][var3] = 0;
+               for(var27 = 0; var27 < 104; ++var27) {
+                  for(var2 = 0; var2 < 104; ++var2) {
+                     class61.tileSettings[var1][var27][var2] = 0;
                   }
                }
             }
@@ -91,239 +93,280 @@ final class class17 implements Comparator {
             class34.method506();
             var1 = ISAACCipher.field2429.length;
             class168.method3108();
-            WorldMapData.method341(true);
+            WorldMapData.flush(true);
+            int var5;
             int var6;
             int var7;
+            int var8;
             int var9;
             int var10;
             int var11;
-            int var12;
-            int var25;
             if(!Client.isDynamicRegion) {
-               byte[] var5;
-               for(var23 = 0; var23 < var1; ++var23) {
-                  var3 = (RSCanvas.mapRegions[var23] >> 8) * 64 - class50.baseX;
-                  var4 = (RSCanvas.mapRegions[var23] & 255) * 64 - class266.baseY;
-                  var5 = ISAACCipher.field2429[var23];
-                  if(var5 != null) {
-                     class14.method67();
-                     var6 = World.field1321 * 8 - 48;
-                     var7 = FileOnDisk.field1777 * 8 - 48;
-                     CollisionData[] var8 = Client.collisionMaps;
+               var27 = 0;
 
-                     for(var9 = 0; var9 < 4; ++var9) {
-                        for(var10 = 0; var10 < 64; ++var10) {
-                           for(var11 = 0; var11 < 64; ++var11) {
-                              if(var3 + var10 > 0 && var3 + var10 < 103 && var11 + var4 > 0 && var11 + var4 < 103) {
-                                 var8[var9].flags[var3 + var10][var11 + var4] &= -16777217;
-                              }
-                           }
+               label445:
+               while(true) {
+                  byte[] var12;
+                  if(var27 >= var1) {
+                     for(var27 = 0; var27 < var1; ++var27) {
+                        var2 = (RSCanvas.mapRegions[var27] >> 8) * 64 - KeyFocusListener.baseX;
+                        var3 = (RSCanvas.mapRegions[var27] & 255) * 64 - class266.baseY;
+                        var12 = ISAACCipher.field2429[var27];
+                        if(var12 == null && FileOnDisk.field1777 < 800) {
+                           class14.method67();
+                           WorldMapType3.method201(var2, var3, 64, 64);
                         }
                      }
 
-                     Buffer var24 = new Buffer(var5);
-
-                     for(var10 = 0; var10 < 4; ++var10) {
-                        for(var11 = 0; var11 < 64; ++var11) {
-                           for(var12 = 0; var12 < 64; ++var12) {
-                              GraphicsObject.method1683(var24, var10, var3 + var11, var4 + var12, var6, var7, 0);
-                           }
-                        }
-                     }
-                  }
-               }
-
-               for(var23 = 0; var23 < var1; ++var23) {
-                  var3 = (RSCanvas.mapRegions[var23] >> 8) * 64 - class50.baseX;
-                  var4 = (RSCanvas.mapRegions[var23] & 255) * 64 - class266.baseY;
-                  var5 = ISAACCipher.field2429[var23];
-                  if(var5 == null && FileOnDisk.field1777 < 800) {
-                     class14.method67();
-                     WorldMapType3.method201(var3, var4, 64, 64);
-                  }
-               }
-
-               WorldMapData.method341(true);
-
-               for(var23 = 0; var23 < var1; ++var23) {
-                  byte[] var27 = class14.field290[var23];
-                  if(var27 != null) {
-                     var4 = (RSCanvas.mapRegions[var23] >> 8) * 64 - class50.baseX;
-                     var25 = (RSCanvas.mapRegions[var23] & 255) * 64 - class266.baseY;
-                     class14.method67();
-                     Region var28 = class2.region;
-                     CollisionData[] var29 = Client.collisionMaps;
-                     Buffer var30 = new Buffer(var27);
-                     var9 = -1;
+                     WorldMapData.flush(true);
+                     var27 = 0;
 
                      while(true) {
-                        var10 = var30.method3159();
-                        if(var10 == 0) {
-                           break;
+                        if(var27 >= var1) {
+                           break label445;
                         }
 
-                        var9 += var10;
-                        var11 = 0;
+                        byte[] var29 = class14.field290[var27];
+                        if(var29 != null) {
+                           var3 = (RSCanvas.mapRegions[var27] >> 8) * 64 - KeyFocusListener.baseX;
+                           var11 = (RSCanvas.mapRegions[var27] & 255) * 64 - class266.baseY;
+                           class14.method67();
+                           Region var31 = class2.region;
+                           CollisionData[] var15 = Client.collisionMaps;
+                           Buffer var16 = new Buffer(var29);
+                           var7 = -1;
 
-                        while(true) {
-                           var12 = var30.method3159();
-                           if(var12 == 0) {
-                              break;
-                           }
-
-                           var11 += var12 - 1;
-                           int var13 = var11 & 63;
-                           int var14 = var11 >> 6 & 63;
-                           int var15 = var11 >> 12;
-                           int var16 = var30.readUnsignedByte();
-                           int var17 = var16 >> 2;
-                           int var18 = var16 & 3;
-                           int var19 = var4 + var14;
-                           int var20 = var13 + var25;
-                           if(var19 > 0 && var20 > 0 && var19 < 103 && var20 < 103) {
-                              int var21 = var15;
-                              if((class61.tileSettings[1][var19][var20] & 2) == 2) {
-                                 var21 = var15 - 1;
+                           while(true) {
+                              var8 = var16.getUSmart();
+                              if(var8 == 0) {
+                                 break;
                               }
 
-                              CollisionData var22 = null;
-                              if(var21 >= 0) {
-                                 var22 = var29[var21];
-                              }
+                              var7 += var8;
+                              var9 = 0;
 
-                              class211.method3906(var15, var19, var20, var9, var18, var17, var28, var22);
+                              while(true) {
+                                 var10 = var16.getUSmart();
+                                 if(var10 == 0) {
+                                    break;
+                                 }
+
+                                 var9 += var10 - 1;
+                                 int var17 = var9 & 63;
+                                 int var18 = var9 >> 6 & 63;
+                                 int var19 = var9 >> 12;
+                                 int var20 = var16.readUnsignedByte();
+                                 int var21 = var20 >> 2;
+                                 int var22 = var20 & 3;
+                                 int var23 = var3 + var18;
+                                 int var24 = var17 + var11;
+                                 if(var23 > 0 && var24 > 0 && var23 < 103 && var24 < 103) {
+                                    int var25 = var19;
+                                    if((class61.tileSettings[1][var23][var24] & 2) == 2) {
+                                       var25 = var19 - 1;
+                                    }
+
+                                    CollisionData var26 = null;
+                                    if(var25 >= 0) {
+                                       var26 = var15[var25];
+                                    }
+
+                                    class211.addObject(var19, var23, var24, var7, var22, var21, var31, var26);
+                                 }
+                              }
                            }
                         }
+
+                        ++var27;
                      }
                   }
+
+                  var2 = (RSCanvas.mapRegions[var27] >> 8) * 64 - KeyFocusListener.baseX;
+                  var3 = (RSCanvas.mapRegions[var27] & 255) * 64 - class266.baseY;
+                  var12 = ISAACCipher.field2429[var27];
+                  if(var12 != null) {
+                     class14.method67();
+                     var5 = World.field1321 * 8 - 48;
+                     var6 = FileOnDisk.field1777 * 8 - 48;
+                     CollisionData[] var13 = Client.collisionMaps;
+                     var7 = 0;
+
+                     label442:
+                     while(true) {
+                        if(var7 >= 4) {
+                           Buffer var14 = new Buffer(var12);
+                           var8 = 0;
+
+                           while(true) {
+                              if(var8 >= 4) {
+                                 break label442;
+                              }
+
+                              for(var9 = 0; var9 < 64; ++var9) {
+                                 for(var10 = 0; var10 < 64; ++var10) {
+                                    GraphicsObject.loadTerrain(var14, var8, var2 + var9, var3 + var10, var5, var6, 0);
+                                 }
+                              }
+
+                              ++var8;
+                           }
+                        }
+
+                        for(var8 = 0; var8 < 64; ++var8) {
+                           for(var9 = 0; var9 < 64; ++var9) {
+                              if(var2 + var8 > 0 && var2 + var8 < 103 && var9 + var3 > 0 && var9 + var3 < 103) {
+                                 var13[var7].flags[var2 + var8][var9 + var3] &= -16777217;
+                              }
+                           }
+                        }
+
+                        ++var7;
+                     }
+                  }
+
+                  ++var27;
                }
             }
 
-            int var26;
+            int var28;
             if(Client.isDynamicRegion) {
-               for(var23 = 0; var23 < 4; ++var23) {
+               var27 = 0;
+
+               label378:
+               while(true) {
+                  if(var27 >= 4) {
+                     for(var27 = 0; var27 < 13; ++var27) {
+                        for(var2 = 0; var2 < 13; ++var2) {
+                           var3 = Client.field988[0][var27][var2];
+                           if(var3 == -1) {
+                              WorldMapType3.method201(var27 * 8, var2 * 8, 8, 8);
+                           }
+                        }
+                     }
+
+                     WorldMapData.flush(true);
+                     var27 = 0;
+
+                     while(true) {
+                        if(var27 >= 4) {
+                           break label378;
+                        }
+
+                        class14.method67();
+
+                        for(var2 = 0; var2 < 13; ++var2) {
+                           for(var3 = 0; var3 < 13; ++var3) {
+                              var11 = Client.field988[var27][var2][var3];
+                              if(var11 != -1) {
+                                 var5 = var11 >> 24 & 3;
+                                 var6 = var11 >> 1 & 3;
+                                 var28 = var11 >> 14 & 1023;
+                                 var7 = var11 >> 3 & 2047;
+                                 var8 = var7 / 8 + (var28 / 8 << 8);
+
+                                 for(var9 = 0; var9 < RSCanvas.mapRegions.length; ++var9) {
+                                    if(RSCanvas.mapRegions[var9] == var8 && class14.field290[var9] != null) {
+                                       class3.method11(class14.field290[var9], var27, var2 * 8, var3 * 8, var5, (var28 & 7) * 8, (var7 & 7) * 8, var6, class2.region, Client.collisionMaps);
+                                       break;
+                                    }
+                                 }
+                              }
+                           }
+                        }
+
+                        ++var27;
+                     }
+                  }
+
                   class14.method67();
 
-                  for(var3 = 0; var3 < 13; ++var3) {
-                     for(var4 = 0; var4 < 13; ++var4) {
-                        boolean var31 = false;
-                        var6 = Client.field988[var23][var3][var4];
-                        if(var6 != -1) {
-                           var7 = var6 >> 24 & 3;
-                           var26 = var6 >> 1 & 3;
-                           var9 = var6 >> 14 & 1023;
-                           var10 = var6 >> 3 & 2047;
-                           var11 = (var9 / 8 << 8) + var10 / 8;
+                  for(var2 = 0; var2 < 13; ++var2) {
+                     for(var3 = 0; var3 < 13; ++var3) {
+                        boolean var30 = false;
+                        var5 = Client.field988[var27][var2][var3];
+                        if(var5 != -1) {
+                           var6 = var5 >> 24 & 3;
+                           var28 = var5 >> 1 & 3;
+                           var7 = var5 >> 14 & 1023;
+                           var8 = var5 >> 3 & 2047;
+                           var9 = (var7 / 8 << 8) + var8 / 8;
 
-                           for(var12 = 0; var12 < RSCanvas.mapRegions.length; ++var12) {
-                              if(var11 == RSCanvas.mapRegions[var12] && ISAACCipher.field2429[var12] != null) {
-                                 class33.method347(ISAACCipher.field2429[var12], var23, var3 * 8, var4 * 8, var7, (var9 & 7) * 8, (var10 & 7) * 8, var26, Client.collisionMaps);
-                                 var31 = true;
+                           for(var10 = 0; var10 < RSCanvas.mapRegions.length; ++var10) {
+                              if(var9 == RSCanvas.mapRegions[var10] && ISAACCipher.field2429[var10] != null) {
+                                 class33.method347(ISAACCipher.field2429[var10], var27, var2 * 8, var3 * 8, var6, (var7 & 7) * 8, (var8 & 7) * 8, var28, Client.collisionMaps);
+                                 var30 = true;
                                  break;
                               }
                            }
                         }
 
-                        if(!var31) {
-                           var7 = var23;
-                           var26 = var3 * 8;
-                           var9 = var4 * 8;
+                        if(!var30) {
+                           var6 = var27;
+                           var28 = var2 * 8;
+                           var7 = var3 * 8;
 
-                           for(var10 = 0; var10 < 8; ++var10) {
-                              for(var11 = 0; var11 < 8; ++var11) {
-                                 class61.tileHeights[var7][var10 + var26][var11 + var9] = 0;
+                           for(var8 = 0; var8 < 8; ++var8) {
+                              for(var9 = 0; var9 < 8; ++var9) {
+                                 class61.tileHeights[var6][var8 + var28][var9 + var7] = 0;
                               }
                            }
 
-                           if(var26 > 0) {
-                              for(var10 = 1; var10 < 8; ++var10) {
-                                 class61.tileHeights[var7][var26][var10 + var9] = class61.tileHeights[var7][var26 - 1][var10 + var9];
+                           if(var28 > 0) {
+                              for(var8 = 1; var8 < 8; ++var8) {
+                                 class61.tileHeights[var6][var28][var8 + var7] = class61.tileHeights[var6][var28 - 1][var8 + var7];
                               }
                            }
 
-                           if(var9 > 0) {
-                              for(var10 = 1; var10 < 8; ++var10) {
-                                 class61.tileHeights[var7][var10 + var26][var9] = class61.tileHeights[var7][var10 + var26][var9 - 1];
+                           if(var7 > 0) {
+                              for(var8 = 1; var8 < 8; ++var8) {
+                                 class61.tileHeights[var6][var8 + var28][var7] = class61.tileHeights[var6][var8 + var28][var7 - 1];
                               }
                            }
 
-                           if(var26 > 0 && class61.tileHeights[var7][var26 - 1][var9] != 0) {
-                              class61.tileHeights[var7][var26][var9] = class61.tileHeights[var7][var26 - 1][var9];
-                           } else if(var9 > 0 && class61.tileHeights[var7][var26][var9 - 1] != 0) {
-                              class61.tileHeights[var7][var26][var9] = class61.tileHeights[var7][var26][var9 - 1];
-                           } else if(var26 > 0 && var9 > 0 && class61.tileHeights[var7][var26 - 1][var9 - 1] != 0) {
-                              class61.tileHeights[var7][var26][var9] = class61.tileHeights[var7][var26 - 1][var9 - 1];
+                           if(var28 > 0 && class61.tileHeights[var6][var28 - 1][var7] != 0) {
+                              class61.tileHeights[var6][var28][var7] = class61.tileHeights[var6][var28 - 1][var7];
+                           } else if(var7 > 0 && class61.tileHeights[var6][var28][var7 - 1] != 0) {
+                              class61.tileHeights[var6][var28][var7] = class61.tileHeights[var6][var28][var7 - 1];
+                           } else if(var28 > 0 && var7 > 0 && class61.tileHeights[var6][var28 - 1][var7 - 1] != 0) {
+                              class61.tileHeights[var6][var28][var7] = class61.tileHeights[var6][var28 - 1][var7 - 1];
                            }
                         }
                      }
                   }
-               }
 
-               for(var23 = 0; var23 < 13; ++var23) {
-                  for(var3 = 0; var3 < 13; ++var3) {
-                     var4 = Client.field988[0][var23][var3];
-                     if(var4 == -1) {
-                        WorldMapType3.method201(var23 * 8, var3 * 8, 8, 8);
-                     }
-                  }
-               }
-
-               WorldMapData.method341(true);
-
-               for(var23 = 0; var23 < 4; ++var23) {
-                  class14.method67();
-
-                  for(var3 = 0; var3 < 13; ++var3) {
-                     for(var4 = 0; var4 < 13; ++var4) {
-                        var25 = Client.field988[var23][var3][var4];
-                        if(var25 != -1) {
-                           var6 = var25 >> 24 & 3;
-                           var7 = var25 >> 1 & 3;
-                           var26 = var25 >> 14 & 1023;
-                           var9 = var25 >> 3 & 2047;
-                           var10 = var9 / 8 + (var26 / 8 << 8);
-
-                           for(var11 = 0; var11 < RSCanvas.mapRegions.length; ++var11) {
-                              if(RSCanvas.mapRegions[var11] == var10 && class14.field290[var11] != null) {
-                                 class3.method11(class14.field290[var11], var23, var3 * 8, var4 * 8, var6, (var26 & 7) * 8, (var9 & 7) * 8, var7, class2.region, Client.collisionMaps);
-                                 break;
-                              }
-                           }
-                        }
-                     }
-                  }
+                  ++var27;
                }
             }
 
-            WorldMapData.method341(true);
+            WorldMapData.flush(true);
             class28.method231();
             class14.method67();
             Client.method1527(class2.region, Client.collisionMaps);
-            WorldMapData.method341(true);
-            var23 = class61.field770;
-            if(var23 > WallObject.plane) {
-               var23 = WallObject.plane;
+            WorldMapData.flush(true);
+            var27 = class61.field770;
+            if(var27 > WallObject.plane) {
+               var27 = WallObject.plane;
             }
 
-            if(var23 < WallObject.plane - 1) {
-               var23 = WallObject.plane - 1;
+            if(var27 < WallObject.plane - 1) {
+               var27 = WallObject.plane - 1;
             }
 
-            if(Client.field930) {
-               class2.region.method2733(class61.field770);
+            if(Client.lowMemory) {
+               class2.region.setup(class61.field770);
             } else {
-               class2.region.method2733(0);
+               class2.region.setup(0);
             }
 
-            for(var3 = 0; var3 < 104; ++var3) {
-               for(var4 = 0; var4 < 104; ++var4) {
-                  class146.groundItemSpawned(var3, var4);
+            for(var2 = 0; var2 < 104; ++var2) {
+               for(var3 = 0; var3 < 104; ++var3) {
+                  Occluder.groundItemSpawned(var2, var3);
                }
             }
 
             class14.method67();
 
-            for(PendingSpawn var32 = (PendingSpawn)Client.pendingSpawns.method3584(); var32 != null; var32 = (PendingSpawn)Client.pendingSpawns.method3578()) {
+            for(PendingSpawn var32 = (PendingSpawn)Client.pendingSpawns.getFront(); var32 != null; var32 = (PendingSpawn)Client.pendingSpawns.getNext()) {
                if(var32.hitpoints == -1) {
                   var32.delay = 0;
                   class3.method10(var32);
@@ -333,22 +376,22 @@ final class class17 implements Comparator {
             }
 
             ObjectComposition.field3487.reset();
-            if(class261.field3632.method967()) {
+            if(class261.clientInstance.method967()) {
                Client.secretPacketBuffer1.putOpcode(219);
                Client.secretPacketBuffer1.putInt(1057001181);
             }
 
             if(!Client.isDynamicRegion) {
-               var3 = (World.field1321 - 6) / 8;
-               var4 = (World.field1321 + 6) / 8;
-               var25 = (FileOnDisk.field1777 - 6) / 8;
-               var6 = (FileOnDisk.field1777 + 6) / 8;
+               var2 = (World.field1321 - 6) / 8;
+               var3 = (World.field1321 + 6) / 8;
+               var11 = (FileOnDisk.field1777 - 6) / 8;
+               var5 = (FileOnDisk.field1777 + 6) / 8;
 
-               for(var7 = var3 - 1; var7 <= var4 + 1; ++var7) {
-                  for(var26 = var25 - 1; var26 <= var6 + 1; ++var26) {
-                     if(var7 < var3 || var7 > var4 || var26 < var25 || var26 > var6) {
-                        Frames.indexMaps.method4143("m" + var7 + "_" + var26);
-                        Frames.indexMaps.method4143("l" + var7 + "_" + var26);
+               for(var6 = var2 - 1; var6 <= var3 + 1; ++var6) {
+                  for(var28 = var11 - 1; var28 <= var5 + 1; ++var28) {
+                     if(var6 < var2 || var6 > var3 || var28 < var11 || var28 > var5) {
+                        Frames.indexMaps.method4143("m" + var6 + "_" + var28);
+                        Frames.indexMaps.method4143("l" + var6 + "_" + var28);
                      }
                   }
                }
@@ -356,11 +399,12 @@ final class class17 implements Comparator {
 
             TextureProvider.setGameState(30);
             class14.method67();
-            class51.method794();
+            class51.resetMapInfo();
             Client.secretPacketBuffer1.putOpcode(111);
             class95.method1782();
          }
       }
+
    }
 
    @ObfuscatedName("i")
@@ -394,22 +438,23 @@ final class class17 implements Comparator {
       signature = "(LPacketBuffer;I)V",
       garbageValue = "-1751909066"
    )
-   static final void method119(PacketBuffer var0) {
-      var0.method3410();
+   @Export("initializeGPI")
+   static final void initializeGPI(PacketBuffer var0) {
+      var0.bitAccess();
       int var1 = Client.localInteractingIndex;
       Player var2 = XItemContainer.localPlayer = Client.cachedPlayers[var1] = new Player();
       var2.field914 = var1;
-      int var3 = var0.method3388(30);
+      int var3 = var0.getBits(30);
       byte var4 = (byte)(var3 >> 28);
       int var5 = var3 >> 14 & 16383;
       int var6 = var3 & 16383;
-      var2.pathX[0] = var5 - class50.baseX;
-      var2.x = (var2.pathX[0] << 7) + (var2.method1156() << 6);
+      var2.pathX[0] = var5 - KeyFocusListener.baseX;
+      var2.x = (var2.pathX[0] << 7) + (var2.getSize() << 6);
       var2.pathY[0] = var6 - class266.baseY;
-      var2.y = (var2.pathY[0] << 7) + (var2.method1156() << 6);
+      var2.y = (var2.pathY[0] << 7) + (var2.getSize() << 6);
       WallObject.plane = var2.field911 = var4;
       if(class96.field1520[var1] != null) {
-         var2.method1154(class96.field1520[var1]);
+         var2.decodeApperance(class96.field1520[var1]);
       }
 
       class96.field1521 = 0;
@@ -419,7 +464,7 @@ final class class17 implements Comparator {
 
       for(int var7 = 1; var7 < 2048; ++var7) {
          if(var7 != var1) {
-            int var8 = var0.method3388(18);
+            int var8 = var0.getBits(18);
             int var9 = var8 >> 16;
             int var10 = var8 >> 8 & 597;
             int var11 = var8 & 597;
@@ -431,7 +476,7 @@ final class class17 implements Comparator {
          }
       }
 
-      var0.method3384();
+      var0.byteAccess();
    }
 
    @ObfuscatedName("o")
@@ -439,10 +484,11 @@ final class class17 implements Comparator {
       signature = "(III)I",
       garbageValue = "1870101392"
    )
-   static final int method122(int var0, int var1) {
-      int var2 = class158.method2972(var0 - 1, var1 - 1) + class158.method2972(var0 + 1, var1 - 1) + class158.method2972(var0 - 1, var1 + 1) + class158.method2972(var0 + 1, var1 + 1);
-      int var3 = class158.method2972(var0 - 1, var1) + class158.method2972(var0 + 1, var1) + class158.method2972(var0, var1 - 1) + class158.method2972(var0, var1 + 1);
-      int var4 = class158.method2972(var0, var1);
+   @Export("getSmoothNoise2D")
+   static final int getSmoothNoise2D(int var0, int var1) {
+      int var2 = Timer.method2972(var0 - 1, var1 - 1) + Timer.method2972(var0 + 1, var1 - 1) + Timer.method2972(var0 - 1, var1 + 1) + Timer.method2972(var0 + 1, var1 + 1);
+      int var3 = Timer.method2972(var0 - 1, var1) + Timer.method2972(var0 + 1, var1) + Timer.method2972(var0, var1 - 1) + Timer.method2972(var0, var1 + 1);
+      int var4 = Timer.method2972(var0, var1);
       return var4 / 4 + var2 / 16 + var3 / 8;
    }
 

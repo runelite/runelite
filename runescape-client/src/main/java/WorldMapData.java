@@ -1,8 +1,12 @@
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
-
-import net.runelite.mapping.*;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
+import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ar")
 @Implements("WorldMapData")
@@ -95,7 +99,7 @@ public class WorldMapData {
    WorldMapSectionBase method274(Buffer var1) {
       int var2 = var1.readUnsignedByte();
       class27[] var3 = new class27[]{class27.field395, class27.field398, class27.field405, class27.field396};
-      class27 var4 = (class27)class134.method2577(var3, var2);
+      class27 var4 = (class27)class134.forOrdinal(var3, var2);
       Object var5 = null;
       switch(var4.field399) {
       case 0:
@@ -126,16 +130,14 @@ public class WorldMapData {
    public boolean method275(int var1, int var2, int var3) {
       Iterator var4 = this.field461.iterator();
 
-      WorldMapSectionBase var5;
-      do {
-         if(!var4.hasNext()) {
-            return false;
+      while(var4.hasNext()) {
+         WorldMapSectionBase var5 = (WorldMapSectionBase)var4.next();
+         if(var5.vmethod728(var1, var2, var3)) {
+            return true;
          }
+      }
 
-         var5 = (WorldMapSectionBase)var4.next();
-      } while(!var5.vmethod728(var1, var2, var3));
-
-      return true;
+      return false;
    }
 
    @ObfuscatedName("r")
@@ -146,16 +148,14 @@ public class WorldMapData {
    public Coordinates method278(int var1, int var2) {
       Iterator var3 = this.field461.iterator();
 
-      WorldMapSectionBase var4;
-      do {
-         if(!var3.hasNext()) {
-            return null;
+      while(var3.hasNext()) {
+         WorldMapSectionBase var4 = (WorldMapSectionBase)var3.next();
+         if(var4.vmethod754(var1, var2)) {
+            return var4.vmethod731(var1, var2);
          }
+      }
 
-         var4 = (WorldMapSectionBase)var3.next();
-      } while(!var4.vmethod754(var1, var2));
-
-      return var4.vmethod731(var1, var2);
+      return null;
    }
 
    @ObfuscatedName("v")
@@ -284,16 +284,14 @@ public class WorldMapData {
          if(var4 >= this.field472 && var4 <= this.field466) {
             Iterator var5 = this.field461.iterator();
 
-            WorldMapSectionBase var6;
-            do {
-               if(!var5.hasNext()) {
-                  return false;
+            while(var5.hasNext()) {
+               WorldMapSectionBase var6 = (WorldMapSectionBase)var5.next();
+               if(var6.vmethod754(var1, var2)) {
+                  return true;
                }
+            }
 
-               var6 = (WorldMapSectionBase)var5.next();
-            } while(!var6.vmethod754(var1, var2));
-
-            return true;
+            return false;
          } else {
             return false;
          }
@@ -335,16 +333,14 @@ public class WorldMapData {
    public int[] method317(int var1, int var2, int var3) {
       Iterator var4 = this.field461.iterator();
 
-      WorldMapSectionBase var5;
-      do {
-         if(!var4.hasNext()) {
-            return null;
+      while(var4.hasNext()) {
+         WorldMapSectionBase var5 = (WorldMapSectionBase)var4.next();
+         if(var5.vmethod728(var1, var2, var3)) {
+            return var5.vmethod730(var1, var2, var3);
          }
+      }
 
-         var5 = (WorldMapSectionBase)var4.next();
-      } while(!var5.vmethod728(var1, var2, var3));
-
-      return var5.vmethod730(var1, var2, var3);
+      return null;
    }
 
    public WorldMapData() {
@@ -391,23 +387,24 @@ public class WorldMapData {
       signature = "(ZI)V",
       garbageValue = "1607787428"
    )
-   static final void method341(boolean var0) {
+   @Export("flush")
+   static final void flush(boolean var0) {
       class14.method67();
       ++Client.audioEffectCount;
       if(Client.audioEffectCount >= 50 || var0) {
          Client.audioEffectCount = 0;
-         if(!Client.field979 && class244.rssocket != null) {
+         if(!Client.socketError && class244.rssocket != null) {
             Client.secretPacketBuffer1.putOpcode(203);
 
             try {
                class244.rssocket.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);
                Client.secretPacketBuffer1.offset = 0;
             } catch (IOException var2) {
-               Client.field979 = true;
+               Client.socketError = true;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("gc")
@@ -415,7 +412,8 @@ public class WorldMapData {
       signature = "(IIII)I",
       garbageValue = "816331099"
    )
-   static final int method343(int var0, int var1, int var2) {
+   @Export("getTileHeight")
+   static final int getTileHeight(int var0, int var1, int var2) {
       int var3 = var0 >> 7;
       int var4 = var1 >> 7;
       if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {

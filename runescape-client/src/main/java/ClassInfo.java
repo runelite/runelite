@@ -15,9 +15,11 @@ public class ClassInfo extends Node {
    @ObfuscatedGetter(
       intValue = -1693504541
    )
-   int field3748;
+   @Export("count")
+   int count;
    @ObfuscatedName("a")
-   int[] field3749;
+   @Export("type")
+   int[] type;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -1381696547
@@ -27,10 +29,12 @@ public class ClassInfo extends Node {
    @Export("fields")
    Field[] fields;
    @ObfuscatedName("t")
-   int[] field3752;
+   @Export("errorIdentifiers")
+   int[] errorIdentifiers;
    @ObfuscatedName("v")
    @Export("methods")
    Method[] methods;
    @ObfuscatedName("r")
-   int[] field3754;
+   @Export("fieldValues")
+   int[] fieldValues;
 }
