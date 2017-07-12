@@ -31,5 +31,7 @@ public interface JumpingInstruction
 {
 	List<Label> getJumps();
 
+	void setJumps(List<Label> labels);
+
 	void setLabel(org.objectweb.asm.Label label);
 }

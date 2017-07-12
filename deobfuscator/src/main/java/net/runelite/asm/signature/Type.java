@@ -30,6 +30,7 @@ public class Type
 {
 	public static final Type INT = new Type("I");
 	public static final Type VOID = new Type("V");
+	public static final Type BOOLEAN = new Type("Z");
 	public static final Type STRING = new Type("Ljava/lang/String;");
 	public static final Type THROWABLE = new Type("Ljava/lang/Throwable;");
 

@@ -25,7 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import net.runelite.asm.Field;
 import net.runelite.asm.attributes.code.Instruction;
@@ -101,7 +101,14 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 	@Override
 	public List<Label> getJumps()
 	{
-		return Arrays.asList(to);
+		return Collections.singletonList(to);
+	}
+
+	@Override
+	public void setJumps(List<Label> labels)
+	{
+		assert labels.size() == 1;
+		to = labels.get(0);
 	}
 	
 	// duplicated from If
@@ -209,5 +216,15 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 	public void setLabel(org.objectweb.asm.Label label)
 	{
 		asmlabel = label;
+	}
+
+	public Label getTo()
+	{
+		return to;
+	}
+
+	public void setTo(Label to)
+	{
+		this.to = to;
 	}
 }

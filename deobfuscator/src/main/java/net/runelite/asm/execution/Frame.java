@@ -373,6 +373,16 @@ public class Frame
 		cur = to.next();
 	}
 
+	public Instruction getCur()
+	{
+		return cur;
+	}
+
+	public void setCur(Instruction cur)
+	{
+		this.cur = cur;
+	}
+
 	public int getOrder()
 	{
 		return order;
@@ -387,5 +397,4 @@ public class Frame
 	{
 		return order++;
 	}
-
 }

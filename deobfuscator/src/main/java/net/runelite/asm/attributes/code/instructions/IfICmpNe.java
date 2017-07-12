@@ -26,6 +26,7 @@ package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.ComparisonInstruction;
 import static net.runelite.asm.attributes.code.instructions.IfICmpEq.isOne;
 import static net.runelite.asm.attributes.code.instructions.IfICmpEq.isZero;
@@ -38,6 +39,11 @@ public class IfICmpNe extends If
 	public IfICmpNe(Instructions instructions, InstructionType type)
 	{
 		super(instructions, type);
+	}
+
+	public IfICmpNe(Instructions instructions, Label to)
+	{
+		super(instructions, to);
 	}
 
 	@Override

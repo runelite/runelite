@@ -22,10 +22,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
@@ -76,17 +76,17 @@ public class Goto extends Instruction implements JumpingInstruction
 		to = ins.findLabel(asmlabel);
 		assert to != null;
 	}
-	
+
 	@Override
 	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ctx = new InstructionContext(this, frame);
-		
+
 		frame.jump(ctx, to);
 
 		return ctx;
 	}
-	
+
 	@Override
 	public boolean isTerminal()
 	{
@@ -96,7 +96,14 @@ public class Goto extends Instruction implements JumpingInstruction
 	@Override
 	public List<Label> getJumps()
 	{
-		return Arrays.asList(to);
+		return Collections.singletonList(to);
+	}
+
+	@Override
+	public void setJumps(List<Label> labels)
+	{
+		assert labels.size() == 1;
+		to = labels.get(0);
 	}
 
 	@Override
@@ -104,5 +111,15 @@ public class Goto extends Instruction implements JumpingInstruction
 	{
 		assert label != null;
 		asmlabel = label;
+	}
+
+	public Label getTo()
+	{
+		return to;
+	}
+
+	public void setTo(Label to)
+	{
+		this.to = to;
 	}
 }

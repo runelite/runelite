@@ -29,16 +29,16 @@ import java.util.Arrays;
 
 public class Variables
 {
-	private VariableContext[] variables;
+	private final VariableContext[] variables;
 
 	public Variables(int sz)
 	{
 		variables = new VariableContext[sz];
 	}
 	
-	protected Variables(Variables other)
+	public Variables(Variables other)
 	{
-		this.variables = Arrays.copyOf(other.variables, other.variables.length);
+		this.variables = other.variables.clone();
 	}
 
 	public void set(int index, VariableContext value)

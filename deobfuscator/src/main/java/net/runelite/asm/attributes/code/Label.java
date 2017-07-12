@@ -50,13 +50,22 @@ public class Label extends NOP
 			return "label <unattached>";
 		}
 
-		return "label " + next().toString();
+		Instruction next = next();
+
+		if (next == null)
+		{
+			return "label with no next instruction";
+		}
+
+		return "label " + next.toString();
 	}
 
 	@Override
 	public Instruction clone()
 	{
-		throw new UnsupportedOperationException();
+		Label l = (Label) super.clone();
+		l.label = new org.objectweb.asm.Label();
+		return l;
 	}
 
 	@Override

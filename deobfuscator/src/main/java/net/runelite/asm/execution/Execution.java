@@ -243,6 +243,11 @@ public class Execution
 		this.visitors.add(ev);
 	}
 
+	public void clearExecutionVisitor()
+	{
+		this.visitors.clear();
+	}
+
 	public void accept(InstructionContext ic)
 	{
 		visitors.forEach(v -> v.visit(ic));
@@ -266,6 +271,15 @@ public class Execution
 	public void accept(MethodContext m)
 	{
 		methodContextVisitors.forEach(mc -> mc.visit(m));
+	}
+
+	public void reset()
+	{
+		frames.clear();
+		framesOther.clear();
+		invokes.clear();
+		stepInvokes.clear();
+		executed.clear();
 	}
 
 	public void order(Frame frame, Method method)

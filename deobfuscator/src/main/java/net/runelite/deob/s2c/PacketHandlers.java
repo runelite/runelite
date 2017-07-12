@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,60 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.deob.s2c;
 
-package net.runelite.asm.execution;
+import java.util.List;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Field;
 
-import java.util.Collection;
-import net.runelite.asm.Method;
-import net.runelite.asm.attributes.code.Instruction;
-import org.apache.commons.collections4.map.MultiValueMap;
-
-public class MethodContext
+public class PacketHandlers
 {
-	private Execution execution;
-	private Method method;
-	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>();
-	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
+	private final ClassGroup group;
+	private final Field packetType;
+	private final List<PacketHandler> handlers;
 
-	public MethodContext(Execution execution, Method method)
+	public PacketHandlers(ClassGroup group, Field packetType, List<PacketHandler> handlers)
 	{
-		this.execution = execution;
-		this.method = method;
-	}
-
-	public Execution getExecution()
-	{
-		return execution;
+		this.group = group;
+		this.packetType = packetType;
+		this.handlers = handlers;
 	}
 
-	public Method getMethod()
+	public PacketHandler find(int opcode)
 	{
-		return method;
-	}
-	
-	protected boolean hasJumped(InstructionContext from, Instruction to)
-	{
-		Collection<Instruction> i = visited.getCollection(from);
-		if (i != null && i.contains(to))
-			return true;
-		
-		visited.put(from, to);
-		return false;
-	}
-	
-	public Collection<InstructionContext> getInstructonContexts(Instruction i)
-	{
-		return contexts.getCollection(i);
-	}
-	
-	public Collection<InstructionContext> getInstructionContexts()
-	{
-		return (Collection) contexts.values();
+		for (PacketHandler handler : handlers)
+		{
+			if (handler.getOpcode() == opcode)
+			{
+				return handler;
+			}
+		}
+		return null;
 	}
 
-	public void reset()
+	public ClassGroup getGroup()
 	{
-		contexts.clear();
-		visited.clear();
+		return group;
+	}
+
+	public Field getPacketType()
+	{
+		return packetType;
+	}
+
+	public List<PacketHandler> getHandlers()
+	{
+		return handlers;
 	}
 }

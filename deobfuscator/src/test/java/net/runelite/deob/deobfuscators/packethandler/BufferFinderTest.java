@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,60 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.deob.deobfuscators.packethandler;
 
-package net.runelite.asm.execution;
+import java.io.File;
+import java.io.IOException;
+import net.runelite.asm.ClassGroup;
+import net.runelite.deob.DeobProperties;
+import net.runelite.deob.TemporyFolderLocation;
+import net.runelite.deob.util.JarUtil;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
-import java.util.Collection;
-import net.runelite.asm.Method;
-import net.runelite.asm.attributes.code.Instruction;
-import org.apache.commons.collections4.map.MultiValueMap;
-
-public class MethodContext
+public class BufferFinderTest
 {
-	private Execution execution;
-	private Method method;
-	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>();
-	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
+	@Rule
+	public DeobProperties properties = new DeobProperties();
 
-	public MethodContext(Execution execution, Method method)
-	{
-		this.execution = execution;
-		this.method = method;
-	}
+	@Rule
+	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
 
-	public Execution getExecution()
+	private ClassGroup group;
+
+	@Before
+	public void before() throws IOException
 	{
-		return execution;
+		group = JarUtil.loadJar(new File(properties.getRsClient()));
 	}
 
-	public Method getMethod()
+	@Test
+	@Ignore
+	public void testRun() throws IOException
 	{
-		return method;
-	}
-	
-	protected boolean hasJumped(InstructionContext from, Instruction to)
-	{
-		Collection<Instruction> i = visited.getCollection(from);
-		if (i != null && i.contains(to))
-			return true;
-		
-		visited.put(from, to);
-		return false;
-	}
-	
-	public Collection<InstructionContext> getInstructonContexts(Instruction i)
-	{
-		return contexts.getCollection(i);
-	}
-	
-	public Collection<InstructionContext> getInstructionContexts()
-	{
-		return (Collection) contexts.values();
-	}
-
-	public void reset()
-	{
-		contexts.clear();
-		visited.clear();
+		BufferFinder bf = new BufferFinder(group);
+		bf.find();
 	}
 }
