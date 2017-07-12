@@ -7,32 +7,46 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ij")
 @Implements("Area")
 public class Area extends CacheableNode {
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 1658282555
-   )
-   int field3294;
+   @ObfuscatedName("w")
+   public static Area[] field3303;
+   @ObfuscatedName("t")
+   @Export("skeletonsIndex")
+   static NodeCache skeletonsIndex;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 1539830473
    )
    static int field3295;
-   @ObfuscatedName("t")
-   @Export("skeletonsIndex")
-   static NodeCache skeletonsIndex;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -1113256817
+   )
+   @Export("spriteId")
+   public int spriteId;
+   @ObfuscatedName("l")
+   int[] field3306;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1188109863
    )
    public final int field3297;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1586498981
-   )
-   int field3299;
    @ObfuscatedName("y")
    @Export("name")
    public String name;
+   @ObfuscatedName("n")
+   public class257 field3311;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -203579295
+   )
+   int field3312;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 1658282555
+   )
+   int field3294;
+   @ObfuscatedName("u")
+   public class239 field3309;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -1600014611
@@ -43,72 +57,52 @@ public class Area extends CacheableNode {
       intValue = 1304194625
    )
    public int field3302;
-   @ObfuscatedName("w")
-   public static Area[] field3303;
-   @ObfuscatedName("o")
-   public String[] field3304;
-   @ObfuscatedName("z")
-   public String field3305;
-   @ObfuscatedName("l")
-   int[] field3306;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1042856535
-   )
-   public int field3307;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1113256817
-   )
-   @Export("spriteId")
-   public int spriteId;
-   @ObfuscatedName("u")
-   public class239 field3309;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1891181725
-   )
-   int field3310;
-   @ObfuscatedName("n")
-   public class257 field3311;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -203579295
-   )
-   int field3312;
-   @ObfuscatedName("p")
-   int[] field3313;
-   @ObfuscatedName("q")
-   byte[] field3314;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = 1245960855
    )
    int field3315;
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
-      garbageValue = "-71"
+   @ObfuscatedName("o")
+   public String[] field3304;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1042856535
    )
-   void method4288(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
+   public int field3307;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -1586498981
+   )
+   int field3299;
+   @ObfuscatedName("z")
+   public String field3305;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1891181725
+   )
+   int field3310;
+   @ObfuscatedName("p")
+   int[] field3313;
+   @ObfuscatedName("q")
+   byte[] field3314;
 
-         this.method4303(var1, var2);
-      }
+   static {
+      skeletonsIndex = new NodeCache(256);
    }
 
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1814972588"
-   )
-   public int method4289() {
-      return this.field3297;
+   Area(int var1) {
+      this.spriteId = -1;
+      this.field3312 = -1;
+      this.field3302 = 0;
+      this.field3304 = new String[5];
+      this.field3294 = Integer.MAX_VALUE;
+      this.field3299 = Integer.MAX_VALUE;
+      this.field3315 = Integer.MIN_VALUE;
+      this.field3310 = Integer.MIN_VALUE;
+      this.field3311 = class257.field3553;
+      this.field3309 = class239.field3280;
+      this.field3307 = -1;
+      this.field3297 = var1;
    }
 
    @ObfuscatedName("s")
@@ -142,21 +136,6 @@ public class Area extends CacheableNode {
             return var2;
          }
       }
-   }
-
-   Area(int var1) {
-      this.spriteId = -1;
-      this.field3312 = -1;
-      this.field3302 = 0;
-      this.field3304 = new String[5];
-      this.field3294 = Integer.MAX_VALUE;
-      this.field3299 = Integer.MAX_VALUE;
-      this.field3315 = Integer.MIN_VALUE;
-      this.field3310 = Integer.MIN_VALUE;
-      this.field3311 = class257.field3553;
-      this.field3309 = class239.field3280;
-      this.field3307 = -1;
-      this.field3297 = var1;
    }
 
    @ObfuscatedName("a")
@@ -249,6 +228,31 @@ public class Area extends CacheableNode {
 
    }
 
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1814972588"
+   )
+   public int method4289() {
+      return this.field3297;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;B)V",
+      garbageValue = "-71"
+   )
+   void method4288(Buffer var1) {
+      while(true) {
+         int var2 = var1.readUnsignedByte();
+         if(var2 == 0) {
+            return;
+         }
+
+         this.method4303(var1, var2);
+      }
+   }
+
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(B)V",
@@ -273,17 +277,6 @@ public class Area extends CacheableNode {
 
    }
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;ZI)V",
-      garbageValue = "-775668954"
-   )
-   public static void method4312(IndexDataBase var0, IndexDataBase var1, boolean var2) {
-      ObjectComposition.objects_ref = var0;
-      ObjectComposition.field3447 = var1;
-      ObjectComposition.field3464 = var2;
-   }
-
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;B)I",
@@ -293,7 +286,14 @@ public class Area extends CacheableNode {
       return var0.length() + 2;
    }
 
-   static {
-      skeletonsIndex = new NodeCache(256);
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;LIndexDataBase;ZI)V",
+      garbageValue = "-775668954"
+   )
+   public static void method4312(IndexDataBase var0, IndexDataBase var1, boolean var2) {
+      ObjectComposition.objects_ref = var0;
+      ObjectComposition.field3447 = var1;
+      ObjectComposition.field3464 = var2;
    }
 }

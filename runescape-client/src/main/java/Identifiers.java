@@ -9,26 +9,6 @@ public class Identifiers {
    @Export("table")
    int[] table;
 
-   @ObfuscatedName("i")
-   @Export("getFile")
-   public int getFile(int var1) {
-      int var2 = (this.table.length >> 1) - 1;
-      int var3 = var1 & var2;
-
-      while(true) {
-         int var4 = this.table[var3 + var3 + 1];
-         if(var4 == -1) {
-            return -1;
-         }
-
-         if(this.table[var3 + var3] == var1) {
-            return var4;
-         }
-
-         var3 = var3 + 1 & var2;
-      }
-   }
-
    public Identifiers(int[] var1) {
       int var2;
       for(var2 = 1; var2 <= var1.length + (var1.length >> 1); var2 <<= 1) {
@@ -51,5 +31,25 @@ public class Identifiers {
          this.table[var4 + var4] = var1[var3];
       }
 
+   }
+
+   @ObfuscatedName("i")
+   @Export("getFile")
+   public int getFile(int var1) {
+      int var2 = (this.table.length >> 1) - 1;
+      int var3 = var1 & var2;
+
+      while(true) {
+         int var4 = this.table[var3 + var3 + 1];
+         if(var4 == -1) {
+            return -1;
+         }
+
+         if(this.table[var3 + var3] == var1) {
+            return var4;
+         }
+
+         var3 = var3 + 1 & var2;
+      }
    }
 }

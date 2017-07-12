@@ -4,11 +4,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fi")
 public abstract class class163 {
-   @ObfuscatedName("t")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -523635057
+      intValue = -2082235101
    )
-   public int field2322;
+   public int field2325;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 179654461
@@ -19,11 +19,11 @@ public abstract class class163 {
       intValue = -1528964497
    )
    public int field2324;
-   @ObfuscatedName("i")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -2082235101
+      intValue = -523635057
    )
-   public int field2325;
+   public int field2322;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(

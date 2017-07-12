@@ -6,62 +6,97 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fq")
 @Implements("Huffman")
 public class Huffman {
-   @ObfuscatedName("a")
-   @Export("keys")
-   int[] keys;
+   @ObfuscatedName("aj")
+   static BuildType field2332;
    @ObfuscatedName("i")
    @Export("masks")
    int[] masks;
-   @ObfuscatedName("aj")
-   static BuildType field2332;
    @ObfuscatedName("w")
    @Export("bits")
    byte[] bits;
+   @ObfuscatedName("a")
+   @Export("keys")
+   int[] keys;
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;LIndexDataBase;I)V",
-      garbageValue = "1010539738"
-   )
-   public static void method3060(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2) {
-      Sequence.seq_ref = var0;
-      Sequence.skel_ref = var1;
-      Sequence.skin_ref = var2;
-   }
+   public Huffman(byte[] var1) {
+      int var2 = var1.length;
+      this.masks = new int[var2];
+      this.bits = var1;
+      int[] var3 = new int[33];
+      this.keys = new int[8];
+      int var4 = 0;
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIIB)V",
-      garbageValue = "-64"
-   )
-   public static void method3061(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var3 + var2) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
+      for(int var5 = 0; var5 < var2; ++var5) {
+         byte var6 = var1[var5];
+         if(var6 != 0) {
+            int var7 = 1 << 32 - var6;
+            int var8 = var3[var6];
+            this.masks[var5] = var8;
+            int var9;
+            int var10;
+            int var11;
+            int var12;
+            if((var8 & var7) != 0) {
+               var9 = var3[var6 - 1];
+            } else {
+               var9 = var8 | var7;
 
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
+               for(var10 = var6 - 1; var10 >= 1; --var10) {
+                  var11 = var3[var10];
+                  if(var8 != var11) {
+                     break;
+                  }
+
+                  var12 = 1 << 32 - var10;
+                  if((var11 & var12) != 0) {
+                     var3[var10] = var3[var10 - 1];
+                     break;
+                  }
+
+                  var3[var10] = var11 | var12;
+               }
+            }
+
+            var3[var6] = var9;
+
+            for(var10 = var6 + 1; var10 <= 32; ++var10) {
+               if(var8 == var3[var10]) {
+                  var3[var10] = var9;
+               }
+            }
+
+            var10 = 0;
+
+            for(var11 = 0; var11 < var6; ++var11) {
+               var12 = Integer.MIN_VALUE >>> var11;
+               if((var8 & var12) != 0) {
+                  if(this.keys[var10] == 0) {
+                     this.keys[var10] = var4;
+                  }
+
+                  var10 = this.keys[var10];
+               } else {
+                  ++var10;
+               }
+
+               if(var10 >= this.keys.length) {
+                  int[] var13 = new int[this.keys.length * 2];
+
+                  for(int var14 = 0; var14 < this.keys.length; ++var14) {
+                     var13[var14] = this.keys[var14];
+                  }
+
+                  this.keys = var13;
+               }
+
+               var12 >>>= 1;
+            }
+
+            this.keys[var10] = ~var5;
+            if(var10 >= var4) {
+               var4 = var10 + 1;
             }
          }
-
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method3061(var0, var1, var2, var5 - 1);
-         method3061(var0, var1, var5 + 1, var3);
       }
 
    }
@@ -231,7 +266,7 @@ public class Huffman {
          int var11 = var7 >> 3;
          int var12 = var7 & 7;
          var6 &= -var12 >> 31;
-         int var13 = var11 + (var10 + var12 - 1 >> 3);
+         int var13 = (var12 + var10 - 1 >> 3) + var11;
          var12 += 24;
          var4[var11] = (byte)(var6 |= var9 >>> var12);
          if(var11 < var13) {
@@ -261,6 +296,17 @@ public class Huffman {
       return (var7 + 7 >> 3) - var5;
    }
 
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;LIndexDataBase;LIndexDataBase;I)V",
+      garbageValue = "1010539738"
+   )
+   public static void method3060(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2) {
+      Sequence.seq_ref = var0;
+      Sequence.skel_ref = var1;
+      Sequence.skin_ref = var2;
+   }
+
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(LPacketBuffer;I)I",
@@ -282,85 +328,39 @@ public class Huffman {
       return var2;
    }
 
-   public Huffman(byte[] var1) {
-      int var2 = var1.length;
-      this.masks = new int[var2];
-      this.bits = var1;
-      int[] var3 = new int[33];
-      this.keys = new int[8];
-      int var4 = 0;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "([Ljava/lang/String;[SIIB)V",
+      garbageValue = "-64"
+   )
+   public static void method3061(String[] var0, short[] var1, int var2, int var3) {
+      if(var2 < var3) {
+         int var4 = (var3 + var2) / 2;
+         int var5 = var2;
+         String var6 = var0[var4];
+         var0[var4] = var0[var3];
+         var0[var3] = var6;
+         short var7 = var1[var4];
+         var1[var4] = var1[var3];
+         var1[var3] = var7;
 
-      for(int var5 = 0; var5 < var2; ++var5) {
-         byte var6 = var1[var5];
-         if(var6 != 0) {
-            int var7 = 1 << 32 - var6;
-            int var8 = var3[var6];
-            this.masks[var5] = var8;
-            int var9;
-            int var10;
-            int var11;
-            int var12;
-            if((var8 & var7) != 0) {
-               var9 = var3[var6 - 1];
-            } else {
-               var9 = var8 | var7;
-
-               for(var10 = var6 - 1; var10 >= 1; --var10) {
-                  var11 = var3[var10];
-                  if(var11 != var8) {
-                     break;
-                  }
-
-                  var12 = 1 << 32 - var10;
-                  if((var11 & var12) != 0) {
-                     var3[var10] = var3[var10 - 1];
-                     break;
-                  }
-
-                  var3[var10] = var11 | var12;
-               }
-            }
-
-            var3[var6] = var9;
-
-            for(var10 = var6 + 1; var10 <= 32; ++var10) {
-               if(var3[var10] == var8) {
-                  var3[var10] = var9;
-               }
-            }
-
-            var10 = 0;
-
-            for(var11 = 0; var11 < var6; ++var11) {
-               var12 = Integer.MIN_VALUE >>> var11;
-               if((var8 & var12) != 0) {
-                  if(this.keys[var10] == 0) {
-                     this.keys[var10] = var4;
-                  }
-
-                  var10 = this.keys[var10];
-               } else {
-                  ++var10;
-               }
-
-               if(var10 >= this.keys.length) {
-                  int[] var13 = new int[this.keys.length * 2];
-
-                  for(int var14 = 0; var14 < this.keys.length; ++var14) {
-                     var13[var14] = this.keys[var14];
-                  }
-
-                  this.keys = var13;
-               }
-
-               var12 >>>= 1;
-            }
-
-            this.keys[var10] = ~var5;
-            if(var10 >= var4) {
-               var4 = var10 + 1;
+         for(int var8 = var2; var8 < var3; ++var8) {
+            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
+               String var9 = var0[var8];
+               var0[var8] = var0[var5];
+               var0[var5] = var9;
+               short var10 = var1[var8];
+               var1[var8] = var1[var5];
+               var1[var5++] = var10;
             }
          }
+
+         var0[var3] = var0[var5];
+         var0[var5] = var6;
+         var1[var3] = var1[var5];
+         var1[var5] = var7;
+         method3061(var0, var1, var2, var5 - 1);
+         method3061(var0, var1, var5 + 1, var3);
       }
 
    }

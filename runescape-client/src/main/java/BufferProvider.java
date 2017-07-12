@@ -7,6 +7,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("jj")
 @Implements("BufferProvider")
 public abstract class BufferProvider {
+   @ObfuscatedName("a")
+   @Export("pixels")
+   public int[] pixels;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -2104431373
@@ -19,9 +22,6 @@ public abstract class BufferProvider {
    )
    @Export("height")
    public int height;
-   @ObfuscatedName("a")
-   @Export("pixels")
-   public int[] pixels;
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(

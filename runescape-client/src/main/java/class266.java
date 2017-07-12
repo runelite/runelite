@@ -7,14 +7,18 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class class266 {
    @ObfuscatedName("i")
    public static final char[] field3668;
-   @ObfuscatedName("s")
-   static ModIcon[] field3669;
    @ObfuscatedName("er")
    @ObfuscatedGetter(
       intValue = 612429295
    )
    @Export("baseY")
    static int baseY;
+   @ObfuscatedName("s")
+   static ModIcon[] field3669;
+
+   static {
+      field3668 = new char[]{'€', '\u0000', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u0000', 'Ž', '\u0000', '\u0000', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u0000', 'ž', 'Ÿ'};
+   }
 
    @ObfuscatedName("fz")
    @ObfuscatedSignature(
@@ -31,9 +35,5 @@ public class class266 {
       }
 
       Client.field1163 = var0;
-   }
-
-   static {
-      field3668 = new char[]{'€', '\u0000', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u0000', 'Ž', '\u0000', '\u0000', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u0000', 'ž', 'Ÿ'};
    }
 }

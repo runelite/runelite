@@ -7,74 +7,98 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fo")
 @Implements("DState")
 public final class DState {
-   @ObfuscatedName("t")
-   final int field2358;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1919343793
-   )
-   @Export("total_out_hi32")
-   int total_out_hi32;
-   @ObfuscatedName("a")
-   final int field2360;
    @ObfuscatedName("de")
    @Export("host")
    static String host;
-   @ObfuscatedName("v")
-   @Export("strm")
-   byte[] strm;
+   @ObfuscatedName("i")
+   final int field2370;
+   @ObfuscatedName("w")
+   final int field2386;
+   @ObfuscatedName("a")
+   final int field2360;
+   @ObfuscatedName("t")
+   final int field2358;
+   @ObfuscatedName("s")
+   final int field2385;
    @ObfuscatedName("r")
    final int field2363;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -2045168799
-   )
-   @Export("total_out_lo32")
-   int total_out_lo32;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -525579473
    )
    @Export("next_in")
    int next_in;
-   @ObfuscatedName("ak")
-   int[][] field2366;
-   @ObfuscatedName("k")
-   @Export("out")
-   byte[] out;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 719412369
    )
    @Export("next_out")
    int next_out;
+   @ObfuscatedName("q")
+   int[] field2379;
+   @ObfuscatedName("h")
+   int[] field2371;
+   @ObfuscatedName("ah")
+   @Export("inUse")
+   boolean[] inUse;
+   @ObfuscatedName("ab")
+   boolean[] field2384;
+   @ObfuscatedName("aw")
+   @Export("seqToUnseq")
+   byte[] seqToUnseq;
+   @ObfuscatedName("ai")
+   byte[] field2393;
+   @ObfuscatedName("v")
+   @Export("strm")
+   byte[] strm;
+   @ObfuscatedName("an")
+   int[] field2387;
+   @ObfuscatedName("au")
+   byte[] field2388;
+   @ObfuscatedName("ar")
+   byte[] field2389;
+   @ObfuscatedName("k")
+   @Export("out")
+   byte[] out;
+   @ObfuscatedName("ay")
+   byte[][] field2390;
+   @ObfuscatedName("ao")
+   int[][] field2391;
+   @ObfuscatedName("as")
+   int[][] field2396;
+   @ObfuscatedName("ak")
+   int[][] field2366;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 2136561499
    )
    int field2369;
-   @ObfuscatedName("i")
-   final int field2370;
-   @ObfuscatedName("h")
-   int[] field2371;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 118838505
-   )
-   @Export("out_len")
-   int out_len;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 783109979
-   )
-   @Export("total_in_hi32")
-   int total_in_hi32;
+   @ObfuscatedName("aq")
+   int[] field2394;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = -1365448899
    )
    @Export("total_in_lo32")
    int total_in_lo32;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 783109979
+   )
+   @Export("total_in_hi32")
+   int total_in_hi32;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -2045168799
+   )
+   @Export("total_out_lo32")
+   int total_out_lo32;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1919343793
+   )
+   @Export("total_out_hi32")
+   int total_out_hi32;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -1881597305
@@ -86,68 +110,44 @@ public final class DState {
       intValue = -1706566721
    )
    int field2376;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 1473187829
-   )
-   @Export("tPos")
-   int tPos;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1984082073
-   )
-   @Export("k0")
-   int k0;
-   @ObfuscatedName("q")
-   int[] field2379;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 946244127
-   )
-   @Export("nblock_used")
-   int nblock_used;
-   @ObfuscatedName("aw")
-   @Export("seqToUnseq")
-   byte[] seqToUnseq;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -1071787417
    )
    @Export("nInUse")
    int nInUse;
-   @ObfuscatedName("ah")
-   @Export("inUse")
-   boolean[] inUse;
-   @ObfuscatedName("ab")
-   boolean[] field2384;
-   @ObfuscatedName("s")
-   final int field2385;
-   @ObfuscatedName("w")
-   final int field2386;
-   @ObfuscatedName("an")
-   int[] field2387;
-   @ObfuscatedName("au")
-   byte[] field2388;
-   @ObfuscatedName("ar")
-   byte[] field2389;
-   @ObfuscatedName("ay")
-   byte[][] field2390;
-   @ObfuscatedName("ao")
-   int[][] field2391;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 118838505
+   )
+   @Export("out_len")
+   int out_len;
    @ObfuscatedName("l")
    @Export("out_ch")
    byte out_ch;
-   @ObfuscatedName("ai")
-   byte[] field2393;
-   @ObfuscatedName("aq")
-   int[] field2394;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 1473187829
+   )
+   @Export("tPos")
+   int tPos;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 946244127
+   )
+   @Export("nblock_used")
+   int nblock_used;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1984082073
+   )
+   @Export("k0")
+   int k0;
    @ObfuscatedName("ax")
    @ObfuscatedGetter(
       intValue = -1733494453
    )
    int field2395;
-   @ObfuscatedName("as")
-   int[][] field2396;
 
    DState() {
       this.field2370 = 4096;

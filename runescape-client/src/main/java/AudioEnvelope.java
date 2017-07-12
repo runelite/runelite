@@ -5,39 +5,49 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("dk")
 @Implements("AudioEnvelope")
 public class AudioEnvelope {
-   @ObfuscatedName("k")
-   @Export("step")
-   int step;
-   @ObfuscatedName("w")
-   @Export("durations")
-   int[] durations;
-   @ObfuscatedName("s")
-   @Export("end")
-   int end;
-   @ObfuscatedName("t")
-   @Export("start")
-   int start;
+   @ObfuscatedName("v")
+   @Export("ticks")
+   int ticks;
+   @ObfuscatedName("y")
+   @Export("max")
+   int max;
    @ObfuscatedName("i")
    @Export("segments")
    int segments;
    @ObfuscatedName("r")
    @Export("form")
    int form;
-   @ObfuscatedName("v")
-   @Export("ticks")
-   int ticks;
    @ObfuscatedName("j")
    @Export("phaseIndex")
    int phaseIndex;
+   @ObfuscatedName("w")
+   @Export("durations")
+   int[] durations;
    @ObfuscatedName("a")
    @Export("phases")
    int[] phases;
    @ObfuscatedName("e")
    @Export("amplitude")
    int amplitude;
-   @ObfuscatedName("y")
-   @Export("max")
-   int max;
+   @ObfuscatedName("k")
+   @Export("step")
+   int step;
+   @ObfuscatedName("t")
+   @Export("start")
+   int start;
+   @ObfuscatedName("s")
+   @Export("end")
+   int end;
+
+   AudioEnvelope() {
+      this.segments = 2;
+      this.durations = new int[2];
+      this.phases = new int[2];
+      this.durations[0] = 0;
+      this.durations[1] = '\uffff';
+      this.phases[0] = 0;
+      this.phases[1] = '\uffff';
+   }
 
    @ObfuscatedName("i")
    @Export("decode")
@@ -46,6 +56,16 @@ public class AudioEnvelope {
       this.start = var1.readInt();
       this.end = var1.readInt();
       this.decodeSegments(var1);
+   }
+
+   @ObfuscatedName("a")
+   @Export("reset")
+   final void reset() {
+      this.ticks = 0;
+      this.phaseIndex = 0;
+      this.step = 0;
+      this.amplitude = 0;
+      this.max = 0;
    }
 
    @ObfuscatedName("w")
@@ -60,16 +80,6 @@ public class AudioEnvelope {
          this.phases[var2] = var1.readUnsignedShort();
       }
 
-   }
-
-   AudioEnvelope() {
-      this.segments = 2;
-      this.durations = new int[2];
-      this.phases = new int[2];
-      this.durations[0] = 0;
-      this.durations[1] = '\uffff';
-      this.phases[0] = 0;
-      this.phases[1] = '\uffff';
    }
 
    @ObfuscatedName("t")
@@ -90,15 +100,5 @@ public class AudioEnvelope {
       this.amplitude += this.step;
       ++this.max;
       return this.amplitude - this.step >> 15;
-   }
-
-   @ObfuscatedName("a")
-   @Export("reset")
-   final void reset() {
-      this.ticks = 0;
-      this.phaseIndex = 0;
-      this.step = 0;
-      this.amplitude = 0;
-      this.max = 0;
    }
 }

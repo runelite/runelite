@@ -4,16 +4,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jo")
 public class class262 {
-   @ObfuscatedName("i")
-   IndexDataBase field3636;
-   @ObfuscatedName("w")
-   IndexDataBase field3637;
-   @ObfuscatedName("a")
-   HashMap field3638;
-   @ObfuscatedName("gc")
-   static ModIcon[] field3639;
    @ObfuscatedName("lp")
    static Widget[] field3641;
+   @ObfuscatedName("gc")
+   static ModIcon[] field3639;
+   @ObfuscatedName("i")
+   IndexDataBase field3636;
+   @ObfuscatedName("a")
+   HashMap field3638;
+   @ObfuscatedName("w")
+   IndexDataBase field3637;
 
    public class262(IndexDataBase var1, IndexDataBase var2) {
       this.field3636 = var1;
@@ -35,31 +35,31 @@ public class class262 {
          if(this.field3638.containsKey(var5)) {
             var2.put(var5, this.field3638.get(var5));
          } else {
-            IndexDataBase var6 = this.field3636;
-            IndexDataBase var7 = this.field3637;
-            String var8 = var5.field3631;
-            int var9 = var6.getFile(var8);
-            int var10 = var6.getChild(var9, "");
-            Font var11;
-            if(!class223.method4073(var6, var9, var10)) {
-               var11 = null;
+            IndexDataBase var7 = this.field3636;
+            IndexDataBase var8 = this.field3637;
+            String var9 = var5.field3631;
+            int var10 = var7.getFile(var9);
+            int var11 = var7.getChild(var10, "");
+            Font var12;
+            if(!class223.method4073(var7, var10, var11)) {
+               var12 = null;
             } else {
-               byte[] var12 = var7.getConfigData(var9, var10);
+               byte[] var14 = var8.getConfigData(var10, var11);
                Font var13;
-               if(var12 == null) {
+               if(var14 == null) {
                   var13 = null;
                } else {
-                  Font var14 = new Font(var12, class286.field3799, class286.offsetsY, class7.field239, class226.field3146, class278.field3745, class210.spritePixels);
+                  Font var15 = new Font(var14, class286.field3799, class286.offsetsY, class7.field239, class226.field3146, class278.field3745, class210.spritePixels);
                   XGrandExchangeOffer.method113();
-                  var13 = var14;
+                  var13 = var15;
                }
 
-               var11 = var13;
+               var12 = var13;
             }
 
-            if(var11 != null) {
-               this.field3638.put(var5, var11);
-               var2.put(var5, var11);
+            if(var12 != null) {
+               this.field3638.put(var5, var12);
+               var2.put(var5, var12);
             }
          }
       }

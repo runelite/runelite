@@ -7,21 +7,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bd")
 @Implements("MessageNode")
 public class MessageNode extends CacheableNode {
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -743015069
-   )
-   @Export("type")
-   int type;
-   @ObfuscatedName("t")
-   @Export("name")
-   String name;
-   @ObfuscatedName("s")
-   @Export("sender")
-   String sender;
-   @ObfuscatedName("r")
-   @Export("value")
-   String value;
    @ObfuscatedName("jt")
    @ObfuscatedGetter(
       intValue = -672814049
@@ -40,21 +25,38 @@ public class MessageNode extends CacheableNode {
    )
    @Export("tick")
    int tick;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -743015069
+   )
+   @Export("type")
+   int type;
+   @ObfuscatedName("t")
+   @Export("name")
+   String name;
+   @ObfuscatedName("s")
+   @Export("sender")
+   String sender;
+   @ObfuscatedName("r")
+   @Export("value")
+   String value;
+
+   MessageNode(int var1, String var2, String var3, String var4) {
+      int var5 = ++class98.field1549 - 1;
+      this.id = var5;
+      this.tick = Client.gameCycle;
+      this.type = var1;
+      this.name = var2;
+      this.sender = var3;
+      this.value = var4;
+   }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(LBuffer;Ljava/lang/String;B)I",
-      garbageValue = "-15"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
+      garbageValue = "12"
    )
-   public static int method1142(Buffer var0, String var1) {
-      int var2 = var0.offset;
-      byte[] var3 = ItemComposition.method4634(var1);
-      var0.putShortSmart(var3.length);
-      var0.offset += class265.field3665.compress(var3, 0, var3.length, var0.payload, var0.offset);
-      return var0.offset - var2;
-   }
-
-   MessageNode(int var1, String var2, String var3, String var4) {
+   void method1146(int var1, String var2, String var3, String var4) {
       int var5 = ++class98.field1549 - 1;
       this.id = var5;
       this.tick = Client.gameCycle;
@@ -77,12 +79,12 @@ public class MessageNode extends CacheableNode {
          int var9 = Graphics3D.COSINE[var7];
          var8 = var8 * 256 / (Client.mapScaleDelta + 256);
          var9 = var9 * 256 / (Client.mapScaleDelta + 256);
-         int var10 = var3 * var8 + var2 * var9 >> 16;
+         int var10 = var2 * var9 + var3 * var8 >> 16;
          int var11 = var3 * var9 - var8 * var2 >> 16;
          double var12 = Math.atan2((double)var10, (double)var11);
          int var14 = (int)(Math.sin(var12) * 63.0D);
          int var15 = (int)(Math.cos(var12) * 57.0D);
-         class31.mapedge.method5118(var0 + 94 + var14 + 4 - 10, var1 + 83 - var15 - 20, 20, 20, 15, 15, var12, 256);
+         class31.mapedge.method5118(var14 + 94 + var0 + 4 - 10, var1 + 83 - var15 - 20, 20, 20, 15, 15, var12, 256);
       } else {
          class40.drawDot(var0, var1, var2, var3, var4, var5);
       }
@@ -91,16 +93,14 @@ public class MessageNode extends CacheableNode {
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
-      garbageValue = "12"
+      signature = "(LBuffer;Ljava/lang/String;B)I",
+      garbageValue = "-15"
    )
-   void method1146(int var1, String var2, String var3, String var4) {
-      int var5 = ++class98.field1549 - 1;
-      this.id = var5;
-      this.tick = Client.gameCycle;
-      this.type = var1;
-      this.name = var2;
-      this.sender = var3;
-      this.value = var4;
+   public static int method1142(Buffer var0, String var1) {
+      int var2 = var0.offset;
+      byte[] var3 = ItemComposition.method4634(var1);
+      var0.putShortSmart(var3.length);
+      var0.offset += class265.field3665.compress(var3, 0, var3.length, var0.payload, var0.offset);
+      return var0.offset - var2;
    }
 }

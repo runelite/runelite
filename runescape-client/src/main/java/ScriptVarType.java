@@ -1,60 +1,66 @@
-import net.runelite.mapping.*;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("v")
 @Implements("ScriptVarType")
 public class ScriptVarType implements RSEnum, class292 {
-   @ObfuscatedName("bo")
-   static final ScriptVarType field42;
+   @ObfuscatedName("gk")
+   static ScriptVarType[] field229;
+   @ObfuscatedName("i")
+   public static final ScriptVarType field64;
    @ObfuscatedName("w")
    static final ScriptVarType field43;
    @ObfuscatedName("a")
    static final ScriptVarType field44;
-   @ObfuscatedName("fh")
-   static final ScriptVarType field45;
+   @ObfuscatedName("t")
+   static final ScriptVarType field115;
    @ObfuscatedName("s")
    static final ScriptVarType field46;
    @ObfuscatedName("r")
    static final ScriptVarType field47;
    @ObfuscatedName("v")
    static final ScriptVarType field48;
-   @ObfuscatedName("d")
-   static final ScriptVarType field49;
+   @ObfuscatedName("y")
+   static final ScriptVarType field124;
    @ObfuscatedName("j")
    static final ScriptVarType field50;
    @ObfuscatedName("k")
    static final ScriptVarType field51;
    @ObfuscatedName("e")
    static final ScriptVarType field52;
-   @ObfuscatedName("f")
-   static final ScriptVarType field53;
+   @ObfuscatedName("o")
+   static final ScriptVarType field130;
    @ObfuscatedName("z")
    static final ScriptVarType field54;
-   @ObfuscatedName("ay")
-   static final ScriptVarType field55;
-   @ObfuscatedName("dw")
-   static final ScriptVarType field56;
-   @ObfuscatedName("ex")
-   static final ScriptVarType field57;
+   @ObfuscatedName("l")
+   static final ScriptVarType field195;
+   @ObfuscatedName("c")
+   static final ScriptVarType field92;
+   @ObfuscatedName("m")
+   static final ScriptVarType field176;
    @ObfuscatedName("b")
    static final ScriptVarType field58;
-   @ObfuscatedName("eg")
-   static final ScriptVarType field59;
+   @ObfuscatedName("f")
+   static final ScriptVarType field53;
    @ObfuscatedName("n")
    static final ScriptVarType field60;
    @ObfuscatedName("u")
    static final ScriptVarType field61;
-   @ObfuscatedName("ch")
-   static final ScriptVarType field62;
-   @ObfuscatedName("fu")
-   static final ScriptVarType field63;
-   @ObfuscatedName("i")
-   public static final ScriptVarType field64;
+   @ObfuscatedName("p")
+   static final ScriptVarType field146;
+   @ObfuscatedName("q")
+   static final ScriptVarType field215;
+   @ObfuscatedName("d")
+   static final ScriptVarType field49;
    @ObfuscatedName("h")
    static final ScriptVarType field65;
    @ObfuscatedName("g")
    static final ScriptVarType field66;
-   @ObfuscatedName("en")
-   static final ScriptVarType field67;
+   @ObfuscatedName("x")
+   static final ScriptVarType field167;
    @ObfuscatedName("ah")
    static final ScriptVarType field68;
    @ObfuscatedName("ab")
@@ -69,18 +75,18 @@ public class ScriptVarType implements RSEnum, class292 {
    static final ScriptVarType field73;
    @ObfuscatedName("ar")
    static final ScriptVarType field74;
-   @ObfuscatedName("ee")
-   static final ScriptVarType field75;
+   @ObfuscatedName("ay")
+   static final ScriptVarType field55;
    @ObfuscatedName("ao")
    static final ScriptVarType field76;
-   @ObfuscatedName("ba")
-   static final ScriptVarType field77;
+   @ObfuscatedName("as")
+   static final ScriptVarType field85;
    @ObfuscatedName("ak")
    static final ScriptVarType field78;
-   @ObfuscatedName("fm")
-   static final ScriptVarType field79;
-   @ObfuscatedName("ez")
-   static final ScriptVarType field80;
+   @ObfuscatedName("aq")
+   static final ScriptVarType field113;
+   @ObfuscatedName("ax")
+   static final ScriptVarType field214;
    @ObfuscatedName("ac")
    static final ScriptVarType field81;
    @ObfuscatedName("at")
@@ -89,22 +95,22 @@ public class ScriptVarType implements RSEnum, class292 {
    static final ScriptVarType field83;
    @ObfuscatedName("aa")
    static final ScriptVarType field84;
-   @ObfuscatedName("as")
-   static final ScriptVarType field85;
-   @ObfuscatedName("bu")
-   static final ScriptVarType field86;
+   @ObfuscatedName("am")
+   static final ScriptVarType field102;
+   @ObfuscatedName("az")
+   static final ScriptVarType field185;
    @ObfuscatedName("al")
    static final ScriptVarType field87;
-   @ObfuscatedName("fq")
-   static final ScriptVarType field88;
+   @ObfuscatedName("ad")
+   static final ScriptVarType field209;
    @ObfuscatedName("ae")
    static final ScriptVarType field89;
    @ObfuscatedName("ag")
    static final ScriptVarType field90;
    @ObfuscatedName("ap")
    static final ScriptVarType field91;
-   @ObfuscatedName("c")
-   static final ScriptVarType field92;
+   @ObfuscatedName("af")
+   static final ScriptVarType field142;
    @ObfuscatedName("aj")
    static final ScriptVarType field93;
    @ObfuscatedName("bb")
@@ -123,10 +129,10 @@ public class ScriptVarType implements RSEnum, class292 {
    static final ScriptVarType field100;
    @ObfuscatedName("br")
    static final ScriptVarType field101;
-   @ObfuscatedName("am")
-   static final ScriptVarType field102;
-   @ObfuscatedName("cf")
-   static final ScriptVarType field103;
+   @ObfuscatedName("bg")
+   static final ScriptVarType field192;
+   @ObfuscatedName("bo")
+   static final ScriptVarType field42;
    @ObfuscatedName("bw")
    static final ScriptVarType field104;
    @ObfuscatedName("bm")
@@ -141,50 +147,50 @@ public class ScriptVarType implements RSEnum, class292 {
    static final ScriptVarType field109;
    @ObfuscatedName("bs")
    static final ScriptVarType field110;
-   @ObfuscatedName("cq")
-   static final ScriptVarType field111;
+   @ObfuscatedName("bu")
+   static final ScriptVarType field86;
    @ObfuscatedName("bn")
    static final ScriptVarType field112;
-   @ObfuscatedName("aq")
-   static final ScriptVarType field113;
+   @ObfuscatedName("bf")
+   static final ScriptVarType field228;
    @ObfuscatedName("bd")
    static final ScriptVarType field114;
-   @ObfuscatedName("t")
-   static final ScriptVarType field115;
+   @ObfuscatedName("by")
+   static final ScriptVarType field201;
    @ObfuscatedName("bq")
    static final ScriptVarType field116;
-   @ObfuscatedName("du")
-   static final ScriptVarType field117;
-   @ObfuscatedName("dm")
-   static final ScriptVarType field118;
-   @ObfuscatedName("fg")
-   static final ScriptVarType field119;
+   @ObfuscatedName("ba")
+   static final ScriptVarType field77;
+   @ObfuscatedName("bk")
+   static final ScriptVarType field172;
+   @ObfuscatedName("bi")
+   static final ScriptVarType field148;
    @ObfuscatedName("cd")
    static final ScriptVarType field120;
-   @ObfuscatedName("cv")
-   static final ScriptVarType field121;
+   @ObfuscatedName("cg")
+   static final ScriptVarType field126;
    @ObfuscatedName("cw")
    static final ScriptVarType field122;
    @ObfuscatedName("cl")
    static final ScriptVarType field123;
-   @ObfuscatedName("y")
-   static final ScriptVarType field124;
+   @ObfuscatedName("cq")
+   static final ScriptVarType field111;
    @ObfuscatedName("ck")
    static final ScriptVarType field125;
-   @ObfuscatedName("cg")
-   static final ScriptVarType field126;
+   @ObfuscatedName("ch")
+   static final ScriptVarType field62;
    @ObfuscatedName("cn")
    static final ScriptVarType field127;
    @ObfuscatedName("ca")
    static final ScriptVarType field128;
    @ObfuscatedName("cm")
    static final ScriptVarType field129;
-   @ObfuscatedName("o")
-   static final ScriptVarType field130;
-   @ObfuscatedName("df")
-   static final ScriptVarType field131;
-   @ObfuscatedName("co")
-   static final ScriptVarType field132;
+   @ObfuscatedName("cv")
+   static final ScriptVarType field121;
+   @ObfuscatedName("cf")
+   static final ScriptVarType field103;
+   @ObfuscatedName("cc")
+   static final ScriptVarType field207;
    @ObfuscatedName("cp")
    static final ScriptVarType field133;
    @ObfuscatedName("cj")
@@ -203,24 +209,24 @@ public class ScriptVarType implements RSEnum, class292 {
    static final ScriptVarType field140;
    @ObfuscatedName("cy")
    static final ScriptVarType field141;
-   @ObfuscatedName("af")
-   static final ScriptVarType field142;
-   @ObfuscatedName("dn")
-   static final ScriptVarType field143;
+   @ObfuscatedName("co")
+   static final ScriptVarType field132;
+   @ObfuscatedName("cb")
+   static final ScriptVarType field208;
    @ObfuscatedName("cs")
    static final ScriptVarType field144;
    @ObfuscatedName("ct")
    static final ScriptVarType field145;
-   @ObfuscatedName("p")
-   static final ScriptVarType field146;
-   @ObfuscatedName("dy")
-   static final ScriptVarType field147;
-   @ObfuscatedName("bi")
-   static final ScriptVarType field148;
-   @ObfuscatedName("eb")
-   static final ScriptVarType field149;
-   @ObfuscatedName("ec")
-   static final ScriptVarType field150;
+   @ObfuscatedName("dn")
+   static final ScriptVarType field143;
+   @ObfuscatedName("dm")
+   static final ScriptVarType field118;
+   @ObfuscatedName("dr")
+   static final ScriptVarType field159;
+   @ObfuscatedName("dx")
+   static final ScriptVarType field157;
+   @ObfuscatedName("di")
+   static final ScriptVarType field162;
    @ObfuscatedName("dl")
    static final ScriptVarType field151;
    @ObfuscatedName("dk")
@@ -233,96 +239,96 @@ public class ScriptVarType implements RSEnum, class292 {
    static final ScriptVarType field155;
    @ObfuscatedName("de")
    static final ScriptVarType field156;
-   @ObfuscatedName("dx")
-   static final ScriptVarType field157;
+   @ObfuscatedName("df")
+   static final ScriptVarType field131;
    @ObfuscatedName("da")
    static final ScriptVarType field158;
-   @ObfuscatedName("dr")
-   static final ScriptVarType field159;
-   @ObfuscatedName("dj")
-   static final ScriptVarType field160;
-   @ObfuscatedName("fs")
-   static final ScriptVarType field161;
-   @ObfuscatedName("di")
-   static final ScriptVarType field162;
-   @ObfuscatedName("fz")
-   static final ScriptVarType field163;
+   @ObfuscatedName("dy")
+   static final ScriptVarType field147;
+   @ObfuscatedName("dc")
+   static final ScriptVarType field183;
+   @ObfuscatedName("dq")
+   static final ScriptVarType field186;
+   @ObfuscatedName("dz")
+   static final ScriptVarType field210;
+   @ObfuscatedName("dw")
+   static final ScriptVarType field56;
    @ObfuscatedName("dg")
    static final ScriptVarType field164;
    @ObfuscatedName("dh")
    static final ScriptVarType field165;
    @ObfuscatedName("dp")
    static final ScriptVarType field166;
-   @ObfuscatedName("x")
-   static final ScriptVarType field167;
+   @ObfuscatedName("du")
+   static final ScriptVarType field117;
    @ObfuscatedName("dv")
    static final ScriptVarType field168;
    @ObfuscatedName("do")
    static final ScriptVarType field169;
    @ObfuscatedName("dd")
    static final ScriptVarType field170;
-   @ObfuscatedName("eh")
-   static final ScriptVarType field171;
-   @ObfuscatedName("bk")
-   static final ScriptVarType field172;
+   @ObfuscatedName("dj")
+   static final ScriptVarType field160;
+   @ObfuscatedName("ee")
+   static final ScriptVarType field75;
    @ObfuscatedName("eu")
    static final ScriptVarType field173;
    @ObfuscatedName("ef")
    static final ScriptVarType field174;
    @ObfuscatedName("et")
    static final ScriptVarType field175;
-   @ObfuscatedName("m")
-   static final ScriptVarType field176;
+   @ObfuscatedName("ex")
+   static final ScriptVarType field57;
    @ObfuscatedName("ek")
    static final ScriptVarType field177;
    @ObfuscatedName("ep")
    static final ScriptVarType field178;
-   @ObfuscatedName("ey")
-   static final ScriptVarType field179;
+   @ObfuscatedName("ec")
+   static final ScriptVarType field150;
    @ObfuscatedName("ed")
    static final ScriptVarType field180;
    @ObfuscatedName("ew")
    static final ScriptVarType field181;
    @ObfuscatedName("em")
    static final ScriptVarType field182;
-   @ObfuscatedName("dc")
-   static final ScriptVarType field183;
-   @ObfuscatedName("fj")
-   static final ScriptVarType field184;
-   @ObfuscatedName("az")
-   static final ScriptVarType field185;
-   @ObfuscatedName("dq")
-   static final ScriptVarType field186;
+   @ObfuscatedName("eb")
+   static final ScriptVarType field149;
+   @ObfuscatedName("ej")
+   static final ScriptVarType field194;
+   @ObfuscatedName("en")
+   static final ScriptVarType field67;
+   @ObfuscatedName("eq")
+   static final ScriptVarType field225;
    @ObfuscatedName("el")
    static final ScriptVarType field187;
    @ObfuscatedName("ei")
    static final ScriptVarType field188;
    @ObfuscatedName("ea")
    static final ScriptVarType field189;
-   @ObfuscatedName("er")
-   static final ScriptVarType field190;
+   @ObfuscatedName("ey")
+   static final ScriptVarType field179;
    @ObfuscatedName("es")
    static final ScriptVarType field191;
-   @ObfuscatedName("bg")
-   static final ScriptVarType field192;
+   @ObfuscatedName("ez")
+   static final ScriptVarType field80;
    @ObfuscatedName("ev")
    static final ScriptVarType field193;
-   @ObfuscatedName("ej")
-   static final ScriptVarType field194;
-   @ObfuscatedName("l")
-   static final ScriptVarType field195;
+   @ObfuscatedName("er")
+   static final ScriptVarType field190;
+   @ObfuscatedName("eh")
+   static final ScriptVarType field171;
    @ObfuscatedName("eo")
    static final ScriptVarType field196;
-   @ObfuscatedName("fx")
-   static final ScriptVarType field197;
+   @ObfuscatedName("eg")
+   static final ScriptVarType field59;
    @ObfuscatedName("ff")
    static final ScriptVarType field198;
    @ObfuscatedName("fn")
    static final ScriptVarType field199;
    @ObfuscatedName("fb")
    static final ScriptVarType field200;
-   @ObfuscatedName("by")
-   static final ScriptVarType field201;
+   @ObfuscatedName("fs")
+   static final ScriptVarType field161;
    @ObfuscatedName("fv")
    static final ScriptVarType field202;
    @ObfuscatedName("ft")
@@ -331,37 +337,36 @@ public class ScriptVarType implements RSEnum, class292 {
    static final ScriptVarType field204;
    @ObfuscatedName("fi")
    static final ScriptVarType field205;
+   @ObfuscatedName("fh")
+   static final ScriptVarType field45;
+   @ObfuscatedName("fq")
+   static final ScriptVarType field88;
+   @ObfuscatedName("fj")
+   static final ScriptVarType field184;
+   @ObfuscatedName("fu")
+   static final ScriptVarType field63;
    @ObfuscatedName("fy")
    static final ScriptVarType field206;
-   @ObfuscatedName("cc")
-   static final ScriptVarType field207;
-   @ObfuscatedName("cb")
-   static final ScriptVarType field208;
-   @ObfuscatedName("ad")
-   static final ScriptVarType field209;
-   @ObfuscatedName("dz")
-   static final ScriptVarType field210;
    @ObfuscatedName("fd")
    static final ScriptVarType field211;
-   @ObfuscatedName("fp")
-   static final ScriptVarType field212;
+   @ObfuscatedName("fg")
+   static final ScriptVarType field119;
+   @ObfuscatedName("fz")
+   static final ScriptVarType field163;
    @ObfuscatedName("fo")
    static final ScriptVarType field213;
-   @ObfuscatedName("ax")
-   static final ScriptVarType field214;
-   @ObfuscatedName("q")
-   static final ScriptVarType field215;
-   @ObfuscatedName("gt")
-   static final ScriptVarType field216;
+   @ObfuscatedName("fp")
+   static final ScriptVarType field212;
+   @ObfuscatedName("fm")
+   static final ScriptVarType field79;
    @ObfuscatedName("fl")
    static final ScriptVarType field217;
    @ObfuscatedName("fa")
    static final ScriptVarType field218;
    @ObfuscatedName("fe")
    static final ScriptVarType field219;
-   @ObfuscatedName("gn")
-   @Export("typeChar")
-   final char typeChar;
+   @ObfuscatedName("fx")
+   static final ScriptVarType field197;
    @ObfuscatedName("fr")
    static final ScriptVarType field221;
    @ObfuscatedName("fk")
@@ -370,8 +375,8 @@ public class ScriptVarType implements RSEnum, class292 {
    static final ScriptVarType field223;
    @ObfuscatedName("gr")
    static final ScriptVarType field224;
-   @ObfuscatedName("eq")
-   static final ScriptVarType field225;
+   @ObfuscatedName("gt")
+   static final ScriptVarType field216;
    @ObfuscatedName("ga")
    static final ScriptVarType field226;
    @ObfuscatedName("gp")
@@ -380,91 +385,9 @@ public class ScriptVarType implements RSEnum, class292 {
    )
    @Export("id")
    final int id;
-   @ObfuscatedName("bf")
-   static final ScriptVarType field228;
-   @ObfuscatedName("gk")
-   static ScriptVarType[] field229;
-
-   ScriptVarType(int var1, char var2, BaseVarType var3, Object var4, String var5, class1[] var6) {
-      this.id = var1;
-      this.typeChar = var2;
-      if(var5 != null && var5.length() > 0) {
-         ;
-      }
-
-      if(field229 == null) {
-         field229 = new ScriptVarType[256];
-      }
-
-      field229[TextureProvider.method2403(this.typeChar) & 255] = this;
-   }
-
-   ScriptVarType(int var1, char var2, BaseVarType var3, Object var4, class1[] var5) {
-      this(var1, var2, var3, var4, (String)null, var5);
-   }
-
-   @ObfuscatedSignature(
-      signature = "(Lclass4;Ljava/lang/Object;C)V",
-      garbageValue = "35"
-   )
-   ScriptVarType(BaseVarType var1, Object var2, char var3) {
-      this(-1, var3, var1, var2, new class1[0]);
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1204543302"
-   )
-   public int rsOrdinal() {
-      return this.id;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-615362470"
-   )
-   public static final void method28() {
-      while(true) {
-         class9 var0 = (class9)class7.field234.method3546();
-         if(var0 == null) {
-            return;
-         }
-
-         var0.vmethod50();
-      }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1737993473"
-   )
-   public static int method29(int var0) {
-      var0 = (var0 >>> 1 & 1431655765) + (var0 & 1431655765);
-      var0 = (var0 & 858993459) + (var0 >>> 2 & 858993459);
-      var0 = var0 + (var0 >>> 4) & 252645135;
-      var0 += var0 >>> 8;
-      var0 += var0 >>> 16;
-      return var0 & 255;
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "1679582363"
-   )
-   public static int method30(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + var0.charAt(var3);
-      }
-
-      return var2;
-   }
+   @ObfuscatedName("gn")
+   @Export("typeChar")
+   final char typeChar;
 
    static {
       field64 = new ScriptVarType(0, 'i', BaseVarType.INTEGER, Integer.valueOf(0), new class1[]{class1.field12, class1.field1, class1.field2, class1.field3, class1.field4, class1.field7, class1.field6});
@@ -652,5 +575,86 @@ public class ScriptVarType implements RSEnum, class292 {
       field224 = new ScriptVarType((BaseVarType)null, Integer.valueOf(-1), '?');
       field216 = new ScriptVarType((BaseVarType)null, Integer.valueOf(-1), 'ç');
       field226 = new ScriptVarType((BaseVarType)null, Integer.valueOf(-1), '*');
+   }
+
+   ScriptVarType(int var1, char var2, BaseVarType var3, Object var4, String var5, class1[] var6) {
+      this.id = var1;
+      this.typeChar = var2;
+      if(var5 != null && var5.length() > 0) {
+         ;
+      }
+
+      if(field229 == null) {
+         field229 = new ScriptVarType[256];
+      }
+
+      field229[TextureProvider.method2403(this.typeChar) & 255] = this;
+   }
+
+   ScriptVarType(int var1, char var2, BaseVarType var3, Object var4, class1[] var5) {
+      this(var1, var2, var3, var4, (String)null, var5);
+   }
+
+   @ObfuscatedSignature(
+      signature = "(LBaseVarType;Ljava/lang/Object;C)V",
+      garbageValue = "35"
+   )
+   ScriptVarType(BaseVarType var1, Object var2, char var3) {
+      this(-1, var3, var1, var2, new class1[0]);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1204543302"
+   )
+   public int rsOrdinal() {
+      return this.id;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "-1737993473"
+   )
+   public static int method29(int var0) {
+      var0 = (var0 >>> 1 & 1431655765) + (var0 & 1431655765);
+      var0 = (var0 & 858993459) + (var0 >>> 2 & 858993459);
+      var0 = var0 + (var0 >>> 4) & 252645135;
+      var0 += var0 >>> 8;
+      var0 += var0 >>> 16;
+      return var0 & 255;
+   }
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "1679582363"
+   )
+   public static int method30(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + var0.charAt(var3);
+      }
+
+      return var2;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-615362470"
+   )
+   public static final void method28() {
+      while(true) {
+         class9 var0 = (class9)class7.field234.method3546();
+         if(var0 == null) {
+            return;
+         }
+
+         var0.vmethod50();
+      }
    }
 }

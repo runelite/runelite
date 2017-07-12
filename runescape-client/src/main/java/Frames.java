@@ -7,23 +7,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("eq")
 @Implements("Frames")
 public class Frames extends CacheableNode {
+   @ObfuscatedName("s")
+   public static File field2158;
    @ObfuscatedName("ce")
    @Export("indexMaps")
    static IndexData indexMaps;
-   @ObfuscatedName("s")
-   public static File field2158;
    @ObfuscatedName("i")
    @Export("skeletons")
    Frame[] skeletons;
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "937027647"
-   )
-   public boolean method2872(int var1) {
-      return this.skeletons[var1].showing;
-   }
 
    Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
       Deque var5 = new Deque();
@@ -58,5 +49,14 @@ public class Frames extends CacheableNode {
          this.skeletons[var7[var8]] = new Frame(var9, var10);
       }
 
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "937027647"
+   )
+   public boolean method2872(int var1) {
+      return this.skeletons[var1].showing;
    }
 }

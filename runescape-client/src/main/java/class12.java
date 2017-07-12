@@ -6,10 +6,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("z")
 final class class12 implements Comparator {
-   @ObfuscatedName("ah")
-   static int[] field270;
-   @ObfuscatedName("og")
-   static byte field271;
    @ObfuscatedName("cp")
    @ObfuscatedGetter(
       longValue = 1733588494741998649L
@@ -18,6 +14,10 @@ final class class12 implements Comparator {
    @ObfuscatedName("dr")
    @Export("vorbisIndex")
    static IndexData vorbisIndex;
+   @ObfuscatedName("ah")
+   static int[] field270;
+   @ObfuscatedName("og")
+   static byte field271;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(

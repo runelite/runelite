@@ -5,16 +5,16 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("dz")
 @Implements("Mapping")
 public class Mapping {
-   @ObfuscatedName("t")
-   int[] field1729;
    @ObfuscatedName("i")
    int field1730;
-   @ObfuscatedName("a")
-   @Export("submapFloors")
-   int[] submapFloors;
    @ObfuscatedName("w")
    @Export("mux")
    int mux;
+   @ObfuscatedName("a")
+   @Export("submapFloors")
+   int[] submapFloors;
+   @ObfuscatedName("t")
+   int[] field1729;
 
    Mapping() {
       class106.getInt(16);

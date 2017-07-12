@@ -5,43 +5,39 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("jh")
 @Implements("Parameters")
 public class Parameters {
-   @ObfuscatedName("z")
-   public static final Parameters field3719;
-   @ObfuscatedName("j")
-   static final Parameters field3720;
+   @ObfuscatedName("i")
+   static final Parameters field3731;
    @ObfuscatedName("a")
    static final Parameters field3721;
-   @ObfuscatedName("t")
-   static final Parameters field3722;
-   @ObfuscatedName("s")
-   static final Parameters field3723;
+   @ObfuscatedName("o")
+   static final Parameters field3730;
    @ObfuscatedName("w")
    static final Parameters field3724;
+   @ObfuscatedName("k")
+   static final Parameters field3728;
    @ObfuscatedName("v")
    static final Parameters field3725;
+   @ObfuscatedName("y")
+   static final Parameters field3734;
+   @ObfuscatedName("t")
+   static final Parameters field3722;
+   @ObfuscatedName("z")
+   public static final Parameters field3719;
+   @ObfuscatedName("s")
+   static final Parameters field3723;
+   @ObfuscatedName("c")
+   static final Parameters field3733;
+   @ObfuscatedName("e")
+   static final Parameters field3727;
+   @ObfuscatedName("r")
+   static final Parameters field3729;
+   @ObfuscatedName("l")
+   public static final Parameters field3732;
+   @ObfuscatedName("j")
+   static final Parameters field3720;
    @ObfuscatedName("m")
    @Export("key")
    public final String key;
-   @ObfuscatedName("e")
-   static final Parameters field3727;
-   @ObfuscatedName("k")
-   static final Parameters field3728;
-   @ObfuscatedName("r")
-   static final Parameters field3729;
-   @ObfuscatedName("o")
-   static final Parameters field3730;
-   @ObfuscatedName("i")
-   static final Parameters field3731;
-   @ObfuscatedName("l")
-   public static final Parameters field3732;
-   @ObfuscatedName("c")
-   static final Parameters field3733;
-   @ObfuscatedName("y")
-   static final Parameters field3734;
-
-   Parameters(String var1, String var2) {
-      this.key = var2;
-   }
 
    static {
       field3731 = new Parameters("8", "8");
@@ -59,5 +55,9 @@ public class Parameters {
       field3719 = new Parameters("4", "4");
       field3732 = new Parameters("5", "5");
       field3733 = new Parameters("9", "9");
+   }
+
+   Parameters(String var1, String var2) {
+      this.key = var2;
    }
 }

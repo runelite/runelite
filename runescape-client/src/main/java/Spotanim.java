@@ -7,37 +7,31 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ir")
 @Implements("Spotanim")
 public class Spotanim extends CacheableNode {
+   @ObfuscatedName("t")
+   static NodeCache field3333;
    @ObfuscatedName("a")
    @Export("spotanims")
    static NodeCache spotanims;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 699885181
-   )
-   public int field3332;
-   @ObfuscatedName("t")
-   static NodeCache field3333;
+   @ObfuscatedName("w")
+   public static IndexDataBase field3338;
+   @ObfuscatedName("i")
+   public static IndexDataBase field3347;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 2136317673
    )
    @Export("id")
    int id;
-   @ObfuscatedName("j")
-   short[] field3335;
-   @ObfuscatedName("k")
-   short[] field3336;
-   @ObfuscatedName("y")
-   short[] field3337;
-   @ObfuscatedName("w")
-   public static IndexDataBase field3338;
-   @ObfuscatedName("m")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -402846049
+      intValue = 699885181
    )
-   int field3339;
-   @ObfuscatedName("e")
-   short[] field3340;
+   public int field3332;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 1669362253
+   )
+   int field3345;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 1688514667
@@ -58,13 +52,33 @@ public class Spotanim extends CacheableNode {
       intValue = 139718341
    )
    int field3344;
-   @ObfuscatedName("r")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1669362253
+      intValue = -402846049
    )
-   int field3345;
-   @ObfuscatedName("i")
-   public static IndexDataBase field3347;
+   int field3339;
+   @ObfuscatedName("y")
+   short[] field3337;
+   @ObfuscatedName("k")
+   short[] field3336;
+   @ObfuscatedName("j")
+   short[] field3335;
+   @ObfuscatedName("e")
+   short[] field3340;
+
+   static {
+      spotanims = new NodeCache(64);
+      field3333 = new NodeCache(30);
+   }
+
+   Spotanim() {
+      this.field3332 = -1;
+      this.field3341 = 128;
+      this.field3342 = 128;
+      this.field3343 = 0;
+      this.field3344 = 0;
+      this.field3339 = 0;
+   }
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
@@ -190,15 +204,6 @@ public class Spotanim extends CacheableNode {
       }
    }
 
-   Spotanim() {
-      this.field3332 = -1;
-      this.field3341 = 128;
-      this.field3342 = 128;
-      this.field3343 = 0;
-      this.field3344 = 0;
-      this.field3339 = 0;
-   }
-
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "([BI)V",
@@ -263,7 +268,7 @@ public class Spotanim extends CacheableNode {
          } else if(var8 == 1) {
             for(var9 = 0; var9 < var4; ++var9) {
                for(int var10 = 0; var10 < var5; ++var10) {
-                  var7[var10 * var4 + var9] = var1.readByte();
+                  var7[var9 + var4 * var10] = var1.readByte();
                }
             }
          }
@@ -286,10 +291,5 @@ public class Spotanim extends CacheableNode {
          int var7 = GameObject.method2892(var0, var1, var4, var5);
          return var5?-var7:var7;
       }
-   }
-
-   static {
-      spotanims = new NodeCache(64);
-      field3333 = new NodeCache(30);
    }
 }

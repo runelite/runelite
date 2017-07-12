@@ -6,20 +6,6 @@ final class class5 implements class0 {
    @ObfuscatedName("k")
    static ModIcon field40;
 
-   @ObfuscatedName("gr")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "2"
-   )
-   static void method18() {
-      Client.secretPacketBuffer1.putOpcode(226);
-      PacketBuffer var0 = Client.secretPacketBuffer1;
-      int var1 = Client.isResized?2:1;
-      var0.putByte(var1);
-      Client.secretPacketBuffer1.putShort(class45.canvasWidth);
-      Client.secretPacketBuffer1.putShort(CollisionData.canvasHeight);
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(ILIndexFile;LIndexData;I)V",
@@ -28,11 +14,10 @@ final class class5 implements class0 {
    static void method19(int var0, IndexFile var1, IndexData var2) {
       byte[] var3 = null;
       Deque var4 = class236.field3247;
-      Deque var5 = class236.field3247;
       synchronized(class236.field3247) {
-         for(FileSystem var6 = (FileSystem)class236.field3247.getFront(); var6 != null; var6 = (FileSystem)class236.field3247.getNext()) {
-            if((long)var0 == var6.hash && var6.index == var1 && var6.field3213 == 0) {
-               var3 = var6.field3215;
+         for(FileSystem var5 = (FileSystem)class236.field3247.getFront(); var5 != null; var5 = (FileSystem)class236.field3247.getNext()) {
+            if((long)var0 == var5.hash && var1 == var5.index && var5.field3213 == 0) {
+               var3 = var5.field3215;
                break;
             }
          }
@@ -41,10 +26,9 @@ final class class5 implements class0 {
       if(var3 != null) {
          var2.method4220(var1, var0, var3, true);
       } else {
-         byte[] var9 = var1.method2997(var0);
-         var2.method4220(var1, var0, var9, true);
+         byte[] var8 = var1.method2997(var0);
+         var2.method4220(var1, var0, var8, true);
       }
-
    }
 
    @ObfuscatedName("a")
@@ -68,7 +52,7 @@ final class class5 implements class0 {
                var5 += var4.field1341 - var2;
             }
 
-            if(var5 - 64 <= var4.field1344 && Client.field1098 != 0 && var4.field1339 == var0) {
+            if(var5 - 64 <= var4.field1344 && Client.field1098 != 0 && var0 == var4.field1339) {
                var5 -= 64;
                if(var5 < 0) {
                   var5 = 0;
@@ -125,6 +109,20 @@ final class class5 implements class0 {
 
    }
 
+   @ObfuscatedName("gr")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "2"
+   )
+   static void method18() {
+      Client.secretPacketBuffer1.putOpcode(226);
+      PacketBuffer var0 = Client.secretPacketBuffer1;
+      int var1 = Client.isResized?2:1;
+      var0.putByte(var1);
+      Client.secretPacketBuffer1.putShort(class45.canvasWidth);
+      Client.secretPacketBuffer1.putShort(CollisionData.canvasHeight);
+   }
+
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(LIndexDataBase;I)V",
@@ -168,7 +166,7 @@ final class class5 implements class0 {
             if(var1 == 1 && var3.field2762 != null) {
                if(var3.index >= 0) {
                   Widget var7 = PacketBuffer.method3403(var3.id);
-                  if(var7 == null || var7.children == null || var3.index >= var7.children.length || var7.children[var3.index] != var3) {
+                  if(var7 == null || var7.children == null || var3.index >= var7.children.length || var3 != var7.children[var3.index]) {
                      continue;
                   }
                }

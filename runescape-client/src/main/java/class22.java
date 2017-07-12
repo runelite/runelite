@@ -16,15 +16,6 @@ public class class22 extends class28 {
    @Export("cameraYaw")
    static int cameraYaw;
 
-   public boolean equals(Object var1) {
-      if(!(var1 instanceof class22)) {
-         return false;
-      } else {
-         class22 var2 = (class22)var1;
-         return var2.field410 == super.field410 && var2.field411 == super.field411;
-      }
-   }
-
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(LBuffer;LBuffer;B)V",
@@ -53,7 +44,7 @@ public class class22 extends class28 {
          } else {
             int var4 = var1.readUnsignedByte();
             int var5 = var1.readUnsignedByte();
-            if(super.field410 == var4 && var5 == super.field411) {
+            if(var4 == super.field410 && var5 == super.field411) {
                for(int var6 = 0; var6 < 64; ++var6) {
                   for(int var7 = 0; var7 < 64; ++var7) {
                      this.method228(var6, var7, var1);
@@ -64,6 +55,15 @@ public class class22 extends class28 {
                throw new IllegalStateException("");
             }
          }
+      }
+   }
+
+   public boolean equals(Object var1) {
+      if(!(var1 instanceof class22)) {
+         return false;
+      } else {
+         class22 var2 = (class22)var1;
+         return var2.field410 == super.field410 && super.field411 == var2.field411;
       }
    }
 
@@ -81,9 +81,9 @@ public class class22 extends class28 {
       File var3 = new File(Frames.field2158, "preferences" + var0 + ".dat");
       if(var3.exists()) {
          try {
-            FileOnDisk var11 = new FileOnDisk(var3, "rw", 10000L);
-            return var11;
-         } catch (IOException var10) {
+            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
+            return var10;
+         } catch (IOException var9) {
             ;
          }
       }
@@ -101,7 +101,7 @@ public class class22 extends class28 {
          try {
             var6 = new FileOnDisk(var5, "rw", 10000L);
             return var6;
-         } catch (IOException var9) {
+         } catch (IOException var8) {
             ;
          }
       }
@@ -109,7 +109,7 @@ public class class22 extends class28 {
       try {
          var6 = new FileOnDisk(var3, "rw", 10000L);
          return var6;
-      } catch (IOException var8) {
+      } catch (IOException var7) {
          throw new RuntimeException();
       }
    }

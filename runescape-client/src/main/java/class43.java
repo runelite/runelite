@@ -5,65 +5,54 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("am")
 public class class43 {
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -548015435
-   )
-   int field590;
-   @ObfuscatedName("a")
-   int[][] field592;
-   @ObfuscatedName("t")
-   int[][] field593;
-   @ObfuscatedName("s")
-   int[][] field594;
-   @ObfuscatedName("r")
-   int[][] field595;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -1565232781
    )
    static int field596;
+   @ObfuscatedName("at")
+   public static BufferProvider field602;
+   @ObfuscatedName("gs")
+   @Export("pkIcons")
+   static SpritePixels[] pkIcons;
+   @ObfuscatedName("rj")
+   @Export("renderOverview")
+   static RenderOverview renderOverview;
    @ObfuscatedName("ra")
    @ObfuscatedGetter(
       longValue = -6992119907625609995L
    )
    static long field599;
-   @ObfuscatedName("rj")
-   @Export("renderOverview")
-   static RenderOverview renderOverview;
-   @ObfuscatedName("gs")
-   @Export("pkIcons")
-   static SpritePixels[] pkIcons;
-   @ObfuscatedName("at")
-   public static BufferProvider field602;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -548015435
+   )
+   int field590;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -13037399
    )
    int field603;
+   @ObfuscatedName("a")
+   int[][] field592;
+   @ObfuscatedName("s")
+   int[][] field594;
+   @ObfuscatedName("t")
+   int[][] field593;
+   @ObfuscatedName("r")
+   int[][] field595;
 
-   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IIILFloorUnderlayDefinition;B)V",
-      garbageValue = "-22"
+      signature = "(II)V",
+      garbageValue = "64"
    )
-   void method635(int var1, int var2, int var3, FloorUnderlayDefinition var4) {
-      if(var4 != null && var3 + var1 >= 0 && var3 + var2 >= 0 && var1 - var3 <= this.field590 && var2 - var3 <= this.field603) {
-         int var5 = Math.max(0, var1 - var3);
-         int var6 = Math.min(this.field590, var3 + var1);
-         int var7 = Math.max(0, var2 - var3);
-         int var8 = Math.min(this.field603, var3 + var2);
-
-         for(int var9 = var5; var9 < var6; ++var9) {
-            for(int var10 = var7; var10 < var8; ++var10) {
-               this.field592[var9][var10] += var4.hue * 256 / var4.hueMultiplier;
-               this.field593[var9][var10] += var4.saturation;
-               this.field594[var9][var10] += var4.lightness;
-               ++this.field595[var9][var10];
-            }
-         }
-      }
-
+   class43(int var1, int var2) {
+      this.field590 = var1;
+      this.field603 = var2;
+      this.field592 = new int[var1][var2];
+      this.field593 = new int[var1][var2];
+      this.field594 = new int[var1][var2];
+      this.field595 = new int[var1][var2];
    }
 
    @ObfuscatedName("w")
@@ -86,17 +75,76 @@ public class class43 {
       }
    }
 
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "64"
+      signature = "(IIILFloorUnderlayDefinition;B)V",
+      garbageValue = "-22"
    )
-   class43(int var1, int var2) {
-      this.field590 = var1;
-      this.field603 = var2;
-      this.field592 = new int[var1][var2];
-      this.field593 = new int[var1][var2];
-      this.field594 = new int[var1][var2];
-      this.field595 = new int[var1][var2];
+   void method635(int var1, int var2, int var3, FloorUnderlayDefinition var4) {
+      if(var4 != null) {
+         if(var3 + var1 >= 0 && var3 + var2 >= 0) {
+            if(var1 - var3 <= this.field590 && var2 - var3 <= this.field603) {
+               int var5 = Math.max(0, var1 - var3);
+               int var6 = Math.min(this.field590, var3 + var1);
+               int var7 = Math.max(0, var2 - var3);
+               int var8 = Math.min(this.field603, var3 + var2);
+
+               for(int var9 = var5; var9 < var6; ++var9) {
+                  for(int var10 = var7; var10 < var8; ++var10) {
+                     this.field592[var9][var10] += var4.hue * 256 / var4.hueMultiplier;
+                     this.field593[var9][var10] += var4.saturation;
+                     this.field594[var9][var10] += var4.lightness;
+                     ++this.field595[var9][var10];
+                  }
+               }
+
+            }
+         }
+      }
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "4"
+   )
+   static void method644() {
+      Object var0 = class236.field3244;
+      synchronized(class236.field3244) {
+         if(class236.field3243 == 0) {
+            class236.field3245 = new Thread(new class236());
+            class236.field3245.setDaemon(true);
+            class236.field3245.start();
+            class236.field3245.setPriority(5);
+         }
+
+         class236.field3243 = 600;
+      }
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIB)Z",
+      garbageValue = "6"
+   )
+   static final boolean method643(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7 = class134.field2008 + var6;
+      if(var7 < var0 && var7 < var1 && var7 < var2) {
+         return false;
+      } else {
+         var7 = class134.field2008 - var6;
+         if(var7 > var0 && var7 > var1 && var7 > var2) {
+            return false;
+         } else {
+            var7 = class134.field2014 + var6;
+            if(var7 < var3 && var7 < var4 && var7 < var5) {
+               return false;
+            } else {
+               var7 = class134.field2014 - var6;
+               return var7 <= var3 || var7 <= var4 || var7 <= var5;
+            }
+         }
+      }
    }
 
    @ObfuscatedName("go")
@@ -162,50 +210,5 @@ public class class43 {
          }
       }
 
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIB)Z",
-      garbageValue = "6"
-   )
-   static final boolean method643(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = class134.field2008 + var6;
-      if(var7 < var0 && var7 < var1 && var7 < var2) {
-         return false;
-      } else {
-         var7 = class134.field2008 - var6;
-         if(var7 > var0 && var7 > var1 && var7 > var2) {
-            return false;
-         } else {
-            var7 = class134.field2014 + var6;
-            if(var7 < var3 && var7 < var4 && var7 < var5) {
-               return false;
-            } else {
-               var7 = class134.field2014 - var6;
-               return var7 <= var3 || var7 <= var4 || var7 <= var5;
-            }
-         }
-      }
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "4"
-   )
-   static void method644() {
-      Object var0 = class236.field3244;
-      Object var1 = class236.field3244;
-      synchronized(class236.field3244) {
-         if(class236.field3243 == 0) {
-            class236.field3245 = new Thread(new class236());
-            class236.field3245.setDaemon(true);
-            class236.field3245.start();
-            class236.field3245.setPriority(5);
-         }
-
-         class236.field3243 = 600;
-      }
    }
 }

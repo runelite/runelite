@@ -7,39 +7,46 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bi")
 public class class77 {
-   @ObfuscatedName("a")
-   Task field1227;
-   @ObfuscatedName("t")
-   DataInputStream field1228;
-   @ObfuscatedName("i")
-   byte[] field1229;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      longValue = -8673129038472713675L
-   )
-   long field1230;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -69539391
-   )
-   int field1231;
-   @ObfuscatedName("r")
-   byte[] field1232;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1959565033
-   )
-   int field1233;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -885124681
-   )
-   int field1234;
    @ObfuscatedName("lv")
    @ObfuscatedGetter(
       intValue = 1150999927
    )
    static int field1237;
+   @ObfuscatedName("i")
+   byte[] field1229;
+   @ObfuscatedName("a")
+   Task field1227;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -69539391
+   )
+   int field1231;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      longValue = -8673129038472713675L
+   )
+   long field1230;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -885124681
+   )
+   int field1234;
+   @ObfuscatedName("t")
+   DataInputStream field1228;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -1959565033
+   )
+   int field1233;
+   @ObfuscatedName("r")
+   byte[] field1232;
+
+   class77(Signlink var1, URL var2) {
+      this.field1229 = new byte[4];
+      this.field1227 = var1.createURL(var2);
+      this.field1231 = 0;
+      this.field1230 = DState.currentTimeMs() + 30000L;
+   }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
@@ -79,12 +86,5 @@ public class class77 {
 
          return null;
       }
-   }
-
-   class77(Signlink var1, URL var2) {
-      this.field1229 = new byte[4];
-      this.field1227 = var1.createURL(var2);
-      this.field1231 = 0;
-      this.field1230 = DState.currentTimeMs() + 30000L;
    }
 }

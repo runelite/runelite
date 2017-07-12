@@ -2,16 +2,31 @@ import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("dx")
 public class class107 extends class122 {
-   @ObfuscatedName("a")
-   public int field1629;
    @ObfuscatedName("w")
    public byte[] field1630;
-   @ObfuscatedName("t")
-   int field1631;
-   @ObfuscatedName("s")
-   public boolean field1632;
    @ObfuscatedName("i")
    public int field1633;
+   @ObfuscatedName("s")
+   public boolean field1632;
+   @ObfuscatedName("a")
+   public int field1629;
+   @ObfuscatedName("t")
+   int field1631;
+
+   class107(int var1, byte[] var2, int var3, int var4) {
+      this.field1633 = var1;
+      this.field1630 = var2;
+      this.field1629 = var3;
+      this.field1631 = var4;
+   }
+
+   class107(int var1, byte[] var2, int var3, int var4, boolean var5) {
+      this.field1633 = var1;
+      this.field1630 = var2;
+      this.field1629 = var3;
+      this.field1631 = var4;
+      this.field1632 = var5;
+   }
 
    @ObfuscatedName("i")
    public class107 method1989(class116 var1) {
@@ -28,20 +43,5 @@ public class class107 extends class122 {
       }
 
       return this;
-   }
-
-   class107(int var1, byte[] var2, int var3, int var4, boolean var5) {
-      this.field1633 = var1;
-      this.field1630 = var2;
-      this.field1629 = var3;
-      this.field1631 = var4;
-      this.field1632 = var5;
-   }
-
-   class107(int var1, byte[] var2, int var3, int var4) {
-      this.field1633 = var1;
-      this.field1630 = var2;
-      this.field1629 = var3;
-      this.field1631 = var4;
    }
 }

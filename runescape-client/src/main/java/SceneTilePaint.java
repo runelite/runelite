@@ -7,33 +7,15 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ec")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 618716109
-   )
-   @Export("nwColor")
-   int nwColor;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1458413775
-   )
-   @Export("neColor")
-   int neColor;
+   @ObfuscatedName("r")
+   @Export("flatShade")
+   boolean flatShade;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -78544361
    )
    @Export("swColor")
    int swColor;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 102543291
-   )
-   @Export("texture")
-   int texture;
-   @ObfuscatedName("r")
-   @Export("flatShade")
-   boolean flatShade;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 1567608003
@@ -46,6 +28,24 @@ public final class SceneTilePaint {
    )
    @Export("seColor")
    int seColor;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 1458413775
+   )
+   @Export("neColor")
+   int neColor;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 618716109
+   )
+   @Export("nwColor")
+   int nwColor;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 102543291
+   )
+   @Export("texture")
+   int texture;
 
    @ObfuscatedSignature(
       signature = "(IIIIIIZ)V",

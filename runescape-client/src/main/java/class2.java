@@ -10,6 +10,15 @@ final class class2 implements class0 {
    @ObfuscatedName("mo")
    static class156 field16;
 
+   @ObfuscatedName("hq")
+   @ObfuscatedSignature(
+      signature = "(S)I",
+      garbageValue = "-5277"
+   )
+   static final int method7() {
+      return Client.menuOptionCount <= 0?-1:(Client.field1075 && KeyFocusListener.field659[81] && Client.field1074 != -1?Client.field1074:Client.menuOptionCount - 1);
+   }
+
    @ObfuscatedName("gp")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;ZI)V",
@@ -22,10 +31,10 @@ final class class2 implements class0 {
       int var4 = var2 + 6;
       int var5 = class37.font_p12full.method4751(var0, 250);
       int var6 = class37.font_p12full.method4752(var0, 250) * 13;
-      Rasterizer2D.method4983(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var6 + var2, 0);
-      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var6 + var2, 16777215);
+      Rasterizer2D.method4983(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 0);
+      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var2 + var2 + var5, var2 + var6 + var2, 16777215);
       class37.font_p12full.method4788(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-      Coordinates.method3911(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var6 + var2);
+      Coordinates.method3911(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6);
       if(var1) {
          class43.field602.vmethod5007(0, 0);
       } else {
@@ -35,21 +44,12 @@ final class class2 implements class0 {
          int var10 = var6;
 
          for(int var11 = 0; var11 < Client.field1061; ++var11) {
-            if(Client.widgetBoundsWidth[var11] + Client.widgetPositionX[var11] > var7 && Client.widgetPositionX[var11] < var7 + var9 && Client.widgetPositionY[var11] + Client.widgetBoundsHeight[var11] > var8 && Client.widgetPositionY[var11] < var10 + var8) {
+            if(Client.widgetBoundsWidth[var11] + Client.widgetPositionX[var11] > var7 && Client.widgetPositionX[var11] < var7 + var9 && Client.widgetPositionY[var11] + Client.widgetBoundsHeight[var11] > var8 && Client.widgetPositionY[var11] < var8 + var10) {
                Client.field1133[var11] = true;
             }
          }
       }
 
-   }
-
-   @ObfuscatedName("hq")
-   @ObfuscatedSignature(
-      signature = "(S)I",
-      garbageValue = "-5277"
-   )
-   static final int method7() {
-      return Client.menuOptionCount <= 0?-1:(Client.field1075 && KeyFocusListener.field659[81] && Client.field1074 != -1?Client.field1074:Client.menuOptionCount - 1);
    }
 
    @ObfuscatedName("r")

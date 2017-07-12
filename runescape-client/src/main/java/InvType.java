@@ -7,15 +7,35 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("iz")
 @Implements("InvType")
 public class InvType extends CacheableNode {
-   @ObfuscatedName("i")
-   public static IndexDataBase field3285;
    @ObfuscatedName("w")
    static NodeCache field3286;
+   @ObfuscatedName("i")
+   public static IndexDataBase field3285;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 1962212427
    )
    public int field3287;
+
+   static {
+      field3286 = new NodeCache(64);
+   }
+
+   InvType() {
+      this.field3287 = 0;
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;II)V",
+      garbageValue = "1875234629"
+   )
+   void method4272(Buffer var1, int var2) {
+      if(var2 == 2) {
+         this.field3287 = var1.readUnsignedShort();
+      }
+
+   }
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -32,25 +52,5 @@ public class InvType extends CacheableNode {
 
          this.method4272(var1, var2);
       }
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "1875234629"
-   )
-   void method4272(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.field3287 = var1.readUnsignedShort();
-      }
-
-   }
-
-   InvType() {
-      this.field3287 = 0;
-   }
-
-   static {
-      field3286 = new NodeCache(64);
    }
 }

@@ -7,24 +7,24 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ek")
 @Implements("VertexNormal")
 public class VertexNormal {
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -1875962745
-   )
-   @Export("z")
-   int z;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 1871515527
-   )
-   @Export("y")
-   int y;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1826977823
    )
    @Export("x")
    int x;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 1871515527
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1875962745
+   )
+   @Export("z")
+   int z;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = 1333091505
@@ -32,13 +32,7 @@ public class VertexNormal {
    @Export("magnitude")
    int magnitude;
 
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1806394361"
-   )
-   public static void method2580() {
-      FloorUnderlayDefinition.underlays.reset();
+   VertexNormal() {
    }
 
    VertexNormal(VertexNormal var1) {
@@ -48,6 +42,12 @@ public class VertexNormal {
       this.magnitude = var1.magnitude;
    }
 
-   VertexNormal() {
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1806394361"
+   )
+   public static void method2580() {
+      FloorUnderlayDefinition.underlays.reset();
    }
 }

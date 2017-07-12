@@ -39,6 +39,17 @@ public enum Permission implements RSEnum {
    @Export("blendedSaturation")
    static int[] blendedSaturation;
 
+   @ObfuscatedSignature(
+      signature = "(IIZZZ)V",
+      garbageValue = "1"
+   )
+   Permission(int var3, int var4, boolean var5, boolean var6, boolean var7) {
+      this.field3187 = var3;
+      this.field3186 = var4;
+      this.field3184 = var6;
+      this.field3188 = var7;
+   }
+
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
@@ -46,26 +57,6 @@ public enum Permission implements RSEnum {
    )
    public int rsOrdinal() {
       return this.field3187;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)Ljava/lang/Class;",
-      garbageValue = "59"
-   )
-   static Class method4095(String var0) throws ClassNotFoundException {
-      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
-   }
-
-   @ObfuscatedSignature(
-      signature = "(IIZZZ)V",
-      garbageValue = "1"
-   )
-   private Permission(int var3, int var4, boolean var5, boolean var6, boolean var7) {
-      this.field3187 = var3;
-      this.field3186 = var4;
-      this.field3184 = var6;
-      this.field3188 = var7;
    }
 
    @ObfuscatedName("c")
@@ -78,5 +69,14 @@ public enum Permission implements RSEnum {
       ObjectComposition.field3487.reset();
       ObjectComposition.cachedModels.reset();
       ObjectComposition.field3486.reset();
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;B)Ljava/lang/Class;",
+      garbageValue = "59"
+   )
+   static Class method4095(String var0) throws ClassNotFoundException {
+      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
    }
 }

@@ -14,17 +14,6 @@ public class class20 {
    @ObfuscatedName("cl")
    static Task field339;
 
-   @ObfuscatedName("je")
-   @ObfuscatedSignature(
-      signature = "(LWidget;II)Ljava/lang/String;",
-      garbageValue = "677622988"
-   )
-   static String method140(Widget var0, int var1) {
-      int var2 = WorldMapType3.getWidgetConfig(var0);
-      boolean var3 = (var2 >> var1 + 1 & 1) != 0;
-      return !var3 && var0.field2754 == null?null:(var0.actions != null && var0.actions.length > var1 && var0.actions[var1] != null && var0.actions[var1].trim().length() != 0?var0.actions[var1]:null);
-   }
-
    @ObfuscatedName("ib")
    @ObfuscatedSignature(
       signature = "([LWidget;II)V",
@@ -34,7 +23,7 @@ public class class20 {
       for(int var2 = 0; var2 < var0.length; ++var2) {
          Widget var3 = var0[var2];
          if(var3 != null && var3.parentId == var1 && (!var3.hasScript || !class39.method555(var3))) {
-            int var4;
+            int var5;
             if(var3.type == 0) {
                if(!var3.hasScript && class39.method555(var3) && var3 != KitDefinition.field3371) {
                   continue;
@@ -45,26 +34,26 @@ public class class20 {
                   method141(var3.children, var3.id);
                }
 
-               WidgetNode var5 = (WidgetNode)Client.componentTable.get((long)var3.id);
-               if(var5 != null) {
-                  var4 = var5.id;
-                  if(class66.loadWidget(var4)) {
-                     method141(class46.widgets[var4], -1);
+               WidgetNode var7 = (WidgetNode)Client.componentTable.get((long)var3.id);
+               if(var7 != null) {
+                  var5 = var7.id;
+                  if(class66.loadWidget(var5)) {
+                     method141(class46.widgets[var5], -1);
                   }
                }
             }
 
             if(var3.type == 6) {
                if(var3.field2717 != -1 || var3.field2702 != -1) {
-                  boolean var7 = WorldMapData.method272(var3);
-                  if(var7) {
-                     var4 = var3.field2702;
+                  boolean var4 = WorldMapData.method272(var3);
+                  if(var4) {
+                     var5 = var3.field2702;
                   } else {
-                     var4 = var3.field2717;
+                     var5 = var3.field2717;
                   }
 
-                  if(var4 != -1) {
-                     Sequence var6 = class224.getAnimation(var4);
+                  if(var5 != -1) {
+                     Sequence var6 = class224.getAnimation(var5);
 
                      for(var3.field2777 += Client.field1002; var3.field2777 > var6.frameLenghts[var3.field2788]; class88.method1714(var3)) {
                         var3.field2777 -= var6.frameLenghts[var3.field2788];
@@ -81,17 +70,61 @@ public class class20 {
 
                if(var3.field2710 != 0 && !var3.hasScript) {
                   int var8 = var3.field2710 >> 16;
-                  var4 = var3.field2710 << 16 >> 16;
+                  var5 = var3.field2710 << 16 >> 16;
                   var8 *= Client.field1002;
-                  var4 *= Client.field1002;
-                  var3.rotationX = var3.rotationX + var8 & 2047;
-                  var3.rotationZ = var4 + var3.rotationZ & 2047;
+                  var5 *= Client.field1002;
+                  var3.rotationX = var8 + var3.rotationX & 2047;
+                  var3.rotationZ = var5 + var3.rotationZ & 2047;
                   class88.method1714(var3);
                }
             }
          }
       }
 
+   }
+
+   @ObfuscatedName("iu")
+   @ObfuscatedSignature(
+      signature = "(LWidget;I)V",
+      garbageValue = "-1827777944"
+   )
+   static final void method143(Widget var0) {
+      int var1 = var0.contentType;
+      if(var1 == 324) {
+         if(Client.field1038 == -1) {
+            Client.field1038 = var0.spriteId;
+            Client.field1200 = var0.field2690;
+         }
+
+         if(Client.field1198.isFemale) {
+            var0.spriteId = Client.field1038;
+         } else {
+            var0.spriteId = Client.field1200;
+         }
+
+      } else if(var1 == 325) {
+         if(Client.field1038 == -1) {
+            Client.field1038 = var0.spriteId;
+            Client.field1200 = var0.field2690;
+         }
+
+         if(Client.field1198.isFemale) {
+            var0.spriteId = Client.field1200;
+         } else {
+            var0.spriteId = Client.field1038;
+         }
+
+      } else if(var1 == 327) {
+         var0.rotationX = 150;
+         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
+         var0.modelType = 5;
+         var0.modelId = 0;
+      } else if(var1 == 328) {
+         var0.rotationX = 150;
+         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
+         var0.modelType = 5;
+         var0.modelId = 1;
+      }
    }
 
    @ObfuscatedName("ha")
@@ -119,46 +152,14 @@ public class class20 {
 
    }
 
-   @ObfuscatedName("iu")
+   @ObfuscatedName("je")
    @ObfuscatedSignature(
-      signature = "(LWidget;I)V",
-      garbageValue = "-1827777944"
+      signature = "(LWidget;II)Ljava/lang/String;",
+      garbageValue = "677622988"
    )
-   static final void method143(Widget var0) {
-      int var1 = var0.contentType;
-      if(var1 == 324) {
-         if(Client.field1038 == -1) {
-            Client.field1038 = var0.spriteId;
-            Client.field1200 = var0.field2690;
-         }
-
-         if(Client.field1198.isFemale) {
-            var0.spriteId = Client.field1038;
-         } else {
-            var0.spriteId = Client.field1200;
-         }
-      } else if(var1 == 325) {
-         if(Client.field1038 == -1) {
-            Client.field1038 = var0.spriteId;
-            Client.field1200 = var0.field2690;
-         }
-
-         if(Client.field1198.isFemale) {
-            var0.spriteId = Client.field1200;
-         } else {
-            var0.spriteId = Client.field1038;
-         }
-      } else if(var1 == 327) {
-         var0.rotationX = 150;
-         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
-         var0.modelType = 5;
-         var0.modelId = 0;
-      } else if(var1 == 328) {
-         var0.rotationX = 150;
-         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
-         var0.modelType = 5;
-         var0.modelId = 1;
-      }
-
+   static String method140(Widget var0, int var1) {
+      int var3 = WorldMapType3.getWidgetConfig(var0);
+      boolean var2 = (var3 >> var1 + 1 & 1) != 0;
+      return !var2 && var0.field2754 == null?null:(var0.actions != null && var0.actions.length > var1 && var0.actions[var1] != null && var0.actions[var1].trim().length() != 0?var0.actions[var1]:null);
    }
 }

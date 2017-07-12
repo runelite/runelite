@@ -57,6 +57,14 @@ public enum class221 implements RSEnum {
    )
    public final int field2842;
 
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "0"
+   )
+   class221(int var3, int var4) {
+      this.field2842 = var3;
+   }
+
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
@@ -64,13 +72,5 @@ public enum class221 implements RSEnum {
    )
    public int rsOrdinal() {
       return this.field2842;
-   }
-
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "0"
-   )
-   private class221(int var3, int var4) {
-      this.field2842 = var3;
    }
 }

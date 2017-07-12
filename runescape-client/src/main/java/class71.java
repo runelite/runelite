@@ -5,27 +5,34 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bf")
 public class class71 implements Runnable {
-   @ObfuscatedName("w")
-   Object field869;
-   @ObfuscatedName("t")
-   int[] field871;
-   @ObfuscatedName("s")
-   int[] field872;
    @ObfuscatedName("mc")
    @Export("chatMessages")
    static Varcs chatMessages;
    @ObfuscatedName("i")
    boolean field874;
+   @ObfuscatedName("w")
+   Object field869;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 1920341521
    )
    int field878;
+   @ObfuscatedName("t")
+   int[] field871;
+   @ObfuscatedName("s")
+   int[] field872;
+
+   class71() {
+      this.field874 = true;
+      this.field869 = new Object();
+      this.field878 = 0;
+      this.field871 = new int[500];
+      this.field872 = new int[500];
+   }
 
    public void run() {
       for(; this.field874; XItemContainer.method1113(50L)) {
          Object var1 = this.field869;
-         Object var2 = this.field869;
          synchronized(this.field869) {
             if(this.field878 < 500) {
                this.field871[this.field878] = MouseInput.field748;
@@ -89,13 +96,5 @@ public class class71 implements Runnable {
       } else {
          return 2;
       }
-   }
-
-   class71() {
-      this.field874 = true;
-      this.field869 = new Object();
-      this.field878 = 0;
-      this.field871 = new int[500];
-      this.field872 = new int[500];
    }
 }

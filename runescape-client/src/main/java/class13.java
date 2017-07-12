@@ -20,34 +20,12 @@ public class class13 {
    @ObfuscatedName("i")
    public final List field283;
 
-   @ObfuscatedName("fj")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1245000480"
-   )
-   static final void method60() {
-      if(Client.field978 > 0) {
-         class64.method1116();
-      } else {
-         TextureProvider.setGameState(40);
-         class215.field2640 = class244.rssocket;
-         class244.rssocket = null;
-      }
-
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Ljava/util/Comparator;ZI)V",
-      garbageValue = "-1884021892"
-   )
-   public void method61(Comparator var1, boolean var2) {
-      if(var2) {
-         Collections.sort(this.field283, var1);
-      } else {
-         Collections.sort(this.field283, Collections.reverseOrder(var1));
-      }
-
+   static {
+      field277 = new class19();
+      new class12();
+      field278 = new class17();
+      field279 = new class18();
+      field280 = new class15();
    }
 
    @ObfuscatedSignature(
@@ -73,6 +51,35 @@ public class class13 {
 
    }
 
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Ljava/util/Comparator;ZI)V",
+      garbageValue = "-1884021892"
+   )
+   public void method61(Comparator var1, boolean var2) {
+      if(var2) {
+         Collections.sort(this.field283, var1);
+      } else {
+         Collections.sort(this.field283, Collections.reverseOrder(var1));
+      }
+
+   }
+
+   @ObfuscatedName("fj")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1245000480"
+   )
+   static final void method60() {
+      if(Client.field978 > 0) {
+         class64.method1116();
+      } else {
+         TextureProvider.setGameState(40);
+         class215.field2640 = class244.rssocket;
+         class244.rssocket = null;
+      }
+   }
+
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
@@ -82,13 +89,5 @@ public class class13 {
       class92.loginMessage1 = var0;
       class92.loginMessage2 = var1;
       class92.loginMessage3 = var2;
-   }
-
-   static {
-      field277 = new class19();
-      new class12();
-      field278 = new class17();
-      field279 = new class18();
-      field280 = new class15();
    }
 }

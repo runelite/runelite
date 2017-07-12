@@ -7,24 +7,32 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("b")
 @Implements("XGrandExchangeOffer")
 public class XGrandExchangeOffer {
+   @ObfuscatedName("eq")
+   static class262 field313;
+   @ObfuscatedName("ct")
+   @Export("indexTrack2")
+   static IndexData indexTrack2;
+   @ObfuscatedName("i")
+   @Export("progress")
+   byte progress;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -708171489
    )
    @Export("totalQuantity")
    public int totalQuantity;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1110847931
-   )
-   @Export("itemId")
-   public int itemId;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -53549477
    )
    @Export("price")
    public int price;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1110847931
+   )
+   @Export("itemId")
+   public int itemId;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -261525069
@@ -37,22 +45,8 @@ public class XGrandExchangeOffer {
    )
    @Export("spent")
    public int spent;
-   @ObfuscatedName("ct")
-   @Export("indexTrack2")
-   static IndexData indexTrack2;
-   @ObfuscatedName("i")
-   @Export("progress")
-   byte progress;
-   @ObfuscatedName("eq")
-   static class262 field313;
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1834311547"
-   )
-   public int method87() {
-      return this.progress & 7;
+   public XGrandExchangeOffer() {
    }
 
    @ObfuscatedSignature(
@@ -78,15 +72,6 @@ public class XGrandExchangeOffer {
       this.progress = (byte)(this.progress | var1 & 7);
    }
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-28"
-   )
-   public int method91() {
-      return (this.progress & 8) == 8?1:0;
-   }
-
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(IB)V",
@@ -100,7 +85,36 @@ public class XGrandExchangeOffer {
 
    }
 
-   public XGrandExchangeOffer() {
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "-28"
+   )
+   public int method91() {
+      return (this.progress & 8) == 8?1:0;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1834311547"
+   )
+   public int method87() {
+      return this.progress & 7;
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1588417071"
+   )
+   public static void method113() {
+      class286.field3799 = null;
+      class286.offsetsY = null;
+      class7.field239 = null;
+      class226.field3146 = null;
+      class278.field3745 = null;
+      class210.spritePixels = null;
    }
 
    @ObfuscatedName("ja")
@@ -114,7 +128,6 @@ public class XGrandExchangeOffer {
          Client.secretPacketBuffer1.putByte(class261.getLength(var0));
          Client.secretPacketBuffer1.putString(var0);
       }
-
    }
 
    @ObfuscatedName("t")
@@ -144,19 +157,5 @@ public class XGrandExchangeOffer {
          method112(var7 + 1, var1, var2, var3, var4, var5);
       }
 
-   }
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1588417071"
-   )
-   public static void method113() {
-      class286.field3799 = null;
-      class286.offsetsY = null;
-      class7.field239 = null;
-      class226.field3146 = null;
-      class278.field3745 = null;
-      class210.spritePixels = (byte[][])null;
    }
 }

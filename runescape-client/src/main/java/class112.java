@@ -7,27 +7,19 @@ public class class112 {
    @ObfuscatedName("w")
    @Export("vorbis_index")
    IndexDataBase vorbis_index;
-   @ObfuscatedName("a")
-   XHashTable field1680;
    @ObfuscatedName("i")
    @Export("sfx_index")
    IndexDataBase sfx_index;
    @ObfuscatedName("t")
    XHashTable field1682;
+   @ObfuscatedName("a")
+   XHashTable field1680;
 
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(I[II)Lclass107;",
-      garbageValue = "1270483995"
-   )
-   public class107 method2085(int var1, int[] var2) {
-      if(this.vorbis_index.size() == 1) {
-         return this.method2086(0, var1, var2);
-      } else if(this.vorbis_index.fileCount(var1) == 1) {
-         return this.method2086(var1, 0, var2);
-      } else {
-         throw new RuntimeException();
-      }
+   public class112(IndexDataBase var1, IndexDataBase var2) {
+      this.field1680 = new XHashTable(256);
+      this.field1682 = new XHashTable(256);
+      this.sfx_index = var1;
+      this.vorbis_index = var2;
    }
 
    @ObfuscatedName("w")
@@ -66,21 +58,6 @@ public class class112 {
       }
    }
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(I[II)Lclass107;",
-      garbageValue = "1916602576"
-   )
-   public class107 method2087(int var1, int[] var2) {
-      if(this.sfx_index.size() == 1) {
-         return this.method2088(0, var1, var2);
-      } else if(this.sfx_index.fileCount(var1) == 1) {
-         return this.method2088(var1, 0, var2);
-      } else {
-         throw new RuntimeException();
-      }
-   }
-
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(II[II)Lclass107;",
@@ -111,119 +88,34 @@ public class class112 {
       }
    }
 
-   public class112(IndexDataBase var1, IndexDataBase var2) {
-      this.field1680 = new XHashTable(256);
-      this.field1682 = new XHashTable(256);
-      this.sfx_index = var1;
-      this.vorbis_index = var2;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(I[II)Lclass107;",
+      garbageValue = "1270483995"
+   )
+   public class107 method2085(int var1, int[] var2) {
+      if(this.vorbis_index.size() == 1) {
+         return this.method2086(0, var1, var2);
+      } else if(this.vorbis_index.fileCount(var1) == 1) {
+         return this.method2086(var1, 0, var2);
+      } else {
+         throw new RuntimeException();
+      }
    }
 
-   @ObfuscatedName("gj")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IIZI)V",
-      garbageValue = "196913818"
+      signature = "(I[II)Lclass107;",
+      garbageValue = "1916602576"
    )
-   static final void method2095(int var0, int var1, boolean var2) {
-      if(!var2 || var0 != World.field1321 || FileOnDisk.field1777 != var1) {
-         World.field1321 = var0;
-         FileOnDisk.field1777 = var1;
-         TextureProvider.setGameState(25);
-         class2.drawStatusBox("Loading - please wait.", true);
-         int var3 = KeyFocusListener.baseX;
-         int var4 = class266.baseY;
-         KeyFocusListener.baseX = (var0 - 6) * 8;
-         class266.baseY = (var1 - 6) * 8;
-         int var5 = KeyFocusListener.baseX - var3;
-         int var6 = class266.baseY - var4;
-         var3 = KeyFocusListener.baseX;
-         var4 = class266.baseY;
-
-         int var7;
-         int var8;
-         for(var7 = 0; var7 < '耀'; ++var7) {
-            NPC var9 = Client.cachedNPCs[var7];
-            if(var9 != null) {
-               for(var8 = 0; var8 < 10; ++var8) {
-                  var9.pathX[var8] -= var5;
-                  var9.pathY[var8] -= var6;
-               }
-
-               var9.x -= var5 * 128;
-               var9.y -= var6 * 128;
-            }
-         }
-
-         for(var7 = 0; var7 < 2048; ++var7) {
-            Player var20 = Client.cachedPlayers[var7];
-            if(var20 != null) {
-               for(var8 = 0; var8 < 10; ++var8) {
-                  var20.pathX[var8] -= var5;
-                  var20.pathY[var8] -= var6;
-               }
-
-               var20.x -= var5 * 128;
-               var20.y -= var6 * 128;
-            }
-         }
-
-         byte var21 = 0;
-         byte var10 = 104;
-         byte var11 = 1;
-         if(var5 < 0) {
-            var21 = 103;
-            var10 = -1;
-            var11 = -1;
-         }
-
-         byte var12 = 0;
-         byte var13 = 104;
-         byte var14 = 1;
-         if(var6 < 0) {
-            var12 = 103;
-            var13 = -1;
-            var14 = -1;
-         }
-
-         int var15;
-         for(int var16 = var21; var16 != var10; var16 += var11) {
-            for(var15 = var12; var13 != var15; var15 += var14) {
-               int var17 = var16 + var5;
-               int var18 = var15 + var6;
-
-               for(int var19 = 0; var19 < 4; ++var19) {
-                  if(var17 >= 0 && var18 >= 0 && var17 < 104 && var18 < 104) {
-                     Client.groundItemDeque[var19][var16][var15] = Client.groundItemDeque[var19][var17][var18];
-                  } else {
-                     Client.groundItemDeque[var19][var16][var15] = null;
-                  }
-               }
-            }
-         }
-
-         for(PendingSpawn var22 = (PendingSpawn)Client.pendingSpawns.getFront(); var22 != null; var22 = (PendingSpawn)Client.pendingSpawns.getNext()) {
-            var22.x -= var5;
-            var22.y -= var6;
-            if(var22.x < 0 || var22.y < 0 || var22.x >= 104 || var22.y >= 104) {
-               var22.unlink();
-            }
-         }
-
-         if(Client.destinationX != 0) {
-            Client.destinationX -= var5;
-            Client.destinationY -= var6;
-         }
-
-         Client.field1181 = 0;
-         Client.field1173 = false;
-         Client.field1154 = -1;
-         Client.graphicsObjectDeque.clear();
-         Client.projectiles.clear();
-
-         for(var15 = 0; var15 < 4; ++var15) {
-            Client.collisionMaps[var15].reset();
-         }
+   public class107 method2087(int var1, int[] var2) {
+      if(this.sfx_index.size() == 1) {
+         return this.method2088(0, var1, var2);
+      } else if(this.sfx_index.fileCount(var1) == 1) {
+         return this.method2088(var1, 0, var2);
+      } else {
+         throw new RuntimeException();
       }
-
    }
 
    @ObfuscatedName("t")
@@ -259,7 +151,6 @@ public class class112 {
          class170.sendConInfo(true);
          class17.field317 = false;
       }
-
    }
 
    @ObfuscatedName("ig")
@@ -281,5 +172,113 @@ public class class112 {
          Client.field1091 = null;
       }
 
+   }
+
+   @ObfuscatedName("gj")
+   @ObfuscatedSignature(
+      signature = "(IIZI)V",
+      garbageValue = "196913818"
+   )
+   static final void method2095(int var0, int var1, boolean var2) {
+      if(!var2 || var0 != World.field1321 || FileOnDisk.field1777 != var1) {
+         World.field1321 = var0;
+         FileOnDisk.field1777 = var1;
+         TextureProvider.setGameState(25);
+         class2.drawStatusBox("Loading - please wait.", true);
+         int var3 = KeyFocusListener.baseX;
+         int var4 = class266.baseY;
+         KeyFocusListener.baseX = (var0 - 6) * 8;
+         class266.baseY = (var1 - 6) * 8;
+         int var5 = KeyFocusListener.baseX - var3;
+         int var6 = class266.baseY - var4;
+         var3 = KeyFocusListener.baseX;
+         var4 = class266.baseY;
+
+         int var7;
+         int var9;
+         for(var7 = 0; var7 < '耀'; ++var7) {
+            NPC var8 = Client.cachedNPCs[var7];
+            if(var8 != null) {
+               for(var9 = 0; var9 < 10; ++var9) {
+                  var8.pathX[var9] -= var5;
+                  var8.pathY[var9] -= var6;
+               }
+
+               var8.x -= var5 * 128;
+               var8.y -= var6 * 128;
+            }
+         }
+
+         for(var7 = 0; var7 < 2048; ++var7) {
+            Player var21 = Client.cachedPlayers[var7];
+            if(var21 != null) {
+               for(var9 = 0; var9 < 10; ++var9) {
+                  var21.pathX[var9] -= var5;
+                  var21.pathY[var9] -= var6;
+               }
+
+               var21.x -= var5 * 128;
+               var21.y -= var6 * 128;
+            }
+         }
+
+         byte var20 = 0;
+         byte var18 = 104;
+         byte var22 = 1;
+         if(var5 < 0) {
+            var20 = 103;
+            var18 = -1;
+            var22 = -1;
+         }
+
+         byte var10 = 0;
+         byte var11 = 104;
+         byte var12 = 1;
+         if(var6 < 0) {
+            var10 = 103;
+            var11 = -1;
+            var12 = -1;
+         }
+
+         int var14;
+         for(int var13 = var20; var18 != var13; var13 += var22) {
+            for(var14 = var10; var11 != var14; var14 += var12) {
+               int var15 = var13 + var5;
+               int var16 = var6 + var14;
+
+               for(int var17 = 0; var17 < 4; ++var17) {
+                  if(var15 >= 0 && var16 >= 0 && var15 < 104 && var16 < 104) {
+                     Client.groundItemDeque[var17][var13][var14] = Client.groundItemDeque[var17][var15][var16];
+                  } else {
+                     Client.groundItemDeque[var17][var13][var14] = null;
+                  }
+               }
+            }
+         }
+
+         for(PendingSpawn var19 = (PendingSpawn)Client.pendingSpawns.getFront(); var19 != null; var19 = (PendingSpawn)Client.pendingSpawns.getNext()) {
+            var19.x -= var5;
+            var19.y -= var6;
+            if(var19.x < 0 || var19.y < 0 || var19.x >= 104 || var19.y >= 104) {
+               var19.unlink();
+            }
+         }
+
+         if(Client.destinationX != 0) {
+            Client.destinationX -= var5;
+            Client.destinationY -= var6;
+         }
+
+         Client.field1181 = 0;
+         Client.field1173 = false;
+         Client.field1154 = -1;
+         Client.graphicsObjectDeque.clear();
+         Client.projectiles.clear();
+
+         for(var14 = 0; var14 < 4; ++var14) {
+            Client.collisionMaps[var14].reset();
+         }
+
+      }
    }
 }

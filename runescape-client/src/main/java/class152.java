@@ -6,23 +6,23 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("er")
 public class class152 extends RuntimeException {
+   @ObfuscatedName("v")
+   @Export("validInterfaces")
+   public static boolean[] validInterfaces;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 152423061
    )
    @Export("revision")
    public static int revision;
+   @ObfuscatedName("i")
+   public static Applet field2238;
    @ObfuscatedName("w")
    public static String field2234;
    @ObfuscatedName("s")
    String field2235;
    @ObfuscatedName("r")
    Throwable field2236;
-   @ObfuscatedName("v")
-   @Export("validInterfaces")
-   public static boolean[] validInterfaces;
-   @ObfuscatedName("i")
-   public static Applet field2238;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(

@@ -9,27 +9,41 @@ public final class class29 {
       intValue = -1127299349
    )
    static int field428;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1784050805
-   )
-   int field429;
+   // $FF: synthetic field
+   final class41 this$0;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 1875234629
    )
    int field430;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 755200143
-   )
-   int field431;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 114895345
    )
    int field432;
-   final class41 this$0;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 755200143
+   )
+   int field431;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1784050805
+   )
+   int field429;
+
+   class29(class41 var1) {
+      this.this$0 = var1;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(IB)Z",
+      garbageValue = "-111"
+   )
+   public static boolean method235(int var0) {
+      return (var0 >> 29 & 1) != 0;
+   }
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
@@ -77,10 +91,6 @@ public final class class29 {
       return var3;
    }
 
-   class29(class41 var1) {
-      this.this$0 = var1;
-   }
-
    @ObfuscatedName("fl")
    @ObfuscatedSignature(
       signature = "(B)V",
@@ -97,14 +107,5 @@ public final class class29 {
          }
       }
 
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "-111"
-   )
-   public static boolean method235(int var0) {
-      return (var0 >> 29 & 1) != 0;
    }
 }

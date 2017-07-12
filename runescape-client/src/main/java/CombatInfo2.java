@@ -7,11 +7,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("it")
 @Implements("CombatInfo2")
 public class CombatInfo2 extends CacheableNode {
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -783929309
-   )
-   public int field3372;
+   @ObfuscatedName("a")
+   public static NodeCache field3375;
+   @ObfuscatedName("t")
+   @Export("spriteCache")
+   public static NodeCache spriteCache;
+   @ObfuscatedName("i")
+   public static IndexDataBase field3380;
    @ObfuscatedName("w")
    static IndexDataBase field3373;
    @ObfuscatedName("l")
@@ -19,13 +21,16 @@ public class CombatInfo2 extends CacheableNode {
       intValue = -2043221263
    )
    int field3374;
-   @ObfuscatedName("a")
-   public static NodeCache field3375;
-   @ObfuscatedName("s")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -2083383579
+      intValue = 644349987
    )
-   public int field3376;
+   int field3383;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -783929309
+   )
+   public int field3372;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 1538707863
@@ -36,26 +41,21 @@ public class CombatInfo2 extends CacheableNode {
       intValue = -1245291667
    )
    public int field3379;
-   @ObfuscatedName("i")
-   public static IndexDataBase field3380;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1464769615
-   )
-   public int field3381;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 738766821
    )
    public int field3382;
-   @ObfuscatedName("z")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 644349987
+      intValue = 1464769615
    )
-   int field3383;
-   @ObfuscatedName("t")
-   @Export("spriteCache")
-   public static NodeCache spriteCache;
+   public int field3381;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -2083383579
+   )
+   public int field3376;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = 800773671
@@ -67,6 +67,23 @@ public class CombatInfo2 extends CacheableNode {
       intValue = -188952331
    )
    public int field3386;
+
+   static {
+      field3375 = new NodeCache(64);
+      spriteCache = new NodeCache(64);
+   }
+
+   public CombatInfo2() {
+      this.field3372 = 255;
+      this.field3379 = 255;
+      this.field3378 = -1;
+      this.field3381 = 1;
+      this.field3382 = 70;
+      this.field3383 = -1;
+      this.field3374 = -1;
+      this.healthScale = 30;
+      this.field3386 = 0;
+   }
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
@@ -100,26 +117,19 @@ public class CombatInfo2 extends CacheableNode {
 
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)LSpritePixels;",
-      garbageValue = "-1940924409"
+      signature = "(LBuffer;I)V",
+      garbageValue = "1575469522"
    )
-   public SpritePixels method4405() {
-      if(this.field3383 < 0) {
-         return null;
-      } else {
-         SpritePixels var1 = (SpritePixels)spriteCache.get((long)this.field3383);
-         if(var1 != null) {
-            return var1;
-         } else {
-            var1 = ObjectComposition.method4574(field3373, this.field3383, 0);
-            if(var1 != null) {
-               spriteCache.put(var1, (long)this.field3383);
-            }
-
-            return var1;
+   public void method4418(Buffer var1) {
+      while(true) {
+         int var2 = var1.readUnsignedByte();
+         if(var2 == 0) {
+            return;
          }
+
+         this.method4402(var1, var2);
       }
    }
 
@@ -146,36 +156,26 @@ public class CombatInfo2 extends CacheableNode {
       }
    }
 
-   public CombatInfo2() {
-      this.field3372 = 255;
-      this.field3379 = 255;
-      this.field3378 = -1;
-      this.field3381 = 1;
-      this.field3382 = 70;
-      this.field3383 = -1;
-      this.field3374 = -1;
-      this.healthScale = 30;
-      this.field3386 = 0;
-   }
-
-   @ObfuscatedName("w")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "1575469522"
+      signature = "(I)LSpritePixels;",
+      garbageValue = "-1940924409"
    )
-   public void method4418(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
+   public SpritePixels method4405() {
+      if(this.field3383 < 0) {
+         return null;
+      } else {
+         SpritePixels var1 = (SpritePixels)spriteCache.get((long)this.field3383);
+         if(var1 != null) {
+            return var1;
+         } else {
+            var1 = ObjectComposition.method4574(field3373, this.field3383, 0);
+            if(var1 != null) {
+               spriteCache.put(var1, (long)this.field3383);
+            }
+
+            return var1;
          }
-
-         this.method4402(var1, var2);
       }
-   }
-
-   static {
-      field3375 = new NodeCache(64);
-      spriteCache = new NodeCache(64);
    }
 }

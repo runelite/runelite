@@ -7,108 +7,108 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ef")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("z")
-   @Export("entityFlags")
-   int[] entityFlags;
-   @ObfuscatedName("o")
-   @Export("objects")
-   GameObject[] objects;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1069686959
-   )
-   @Export("wallCullDirection")
-   int wallCullDirection;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 768199681
-   )
-   @Export("renderLevel")
-   int renderLevel;
    @ObfuscatedName("s")
    @Export("paint")
    SceneTilePaint paint;
-   @ObfuscatedName("r")
-   @Export("overlay")
-   SceneTileModel overlay;
+   @ObfuscatedName("k")
+   @Export("itemLayer")
+   ItemLayer itemLayer;
+   @ObfuscatedName("y")
+   @Export("decorativeObject")
+   DecorativeObject decorativeObject;
    @ObfuscatedName("v")
    @Export("wallObject")
    WallObject wallObject;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1895705223
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("j")
-   @Export("groundObject")
-   GroundObject groundObject;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 137325067
-   )
-   @Export("wallDrawFlags")
-   int wallDrawFlags;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 413710941
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 180766603
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1475565547
-   )
-   @Export("flags")
-   int flags;
+   @ObfuscatedName("j")
+   @Export("groundObject")
+   GroundObject groundObject;
+   @ObfuscatedName("o")
+   @Export("objects")
+   GameObject[] objects;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = 1103038989
    )
    @Export("physicalLevel")
    int physicalLevel;
-   @ObfuscatedName("m")
-   @Export("draw")
-   boolean draw;
-   @ObfuscatedName("f")
-   @Export("drawEntities")
-   boolean drawEntities;
-   @ObfuscatedName("k")
-   @Export("itemLayer")
-   ItemLayer itemLayer;
-   @ObfuscatedName("b")
-   @Export("visible")
-   boolean visible;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -726971605
-   )
-   @Export("wallUncullDirection")
-   int wallUncullDirection;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 760069959
-   )
-   @Export("wallCullOppositeDirection")
-   int wallCullOppositeDirection;
-   @ObfuscatedName("y")
-   @Export("decorativeObject")
-   DecorativeObject decorativeObject;
+   @ObfuscatedName("r")
+   @Export("overlay")
+   SceneTileModel overlay;
+   @ObfuscatedName("z")
+   @Export("entityFlags")
+   int[] entityFlags;
    @ObfuscatedName("d")
    @Export("bridge")
    Tile bridge;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1475565547
+   )
+   @Export("flags")
+   int flags;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 587710695
    )
    @Export("plane")
    int plane;
+   @ObfuscatedName("b")
+   @Export("visible")
+   boolean visible;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1895705223
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 768199681
+   )
+   @Export("renderLevel")
+   int renderLevel;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 180766603
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("m")
+   @Export("draw")
+   boolean draw;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1069686959
+   )
+   @Export("wallCullDirection")
+   int wallCullDirection;
+   @ObfuscatedName("f")
+   @Export("drawEntities")
+   boolean drawEntities;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -726971605
+   )
+   @Export("wallUncullDirection")
+   int wallUncullDirection;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 137325067
+   )
+   @Export("wallDrawFlags")
+   int wallDrawFlags;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 760069959
+   )
+   @Export("wallCullOppositeDirection")
+   int wallCullOppositeDirection;
 
    Tile(int var1, int var2, int var3) {
       this.objects = new GameObject[5];

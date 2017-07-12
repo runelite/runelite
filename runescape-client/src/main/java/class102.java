@@ -4,12 +4,12 @@ import net.runelite.mapping.ObfuscatedName;
 public class class102 extends class119 {
    @ObfuscatedName("i")
    Deque field1581;
+   @ObfuscatedName("a")
+   Deque field1584;
    @ObfuscatedName("s")
    int field1582;
    @ObfuscatedName("t")
    int field1583;
-   @ObfuscatedName("a")
-   Deque field1584;
 
    public class102() {
       this.field1581 = new Deque();
@@ -18,53 +18,18 @@ public class class102 extends class119 {
       this.field1582 = -1;
    }
 
-   @ObfuscatedName("w")
-   public final synchronized void method1887(class119 var1) {
-      var1.unlink();
-   }
-
-   @ObfuscatedName("a")
-   void method1888() {
-      if(this.field1583 > 0) {
-         for(class113 var1 = (class113)this.field1584.getFront(); var1 != null; var1 = (class113)this.field1584.getNext()) {
-            var1.field1683 -= this.field1583;
-         }
-
-         this.field1582 -= this.field1583;
-         this.field1583 = 0;
+   @ObfuscatedName("k")
+   void method1902(int[] var1, int var2, int var3) {
+      for(class119 var4 = (class119)this.field1581.getFront(); var4 != null; var4 = (class119)this.field1581.getNext()) {
+         var4.method2295(var1, var2, var3);
       }
 
    }
 
-   @ObfuscatedName("t")
-   void method1889(Node var1, class113 var2) {
-      while(this.field1584.head != var1 && ((class113)var1).field1683 <= var2.field1683) {
-         var1 = var1.next;
-      }
-
-      Deque.method3581(var2, var1);
-      this.field1582 = ((class113)this.field1584.head.next).field1683;
-   }
-
-   @ObfuscatedName("i")
-   public final synchronized void method1890(class119 var1) {
-      this.field1581.addTail(var1);
-   }
-
-   @ObfuscatedName("r")
-   protected class119 vmethod3864() {
-      return (class119)this.field1581.getFront();
-   }
-
-   @ObfuscatedName("s")
-   void method1892(class113 var1) {
-      var1.unlink();
-      var1.method2099();
-      Node var2 = this.field1584.head.next;
-      if(var2 == this.field1584.head) {
-         this.field1582 = -1;
-      } else {
-         this.field1582 = ((class113)var2).field1683;
+   @ObfuscatedName("o")
+   void method1897(int var1) {
+      for(class119 var2 = (class119)this.field1581.getFront(); var2 != null; var2 = (class119)this.field1581.getNext()) {
+         var2.vmethod3885(var1);
       }
 
    }
@@ -138,25 +103,60 @@ public class class102 extends class119 {
 
    }
 
-   @ObfuscatedName("o")
-   void method1897(int var1) {
-      for(class119 var2 = (class119)this.field1581.getFront(); var2 != null; var2 = (class119)this.field1581.getNext()) {
-         var2.vmethod3885(var1);
-      }
-
-   }
-
    @ObfuscatedName("v")
    protected class119 vmethod3865() {
       return (class119)this.field1581.getNext();
    }
 
-   @ObfuscatedName("k")
-   void method1902(int[] var1, int var2, int var3) {
-      for(class119 var4 = (class119)this.field1581.getFront(); var4 != null; var4 = (class119)this.field1581.getNext()) {
-         var4.method2295(var1, var2, var3);
+   @ObfuscatedName("a")
+   void method1888() {
+      if(this.field1583 > 0) {
+         for(class113 var1 = (class113)this.field1584.getFront(); var1 != null; var1 = (class113)this.field1584.getNext()) {
+            var1.field1683 -= this.field1583;
+         }
+
+         this.field1582 -= this.field1583;
+         this.field1583 = 0;
       }
 
+   }
+
+   @ObfuscatedName("i")
+   public final synchronized void method1890(class119 var1) {
+      this.field1581.addTail(var1);
+   }
+
+   @ObfuscatedName("r")
+   protected class119 vmethod3864() {
+      return (class119)this.field1581.getFront();
+   }
+
+   @ObfuscatedName("w")
+   public final synchronized void method1887(class119 var1) {
+      var1.unlink();
+   }
+
+   @ObfuscatedName("s")
+   void method1892(class113 var1) {
+      var1.unlink();
+      var1.method2099();
+      Node var2 = this.field1584.head.next;
+      if(var2 == this.field1584.head) {
+         this.field1582 = -1;
+      } else {
+         this.field1582 = ((class113)var2).field1683;
+      }
+
+   }
+
+   @ObfuscatedName("t")
+   void method1889(Node var1, class113 var2) {
+      while(this.field1584.head != var1 && ((class113)var1).field1683 <= var2.field1683) {
+         var1 = var1.next;
+      }
+
+      Deque.method3581(var2, var1);
+      this.field1582 = ((class113)this.field1584.head.next).field1683;
    }
 
    @ObfuscatedName("y")

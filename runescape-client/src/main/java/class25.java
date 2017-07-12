@@ -15,6 +15,11 @@ public class class25 {
    @ObfuscatedName("w")
    Coordinates field371;
 
+   class25(int var1, Coordinates var2) {
+      this.field370 = var1;
+      this.field371 = var2;
+   }
+
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(IIIIIIIB)V",
@@ -26,6 +31,15 @@ public class class25 {
       int var9 = Math.min(var0, Math.min(var1, var2)) - var6;
       int var10 = Math.max(var0, Math.max(var1, var2)) + var6;
       class7.field234.method3543(new class8(var7, var9, var8, var10, -49088));
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;IIB)[LModIcon;",
+      garbageValue = "10"
+   )
+   static ModIcon[] method168(IndexDataBase var0, int var1, int var2) {
+      return !class223.method4073(var0, var1, var2)?null:class155.method2943();
    }
 
    @ObfuscatedName("q")
@@ -99,19 +113,5 @@ public class class25 {
             return false;
          }
       }
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;IIB)[LModIcon;",
-      garbageValue = "10"
-   )
-   static ModIcon[] method168(IndexDataBase var0, int var1, int var2) {
-      return !class223.method4073(var0, var1, var2)?null:class155.method2943();
-   }
-
-   class25(int var1, Coordinates var2) {
-      this.field370 = var1;
-      this.field371 = var2;
    }
 }

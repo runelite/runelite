@@ -4,10 +4,22 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("g")
 public class class24 {
+   @ObfuscatedName("i")
+   public static final class24 field364;
    @ObfuscatedName("w")
    public static final class24 field358;
    @ObfuscatedName("a")
    public static final class24 field359;
+   @ObfuscatedName("dd")
+   @ObfuscatedGetter(
+      longValue = -7267825207791254187L
+   )
+   static long field368;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -1108717529
+   )
+   final int field363;
    @ObfuscatedName("t")
    final String field360;
    @ObfuscatedName("s")
@@ -15,23 +27,17 @@ public class class24 {
       intValue = -18608567
    )
    final int field362;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1108717529
-   )
-   final int field363;
-   @ObfuscatedName("i")
-   public static final class24 field364;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -1454688603
    )
    final int field367;
-   @ObfuscatedName("dd")
-   @ObfuscatedGetter(
-      longValue = -7267825207791254187L
-   )
-   static long field368;
+
+   static {
+      field364 = new class24("SMALL", 0, 0, 4);
+      field358 = new class24("MEDIUM", 2, 1, 2);
+      field359 = new class24("LARGE", 1, 2, 0);
+   }
 
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;III)V",
@@ -59,20 +65,22 @@ public class class24 {
       garbageValue = "1575584221"
    )
    static final void method162(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
-      if(!Client.isMenuOpen && Client.menuOptionCount < 500) {
-         Client.menuOptions[Client.menuOptionCount] = var0;
-         Client.menuTargets[Client.menuOptionCount] = var1;
-         Client.menuTypes[Client.menuOptionCount] = var2;
-         Client.menuIdentifiers[Client.menuOptionCount] = var3;
-         Client.menuActionParams0[Client.menuOptionCount] = var4;
-         Client.menuActionParams1[Client.menuOptionCount] = var5;
-         if(var6) {
-            Client.field1074 = Client.menuOptionCount;
+      if(!Client.isMenuOpen) {
+         if(Client.menuOptionCount < 500) {
+            Client.menuOptions[Client.menuOptionCount] = var0;
+            Client.menuTargets[Client.menuOptionCount] = var1;
+            Client.menuTypes[Client.menuOptionCount] = var2;
+            Client.menuIdentifiers[Client.menuOptionCount] = var3;
+            Client.menuActionParams0[Client.menuOptionCount] = var4;
+            Client.menuActionParams1[Client.menuOptionCount] = var5;
+            if(var6) {
+               Client.field1074 = Client.menuOptionCount;
+            }
+
+            ++Client.menuOptionCount;
          }
 
-         ++Client.menuOptionCount;
       }
-
    }
 
    @ObfuscatedName("b")
@@ -88,14 +96,14 @@ public class class24 {
          return 1;
       } else {
          int var4;
-         ItemComposition var5;
+         ItemComposition var17;
          if(var0 == 4201) {
             class46.intStackSize -= 2;
             var3 = class83.intStack[class46.intStackSize];
             var4 = class83.intStack[class46.intStackSize + 1];
-            var5 = AbstractByteBuffer.getItemDefinition(var3);
-            if(var4 >= 1 && var4 <= 5 && var5.groundActions[var4 - 1] != null) {
-               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var5.groundActions[var4 - 1];
+            var17 = AbstractByteBuffer.getItemDefinition(var3);
+            if(var4 >= 1 && var4 <= 5 && var17.groundActions[var4 - 1] != null) {
+               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var17.groundActions[var4 - 1];
             } else {
                class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
             }
@@ -105,9 +113,9 @@ public class class24 {
             class46.intStackSize -= 2;
             var3 = class83.intStack[class46.intStackSize];
             var4 = class83.intStack[class46.intStackSize + 1];
-            var5 = AbstractByteBuffer.getItemDefinition(var3);
-            if(var4 >= 1 && var4 <= 5 && var5.inventoryActions[var4 - 1] != null) {
-               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var5.inventoryActions[var4 - 1];
+            var17 = AbstractByteBuffer.getItemDefinition(var3);
+            if(var4 >= 1 && var4 <= 5 && var17.inventoryActions[var4 - 1] != null) {
+               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var17.inventoryActions[var4 - 1];
             } else {
                class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
             }
@@ -122,12 +130,12 @@ public class class24 {
             class83.intStack[++class46.intStackSize - 1] = AbstractByteBuffer.getItemDefinition(var3).isStackable == 1?1:0;
             return 1;
          } else {
-            ItemComposition var6;
+            ItemComposition var13;
             if(var0 == 4205) {
                var3 = class83.intStack[--class46.intStackSize];
-               var6 = AbstractByteBuffer.getItemDefinition(var3);
-               if(var6.notedTemplate == -1 && var6.note >= 0) {
-                  class83.intStack[++class46.intStackSize - 1] = var6.note;
+               var13 = AbstractByteBuffer.getItemDefinition(var3);
+               if(var13.notedTemplate == -1 && var13.note >= 0) {
+                  class83.intStack[++class46.intStackSize - 1] = var13.note;
                } else {
                   class83.intStack[++class46.intStackSize - 1] = var3;
                }
@@ -135,9 +143,9 @@ public class class24 {
                return 1;
             } else if(var0 == 4206) {
                var3 = class83.intStack[--class46.intStackSize];
-               var6 = AbstractByteBuffer.getItemDefinition(var3);
-               if(var6.notedTemplate >= 0 && var6.note >= 0) {
-                  class83.intStack[++class46.intStackSize - 1] = var6.note;
+               var13 = AbstractByteBuffer.getItemDefinition(var3);
+               if(var13.notedTemplate >= 0 && var13.note >= 0) {
+                  class83.intStack[++class46.intStackSize - 1] = var13.note;
                } else {
                   class83.intStack[++class46.intStackSize - 1] = var3;
                }
@@ -149,9 +157,9 @@ public class class24 {
                return 1;
             } else if(var0 == 4208) {
                var3 = class83.intStack[--class46.intStackSize];
-               var6 = AbstractByteBuffer.getItemDefinition(var3);
-               if(var6.field3501 == -1 && var6.field3508 >= 0) {
-                  class83.intStack[++class46.intStackSize - 1] = var6.field3508;
+               var13 = AbstractByteBuffer.getItemDefinition(var3);
+               if(var13.field3501 == -1 && var13.field3508 >= 0) {
+                  class83.intStack[++class46.intStackSize - 1] = var13.field3508;
                } else {
                   class83.intStack[++class46.intStackSize - 1] = var3;
                }
@@ -159,62 +167,61 @@ public class class24 {
                return 1;
             } else if(var0 == 4209) {
                var3 = class83.intStack[--class46.intStackSize];
-               var6 = AbstractByteBuffer.getItemDefinition(var3);
-               if(var6.field3501 >= 0 && var6.field3508 >= 0) {
-                  class83.intStack[++class46.intStackSize - 1] = var6.field3508;
+               var13 = AbstractByteBuffer.getItemDefinition(var3);
+               if(var13.field3501 >= 0 && var13.field3508 >= 0) {
+                  class83.intStack[++class46.intStackSize - 1] = var13.field3508;
                } else {
                   class83.intStack[++class46.intStackSize - 1] = var3;
                }
 
                return 1;
             } else if(var0 == 4210) {
-               String var7 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+               String var14 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
                var4 = class83.intStack[--class46.intStackSize];
-               boolean var8 = var4 == 1;
-               String var9 = var7.toLowerCase();
-               short[] var10 = new short[16];
-               int var11 = 0;
-               int var12 = 0;
+               boolean var6 = var4 == 1;
+               String var5 = var14.toLowerCase();
+               short[] var7 = new short[16];
+               int var8 = 0;
+               int var9 = 0;
 
                while(true) {
-                  short[] var14;
-                  if(var12 >= CombatInfoListHolder.field1389) {
-                     class15.field296 = var10;
+                  if(var9 >= CombatInfoListHolder.field1389) {
+                     class15.field296 = var7;
                      WorldMapType2.field545 = 0;
-                     class40.field569 = var11;
-                     String[] var16 = new String[class40.field569];
+                     class40.field569 = var8;
+                     String[] var15 = new String[class40.field569];
 
-                     for(int var17 = 0; var17 < class40.field569; ++var17) {
-                        var16[var17] = AbstractByteBuffer.getItemDefinition(var10[var17]).name;
+                     for(int var16 = 0; var16 < class40.field569; ++var16) {
+                        var15[var16] = AbstractByteBuffer.getItemDefinition(var7[var16]).name;
                      }
 
-                     var14 = class15.field296;
-                     Huffman.method3061(var16, var14, 0, var16.length - 1);
+                     short[] var18 = class15.field296;
+                     Huffman.method3061(var15, var18, 0, var15.length - 1);
                      break;
                   }
 
-                  ItemComposition var13 = AbstractByteBuffer.getItemDefinition(var12);
-                  if((!var8 || var13.field3502) && var13.notedTemplate == -1 && var13.name.toLowerCase().indexOf(var9) != -1) {
-                     if(var11 >= 250) {
+                  ItemComposition var10 = AbstractByteBuffer.getItemDefinition(var9);
+                  if((!var6 || var10.field3502) && var10.notedTemplate == -1 && var10.name.toLowerCase().indexOf(var5) != -1) {
+                     if(var8 >= 250) {
                         class40.field569 = -1;
                         class15.field296 = null;
                         break;
                      }
 
-                     if(var11 >= var10.length) {
-                        var14 = new short[var10.length * 2];
+                     if(var8 >= var7.length) {
+                        short[] var11 = new short[var7.length * 2];
 
-                        for(int var15 = 0; var15 < var11; ++var15) {
-                           var14[var15] = var10[var15];
+                        for(int var12 = 0; var12 < var8; ++var12) {
+                           var11[var12] = var7[var12];
                         }
 
-                        var10 = var14;
+                        var7 = var11;
                      }
 
-                     var10[var11++] = (short)var12;
+                     var7[var8++] = (short)var9;
                   }
 
-                  ++var12;
+                  ++var9;
                }
 
                class83.intStack[++class46.intStackSize - 1] = class40.field569;
@@ -274,125 +281,125 @@ public class class24 {
       }
 
       int var4;
-      int var5;
+      int var14;
       if(var0.type == 2) {
-         var5 = 0;
+         var14 = 0;
 
          for(var4 = 0; var4 < var0.height; ++var4) {
-            for(int var6 = 0; var6 < var0.width; ++var6) {
-               int var7 = var6 * (var0.paddingX + 32);
-               int var8 = (var0.paddingY + 32) * var4;
-               if(var5 < 20) {
-                  var7 += var0.xSprites[var5];
-                  var8 += var0.field2723[var5];
+            for(int var5 = 0; var5 < var0.width; ++var5) {
+               int var6 = (var0.paddingX + 32) * var5;
+               int var7 = (var0.paddingY + 32) * var4;
+               if(var14 < 20) {
+                  var6 += var0.xSprites[var14];
+                  var7 += var0.field2723[var14];
                }
 
-               if(var1 >= var7 && var2 >= var8 && var1 < var7 + 32 && var2 < var8 + 32) {
-                  Client.field1042 = var5;
+               if(var1 >= var6 && var2 >= var7 && var1 < var6 + 32 && var2 < var7 + 32) {
+                  Client.field1042 = var14;
                   FaceNormal.field2155 = var0;
-                  if(var0.itemIds[var5] > 0) {
-                     ItemComposition var9 = AbstractByteBuffer.getItemDefinition(var0.itemIds[var5] - 1);
+                  if(var0.itemIds[var14] > 0) {
+                     ItemComposition var8 = AbstractByteBuffer.getItemDefinition(var0.itemIds[var14] - 1);
                      if(Client.itemSelectionState == 1 && class157.method2963(WorldMapType3.getWidgetConfig(var0))) {
-                        if(var0.id != class40.field571 || var5 != FileSystem.selectedItemIndex) {
-                           class175.addMenuEntry("Use", Client.selectedItemName + " -> " + class220.getColTags(16748608) + var9.name, 31, var9.id, var5, var0.id);
+                        if(var0.id != class40.field571 || var14 != FileSystem.selectedItemIndex) {
+                           class175.addMenuEntry("Use", Client.selectedItemName + " " + "->" + " " + class220.getColTags(16748608) + var8.name, 31, var8.id, var14, var0.id);
                         }
                      } else if(Client.spellSelected && class157.method2963(WorldMapType3.getWidgetConfig(var0))) {
                         if((WorldMapType3.spellTargetFlags & 16) == 16) {
-                           class175.addMenuEntry(Client.field1078, Client.field1159 + " -> " + class220.getColTags(16748608) + var9.name, 32, var9.id, var5, var0.id);
+                           class175.addMenuEntry(Client.field1078, Client.field1159 + " " + "->" + " " + class220.getColTags(16748608) + var8.name, 32, var8.id, var14, var0.id);
                         }
                      } else {
-                        String[] var10 = var9.inventoryActions;
+                        String[] var9 = var8.inventoryActions;
                         if(Client.field1199) {
-                           var10 = class251.method4456(var10);
+                           var9 = class251.method4456(var9);
                         }
 
-                        int var11 = var9.method4624();
-                        int var12;
-                        boolean var13;
-                        byte var14;
+                        int var10 = var8.method4624();
+                        int var11;
+                        boolean var12;
+                        byte var13;
                         if(class157.method2963(WorldMapType3.getWidgetConfig(var0))) {
-                           for(var12 = 4; var12 >= 3; --var12) {
-                              var13 = var12 == var11;
-                              if(var10 != null && var10[var12] != null) {
-                                 if(var12 == 3) {
-                                    var14 = 36;
+                           for(var11 = 4; var11 >= 3; --var11) {
+                              var12 = var11 == var10;
+                              if(var9 != null && var9[var11] != null) {
+                                 if(var11 == 3) {
+                                    var13 = 36;
                                  } else {
-                                    var14 = 37;
+                                    var13 = 37;
                                  }
 
-                                 method162(var10[var12], class220.getColTags(16748608) + var9.name, var14, var9.id, var5, var0.id, var13);
-                              } else if(var12 == 4) {
-                                 method162("Drop", class220.getColTags(16748608) + var9.name, 37, var9.id, var5, var0.id, var13);
+                                 method162(var9[var11], class220.getColTags(16748608) + var8.name, var13, var8.id, var14, var0.id, var12);
+                              } else if(var11 == 4) {
+                                 method162("Drop", class220.getColTags(16748608) + var8.name, 37, var8.id, var14, var0.id, var12);
                               }
                            }
                         }
 
                         if(class204.method3798(WorldMapType3.getWidgetConfig(var0))) {
-                           class175.addMenuEntry("Use", class220.getColTags(16748608) + var9.name, 38, var9.id, var5, var0.id);
+                           class175.addMenuEntry("Use", class220.getColTags(16748608) + var8.name, 38, var8.id, var14, var0.id);
                         }
 
-                        if(class157.method2963(WorldMapType3.getWidgetConfig(var0)) && var10 != null) {
-                           for(var12 = 2; var12 >= 0; --var12) {
-                              var13 = var12 == var11;
-                              if(var10[var12] != null) {
-                                 var14 = 0;
-                                 if(var12 == 0) {
-                                    var14 = 33;
+                        if(class157.method2963(WorldMapType3.getWidgetConfig(var0)) && var9 != null) {
+                           for(var11 = 2; var11 >= 0; --var11) {
+                              var12 = var10 == var11;
+                              if(var9[var11] != null) {
+                                 var13 = 0;
+                                 if(var11 == 0) {
+                                    var13 = 33;
                                  }
 
-                                 if(var12 == 1) {
-                                    var14 = 34;
+                                 if(var11 == 1) {
+                                    var13 = 34;
                                  }
 
-                                 if(var12 == 2) {
-                                    var14 = 35;
+                                 if(var11 == 2) {
+                                    var13 = 35;
                                  }
 
-                                 method162(var10[var12], class220.getColTags(16748608) + var9.name, var14, var9.id, var5, var0.id, var13);
+                                 method162(var9[var11], class220.getColTags(16748608) + var8.name, var13, var8.id, var14, var0.id, var12);
                               }
                            }
                         }
 
-                        var10 = var0.configActions;
+                        var9 = var0.configActions;
                         if(Client.field1199) {
-                           var10 = class251.method4456(var10);
+                           var9 = class251.method4456(var9);
                         }
 
-                        if(var10 != null) {
-                           for(var12 = 4; var12 >= 0; --var12) {
-                              if(var10[var12] != null) {
-                                 byte var15 = 0;
-                                 if(var12 == 0) {
-                                    var15 = 39;
+                        if(var9 != null) {
+                           for(var11 = 4; var11 >= 0; --var11) {
+                              if(var9[var11] != null) {
+                                 byte var17 = 0;
+                                 if(var11 == 0) {
+                                    var17 = 39;
                                  }
 
-                                 if(var12 == 1) {
-                                    var15 = 40;
+                                 if(var11 == 1) {
+                                    var17 = 40;
                                  }
 
-                                 if(var12 == 2) {
-                                    var15 = 41;
+                                 if(var11 == 2) {
+                                    var17 = 41;
                                  }
 
-                                 if(var12 == 3) {
-                                    var15 = 42;
+                                 if(var11 == 3) {
+                                    var17 = 42;
                                  }
 
-                                 if(var12 == 4) {
-                                    var15 = 43;
+                                 if(var11 == 4) {
+                                    var17 = 43;
                                  }
 
-                                 class175.addMenuEntry(var10[var12], class220.getColTags(16748608) + var9.name, var15, var9.id, var5, var0.id);
+                                 class175.addMenuEntry(var9[var11], class220.getColTags(16748608) + var8.name, var17, var8.id, var14, var0.id);
                               }
                            }
                         }
 
-                        class175.addMenuEntry("Examine", class220.getColTags(16748608) + var9.name, 1005, var9.id, var5, var0.id);
+                        class175.addMenuEntry("Examine", class220.getColTags(16748608) + var8.name, 1005, var8.id, var14, var0.id);
                      }
                   }
                }
 
-               ++var5;
+               ++var14;
             }
          }
       }
@@ -400,14 +407,13 @@ public class class24 {
       if(var0.hasScript) {
          if(Client.spellSelected) {
             if(Actor.method1558(WorldMapType3.getWidgetConfig(var0)) && (WorldMapType3.spellTargetFlags & 32) == 32) {
-               class175.addMenuEntry(Client.field1078, Client.field1159 + " -> " + var0.name, 58, 0, var0.index, var0.id);
+               class175.addMenuEntry(Client.field1078, Client.field1159 + " " + "->" + " " + var0.name, 58, 0, var0.index, var0.id);
             }
          } else {
-            String var16;
-            for(var5 = 9; var5 >= 5; --var5) {
-               var16 = class20.method140(var0, var5);
-               if(var16 != null) {
-                  class175.addMenuEntry(var16, var0.name, 1007, var5 + 1, var0.index, var0.id);
+            for(var14 = 9; var14 >= 5; --var14) {
+               String var15 = class20.method140(var0, var14);
+               if(var15 != null) {
+                  class175.addMenuEntry(var15, var0.name, 1007, var14 + 1, var0.index, var0.id);
                }
             }
 
@@ -417,7 +423,7 @@ public class class24 {
             }
 
             for(var4 = 4; var4 >= 0; --var4) {
-               var16 = class20.method140(var0, var4);
+               String var16 = class20.method140(var0, var4);
                if(var16 != null) {
                   class175.addMenuEntry(var16, var0.name, 57, var4 + 1, var0.index, var0.id);
                }
@@ -429,11 +435,5 @@ public class class24 {
          }
       }
 
-   }
-
-   static {
-      field364 = new class24("SMALL", 0, 0, 4);
-      field358 = new class24("MEDIUM", 2, 1, 2);
-      field359 = new class24("LARGE", 1, 2, 0);
    }
 }

@@ -7,23 +7,44 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ch")
 @Implements("GraphicsObject")
 public final class GraphicsObject extends Renderable {
+   @ObfuscatedName("d")
+   @Export("userHome")
+   public static String userHome;
+   @ObfuscatedName("g")
+   static int[] field1382;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1366002557
+   )
+   @Export("id")
+   int id;
    @ObfuscatedName("k")
    @Export("finished")
    boolean finished;
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 215620871
+      intValue = 217125579
    )
-   @Export("startCycle")
-   int startCycle;
+   int field1380;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -1599757631
+   )
+   int field1378;
+   @ObfuscatedName("v")
+   Sequence field1375;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1626903793
+   )
+   @Export("level")
+   int level;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = 1079143615
    )
    @Export("x")
    int x;
-   @ObfuscatedName("v")
-   Sequence field1375;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -143170019
@@ -36,33 +57,12 @@ public final class GraphicsObject extends Renderable {
    )
    @Export("height")
    int height;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1599757631
+      intValue = 215620871
    )
-   int field1378;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -1626903793
-   )
-   @Export("level")
-   int level;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 217125579
-   )
-   int field1380;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1366002557
-   )
-   @Export("id")
-   int id;
-   @ObfuscatedName("g")
-   static int[] field1382;
-   @ObfuscatedName("d")
-   @Export("userHome")
-   public static String userHome;
+   @Export("startCycle")
+   int startCycle;
 
    GraphicsObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       this.field1378 = 0;
@@ -101,16 +101,6 @@ public final class GraphicsObject extends Renderable {
       return var2 == null?null:var2;
    }
 
-   @ObfuscatedName("gm")
-   @ObfuscatedSignature(
-      signature = "(LActor;II)V",
-      garbageValue = "-664573438"
-   )
-   @Export("characterToScreen")
-   static final void characterToScreen(Actor var0, int var1) {
-      class82.method1626(var0.x, var0.y, var1);
-   }
-
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(II)V",
@@ -128,8 +118,8 @@ public final class GraphicsObject extends Renderable {
                break;
             }
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("s")
@@ -147,18 +137,18 @@ public final class GraphicsObject extends Renderable {
             var7 = var0.readUnsignedByte();
             if(var7 == 0) {
                if(var1 == 0) {
-                  int[] var12 = class61.tileHeights[0][var2];
-                  int var9 = var4 + var2 + 932731;
-                  int var10 = var5 + var3 + 556238;
-                  int var11 = class48.getSmoothNoise(var9 + '넵', var10 + 91923, 4) - 128 + (class48.getSmoothNoise(var9 + 10294, var10 + '鎽', 2) - 128 >> 1) + (class48.getSmoothNoise(var9, var10, 1) - 128 >> 2);
-                  var11 = (int)((double)var11 * 0.3D) + 35;
-                  if(var11 < 10) {
-                     var11 = 10;
-                  } else if(var11 > 60) {
-                     var11 = 60;
+                  int[] var8 = class61.tileHeights[0][var2];
+                  int var11 = var4 + var2 + 932731;
+                  int var12 = var5 + var3 + 556238;
+                  int var13 = class48.getSmoothNoise(var11 + '넵', var12 + 91923, 4) - 128 + (class48.getSmoothNoise(var11 + 10294, var12 + '鎽', 2) - 128 >> 1) + (class48.getSmoothNoise(var11, var12, 1) - 128 >> 2);
+                  var13 = (int)((double)var13 * 0.3D) + 35;
+                  if(var13 < 10) {
+                     var13 = 10;
+                  } else if(var13 > 60) {
+                     var13 = 60;
                   }
 
-                  var12[var3] = -var11 * 8;
+                  var8[var3] = -var13 * 8;
                } else {
                   class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
                }
@@ -166,15 +156,15 @@ public final class GraphicsObject extends Renderable {
             }
 
             if(var7 == 1) {
-               int var8 = var0.readUnsignedByte();
-               if(var8 == 1) {
-                  var8 = 0;
+               int var14 = var0.readUnsignedByte();
+               if(var14 == 1) {
+                  var14 = 0;
                }
 
                if(var1 == 0) {
-                  class61.tileHeights[0][var2][var3] = -var8 * 8;
+                  class61.tileHeights[0][var2][var3] = -var14 * 8;
                } else {
-                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - var8 * 8;
+                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - var14 * 8;
                }
                break;
             }
@@ -207,5 +197,15 @@ public final class GraphicsObject extends Renderable {
          }
       }
 
+   }
+
+   @ObfuscatedName("gm")
+   @ObfuscatedSignature(
+      signature = "(LActor;II)V",
+      garbageValue = "-664573438"
+   )
+   @Export("characterToScreen")
+   static final void characterToScreen(Actor var0, int var1) {
+      class82.method1626(var0.x, var0.y, var1);
    }
 }

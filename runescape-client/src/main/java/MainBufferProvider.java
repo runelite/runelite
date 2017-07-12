@@ -24,6 +24,36 @@ public final class MainBufferProvider extends BufferProvider {
    @ObfuscatedName("i")
    Component field708;
 
+   MainBufferProvider(int var1, int var2, Component var3) {
+      super.width = var1;
+      super.height = var2;
+      super.pixels = new int[var2 * var1 + 1];
+      DataBufferInt var4 = new DataBufferInt(super.pixels, super.pixels.length);
+      DirectColorModel var5 = new DirectColorModel(32, 16711680, '\uff00', 255);
+      WritableRaster var6 = Raster.createWritableRaster(var5.createCompatibleSampleModel(super.width, super.height), var4, (Point)null);
+      this.image = new BufferedImage(var5, var6, false, new Hashtable());
+      this.method852(var3);
+      this.setRaster();
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Ljava/awt/Graphics;IIIII)V",
+      garbageValue = "24996825"
+   )
+   @Export("drawSub")
+   final void drawSub(Graphics var1, int var2, int var3, int var4, int var5) {
+      try {
+         Shape var6 = var1.getClip();
+         var1.clipRect(var2, var3, var4, var5);
+         var1.drawImage(this.image, 0, 0, this.field708);
+         var1.setClip(var6);
+      } catch (Exception var7) {
+         this.field708.repaint();
+      }
+
+   }
+
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Graphics;III)V",
@@ -56,36 +86,6 @@ public final class MainBufferProvider extends BufferProvider {
    )
    public final void vmethod5007(int var1, int var2) {
       this.draw(this.field708.getGraphics(), var1, var2);
-   }
-
-   MainBufferProvider(int var1, int var2, Component var3) {
-      super.width = var1;
-      super.height = var2;
-      super.pixels = new int[var2 * var1 + 1];
-      DataBufferInt var4 = new DataBufferInt(super.pixels, super.pixels.length);
-      DirectColorModel var5 = new DirectColorModel(32, 16711680, '\uff00', 255);
-      WritableRaster var6 = Raster.createWritableRaster(var5.createCompatibleSampleModel(super.width, super.height), var4, (Point)null);
-      this.image = new BufferedImage(var5, var6, false, new Hashtable());
-      this.method852(var3);
-      this.setRaster();
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIIII)V",
-      garbageValue = "24996825"
-   )
-   @Export("drawSub")
-   final void drawSub(Graphics var1, int var2, int var3, int var4, int var5) {
-      try {
-         Shape var6 = var1.getClip();
-         var1.clipRect(var2, var3, var4, var5);
-         var1.drawImage(this.image, 0, 0, this.field708);
-         var1.setClip(var6);
-      } catch (Exception var7) {
-         this.field708.repaint();
-      }
-
    }
 
    @ObfuscatedName("a")

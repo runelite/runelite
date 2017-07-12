@@ -14,34 +14,34 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    @ObfuscatedName("i")
    @Export("keyboard")
    public static KeyFocusListener keyboard;
-   @ObfuscatedName("ca")
-   public static boolean[] field659;
-   @ObfuscatedName("cj")
-   static char[] field660;
-   @ObfuscatedName("cc")
-   @ObfuscatedGetter(
-      intValue = 1195195041
-   )
-   static int field663;
-   @ObfuscatedName("cf")
-   static int[] field665;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1378839515
-   )
-   @Export("scriptStringStackSize")
-   static int scriptStringStackSize;
    @ObfuscatedName("cp")
    @ObfuscatedGetter(
       intValue = 1517100313
    )
    static int field667;
-   @ObfuscatedName("ev")
+   @ObfuscatedName("co")
+   static int[] field676;
+   @ObfuscatedName("ca")
+   public static boolean[] field659;
+   @ObfuscatedName("cf")
+   static int[] field665;
+   @ObfuscatedName("ce")
    @ObfuscatedGetter(
-      intValue = -979221669
+      intValue = -345213379
    )
-   @Export("baseX")
-   static int baseX;
+   static int field673;
+   @ObfuscatedName("cc")
+   @ObfuscatedGetter(
+      intValue = 1195195041
+   )
+   static int field663;
+   @ObfuscatedName("cu")
+   @ObfuscatedGetter(
+      intValue = 1536882955
+   )
+   static int field672;
+   @ObfuscatedName("cj")
+   static char[] field660;
    @ObfuscatedName("cr")
    static int[] field669;
    @ObfuscatedName("cz")
@@ -51,29 +51,46 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
       intValue = -398072213
    )
    public static int field671;
-   @ObfuscatedName("cu")
+   @ObfuscatedName("ev")
    @ObfuscatedGetter(
-      intValue = 1536882955
+      intValue = -979221669
    )
-   static int field672;
-   @ObfuscatedName("ce")
-   @ObfuscatedGetter(
-      intValue = -345213379
-   )
-   static int field673;
-   @ObfuscatedName("cx")
-   @ObfuscatedGetter(
-      intValue = 440297159
-   )
-   static int field674;
+   @Export("baseX")
+   static int baseX;
    @ObfuscatedName("cy")
    @ObfuscatedGetter(
       intValue = -1036662863
    )
    @Export("keyboardIdleTicks")
    static volatile int keyboardIdleTicks;
-   @ObfuscatedName("co")
-   static int[] field676;
+   @ObfuscatedName("cx")
+   @ObfuscatedGetter(
+      intValue = 440297159
+   )
+   static int field674;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -1378839515
+   )
+   @Export("scriptStringStackSize")
+   static int scriptStringStackSize;
+
+   static {
+      keyboard = new KeyFocusListener();
+      field659 = new boolean[112];
+      field665 = new int[128];
+      field663 = 0;
+      field667 = 0;
+      field660 = new char[128];
+      field669 = new int[128];
+      field670 = new int[128];
+      field671 = 0;
+      field672 = 0;
+      field673 = 0;
+      field674 = 0;
+      keyboardIdleTicks = 0;
+      field676 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+   }
 
    public final void keyTyped(KeyEvent var1) {
       if(keyboard != null) {
@@ -83,15 +100,15 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
             if(var2 > 0 && var2 < 128 || var2 >= 160 && var2 <= 255) {
                var3 = true;
             } else {
-               label56: {
+               label59: {
                   if(var2 != 0) {
-                     char[] var4 = class266.field3668;
+                     char[] var7 = class266.field3668;
 
-                     for(int var5 = 0; var5 < var4.length; ++var5) {
-                        char var6 = var4[var5];
+                     for(int var5 = 0; var5 < var7.length; ++var5) {
+                        char var6 = var7[var5];
                         if(var2 == var6) {
                            var3 = true;
-                           break label56;
+                           break label59;
                         }
                      }
                   }
@@ -101,11 +118,11 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
             }
 
             if(var3) {
-               int var7 = field673 + 1 & 127;
-               if(var7 != field672) {
+               int var4 = field673 + 1 & 127;
+               if(var4 != field672) {
                   field669[field673] = -1;
                   field660[field673] = var2;
-                  field673 = var7;
+                  field673 = var4;
                }
             }
          }
@@ -199,15 +216,15 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
                }
 
                String var4 = var0.substring(0, var3);
-               int var5 = class177.method3365(var1, var2 - 1);
-               String var6;
-               if(var5 < 999999999) {
-                  var6 = Integer.toString(var5);
+               int var6 = class177.method3365(var1, var2 - 1);
+               String var5;
+               if(var6 < 999999999) {
+                  var5 = Integer.toString(var6);
                } else {
-                  var6 = "*";
+                  var5 = "*";
                }
 
-               var0 = var4 + var6 + var0.substring(var3 + 2);
+               var0 = var4 + var5 + var0.substring(var3 + 2);
             }
          }
 
@@ -259,9 +276,9 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
                   break;
                }
             }
+
          }
       }
-
    }
 
    @ObfuscatedName("a")
@@ -272,22 +289,5 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    static MessageNode method790(int var0, int var1) {
       ChatLineBuffer var2 = (ChatLineBuffer)class98.chatLineMap.get(Integer.valueOf(var0));
       return var2.method1876(var1);
-   }
-
-   static {
-      keyboard = new KeyFocusListener();
-      field659 = new boolean[112];
-      field665 = new int[128];
-      field663 = 0;
-      field667 = 0;
-      field660 = new char[128];
-      field669 = new int[128];
-      field670 = new int[128];
-      field671 = 0;
-      field672 = 0;
-      field673 = 0;
-      field674 = 0;
-      keyboardIdleTicks = 0;
-      field676 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
    }
 }

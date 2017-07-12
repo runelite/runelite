@@ -7,21 +7,21 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("hm")
 @Implements("BuildType")
 public class BuildType {
-   @ObfuscatedName("a")
-   @Export("LIVE")
-   static final BuildType LIVE;
-   @ObfuscatedName("w")
-   @Export("WIP")
-   static final BuildType WIP;
    @ObfuscatedName("i")
    @Export("RC")
    static final BuildType RC;
-   @ObfuscatedName("s")
-   @Export("identifier")
-   public final String identifier;
+   @ObfuscatedName("w")
+   @Export("WIP")
+   static final BuildType WIP;
+   @ObfuscatedName("a")
+   @Export("LIVE")
+   static final BuildType LIVE;
    @ObfuscatedName("t")
    @Export("BUILD_LIVE")
    static final BuildType BUILD_LIVE;
+   @ObfuscatedName("s")
+   @Export("identifier")
+   public final String identifier;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -892837143
@@ -29,16 +29,11 @@ public class BuildType {
    @Export("ordinal")
    public final int ordinal;
 
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-22"
-   )
-   public static void method4105() {
-      if(class238.field3272 != null) {
-         class238.field3272.close();
-      }
-
+   static {
+      RC = new BuildType("LIVE", 0);
+      WIP = new BuildType("BUILDLIVE", 3);
+      LIVE = new BuildType("RC", 1);
+      BUILD_LIVE = new BuildType("WIP", 2);
    }
 
    @ObfuscatedSignature(
@@ -50,10 +45,15 @@ public class BuildType {
       this.ordinal = var2;
    }
 
-   static {
-      RC = new BuildType("LIVE", 0);
-      WIP = new BuildType("BUILDLIVE", 3);
-      LIVE = new BuildType("RC", 1);
-      BUILD_LIVE = new BuildType("WIP", 2);
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-22"
+   )
+   public static void method4105() {
+      if(class238.field3272 != null) {
+         class238.field3272.close();
+      }
+
    }
 }

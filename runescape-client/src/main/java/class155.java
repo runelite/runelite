@@ -6,26 +6,32 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("eg")
 public class class155 {
+   @ObfuscatedName("o")
+   public static CacheFile field2258;
+   @ObfuscatedName("z")
+   public static CacheFile field2259;
+   @ObfuscatedName("l")
+   public static CacheFile field2262;
+   @ObfuscatedName("p")
+   @Export("osNameLC")
+   public static String osNameLC;
+   @ObfuscatedName("q")
+   @Export("osName")
+   public static String osName;
+   @ObfuscatedName("t")
+   public static File field2257;
    @ObfuscatedName("gb")
    @ObfuscatedGetter(
       intValue = -1361029035
    )
    @Export("cameraX")
    static int cameraX;
-   @ObfuscatedName("t")
-   public static File field2257;
-   @ObfuscatedName("o")
-   public static CacheFile field2258;
-   @ObfuscatedName("z")
-   public static CacheFile field2259;
-   @ObfuscatedName("p")
-   @Export("osNameLC")
-   public static String osNameLC;
-   @ObfuscatedName("l")
-   public static CacheFile field2262;
-   @ObfuscatedName("q")
-   @Export("osName")
-   public static String osName;
+
+   static {
+      field2258 = null;
+      field2259 = null;
+      field2262 = null;
+   }
 
    @ObfuscatedName("y")
    @ObfuscatedSignature(
@@ -49,11 +55,5 @@ public class class155 {
 
       XGrandExchangeOffer.method113();
       return var0;
-   }
-
-   static {
-      field2258 = null;
-      field2259 = null;
-      field2262 = null;
    }
 }

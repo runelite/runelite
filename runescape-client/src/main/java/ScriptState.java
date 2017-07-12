@@ -7,27 +7,27 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bw")
 @Implements("ScriptState")
 public class ScriptState {
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 536829453
-   )
-   @Export("invokedFromPc")
-   int invokedFromPc;
-   @ObfuscatedName("a")
-   @Export("savedLocalInts")
-   int[] savedLocalInts;
-   @ObfuscatedName("t")
-   @Export("savedLocalStrings")
-   String[] savedLocalStrings;
    @ObfuscatedName("jx")
    @ObfuscatedGetter(
       intValue = -1741716253
    )
    @Export("menuX")
    static int menuX;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 536829453
+   )
+   @Export("invokedFromPc")
+   int invokedFromPc;
    @ObfuscatedName("i")
    @Export("invokedFromScript")
    Script invokedFromScript;
+   @ObfuscatedName("a")
+   @Export("savedLocalInts")
+   int[] savedLocalInts;
+   @ObfuscatedName("t")
+   @Export("savedLocalStrings")
+   String[] savedLocalStrings;
 
    ScriptState() {
       this.invokedFromPc = -1;

@@ -6,12 +6,17 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("dj")
 @Implements("GroundObject")
 public final class GroundObject {
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
+   public static IndexDataBase field1876;
+   @ObfuscatedName("t")
+   @Export("renderable")
+   public Renderable renderable;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1268514035
+      intValue = -1729518895
    )
-   @Export("renderInfoBitPacked")
-   int renderInfoBitPacked;
+   @Export("hash")
+   public int hash;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -556975977
@@ -24,21 +29,16 @@ public final class GroundObject {
    )
    @Export("y")
    int y;
-   @ObfuscatedName("t")
-   @Export("renderable")
-   public Renderable renderable;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1729518895
-   )
-   @Export("hash")
-   public int hash;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -1265403133
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("e")
-   public static IndexDataBase field1876;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -1268514035
+   )
+   @Export("renderInfoBitPacked")
+   int renderInfoBitPacked;
 }

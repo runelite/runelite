@@ -7,12 +7,12 @@ import netscape.javascript.JSObject;
 
 @ObfuscatedName("hz")
 public class class215 {
+   @ObfuscatedName("an")
+   static FontMetrics field2642;
    @ObfuscatedName("a")
    public static IndexDataBase field2639;
    @ObfuscatedName("eu")
    static RSSocket field2640;
-   @ObfuscatedName("an")
-   static FontMetrics field2642;
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(

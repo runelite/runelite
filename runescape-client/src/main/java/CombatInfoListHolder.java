@@ -7,17 +7,22 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("cn")
 @Implements("CombatInfoListHolder")
 public class CombatInfoListHolder extends Node {
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 243997961
+   )
+   public static int field1389;
    @ObfuscatedName("t")
    @Export("combatInfo1")
    CombatInfoList combatInfo1;
    @ObfuscatedName("a")
    @Export("combatInfo2")
    CombatInfo2 combatInfo2;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 243997961
-   )
-   public static int field1389;
+
+   CombatInfoListHolder(CombatInfo2 var1) {
+      this.combatInfo1 = new CombatInfoList();
+      this.combatInfo2 = var1;
+   }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
@@ -44,13 +49,14 @@ public class CombatInfoListHolder extends Node {
          if(var6 < 4) {
             this.combatInfo1.method3544(new CombatInfo1(var1, var2, var3, var4));
          }
+
       } else {
          CombatInfoList.method3545(new CombatInfo1(var1, var2, var3, var4), var5);
          if(var6 >= 4) {
             this.combatInfo1.method3547().unlink();
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("w")
@@ -84,11 +90,6 @@ public class CombatInfoListHolder extends Node {
    )
    boolean method1688() {
       return this.combatInfo1.method3550();
-   }
-
-   CombatInfoListHolder(CombatInfo2 var1) {
-      this.combatInfo1 = new CombatInfoList();
-      this.combatInfo2 = var1;
    }
 
    @ObfuscatedName("t")

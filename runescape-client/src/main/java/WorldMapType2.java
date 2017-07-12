@@ -7,6 +7,24 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ax")
 @Implements("WorldMapType2")
 public class WorldMapType2 implements WorldMapSectionBase {
+   @ObfuscatedName("j")
+   @Export("titlemuteSprite")
+   static ModIcon[] titlemuteSprite;
+   @ObfuscatedName("rm")
+   @ObfuscatedGetter(
+      intValue = 1583246805
+   )
+   static int field545;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1604656279
+   )
+   int field544;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -357340807
+   )
+   int field542;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -710106961
@@ -27,24 +45,24 @@ public class WorldMapType2 implements WorldMapSectionBase {
       intValue = 563618079
    )
    int field541;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -357340807
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(III)Z",
+      garbageValue = "202348652"
    )
-   int field542;
-   @ObfuscatedName("j")
-   @Export("titlemuteSprite")
-   static ModIcon[] titlemuteSprite;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1604656279
+   public boolean vmethod754(int var1, int var2) {
+      return var1 >> 6 == this.field542 && var2 >> 6 == this.field538;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IIII)Z",
+      garbageValue = "998947175"
    )
-   int field544;
-   @ObfuscatedName("rm")
-   @ObfuscatedGetter(
-      intValue = 1583246805
-   )
-   static int field545;
+   public boolean vmethod728(int var1, int var2, int var3) {
+      return var1 >= this.field544 && var1 < this.field544 + this.field539?var2 >> 6 == this.field540 && var3 >> 6 == this.field541:false;
+   }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
@@ -66,64 +84,6 @@ public class WorldMapType2 implements WorldMapSectionBase {
 
       if(var1.field466 < this.field538) {
          var1.field466 = this.field538;
-      }
-
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIII)Z",
-      garbageValue = "998947175"
-   )
-   public boolean vmethod728(int var1, int var2, int var3) {
-      return var1 >= this.field544 && var1 < this.field544 + this.field539?var2 >> 6 == this.field540 && this.field541 == var3 >> 6:false;
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "202348652"
-   )
-   public boolean vmethod754(int var1, int var2) {
-      return var1 >> 6 == this.field542 && var2 >> 6 == this.field538;
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "618655756"
-   )
-   public void vmethod732(Buffer var1) {
-      this.field544 = var1.readUnsignedByte();
-      this.field539 = var1.readUnsignedByte();
-      this.field540 = var1.readUnsignedShort();
-      this.field541 = var1.readUnsignedShort();
-      this.field542 = var1.readUnsignedShort();
-      this.field538 = var1.readUnsignedShort();
-      this.method524();
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-128"
-   )
-   void method524() {
-   }
-
-   @ObfuscatedName("ar")
-   @ObfuscatedSignature(
-      signature = "(Lclass119;I)V",
-      garbageValue = "868030669"
-   )
-   static final void method525(class119 var0) {
-      var0.field1725 = false;
-      if(var0.field1726 != null) {
-         var0.field1726.field1759 = 0;
-      }
-
-      for(class119 var1 = var0.vmethod3864(); var1 != null; var1 = var0.vmethod3865()) {
-         method525(var1);
       }
 
    }
@@ -155,6 +115,46 @@ public class WorldMapType2 implements WorldMapSectionBase {
          int[] var4 = new int[]{this.field542 * 64 - this.field540 * 64 + var2, var3 + (this.field538 * 64 - this.field541 * 64)};
          return var4;
       }
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-128"
+   )
+   void method524() {
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;I)V",
+      garbageValue = "618655756"
+   )
+   public void vmethod732(Buffer var1) {
+      this.field544 = var1.readUnsignedByte();
+      this.field539 = var1.readUnsignedByte();
+      this.field540 = var1.readUnsignedShort();
+      this.field541 = var1.readUnsignedShort();
+      this.field542 = var1.readUnsignedShort();
+      this.field538 = var1.readUnsignedShort();
+      this.method524();
+   }
+
+   @ObfuscatedName("ar")
+   @ObfuscatedSignature(
+      signature = "(Lclass119;I)V",
+      garbageValue = "868030669"
+   )
+   static final void method525(class119 var0) {
+      var0.field1725 = false;
+      if(var0.field1726 != null) {
+         var0.field1726.field1759 = 0;
+      }
+
+      for(class119 var1 = var0.vmethod3864(); var1 != null; var1 = var0.vmethod3865()) {
+         method525(var1);
+      }
+
    }
 
    @ObfuscatedName("iq")

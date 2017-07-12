@@ -6,15 +6,21 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class class276 {
    @ObfuscatedName("i")
    public static final class276 field3737;
+   @ObfuscatedName("w")
+   public static final class276 field3740;
+   @ObfuscatedName("a")
+   public static final class276 field3739;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = 266395975
    )
    public final int field3738;
-   @ObfuscatedName("a")
-   public static final class276 field3739;
-   @ObfuscatedName("w")
-   public static final class276 field3740;
+
+   static {
+      field3737 = new class276(0);
+      field3740 = new class276(1);
+      field3739 = new class276(2);
+   }
 
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -22,11 +28,5 @@ public class class276 {
    )
    class276(int var1) {
       this.field3738 = var1;
-   }
-
-   static {
-      field3737 = new class276(0);
-      field3740 = new class276(1);
-      field3739 = new class276(2);
    }
 }

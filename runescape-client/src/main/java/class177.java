@@ -47,7 +47,7 @@ public class class177 {
                   var11 = var2[var4++];
                   if(var11 != -1 && (!AbstractByteBuffer.getItemDefinition(var11).isMembers || Client.isMembers)) {
                      for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(1 + var11 == var10.itemIds[var12]) {
+                        if(var11 + 1 == var10.itemIds[var12]) {
                            var7 += var10.itemQuantities[var12];
                         }
                      }

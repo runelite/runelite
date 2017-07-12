@@ -5,26 +5,26 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ke")
 public class class286 {
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -1819207681
-   )
-   static int field3796;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -11790981
-   )
-   static int field3798;
-   @ObfuscatedName("t")
-   public static int[] field3799;
-   @ObfuscatedName("s")
-   @Export("offsetsY")
-   public static int[] offsetsY;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -149631605
    )
    static int field3801;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1819207681
+   )
+   static int field3796;
+   @ObfuscatedName("t")
+   public static int[] field3799;
+   @ObfuscatedName("s")
+   @Export("offsetsY")
+   public static int[] offsetsY;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -11790981
+   )
+   static int field3798;
 
    @ObfuscatedName("hf")
    @ObfuscatedSignature(
@@ -48,9 +48,9 @@ public class class286 {
       int var8;
       int var9;
       for(var7 = 0; var7 < Client.menuOptionCount; ++var7) {
-         var8 = (Client.menuOptionCount - 1 - var7) * 15 + 31 + var1;
+         var8 = var1 + 31 + (Client.menuOptionCount - 1 - var7) * 15;
          var9 = 16777215;
-         if(var5 > var0 && var5 < var0 + var2 && var6 > var8 - 13 && var6 < var8 + 3) {
+         if(var5 > var0 && var5 < var2 + var0 && var6 > var8 - 13 && var6 < var8 + 3) {
             var9 = 16776960;
          }
 

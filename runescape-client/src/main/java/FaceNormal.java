@@ -7,30 +7,30 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("en")
 @Implements("FaceNormal")
 public class FaceNormal {
+   @ObfuscatedName("if")
+   static Widget field2155;
    @ObfuscatedName("u")
    static Buffer field2150;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -346069527
-   )
-   @Export("y")
-   int y;
+   @ObfuscatedName("f")
+   public static String[] field2153;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -645269187
    )
    @Export("z")
    int z;
-   @ObfuscatedName("f")
-   public static String[] field2153;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -346069527
+   )
+   @Export("y")
+   int y;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -1170390967
    )
    @Export("x")
    int x;
-   @ObfuscatedName("if")
-   static Widget field2155;
 
    @ObfuscatedName("hr")
    @ObfuscatedSignature(

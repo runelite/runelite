@@ -5,15 +5,6 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("dc")
 @Implements("SoundEffect3")
 public class SoundEffect3 {
-   @ObfuscatedName("j")
-   @Export("fowardMultiplier")
-   static int fowardMultiplier;
-   @ObfuscatedName("t")
-   @Export("magnitudes")
-   int[][][] magnitudes;
-   @ObfuscatedName("s")
-   @Export("unity")
-   int[] unity;
    @ObfuscatedName("r")
    @Export("minimisedCoefficients")
    static float[][] minimisedCoefficients;
@@ -23,12 +14,26 @@ public class SoundEffect3 {
    @ObfuscatedName("y")
    @Export("fowardMinimisedCoefficientMultiplier")
    static float fowardMinimisedCoefficientMultiplier;
-   @ObfuscatedName("i")
-   @Export("pairs")
-   int[] pairs;
+   @ObfuscatedName("j")
+   @Export("fowardMultiplier")
+   static int fowardMultiplier;
+   @ObfuscatedName("t")
+   @Export("magnitudes")
+   int[][][] magnitudes;
    @ObfuscatedName("a")
    @Export("phases")
    int[][][] phases;
+   @ObfuscatedName("s")
+   @Export("unity")
+   int[] unity;
+   @ObfuscatedName("i")
+   @Export("pairs")
+   int[] pairs;
+
+   static {
+      minimisedCoefficients = new float[2][8];
+      coefficients = new int[2][8];
+   }
 
    SoundEffect3() {
       this.pairs = new int[2];
@@ -37,11 +42,12 @@ public class SoundEffect3 {
       this.unity = new int[2];
    }
 
-   @ObfuscatedName("w")
-   @Export("normalise")
-   static float normalise(float var0) {
-      float var1 = 32.703197F * (float)Math.pow(2.0D, (double)var0);
-      return var1 * 3.1415927F / 11025.0F;
+   @ObfuscatedName("i")
+   @Export("interpolateMagniture")
+   float interpolateMagniture(int var1, int var2, float var3) {
+      float var4 = (float)this.magnitudes[var1][0][var2] + var3 * (float)(this.magnitudes[var1][1][var2] - this.magnitudes[var1][0][var2]);
+      var4 *= 0.0015258789F;
+      return 1.0F - (float)Math.pow(10.0D, (double)(-var4 / 20.0F));
    }
 
    @ObfuscatedName("a")
@@ -143,16 +149,10 @@ public class SoundEffect3 {
 
    }
 
-   @ObfuscatedName("i")
-   @Export("interpolateMagniture")
-   float interpolateMagniture(int var1, int var2, float var3) {
-      float var4 = (float)this.magnitudes[var1][0][var2] + var3 * (float)(this.magnitudes[var1][1][var2] - this.magnitudes[var1][0][var2]);
-      var4 *= 0.0015258789F;
-      return 1.0F - (float)Math.pow(10.0D, (double)(-var4 / 20.0F));
-   }
-
-   static {
-      minimisedCoefficients = new float[2][8];
-      coefficients = new int[2][8];
+   @ObfuscatedName("w")
+   @Export("normalise")
+   static float normalise(float var0) {
+      float var1 = 32.703197F * (float)Math.pow(2.0D, (double)var0);
+      return var1 * 3.1415927F / 11025.0F;
    }
 }

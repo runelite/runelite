@@ -10,18 +10,18 @@ import net.runelite.mapping.ObfuscatedSignature;
 public final class Item extends Renderable {
    @ObfuscatedName("ai")
    static java.awt.Font field1507;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 353866017
-   )
-   @Export("quantity")
-   int quantity;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1177587853
    )
    @Export("id")
    int id;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 353866017
+   )
+   @Export("quantity")
+   int quantity;
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
@@ -80,10 +80,10 @@ public final class Item extends Renderable {
          }
       }
 
-      Player var9;
+      Player var14;
       if(var2 == 44) {
-         var9 = Client.cachedPlayers[var3];
-         if(var9 != null) {
+         var14 = Client.cachedPlayers[var3];
+         if(var14 != null) {
             Client.field1190 = var6;
             Client.field1034 = var7;
             Client.cursorState = 2;
@@ -96,11 +96,11 @@ public final class Item extends Renderable {
          }
       }
 
-      Widget var10;
+      Widget var15;
       if(var2 == 57 || var2 == 1007) {
-         var10 = class202.method3650(var1, var0);
-         if(var10 != null) {
-            class60.method1052(var3, var1, var0, var10.itemId, var5);
+         var15 = class202.method3650(var1, var0);
+         if(var15 != null) {
+            class60.method1052(var3, var1, var0, var15.itemId, var5);
          }
       }
 
@@ -164,9 +164,9 @@ public final class Item extends Renderable {
       }
 
       if(var2 == 1005) {
-         var10 = PacketBuffer.method3403(var1);
-         if(var10 != null && var10.itemQuantities[var0] >= 100000) {
-            class152.sendGameMessage(27, "", var10.itemQuantities[var0] + " x " + AbstractByteBuffer.getItemDefinition(var3).name);
+         var15 = PacketBuffer.method3403(var1);
+         if(var15 != null && var15.itemQuantities[var0] >= 100000) {
+            class152.sendGameMessage(27, "", var15.itemQuantities[var0] + " x " + AbstractByteBuffer.getItemDefinition(var3).name);
          } else {
             Client.secretPacketBuffer1.putOpcode(72);
             Client.secretPacketBuffer1.putLEShortA(var3);
@@ -178,8 +178,8 @@ public final class Item extends Renderable {
       }
 
       if(var2 == 15) {
-         var9 = Client.cachedPlayers[var3];
-         if(var9 != null) {
+         var14 = Client.cachedPlayers[var3];
+         if(var14 != null) {
             Client.field1190 = var6;
             Client.field1034 = var7;
             Client.cursorState = 2;
@@ -245,13 +245,13 @@ public final class Item extends Renderable {
       }
 
       if(var2 == 24) {
-         var10 = PacketBuffer.method3403(var1);
-         boolean var11 = true;
-         if(var10.contentType > 0) {
-            var11 = class7.method39(var10);
+         var15 = PacketBuffer.method3403(var1);
+         boolean var9 = true;
+         if(var15.contentType > 0) {
+            var9 = class7.method39(var15);
          }
 
-         if(var11) {
+         if(var9) {
             Client.secretPacketBuffer1.putOpcode(53);
             Client.secretPacketBuffer1.putInt(var1);
          }
@@ -259,16 +259,17 @@ public final class Item extends Renderable {
 
       if(var2 == 38) {
          class51.method791();
-         var10 = PacketBuffer.method3403(var1);
+         var15 = PacketBuffer.method3403(var1);
          Client.itemSelectionState = 1;
          FileSystem.selectedItemIndex = var0;
          class40.field571 = var1;
          IndexDataBase.field3221 = var3;
-         class88.method1714(var10);
+         class88.method1714(var15);
          Client.selectedItemName = class220.getColTags(16748608) + AbstractByteBuffer.getItemDefinition(var3).name + class220.getColTags(16777215);
          if(Client.selectedItemName == null) {
             Client.selectedItemName = "null";
          }
+
       } else {
          if(var2 == 37) {
             Client.secretPacketBuffer1.putOpcode(44);
@@ -289,16 +290,16 @@ public final class Item extends Renderable {
             Client.secretPacketBuffer1.putLEShortA(var3 >> 14 & 32767);
          }
 
-         int var14;
+         int var16;
          if(var2 == 29) {
             Client.secretPacketBuffer1.putOpcode(53);
             Client.secretPacketBuffer1.putInt(var1);
-            var10 = PacketBuffer.method3403(var1);
-            if(var10.dynamicValues != null && var10.dynamicValues[0][0] == 5) {
-               var14 = var10.dynamicValues[0][1];
-               if(class211.widgetSettings[var14] != var10.field2645[0]) {
-                  class211.widgetSettings[var14] = var10.field2645[0];
-                  Preferences.method1614(var14);
+            var15 = PacketBuffer.method3403(var1);
+            if(var15.dynamicValues != null && var15.dynamicValues[0][0] == 5) {
+               var16 = var15.dynamicValues[0][1];
+               if(class211.widgetSettings[var16] != var15.field2645[0]) {
+                  class211.widgetSettings[var16] = var15.field2645[0];
+                  Preferences.method1614(var16);
                }
             }
          }
@@ -343,8 +344,8 @@ public final class Item extends Renderable {
          }
 
          if(var2 == 49) {
-            var9 = Client.cachedPlayers[var3];
-            if(var9 != null) {
+            var14 = Client.cachedPlayers[var3];
+            if(var14 != null) {
                Client.field1190 = var6;
                Client.field1034 = var7;
                Client.cursorState = 2;
@@ -401,24 +402,25 @@ public final class Item extends Renderable {
          }
 
          if(var2 == 25) {
-            var10 = class202.method3650(var1, var0);
-            if(var10 != null) {
+            var15 = class202.method3650(var1, var0);
+            if(var15 != null) {
                class51.method791();
-               int var12 = WorldMapType3.getWidgetConfig(var10);
-               int var13 = var12 >> 11 & 63;
-               class91.method1729(var1, var0, var13, var10.itemId);
+               int var12 = WorldMapType3.getWidgetConfig(var15);
+               int var11 = var12 >> 11 & 63;
+               class91.method1729(var1, var0, var11, var15.itemId);
                Client.itemSelectionState = 0;
-               Client.field1078 = class162.method3041(var10);
+               Client.field1078 = class162.method3041(var15);
                if(Client.field1078 == null) {
                   Client.field1078 = "Null";
                }
 
-               if(var10.hasScript) {
-                  Client.field1159 = var10.name + class220.getColTags(16777215);
+               if(var15.hasScript) {
+                  Client.field1159 = var15.name + class220.getColTags(16777215);
                } else {
-                  Client.field1159 = class220.getColTags('\uff00') + var10.field2766 + class220.getColTags(16777215);
+                  Client.field1159 = class220.getColTags('\uff00') + var15.field2766 + class220.getColTags(16777215);
                }
             }
+
          } else {
             if(var2 == 43) {
                Client.secretPacketBuffer1.putOpcode(166);
@@ -431,8 +433,8 @@ public final class Item extends Renderable {
             }
 
             if(var2 == 50) {
-               var9 = Client.cachedPlayers[var3];
-               if(var9 != null) {
+               var14 = Client.cachedPlayers[var3];
+               if(var14 != null) {
                   Client.field1190 = var6;
                   Client.field1034 = var7;
                   Client.cursorState = 2;
@@ -483,14 +485,14 @@ public final class Item extends Renderable {
                Client.field967 = 0;
                var8 = Client.cachedNPCs[var3];
                if(var8 != null) {
-                  NPCComposition var15 = var8.composition;
-                  if(var15.configs != null) {
-                     var15 = var15.transform();
+                  NPCComposition var13 = var8.composition;
+                  if(var13.configs != null) {
+                     var13 = var13.transform();
                   }
 
-                  if(var15 != null) {
+                  if(var13 != null) {
                      Client.secretPacketBuffer1.putOpcode(120);
-                     Client.secretPacketBuffer1.putShort(var15.id);
+                     Client.secretPacketBuffer1.putShort(var13.id);
                   }
                }
             }
@@ -500,8 +502,8 @@ public final class Item extends Renderable {
             }
 
             if(var2 == 45) {
-               var9 = Client.cachedPlayers[var3];
-               if(var9 != null) {
+               var14 = Client.cachedPlayers[var3];
+               if(var14 != null) {
                   Client.field1190 = var6;
                   Client.field1034 = var7;
                   Client.cursorState = 2;
@@ -553,8 +555,8 @@ public final class Item extends Renderable {
             }
 
             if(var2 == 47) {
-               var9 = Client.cachedPlayers[var3];
-               if(var9 != null) {
+               var14 = Client.cachedPlayers[var3];
+               if(var14 != null) {
                   Client.field1190 = var6;
                   Client.field1034 = var7;
                   Client.cursorState = 2;
@@ -583,11 +585,11 @@ public final class Item extends Renderable {
             if(var2 == 28) {
                Client.secretPacketBuffer1.putOpcode(53);
                Client.secretPacketBuffer1.putInt(var1);
-               var10 = PacketBuffer.method3403(var1);
-               if(var10.dynamicValues != null && var10.dynamicValues[0][0] == 5) {
-                  var14 = var10.dynamicValues[0][1];
-                  class211.widgetSettings[var14] = 1 - class211.widgetSettings[var14];
-                  Preferences.method1614(var14);
+               var15 = PacketBuffer.method3403(var1);
+               if(var15.dynamicValues != null && var15.dynamicValues[0][0] == 5) {
+                  var16 = var15.dynamicValues[0][1];
+                  class211.widgetSettings[var16] = 1 - class211.widgetSettings[var16];
+                  Preferences.method1614(var16);
                }
             }
 
@@ -642,8 +644,8 @@ public final class Item extends Renderable {
             }
 
             if(var2 == 51) {
-               var9 = Client.cachedPlayers[var3];
-               if(var9 != null) {
+               var14 = Client.cachedPlayers[var3];
+               if(var14 != null) {
                   Client.field1190 = var6;
                   Client.field1034 = var7;
                   Client.cursorState = 2;
@@ -672,8 +674,8 @@ public final class Item extends Renderable {
             }
 
             if(var2 == 48) {
-               var9 = Client.cachedPlayers[var3];
-               if(var9 != null) {
+               var14 = Client.cachedPlayers[var3];
+               if(var14 != null) {
                   Client.field1190 = var6;
                   Client.field1034 = var7;
                   Client.cursorState = 2;
@@ -687,8 +689,8 @@ public final class Item extends Renderable {
             }
 
             if(var2 == 46) {
-               var9 = Client.cachedPlayers[var3];
-               if(var9 != null) {
+               var14 = Client.cachedPlayers[var3];
+               if(var14 != null) {
                   Client.field1190 = var6;
                   Client.field1034 = var7;
                   Client.cursorState = 2;
@@ -721,15 +723,15 @@ public final class Item extends Renderable {
             }
 
             if(var2 == 58) {
-               var10 = class202.method3650(var1, var0);
-               if(var10 != null) {
+               var15 = class202.method3650(var1, var0);
+               if(var15 != null) {
                   Client.secretPacketBuffer1.putOpcode(99);
                   Client.secretPacketBuffer1.method3233(class208.field2598);
                   Client.secretPacketBuffer1.putIntOb1(Client.field1084);
                   Client.secretPacketBuffer1.putInt(var1);
                   Client.secretPacketBuffer1.putIntOb1(Client.field1158);
                   Client.secretPacketBuffer1.putShort(var0);
-                  Client.secretPacketBuffer1.putShort(var10.itemId);
+                  Client.secretPacketBuffer1.putShort(var15.itemId);
                }
             }
 
@@ -746,8 +748,8 @@ public final class Item extends Renderable {
             }
 
             if(var2 == 14) {
-               var9 = Client.cachedPlayers[var3];
-               if(var9 != null) {
+               var14 = Client.cachedPlayers[var3];
+               if(var14 != null) {
                   Client.field1190 = var6;
                   Client.field1034 = var7;
                   Client.cursorState = 2;
@@ -819,9 +821,9 @@ public final class Item extends Renderable {
             if(Buffer.field2405 != null && Client.field997 == 0) {
                class88.method1714(Buffer.field2405);
             }
+
          }
       }
-
    }
 
    @ObfuscatedName("gk")
@@ -845,17 +847,17 @@ public final class Item extends Renderable {
          var5 = 100;
       }
 
-      int var6 = var5 * (Client.field1180 - Client.field1179) / 100 + Client.field1179;
+      int var6 = (Client.field1180 - Client.field1179) * var5 / 100 + Client.field1179;
       int var7 = var3 * var6 * 512 / (var2 * 334);
       int var8;
       int var9;
-      short var10;
+      short var15;
       if(var7 < Client.field1185) {
-         var10 = Client.field1185;
-         var6 = var2 * var10 * 334 / (var3 * 512);
+         var15 = Client.field1185;
+         var6 = var15 * var2 * 334 / (var3 * 512);
          if(var6 > Client.field1184) {
             var6 = Client.field1184;
-            var8 = var3 * var6 * 512 / (var10 * 334);
+            var8 = var3 * var6 * 512 / (var15 * 334);
             var9 = (var2 - var8) / 2;
             if(var4) {
                Rasterizer2D.noClip();
@@ -867,11 +869,11 @@ public final class Item extends Renderable {
             var2 -= var9 * 2;
          }
       } else if(var7 > Client.field1186) {
-         var10 = Client.field1186;
-         var6 = var2 * var10 * 334 / (var3 * 512);
+         var15 = Client.field1186;
+         var6 = var15 * var2 * 334 / (var3 * 512);
          if(var6 < Client.field1166) {
             var6 = Client.field1166;
-            var8 = var2 * var10 * 334 / (var6 * 512);
+            var8 = var15 * var2 * 334 / (var6 * 512);
             var9 = (var3 - var8) / 2;
             if(var4) {
                Rasterizer2D.noClip();
@@ -884,19 +886,19 @@ public final class Item extends Renderable {
          }
       }
 
-      var8 = var5 * (Client.field1182 - Client.field1126) / 100 + Client.field1126;
+      var8 = (Client.field1182 - Client.field1126) * var5 / 100 + Client.field1126;
       Client.scale = var8 * var3 * var6 / 85504 << 1;
       if(var2 != Client.viewportHeight || var3 != Client.viewportWidth) {
-         int[] var11 = new int[9];
+         int[] var14 = new int[9];
 
-         for(int var12 = 0; var12 < 9; ++var12) {
-            int var13 = var12 * 32 + 128 + 15;
-            int var14 = var13 * 3 + 600;
-            int var15 = Graphics3D.SINE[var13];
-            var11[var12] = var15 * var14 >> 16;
+         for(int var10 = 0; var10 < 9; ++var10) {
+            int var11 = var10 * 32 + 128 + 15;
+            int var12 = var11 * 3 + 600;
+            int var13 = Graphics3D.SINE[var11];
+            var14[var10] = var12 * var13 >> 16;
          }
 
-         Region.method2701(var11, 500, 800, var2, var3);
+         Region.method2701(var14, 500, 800, var2, var3);
       }
 
       Client.field1187 = var0;

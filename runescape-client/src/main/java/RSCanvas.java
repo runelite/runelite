@@ -10,18 +10,26 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bc")
 @Implements("RSCanvas")
 public final class RSCanvas extends Canvas {
-   @ObfuscatedName("i")
-   @Export("component")
-   Component component;
+   @ObfuscatedName("dm")
+   static IndexData field693;
    @ObfuscatedName("fv")
    @Export("mapRegions")
    @Hook("mapRegionsChanged")
    static int[] mapRegions;
-   @ObfuscatedName("dm")
-   static IndexData field693;
+   @ObfuscatedName("i")
+   @Export("component")
+   Component component;
+
+   RSCanvas(Component var1) {
+      this.component = var1;
+   }
 
    public final void paint(Graphics var1) {
       this.component.paint(var1);
+   }
+
+   public final void update(Graphics var1) {
+      this.component.update(var1);
    }
 
    @ObfuscatedName("r")
@@ -33,12 +41,19 @@ public final class RSCanvas extends Canvas {
       class251.field3400.reset();
    }
 
-   RSCanvas(Component var1) {
-      this.component = var1;
-   }
+   @ObfuscatedName("fv")
+   @ObfuscatedSignature(
+      signature = "(IZZZI)LIndexData;",
+      garbageValue = "-2044150389"
+   )
+   @Export("openCacheIndex")
+   static IndexData openCacheIndex(int var0, boolean var1, boolean var2, boolean var3) {
+      IndexFile var4 = null;
+      if(class155.field2259 != null) {
+         var4 = new IndexFile(var0, class155.field2259, BaseVarType.field32[var0], 1000000);
+      }
 
-   public final void update(Graphics var1) {
-      this.component.update(var1);
+      return new IndexData(var4, Ignore.field861, var0, var1, var2, var3);
    }
 
    @ObfuscatedName("fa")
@@ -112,20 +127,5 @@ public final class RSCanvas extends Canvas {
          var0.field1269 = var0.queueSize;
       }
 
-   }
-
-   @ObfuscatedName("fv")
-   @ObfuscatedSignature(
-      signature = "(IZZZI)LIndexData;",
-      garbageValue = "-2044150389"
-   )
-   @Export("openCacheIndex")
-   static IndexData openCacheIndex(int var0, boolean var1, boolean var2, boolean var3) {
-      IndexFile var4 = null;
-      if(class155.field2259 != null) {
-         var4 = new IndexFile(var0, class155.field2259, BaseVarType.field32[var0], 1000000);
-      }
-
-      return new IndexData(var4, Ignore.field861, var0, var1, var2, var3);
    }
 }

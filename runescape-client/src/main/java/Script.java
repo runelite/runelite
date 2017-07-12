@@ -9,12 +9,18 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class Script extends CacheableNode {
    @ObfuscatedName("i")
    static NodeCache field1551;
+   @ObfuscatedName("aa")
+   @ObfuscatedGetter(
+      intValue = -1343832047
+   )
+   @Export("authCodeForLogin")
+   static int authCodeForLogin;
+   @ObfuscatedName("w")
+   @Export("instructions")
+   int[] instructions;
    @ObfuscatedName("a")
    @Export("intOperands")
    int[] intOperands;
-   @ObfuscatedName("t")
-   @Export("stringOperands")
-   String[] stringOperands;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 346249157
@@ -27,30 +33,28 @@ public class Script extends CacheableNode {
    )
    @Export("localStringCount")
    int localStringCount;
+   @ObfuscatedName("t")
+   @Export("stringOperands")
+   String[] stringOperands;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -1393628567
    )
    @Export("intStackCount")
    int intStackCount;
+   @ObfuscatedName("j")
+   @Export("switches")
+   class186[] switches;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -1155965441
    )
    @Export("stringStackCount")
    int stringStackCount;
-   @ObfuscatedName("j")
-   @Export("switches")
-   class186[] switches;
-   @ObfuscatedName("aa")
-   @ObfuscatedGetter(
-      intValue = -1343832047
-   )
-   @Export("authCodeForLogin")
-   static int authCodeForLogin;
-   @ObfuscatedName("w")
-   @Export("instructions")
-   int[] instructions;
+
+   static {
+      field1551 = new NodeCache(128);
+   }
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(
@@ -59,9 +63,5 @@ public class Script extends CacheableNode {
    )
    class186[] method1861(int var1) {
       return new class186[var1];
-   }
-
-   static {
-      field1551 = new NodeCache(128);
    }
 }

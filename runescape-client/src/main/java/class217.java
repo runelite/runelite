@@ -18,7 +18,7 @@ public class class217 {
 
          class155.field2262.method2333();
          class155.field2258.method2333();
-      } catch (Exception var1) {
+      } catch (Exception var2) {
          ;
       }
 

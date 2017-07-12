@@ -26,13 +26,14 @@ public class class175 {
       class24.method162(var0, var1, var2, var3, var4, var5, false);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;I)V",
-      garbageValue = "1715828254"
+      signature = "(IIIB)I",
+      garbageValue = "-32"
    )
-   public static void method3346(IndexDataBase var0) {
-      class244.field3324 = var0;
+   static final int method3348(int var0, int var1, int var2) {
+      int var3 = 256 - var2;
+      return ((var0 & '\uff00') * var3 + (var1 & '\uff00') * var2 & 16711680) + (var3 * (var0 & 16711935) + (var1 & 16711935) * var2 & -16711936) >> 8;
    }
 
    @ObfuscatedName("i")
@@ -44,13 +45,12 @@ public class class175 {
       Enum.field3409 = var0;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IIIB)I",
-      garbageValue = "-32"
+      signature = "(LIndexDataBase;I)V",
+      garbageValue = "1715828254"
    )
-   static final int method3348(int var0, int var1, int var2) {
-      int var3 = 256 - var2;
-      return (var3 * (var0 & '\uff00') + (var1 & '\uff00') * var2 & 16711680) + (var3 * (var0 & 16711935) + var2 * (var1 & 16711935) & -16711936) >> 8;
+   public static void method3346(IndexDataBase var0) {
+      class244.field3324 = var0;
    }
 }

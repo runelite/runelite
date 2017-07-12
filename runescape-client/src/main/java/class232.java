@@ -29,7 +29,7 @@ public enum class232 implements RSEnum {
       signature = "(Ljava/lang/String;Ljava/lang/String;I)V",
       garbageValue = "0"
    )
-   private class232(String var3, String var4, int var5) {
+   class232(String var3, String var4, int var5) {
       this.field3203 = var3;
       this.field3197 = var5;
    }

@@ -5,11 +5,23 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ag")
 public class class48 implements WorldMapSectionBase {
+   @ObfuscatedName("aj")
+   static ModIcon[] field651;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1676185101
    )
    int field638;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 430162335
+   )
+   int field652;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1114599785
+   )
+   int field646;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -2021947337
@@ -20,43 +32,40 @@ public class class48 implements WorldMapSectionBase {
       intValue = 1694272987
    )
    int field640;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 419699385
-   )
-   int field641;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -1082124341
-   )
-   int field642;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -2094432847
    )
    int field644;
-   @ObfuscatedName("y")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -179538839
+      intValue = 419699385
    )
-   int field645;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1114599785
-   )
-   int field646;
+   int field641;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = -1117358061
    )
    int field647;
-   @ObfuscatedName("aj")
-   static ModIcon[] field651;
-   @ObfuscatedName("s")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 430162335
+      intValue = -1082124341
    )
-   int field652;
+   int field642;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -179538839
+   )
+   int field645;
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(III)Z",
+      garbageValue = "202348652"
+   )
+   public boolean vmethod754(int var1, int var2) {
+      return var1 >= (this.field652 << 6) + (this.field646 << 3) && var1 <= (this.field652 << 6) + (this.field646 << 3) + 7 && var2 >= (this.field641 << 6) + (this.field647 << 3) && var2 <= (this.field641 << 6) + (this.field647 << 3) + 7;
+   }
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -67,18 +76,28 @@ public class class48 implements WorldMapSectionBase {
       return var1 >= this.field638 && var1 < this.field639 + this.field638?var2 >= (this.field640 << 6) + (this.field644 << 3) && var2 <= (this.field644 << 3) + (this.field640 << 6) + 7 && var3 >= (this.field642 << 6) + (this.field645 << 3) && var3 <= (this.field642 << 6) + (this.field645 << 3) + 7:false;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "1509988890"
+      signature = "(LWorldMapData;I)V",
+      garbageValue = "98017718"
    )
-   public int[] vmethod730(int var1, int var2, int var3) {
-      if(!this.vmethod728(var1, var2, var3)) {
-         return null;
-      } else {
-         int[] var4 = new int[]{this.field646 * 8 - this.field644 * 8 + this.field652 * 64 - this.field640 * 64 + var2, this.field647 * 8 - this.field645 * 8 + var3 + (this.field641 * 64 - this.field642 * 64)};
-         return var4;
+   public void vmethod753(WorldMapData var1) {
+      if(var1.field467 > this.field652) {
+         var1.field467 = this.field652;
       }
+
+      if(var1.field468 < this.field652) {
+         var1.field468 = this.field652;
+      }
+
+      if(var1.field472 > this.field641) {
+         var1.field472 = this.field641;
+      }
+
+      if(var1.field466 < this.field641) {
+         var1.field466 = this.field641;
+      }
+
    }
 
    @ObfuscatedName("s")
@@ -93,6 +112,20 @@ public class class48 implements WorldMapSectionBase {
          int var3 = this.field644 * 8 - this.field646 * 8 + this.field640 * 64 - this.field652 * 64 + var1;
          int var4 = this.field645 * 8 - this.field647 * 8 + this.field642 * 64 - this.field641 * 64 + var2;
          return new Coordinates(this.field638, var3, var4);
+      }
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(IIII)[I",
+      garbageValue = "1509988890"
+   )
+   public int[] vmethod730(int var1, int var2, int var3) {
+      if(!this.vmethod728(var1, var2, var3)) {
+         return null;
+      } else {
+         int[] var4 = new int[]{this.field646 * 8 - this.field644 * 8 + this.field652 * 64 - this.field640 * 64 + var2, this.field647 * 8 - this.field645 * 8 + var3 + (this.field641 * 64 - this.field642 * 64)};
+         return var4;
       }
    }
 
@@ -121,6 +154,35 @@ public class class48 implements WorldMapSectionBase {
       garbageValue = "-1006647602"
    )
    void method733() {
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "([BIII)Ljava/lang/String;",
+      garbageValue = "-2135132767"
+   )
+   @Export("getString")
+   public static String getString(byte[] var0, int var1, int var2) {
+      char[] var3 = new char[var2];
+      int var4 = 0;
+
+      for(int var5 = 0; var5 < var2; ++var5) {
+         int var6 = var0[var5 + var1] & 255;
+         if(var6 != 0) {
+            if(var6 >= 128 && var6 < 160) {
+               char var7 = class266.field3668[var6 - 128];
+               if(var7 == 0) {
+                  var7 = 63;
+               }
+
+               var6 = var7;
+            }
+
+            var3[var4++] = (char)var6;
+         }
+      }
+
+      return new String(var3, 0, var4);
    }
 
    @ObfuscatedName("a")
@@ -203,74 +265,12 @@ public class class48 implements WorldMapSectionBase {
       int var8 = class17.getSmoothNoise2D(var3 + 1, var5);
       int var9 = class17.getSmoothNoise2D(var3, var5 + 1);
       int var10 = class17.getSmoothNoise2D(var3 + 1, var5 + 1);
-      int var11 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
-      int var12 = (var8 * var11 >> 16) + (var7 * (65536 - var11) >> 16);
-      int var13 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
-      int var14 = ((65536 - var13) * var9 >> 16) + (var10 * var13 >> 16);
-      int var15 = 65536 - Graphics3D.COSINE[var6 * 1024 / var2] >> 1;
-      int var16 = (var15 * var14 >> 16) + ((65536 - var15) * var12 >> 16);
-      return var16;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(LWorldMapData;I)V",
-      garbageValue = "98017718"
-   )
-   public void vmethod753(WorldMapData var1) {
-      if(var1.field467 > this.field652) {
-         var1.field467 = this.field652;
-      }
-
-      if(var1.field468 < this.field652) {
-         var1.field468 = this.field652;
-      }
-
-      if(var1.field472 > this.field641) {
-         var1.field472 = this.field641;
-      }
-
-      if(var1.field466 < this.field641) {
-         var1.field466 = this.field641;
-      }
-
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "202348652"
-   )
-   public boolean vmethod754(int var1, int var2) {
-      return var1 >= (this.field652 << 6) + (this.field646 << 3) && var1 <= (this.field652 << 6) + (this.field646 << 3) + 7 && var2 >= (this.field641 << 6) + (this.field647 << 3) && var2 <= (this.field641 << 6) + (this.field647 << 3) + 7;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "([BIII)Ljava/lang/String;",
-      garbageValue = "-2135132767"
-   )
-   @Export("getString")
-   public static String getString(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
-
-      for(int var5 = 0; var5 < var2; ++var5) {
-         int var6 = var0[var5 + var1] & 255;
-         if(var6 != 0) {
-            if(var6 >= 128 && var6 < 160) {
-               char var7 = class266.field3668[var6 - 128];
-               if(var7 == 0) {
-                  var7 = 63;
-               }
-
-               var6 = var7;
-            }
-
-            var3[var4++] = (char)var6;
-         }
-      }
-
-      return new String(var3, 0, var4);
+      int var12 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
+      int var11 = ((65536 - var12) * var7 >> 16) + (var8 * var12 >> 16);
+      int var14 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
+      int var13 = (var10 * var14 >> 16) + ((65536 - var14) * var9 >> 16);
+      int var16 = 65536 - Graphics3D.COSINE[var6 * 1024 / var2] >> 1;
+      int var15 = ((65536 - var16) * var11 >> 16) + (var13 * var16 >> 16);
+      return var15;
    }
 }

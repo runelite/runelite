@@ -7,39 +7,26 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("io")
 @Implements("VarPlayerType")
 public class VarPlayerType extends CacheableNode {
+   @ObfuscatedName("a")
+   @Export("varplayers")
+   public static NodeCache varplayers;
+   @ObfuscatedName("i")
+   @Export("varplayer_ref")
+   public static IndexDataBase varplayer_ref;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 971956589
    )
    public static int field3289;
-   @ObfuscatedName("a")
-   @Export("varplayers")
-   public static NodeCache varplayers;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -2137069147
    )
    @Export("configType")
    public int configType;
-   @ObfuscatedName("i")
-   @Export("varplayer_ref")
-   public static IndexDataBase varplayer_ref;
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
-      garbageValue = "-52"
-   )
-   @Export("decode")
-   public void decode(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
-
-         this.decode(var1, var2);
-      }
+   static {
+      varplayers = new NodeCache(64);
    }
 
    public VarPlayerType() {
@@ -59,7 +46,20 @@ public class VarPlayerType extends CacheableNode {
 
    }
 
-   static {
-      varplayers = new NodeCache(64);
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;B)V",
+      garbageValue = "-52"
+   )
+   @Export("decode")
+   public void decode(Buffer var1) {
+      while(true) {
+         int var2 = var1.readUnsignedByte();
+         if(var2 == 0) {
+            return;
+         }
+
+         this.decode(var1, var2);
+      }
    }
 }

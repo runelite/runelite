@@ -5,6 +5,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("m")
 final class class15 implements Comparator {
+   @ObfuscatedName("i")
+   static IndexDataBase field298;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 2048602787
@@ -12,44 +14,6 @@ final class class15 implements Comparator {
    static int field294;
    @ObfuscatedName("rs")
    static short[] field296;
-   @ObfuscatedName("i")
-   static IndexDataBase field298;
-
-   @ObfuscatedName("ge")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIIIB)V",
-      garbageValue = "3"
-   )
-   static final void method79(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-      PendingSpawn var9 = null;
-
-      for(PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.getFront(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.getNext()) {
-         if(var0 == var10.level && var1 == var10.x && var2 == var10.y && var3 == var10.type) {
-            var9 = var10;
-            break;
-         }
-      }
-
-      if(var9 == null) {
-         var9 = new PendingSpawn();
-         var9.level = var0;
-         var9.type = var3;
-         var9.x = var1;
-         var9.y = var2;
-         class3.method10(var9);
-         Client.pendingSpawns.addFront(var9);
-      }
-
-      var9.id = var4;
-      var9.field1223 = var5;
-      var9.orientation = var6;
-      var9.delay = var7;
-      var9.hitpoints = var8;
-   }
-
-   public int compare(Object var1, Object var2) {
-      return this.method83((class14)var1, (class14)var2);
-   }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
@@ -58,6 +22,10 @@ final class class15 implements Comparator {
    )
    int method83(class14 var1, class14 var2) {
       return var1.field285.totalQuantity < var2.field285.totalQuantity?-1:(var2.field285.totalQuantity == var1.field285.totalQuantity?0:1);
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method83((class14)var1, (class14)var2);
    }
 
    public boolean equals(Object var1) {
@@ -149,5 +117,37 @@ final class class15 implements Comparator {
       }
 
       TextureProvider.setGameState(10);
+   }
+
+   @ObfuscatedName("ge")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIIIB)V",
+      garbageValue = "3"
+   )
+   static final void method79(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      PendingSpawn var9 = null;
+
+      for(PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.getFront(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.getNext()) {
+         if(var0 == var10.level && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
+            var9 = var10;
+            break;
+         }
+      }
+
+      if(var9 == null) {
+         var9 = new PendingSpawn();
+         var9.level = var0;
+         var9.type = var3;
+         var9.x = var1;
+         var9.y = var2;
+         class3.method10(var9);
+         Client.pendingSpawns.addFront(var9);
+      }
+
+      var9.id = var4;
+      var9.field1223 = var5;
+      var9.orientation = var6;
+      var9.delay = var7;
+      var9.hitpoints = var8;
    }
 }

@@ -8,12 +8,17 @@ import net.runelite.mapping.ObfuscatedSignature;
 final class class95 implements Comparator {
    @ObfuscatedName("ij")
    static Widget field1513;
-   final boolean val$preferOwnWorld;
    @ObfuscatedName("pn")
    @ObfuscatedGetter(
       intValue = -483759695
    )
    static int field1515;
+   // $FF: synthetic field
+   final boolean val$preferOwnWorld;
+
+   class95(boolean var1) {
+      this.val$preferOwnWorld = var1;
+   }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
@@ -42,61 +47,8 @@ final class class95 implements Comparator {
       return this.method1775((class14)var1, (class14)var2);
    }
 
-   class95(boolean var1) {
-      this.val$preferOwnWorld = var1;
-   }
-
    public boolean equals(Object var1) {
       return super.equals(var1);
-   }
-
-   @ObfuscatedName("is")
-   @ObfuscatedSignature(
-      signature = "(LWidgetNode;ZB)V",
-      garbageValue = "-1"
-   )
-   static final void method1780(WidgetNode var0, boolean var1) {
-      int var2 = var0.id;
-      int var3 = (int)var0.hash;
-      var0.unlink();
-      int var4;
-      if(var1 && var2 != -1 && class152.validInterfaces[var2]) {
-         Widget.widgetIndex.method4127(var2);
-         if(class46.widgets[var2] != null) {
-            boolean var5 = true;
-
-            for(var4 = 0; var4 < class46.widgets[var2].length; ++var4) {
-               if(class46.widgets[var2][var4] != null) {
-                  if(class46.widgets[var2][var4].type != 2) {
-                     class46.widgets[var2][var4] = null;
-                  } else {
-                     var5 = false;
-                  }
-               }
-            }
-
-            if(var5) {
-               class46.widgets[var2] = null;
-            }
-
-            class152.validInterfaces[var2] = false;
-         }
-      }
-
-      class205.method3804(var2);
-      Widget var6 = PacketBuffer.method3403(var3);
-      if(var6 != null) {
-         class88.method1714(var6);
-      }
-
-      class20.method142();
-      if(Client.widgetRoot != -1) {
-         var4 = Client.widgetRoot;
-         if(class66.loadWidget(var4)) {
-            class5.method22(class46.widgets[var4], 1);
-         }
-      }
-
    }
 
    @ObfuscatedName("i")
@@ -121,6 +73,21 @@ final class class95 implements Comparator {
       }
    }
 
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;IS)Z",
+      garbageValue = "255"
+   )
+   public static boolean method1783(IndexDataBase var0, int var1) {
+      byte[] var2 = var0.method4120(var1);
+      if(var2 == null) {
+         return false;
+      } else {
+         Spotanim.decodeSprite(var2);
+         return true;
+      }
+   }
+
    @ObfuscatedName("as")
    @ObfuscatedSignature(
       signature = "(B)V",
@@ -141,18 +108,52 @@ final class class95 implements Comparator {
       class43.field596 = 0;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("is")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;IS)Z",
-      garbageValue = "255"
+      signature = "(LWidgetNode;ZB)V",
+      garbageValue = "-1"
    )
-   public static boolean method1783(IndexDataBase var0, int var1) {
-      byte[] var2 = var0.method4120(var1);
-      if(var2 == null) {
-         return false;
-      } else {
-         Spotanim.decodeSprite(var2);
-         return true;
+   static final void method1780(WidgetNode var0, boolean var1) {
+      int var2 = var0.id;
+      int var3 = (int)var0.hash;
+      var0.unlink();
+      int var5;
+      if(var1 && var2 != -1 && class152.validInterfaces[var2]) {
+         Widget.widgetIndex.method4127(var2);
+         if(class46.widgets[var2] != null) {
+            boolean var6 = true;
+
+            for(var5 = 0; var5 < class46.widgets[var2].length; ++var5) {
+               if(class46.widgets[var2][var5] != null) {
+                  if(class46.widgets[var2][var5].type != 2) {
+                     class46.widgets[var2][var5] = null;
+                  } else {
+                     var6 = false;
+                  }
+               }
+            }
+
+            if(var6) {
+               class46.widgets[var2] = null;
+            }
+
+            class152.validInterfaces[var2] = false;
+         }
       }
+
+      class205.method3804(var2);
+      Widget var4 = PacketBuffer.method3403(var3);
+      if(var4 != null) {
+         class88.method1714(var4);
+      }
+
+      class20.method142();
+      if(Client.widgetRoot != -1) {
+         var5 = Client.widgetRoot;
+         if(class66.loadWidget(var5)) {
+            class5.method22(class46.widgets[var5], 1);
+         }
+      }
+
    }
 }

@@ -5,12 +5,12 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("gc")
 @Implements("CacheableNode")
 public class CacheableNode extends Node {
-   @ObfuscatedName("cj")
-   @Export("previous")
-   public CacheableNode previous;
    @ObfuscatedName("cr")
    @Export("next")
    public CacheableNode next;
+   @ObfuscatedName("cj")
+   @Export("previous")
+   public CacheableNode previous;
 
    @ObfuscatedName("cv")
    @Export("unlinkDual")
@@ -21,6 +21,5 @@ public class CacheableNode extends Node {
          this.previous = null;
          this.next = null;
       }
-
    }
 }

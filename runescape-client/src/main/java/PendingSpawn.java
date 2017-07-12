@@ -7,48 +7,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bk")
 @Implements("PendingSpawn")
 public final class PendingSpawn extends Node {
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1692386129
-   )
-   int field1209;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -2125213343
-   )
-   @Export("type")
-   int type;
    @ObfuscatedName("kv")
    static Widget field1211;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1631496493
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1714720235
-   )
-   int field1214;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -44181719
-   )
-   @Export("level")
-   int level;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -261812195
-   )
-   @Export("id")
-   int id;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -385346915
-   )
-   @Export("orientation")
-   int orientation;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 1472337163
@@ -67,16 +27,61 @@ public final class PendingSpawn extends Node {
    )
    @Export("x")
    int x;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 1631496493
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -44181719
+   )
+   @Export("level")
+   int level;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1692386129
+   )
+   int field1209;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -1129133201
    )
    int field1222;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -2125213343
+   )
+   @Export("type")
+   int type;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -1714720235
+   )
+   int field1214;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -261812195
+   )
+   @Export("id")
+   int id;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = -1544924171
    )
    int field1223;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -385346915
+   )
+   @Export("orientation")
+   int orientation;
+
+   PendingSpawn() {
+      this.delay = 0;
+      this.hitpoints = -1;
+   }
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -112,10 +117,5 @@ public final class PendingSpawn extends Node {
 
       var4.itemIds[var1] = var2;
       var4.stackSizes[var1] = var3;
-   }
-
-   PendingSpawn() {
-      this.delay = 0;
-      this.hitpoints = -1;
    }
 }

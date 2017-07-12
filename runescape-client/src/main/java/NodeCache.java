@@ -5,10 +5,6 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("gq")
 @Implements("NodeCache")
 public final class NodeCache {
-   @ObfuscatedName("w")
-   int field2460;
-   @ObfuscatedName("i")
-   CacheableNode field2461;
    @ObfuscatedName("a")
    int field2462;
    @ObfuscatedName("t")
@@ -17,47 +13,10 @@ public final class NodeCache {
    @ObfuscatedName("s")
    @Export("list")
    Node2LinkedList list;
-
-   @ObfuscatedName("t")
-   @Export("reset")
-   public void reset() {
-      this.list.clear();
-      this.table.method3532();
-      this.field2461 = new CacheableNode();
-      this.field2462 = this.field2460;
-   }
-
+   @ObfuscatedName("i")
+   CacheableNode field2461;
    @ObfuscatedName("w")
-   @Export("remove")
-   public void remove(long var1) {
-      CacheableNode var3 = (CacheableNode)this.table.get(var1);
-      if(var3 != null) {
-         var3.unlink();
-         var3.unlinkDual();
-         ++this.field2462;
-      }
-
-   }
-
-   @ObfuscatedName("a")
-   @Export("put")
-   public void put(CacheableNode var1, long var2) {
-      if(this.field2462 == 0) {
-         CacheableNode var4 = this.list.pop();
-         var4.unlink();
-         var4.unlinkDual();
-         if(this.field2461 == var4) {
-            var4 = this.list.pop();
-            var4.unlink();
-            var4.unlinkDual();
-         }
-      } else {
-         --this.field2462;
-      }
-
-      this.table.put(var1, var2);
-      this.list.push(var1);
-   }
+   int field2460;
 
    public NodeCache(int var1) {
       this.field2461 = new CacheableNode();
@@ -82,5 +41,46 @@ public final class NodeCache {
       }
 
       return var3;
+   }
+
+   @ObfuscatedName("a")
+   @Export("put")
+   public void put(CacheableNode var1, long var2) {
+      if(this.field2462 == 0) {
+         CacheableNode var4 = this.list.pop();
+         var4.unlink();
+         var4.unlinkDual();
+         if(var4 == this.field2461) {
+            var4 = this.list.pop();
+            var4.unlink();
+            var4.unlinkDual();
+         }
+      } else {
+         --this.field2462;
+      }
+
+      this.table.put(var1, var2);
+      this.list.push(var1);
+   }
+
+   @ObfuscatedName("t")
+   @Export("reset")
+   public void reset() {
+      this.list.clear();
+      this.table.method3532();
+      this.field2461 = new CacheableNode();
+      this.field2462 = this.field2460;
+   }
+
+   @ObfuscatedName("w")
+   @Export("remove")
+   public void remove(long var1) {
+      CacheableNode var3 = (CacheableNode)this.table.get(var1);
+      if(var3 != null) {
+         var3.unlink();
+         var3.unlinkDual();
+         ++this.field2462;
+      }
+
    }
 }

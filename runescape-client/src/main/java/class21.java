@@ -88,10 +88,10 @@ public class class21 {
             var16 = (int)((double)var16 * 1.04D);
          }
 
-         int var17 = Graphics3D.SINE[var9.xan2d] * var16 >> 16;
-         int var18 = Graphics3D.COSINE[var9.xan2d] * var16 >> 16;
+         int var17 = var16 * Graphics3D.SINE[var9.xan2d] >> 16;
+         int var18 = var16 * Graphics3D.COSINE[var9.xan2d] >> 16;
          var21.method2493();
-         var21.method2506(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var9.offsetY2d + var21.modelHeight / 2 + var17, var18 + var9.offsetY2d);
+         var21.method2506(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var17 + var21.modelHeight / 2 + var9.offsetY2d, var18 + var9.offsetY2d);
          if(var9.notedId != -1) {
             var22.method5042(0, 0);
          }
@@ -119,9 +119,9 @@ public class class21 {
             if(var1 < 100000) {
                var20 = "<col=ffff00>" + var1 + "</col>";
             } else if(var1 < 10000000) {
-               var20 = "<col=ffffff>" + var1 / 1000 + "K</col>";
+               var20 = "<col=ffffff>" + var1 / 1000 + "K" + "</col>";
             } else {
-               var20 = "<col=00ff80>" + var1 / 1000000 + "M</col>";
+               var20 = "<col=00ff80>" + var1 / 1000000 + "M" + "</col>";
             }
 
             var19.method4790(var20, 0, 9, 16776960, 1);

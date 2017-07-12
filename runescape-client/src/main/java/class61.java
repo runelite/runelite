@@ -7,25 +7,19 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bo")
 public final class class61 {
-   @ObfuscatedName("bc")
-   static ModIcon[] field768;
+   @ObfuscatedName("i")
+   @Export("tileHeights")
+   static int[][][] tileHeights;
    @ObfuscatedName("w")
    @Export("tileSettings")
    static byte[][][] tileSettings;
+   @ObfuscatedName("r")
+   public static IndexDataBase field785;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -390026021
    )
    static int field770;
-   @ObfuscatedName("y")
-   static byte[][][] field771;
-   @ObfuscatedName("d")
-   static final int[] field772;
-   @ObfuscatedName("t")
-   @Export("underlayIds")
-   static byte[][][] underlayIds;
-   @ObfuscatedName("j")
-   static int[][] field774;
    @ObfuscatedName("n")
    static final int[] field775;
    @ObfuscatedName("u")
@@ -34,31 +28,51 @@ public final class class61 {
    static final int[] field777;
    @ObfuscatedName("q")
    static final int[] field778;
+   @ObfuscatedName("d")
+   static final int[] field772;
+   @ObfuscatedName("h")
+   static final int[] field786;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 161032159
    )
    static int field779;
-   @ObfuscatedName("s")
-   @Export("overlayIds")
-   static byte[][][] overlayIds;
-   @ObfuscatedName("i")
-   @Export("tileHeights")
-   static int[][][] tileHeights;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 1137929227
    )
    static int field782;
+   @ObfuscatedName("bc")
+   static ModIcon[] field768;
    @ObfuscatedName("di")
    @Export("indexWorldMap")
    static IndexData indexWorldMap;
-   @ObfuscatedName("r")
-   public static IndexDataBase field785;
-   @ObfuscatedName("h")
-   static final int[] field786;
+   @ObfuscatedName("t")
+   @Export("underlayIds")
+   static byte[][][] underlayIds;
+   @ObfuscatedName("s")
+   @Export("overlayIds")
+   static byte[][][] overlayIds;
+   @ObfuscatedName("y")
+   static byte[][][] field771;
+   @ObfuscatedName("j")
+   static int[][] field774;
    @ObfuscatedName("nh")
    static class276 field787;
+
+   static {
+      tileHeights = new int[4][105][105];
+      tileSettings = new byte[4][104][104];
+      field770 = 99;
+      field775 = new int[]{1, 2, 4, 8};
+      field776 = new int[]{16, 32, 64, 128};
+      field777 = new int[]{1, 0, -1, 0};
+      field778 = new int[]{0, -1, 0, 1};
+      field772 = new int[]{1, -1, -1, 1};
+      field786 = new int[]{-1, -1, 1, 1};
+      field779 = (int)(Math.random() * 17.0D) - 8;
+      field782 = (int)(Math.random() * 33.0D) - 16;
+   }
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -155,19 +169,5 @@ public final class class61 {
 
          return (var0 & 'ﾀ') + var1;
       }
-   }
-
-   static {
-      tileHeights = new int[4][105][105];
-      tileSettings = new byte[4][104][104];
-      field770 = 99;
-      field775 = new int[]{1, 2, 4, 8};
-      field776 = new int[]{16, 32, 64, 128};
-      field777 = new int[]{1, 0, -1, 0};
-      field778 = new int[]{0, -1, 0, 1};
-      field772 = new int[]{1, -1, -1, 1};
-      field786 = new int[]{-1, -1, 1, 1};
-      field779 = (int)(Math.random() * 17.0D) - 8;
-      field782 = (int)(Math.random() * 33.0D) - 16;
    }
 }

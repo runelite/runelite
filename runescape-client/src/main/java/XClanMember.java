@@ -10,14 +10,14 @@ public class XClanMember extends Node {
    @ObfuscatedName("i")
    @Export("username")
    String username;
-   @ObfuscatedName("w")
-   String field919;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -642545351
    )
    @Export("world")
    int world;
+   @ObfuscatedName("w")
+   String field919;
    @ObfuscatedName("t")
    @Export("rank")
    byte rank;
@@ -63,15 +63,15 @@ public class XClanMember extends Node {
                ++var2;
             }
 
-            StringBuilder var6 = new StringBuilder(var2);
+            StringBuilder var5 = new StringBuilder(var2);
 
             while(var0 != 0L) {
-               long var4 = var0;
+               long var6 = var0;
                var0 /= 37L;
-               var6.append(class268.field3681[(int)(var4 - 37L * var0)]);
+               var5.append(class268.field3681[(int)(var6 - 37L * var0)]);
             }
 
-            return var6.reverse().toString();
+            return var5.reverse().toString();
          }
       } else {
          return null;

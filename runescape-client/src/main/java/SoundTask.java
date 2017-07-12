@@ -10,6 +10,24 @@ public class SoundTask implements Runnable {
    @Export("systems")
    volatile AbstractSoundSystem[] systems;
 
+   SoundTask() {
+      this.systems = new AbstractSoundSystem[2];
+   }
+
+   public void run() {
+      try {
+         for(int var1 = 0; var1 < 2; ++var1) {
+            AbstractSoundSystem var2 = this.systems[var1];
+            if(var2 != null) {
+               var2.method2022();
+            }
+         }
+      } catch (Exception var4) {
+         MilliTimer.method2912((String)null, var4);
+      }
+
+   }
+
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(ILScript;ZB)I",
@@ -120,23 +138,5 @@ public class SoundTask implements Runnable {
 
       var3.field2734 = true;
       return 1;
-   }
-
-   public void run() {
-      try {
-         for(int var1 = 0; var1 < 2; ++var1) {
-            AbstractSoundSystem var2 = this.systems[var1];
-            if(var2 != null) {
-               var2.method2022();
-            }
-         }
-      } catch (Exception var3) {
-         MilliTimer.method2912((String)null, var3);
-      }
-
-   }
-
-   SoundTask() {
-      this.systems = new AbstractSoundSystem[2];
    }
 }

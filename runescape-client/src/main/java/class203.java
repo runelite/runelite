@@ -4,10 +4,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ge")
 public class class203 {
-   @ObfuscatedName("i")
-   public static IndexDataBase field2506;
-   @ObfuscatedName("a")
-   public static IndexDataBase field2507;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1406754967
@@ -20,25 +16,33 @@ public class class203 {
       intValue = -2057629755
    )
    public static int field2511;
+   @ObfuscatedName("a")
+   public static IndexDataBase field2507;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = 269689881
    )
    public static int field2512;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 692889359
-   )
-   public static int field2513;
    @ObfuscatedName("w")
    public static IndexDataBase field2514;
-   @ObfuscatedName("e")
-   public static boolean field2515;
+   @ObfuscatedName("i")
+   public static IndexDataBase field2506;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 1235465649
    )
    public static int field2517;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 692889359
+   )
+   public static int field2513;
+   @ObfuscatedName("e")
+   public static boolean field2515;
+
+   static {
+      field2508 = 0;
+   }
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
@@ -47,9 +51,5 @@ public class class203 {
    )
    public static boolean method3665(int var0) {
       return var0 >= class221.field2839.field2842 && var0 <= class221.field2819.field2842;
-   }
-
-   static {
-      field2508 = 0;
    }
 }

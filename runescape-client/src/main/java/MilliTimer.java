@@ -7,49 +7,50 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ev")
 @Implements("MilliTimer")
 public class MilliTimer extends Timer {
+   @ObfuscatedName("ph")
+   @ObfuscatedGetter(
+      intValue = 425198859
+   )
+   static int field2223;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1293963245
+   )
+   int field2226;
+   @ObfuscatedName("i")
+   long[] field2224;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 1338212991
    )
    @Export("sleepTime")
    int sleepTime;
-   @ObfuscatedName("ph")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 425198859
+      intValue = -391261729
    )
-   static int field2223;
-   @ObfuscatedName("i")
-   long[] field2224;
+   int field2228;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       longValue = -328335958128952751L
    )
    @Export("milliTime")
    long milliTime;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1293963245
-   )
-   int field2226;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 1935282031
    )
    int field2227;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -391261729
-   )
-   int field2228;
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-85"
-   )
-   public void vmethod2965() {
+   public MilliTimer() {
+      this.field2224 = new long[10];
+      this.field2226 = 256;
+      this.sleepTime = 1;
+      this.field2228 = 0;
+      this.milliTime = DState.currentTimeMs();
+
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field2224[var1] = 0L;
+         this.field2224[var1] = this.milliTime;
       }
 
    }
@@ -112,23 +113,22 @@ public class MilliTimer extends Timer {
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-85"
+   )
+   public void vmethod2965() {
+      for(int var1 = 0; var1 < 10; ++var1) {
+         this.field2224[var1] = 0L;
+      }
+
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
       signature = "(Ljava/lang/String;Ljava/lang/Throwable;S)V",
       garbageValue = "6282"
    )
    public static void method2912(String var0, Throwable var1) {
       var1.printStackTrace();
-   }
-
-   public MilliTimer() {
-      this.field2224 = new long[10];
-      this.field2226 = 256;
-      this.sleepTime = 1;
-      this.field2228 = 0;
-      this.milliTime = DState.currentTimeMs();
-
-      for(int var1 = 0; var1 < 10; ++var1) {
-         this.field2224[var1] = this.milliTime;
-      }
-
    }
 }

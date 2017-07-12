@@ -4,43 +4,53 @@ import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("ic")
 public class class238 {
-   @ObfuscatedName("t")
-   public static XHashTable field3260;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1322706447
+   )
+   public static int field3277;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1879967263
    )
    public static int field3261;
-   @ObfuscatedName("p")
-   static IndexData[] field3262;
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
+   public static XHashTable field3268;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      longValue = -9065922425014045625L
+      intValue = 435265601
    )
-   public static long field3263;
-   @ObfuscatedName("c")
-   public static Buffer field3264;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 1888769611
-   )
-   public static int field3265;
+   public static int field3278;
+   @ObfuscatedName("t")
+   public static XHashTable field3260;
+   @ObfuscatedName("y")
+   public static Node2LinkedList field3267;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1818063435
    )
    public static int field3266;
-   @ObfuscatedName("y")
-   public static Node2LinkedList field3267;
-   @ObfuscatedName("j")
-   public static XHashTable field3268;
+   @ObfuscatedName("r")
+   public static XHashTable field3275;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      longValue = -9065922425014045625L
+   )
+   public static long field3263;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 1888769611
+   )
+   public static int field3265;
+   @ObfuscatedName("e")
+   public static XHashTable field3270;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = -1031228371
    )
    public static int field3269;
-   @ObfuscatedName("e")
-   public static XHashTable field3270;
+   @ObfuscatedName("p")
+   static IndexData[] field3262;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 1344104133
@@ -48,6 +58,8 @@ public class class238 {
    public static int field3271;
    @ObfuscatedName("i")
    public static RSSocket field3272;
+   @ObfuscatedName("c")
+   public static Buffer field3264;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = 222246919
@@ -55,20 +67,8 @@ public class class238 {
    public static int field3273;
    @ObfuscatedName("n")
    static CRC32 field3274;
-   @ObfuscatedName("r")
-   public static XHashTable field3275;
    @ObfuscatedName("q")
    public static byte field3276;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1322706447
-   )
-   public static int field3277;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 435265601
-   )
-   public static int field3278;
 
    static {
       field3261 = 0;

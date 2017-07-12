@@ -9,34 +9,18 @@ import net.runelite.mapping.ObfuscatedSignature;
 public final class PacketBuffer extends Buffer {
    @ObfuscatedName("k")
    static final int[] field2426;
-   @ObfuscatedName("j")
-   @Export("cipher")
-   ISAACCipher cipher;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -1652269775
    )
    @Export("bitPosition")
    int bitPosition;
+   @ObfuscatedName("j")
+   @Export("cipher")
+   ISAACCipher cipher;
 
-   @ObfuscatedName("hq")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1328481773"
-   )
-   @Export("byteAccess")
-   public void byteAccess() {
-      super.offset = (this.bitPosition + 7) / 8;
-   }
-
-   @ObfuscatedName("hi")
-   @ObfuscatedSignature(
-      signature = "([IS)V",
-      garbageValue = "-13659"
-   )
-   @Export("seed")
-   public void seed(int[] var1) {
-      this.cipher = new ISAACCipher(var1);
+   static {
+      field2426 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
    }
 
    @ObfuscatedSignature(
@@ -55,6 +39,26 @@ public final class PacketBuffer extends Buffer {
    @Export("readOpcode")
    public int readOpcode() {
       return super.payload[++super.offset - 1] - this.cipher.nextInt() & 255;
+   }
+
+   @ObfuscatedName("hh")
+   @ObfuscatedSignature(
+      signature = "(IS)V",
+      garbageValue = "20061"
+   )
+   @Export("putOpcode")
+   public void putOpcode(int var1) {
+      super.payload[++super.offset - 1] = (byte)(var1 + this.cipher.nextInt());
+   }
+
+   @ObfuscatedName("hc")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "480268066"
+   )
+   @Export("bitAccess")
+   public void bitAccess() {
+      this.bitPosition = super.offset * 8;
    }
 
    @ObfuscatedName("hv")
@@ -82,6 +86,16 @@ public final class PacketBuffer extends Buffer {
       return var4;
    }
 
+   @ObfuscatedName("hq")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1328481773"
+   )
+   @Export("byteAccess")
+   public void byteAccess() {
+      super.offset = (this.bitPosition + 7) / 8;
+   }
+
    @ObfuscatedName("hr")
    @ObfuscatedSignature(
       signature = "(II)I",
@@ -92,23 +106,14 @@ public final class PacketBuffer extends Buffer {
       return var1 * 8 - this.bitPosition;
    }
 
-   @ObfuscatedName("hh")
+   @ObfuscatedName("hi")
    @ObfuscatedSignature(
-      signature = "(IS)V",
-      garbageValue = "20061"
+      signature = "([IS)V",
+      garbageValue = "-13659"
    )
-   @Export("putOpcode")
-   public void putOpcode(int var1) {
-      super.payload[++super.offset - 1] = (byte)(var1 + this.cipher.nextInt());
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(CB)Z",
-      garbageValue = "12"
-   )
-   static final boolean method3402(char var0) {
-      return var0 == 160 || var0 == 32 || var0 == 95 || var0 == 45;
+   @Export("seed")
+   public void seed(int[] var1) {
+      this.cipher = new ISAACCipher(var1);
    }
 
    @ObfuscatedName("i")
@@ -127,47 +132,6 @@ public final class PacketBuffer extends Buffer {
       }
 
       return class46.widgets[var1][var2];
-   }
-
-   @ObfuscatedName("hc")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "480268066"
-   )
-   @Export("bitAccess")
-   public void bitAccess() {
-      this.bitPosition = super.offset * 8;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-274694405"
-   )
-   public static void method3411(int var0) {
-      if(var0 != -1 && class152.validInterfaces[var0]) {
-         Widget.widgetIndex.method4127(var0);
-         if(class46.widgets[var0] != null) {
-            boolean var1 = true;
-
-            for(int var2 = 0; var2 < class46.widgets[var0].length; ++var2) {
-               if(class46.widgets[var0][var2] != null) {
-                  if(class46.widgets[var0][var2].type != 2) {
-                     class46.widgets[var0][var2] = null;
-                  } else {
-                     var1 = false;
-                  }
-               }
-            }
-
-            if(var1) {
-               class46.widgets[var0] = null;
-            }
-
-            class152.validInterfaces[var0] = false;
-         }
-      }
-
    }
 
    @ObfuscatedName("a")
@@ -189,6 +153,7 @@ public final class PacketBuffer extends Buffer {
                   --class238.field3269;
                   ++class238.field3266;
                }
+
             } else {
                if(!var5) {
                   var8 = (FileRequest)class238.field3270.get(var6);
@@ -209,10 +174,19 @@ public final class PacketBuffer extends Buffer {
                   class238.field3268.put(var8, var6);
                   ++class238.field3269;
                }
+
             }
          }
       }
+   }
 
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(CB)Z",
+      garbageValue = "12"
+   )
+   static final boolean method3402(char var0) {
+      return var0 == 160 || var0 == 32 || var0 == 95 || var0 == 45;
    }
 
    @ObfuscatedName("r")
@@ -273,7 +247,35 @@ public final class PacketBuffer extends Buffer {
       }
    }
 
-   static {
-      field2426 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-274694405"
+   )
+   public static void method3411(int var0) {
+      if(var0 != -1) {
+         if(class152.validInterfaces[var0]) {
+            Widget.widgetIndex.method4127(var0);
+            if(class46.widgets[var0] != null) {
+               boolean var1 = true;
+
+               for(int var2 = 0; var2 < class46.widgets[var0].length; ++var2) {
+                  if(class46.widgets[var0][var2] != null) {
+                     if(class46.widgets[var0][var2].type != 2) {
+                        class46.widgets[var0][var2] = null;
+                     } else {
+                        var1 = false;
+                     }
+                  }
+               }
+
+               if(var1) {
+                  class46.widgets[var0] = null;
+               }
+
+               class152.validInterfaces[var0] = false;
+            }
+         }
+      }
    }
 }

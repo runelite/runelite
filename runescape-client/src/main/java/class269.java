@@ -5,20 +5,10 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class class269 {
    @ObfuscatedName("i")
    public static char[] field3684;
-   @ObfuscatedName("a")
-   static int[] field3685;
    @ObfuscatedName("w")
    static char[] field3687;
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "124"
-   )
-   static int method4863(int var0) {
-      MessageNode var1 = (MessageNode)class98.field1546.method3478((long)var0);
-      return var1 == null?-1:(var1.next == class98.field1548.field2492?-1:((MessageNode)var1.next).id);
-   }
+   @ObfuscatedName("a")
+   static int[] field3685;
 
    static {
       field3684 = new char[64];
@@ -72,11 +62,21 @@ public class class269 {
          field3685[var0] = var0 - 48 + 52;
       }
 
-      int[] var1 = field3685;
-      field3685[43] = 62;
-      var1[42] = 62;
       int[] var2 = field3685;
+      field3685[43] = 62;
+      var2[42] = 62;
+      int[] var1 = field3685;
       field3685[47] = 63;
-      var2[45] = 63;
+      var1[45] = 63;
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(IB)I",
+      garbageValue = "124"
+   )
+   static int method4863(int var0) {
+      MessageNode var1 = (MessageNode)class98.field1546.method3478((long)var0);
+      return var1 == null?-1:(var1.next == class98.field1548.field2492?-1:((MessageNode)var1.next).id);
    }
 }

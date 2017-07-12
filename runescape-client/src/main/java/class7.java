@@ -4,21 +4,29 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("y")
 public class class7 {
+   @ObfuscatedName("i")
+   public static boolean field236;
+   @ObfuscatedName("w")
+   public static boolean field238;
    @ObfuscatedName("a")
    public static boolean field232;
+   @ObfuscatedName("l")
+   @Export("currentRequest")
+   public static FileRequest currentRequest;
    @ObfuscatedName("t")
    public static class11 field233;
    @ObfuscatedName("s")
    public static CombatInfoList field234;
-   @ObfuscatedName("i")
-   public static boolean field236;
-   @ObfuscatedName("l")
-   @Export("currentRequest")
-   public static FileRequest currentRequest;
-   @ObfuscatedName("w")
-   public static boolean field238;
    @ObfuscatedName("r")
    public static int[] field239;
+
+   static {
+      field236 = false;
+      field238 = false;
+      field232 = false;
+      field233 = class11.field268;
+      field234 = new CombatInfoList();
+   }
 
    @ObfuscatedName("iy")
    @ObfuscatedSignature(
@@ -61,13 +69,5 @@ public class class7 {
             return false;
          }
       }
-   }
-
-   static {
-      field236 = false;
-      field238 = false;
-      field232 = false;
-      field233 = class11.field268;
-      field234 = new CombatInfoList();
    }
 }

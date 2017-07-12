@@ -4,40 +4,22 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ka")
 public class class287 {
-   @ObfuscatedName("r")
-   String field3807;
-   @ObfuscatedName("v")
-   IndexDataBase field3808;
+   @ObfuscatedName("j")
+   boolean field3810;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -721163537
    )
    int field3809;
-   @ObfuscatedName("j")
-   boolean field3810;
+   @ObfuscatedName("v")
+   IndexDataBase field3808;
+   @ObfuscatedName("r")
+   String field3807;
 
    class287(IndexDataBase var1) {
       this.field3809 = 0;
       this.field3810 = false;
       this.field3808 = var1;
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-2082301828"
-   )
-   boolean method5163() {
-      return this.field3810;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1495111999"
-   )
-   int method5164() {
-      return this.field3809;
    }
 
    @ObfuscatedName("w")
@@ -82,18 +64,37 @@ public class class287 {
       return this.field3809;
    }
 
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-2082301828"
+   )
+   boolean method5163() {
+      return this.field3810;
+   }
+
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;I)V",
       garbageValue = "-186137854"
    )
    void method5176(String var1) {
-      if(var1 != null && !var1.isEmpty() && this.field3807 != var1) {
-         this.field3807 = var1;
-         this.field3809 = 0;
-         this.field3810 = false;
-         this.method5170();
+      if(var1 != null && !var1.isEmpty()) {
+         if(var1 != this.field3807) {
+            this.field3807 = var1;
+            this.field3809 = 0;
+            this.field3810 = false;
+            this.method5170();
+         }
       }
+   }
 
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1495111999"
+   )
+   int method5164() {
+      return this.field3809;
    }
 }

@@ -11,19 +11,15 @@ public abstract class class119 extends Node {
    @ObfuscatedName("f")
    int field1728;
 
-   @ObfuscatedName("al")
-   int vmethod2291() {
-      return 255;
+   protected class119() {
+      this.field1725 = true;
    }
 
-   @ObfuscatedName("r")
-   protected abstract class119 vmethod3864();
+   @ObfuscatedName("j")
+   protected abstract void vmethod3889(int[] var1, int var2, int var3);
 
-   @ObfuscatedName("v")
-   protected abstract class119 vmethod3865();
-
-   @ObfuscatedName("y")
-   protected abstract int vmethod3888();
+   @ObfuscatedName("e")
+   protected abstract void vmethod3885(int var1);
 
    @ObfuscatedName("eh")
    final void method2295(int[] var1, int var2, int var3) {
@@ -35,13 +31,17 @@ public abstract class class119 extends Node {
 
    }
 
-   protected class119() {
-      this.field1725 = true;
+   @ObfuscatedName("v")
+   protected abstract class119 vmethod3865();
+
+   @ObfuscatedName("r")
+   protected abstract class119 vmethod3864();
+
+   @ObfuscatedName("al")
+   int vmethod2291() {
+      return 255;
    }
 
-   @ObfuscatedName("j")
-   protected abstract void vmethod3889(int[] var1, int var2, int var3);
-
-   @ObfuscatedName("e")
-   protected abstract void vmethod3885(int var1);
+   @ObfuscatedName("y")
+   protected abstract int vmethod3888();
 }

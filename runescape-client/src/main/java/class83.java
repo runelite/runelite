@@ -6,16 +6,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ck")
 public class class83 {
-   @ObfuscatedName("o")
-   @Export("scriptStack")
-   static ScriptState[] scriptStack;
-   @ObfuscatedName("t")
-   @Export("scriptLocalStrings")
-   static String[] scriptLocalStrings;
    @ObfuscatedName("s")
    static int[] field1358;
-   @ObfuscatedName("m")
-   static final String[] field1359;
+   @ObfuscatedName("r")
+   @Export("SHAPE_VERTICIES")
+   static int[][] SHAPE_VERTICIES;
    @ObfuscatedName("v")
    @Export("intStack")
    static int[] intStack;
@@ -28,16 +23,13 @@ public class class83 {
    )
    @Export("scriptStackCount")
    static int scriptStackCount;
-   @ObfuscatedName("r")
-   @Export("SHAPE_VERTICIES")
-   static int[][] SHAPE_VERTICIES;
-   @ObfuscatedName("l")
-   static Widget field1364;
+   @ObfuscatedName("o")
+   @Export("scriptStack")
+   static ScriptState[] scriptStack;
    @ObfuscatedName("c")
    static Calendar field1365;
-   @ObfuscatedName("a")
-   @Export("scriptLocalInts")
-   static int[] scriptLocalInts;
+   @ObfuscatedName("m")
+   static final String[] field1359;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -1498047889
@@ -48,15 +40,14 @@ public class class83 {
    static ModIcon logoSprite;
    @ObfuscatedName("q")
    static int[] field1370;
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1956252938"
-   )
-   public static void method1674(int var0) {
-      MouseInput.mouseIdleTicks = var0;
-   }
+   @ObfuscatedName("a")
+   @Export("scriptLocalInts")
+   static int[] scriptLocalInts;
+   @ObfuscatedName("t")
+   @Export("scriptLocalStrings")
+   static String[] scriptLocalStrings;
+   @ObfuscatedName("l")
+   static Widget field1364;
 
    static {
       field1358 = new int[5];
@@ -68,5 +59,14 @@ public class class83 {
       field1365 = Calendar.getInstance();
       field1359 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
       field1367 = 0;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1956252938"
+   )
+   public static void method1674(int var0) {
+      MouseInput.mouseIdleTicks = var0;
    }
 }

@@ -7,18 +7,53 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ea")
 @Implements("DecorativeObject")
 public final class DecorativeObject {
+   @ObfuscatedName("cs")
+   static IndexData field2194;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -859681275
+   )
+   @Export("hash")
+   public int hash;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 1023584981
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 831492273
+   )
+   @Export("offsetX")
+   int offsetX;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 1641522523
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 1221729509
+   )
+   @Export("offsetY")
+   int offsetY;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 691217971
+   )
+   @Export("y")
+   int y;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -483691505
    )
    @Export("floor")
    int floor;
+   @ObfuscatedName("y")
+   @Export("renderable1")
+   public Renderable renderable1;
    @ObfuscatedName("j")
    @Export("renderable2")
    public Renderable renderable2;
@@ -34,41 +69,6 @@ public final class DecorativeObject {
    )
    @Export("rotation")
    int rotation;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 831492273
-   )
-   @Export("offsetX")
-   int offsetX;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 1221729509
-   )
-   @Export("offsetY")
-   int offsetY;
-   @ObfuscatedName("y")
-   @Export("renderable1")
-   public Renderable renderable1;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 691217971
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -859681275
-   )
-   @Export("hash")
-   public int hash;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 1641522523
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("cs")
-   static IndexData field2194;
 
    DecorativeObject() {
       this.hash = 0;

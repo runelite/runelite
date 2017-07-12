@@ -5,23 +5,28 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("as")
 public class class35 {
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1304039067
-   )
-   final int field506;
-   @ObfuscatedName("w")
-   static final class35 field507;
-   @ObfuscatedName("od")
-   @Export("clanChatRank")
-   static byte clanChatRank;
    @ObfuscatedName("i")
    static final class35 field511;
+   @ObfuscatedName("w")
+   static final class35 field507;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 187222449
    )
    public static int field514;
+   @ObfuscatedName("od")
+   @Export("clanChatRank")
+   static byte clanChatRank;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 1304039067
+   )
+   final int field506;
+
+   static {
+      field511 = new class35(0);
+      field507 = new class35(1);
+   }
 
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -29,15 +34,6 @@ public class class35 {
    )
    class35(int var1) {
       this.field506 = var1;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)[LBuildType;",
-      garbageValue = "1933463881"
-   )
-   public static BuildType[] method507() {
-      return new BuildType[]{BuildType.LIVE, BuildType.RC, BuildType.BUILD_LIVE, BuildType.WIP};
    }
 
    @ObfuscatedName("i")
@@ -64,8 +60,12 @@ public class class35 {
       }
    }
 
-   static {
-      field511 = new class35(0);
-      field507 = new class35(1);
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)[LBuildType;",
+      garbageValue = "1933463881"
+   )
+   public static BuildType[] method507() {
+      return new BuildType[]{BuildType.LIVE, BuildType.RC, BuildType.BUILD_LIVE, BuildType.WIP};
    }
 }

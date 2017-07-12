@@ -32,8 +32,8 @@ public class class170 {
             ++class238.field3278;
             class238.field3272 = null;
          }
-      }
 
+      }
    }
 
    @ObfuscatedName("i")

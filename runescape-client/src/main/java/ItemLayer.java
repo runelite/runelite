@@ -7,12 +7,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("dv")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1616879843
-   )
-   @Export("flags")
-   int flags;
+   @ObfuscatedName("t")
+   @Export("bottom")
+   Renderable bottom;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -164313745
@@ -25,27 +22,30 @@ public final class ItemLayer {
    )
    @Export("y")
    int y;
-   @ObfuscatedName("t")
-   @Export("bottom")
-   Renderable bottom;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -462915027
    )
    @Export("hash")
    int hash;
-   @ObfuscatedName("y")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1489572101
+      intValue = -1616879843
    )
-   @Export("height")
-   int height;
+   @Export("flags")
+   int flags;
    @ObfuscatedName("s")
    @Export("middle")
    Renderable middle;
    @ObfuscatedName("r")
    @Export("top")
    Renderable top;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -1489572101
+   )
+   @Export("height")
+   int height;
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(

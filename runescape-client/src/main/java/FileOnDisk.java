@@ -11,18 +11,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("dp")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      longValue = 5572046021208202383L
-   )
-   @Export("length")
-   long length;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      longValue = -1707267051185505401L
-   )
-   @Export("position")
-   long position;
    @ObfuscatedName("cv")
    @Export("rssocket")
    static RSSocket rssocket;
@@ -31,105 +19,21 @@ public final class FileOnDisk {
       intValue = -499958675
    )
    static int field1777;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      longValue = -1707267051185505401L
+   )
+   @Export("position")
+   long position;
    @ObfuscatedName("i")
    @Export("file")
    RandomAccessFile file;
-
    @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "167165863"
-   )
-   @Export("write")
-   public final void write(byte[] var1, int var2, int var3) throws IOException {
-      if((long)var3 + this.position > this.length) {
-         this.file.seek(this.length + 1L);
-         this.file.write(1);
-         throw new EOFException();
-      } else {
-         this.file.write(var1, var2, var3);
-         this.position += (long)var3;
-      }
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
-      garbageValue = "748090705"
-   )
-   static int method2366(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class83.field1364:class60.field766;
-      if(var0 == 1800) {
-         int[] var8 = class83.intStack;
-         int var5 = ++class46.intStackSize - 1;
-         int var6 = WorldMapType3.getWidgetConfig(var3);
-         int var7 = var6 >> 11 & 63;
-         var8[var5] = var7;
-         return 1;
-      } else if(var0 != 1801) {
-         if(var0 == 1802) {
-            if(var3.name == null) {
-               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
-            } else {
-               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var3.name;
-            }
-
-            return 1;
-         } else {
-            return 2;
-         }
-      } else {
-         int var4 = class83.intStack[--class46.intStackSize];
-         --var4;
-         if(var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
-            class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var3.actions[var4];
-         } else {
-            class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
-         }
-
-         return 1;
-      }
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "([BIII)I",
-      garbageValue = "1897591308"
-   )
-   @Export("read")
-   public final int read(byte[] var1, int var2, int var3) throws IOException {
-      int var4 = this.file.read(var1, var2, var3);
-      if(var4 > 0) {
-         this.position += (long)var4;
-      }
-
-      return var4;
-   }
-
-   protected void finalize() throws Throwable {
-      if(this.file != null) {
-         System.out.println("");
-         this.close();
-      }
-
-   }
-
-   @ObfuscatedName("i")
-   @Export("seek")
-   final void seek(long var1) throws IOException {
-      this.file.seek(var1);
-      this.position = var1;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "-1398584935"
+   @ObfuscatedGetter(
+      longValue = 5572046021208202383L
    )
    @Export("length")
-   public final long length() throws IOException {
-      return this.file.length();
-   }
+   long length;
 
    public FileOnDisk(File var1, String var2, long var3) throws IOException {
       if(-1L == var3) {
@@ -152,6 +56,16 @@ public final class FileOnDisk {
       this.file.seek(0L);
    }
 
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(I)J",
+      garbageValue = "-1398584935"
+   )
+   @Export("length")
+   public final long length() throws IOException {
+      return this.file.length();
+   }
+
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -162,6 +76,53 @@ public final class FileOnDisk {
       if(this.file != null) {
          this.file.close();
          this.file = null;
+      }
+
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "([BIII)I",
+      garbageValue = "1897591308"
+   )
+   @Export("read")
+   public final int read(byte[] var1, int var2, int var3) throws IOException {
+      int var4 = this.file.read(var1, var2, var3);
+      if(var4 > 0) {
+         this.position += (long)var4;
+      }
+
+      return var4;
+   }
+
+   @ObfuscatedName("i")
+   @Export("seek")
+   final void seek(long var1) throws IOException {
+      this.file.seek(var1);
+      this.position = var1;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "([BIII)V",
+      garbageValue = "167165863"
+   )
+   @Export("write")
+   public final void write(byte[] var1, int var2, int var3) throws IOException {
+      if((long)var3 + this.position > this.length) {
+         this.file.seek(this.length + 1L);
+         this.file.write(1);
+         throw new EOFException();
+      } else {
+         this.file.write(var1, var2, var3);
+         this.position += (long)var3;
+      }
+   }
+
+   protected void finalize() throws Throwable {
+      if(this.file != null) {
+         System.out.println("");
+         this.close();
       }
 
    }
@@ -193,5 +154,44 @@ public final class FileOnDisk {
 
       XGrandExchangeOffer.method113();
       return var0;
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(ILScript;ZI)I",
+      garbageValue = "748090705"
+   )
+   static int method2366(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class83.field1364:class60.field766;
+      if(var0 == 1800) {
+         int[] var4 = class83.intStack;
+         int var5 = ++class46.intStackSize - 1;
+         int var7 = WorldMapType3.getWidgetConfig(var3);
+         int var6 = var7 >> 11 & 63;
+         var4[var5] = var6;
+         return 1;
+      } else if(var0 != 1801) {
+         if(var0 == 1802) {
+            if(var3.name == null) {
+               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
+            } else {
+               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var3.name;
+            }
+
+            return 1;
+         } else {
+            return 2;
+         }
+      } else {
+         int var8 = class83.intStack[--class46.intStackSize];
+         --var8;
+         if(var3.actions != null && var8 < var3.actions.length && var3.actions[var8] != null) {
+            class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var3.actions[var8];
+         } else {
+            class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
+         }
+
+         return 1;
+      }
    }
 }

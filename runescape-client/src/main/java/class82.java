@@ -4,40 +4,20 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cq")
 public final class class82 extends Node {
+   @ObfuscatedName("i")
+   static Deque field1349;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 1051222987
    )
    int field1338;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -2144107343
-   )
-   int field1339;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1522915565
-   )
-   int field1340;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -1293001177
-   )
-   int field1341;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 32616749
-   )
-   int field1343;
+   @ObfuscatedName("r")
+   ObjectComposition field1345;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -1720722111
    )
    int field1344;
-   @ObfuscatedName("r")
-   ObjectComposition field1345;
-   @ObfuscatedName("e")
-   class117 field1346;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 2126725121
@@ -48,53 +28,45 @@ public final class class82 extends Node {
       intValue = 66226405
    )
    int field1348;
-   @ObfuscatedName("i")
-   static Deque field1349;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1676533379
-   )
-   int field1350;
-   @ObfuscatedName("c")
-   class117 field1351;
+   @ObfuscatedName("z")
+   int[] field1353;
+   @ObfuscatedName("e")
+   class117 field1346;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 1336452109
    )
    int field1352;
-   @ObfuscatedName("z")
-   int[] field1353;
-
-   @ObfuscatedName("gq")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "1776884771"
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 1522915565
    )
-   static final void method1616(boolean var0) {
-      for(int var1 = 0; var1 < Client.field937; ++var1) {
-         NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
-         int var3 = (Client.npcIndices[var1] << 14) + 536870912;
-         if(var2 != null && var2.hasConfig() && var0 == var2.composition.isVisible && var2.composition.method4666()) {
-            int var4 = var2.x >> 7;
-            int var5 = var2.y >> 7;
-            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
-               if(var2.field1242 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
-                  if(Client.field1058[var4][var5] == Client.field957) {
-                     continue;
-                  }
+   int field1340;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 32616749
+   )
+   int field1343;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -1293001177
+   )
+   int field1341;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -2144107343
+   )
+   int field1339;
+   @ObfuscatedName("c")
+   class117 field1351;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -1676533379
+   )
+   int field1350;
 
-                  Client.field1058[var4][var5] = Client.field957;
-               }
-
-               if(!var2.composition.field3588) {
-                  var3 -= Integer.MIN_VALUE;
-               }
-
-               class2.region.method2677(WallObject.plane, var2.x, var2.y, WorldMapData.getTileHeight(var2.field1242 * 64 - 64 + var2.x, var2.field1242 * 64 - 64 + var2.y, WallObject.plane), var2.field1242 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1267);
-            }
-         }
-      }
-
+   static {
+      field1349 = new Deque();
    }
 
    @ObfuscatedName("w")
@@ -119,7 +91,7 @@ public final class class82 extends Node {
          this.field1353 = null;
       }
 
-      if(this.field1338 != var1 && this.field1346 != null) {
+      if(var1 != this.field1338 && this.field1346 != null) {
          class19.field328.method1887(this.field1346);
          this.field1346 = null;
       }
@@ -136,6 +108,53 @@ public final class class82 extends Node {
          class92.worldSelectShown = true;
       }
 
+   }
+
+   @ObfuscatedName("gq")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "1776884771"
+   )
+   static final void method1616(boolean var0) {
+      for(int var1 = 0; var1 < Client.field937; ++var1) {
+         NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
+         int var3 = (Client.npcIndices[var1] << 14) + 536870912;
+         if(var2 != null && var2.hasConfig() && var2.composition.isVisible == var0 && var2.composition.method4666()) {
+            int var4 = var2.x >> 7;
+            int var5 = var2.y >> 7;
+            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
+               if(var2.field1242 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
+                  if(Client.field1058[var4][var5] == Client.field957) {
+                     continue;
+                  }
+
+                  Client.field1058[var4][var5] = Client.field957;
+               }
+
+               if(!var2.composition.field3588) {
+                  var3 -= Integer.MIN_VALUE;
+               }
+
+               class2.region.method2677(WallObject.plane, var2.x, var2.y, WorldMapData.getTileHeight(var2.field1242 * 64 - 64 + var2.x, var2.field1242 * 64 - 64 + var2.y, WallObject.plane), var2.field1242 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1267);
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(ILIndexDataBase;IIIZI)V",
+      garbageValue = "1681101811"
+   )
+   public static void method1628(int var0, IndexDataBase var1, int var2, int var3, int var4, boolean var5) {
+      class203.field2508 = 1;
+      class61.field785 = var1;
+      class203.field2511 = var2;
+      class203.field2512 = var3;
+      class203.field2513 = var4;
+      class203.field2515 = var5;
+      class203.field2517 = var0;
    }
 
    @ObfuscatedName("gw")
@@ -156,38 +175,19 @@ public final class class82 extends Node {
          int var8 = var6 * var1 + var0 * var7 >> 16;
          var1 = var7 * var1 - var0 * var6 >> 16;
          var0 = var8;
-         var8 = var3 * var5 - var4 * var1 >> 16;
+         var8 = var5 * var3 - var4 * var1 >> 16;
          var1 = var3 * var4 + var5 * var1 >> 16;
          if(var1 >= 50) {
             Client.screenY = var0 * Client.scale / var1 + Client.viewportHeight / 2;
-            Client.screenX = var8 * Client.scale / var1 + Client.viewportWidth / 2;
+            Client.screenX = Client.viewportWidth / 2 + Client.scale * var8 / var1;
          } else {
             Client.screenY = -1;
             Client.screenX = -1;
          }
+
       } else {
          Client.screenY = -1;
          Client.screenX = -1;
       }
-
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(ILIndexDataBase;IIIZI)V",
-      garbageValue = "1681101811"
-   )
-   public static void method1628(int var0, IndexDataBase var1, int var2, int var3, int var4, boolean var5) {
-      class203.field2508 = 1;
-      class61.field785 = var1;
-      class203.field2511 = var2;
-      class203.field2512 = var3;
-      class203.field2513 = var4;
-      class203.field2515 = var5;
-      class203.field2517 = var0;
-   }
-
-   static {
-      field1349 = new Deque();
    }
 }

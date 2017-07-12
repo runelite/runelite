@@ -5,6 +5,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("j")
 public final class class8 extends class9 {
+   @ObfuscatedName("re")
+   @Export("settings")
+   static Preferences settings;
+   @ObfuscatedName("gk")
+   static ModIcon[] field246;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 95643145
+   )
+   final int field245;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -358101561
@@ -25,16 +35,6 @@ public final class class8 extends class9 {
       intValue = -2075352045
    )
    final int field244;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 95643145
-   )
-   final int field245;
-   @ObfuscatedName("gk")
-   static ModIcon[] field246;
-   @ObfuscatedName("re")
-   @Export("settings")
-   static Preferences settings;
 
    public class8(int var1, int var2, int var3, int var4, int var5) {
       this.field245 = var1;
@@ -42,6 +42,15 @@ public final class class8 extends class9 {
       this.field242 = var3;
       this.field243 = var4;
       this.field244 = var5;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "366399750"
+   )
+   final void vmethod50() {
+      Rasterizer2D.drawRectangle(this.field245 + Rasterizer2D.draw_region_x, this.field240 + Rasterizer2D.drawingAreaTop, this.field242 - this.field245, this.field243 - this.field240, this.field244);
    }
 
    @ObfuscatedName("w")
@@ -63,14 +72,5 @@ public final class class8 extends class9 {
       class98.field1546.method3480();
       class98.field1548.method3645();
       class98.field1549 = 0;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "366399750"
-   )
-   final void vmethod50() {
-      Rasterizer2D.drawRectangle(this.field245 + Rasterizer2D.draw_region_x, this.field240 + Rasterizer2D.drawingAreaTop, this.field242 - this.field245, this.field243 - this.field240, this.field244);
    }
 }

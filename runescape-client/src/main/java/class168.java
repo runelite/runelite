@@ -11,6 +11,10 @@ public class class168 {
    )
    public static int field2346;
 
+   static {
+      new HashMap();
+   }
+
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -30,9 +34,5 @@ public class class168 {
       }
 
       class82.field1349.clear();
-   }
-
-   static {
-      new HashMap();
    }
 }

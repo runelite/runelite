@@ -26,6 +26,15 @@ public enum class27 implements RSEnum {
    @ObfuscatedName("r")
    final byte field400;
 
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "0"
+   )
+   class27(int var3, byte var4) {
+      this.field399 = var3;
+      this.field400 = var4;
+   }
+
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
@@ -33,15 +42,6 @@ public enum class27 implements RSEnum {
    )
    public int rsOrdinal() {
       return this.field400;
-   }
-
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "0"
-   )
-   private class27(int var3, byte var4) {
-      this.field399 = var3;
-      this.field400 = var4;
    }
 
    @ObfuscatedName("i")

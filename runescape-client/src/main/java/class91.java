@@ -28,6 +28,14 @@ public enum class91 implements RSEnum {
    @ObfuscatedName("ao")
    static Image field1448;
 
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "0"
+   )
+   class91(int var3) {
+      this.field1443 = var3;
+   }
+
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
@@ -57,13 +65,5 @@ public enum class91 implements RSEnum {
       Client.field1158 = var1;
       WorldMapType3.spellTargetFlags = var2;
       class88.method1714(var4);
-   }
-
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "0"
-   )
-   private class91(int var3) {
-      this.field1443 = var3;
    }
 }

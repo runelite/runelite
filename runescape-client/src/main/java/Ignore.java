@@ -7,23 +7,23 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bn")
 @Implements("Ignore")
 public class Ignore {
+   @ObfuscatedName("ry")
+   static IndexFile field861;
+   @ObfuscatedName("rb")
+   static MachineInfo field866;
+   @ObfuscatedName("ab")
+   static int[] field864;
    @ObfuscatedName("hn")
    @ObfuscatedGetter(
       intValue = -726961477
    )
    static int field860;
-   @ObfuscatedName("ry")
-   static IndexFile field861;
-   @ObfuscatedName("w")
-   @Export("previousName")
-   String previousName;
    @ObfuscatedName("i")
    @Export("name")
    String name;
-   @ObfuscatedName("ab")
-   static int[] field864;
-   @ObfuscatedName("rb")
-   static MachineInfo field866;
+   @ObfuscatedName("w")
+   @Export("previousName")
+   String previousName;
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
@@ -31,20 +31,22 @@ public class Ignore {
       garbageValue = "-1"
    )
    static void method1136(int var0) {
-      if(var0 != -1 && class66.loadWidget(var0)) {
-         Widget[] var1 = class46.widgets[var0];
+      if(var0 != -1) {
+         if(class66.loadWidget(var0)) {
+            Widget[] var1 = class46.widgets[var0];
 
-         for(int var2 = 0; var2 < var1.length; ++var2) {
-            Widget var3 = var1[var2];
-            if(var3.field2735 != null) {
-               ScriptEvent var4 = new ScriptEvent();
-               var4.widget = var3;
-               var4.field857 = var3.field2735;
-               class31.method267(var4, 2000000);
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               Widget var3 = var1[var2];
+               if(var3.field2735 != null) {
+                  ScriptEvent var4 = new ScriptEvent();
+                  var4.widget = var3;
+                  var4.field857 = var3.field2735;
+                  class31.method267(var4, 2000000);
+               }
             }
+
          }
       }
-
    }
 
    @ObfuscatedName("i")
@@ -58,7 +60,7 @@ public class Ignore {
 
       for(int var3 = 0; var3 < var2.length; ++var3) {
          class276 var4 = var2[var3];
-         if(var4.field3738 == var0) {
+         if(var0 == var4.field3738) {
             return var4;
          }
       }

@@ -15,6 +15,13 @@ public class GZipDecompressor {
       this(-1, 1000000, 1000000);
    }
 
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "1000000"
+   )
+   GZipDecompressor(int var1, int var2, int var3) {
+   }
+
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(LBuffer;[BI)V",
@@ -39,13 +46,6 @@ public class GZipDecompressor {
       } else {
          throw new RuntimeException("");
       }
-   }
-
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "1000000"
-   )
-   GZipDecompressor(int var1, int var2, int var3) {
    }
 
    @ObfuscatedName("v")

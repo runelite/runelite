@@ -12,19 +12,12 @@ public interface WorldMapSectionBase {
    )
    boolean vmethod754(int var1, int var2);
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "1509988890"
+      signature = "(IIII)Z",
+      garbageValue = "998947175"
    )
-   int[] vmethod730(int var1, int var2, int var3);
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "618655756"
-   )
-   void vmethod732(Buffer var1);
+   boolean vmethod728(int var1, int var2, int var3);
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
@@ -40,10 +33,17 @@ public interface WorldMapSectionBase {
    )
    Coordinates vmethod731(int var1, int var2);
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IIII)Z",
-      garbageValue = "998947175"
+      signature = "(IIII)[I",
+      garbageValue = "1509988890"
    )
-   boolean vmethod728(int var1, int var2, int var3);
+   int[] vmethod730(int var1, int var2, int var3);
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;I)V",
+      garbageValue = "618655756"
+   )
+   void vmethod732(Buffer var1);
 }

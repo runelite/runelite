@@ -12,85 +12,6 @@ public final class NPC extends Actor {
    @Export("composition")
    NPCComposition composition;
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIZI)V",
-      garbageValue = "2056497285"
-   )
-   final void method1692(int var1, int var2, boolean var3) {
-      if(super.animation != -1 && class224.getAnimation(super.animation).priority == 1) {
-         super.animation = -1;
-      }
-
-      if(!var3) {
-         int var4 = var1 - super.pathX[0];
-         int var5 = var2 - super.pathY[0];
-         if(var4 >= -8 && var4 <= 8 && var5 >= -8 && var5 <= 8) {
-            if(super.queueSize < 9) {
-               ++super.queueSize;
-            }
-
-            for(int var6 = super.queueSize; var6 > 0; --var6) {
-               super.pathX[var6] = super.pathX[var6 - 1];
-               super.pathY[var6] = super.pathY[var6 - 1];
-               super.field1297[var6] = super.field1297[var6 - 1];
-            }
-
-            super.pathX[0] = var1;
-            super.pathY[0] = var2;
-            super.field1297[0] = 1;
-            return;
-         }
-      }
-
-      super.queueSize = 0;
-      super.field1269 = 0;
-      super.field1275 = 0;
-      super.pathX[0] = var1;
-      super.pathY[0] = var2;
-      super.x = super.pathX[0] * 128 + super.field1242 * 64;
-      super.y = 128 * super.pathY[0] + super.field1242 * 64;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-1215404042"
-   )
-   public static String method1693(CharSequence var0) {
-      int var1 = var0.length();
-      StringBuilder var2 = new StringBuilder(var1);
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 < 97 || var4 > 122) && (var4 < 65 || var4 > 90) && (var4 < 48 || var4 > 57) && var4 != 46 && var4 != 45 && var4 != 42 && var4 != 95) {
-            if(var4 == 32) {
-               var2.append('+');
-            } else {
-               byte var5 = TextureProvider.method2403(var4);
-               var2.append('%');
-               int var6 = var5 >> 4 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-
-               var6 = var5 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-            }
-         } else {
-            var2.append(var4);
-         }
-      }
-
-      return var2.toString();
-   }
-
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)LModel;",
@@ -101,7 +22,7 @@ public final class NPC extends Actor {
          return null;
       } else {
          Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?class224.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation == -1 || super.idlePoseAnimation == super.poseAnimation && var1 != null?null:class224.getAnimation(super.poseAnimation);
+         Sequence var2 = super.poseAnimation != -1 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?class224.getAnimation(super.poseAnimation):null;
          Model var3 = this.composition.method4651(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;
@@ -199,13 +120,44 @@ public final class NPC extends Actor {
       super.field1297[0] = var2;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1723086244"
+      signature = "(IIZI)V",
+      garbageValue = "2056497285"
    )
-   public static void method1704() {
-      VarPlayerType.varplayers.reset();
+   final void method1692(int var1, int var2, boolean var3) {
+      if(super.animation != -1 && class224.getAnimation(super.animation).priority == 1) {
+         super.animation = -1;
+      }
+
+      if(!var3) {
+         int var4 = var1 - super.pathX[0];
+         int var5 = var2 - super.pathY[0];
+         if(var4 >= -8 && var4 <= 8 && var5 >= -8 && var5 <= 8) {
+            if(super.queueSize < 9) {
+               ++super.queueSize;
+            }
+
+            for(int var6 = super.queueSize; var6 > 0; --var6) {
+               super.pathX[var6] = super.pathX[var6 - 1];
+               super.pathY[var6] = super.pathY[var6 - 1];
+               super.field1297[var6] = super.field1297[var6 - 1];
+            }
+
+            super.pathX[0] = var1;
+            super.pathY[0] = var2;
+            super.field1297[0] = 1;
+            return;
+         }
+      }
+
+      super.queueSize = 0;
+      super.field1269 = 0;
+      super.field1275 = 0;
+      super.pathX[0] = var1;
+      super.pathY[0] = var2;
+      super.x = super.field1242 * 64 + super.pathX[0] * 128;
+      super.y = super.field1242 * 64 + super.pathY[0] * 128;
    }
 
    @ObfuscatedName("w")
@@ -228,5 +180,53 @@ public final class NPC extends Actor {
          Overlay.overlays.put(var1, (long)var0);
          return var1;
       }
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1723086244"
+   )
+   public static void method1704() {
+      VarPlayerType.varplayers.reset();
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "-1215404042"
+   )
+   public static String method1693(CharSequence var0) {
+      int var1 = var0.length();
+      StringBuilder var2 = new StringBuilder(var1);
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if((var4 < 97 || var4 > 122) && (var4 < 65 || var4 > 90) && (var4 < 48 || var4 > 57) && var4 != 46 && var4 != 45 && var4 != 42 && var4 != 95) {
+            if(var4 == 32) {
+               var2.append('+');
+            } else {
+               byte var5 = TextureProvider.method2403(var4);
+               var2.append('%');
+               int var6 = var5 >> 4 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(var6 + 55));
+               } else {
+                  var2.append((char)(var6 + 48));
+               }
+
+               var6 = var5 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(var6 + 55));
+               } else {
+                  var2.append((char)(var6 + 48));
+               }
+            }
+         } else {
+            var2.append(var4);
+         }
+      }
+
+      return var2.toString();
    }
 }

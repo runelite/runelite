@@ -15,92 +15,6 @@ import net.runelite.rs.Reflection;
 
 @ObfuscatedName("gl")
 public class class205 extends Node {
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -837779237
-   )
-   int field2546;
-   @ObfuscatedName("a")
-   class207 field2547;
-   @ObfuscatedName("t")
-   class107 field2548;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -237639853
-   )
-   int field2549;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -755631907
-   )
-   int field2550;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 463333081
-   )
-   int field2551;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 1359167121
-   )
-   int field2552;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 2011734413
-   )
-   int field2553;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 28268075
-   )
-   int field2554;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1828918217
-   )
-   int field2555;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1446529713
-   )
-   int field2556;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 2008137635
-   )
-   int field2557;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -941902761
-   )
-   int field2558;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1206528403
-   )
-   int field2559;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -378149433
-   )
-   int field2560;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1531283323
-   )
-   int field2561;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -837445589
-   )
-   int field2562;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -2033054195
-   )
-   int field2563;
-   @ObfuscatedName("n")
-   class117 field2564;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 295922261
@@ -108,33 +22,92 @@ public class class205 extends Node {
    int field2565;
    @ObfuscatedName("w")
    class202 field2566;
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-1084482843"
+   @ObfuscatedName("a")
+   class207 field2547;
+   @ObfuscatedName("t")
+   class107 field2548;
+   @ObfuscatedName("n")
+   class117 field2564;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -237639853
    )
-   @Export("hsl24to16")
-   static final int hsl24to16(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
-      }
-
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-      return var3;
-   }
+   int field2549;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1206528403
+   )
+   int field2559;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 28268075
+   )
+   int field2554;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -378149433
+   )
+   int field2560;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -2033054195
+   )
+   int field2563;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 2011734413
+   )
+   int field2553;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -755631907
+   )
+   int field2550;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 1359167121
+   )
+   int field2552;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 1446529713
+   )
+   int field2556;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 463333081
+   )
+   int field2551;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 2008137635
+   )
+   int field2557;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -837445589
+   )
+   int field2562;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -941902761
+   )
+   int field2558;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -837779237
+   )
+   int field2546;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1828918217
+   )
+   int field2555;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -1531283323
+   )
+   int field2561;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
@@ -168,20 +141,6 @@ public class class205 extends Node {
          class244.field3322.put(var1, (long)var0);
          return var1;
       }
-   }
-
-   @ObfuscatedName("jy")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-7"
-   )
-   static void method3804(int var0) {
-      for(WidgetConfig var1 = (WidgetConfig)Client.widgetFlags.method3533(); var1 != null; var1 = (WidgetConfig)Client.widgetFlags.method3538()) {
-         if((long)var0 == (var1.hash >> 48 & 65535L)) {
-            var1.unlink();
-         }
-      }
-
    }
 
    @ObfuscatedName("w")
@@ -220,60 +179,60 @@ public class class205 extends Node {
                      var0.putInt(var6);
                   }
 
-                  Method var7;
+                  Method var25;
                   if(var4 != 3) {
                      if(var4 == 4) {
-                        var7 = var1.methods[var3];
-                        var6 = var7.getModifiers();
+                        var25 = var1.methods[var3];
+                        var6 = var25.getModifiers();
                         var0.putByte(0);
                         var0.putInt(var6);
                      }
                   } else {
-                     var7 = var1.methods[var3];
-                     byte[][] var8 = var1.args[var3];
-                     Object[] var9 = new Object[var8.length];
+                     var25 = var1.methods[var3];
+                     byte[][] var10 = var1.args[var3];
+                     Object[] var7 = new Object[var10.length];
 
-                     for(int var10 = 0; var10 < var8.length; ++var10) {
-                        ObjectInputStream var11 = new ObjectInputStream(new ByteArrayInputStream(var8[var10]));
-                        var9[var10] = var11.readObject();
+                     for(int var8 = 0; var8 < var10.length; ++var8) {
+                        ObjectInputStream var9 = new ObjectInputStream(new ByteArrayInputStream(var10[var8]));
+                        var7[var8] = var9.readObject();
                      }
 
-                     Object var24 = Reflection.invoke(var7, (Object)null, var9);
-                     if(var24 == null) {
+                     Object var11 = Reflection.invoke(var25, (Object)null, var7);
+                     if(var11 == null) {
                         var0.putByte(0);
-                     } else if(var24 instanceof Number) {
+                     } else if(var11 instanceof Number) {
                         var0.putByte(1);
-                        var0.putLong(((Number)var24).longValue());
-                     } else if(var24 instanceof String) {
+                        var0.putLong(((Number)var11).longValue());
+                     } else if(var11 instanceof String) {
                         var0.putByte(2);
-                        var0.putString((String)var24);
+                        var0.putString((String)var11);
                      } else {
                         var0.putByte(4);
                      }
                   }
-               } catch (ClassNotFoundException var12) {
+               } catch (ClassNotFoundException var13) {
                   var0.putByte(-10);
-               } catch (InvalidClassException var13) {
+               } catch (InvalidClassException var14) {
                   var0.putByte(-11);
-               } catch (StreamCorruptedException var14) {
+               } catch (StreamCorruptedException var15) {
                   var0.putByte(-12);
-               } catch (OptionalDataException var15) {
+               } catch (OptionalDataException var16) {
                   var0.putByte(-13);
-               } catch (IllegalAccessException var16) {
+               } catch (IllegalAccessException var17) {
                   var0.putByte(-14);
-               } catch (IllegalArgumentException var17) {
+               } catch (IllegalArgumentException var18) {
                   var0.putByte(-15);
-               } catch (InvocationTargetException var18) {
+               } catch (InvocationTargetException var19) {
                   var0.putByte(-16);
-               } catch (SecurityException var19) {
+               } catch (SecurityException var20) {
                   var0.putByte(-17);
-               } catch (IOException var20) {
+               } catch (IOException var21) {
                   var0.putByte(-18);
-               } catch (NullPointerException var21) {
+               } catch (NullPointerException var22) {
                   var0.putByte(-19);
-               } catch (Exception var22) {
+               } catch (Exception var23) {
                   var0.putByte(-20);
-               } catch (Throwable var23) {
+               } catch (Throwable var24) {
                   var0.putByte(-21);
                }
             }
@@ -282,6 +241,46 @@ public class class205 extends Node {
          var0.putCrc(var2);
          var1.unlink();
       }
+   }
 
+   @ObfuscatedName("jy")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "-7"
+   )
+   static void method3804(int var0) {
+      for(WidgetConfig var1 = (WidgetConfig)Client.widgetFlags.method3533(); var1 != null; var1 = (WidgetConfig)Client.widgetFlags.method3538()) {
+         if((long)var0 == (var1.hash >> 48 & 65535L)) {
+            var1.unlink();
+         }
+      }
+
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(IIII)I",
+      garbageValue = "-1084482843"
+   )
+   @Export("hsl24to16")
+   static final int hsl24to16(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
+      }
+
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
+      return var3;
    }
 }

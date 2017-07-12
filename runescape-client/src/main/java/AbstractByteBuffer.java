@@ -11,6 +11,18 @@ public abstract class AbstractByteBuffer {
    @ObfuscatedName("bb")
    static ModIcon[] field2422;
 
+   static {
+      field2420 = false;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(B)[B",
+      garbageValue = "104"
+   )
+   @Export("get")
+   abstract byte[] get();
+
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "([BI)V",
@@ -80,14 +92,6 @@ public abstract class AbstractByteBuffer {
       }
    }
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(B)[B",
-      garbageValue = "104"
-   )
-   @Export("get")
-   abstract byte[] get();
-
    @ObfuscatedName("iz")
    @ObfuscatedSignature(
       signature = "(LWidget;IIIIIII)V",
@@ -109,7 +113,7 @@ public abstract class AbstractByteBuffer {
          } else if(var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
             var0.scrollY += 4;
             class88.method1714(var0);
-         } else if(var5 >= var1 - Client.field1008 && var5 < 16 + var1 + Client.field1008 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
+         } else if(var5 >= var1 - Client.field1008 && var5 < var1 + 16 + Client.field1008 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
             var7 = var3 * (var3 - 32) / var4;
             if(var7 < 8) {
                var7 = 8;
@@ -131,9 +135,5 @@ public abstract class AbstractByteBuffer {
          }
       }
 
-   }
-
-   static {
-      field2420 = false;
    }
 }

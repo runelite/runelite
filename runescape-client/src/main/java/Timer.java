@@ -22,6 +22,18 @@ public abstract class Timer {
    )
    public abstract void vmethod2965();
 
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-1673479880"
+   )
+   static final int method2972(int var0, int var1) {
+      int var2 = var1 * 57 + var0;
+      var2 ^= var2 << 13;
+      int var3 = var2 * (789221 + var2 * var2 * 15731) + 1376312589 & Integer.MAX_VALUE;
+      return var3 >> 19 & 255;
+   }
+
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(ILIndexDataBase;Ljava/lang/String;Ljava/lang/String;IZI)V",
@@ -110,17 +122,5 @@ public abstract class Timer {
       } else {
          return var0;
       }
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1673479880"
-   )
-   static final int method2972(int var0, int var1) {
-      int var2 = var1 * 57 + var0;
-      var2 ^= var2 << 13;
-      int var3 = (var2 * var2 * 15731 + 789221) * var2 + 1376312589 & Integer.MAX_VALUE;
-      return var3 >> 19 & 255;
    }
 }

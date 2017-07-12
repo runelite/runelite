@@ -5,11 +5,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hf")
 public class class210 extends CacheableNode {
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -795874025
-   )
-   public final int field2602;
+   @ObfuscatedName("j")
+   @Export("spritePixels")
+   public static byte[][] spritePixels;
    @ObfuscatedName("t")
    public final int[] field2604;
    @ObfuscatedName("i")
@@ -17,11 +15,13 @@ public class class210 extends CacheableNode {
       intValue = 986821743
    )
    public final int field2607;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -795874025
+   )
+   public final int field2602;
    @ObfuscatedName("a")
    public final int[] field2608;
-   @ObfuscatedName("j")
-   @Export("spritePixels")
-   public static byte[][] spritePixels;
 
    class210(int var1, int var2, int[] var3, int[] var4, int var5) {
       this.field2607 = var1;

@@ -28,7 +28,7 @@ public class class200 implements Iterator {
 
    public Object next() {
       CacheableNode var1 = this.field2490;
-      if(this.field2489.field2492 == var1) {
+      if(var1 == this.field2489.field2492) {
          var1 = null;
          this.field2490 = null;
       } else {
@@ -40,6 +40,6 @@ public class class200 implements Iterator {
    }
 
    public boolean hasNext() {
-      return this.field2490 != this.field2489.field2492;
+      return this.field2489.field2492 != this.field2490;
    }
 }

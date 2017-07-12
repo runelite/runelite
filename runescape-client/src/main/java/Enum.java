@@ -7,31 +7,31 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("il")
 @Implements("Enum")
 public class Enum extends CacheableNode {
+   @ObfuscatedName("w")
+   public static NodeCache field3415;
    @ObfuscatedName("i")
    public static IndexDataBase field3409;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -904889213
-   )
-   @Export("size")
-   public int size;
+   @ObfuscatedName("s")
+   @Export("defaultString")
+   public String defaultString;
    @ObfuscatedName("a")
    @Export("keyType")
    public char keyType;
    @ObfuscatedName("t")
    @Export("valType")
    public char valType;
-   @ObfuscatedName("s")
-   @Export("defaultString")
-   public String defaultString;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -904889213
+   )
+   @Export("size")
+   public int size;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -1937549869
    )
    @Export("defaultInt")
    public int defaultInt;
-   @ObfuscatedName("w")
-   public static NodeCache field3415;
    @ObfuscatedName("y")
    @Export("keys")
    public int[] keys;
@@ -42,21 +42,8 @@ public class Enum extends CacheableNode {
    @Export("intVals")
    public int[] intVals;
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
-      garbageValue = "4"
-   )
-   @Export("decode")
-   public void decode(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
-
-         this.method4474(var1, var2);
-      }
+   static {
+      field3415 = new NodeCache(64);
    }
 
    public Enum() {
@@ -103,7 +90,20 @@ public class Enum extends CacheableNode {
 
    }
 
-   static {
-      field3415 = new NodeCache(64);
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;B)V",
+      garbageValue = "4"
+   )
+   @Export("decode")
+   public void decode(Buffer var1) {
+      while(true) {
+         int var2 = var1.readUnsignedByte();
+         if(var2 == 0) {
+            return;
+         }
+
+         this.method4474(var1, var2);
+      }
    }
 }

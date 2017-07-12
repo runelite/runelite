@@ -5,15 +5,15 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("gm")
 @Implements("Node")
 public class Node {
-   @ObfuscatedName("cf")
-   @Export("hash")
-   public long hash;
-   @ObfuscatedName("cc")
-   @Export("next")
-   public Node next;
    @ObfuscatedName("cp")
    @Export("previous")
    Node previous;
+   @ObfuscatedName("cc")
+   @Export("next")
+   public Node next;
+   @ObfuscatedName("cf")
+   @Export("hash")
+   public long hash;
 
    @ObfuscatedName("ip")
    @Export("unlink")
@@ -24,7 +24,6 @@ public class Node {
          this.next = null;
          this.previous = null;
       }
-
    }
 
    @ObfuscatedName("ir")

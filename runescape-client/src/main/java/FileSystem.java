@@ -6,20 +6,14 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("ht")
 @Implements("FileSystem")
 public class FileSystem extends Node {
-   @ObfuscatedName("v")
-   static IndexDataBase field3207;
-   @ObfuscatedName("a")
-   @Export("index")
-   public IndexFile index;
-   @ObfuscatedName("t")
-   @Export("data")
-   public IndexData data;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1633923949
    )
    @Export("sampleRate")
    public static int sampleRate;
+   @ObfuscatedName("v")
+   static IndexDataBase field3207;
    @ObfuscatedName("kw")
    @ObfuscatedGetter(
       intValue = -551144227
@@ -31,6 +25,12 @@ public class FileSystem extends Node {
       intValue = -1437416461
    )
    int field3213;
+   @ObfuscatedName("a")
+   @Export("index")
+   public IndexFile index;
    @ObfuscatedName("w")
    public byte[] field3215;
+   @ObfuscatedName("t")
+   @Export("data")
+   public IndexData data;
 }

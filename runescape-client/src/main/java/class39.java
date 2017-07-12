@@ -6,8 +6,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ac")
 public class class39 {
-   @ObfuscatedName("a")
-   public final Coordinates field547;
+   @ObfuscatedName("m")
+   public static Buffer field559;
+   @ObfuscatedName("c")
+   static int[][][] field555;
+   @ObfuscatedName("rt")
+   static GarbageCollectorMXBean field558;
+   @ObfuscatedName("r")
+   final class33 field553;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 603456755
@@ -18,6 +24,8 @@ public class class39 {
       intValue = -1498669247
    )
    int field549;
+   @ObfuscatedName("a")
+   public final Coordinates field547;
    @ObfuscatedName("w")
    public final Coordinates field550;
    @ObfuscatedName("t")
@@ -25,60 +33,32 @@ public class class39 {
       intValue = 626045137
    )
    final int field551;
-   @ObfuscatedName("r")
-   final class33 field553;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1362547145
-   )
-   final int field554;
-   @ObfuscatedName("c")
-   static int[][][] field555;
-   @ObfuscatedName("rt")
-   static GarbageCollectorMXBean field558;
-   @ObfuscatedName("m")
-   public static Buffer field559;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = 1045903997
    )
    int field560;
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(IIZB)Ljava/lang/String;",
-      garbageValue = "-60"
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1362547145
    )
-   static String method547(int var0, int var1, boolean var2) {
-      if(var1 >= 2 && var1 <= 36) {
-         if(var2 && var0 >= 0) {
-            int var3 = 2;
+   final int field554;
 
-            for(int var4 = var0 / var1; var4 != 0; ++var3) {
-               var4 /= var1;
-            }
-
-            char[] var8 = new char[var3];
-            var8[0] = 43;
-
-            for(int var5 = var3 - 1; var5 > 0; --var5) {
-               int var6 = var0;
-               var0 /= var1;
-               int var7 = var6 - var0 * var1;
-               if(var7 >= 10) {
-                  var8[var5] = (char)(var7 + 87);
-               } else {
-                  var8[var5] = (char)(var7 + 48);
-               }
-            }
-
-            return new String(var8);
-         } else {
-            return Integer.toString(var0, var1);
-         }
+   class39(int var1, Coordinates var2, Coordinates var3, class33 var4) {
+      this.field548 = var1;
+      this.field547 = var2;
+      this.field550 = var3;
+      this.field553 = var4;
+      Area var5 = Area.field3303[this.field548];
+      SpritePixels var6 = var5.method4291(false);
+      if(var6 != null) {
+         this.field551 = var6.width;
+         this.field554 = var6.height;
       } else {
-         throw new IllegalArgumentException("");
+         this.field551 = 0;
+         this.field554 = 0;
       }
+
    }
 
    @ObfuscatedName("w")
@@ -90,15 +70,17 @@ public class class39 {
       Area var3 = Area.field3303[this.field548];
       switch(var3.field3311.field3550) {
       case 0:
-         if(var1 < this.field549 || var1 >= this.field551 + this.field549) {
-            return false;
+         if(var1 >= this.field549 && var1 < this.field551 + this.field549) {
+            break;
          }
-         break;
+
+         return false;
       case 1:
-         if(var1 < this.field549 - this.field551 / 2 || var1 > this.field551 / 2 + this.field549) {
-            return false;
+         if(var1 >= this.field549 - this.field551 / 2 && var1 <= this.field551 / 2 + this.field549) {
+            break;
          }
-         break;
+
+         return false;
       case 2:
          if(var1 <= this.field549 - this.field551 || var1 > this.field549) {
             return false;
@@ -107,10 +89,11 @@ public class class39 {
 
       switch(var3.field3309.field3282) {
       case 0:
-         if(var2 < this.field560 - this.field554 / 2 || var2 > this.field554 / 2 + this.field560) {
-            return false;
+         if(var2 >= this.field560 - this.field554 / 2 && var2 <= this.field554 / 2 + this.field560) {
+            break;
          }
-         break;
+
+         return false;
       case 1:
          if(var2 <= this.field560 - this.field554 || var2 > this.field560) {
             return false;
@@ -131,24 +114,7 @@ public class class39 {
       garbageValue = "71"
    )
    boolean method550(int var1, int var2) {
-      return this.field553 == null?false:(var1 >= this.field549 - this.field553.field475 / 2 && var1 <= this.field549 + this.field553.field475 / 2?var2 >= this.field560 && var2 <= this.field560 + this.field553.field477:false);
-   }
-
-   class39(int var1, Coordinates var2, Coordinates var3, class33 var4) {
-      this.field548 = var1;
-      this.field547 = var2;
-      this.field550 = var3;
-      this.field553 = var4;
-      Area var5 = Area.field3303[this.field548];
-      SpritePixels var6 = var5.method4291(false);
-      if(var6 != null) {
-         this.field551 = var6.width;
-         this.field554 = var6.height;
-      } else {
-         this.field551 = 0;
-         this.field554 = 0;
-      }
-
+      return this.field553 == null?false:(var1 >= this.field549 - this.field553.field475 / 2 && var1 <= this.field553.field475 / 2 + this.field549?var2 >= this.field560 && var2 <= this.field553.field477 + this.field560:false);
    }
 
    @ObfuscatedName("i")
@@ -158,6 +124,43 @@ public class class39 {
    )
    boolean method551(int var1, int var2) {
       return this.method549(var1, var2)?true:this.method550(var1, var2);
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(IIZB)Ljava/lang/String;",
+      garbageValue = "-60"
+   )
+   static String method547(int var0, int var1, boolean var2) {
+      if(var1 >= 2 && var1 <= 36) {
+         if(var2 && var0 >= 0) {
+            int var3 = 2;
+
+            for(int var4 = var0 / var1; var4 != 0; ++var3) {
+               var4 /= var1;
+            }
+
+            char[] var5 = new char[var3];
+            var5[0] = 43;
+
+            for(int var6 = var3 - 1; var6 > 0; --var6) {
+               int var7 = var0;
+               var0 /= var1;
+               int var8 = var7 - var0 * var1;
+               if(var8 >= 10) {
+                  var5[var6] = (char)(var8 + 87);
+               } else {
+                  var5[var6] = (char)(var8 + 48);
+               }
+            }
+
+            return new String(var5);
+         } else {
+            return Integer.toString(var0, var1);
+         }
+      } else {
+         throw new IllegalArgumentException("");
+      }
    }
 
    @ObfuscatedName("jc")
@@ -200,35 +203,6 @@ public class class39 {
          }
       }
 
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "992557555"
-   )
-   @Export("adjustHSLListness0")
-   static final int adjustHSLListness0(int var0, int var1) {
-      if(var0 == -2) {
-         return 12345678;
-      } else if(var0 == -1) {
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return var1;
-      } else {
-         var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return (var0 & 'ﾀ') + var1;
-      }
    }
 
    @ObfuscatedName("v")
@@ -281,6 +255,35 @@ public class class39 {
          return 1;
       } else {
          return 2;
+      }
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "992557555"
+   )
+   @Export("adjustHSLListness0")
+   static final int adjustHSLListness0(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return var1;
+      } else {
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return (var0 & 'ﾀ') + var1;
       }
    }
 }

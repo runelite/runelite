@@ -5,21 +5,25 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("bm")
 @Implements("XItemContainer")
 public class XItemContainer extends Node {
+   @ObfuscatedName("i")
+   @Export("itemContainers")
+   static XHashTable itemContainers;
    @ObfuscatedName("is")
    @Export("localPlayer")
    static Player localPlayer;
+   @ObfuscatedName("y")
+   @Export("isMembersWorld")
+   public static boolean isMembersWorld;
    @ObfuscatedName("w")
    @Export("itemIds")
    int[] itemIds;
    @ObfuscatedName("a")
    @Export("stackSizes")
    int[] stackSizes;
-   @ObfuscatedName("i")
-   @Export("itemContainers")
-   static XHashTable itemContainers;
-   @ObfuscatedName("y")
-   @Export("isMembersWorld")
-   public static boolean isMembersWorld;
+
+   static {
+      itemContainers = new XHashTable(32);
+   }
 
    XItemContainer() {
       this.itemIds = new int[]{-1};
@@ -35,11 +39,7 @@ public class XItemContainer extends Node {
          } else {
             class162.method3046(var0);
          }
+
       }
-
-   }
-
-   static {
-      itemContainers = new XHashTable(32);
    }
 }

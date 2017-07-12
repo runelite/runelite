@@ -6,60 +6,6 @@ final class class3 implements class0 {
    @ObfuscatedName("v")
    static SpritePixels field19;
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIB)I",
-      garbageValue = "1"
-   )
-   public static int method9(int var0, int var1, int var2, int var3, int var4, int var5) {
-      if((var5 & 1) == 1) {
-         int var6 = var3;
-         var3 = var4;
-         var4 = var6;
-      }
-
-      var2 &= 3;
-      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0 - (var3 - 1):7 - var1 - (var4 - 1)));
-   }
-
-   @ObfuscatedName("gv")
-   @ObfuscatedSignature(
-      signature = "(LPendingSpawn;I)V",
-      garbageValue = "1987773958"
-   )
-   static final void method10(PendingSpawn var0) {
-      int var1 = 0;
-      int var2 = -1;
-      int var3 = 0;
-      int var4 = 0;
-      if(var0.type == 0) {
-         var1 = class2.region.method2692(var0.level, var0.x, var0.y);
-      }
-
-      if(var0.type == 1) {
-         var1 = class2.region.method2794(var0.level, var0.x, var0.y);
-      }
-
-      if(var0.type == 2) {
-         var1 = class2.region.method2694(var0.level, var0.x, var0.y);
-      }
-
-      if(var0.type == 3) {
-         var1 = class2.region.method2695(var0.level, var0.x, var0.y);
-      }
-
-      if(var1 != 0) {
-         int var5 = class2.region.method2696(var0.level, var0.x, var0.y, var1);
-         var2 = var1 >> 14 & 32767;
-         var3 = var5 & 31;
-         var4 = var5 >> 6 & 3;
-      }
-
-      var0.field1209 = var2;
-      var0.field1222 = var3;
-      var0.field1214 = var4;
-   }
-
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "([BIIIIIIILRegion;[LCollisionData;I)V",
@@ -111,5 +57,59 @@ final class class3 implements class0 {
             }
          }
       }
+   }
+
+   @ObfuscatedName("gv")
+   @ObfuscatedSignature(
+      signature = "(LPendingSpawn;I)V",
+      garbageValue = "1987773958"
+   )
+   static final void method10(PendingSpawn var0) {
+      int var1 = 0;
+      int var2 = -1;
+      int var3 = 0;
+      int var4 = 0;
+      if(var0.type == 0) {
+         var1 = class2.region.method2692(var0.level, var0.x, var0.y);
+      }
+
+      if(var0.type == 1) {
+         var1 = class2.region.method2794(var0.level, var0.x, var0.y);
+      }
+
+      if(var0.type == 2) {
+         var1 = class2.region.method2694(var0.level, var0.x, var0.y);
+      }
+
+      if(var0.type == 3) {
+         var1 = class2.region.method2695(var0.level, var0.x, var0.y);
+      }
+
+      if(var1 != 0) {
+         int var5 = class2.region.method2696(var0.level, var0.x, var0.y, var1);
+         var2 = var1 >> 14 & 32767;
+         var3 = var5 & 31;
+         var4 = var5 >> 6 & 3;
+      }
+
+      var0.field1209 = var2;
+      var0.field1222 = var3;
+      var0.field1214 = var4;
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIB)I",
+      garbageValue = "1"
+   )
+   public static int method9(int var0, int var1, int var2, int var3, int var4, int var5) {
+      if((var5 & 1) == 1) {
+         int var6 = var3;
+         var3 = var4;
+         var4 = var6;
+      }
+
+      var2 &= 3;
+      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0 - (var3 - 1):7 - var1 - (var4 - 1)));
    }
 }

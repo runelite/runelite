@@ -5,54 +5,30 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("dm")
 @Implements("SoundEffect")
 public class SoundEffect {
-   @ObfuscatedName("w")
-   @Export("instruments")
-   AudioInstrument[] instruments;
    @ObfuscatedName("a")
    @Export("start")
    int start;
+   @ObfuscatedName("w")
+   @Export("instruments")
+   AudioInstrument[] instruments;
    @ObfuscatedName("t")
    @Export("end")
    int end;
 
-   @ObfuscatedName("w")
-   public class107 method1942() {
-      byte[] var1 = this.mix();
-      return new class107(22050, var1, this.start * 22050 / 1000, this.end * 22050 / 1000);
-   }
+   SoundEffect(Buffer var1) {
+      this.instruments = new AudioInstrument[10];
 
-   @ObfuscatedName("a")
-   @Export("calculateDelay")
-   public final int calculateDelay() {
-      int var1 = 9999999;
-
-      int var2;
-      for(var2 = 0; var2 < 10; ++var2) {
-         if(this.instruments[var2] != null && this.instruments[var2].offset / 20 < var1) {
-            var1 = this.instruments[var2].offset / 20;
+      for(int var2 = 0; var2 < 10; ++var2) {
+         int var3 = var1.readUnsignedByte();
+         if(var3 != 0) {
+            --var1.offset;
+            this.instruments[var2] = new AudioInstrument();
+            this.instruments[var2].decode(var1);
          }
       }
 
-      if(this.start < this.end && this.start / 20 < var1) {
-         var1 = this.start / 20;
-      }
-
-      if(var1 != 9999999 && var1 != 0) {
-         for(var2 = 0; var2 < 10; ++var2) {
-            if(this.instruments[var2] != null) {
-               this.instruments[var2].offset -= var1 * 20;
-            }
-         }
-
-         if(this.start < this.end) {
-            this.start -= var1 * 20;
-            this.end -= var1 * 20;
-         }
-
-         return var1;
-      } else {
-         return 0;
-      }
+      this.start = var1.readUnsignedShort();
+      this.end = var1.readUnsignedShort();
    }
 
    @ObfuscatedName("t")
@@ -94,26 +70,50 @@ public class SoundEffect {
       }
    }
 
+   @ObfuscatedName("w")
+   public class107 method1942() {
+      byte[] var1 = this.mix();
+      return new class107(22050, var1, this.start * 22050 / 1000, this.end * 22050 / 1000);
+   }
+
+   @ObfuscatedName("a")
+   @Export("calculateDelay")
+   public final int calculateDelay() {
+      int var1 = 9999999;
+
+      int var2;
+      for(var2 = 0; var2 < 10; ++var2) {
+         if(this.instruments[var2] != null && this.instruments[var2].offset / 20 < var1) {
+            var1 = this.instruments[var2].offset / 20;
+         }
+      }
+
+      if(this.start < this.end && this.start / 20 < var1) {
+         var1 = this.start / 20;
+      }
+
+      if(var1 != 9999999 && var1 != 0) {
+         for(var2 = 0; var2 < 10; ++var2) {
+            if(this.instruments[var2] != null) {
+               this.instruments[var2].offset -= var1 * 20;
+            }
+         }
+
+         if(this.start < this.end) {
+            this.start -= var1 * 20;
+            this.end -= var1 * 20;
+         }
+
+         return var1;
+      } else {
+         return 0;
+      }
+   }
+
    @ObfuscatedName("i")
    @Export("getTrack")
    public static SoundEffect getTrack(IndexDataBase var0, int var1, int var2) {
       byte[] var3 = var0.getConfigData(var1, var2);
       return var3 == null?null:new SoundEffect(new Buffer(var3));
-   }
-
-   SoundEffect(Buffer var1) {
-      this.instruments = new AudioInstrument[10];
-
-      for(int var2 = 0; var2 < 10; ++var2) {
-         int var3 = var1.readUnsignedByte();
-         if(var3 != 0) {
-            --var1.offset;
-            this.instruments[var2] = new AudioInstrument();
-            this.instruments[var2].decode(var1);
-         }
-      }
-
-      this.start = var1.readUnsignedShort();
-      this.end = var1.readUnsignedShort();
    }
 }

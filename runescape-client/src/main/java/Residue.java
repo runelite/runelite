@@ -8,23 +8,23 @@ public class Residue {
    @ObfuscatedName("r")
    @Export("classBook")
    int classBook;
-   @ObfuscatedName("i")
-   @Export("type")
-   int type;
    @ObfuscatedName("a")
    @Export("end")
    int end;
-   @ObfuscatedName("t")
-   @Export("partitionSize")
-   int partitionSize;
-   @ObfuscatedName("s")
-   @Export("classification")
-   int classification;
+   @ObfuscatedName("i")
+   @Export("type")
+   int type;
    @ObfuscatedName("w")
    @Export("begin")
    int begin;
+   @ObfuscatedName("t")
+   @Export("partitionSize")
+   int partitionSize;
    @ObfuscatedName("v")
    int[] field1691;
+   @ObfuscatedName("s")
+   @Export("classification")
+   int classification;
 
    Residue() {
       this.type = class106.getInt(16);
@@ -79,8 +79,8 @@ public class Residue {
                   var10 = class106.codeBooks[this.classBook].getHuffmanRoot();
 
                   for(var11 = var4 - 1; var11 >= 0; --var11) {
-                     if(var11 + var9 < var6) {
-                        var7[var11 + var9] = var10 % this.classification;
+                     if(var9 + var11 < var6) {
+                        var7[var9 + var11] = var10 % this.classification;
                      }
 
                      var10 /= this.classification;
@@ -91,27 +91,27 @@ public class Residue {
                   var11 = var7[var9];
                   int var12 = this.field1691[var8 + var11 * 8];
                   if(var12 >= 0) {
-                     int var13 = this.begin + this.partitionSize * var9;
+                     int var13 = var9 * this.partitionSize + this.begin;
                      CodeBook var14 = class106.codeBooks[var12];
                      int var15;
                      if(this.type == 0) {
                         var15 = this.partitionSize / var14.dimensions;
 
-                        for(int var19 = 0; var19 < var15; ++var19) {
-                           float[] var20 = var14.method1933();
+                        for(int var16 = 0; var16 < var15; ++var16) {
+                           float[] var17 = var14.method1933();
 
                            for(int var18 = 0; var18 < var14.dimensions; ++var18) {
-                              var1[var13 + var19 + var18 * var15] += var20[var18];
+                              var1[var13 + var16 + var18 * var15] += var17[var18];
                            }
                         }
                      } else {
                         var15 = 0;
 
                         while(var15 < this.partitionSize) {
-                           float[] var16 = var14.method1933();
+                           float[] var19 = var14.method1933();
 
-                           for(int var17 = 0; var17 < var14.dimensions; ++var17) {
-                              var1[var13 + var15] += var16[var17];
+                           for(int var20 = 0; var20 < var14.dimensions; ++var20) {
+                              var1[var13 + var15] += var19[var20];
                               ++var15;
                            }
                         }
@@ -125,7 +125,7 @@ public class Residue {
                }
             }
          }
-      }
 
+      }
    }
 }

@@ -2,14 +2,14 @@ import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("hn")
 public class class214 {
+   @ObfuscatedName("i")
+   public static final short[] field2638;
    @ObfuscatedName("w")
    public static final short[][] field2631;
    @ObfuscatedName("a")
    public static final short[] field2633;
    @ObfuscatedName("t")
    public static final short[][] field2634;
-   @ObfuscatedName("i")
-   public static final short[] field2638;
 
    static {
       field2638 = new short[]{(short)6798, (short)8741, (short)25238, (short)4626, (short)4550};

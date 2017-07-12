@@ -3,16 +3,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hq")
 public class class223 {
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-675489132"
-   )
-   public static boolean method4072() {
-      ClassInfo var0 = (ClassInfo)class280.field3755.method3547();
-      return var0 != null;
-   }
-
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(LIndexDataBase;III)Z",
@@ -26,5 +16,15 @@ public class class223 {
          Spotanim.decodeSprite(var3);
          return true;
       }
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-675489132"
+   )
+   public static boolean method4072() {
+      ClassInfo var0 = (ClassInfo)class280.field3755.method3547();
+      return var0 != null;
    }
 }

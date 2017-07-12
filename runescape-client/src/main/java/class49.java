@@ -13,6 +13,10 @@ public final class class49 implements class156, MouseWheelListener {
    )
    int field653;
 
+   class49() {
+      this.field653 = 0;
+   }
+
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Component;I)V",
@@ -29,10 +33,6 @@ public final class class49 implements class156, MouseWheelListener {
    )
    void method758(Component var1) {
       var1.removeMouseWheelListener(this);
-   }
-
-   class49() {
-      this.field653 = 0;
    }
 
    @ObfuscatedName("a")

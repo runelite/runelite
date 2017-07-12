@@ -32,21 +32,11 @@ public enum class228 implements RSEnum {
    )
    public final int field3167;
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "-37"
-   )
-   static int method4084(int var0, int var1) {
-      long var2 = (long)((var0 << 16) + var1);
-      return class7.currentRequest != null && class7.currentRequest.hash == var2?class39.field559.offset * 99 / (class39.field559.payload.length - class7.currentRequest.padding) + 1:0;
-   }
-
    @ObfuscatedSignature(
       signature = "(II)V",
       garbageValue = "0"
    )
-   private class228(int var3, int var4) {
+   class228(int var3, int var4) {
       this.field3167 = var3;
       this.field3156 = var4;
    }
@@ -58,6 +48,16 @@ public enum class228 implements RSEnum {
    )
    public int rsOrdinal() {
       return this.field3156;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "-37"
+   )
+   static int method4084(int var0, int var1) {
+      long var2 = (long)((var0 << 16) + var1);
+      return class7.currentRequest != null && class7.currentRequest.hash == var2?class39.field559.offset * 99 / (class39.field559.payload.length - class7.currentRequest.padding) + 1:0;
    }
 
    @ObfuscatedName("s")

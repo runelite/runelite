@@ -24,6 +24,5 @@ public class class73 extends class163 {
          byte[] var1 = class37.method514();
          var0.putBytes(var1, 0, var1.length);
       }
-
    }
 }

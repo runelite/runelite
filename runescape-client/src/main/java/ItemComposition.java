@@ -7,332 +7,302 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("id")
 @Implements("ItemComposition")
 public class ItemComposition extends CacheableNode {
-   @ObfuscatedName("ae")
-   @ObfuscatedGetter(
-      intValue = 213459857
-   )
-   @Export("note")
-   public int note;
    @ObfuscatedName("k")
    @Export("items")
    public static NodeCache items;
-   @ObfuscatedName("aa")
-   @ObfuscatedGetter(
-      intValue = 28928975
-   )
-   @Export("maleHeadModel2")
-   int maleHeadModel2;
    @ObfuscatedName("e")
    @Export("itemModelCache")
    public static NodeCache itemModelCache;
-   @ObfuscatedName("bg")
-   @ObfuscatedGetter(
-      intValue = 1059460471
-   )
-   public int field3501;
-   @ObfuscatedName("bt")
-   public boolean field3502;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 1258159299
-   )
-   @Export("inventoryModel")
-   int inventoryModel;
-   @ObfuscatedName("m")
-   @Export("name")
-   public String name;
-   @ObfuscatedName("b")
-   @Export("colourToReplace")
-   short[] colourToReplace;
-   @ObfuscatedName("f")
-   @Export("colourToReplaceWith")
-   short[] colourToReplaceWith;
-   @ObfuscatedName("n")
-   @Export("textureToReplace")
-   short[] textureToReplace;
-   @ObfuscatedName("br")
-   @ObfuscatedGetter(
-      intValue = -564882477
-   )
-   public int field3508;
-   @ObfuscatedName("ab")
-   @ObfuscatedGetter(
-      intValue = -2068631335
-   )
-   @Export("price")
-   public int price;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 940026089
-   )
-   @Export("xan2d")
-   public int xan2d;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 75373529
-   )
-   @Export("yan2d")
-   public int yan2d;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -542114129
-   )
-   @Export("zan2d")
-   public int zan2d;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1330481689
-   )
-   @Export("offsetX2d")
-   public int offsetX2d;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 443706015
-   )
-   @Export("id")
-   public int id;
-   @ObfuscatedName("bl")
-   @ObfuscatedGetter(
-      intValue = -602453019
-   )
-   @Export("unnotedId")
-   int unnotedId;
-   @ObfuscatedName("aw")
-   @Export("isMembers")
-   public boolean isMembers;
-   @ObfuscatedName("ai")
-   @Export("groundActions")
-   public String[] groundActions;
-   @ObfuscatedName("an")
-   @Export("inventoryActions")
-   public String[] inventoryActions;
-   @ObfuscatedName("ar")
-   @ObfuscatedGetter(
-      intValue = 636860291
-   )
-   @Export("team")
-   int team;
-   @ObfuscatedName("ay")
-   @ObfuscatedGetter(
-      intValue = 1041502105
-   )
-   @Export("maleModel")
-   int maleModel;
-   @ObfuscatedName("bc")
-   @ObfuscatedGetter(
-      intValue = 1077305931
-   )
-   @Export("contrast")
-   public int contrast;
-   @ObfuscatedName("as")
-   @ObfuscatedGetter(
-      intValue = 1829549487
-   )
-   @Export("maleOffset")
-   int maleOffset;
-   @ObfuscatedName("ak")
-   @ObfuscatedGetter(
-      intValue = -1155506915
-   )
-   @Export("femaleModel")
-   int femaleModel;
-   @ObfuscatedName("aq")
-   @ObfuscatedGetter(
-      intValue = -1097813663
-   )
-   @Export("femaleModel1")
-   int femaleModel1;
-   @ObfuscatedName("ax")
-   @ObfuscatedGetter(
-      intValue = 706587871
-   )
-   @Export("femaleOffset")
-   int femaleOffset;
-   @ObfuscatedName("ac")
-   @ObfuscatedGetter(
-      intValue = 930064069
-   )
-   @Export("maleModel2")
-   int maleModel2;
-   @ObfuscatedName("ah")
-   @ObfuscatedGetter(
-      intValue = -1687398403
-   )
-   @Export("isStackable")
-   public int isStackable;
+   @ObfuscatedName("o")
+   @Export("itemSpriteCache")
+   public static NodeCache itemSpriteCache;
    @ObfuscatedName("av")
    @ObfuscatedGetter(
       intValue = -1335929497
    )
    @Export("maleHeadModel")
    int maleHeadModel;
+   @ObfuscatedName("ay")
+   @ObfuscatedGetter(
+      intValue = 1041502105
+   )
+   @Export("maleModel")
+   int maleModel;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 1258159299
+   )
+   @Export("inventoryModel")
+   int inventoryModel;
    @ObfuscatedName("al")
    @Export("countObj")
    int[] countObj;
-   @ObfuscatedName("am")
+   @ObfuscatedName("ar")
    @ObfuscatedGetter(
-      intValue = -1950593005
+      intValue = 636860291
    )
-   @Export("femaleHeadModel")
-   int femaleHeadModel;
-   @ObfuscatedName("az")
-   @ObfuscatedGetter(
-      intValue = 1328798175
-   )
-   @Export("femaleHeadModel2")
-   int femaleHeadModel2;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 209985715
-   )
-   @Export("offsetY2d")
-   public int offsetY2d;
-   @ObfuscatedName("ad")
-   @Export("countCo")
-   int[] countCo;
-   @ObfuscatedName("u")
-   @Export("textToReplaceWith")
-   short[] textToReplaceWith;
-   @ObfuscatedName("ag")
-   @ObfuscatedGetter(
-      intValue = 934421945
-   )
-   @Export("notedTemplate")
-   public int notedTemplate;
-   @ObfuscatedName("bp")
-   @ObfuscatedGetter(
-      intValue = -1184985675
-   )
-   @Export("notedId")
-   int notedId;
-   @ObfuscatedName("af")
-   @ObfuscatedGetter(
-      intValue = 213093679
-   )
-   @Export("resizeY")
-   int resizeY;
-   @ObfuscatedName("aj")
-   @ObfuscatedGetter(
-      intValue = 818893433
-   )
-   @Export("resizeZ")
-   int resizeZ;
-   @ObfuscatedName("bb")
-   @ObfuscatedGetter(
-      intValue = 1948343719
-   )
-   @Export("ambient")
-   public int ambient;
-   @ObfuscatedName("at")
-   @ObfuscatedGetter(
-      intValue = 1541906803
-   )
-   @Export("femaleModel2")
-   int femaleModel2;
-   @ObfuscatedName("be")
-   @ObfuscatedGetter(
-      intValue = 66092157
-   )
-   public int field3542;
+   @Export("team")
+   int team;
    @ObfuscatedName("bv")
    class186 field3543;
-   @ObfuscatedName("p")
+   @ObfuscatedName("aa")
    @ObfuscatedGetter(
-      intValue = 1748874283
+      intValue = 28928975
    )
-   @Export("zoom2d")
-   public int zoom2d;
-   @ObfuscatedName("ap")
-   @ObfuscatedGetter(
-      intValue = -1103363133
-   )
-   @Export("resizeX")
-   int resizeX;
+   @Export("maleHeadModel2")
+   int maleHeadModel2;
    @ObfuscatedName("ao")
    @ObfuscatedGetter(
       intValue = 1179209707
    )
    @Export("maleModel1")
    int maleModel1;
-   @ObfuscatedName("o")
-   @Export("itemSpriteCache")
-   public static NodeCache itemSpriteCache;
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1401311993"
+   @ObfuscatedName("ac")
+   @ObfuscatedGetter(
+      intValue = 930064069
    )
-   @Export("post")
-   void post() {
+   @Export("maleModel2")
+   int maleModel2;
+   @ObfuscatedName("an")
+   @Export("inventoryActions")
+   public String[] inventoryActions;
+   @ObfuscatedName("m")
+   @Export("name")
+   public String name;
+   @ObfuscatedName("am")
+   @ObfuscatedGetter(
+      intValue = -1950593005
+   )
+   @Export("femaleHeadModel")
+   int femaleHeadModel;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1748874283
+   )
+   @Export("zoom2d")
+   public int zoom2d;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 443706015
+   )
+   @Export("id")
+   public int id;
+   @ObfuscatedName("az")
+   @ObfuscatedGetter(
+      intValue = 1328798175
+   )
+   @Export("femaleHeadModel2")
+   int femaleHeadModel2;
+   @ObfuscatedName("ak")
+   @ObfuscatedGetter(
+      intValue = -1155506915
+   )
+   @Export("femaleModel")
+   int femaleModel;
+   @ObfuscatedName("ad")
+   @Export("countCo")
+   int[] countCo;
+   @ObfuscatedName("aq")
+   @ObfuscatedGetter(
+      intValue = -1097813663
+   )
+   @Export("femaleModel1")
+   int femaleModel1;
+   @ObfuscatedName("at")
+   @ObfuscatedGetter(
+      intValue = 1541906803
+   )
+   @Export("femaleModel2")
+   int femaleModel2;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 940026089
+   )
+   @Export("xan2d")
+   public int xan2d;
+   @ObfuscatedName("ap")
+   @ObfuscatedGetter(
+      intValue = -1103363133
+   )
+   @Export("resizeX")
+   int resizeX;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 75373529
+   )
+   @Export("yan2d")
+   public int yan2d;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1330481689
+   )
+   @Export("offsetX2d")
+   public int offsetX2d;
+   @ObfuscatedName("ah")
+   @ObfuscatedGetter(
+      intValue = -1687398403
+   )
+   @Export("isStackable")
+   public int isStackable;
+   @ObfuscatedName("af")
+   @ObfuscatedGetter(
+      intValue = 213093679
+   )
+   @Export("resizeY")
+   int resizeY;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 209985715
+   )
+   @Export("offsetY2d")
+   public int offsetY2d;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -542114129
+   )
+   @Export("zan2d")
+   public int zan2d;
+   @ObfuscatedName("aw")
+   @Export("isMembers")
+   public boolean isMembers;
+   @ObfuscatedName("ab")
+   @ObfuscatedGetter(
+      intValue = -2068631335
+   )
+   @Export("price")
+   public int price;
+   @ObfuscatedName("aj")
+   @ObfuscatedGetter(
+      intValue = 818893433
+   )
+   @Export("resizeZ")
+   int resizeZ;
+   @ObfuscatedName("b")
+   @Export("colourToReplace")
+   short[] colourToReplace;
+   @ObfuscatedName("n")
+   @Export("textureToReplace")
+   short[] textureToReplace;
+   @ObfuscatedName("as")
+   @ObfuscatedGetter(
+      intValue = 1829549487
+   )
+   @Export("maleOffset")
+   int maleOffset;
+   @ObfuscatedName("ag")
+   @ObfuscatedGetter(
+      intValue = 934421945
+   )
+   @Export("notedTemplate")
+   public int notedTemplate;
+   @ObfuscatedName("ai")
+   @Export("groundActions")
+   public String[] groundActions;
+   @ObfuscatedName("f")
+   @Export("colourToReplaceWith")
+   short[] colourToReplaceWith;
+   @ObfuscatedName("ax")
+   @ObfuscatedGetter(
+      intValue = 706587871
+   )
+   @Export("femaleOffset")
+   int femaleOffset;
+   @ObfuscatedName("u")
+   @Export("textToReplaceWith")
+   short[] textToReplaceWith;
+   @ObfuscatedName("bt")
+   public boolean field3502;
+   @ObfuscatedName("bb")
+   @ObfuscatedGetter(
+      intValue = 1948343719
+   )
+   @Export("ambient")
+   public int ambient;
+   @ObfuscatedName("bp")
+   @ObfuscatedGetter(
+      intValue = -1184985675
+   )
+   @Export("notedId")
+   int notedId;
+   @ObfuscatedName("bc")
+   @ObfuscatedGetter(
+      intValue = 1077305931
+   )
+   @Export("contrast")
+   public int contrast;
+   @ObfuscatedName("ae")
+   @ObfuscatedGetter(
+      intValue = 213459857
+   )
+   @Export("note")
+   public int note;
+   @ObfuscatedName("be")
+   @ObfuscatedGetter(
+      intValue = 66092157
+   )
+   public int field3542;
+   @ObfuscatedName("bg")
+   @ObfuscatedGetter(
+      intValue = 1059460471
+   )
+   public int field3501;
+   @ObfuscatedName("bl")
+   @ObfuscatedGetter(
+      intValue = -602453019
+   )
+   @Export("unnotedId")
+   int unnotedId;
+   @ObfuscatedName("br")
+   @ObfuscatedGetter(
+      intValue = -564882477
+   )
+   public int field3508;
+
+   static {
+      items = new NodeCache(64);
+      itemModelCache = new NodeCache(50);
+      itemSpriteCache = new NodeCache(200);
    }
 
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(LItemComposition;LItemComposition;I)V",
-      garbageValue = "2023430417"
-   )
-   void method4579(ItemComposition var1, ItemComposition var2) {
-      this.inventoryModel = var1.inventoryModel;
-      this.zoom2d = var1.zoom2d;
-      this.xan2d = var1.xan2d;
-      this.yan2d = var1.yan2d;
-      this.zan2d = var1.zan2d;
-      this.offsetX2d = var1.offsetX2d;
-      this.offsetY2d = var1.offsetY2d;
-      this.colourToReplace = var1.colourToReplace;
-      this.colourToReplaceWith = var1.colourToReplaceWith;
-      this.textureToReplace = var1.textureToReplace;
-      this.textToReplaceWith = var1.textToReplaceWith;
-      this.name = var2.name;
-      this.isMembers = var2.isMembers;
-      this.price = var2.price;
-      this.isStackable = 1;
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(II)LModelData;",
-      garbageValue = "-2032686553"
-   )
-   public final ModelData method4582(int var1) {
-      int var2;
-      if(this.countObj != null && var1 > 1) {
-         int var3 = -1;
-
-         for(var2 = 0; var2 < 10; ++var2) {
-            if(var1 >= this.countCo[var2] && this.countCo[var2] != 0) {
-               var3 = this.countObj[var2];
-            }
-         }
-
-         if(var3 != -1) {
-            return AbstractByteBuffer.getItemDefinition(var3).method4582(1);
-         }
-      }
-
-      ModelData var4 = ModelData.method2414(FileSystem.field3207, this.inventoryModel, 0);
-      if(var4 == null) {
-         return null;
-      } else {
-         if(this.resizeX != 128 || this.resizeY != 128 || this.resizeZ != 128) {
-            var4.method2425(this.resizeX, this.resizeY, this.resizeZ);
-         }
-
-         if(this.colourToReplace != null) {
-            for(var2 = 0; var2 < this.colourToReplace.length; ++var2) {
-               var4.recolor(this.colourToReplace[var2], this.colourToReplaceWith[var2]);
-            }
-         }
-
-         if(this.textureToReplace != null) {
-            for(var2 = 0; var2 < this.textureToReplace.length; ++var2) {
-               var4.method2450(this.textureToReplace[var2], this.textToReplaceWith[var2]);
-            }
-         }
-
-         return var4;
-      }
+   ItemComposition() {
+      this.name = "null";
+      this.zoom2d = 2000;
+      this.xan2d = 0;
+      this.yan2d = 0;
+      this.zan2d = 0;
+      this.offsetX2d = 0;
+      this.offsetY2d = 0;
+      this.isStackable = 0;
+      this.price = 1;
+      this.isMembers = false;
+      this.groundActions = new String[]{null, null, "Take", null, null};
+      this.inventoryActions = new String[]{null, null, null, null, "Drop"};
+      this.team = -2;
+      this.maleModel = -1;
+      this.maleModel1 = -1;
+      this.maleOffset = 0;
+      this.femaleModel = -1;
+      this.femaleModel1 = -1;
+      this.femaleOffset = 0;
+      this.maleModel2 = -1;
+      this.femaleModel2 = -1;
+      this.maleHeadModel = -1;
+      this.maleHeadModel2 = -1;
+      this.femaleHeadModel = -1;
+      this.femaleHeadModel2 = -1;
+      this.note = -1;
+      this.notedTemplate = -1;
+      this.resizeX = 128;
+      this.resizeY = 128;
+      this.resizeZ = 128;
+      this.ambient = 0;
+      this.contrast = 0;
+      this.field3542 = 0;
+      this.field3502 = false;
+      this.unnotedId = -1;
+      this.notedId = -1;
+      this.field3508 = -1;
+      this.field3501 = -1;
    }
 
    @ObfuscatedName("s")
@@ -463,12 +433,13 @@ public class ItemComposition extends CacheableNode {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IB)LItemComposition;",
-      garbageValue = "-1"
+      signature = "(II)LModel;",
+      garbageValue = "-958467081"
    )
-   public ItemComposition method4584(int var1) {
+   @Export("getModel")
+   public final Model getModel(int var1) {
       if(this.countObj != null && var1 > 1) {
          int var2 = -1;
 
@@ -479,20 +450,86 @@ public class ItemComposition extends CacheableNode {
          }
 
          if(var2 != -1) {
-            return AbstractByteBuffer.getItemDefinition(var2);
+            return AbstractByteBuffer.getItemDefinition(var2).getModel(1);
          }
       }
 
-      return this;
+      Model var5 = (Model)itemModelCache.get((long)this.id);
+      if(var5 != null) {
+         return var5;
+      } else {
+         ModelData var6 = ModelData.method2414(FileSystem.field3207, this.inventoryModel, 0);
+         if(var6 == null) {
+            return null;
+         } else {
+            if(this.resizeX != 128 || this.resizeY != 128 || this.resizeZ != 128) {
+               var6.method2425(this.resizeX, this.resizeY, this.resizeZ);
+            }
+
+            int var4;
+            if(this.colourToReplace != null) {
+               for(var4 = 0; var4 < this.colourToReplace.length; ++var4) {
+                  var6.recolor(this.colourToReplace[var4], this.colourToReplaceWith[var4]);
+               }
+            }
+
+            if(this.textureToReplace != null) {
+               for(var4 = 0; var4 < this.textureToReplace.length; ++var4) {
+                  var6.method2450(this.textureToReplace[var4], this.textToReplaceWith[var4]);
+               }
+            }
+
+            var5 = var6.light(this.ambient + 64, this.contrast + 768, -50, -10, -50);
+            var5.field1950 = true;
+            itemModelCache.put(var5, (long)this.id);
+            return var5;
+         }
+      }
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "2048557574"
+      signature = "(II)LModelData;",
+      garbageValue = "-2032686553"
    )
-   public int method4586(int var1, int var2) {
-      return ChatLineBuffer.method1884(this.field3543, var1, var2);
+   public final ModelData method4582(int var1) {
+      int var3;
+      if(this.countObj != null && var1 > 1) {
+         int var2 = -1;
+
+         for(var3 = 0; var3 < 10; ++var3) {
+            if(var1 >= this.countCo[var3] && this.countCo[var3] != 0) {
+               var2 = this.countObj[var3];
+            }
+         }
+
+         if(var2 != -1) {
+            return AbstractByteBuffer.getItemDefinition(var2).method4582(1);
+         }
+      }
+
+      ModelData var4 = ModelData.method2414(FileSystem.field3207, this.inventoryModel, 0);
+      if(var4 == null) {
+         return null;
+      } else {
+         if(this.resizeX != 128 || this.resizeY != 128 || this.resizeZ != 128) {
+            var4.method2425(this.resizeX, this.resizeY, this.resizeZ);
+         }
+
+         if(this.colourToReplace != null) {
+            for(var3 = 0; var3 < this.colourToReplace.length; ++var3) {
+               var4.recolor(this.colourToReplace[var3], this.colourToReplaceWith[var3]);
+            }
+         }
+
+         if(this.textureToReplace != null) {
+            for(var3 = 0; var3 < this.textureToReplace.length; ++var3) {
+               var4.method2450(this.textureToReplace[var3], this.textToReplaceWith[var3]);
+            }
+         }
+
+         return var4;
+      }
    }
 
    @ObfuscatedName("c")
@@ -522,6 +559,15 @@ public class ItemComposition extends CacheableNode {
 
          return var4;
       }
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1401311993"
+   )
+   @Export("post")
+   void post() {
    }
 
    @ObfuscatedName("b")
@@ -564,54 +610,57 @@ public class ItemComposition extends CacheableNode {
       }
    }
 
-   ItemComposition() {
-      this.name = "null";
-      this.zoom2d = 2000;
-      this.xan2d = 0;
-      this.yan2d = 0;
-      this.zan2d = 0;
-      this.offsetX2d = 0;
-      this.offsetY2d = 0;
-      this.isStackable = 0;
-      this.price = 1;
-      this.isMembers = false;
-      this.groundActions = new String[]{null, null, "Take", null, null};
-      this.inventoryActions = new String[]{null, null, null, null, "Drop"};
-      this.team = -2;
-      this.maleModel = -1;
-      this.maleModel1 = -1;
-      this.maleOffset = 0;
-      this.femaleModel = -1;
-      this.femaleModel1 = -1;
-      this.femaleOffset = 0;
-      this.maleModel2 = -1;
-      this.femaleModel2 = -1;
-      this.maleHeadModel = -1;
-      this.maleHeadModel2 = -1;
-      this.femaleHeadModel = -1;
-      this.femaleHeadModel2 = -1;
-      this.note = -1;
-      this.notedTemplate = -1;
-      this.resizeX = 128;
-      this.resizeY = 128;
-      this.resizeZ = 128;
-      this.ambient = 0;
-      this.contrast = 0;
-      this.field3542 = 0;
-      this.field3502 = false;
-      this.unnotedId = -1;
-      this.notedId = -1;
-      this.field3508 = -1;
-      this.field3501 = -1;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;B)V",
+      garbageValue = "48"
+   )
+   @Export("loadBuffer")
+   void loadBuffer(Buffer var1) {
+      while(true) {
+         int var2 = var1.readUnsignedByte();
+         if(var2 == 0) {
+            return;
+         }
+
+         this.populateFromBuffer(var1, var2);
+      }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;B)Ljava/lang/String;",
-      garbageValue = "-26"
+      signature = "(ZI)Z",
+      garbageValue = "1299958821"
    )
-   public String method4589(int var1, String var2) {
-      return class92.method1733(this.field3543, var1, var2);
+   @Export("readyWorn")
+   public final boolean readyWorn(boolean var1) {
+      int var2 = this.maleModel;
+      int var3 = this.maleModel1;
+      int var4 = this.maleModel2;
+      if(var1) {
+         var2 = this.femaleModel;
+         var3 = this.femaleModel1;
+         var4 = this.femaleModel2;
+      }
+
+      if(var2 == -1) {
+         return true;
+      } else {
+         boolean var5 = true;
+         if(!FileSystem.field3207.method4116(var2, 0)) {
+            var5 = false;
+         }
+
+         if(var3 != -1 && !FileSystem.field3207.method4116(var3, 0)) {
+            var5 = false;
+         }
+
+         if(var4 != -1 && !FileSystem.field3207.method4116(var4, 0)) {
+            var5 = false;
+         }
+
+         return var5;
+      }
    }
 
    @ObfuscatedName("l")
@@ -671,58 +720,27 @@ public class ItemComposition extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(II)LModel;",
-      garbageValue = "-958467081"
+      signature = "(LItemComposition;LItemComposition;I)V",
+      garbageValue = "2023430417"
    )
-   @Export("getModel")
-   public final Model getModel(int var1) {
-      if(this.countObj != null && var1 > 1) {
-         int var2 = -1;
-
-         for(int var3 = 0; var3 < 10; ++var3) {
-            if(var1 >= this.countCo[var3] && this.countCo[var3] != 0) {
-               var2 = this.countObj[var3];
-            }
-         }
-
-         if(var2 != -1) {
-            return AbstractByteBuffer.getItemDefinition(var2).getModel(1);
-         }
-      }
-
-      Model var5 = (Model)itemModelCache.get((long)this.id);
-      if(var5 != null) {
-         return var5;
-      } else {
-         ModelData var6 = ModelData.method2414(FileSystem.field3207, this.inventoryModel, 0);
-         if(var6 == null) {
-            return null;
-         } else {
-            if(this.resizeX != 128 || this.resizeY != 128 || this.resizeZ != 128) {
-               var6.method2425(this.resizeX, this.resizeY, this.resizeZ);
-            }
-
-            int var4;
-            if(this.colourToReplace != null) {
-               for(var4 = 0; var4 < this.colourToReplace.length; ++var4) {
-                  var6.recolor(this.colourToReplace[var4], this.colourToReplaceWith[var4]);
-               }
-            }
-
-            if(this.textureToReplace != null) {
-               for(var4 = 0; var4 < this.textureToReplace.length; ++var4) {
-                  var6.method2450(this.textureToReplace[var4], this.textToReplaceWith[var4]);
-               }
-            }
-
-            var5 = var6.light(this.ambient + 64, this.contrast + 768, -50, -10, -50);
-            var5.field1950 = true;
-            itemModelCache.put(var5, (long)this.id);
-            return var5;
-         }
-      }
+   void method4579(ItemComposition var1, ItemComposition var2) {
+      this.inventoryModel = var1.inventoryModel;
+      this.zoom2d = var1.zoom2d;
+      this.xan2d = var1.xan2d;
+      this.yan2d = var1.yan2d;
+      this.zan2d = var1.zan2d;
+      this.offsetX2d = var1.offsetX2d;
+      this.offsetY2d = var1.offsetY2d;
+      this.colourToReplace = var1.colourToReplace;
+      this.colourToReplaceWith = var1.colourToReplaceWith;
+      this.textureToReplace = var1.textureToReplace;
+      this.textToReplaceWith = var1.textToReplaceWith;
+      this.name = var2.name;
+      this.isMembers = var2.isMembers;
+      this.price = var2.price;
+      this.isStackable = 1;
    }
 
    @ObfuscatedName("v")
@@ -792,6 +810,47 @@ public class ItemComposition extends CacheableNode {
       this.field3502 = false;
    }
 
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(IB)LItemComposition;",
+      garbageValue = "-1"
+   )
+   public ItemComposition method4584(int var1) {
+      if(this.countObj != null && var1 > 1) {
+         int var2 = -1;
+
+         for(int var3 = 0; var3 < 10; ++var3) {
+            if(var1 >= this.countCo[var3] && this.countCo[var3] != 0) {
+               var2 = this.countObj[var3];
+            }
+         }
+
+         if(var2 != -1) {
+            return AbstractByteBuffer.getItemDefinition(var2);
+         }
+      }
+
+      return this;
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "2048557574"
+   )
+   public int method4586(int var1, int var2) {
+      return ChatLineBuffer.method1884(this.field3543, var1, var2);
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(ILjava/lang/String;B)Ljava/lang/String;",
+      garbageValue = "-26"
+   )
+   public String method4589(int var1, String var2) {
+      return class92.method1733(this.field3543, var1, var2);
+   }
+
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(B)I",
@@ -801,59 +860,6 @@ public class ItemComposition extends CacheableNode {
       return this.team != -1 && this.inventoryActions != null?(this.team >= 0?(this.inventoryActions[this.team] != null?this.team:-1):("Drop".equalsIgnoreCase(this.inventoryActions[4])?4:-1)):-1;
    }
 
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
-      garbageValue = "48"
-   )
-   @Export("loadBuffer")
-   void loadBuffer(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
-
-         this.populateFromBuffer(var1, var2);
-      }
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(ZI)Z",
-      garbageValue = "1299958821"
-   )
-   @Export("readyWorn")
-   public final boolean readyWorn(boolean var1) {
-      int var2 = this.maleModel;
-      int var3 = this.maleModel1;
-      int var4 = this.maleModel2;
-      if(var1) {
-         var2 = this.femaleModel;
-         var3 = this.femaleModel1;
-         var4 = this.femaleModel2;
-      }
-
-      if(var2 == -1) {
-         return true;
-      } else {
-         boolean var5 = true;
-         if(!FileSystem.field3207.method4116(var2, 0)) {
-            var5 = false;
-         }
-
-         if(var3 != -1 && !FileSystem.field3207.method4116(var3, 0)) {
-            var5 = false;
-         }
-
-         if(var4 != -1 && !FileSystem.field3207.method4116(var4, 0)) {
-            var5 = false;
-         }
-
-         return var5;
-      }
-   }
-
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(LGameEngine;I)V",
@@ -861,9 +867,9 @@ public class ItemComposition extends CacheableNode {
    )
    static void method4633(GameEngine var0) {
       int var1;
-      int var2;
-      int var3;
-      int var4;
+      int var11;
+      int var12;
+      int var14;
       if(class92.worldSelectShown) {
          if(MouseInput.field742 == 1 || !class34.field499 && MouseInput.field742 == 4) {
             var1 = class92.field1470 + 280;
@@ -872,22 +878,22 @@ public class ItemComposition extends CacheableNode {
             } else if(MouseInput.field747 >= var1 + 15 && MouseInput.field747 <= var1 + 80 && MouseInput.field756 >= 4 && MouseInput.field756 <= 18) {
                Projectile.method1767(0, 1);
             } else {
-               var2 = class92.field1470 + 390;
-               if(MouseInput.field747 >= var2 && MouseInput.field747 <= var2 + 14 && MouseInput.field756 >= 4 && MouseInput.field756 <= 18) {
+               var11 = class92.field1470 + 390;
+               if(MouseInput.field747 >= var11 && MouseInput.field747 <= var11 + 14 && MouseInput.field756 >= 4 && MouseInput.field756 <= 18) {
                   Projectile.method1767(1, 0);
-               } else if(MouseInput.field747 >= var2 + 15 && MouseInput.field747 <= var2 + 80 && MouseInput.field756 >= 4 && MouseInput.field756 <= 18) {
+               } else if(MouseInput.field747 >= var11 + 15 && MouseInput.field747 <= var11 + 80 && MouseInput.field756 >= 4 && MouseInput.field756 <= 18) {
                   Projectile.method1767(1, 1);
                } else {
-                  var3 = class92.field1470 + 500;
-                  if(MouseInput.field747 >= var3 && MouseInput.field747 <= var3 + 14 && MouseInput.field756 >= 4 && MouseInput.field756 <= 18) {
+                  var12 = class92.field1470 + 500;
+                  if(MouseInput.field747 >= var12 && MouseInput.field747 <= var12 + 14 && MouseInput.field756 >= 4 && MouseInput.field756 <= 18) {
                      Projectile.method1767(2, 0);
-                  } else if(MouseInput.field747 >= var3 + 15 && MouseInput.field747 <= var3 + 80 && MouseInput.field756 >= 4 && MouseInput.field756 <= 18) {
+                  } else if(MouseInput.field747 >= var12 + 15 && MouseInput.field747 <= var12 + 80 && MouseInput.field756 >= 4 && MouseInput.field756 <= 18) {
                      Projectile.method1767(2, 1);
                   } else {
-                     var4 = class92.field1470 + 610;
-                     if(MouseInput.field747 >= var4 && MouseInput.field747 <= var4 + 14 && MouseInput.field756 >= 4 && MouseInput.field756 <= 18) {
+                     var14 = class92.field1470 + 610;
+                     if(MouseInput.field747 >= var14 && MouseInput.field747 <= var14 + 14 && MouseInput.field756 >= 4 && MouseInput.field756 <= 18) {
                         Projectile.method1767(3, 0);
-                     } else if(MouseInput.field747 >= var4 + 15 && MouseInput.field747 <= var4 + 80 && MouseInput.field756 >= 4 && MouseInput.field756 <= 18) {
+                     } else if(MouseInput.field747 >= var14 + 15 && MouseInput.field747 <= var14 + 80 && MouseInput.field756 >= 4 && MouseInput.field756 <= 18) {
                         Projectile.method1767(3, 1);
                      } else if(MouseInput.field747 >= class92.field1470 + 708 && MouseInput.field756 >= 4 && MouseInput.field747 <= class92.field1470 + 708 + 50 && MouseInput.field756 <= 20) {
                         class92.worldSelectShown = false;
@@ -906,6 +912,7 @@ public class ItemComposition extends CacheableNode {
                }
             }
          }
+
       } else {
          if((MouseInput.field742 == 1 || !class34.field499 && MouseInput.field742 == 4) && MouseInput.field747 >= class92.field1470 + 765 - 50 && MouseInput.field756 >= 453) {
             class8.settings.muted = !class8.settings.muted;
@@ -922,14 +929,13 @@ public class ItemComposition extends CacheableNode {
          if(Client.gameState != 5) {
             ++class92.field1456;
             if(Client.gameState == 10 || Client.gameState == 11) {
-               short var11;
                if(Client.languageId == 0) {
                   if(MouseInput.field742 == 1 || !class34.field499 && MouseInput.field742 == 4) {
                      var1 = class92.field1470 + 5;
-                     var11 = 463;
-                     byte var6 = 100;
-                     byte var7 = 35;
-                     if(MouseInput.field747 >= var1 && MouseInput.field747 <= var6 + var1 && MouseInput.field756 >= var11 && MouseInput.field756 <= var11 + var7) {
+                     short var2 = 463;
+                     byte var3 = 100;
+                     byte var4 = 35;
+                     if(MouseInput.field747 >= var1 && MouseInput.field747 <= var3 + var1 && MouseInput.field756 >= var2 && MouseInput.field756 <= var2 + var4) {
                         class82.method1625();
                         return;
                      }
@@ -941,13 +947,14 @@ public class ItemComposition extends CacheableNode {
                }
 
                var1 = MouseInput.field742;
-               var2 = MouseInput.field747;
-               var3 = MouseInput.field756;
+               var11 = MouseInput.field747;
+               var12 = MouseInput.field756;
                if(!class34.field499 && var1 == 4) {
                   var1 = 1;
                }
 
-               int var12;
+               short var6;
+               int var9;
                if(class92.loginIndex == 0) {
                   boolean var13 = false;
 
@@ -957,15 +964,15 @@ public class ItemComposition extends CacheableNode {
                      }
                   }
 
-                  var12 = class92.loginWindowX + 180 - 80;
-                  var11 = 291;
-                  if(var1 == 1 && var2 >= var12 - 75 && var2 <= var12 + 75 && var3 >= var11 - 20 && var3 <= var11 + 20) {
-                     String var8 = WorldMapType1.method263("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws";
-                     class18.method131(var8, true, "openjs", false);
+                  var9 = class92.loginWindowX + 180 - 80;
+                  var6 = 291;
+                  if(var1 == 1 && var11 >= var9 - 75 && var11 <= var9 + 75 && var12 >= var6 - 20 && var12 <= var6 + 20) {
+                     String var7 = WorldMapType1.method263("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws";
+                     class18.method131(var7, true, "openjs", false);
                   }
 
-                  var12 = class92.loginWindowX + 180 + 80;
-                  if(var1 == 1 && var2 >= var12 - 75 && var2 <= var12 + 75 && var3 >= var11 - 20 && var3 <= var11 + 20 || var13) {
+                  var9 = class92.loginWindowX + 180 + 80;
+                  if(var1 == 1 && var11 >= var9 - 75 && var11 <= var9 + 75 && var12 >= var6 - 20 && var12 <= var6 + 20 || var13) {
                      if((Client.flags & 33554432) != 0) {
                         class92.field1466 = "";
                         class92.loginMessage1 = "This is a <col=00ffff>Beta<col=ffffff> world.";
@@ -1003,34 +1010,32 @@ public class ItemComposition extends CacheableNode {
                      }
                   }
                } else {
-                  short var14;
+                  short var17;
                   if(class92.loginIndex != 1) {
-                     boolean var9;
-                     int var10;
                      short var15;
                      if(class92.loginIndex == 2) {
                         var15 = 231;
-                        var4 = var15 + 30;
-                        if(var1 == 1 && var3 >= var4 - 15 && var3 < var4) {
+                        var14 = var15 + 30;
+                        if(var1 == 1 && var12 >= var14 - 15 && var12 < var14) {
                            class92.loginIndex2 = 0;
                         }
 
-                        var4 += 15;
-                        if(var1 == 1 && var3 >= var4 - 15 && var3 < var4) {
+                        var14 += 15;
+                        if(var1 == 1 && var12 >= var14 - 15 && var12 < var14) {
                            class92.loginIndex2 = 1;
                         }
 
-                        var4 += 15;
+                        var14 += 15;
                         var15 = 361;
-                        if(var1 == 1 && var3 >= var15 - 15 && var3 < var15) {
+                        if(var1 == 1 && var12 >= var15 - 15 && var12 < var15) {
                            class13.method64("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
                            class92.loginIndex = 5;
                            return;
                         }
 
-                        var12 = class92.loginWindowX + 180 - 80;
-                        var11 = 321;
-                        if(var1 == 1 && var2 >= var12 - 75 && var2 <= var12 + 75 && var3 >= var11 - 20 && var3 <= var11 + 20) {
+                        var9 = class92.loginWindowX + 180 - 80;
+                        var6 = 321;
+                        if(var1 == 1 && var11 >= var9 - 75 && var11 <= var9 + 75 && var12 >= var6 - 20 && var12 <= var6 + 20) {
                            class92.username = class92.username.trim();
                            if(class92.username.length() == 0) {
                               class13.method64("", "Please enter your username/email address.", "");
@@ -1048,8 +1053,8 @@ public class ItemComposition extends CacheableNode {
                            return;
                         }
 
-                        var12 = 180 + class92.loginWindowX + 80;
-                        if(var1 == 1 && var2 >= var12 - 75 && var2 <= var12 + 75 && var3 >= var11 - 20 && var3 <= var11 + 20) {
+                        var9 = 180 + class92.loginWindowX + 80;
+                        if(var1 == 1 && var11 >= var9 - 75 && var11 <= var9 + 75 && var12 >= var6 - 20 && var12 <= var6 + 20) {
                            class92.loginIndex = 0;
                            class92.username = "";
                            class92.password = "";
@@ -1060,11 +1065,11 @@ public class ItemComposition extends CacheableNode {
 
                         while(true) {
                            while(class14.method77()) {
-                              var9 = false;
+                              boolean var10 = false;
 
-                              for(var10 = 0; var10 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".length(); ++var10) {
-                                 if(IndexDataBase.field3238 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var10)) {
-                                    var9 = true;
+                              for(int var8 = 0; var8 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".length(); ++var8) {
+                                 if(IndexDataBase.field3238 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var8)) {
+                                    var10 = true;
                                     break;
                                  }
                               }
@@ -1085,7 +1090,7 @@ public class ItemComposition extends CacheableNode {
                                     class92.loginIndex2 = 1;
                                  }
 
-                                 if(var9 && class92.username.length() < 320) {
+                                 if(var10 && class92.username.length() < 320) {
                                     class92.username = class92.username + IndexDataBase.field3238;
                                  }
                               } else if(class92.loginIndex2 == 1) {
@@ -1115,7 +1120,7 @@ public class ItemComposition extends CacheableNode {
                                     return;
                                  }
 
-                                 if(var9 && class92.password.length() < 20) {
+                                 if(var10 && class92.password.length() < 20) {
                                     class92.password = class92.password + IndexDataBase.field3238;
                                  }
                               }
@@ -1123,12 +1128,10 @@ public class ItemComposition extends CacheableNode {
 
                            return;
                         }
-                     }
-
-                     if(class92.loginIndex == 3) {
-                        var4 = class92.loginWindowX + 180;
-                        var14 = 276;
-                        if(var1 == 1 && var2 >= var4 - 75 && var2 <= var4 + 75 && var3 >= var14 - 20 && var3 <= var14 + 20) {
+                     } else if(class92.loginIndex == 3) {
+                        var14 = class92.loginWindowX + 180;
+                        var17 = 276;
+                        if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var17 - 20 && var12 <= var17 + 20) {
                            class92.loginMessage1 = "";
                            class92.loginMessage2 = "Enter your username/email & password.";
                            class92.loginMessage3 = "";
@@ -1136,163 +1139,167 @@ public class ItemComposition extends CacheableNode {
                            class92.loginIndex2 = 0;
                         }
 
-                        var4 = class92.loginWindowX + 180;
-                        var14 = 326;
-                        if(var1 == 1 && var2 >= var4 - 75 && var2 <= var4 + 75 && var3 >= var14 - 20 && var3 <= var14 + 20) {
+                        var14 = class92.loginWindowX + 180;
+                        var17 = 326;
+                        if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var17 - 20 && var12 <= var17 + 20) {
                            class13.method64("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
                            class92.loginIndex = 5;
                            return;
                         }
-                     } else if(class92.loginIndex == 4) {
-                        var4 = class92.loginWindowX + 180 - 80;
-                        var14 = 321;
-                        if(var1 == 1 && var2 >= var4 - 75 && var2 <= var4 + 75 && var3 >= var14 - 20 && var3 <= var14 + 20) {
-                           class36.authCode.trim();
-                           if(class36.authCode.length() != 6) {
-                              class13.method64("", "Please enter a 6-digit PIN.", "");
+                     } else {
+                        boolean var16;
+                        int var18;
+                        if(class92.loginIndex == 4) {
+                           var14 = class92.loginWindowX + 180 - 80;
+                           var17 = 321;
+                           if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var17 - 20 && var12 <= var17 + 20) {
+                              class36.authCode.trim();
+                              if(class36.authCode.length() != 6) {
+                                 class13.method64("", "Please enter a 6-digit PIN.", "");
+                                 return;
+                              }
+
+                              Script.authCodeForLogin = Integer.parseInt(class36.authCode);
+                              class36.authCode = "";
+                              class92.field1472 = class92.field1473?class149.field2214:class149.field2219;
+                              class13.method64("", "Connecting to server...", "");
+                              TextureProvider.setGameState(20);
                               return;
                            }
 
-                           Script.authCodeForLogin = Integer.parseInt(class36.authCode);
-                           class36.authCode = "";
-                           class92.field1472 = class92.field1473?class149.field2214:class149.field2219;
-                           class13.method64("", "Connecting to server...", "");
-                           TextureProvider.setGameState(20);
-                           return;
-                        }
-
-                        if(var1 == 1 && var2 >= class92.loginWindowX + 180 - 9 && var2 <= class92.loginWindowX + 180 + 130 && var3 >= 263 && var3 <= 296) {
-                           class92.field1473 = !class92.field1473;
-                        }
-
-                        if(var1 == 1 && var2 >= class92.loginWindowX + 180 - 34 && var2 <= class92.loginWindowX + 180 + 34 && var3 >= 351 && var3 <= 363) {
-                           Player.method1175(WorldMapType1.method263("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
-                        }
-
-                        var4 = class92.loginWindowX + 180 + 80;
-                        if(var1 == 1 && var2 >= var4 - 75 && var2 <= var4 + 75 && var3 >= var14 - 20 && var3 <= var14 + 20) {
-                           class92.loginIndex = 0;
-                           class92.username = "";
-                           class92.password = "";
-                           Script.authCodeForLogin = 0;
-                           class36.authCode = "";
-                        }
-
-                        while(class14.method77()) {
-                           var9 = false;
-
-                           for(var10 = 0; var10 < "1234567890".length(); ++var10) {
-                              if(IndexDataBase.field3238 == "1234567890".charAt(var10)) {
-                                 var9 = true;
-                                 break;
-                              }
+                           if(var1 == 1 && var11 >= class92.loginWindowX + 180 - 9 && var11 <= class92.loginWindowX + 180 + 130 && var12 >= 263 && var12 <= 296) {
+                              class92.field1473 = !class92.field1473;
                            }
 
-                           if(class168.field2346 == 13) {
+                           if(var1 == 1 && var11 >= class92.loginWindowX + 180 - 34 && var11 <= class92.loginWindowX + 180 + 34 && var12 >= 351 && var12 <= 363) {
+                              Player.method1175(WorldMapType1.method263("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
+                           }
+
+                           var14 = class92.loginWindowX + 180 + 80;
+                           if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var17 - 20 && var12 <= var17 + 20) {
                               class92.loginIndex = 0;
                               class92.username = "";
                               class92.password = "";
                               Script.authCodeForLogin = 0;
                               class36.authCode = "";
-                           } else {
-                              if(class168.field2346 == 85 && class36.authCode.length() > 0) {
-                                 class36.authCode = class36.authCode.substring(0, class36.authCode.length() - 1);
+                           }
+
+                           while(class14.method77()) {
+                              var16 = false;
+
+                              for(var18 = 0; var18 < "1234567890".length(); ++var18) {
+                                 if(IndexDataBase.field3238 == "1234567890".charAt(var18)) {
+                                    var16 = true;
+                                    break;
+                                 }
                               }
 
-                              if(class168.field2346 == 84) {
-                                 class36.authCode.trim();
-                                 if(class36.authCode.length() != 6) {
-                                    class13.method64("", "Please enter a 6-digit PIN.", "");
+                              if(class168.field2346 == 13) {
+                                 class92.loginIndex = 0;
+                                 class92.username = "";
+                                 class92.password = "";
+                                 Script.authCodeForLogin = 0;
+                                 class36.authCode = "";
+                              } else {
+                                 if(class168.field2346 == 85 && class36.authCode.length() > 0) {
+                                    class36.authCode = class36.authCode.substring(0, class36.authCode.length() - 1);
+                                 }
+
+                                 if(class168.field2346 == 84) {
+                                    class36.authCode.trim();
+                                    if(class36.authCode.length() != 6) {
+                                       class13.method64("", "Please enter a 6-digit PIN.", "");
+                                       return;
+                                    }
+
+                                    Script.authCodeForLogin = Integer.parseInt(class36.authCode);
+                                    class36.authCode = "";
+                                    class92.field1472 = class92.field1473?class149.field2214:class149.field2219;
+                                    class13.method64("", "Connecting to server...", "");
+                                    TextureProvider.setGameState(20);
                                     return;
                                  }
 
-                                 Script.authCodeForLogin = Integer.parseInt(class36.authCode);
-                                 class36.authCode = "";
-                                 class92.field1472 = class92.field1473?class149.field2214:class149.field2219;
-                                 class13.method64("", "Connecting to server...", "");
-                                 TextureProvider.setGameState(20);
-                                 return;
-                              }
-
-                              if(var9 && class36.authCode.length() < 6) {
-                                 class36.authCode = class36.authCode + IndexDataBase.field3238;
+                                 if(var16 && class36.authCode.length() < 6) {
+                                    class36.authCode = class36.authCode + IndexDataBase.field3238;
+                                 }
                               }
                            }
-                        }
-                     } else if(class92.loginIndex == 5) {
-                        var4 = class92.loginWindowX + 180 - 80;
-                        var14 = 321;
-                        if(var1 == 1 && var2 >= var4 - 75 && var2 <= var4 + 75 && var3 >= var14 - 20 && var3 <= var14 + 20) {
-                           GameObject.method2893();
-                           return;
-                        }
-
-                        var4 = class92.loginWindowX + 180 + 80;
-                        if(var1 == 1 && var2 >= var4 - 75 && var2 <= var4 + 75 && var3 >= var14 - 20 && var3 <= var14 + 20) {
-                           class92.loginMessage1 = "";
-                           class92.loginMessage2 = "Enter your username/email & password.";
-                           class92.loginMessage3 = "";
-                           class92.loginIndex = 2;
-                           class92.loginIndex2 = 0;
-                           class92.password = "";
-                        }
-
-                        while(class14.method77()) {
-                           var9 = false;
-
-                           for(var10 = 0; var10 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".length(); ++var10) {
-                              if(IndexDataBase.field3238 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var10)) {
-                                 var9 = true;
-                                 break;
-                              }
+                        } else if(class92.loginIndex == 5) {
+                           var14 = class92.loginWindowX + 180 - 80;
+                           var17 = 321;
+                           if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var17 - 20 && var12 <= var17 + 20) {
+                              GameObject.method2893();
+                              return;
                            }
 
-                           if(class168.field2346 == 13) {
+                           var14 = class92.loginWindowX + 180 + 80;
+                           if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var17 - 20 && var12 <= var17 + 20) {
                               class92.loginMessage1 = "";
                               class92.loginMessage2 = "Enter your username/email & password.";
                               class92.loginMessage3 = "";
                               class92.loginIndex = 2;
                               class92.loginIndex2 = 0;
                               class92.password = "";
-                           } else {
-                              if(class168.field2346 == 85 && class92.username.length() > 0) {
-                                 class92.username = class92.username.substring(0, class92.username.length() - 1);
-                              }
-
-                              if(class168.field2346 == 84) {
-                                 GameObject.method2893();
-                                 return;
-                              }
-
-                              if(var9 && class92.username.length() < 320) {
-                                 class92.username = class92.username + IndexDataBase.field3238;
-                              }
                            }
-                        }
-                     } else if(class92.loginIndex == 6) {
-                        while(true) {
-                           do {
-                              if(!class14.method77()) {
-                                 var15 = 321;
-                                 if(var1 == 1 && var3 >= var15 - 20 && var3 <= var15 + 20) {
-                                    class92.loginMessage1 = "";
-                                    class92.loginMessage2 = "Enter your username/email & password.";
-                                    class92.loginMessage3 = "";
-                                    class92.loginIndex = 2;
-                                    class92.loginIndex2 = 0;
-                                    class92.password = "";
+
+                           while(class14.method77()) {
+                              var16 = false;
+
+                              for(var18 = 0; var18 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".length(); ++var18) {
+                                 if(IndexDataBase.field3238 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var18)) {
+                                    var16 = true;
+                                    break;
+                                 }
+                              }
+
+                              if(class168.field2346 == 13) {
+                                 class92.loginMessage1 = "";
+                                 class92.loginMessage2 = "Enter your username/email & password.";
+                                 class92.loginMessage3 = "";
+                                 class92.loginIndex = 2;
+                                 class92.loginIndex2 = 0;
+                                 class92.password = "";
+                              } else {
+                                 if(class168.field2346 == 85 && class92.username.length() > 0) {
+                                    class92.username = class92.username.substring(0, class92.username.length() - 1);
                                  }
 
-                                 return;
-                              }
-                           } while(class168.field2346 != 84 && class168.field2346 != 13);
+                                 if(class168.field2346 == 84) {
+                                    GameObject.method2893();
+                                    return;
+                                 }
 
-                           class92.loginMessage1 = "";
-                           class92.loginMessage2 = "Enter your username/email & password.";
-                           class92.loginMessage3 = "";
-                           class92.loginIndex = 2;
-                           class92.loginIndex2 = 0;
-                           class92.password = "";
+                                 if(var16 && class92.username.length() < 320) {
+                                    class92.username = class92.username + IndexDataBase.field3238;
+                                 }
+                              }
+                           }
+                        } else if(class92.loginIndex == 6) {
+                           while(true) {
+                              do {
+                                 if(!class14.method77()) {
+                                    var15 = 321;
+                                    if(var1 == 1 && var12 >= var15 - 20 && var12 <= var15 + 20) {
+                                       class92.loginMessage1 = "";
+                                       class92.loginMessage2 = "Enter your username/email & password.";
+                                       class92.loginMessage3 = "";
+                                       class92.loginIndex = 2;
+                                       class92.loginIndex2 = 0;
+                                       class92.password = "";
+                                    }
+
+                                    return;
+                                 }
+                              } while(class168.field2346 != 84 && class168.field2346 != 13);
+
+                              class92.loginMessage1 = "";
+                              class92.loginMessage2 = "Enter your username/email & password.";
+                              class92.loginMessage3 = "";
+                              class92.loginIndex = 2;
+                              class92.loginIndex2 = 0;
+                              class92.password = "";
+                           }
                         }
                      }
                   } else {
@@ -1308,9 +1315,9 @@ public class ItemComposition extends CacheableNode {
                         }
                      }
 
-                     var4 = class92.loginWindowX + 180 - 80;
-                     var14 = 321;
-                     if(var1 == 1 && var2 >= var4 - 75 && var2 <= var4 + 75 && var3 >= var14 - 20 && var3 <= var14 + 20) {
+                     var14 = class92.loginWindowX + 180 - 80;
+                     var17 = 321;
+                     if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var17 - 20 && var12 <= var17 + 20) {
                         class92.loginMessage1 = "";
                         class92.loginMessage2 = "Enter your username/email & password.";
                         class92.loginMessage3 = "";
@@ -1318,16 +1325,16 @@ public class ItemComposition extends CacheableNode {
                         class92.loginIndex2 = 0;
                      }
 
-                     var4 = 180 + class92.loginWindowX + 80;
-                     if(var1 == 1 && var2 >= var4 - 75 && var2 <= var4 + 75 && var3 >= var14 - 20 && var3 <= var14 + 20) {
+                     var14 = 180 + class92.loginWindowX + 80;
+                     if(var1 == 1 && var11 >= var14 - 75 && var11 <= var14 + 75 && var12 >= var17 - 20 && var12 <= var17 + 20) {
                         class92.loginIndex = 0;
                      }
                   }
                }
+
             }
          }
       }
-
    }
 
    @ObfuscatedName("w")
@@ -1405,11 +1412,5 @@ public class ItemComposition extends CacheableNode {
       }
 
       return var2;
-   }
-
-   static {
-      items = new NodeCache(64);
-      itemModelCache = new NodeCache(50);
-      itemSpriteCache = new NodeCache(200);
    }
 }

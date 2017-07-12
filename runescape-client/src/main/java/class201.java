@@ -6,6 +6,20 @@ public class class201 implements Iterable {
    @ObfuscatedName("i")
    public CacheableNode field2492;
 
+   public class201() {
+      this.field2492 = new CacheableNode();
+      this.field2492.previous = this.field2492;
+      this.field2492.next = this.field2492;
+   }
+
+   @ObfuscatedName("i")
+   public void method3645() {
+      while(this.field2492.previous != this.field2492) {
+         this.field2492.previous.unlinkDual();
+      }
+
+   }
+
    @ObfuscatedName("w")
    public void method3642(CacheableNode var1) {
       if(var1.next != null) {
@@ -20,19 +34,5 @@ public class class201 implements Iterable {
 
    public Iterator iterator() {
       return new class200(this);
-   }
-
-   public class201() {
-      this.field2492 = new CacheableNode();
-      this.field2492.previous = this.field2492;
-      this.field2492.next = this.field2492;
-   }
-
-   @ObfuscatedName("i")
-   public void method3645() {
-      while(this.field2492 != this.field2492.previous) {
-         this.field2492.previous.unlinkDual();
-      }
-
    }
 }

@@ -5,12 +5,18 @@ import net.runelite.mapping.ObfuscatedName;
 public class class197 implements Iterator {
    @ObfuscatedName("t")
    Node field2483;
-   @ObfuscatedName("w")
-   Node field2484;
-   @ObfuscatedName("a")
-   int field2485;
    @ObfuscatedName("i")
    class186 field2486;
+   @ObfuscatedName("a")
+   int field2485;
+   @ObfuscatedName("w")
+   Node field2484;
+
+   class197(class186 var1) {
+      this.field2483 = null;
+      this.field2486 = var1;
+      this.method3618();
+   }
 
    @ObfuscatedName("e")
    void method3618() {
@@ -27,16 +33,17 @@ public class class197 implements Iterator {
          this.field2483 = var1;
          return var1;
       } else {
-         while(this.field2485 < this.field2486.field2455) {
-            var1 = this.field2486.field2452[this.field2485++].next;
-            if(this.field2486.field2452[this.field2485 - 1] != var1) {
-               this.field2484 = var1.next;
-               this.field2483 = var1;
-               return var1;
+         do {
+            if(this.field2485 >= this.field2486.field2455) {
+               return null;
             }
-         }
 
-         return null;
+            var1 = this.field2486.field2452[this.field2485++].next;
+         } while(var1 == this.field2486.field2452[this.field2485 - 1]);
+
+         this.field2484 = var1.next;
+         this.field2483 = var1;
+         return var1;
       }
    }
 
@@ -60,11 +67,5 @@ public class class197 implements Iterator {
    public void remove() {
       this.field2483.unlink();
       this.field2483 = null;
-   }
-
-   class197(class186 var1) {
-      this.field2483 = null;
-      this.field2486 = var1;
-      this.method3618();
    }
 }

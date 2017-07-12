@@ -8,12 +8,12 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("n")
 final class class18 implements Comparator {
-   @ObfuscatedName("co")
-   @Export("indexSprites")
-   static IndexData indexSprites;
    @ObfuscatedName("v")
    @Export("colorsToFind")
    public static short[] colorsToFind;
+   @ObfuscatedName("co")
+   @Export("indexSprites")
+   static IndexData indexSprites;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
@@ -30,6 +30,39 @@ final class class18 implements Comparator {
 
    public boolean equals(Object var1) {
       return super.equals(var1);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(LIndexDataBase;LIndexDataBase;IZI)LFrames;",
+      garbageValue = "-1506743544"
+   )
+   public static Frames method133(IndexDataBase var0, IndexDataBase var1, int var2, boolean var3) {
+      boolean var4 = true;
+      int[] var5 = var0.getChilds(var2);
+
+      for(int var6 = 0; var6 < var5.length; ++var6) {
+         byte[] var7 = var0.getChild(var2, var5[var6]);
+         if(var7 == null) {
+            var4 = false;
+         } else {
+            int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
+            byte[] var9 = var1.getChild(var8, 0);
+            if(var9 == null) {
+               var4 = false;
+            }
+         }
+      }
+
+      if(!var4) {
+         return null;
+      } else {
+         try {
+            return new Frames(var0, var1, var2, var3);
+         } catch (Exception var11) {
+            return null;
+         }
+      }
    }
 
    @ObfuscatedName("w")
@@ -92,7 +125,7 @@ final class class18 implements Comparator {
                   class2.region.method2788(var1, var4, 512, var0, var5, var3);
                }
 
-               if(var0 < 3 && (class61.tileSettings[1 + var0][var5][var3] & 8) != 0) {
+               if(var0 < 3 && (class61.tileSettings[var0 + 1][var5][var3] & 8) != 0) {
                   class2.region.method2788(var1, var4, 512, var0 + 1, var5, var3);
                }
 
@@ -111,7 +144,7 @@ final class class18 implements Comparator {
                   class222.method4071(var0, var6, var5, var3, var4);
                }
 
-               if(var0 < 3 && (class61.tileSettings[1 + var0][var6][var5] & 8) != 0) {
+               if(var0 < 3 && (class61.tileSettings[var0 + 1][var6][var5] & 8) != 0) {
                   class222.method4071(var0 + 1, var6, var5, var3, var4);
                }
             }
@@ -129,23 +162,23 @@ final class class18 implements Comparator {
                      int var9 = var5;
                      int var10 = var6;
                      if(var8 != 22 && var8 != 29 && var8 != 34 && var8 != 36 && var8 != 46 && var8 != 47 && var8 != 48) {
-                        int[][] var11 = Client.collisionMaps[WallObject.plane].flags;
+                        int[][] var13 = Client.collisionMaps[WallObject.plane].flags;
 
-                        for(int var12 = 0; var12 < 10; ++var12) {
-                           int var13 = (int)(Math.random() * 4.0D);
-                           if(var13 == 0 && var9 > 0 && var9 > var5 - 3 && (var11[var9 - 1][var10] & 19136776) == 0) {
+                        for(int var14 = 0; var14 < 10; ++var14) {
+                           int var15 = (int)(Math.random() * 4.0D);
+                           if(var15 == 0 && var9 > 0 && var9 > var5 - 3 && (var13[var9 - 1][var10] & 19136776) == 0) {
                               --var9;
                            }
 
-                           if(var13 == 1 && var9 < 103 && var9 < var5 + 3 && (var11[var9 + 1][var10] & 19136896) == 0) {
+                           if(var15 == 1 && var9 < 103 && var9 < var5 + 3 && (var13[var9 + 1][var10] & 19136896) == 0) {
                               ++var9;
                            }
 
-                           if(var13 == 2 && var10 > 0 && var10 > var6 - 3 && (var11[var9][var10 - 1] & 19136770) == 0) {
+                           if(var15 == 2 && var10 > 0 && var10 > var6 - 3 && (var13[var9][var10 - 1] & 19136770) == 0) {
                               --var10;
                            }
 
-                           if(var13 == 3 && var10 < 103 && var10 < var6 + 3 && (var11[var9][var10 + 1] & 19136800) == 0) {
+                           if(var15 == 3 && var10 < 103 && var10 < var6 + 3 && (var13[var9][var10 + 1] & 19136800) == 0) {
                               ++var10;
                            }
                         }
@@ -163,38 +196,5 @@ final class class18 implements Comparator {
          class43.field602.setRaster();
       }
 
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;IZI)LFrames;",
-      garbageValue = "-1506743544"
-   )
-   public static Frames method133(IndexDataBase var0, IndexDataBase var1, int var2, boolean var3) {
-      boolean var4 = true;
-      int[] var5 = var0.getChilds(var2);
-
-      for(int var6 = 0; var6 < var5.length; ++var6) {
-         byte[] var7 = var0.getChild(var2, var5[var6]);
-         if(var7 == null) {
-            var4 = false;
-         } else {
-            int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
-            byte[] var9 = var1.getChild(var8, 0);
-            if(var9 == null) {
-               var4 = false;
-            }
-         }
-      }
-
-      if(!var4) {
-         return null;
-      } else {
-         try {
-            return new Frames(var0, var1, var2, var3);
-         } catch (Exception var10) {
-            return null;
-         }
-      }
    }
 }

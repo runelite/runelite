@@ -5,11 +5,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ak")
 public class class36 {
+   @ObfuscatedName("w")
+   static final class36 field516;
+   @ObfuscatedName("i")
+   static final class36 field526;
    @ObfuscatedName("am")
    @Export("authCode")
    static String authCode;
-   @ObfuscatedName("w")
-   static final class36 field516;
    @ObfuscatedName("r")
    @Export("overlayPaths")
    static byte[][][] overlayPaths;
@@ -18,8 +20,11 @@ public class class36 {
       intValue = 623444973
    )
    final int field525;
-   @ObfuscatedName("i")
-   static final class36 field526;
+
+   static {
+      field526 = new class36(0);
+      field516 = new class36(1);
+   }
 
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -27,10 +32,5 @@ public class class36 {
    )
    class36(int var1) {
       this.field525 = var1;
-   }
-
-   static {
-      field526 = new class36(0);
-      field516 = new class36(1);
    }
 }

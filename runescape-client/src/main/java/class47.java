@@ -3,8 +3,6 @@ import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("ae")
 public class class47 {
-   @ObfuscatedName("a")
-   public Coordinates field632;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1987967947
@@ -12,6 +10,8 @@ public class class47 {
    public int field633;
    @ObfuscatedName("w")
    public Coordinates field635;
+   @ObfuscatedName("a")
+   public Coordinates field632;
 
    public class47(int var1, Coordinates var2, Coordinates var3) {
       this.field633 = var1;

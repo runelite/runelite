@@ -5,22 +5,41 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bg")
 public final class class60 {
-   @ObfuscatedName("z")
-   static Widget field766;
    @ObfuscatedName("ge")
    @ObfuscatedGetter(
       intValue = 1742632731
    )
    @Export("cameraZ")
    static int cameraZ;
+   @ObfuscatedName("z")
+   static Widget field766;
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "40"
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "592806910"
    )
-   public static int method1047() {
-      return KeyFocusListener.keyboardIdleTicks;
+   @Export("djb2Hash")
+   public static int djb2Hash(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + TextureProvider.method2403(var0.charAt(var3));
+      }
+
+      return var2;
+   }
+
+   @ObfuscatedName("hk")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1619448000"
+   )
+   static void method1055() {
+      Client.menuOptionCount = 0;
+      Client.field1074 = -1;
+      Client.isMenuOpen = false;
    }
 
    @ObfuscatedName("fs")
@@ -70,8 +89,8 @@ public final class class60 {
                class92.loadingBarPercentage = 20;
                Client.loadingStage = 40;
             } else if(Client.loadingStage == 40) {
-               byte var5 = 0;
-               var0 = var5 + class44.indexInterfaces.percentage() * 4 / 100;
+               byte var24 = 0;
+               var0 = var24 + class44.indexInterfaces.percentage() * 4 / 100;
                var0 += class261.indexSoundEffects.percentage() * 4 / 100;
                var0 += class91.configsIndex.percentage() * 2 / 100;
                var0 += class10.field259.percentage() * 2 / 100;
@@ -104,11 +123,11 @@ public final class class60 {
                FileSystem.sampleRate = 22050;
                AbstractSoundSystem.highMemory = var23;
                AbstractSoundSystem.priority = 2;
-               class204 var6 = new class204();
-               var6.method3675(9, 128);
+               class204 var28 = new class204();
+               var28.method3675(9, 128);
                FrameMap.soundSystem0 = class25.method166(GameEngine.taskManager, 0, 22050);
-               FrameMap.soundSystem0.method2021(var6);
-               class33.method348(class28.field424, class12.vorbisIndex, class98.field1545, var6);
+               FrameMap.soundSystem0.method2021(var28);
+               class33.method348(class28.field424, class12.vorbisIndex, class98.field1545, var28);
                MouseInput.soundSystem1 = class25.method166(GameEngine.taskManager, 1, 2048);
                class19.field328 = new class102();
                MouseInput.soundSystem1.method2021(class19.field328);
@@ -118,11 +137,11 @@ public final class class60 {
                Client.loadingStage = 50;
                XGrandExchangeOffer.field313 = new class262(class18.indexSprites, RSCanvas.field693);
             } else if(Client.loadingStage == 50) {
-               class261[] var24 = new class261[]{class261.field3629, class261.field3628, class261.field3624, class261.field3634, class261.field3635, class261.field3633};
-               var1 = var24.length;
-               class262 var26 = XGrandExchangeOffer.field313;
-               class261[] var7 = new class261[]{class261.field3629, class261.field3628, class261.field3624, class261.field3634, class261.field3635, class261.field3633};
-               Client.field1134 = var26.method4737(var7);
+               class261[] var29 = new class261[]{class261.field3629, class261.field3628, class261.field3624, class261.field3634, class261.field3635, class261.field3633};
+               var1 = var29.length;
+               class262 var30 = XGrandExchangeOffer.field313;
+               class261[] var31 = new class261[]{class261.field3629, class261.field3628, class261.field3624, class261.field3634, class261.field3635, class261.field3633};
+               Client.field1134 = var30.method4737(var31);
                if(Client.field1134.size() < var1) {
                   class92.loadingText = "Loading fonts - " + Client.field1134.size() * 100 / var1 + "%";
                   class92.loadingBarPercentage = 40;
@@ -154,53 +173,53 @@ public final class class60 {
                } else {
                   class89.method1721(class91.configsIndex);
                   class5.method21(class91.configsIndex);
-                  IndexData var25 = class91.configsIndex;
-                  IndexData var28 = class1.indexModels;
-                  KitDefinition.identKit_ref = var25;
-                  KitDefinition.field3357 = var28;
+                  IndexData var27 = class91.configsIndex;
+                  IndexData var19 = class1.indexModels;
+                  KitDefinition.identKit_ref = var27;
+                  KitDefinition.field3357 = var19;
                   KitDefinition.field3359 = KitDefinition.identKit_ref.fileCount(3);
                   Area.method4312(class91.configsIndex, class1.indexModels, Client.lowMemory);
-                  IndexData var31 = class91.configsIndex;
-                  IndexData var8 = class1.indexModels;
-                  NPCComposition.field3567 = var31;
-                  NPCComposition.field3584 = var8;
-                  IndexData var9 = class91.configsIndex;
-                  class252.field3406 = var9;
+                  IndexData var20 = class91.configsIndex;
+                  IndexData var21 = class1.indexModels;
+                  NPCComposition.field3567 = var20;
+                  NPCComposition.field3584 = var21;
+                  IndexData var22 = class91.configsIndex;
+                  class252.field3406 = var22;
                   class170.method3116(class91.configsIndex, class1.indexModels, Client.isMembers, class45.field618);
                   Huffman.method3060(class91.configsIndex, class44.indexInterfaces, class261.indexSoundEffects);
-                  IndexData var10 = class91.configsIndex;
-                  IndexData var11 = class1.indexModels;
-                  Spotanim.field3347 = var10;
-                  Spotanim.field3338 = var11;
-                  IndexData var12 = class91.configsIndex;
-                  Varbit.varbit_ref = var12;
-                  IndexData var13 = class91.configsIndex;
-                  VarPlayerType.varplayer_ref = var13;
+                  IndexData var5 = class91.configsIndex;
+                  IndexData var6 = class1.indexModels;
+                  Spotanim.field3347 = var5;
+                  Spotanim.field3338 = var6;
+                  IndexData var7 = class91.configsIndex;
+                  Varbit.varbit_ref = var7;
+                  IndexData var8 = class91.configsIndex;
+                  VarPlayerType.varplayer_ref = var8;
                   VarPlayerType.field3289 = VarPlayerType.varplayer_ref.fileCount(16);
-                  IndexData var14 = class10.field259;
-                  IndexData var15 = class1.indexModels;
-                  IndexData var16 = class18.indexSprites;
-                  IndexData var17 = RSCanvas.field693;
-                  Widget.widgetIndex = var14;
-                  Widget.field2750 = var15;
-                  CollisionData.field2309 = var16;
-                  GroundObject.field1876 = var17;
+                  IndexData var9 = class10.field259;
+                  IndexData var10 = class1.indexModels;
+                  IndexData var11 = class18.indexSprites;
+                  IndexData var12 = RSCanvas.field693;
+                  Widget.widgetIndex = var9;
+                  Widget.field2750 = var10;
+                  CollisionData.field2309 = var11;
+                  GroundObject.field1876 = var12;
                   class46.widgets = new Widget[Widget.widgetIndex.size()][];
                   class152.validInterfaces = new boolean[Widget.widgetIndex.size()];
-                  IndexData var18 = class91.configsIndex;
-                  InvType.field3285 = var18;
+                  IndexData var13 = class91.configsIndex;
+                  InvType.field3285 = var13;
                   class175.method3347(class91.configsIndex);
                   AbstractSoundSystem.method2064(class91.configsIndex);
                   class175.method3346(class91.configsIndex);
-                  IndexData var19 = class91.configsIndex;
-                  class251.field3399 = var19;
+                  IndexData var14 = class91.configsIndex;
+                  class251.field3399 = var14;
                   class71.chatMessages = new Varcs();
-                  IndexData var20 = class91.configsIndex;
-                  IndexData var21 = class18.indexSprites;
-                  IndexData var22 = RSCanvas.field693;
-                  class254.field3441 = var20;
-                  class254.field3419 = var21;
-                  class215.field2639 = var22;
+                  IndexData var15 = class91.configsIndex;
+                  IndexData var16 = class18.indexSprites;
+                  IndexData var17 = RSCanvas.field693;
+                  class254.field3441 = var15;
+                  class254.field3419 = var16;
+                  class215.field2639 = var17;
                   Player.method1178(class91.configsIndex, class18.indexSprites);
                   class31.method269(class91.configsIndex, class18.indexSprites);
                   class92.loadingText = "Loaded config";
@@ -295,8 +314,8 @@ public final class class60 {
                   class92.loadingText = "Loading textures - " + class87.indexTextures.method4234() + "%";
                   class92.loadingBarPercentage = 90;
                } else {
-                  TextureProvider var27 = new TextureProvider(class87.indexTextures, class18.indexSprites, 20, 0.8D, Client.lowMemory?64:128);
-                  Graphics3D.setTextureLoader(var27);
+                  TextureProvider var26 = new TextureProvider(class87.indexTextures, class18.indexSprites, 20, 0.8D, Client.lowMemory?64:128);
+                  Graphics3D.setTextureLoader(var26);
                   Graphics3D.setBrightness(0.8D);
                   class92.loadingText = "Loaded textures";
                   class92.loadingBarPercentage = 90;
@@ -310,11 +329,11 @@ public final class class60 {
                Client.loadingStage = 120;
             } else if(Client.loadingStage == 120) {
                if(!DecorativeObject.field2194.method4134("huffman", "")) {
-                  class92.loadingText = "Loading wordpack - 0%";
+                  class92.loadingText = "Loading wordpack - " + 0 + "%";
                   class92.loadingBarPercentage = 96;
                } else {
-                  Huffman var29 = new Huffman(DecorativeObject.field2194.method4145("huffman", ""));
-                  class265.field3665 = var29;
+                  Huffman var25 = new Huffman(DecorativeObject.field2194.method4145("huffman", ""));
+                  class265.field3665 = var25;
                   class92.loadingText = "Loaded wordpack";
                   class92.loadingBarPercentage = 96;
                   Client.loadingStage = 130;
@@ -356,64 +375,21 @@ public final class class60 {
                TextureProvider.setGameState(10);
             }
          } else {
-            int[] var30 = new int[9];
+            int[] var18 = new int[9];
 
             for(var1 = 0; var1 < 9; ++var1) {
                var2 = 128 + var1 * 32 + 15;
                var3 = var2 * 3 + 600;
                var4 = Graphics3D.SINE[var2];
-               var30[var1] = var3 * var4 >> 16;
+               var18[var1] = var4 * var3 >> 16;
             }
 
-            Region.method2701(var30, 500, 800, 512, 334);
+            Region.method2701(var18, 500, 800, 512, 334);
             class92.loadingText = "Prepared visibility map";
             class92.loadingBarPercentage = 10;
             Client.loadingStage = 30;
          }
       }
-
-   }
-
-   @ObfuscatedName("ho")
-   @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;I)V",
-      garbageValue = "833525561"
-   )
-   static void method1051(int var0, String var1) {
-      int var2 = class96.field1521;
-      int[] var3 = class96.field1531;
-      boolean var4 = false;
-
-      for(int var5 = 0; var5 < var2; ++var5) {
-         Player var6 = Client.cachedPlayers[var3[var5]];
-         if(var6 != null && var6 != XItemContainer.localPlayer && var6.name != null && var6.name.equalsIgnoreCase(var1)) {
-            if(var0 == 1) {
-               Client.secretPacketBuffer1.putOpcode(68);
-               Client.secretPacketBuffer1.putShortOb2(var3[var5]);
-               Client.secretPacketBuffer1.putShortLE(0);
-            } else if(var0 == 4) {
-               Client.secretPacketBuffer1.putOpcode(191);
-               Client.secretPacketBuffer1.putShort(var3[var5]);
-               Client.secretPacketBuffer1.putShortLE(0);
-            } else if(var0 == 6) {
-               Client.secretPacketBuffer1.putOpcode(186);
-               Client.secretPacketBuffer1.putShortLE(0);
-               Client.secretPacketBuffer1.putShort(var3[var5]);
-            } else if(var0 == 7) {
-               Client.secretPacketBuffer1.putOpcode(204);
-               Client.secretPacketBuffer1.putShortLE(0);
-               Client.secretPacketBuffer1.putLEShortA(var3[var5]);
-            }
-
-            var4 = true;
-            break;
-         }
-      }
-
-      if(!var4) {
-         class152.sendGameMessage(4, "", "Unable to find " + var1);
-      }
-
    }
 
    @ObfuscatedName("hs")
@@ -439,10 +415,10 @@ public final class class60 {
          }
 
          if(var10) {
-            int var7 = WorldMapType3.getWidgetConfig(var5);
-            int var8 = var0 - 1;
-            boolean var9 = (var7 >> var8 + 1 & 1) != 0;
-            if(var9) {
+            int var8 = WorldMapType3.getWidgetConfig(var5);
+            int var9 = var0 - 1;
+            boolean var7 = (var8 >> var9 + 1 & 1) != 0;
+            if(var7) {
                if(var0 == 1) {
                   Client.secretPacketBuffer1.putOpcode(78);
                   Client.secretPacketBuffer1.putInt(var1);
@@ -512,37 +488,60 @@ public final class class60 {
                   Client.secretPacketBuffer1.putShort(var2);
                   Client.secretPacketBuffer1.putShort(var3);
                }
+
             }
          }
       }
-
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("ho")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "592806910"
+      signature = "(ILjava/lang/String;I)V",
+      garbageValue = "833525561"
    )
-   @Export("djb2Hash")
-   public static int djb2Hash(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
+   static void method1051(int var0, String var1) {
+      int var2 = class96.field1521;
+      int[] var3 = class96.field1531;
+      boolean var4 = false;
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + TextureProvider.method2403(var0.charAt(var3));
+      for(int var5 = 0; var5 < var2; ++var5) {
+         Player var6 = Client.cachedPlayers[var3[var5]];
+         if(var6 != null && var6 != XItemContainer.localPlayer && var6.name != null && var6.name.equalsIgnoreCase(var1)) {
+            if(var0 == 1) {
+               Client.secretPacketBuffer1.putOpcode(68);
+               Client.secretPacketBuffer1.putShortOb2(var3[var5]);
+               Client.secretPacketBuffer1.putShortLE(0);
+            } else if(var0 == 4) {
+               Client.secretPacketBuffer1.putOpcode(191);
+               Client.secretPacketBuffer1.putShort(var3[var5]);
+               Client.secretPacketBuffer1.putShortLE(0);
+            } else if(var0 == 6) {
+               Client.secretPacketBuffer1.putOpcode(186);
+               Client.secretPacketBuffer1.putShortLE(0);
+               Client.secretPacketBuffer1.putShort(var3[var5]);
+            } else if(var0 == 7) {
+               Client.secretPacketBuffer1.putOpcode(204);
+               Client.secretPacketBuffer1.putShortLE(0);
+               Client.secretPacketBuffer1.putLEShortA(var3[var5]);
+            }
+
+            var4 = true;
+            break;
+         }
       }
 
-      return var2;
+      if(!var4) {
+         class152.sendGameMessage(4, "", "Unable to find " + var1);
+      }
+
    }
 
-   @ObfuscatedName("hk")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1619448000"
+      signature = "(B)I",
+      garbageValue = "40"
    )
-   static void method1055() {
-      Client.menuOptionCount = 0;
-      Client.field1074 = -1;
-      Client.isMenuOpen = false;
+   public static int method1047() {
+      return KeyFocusListener.keyboardIdleTicks;
    }
 }

@@ -55,7 +55,7 @@ public abstract class class9 extends Node {
                      var12 = var8.id;
                   }
 
-                  if(var11 != var12) {
+                  if(var12 != var11) {
                      if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
                         var9 = false;
                      }

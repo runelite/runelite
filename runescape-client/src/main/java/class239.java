@@ -30,6 +30,15 @@ public enum class239 implements RSEnum {
    )
    public final int field3282;
 
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "0"
+   )
+   class239(int var3, int var4) {
+      this.field3282 = var3;
+      this.field3281 = var4;
+   }
+
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
@@ -37,166 +46,6 @@ public enum class239 implements RSEnum {
    )
    public int rsOrdinal() {
       return this.field3281;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "808405277"
-   )
-   static long method4263() {
-      try {
-         URL var0 = new URL(WorldMapType1.method263("services", false) + "m=accountappeal/login.ws");
-         URLConnection var1 = var0.openConnection();
-         var1.setRequestProperty("connection", "close");
-         var1.setDoInput(true);
-         var1.setDoOutput(true);
-         var1.setConnectTimeout(5000);
-         OutputStreamWriter var2 = new OutputStreamWriter(var1.getOutputStream());
-         var2.write("data1=req");
-         var2.flush();
-         InputStream var3 = var1.getInputStream();
-         Buffer var4 = new Buffer(new byte[1000]);
-
-         do {
-            int var5 = var3.read(var4.payload, var4.offset, 1000 - var4.offset);
-            if(var5 == -1) {
-               var4.offset = 0;
-               long var6 = var4.readLong();
-               return var6;
-            }
-
-            var4.offset += var5;
-         } while(var4.offset < 1000);
-
-         return 0L;
-      } catch (Exception var8) {
-         return 0L;
-      }
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "306404671"
-   )
-   @Export("decodeClassVerifier")
-   public static void decodeClassVerifier(Buffer var0, int var1) {
-      ClassInfo var2 = new ClassInfo();
-      var2.count = var0.readUnsignedByte();
-      var2.field3750 = var0.readInt();
-      var2.type = new int[var2.count];
-      var2.errorIdentifiers = new int[var2.count];
-      var2.fields = new Field[var2.count];
-      var2.fieldValues = new int[var2.count];
-      var2.methods = new Method[var2.count];
-      var2.args = new byte[var2.count][][];
-
-      for(int var3 = 0; var3 < var2.count; ++var3) {
-         try {
-            int var4 = var0.readUnsignedByte();
-            String var5;
-            String var6;
-            int var7;
-            if(var4 != 0 && var4 != 1 && var4 != 2) {
-               if(var4 == 3 || var4 == 4) {
-                  var5 = var0.readString();
-                  var6 = var0.readString();
-                  var7 = var0.readUnsignedByte();
-                  String[] var8 = new String[var7];
-
-                  for(int var9 = 0; var9 < var7; ++var9) {
-                     var8[var9] = var0.readString();
-                  }
-
-                  String var26 = var0.readString();
-                  byte[][] var10 = new byte[var7][];
-                  int var11;
-                  if(var4 == 3) {
-                     for(int var12 = 0; var12 < var7; ++var12) {
-                        var11 = var0.readInt();
-                        var10[var12] = new byte[var11];
-                        var0.readBytes(var10[var12], 0, var11);
-                     }
-                  }
-
-                  var2.type[var3] = var4;
-                  Class[] var27 = new Class[var7];
-
-                  for(var11 = 0; var11 < var7; ++var11) {
-                     var27[var11] = Permission.method4095(var8[var11]);
-                  }
-
-                  Class var13 = Permission.method4095(var26);
-                  if(Permission.method4095(var5).getClassLoader() == null) {
-                     throw new SecurityException();
-                  }
-
-                  Method[] var14 = Permission.method4095(var5).getDeclaredMethods();
-                  Method[] var15 = var14;
-
-                  for(int var16 = 0; var16 < var15.length; ++var16) {
-                     Method var17 = var15[var16];
-                     if(Reflection.getMethodName(var17).equals(var6)) {
-                        Class[] var18 = Reflection.getParameterTypes(var17);
-                        if(var18.length == var27.length) {
-                           boolean var19 = true;
-
-                           for(int var20 = 0; var20 < var27.length; ++var20) {
-                              if(var18[var20] != var27[var20]) {
-                                 var19 = false;
-                                 break;
-                              }
-                           }
-
-                           if(var19 && var13 == var17.getReturnType()) {
-                              var2.methods[var3] = var17;
-                           }
-                        }
-                     }
-                  }
-
-                  var2.args[var3] = var10;
-               }
-            } else {
-               var5 = var0.readString();
-               var6 = var0.readString();
-               var7 = 0;
-               if(var4 == 1) {
-                  var7 = var0.readInt();
-               }
-
-               var2.type[var3] = var4;
-               var2.fieldValues[var3] = var7;
-               if(Permission.method4095(var5).getClassLoader() == null) {
-                  throw new SecurityException();
-               }
-
-               var2.fields[var3] = Reflection.findField(Permission.method4095(var5), var6);
-            }
-         } catch (ClassNotFoundException var21) {
-            var2.errorIdentifiers[var3] = -1;
-         } catch (SecurityException var22) {
-            var2.errorIdentifiers[var3] = -2;
-         } catch (NullPointerException var23) {
-            var2.errorIdentifiers[var3] = -3;
-         } catch (Exception var24) {
-            var2.errorIdentifiers[var3] = -4;
-         } catch (Throwable var25) {
-            var2.errorIdentifiers[var3] = -5;
-         }
-      }
-
-      class280.field3755.method3543(var2);
-   }
-
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "0"
-   )
-   private class239(int var3, int var4) {
-      this.field3282 = var3;
-      this.field3281 = var4;
    }
 
    @ObfuscatedName("e")
@@ -248,7 +97,7 @@ public enum class239 implements RSEnum {
       int var9;
       int var10;
       for(var3 = 1; var3 < var0 - 1; ++var3) {
-         var4 = (var0 - var3) * class92.field1459[var3] / var0;
+         var4 = class92.field1459[var3] * (var0 - var3) / var0;
          var5 = var4 + 22;
          if(var5 < 0) {
             var5 = 0;
@@ -263,7 +112,7 @@ public enum class239 implements RSEnum {
                var9 = 256 - var7;
                var7 = WorldMapType3.field375[var7];
                var10 = class43.field602.pixels[var2];
-               class43.field602.pixels[var2++] = (var8 * (var7 & '\uff00') + (var10 & '\uff00') * var9 & 16711680) + ((var10 & 16711935) * var9 + (var7 & 16711935) * var8 & -16711936) >> 8;
+               class43.field602.pixels[var2++] = (var9 * (var10 & 16711935) + var8 * (var7 & 16711935) & -16711936) + (var8 * (var7 & '\uff00') + var9 * (var10 & '\uff00') & 16711680) >> 8;
             } else {
                ++var2;
             }
@@ -279,7 +128,7 @@ public enum class239 implements RSEnum {
       var2 = class43.field602.width * 9 + 24 + 637 + class92.field1470;
 
       for(var3 = 1; var3 < var0 - 1; ++var3) {
-         var4 = (var0 - var3) * class92.field1459[var3] / var0;
+         var4 = class92.field1459[var3] * (var0 - var3) / var0;
          var5 = 103 - var4;
          var2 += var4;
 
@@ -290,7 +139,7 @@ public enum class239 implements RSEnum {
                var9 = 256 - var7;
                var7 = WorldMapType3.field375[var7];
                var10 = class43.field602.pixels[var2];
-               class43.field602.pixels[var2++] = (var8 * (var7 & '\uff00') + (var10 & '\uff00') * var9 & 16711680) + ((var10 & 16711935) * var9 + (var7 & 16711935) * var8 & -16711936) >> 8;
+               class43.field602.pixels[var2++] = (var9 * (var10 & 16711935) + var8 * (var7 & 16711935) & -16711936) + (var8 * (var7 & '\uff00') + (var10 & '\uff00') * var9 & 16711680) >> 8;
             } else {
                ++var2;
             }
@@ -300,5 +149,156 @@ public enum class239 implements RSEnum {
          var2 += class43.field602.width - var5 - var4;
       }
 
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)J",
+      garbageValue = "808405277"
+   )
+   static long method4263() {
+      try {
+         URL var0 = new URL(WorldMapType1.method263("services", false) + "m=accountappeal/login.ws");
+         URLConnection var1 = var0.openConnection();
+         var1.setRequestProperty("connection", "close");
+         var1.setDoInput(true);
+         var1.setDoOutput(true);
+         var1.setConnectTimeout(5000);
+         OutputStreamWriter var2 = new OutputStreamWriter(var1.getOutputStream());
+         var2.write("data1=req");
+         var2.flush();
+         InputStream var3 = var1.getInputStream();
+         Buffer var4 = new Buffer(new byte[1000]);
+
+         do {
+            int var5 = var3.read(var4.payload, var4.offset, 1000 - var4.offset);
+            if(var5 == -1) {
+               var4.offset = 0;
+               long var7 = var4.readLong();
+               return var7;
+            }
+
+            var4.offset += var5;
+         } while(var4.offset < 1000);
+
+         return 0L;
+      } catch (Exception var9) {
+         return 0L;
+      }
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;II)V",
+      garbageValue = "306404671"
+   )
+   @Export("decodeClassVerifier")
+   public static void decodeClassVerifier(Buffer var0, int var1) {
+      ClassInfo var2 = new ClassInfo();
+      var2.count = var0.readUnsignedByte();
+      var2.field3750 = var0.readInt();
+      var2.type = new int[var2.count];
+      var2.errorIdentifiers = new int[var2.count];
+      var2.fields = new Field[var2.count];
+      var2.fieldValues = new int[var2.count];
+      var2.methods = new Method[var2.count];
+      var2.args = new byte[var2.count][][];
+
+      for(int var3 = 0; var3 < var2.count; ++var3) {
+         try {
+            int var4 = var0.readUnsignedByte();
+            String var5;
+            String var6;
+            int var7;
+            if(var4 != 0 && var4 != 1 && var4 != 2) {
+               if(var4 == 3 || var4 == 4) {
+                  var5 = var0.readString();
+                  var6 = var0.readString();
+                  var7 = var0.readUnsignedByte();
+                  String[] var8 = new String[var7];
+
+                  for(int var9 = 0; var9 < var7; ++var9) {
+                     var8[var9] = var0.readString();
+                  }
+
+                  String var20 = var0.readString();
+                  byte[][] var10 = new byte[var7][];
+                  int var12;
+                  if(var4 == 3) {
+                     for(int var11 = 0; var11 < var7; ++var11) {
+                        var12 = var0.readInt();
+                        var10[var11] = new byte[var12];
+                        var0.readBytes(var10[var11], 0, var12);
+                     }
+                  }
+
+                  var2.type[var3] = var4;
+                  Class[] var21 = new Class[var7];
+
+                  for(var12 = 0; var12 < var7; ++var12) {
+                     var21[var12] = Permission.method4095(var8[var12]);
+                  }
+
+                  Class var22 = Permission.method4095(var20);
+                  if(Permission.method4095(var5).getClassLoader() == null) {
+                     throw new SecurityException();
+                  }
+
+                  Method[] var13 = Permission.method4095(var5).getDeclaredMethods();
+                  Method[] var14 = var13;
+
+                  for(int var15 = 0; var15 < var14.length; ++var15) {
+                     Method var16 = var14[var15];
+                     if(Reflection.getMethodName(var16).equals(var6)) {
+                        Class[] var17 = Reflection.getParameterTypes(var16);
+                        if(var17.length == var21.length) {
+                           boolean var18 = true;
+
+                           for(int var19 = 0; var19 < var21.length; ++var19) {
+                              if(var17[var19] != var21[var19]) {
+                                 var18 = false;
+                                 break;
+                              }
+                           }
+
+                           if(var18 && var22 == var16.getReturnType()) {
+                              var2.methods[var3] = var16;
+                           }
+                        }
+                     }
+                  }
+
+                  var2.args[var3] = var10;
+               }
+            } else {
+               var5 = var0.readString();
+               var6 = var0.readString();
+               var7 = 0;
+               if(var4 == 1) {
+                  var7 = var0.readInt();
+               }
+
+               var2.type[var3] = var4;
+               var2.fieldValues[var3] = var7;
+               if(Permission.method4095(var5).getClassLoader() == null) {
+                  throw new SecurityException();
+               }
+
+               var2.fields[var3] = Reflection.findField(Permission.method4095(var5), var6);
+            }
+         } catch (ClassNotFoundException var24) {
+            var2.errorIdentifiers[var3] = -1;
+         } catch (SecurityException var25) {
+            var2.errorIdentifiers[var3] = -2;
+         } catch (NullPointerException var26) {
+            var2.errorIdentifiers[var3] = -3;
+         } catch (Exception var27) {
+            var2.errorIdentifiers[var3] = -4;
+         } catch (Throwable var28) {
+            var2.errorIdentifiers[var3] = -5;
+         }
+      }
+
+      class280.field3755.method3543(var2);
    }
 }

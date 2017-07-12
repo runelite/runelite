@@ -10,6 +10,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("eo")
 @Implements("Signlink")
 public class Signlink implements Runnable {
+   @ObfuscatedName("i")
+   @Export("javaVendor")
+   public static String javaVendor;
    @ObfuscatedName("w")
    @Export("javaVersion")
    public static String javaVersion;
@@ -19,34 +22,32 @@ public class Signlink implements Runnable {
    @ObfuscatedName("a")
    @Export("currentTask")
    Task currentTask;
-   @ObfuscatedName("t")
-   @Export("cachedTask")
-   Task cachedTask;
    @ObfuscatedName("s")
    @Export("sysEventQueue")
    Thread sysEventQueue;
-   @ObfuscatedName("i")
-   @Export("javaVendor")
-   public static String javaVendor;
+   @ObfuscatedName("t")
+   @Export("cachedTask")
+   Task cachedTask;
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "52"
-   )
-   @Export("join")
-   public final void join() {
-      synchronized(this) {
-         this.closed = true;
-         this.notifyAll();
-      }
+   public Signlink() {
+      this.currentTask = null;
+      this.cachedTask = null;
+      this.closed = false;
+      javaVendor = "Unknown";
+      javaVersion = "1.6";
 
       try {
-         this.sysEventQueue.join();
-      } catch (InterruptedException var3) {
+         javaVendor = System.getProperty("java.vendor");
+         javaVersion = System.getProperty("java.version");
+      } catch (Exception var2) {
          ;
       }
 
+      this.closed = false;
+      this.sysEventQueue = new Thread(this);
+      this.sysEventQueue.setPriority(10);
+      this.sysEventQueue.setDaemon(true);
+      this.sysEventQueue.start();
    }
 
    @ObfuscatedName("w")
@@ -72,14 +73,14 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)LTask;",
-      garbageValue = "-718440342"
+      signature = "(Ljava/net/URL;B)LTask;",
+      garbageValue = "25"
    )
-   @Export("createSocket")
-   public final Task createSocket(String var1, int var2) {
-      return this.method2925(1, var2, 0, var1);
+   @Export("createURL")
+   public final Task createURL(URL var1) {
+      return this.method2925(4, 0, 0, var1);
    }
 
    @ObfuscatedName("t")
@@ -90,6 +91,46 @@ public class Signlink implements Runnable {
    @Export("createRunnable")
    public final Task createRunnable(Runnable var1, int var2) {
       return this.method2925(2, var2, 0, var1);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "52"
+   )
+   @Export("join")
+   public final void join() {
+      synchronized(this) {
+         this.closed = true;
+         this.notifyAll();
+      }
+
+      try {
+         this.sysEventQueue.join();
+      } catch (InterruptedException var3) {
+         ;
+      }
+
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;II)LTask;",
+      garbageValue = "-718440342"
+   )
+   @Export("createSocket")
+   public final Task createSocket(String var1, int var2) {
+      return this.method2925(1, var2, 0, var1);
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(II)LTask;",
+      garbageValue = "1927296735"
+   )
+   @Export("createHost")
+   public final Task createHost(int var1) {
+      return this.method2925(3, var1, 0, (Object)null);
    }
 
    public final void run() {
@@ -112,77 +153,36 @@ public class Signlink implements Runnable {
 
                try {
                   this.wait();
-               } catch (InterruptedException var7) {
+               } catch (InterruptedException var8) {
                   ;
                }
             }
          }
 
          try {
-            int var2 = var1.type;
-            if(var2 == 1) {
+            int var5 = var1.type;
+            if(var5 == 1) {
                var1.value = new Socket(InetAddress.getByName((String)var1.field2246), var1.field2245);
-            } else if(var2 == 2) {
+            } else if(var5 == 2) {
                Thread var3 = new Thread((Runnable)var1.field2246);
                var3.setDaemon(true);
                var3.start();
                var3.setPriority(var1.field2245);
                var1.value = var3;
-            } else if(var2 == 4) {
+            } else if(var5 == 4) {
                var1.value = new DataInputStream(((URL)var1.field2246).openStream());
-            } else if(var2 == 3) {
-               String var9 = (var1.field2245 >> 24 & 255) + "." + (var1.field2245 >> 16 & 255) + "." + (var1.field2245 >> 8 & 255) + "." + (var1.field2245 & 255);
-               var1.value = InetAddress.getByName(var9).getHostName();
+            } else if(var5 == 3) {
+               String var10 = (var1.field2245 >> 24 & 255) + "." + (var1.field2245 >> 16 & 255) + "." + (var1.field2245 >> 8 & 255) + "." + (var1.field2245 & 255);
+               var1.value = InetAddress.getByName(var10).getHostName();
             }
 
             var1.status = 1;
-         } catch (ThreadDeath var5) {
-            throw var5;
-         } catch (Throwable var6) {
+         } catch (ThreadDeath var6) {
+            throw var6;
+         } catch (Throwable var7) {
             var1.status = 2;
          }
       }
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(Ljava/net/URL;B)LTask;",
-      garbageValue = "25"
-   )
-   @Export("createURL")
-   public final Task createURL(URL var1) {
-      return this.method2925(4, 0, 0, var1);
-   }
-
-   public Signlink() {
-      this.currentTask = null;
-      this.cachedTask = null;
-      this.closed = false;
-      javaVendor = "Unknown";
-      javaVersion = "1.6";
-
-      try {
-         javaVendor = System.getProperty("java.vendor");
-         javaVersion = System.getProperty("java.version");
-      } catch (Exception var2) {
-         ;
-      }
-
-      this.closed = false;
-      this.sysEventQueue = new Thread(this);
-      this.sysEventQueue.setPriority(10);
-      this.sysEventQueue.setDaemon(true);
-      this.sysEventQueue.start();
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(II)LTask;",
-      garbageValue = "1927296735"
-   )
-   @Export("createHost")
-   public final Task createHost(int var1) {
-      return this.method2925(3, var1, 0, (Object)null);
    }
 
    @ObfuscatedName("hy")
@@ -199,13 +199,16 @@ public class Signlink implements Runnable {
             WallObject.gameDraw(class262.field3641, -1412584499, var1, var2, var3, var4, class77.field1237, class270.field3689, var7);
             class262.field3641 = null;
          }
-      } else if(var7 != -1) {
-         Client.field1132[var7] = true;
-      } else {
-         for(int var8 = 0; var8 < 100; ++var8) {
-            Client.field1132[var8] = true;
-         }
-      }
 
+      } else {
+         if(var7 != -1) {
+            Client.field1132[var7] = true;
+         } else {
+            for(int var8 = 0; var8 < 100; ++var8) {
+               Client.field1132[var8] = true;
+            }
+         }
+
+      }
    }
 }

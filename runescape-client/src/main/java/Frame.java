@@ -5,19 +5,20 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("eu")
 @Implements("Frame")
 public class Frame {
-   @ObfuscatedName("s")
-   @Export("skin")
-   FrameMap skin;
-   @ObfuscatedName("e")
-   @Export("showing")
-   boolean showing;
+   @ObfuscatedName("i")
+   static int[] field1904;
+   @ObfuscatedName("w")
+   static int[] field1903;
    @ObfuscatedName("a")
    static int[] field1896;
    @ObfuscatedName("t")
    static int[] field1897;
-   @ObfuscatedName("k")
-   @Export("translator_z")
-   int[] translator_z;
+   @ObfuscatedName("e")
+   @Export("showing")
+   boolean showing;
+   @ObfuscatedName("s")
+   @Export("skin")
+   FrameMap skin;
    @ObfuscatedName("r")
    int field1899;
    @ObfuscatedName("v")
@@ -28,10 +29,16 @@ public class Frame {
    @ObfuscatedName("j")
    @Export("translator_y")
    int[] translator_y;
-   @ObfuscatedName("w")
-   static int[] field1903;
-   @ObfuscatedName("i")
-   static int[] field1904;
+   @ObfuscatedName("k")
+   @Export("translator_z")
+   int[] translator_z;
+
+   static {
+      field1904 = new int[500];
+      field1903 = new int[500];
+      field1896 = new int[500];
+      field1897 = new int[500];
+   }
 
    Frame(byte[] var1, FrameMap var2) {
       this.skin = null;
@@ -112,12 +119,5 @@ public class Frame {
          }
 
       }
-   }
-
-   static {
-      field1904 = new int[500];
-      field1903 = new int[500];
-      field1896 = new int[500];
-      field1897 = new int[500];
    }
 }

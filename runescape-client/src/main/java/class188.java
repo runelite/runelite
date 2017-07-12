@@ -10,9 +10,16 @@ public class class188 implements Iterator {
    @ObfuscatedName("a")
    Node field2459;
 
+   class188(CombatInfoList var1) {
+      this.field2459 = null;
+      this.field2457 = var1;
+      this.field2458 = this.field2457.node.next;
+      this.field2459 = null;
+   }
+
    public Object next() {
       Node var1 = this.field2458;
-      if(this.field2457.node == var1) {
+      if(var1 == this.field2457.node) {
          var1 = null;
          this.field2458 = null;
       } else {
@@ -24,18 +31,11 @@ public class class188 implements Iterator {
    }
 
    public boolean hasNext() {
-      return this.field2458 != this.field2457.node;
+      return this.field2457.node != this.field2458;
    }
 
    public void remove() {
       this.field2459.unlink();
-      this.field2459 = null;
-   }
-
-   class188(CombatInfoList var1) {
-      this.field2459 = null;
-      this.field2457 = var1;
-      this.field2458 = this.field2457.node.next;
       this.field2459 = null;
    }
 }

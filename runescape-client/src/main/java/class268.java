@@ -7,24 +7,8 @@ public final class class268 {
    @ObfuscatedName("i")
    static final char[] field3681;
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(ILIndexFile;LIndexData;I)V",
-      garbageValue = "926420545"
-   )
-   static void method4858(int var0, IndexFile var1, IndexData var2) {
-      FileSystem var3 = new FileSystem();
-      var3.field3213 = 1;
-      var3.hash = (long)var0;
-      var3.index = var1;
-      var3.data = var2;
-      Deque var4 = class236.field3247;
-      Deque var5 = class236.field3247;
-      synchronized(class236.field3247) {
-         class236.field3247.addFront(var3);
-      }
-
-      class43.method644();
+   static {
+      field3681 = new char[]{'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
    }
 
    @ObfuscatedName("j")
@@ -47,7 +31,22 @@ public final class class268 {
       return var0;
    }
 
-   static {
-      field3681 = new char[]{'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(ILIndexFile;LIndexData;I)V",
+      garbageValue = "926420545"
+   )
+   static void method4858(int var0, IndexFile var1, IndexData var2) {
+      FileSystem var3 = new FileSystem();
+      var3.field3213 = 1;
+      var3.hash = (long)var0;
+      var3.index = var1;
+      var3.data = var2;
+      Deque var4 = class236.field3247;
+      synchronized(class236.field3247) {
+         class236.field3247.addFront(var3);
+      }
+
+      class43.method644();
    }
 }

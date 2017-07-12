@@ -7,26 +7,42 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("co")
 @Implements("DynamicObject")
 public class DynamicObject extends Renderable {
+   @ObfuscatedName("v")
+   Sequence field1563;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -1898134511
    )
    @Export("id")
    int id;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1945526093
+   )
+   int field1569;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1889787191
    )
    @Export("type")
    int type;
-   @ObfuscatedName("v")
-   Sequence field1563;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 1645815089
+   )
+   @Export("orientation")
+   int orientation;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -1711485319
    )
    @Export("level")
    int level;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 64664663
+   )
+   int field1568;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -849978763
@@ -39,22 +55,34 @@ public class DynamicObject extends Renderable {
    )
    @Export("sceneY")
    int sceneY;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 64664663
-   )
-   int field1568;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1945526093
-   )
-   int field1569;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1645815089
-   )
-   @Export("orientation")
-   int orientation;
+
+   DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
+      this.id = var1;
+      this.type = var2;
+      this.orientation = var3;
+      this.level = var4;
+      this.sceneX = var5;
+      this.sceneY = var6;
+      if(var7 != -1) {
+         this.field1563 = class224.getAnimation(var7);
+         this.field1568 = 0;
+         this.field1569 = Client.gameCycle - 1;
+         if(this.field1563.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
+            DynamicObject var10 = (DynamicObject)var9;
+            if(this.field1563 == var10.field1563) {
+               this.field1568 = var10.field1568;
+               this.field1569 = var10.field1569;
+               return;
+            }
+         }
+
+         if(var8 && this.field1563.frameStep != -1) {
+            this.field1568 = (int)(Math.random() * (double)this.field1563.frameIDs.length);
+            this.field1569 -= (int)(Math.random() * (double)this.field1563.frameLenghts[this.field1568]);
+         }
+      }
+
+   }
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
@@ -68,11 +96,11 @@ public class DynamicObject extends Renderable {
             var1 = 100;
          }
 
-         label47: {
+         label53: {
             do {
                do {
                   if(var1 <= this.field1563.frameLenghts[this.field1568]) {
-                     break label47;
+                     break label53;
                   }
 
                   var1 -= this.field1563.frameLenghts[this.field1568];
@@ -118,32 +146,37 @@ public class DynamicObject extends Renderable {
       }
    }
 
-   DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
-      this.id = var1;
-      this.type = var2;
-      this.orientation = var3;
-      this.level = var4;
-      this.sceneX = var5;
-      this.sceneY = var6;
-      if(var7 != -1) {
-         this.field1563 = class224.getAnimation(var7);
-         this.field1568 = 0;
-         this.field1569 = Client.gameCycle - 1;
-         if(this.field1563.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
-            DynamicObject var10 = (DynamicObject)var9;
-            if(this.field1563 == var10.field1563) {
-               this.field1568 = var10.field1568;
-               this.field1569 = var10.field1569;
-               return;
-            }
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "338399108"
+   )
+   public static void method1874(int var0, int var1) {
+      Varbit var3 = (Varbit)Varbit.varbits.get((long)var0);
+      Varbit var2;
+      if(var3 != null) {
+         var2 = var3;
+      } else {
+         byte[] var8 = Varbit.varbit_ref.getConfigData(14, var0);
+         var3 = new Varbit();
+         if(var8 != null) {
+            var3.decode(new Buffer(var8));
          }
 
-         if(var8 && this.field1563.frameStep != -1) {
-            this.field1568 = (int)(Math.random() * (double)this.field1563.frameIDs.length);
-            this.field1569 -= (int)(Math.random() * (double)this.field1563.frameLenghts[this.field1568]);
-         }
+         Varbit.varbits.put(var3, (long)var0);
+         var2 = var3;
       }
 
+      int var4 = var2.configId;
+      int var5 = var2.leastSignificantBit;
+      int var6 = var2.mostSignificantBit;
+      int var7 = class211.field2613[var6 - var5];
+      if(var1 < 0 || var1 > var7) {
+         var1 = 0;
+      }
+
+      var7 <<= var5;
+      class211.widgetSettings[var4] = class211.widgetSettings[var4] & ~var7 | var1 << var5 & var7;
    }
 
    @ObfuscatedName("ju")
@@ -173,41 +206,8 @@ public class DynamicObject extends Renderable {
                   break;
                }
             }
+
          }
       }
-
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "338399108"
-   )
-   public static void method1874(int var0, int var1) {
-      Varbit var2 = (Varbit)Varbit.varbits.get((long)var0);
-      Varbit var3;
-      if(var2 != null) {
-         var3 = var2;
-      } else {
-         byte[] var4 = Varbit.varbit_ref.getConfigData(14, var0);
-         var2 = new Varbit();
-         if(var4 != null) {
-            var2.decode(new Buffer(var4));
-         }
-
-         Varbit.varbits.put(var2, (long)var0);
-         var3 = var2;
-      }
-
-      int var8 = var3.configId;
-      int var5 = var3.leastSignificantBit;
-      int var6 = var3.mostSignificantBit;
-      int var7 = class211.field2613[var6 - var5];
-      if(var1 < 0 || var1 > var7) {
-         var1 = 0;
-      }
-
-      var7 <<= var5;
-      class211.widgetSettings[var8] = class211.widgetSettings[var8] & ~var7 | var1 << var5 & var7;
    }
 }
