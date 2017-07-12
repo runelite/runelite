@@ -915,9 +915,9 @@ public class ItemComposition extends CacheableNode {
 
       } else {
          if((MouseInput.field742 == 1 || !class34.field499 && MouseInput.field742 == 4) && MouseInput.field747 >= class92.field1470 + 765 - 50 && MouseInput.field756 >= 453) {
-            class8.settings.muted = !class8.settings.muted;
+            class8.preferences.muted = !class8.preferences.muted;
             class1.method3();
-            if(!class8.settings.muted) {
+            if(!class8.preferences.muted) {
                class98.method1859(class44.indexTrack1, "scape main", "", 255, false);
             } else {
                class203.field2509.method3740();
@@ -1048,7 +1048,7 @@ public class ItemComposition extends CacheableNode {
                            }
 
                            class13.method64("", "Connecting to server...", "");
-                           class92.field1472 = class8.settings.preferences.containsKey(Integer.valueOf(ScriptVarType.method30(class92.username)))?class149.field2215:class149.field2213;
+                           class92.field1472 = class8.preferences.preferences.containsKey(Integer.valueOf(ScriptVarType.method30(class92.username)))?class149.field2215:class149.field2213;
                            TextureProvider.setGameState(20);
                            return;
                         }
@@ -1115,7 +1115,7 @@ public class ItemComposition extends CacheableNode {
                                     }
 
                                     class13.method64("", "Connecting to server...", "");
-                                    class92.field1472 = class8.settings.preferences.containsKey(Integer.valueOf(ScriptVarType.method30(class92.username)))?class149.field2215:class149.field2213;
+                                    class92.field1472 = class8.preferences.preferences.containsKey(Integer.valueOf(ScriptVarType.method30(class92.username)))?class149.field2215:class149.field2213;
                                     TextureProvider.setGameState(20);
                                     return;
                                  }

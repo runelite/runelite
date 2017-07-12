@@ -167,14 +167,14 @@ public class class37 {
 
             return 1;
          } else if(var0 == 5308) {
-            class83.intStack[++class46.intStackSize - 1] = class8.settings.screenType;
+            class83.intStack[++class46.intStackSize - 1] = class8.preferences.screenType;
             return 1;
          } else if(var0 != 5309) {
             return 2;
          } else {
             var6 = class83.intStack[--class46.intStackSize];
             if(var6 == 1 || var6 == 2) {
-               class8.settings.screenType = var6;
+               class8.preferences.screenType = var6;
                class1.method3();
             }
 

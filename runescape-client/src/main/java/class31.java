@@ -765,10 +765,10 @@ public class class31 {
                                                                                                                class34.field499 = class83.intStack[--class46.intStackSize] == 1;
                                                                                                                var15 = 1;
                                                                                                             } else if(var43 == 3111) {
-                                                                                                               class83.intStack[++class46.intStackSize - 1] = class8.settings.hideRoofs?1:0;
+                                                                                                               class83.intStack[++class46.intStackSize - 1] = class8.preferences.hideRoofs?1:0;
                                                                                                                var15 = 1;
                                                                                                             } else if(var43 == 3112) {
-                                                                                                               class8.settings.hideRoofs = class83.intStack[--class46.intStackSize] == 1;
+                                                                                                               class8.preferences.hideRoofs = class83.intStack[--class46.intStackSize] == 1;
                                                                                                                class1.method3();
                                                                                                                var15 = 1;
                                                                                                             } else if(var43 == 3113) {
@@ -1626,9 +1626,9 @@ public class class31 {
                                                                                                                      } else if(var43 == 5020) {
                                                                                                                         var68 = class83.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
                                                                                                                         if(var68.equalsIgnoreCase("toggleroof")) {
-                                                                                                                           class8.settings.hideRoofs = !class8.settings.hideRoofs;
+                                                                                                                           class8.preferences.hideRoofs = !class8.preferences.hideRoofs;
                                                                                                                            class1.method3();
-                                                                                                                           if(class8.settings.hideRoofs) {
+                                                                                                                           if(class8.preferences.hideRoofs) {
                                                                                                                               class152.sendGameMessage(99, "", "Roofs are now all hidden");
                                                                                                                            } else {
                                                                                                                               class152.sendGameMessage(99, "", "Roofs will only be removed selectively");
@@ -2549,7 +2549,7 @@ public class class31 {
       int var14;
       int var15;
       if(!Client.field1173) {
-         if(class8.settings.hideRoofs) {
+         if(class8.preferences.hideRoofs) {
             var29 = WallObject.plane;
          } else {
             label671: {
@@ -2655,7 +2655,7 @@ public class class31 {
 
          var5 = var29;
       } else {
-         if(class8.settings.hideRoofs) {
+         if(class8.preferences.hideRoofs) {
             var29 = WallObject.plane;
          } else {
             var7 = WorldMapData.getTileHeight(class155.cameraX, class157.cameraY, WallObject.plane);

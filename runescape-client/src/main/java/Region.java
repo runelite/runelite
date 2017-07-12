@@ -21,8 +21,8 @@ public class Region {
    @Export("tileDeque")
    static Deque tileDeque;
    @ObfuscatedName("h")
-   @Export("cameraX")
-   static int cameraX;
+   @Export("cameraX2")
+   static int cameraX2;
    @ObfuscatedName("m")
    static int field2083;
    @ObfuscatedName("b")
@@ -43,8 +43,8 @@ public class Region {
    @ObfuscatedName("az")
    static Occluder[] field2112;
    @ObfuscatedName("x")
-   @Export("cameraZ")
-   static int cameraZ;
+   @Export("cameraZ2")
+   static int cameraZ2;
    @ObfuscatedName("au")
    @Export("checkClick")
    static boolean checkClick;
@@ -52,16 +52,16 @@ public class Region {
    @Export("entityBuffer")
    static GameObject[] entityBuffer;
    @ObfuscatedName("g")
-   @Export("cameraY")
-   static int cameraY;
+   @Export("cameraY2")
+   static int cameraY2;
    @ObfuscatedName("ar")
    static int field2100;
    @ObfuscatedName("ah")
    @Export("pitchSin")
    static int pitchSin;
    @ObfuscatedName("ay")
-   @Export("mouseX")
-   static int mouseX;
+   @Export("mouseX2")
+   static int mouseX2;
    @ObfuscatedName("q")
    @Export("screenCenterX")
    static int screenCenterX;
@@ -72,8 +72,8 @@ public class Region {
    @Export("pitchCos")
    static int pitchCos;
    @ObfuscatedName("ao")
-   @Export("mouseY")
-   static int mouseY;
+   @Export("mouseY2")
+   static int mouseY2;
    @ObfuscatedName("aw")
    @Export("yawSin")
    static int yawSin;
@@ -173,8 +173,8 @@ public class Region {
       entityBuffer = new GameObject[100];
       checkClick = false;
       field2100 = 0;
-      mouseX = 0;
-      mouseY = 0;
+      mouseX2 = 0;
+      mouseY2 = 0;
       selectedRegionTileX = -1;
       selectedRegionTileY = -1;
       viewportWalking = false;
@@ -464,8 +464,8 @@ public class Region {
          checkClick = true;
          viewportWalking = var4;
          field2100 = var1;
-         mouseX = var2;
-         mouseY = var3;
+         mouseX2 = var2;
+         mouseY2 = var3;
          selectedRegionTileX = -1;
          selectedRegionTileY = -1;
       }
@@ -485,7 +485,7 @@ public class Region {
          int var10 = var7 - 238;
          if(var4 < 16) {
             if(var4 == 1) {
-               if(var5 > cameraX) {
+               if(var5 > cameraX2) {
                   if(!this.isOccluded(var5, var7, var6)) {
                      return false;
                   }
@@ -517,7 +517,7 @@ public class Region {
             }
 
             if(var4 == 2) {
-               if(var6 < cameraZ) {
+               if(var6 < cameraZ2) {
                   if(!this.isOccluded(var5, var7, var6 + 128)) {
                      return false;
                   }
@@ -549,7 +549,7 @@ public class Region {
             }
 
             if(var4 == 4) {
-               if(var5 < cameraX) {
+               if(var5 < cameraX2) {
                   if(!this.isOccluded(var5 + 128, var7, var6)) {
                      return false;
                   }
@@ -581,7 +581,7 @@ public class Region {
             }
 
             if(var4 == 8) {
-               if(var6 > cameraZ) {
+               if(var6 > cameraZ2) {
                   if(!this.isOccluded(var5, var7, var6)) {
                      return false;
                   }
@@ -621,17 +621,17 @@ public class Region {
    @Export("drawTileUnderlay")
    void drawTileUnderlay(SceneTilePaint var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var9;
-      int var10 = var9 = (var7 << 7) - cameraX;
+      int var10 = var9 = (var7 << 7) - cameraX2;
       int var11;
-      int var12 = var11 = (var8 << 7) - cameraZ;
+      int var12 = var11 = (var8 << 7) - cameraZ2;
       int var13;
       int var14 = var13 = var10 + 128;
       int var15;
       int var16 = var15 = var12 + 128;
-      int var17 = this.tileHeights[var2][var7][var8] - cameraY;
-      int var18 = this.tileHeights[var2][var7 + 1][var8] - cameraY;
-      int var19 = this.tileHeights[var2][var7 + 1][var8 + 1] - cameraY;
-      int var20 = this.tileHeights[var2][var7][var8 + 1] - cameraY;
+      int var17 = this.tileHeights[var2][var7][var8] - cameraY2;
+      int var18 = this.tileHeights[var2][var7 + 1][var8] - cameraY2;
+      int var19 = this.tileHeights[var2][var7 + 1][var8 + 1] - cameraY2;
+      int var20 = this.tileHeights[var2][var7][var8 + 1] - cameraY2;
       int var21 = var10 * var6 + var5 * var12 >> 16;
       var12 = var12 * var6 - var5 * var10 >> 16;
       var10 = var21;
@@ -675,7 +675,7 @@ public class Region {
                         Graphics3D.rasterClipEnable = true;
                      }
 
-                     if(checkClick && this.withinTriangle(mouseX, mouseY, var27, var29, var25, var26, var28, var24)) {
+                     if(checkClick && this.withinTriangle(mouseX2, mouseY2, var27, var29, var25, var26, var28, var24)) {
                         selectedRegionTileX = var7;
                         selectedRegionTileY = var8;
                      }
@@ -702,7 +702,7 @@ public class Region {
                         Graphics3D.rasterClipEnable = true;
                      }
 
-                     if(checkClick && this.withinTriangle(mouseX, mouseY, var23, var25, var29, var22, var24, var28)) {
+                     if(checkClick && this.withinTriangle(mouseX2, mouseY2, var23, var25, var29, var22, var24, var28)) {
                         selectedRegionTileX = var7;
                         selectedRegionTileY = var8;
                      }
@@ -736,9 +736,9 @@ public class Region {
       int var12;
       int var13;
       for(var9 = 0; var9 < var8; ++var9) {
-         var10 = var1.vertexX[var9] - cameraX;
-         var11 = var1.vertexY[var9] - cameraY;
-         var12 = var1.vertexZ[var9] - cameraZ;
+         var10 = var1.vertexX[var9] - cameraX2;
+         var11 = var1.vertexY[var9] - cameraY2;
+         var12 = var1.vertexZ[var9] - cameraZ2;
          var13 = var12 * var4 + var5 * var10 >> 16;
          var12 = var5 * var12 - var10 * var4 >> 16;
          var10 = var13;
@@ -777,7 +777,7 @@ public class Region {
                Graphics3D.rasterClipEnable = true;
             }
 
-            if(checkClick && this.withinTriangle(mouseX, mouseY, var16, var17, var18, var13, var14, var15)) {
+            if(checkClick && this.withinTriangle(mouseX2, mouseY2, var16, var17, var18, var13, var14, var15)) {
                selectedRegionTileX = var6;
                selectedRegionTileY = var7;
             }
@@ -940,7 +940,7 @@ public class Region {
                }
 
                if(var13) {
-                  var9 = cameraX - var4.minX;
+                  var9 = cameraX2 - var4.minX;
                   if(var9 > 32) {
                      var4.testDirection = 1;
                   } else {
@@ -952,10 +952,10 @@ public class Region {
                      var9 = -var9;
                   }
 
-                  var4.minNormalX = (var4.minZ - cameraZ << 8) / var9;
-                  var4.maxNormalX = (var4.maxZ - cameraZ << 8) / var9;
-                  var4.minNormalY = (var4.minY - cameraY << 8) / var9;
-                  var4.maxNormalY = (var4.maxY - cameraY << 8) / var9;
+                  var4.minNormalX = (var4.minZ - cameraZ2 << 8) / var9;
+                  var4.maxNormalX = (var4.maxZ - cameraZ2 << 8) / var9;
+                  var4.minNormalY = (var4.minY - cameraY2 << 8) / var9;
+                  var4.maxNormalY = (var4.maxY - cameraY2 << 8) / var9;
                   field2112[field2111++] = var4;
                }
             }
@@ -982,7 +982,7 @@ public class Region {
                }
 
                if(var13) {
-                  var9 = cameraZ - var4.minZ;
+                  var9 = cameraZ2 - var4.minZ;
                   if(var9 > 32) {
                      var4.testDirection = 3;
                   } else {
@@ -994,15 +994,15 @@ public class Region {
                      var9 = -var9;
                   }
 
-                  var4.field2163 = (var4.minX - cameraX << 8) / var9;
-                  var4.field2176 = (var4.maxX - cameraX << 8) / var9;
-                  var4.minNormalY = (var4.minY - cameraY << 8) / var9;
-                  var4.maxNormalY = (var4.maxY - cameraY << 8) / var9;
+                  var4.field2163 = (var4.minX - cameraX2 << 8) / var9;
+                  var4.field2176 = (var4.maxX - cameraX2 << 8) / var9;
+                  var4.minNormalY = (var4.minY - cameraY2 << 8) / var9;
+                  var4.maxNormalY = (var4.maxY - cameraY2 << 8) / var9;
                   field2112[field2111++] = var4;
                }
             }
          } else if(var4.type == 4) {
-            var5 = var4.minY - cameraY;
+            var5 = var4.minY - cameraY2;
             if(var5 > 128) {
                var6 = var4.minTileZ - screenCenterZ + 25;
                if(var6 < 0) {
@@ -1039,10 +1039,10 @@ public class Region {
 
                   if(var10) {
                      var4.testDirection = 5;
-                     var4.field2163 = (var4.minX - cameraX << 8) / var5;
-                     var4.field2176 = (var4.maxX - cameraX << 8) / var5;
-                     var4.minNormalX = (var4.minZ - cameraZ << 8) / var5;
-                     var4.maxNormalX = (var4.maxZ - cameraZ << 8) / var5;
+                     var4.field2163 = (var4.minX - cameraX2 << 8) / var5;
+                     var4.field2176 = (var4.maxX - cameraX2 << 8) / var5;
+                     var4.minNormalX = (var4.minZ - cameraZ2 << 8) / var5;
+                     var4.maxNormalX = (var4.maxZ - cameraZ2 << 8) / var5;
                      field2112[field2111++] = var4;
                   }
                }
@@ -1199,13 +1199,13 @@ public class Region {
 
                                     var10 = var9.wallObject;
                                     if(var10 != null) {
-                                       var10.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var10.x - cameraX, var10.floor - cameraY, var10.y - cameraZ, var10.hash);
+                                       var10.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var10.x - cameraX2, var10.floor - cameraY2, var10.y - cameraZ2, var10.hash);
                                     }
 
                                     for(var11 = 0; var11 < var9.entityCount; ++var11) {
                                        var12 = var9.objects[var11];
                                        if(var12 != null) {
-                                          var12.renderable.draw(var12.orientation, pitchSin, pitchCos, yawSin, yawCos, var12.x - cameraX, var12.height - cameraY, var12.y - cameraZ, var12.hash);
+                                          var12.renderable.draw(var12.orientation, pitchSin, pitchCos, yawSin, yawCos, var12.x - cameraX2, var12.height - cameraY2, var12.y - cameraZ2, var12.hash);
                                        }
                                     }
                                  }
@@ -1268,21 +1268,21 @@ public class Region {
                                     }
 
                                     if((var31.orientationA & var11) != 0 && !this.isWallOccluded(var7, var4, var5, var31.orientationA)) {
-                                       var31.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var31.x - cameraX, var31.floor - cameraY, var31.y - cameraZ, var31.hash);
+                                       var31.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var31.x - cameraX2, var31.floor - cameraY2, var31.y - cameraZ2, var31.hash);
                                     }
 
                                     if((var31.orientationB & var11) != 0 && !this.isWallOccluded(var7, var4, var5, var31.orientationB)) {
-                                       var31.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var31.x - cameraX, var31.floor - cameraY, var31.y - cameraZ, var31.hash);
+                                       var31.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var31.x - cameraX2, var31.floor - cameraY2, var31.y - cameraZ2, var31.hash);
                                     }
                                  }
 
                                  if(var25 != null && !this.isOccluded(var7, var4, var5, var25.renderable1.modelHeight)) {
                                     if((var25.renderFlag & var11) != 0) {
-                                       var25.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var25.x - cameraX + var25.offsetX, var25.floor - cameraY, var25.y - cameraZ + var25.offsetY, var25.hash);
+                                       var25.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var25.x - cameraX2 + var25.offsetX, var25.floor - cameraY2, var25.y - cameraZ2 + var25.offsetY, var25.hash);
                                     } else if(var25.renderFlag == 256) {
-                                       var14 = var25.x - cameraX;
-                                       var22 = var25.floor - cameraY;
-                                       var16 = var25.y - cameraZ;
+                                       var14 = var25.x - cameraX2;
+                                       var22 = var25.floor - cameraY2;
+                                       var16 = var25.y - cameraZ2;
                                        var17 = var25.rotation;
                                        if(var17 != 1 && var17 != 2) {
                                           var18 = var14;
@@ -1308,21 +1308,21 @@ public class Region {
                                  if(var20) {
                                     GroundObject var24 = var3.groundObject;
                                     if(var24 != null) {
-                                       var24.renderable.draw(0, pitchSin, pitchCos, yawSin, yawCos, var24.x - cameraX, var24.floor - cameraY, var24.y - cameraZ, var24.hash);
+                                       var24.renderable.draw(0, pitchSin, pitchCos, yawSin, yawCos, var24.x - cameraX2, var24.floor - cameraY2, var24.y - cameraZ2, var24.hash);
                                     }
 
                                     ItemLayer var15 = var3.itemLayer;
                                     if(var15 != null && var15.height == 0) {
                                        if(var15.middle != null) {
-                                          var15.middle.draw(0, pitchSin, pitchCos, yawSin, yawCos, var15.x - cameraX, var15.hash - cameraY, var15.y - cameraZ, var15.flags);
+                                          var15.middle.draw(0, pitchSin, pitchCos, yawSin, yawCos, var15.x - cameraX2, var15.hash - cameraY2, var15.y - cameraZ2, var15.flags);
                                        }
 
                                        if(var15.top != null) {
-                                          var15.top.draw(0, pitchSin, pitchCos, yawSin, yawCos, var15.x - cameraX, var15.hash - cameraY, var15.y - cameraZ, var15.flags);
+                                          var15.top.draw(0, pitchSin, pitchCos, yawSin, yawCos, var15.x - cameraX2, var15.hash - cameraY2, var15.y - cameraZ2, var15.flags);
                                        }
 
                                        if(var15.bottom != null) {
-                                          var15.bottom.draw(0, pitchSin, pitchCos, yawSin, yawCos, var15.x - cameraX, var15.hash - cameraY, var15.y - cameraZ, var15.flags);
+                                          var15.bottom.draw(0, pitchSin, pitchCos, yawSin, yawCos, var15.x - cameraX2, var15.hash - cameraY2, var15.y - cameraZ2, var15.flags);
                                        }
                                     }
                                  }
@@ -1373,7 +1373,7 @@ public class Region {
                                  if(var20) {
                                     var10 = var3.wallObject;
                                     if(!this.isWallOccluded(var7, var4, var5, var10.orientationA)) {
-                                       var10.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var10.x - cameraX, var10.floor - cameraY, var10.y - cameraZ, var10.hash);
+                                       var10.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var10.x - cameraX2, var10.floor - cameraY2, var10.y - cameraZ2, var10.hash);
                                     }
 
                                     var3.wallCullDirection = 0;
@@ -1455,10 +1455,10 @@ public class Region {
                                              var11 = var35.drawPriority;
                                              var23 = var13;
                                           } else if(var11 == var35.drawPriority) {
-                                             var22 = var35.x - cameraX;
-                                             var16 = var35.y - cameraZ;
-                                             var17 = entityBuffer[var23].x - cameraX;
-                                             var18 = entityBuffer[var23].y - cameraZ;
+                                             var22 = var35.x - cameraX2;
+                                             var16 = var35.y - cameraZ2;
+                                             var17 = entityBuffer[var23].x - cameraX2;
+                                             var18 = entityBuffer[var23].y - cameraZ2;
                                              if(var22 * var22 + var16 * var16 > var17 * var17 + var18 * var18) {
                                                 var23 = var13;
                                              }
@@ -1473,7 +1473,7 @@ public class Region {
                                     GameObject var36 = entityBuffer[var23];
                                     var36.cycle = cycle;
                                     if(!this.isAreaOccluded(var7, var36.relativeX, var36.offsetX, var36.relativeY, var36.offsetY, var36.renderable.modelHeight)) {
-                                       var36.renderable.draw(var36.orientation, pitchSin, pitchCos, yawSin, yawCos, var36.x - cameraX, var36.height - cameraY, var36.y - cameraZ, var36.hash);
+                                       var36.renderable.draw(var36.orientation, pitchSin, pitchCos, yawSin, yawCos, var36.x - cameraX2, var36.height - cameraY2, var36.y - cameraZ2, var36.hash);
                                     }
 
                                     for(var14 = var36.relativeX; var14 <= var36.offsetX; ++var14) {
@@ -1532,15 +1532,15 @@ public class Region {
          ItemLayer var32 = var3.itemLayer;
          if(var32 != null && var32.height != 0) {
             if(var32.middle != null) {
-               var32.middle.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX, var32.hash - cameraY - var32.height, var32.y - cameraZ, var32.flags);
+               var32.middle.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.hash - cameraY2 - var32.height, var32.y - cameraZ2, var32.flags);
             }
 
             if(var32.top != null) {
-               var32.top.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX, var32.hash - cameraY - var32.height, var32.y - cameraZ, var32.flags);
+               var32.top.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.hash - cameraY2 - var32.height, var32.y - cameraZ2, var32.flags);
             }
 
             if(var32.bottom != null) {
-               var32.bottom.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX, var32.hash - cameraY - var32.height, var32.y - cameraZ, var32.flags);
+               var32.bottom.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.hash - cameraY2 - var32.height, var32.y - cameraZ2, var32.flags);
             }
          }
 
@@ -1548,11 +1548,11 @@ public class Region {
             DecorativeObject var29 = var3.decorativeObject;
             if(var29 != null && !this.isOccluded(var7, var4, var5, var29.renderable1.modelHeight)) {
                if((var29.renderFlag & var3.wallDrawFlags) != 0) {
-                  var29.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var29.x - cameraX + var29.offsetX, var29.floor - cameraY, var29.y - cameraZ + var29.offsetY, var29.hash);
+                  var29.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var29.x - cameraX2 + var29.offsetX, var29.floor - cameraY2, var29.y - cameraZ2 + var29.offsetY, var29.hash);
                } else if(var29.renderFlag == 256) {
-                  var11 = var29.x - cameraX;
-                  var23 = var29.floor - cameraY;
-                  var13 = var29.y - cameraZ;
+                  var11 = var29.x - cameraX2;
+                  var23 = var29.floor - cameraY2;
+                  var13 = var29.y - cameraZ2;
                   var14 = var29.rotation;
                   if(var14 != 1 && var14 != 2) {
                      var22 = var11;
@@ -1577,11 +1577,11 @@ public class Region {
             WallObject var27 = var3.wallObject;
             if(var27 != null) {
                if((var27.orientationB & var3.wallDrawFlags) != 0 && !this.isWallOccluded(var7, var4, var5, var27.orientationB)) {
-                  var27.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var27.x - cameraX, var27.floor - cameraY, var27.y - cameraZ, var27.hash);
+                  var27.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var27.x - cameraX2, var27.floor - cameraY2, var27.y - cameraZ2, var27.hash);
                }
 
                if((var27.orientationA & var3.wallDrawFlags) != 0 && !this.isWallOccluded(var7, var4, var5, var27.orientationA)) {
-                  var27.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var27.x - cameraX, var27.floor - cameraY, var27.y - cameraZ, var27.hash);
+                  var27.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var27.x - cameraX2, var27.floor - cameraY2, var27.y - cameraZ2, var27.hash);
                }
             }
          }
@@ -2115,9 +2115,9 @@ public class Region {
       yawSin = Graphics3D.SINE[var5];
       yawCos = Graphics3D.COSINE[var5];
       renderArea = visibilityMaps[(var4 - 128) / 32][var5 / 64];
-      cameraX = var1;
-      cameraY = var2;
-      cameraZ = var3;
+      cameraX2 = var1;
+      cameraY2 = var2;
+      cameraZ2 = var3;
       screenCenterX = var1 / 128;
       screenCenterZ = var3 / 128;
       field2083 = var6;

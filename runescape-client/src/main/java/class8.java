@@ -6,8 +6,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("j")
 public final class class8 extends class9 {
    @ObfuscatedName("re")
-   @Export("settings")
-   static Preferences settings;
+   @Export("preferences")
+   static Preferences preferences;
    @ObfuscatedName("gk")
    static ModIcon[] field246;
    @ObfuscatedName("i")

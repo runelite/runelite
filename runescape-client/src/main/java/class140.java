@@ -102,7 +102,7 @@ public class class140 {
          class36.authCode = "";
          class92.field1473 = true;
          class92.worldSelectShown = false;
-         if(!class8.settings.muted) {
+         if(!class8.preferences.muted) {
             Timer.method2968(2, class44.indexTrack1, "scape main", "", 255, false);
          } else {
             class174.method3343(2);

@@ -1461,7 +1461,7 @@ public final class Client extends GameEngine {
          var2 = super.field726;
       }
 
-      if(class8.settings != null) {
+      if(class8.preferences != null) {
          try {
             Client var3 = class261.clientInstance;
             int var4 = isResized?2:1;
@@ -1579,7 +1579,7 @@ public final class Client extends GameEngine {
          ;
       }
 
-      class8.settings = var3;
+      class8.preferences = var3;
       this.method909();
       String var10 = GameEngine.field735;
       class56.field699 = this;
@@ -1588,7 +1588,7 @@ public final class Client extends GameEngine {
          displayFps = true;
       }
 
-      int var7 = class8.settings.screenType;
+      int var7 = class8.preferences.screenType;
       field1140 = 0L;
       if(var7 >= 2) {
          isResized = true;
@@ -4034,7 +4034,7 @@ public final class Client extends GameEngine {
                secretPacketBuffer1.offset += 5;
                break;
             case 2:
-               secretPacketBuffer1.putInt(((Integer)class8.settings.preferences.get(Integer.valueOf(ScriptVarType.method30(class92.username)))).intValue());
+               secretPacketBuffer1.putInt(((Integer)class8.preferences.preferences.get(Integer.valueOf(ScriptVarType.method30(class92.username)))).intValue());
                secretPacketBuffer1.offset += 4;
                break;
             case 3:
@@ -4143,13 +4143,13 @@ public final class Client extends GameEngine {
                   var2 |= secretPacketBuffer2.readOpcode() << 8;
                   var2 |= secretPacketBuffer2.readOpcode();
                   var3 = ScriptVarType.method30(class92.username);
-                  if(class8.settings.preferences.size() >= 10 && !class8.settings.preferences.containsKey(Integer.valueOf(var3))) {
-                     Iterator var13 = class8.settings.preferences.entrySet().iterator();
+                  if(class8.preferences.preferences.size() >= 10 && !class8.preferences.preferences.containsKey(Integer.valueOf(var3))) {
+                     Iterator var13 = class8.preferences.preferences.entrySet().iterator();
                      var13.next();
                      var13.remove();
                   }
 
-                  class8.settings.preferences.put(Integer.valueOf(var3), Integer.valueOf(var2));
+                  class8.preferences.preferences.put(Integer.valueOf(var3), Integer.valueOf(var2));
                   class1.method3();
                }
 

@@ -57,7 +57,7 @@ public class class1 {
 
       try {
          var0 = class22.getPreferencesFile("", Client.field1207.field3203, true);
-         Buffer var1 = class8.settings.serialize();
+         Buffer var1 = class8.preferences.serialize();
          var0.write(var1.payload, 0, var1.offset);
       } catch (Exception var3) {
          ;

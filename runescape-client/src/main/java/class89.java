@@ -595,7 +595,7 @@ public class class89 {
          }
 
          class239.method4269();
-         WorldMapType2.titlemuteSprite[class8.settings.muted?1:0].method5025(class92.field1470 + 765 - 40, 463);
+         WorldMapType2.titlemuteSprite[class8.preferences.muted?1:0].method5025(class92.field1470 + 765 - 40, 463);
          if(Client.gameState > 5 && Client.languageId == 0) {
             if(class91.field1445 != null) {
                var31 = class92.field1470 + 5;
