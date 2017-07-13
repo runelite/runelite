@@ -1,7 +1,7 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dg")
+@ObfuscatedName("dw")
 public abstract class class122 extends Node {
-   @ObfuscatedName("r")
-   int field1759;
+   @ObfuscatedName("e")
+   int field1738;
 }

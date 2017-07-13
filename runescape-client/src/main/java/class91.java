@@ -1,69 +1,174 @@
-import java.awt.Image;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cp")
+@ObfuscatedName("cd")
 public enum class91 implements RSEnum {
-   @ObfuscatedName("i")
-   field1442(0),
-   @ObfuscatedName("w")
-   field1440(1),
    @ObfuscatedName("a")
-   field1439(2),
-   @ObfuscatedName("t")
-   field1441(3);
+   field1410(0),
+   @ObfuscatedName("j")
+   field1416(1),
+   @ObfuscatedName("n")
+   field1413(2),
+   @ObfuscatedName("r")
+   field1409(3);
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1279618521
+      intValue = -1580104769
    )
-   final int field1443;
-   @ObfuscatedName("be")
-   static ModIcon field1445;
-   @ObfuscatedName("cz")
-   @Export("configsIndex")
-   static IndexData configsIndex;
-   @ObfuscatedName("ao")
-   static Image field1448;
+   final int field1412;
+   @ObfuscatedName("p")
+   public static short[][] field1414;
 
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "0"
    )
    class91(int var3) {
-      this.field1443 = var3;
+      this.field1412 = var3;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1204543302"
+      garbageValue = "1952293135"
    )
    public int rsOrdinal() {
-      return this.field1443;
+      return this.field1412;
    }
 
-   @ObfuscatedName("hj")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-71664062"
+      signature = "(IB)LFrames;",
+      garbageValue = "-57"
    )
-   static void method1729(int var0, int var1, int var2, int var3) {
-      Widget var4 = class202.method3650(var0, var1);
-      if(var4 != null && var4.field2745 != null) {
-         ScriptEvent var5 = new ScriptEvent();
-         var5.widget = var4;
-         var5.field857 = var4.field2745;
-         class14.method76(var5);
+   @Export("getFrames")
+   static Frames getFrames(int var0) {
+      Frames var1 = (Frames)Sequence.skeletons.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         IndexDataBase var3 = Sequence.skel_ref;
+         IndexDataBase var4 = class46.skin_ref;
+         boolean var5 = true;
+         int[] var6 = var3.getChilds(var0);
+
+         for(int var7 = 0; var7 < var6.length; ++var7) {
+            byte[] var8 = var3.getChild(var0, var6[var7]);
+            if(var8 == null) {
+               var5 = false;
+            } else {
+               int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
+               byte[] var10 = var4.getChild(var9, 0);
+               if(var10 == null) {
+                  var5 = false;
+               }
+            }
+         }
+
+         Frames var2;
+         if(!var5) {
+            var2 = null;
+         } else {
+            try {
+               var2 = new Frames(var3, var4, var0, false);
+            } catch (Exception var12) {
+               var2 = null;
+            }
+         }
+
+         if(var2 != null) {
+            Sequence.skeletons.put(var2, (long)var0);
+         }
+
+         return var2;
+      }
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(III)Z",
+      garbageValue = "-779018806"
+   )
+   static final boolean method1698(int var0, int var1) {
+      ObjectComposition var2 = PlayerComposition.getObjectDefinition(var0);
+      if(var1 == 11) {
+         var1 = 10;
       }
 
-      Client.field1084 = var3;
-      Client.spellSelected = true;
-      class208.field2598 = var0;
-      Client.field1158 = var1;
-      WorldMapType3.spellTargetFlags = var2;
-      class88.method1714(var4);
+      if(var1 >= 5 && var1 <= 8) {
+         var1 = 4;
+      }
+
+      return var2.method4484(var1);
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "-796456852"
+   )
+   public static String method1700(CharSequence var0) {
+      int var1 = var0.length();
+      StringBuilder var2 = new StringBuilder(var1);
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if((var4 < 97 || var4 > 122) && (var4 < 65 || var4 > 90) && (var4 < 48 || var4 > 57) && var4 != 46 && var4 != 45 && var4 != 42 && var4 != 95) {
+            if(var4 == 32) {
+               var2.append('+');
+            } else {
+               byte var5 = class157.method2970(var4);
+               var2.append('%');
+               int var6 = var5 >> 4 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(var6 + 55));
+               } else {
+                  var2.append((char)(var6 + 48));
+               }
+
+               var6 = var5 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(var6 + 55));
+               } else {
+                  var2.append((char)(var6 + 48));
+               }
+            }
+         } else {
+            var2.append(var4);
+         }
+      }
+
+      return var2.toString();
+   }
+
+   @ObfuscatedName("id")
+   @ObfuscatedSignature(
+      signature = "(LWidget;III)V",
+      garbageValue = "-1292109678"
+   )
+   static final void method1699(Widget var0, int var1, int var2) {
+      if(Client.field1079 == null && !Client.isMenuOpen) {
+         if(var0 != null && class89.method1688(var0) != null) {
+            Client.field1079 = var0;
+            Client.field920 = class89.method1688(var0);
+            Client.field1081 = var1;
+            Client.field1082 = var2;
+            class33.field454 = 0;
+            Client.field1174 = false;
+            int var3 = class134.method2587();
+            if(var3 != -1) {
+               class98.field1525 = new class89();
+               class98.field1525.field1402 = Client.menuActionParams0[var3];
+               class98.field1525.field1399 = Client.menuActionParams1[var3];
+               class98.field1525.field1400 = Client.menuTypes[var3];
+               class98.field1525.field1403 = Client.menuIdentifiers[var3];
+               class98.field1525.field1401 = Client.menuOptions[var3];
+            }
+
+         }
+      }
    }
 }

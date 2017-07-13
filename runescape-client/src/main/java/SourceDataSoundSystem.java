@@ -9,37 +9,37 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bv")
+@ObfuscatedName("bd")
 @Implements("SourceDataSoundSystem")
 public class SourceDataSoundSystem extends AbstractSoundSystem {
-   @ObfuscatedName("i")
-   AudioFormat field697;
    @ObfuscatedName("a")
+   AudioFormat field665;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 426452675
+      intValue = -366119193
    )
    @Export("size")
    int size;
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @Export("source")
    SourceDataLine source;
-   @ObfuscatedName("t")
+   @ObfuscatedName("r")
    @Export("bytes")
    byte[] bytes;
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "65497601"
+      garbageValue = "-1605457436"
    )
-   protected void vmethod2034() {
+   protected void vmethod1997() {
       this.source.flush();
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "5"
+      garbageValue = "55"
    )
    @Export("close")
    protected void close() {
@@ -50,22 +50,22 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-1370558022"
+      garbageValue = "1959206863"
    )
    @Export("create")
    protected void create(int var1) throws LineUnavailableException {
       try {
-         Info var2 = new Info(SourceDataLine.class, this.field697, var1 << (AbstractSoundSystem.highMemory?2:1));
+         Info var2 = new Info(SourceDataLine.class, this.field665, var1 << (AbstractSoundSystem.highMemory?2:1));
          this.source = (SourceDataLine)AudioSystem.getLine(var2);
          this.source.open();
          this.source.start();
          this.size = var1;
       } catch (LineUnavailableException var3) {
-         if(ScriptVarType.method29(var1) != 1) {
-            this.create(class56.method849(var1));
+         if(KeyFocusListener.method764(var1) != 1) {
+            this.create(class152.method2922(var1));
          } else {
             this.source = null;
             throw var3;
@@ -73,17 +73,17 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "-27"
+      garbageValue = "-17"
    )
    @Export("size")
    protected int size() {
       return this.size - (this.source.available() >> (AbstractSoundSystem.highMemory?2:1));
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("r")
    @Export("write")
    protected void write() {
       int var1 = 256;
@@ -104,13 +104,13 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
       this.source.write(this.bytes, 0, var1 << 1);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "420068294"
+      signature = "(B)V",
+      garbageValue = "52"
    )
-   protected void vmethod2029() {
-      this.field697 = new AudioFormat((float)FileSystem.sampleRate, 16, AbstractSoundSystem.highMemory?2:1, true, false);
+   protected void vmethod1992() {
+      this.field665 = new AudioFormat((float)ChatLineBuffer.sampleRate, 16, AbstractSoundSystem.highMemory?2:1, true, false);
       this.bytes = new byte[256 << (AbstractSoundSystem.highMemory?2:1)];
    }
 }

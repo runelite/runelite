@@ -1,111 +1,115 @@
+import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ef")
+@ObfuscatedName("ei")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("s")
+   @ObfuscatedName("co")
+   @Export("configsIndex")
+   static IndexData configsIndex;
+   @ObfuscatedName("v")
    @Export("paint")
    SceneTilePaint paint;
-   @ObfuscatedName("k")
-   @Export("itemLayer")
-   ItemLayer itemLayer;
-   @ObfuscatedName("y")
+   @ObfuscatedName("s")
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
-   @ObfuscatedName("v")
+   @ObfuscatedName("p")
+   @Export("itemLayer")
+   ItemLayer itemLayer;
+   @ObfuscatedName("l")
    @Export("wallObject")
    WallObject wallObject;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 413710941
+      intValue = -1745112963
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("j")
+   @ObfuscatedName("w")
    @Export("groundObject")
    GroundObject groundObject;
-   @ObfuscatedName("o")
+   @ObfuscatedName("u")
    @Export("objects")
    GameObject[] objects;
-   @ObfuscatedName("c")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1103038989
+      intValue = 1206013741
    )
    @Export("physicalLevel")
    int physicalLevel;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @Export("overlay")
    SceneTileModel overlay;
-   @ObfuscatedName("z")
+   @ObfuscatedName("g")
    @Export("entityFlags")
    int[] entityFlags;
    @ObfuscatedName("d")
    @Export("bridge")
    Tile bridge;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1475565547
+      intValue = -1497025439
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 587710695
+      intValue = -1887313475
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("b")
+   @ObfuscatedName("o")
    @Export("visible")
    boolean visible;
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1895705223
+      intValue = -1372765931
    )
    @Export("x")
    int x;
-   @ObfuscatedName("t")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 768199681
-   )
-   @Export("renderLevel")
-   int renderLevel;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 180766603
+      intValue = 2042781905
    )
    @Export("y")
    int y;
-   @ObfuscatedName("m")
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -1978890247
+   )
+   @Export("renderLevel")
+   int renderLevel;
+   @ObfuscatedName("c")
    @Export("draw")
    boolean draw;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1069686959
+      intValue = 522290313
    )
    @Export("wallCullDirection")
    int wallCullDirection;
-   @ObfuscatedName("f")
+   @ObfuscatedName("x")
    @Export("drawEntities")
    boolean drawEntities;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -726971605
+      intValue = -586775189
    )
    @Export("wallUncullDirection")
    int wallUncullDirection;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 137325067
+      intValue = 842419767
    )
    @Export("wallDrawFlags")
    int wallDrawFlags;
-   @ObfuscatedName("p")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 760069959
+      intValue = -834579137
    )
    @Export("wallCullOppositeDirection")
    int wallCullOppositeDirection;
@@ -119,12 +123,24 @@ public final class Tile extends Node {
       this.y = var3;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "1222404465"
+      signature = "(Ljava/awt/Component;I)V",
+      garbageValue = "1215378627"
    )
-   static int method2485(int var0, int var1, int var2) {
-      return (class61.tileSettings[var0][var1][var2] & 8) != 0?0:(var0 > 0 && (class61.tileSettings[1][var1][var2] & 2) != 0?var0 - 1:var0);
+   static void method2491(Component var0) {
+      var0.removeMouseListener(MouseInput.mouse);
+      var0.removeMouseMotionListener(MouseInput.mouse);
+      var0.removeFocusListener(MouseInput.mouse);
+      MouseInput.field718 = 0;
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "177163951"
+   )
+   public static boolean method2492(int var0) {
+      return var0 == class221.field2834.field2816;
    }
 }

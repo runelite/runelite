@@ -2,30 +2,32 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("l")
+@ObfuscatedName("k")
 public class class13 {
-   @ObfuscatedName("w")
-   public static Comparator field277;
+   @ObfuscatedName("j")
+   public static Comparator field288;
+   @ObfuscatedName("z")
+   @Export("osNameLC")
+   public static String osNameLC;
+   @ObfuscatedName("n")
+   public static Comparator field292;
+   @ObfuscatedName("r")
+   public static Comparator field290;
+   @ObfuscatedName("v")
+   public static Comparator field291;
    @ObfuscatedName("a")
-   public static Comparator field278;
-   @ObfuscatedName("t")
-   public static Comparator field279;
-   @ObfuscatedName("s")
-   public static Comparator field280;
-   @ObfuscatedName("km")
-   static class89 field281;
-   @ObfuscatedName("i")
-   public final List field283;
+   public final List field294;
 
    static {
-      field277 = new class19();
+      field288 = new class19();
       new class12();
-      field278 = new class17();
-      field279 = new class18();
-      field280 = new class15();
+      field292 = new class17();
+      field290 = new class18();
+      field291 = new class15();
    }
 
    @ObfuscatedSignature(
@@ -43,51 +45,40 @@ public class class13 {
       }
 
       int var6 = var1.readUnsignedShort();
-      this.field283 = new ArrayList(var6);
+      this.field294 = new ArrayList(var6);
 
       for(int var7 = 0; var7 < var6; ++var7) {
-         this.field283.add(new class14(var1, var5, var3));
+         this.field294.add(new class14(var1, var5, var3));
       }
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(Ljava/util/Comparator;ZI)V",
-      garbageValue = "-1884021892"
+      garbageValue = "-1933170272"
    )
-   public void method61(Comparator var1, boolean var2) {
+   public void method74(Comparator var1, boolean var2) {
       if(var2) {
-         Collections.sort(this.field283, var1);
+         Collections.sort(this.field294, var1);
       } else {
-         Collections.sort(this.field283, Collections.reverseOrder(var1));
+         Collections.sort(this.field294, Collections.reverseOrder(var1));
       }
 
    }
 
-   @ObfuscatedName("fj")
+   @ObfuscatedName("gt")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1245000480"
+      signature = "(III)V",
+      garbageValue = "-1629426360"
    )
-   static final void method60() {
-      if(Client.field978 > 0) {
-         class64.method1116();
-      } else {
-         TextureProvider.setGameState(40);
-         class215.field2640 = class244.rssocket;
-         class244.rssocket = null;
-      }
-   }
+   static final void method77(int var0, int var1) {
+      if(Client.field1120 == 2) {
+         class48.method750((Client.hintArrowX - class163.baseX << 7) + Client.field929, (Client.hintArrowY - class10.baseY << 7) + Client.field930, Client.hintArrowType * 2);
+         if(Client.screenY > -1 && Client.gameCycle % 20 < 10) {
+            class23.pkIcons[0].method5032(var0 + Client.screenY - 12, Client.screenX + var1 - 28);
+         }
 
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
-      garbageValue = "8"
-   )
-   static void method64(String var0, String var1, String var2) {
-      class92.loginMessage1 = var0;
-      class92.loginMessage2 = var1;
-      class92.loginMessage3 = var2;
+      }
    }
 }

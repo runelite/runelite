@@ -3,274 +3,213 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ag")
+@ObfuscatedName("ay")
 public class class48 implements WorldMapSectionBase {
-   @ObfuscatedName("aj")
-   static ModIcon[] field651;
-   @ObfuscatedName("i")
+   @ObfuscatedName("u")
+   @Export("timer")
+   static Timer timer;
+   @ObfuscatedName("cd")
    @ObfuscatedGetter(
-      intValue = 1676185101
+      longValue = 5150890726337518591L
    )
-   int field638;
-   @ObfuscatedName("s")
+   static long field608;
+   @ObfuscatedName("hp")
    @ObfuscatedGetter(
-      intValue = 430162335
+      intValue = -362606635
    )
-   int field652;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1114599785
-   )
-   int field646;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -2021947337
-   )
-   int field639;
+   static int field605;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1694272987
+      intValue = -251057171
    )
-   int field640;
+   int field601;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -2094432847
+      intValue = -1201511355
    )
-   int field644;
+   int field598;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 285699377
+   )
+   int field602;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 679265661
+   )
+   int field595;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 2128091289
+   )
+   int field596;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1261408413
+   )
+   int field600;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 929332967
+   )
+   int field604;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1417995219
+   )
+   int field603;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 419699385
+      intValue = 505385021
    )
-   int field641;
-   @ObfuscatedName("k")
+   int field599;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1117358061
+      intValue = 382408053
    )
-   int field647;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -1082124341
+   int field609;
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(III)Z",
+      garbageValue = "-2141582860"
    )
-   int field642;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -179538839
+   public boolean vmethod722(int var1, int var2) {
+      return var1 >= (this.field598 << 6) + (this.field602 << 3) && var1 <= (this.field598 << 6) + (this.field602 << 3) + 7 && var2 >= (this.field604 << 6) + (this.field603 << 3) && var2 <= (this.field604 << 6) + (this.field603 << 3) + 7;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(IIII)Z",
+      garbageValue = "-1671303044"
    )
-   int field645;
+   public boolean vmethod721(int var1, int var2, int var3) {
+      return var1 >= this.field601 && var1 < this.field601 + this.field595?var2 >= (this.field596 << 6) + (this.field600 << 3) && var2 <= (this.field596 << 6) + (this.field600 << 3) + 7 && var3 >= (this.field599 << 6) + (this.field609 << 3) && var3 <= (this.field599 << 6) + (this.field609 << 3) + 7:false;
+   }
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "202348652"
-   )
-   public boolean vmethod754(int var1, int var2) {
-      return var1 >= (this.field652 << 6) + (this.field646 << 3) && var1 <= (this.field652 << 6) + (this.field646 << 3) + 7 && var2 >= (this.field641 << 6) + (this.field647 << 3) && var2 <= (this.field641 << 6) + (this.field647 << 3) + 7;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIII)Z",
-      garbageValue = "998947175"
-   )
-   public boolean vmethod728(int var1, int var2, int var3) {
-      return var1 >= this.field638 && var1 < this.field639 + this.field638?var2 >= (this.field640 << 6) + (this.field644 << 3) && var2 <= (this.field644 << 3) + (this.field640 << 6) + 7 && var3 >= (this.field642 << 6) + (this.field645 << 3) && var3 <= (this.field642 << 6) + (this.field645 << 3) + 7:false;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
       signature = "(LWorldMapData;I)V",
-      garbageValue = "98017718"
+      garbageValue = "-1824757307"
    )
-   public void vmethod753(WorldMapData var1) {
-      if(var1.field467 > this.field652) {
-         var1.field467 = this.field652;
+   public void vmethod720(WorldMapData var1) {
+      if(var1.field447 > this.field598) {
+         var1.field447 = this.field598;
       }
 
-      if(var1.field468 < this.field652) {
-         var1.field468 = this.field652;
+      if(var1.field448 < this.field598) {
+         var1.field448 = this.field598;
       }
 
-      if(var1.field472 > this.field641) {
-         var1.field472 = this.field641;
+      if(var1.field441 > this.field604) {
+         var1.field441 = this.field604;
       }
 
-      if(var1.field466 < this.field641) {
-         var1.field466 = this.field641;
+      if(var1.field450 < this.field604) {
+         var1.field450 = this.field604;
       }
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(III)LCoordinates;",
-      garbageValue = "-2079571098"
+      garbageValue = "665140774"
    )
-   public Coordinates vmethod731(int var1, int var2) {
-      if(!this.vmethod754(var1, var2)) {
+   public Coordinates vmethod743(int var1, int var2) {
+      if(!this.vmethod722(var1, var2)) {
          return null;
       } else {
-         int var3 = this.field644 * 8 - this.field646 * 8 + this.field640 * 64 - this.field652 * 64 + var1;
-         int var4 = this.field645 * 8 - this.field647 * 8 + this.field642 * 64 - this.field641 * 64 + var2;
-         return new Coordinates(this.field638, var3, var4);
+         int var3 = this.field600 * 8 - this.field602 * 8 + this.field596 * 64 - this.field598 * 64 + var1;
+         int var4 = this.field609 * 8 - this.field603 * 8 + this.field599 * 64 - this.field604 * 64 + var2;
+         return new Coordinates(this.field601, var3, var4);
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "1509988890"
+      signature = "(IIIB)[I",
+      garbageValue = "13"
    )
-   public int[] vmethod730(int var1, int var2, int var3) {
-      if(!this.vmethod728(var1, var2, var3)) {
+   public int[] vmethod731(int var1, int var2, int var3) {
+      if(!this.vmethod721(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{this.field646 * 8 - this.field644 * 8 + this.field652 * 64 - this.field640 * 64 + var2, this.field647 * 8 - this.field645 * 8 + var3 + (this.field641 * 64 - this.field642 * 64)};
+         int[] var4 = new int[]{this.field602 * 8 - this.field600 * 8 + this.field598 * 64 - this.field596 * 64 + var2, this.field603 * 8 - this.field609 * 8 + var3 + (this.field604 * 64 - this.field599 * 64)};
          return var4;
       }
    }
 
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "618655756"
-   )
-   public void vmethod732(Buffer var1) {
-      this.field638 = var1.readUnsignedByte();
-      this.field639 = var1.readUnsignedByte();
-      this.field640 = var1.readUnsignedShort();
-      this.field644 = var1.readUnsignedByte();
-      this.field642 = var1.readUnsignedShort();
-      this.field645 = var1.readUnsignedByte();
-      this.field652 = var1.readUnsignedShort();
-      this.field646 = var1.readUnsignedByte();
-      this.field641 = var1.readUnsignedShort();
-      this.field647 = var1.readUnsignedByte();
-      this.method733();
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1006647602"
-   )
-   void method733() {
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "([BIII)Ljava/lang/String;",
-      garbageValue = "-2135132767"
-   )
-   @Export("getString")
-   public static String getString(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
-
-      for(int var5 = 0; var5 < var2; ++var5) {
-         int var6 = var0[var5 + var1] & 255;
-         if(var6 != 0) {
-            if(var6 >= 128 && var6 < 160) {
-               char var7 = class266.field3668[var6 - 128];
-               if(var7 == 0) {
-                  var7 = 63;
-               }
-
-               var6 = var7;
-            }
-
-            var3[var4++] = (char)var6;
-         }
-      }
-
-      return new String(var3, 0, var4);
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "([BI)LScript;",
-      garbageValue = "1119686122"
-   )
-   static Script method738(byte[] var0) {
-      Script var1 = new Script();
-      Buffer var2 = new Buffer(var0);
-      var2.offset = var2.payload.length - 2;
-      int var3 = var2.readUnsignedShort();
-      int var4 = var2.payload.length - 2 - var3 - 12;
-      var2.offset = var4;
-      int var5 = var2.readInt();
-      var1.localIntCount = var2.readUnsignedShort();
-      var1.localStringCount = var2.readUnsignedShort();
-      var1.intStackCount = var2.readUnsignedShort();
-      var1.stringStackCount = var2.readUnsignedShort();
-      int var6 = var2.readUnsignedByte();
-      int var7;
-      int var8;
-      if(var6 > 0) {
-         var1.switches = var1.method1861(var6);
-
-         for(var7 = 0; var7 < var6; ++var7) {
-            var8 = var2.readUnsignedShort();
-            class186 var9 = new class186(class56.method849(var8));
-            var1.switches[var7] = var9;
-
-            while(var8-- > 0) {
-               int var10 = var2.readInt();
-               int var11 = var2.readInt();
-               var9.method3479(new WidgetConfig(var11), (long)var10);
-            }
-         }
-      }
-
-      var2.offset = 0;
-      var2.getNullString();
-      var1.instructions = new int[var5];
-      var1.intOperands = new int[var5];
-      var1.stringOperands = new String[var5];
-
-      for(var7 = 0; var2.offset < var4; var1.instructions[var7++] = var8) {
-         var8 = var2.readUnsignedShort();
-         if(var8 == 3) {
-            var1.stringOperands[var7] = var2.readString();
-         } else if(var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
-            var1.intOperands[var7] = var2.readInt();
-         } else {
-            var1.intOperands[var7] = var2.readUnsignedByte();
-         }
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(B)[Lclass91;",
-      garbageValue = "13"
-   )
-   static class91[] method739() {
-      return new class91[]{class91.field1440, class91.field1441, class91.field1442, class91.field1439};
-   }
-
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-1478645957"
+      signature = "(LBuffer;I)V",
+      garbageValue = "-1909314997"
    )
-   @Export("getSmoothNoise")
-   static final int getSmoothNoise(int var0, int var1, int var2) {
-      int var3 = var0 / var2;
-      int var4 = var0 & var2 - 1;
-      int var5 = var1 / var2;
-      int var6 = var1 & var2 - 1;
-      int var7 = class17.getSmoothNoise2D(var3, var5);
-      int var8 = class17.getSmoothNoise2D(var3 + 1, var5);
-      int var9 = class17.getSmoothNoise2D(var3, var5 + 1);
-      int var10 = class17.getSmoothNoise2D(var3 + 1, var5 + 1);
-      int var12 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
-      int var11 = ((65536 - var12) * var7 >> 16) + (var8 * var12 >> 16);
-      int var14 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
-      int var13 = (var10 * var14 >> 16) + ((65536 - var14) * var9 >> 16);
-      int var16 = 65536 - Graphics3D.COSINE[var6 * 1024 / var2] >> 1;
-      int var15 = ((65536 - var16) * var11 >> 16) + (var13 * var16 >> 16);
-      return var15;
+   public void vmethod746(Buffer var1) {
+      this.field601 = var1.readUnsignedByte();
+      this.field595 = var1.readUnsignedByte();
+      this.field596 = var1.readUnsignedShort();
+      this.field600 = var1.readUnsignedByte();
+      this.field599 = var1.readUnsignedShort();
+      this.field609 = var1.readUnsignedByte();
+      this.field598 = var1.readUnsignedShort();
+      this.field602 = var1.readUnsignedByte();
+      this.field604 = var1.readUnsignedShort();
+      this.field603 = var1.readUnsignedByte();
+      this.method724();
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1606776473"
+   )
+   void method724() {
+   }
+
+   @ObfuscatedName("ir")
+   @ObfuscatedSignature(
+      signature = "(LWidget;B)V",
+      garbageValue = "-94"
+   )
+   static void method749(Widget var0) {
+      if(var0.loopCycle == Client.field1110) {
+         Client.field1111[var0.boundsIndex] = true;
+      }
+
+   }
+
+   @ObfuscatedName("gp")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "-1175012851"
+   )
+   static final void method750(int var0, int var1, int var2) {
+      if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
+         int var3 = Actor.getTileHeight(var0, var1, class45.plane) - var2;
+         var0 -= class41.cameraX;
+         var3 -= XItemContainer.cameraZ;
+         var1 -= class7.cameraY;
+         int var4 = Graphics3D.SINE[class8.cameraPitch];
+         int var5 = Graphics3D.COSINE[class8.cameraPitch];
+         int var6 = Graphics3D.SINE[Friend.cameraYaw];
+         int var7 = Graphics3D.COSINE[Friend.cameraYaw];
+         int var8 = var6 * var1 + var0 * var7 >> 16;
+         var1 = var7 * var1 - var0 * var6 >> 16;
+         var0 = var8;
+         var8 = var3 * var5 - var4 * var1 >> 16;
+         var1 = var5 * var1 + var3 * var4 >> 16;
+         if(var1 >= 50) {
+            Client.screenY = var0 * Client.scale / var1 + Client.viewportHeight / 2;
+            Client.screenX = var8 * Client.scale / var1 + Client.viewportWidth / 2;
+         } else {
+            Client.screenY = -1;
+            Client.screenX = -1;
+         }
+
+      } else {
+         Client.screenY = -1;
+         Client.screenX = -1;
+      }
    }
 }

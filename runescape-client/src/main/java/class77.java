@@ -1,90 +1,117 @@
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bi")
+@ObfuscatedName("by")
 public class class77 {
-   @ObfuscatedName("lv")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1150999927
+      intValue = -1162929643
    )
-   static int field1237;
-   @ObfuscatedName("i")
-   byte[] field1229;
+   @Export("canvasWidth")
+   public static int canvasWidth;
+   @ObfuscatedName("x")
+   public static String[] field1212;
+   @ObfuscatedName("r")
+   byte[] field1207;
+   @ObfuscatedName("j")
+   Task field1204;
    @ObfuscatedName("a")
-   Task field1227;
-   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -69539391
+      intValue = -1575353213
    )
-   int field1231;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      longValue = -8673129038472713675L
-   )
-   long field1230;
+   int field1210;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -885124681
+      longValue = 7041020616169332995L
    )
-   int field1234;
-   @ObfuscatedName("t")
-   DataInputStream field1228;
+   long field1208;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1959565033
+      intValue = 590718041
    )
-   int field1233;
-   @ObfuscatedName("r")
-   byte[] field1232;
+   int field1211;
+   @ObfuscatedName("n")
+   DataInputStream field1206;
+   @ObfuscatedName("e")
+   byte[] field1209;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1354789391
+   )
+   int field1205;
 
    class77(Signlink var1, URL var2) {
-      this.field1229 = new byte[4];
-      this.field1227 = var1.createURL(var2);
-      this.field1231 = 0;
-      this.field1230 = DState.currentTimeMs() + 30000L;
+      this.field1207 = new byte[4];
+      this.field1204 = var1.createURL(var2);
+      this.field1210 = 0;
+      this.field1208 = class46.currentTimeMs() + 30000L;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(B)[B",
-      garbageValue = "9"
+      signature = "(I)[B",
+      garbageValue = "124522945"
    )
-   byte[] method1530() throws IOException {
-      if(DState.currentTimeMs() > this.field1230) {
+   byte[] method1481() throws IOException {
+      if(class46.currentTimeMs() > this.field1208) {
          throw new IOException();
       } else {
-         if(this.field1231 == 0) {
-            if(this.field1227.status == 2) {
+         if(this.field1210 == 0) {
+            if(this.field1204.status == 2) {
                throw new IOException();
             }
 
-            if(this.field1227.status == 1) {
-               this.field1228 = (DataInputStream)this.field1227.value;
-               this.field1231 = 1;
+            if(this.field1204.status == 1) {
+               this.field1206 = (DataInputStream)this.field1204.value;
+               this.field1210 = 1;
             }
          }
 
-         if(this.field1231 == 1) {
-            this.field1234 += this.field1228.read(this.field1229, this.field1234, this.field1229.length - this.field1234);
-            if(this.field1234 == 4) {
-               int var1 = (new Buffer(this.field1229)).readInt();
-               this.field1232 = new byte[var1];
-               this.field1231 = 2;
+         if(this.field1210 == 1) {
+            this.field1211 += this.field1206.read(this.field1207, this.field1211, this.field1207.length - this.field1211);
+            if(this.field1211 == 4) {
+               int var1 = (new Buffer(this.field1207)).readInt();
+               this.field1209 = new byte[var1];
+               this.field1210 = 2;
             }
          }
 
-         if(this.field1231 == 2) {
-            this.field1233 += this.field1228.read(this.field1232, this.field1233, this.field1232.length - this.field1233);
-            if(this.field1232.length == this.field1233) {
-               return this.field1232;
+         if(this.field1210 == 2) {
+            this.field1205 += this.field1206.read(this.field1209, this.field1205, this.field1209.length - this.field1205);
+            if(this.field1209.length == this.field1205) {
+               return this.field1209;
             }
          }
 
          return null;
+      }
+   }
+
+   @ObfuscatedName("jv")
+   @ObfuscatedSignature(
+      signature = "(LWidget;I)LWidget;",
+      garbageValue = "2055211907"
+   )
+   static Widget method1480(Widget var0) {
+      int var2 = class46.getWidgetConfig(var0);
+      int var1 = var2 >> 17 & 7;
+      int var3 = var1;
+      if(var1 == 0) {
+         return null;
+      } else {
+         for(int var4 = 0; var4 < var3; ++var4) {
+            var0 = class61.method1038(var0.parentId);
+            if(var0 == null) {
+               return null;
+            }
+         }
+
+         return var0;
       }
    }
 }

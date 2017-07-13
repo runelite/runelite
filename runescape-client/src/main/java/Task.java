@@ -3,26 +3,26 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("eh")
+@ObfuscatedName("ev")
 @Implements("Task")
 public class Task {
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @Export("status")
    public volatile int status;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -660246521
+      intValue = -766116845
    )
    @Export("type")
    int type;
-   @ObfuscatedName("v")
-   public int field2245;
-   @ObfuscatedName("i")
+   @ObfuscatedName("l")
+   public int field2222;
+   @ObfuscatedName("a")
    @Export("task")
    Task task;
-   @ObfuscatedName("y")
-   Object field2246;
-   @ObfuscatedName("j")
+   @ObfuscatedName("s")
+   Object field2219;
+   @ObfuscatedName("w")
    @Export("value")
    public volatile Object value;
 

@@ -4,16 +4,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fj")
+@ObfuscatedName("fl")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-   @ObfuscatedName("i")
+   @ObfuscatedName("az")
+   public static BufferProvider field2327;
+   @ObfuscatedName("gf")
+   static ModIcon[] field2330;
+   @ObfuscatedName("a")
    @Export("inflator")
    Inflater inflator;
-
-   public GZipDecompressor() {
-      this(-1, 1000000, 1000000);
-   }
 
    @ObfuscatedSignature(
       signature = "(III)V",
@@ -22,10 +22,14 @@ public class GZipDecompressor {
    GZipDecompressor(int var1, int var2, int var3) {
    }
 
-   @ObfuscatedName("i")
+   public GZipDecompressor() {
+      this(-1, 1000000, 1000000);
+   }
+
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LBuffer;[BI)V",
-      garbageValue = "1867657898"
+      signature = "(LBuffer;[BB)V",
+      garbageValue = "105"
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
@@ -48,13 +52,15 @@ public class GZipDecompressor {
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "14"
+      signature = "(I)V",
+      garbageValue = "-2034737161"
    )
-   static int method3076(int var0) {
-      MessageNode var1 = (MessageNode)class98.field1546.method3478((long)var0);
-      return var1 == null?-1:(var1.previous == class98.field1548.field2492?-1:((MessageNode)var1.previous).id);
+   public static void method3074() {
+      Widget.field2647.reset();
+      Widget.field2783.reset();
+      Widget.field2684.reset();
+      Widget.field2650.reset();
    }
 }

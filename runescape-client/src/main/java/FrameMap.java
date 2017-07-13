@@ -4,31 +4,30 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ed")
+@ObfuscatedName("eb")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("pq")
-   @Export("soundSystem0")
-   static AbstractSoundSystem soundSystem0;
-   @ObfuscatedName("g")
-   @Export("tt")
-   static int[] tt;
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
+   @Export("item_ref")
+   static IndexDataBase item_ref;
+   @ObfuscatedName("v")
+   static Thread field2049;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 468508233
+      intValue = -478955957
    )
    @Export("id")
    int id;
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 891823307
+      intValue = -1438586063
    )
    @Export("count")
    int count;
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @Export("types")
    int[] types;
-   @ObfuscatedName("t")
+   @ObfuscatedName("r")
    @Export("list")
    int[][] list;
 
@@ -56,62 +55,34 @@ public class FrameMap extends Node {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "([BZI)Ljava/lang/Object;",
-      garbageValue = "-336351817"
+      signature = "(B)V",
+      garbageValue = "-53"
    )
-   public static Object method2665(byte[] var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else {
-         if(var0.length > 136 && !AbstractByteBuffer.field2420) {
-            try {
-               DirectByteBuffer var2 = new DirectByteBuffer();
-               var2.put(var0);
-               return var2;
-            } catch (Throwable var3) {
-               AbstractByteBuffer.field2420 = true;
-            }
+   public static void method2664() {
+      try {
+         class155.field2237.method2329();
+
+         for(int var0 = 0; var0 < class155.field2241; ++var0) {
+            class155.field2247[var0].method2329();
          }
 
-         return var0;
+         class155.field2246.method2329();
+         class155.field2239.method2329();
+      } catch (Exception var2) {
+         ;
       }
+
    }
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1387470708"
-   )
-   public static boolean method2661(int var0) {
-      return (var0 & 1) != 0;
-   }
-
-   @ObfuscatedName("l")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "2045436958"
+      garbageValue = "961581326"
    )
-   public static int method2663(int var0) {
-      return var0 > 0?1:(var0 < 0?-1:0);
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1870942696"
-   )
-   public static boolean method2664(int var0) {
-      return (var0 >> 20 & 1) != 0;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1479443479"
-   )
-   public static int method2662() {
-      return ++MouseInput.mouseIdleTicks - 1;
+   static int method2663(int var0) {
+      MessageNode var1 = (MessageNode)class98.field1520.method3482((long)var0);
+      return var1 == null?-1:(var1.next == class98.field1526.field2484?-1:((MessageNode)var1.next).id);
    }
 }

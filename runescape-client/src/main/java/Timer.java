@@ -1,126 +1,114 @@
+import java.awt.Image;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fb")
+@ObfuscatedName("fu")
 @Implements("Timer")
 public abstract class Timer {
-   @ObfuscatedName("z")
-   static int[] field2273;
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "-70"
+   @ObfuscatedName("aq")
+   static Image field2258;
+   @ObfuscatedName("pk")
+   @ObfuscatedGetter(
+      intValue = 2010803967
    )
-   public abstract int vmethod2964(int var1, int var2);
+   static int field2255;
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-85"
-   )
-   public abstract void vmethod2965();
-
-   @ObfuscatedName("z")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "-1673479880"
+      garbageValue = "-2130584926"
    )
-   static final int method2972(int var0, int var1) {
-      int var2 = var1 * 57 + var0;
-      var2 ^= var2 << 13;
-      int var3 = var2 * (789221 + var2 * var2 * 15731) + 1376312589 & Integer.MAX_VALUE;
-      return var3 >> 19 & 255;
-   }
+   public abstract int vmethod2980(int var1, int var2);
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ILIndexDataBase;Ljava/lang/String;Ljava/lang/String;IZI)V",
-      garbageValue = "954483578"
+      signature = "(B)V",
+      garbageValue = "9"
    )
-   public static void method2968(int var0, IndexDataBase var1, String var2, String var3, int var4, boolean var5) {
-      int var6 = var1.getFile(var2);
-      int var7 = var1.getChild(var6, var3);
-      class82.method1628(var0, var1, var6, var7, var4, var5);
-   }
+   public abstract void vmethod2974();
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(CII)C",
-      garbageValue = "-429286558"
+      signature = "(Lclass186;IIS)I",
+      garbageValue = "-9571"
    )
-   public static char method2970(char var0, int var1) {
-      if(var0 >= 192 && var0 <= 255) {
-         if(var0 >= 192 && var0 <= 198) {
-            return 'A';
-         }
-
-         if(var0 == 199) {
-            return 'C';
-         }
-
-         if(var0 >= 200 && var0 <= 203) {
-            return 'E';
-         }
-
-         if(var0 >= 204 && var0 <= 207) {
-            return 'I';
-         }
-
-         if(var0 >= 210 && var0 <= 214) {
-            return 'O';
-         }
-
-         if(var0 >= 217 && var0 <= 220) {
-            return 'U';
-         }
-
-         if(var0 == 221) {
-            return 'Y';
-         }
-
-         if(var0 == 223) {
-            return 's';
-         }
-
-         if(var0 >= 224 && var0 <= 230) {
-            return 'a';
-         }
-
-         if(var0 == 231) {
-            return 'c';
-         }
-
-         if(var0 >= 232 && var0 <= 235) {
-            return 'e';
-         }
-
-         if(var0 >= 236 && var0 <= 239) {
-            return 'i';
-         }
-
-         if(var0 >= 242 && var0 <= 246) {
-            return 'o';
-         }
-
-         if(var0 >= 249 && var0 <= 252) {
-            return 'u';
-         }
-
-         if(var0 == 253 || var0 == 255) {
-            return 'y';
-         }
-      }
-
-      if(var0 == 338) {
-         return 'O';
-      } else if(var0 == 339) {
-         return 'o';
-      } else if(var0 == 376) {
-         return 'Y';
+   static int method2973(class186 var0, int var1, int var2) {
+      if(var0 == null) {
+         return var2;
       } else {
-         return var0;
+         WidgetConfig var3 = (WidgetConfig)var0.method3482((long)var1);
+         return var3 == null?var2:var3.config;
       }
+   }
+
+   @ObfuscatedName("gi")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "787611644"
+   )
+   static final void method2979() {
+      for(Projectile var0 = (Projectile)Client.projectiles.getFront(); var0 != null; var0 = (Projectile)Client.projectiles.getNext()) {
+         if(var0.floor == class45.plane && Client.gameCycle <= var0.cycle) {
+            if(Client.gameCycle >= var0.startTime) {
+               if(var0.interacting > 0) {
+                  NPC var1 = Client.cachedNPCs[var0.interacting - 1];
+                  if(var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
+                     var0.method1735(var1.x, var1.y, Actor.getTileHeight(var1.x, var1.y, var0.floor) - var0.endHeight, Client.gameCycle);
+                  }
+               }
+
+               if(var0.interacting < 0) {
+                  int var2 = -var0.interacting - 1;
+                  Player var3;
+                  if(var2 == Client.localInteractingIndex) {
+                     var3 = Script.localPlayer;
+                  } else {
+                     var3 = Client.cachedPlayers[var2];
+                  }
+
+                  if(var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
+                     var0.method1735(var3.x, var3.y, Actor.getTileHeight(var3.x, var3.y, var0.floor) - var0.endHeight, Client.gameCycle);
+                  }
+               }
+
+               var0.method1736(Client.field982);
+               class29.region.method2677(class45.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.rotationX, -1, false);
+            }
+         } else {
+            var0.unlink();
+         }
+      }
+
+   }
+
+   @ObfuscatedName("fg")
+   @ObfuscatedSignature(
+      signature = "(LPlayer;III)V",
+      garbageValue = "-1891484616"
+   )
+   static void method2981(Player var0, int var1, int var2) {
+      if(var0.animation == var1 && var1 != -1) {
+         int var3 = class112.getAnimation(var1).replyMode;
+         if(var3 == 1) {
+            var0.actionFrame = 0;
+            var0.field1248 = 0;
+            var0.actionAnimationDisable = var2;
+            var0.field1259 = 0;
+         }
+
+         if(var3 == 2) {
+            var0.field1259 = 0;
+         }
+      } else if(var1 == -1 || var0.animation == -1 || class112.getAnimation(var1).forcedPriority >= class112.getAnimation(var0.animation).forcedPriority) {
+         var0.animation = var1;
+         var0.actionFrame = 0;
+         var0.field1248 = 0;
+         var0.actionAnimationDisable = var2;
+         var0.field1259 = 0;
+         var0.field1273 = var0.queueSize;
+      }
+
    }
 }

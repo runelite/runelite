@@ -4,23 +4,22 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("io")
+@ObfuscatedName("ik")
 @Implements("VarPlayerType")
 public class VarPlayerType extends CacheableNode {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @Export("varplayers")
-   public static NodeCache varplayers;
-   @ObfuscatedName("i")
-   @Export("varplayer_ref")
-   public static IndexDataBase varplayer_ref;
-   @ObfuscatedName("w")
+   static NodeCache varplayers;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 971956589
+      intValue = 1996318971
    )
-   public static int field3289;
-   @ObfuscatedName("t")
+   public static int field3283;
+   @ObfuscatedName("a")
+   public static IndexDataBase field3286;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -2137069147
+      intValue = -241820073
    )
    @Export("configType")
    public int configType;
@@ -29,14 +28,14 @@ public class VarPlayerType extends CacheableNode {
       varplayers = new NodeCache(64);
    }
 
-   public VarPlayerType() {
+   VarPlayerType() {
       this.configType = 0;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(LBuffer;II)V",
-      garbageValue = "-1931581430"
+      garbageValue = "327096854"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -46,13 +45,13 @@ public class VarPlayerType extends CacheableNode {
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(LBuffer;B)V",
-      garbageValue = "-52"
+      garbageValue = "11"
    )
    @Export("decode")
-   public void decode(Buffer var1) {
+   void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
@@ -61,5 +60,19 @@ public class VarPlayerType extends CacheableNode {
 
          this.decode(var1, var2);
       }
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "-408011722"
+   )
+   public static String method4239(CharSequence var0) {
+      String var1 = PendingSpawn.method1478(class82.method1582(var0));
+      if(var1 == null) {
+         var1 = "";
+      }
+
+      return var1;
    }
 }

@@ -3,149 +3,149 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("do")
+@ObfuscatedName("dv")
 @Implements("ModelData")
 public class ModelData extends Renderable {
    @ObfuscatedName("al")
-   static int[] field1846;
-   @ObfuscatedName("aa")
-   static int[] field1823;
-   @ObfuscatedName("ad")
-   static int[] field1847;
-   @ObfuscatedName("am")
-   static int[] field1844;
-   @ObfuscatedName("az")
-   static int field1845;
-   @ObfuscatedName("ak")
-   boolean field1837;
+   static int[] field1810;
+   @ObfuscatedName("av")
+   static int[] field1826;
+   @ObfuscatedName("ah")
+   static int[] field1830;
    @ObfuscatedName("ab")
+   static int[] field1803;
+   @ObfuscatedName("at")
+   static int field1828;
+   @ObfuscatedName("ag")
+   boolean field1820;
+   @ObfuscatedName("ae")
    @Export("vertexSkins")
    int[] vertexSkins;
-   @ObfuscatedName("ar")
-   @Export("normals")
-   VertexNormal[] normals;
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @Export("vertexX")
    int[] vertexX;
-   @ObfuscatedName("l")
-   @Export("faceTextures")
-   short[] faceTextures;
-   @ObfuscatedName("i")
+   @ObfuscatedName("am")
+   @Export("normals")
+   VertexNormal[] normals;
+   @ObfuscatedName("a")
    @Export("vertexCount")
    int vertexCount;
-   @ObfuscatedName("s")
+   @ObfuscatedName("k")
+   @Export("faceTextures")
+   short[] faceTextures;
+   @ObfuscatedName("v")
    @Export("triangleFaceCount")
    int triangleFaceCount;
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @Export("vertexY")
    int[] vertexY;
    @ObfuscatedName("ax")
-   int field1808;
-   @ObfuscatedName("aw")
+   int field1822;
+   @ObfuscatedName("au")
    @Export("triangleSkinValues")
    int[] triangleSkinValues;
-   @ObfuscatedName("t")
+   @ObfuscatedName("r")
    @Export("vertexZ")
    int[] vertexZ;
-   @ObfuscatedName("z")
-   @Export("faceColor")
-   short[] faceColor;
-   @ObfuscatedName("j")
+   @ObfuscatedName("w")
    @Export("faceRenderType")
    byte[] faceRenderType;
-   @ObfuscatedName("ay")
-   VertexNormal[] field1834;
-   @ObfuscatedName("ac")
-   int field1840;
-   @ObfuscatedName("aq")
-   int field1838;
-   @ObfuscatedName("au")
+   @ObfuscatedName("g")
+   @Export("faceColor")
+   short[] faceColor;
+   @ObfuscatedName("aw")
+   VertexNormal[] field1817;
+   @ObfuscatedName("ad")
+   int field1823;
+   @ObfuscatedName("aj")
+   int field1821;
+   @ObfuscatedName("ar")
    @Export("faceNormals")
    FaceNormal[] faceNormals;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @Export("trianglePointsX")
    int[] trianglePointsX;
-   @ObfuscatedName("ai")
-   int[][] field1830;
-   @ObfuscatedName("av")
-   int field1842;
-   @ObfuscatedName("c")
+   @ObfuscatedName("ak")
+   int[][] field1813;
+   @ObfuscatedName("as")
+   int field1784;
+   @ObfuscatedName("t")
    @Export("priority")
    byte priority;
-   @ObfuscatedName("y")
+   @ObfuscatedName("s")
    @Export("trianglePointsZ")
    int[] trianglePointsZ;
-   @ObfuscatedName("an")
-   int[][] field1831;
-   @ObfuscatedName("at")
-   int field1833;
-   @ObfuscatedName("v")
+   @ObfuscatedName("ap")
+   int[][] field1814;
+   @ObfuscatedName("az")
+   int field1798;
+   @ObfuscatedName("l")
    @Export("trianglePointsY")
    int[] trianglePointsY;
-   @ObfuscatedName("m")
-   int field1827;
-   @ObfuscatedName("ao")
-   public short field1801;
-   @ObfuscatedName("as")
+   @ObfuscatedName("c")
+   int field1799;
+   @ObfuscatedName("aq")
+   public short field1818;
+   @ObfuscatedName("aa")
    @Export("contrast")
    public short contrast;
-   @ObfuscatedName("o")
+   @ObfuscatedName("u")
    @Export("textureCoords")
    byte[] textureCoords;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @Export("faceAlphas")
    byte[] faceAlphas;
-   @ObfuscatedName("b")
+   @ObfuscatedName("o")
    @Export("textureRenderTypes")
    byte[] textureRenderTypes;
-   @ObfuscatedName("k")
+   @ObfuscatedName("p")
    @Export("faceRenderPriorities")
    byte[] faceRenderPriorities;
-   @ObfuscatedName("f")
+   @ObfuscatedName("x")
    @Export("texTriangleX")
    short[] texTriangleX;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @Export("texTriangleY")
    short[] texTriangleY;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @Export("texTriangleZ")
    short[] texTriangleZ;
-   @ObfuscatedName("p")
-   short[] field1821;
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
+   short[] field1790;
+   @ObfuscatedName("i")
    short[] field1819;
    @ObfuscatedName("d")
-   short[] field1803;
-   @ObfuscatedName("h")
-   short[] field1816;
-   @ObfuscatedName("ah")
-   byte[] field1804;
-   @ObfuscatedName("g")
    short[] field1825;
-   @ObfuscatedName("x")
+   @ObfuscatedName("b")
+   short[] field1807;
+   @ObfuscatedName("ai")
+   byte[] field1793;
+   @ObfuscatedName("q")
+   short[] field1808;
+   @ObfuscatedName("y")
    @Export("texturePrimaryColor")
    short[] texturePrimaryColor;
 
    static {
-      field1823 = new int[10000];
-      field1844 = new int[10000];
-      field1845 = 0;
-      field1846 = Graphics3D.SINE;
-      field1847 = Graphics3D.COSINE;
+      field1826 = new int[10000];
+      field1803 = new int[10000];
+      field1828 = 0;
+      field1810 = Graphics3D.SINE;
+      field1830 = Graphics3D.COSINE;
    }
 
    ModelData() {
       this.vertexCount = 0;
       this.triangleFaceCount = 0;
       this.priority = 0;
-      this.field1837 = false;
+      this.field1820 = false;
    }
 
    public ModelData(ModelData[] var1, int var2) {
       this.vertexCount = 0;
       this.triangleFaceCount = 0;
       this.priority = 0;
-      this.field1837 = false;
+      this.field1820 = false;
       boolean var3 = false;
       boolean var4 = false;
       boolean var5 = false;
@@ -154,7 +154,7 @@ public class ModelData extends Renderable {
       boolean var8 = false;
       this.vertexCount = 0;
       this.triangleFaceCount = 0;
-      this.field1827 = 0;
+      this.field1799 = 0;
       this.priority = -1;
 
       int var9;
@@ -164,7 +164,7 @@ public class ModelData extends Renderable {
          if(var10 != null) {
             this.vertexCount += var10.vertexCount;
             this.triangleFaceCount += var10.triangleFaceCount;
-            this.field1827 += var10.field1827;
+            this.field1799 += var10.field1799;
             if(var10.faceRenderPriorities != null) {
                var4 = true;
             } else {
@@ -217,23 +217,23 @@ public class ModelData extends Renderable {
       }
 
       this.faceColor = new short[this.triangleFaceCount];
-      if(this.field1827 > 0) {
-         this.textureRenderTypes = new byte[this.field1827];
-         this.texTriangleX = new short[this.field1827];
-         this.texTriangleY = new short[this.field1827];
-         this.texTriangleZ = new short[this.field1827];
-         this.field1821 = new short[this.field1827];
-         this.field1819 = new short[this.field1827];
-         this.field1803 = new short[this.field1827];
-         this.field1816 = new short[this.field1827];
-         this.field1804 = new byte[this.field1827];
-         this.field1825 = new short[this.field1827];
-         this.texturePrimaryColor = new short[this.field1827];
+      if(this.field1799 > 0) {
+         this.textureRenderTypes = new byte[this.field1799];
+         this.texTriangleX = new short[this.field1799];
+         this.texTriangleY = new short[this.field1799];
+         this.texTriangleZ = new short[this.field1799];
+         this.field1790 = new short[this.field1799];
+         this.field1819 = new short[this.field1799];
+         this.field1825 = new short[this.field1799];
+         this.field1807 = new short[this.field1799];
+         this.field1793 = new byte[this.field1799];
+         this.field1808 = new short[this.field1799];
+         this.texturePrimaryColor = new short[this.field1799];
       }
 
       this.vertexCount = 0;
       this.triangleFaceCount = 0;
-      this.field1827 = 0;
+      this.field1799 = 0;
 
       for(var9 = 0; var9 < var2; ++var9) {
          var10 = var1[var9];
@@ -270,44 +270,44 @@ public class ModelData extends Renderable {
 
                if(var8) {
                   if(var10.textureCoords != null && var10.textureCoords[var11] != -1) {
-                     this.textureCoords[this.triangleFaceCount] = (byte)(this.field1827 + var10.textureCoords[var11]);
+                     this.textureCoords[this.triangleFaceCount] = (byte)(this.field1799 + var10.textureCoords[var11]);
                   } else {
                      this.textureCoords[this.triangleFaceCount] = -1;
                   }
                }
 
                this.faceColor[this.triangleFaceCount] = var10.faceColor[var11];
-               this.trianglePointsX[this.triangleFaceCount] = this.method2456(var10, var10.trianglePointsX[var11]);
-               this.trianglePointsY[this.triangleFaceCount] = this.method2456(var10, var10.trianglePointsY[var11]);
-               this.trianglePointsZ[this.triangleFaceCount] = this.method2456(var10, var10.trianglePointsZ[var11]);
+               this.trianglePointsX[this.triangleFaceCount] = this.method2400(var10, var10.trianglePointsX[var11]);
+               this.trianglePointsY[this.triangleFaceCount] = this.method2400(var10, var10.trianglePointsY[var11]);
+               this.trianglePointsZ[this.triangleFaceCount] = this.method2400(var10, var10.trianglePointsZ[var11]);
                ++this.triangleFaceCount;
             }
 
-            for(var11 = 0; var11 < var10.field1827; ++var11) {
-               byte var12 = this.textureRenderTypes[this.field1827] = var10.textureRenderTypes[var11];
+            for(var11 = 0; var11 < var10.field1799; ++var11) {
+               byte var12 = this.textureRenderTypes[this.field1799] = var10.textureRenderTypes[var11];
                if(var12 == 0) {
-                  this.texTriangleX[this.field1827] = (short)this.method2456(var10, var10.texTriangleX[var11]);
-                  this.texTriangleY[this.field1827] = (short)this.method2456(var10, var10.texTriangleY[var11]);
-                  this.texTriangleZ[this.field1827] = (short)this.method2456(var10, var10.texTriangleZ[var11]);
+                  this.texTriangleX[this.field1799] = (short)this.method2400(var10, var10.texTriangleX[var11]);
+                  this.texTriangleY[this.field1799] = (short)this.method2400(var10, var10.texTriangleY[var11]);
+                  this.texTriangleZ[this.field1799] = (short)this.method2400(var10, var10.texTriangleZ[var11]);
                }
 
                if(var12 >= 1 && var12 <= 3) {
-                  this.texTriangleX[this.field1827] = var10.texTriangleX[var11];
-                  this.texTriangleY[this.field1827] = var10.texTriangleY[var11];
-                  this.texTriangleZ[this.field1827] = var10.texTriangleZ[var11];
-                  this.field1821[this.field1827] = var10.field1821[var11];
-                  this.field1819[this.field1827] = var10.field1819[var11];
-                  this.field1803[this.field1827] = var10.field1803[var11];
-                  this.field1816[this.field1827] = var10.field1816[var11];
-                  this.field1804[this.field1827] = var10.field1804[var11];
-                  this.field1825[this.field1827] = var10.field1825[var11];
+                  this.texTriangleX[this.field1799] = var10.texTriangleX[var11];
+                  this.texTriangleY[this.field1799] = var10.texTriangleY[var11];
+                  this.texTriangleZ[this.field1799] = var10.texTriangleZ[var11];
+                  this.field1790[this.field1799] = var10.field1790[var11];
+                  this.field1819[this.field1799] = var10.field1819[var11];
+                  this.field1825[this.field1799] = var10.field1825[var11];
+                  this.field1807[this.field1799] = var10.field1807[var11];
+                  this.field1793[this.field1799] = var10.field1793[var11];
+                  this.field1808[this.field1799] = var10.field1808[var11];
                }
 
                if(var12 == 2) {
-                  this.texturePrimaryColor[this.field1827] = var10.texturePrimaryColor[var11];
+                  this.texturePrimaryColor[this.field1799] = var10.texturePrimaryColor[var11];
                }
 
-               ++this.field1827;
+               ++this.field1799;
             }
          }
       }
@@ -318,7 +318,7 @@ public class ModelData extends Renderable {
       this.vertexCount = 0;
       this.triangleFaceCount = 0;
       this.priority = 0;
-      this.field1837 = false;
+      this.field1820 = false;
       if(var1[var1.length - 1] == -1 && var1[var1.length - 2] == -1) {
          this.decodeNewFormat(var1);
       } else {
@@ -335,10 +335,10 @@ public class ModelData extends Renderable {
       this.vertexCount = 0;
       this.triangleFaceCount = 0;
       this.priority = 0;
-      this.field1837 = false;
+      this.field1820 = false;
       this.vertexCount = var1.vertexCount;
       this.triangleFaceCount = var1.triangleFaceCount;
-      this.field1827 = var1.field1827;
+      this.field1799 = var1.field1799;
       int var6;
       if(var2) {
          this.vertexX = var1.vertexX;
@@ -388,68 +388,68 @@ public class ModelData extends Renderable {
       this.texTriangleX = var1.texTriangleX;
       this.texTriangleY = var1.texTriangleY;
       this.texTriangleZ = var1.texTriangleZ;
-      this.field1821 = var1.field1821;
+      this.field1790 = var1.field1790;
       this.field1819 = var1.field1819;
-      this.field1803 = var1.field1803;
-      this.field1816 = var1.field1816;
-      this.field1804 = var1.field1804;
       this.field1825 = var1.field1825;
+      this.field1807 = var1.field1807;
+      this.field1793 = var1.field1793;
+      this.field1808 = var1.field1808;
       this.texturePrimaryColor = var1.texturePrimaryColor;
       this.vertexSkins = var1.vertexSkins;
       this.triangleSkinValues = var1.triangleSkinValues;
-      this.field1830 = var1.field1830;
-      this.field1831 = var1.field1831;
+      this.field1813 = var1.field1813;
+      this.field1814 = var1.field1814;
       this.normals = var1.normals;
       this.faceNormals = var1.faceNormals;
-      this.field1834 = var1.field1834;
-      this.field1801 = var1.field1801;
+      this.field1817 = var1.field1817;
+      this.field1818 = var1.field1818;
       this.contrast = var1.contrast;
    }
 
-   @ObfuscatedName("p")
-   void method2428() {
-      if(!this.field1837) {
+   @ObfuscatedName("d")
+   void method2415() {
+      if(!this.field1820) {
          super.modelHeight = 0;
-         this.field1838 = 0;
-         this.field1808 = 999999;
-         this.field1840 = -999999;
-         this.field1833 = -99999;
-         this.field1842 = 99999;
+         this.field1821 = 0;
+         this.field1822 = 999999;
+         this.field1823 = -999999;
+         this.field1798 = -99999;
+         this.field1784 = 99999;
 
          for(int var1 = 0; var1 < this.vertexCount; ++var1) {
             int var2 = this.vertexX[var1];
             int var3 = this.vertexY[var1];
             int var4 = this.vertexZ[var1];
-            if(var2 < this.field1808) {
-               this.field1808 = var2;
+            if(var2 < this.field1822) {
+               this.field1822 = var2;
             }
 
-            if(var2 > this.field1840) {
-               this.field1840 = var2;
+            if(var2 > this.field1823) {
+               this.field1823 = var2;
             }
 
-            if(var4 < this.field1842) {
-               this.field1842 = var4;
+            if(var4 < this.field1784) {
+               this.field1784 = var4;
             }
 
-            if(var4 > this.field1833) {
-               this.field1833 = var4;
+            if(var4 > this.field1798) {
+               this.field1798 = var4;
             }
 
             if(-var3 > super.modelHeight) {
                super.modelHeight = -var3;
             }
 
-            if(var3 > this.field1838) {
-               this.field1838 = var3;
+            if(var3 > this.field1821) {
+               this.field1821 = var3;
             }
          }
 
-         this.field1837 = true;
+         this.field1820 = true;
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("z")
    @Export("computeNormals")
    public void computeNormals() {
       if(this.normals == null) {
@@ -525,15 +525,15 @@ public class ModelData extends Renderable {
       }
    }
 
-   @ObfuscatedName("u")
-   void method2463() {
+   @ObfuscatedName("i")
+   void method2414() {
       this.normals = null;
-      this.field1834 = null;
+      this.field1817 = null;
       this.faceNormals = null;
-      this.field1837 = false;
+      this.field1820 = false;
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("c")
    @Export("recolor")
    public void recolor(short var1, short var2) {
       for(int var3 = 0; var3 < this.triangleFaceCount; ++var3) {
@@ -544,8 +544,8 @@ public class ModelData extends Renderable {
 
    }
 
-   @ObfuscatedName("r")
-   public ModelData method2415() {
+   @ObfuscatedName("e")
+   public ModelData method2401() {
       ModelData var1 = new ModelData();
       if(this.faceRenderType != null) {
          var1.faceRenderType = new byte[this.triangleFaceCount];
@@ -557,7 +557,7 @@ public class ModelData extends Renderable {
 
       var1.vertexCount = this.vertexCount;
       var1.triangleFaceCount = this.triangleFaceCount;
-      var1.field1827 = this.field1827;
+      var1.field1799 = this.field1799;
       var1.vertexX = this.vertexX;
       var1.vertexY = this.vertexY;
       var1.vertexZ = this.vertexZ;
@@ -574,26 +574,26 @@ public class ModelData extends Renderable {
       var1.texTriangleX = this.texTriangleX;
       var1.texTriangleY = this.texTriangleY;
       var1.texTriangleZ = this.texTriangleZ;
-      var1.field1821 = this.field1821;
+      var1.field1790 = this.field1790;
       var1.field1819 = this.field1819;
-      var1.field1803 = this.field1803;
-      var1.field1816 = this.field1816;
-      var1.field1804 = this.field1804;
       var1.field1825 = this.field1825;
+      var1.field1807 = this.field1807;
+      var1.field1793 = this.field1793;
+      var1.field1808 = this.field1808;
       var1.texturePrimaryColor = this.texturePrimaryColor;
       var1.vertexSkins = this.vertexSkins;
       var1.triangleSkinValues = this.triangleSkinValues;
-      var1.field1830 = this.field1830;
-      var1.field1831 = this.field1831;
+      var1.field1813 = this.field1813;
+      var1.field1814 = this.field1814;
       var1.normals = this.normals;
       var1.faceNormals = this.faceNormals;
-      var1.field1801 = this.field1801;
+      var1.field1818 = this.field1818;
       var1.contrast = this.contrast;
       return var1;
    }
 
-   @ObfuscatedName("c")
-   public void method2450(short var1, short var2) {
+   @ObfuscatedName("o")
+   public void method2410(short var1, short var2) {
       if(this.faceTextures != null) {
          for(int var3 = 0; var3 < this.triangleFaceCount; ++var3) {
             if(this.faceTextures[var3] == var1) {
@@ -604,7 +604,7 @@ public class ModelData extends Renderable {
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("r")
    @Export("decodeOldFormat")
    void decodeOldFormat(byte[] var1) {
       boolean var2 = false;
@@ -669,7 +669,7 @@ public class ModelData extends Renderable {
       int var10000 = var45 + var19;
       this.vertexCount = var9;
       this.triangleFaceCount = var10;
-      this.field1827 = var11;
+      this.field1799 = var11;
       this.vertexX = new int[var9];
       this.vertexY = new int[var9];
       this.vertexZ = new int[var9];
@@ -882,18 +882,18 @@ public class ModelData extends Renderable {
 
    }
 
-   @ObfuscatedName("f")
-   public void method2425(int var1, int var2, int var3) {
+   @ObfuscatedName("h")
+   public void method2412(int var1, int var2, int var3) {
       for(int var4 = 0; var4 < this.vertexCount; ++var4) {
          this.vertexX[var4] = this.vertexX[var4] * var1 / 128;
          this.vertexY[var4] = var2 * this.vertexY[var4] / 128;
          this.vertexZ[var4] = var3 * this.vertexZ[var4] / 128;
       }
 
-      this.method2463();
+      this.method2414();
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @Export("decodeNewFormat")
    void decodeNewFormat(byte[] var1) {
       Buffer var2 = new Buffer(var1);
@@ -1001,7 +1001,7 @@ public class ModelData extends Renderable {
       var26 += var24 * 2 + var25 * 2;
       this.vertexCount = var9;
       this.triangleFaceCount = var10;
-      this.field1827 = var11;
+      this.field1799 = var11;
       this.vertexX = new int[var9];
       this.vertexY = new int[var9];
       this.vertexZ = new int[var9];
@@ -1044,12 +1044,12 @@ public class ModelData extends Renderable {
          this.texTriangleY = new short[var11];
          this.texTriangleZ = new short[var11];
          if(var24 > 0) {
-            this.field1821 = new short[var24];
+            this.field1790 = new short[var24];
             this.field1819 = new short[var24];
-            this.field1803 = new short[var24];
-            this.field1816 = new short[var24];
-            this.field1804 = new byte[var24];
             this.field1825 = new short[var24];
+            this.field1807 = new short[var24];
+            this.field1793 = new byte[var24];
+            this.field1808 = new short[var24];
          }
 
          if(var25 > 0) {
@@ -1203,24 +1203,24 @@ public class ModelData extends Renderable {
             this.texTriangleX[var55] = (short)var3.readUnsignedShort();
             this.texTriangleY[var55] = (short)var3.readUnsignedShort();
             this.texTriangleZ[var55] = (short)var3.readUnsignedShort();
-            this.field1821[var55] = (short)var4.readUnsignedShort();
+            this.field1790[var55] = (short)var4.readUnsignedShort();
             this.field1819[var55] = (short)var4.readUnsignedShort();
-            this.field1803[var55] = (short)var4.readUnsignedShort();
-            this.field1816[var55] = (short)var5.readUnsignedShort();
-            this.field1804[var55] = var6.readByte();
-            this.field1825[var55] = (short)var7.readUnsignedShort();
+            this.field1825[var55] = (short)var4.readUnsignedShort();
+            this.field1807[var55] = (short)var5.readUnsignedShort();
+            this.field1793[var55] = var6.readByte();
+            this.field1808[var55] = (short)var7.readUnsignedShort();
          }
 
          if(var56 == 2) {
             this.texTriangleX[var55] = (short)var3.readUnsignedShort();
             this.texTriangleY[var55] = (short)var3.readUnsignedShort();
             this.texTriangleZ[var55] = (short)var3.readUnsignedShort();
-            this.field1821[var55] = (short)var4.readUnsignedShort();
+            this.field1790[var55] = (short)var4.readUnsignedShort();
             this.field1819[var55] = (short)var4.readUnsignedShort();
-            this.field1803[var55] = (short)var4.readUnsignedShort();
-            this.field1816[var55] = (short)var5.readUnsignedShort();
-            this.field1804[var55] = var6.readByte();
-            this.field1825[var55] = (short)var7.readUnsignedShort();
+            this.field1825[var55] = (short)var4.readUnsignedShort();
+            this.field1807[var55] = (short)var5.readUnsignedShort();
+            this.field1793[var55] = var6.readByte();
+            this.field1808[var55] = (short)var7.readUnsignedShort();
             this.texturePrimaryColor[var55] = (short)var7.readUnsignedShort();
          }
 
@@ -1228,12 +1228,12 @@ public class ModelData extends Renderable {
             this.texTriangleX[var55] = (short)var3.readUnsignedShort();
             this.texTriangleY[var55] = (short)var3.readUnsignedShort();
             this.texTriangleZ[var55] = (short)var3.readUnsignedShort();
-            this.field1821[var55] = (short)var4.readUnsignedShort();
+            this.field1790[var55] = (short)var4.readUnsignedShort();
             this.field1819[var55] = (short)var4.readUnsignedShort();
-            this.field1803[var55] = (short)var4.readUnsignedShort();
-            this.field1816[var55] = (short)var5.readUnsignedShort();
-            this.field1804[var55] = var6.readByte();
-            this.field1825[var55] = (short)var7.readUnsignedShort();
+            this.field1825[var55] = (short)var4.readUnsignedShort();
+            this.field1807[var55] = (short)var5.readUnsignedShort();
+            this.field1793[var55] = var6.readByte();
+            this.field1808[var55] = (short)var7.readUnsignedShort();
          }
       }
 
@@ -1249,18 +1249,18 @@ public class ModelData extends Renderable {
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("ae")
    @Export("light")
    public final Model light(int var1, int var2, int var3, int var4, int var5) {
       this.computeNormals();
       int var6 = (int)Math.sqrt((double)(var5 * var5 + var3 * var3 + var4 * var4));
       int var7 = var6 * var2 >> 8;
       Model var8 = new Model();
-      var8.field1943 = new int[this.triangleFaceCount];
-      var8.field1965 = new int[this.triangleFaceCount];
-      var8.field1945 = new int[this.triangleFaceCount];
-      if(this.field1827 > 0 && this.textureCoords != null) {
-         int[] var9 = new int[this.field1827];
+      var8.field1961 = new int[this.triangleFaceCount];
+      var8.field1930 = new int[this.triangleFaceCount];
+      var8.field1931 = new int[this.triangleFaceCount];
+      if(this.field1799 > 0 && this.textureCoords != null) {
+         int[] var9 = new int[this.field1799];
 
          int var10;
          for(var10 = 0; var10 < this.triangleFaceCount; ++var10) {
@@ -1269,38 +1269,38 @@ public class ModelData extends Renderable {
             }
          }
 
-         var8.field1951 = 0;
+         var8.field1937 = 0;
 
-         for(var10 = 0; var10 < this.field1827; ++var10) {
+         for(var10 = 0; var10 < this.field1799; ++var10) {
             if(var9[var10] > 0 && this.textureRenderTypes[var10] == 0) {
-               ++var8.field1951;
+               ++var8.field1937;
             }
          }
 
-         var8.field1952 = new int[var8.field1951];
-         var8.field1953 = new int[var8.field1951];
-         var8.field1931 = new int[var8.field1951];
+         var8.field1938 = new int[var8.field1937];
+         var8.field1939 = new int[var8.field1937];
+         var8.field1940 = new int[var8.field1937];
          var10 = 0;
 
          int var11;
-         for(var11 = 0; var11 < this.field1827; ++var11) {
+         for(var11 = 0; var11 < this.field1799; ++var11) {
             if(var9[var11] > 0 && this.textureRenderTypes[var11] == 0) {
-               var8.field1952[var10] = this.texTriangleX[var11] & '\uffff';
-               var8.field1953[var10] = this.texTriangleY[var11] & '\uffff';
-               var8.field1931[var10] = this.texTriangleZ[var11] & '\uffff';
+               var8.field1938[var10] = this.texTriangleX[var11] & '\uffff';
+               var8.field1939[var10] = this.texTriangleY[var11] & '\uffff';
+               var8.field1940[var10] = this.texTriangleZ[var11] & '\uffff';
                var9[var11] = var10++;
             } else {
                var9[var11] = -1;
             }
          }
 
-         var8.field1944 = new byte[this.triangleFaceCount];
+         var8.field1934 = new byte[this.triangleFaceCount];
 
          for(var11 = 0; var11 < this.triangleFaceCount; ++var11) {
             if(this.textureCoords[var11] != -1) {
-               var8.field1944[var11] = (byte)var9[this.textureCoords[var11] & 255];
+               var8.field1934[var11] = (byte)var9[this.textureCoords[var11] & 255];
             } else {
-               var8.field1944[var11] = -1;
+               var8.field1934[var11] = -1;
             }
          }
       }
@@ -1343,103 +1343,114 @@ public class ModelData extends Renderable {
                if(var17 == 1) {
                   var19 = this.faceNormals[var16];
                   var14 = (var5 * var19.z + var3 * var19.x + var4 * var19.y) / (var7 + var7 / 2) + var1;
-                  var8.field1943[var16] = method2431(this.faceColor[var16] & '\uffff', var14);
-                  var8.field1945[var16] = -1;
+                  var8.field1961[var16] = method2395(this.faceColor[var16] & '\uffff', var14);
+                  var8.field1931[var16] = -1;
                } else if(var17 == 3) {
-                  var8.field1943[var16] = 128;
-                  var8.field1945[var16] = -1;
+                  var8.field1961[var16] = 128;
+                  var8.field1931[var16] = -1;
                } else {
-                  var8.field1945[var16] = -2;
+                  var8.field1931[var16] = -2;
                }
             } else {
                int var15 = this.faceColor[var16] & '\uffff';
-               if(this.field1834 != null && this.field1834[this.trianglePointsX[var16]] != null) {
-                  var13 = this.field1834[this.trianglePointsX[var16]];
+               if(this.field1817 != null && this.field1817[this.trianglePointsX[var16]] != null) {
+                  var13 = this.field1817[this.trianglePointsX[var16]];
                } else {
                   var13 = this.normals[this.trianglePointsX[var16]];
                }
 
                var14 = (var5 * var13.z + var3 * var13.x + var4 * var13.y) / (var7 * var13.magnitude) + var1;
-               var8.field1943[var16] = method2431(var15, var14);
-               if(this.field1834 != null && this.field1834[this.trianglePointsY[var16]] != null) {
-                  var13 = this.field1834[this.trianglePointsY[var16]];
+               var8.field1961[var16] = method2395(var15, var14);
+               if(this.field1817 != null && this.field1817[this.trianglePointsY[var16]] != null) {
+                  var13 = this.field1817[this.trianglePointsY[var16]];
                } else {
                   var13 = this.normals[this.trianglePointsY[var16]];
                }
 
-               var14 = (var4 * var13.y + var3 * var13.x + var5 * var13.z) / (var7 * var13.magnitude) + var1;
-               var8.field1965[var16] = method2431(var15, var14);
-               if(this.field1834 != null && this.field1834[this.trianglePointsZ[var16]] != null) {
-                  var13 = this.field1834[this.trianglePointsZ[var16]];
+               var14 = (var5 * var13.z + var3 * var13.x + var4 * var13.y) / (var7 * var13.magnitude) + var1;
+               var8.field1930[var16] = method2395(var15, var14);
+               if(this.field1817 != null && this.field1817[this.trianglePointsZ[var16]] != null) {
+                  var13 = this.field1817[this.trianglePointsZ[var16]];
                } else {
                   var13 = this.normals[this.trianglePointsZ[var16]];
                }
 
-               var14 = (var5 * var13.z + var3 * var13.x + var4 * var13.y) / (var7 * var13.magnitude) + var1;
-               var8.field1945[var16] = method2431(var15, var14);
+               var14 = (var4 * var13.y + var3 * var13.x + var5 * var13.z) / (var7 * var13.magnitude) + var1;
+               var8.field1931[var16] = method2395(var15, var14);
             }
          } else if(var17 != 0) {
             if(var17 == 1) {
                var19 = this.faceNormals[var16];
-               var14 = (var5 * var19.z + var4 * var19.y + var3 * var19.x) / (var7 + var7 / 2) + var1;
-               var8.field1943[var16] = method2465(var14);
-               var8.field1945[var16] = -1;
+               var14 = (var4 * var19.y + var3 * var19.x + var5 * var19.z) / (var7 + var7 / 2) + var1;
+               var8.field1961[var16] = method2397(var14);
+               var8.field1931[var16] = -1;
             } else {
-               var8.field1945[var16] = -2;
+               var8.field1931[var16] = -2;
             }
          } else {
-            if(this.field1834 != null && this.field1834[this.trianglePointsX[var16]] != null) {
-               var13 = this.field1834[this.trianglePointsX[var16]];
+            if(this.field1817 != null && this.field1817[this.trianglePointsX[var16]] != null) {
+               var13 = this.field1817[this.trianglePointsX[var16]];
             } else {
                var13 = this.normals[this.trianglePointsX[var16]];
             }
 
-            var14 = (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude) + var1;
-            var8.field1943[var16] = method2465(var14);
-            if(this.field1834 != null && this.field1834[this.trianglePointsY[var16]] != null) {
-               var13 = this.field1834[this.trianglePointsY[var16]];
+            var14 = (var5 * var13.z + var3 * var13.x + var4 * var13.y) / (var7 * var13.magnitude) + var1;
+            var8.field1961[var16] = method2397(var14);
+            if(this.field1817 != null && this.field1817[this.trianglePointsY[var16]] != null) {
+               var13 = this.field1817[this.trianglePointsY[var16]];
             } else {
                var13 = this.normals[this.trianglePointsY[var16]];
             }
 
             var14 = (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude) + var1;
-            var8.field1965[var16] = method2465(var14);
-            if(this.field1834 != null && this.field1834[this.trianglePointsZ[var16]] != null) {
-               var13 = this.field1834[this.trianglePointsZ[var16]];
+            var8.field1930[var16] = method2397(var14);
+            if(this.field1817 != null && this.field1817[this.trianglePointsZ[var16]] != null) {
+               var13 = this.field1817[this.trianglePointsZ[var16]];
             } else {
                var13 = this.normals[this.trianglePointsZ[var16]];
             }
 
-            var14 = (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude) + var1;
-            var8.field1945[var16] = method2465(var14);
+            var14 = (var5 * var13.z + var3 * var13.x + var4 * var13.y) / (var7 * var13.magnitude) + var1;
+            var8.field1931[var16] = method2397(var14);
          }
       }
 
       this.computeAnimationTables();
-      var8.field1961 = this.vertexCount;
+      var8.field1941 = this.vertexCount;
       var8.verticesX = this.vertexX;
       var8.verticesY = this.vertexY;
       var8.verticesZ = this.vertexZ;
-      var8.field1939 = this.triangleFaceCount;
+      var8.field1972 = this.triangleFaceCount;
       var8.indices1 = this.trianglePointsX;
       var8.indices2 = this.trianglePointsY;
       var8.indices3 = this.trianglePointsZ;
-      var8.field1946 = this.faceRenderPriorities;
-      var8.field1947 = this.faceAlphas;
-      var8.field1994 = this.priority;
-      var8.field1995 = this.field1830;
-      var8.field1956 = this.field1831;
-      var8.field1949 = this.faceTextures;
+      var8.field1925 = this.faceRenderPriorities;
+      var8.field1933 = this.faceAlphas;
+      var8.field1983 = this.priority;
+      var8.field1957 = this.field1813;
+      var8.field1942 = this.field1814;
+      var8.field1935 = this.faceTextures;
       return var8;
    }
 
-   @ObfuscatedName("v")
-   public ModelData method2467(int[][] var1, int var2, int var3, int var4, boolean var5, int var6) {
-      this.method2428();
-      int var7 = var2 + this.field1808;
-      int var8 = var2 + this.field1840;
-      int var9 = var4 + this.field1842;
-      int var10 = var4 + this.field1833;
+   @ObfuscatedName("g")
+   public void method2408(int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < this.vertexCount; ++var4) {
+         this.vertexX[var4] += var1;
+         this.vertexY[var4] += var2;
+         this.vertexZ[var4] += var3;
+      }
+
+      this.method2414();
+   }
+
+   @ObfuscatedName("l")
+   public ModelData method2411(int[][] var1, int var2, int var3, int var4, boolean var5, int var6) {
+      this.method2415();
+      int var7 = var2 + this.field1822;
+      int var8 = var2 + this.field1823;
+      int var9 = var4 + this.field1784;
+      int var10 = var4 + this.field1798;
       if(var7 >= 0 && var8 + 128 >> 7 < var1.length && var9 >= 0 && var10 + 128 >> 7 < var1[0].length) {
          var7 >>= 7;
          var8 = var8 + 127 >> 7;
@@ -1451,7 +1462,7 @@ public class ModelData extends Renderable {
             ModelData var11 = new ModelData();
             var11.vertexCount = this.vertexCount;
             var11.triangleFaceCount = this.triangleFaceCount;
-            var11.field1827 = this.field1827;
+            var11.field1799 = this.field1799;
             var11.vertexX = this.vertexX;
             var11.vertexZ = this.vertexZ;
             var11.trianglePointsX = this.trianglePointsX;
@@ -1468,18 +1479,18 @@ public class ModelData extends Renderable {
             var11.texTriangleX = this.texTriangleX;
             var11.texTriangleY = this.texTriangleY;
             var11.texTriangleZ = this.texTriangleZ;
-            var11.field1821 = this.field1821;
+            var11.field1790 = this.field1790;
             var11.field1819 = this.field1819;
-            var11.field1803 = this.field1803;
-            var11.field1816 = this.field1816;
-            var11.field1804 = this.field1804;
             var11.field1825 = this.field1825;
+            var11.field1807 = this.field1807;
+            var11.field1793 = this.field1793;
+            var11.field1808 = this.field1808;
             var11.texturePrimaryColor = this.texturePrimaryColor;
             var11.vertexSkins = this.vertexSkins;
             var11.triangleSkinValues = this.triangleSkinValues;
-            var11.field1830 = this.field1830;
-            var11.field1831 = this.field1831;
-            var11.field1801 = this.field1801;
+            var11.field1813 = this.field1813;
+            var11.field1814 = this.field1814;
+            var11.field1818 = this.field1818;
             var11.contrast = this.contrast;
             var11.vertexY = new int[var11.vertexCount];
             int var12;
@@ -1523,7 +1534,7 @@ public class ModelData extends Renderable {
                }
             }
 
-            var11.method2463();
+            var11.method2414();
             return var11;
          }
       } else {
@@ -1531,18 +1542,23 @@ public class ModelData extends Renderable {
       }
    }
 
-   @ObfuscatedName("z")
-   public void method2430(int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < this.vertexCount; ++var4) {
-         this.vertexX[var4] += var1;
-         this.vertexY[var4] += var2;
-         this.vertexZ[var4] += var3;
+   @ObfuscatedName("x")
+   public void method2450() {
+      int var1;
+      for(var1 = 0; var1 < this.vertexCount; ++var1) {
+         this.vertexZ[var1] = -this.vertexZ[var1];
       }
 
-      this.method2463();
+      for(var1 = 0; var1 < this.triangleFaceCount; ++var1) {
+         int var2 = this.trianglePointsX[var1];
+         this.trianglePointsX[var1] = this.trianglePointsZ[var1];
+         this.trianglePointsZ[var1] = var2;
+      }
+
+      this.method2414();
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("s")
    @Export("computeAnimationTables")
    void computeAnimationTables() {
       int[] var1;
@@ -1561,14 +1577,14 @@ public class ModelData extends Renderable {
             }
          }
 
-         this.field1830 = new int[var2 + 1][];
+         this.field1813 = new int[var2 + 1][];
 
          for(var3 = 0; var3 <= var2; ++var3) {
-            this.field1830[var3] = new int[var1[var3]];
+            this.field1813[var3] = new int[var1[var3]];
             var1[var3] = 0;
          }
 
-         for(var3 = 0; var3 < this.vertexCount; this.field1830[var4][var1[var4]++] = var3++) {
+         for(var3 = 0; var3 < this.vertexCount; this.field1813[var4][var1[var4]++] = var3++) {
             var4 = this.vertexSkins[var3];
          }
 
@@ -1587,14 +1603,14 @@ public class ModelData extends Renderable {
             }
          }
 
-         this.field1831 = new int[var2 + 1][];
+         this.field1814 = new int[var2 + 1][];
 
          for(var3 = 0; var3 <= var2; ++var3) {
-            this.field1831[var3] = new int[var1[var3]];
+            this.field1814[var3] = new int[var1[var3]];
             var1[var3] = 0;
          }
 
-         for(var3 = 0; var3 < this.triangleFaceCount; this.field1831[var4][var1[var4]++] = var3++) {
+         for(var3 = 0; var3 < this.triangleFaceCount; this.field1814[var4][var1[var4]++] = var3++) {
             var4 = this.triangleSkinValues[var3];
          }
 
@@ -1603,30 +1619,14 @@ public class ModelData extends Renderable {
 
    }
 
-   @ObfuscatedName("b")
-   public void method2424() {
-      int var1;
-      for(var1 = 0; var1 < this.vertexCount; ++var1) {
-         this.vertexZ[var1] = -this.vertexZ[var1];
-      }
-
-      for(var1 = 0; var1 < this.triangleFaceCount; ++var1) {
-         int var2 = this.trianglePointsX[var1];
-         this.trianglePointsX[var1] = this.trianglePointsZ[var1];
-         this.trianglePointsZ[var1] = var2;
-      }
-
-      this.method2463();
-   }
-
-   @ObfuscatedName("o")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "256"
    )
-   public void method2421(int var1) {
-      int var2 = field1846[var1];
-      int var3 = field1847[var1];
+   public void method2435(int var1) {
+      int var2 = field1810[var1];
+      int var3 = field1830[var1];
 
       for(int var4 = 0; var4 < this.vertexCount; ++var4) {
          int var5 = var2 * this.vertexZ[var4] + var3 * this.vertexX[var4] >> 16;
@@ -1634,43 +1634,43 @@ public class ModelData extends Renderable {
          this.vertexX[var4] = var5;
       }
 
-      this.method2463();
+      this.method2414();
    }
 
-   @ObfuscatedName("j")
-   public void method2418() {
+   @ObfuscatedName("w")
+   public void method2442() {
       for(int var1 = 0; var1 < this.vertexCount; ++var1) {
          int var2 = this.vertexX[var1];
          this.vertexX[var1] = this.vertexZ[var1];
          this.vertexZ[var1] = -var2;
       }
 
-      this.method2463();
+      this.method2414();
    }
 
-   @ObfuscatedName("k")
-   public void method2419() {
+   @ObfuscatedName("p")
+   public void method2445() {
       for(int var1 = 0; var1 < this.vertexCount; ++var1) {
          this.vertexX[var1] = -this.vertexX[var1];
          this.vertexZ[var1] = -this.vertexZ[var1];
       }
 
-      this.method2463();
+      this.method2414();
    }
 
-   @ObfuscatedName("e")
-   public void method2420() {
+   @ObfuscatedName("m")
+   public void method2406() {
       for(int var1 = 0; var1 < this.vertexCount; ++var1) {
          int var2 = this.vertexZ[var1];
          this.vertexZ[var1] = this.vertexX[var1];
          this.vertexX[var1] = -var2;
       }
 
-      this.method2463();
+      this.method2414();
    }
 
-   @ObfuscatedName("s")
-   final int method2456(ModelData var1, int var2) {
+   @ObfuscatedName("v")
+   final int method2400(ModelData var1, int var2) {
       int var3 = -1;
       int var4 = var1.vertexX[var2];
       int var5 = var1.vertexY[var2];
@@ -1697,23 +1697,23 @@ public class ModelData extends Renderable {
       return var3;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(LIndexDataBase;II)LModelData;",
       garbageValue = "0"
    )
-   public static ModelData method2414(IndexDataBase var0, int var1, int var2) {
+   public static ModelData method2396(IndexDataBase var0, int var1, int var2) {
       byte[] var3 = var0.getConfigData(var1, var2);
       return var3 == null?null:new ModelData(var3);
    }
 
-   @ObfuscatedName("q")
-   static void method2423(ModelData var0, ModelData var1, int var2, int var3, int var4, boolean var5) {
-      var0.method2428();
+   @ObfuscatedName("ai")
+   static void method2416(ModelData var0, ModelData var1, int var2, int var3, int var4, boolean var5) {
+      var0.method2415();
       var0.computeNormals();
-      var1.method2428();
+      var1.method2415();
       var1.computeNormals();
-      ++field1845;
+      ++field1828;
       int var6 = 0;
       int[] var7 = var1.vertexX;
       int var8 = var1.vertexCount;
@@ -1723,30 +1723,30 @@ public class ModelData extends Renderable {
          VertexNormal var10 = var0.normals[var9];
          if(var10.magnitude != 0) {
             int var11 = var0.vertexY[var9] - var3;
-            if(var11 <= var1.field1838) {
+            if(var11 <= var1.field1821) {
                int var12 = var0.vertexX[var9] - var2;
-               if(var12 >= var1.field1808 && var12 <= var1.field1840) {
+               if(var12 >= var1.field1822 && var12 <= var1.field1823) {
                   int var13 = var0.vertexZ[var9] - var4;
-                  if(var13 >= var1.field1842 && var13 <= var1.field1833) {
+                  if(var13 >= var1.field1784 && var13 <= var1.field1798) {
                      for(int var14 = 0; var14 < var8; ++var14) {
                         VertexNormal var15 = var1.normals[var14];
                         if(var12 == var7[var14] && var13 == var1.vertexZ[var14] && var11 == var1.vertexY[var14] && var15.magnitude != 0) {
-                           if(var0.field1834 == null) {
-                              var0.field1834 = new VertexNormal[var0.vertexCount];
+                           if(var0.field1817 == null) {
+                              var0.field1817 = new VertexNormal[var0.vertexCount];
                            }
 
-                           if(var1.field1834 == null) {
-                              var1.field1834 = new VertexNormal[var8];
+                           if(var1.field1817 == null) {
+                              var1.field1817 = new VertexNormal[var8];
                            }
 
-                           VertexNormal var16 = var0.field1834[var9];
+                           VertexNormal var16 = var0.field1817[var9];
                            if(var16 == null) {
-                              var16 = var0.field1834[var9] = new VertexNormal(var10);
+                              var16 = var0.field1817[var9] = new VertexNormal(var10);
                            }
 
-                           VertexNormal var17 = var1.field1834[var14];
+                           VertexNormal var17 = var1.field1817[var14];
                            if(var17 == null) {
-                              var17 = var1.field1834[var14] = new VertexNormal(var15);
+                              var17 = var1.field1817[var14] = new VertexNormal(var15);
                            }
 
                            var16.x += var15.x;
@@ -1758,8 +1758,8 @@ public class ModelData extends Renderable {
                            var17.z += var10.z;
                            var17.magnitude += var10.magnitude;
                            ++var6;
-                           field1823[var9] = field1845;
-                           field1844[var14] = field1845;
+                           field1826[var9] = field1828;
+                           field1803[var14] = field1828;
                         }
                      }
                   }
@@ -1770,7 +1770,7 @@ public class ModelData extends Renderable {
 
       if(var6 >= 3 && var5) {
          for(var9 = 0; var9 < var0.triangleFaceCount; ++var9) {
-            if(field1823[var0.trianglePointsX[var9]] == field1845 && field1823[var0.trianglePointsY[var9]] == field1845 && field1823[var0.trianglePointsZ[var9]] == field1845) {
+            if(field1826[var0.trianglePointsX[var9]] == field1828 && field1826[var0.trianglePointsY[var9]] == field1828 && field1826[var0.trianglePointsZ[var9]] == field1828) {
                if(var0.faceRenderType == null) {
                   var0.faceRenderType = new byte[var0.triangleFaceCount];
                }
@@ -1780,7 +1780,7 @@ public class ModelData extends Renderable {
          }
 
          for(var9 = 0; var9 < var1.triangleFaceCount; ++var9) {
-            if(field1845 == field1844[var1.trianglePointsX[var9]] && field1845 == field1844[var1.trianglePointsY[var9]] && field1845 == field1844[var1.trianglePointsZ[var9]]) {
+            if(field1828 == field1803[var1.trianglePointsX[var9]] && field1828 == field1803[var1.trianglePointsY[var9]] && field1828 == field1803[var1.trianglePointsZ[var9]]) {
                if(var1.faceRenderType == null) {
                   var1.faceRenderType = new byte[var1.triangleFaceCount];
                }
@@ -1792,8 +1792,8 @@ public class ModelData extends Renderable {
       }
    }
 
-   @ObfuscatedName("ai")
-   static final int method2465(int var0) {
+   @ObfuscatedName("ak")
+   static final int method2397(int var0) {
       if(var0 < 2) {
          var0 = 2;
       } else if(var0 > 126) {
@@ -1803,8 +1803,8 @@ public class ModelData extends Renderable {
       return var0;
    }
 
-   @ObfuscatedName("x")
-   static final int method2431(int var0, int var1) {
+   @ObfuscatedName("au")
+   static final int method2395(int var0, int var1) {
       var1 = (var0 & 127) * var1 >> 7;
       if(var1 < 2) {
          var1 = 2;

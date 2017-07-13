@@ -1,61 +1,42 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bh")
+@ObfuscatedName("bz")
 public class class67 extends class196 {
-   @ObfuscatedName("v")
-   @Export("overlayRotations")
-   static byte[][][] overlayRotations;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -2076352289
-   )
-   int field836;
-   @ObfuscatedName("w")
-   String field841;
    @ObfuscatedName("a")
-   short field837;
+   @ObfuscatedGetter(
+      intValue = 831416131
+   )
+   int field820;
+   @ObfuscatedName("j")
+   String field817;
+   @ObfuscatedName("n")
+   short field818;
 
    class67(String var1, int var2) {
-      this.field836 = (int)(DState.currentTimeMs() / 1000L);
-      this.field841 = var1;
-      this.field837 = (short)var2;
+      this.field820 = (int)(class46.currentTimeMs() / 1000L);
+      this.field817 = var1;
+      this.field818 = (short)var2;
    }
 
-   @ObfuscatedName("hn")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Lclass89;III)V",
-      garbageValue = "2059490363"
+      signature = "(III)I",
+      garbageValue = "1445712581"
    )
-   static final void method1122(class89 var0, int var1, int var2) {
-      Item.menuAction(var0.field1433, var0.field1429, var0.field1427, var0.field1428, var0.field1425, var0.field1425, var1, var2);
+   public static int method1088(int var0, int var1) {
+      int var2 = var0 >>> 31;
+      return (var0 + var2) / var1 - var2;
    }
 
-   @ObfuscatedName("fd")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LSequence;IIII)V",
-      garbageValue = "1031531963"
+      signature = "(III)LMessageNode;",
+      garbageValue = "82652202"
    )
-   static void method1123(Sequence var0, int var1, int var2, int var3) {
-      if(Client.field1181 < 50 && Client.field1098 != 0) {
-         if(var0.field3613 != null && var1 < var0.field3613.length) {
-            int var4 = var0.field3613[var1];
-            if(var4 != 0) {
-               int var5 = var4 >> 8;
-               int var6 = var4 >> 4 & 7;
-               int var7 = var4 & 15;
-               Client.field1168[Client.field1181] = var5;
-               Client.field1169[Client.field1181] = var6;
-               Client.field1170[Client.field1181] = 0;
-               Client.audioEffects[Client.field1181] = null;
-               int var8 = (var2 - 64) / 128;
-               int var9 = (var3 - 64) / 128;
-               Client.field1171[Client.field1181] = var7 + (var9 << 8) + (var8 << 16);
-               ++Client.field1181;
-            }
-         }
-      }
+   static MessageNode method1087(int var0, int var1) {
+      ChatLineBuffer var2 = (ChatLineBuffer)class98.chatLineMap.get(Integer.valueOf(var0));
+      return var2.method1843(var1);
    }
 }

@@ -2,44 +2,60 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hd")
+@ObfuscatedName("ho")
 public enum class232 implements RSEnum {
-   @ObfuscatedName("i")
-   field3202("runescape", "RuneScape", 0),
-   @ObfuscatedName("w")
-   field3198("stellardawn", "Stellar Dawn", 1),
    @ObfuscatedName("a")
-   field3204("game3", "Game 3", 2),
-   @ObfuscatedName("t")
-   field3200("game4", "Game 4", 3),
-   @ObfuscatedName("s")
-   field3201("game5", "Game 5", 4),
+   field3195("runescape", "RuneScape", 0),
+   @ObfuscatedName("j")
+   field3196("stellardawn", "Stellar Dawn", 1),
+   @ObfuscatedName("n")
+   field3194("game3", "Game 3", 2),
    @ObfuscatedName("r")
-   field3199("oldscape", "RuneScape 2007", 5);
-
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 1239787385
-   )
-   final int field3197;
+   field3197("game4", "Game 4", 3),
    @ObfuscatedName("v")
-   public final String field3203;
+   field3192("game5", "Game 5", 4),
+   @ObfuscatedName("e")
+   field3193("oldscape", "RuneScape 2007", 5);
+
+   @ObfuscatedName("l")
+   public final String field3198;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -117502167
+   )
+   final int field3199;
 
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;Ljava/lang/String;I)V",
       garbageValue = "0"
    )
    class232(String var3, String var4, int var5) {
-      this.field3203 = var3;
-      this.field3197 = var5;
+      this.field3198 = var3;
+      this.field3199 = var5;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1204543302"
+      garbageValue = "1952293135"
    )
    public int rsOrdinal() {
-      return this.field3197;
+      return this.field3199;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "1740284050"
+   )
+   public static int method4077(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + var0.charAt(var3);
+      }
+
+      return var2;
    }
 }

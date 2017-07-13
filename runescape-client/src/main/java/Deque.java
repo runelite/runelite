@@ -2,13 +2,13 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gw")
+@ObfuscatedName("gt")
 @Implements("Deque")
 public class Deque {
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @Export("current")
    Node current;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @Export("head")
    public Node head;
 
@@ -18,7 +18,7 @@ public class Deque {
       this.head.previous = this.head;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @Export("addTail")
    public void addTail(Node var1) {
       if(var1.previous != null) {
@@ -31,7 +31,7 @@ public class Deque {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("l")
    @Export("getFront")
    public Node getFront() {
       Node var1 = this.head.next;
@@ -44,7 +44,7 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("w")
    @Export("getNext")
    public Node getNext() {
       Node var1 = this.current;
@@ -57,7 +57,7 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @Export("addFront")
    public void addFront(Node var1) {
       if(var1.previous != null) {
@@ -70,7 +70,7 @@ public class Deque {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @Export("popFront")
    public Node popFront() {
       Node var1 = this.head.next;
@@ -82,7 +82,7 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("s")
    @Export("getTail")
    public Node getTail() {
       Node var1 = this.head.previous;
@@ -95,7 +95,7 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @Export("popTail")
    public Node popTail() {
       Node var1 = this.head.previous;
@@ -107,7 +107,7 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("p")
    @Export("getPrevious")
    public Node getPrevious() {
       Node var1 = this.current;
@@ -120,7 +120,7 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @Export("clear")
    public void clear() {
       while(true) {
@@ -134,8 +134,8 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("t")
-   public static void method3581(Node var0, Node var1) {
+   @ObfuscatedName("r")
+   public static void method3598(Node var0, Node var1) {
       if(var0.previous != null) {
          var0.unlink();
       }

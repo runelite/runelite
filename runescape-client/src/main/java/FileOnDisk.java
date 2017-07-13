@@ -8,29 +8,26 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dp")
+@ObfuscatedName("dk")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("cv")
-   @Export("rssocket")
-   static RSSocket rssocket;
-   @ObfuscatedName("eo")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -499958675
+      intValue = 1250186955
    )
-   static int field1777;
-   @ObfuscatedName("a")
+   static int field1754;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      longValue = -1707267051185505401L
+      longValue = 7844680910599758713L
    )
    @Export("position")
    long position;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @Export("file")
    RandomAccessFile file;
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      longValue = 5572046021208202383L
+      longValue = -7388041668595790779L
    )
    @Export("length")
    long length;
@@ -56,20 +53,20 @@ public final class FileOnDisk {
       this.file.seek(0L);
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(I)J",
-      garbageValue = "-1398584935"
+      garbageValue = "720127786"
    )
    @Export("length")
    public final long length() throws IOException {
       return this.file.length();
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1605625791"
+      garbageValue = "-676366823"
    )
    @Export("close")
    public final void close() throws IOException {
@@ -80,10 +77,10 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "([BIII)I",
-      garbageValue = "1897591308"
+      signature = "([BIIB)I",
+      garbageValue = "-31"
    )
    @Export("read")
    public final int read(byte[] var1, int var2, int var3) throws IOException {
@@ -95,17 +92,17 @@ public final class FileOnDisk {
       return var4;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @Export("seek")
    final void seek(long var1) throws IOException {
       this.file.seek(var1);
       this.position = var1;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "167165863"
+      garbageValue = "-1006610038"
    )
    @Export("write")
    public final void write(byte[] var1, int var2, int var3) throws IOException {
@@ -127,71 +124,60 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(I)[LSpritePixels;",
-      garbageValue = "2086255941"
+      signature = "(LIndexData;IIIBZI)V",
+      garbageValue = "-108821052"
    )
-   static SpritePixels[] method2382() {
-      SpritePixels[] var0 = new SpritePixels[class286.field3798];
+   static void method2368(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
+      long var6 = (long)((var1 << 16) + var2);
+      FileRequest var8 = (FileRequest)class238.field3255.get(var6);
+      if(var8 == null) {
+         var8 = (FileRequest)class238.field3269.get(var6);
+         if(var8 == null) {
+            var8 = (FileRequest)class238.field3260.get(var6);
+            if(var8 != null) {
+               if(var5) {
+                  var8.unlinkDual();
+                  class238.field3255.put(var8, var6);
+                  --class238.field3256;
+                  ++class238.field3272;
+               }
 
-      for(int var1 = 0; var1 < class286.field3798; ++var1) {
-         SpritePixels var2 = var0[var1] = new SpritePixels();
-         var2.maxWidth = class286.field3801;
-         var2.maxHeight = class286.field3796;
-         var2.offsetX = class286.field3799[var1];
-         var2.offsetY = class286.offsetsY[var1];
-         var2.width = class7.field239[var1];
-         var2.height = class226.field3146[var1];
-         int var3 = var2.height * var2.width;
-         byte[] var4 = class210.spritePixels[var1];
-         var2.image = new int[var3];
+            } else {
+               if(!var5) {
+                  var8 = (FileRequest)class238.field3262.get(var6);
+                  if(var8 != null) {
+                     return;
+                  }
+               }
 
-         for(int var5 = 0; var5 < var3; ++var5) {
-            var2.image[var5] = class278.field3745[var4[var5] & 255];
+               var8 = new FileRequest();
+               var8.index = var0;
+               var8.crc = var3;
+               var8.padding = var4;
+               if(var5) {
+                  class238.field3255.put(var8, var6);
+                  ++class238.field3272;
+               } else {
+                  class238.field3259.push(var8);
+                  class238.field3260.put(var8, var6);
+                  ++class238.field3256;
+               }
+
+            }
          }
       }
-
-      XGrandExchangeOffer.method113();
-      return var0;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
-      garbageValue = "748090705"
+      signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;IZI)V",
+      garbageValue = "1709750485"
    )
-   static int method2366(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class83.field1364:class60.field766;
-      if(var0 == 1800) {
-         int[] var4 = class83.intStack;
-         int var5 = ++class46.intStackSize - 1;
-         int var7 = WorldMapType3.getWidgetConfig(var3);
-         int var6 = var7 >> 11 & 63;
-         var4[var5] = var6;
-         return 1;
-      } else if(var0 != 1801) {
-         if(var0 == 1802) {
-            if(var3.name == null) {
-               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
-            } else {
-               class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var3.name;
-            }
-
-            return 1;
-         } else {
-            return 2;
-         }
-      } else {
-         int var8 = class83.intStack[--class46.intStackSize];
-         --var8;
-         if(var3.actions != null && var8 < var3.actions.length && var3.actions[var8] != null) {
-            class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var3.actions[var8];
-         } else {
-            class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
-         }
-
-         return 1;
-      }
+   public static void method2367(IndexDataBase var0, String var1, String var2, int var3, boolean var4) {
+      int var5 = var0.getFile(var1);
+      int var6 = var0.getChild(var5, var2);
+      Friend.method1083(var0, var5, var6, var3, var4);
    }
 }

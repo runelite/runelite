@@ -2,35 +2,31 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ht")
+@ObfuscatedName("hs")
 @Implements("FileSystem")
 public class FileSystem extends Node {
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1633923949
-   )
-   @Export("sampleRate")
-   public static int sampleRate;
-   @ObfuscatedName("v")
-   static IndexDataBase field3207;
-   @ObfuscatedName("kw")
-   @ObfuscatedGetter(
-      intValue = -551144227
-   )
-   @Export("selectedItemIndex")
-   static int selectedItemIndex;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1437416461
-   )
-   int field3213;
    @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 300161705
+   )
+   int field3204;
+   @ObfuscatedName("n")
    @Export("index")
-   public IndexFile index;
-   @ObfuscatedName("w")
-   public byte[] field3215;
-   @ObfuscatedName("t")
+   IndexFile index;
+   @ObfuscatedName("j")
+   byte[] field3202;
+   @ObfuscatedName("r")
    @Export("data")
-   public IndexData data;
+   IndexData data;
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "-2090714293"
+   )
+   public static String method4078(int var0) {
+      return (var0 >> 24 & 255) + "." + (var0 >> 16 & 255) + "." + (var0 >> 8 & 255) + "." + (var0 & 255);
+   }
 }

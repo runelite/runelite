@@ -3,98 +3,93 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bf")
+@ObfuscatedName("bq")
 public class class71 implements Runnable {
-   @ObfuscatedName("mc")
-   @Export("chatMessages")
-   static Varcs chatMessages;
-   @ObfuscatedName("i")
-   boolean field874;
-   @ObfuscatedName("w")
-   Object field869;
+   @ObfuscatedName("de")
+   @Export("vorbisIndex")
+   static IndexData vorbisIndex;
    @ObfuscatedName("a")
+   boolean field848;
+   @ObfuscatedName("j")
+   Object field852;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1920341521
+      intValue = -1171268629
    )
-   int field878;
-   @ObfuscatedName("t")
-   int[] field871;
-   @ObfuscatedName("s")
-   int[] field872;
+   int field849;
+   @ObfuscatedName("r")
+   int[] field850;
+   @ObfuscatedName("v")
+   int[] field851;
 
    class71() {
-      this.field874 = true;
-      this.field869 = new Object();
-      this.field878 = 0;
-      this.field871 = new int[500];
-      this.field872 = new int[500];
+      this.field848 = true;
+      this.field852 = new Object();
+      this.field849 = 0;
+      this.field850 = new int[500];
+      this.field851 = new int[500];
    }
 
    public void run() {
-      for(; this.field874; XItemContainer.method1113(50L)) {
-         Object var1 = this.field869;
-         synchronized(this.field869) {
-            if(this.field878 < 500) {
-               this.field871[this.field878] = MouseInput.field748;
-               this.field872[this.field878] = MouseInput.field749;
-               ++this.field878;
+      for(; this.field848; class33.method354(50L)) {
+         Object var1 = this.field852;
+         synchronized(this.field852) {
+            if(this.field849 < 500) {
+               this.field850[this.field849] = MouseInput.field722;
+               this.field851[this.field849] = MouseInput.field723;
+               ++this.field849;
             }
          }
       }
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("il")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
-      garbageValue = "-2098549439"
+      signature = "(Ljava/lang/String;LWidget;I)Ljava/lang/String;",
+      garbageValue = "1663922504"
    )
-   static int method1141(int var0, Script var1, boolean var2) {
-      Widget var3 = PacketBuffer.method3403(class83.intStack[--class46.intStackSize]);
-      if(var0 == 2600) {
-         class83.intStack[++class46.intStackSize - 1] = var3.scrollX;
-         return 1;
-      } else if(var0 == 2601) {
-         class83.intStack[++class46.intStackSize - 1] = var3.scrollY;
-         return 1;
-      } else if(var0 == 2602) {
-         class83.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var3.text;
-         return 1;
-      } else if(var0 == 2603) {
-         class83.intStack[++class46.intStackSize - 1] = var3.scrollWidth;
-         return 1;
-      } else if(var0 == 2604) {
-         class83.intStack[++class46.intStackSize - 1] = var3.scrollHeight;
-         return 1;
-      } else if(var0 == 2605) {
-         class83.intStack[++class46.intStackSize - 1] = var3.modelZoom;
-         return 1;
-      } else if(var0 == 2606) {
-         class83.intStack[++class46.intStackSize - 1] = var3.rotationX;
-         return 1;
-      } else if(var0 == 2607) {
-         class83.intStack[++class46.intStackSize - 1] = var3.rotationY;
-         return 1;
-      } else if(var0 == 2608) {
-         class83.intStack[++class46.intStackSize - 1] = var3.rotationZ;
-         return 1;
-      } else if(var0 == 2609) {
-         class83.intStack[++class46.intStackSize - 1] = var3.opacity;
-         return 1;
-      } else if(var0 == 2610) {
-         class83.intStack[++class46.intStackSize - 1] = var3.field2686;
-         return 1;
-      } else if(var0 == 2611) {
-         class83.intStack[++class46.intStackSize - 1] = var3.textColor;
-         return 1;
-      } else if(var0 == 2612) {
-         class83.intStack[++class46.intStackSize - 1] = var3.field2680;
-         return 1;
-      } else if(var0 == 2613) {
-         class83.intStack[++class46.intStackSize - 1] = var3.field2757.rsOrdinal();
-         return 1;
-      } else {
-         return 2;
+   static String method1103(String var0, Widget var1) {
+      if(var0.indexOf("%") != -1) {
+         int var2;
+         for(var2 = 1; var2 <= 5; ++var2) {
+            while(true) {
+               int var3 = var0.indexOf("%" + var2);
+               if(var3 == -1) {
+                  break;
+               }
+
+               String var4 = var0.substring(0, var3);
+               int var6 = class2.method4(var1, var2 - 1);
+               String var5;
+               if(var6 < 999999999) {
+                  var5 = Integer.toString(var6);
+               } else {
+                  var5 = "*";
+               }
+
+               var0 = var4 + var5 + var0.substring(var3 + 2);
+            }
+         }
+
+         while(true) {
+            var2 = var0.indexOf("%dns");
+            if(var2 == -1) {
+               break;
+            }
+
+            String var7 = "";
+            if(class8.field244 != null) {
+               var7 = FileSystem.method4078(class8.field244.field2222);
+               if(class8.field244.value != null) {
+                  var7 = (String)class8.field244.value;
+               }
+            }
+
+            var0 = var0.substring(0, var2) + var7 + var0.substring(var2 + 4);
+         }
       }
+
+      return var0;
    }
 }

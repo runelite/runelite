@@ -1,72 +1,74 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ib")
+@ObfuscatedName("id")
 public class class252 extends CacheableNode {
-   @ObfuscatedName("w")
-   public static NodeCache field3402;
-   @ObfuscatedName("i")
-   public static IndexDataBase field3406;
-   @ObfuscatedName("z")
-   static Font field3407;
-   @ObfuscatedName("a")
-   class186 field3404;
+   @ObfuscatedName("j")
+   public static NodeCache field3394;
+   @ObfuscatedName("dz")
+   @ObfuscatedGetter(
+      intValue = -1415133257
+   )
+   static int field3393;
+   @ObfuscatedName("n")
+   class186 field3392;
 
    static {
-      field3402 = new NodeCache(64);
+      field3394 = new NodeCache(64);
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(LBuffer;II)V",
-      garbageValue = "-1104737414"
+      garbageValue = "-1242190111"
    )
-   void method4460(Buffer var1, int var2) {
+   void method4398(Buffer var1, int var2) {
       if(var2 == 249) {
-         this.field3404 = XClanMember.method1181(var1, this.field3404);
+         this.field3392 = World.method1549(var1, this.field3392);
       }
 
    }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "1093300583"
-   )
-   public int method4457(int var1, int var2) {
-      return ChatLineBuffer.method1884(this.field3404, var1, var2);
-   }
-
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;I)Ljava/lang/String;",
-      garbageValue = "-520118081"
+      signature = "(IIB)I",
+      garbageValue = "61"
    )
-   public String method4462(int var1, String var2) {
-      return class92.method1733(this.field3404, var1, var2);
+   public int method4399(int var1, int var2) {
+      return Timer.method2973(this.field3392, var1, var2);
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "471920943"
+      signature = "(ILjava/lang/String;B)Ljava/lang/String;",
+      garbageValue = "14"
    )
-   public void method4458() {
+   public String method4414(int var1, String var2) {
+      return IndexFile.method3005(this.field3392, var1, var2);
    }
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
-      garbageValue = "1"
+      signature = "(B)V",
+      garbageValue = "-77"
    )
-   public void method4459(Buffer var1) {
+   public void method4420() {
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;I)V",
+      garbageValue = "-606058381"
+   )
+   public void method4397(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4460(var1, var2);
+         this.method4398(var1, var2);
       }
    }
 }

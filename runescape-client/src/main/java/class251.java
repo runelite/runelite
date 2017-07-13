@@ -1,145 +1,86 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ie")
+@ObfuscatedName("iv")
 public class class251 extends CacheableNode {
-   @ObfuscatedName("w")
-   static NodeCache field3400;
-   @ObfuscatedName("i")
-   public static IndexDataBase field3399;
-   @ObfuscatedName("a")
-   char field3397;
-   @ObfuscatedName("r")
-   boolean field3395;
-   @ObfuscatedName("t")
+   @ObfuscatedName("j")
+   static NodeCache field3385;
+   @ObfuscatedName("fp")
    @ObfuscatedGetter(
-      intValue = -3128223
+      intValue = -1058038549
    )
-   public int field3398;
-   @ObfuscatedName("s")
-   public String field3401;
+   static int field3390;
+   @ObfuscatedName("a")
+   public static IndexDataBase field3386;
+   @ObfuscatedName("n")
+   char field3391;
+   @ObfuscatedName("e")
+   boolean field3389;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -1482762385
+   )
+   public int field3387;
+   @ObfuscatedName("v")
+   public String field3384;
 
    static {
-      field3400 = new NodeCache(64);
+      field3385 = new NodeCache(64);
    }
 
    class251() {
-      this.field3395 = true;
+      this.field3389 = true;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "-2026051054"
+      signature = "(LBuffer;IB)V",
+      garbageValue = "3"
    )
-   void method4441(Buffer var1, int var2) {
+   void method4388(Buffer var1, int var2) {
       if(var2 == 1) {
-         byte var4 = var1.readByte();
-         int var5 = var4 & 255;
-         if(var5 == 0) {
-            throw new IllegalArgumentException("");
-         }
-
-         if(var5 >= 128 && var5 < 160) {
-            char var6 = class266.field3668[var5 - 128];
-            if(var6 == 0) {
-               var6 = 63;
-            }
-
-            var5 = var6;
-         }
-
-         char var3 = (char)var5;
-         this.field3397 = var3;
+         this.field3391 = class262.method4659(var1.readByte());
       } else if(var2 == 2) {
-         this.field3398 = var1.readInt();
+         this.field3387 = var1.readInt();
       } else if(var2 == 4) {
-         this.field3395 = false;
+         this.field3389 = false;
       } else if(var2 == 5) {
-         this.field3401 = var1.readString();
+         this.field3384 = var1.readString();
       }
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "90532835"
+      garbageValue = "2084270026"
    )
-   public boolean method4440() {
-      return this.field3397 == 115;
+   public boolean method4382() {
+      return this.field3391 == 115;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "554944914"
+      garbageValue = "-1231284179"
    )
-   void method4437() {
+   void method4379() {
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
-      garbageValue = "1849337015"
+      garbageValue = "-1015913555"
    )
-   void method4438(Buffer var1) {
+   void method4380(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4441(var1, var2);
+         this.method4388(var1, var2);
       }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)LObjectComposition;",
-      garbageValue = "173920005"
-   )
-   @Export("getObjectDefinition")
-   public static ObjectComposition getObjectDefinition(int var0) {
-      ObjectComposition var1 = (ObjectComposition)ObjectComposition.objects.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = ObjectComposition.objects_ref.getConfigData(6, var0);
-         var1 = new ObjectComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         var1.post();
-         if(var1.isSolid) {
-            var1.interactType = 0;
-            var1.field3456 = false;
-         }
-
-         ObjectComposition.objects.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("iw")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;B)[Ljava/lang/String;",
-      garbageValue = "0"
-   )
-   static final String[] method4456(String[] var0) {
-      String[] var1 = new String[5];
-
-      for(int var2 = 0; var2 < 5; ++var2) {
-         var1[var2] = var2 + ": ";
-         if(var0 != null && var0[var2] != null) {
-            var1[var2] = var1[var2] + var0[var2];
-         }
-      }
-
-      return var1;
    }
 }

@@ -1,39 +1,41 @@
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("du")
+@ObfuscatedName("da")
 @Implements("TextureProvider")
 public class TextureProvider implements ITextureLoader {
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1756501805
+      intValue = 1815933983
    )
    @Export("width")
    int width;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @Export("brightness")
    double brightness;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @Export("textures")
    Texture[] textures;
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @Export("deque")
    Deque deque;
-   @ObfuscatedName("t")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1408455501
+      intValue = 1952578149
    )
    @Export("size")
    int size;
-   @ObfuscatedName("v")
+   @ObfuscatedName("l")
    @Export("sprites")
    IndexDataBase sprites;
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 319506549
+      intValue = 1202783989
    )
    @Export("maxSize")
    int maxSize;
@@ -63,10 +65,10 @@ public class TextureProvider implements ITextureLoader {
 
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "423"
+      signature = "(B)V",
+      garbageValue = "-110"
    )
    @Export("reset")
    public void reset() {
@@ -80,20 +82,20 @@ public class TextureProvider implements ITextureLoader {
       this.size = this.maxSize;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "1662598982"
+      garbageValue = "769753382"
    )
    @Export("getAverageTextureRGB")
    public int getAverageTextureRGB(int var1) {
-      return this.textures[var1] != null?this.textures[var1].field1883:0;
+      return this.textures[var1] != null?this.textures[var1].field1868:0;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(II)[I",
-      garbageValue = "750752520"
+      garbageValue = "883752153"
    )
    @Export("load")
    public int[] load(int var1) {
@@ -105,7 +107,7 @@ public class TextureProvider implements ITextureLoader {
             return var2.pixels;
          }
 
-         boolean var3 = var2.method2475(this.brightness, this.width, this.sprites);
+         boolean var3 = var2.method2487(this.brightness, this.width, this.sprites);
          if(var3) {
             if(this.size == 0) {
                Texture var4 = (Texture)this.deque.popTail();
@@ -123,28 +125,28 @@ public class TextureProvider implements ITextureLoader {
       return null;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "349268549"
+      garbageValue = "-16711936"
    )
-   public boolean vmethod2878(int var1) {
+   public boolean vmethod2877(int var1) {
       return this.width == 64;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(IS)Z",
-      garbageValue = "-4101"
+      signature = "(II)Z",
+      garbageValue = "-31277212"
    )
    public boolean vmethod2875(int var1) {
-      return this.textures[var1].field1889;
+      return this.textures[var1].field1869;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(D)V",
-      garbageValue = "0.9"
+      garbageValue = "0.8"
    )
    @Export("brightness")
    public void brightness(double var1) {
@@ -152,145 +154,66 @@ public class TextureProvider implements ITextureLoader {
       this.reset();
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "889939768"
+      garbageValue = "1836397146"
    )
-   public void method2390(int var1) {
+   public void method2369(int var1) {
       for(int var2 = 0; var2 < this.textures.length; ++var2) {
          Texture var3 = this.textures[var2];
-         if(var3 != null && var3.field1888 != 0 && var3.loaded) {
-            var3.method2477(var1);
+         if(var3 != null && var3.field1874 != 0 && var3.loaded) {
+            var3.method2488(var1);
             var3.loaded = false;
          }
       }
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("au")
    @ObfuscatedSignature(
-      signature = "(CI)B",
-      garbageValue = "-842790610"
+      signature = "(LSignlink;IIB)LAbstractSoundSystem;",
+      garbageValue = "-54"
    )
-   public static byte method2403(char var0) {
-      byte var1;
-      if(var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
-         var1 = (byte)var0;
-      } else if(var0 == 8364) {
-         var1 = -128;
-      } else if(var0 == 8218) {
-         var1 = -126;
-      } else if(var0 == 402) {
-         var1 = -125;
-      } else if(var0 == 8222) {
-         var1 = -124;
-      } else if(var0 == 8230) {
-         var1 = -123;
-      } else if(var0 == 8224) {
-         var1 = -122;
-      } else if(var0 == 8225) {
-         var1 = -121;
-      } else if(var0 == 710) {
-         var1 = -120;
-      } else if(var0 == 8240) {
-         var1 = -119;
-      } else if(var0 == 352) {
-         var1 = -118;
-      } else if(var0 == 8249) {
-         var1 = -117;
-      } else if(var0 == 338) {
-         var1 = -116;
-      } else if(var0 == 381) {
-         var1 = -114;
-      } else if(var0 == 8216) {
-         var1 = -111;
-      } else if(var0 == 8217) {
-         var1 = -110;
-      } else if(var0 == 8220) {
-         var1 = -109;
-      } else if(var0 == 8221) {
-         var1 = -108;
-      } else if(var0 == 8226) {
-         var1 = -107;
-      } else if(var0 == 8211) {
-         var1 = -106;
-      } else if(var0 == 8212) {
-         var1 = -105;
-      } else if(var0 == 732) {
-         var1 = -104;
-      } else if(var0 == 8482) {
-         var1 = -103;
-      } else if(var0 == 353) {
-         var1 = -102;
-      } else if(var0 == 8250) {
-         var1 = -101;
-      } else if(var0 == 339) {
-         var1 = -100;
-      } else if(var0 == 382) {
-         var1 = -98;
-      } else if(var0 == 376) {
-         var1 = -97;
-      } else {
-         var1 = 63;
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("eg")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1483925623"
-   )
-   @Export("setGameState")
-   static void setGameState(int var0) {
-      if(var0 != Client.gameState) {
-         if(Client.gameState == 0) {
-            class261.clientInstance.method880();
+   public static final AbstractSoundSystem method2381(Signlink var0, int var1, int var2) {
+      if(ChatLineBuffer.sampleRate == 0) {
+         throw new IllegalStateException();
+      } else if(var1 >= 0 && var1 < 2) {
+         if(var2 < 256) {
+            var2 = 256;
          }
 
-         if(var0 == 20 || var0 == 40 || var0 == 45) {
-            Client.loginState = 0;
-            Client.field958 = 0;
-            Client.field959 = 0;
-         }
-
-         if(var0 != 20 && var0 != 40 && class215.field2640 != null) {
-            class215.field2640.close();
-            class215.field2640 = null;
-         }
-
-         if(Client.gameState == 25) {
-            Client.field1104 = 0;
-            Client.field1083 = 0;
-            Client.field982 = 1;
-            Client.field983 = 0;
-            Client.field984 = 1;
-         }
-
-         if(var0 != 5 && var0 != 10) {
-            if(var0 == 20) {
-               class140.method2857(DecorativeObject.field2194, class18.indexSprites, true, Client.gameState == 11?4:0);
-            } else if(var0 == 11) {
-               class140.method2857(DecorativeObject.field2194, class18.indexSprites, false, 4);
-            } else {
-               class112.method2096();
+         try {
+            AbstractSoundSystem var3 = class267.field3666.vmethod1892();
+            var3.samples = new int[256 * (AbstractSoundSystem.highMemory?2:1)];
+            var3.field1631 = var2;
+            var3.vmethod1992();
+            var3.offset = (var2 & -1024) + 1024;
+            if(var3.offset > 16384) {
+               var3.offset = 16384;
             }
-         } else {
-            class140.method2857(DecorativeObject.field2194, class18.indexSprites, true, 0);
+
+            var3.create(var3.offset);
+            if(class11.priority > 0 && class24.task == null) {
+               class24.task = new SoundTask();
+               class280.field3754 = Executors.newScheduledThreadPool(1);
+               class280.field3754.scheduleAtFixedRate(class24.task, 0L, 10L, TimeUnit.MILLISECONDS);
+            }
+
+            if(class24.task != null) {
+               if(class24.task.systems[var1] != null) {
+                  throw new IllegalArgumentException();
+               }
+
+               class24.task.systems[var1] = var3;
+            }
+
+            return var3;
+         } catch (Throwable var4) {
+            return new AbstractSoundSystem();
          }
-
-         Client.gameState = var0;
+      } else {
+         throw new IllegalArgumentException();
       }
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1438867577"
-   )
-   public static void method2399() {
-      Varbit.varbits.reset();
    }
 }

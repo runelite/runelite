@@ -3,18 +3,25 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ii")
+@ObfuscatedName("in")
 @Implements("FileRequest")
 public class FileRequest extends CacheableNode {
-   @ObfuscatedName("a")
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1450681237
+   )
+   static int field3207;
+   @ObfuscatedName("w")
+   static int[][] field3211;
+   @ObfuscatedName("n")
    @Export("padding")
    byte padding;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @Export("index")
    IndexData index;
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1130049009
+      intValue = 1630955271
    )
    @Export("crc")
    int crc;

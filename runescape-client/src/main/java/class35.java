@@ -1,31 +1,26 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("as")
+@ObfuscatedName("aa")
 public class class35 {
-   @ObfuscatedName("i")
-   static final class35 field511;
-   @ObfuscatedName("w")
-   static final class35 field507;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 187222449
-   )
-   public static int field514;
-   @ObfuscatedName("od")
-   @Export("clanChatRank")
-   static byte clanChatRank;
    @ObfuscatedName("a")
+   static final class35 field487;
+   @ObfuscatedName("j")
+   static final class35 field481;
+   @ObfuscatedName("ig")
+   static Widget field482;
+   @ObfuscatedName("kp")
+   static Widget field483;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1304039067
+      intValue = -1683261371
    )
-   final int field506;
+   final int field480;
 
    static {
-      field511 = new class35(0);
-      field507 = new class35(1);
+      field487 = new class35(0);
+      field481 = new class35(1);
    }
 
    @ObfuscatedSignature(
@@ -33,39 +28,16 @@ public class class35 {
       garbageValue = "0"
    )
    class35(int var1) {
-      this.field506 = var1;
+      this.field480 = var1;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("fu")
    @ObfuscatedSignature(
-      signature = "(II)LNPCComposition;",
-      garbageValue = "1890011737"
+      signature = "(I)V",
+      garbageValue = "387058479"
    )
-   @Export("getNpcDefinition")
-   public static NPCComposition getNpcDefinition(int var0) {
-      NPCComposition var1 = (NPCComposition)NPCComposition.npcs.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = NPCComposition.field3567.getConfigData(9, var0);
-         var1 = new NPCComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         var1.post();
-         NPCComposition.npcs.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)[LBuildType;",
-      garbageValue = "1933463881"
-   )
-   public static BuildType[] method507() {
-      return new BuildType[]{BuildType.LIVE, BuildType.RC, BuildType.BUILD_LIVE, BuildType.WIP};
+   static final void method484() {
+      Region.lowMemory = false;
+      Client.lowMemory = false;
    }
 }

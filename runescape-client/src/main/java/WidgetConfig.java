@@ -2,10 +2,10 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gu")
+@ObfuscatedName("gj")
 @Implements("WidgetConfig")
 public class WidgetConfig extends Node {
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @Export("config")
    public int config;
 

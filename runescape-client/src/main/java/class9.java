@@ -1,123 +1,61 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("k")
+@ObfuscatedName("p")
 public abstract class class9 extends Node {
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "366399750"
+   @ObfuscatedName("dr")
+   @ObfuscatedGetter(
+      intValue = -1746304565
    )
-   abstract void vmethod50();
+   @Export("myWorldPort")
+   static int myWorldPort;
+   @ObfuscatedName("t")
+   static int[][][] field249;
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([LWorld;II[I[II)V",
-      garbageValue = "1651108082"
+      signature = "(B)V",
+      garbageValue = "1"
    )
-   static void method48(World[] var0, int var1, int var2, int[] var3, int[] var4) {
-      if(var1 < var2) {
-         int var5 = var1 - 1;
-         int var6 = var2 + 1;
-         int var7 = (var2 + var1) / 2;
-         World var8 = var0[var7];
-         var0[var7] = var0[var1];
-         var0[var1] = var8;
+   abstract void vmethod54();
 
-         while(var5 < var6) {
-            boolean var9 = true;
-
-            int var10;
-            int var11;
-            int var12;
-            do {
-               --var6;
-
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
-                     var11 = var0[var6].index;
-                     var12 = var8.index;
-                  } else if(var3[var10] == 1) {
-                     var11 = var0[var6].playerCount;
-                     var12 = var8.playerCount;
-                     if(var11 == -1 && var4[var10] == 1) {
-                        var11 = 2001;
-                     }
-
-                     if(var12 == -1 && var4[var10] == 1) {
-                        var12 = 2001;
-                     }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var6].method1566()?1:0;
-                     var12 = var8.method1566()?1:0;
-                  } else {
-                     var11 = var0[var6].id;
-                     var12 = var8.id;
-                  }
-
-                  if(var12 != var11) {
-                     if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
-                        var9 = false;
-                     }
-                     break;
-                  }
-
-                  if(var10 == 3) {
-                     var9 = false;
-                  }
-               }
-            } while(var9);
-
-            var9 = true;
-
-            do {
-               ++var5;
-
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
-                     var11 = var0[var5].index;
-                     var12 = var8.index;
-                  } else if(var3[var10] == 1) {
-                     var11 = var0[var5].playerCount;
-                     var12 = var8.playerCount;
-                     if(var11 == -1 && var4[var10] == 1) {
-                        var11 = 2001;
-                     }
-
-                     if(var12 == -1 && var4[var10] == 1) {
-                        var12 = 2001;
-                     }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var5].method1566()?1:0;
-                     var12 = var8.method1566()?1:0;
-                  } else {
-                     var11 = var0[var5].id;
-                     var12 = var8.id;
-                  }
-
-                  if(var11 != var12) {
-                     if((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
-                        var9 = false;
-                     }
-                     break;
-                  }
-
-                  if(var10 == 3) {
-                     var9 = false;
-                  }
-               }
-            } while(var9);
-
-            if(var5 < var6) {
-               World var13 = var0[var5];
-               var0[var5] = var0[var6];
-               var0[var6] = var13;
-            }
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "52"
+   )
+   @Export("resetItemTable")
+   static void resetItemTable(int var0) {
+      XItemContainer var1 = (XItemContainer)XItemContainer.itemContainers.get((long)var0);
+      if(var1 != null) {
+         for(int var2 = 0; var2 < var1.itemIds.length; ++var2) {
+            var1.itemIds[var2] = -1;
+            var1.stackSizes[var2] = 0;
          }
 
-         method48(var0, var1, var6, var3, var4);
-         method48(var0, var6 + 1, var2, var3, var4);
       }
+   }
 
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(II)LEnum;",
+      garbageValue = "-547286080"
+   )
+   public static Enum method45(int var0) {
+      Enum var1 = (Enum)Enum.field3395.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = VarPlayerType.field3286.getConfigData(8, var0);
+         var1 = new Enum();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
+         }
+
+         Enum.field3395.put(var1, (long)var0);
+         return var1;
+      }
    }
 }

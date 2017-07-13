@@ -2,71 +2,75 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hw")
+@ObfuscatedName("hn")
 public enum class228 implements RSEnum {
-   @ObfuscatedName("i")
-   field3165(4, 0),
-   @ObfuscatedName("w")
-   field3157(7, 1),
    @ObfuscatedName("a")
-   field3158(6, 2),
-   @ObfuscatedName("t")
-   field3162(1, 3),
-   @ObfuscatedName("s")
-   field3160(3, 4),
-   @ObfuscatedName("r")
-   field3161(5, 5),
-   @ObfuscatedName("v")
-   field3164(2, 6),
-   @ObfuscatedName("y")
-   field3163(0, 7);
-
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1654934513
-   )
-   final int field3156;
+   field3155(6, 0),
    @ObfuscatedName("j")
+   field3159(5, 1),
+   @ObfuscatedName("n")
+   field3153(2, 2),
+   @ObfuscatedName("r")
+   field3154(1, 3),
+   @ObfuscatedName("v")
+   field3161(4, 4),
+   @ObfuscatedName("e")
+   field3156(3, 5),
+   @ObfuscatedName("l")
+   field3157(7, 6),
+   @ObfuscatedName("s")
+   field3158(0, 7);
+
+   @ObfuscatedName("m")
+   static ModIcon field3151;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 493489157
+      intValue = 1559279583
    )
-   public final int field3167;
+   public final int field3152;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -571644835
+   )
+   final int field3160;
 
    @ObfuscatedSignature(
       signature = "(II)V",
       garbageValue = "0"
    )
    class228(int var3, int var4) {
-      this.field3167 = var3;
-      this.field3156 = var4;
+      this.field3152 = var3;
+      this.field3160 = var4;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1204543302"
+      garbageValue = "1952293135"
    )
    public int rsOrdinal() {
-      return this.field3156;
+      return this.field3160;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "-37"
+      signature = "(II)Lclass251;",
+      garbageValue = "-505208587"
    )
-   static int method4084(int var0, int var1) {
-      long var2 = (long)((var0 << 16) + var1);
-      return class7.currentRequest != null && class7.currentRequest.hash == var2?class39.field559.offset * 99 / (class39.field559.payload.length - class7.currentRequest.padding) + 1:0;
-   }
+   public static class251 method4068(int var0) {
+      class251 var1 = (class251)class251.field3385.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class251.field3386.getConfigData(11, var0);
+         var1 = new class251();
+         if(var2 != null) {
+            var1.method4380(new Buffer(var2));
+         }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-721249226"
-   )
-   public static void method4093() {
-      Spotanim.spotanims.reset();
-      Spotanim.field3333.reset();
+         var1.method4379();
+         class251.field3385.put(var1, (long)var0);
+         return var1;
+      }
    }
 }

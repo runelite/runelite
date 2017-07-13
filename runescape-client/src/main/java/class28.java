@@ -4,97 +4,75 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aw")
+@ObfuscatedName("au")
 public abstract class class28 {
-   @ObfuscatedName("oh")
-   @ObfuscatedGetter(
-      intValue = -772494883
-   )
-   @Export("clanChatCount")
-   static int clanChatCount;
-   @ObfuscatedName("dx")
-   static IndexData field424;
-   @ObfuscatedName("fi")
-   @Export("xteaKeys")
-   static int[][] xteaKeys;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -292741467
-   )
-   int field410;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 731865583
-   )
-   int field411;
-   @ObfuscatedName("v")
-   short[][][] field414;
+   @ObfuscatedName("an")
+   @Export("clientInstance")
+   static Client clientInstance;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 16478029
+      intValue = 1249089651
    )
-   int field413;
+   int field399;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -1781889243
+   )
+   int field401;
+   @ObfuscatedName("l")
+   short[][][] field405;
    @ObfuscatedName("e")
-   class31[][][][] field418;
-   @ObfuscatedName("y")
-   short[][][] field421;
+   @ObfuscatedGetter(
+      intValue = 1480932171
+   )
+   int field404;
+   @ObfuscatedName("m")
+   class31[][][][] field409;
    @ObfuscatedName("s")
+   short[][][] field410;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -2043352399
+      intValue = -437437171
    )
-   int field412;
-   @ObfuscatedName("j")
-   byte[][][] field408;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -2097863695
-   )
-   int field420;
-   @ObfuscatedName("k")
-   byte[][][] field419;
+   int field407;
    @ObfuscatedName("w")
+   byte[][][] field406;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1657541437
+      intValue = 1070955015
    )
-   int field409;
+   int field403;
+   @ObfuscatedName("p")
+   byte[][][] field408;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -586331605
+   )
+   int field400;
 
    class28() {
       new LinkedList();
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "2046991982"
+      garbageValue = "436002722"
    )
-   int method213(int var1, int var2) {
-      return var1 >= 0 && var2 >= 0?(var1 < 64 && var2 < 64?this.field414[0][var1][var2] - 1:-1):-1;
+   int method222(int var1, int var2) {
+      return var1 >= 0 && var2 >= 0?(var1 < 64 && var2 < 64?this.field405[0][var1][var2] - 1:-1):-1;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(IILBuffer;IB)V",
-      garbageValue = "-38"
+      signature = "(IILBuffer;II)V",
+      garbageValue = "532552929"
    )
-   void method212(int var1, int var2, Buffer var3, int var4) {
-      boolean var5 = (var4 & 2) != 0;
-      if(var5) {
-         this.field421[0][var1][var2] = (short)var3.readUnsignedByte();
-      }
-
-      this.field414[0][var1][var2] = (short)var3.readUnsignedByte();
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(IILBuffer;IB)V",
-      garbageValue = "-101"
-   )
-   void method222(int var1, int var2, Buffer var3, int var4) {
+   void method221(int var1, int var2, Buffer var3, int var4) {
       int var5 = ((var4 & 24) >> 3) + 1;
       boolean var6 = (var4 & 2) != 0;
       boolean var7 = (var4 & 4) != 0;
-      this.field414[0][var1][var2] = (short)var3.readUnsignedByte();
+      this.field405[0][var1][var2] = (short)var3.readUnsignedByte();
       int var8;
       int var9;
       int var11;
@@ -104,10 +82,10 @@ public abstract class class28 {
          for(var9 = 0; var9 < var8; ++var9) {
             int var10 = var3.readUnsignedByte();
             if(var10 != 0) {
-               this.field421[var9][var1][var2] = (short)var10;
+               this.field410[var9][var1][var2] = (short)var10;
                var11 = var3.readUnsignedByte();
-               this.field408[var9][var1][var2] = (byte)(var11 >> 2);
-               this.field419[var9][var1][var2] = (byte)(var11 & 3);
+               this.field406[var9][var1][var2] = (byte)(var11 >> 2);
+               this.field408[var9][var1][var2] = (byte)(var11 & 3);
             }
          }
       }
@@ -116,10 +94,10 @@ public abstract class class28 {
          for(var8 = 0; var8 < var5; ++var8) {
             var9 = var3.readUnsignedByte();
             if(var9 != 0) {
-               class31[] var14 = this.field418[var8][var1][var2] = new class31[var9];
+               class31[] var14 = this.field409[var8][var1][var2] = new class31[var9];
 
                for(var11 = 0; var11 < var9; ++var11) {
-                  int var12 = var3.method3130();
+                  int var12 = var3.method3221();
                   int var13 = var3.readUnsignedByte();
                   var14[var11] = new class31(var12, var13 >> 2, var13 & 3);
                }
@@ -131,83 +109,50 @@ public abstract class class28 {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-45"
+      signature = "(IILBuffer;II)V",
+      garbageValue = "-1910673030"
    )
-   int method214() {
-      return this.field410;
+   void method231(int var1, int var2, Buffer var3, int var4) {
+      boolean var5 = (var4 & 2) != 0;
+      if(var5) {
+         this.field410[0][var1][var2] = (short)var3.readUnsignedByte();
+      }
+
+      this.field405[0][var1][var2] = (short)var3.readUnsignedByte();
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-966983615"
+      garbageValue = "-1659670791"
    )
-   int method215() {
-      return this.field411;
+   int method223() {
+      return this.field401;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "2129285286"
+   )
+   int method234() {
+      return this.field399;
    }
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(IILBuffer;I)V",
-      garbageValue = "2029514419"
+      garbageValue = "-503831883"
    )
-   void method228(int var1, int var2, Buffer var3) {
+   void method219(int var1, int var2, Buffer var3) {
       int var4 = var3.readUnsignedByte();
       if(var4 != 0) {
          if((var4 & 1) != 0) {
-            this.method212(var1, var2, var3, var4);
+            this.method231(var1, var2, var3, var4);
          } else {
-            this.method222(var1, var2, var3, var4);
+            this.method221(var1, var2, var3, var4);
          }
 
       }
-   }
-
-   @ObfuscatedName("fq")
-   @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "-391"
-   )
-   static final void method231() {
-      Overlay.overlays.reset();
-      VertexNormal.method2580();
-      KitDefinition.identKits.reset();
-      Permission.method4098();
-      NPCComposition.npcs.reset();
-      NPCComposition.npcModelCache.reset();
-      ItemComposition.items.reset();
-      ItemComposition.itemModelCache.reset();
-      ItemComposition.itemSpriteCache.reset();
-      Sequence.sequences.reset();
-      Sequence.skeletons.reset();
-      class228.method4093();
-      TextureProvider.method2399();
-      NPC.method1704();
-      ItemLayer.method2407();
-      CombatInfo2.field3375.reset();
-      CombatInfo2.spriteCache.reset();
-      class252.field3402.reset();
-      RSCanvas.method804();
-      class225.method4082();
-      PlayerComposition.field2630.reset();
-      Widget.field2755.reset();
-      Widget.field2649.reset();
-      Widget.field2779.reset();
-      Widget.field2657.reset();
-      ((TextureProvider)Graphics3D.textureLoader).reset();
-      Script.field1551.reset();
-      class44.indexInterfaces.reset();
-      class261.indexSoundEffects.reset();
-      class10.field259.reset();
-      class98.field1545.reset();
-      Frames.indexMaps.reset();
-      class44.indexTrack1.reset();
-      class1.indexModels.reset();
-      class18.indexSprites.reset();
-      class87.indexTextures.reset();
-      DecorativeObject.field2194.reset();
-      XGrandExchangeOffer.indexTrack2.reset();
-      class169.indexScripts.reset();
    }
 }

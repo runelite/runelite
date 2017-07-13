@@ -3,81 +3,81 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dw")
+@ObfuscatedName("dh")
 @Implements("AudioInstrument")
 public class AudioInstrument {
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @Export("NOISE")
    static int[] NOISE;
-   @ObfuscatedName("f")
+   @ObfuscatedName("x")
    @Export("samples")
    static int[] samples;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @Export("SINE")
    static int[] SINE;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @Export("phases")
    static int[] phases;
    @ObfuscatedName("d")
    @Export("delays")
    static int[] delays;
-   @ObfuscatedName("h")
+   @ObfuscatedName("b")
    @Export("volumeSteps")
    static int[] volumeSteps;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @Export("pitchSteps")
    static int[] pitchSteps;
-   @ObfuscatedName("x")
+   @ObfuscatedName("y")
    @Export("pitchBaseSteps")
    static int[] pitchBaseSteps;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @Export("pitch")
    AudioEnvelope pitch;
-   @ObfuscatedName("m")
+   @ObfuscatedName("c")
    @Export("duration")
    int duration;
-   @ObfuscatedName("b")
+   @ObfuscatedName("o")
    @Export("offset")
    int offset;
-   @ObfuscatedName("j")
+   @ObfuscatedName("w")
    @Export("oscillatorVolume")
    int[] oscillatorVolume;
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @Export("volume")
    AudioEnvelope volume;
-   @ObfuscatedName("k")
+   @ObfuscatedName("p")
    @Export("oscillatorPitch")
    int[] oscillatorPitch;
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @Export("pitchModifier")
    AudioEnvelope pitchModifier;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @Export("volumeMultiplier")
    AudioEnvelope volumeMultiplier;
-   @ObfuscatedName("t")
+   @ObfuscatedName("r")
    @Export("pitchModifierAmplitude")
    AudioEnvelope pitchModifierAmplitude;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @Export("oscillatorDelays")
    int[] oscillatorDelays;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @Export("volumeMultiplierAmplitude")
    AudioEnvelope volumeMultiplierAmplitude;
-   @ObfuscatedName("o")
+   @ObfuscatedName("u")
    @Export("delayTime")
    int delayTime;
-   @ObfuscatedName("z")
+   @ObfuscatedName("g")
    @Export("delayDecay")
    int delayDecay;
-   @ObfuscatedName("v")
+   @ObfuscatedName("l")
    @Export("release")
    AudioEnvelope release;
-   @ObfuscatedName("y")
-   AudioEnvelope field1740;
-   @ObfuscatedName("l")
+   @ObfuscatedName("s")
+   AudioEnvelope field1736;
+   @ObfuscatedName("k")
    @Export("filter")
    SoundEffect3 filter;
-   @ObfuscatedName("c")
+   @ObfuscatedName("t")
    @Export("filterEnvelope")
    AudioEnvelope filterEnvelope;
 
@@ -114,10 +114,10 @@ public class AudioInstrument {
       this.offset = 0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @Export("synthesize")
    final int[] synthesize(int var1, int var2) {
-      class183.method3441(samples, 0, var1);
+      class183.method3438(samples, 0, var1);
       if(var2 < 10) {
          return samples;
       } else {
@@ -190,14 +190,14 @@ public class AudioInstrument {
          int var16;
          if(this.release != null) {
             this.release.reset();
-            this.field1740.reset();
+            this.field1736.reset();
             var11 = 0;
             boolean var19 = false;
             boolean var20 = true;
 
             for(var14 = 0; var14 < var1; ++var14) {
                var15 = this.release.step(var1);
-               var16 = this.field1740.step(var1);
+               var16 = this.field1736.step(var1);
                if(var20) {
                   var12 = (var15 * (this.release.end - this.release.start) >> 8) + this.release.start;
                } else {
@@ -317,7 +317,7 @@ public class AudioInstrument {
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @Export("decode")
    final void decode(Buffer var1) {
       this.pitch = new AudioEnvelope();
@@ -347,8 +347,8 @@ public class AudioInstrument {
          --var1.offset;
          this.release = new AudioEnvelope();
          this.release.decode(var1);
-         this.field1740 = new AudioEnvelope();
-         this.field1740.decode(var1);
+         this.field1736 = new AudioEnvelope();
+         this.field1736.decode(var1);
       }
 
       for(int var3 = 0; var3 < 10; ++var3) {
@@ -371,7 +371,7 @@ public class AudioInstrument {
       this.filter.decode(var1, this.filterEnvelope);
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @Export("evaluateWave")
    final int evaluateWave(int var1, int var2, int var3) {
       return var3 == 1?((var1 & 32767) < 16384?var2:-var2):(var3 == 2?SINE[var1 & 32767] * var2 >> 14:(var3 == 3?(var2 * (var1 & 32767) >> 14) - var2:(var3 == 4?var2 * NOISE[var1 / 2607 & 32767]:0)));

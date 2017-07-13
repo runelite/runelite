@@ -1,182 +1,136 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("r")
+@ObfuscatedName("e")
 final class class5 implements class0 {
-   @ObfuscatedName("k")
-   static ModIcon field40;
+   @ObfuscatedName("er")
+   @Export("font_p12full")
+   static Font font_p12full;
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("gs")
    @ObfuscatedSignature(
-      signature = "(ILIndexFile;LIndexData;I)V",
-      garbageValue = "1210692513"
+      signature = "(ZB)V",
+      garbageValue = "100"
    )
-   static void method19(int var0, IndexFile var1, IndexData var2) {
-      byte[] var3 = null;
-      Deque var4 = class236.field3247;
-      synchronized(class236.field3247) {
-         for(FileSystem var5 = (FileSystem)class236.field3247.getFront(); var5 != null; var5 = (FileSystem)class236.field3247.getNext()) {
-            if((long)var0 == var5.hash && var1 == var5.index && var5.field3213 == 0) {
-               var3 = var5.field3215;
-               break;
+   @Export("xteaChanged")
+   static final void xteaChanged(boolean var0) {
+      Client.isDynamicRegion = var0;
+      int var1;
+      int var3;
+      int var4;
+      int var5;
+      int var6;
+      int var7;
+      if(!Client.isDynamicRegion) {
+         var1 = Client.secretPacketBuffer2.readUnsignedShort();
+         int var2 = Client.secretPacketBuffer2.readByteOb1();
+         var3 = Client.secretPacketBuffer2.readUnsignedShort();
+         class73.xteaKeys = new int[var3][4];
+
+         for(var4 = 0; var4 < var3; ++var4) {
+            for(var5 = 0; var5 < 4; ++var5) {
+               class73.xteaKeys[var4][var5] = Client.secretPacketBuffer2.readInt();
             }
          }
-      }
 
-      if(var3 != null) {
-         var2.method4220(var1, var0, var3, true);
+         RSCanvas.mapRegions = new int[var3];
+         class10.field259 = new int[var3];
+         CombatInfoListHolder.landRegionFielIds = new int[var3];
+         class39.field525 = new byte[var3][];
+         class25.field365 = new byte[var3][];
+         boolean var15 = false;
+         if((var1 / 8 == 48 || var1 / 8 == 49) && var2 / 8 == 48) {
+            var15 = true;
+         }
+
+         if(var1 / 8 == 48 && var2 / 8 == 148) {
+            var15 = true;
+         }
+
+         var3 = 0;
+
+         for(var5 = (var1 - 6) / 8; var5 <= (var1 + 6) / 8; ++var5) {
+            for(var6 = (var2 - 6) / 8; var6 <= (var2 + 6) / 8; ++var6) {
+               var7 = var6 + (var5 << 8);
+               if(!var15 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
+                  RSCanvas.mapRegions[var3] = var7;
+                  class10.field259[var3] = class12.indexMaps.getFile("m" + var5 + "_" + var6);
+                  CombatInfoListHolder.landRegionFielIds[var3] = class12.indexMaps.getFile("l" + var5 + "_" + var6);
+                  ++var3;
+               }
+            }
+         }
+
+         Varcs.method1789(var1, var2, true);
       } else {
-         byte[] var8 = var1.method2997(var0);
-         var2.method4220(var1, var0, var8, true);
-      }
-   }
+         var1 = Client.secretPacketBuffer2.readUnsignedShortOb1();
+         boolean var14 = Client.secretPacketBuffer2.method3249() == 1;
+         var3 = Client.secretPacketBuffer2.readUnsignedShortOb1();
+         var4 = Client.secretPacketBuffer2.readUnsignedShort();
+         Client.secretPacketBuffer2.bitAccess();
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "-35"
-   )
-   static void method20(int var0, int var1, int var2, int var3) {
-      for(class82 var4 = (class82)class82.field1349.getFront(); var4 != null; var4 = (class82)class82.field1349.getNext()) {
-         if(var4.field1338 != -1 || var4.field1353 != null) {
-            int var5 = 0;
-            if(var1 > var4.field1352) {
-               var5 += var1 - var4.field1352;
-            } else if(var1 < var4.field1340) {
-               var5 += var4.field1340 - var1;
-            }
-
-            if(var2 > var4.field1343) {
-               var5 += var2 - var4.field1343;
-            } else if(var2 < var4.field1341) {
-               var5 += var4.field1341 - var2;
-            }
-
-            if(var5 - 64 <= var4.field1344 && Client.field1098 != 0 && var0 == var4.field1339) {
-               var5 -= 64;
-               if(var5 < 0) {
-                  var5 = 0;
-               }
-
-               int var6 = (var4.field1344 - var5) * Client.field1098 / var4.field1344;
-               if(var4.field1346 == null) {
-                  if(var4.field1338 >= 0) {
-                     SoundEffect var7 = SoundEffect.getTrack(class98.field1545, var4.field1338, 0);
-                     if(var7 != null) {
-                        class107 var8 = var7.method1942().method1989(class225.field2896);
-                        class117 var9 = class117.method2229(var8, 100, var6);
-                        var9.method2126(-1);
-                        class19.field328.method1890(var9);
-                        var4.field1346 = var9;
-                     }
+         int var8;
+         for(var5 = 0; var5 < 4; ++var5) {
+            for(var6 = 0; var6 < 13; ++var6) {
+               for(var7 = 0; var7 < 13; ++var7) {
+                  var8 = Client.secretPacketBuffer2.getBits(1);
+                  if(var8 == 1) {
+                     Client.field1119[var5][var6][var7] = Client.secretPacketBuffer2.getBits(26);
+                  } else {
+                     Client.field1119[var5][var6][var7] = -1;
                   }
-               } else {
-                  var4.field1346.method2130(var6);
-               }
-
-               if(var4.field1351 == null) {
-                  if(var4.field1353 != null && (var4.field1350 -= var3) <= 0) {
-                     int var11 = (int)(Math.random() * (double)var4.field1353.length);
-                     SoundEffect var12 = SoundEffect.getTrack(class98.field1545, var4.field1353[var11], 0);
-                     if(var12 != null) {
-                        class107 var13 = var12.method1942().method1989(class225.field2896);
-                        class117 var10 = class117.method2229(var13, 100, var6);
-                        var10.method2126(0);
-                        class19.field328.method1890(var10);
-                        var4.field1351 = var10;
-                        var4.field1350 = var4.field1347 + (int)(Math.random() * (double)(var4.field1348 - var4.field1347));
-                     }
-                  }
-               } else {
-                  var4.field1351.method2130(var6);
-                  if(!var4.field1351.linked()) {
-                     var4.field1351 = null;
-                  }
-               }
-            } else {
-               if(var4.field1346 != null) {
-                  class19.field328.method1887(var4.field1346);
-                  var4.field1346 = null;
-               }
-
-               if(var4.field1351 != null) {
-                  class19.field328.method1887(var4.field1351);
-                  var4.field1351 = null;
                }
             }
          }
-      }
 
-   }
+         Client.secretPacketBuffer2.byteAccess();
+         class73.xteaKeys = new int[var4][4];
 
-   @ObfuscatedName("gr")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "2"
-   )
-   static void method18() {
-      Client.secretPacketBuffer1.putOpcode(226);
-      PacketBuffer var0 = Client.secretPacketBuffer1;
-      int var1 = Client.isResized?2:1;
-      var0.putByte(var1);
-      Client.secretPacketBuffer1.putShort(class45.canvasWidth);
-      Client.secretPacketBuffer1.putShort(CollisionData.canvasHeight);
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;I)V",
-      garbageValue = "1708901919"
-   )
-   public static void method21(IndexDataBase var0) {
-      FloorUnderlayDefinition.underlay_ref = var0;
-   }
-
-   @ObfuscatedName("ir")
-   @ObfuscatedSignature(
-      signature = "([LWidget;II)V",
-      garbageValue = "-451890668"
-   )
-   static final void method22(Widget[] var0, int var1) {
-      for(int var2 = 0; var2 < var0.length; ++var2) {
-         Widget var3 = var0[var2];
-         if(var3 != null) {
-            if(var3.type == 0) {
-               if(var3.children != null) {
-                  method22(var3.children, var1);
-               }
-
-               WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var3.id);
-               if(var4 != null) {
-                  int var5 = var4.id;
-                  if(class66.loadWidget(var5)) {
-                     method22(class46.widgets[var5], var1);
-                  }
-               }
-            }
-
-            ScriptEvent var6;
-            if(var1 == 0 && var3.field2731 != null) {
-               var6 = new ScriptEvent();
-               var6.widget = var3;
-               var6.field857 = var3.field2731;
-               class14.method76(var6);
-            }
-
-            if(var1 == 1 && var3.field2762 != null) {
-               if(var3.index >= 0) {
-                  Widget var7 = PacketBuffer.method3403(var3.id);
-                  if(var7 == null || var7.children == null || var3.index >= var7.children.length || var3 != var7.children[var3.index]) {
-                     continue;
-                  }
-               }
-
-               var6 = new ScriptEvent();
-               var6.widget = var3;
-               var6.field857 = var3.field2762;
-               class14.method76(var6);
+         for(var5 = 0; var5 < var4; ++var5) {
+            for(var6 = 0; var6 < 4; ++var6) {
+               class73.xteaKeys[var5][var6] = Client.secretPacketBuffer2.readInt();
             }
          }
+
+         RSCanvas.mapRegions = new int[var4];
+         class10.field259 = new int[var4];
+         CombatInfoListHolder.landRegionFielIds = new int[var4];
+         class39.field525 = new byte[var4][];
+         class25.field365 = new byte[var4][];
+         var4 = 0;
+
+         for(var5 = 0; var5 < 4; ++var5) {
+            for(var6 = 0; var6 < 13; ++var6) {
+               for(var7 = 0; var7 < 13; ++var7) {
+                  var8 = Client.field1119[var5][var6][var7];
+                  if(var8 != -1) {
+                     int var9 = var8 >> 14 & 1023;
+                     int var10 = var8 >> 3 & 2047;
+                     int var11 = (var9 / 8 << 8) + var10 / 8;
+
+                     int var12;
+                     for(var12 = 0; var12 < var4; ++var12) {
+                        if(RSCanvas.mapRegions[var12] == var11) {
+                           var11 = -1;
+                           break;
+                        }
+                     }
+
+                     if(var11 != -1) {
+                        RSCanvas.mapRegions[var4] = var11;
+                        var12 = var11 >> 8 & 255;
+                        int var13 = var11 & 255;
+                        class10.field259[var4] = class12.indexMaps.getFile("m" + var12 + "_" + var13);
+                        CombatInfoListHolder.landRegionFielIds[var4] = class12.indexMaps.getFile("l" + var12 + "_" + var13);
+                        ++var4;
+                     }
+                  }
+               }
+            }
+         }
+
+         Varcs.method1789(var1, var3, !var14);
       }
 
    }

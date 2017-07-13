@@ -5,88 +5,106 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("az")
+@ObfuscatedName("at")
 public class class44 extends WorldMapData {
-   @ObfuscatedName("cj")
-   @Export("indexInterfaces")
-   static IndexData indexInterfaces;
-   @ObfuscatedName("cx")
-   @Export("indexTrack1")
-   static IndexData indexTrack1;
-   @ObfuscatedName("c")
-   List field606;
-   @ObfuscatedName("z")
-   HashSet field607;
-   @ObfuscatedName("l")
-   HashSet field608;
+   @ObfuscatedName("h")
+   static Buffer field568;
+   @ObfuscatedName("oa")
+   @Export("clanMembers")
+   static XClanMember[] clanMembers;
+   @ObfuscatedName("t")
+   List field567;
+   @ObfuscatedName("g")
+   HashSet field566;
+   @ObfuscatedName("k")
+   HashSet field565;
 
-   @ObfuscatedName("bq")
+   @ObfuscatedName("be")
    @ObfuscatedSignature(
       signature = "(LBuffer;ZI)V",
-      garbageValue = "850377935"
+      garbageValue = "-1577245512"
    )
-   void method650(Buffer var1, boolean var2) {
-      this.field606 = new LinkedList();
+   void method632(Buffer var1, boolean var2) {
+      this.field567 = new LinkedList();
       int var3 = var1.readUnsignedShort();
 
       for(int var4 = 0; var4 < var3; ++var4) {
-         int var5 = var1.method3130();
+         int var5 = var1.method3221();
          Coordinates var6 = new Coordinates(var1.readInt());
          boolean var7 = var1.readUnsignedByte() == 1;
          if(var2 || !var7) {
-            this.field606.add(new class25(var5, var6));
+            this.field567.add(new class25(var5, var6));
          }
       }
 
    }
 
-   @ObfuscatedName("by")
+   @ObfuscatedName("bu")
    @ObfuscatedSignature(
-      signature = "(LBuffer;LBuffer;LBuffer;IZB)V",
-      garbageValue = "-103"
+      signature = "(LBuffer;LBuffer;LBuffer;IZI)V",
+      garbageValue = "230365169"
    )
-   void method645(Buffer var1, Buffer var2, Buffer var3, int var4, boolean var5) {
+   void method633(Buffer var1, Buffer var2, Buffer var3, int var4, boolean var5) {
       this.loadMapData(var1, var4);
       int var6 = var3.readUnsignedShort();
-      this.field607 = new HashSet(var6);
+      this.field566 = new HashSet(var6);
 
       int var7;
       for(var7 = 0; var7 < var6; ++var7) {
          class22 var8 = new class22();
 
          try {
-            var8.method156(var2, var3);
+            var8.method159(var2, var3);
          } catch (IllegalStateException var13) {
             continue;
          }
 
-         this.field607.add(var8);
+         this.field566.add(var8);
       }
 
       var7 = var3.readUnsignedShort();
-      this.field608 = new HashSet(var7);
+      this.field565 = new HashSet(var7);
 
       for(int var11 = 0; var11 < var7; ++var11) {
          class45 var9 = new class45();
 
          try {
-            var9.method655(var2, var3);
+            var9.method660(var2, var3);
          } catch (IllegalStateException var12) {
             continue;
          }
 
-         this.field608.add(var9);
+         this.field565.add(var9);
       }
 
-      this.method650(var2, var5);
+      this.method632(var2, var5);
    }
 
-   @ObfuscatedName("eh")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)LRenderOverview;",
-      garbageValue = "2074796345"
+      signature = "(IIIIIIII)V",
+      garbageValue = "-744456704"
    )
-   static RenderOverview method651() {
-      return class43.renderOverview;
+   public static final void method640(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7 = Math.min(var3, Math.min(var4, var5)) - var6;
+      int var8 = Math.max(var3, Math.max(var4, var5)) + var6;
+      int var9 = Math.min(var0, Math.min(var1, var2)) - var6;
+      int var10 = Math.max(var0, Math.max(var1, var2)) + var6;
+      class7.field226.method3563(new class8(var7, var9, var8, var10, -49088));
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "467512237"
+   )
+   public static void method641(boolean var0) {
+      if(var0 != ItemComposition.isMembersWorld) {
+         ItemComposition.items.reset();
+         ItemComposition.itemModelCache.reset();
+         ItemComposition.itemSpriteCache.reset();
+         ItemComposition.isMembersWorld = var0;
+      }
+
    }
 }
