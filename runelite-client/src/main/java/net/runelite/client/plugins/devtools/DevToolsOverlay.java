@@ -155,7 +155,7 @@ public class DevToolsOverlay extends Overlay
 			{
 				if (npc != null)
 				{
-					String text = npc.getName() + " (A: " + npc.getAnimation() + ") (G: " + npc.getGraphic() + ")";
+					String text = npc.getName() + " (ID: " + npc.getId() + ") (A: " + npc.getAnimation() + ") (G: " + npc.getGraphic() + ")";
 					if (npc.getCombatLevel() > 1)
 					{
 						OverlayUtil.renderActorOverlay(graphics, npc, text, YELLOW);
