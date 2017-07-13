@@ -52,6 +52,7 @@ import net.runelite.client.plugins.jewelrycount.JewelryCount;
 import net.runelite.client.plugins.mousehighlight.MouseHighlight;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 import net.runelite.client.plugins.pestcontrol.PestControl;
+import net.runelite.client.plugins.rememberusername.RememberUsername;
 import net.runelite.client.plugins.runecraft.Runecraft;
 import net.runelite.client.plugins.woodcutting.WoodcuttingPlugin;
 import net.runelite.client.plugins.xpglobes.XpGlobes;
@@ -100,6 +101,7 @@ public class PluginManager
 		plugins.add(new ExaminePlugin());
 		plugins.add(new FishingPlugin());
 		plugins.add(new WoodcuttingPlugin());
+		plugins.add(new RememberUsername());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
