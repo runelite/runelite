@@ -24,6 +24,8 @@
  */
 package net.runelite.http.service.item;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonParseException;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -35,10 +37,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.ItemType;
+import net.runelite.http.api.item.SearchResult;
 import okhttp3.HttpUrl;
 import okhttp3.ResponseBody;
 import org.slf4j.Logger;
@@ -54,16 +58,18 @@ public class ItemService
 {
 	private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
 
-	private static final HttpUrl RS_ITEM_URL = HttpUrl.parse("http://services.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json");
-	private static final HttpUrl RS_PRICE_URL = HttpUrl.parse("http://services.runescape.com/m=itemdb_oldschool/api/graph");
+	private static final String BASE = "https://services.runescape.com/m=itemdb_oldschool";
+	private static final HttpUrl RS_ITEM_URL = HttpUrl.parse(BASE + "/api/catalogue/detail.json");
+	private static final HttpUrl RS_PRICE_URL = HttpUrl.parse(BASE + "/api/graph");
+	private static final HttpUrl RS_SEARCH_URL = HttpUrl.parse(BASE + "/api/catalogue/items.json?category=1");
 
 	private static final String CREATE_ITEMS = "CREATE TABLE IF NOT EXISTS `items` (\n"
 		+ "  `id` int(11) NOT NULL,\n"
 		+ "  `name` tinytext NOT NULL,\n"
 		+ "  `description` tinytext NOT NULL,\n"
 		+ "  `type` enum('DEFAULT') NOT NULL,\n"
-		+ "  `icon` blob NOT NULL,\n"
-		+ "  `icon_large` blob NOT NULL,\n"
+		+ "  `icon` blob,\n"
+		+ "  `icon_large` blob,\n"
 		+ "  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
 		+ "  PRIMARY KEY (`id`)\n"
 		+ ") ENGINE=InnoDB";
@@ -81,9 +87,12 @@ public class ItemService
 	private static final String CREATE_PRICES_IDX = "ALTER TABLE `prices`\n"
 		+ "  ADD UNIQUE KEY `item` (`item`,`time`);";
 
-	private static final String RUNELITE_ITEM_CACHE = "Runelite-Item-Cache";
+	private static final String RUNELITE_CACHE = "Runelite-Cache";
 
 	private final Sql2o sql2o;
+	private final Cache<String, SearchResult> cachedSearches = CacheBuilder.newBuilder()
+		.maximumSize(1024L)
+		.build();
 
 	@Inject
 	public ItemService(@Named("Runelite SQL2O") Sql2o sql2o)
@@ -131,7 +140,7 @@ public class ItemService
 		if (item != null)
 		{
 			response.type("application/json");
-			response.header(RUNELITE_ITEM_CACHE, "HIT");
+			response.header(RUNELITE_CACHE, "HIT");
 			return item.toItem();
 		}
 
@@ -139,7 +148,7 @@ public class ItemService
 		if (item != null)
 		{
 			response.type("application/json");
-			response.header(RUNELITE_ITEM_CACHE, "MISS");
+			response.header(RUNELITE_CACHE, "MISS");
 			return item.toItem();
 		}
 
@@ -151,10 +160,10 @@ public class ItemService
 		int itemId = Integer.parseInt(request.params("id"));
 
 		ItemEntry item = getItem(itemId);
-		if (item != null)
+		if (item != null && item.getIcon() != null)
 		{
 			response.type("image/gif");
-			response.header(RUNELITE_ITEM_CACHE, "HIT");
+			response.header(RUNELITE_CACHE, "HIT");
 			return item.getIcon();
 		}
 
@@ -162,7 +171,7 @@ public class ItemService
 		if (item != null)
 		{
 			response.type("image/gif");
-			response.header(RUNELITE_ITEM_CACHE, "MISS");
+			response.header(RUNELITE_CACHE, "MISS");
 			return item.getIcon();
 		}
 
@@ -174,10 +183,10 @@ public class ItemService
 		int itemId = Integer.parseInt(request.params("id"));
 
 		ItemEntry item = getItem(itemId);
-		if (item != null)
+		if (item != null && item.getIcon_large() != null)
 		{
 			response.type("image/gif");
-			response.header(RUNELITE_ITEM_CACHE, "HIT");
+			response.header(RUNELITE_CACHE, "HIT");
 			return item.getIcon_large();
 		}
 
@@ -185,7 +194,7 @@ public class ItemService
 		if (item != null)
 		{
 			response.type("image/gif");
-			response.header(RUNELITE_ITEM_CACHE, "MISS");
+			response.header(RUNELITE_CACHE, "MISS");
 			return item.getIcon_large();
 		}
 
@@ -255,8 +264,65 @@ public class ItemService
 		itemPrice.setTime(priceEntry.getTime());
 
 		response.type("application/json");
-		response.header(RUNELITE_ITEM_CACHE, hit ? "HIT" : "MISS");
+		response.header(RUNELITE_CACHE, hit ? "HIT" : "MISS");
 		return itemPrice;
+	}
+
+	public SearchResult search(Request request, Response response)
+	{
+		String query = request.queryParams("query");
+
+		// rs api seems to require lowercase
+		query = query.toLowerCase();
+
+		SearchResult searchResult = cachedSearches.getIfPresent(query);
+		if (searchResult != null)
+		{
+			response.type("application/json");
+			response.header(RUNELITE_CACHE, "HIT");
+			return searchResult;
+		}
+
+		try
+		{
+			RSSearch search = fetchRSSearch(query);
+
+			searchResult = new SearchResult();
+			List<Item> items = search.getItems().stream()
+				.map(rsi -> rsi.toItem())
+				.collect(Collectors.toList());
+			searchResult.setItems(items);
+
+			cachedSearches.put(query, searchResult);
+
+			try (Connection con = sql2o.beginTransaction())
+			{
+				Query q = con.createQuery("insert into items (id, name, description, type) values (:id,"
+					+ " :name, :description, :type) ON DUPLICATE KEY UPDATE name = :name,"
+					+ " description = :description, type = :type");
+
+				for (RSItem rsItem : search.getItems())
+				{
+					q.addParameter("id", rsItem.getId())
+						.addParameter("name", rsItem.getName())
+						.addParameter("description", rsItem.getDescription())
+						.addParameter("type", rsItem.getType())
+						.addToBatch();
+				}
+
+				q.executeBatch();
+				con.commit();
+			}
+
+			response.type("application/json");
+			response.header(RUNELITE_CACHE, "MISS");
+			return searchResult;
+		}
+		catch (IOException ex)
+		{
+			logger.warn("error while searching items", ex);
+			return null;
+		}
 	}
 
 	private ItemEntry getItem(int itemId)
@@ -296,14 +362,32 @@ public class ItemService
 		try
 		{
 			RSItem rsItem = fetchRSItem(itemId);
-			byte[] icon = fetchImage(rsItem.getIcon());
-			byte[] iconLarge = fetchImage(rsItem.getIcon_large());
+			byte[] icon = null, iconLarge = null;
+
+			try
+			{
+				icon = fetchImage(rsItem.getIcon());
+			}
+			catch (IOException ex)
+			{
+				logger.warn("error fetching image", ex);
+			}
+
+			try
+			{
+				iconLarge = fetchImage(rsItem.getIcon_large());
+			}
+			catch (IOException ex)
+			{
+				logger.warn("error fetching image", ex);
+			}
 
 			try (Connection con = sql2o.open())
 			{
 				con.createQuery("insert into items (id, name, description, type, icon, icon_large) values (:id,"
-					+ " :name, :description, :type, :icon, :icon_large)")
-					.addParameter("id", itemId)
+					+ " :name, :description, :type, :icon, :icon_large) ON DUPLICATE KEY UPDATE name = :name,"
+					+ " description = :description, type = :type, icon = :icon, icon_large = :icon_large")
+					.addParameter("id", rsItem.getId())
 					.addParameter("name", rsItem.getName())
 					.addParameter("description", rsItem.getDescription())
 					.addParameter("type", rsItem.getType())
@@ -316,16 +400,7 @@ public class ItemService
 			item.setId(itemId);
 			item.setName(rsItem.getName());
 			item.setDescription(rsItem.getDescription());
-
-			try
-			{
-				item.setType(ItemType.valueOf(rsItem.getType().toUpperCase()));
-			}
-			catch (IllegalArgumentException ex)
-			{
-				logger.warn(null, ex);
-			}
-
+			item.setType(ItemType.of(rsItem.getType()));
 			item.setIcon(icon);
 			item.setIcon_large(iconLarge);
 			return item;
@@ -406,6 +481,20 @@ public class ItemService
 			.build();
 
 		return fetchJson(request, RSPrices.class);
+	}
+
+	private RSSearch fetchRSSearch(String query) throws IOException
+	{
+		HttpUrl searchUrl = RS_SEARCH_URL
+			.newBuilder()
+			.addQueryParameter("alpha", query)
+			.build();
+
+		okhttp3.Request request = new okhttp3.Request.Builder()
+			.url(searchUrl)
+			.build();
+
+		return fetchJson(request, RSSearch.class);
 	}
 
 	private <T> T fetchJson(okhttp3.Request request, Class<T> clazz) throws IOException
