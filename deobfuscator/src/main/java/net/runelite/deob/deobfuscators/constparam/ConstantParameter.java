@@ -26,6 +26,7 @@ package net.runelite.deob.deobfuscators.constparam;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.ComparisonInstruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
@@ -51,10 +53,14 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
 import org.apache.commons.collections4.map.MultiValueMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ConstantParameter implements Deobfuscator
 {
+	private static final Logger logger = LoggerFactory.getLogger(ConstantParameter.class);
+
 	private Map<ConstantMethodParameter, ConstantMethodParameter> parameters = new HashMap<>();
 	private MultiValueMap<Method, ConstantMethodParameter> mparams = new MultiValueMap<>();
 
@@ -148,6 +154,7 @@ public class ConstantParameter implements Deobfuscator
 		}
 	}
 
+	// find constant valuess passed to parameters
 	private void findParameters(InstructionContext ins)
 	{
 		if (!(ins.getInstruction() instanceof InvokeInstruction))
@@ -169,13 +176,18 @@ public class ConstantParameter implements Deobfuscator
 		Collection<ConstantMethodParameter> c = mparams.getCollection(m);
 		if (c == null)
 		{
-			return new ArrayList<>();
+			return Collections.EMPTY_LIST;
 		}
 		return new ArrayList<>(c);
 	}
 
 	// compare known values against a jump. also invalidates constant param
 	// if lvt is reassigned or a comparison is made against a non constant
+	private void findDeadParameters(MethodContext mctx)
+	{
+		mctx.getInstructionContexts().forEach(this::findDeadParameters);
+	}
+	
 	private void findDeadParameters(InstructionContext ins)
 	{
 		List<ConstantMethodParameter> parameters = this.findParametersForMethod(ins.getFrame().getMethod());
@@ -192,11 +204,27 @@ public class ConstantParameter implements Deobfuscator
 			if (ins.getInstruction() instanceof LVTInstruction)
 			{
 				LVTInstruction lvt = (LVTInstruction) ins.getInstruction();
+				
+				if (lvt.getVariableIndex() != lvtIndex)
+				{
+					continue;
+				}
 
-				if (lvt.getVariableIndex() == lvtIndex && lvt.store())
+				if (lvt.store() || ins.getInstruction().getType() == InstructionType.IINC)
 				{
 					parameter.invalid = true;
 					continue; // value changes at some point, parameter is used
+				}
+				
+				// check what pops the parameter is a comparison
+				assert ins.getPushes().size() == 1;
+				StackContext sctx = ins.getPushes().get(0);
+				
+				if (sctx.getPopped().size() != 1
+					|| !(sctx.getPopped().get(0).getInstruction() instanceof ComparisonInstruction))
+				{
+					parameter.invalid = true;
+					continue;
 				}
 			}
 
@@ -265,6 +293,8 @@ public class ConstantParameter implements Deobfuscator
 				// the result of the comparison doesn't matter, only that it always goes the same direction for every invocation
 				boolean result = doLogicalComparison(value, comp, otherValue);
 
+				// XXX this should check that the particular if always takes the same path,
+				// not that all ifs for a specific parameter always take the same path
 				if (parameter.result != null && parameter.result != result)
 				{
 					parameter.invalid = true;
@@ -430,7 +460,7 @@ public class ConstantParameter implements Deobfuscator
 		execution.run();
 
 		execution = new Execution(group);
-		execution.addExecutionVisitor(i -> findDeadParameters(i));
+		execution.addMethodContextVisitor(mc -> findDeadParameters(mc));
 		execution.populateInitialMethods();
 		execution.run();
 
@@ -439,7 +469,7 @@ public class ConstantParameter implements Deobfuscator
 		execution.populateInitialMethods();
 		execution.run();
 
-		System.out.println("Removed " + count + " logically dead conditional jumps");
+		logger.info("Removed {} logically dead conditional jumps", count);
 	}
 
 }
