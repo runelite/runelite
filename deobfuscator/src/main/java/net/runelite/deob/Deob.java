@@ -63,6 +63,7 @@ public class Deob
 	private static final Logger logger = LoggerFactory.getLogger(Deob.class);
 
 	public static final int OBFUSCATED_NAME_MAX_LEN = 2;
+	private static final boolean CHECK_EXEC = false;
 
 	public static void main(String[] args) throws IOException
 	{
@@ -167,8 +168,11 @@ public class Deob
 		logger.info("{} took {}", deob.getClass().getSimpleName(), stopwatch);
 
 		// check code is still correct
-		Execution execution = new Execution(group);
-		execution.populateInitialMethods();
-		execution.run();
+		if (CHECK_EXEC)
+		{
+			Execution execution = new Execution(group);
+			execution.populateInitialMethods();
+			execution.run();
+		}
 	}
 }
