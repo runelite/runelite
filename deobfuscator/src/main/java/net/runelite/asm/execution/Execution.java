@@ -49,7 +49,6 @@ public class Execution
 
 	private final ClassGroup group;
 	public List<Frame> frames = new ArrayList<>(), framesOther = new ArrayList<>();
-	public Set<Method> methods = new HashSet<>(); // all methods
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
 	private MultiValueMap<WeakInstructionContext, Method> stepInvokes = new MultiValueMap<>();
 	private Set<Method> invokes = new HashSet<>();
@@ -107,7 +106,6 @@ public class Execution
 		{
 			if (m.getCode() == null)
 			{
-				methods.add(m);
 				continue;
 			}
 
@@ -195,8 +193,6 @@ public class Execution
 		while (!frames.isEmpty())
 		{
 			Frame frame = frames.get(0);
-
-			methods.add(frame.getMethod());
 
 			++fcount;
 			frame.execute();

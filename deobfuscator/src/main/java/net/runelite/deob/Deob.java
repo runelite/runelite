@@ -76,17 +76,14 @@ public class Deob
 
 		ClassGroup group = JarUtil.loadJar(new File(args[0]));
 
-		run(group, new ControlFlowDeobfuscator());
-
 		run(group, new RenameUnique());
 
-		// remove except RuntimeException
-		run(group, new RuntimeExceptions());
-
-		// remove unused methods - this leaves Code with no instructions,
-		// which is not valid, so unused methods is run after
-		run(group, new UnreachedCode());
 		run(group, new UnusedMethods());
+
+		run(group, new ControlFlowDeobfuscator());
+
+		// remove .catch RuntimeException
+		run(group, new RuntimeExceptions());
 
 		// remove illegal state exceptions, frees up some parameters
 		run(group, new IllegalStateExceptions());
