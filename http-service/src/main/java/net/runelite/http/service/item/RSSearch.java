@@ -22,27 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.item;
+package net.runelite.http.service.item;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
 
-public enum ItemType
+public class RSSearch
 {
-	DEFAULT;
+	private List<RSItem> items;
 
-	private static final Logger logger = LoggerFactory.getLogger(ItemType.class);
-
-	public static ItemType of(String type)
+	public List<RSItem> getItems()
 	{
-		try
-		{
-			return ItemType.valueOf(type.toUpperCase());
-		}
-		catch (IllegalArgumentException ex)
-		{
-			logger.warn("unable to convert type", ex);
-			return DEFAULT;
-		}
+		return items;
+	}
+
+	public void setItems(List<RSItem> items)
+	{
+		this.items = items;
 	}
 }

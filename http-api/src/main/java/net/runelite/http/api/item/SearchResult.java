@@ -24,25 +24,19 @@
  */
 package net.runelite.http.api.item;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
 
-public enum ItemType
+public class SearchResult
 {
-	DEFAULT;
+	private List<Item> items;
 
-	private static final Logger logger = LoggerFactory.getLogger(ItemType.class);
-
-	public static ItemType of(String type)
+	public List<Item> getItems()
 	{
-		try
-		{
-			return ItemType.valueOf(type.toUpperCase());
-		}
-		catch (IllegalArgumentException ex)
-		{
-			logger.warn("unable to convert type", ex);
-			return DEFAULT;
-		}
+		return items;
+	}
+
+	public void setItems(List<Item> items)
+	{
+		this.items = items;
 	}
 }
