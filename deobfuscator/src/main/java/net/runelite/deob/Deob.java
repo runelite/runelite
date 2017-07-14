@@ -31,7 +31,7 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.execution.Execution;
 import net.runelite.deob.deobfuscators.transformers.GetPathTransformer;
 import net.runelite.deob.deobfuscators.CastNull;
-import net.runelite.deob.deobfuscators.ConstantParameter;
+import net.runelite.deob.deobfuscators.constparam.ConstantParameter;
 import net.runelite.deob.deobfuscators.EnumDeobfuscator;
 import net.runelite.deob.deobfuscators.ExprArgOrder;
 import net.runelite.deob.deobfuscators.FieldInliner;

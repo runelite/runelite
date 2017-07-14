@@ -22,14 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.deob.deobfuscators;
+package net.runelite.deob.deobfuscators.constparam;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
@@ -53,48 +52,6 @@ import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
 import org.apache.commons.collections4.map.MultiValueMap;
 
-class ConstantMethodParameter
-{
-	List<Method> methods; // methods this is a parameter for
-	int paramIndex;
-	int lvtIndex;
-	List<Number> values = new ArrayList<>(); // possible values for the parameter
-	List<Instruction> operations = new ArrayList<>(); // conditional jumps based on the parameter
-	Boolean result; // result of the jumps (branch taken or not)
-	boolean invalid;
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 3;
-		hash = 47 * hash + Objects.hashCode(this.methods);
-		hash = 47 * hash + this.lvtIndex;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final ConstantMethodParameter other = (ConstantMethodParameter) obj;
-		if (!Objects.equals(this.methods, other.methods))
-		{
-			return false;
-		}
-		if (this.lvtIndex != other.lvtIndex)
-		{
-			return false;
-		}
-		return true;
-	}
-}
 
 public class ConstantParameter implements Deobfuscator
 {
