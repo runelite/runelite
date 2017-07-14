@@ -114,6 +114,7 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 
 			if (method.getCode() == null)
 			{
+				frame.getExecution().methods.add(method);
 				continue;
 			}
 
