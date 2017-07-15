@@ -73,6 +73,8 @@ public class Deob
 			System.exit(-1);
 		}
 
+		logger.info("Deobfuscator revision {}", DeobProperties.getRevision());
+
 		Stopwatch stopwatch = Stopwatch.createStarted();
 
 		ClassGroup group = JarUtil.loadJar(new File(args[0]));

@@ -24,40 +24,18 @@
  */
 package net.runelite.deob;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import org.junit.rules.ExternalResource;
 
-public class DeobProperties extends ExternalResource
+public class DeobProperties
 {
-	private String rsClient;
-	private int rsVersion;
-	private String vanillaClient;
-
-	@Override
-	protected void before() throws Throwable
+	public static String getRevision() throws IOException
 	{
 		Properties properties = new Properties();
-		InputStream resourceAsStream = getClass().getResourceAsStream("/deob-test.properties");
+		InputStream resourceAsStream = DeobProperties.class.getResourceAsStream("/deob.properties");
 		properties.load(resourceAsStream);
 
-		rsClient = (String) properties.get("rs.client");
-		rsVersion = Integer.parseInt((String) properties.get("rs.version"));
-		vanillaClient = (String) properties.get("vanilla.client");
-	}
-
-	public String getRsClient()
-	{
-		return rsClient;
-	}
-
-	public int getRsVersion()
-	{
-		return rsVersion;
-	}
-
-	public String getVanillaClient()
-	{
-		return vanillaClient;
+		return properties.getProperty("git.commit.id");
 	}
 }
