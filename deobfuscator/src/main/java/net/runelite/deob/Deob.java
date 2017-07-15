@@ -105,9 +105,6 @@ public class Deob
 		// remove unused fields
 		run(group, new UnusedFields());
 
-		// remove unused methods, again?
-		run(group, new UnusedMethods());
-
 		run(group, new FieldInliner());
 
 		run(group, new UnusedClass());
