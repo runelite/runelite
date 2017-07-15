@@ -26,10 +26,6 @@ public enum class149 implements RSEnum {
    @ObfuscatedName("u")
    public static Track1 field2196;
 
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "0"
-   )
    class149(int var3, int var4) {
       this.field2193 = var3;
       this.field2195 = var4;

@@ -20,12 +20,12 @@ public class class204 extends class119 {
    int[] field2530;
    @ObfuscatedName("v")
    int[] field2519;
-   @ObfuscatedName("a")
-   XHashTable field2528;
    @ObfuscatedName("l")
    int[] field2520;
    @ObfuscatedName("s")
    int[] field2521;
+   @ObfuscatedName("a")
+   XHashTable field2528;
    @ObfuscatedName("y")
    class205[][] field2532;
    @ObfuscatedName("h")
@@ -417,8 +417,10 @@ public class class204 extends class119 {
    public synchronized boolean method3699(Track1 var1, IndexDataBase var2, class112 var3, int var4) {
       var1.method3894();
       boolean var5 = true;
-      Object var6 = null;
-      int[] var10 = new int[]{var4};
+      int[] var6 = null;
+      if(var4 > 0) {
+         var6 = new int[]{var4};
+      }
 
       for(class199 var7 = (class199)var1.field2597.method3538(); var7 != null; var7 = (class199)var1.field2597.method3539()) {
          int var8 = (int)var7.hash;
@@ -433,7 +435,7 @@ public class class204 extends class119 {
             this.field2528.put(var9, (long)var8);
          }
 
-         if(!var9.method3857(var3, var7.field2480, var10)) {
+         if(!var9.method3857(var3, var7.field2480, var6)) {
             var5 = false;
          }
       }

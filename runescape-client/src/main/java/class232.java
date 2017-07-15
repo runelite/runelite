@@ -25,10 +25,6 @@ public enum class232 implements RSEnum {
    )
    final int field3199;
 
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "0"
-   )
    class232(String var3, String var4, int var5) {
       this.field3198 = var3;
       this.field3199 = var5;

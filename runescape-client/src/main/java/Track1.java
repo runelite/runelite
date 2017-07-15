@@ -70,7 +70,7 @@ public class Track1 extends Node {
       var4 += (var7 + var8 + var6 + var9 + var11) * 2;
       var4 += var10 + var12;
       var13 = var1.offset;
-      var14 = var9 + var8 + var2 + var5 + var6 + var7 + var10 + var11 + var12;
+      var14 = var9 + var2 + var5 + var6 + var7 + var8 + var10 + var11 + var12;
 
       for(var15 = 0; var15 < var14; ++var15) {
          var1.readVarInt();

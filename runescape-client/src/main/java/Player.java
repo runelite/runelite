@@ -513,7 +513,7 @@ public final class Player extends Actor {
                                     class162.field2299[var36 - 1][var37 - 1] = var27;
                                  }
 
-                                 if(var36 < 126 && var37 > 0 && class162.field2304[var36 + 1][var37 - 1] == 0 && (var33[1 + var25][var26 - 1] & 19136911) == 0 && (var33[var25 + 2][var26 - 1] & 19136899) == 0 && (var33[var25 + 2][var26] & 19136995) == 0) {
+                                 if(var36 < 126 && var37 > 0 && class162.field2304[var36 + 1][var37 - 1] == 0 && (var33[var25 + 1][var26 - 1] & 19136911) == 0 && (var33[var25 + 2][var26 - 1] & 19136899) == 0 && (var33[var25 + 2][var26] & 19136995) == 0) {
                                     class162.field2301[var39] = var16 + 1;
                                     class162.field2303[var39] = var17 - 1;
                                     var39 = var39 + 1 & 4095;
@@ -529,7 +529,7 @@ public final class Player extends Actor {
                                     class162.field2299[var36 - 1][var37 + 1] = var27;
                                  }
 
-                                 if(var36 < 126 && var37 < 126 && class162.field2304[1 + var36][1 + var37] == 0 && (var33[var25 + 1][var26 + 2] & 19137016) == 0 && (var33[var25 + 2][var26 + 2] & 19136992) == 0 && (var33[var25 + 2][var26 + 1] & 19136995) == 0) {
+                                 if(var36 < 126 && var37 < 126 && class162.field2304[1 + var36][var37 + 1] == 0 && (var33[var25 + 1][var26 + 2] & 19137016) == 0 && (var33[var25 + 2][var26 + 2] & 19136992) == 0 && (var33[var25 + 2][var26 + 1] & 19136995) == 0) {
                                     class162.field2301[var39] = var16 + 1;
                                     class162.field2303[var39] = var17 + 1;
                                     var39 = var39 + 1 & 4095;
@@ -683,7 +683,7 @@ public final class Player extends Actor {
                                                          break;
                                                       }
 
-                                                      if((var33[var25 - 1][var28 + (var26 - 1)] & 19136830) != 0 || (var33[var25 - 1 + var28][var26 - 1] & 19136911) != 0) {
+                                                      if((var33[var25 - 1][var26 - 1 + var28] & 19136830) != 0 || (var33[var25 - 1 + var28][var26 - 1] & 19136911) != 0) {
                                                          break;
                                                       }
 

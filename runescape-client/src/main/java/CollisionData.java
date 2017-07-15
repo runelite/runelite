@@ -35,10 +35,6 @@ public class CollisionData {
    @Export("y")
    public int y;
 
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "104"
-   )
    public CollisionData(int var1, int var2) {
       this.x = 0;
       this.y = 0;

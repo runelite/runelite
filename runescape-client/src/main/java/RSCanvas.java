@@ -514,12 +514,12 @@ public final class RSCanvas extends Canvas {
 
                      var61 = var0.hitsplatCycles[var75] - Client.gameCycle;
                      int var62 = var87.field3417 - var61 * var87.field3417 / var87.field3418;
-                     int var63 = var87.field3424 * var61 / var87.field3418 + -var87.field3424;
+                     int var63 = var61 * var87.field3424 / var87.field3418 + -var87.field3424;
                      int var64 = var2 + Client.screenY - (var50 >> 1) + var62;
                      int var65 = var63 + (var3 + Client.screenX - 12);
                      int var66 = var65;
                      int var67 = var41 + var65;
-                     int var68 = var65 + 15 + var87.field3432;
+                     int var68 = 15 + var65 + var87.field3432;
                      int var69 = var68 - var84.minSpacing;
                      int var70 = var68 + var84.maxSpacing;
                      if(var69 < var65) {
@@ -534,7 +534,7 @@ public final class RSCanvas extends Canvas {
                      int var72;
                      int var73;
                      if(var79 != null) {
-                        var71 = var65 + 15 + var79.field3432;
+                        var71 = 15 + var65 + var79.field3432;
                         var72 = var71 - var43.minSpacing;
                         var73 = var71 + var43.maxSpacing;
                         if(var72 < var66) {

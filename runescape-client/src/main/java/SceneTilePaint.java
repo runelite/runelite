@@ -47,10 +47,6 @@ public final class SceneTilePaint {
    @Export("texture")
    int texture;
 
-   @ObfuscatedSignature(
-      signature = "(IIIIIIZ)V",
-      garbageValue = "0"
-   )
    SceneTilePaint(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
       this.flatShade = true;
       this.swColor = var1;

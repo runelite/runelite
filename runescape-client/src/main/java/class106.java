@@ -1,6 +1,5 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("de")
 public class class106 extends Node {
@@ -279,7 +278,7 @@ public class class106 extends Node {
             var27 = var20[var17 + 1 + var25 * 4];
             var28 = var20[var25 * 4 + 3];
             var29 = var20[var25 * 4 + 1];
-            var20[var25 * 4 + var17 + 3] = var26 + var28;
+            var20[4 * var25 + var17 + 3] = var26 + var28;
             var20[var17 + 1 + var25 * 4] = var27 + var29;
             var30 = var44[var17 - 4 - var25 * 4];
             var31 = var44[var17 - 3 - var25 * 4];
@@ -299,7 +298,7 @@ public class class106 extends Node {
 
             for(var50 = 0; var50 < 2 << var47; ++var50) {
                int var51 = var4 - var48 * 2 * var50;
-               int var52 = var4 - (2 * var50 + 1) * var48;
+               int var52 = var4 - (var50 * 2 + 1) * var48;
 
                for(int var32 = 0; var32 < var4 >> var47 + 4; ++var32) {
                   int var33 = var32 * 4;
@@ -435,10 +434,6 @@ public class class106 extends Node {
    }
 
    @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "([BI)V",
-      garbageValue = "0"
-   )
    @Export("setBytes")
    static void setBytes(byte[] var0, int var1) {
       payload = var0;

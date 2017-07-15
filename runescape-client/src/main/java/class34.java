@@ -117,7 +117,7 @@ public class class34 {
                      }
 
                      if(var8.field434 == 3) {
-                        Rasterizer2D.method4927(this.field471 * var1, this.field471 * (63 - var2) + this.field471 - 1, 1, var10);
+                        Rasterizer2D.method4927(this.field471 * var1, (63 - var2) * this.field471 + this.field471 - 1, 1, var10);
                      }
                   }
 

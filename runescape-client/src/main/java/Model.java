@@ -781,7 +781,7 @@ public class Model extends Renderable {
                   var16 = var14 & 127;
                   var17 = var13 >> 7;
                   var18 = var14 >> 7;
-                  var19 = var15 * var1[var17 + 1][var18] + var1[var17][var18] * (128 - var15) >> 7;
+                  var19 = var1[var17 + 1][var18] * var15 + var1[var17][var18] * (128 - var15) >> 7;
                   var20 = var15 * var1[var17 + 1][var18 + 1] + var1[var17][var18 + 1] * (128 - var15) >> 7;
                   var21 = var19 * (128 - var16) + var20 * var16 >> 7;
                   var11.verticesY[var12] = var21 + this.verticesY[var12] - var3;
@@ -796,8 +796,8 @@ public class Model extends Renderable {
                      var17 = var15 & 127;
                      var18 = var14 >> 7;
                      var19 = var15 >> 7;
-                     var20 = var1[var18 + 1][var19] * var16 + var1[var18][var19] * (128 - var16) >> 7;
-                     var21 = var1[var18 + 1][var19 + 1] * var16 + var1[var18][var19 + 1] * (128 - var16) >> 7;
+                     var20 = var16 * var1[var18 + 1][var19] + var1[var18][var19] * (128 - var16) >> 7;
+                     var21 = var16 * var1[var18 + 1][var19 + 1] + var1[var18][var19 + 1] * (128 - var16) >> 7;
                      int var22 = var20 * (128 - var17) + var21 * var17 >> 7;
                      var11.verticesY[var12] = (var22 - var3) * (var6 - var13) / var6 + this.verticesY[var12];
                   }
@@ -846,7 +846,7 @@ public class Model extends Renderable {
                int var18 = var2 * this.XYZMag >> 16;
                int var19 = (var17 + var18) * Graphics3D.field2026;
                if(var19 / var13 > Graphics3D.field2021) {
-                  int var20 = (var3 * super.modelHeight >> 16) + var18;
+                  int var20 = (super.modelHeight * var3 >> 16) + var18;
                   int var21 = (var17 - var20) * Graphics3D.field2026;
                   if(var21 / var13 < Graphics3D.field2027) {
                      int var22 = var12 + (var2 * super.modelHeight >> 16);
@@ -1576,8 +1576,8 @@ public class Model extends Renderable {
 
       int var8 = Graphics3D.centerX;
       int var9 = Graphics3D.centerY;
-      int var10000 = field1981[var1];
-      var10000 = field1932[var1];
+      int var10 = field1981[var1];
+      int var11 = field1932[var1];
       int var12 = field1981[var2];
       int var13 = field1932[var2];
       int var14 = field1981[var3];
@@ -1595,6 +1595,12 @@ public class Model extends Renderable {
             var23 = var21 * var14 + var20 * var15 >> 16;
             var21 = var21 * var15 - var20 * var14 >> 16;
             var20 = var23;
+         }
+
+         if(var1 != 0) {
+            var23 = var21 * var11 - var22 * var10 >> 16;
+            var22 = var21 * var10 + var22 * var11 >> 16;
+            var21 = var23;
          }
 
          if(var2 != 0) {
@@ -1635,8 +1641,8 @@ public class Model extends Renderable {
 
       int var9 = Graphics3D.centerX;
       int var10 = Graphics3D.centerY;
-      int var10000 = field1981[var1];
-      var10000 = field1932[var1];
+      int var11 = field1981[var1];
+      int var12 = field1932[var1];
       int var13 = field1981[var2];
       int var14 = field1932[var2];
       int var15 = field1981[var3];
@@ -1654,6 +1660,12 @@ public class Model extends Renderable {
             var24 = var22 * var15 + var21 * var16 >> 16;
             var22 = var22 * var16 - var21 * var15 >> 16;
             var21 = var24;
+         }
+
+         if(var1 != 0) {
+            var24 = var22 * var12 - var23 * var11 >> 16;
+            var23 = var22 * var11 + var23 * var12 >> 16;
+            var22 = var24;
          }
 
          if(var2 != 0) {

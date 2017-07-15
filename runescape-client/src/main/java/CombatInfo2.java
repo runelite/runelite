@@ -187,6 +187,6 @@ public class CombatInfo2 extends CacheableNode {
       int var2 = Varcs.method1804(var0 - 1, var1 - 1) + Varcs.method1804(var0 + 1, var1 - 1) + Varcs.method1804(var0 - 1, var1 + 1) + Varcs.method1804(var0 + 1, var1 + 1);
       int var3 = Varcs.method1804(var0 - 1, var1) + Varcs.method1804(var0 + 1, var1) + Varcs.method1804(var0, var1 - 1) + Varcs.method1804(var0, var1 + 1);
       int var4 = Varcs.method1804(var0, var1);
-      return var2 / 16 + var3 / 8 + var4 / 4;
+      return var3 / 8 + var2 / 16 + var4 / 4;
    }
 }

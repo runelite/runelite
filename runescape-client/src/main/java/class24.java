@@ -38,10 +38,6 @@ public class class24 {
       field354 = new class24("LARGE", 2, 2, 0);
    }
 
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;III)V",
-      garbageValue = "4"
-   )
    class24(String var1, int var2, int var3, int var4) {
       this.field353 = var1;
       this.field356 = var2;

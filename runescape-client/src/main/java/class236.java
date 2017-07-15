@@ -253,7 +253,7 @@ public class class236 implements Runnable {
                   var4 = Client.secretPacketBuffer2.readUnsignedByte();
                   var5 = Client.secretPacketBuffer2.readUnsignedShort();
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
-                     var1 = var1 * 128 + 64;
+                     var1 = 128 * var1 + 64;
                      var2 = var2 * 128 + 64;
                      GraphicsObject var42 = new GraphicsObject(var3, class45.plane, var1, var2, Actor.getTileHeight(var1, var2, class45.plane) - var4, var5, Client.gameCycle);
                      Client.graphicsObjectDeque.addFront(var42);
@@ -372,7 +372,7 @@ public class class236 implements Runnable {
                      var12 = Client.secretPacketBuffer2.readUnsignedByte();
                      if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104 && var3 >= 0 && var4 >= 0 && var3 < 104 && var4 < 104 && var6 != '\uffff') {
                         var1 = var1 * 128 + 64;
-                        var2 = var2 * 128 + 64;
+                        var2 = 128 * var2 + 64;
                         var3 = var3 * 128 + 64;
                         var4 = var4 * 128 + 64;
                         Projectile var34 = new Projectile(var6, class45.plane, var1, var2, Actor.getTileHeight(var1, var2, class45.plane) - var7, var9 + Client.gameCycle, var10 + Client.gameCycle, var11, var12, var5, var32);

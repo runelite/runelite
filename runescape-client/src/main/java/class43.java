@@ -39,10 +39,6 @@ public class class43 {
    @ObfuscatedName("e")
    int[][] field557;
 
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "64"
-   )
    class43(int var1, int var2) {
       this.field552 = var1;
       this.field562 = var2;

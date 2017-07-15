@@ -93,7 +93,7 @@ public class WorldMapType3 implements WorldMapSectionBase {
       garbageValue = "-1671303044"
    )
    public boolean vmethod721(int var1, int var2, int var3) {
-      return var1 >= this.field379 && var1 < this.field387 + this.field379?var2 >= (this.field384 << 6) + (this.field376 << 3) && var2 <= (this.field382 << 3) + (this.field384 << 6) + 7 && var3 >= (this.field377 << 6) + (this.field388 << 3) && var3 <= (this.field383 << 3) + (this.field377 << 6) + 7:false;
+      return var1 >= this.field379 && var1 < this.field387 + this.field379?var2 >= (this.field384 << 6) + (this.field376 << 3) && var2 <= (this.field382 << 3) + (this.field384 << 6) + 7 && var3 >= (this.field377 << 6) + (this.field388 << 3) && var3 <= (this.field377 << 6) + (this.field383 << 3) + 7:false;
    }
 
    @ObfuscatedName("a")

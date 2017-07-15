@@ -327,7 +327,7 @@ public class Frames extends CacheableNode {
                                     Deque var48 = Client.groundItemDeque[class45.plane][var23][var24];
                                     if(var48 != null) {
                                        var26 = var23 * 4 + 2 - Script.localPlayer.x / 32;
-                                       var49 = 4 * var24 + 2 - Script.localPlayer.y / 32;
+                                       var49 = var24 * 4 + 2 - Script.localPlayer.y / 32;
                                        ScriptVarType.drawDot(var12, var13, var26, var49, class163.mapDots[0], var57);
                                     }
                                  }
@@ -720,8 +720,8 @@ public class Frames extends CacheableNode {
                                                 var47 = class46.getColTags(16748608) + var53.name + "</col>" + " " + 'x' + class56.method830(var10.itemQuantities[var20]);
                                              }
 
-                                             var25 = var22 * (115 + var10.paddingX) + var12;
-                                             var26 = var21 * (12 + var10.paddingY) + var13;
+                                             var25 = var22 * (var10.paddingX + 115) + var12;
+                                             var26 = var21 * (var10.paddingY + 12) + var13;
                                              if(var10.field2716 == 0) {
                                                 var55.method4725(var47, var25, var26, var10.textColor, var10.textShadowed?0:-1);
                                              } else if(var10.field2716 == 1) {
@@ -743,7 +743,7 @@ public class Frames extends CacheableNode {
                                     String var54 = var10.text;
 
                                     String var72;
-                                    for(var54 = class71.method1103(var54, var10); var54.length() > 0; var20 += 1 + var52.verticalSpace) {
+                                    for(var54 = class71.method1103(var54, var10); var54.length() > 0; var20 += var52.verticalSpace + 1) {
                                        var24 = var54.indexOf("<br>");
                                        if(var24 != -1) {
                                           var72 = var54.substring(0, var24);
@@ -762,7 +762,7 @@ public class Frames extends CacheableNode {
                                     var46 += 6;
                                     var20 += 7;
                                     var24 = var12 + var10.width - 5 - var46;
-                                    var25 = var13 + var10.height + 5;
+                                    var25 = var10.height + var13 + 5;
                                     if(var24 < var12 + 5) {
                                        var24 = var12 + 5;
                                     }

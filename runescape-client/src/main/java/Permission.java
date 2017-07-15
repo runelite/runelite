@@ -34,10 +34,6 @@ public enum Permission implements RSEnum {
    @ObfuscatedName("p")
    public final boolean field3182;
 
-   @ObfuscatedSignature(
-      signature = "(IIZZZ)V",
-      garbageValue = "1"
-   )
    Permission(int var3, int var4, boolean var5, boolean var6, boolean var7) {
       this.field3173 = var3;
       this.field3178 = var4;

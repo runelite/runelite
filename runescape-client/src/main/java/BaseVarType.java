@@ -421,7 +421,7 @@ public enum BaseVarType implements RSEnum {
 
                   var0 = class11.renderOverview.method5108();
                   if(var0 < 100) {
-                     class92.loadingText = "Loading world map - " + (9 * var0 / 10 + 10) + "%";
+                     class92.loadingText = "Loading world map - " + (var0 * 9 / 10 + 10) + "%";
                   } else {
                      class92.loadingText = "Loaded world map";
                      class92.loadingBarPercentage = 100;

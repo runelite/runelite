@@ -22,10 +22,6 @@ public enum class91 implements RSEnum {
    @ObfuscatedName("p")
    public static short[][] field1414;
 
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "0"
-   )
    class91(int var3) {
       this.field1412 = var3;
    }

@@ -128,7 +128,7 @@ public final class class10 extends class9 {
          }
 
          int[] var10 = class221.field2833.image;
-         var11 = (103 - var2) * 2048 + 4 * var1 + 24624;
+         var11 = 2048 * (103 - var2) + 24624 + 4 * var1;
          var12 = var5 >> 14 & 32767;
          ObjectComposition var13 = PlayerComposition.getObjectDefinition(var12);
          if(var13.mapSceneId != -1) {
@@ -136,7 +136,7 @@ public final class class10 extends class9 {
             if(var14 != null) {
                int var15 = (var13.sizeX * 4 - var14.originalWidth) / 2;
                int var16 = (var13.sizeY * 4 - var14.height) / 2;
-               var14.method4952(var15 + 48 + 4 * var1, var16 + (104 - var2 - var13.sizeY) * 4 + 48);
+               var14.method4952(var15 + var1 * 4 + 48, var16 + (104 - var2 - var13.sizeY) * 4 + 48);
             }
          } else {
             if(var8 == 0 || var8 == 2) {
@@ -188,7 +188,7 @@ public final class class10 extends class9 {
                   var10[var11 + 3] = var9;
                } else if(var7 == 1) {
                   var10[var11 + 3] = var9;
-                  var10[3 + var11 + 512] = var9;
+                  var10[var11 + 3 + 512] = var9;
                   var10[var11 + 3 + 1024] = var9;
                   var10[var11 + 3 + 1536] = var9;
                } else if(var7 == 2) {

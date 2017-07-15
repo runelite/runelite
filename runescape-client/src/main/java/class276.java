@@ -1,6 +1,5 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jm")
 public class class276 {
@@ -22,10 +21,6 @@ public class class276 {
       field3732 = new class276(2);
    }
 
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "0"
-   )
    class276(int var1) {
       this.field3731 = var1;
    }

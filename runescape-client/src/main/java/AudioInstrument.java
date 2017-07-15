@@ -181,7 +181,7 @@ public class AudioInstrument {
                   var15 = delays[var14] + var11;
                   if(var15 < var1) {
                      samples[var15] += this.evaluateWave(phases[var14], volumeSteps[var14] * var13 >> 15, this.pitch.form);
-                     phases[var14] += pitchBaseSteps[var14] + (pitchSteps[var14] * var12 >> 16);
+                     phases[var14] += pitchBaseSteps[var14] + (var12 * pitchSteps[var14] >> 16);
                   }
                }
             }
@@ -199,9 +199,9 @@ public class AudioInstrument {
                var15 = this.release.step(var1);
                var16 = this.field1736.step(var1);
                if(var20) {
-                  var12 = (var15 * (this.release.end - this.release.start) >> 8) + this.release.start;
+                  var12 = ((this.release.end - this.release.start) * var15 >> 8) + this.release.start;
                } else {
-                  var12 = (var16 * (this.release.end - this.release.start) >> 8) + this.release.start;
+                  var12 = ((this.release.end - this.release.start) * var16 >> 8) + this.release.start;
                }
 
                var11 += 256;

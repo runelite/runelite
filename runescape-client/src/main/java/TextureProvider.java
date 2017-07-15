@@ -40,10 +40,6 @@ public class TextureProvider implements ITextureLoader {
    @Export("maxSize")
    int maxSize;
 
-   @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;IDI)V",
-      garbageValue = "64"
-   )
    public TextureProvider(IndexDataBase var1, IndexDataBase var2, int var3, double var4, int var6) {
       this.deque = new Deque();
       this.size = 0;
@@ -144,10 +140,6 @@ public class TextureProvider implements ITextureLoader {
    }
 
    @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(D)V",
-      garbageValue = "0.8"
-   )
    @Export("brightness")
    public void brightness(double var1) {
       this.brightness = var1;

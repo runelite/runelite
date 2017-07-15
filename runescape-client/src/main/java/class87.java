@@ -123,7 +123,7 @@ public class class87 {
             var12.putString(var29);
             var12.offset = var11;
             var12.encryptXtea2(var10);
-            Buffer var13 = new Buffer(var12.offset + var9.offset + var24.offset + 5);
+            Buffer var13 = new Buffer(var12.offset + var24.offset + 5 + var9.offset);
             var13.putByte(2);
             var13.putByte(var24.offset);
             var13.putBytes(var24.payload, 0, var24.offset);

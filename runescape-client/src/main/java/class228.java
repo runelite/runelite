@@ -34,10 +34,6 @@ public enum class228 implements RSEnum {
    )
    final int field3160;
 
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "0"
-   )
    class228(int var3, int var4) {
       this.field3152 = var3;
       this.field3160 = var4;

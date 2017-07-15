@@ -78,7 +78,7 @@ public class Buffer extends Node {
    @Export("readInt")
    public int readInt() {
       this.offset += 4;
-      return ((this.payload[this.offset - 2] & 255) << 8) + ((this.payload[this.offset - 4] & 255) << 24) + ((this.payload[this.offset - 3] & 255) << 16) + (this.payload[this.offset - 1] & 255);
+      return ((this.payload[this.offset - 4] & 255) << 24) + ((this.payload[this.offset - 3] & 255) << 16) + ((this.payload[this.offset - 2] & 255) << 8) + (this.payload[this.offset - 1] & 255);
    }
 
    @ObfuscatedName("j")
@@ -475,7 +475,7 @@ public class Buffer extends Node {
    )
    public int method3184() {
       this.offset += 4;
-      return (this.payload[this.offset - 4] & 255) + ((this.payload[this.offset - 2] & 255) << 16) + ((this.payload[this.offset - 1] & 255) << 24) + ((this.payload[this.offset - 3] & 255) << 8);
+      return (this.payload[this.offset - 4] & 255) + ((this.payload[this.offset - 1] & 255) << 24) + ((this.payload[this.offset - 2] & 255) << 16) + ((this.payload[this.offset - 3] & 255) << 8);
    }
 
    @ObfuscatedName("bw")
@@ -835,8 +835,8 @@ public class Buffer extends Node {
          int var6 = 0;
          int var7 = -1640531527;
 
-         for(int var8 = 32; var8-- > 0; var5 += var4 + (var4 << 4 ^ var4 >>> 5) ^ var6 + var1[var6 >>> 11 & 3]) {
-            var4 += var5 + (var5 << 4 ^ var5 >>> 5) ^ var1[var6 & 3] + var6;
+         for(int var8 = 32; var8-- > 0; var5 += var4 + (var4 << 4 ^ var4 >>> 5) ^ var1[var6 >>> 11 & 3] + var6) {
+            var4 += var5 + (var5 << 4 ^ var5 >>> 5) ^ var6 + var1[var6 & 3];
             var6 += var7;
          }
 
@@ -906,7 +906,7 @@ public class Buffer extends Node {
    )
    public int method3180() {
       this.offset += 3;
-      return (this.payload[this.offset - 3] & 255) + ((this.payload[this.offset - 1] & 255) << 16) + ((this.payload[this.offset - 2] & 255) << 8);
+      return (this.payload[this.offset - 3] & 255) + ((this.payload[this.offset - 2] & 255) << 8) + ((this.payload[this.offset - 1] & 255) << 16);
    }
 
    @ObfuscatedName("bd")

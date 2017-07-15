@@ -256,7 +256,7 @@ public class XClanMember extends Node {
                int var23 = var1.verticalSpace + 8;
                Rasterizer2D.method4921(MouseInput.field722 - var16 / 2, MouseInput.field723 + 20 + 5, var16, var23, 16777120);
                Rasterizer2D.drawRectangle(MouseInput.field722 - var16 / 2, MouseInput.field723 + 20 + 5, var16, var23, 0);
-               var1.method4734(World.worldList[class92.field1448].activity, MouseInput.field722, 20 + MouseInput.field723 + 5 + var1.verticalSpace + 4, 0, -1);
+               var1.method4734(World.worldList[class92.field1448].activity, MouseInput.field722, MouseInput.field723 + 20 + 5 + var1.verticalSpace + 4, 0, -1);
             }
          }
 
@@ -440,7 +440,7 @@ public class XClanMember extends Node {
                   var8 = 321;
                   class208.field2595.method4952(var7 - 73, var8 - 20);
                   var0.method4734("Recover", var7, var8 + 5, 16777215, 0);
-                  var7 = class92.loginWindowX + 180 + 80;
+                  var7 = 180 + class92.loginWindowX + 80;
                   class208.field2595.method4952(var7 - 73, var8 - 20);
                   var0.method4734("Back", var7, var8 + 5, 16777215, 0);
                } else if(class92.loginIndex == 6) {

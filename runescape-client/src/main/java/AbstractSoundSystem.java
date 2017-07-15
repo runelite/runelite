@@ -310,10 +310,6 @@ public class AbstractSoundSystem {
    }
 
    @ObfuscatedName("aa")
-   @ObfuscatedSignature(
-      signature = "([II)V",
-      garbageValue = "256"
-   )
    final void method1990(int[] var1, int var2) {
       int var3 = var2;
       if(highMemory) {

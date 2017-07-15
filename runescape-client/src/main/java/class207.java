@@ -35,7 +35,7 @@ public class class207 extends Node {
       Buffer var2 = new Buffer(var1);
 
       int var3;
-      for(var3 = 0; var2.payload[var3 + var2.offset] != 0; ++var3) {
+      for(var3 = 0; var2.payload[var2.offset + var3] != 0; ++var3) {
          ;
       }
 

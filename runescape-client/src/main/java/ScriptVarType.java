@@ -595,10 +595,6 @@ public class ScriptVarType implements RSEnum, class292 {
       this(var1, var2, var3, var4, (String)null, var5);
    }
 
-   @ObfuscatedSignature(
-      signature = "(LBaseVarType;Ljava/lang/Object;C)V",
-      garbageValue = "35"
-   )
    ScriptVarType(BaseVarType var1, Object var2, char var3) {
       this(-1, var3, var1, var2, new class1[0]);
    }

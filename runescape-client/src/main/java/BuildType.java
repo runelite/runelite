@@ -38,10 +38,6 @@ public class BuildType {
       BUILD_LIVE = new BuildType("WIP", 2);
    }
 
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "0"
-   )
    BuildType(String var1, int var2) {
       this.identifier = var1;
       this.ordinal = var2;

@@ -39,10 +39,6 @@ public final class IndexFile {
       field2279 = new byte[520];
    }
 
-   @ObfuscatedSignature(
-      signature = "(ILCacheFile;LCacheFile;I)V",
-      garbageValue = "500000"
-   )
    public IndexFile(int var1, CacheFile var2, CacheFile var3, int var4) {
       this.dataFile = null;
       this.indexFile = null;
@@ -2159,7 +2155,7 @@ public final class IndexFile {
                                                                                                                                  } else if(var9 == 6634) {
                                                                                                                                     WorldMapType2.intStackSize -= 2;
                                                                                                                                     var16 = class83.intStack[WorldMapType2.intStackSize];
-                                                                                                                                    var95 = class83.intStack[WorldMapType2.intStackSize + 1] == 1;
+                                                                                                                                    var95 = class83.intStack[1 + WorldMapType2.intStackSize] == 1;
                                                                                                                                     class39.method548().method5150(var16, var95);
                                                                                                                                     var15 = 1;
                                                                                                                                  } else if(var9 == 6635) {

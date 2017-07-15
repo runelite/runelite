@@ -345,7 +345,7 @@ public final class class29 {
                               class92.field1446 = !class92.field1446;
                            }
 
-                           if(var1 == 1 && var10 >= class92.loginWindowX + 180 - 34 && var10 <= class92.loginWindowX + 180 + 34 && var11 >= 351 && var11 <= 363) {
+                           if(var1 == 1 && var10 >= class92.loginWindowX + 180 - 34 && var10 <= 180 + class92.loginWindowX + 34 && var11 >= 351 && var11 <= 363) {
                               class36.method485(WidgetNode.method1089("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
                            }
 

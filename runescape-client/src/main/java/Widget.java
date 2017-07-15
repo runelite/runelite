@@ -1172,14 +1172,14 @@ public class Widget extends Node {
 
                   int var13;
                   for(var13 = 0; var13 < var7.width; ++var13) {
-                     if(var7.image[var13 + var10 * var7.width] == 0) {
+                     if(var7.image[var7.width * var10 + var13] == 0) {
                         var11 = var13;
                         break;
                      }
                   }
 
                   for(var13 = var7.width - 1; var13 >= var11; --var13) {
-                     if(var7.image[var13 + var7.width * var10] == 0) {
+                     if(var7.image[var13 + var10 * var7.width] == 0) {
                         var12 = var13 + 1;
                         break;
                      }
@@ -1457,7 +1457,7 @@ public class Widget extends Node {
       Rasterizer2D.method4865(var0 + 15, var6 + var1 + 16, var5, Client.field985);
       Rasterizer2D.method4865(var0 + 14, var6 + var1 + 17, var5 - 1, Client.field985);
       Rasterizer2D.method4927(var0, var6 + var1 + 15 + var5, 16, Client.field985);
-      Rasterizer2D.method4927(var0 + 1, var5 + var1 + 14 + var6, 15, Client.field985);
+      Rasterizer2D.method4927(var0 + 1, var5 + 14 + var1 + var6, 15, Client.field985);
    }
 
    @ObfuscatedName("a")

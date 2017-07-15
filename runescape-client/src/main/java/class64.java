@@ -72,7 +72,7 @@ public class class64 {
          }
 
          var29 = Client.field969 + Client.mapAngle & 2047;
-         class182.method3428(class54.field659, Actor.getTileHeight(Script.localPlayer.x, Script.localPlayer.y, class45.plane) - Client.field995, class48.field605, var5, var29, 3 * var5 + 600);
+         class182.method3428(class54.field659, Actor.getTileHeight(Script.localPlayer.x, Script.localPlayer.y, class45.plane) - Client.field995, class48.field605, var5, var29, var5 * 3 + 600);
       }
 
       int var8;
@@ -324,7 +324,7 @@ public class class64 {
             if(Client.field1005[var18] == 9) {
                var26 = 150 - Client.field1167[var18];
                if(var26 < 50) {
-                  var25 = 1280 * var26 + 16711680;
+                  var25 = var26 * 1280 + 16711680;
                } else if(var26 < 100) {
                   var25 = 16776960 - (var26 - 50) * 327680;
                } else if(var26 < 150) {

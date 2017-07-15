@@ -575,7 +575,7 @@ public abstract class Actor extends Renderable {
 
          int var6 = var0 & 127;
          int var7 = var1 & 127;
-         int var8 = (128 - var6) * class61.tileHeights[var5][var3][var4] + var6 * class61.tileHeights[var5][var3 + 1][var4] >> 7;
+         int var8 = class61.tileHeights[var5][var3][var4] * (128 - var6) + var6 * class61.tileHeights[var5][1 + var3][var4] >> 7;
          int var9 = class61.tileHeights[var5][var3][var4 + 1] * (128 - var6) + var6 * class61.tileHeights[var5][var3 + 1][var4 + 1] >> 7;
          return var9 * var7 + var8 * (128 - var7) >> 7;
       } else {

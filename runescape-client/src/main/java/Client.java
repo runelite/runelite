@@ -4770,7 +4770,7 @@ public final class Client extends GameEngine {
                         var6 = 764;
                      }
 
-                     var7 = var6 + 765 * var5;
+                     var7 = var6 + var5 * 765;
                      if(KeyFocusListener.field641.field851[var4] == -1 && KeyFocusListener.field641.field850[var4] == -1) {
                         var6 = -1;
                         var5 = -1;
@@ -5243,7 +5243,7 @@ public final class Client extends GameEngine {
                                                 var4 = XItemContainer.field782 * 128 + 64;
                                                 var5 = Actor.getTileHeight(var3, var4, class45.plane) - PendingSpawn.field1203;
                                                 if(class41.cameraX < var3) {
-                                                   class41.cameraX += DecorativeObject.field2171 + class43.field559 * (var3 - class41.cameraX) / 1000;
+                                                   class41.cameraX += (var3 - class41.cameraX) * class43.field559 / 1000 + DecorativeObject.field2171;
                                                    if(class41.cameraX > var3) {
                                                       class41.cameraX = var3;
                                                    }
@@ -5264,7 +5264,7 @@ public final class Client extends GameEngine {
                                                 }
 
                                                 if(XItemContainer.cameraZ > var5) {
-                                                   XItemContainer.cameraZ -= class43.field559 * (XItemContainer.cameraZ - var5) / 1000 + DecorativeObject.field2171;
+                                                   XItemContainer.cameraZ -= (XItemContainer.cameraZ - var5) * class43.field559 / 1000 + DecorativeObject.field2171;
                                                    if(XItemContainer.cameraZ < var5) {
                                                       XItemContainer.cameraZ = var5;
                                                    }
@@ -5325,7 +5325,7 @@ public final class Client extends GameEngine {
                                                 }
 
                                                 if(var12 > 0) {
-                                                   Friend.cameraYaw += Timer.field2255 + var12 * class37.field498 / 1000;
+                                                   Friend.cameraYaw += var12 * class37.field498 / 1000 + Timer.field2255;
                                                    Friend.cameraYaw &= 2047;
                                                 }
 

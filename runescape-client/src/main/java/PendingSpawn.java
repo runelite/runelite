@@ -211,7 +211,7 @@ public final class PendingSpawn extends Node {
                var17 = 65536 / var15;
                var18 = (var14 << 8) / var15;
                var19 = (var17 * -10 + var16 * -50 + var18 * -50) / var10 + 96;
-               var20 = (var42[var12][var11] >> 1) + (var42[var12][var11 + 1] >> 3) + (var42[var12 + 1][var11] >> 3) + (var42[var12 - 1][var11] >> 2) + (var42[var12][var11 - 1] >> 2);
+               var20 = (var42[var12][var11] >> 1) + (var42[var12 + 1][var11] >> 3) + (var42[var12 - 1][var11] >> 2) + (var42[var12][var11 - 1] >> 2) + (var42[var12][1 + var11] >> 3);
                FileRequest.field3211[var12][var11] = var19 - var20;
             }
          }
@@ -489,7 +489,7 @@ public final class PendingSpawn extends Node {
                         ;
                      }
 
-                     while(var10 < 104 && (class9.field249[var6][1 + var10][var7] & var3) != 0) {
+                     while(var10 < 104 && (class9.field249[var6][var10 + 1][var7] & var3) != 0) {
                         ++var10;
                      }
 
@@ -539,7 +539,7 @@ public final class PendingSpawn extends Node {
                         ;
                      }
 
-                     while(var12 < 104 && (class9.field249[var6][var8][1 + var12] & var4) != 0) {
+                     while(var12 < 104 && (class9.field249[var6][var8][var12 + 1] & var4) != 0) {
                         ++var12;
                      }
 
@@ -557,7 +557,7 @@ public final class PendingSpawn extends Node {
                      label559:
                      while(var10 < 104) {
                         for(var13 = var11; var13 <= var12; ++var13) {
-                           if((class9.field249[var6][1 + var10][var13] & var4) == 0) {
+                           if((class9.field249[var6][var10 + 1][var13] & var4) == 0) {
                               break label559;
                            }
                         }
@@ -567,7 +567,7 @@ public final class PendingSpawn extends Node {
 
                      if((var12 - var11 + 1) * (var10 - var9 + 1) >= 4) {
                         var13 = class61.tileHeights[var6][var9][var11];
-                        Region.addOcclude(var5, 4, var9 * 128, var10 * 128 + 128, var11 * 128, var12 * 128 + 128, var13, var13);
+                        Region.addOcclude(var5, 4, var9 * 128, 128 * var10 + 128, var11 * 128, var12 * 128 + 128, var13, var13);
 
                         for(var14 = var9; var14 <= var10; ++var14) {
                            for(var15 = var11; var15 <= var12; ++var15) {

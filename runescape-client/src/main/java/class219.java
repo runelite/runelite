@@ -43,10 +43,6 @@ public class class219 implements class218 {
       field2792 = new class219("", 76, true, false);
    }
 
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "10"
-   )
    class219(String var1, int var2) {
       this(var1, var2, false, (ScriptVarType[])null, false, (ScriptVarType[])null);
    }
@@ -59,10 +55,6 @@ public class class219 implements class218 {
       this(var1, var2, var3 != null, var3, null != var4, var4);
    }
 
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IZZ)V",
-      garbageValue = "1"
-   )
    class219(String var1, int var2, boolean var3, boolean var4) {
       this(var1, var2, var3, (ScriptVarType[])null, var4, (ScriptVarType[])null);
    }

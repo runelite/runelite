@@ -64,10 +64,6 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "0"
-   )
    synchronized void method2255(int var1) {
       this.method2115(var1, this.method2135());
    }

@@ -60,10 +60,6 @@ public class CacheFile {
    @Export("length")
    long length;
 
-   @ObfuscatedSignature(
-      signature = "(LFileOnDisk;II)V",
-      garbageValue = "0"
-   )
    public CacheFile(FileOnDisk var1, int var2, int var3) throws IOException {
       this.field1739 = -1L;
       this.field1751 = -1L;

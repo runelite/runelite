@@ -89,7 +89,7 @@ public final class WallObject {
 
          int var10 = var0.x;
          int var2 = var0.y;
-         int var3 = 128 * var0.pathX[var0.queueSize - 1] + var0.field1218 * 64;
+         int var3 = var0.pathX[var0.queueSize - 1] * 128 + var0.field1218 * 64;
          int var4 = var0.pathY[var0.queueSize - 1] * 128 + var0.field1218 * 64;
          if(var10 < var3) {
             if(var2 < var4) {

@@ -1,7 +1,6 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("em")
 @Implements("Region")
@@ -348,9 +347,9 @@ public class Region {
             var6 = var5.minX - var1;
             if(var6 > 0) {
                var7 = (var6 * var5.minNormalX >> 8) + var5.minZ;
-               var8 = (var6 * var5.maxNormalX >> 8) + var5.maxZ;
-               var9 = (var5.minNormalY * var6 >> 8) + var5.minY;
-               var10 = (var5.maxNormalY * var6 >> 8) + var5.maxY;
+               var8 = (var5.maxNormalX * var6 >> 8) + var5.maxZ;
+               var9 = (var6 * var5.minNormalY >> 8) + var5.minY;
+               var10 = (var6 * var5.maxNormalY >> 8) + var5.maxY;
                if(var3 >= var7 && var3 <= var8 && var2 >= var9 && var2 <= var10) {
                   return true;
                }
@@ -358,10 +357,10 @@ public class Region {
          } else if(var5.testDirection == 2) {
             var6 = var1 - var5.minX;
             if(var6 > 0) {
-               var7 = (var6 * var5.minNormalX >> 8) + var5.minZ;
-               var8 = (var5.maxNormalX * var6 >> 8) + var5.maxZ;
-               var9 = (var6 * var5.minNormalY >> 8) + var5.minY;
-               var10 = (var5.maxNormalY * var6 >> 8) + var5.maxY;
+               var7 = (var5.minNormalX * var6 >> 8) + var5.minZ;
+               var8 = (var6 * var5.maxNormalX >> 8) + var5.maxZ;
+               var9 = (var5.minNormalY * var6 >> 8) + var5.minY;
+               var10 = (var6 * var5.maxNormalY >> 8) + var5.maxY;
                if(var3 >= var7 && var3 <= var8 && var2 >= var9 && var2 <= var10) {
                   return true;
                }
@@ -369,10 +368,10 @@ public class Region {
          } else if(var5.testDirection == 3) {
             var6 = var5.minZ - var3;
             if(var6 > 0) {
-               var7 = (var5.field2152 * var6 >> 8) + var5.minX;
-               var8 = (var5.field2153 * var6 >> 8) + var5.maxX;
+               var7 = (var6 * var5.field2152 >> 8) + var5.minX;
+               var8 = (var6 * var5.field2153 >> 8) + var5.maxX;
                var9 = (var5.minNormalY * var6 >> 8) + var5.minY;
-               var10 = (var6 * var5.maxNormalY >> 8) + var5.maxY;
+               var10 = (var5.maxNormalY * var6 >> 8) + var5.maxY;
                if(var1 >= var7 && var1 <= var8 && var2 >= var9 && var2 <= var10) {
                   return true;
                }
@@ -381,9 +380,9 @@ public class Region {
             var6 = var3 - var5.minZ;
             if(var6 > 0) {
                var7 = (var5.field2152 * var6 >> 8) + var5.minX;
-               var8 = (var5.field2153 * var6 >> 8) + var5.maxX;
+               var8 = (var6 * var5.field2153 >> 8) + var5.maxX;
                var9 = (var5.minNormalY * var6 >> 8) + var5.minY;
-               var10 = (var5.maxNormalY * var6 >> 8) + var5.maxY;
+               var10 = (var6 * var5.maxNormalY >> 8) + var5.maxY;
                if(var1 >= var7 && var1 <= var8 && var2 >= var9 && var2 <= var10) {
                   return true;
                }
@@ -391,10 +390,10 @@ public class Region {
          } else if(var5.testDirection == 5) {
             var6 = var2 - var5.minY;
             if(var6 > 0) {
-               var7 = (var5.field2152 * var6 >> 8) + var5.minX;
-               var8 = (var5.field2153 * var6 >> 8) + var5.maxX;
-               var9 = (var6 * var5.minNormalX >> 8) + var5.minZ;
-               var10 = (var6 * var5.maxNormalX >> 8) + var5.maxZ;
+               var7 = (var6 * var5.field2152 >> 8) + var5.minX;
+               var8 = (var6 * var5.field2153 >> 8) + var5.maxX;
+               var9 = (var5.minNormalX * var6 >> 8) + var5.minZ;
+               var10 = (var5.maxNormalX * var6 >> 8) + var5.maxZ;
                if(var1 >= var7 && var1 <= var8 && var3 >= var9 && var3 <= var10) {
                   return true;
                }
@@ -698,14 +697,14 @@ public class Region {
          var11 = var3 * var18 + var11 * var4 >> 16;
          var18 = var21;
          if(var11 >= 50) {
-            var21 = var13 * var6 + var16 * var5 >> 16;
+            var21 = var13 * var6 + var5 * var16 >> 16;
             var16 = var16 * var6 - var5 * var13 >> 16;
             var13 = var21;
             var21 = var19 * var4 - var3 * var16 >> 16;
             var16 = var3 * var19 + var16 * var4 >> 16;
             var19 = var21;
             if(var16 >= 50) {
-               var21 = var9 * var6 + var15 * var5 >> 16;
+               var21 = var9 * var6 + var5 * var15 >> 16;
                var15 = var15 * var6 - var5 * var9 >> 16;
                var9 = var21;
                var21 = var20 * var4 - var3 * var15 >> 16;
@@ -1924,7 +1923,7 @@ public class Region {
       if(var7 == null) {
          return true;
       } else {
-         int var11 = var5 * 64 + var2 * 128;
+         int var11 = 64 * var5 + var2 * 128;
          int var12 = var6 * 64 + var3 * 128;
          return this.addEntityMarker(var1, var2, var3, var5, var6, var11, var12, var4, var7, var8, false, var9, var10);
       }
@@ -2198,10 +2197,6 @@ public class Region {
    }
 
    @ObfuscatedName("ag")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-50"
-   )
    @Export("applyLighting")
    public void applyLighting(int var1, int var2, int var3) {
       for(int var4 = 0; var4 < this.maxY; ++var4) {
@@ -2457,7 +2452,7 @@ public class Region {
    static boolean method2702(int var0, int var1, int var2) {
       int var3 = var0 * yawCos + var2 * yawSin >> 16;
       int var4 = var2 * yawCos - var0 * yawSin >> 16;
-      int var5 = var4 * pitchCos + var1 * pitchSin >> 16;
+      int var5 = var4 * pitchCos + pitchSin * var1 >> 16;
       int var6 = pitchCos * var1 - var4 * pitchSin >> 16;
       if(var5 >= 50 && var5 <= 3500) {
          int var7 = var3 * 390 / var5 + field2114;

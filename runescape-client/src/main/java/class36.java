@@ -23,10 +23,6 @@ public class class36 {
       field488 = new class36(1);
    }
 
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "0"
-   )
    class36(int var1) {
       this.field490 = var1;
    }

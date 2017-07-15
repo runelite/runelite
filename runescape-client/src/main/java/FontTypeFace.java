@@ -2,7 +2,6 @@ import java.util.Random;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("js")
 @Implements("FontTypeFace")
@@ -748,10 +747,6 @@ public abstract class FontTypeFace extends Rasterizer2D {
    }
 
    @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IIII)V",
-      garbageValue = "-1"
-   )
    public void method4734(String var1, int var2, int var3, int var4, int var5) {
       if(var1 != null) {
          this.setColor(var4, var5);
@@ -760,10 +755,6 @@ public abstract class FontTypeFace extends Rasterizer2D {
    }
 
    @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IIII)V",
-      garbageValue = "0"
-   )
    public void method4725(String var1, int var2, int var3, int var4, int var5) {
       if(var1 != null) {
          this.setColor(var4, var5);
@@ -772,10 +763,6 @@ public abstract class FontTypeFace extends Rasterizer2D {
    }
 
    @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IIII)V",
-      garbageValue = "-1"
-   )
    public void method4679(String var1, int var2, int var3, int var4, int var5) {
       if(var1 != null) {
          this.setColor(var4, var5);

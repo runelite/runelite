@@ -130,7 +130,7 @@ public class class227 {
                      var3 = class45.plane;
                      var4 = (Script.localPlayer.x >> 7) + class163.baseX;
                      var12 = (Script.localPlayer.y >> 7) + class10.baseY;
-                     class83.intStack[++WorldMapType2.intStackSize - 1] = (var4 << 14) + (var3 << 28) + var12;
+                     class83.intStack[++WorldMapType2.intStackSize - 1] = (var3 << 28) + (var4 << 14) + var12;
                      return 1;
                   } else if(var0 == 3309) {
                      var3 = class83.intStack[--WorldMapType2.intStackSize];

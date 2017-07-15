@@ -1,6 +1,5 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ft")
 public final class class167 {
@@ -13,10 +12,6 @@ public final class class167 {
    }
 
    @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "([BI[BII)I",
-      garbageValue = "9"
-   )
    public static int method3076(byte[] var0, int var1, byte[] var2, int var3, int var4) {
       DState var5 = state;
       synchronized(state) {
@@ -331,7 +326,7 @@ public final class class167 {
                         if(var46 == 0) {
                            var48 += var49;
                         } else if(var46 == 1) {
-                           var48 += var49 * 2;
+                           var48 += 2 * var49;
                         }
 
                         var49 *= 2;
