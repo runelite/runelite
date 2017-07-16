@@ -22,97 +22,75 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client;
+package net.runelite.client.game;
 
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import net.runelite.client.RuneLite;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ItemManager
 {
-	private static class ItemLoader extends CacheLoader<Integer, ItemPrice>
-	{
-		private static final Logger logger = LoggerFactory.getLogger(ItemLoader.class);
+	/**
+	 * not yet looked up
+	 */
 
-		private final ListeningExecutorService executorService;
-		private final ItemClient client = new ItemClient();
+	static final ItemPrice EMPTY = new ItemPrice();
+	/**
+	 * has no price
+	 */
+	static final ItemPrice NONE = new ItemPrice();
 
-		ItemLoader(RuneLite runelite)
-		{
-			executorService = MoreExecutors.listeningDecorator(runelite.getExecutor());
-		}
-
-		@Override
-		public ItemPrice load(Integer key) throws Exception
-		{
-			// guava's Cache doesn't support null values
-			return EMPTY;
-		}
-
-		@Override
-		public ListenableFuture<ItemPrice> reload(Integer key, ItemPrice oldValue)
-		{
-			logger.debug("Submitting lookup for item {}", key);
-
-			return executorService.submit(() -> fetch(key));
-		}
-
-		private ItemPrice fetch(Integer key)
-		{
-			try
-			{
-				ItemPrice itemPrice = client.lookupItemPrice(key);
-				if (itemPrice == null)
-				{
-					return NONE;
-				}
-				return itemPrice;
-			}
-			catch (IOException ex)
-			{
-				logger.warn("unable to look up item!", ex);
-				return NONE;
-			}
-		}
-	};
-
+	private final ItemClient client = new ItemClient();
 	private final LoadingCache<Integer, ItemPrice> itemPrices;
-	private static final ItemPrice EMPTY = new ItemPrice();
-	private static final ItemPrice NONE = new ItemPrice();
 
 	public ItemManager(RuneLite runelite)
 	{
 		itemPrices = CacheBuilder.newBuilder()
-			.concurrencyLevel(4) // from runelite's ScheduledExecutorService
 			.maximumSize(512L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new ItemLoader(runelite));
+			.build(new ItemPriceLoader(runelite, client));
 	}
 
+	/**
+	 * Look up an item's price asynchronously.
+	 *
+	 * @param itemId
+	 * @return the price, or null if the price is not yet loaded
+	 */
 	public ItemPrice get(int itemId)
 	{
 		ItemPrice itemPrice = itemPrices.getIfPresent(itemId);
 		if (itemPrice != null && itemPrice != EMPTY)
 		{
-			if (itemPrice == NONE)
-			{
-				return null;
-			}
-
-			return itemPrice;
+			return itemPrice == NONE ? null : itemPrice;
 		}
 
 		itemPrices.refresh(itemId);
 		return null;
+	}
+
+	/**
+	 * Look up an item's price synchronously
+	 *
+	 * @param itemId
+	 * @return
+	 * @throws IOException
+	 */
+	public ItemPrice getItemPrice(int itemId) throws IOException
+	{
+		ItemPrice itemPrice = itemPrices.getIfPresent(itemId);
+		if (itemPrice != null && itemPrice != EMPTY)
+		{
+			return itemPrice == NONE ? null : itemPrice;
+		}
+
+		itemPrice = client.lookupItemPrice(itemId);
+		itemPrices.put(itemId, itemPrice);
+		return itemPrice;
 	}
 
 	/**
