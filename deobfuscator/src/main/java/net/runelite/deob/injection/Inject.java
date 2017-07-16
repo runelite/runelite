@@ -83,34 +83,33 @@ public class Inject
 		this.deobfuscated = deobfuscated;
 		this.vanilla = vanilla;
 	}
-	
-	public Type toObType(Type t)
+
+	public Type getFieldType(Field f)
 	{
-		if (t.isPrimitive())
-			return t;
+		Type type = f.getType();
 
-		String className = t.getType();
-		assert className.startsWith("L");
-		assert className.endsWith(";");
+		Annotation obfSignature = f.getAnnotations().find(DeobAnnotations.OBFUSCATED_SIGNATURE);
+		if (obfSignature != null)
+		{
+			//Annotation exists. Type was updated by us during deobfuscation
+			type = DeobAnnotations.getObfuscatedType(f);
+		}
 
-		className = className.substring(1, className.length() - 1); // remove L ;
-
-		ClassFile cf = deobfuscated.findClass(className);
-		if (cf == null)
-			return t;
-		
-		Annotations an = cf.getAnnotations();
-		String obfuscatedName = DeobAnnotations.getObfuscatedName(an);
-		return new Type("L" + obfuscatedName + ";", t.getArrayDims());
+		return type;
 	}
-	
-	public Signature toObSignature(Signature s)
+
+	public Signature getMethodSignature(Method m)
 	{
-		Signature.Builder builder = new Signature.Builder()
-			.setReturnType(toObType(s.getReturnValue()));
-		for (Type t : s.getArguments())
-			builder.addArgument(toObType(t));
-		return builder.build();
+		Signature signature = m.getDescriptor();
+
+		Annotation obfSignature = m.getAnnotations().find(DeobAnnotations.OBFUSCATED_SIGNATURE);
+		if (obfSignature != null)
+		{
+			//Annotation exists. Signature was updated by us during deobfuscation
+			signature = DeobAnnotations.getObfuscatedSignature(m);
+		}
+
+		return signature;
 	}
 
 	/**
@@ -230,18 +229,21 @@ public class Inject
 
 				boolean isSetter = false;
 				if (exportAnnotation.getElements().size() == 2)
+				{
 					isSetter = (boolean) exportAnnotation.getElements().get(1).getValue();
+				}
 
 				obfuscatedName = DeobAnnotations.getObfuscatedName(an);
 				
 				Annotation getterAnnotation = an.find(DeobAnnotations.OBFUSCATED_GETTER);
 				Number getter = null;
 				if (getterAnnotation != null)
+				{
 					getter = (Number) getterAnnotation.getElement().getValue();
-				
+				}
 				// the ob jar is the same as the vanilla so this field must exist in this class.
 
-				Type obType = toObType(f.getType());
+				Type obType = getFieldType(f);
 				Field otherf = other.findField(obfuscatedName, obType);
 				assert otherf != null;
 				
@@ -458,53 +460,6 @@ public class Inject
 			default:
 				throw new RuntimeException("Unknown type");
 		}
-	}
-	
-	/**
-	 * get the obfuscated signature for a deobfuscated method
-	 *
-	 * @param method
-	 * @return
-	 */
-	public Signature getObfuscatedSignature(Method method)
-	{
-		Signature obfuscatedSignature = DeobAnnotations.getObfuscatedSignature(method);
-
-		if (obfuscatedSignature != null)
-		{
-			// The obfuscated signature annotation is generated post rename unique, so class
-			// names in the signature match our class names and not theirs, so we toObSignature() it
-			return toObSignature(obfuscatedSignature);
-		}
-		else
-		{
-			// No obfuscated signature annotation, so the annotation wasn't changed during deobfuscation.
-			// We should be able to just find it normally.
-			return toObSignature(method.getDescriptor());
-		}
-	}
-	
-	/** retrieve the garbage parameter
-	 * 
-	 * @param method
-	 * @return 
-	 */
-	public String getGarbage(Method method)
-	{
-		Annotations an = method.getAnnotations();
-		Annotation obfuscatedSignature = an.find(DeobAnnotations.OBFUSCATED_SIGNATURE);
-
-		if (obfuscatedSignature != null)
-		{
-			List<Element> elements = obfuscatedSignature.getElements();
-
-			if (elements.size() == 2)
-			{
-				return obfuscatedSignature.getElements().get(1).getString();
-			}
-		}
-
-		return null;
 	}
 
 	public ClassGroup getDeobfuscated()

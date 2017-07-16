@@ -56,7 +56,6 @@ import org.apache.commons.collections4.map.MultiValueMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class ConstantParameter implements Deobfuscator
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConstantParameter.class);
@@ -187,7 +186,7 @@ public class ConstantParameter implements Deobfuscator
 	{
 		mctx.getInstructionContexts().forEach(this::findDeadParameters);
 	}
-	
+
 	private void findDeadParameters(InstructionContext ins)
 	{
 		List<ConstantMethodParameter> parameters = this.findParametersForMethod(ins.getFrame().getMethod());
@@ -204,7 +203,7 @@ public class ConstantParameter implements Deobfuscator
 			if (ins.getInstruction() instanceof LVTInstruction)
 			{
 				LVTInstruction lvt = (LVTInstruction) ins.getInstruction();
-				
+
 				if (lvt.getVariableIndex() != lvtIndex)
 				{
 					continue;
@@ -215,11 +214,11 @@ public class ConstantParameter implements Deobfuscator
 					parameter.invalid = true;
 					continue; // value changes at some point, parameter is used
 				}
-				
+
 				// check what pops the parameter is a comparison
 				assert ins.getPushes().size() == 1;
 				StackContext sctx = ins.getPushes().get(0);
-				
+
 				if (sctx.getPopped().size() != 1
 					|| !(sctx.getPopped().get(0).getInstruction() instanceof ComparisonInstruction))
 				{
@@ -361,9 +360,11 @@ public class ConstantParameter implements Deobfuscator
 				continue;
 			}
 
+			// only annotate garbage value of last param
 			if (cmp.paramIndex + 1 == mctx.getMethod().getDescriptor().size())
-				// only annotate garbage value of last param
+			{
 				annotateObfuscatedSignature(cmp);
+			}
 
 			for (Instruction ins : cmp.operations) // comparisons
 			{
@@ -435,17 +436,23 @@ public class ConstantParameter implements Deobfuscator
 
 			Annotations annotations = m.getAnnotations();
 
-			if (annotations != null && annotations.find(DeobAnnotations.OBFUSCATED_SIGNATURE) != null)
+			Annotation obfuscatedSignature = annotations.find(DeobAnnotations.OBFUSCATED_SIGNATURE);
+			if (obfuscatedSignature != null && obfuscatedSignature.getElements().size() == 2)
 			{
-				return;
+				// already annotated
+				continue;
 			}
 
-			Annotation annotation = annotations.addAnnotation(DeobAnnotations.OBFUSCATED_SIGNATURE, "signature", m.getDescriptor().toString());
+			if (obfuscatedSignature == null)
+			{
+				obfuscatedSignature = annotations.addAnnotation(DeobAnnotations.OBFUSCATED_SIGNATURE, "signature", m.getDescriptor().toString());
+			}
 
-			Element element = new Element(annotation);
+			// Add garbage value
+			Element element = new Element(obfuscatedSignature);
 			element.setName("garbageValue");
 			element.setValue(value.toString());
-			annotation.addElement(element);
+			obfuscatedSignature.addElement(element);
 		}
 	}
 

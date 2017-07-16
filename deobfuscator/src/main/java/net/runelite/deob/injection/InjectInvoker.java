@@ -84,8 +84,8 @@ public class InjectInvoker
 			obfuscatedName = m.getName();
 		}
 
-		String garbage = inject.getGarbage(m);
-		Method otherm = other.findMethod(obfuscatedName, inject.getObfuscatedSignature(m));
+		String garbage = DeobAnnotations.getObfuscatedValue(m);
+		Method otherm = other.findMethod(obfuscatedName, inject.getMethodSignature(m));
 
 		assert otherm != null;
 		assert m.isStatic() == otherm.isStatic();

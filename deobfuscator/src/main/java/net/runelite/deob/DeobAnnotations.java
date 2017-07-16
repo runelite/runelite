@@ -58,6 +58,18 @@ public class DeobAnnotations
 		return new Signature(str);
 	}
 
+	public static Type getObfuscatedType(Field f)
+	{
+		String str = getAnnotationValue(f.getAnnotations(), OBFUSCATED_SIGNATURE);
+
+		if (str == null)
+		{
+			return null;
+		}
+
+		return new Type(str);
+	}
+
 	public static String getObfuscatedName(Annotations an)
 	{
 		return getAnnotationValue(an, OBFUSCATED_NAME);
@@ -94,14 +106,14 @@ public class DeobAnnotations
 		return (Number) an.getElement().getValue();
 	}
 
-	public static Number getObfuscatedPredicate(Method method)
+	public static String getObfuscatedValue(Method method)
 	{
 		if (method == null || method.getAnnotations() == null)
 		{
 			return null;
 		}
 
-		Annotation an = method.getAnnotations().find(OBFUSCATED_GETTER);
+		Annotation an = method.getAnnotations().find(OBFUSCATED_SIGNATURE);
 		if (an == null)
 		{
 			return null;
@@ -113,7 +125,7 @@ public class DeobAnnotations
 			return null;
 		}
 
-		return Long.valueOf((String) elements.get(1).getValue());
+		return (String) elements.get(1).getValue();
 	}
 
 	private static String getAnnotationValue(Annotations an, Type type)
