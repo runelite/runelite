@@ -410,4 +410,9 @@ public class Client
 	{
 		client.setGameDrawingMode(gameDrawingMode);
 	}
+
+	public void refreshChat()
+	{
+		client.setChatCycle(client.getCycleCntr());
+	}
 }
