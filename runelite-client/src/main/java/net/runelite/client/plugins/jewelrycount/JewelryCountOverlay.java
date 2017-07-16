@@ -39,11 +39,13 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 class JewelryCountOverlay extends Overlay
 {
 	private final JewelryCountConfig config;
+	private final JewelryCount plugin;
 
 	JewelryCountOverlay(JewelryCount plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.config = plugin.getConfig();
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -56,6 +58,12 @@ class JewelryCountOverlay extends Overlay
 			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
 		{
 			return null;
+		}
+
+		Font font = plugin.getFont();
+		if (font != null)
+		{
+			graphics.setFont(font);
 		}
 
 		Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
@@ -116,7 +124,7 @@ class JewelryCountOverlay extends Overlay
 
 	private void renderWidgetText(Graphics2D graphics, Rectangle bounds, int charges, Color color)
 	{
-		String text = charges + "";
+		String text = "(" + charges + ")";
 		FontMetrics fm = graphics.getFontMetrics();
 		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
 
