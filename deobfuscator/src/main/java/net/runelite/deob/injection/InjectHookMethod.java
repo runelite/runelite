@@ -29,6 +29,7 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.ALoad_0;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
@@ -66,6 +67,14 @@ public class InjectHookMethod
 		String obfuscatedMethodName = DeobAnnotations.getObfuscatedName(an),
 			obfuscatedClassName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 
+		// might be a constructor
+		if (obfuscatedMethodName == null && method.getName().equals("<init>"))
+		{
+			obfuscatedMethodName = "<init>";
+		}
+
+		assert obfuscatedMethodName != null : "hook on method with no obfuscated name";
+
 		Signature obfuscatedSignature = inject.getMethodSignature(method);
 
 		ClassGroup vanilla = inject.getVanilla();
@@ -84,7 +93,7 @@ public class InjectHookMethod
 			.setReturnType(Type.VOID) // Hooks always return void
 			.addArguments(deobMethod.getDescriptor().getArguments());
 
-		int index = 0;
+		int insertPos = findHookLocation(vanillaMethod);
 
 		assert deobMethod.isStatic() == vanillaMethod.isStatic();
 
@@ -92,17 +101,18 @@ public class InjectHookMethod
 		{
 			// Add variable to signature
 			builder.addArgument(0, new Type("Ljava/lang/Object;")); // XXX this should be the API class..
-			instructions.addInstruction(index++, new ALoad_0(instructions));
+			instructions.addInstruction(insertPos++, new ALoad_0(instructions));
 		}
 
 		Signature signature = builder.build();
+		int index = deobMethod.isStatic() ? 0 : 1; // current variable index
 
 		for (int i = index; i < signature.size(); ++i)
 		{
 			Type type = signature.getTypeOfArg(i);
 
 			Instruction load = inject.createLoadForTypeIndex(instructions, type, index);
-			instructions.addInstruction(i, load);
+			instructions.addInstruction(insertPos++, load);
 
 			index += type.getSlots();
 		}
@@ -116,10 +126,32 @@ public class InjectHookMethod
 			)
 		);
 
-		instructions.addInstruction(signature.size(), invoke);
+		instructions.addInstruction(insertPos++, invoke);
 
 		logger.info("Injected method hook {} in {} with {} args: {}",
 			hookName, vanillaMethod, signature.size(),
 			signature.getArguments());
+	}
+
+	private int findHookLocation(Method vanillaMethod)
+	{
+		if (!vanillaMethod.getName().equals("<init>"))
+		{
+			return 0;
+		}
+
+		// Find index after invokespecial
+		Instructions instructions = vanillaMethod.getCode().getInstructions();
+		for (int i = 0; i < instructions.getInstructions().size(); ++i)
+		{
+			Instruction in = instructions.getInstructions().get(i);
+
+			if (in.getType() == InstructionType.INVOKESPECIAL)
+			{
+				return i + 1; // one after
+			}
+		}
+
+		throw new IllegalStateException("constructor with no invokespecial");
 	}
 }
