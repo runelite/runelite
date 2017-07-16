@@ -46,4 +46,10 @@ public interface Projectile
 
 	@Import("scalar")
 	double getScalar();
+
+	@Import("x1")
+	int getStartX();
+
+	@Import("y1")
+	int getStartY();
 }

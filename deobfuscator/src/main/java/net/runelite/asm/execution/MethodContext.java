@@ -72,4 +72,10 @@ public class MethodContext
 	{
 		return (Collection) contexts.values();
 	}
+
+	public void reset()
+	{
+		contexts.clear();
+		visited.clear();
+	}
 }

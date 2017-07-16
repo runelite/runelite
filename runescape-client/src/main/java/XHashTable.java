@@ -1,80 +1,36 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gs")
+@ObfuscatedName("gd")
 @Implements("XHashTable")
 public final class XHashTable {
-   @ObfuscatedName("w")
-   @Export("buckets")
-   Node[] buckets;
-   @ObfuscatedName("s")
-   int field2466;
    @ObfuscatedName("a")
-   Node field2467;
-   @ObfuscatedName("t")
-   Node field2468;
-   @ObfuscatedName("i")
    @Export("size")
    int size;
-
-   @ObfuscatedName("w")
-   public void method3529(Node var1, long var2) {
-      if(var1.previous != null) {
-         var1.unlink();
-      }
-
-      Node var4 = this.buckets[(int)(var2 & (long)(this.size - 1))];
-      var1.previous = var4.previous;
-      var1.next = var4;
-      var1.previous.next = var1;
-      var1.next.previous = var1;
-      var1.hash = var2;
-   }
-
-   @ObfuscatedName("i")
-   public Node method3530(long var1) {
-      Node var3 = this.buckets[(int)(var1 & (long)(this.size - 1))];
-
-      for(this.field2467 = var3.next; this.field2467 != var3; this.field2467 = this.field2467.next) {
-         if(this.field2467.hash == var1) {
-            Node var4 = this.field2467;
-            this.field2467 = this.field2467.next;
-            return var4;
-         }
-      }
-
-      this.field2467 = null;
-      return null;
-   }
-
-   @ObfuscatedName("a")
-   void method3532() {
-      for(int var1 = 0; var1 < this.size; ++var1) {
-         Node var2 = this.buckets[var1];
-
-         while(true) {
-            Node var3 = var2.next;
-            if(var2 == var3) {
-               break;
-            }
-
-            var3.unlink();
-         }
-      }
-
-      this.field2467 = null;
-      this.field2468 = null;
-   }
-
-   @ObfuscatedName("t")
-   public Node method3533() {
-      this.field2466 = 0;
-      return this.method3538();
-   }
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "[Lge;"
+   )
+   @Export("buckets")
+   Node[] buckets;
+   @ObfuscatedName("v")
+   @Export("index")
+   int index;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lge;"
+   )
+   Node field2461;
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lge;"
+   )
+   Node field2460;
 
    public XHashTable(int var1) {
-      this.field2466 = 0;
+      this.index = 0;
       this.size = var1;
       this.buckets = new Node[var1];
 
@@ -86,24 +42,93 @@ public final class XHashTable {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "()Lge;"
+   )
    public Node method3538() {
+      this.index = 0;
+      return this.method3539();
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(J)Lge;"
+   )
+   @Export("get")
+   public Node get(long var1) {
+      Node var3 = this.buckets[(int)(var1 & (long)(this.size - 1))];
+
+      for(this.field2461 = var3.next; var3 != this.field2461; this.field2461 = this.field2461.next) {
+         if(this.field2461.hash == var1) {
+            Node var4 = this.field2461;
+            this.field2461 = this.field2461.next;
+            return var4;
+         }
+      }
+
+      this.field2461 = null;
+      return null;
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "()Lge;"
+   )
+   public Node method3539() {
       Node var1;
-      if(this.field2466 > 0 && this.field2468 != this.buckets[this.field2466 - 1]) {
-         var1 = this.field2468;
-         this.field2468 = var1.next;
+      if(this.index > 0 && this.buckets[this.index - 1] != this.field2460) {
+         var1 = this.field2460;
+         this.field2460 = var1.next;
          return var1;
       } else {
          do {
-            if(this.field2466 >= this.size) {
+            if(this.index >= this.size) {
                return null;
             }
 
-            var1 = this.buckets[this.field2466++].next;
-         } while(var1 == this.buckets[this.field2466 - 1]);
+            var1 = this.buckets[this.index++].next;
+         } while(this.buckets[this.index - 1] == var1);
 
-         this.field2468 = var1.next;
+         this.field2460 = var1.next;
          return var1;
       }
+   }
+
+   @ObfuscatedName("n")
+   void method3537() {
+      for(int var1 = 0; var1 < this.size; ++var1) {
+         Node var2 = this.buckets[var1];
+
+         while(true) {
+            Node var3 = var2.next;
+            if(var3 == var2) {
+               break;
+            }
+
+            var3.unlink();
+         }
+      }
+
+      this.field2461 = null;
+      this.field2460 = null;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lge;J)V"
+   )
+   @Export("put")
+   public void put(Node var1, long var2) {
+      if(var1.previous != null) {
+         var1.unlink();
+      }
+
+      Node var4 = this.buckets[(int)(var2 & (long)(this.size - 1))];
+      var1.previous = var4.previous;
+      var1.next = var4;
+      var1.previous.next = var1;
+      var1.next.previous = var1;
+      var1.hash = var2;
    }
 }

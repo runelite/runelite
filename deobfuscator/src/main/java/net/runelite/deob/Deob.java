@@ -31,13 +31,14 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.execution.Execution;
 import net.runelite.deob.deobfuscators.transformers.GetPathTransformer;
 import net.runelite.deob.deobfuscators.CastNull;
-import net.runelite.deob.deobfuscators.ConstantParameter;
+import net.runelite.deob.deobfuscators.constparam.ConstantParameter;
 import net.runelite.deob.deobfuscators.EnumDeobfuscator;
 import net.runelite.deob.deobfuscators.ExprArgOrder;
 import net.runelite.deob.deobfuscators.FieldInliner;
 import net.runelite.deob.deobfuscators.IllegalStateExceptions;
 import net.runelite.deob.deobfuscators.Lvt;
 import net.runelite.deob.deobfuscators.Order;
+import net.runelite.deob.deobfuscators.PacketHandlerOrder;
 import net.runelite.deob.deobfuscators.RenameUnique;
 import net.runelite.deob.deobfuscators.RuntimeExceptions;
 import net.runelite.deob.deobfuscators.UnreachedCode;
@@ -62,6 +63,7 @@ public class Deob
 	private static final Logger logger = LoggerFactory.getLogger(Deob.class);
 
 	public static final int OBFUSCATED_NAME_MAX_LEN = 2;
+	private static final boolean CHECK_EXEC = false;
 
 	public static void main(String[] args) throws IOException
 	{
@@ -70,6 +72,8 @@ public class Deob
 			System.err.println("Syntax: input_jar output_jar");
 			System.exit(-1);
 		}
+
+		logger.info("Deobfuscator revision {}", DeobProperties.getRevision());
 
 		Stopwatch stopwatch = Stopwatch.createStarted();
 
@@ -102,9 +106,6 @@ public class Deob
 
 		// remove unused fields
 		run(group, new UnusedFields());
-
-		// remove unused methods, again?
-		run(group, new UnusedMethods());
 
 		run(group, new FieldInliner());
 
@@ -142,6 +143,8 @@ public class Deob
 
 		run(group, new Order());
 
+		run(group, new PacketHandlerOrder());
+
 		new GetPathTransformer().transform(group);
 		new ClientErrorTransformer().transform(group);
 		new ReflectionTransformer().transform(group);
@@ -167,8 +170,11 @@ public class Deob
 		logger.info("{} took {}", deob.getClass().getSimpleName(), stopwatch);
 
 		// check code is still correct
-		Execution execution = new Execution(group);
-		execution.populateInitialMethods();
-		execution.run();
+		if (CHECK_EXEC)
+		{
+			Execution execution = new Execution(group);
+			execution.populateInitialMethods();
+			execution.run();
+		}
 	}
 }

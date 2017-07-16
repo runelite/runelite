@@ -24,49 +24,41 @@
  */
 package net.runelite.client.plugins.combatnotifier;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
-
-import java.awt.*;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import net.runelite.client.task.Schedule;
 
 public class CombatNotifier extends Plugin
 {
-	private static final int CHECK_INTERVAL = 1;
-
 	private final Client client = RuneLite.getClient();
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final CombatNotifierConfig config = runelite.getConfigManager()
 		.getConfig(CombatNotifierConfig.class);
 
-	private ScheduledFuture<?> future;
 	private Instant lastInteracting;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
-		future = executor.scheduleAtFixedRate(this::checkIdle, CHECK_INTERVAL, CHECK_INTERVAL, TimeUnit.SECONDS);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		future.cancel(true);
 	}
 
-	private void checkIdle()
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.SECONDS
+	)
+	public void checkIdle()
 	{
 		if (client.getGameState() != GameState.LOGGED_IN || !config.isEnabled())
 		{

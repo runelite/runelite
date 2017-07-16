@@ -4,91 +4,125 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("cr")
 @Implements("DynamicObject")
 public class DynamicObject extends Renderable {
-   @ObfuscatedName("i")
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Ljg;"
+   )
+   Sequence field1543;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1898134511
+      intValue = -1581002617
    )
    @Export("id")
    int id;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1889787191
+      intValue = -1140677741
+   )
+   int field1547;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -968208439
    )
    @Export("type")
    int type;
-   @ObfuscatedName("v")
-   Sequence field1563;
-   @ObfuscatedName("t")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1711485319
+      intValue = -463285165
+   )
+   @Export("orientation")
+   int orientation;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -1331028599
    )
    @Export("level")
    int level;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -849978763
+      intValue = -488042345
+   )
+   int field1546;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 907518845
    )
    @Export("sceneX")
    int sceneX;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 3985011
+      intValue = -160305821
    )
    @Export("sceneY")
    int sceneY;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 64664663
-   )
-   int field1568;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1945526093
-   )
-   int field1569;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1645815089
-   )
-   @Export("orientation")
-   int orientation;
 
-   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)LModel;",
-      garbageValue = "-1914243094"
+      signature = "(IIIIIIIZLef;)V"
+   )
+   DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
+      this.id = var1;
+      this.type = var2;
+      this.orientation = var3;
+      this.level = var4;
+      this.sceneX = var5;
+      this.sceneY = var6;
+      if(var7 != -1) {
+         this.field1543 = class112.getAnimation(var7);
+         this.field1546 = 0;
+         this.field1547 = Client.gameCycle - 1;
+         if(this.field1543.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
+            DynamicObject var10 = (DynamicObject)var9;
+            if(this.field1543 == var10.field1543) {
+               this.field1546 = var10.field1546;
+               this.field1547 = var10.field1547;
+               return;
+            }
+         }
+
+         if(var8 && this.field1543.frameStep != -1) {
+            this.field1546 = (int)(Math.random() * (double)this.field1543.frameIDs.length);
+            this.field1547 -= (int)(Math.random() * (double)this.field1543.frameLenghts[this.field1546]);
+         }
+      }
+
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(B)Lej;",
+      garbageValue = "19"
    )
    protected final Model getModel() {
-      if(this.field1563 != null) {
-         int var1 = Client.gameCycle - this.field1569;
-         if(var1 > 100 && this.field1563.frameStep > 0) {
+      if(this.field1543 != null) {
+         int var1 = Client.gameCycle - this.field1547;
+         if(var1 > 100 && this.field1543.frameStep > 0) {
             var1 = 100;
          }
 
-         label53: {
+         label55: {
             do {
                do {
-                  if(var1 <= this.field1563.frameLenghts[this.field1568]) {
-                     break label53;
+                  if(var1 <= this.field1543.frameLenghts[this.field1546]) {
+                     break label55;
                   }
 
-                  var1 -= this.field1563.frameLenghts[this.field1568];
-                  ++this.field1568;
-               } while(this.field1568 < this.field1563.frameIDs.length);
+                  var1 -= this.field1543.frameLenghts[this.field1546];
+                  ++this.field1546;
+               } while(this.field1546 < this.field1543.frameIDs.length);
 
-               this.field1568 -= this.field1563.frameStep;
-            } while(this.field1568 >= 0 && this.field1568 < this.field1563.frameIDs.length);
+               this.field1546 -= this.field1543.frameStep;
+            } while(this.field1546 >= 0 && this.field1546 < this.field1543.frameIDs.length);
 
-            this.field1563 = null;
+            this.field1543 = null;
          }
 
-         this.field1569 = Client.gameCycle - var1;
+         this.field1547 = Client.gameCycle - var1;
       }
 
-      ObjectComposition var12 = class251.getObjectDefinition(this.id);
+      ObjectComposition var12 = PlayerComposition.getObjectDefinition(this.id);
       if(var12.impostorIds != null) {
          var12 = var12.getImpostor();
       }
@@ -107,107 +141,14 @@ public class DynamicObject extends Renderable {
          }
 
          int var4 = this.sceneX + (var2 >> 1);
-         int var5 = (var2 + 1 >> 1) + this.sceneX;
+         int var5 = (1 + var2 >> 1) + this.sceneX;
          int var6 = this.sceneY + (var3 >> 1);
          int var7 = (var3 + 1 >> 1) + this.sceneY;
          int[][] var8 = class61.tileHeights[this.level];
-         int var9 = var8[var4][var6] + var8[var5][var6] + var8[var4][var7] + var8[var5][var7] >> 2;
+         int var9 = var8[var5][var6] + var8[var4][var6] + var8[var4][var7] + var8[var5][var7] >> 2;
          int var10 = (this.sceneX << 7) + (var2 << 6);
          int var11 = (this.sceneY << 7) + (var3 << 6);
-         return var12.method4519(this.type, this.orientation, var8, var10, var9, var11, this.field1563, this.field1568);
+         return var12.method4463(this.type, this.orientation, var8, var10, var9, var11, this.field1543, this.field1546);
       }
-   }
-
-   DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
-      this.id = var1;
-      this.type = var2;
-      this.orientation = var3;
-      this.level = var4;
-      this.sceneX = var5;
-      this.sceneY = var6;
-      if(var7 != -1) {
-         this.field1563 = class224.getAnimation(var7);
-         this.field1568 = 0;
-         this.field1569 = Client.gameCycle - 1;
-         if(this.field1563.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
-            DynamicObject var10 = (DynamicObject)var9;
-            if(this.field1563 == var10.field1563) {
-               this.field1568 = var10.field1568;
-               this.field1569 = var10.field1569;
-               return;
-            }
-         }
-
-         if(var8 && this.field1563.frameStep != -1) {
-            this.field1568 = (int)(Math.random() * (double)this.field1563.frameIDs.length);
-            this.field1569 -= (int)(Math.random() * (double)this.field1563.frameLenghts[this.field1568]);
-         }
-      }
-
-   }
-
-   @ObfuscatedName("ju")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "868881172"
-   )
-   static final void method1873(String var0) {
-      if(var0 != null) {
-         String var1 = Player.method1179(var0, Client.field928);
-         if(var1 != null) {
-            for(int var2 = 0; var2 < Client.friendCount; ++var2) {
-               Friend var3 = Client.friends[var2];
-               String var4 = var3.name;
-               String var5 = Player.method1179(var4, Client.field928);
-               if(class272.method4895(var0, var1, var4, var5)) {
-                  --Client.friendCount;
-
-                  for(int var6 = var2; var6 < Client.friendCount; ++var6) {
-                     Client.friends[var6] = Client.friends[var6 + 1];
-                  }
-
-                  Client.field1025 = Client.field1112;
-                  Client.secretPacketBuffer1.putOpcode(87);
-                  Client.secretPacketBuffer1.putByte(class261.method4734(var0));
-                  Client.secretPacketBuffer1.method3137(var0);
-                  break;
-               }
-            }
-
-         }
-      }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "338399108"
-   )
-   public static void method1874(int var0, int var1) {
-      Varbit var3 = (Varbit)Varbit.field3390.get((long)var0);
-      Varbit var2;
-      if(var3 != null) {
-         var2 = var3;
-      } else {
-         byte[] var8 = Varbit.field3391.getConfigData(14, var0);
-         var3 = new Varbit();
-         if(var8 != null) {
-            var3.method4426(new Buffer(var8));
-         }
-
-         Varbit.field3390.put(var3, (long)var0);
-         var2 = var3;
-      }
-
-      int var4 = var2.configId;
-      int var5 = var2.leastSignificantBit;
-      int var6 = var2.mostSignificantBit;
-      int var7 = class211.field2613[var6 - var5];
-      if(var1 < 0 || var1 > var7) {
-         var1 = 0;
-      }
-
-      var7 <<= var5;
-      class211.widgetSettings[var4] = class211.widgetSettings[var4] & ~var7 | var1 << var5 & var7;
    }
 }

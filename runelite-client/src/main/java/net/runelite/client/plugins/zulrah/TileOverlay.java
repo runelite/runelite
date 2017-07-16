@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.zulrah;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -54,28 +53,21 @@ public class TileOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		ZulrahPattern pattern;
-		Point startLocationWorld;
-		int stage;
+		Fight fight = plugin.getFight();
 
-		synchronized (plugin)
+		if (client.getGameState() != GameState.LOGGED_IN || fight == null)
 		{
-			Fight fight = plugin.getFight();
-
-			if (client.getGameState() != GameState.LOGGED_IN || fight == null)
-			{
-				return null;
-			}
-
-			pattern = fight.getPattern();
-			if (pattern == null)
-			{
-				return null;
-			}
-
-			startLocationWorld = fight.getStartLocationWorld();
-			stage = fight.getStage();
+			return null;
 		}
+
+		ZulrahPattern pattern = fight.getPattern();
+		if (pattern == null)
+		{
+			return null;
+		}
+
+		Point startLocationWorld = fight.getStartLocationWorld();
+		int stage = fight.getStage();
 
 		ZulrahInstance current = pattern.get(stage);
 		if (current == null)
@@ -123,7 +115,7 @@ public class TileOverlay extends Overlay
 
 		//to make the centre of the tile on the point, rather than the tile the point resides in
 		localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
-		
+
 		Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
 		if (poly != null)
 		{

@@ -25,8 +25,12 @@
 package net.runelite.deob.injection;
 
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +47,7 @@ public class InjectorValidator
 
 	private final ClassGroup group;
 
-	private int missing, okay;
+	private int error, missing, okay;
 
 	public InjectorValidator(ClassGroup group)
 	{
@@ -98,6 +102,27 @@ public class InjectorValidator
 				}
 			}
 		}
+
+		Set<NameAndSignature> signatures = new HashSet<>();
+
+		for (net.runelite.asm.Method method : cf.getMethods().getMethods())
+		{
+			NameAndSignature nas = new NameAndSignature(method.getName(), method.getDescriptor());
+
+			if (signatures.contains(nas))
+			{
+				logger.error("Class {} has duplicate method with same name and signature {} {}",
+					cf.getName(), method.getName(), method.getDescriptor());
+				++error;
+			}
+
+			signatures.add(nas);
+		}
+	}
+
+	public int getError()
+	{
+		return error;
 	}
 
 	public int getMissing()
@@ -108,5 +133,53 @@ public class InjectorValidator
 	public int getOkay()
 	{
 		return okay;
+	}
+
+	static final class NameAndSignature
+	{
+		String name;
+		Signature signature;
+
+		NameAndSignature(String name, Signature signature)
+		{
+			this.name = name;
+			this.signature = signature;
+		}
+
+		@Override
+		public int hashCode()
+		{
+			int hash = 3;
+			hash = 67 * hash + Objects.hashCode(this.name);
+			hash = 67 * hash + Objects.hashCode(this.signature);
+			return hash;
+		}
+
+		@Override
+		public boolean equals(Object obj)
+		{
+			if (this == obj)
+			{
+				return true;
+			}
+			if (obj == null)
+			{
+				return false;
+			}
+			if (getClass() != obj.getClass())
+			{
+				return false;
+			}
+			final NameAndSignature other = (NameAndSignature) obj;
+			if (!Objects.equals(this.name, other.name))
+			{
+				return false;
+			}
+			if (!Objects.equals(this.signature, other.signature))
+			{
+				return false;
+			}
+			return true;
+		}
 	}
 }

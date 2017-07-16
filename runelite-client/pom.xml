@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.1.32-SNAPSHOT</version>
+		<version>1.1.33-SNAPSHOT</version>
 	</parent>
 
 	<groupId>net.runelite</groupId>
@@ -122,7 +122,7 @@
 								<!--
 								Do not filter anything under net.runelite.
 								net.runelite.rs:client gets automatically filtered otherwise because it is runtime scoped
-								and only accessed with reflection. Also the classes under net.runelite.inject.* get removed, too.
+								and only accessed with reflection.
 								-->
 								<filter>
 									<artifact>net.runelite.*:*</artifact>

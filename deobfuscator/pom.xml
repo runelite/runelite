@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.1.32-SNAPSHOT</version>
+		<version>1.1.33-SNAPSHOT</version>
 	</parent>
 
 	<groupId>net.runelite</groupId>
@@ -95,6 +95,12 @@
 	</dependencies>
 	
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<testResources>
 			<testResource>
 				<directory>src/test/resources</directory>
@@ -141,6 +147,24 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>false</doCheck>
+					<doUpdate>false</doUpdate>
+					<revisionOnScmFailure>unknown</revisionOnScmFailure>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

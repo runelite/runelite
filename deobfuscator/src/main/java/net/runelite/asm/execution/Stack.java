@@ -31,7 +31,7 @@ import java.util.List;
 public class Stack
 {
 	private int size;
-	private StackContext[] stack;
+	private final StackContext[] stack;
 
 	public Stack(int sz)
 	{
@@ -41,7 +41,7 @@ public class Stack
 	public Stack(Stack other)
 	{
 		this.size = other.size;
-		this.stack = Arrays.copyOf(other.stack, other.stack.length);
+		this.stack = other.stack.clone();
 	}
 	
 	private void printStack(StackContext ctx, int level)

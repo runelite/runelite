@@ -2,48 +2,48 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aa")
+@ObfuscatedName("av")
 @Implements("WorldMapSectionBase")
 public interface WorldMapSectionBase {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(III)Z",
-      garbageValue = "202348652"
+      garbageValue = "-2141582860"
    )
-   boolean vmethod754(int var1, int var2);
+   boolean vmethod722(int var1, int var2);
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "1509988890"
+      signature = "(IIII)Z",
+      garbageValue = "-1671303044"
    )
-   int[] vmethod730(int var1, int var2, int var3);
+   boolean vmethod721(int var1, int var2, int var3);
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lam;I)V",
+      garbageValue = "-1824757307"
+   )
+   void vmethod720(WorldMapData var1);
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(III)Lhd;",
+      garbageValue = "665140774"
+   )
+   Coordinates vmethod743(int var1, int var2);
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "618655756"
+      signature = "(IIIB)[I",
+      garbageValue = "13"
    )
-   void vmethod732(Buffer var1);
+   int[] vmethod731(int var1, int var2, int var3);
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(LWorldMapData;I)V",
-      garbageValue = "98017718"
+      signature = "(Lfe;I)V",
+      garbageValue = "-1909314997"
    )
-   void vmethod753(WorldMapData var1);
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(III)LCoordinates;",
-      garbageValue = "-2079571098"
-   )
-   Coordinates vmethod731(int var1, int var2);
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIII)Z",
-      garbageValue = "998947175"
-   )
-   boolean vmethod728(int var1, int var2, int var3);
+   void vmethod746(Buffer var1);
 }

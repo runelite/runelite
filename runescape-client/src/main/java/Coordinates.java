@@ -1,116 +1,48 @@
-import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hb")
+@ObfuscatedName("hd")
 @Implements("Coordinates")
 public class Coordinates {
-   @ObfuscatedName("w")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1162280981
-   )
-   @Export("worldX")
-   public int worldX;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 92996023
+      intValue = -666198645
    )
    @Export("plane")
    public int plane;
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1435309081
+      intValue = 1400042277
+   )
+   @Export("worldX")
+   public int worldX;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -600094391
    )
    @Export("worldY")
    public int worldY;
-   @ObfuscatedName("bo")
-   @ObfuscatedGetter(
-      intValue = 1812031595
-   )
-   static int field2618;
-   @ObfuscatedName("jg")
-   @ObfuscatedGetter(
-      intValue = -1624607533
-   )
-   @Export("menuY")
-   static int menuY;
 
-   public Coordinates(int var1, int var2, int var3) {
-      this.plane = var1;
-      this.worldX = var2;
-      this.worldY = var3;
+   public Coordinates() {
+      this.plane = -1;
    }
 
+   @ObfuscatedSignature(
+      signature = "(Lhd;)V"
+   )
    public Coordinates(Coordinates var1) {
       this.plane = var1.plane;
       this.worldX = var1.worldX;
       this.worldY = var1.worldY;
    }
 
-   @ObfuscatedName("hg")
-   @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-1724632212"
-   )
-   static final void method3911(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.field1061; ++var4) {
-         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
-            Client.field1132[var4] = true;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(IIIB)V",
-      garbageValue = "41"
-   )
-   public void method3912(int var1, int var2, int var3) {
+   public Coordinates(int var1, int var2, int var3) {
       this.plane = var1;
       this.worldX = var2;
       this.worldY = var3;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-68"
-   )
-   public int method3913() {
-      return this.plane << 28 | this.worldX << 14 | this.worldY;
-   }
-
-   public boolean equals(Object var1) {
-      return var1 == this?true:(!(var1 instanceof Coordinates)?false:this.method3914((Coordinates)var1));
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(LCoordinates;I)Z",
-      garbageValue = "1730608390"
-   )
-   boolean method3914(Coordinates var1) {
-      return this.plane != var1.plane?false:(this.worldX != var1.worldX?false:this.worldY == var1.worldY);
-   }
-
-   public int hashCode() {
-      return this.method3913();
-   }
-
-   public String toString() {
-      return this.plane + "," + (this.worldX >> 6) + "," + (this.worldY >> 6) + "," + (this.worldX & 63) + "," + (this.worldY & 63);
-   }
-
-   public Coordinates() {
-      this.plane = -1;
    }
 
    public Coordinates(int var1) {
@@ -124,28 +56,53 @@ public class Coordinates {
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "([BB)LSpritePixels;",
-      garbageValue = "1"
+      signature = "(I)I",
+      garbageValue = "1386944416"
    )
-   public static final SpritePixels method3928(byte[] var0) {
-      BufferedImage var1 = null;
+   public int method3915() {
+      return this.plane << 28 | this.worldX << 14 | this.worldY;
+   }
 
-      try {
-         var1 = ImageIO.read(new ByteArrayInputStream(var0));
-         int var2 = var1.getWidth();
-         int var3 = var1.getHeight();
-         int[] var4 = new int[var3 * var2];
-         PixelGrabber var5 = new PixelGrabber(var1, 0, 0, var2, var3, var4, 0, var2);
-         var5.grabPixels();
-         return new SpritePixels(var4, var2, var3);
-      } catch (IOException var7) {
-         ;
-      } catch (InterruptedException var8) {
-         ;
-      }
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "1193641631"
+   )
+   public void method3928(int var1, int var2, int var3) {
+      this.plane = var1;
+      this.worldX = var2;
+      this.worldY = var3;
+   }
 
-      return new SpritePixels(0, 0);
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Lhd;B)Z",
+      garbageValue = "-6"
+   )
+   boolean method3917(Coordinates var1) {
+      return this.plane != var1.plane?false:(this.worldX != var1.worldX?false:this.worldY == var1.worldY);
+   }
+
+   public boolean equals(Object var1) {
+      return this == var1?true:(!(var1 instanceof Coordinates)?false:this.method3917((Coordinates)var1));
+   }
+
+   public int hashCode() {
+      return this.method3915();
+   }
+
+   public String toString() {
+      return this.plane + "," + (this.worldX >> 6) + "," + (this.worldY >> 6) + "," + (this.worldX & 63) + "," + (this.worldY & 63);
+   }
+
+   @ObfuscatedName("hn")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "24"
+   )
+   static final boolean method3932() {
+      return Client.menuOptionCount <= 0?false:Client.field1054 && KeyFocusListener.field626[81] && Client.field940 != -1;
    }
 }

@@ -1,7 +1,11 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hl")
+@ObfuscatedName("hk")
 public class class226 {
-   @ObfuscatedName("v")
-   public static int[] field3146;
+   @ObfuscatedName("gn")
+   @ObfuscatedSignature(
+      signature = "[Ljf;"
+   )
+   static ModIcon[] field3142;
 }

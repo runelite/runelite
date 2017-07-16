@@ -1,124 +1,52 @@
+import java.applet.Applet;
+import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import netscape.javascript.JSObject;
 
-@ObfuscatedName("ca")
+@ObfuscatedName("ch")
 @Implements("NPC")
 public final class NPC extends Actor {
-   @ObfuscatedName("j")
-   public static short[] field1398;
-   @ObfuscatedName("i")
+   @ObfuscatedName("q")
+   @Export("tt")
+   static int[] tt;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lip;"
+   )
    @Export("composition")
    NPCComposition composition;
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IIZI)V",
-      garbageValue = "2056497285"
-   )
-   final void method1692(int var1, int var2, boolean var3) {
-      if(super.animation != -1 && class224.getAnimation(super.animation).priority == 1) {
-         super.animation = -1;
-      }
-
-      if(!var3) {
-         int var4 = var1 - super.pathX[0];
-         int var5 = var2 - super.pathY[0];
-         if(var4 >= -8 && var4 <= 8 && var5 >= -8 && var5 <= 8) {
-            if(super.queueSize < 9) {
-               ++super.queueSize;
-            }
-
-            for(int var6 = super.queueSize; var6 > 0; --var6) {
-               super.pathX[var6] = super.pathX[var6 - 1];
-               super.pathY[var6] = super.pathY[var6 - 1];
-               super.field1297[var6] = super.field1297[var6 - 1];
-            }
-
-            super.pathX[0] = var1;
-            super.pathY[0] = var2;
-            super.field1297[0] = 1;
-            return;
-         }
-      }
-
-      super.queueSize = 0;
-      super.field1269 = 0;
-      super.field1275 = 0;
-      super.pathX[0] = var1;
-      super.pathY[0] = var2;
-      super.x = super.pathX[0] * 128 + super.field1242 * 64;
-      super.y = 128 * super.pathY[0] + super.field1242 * 64;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-1215404042"
-   )
-   public static String method1693(CharSequence var0) {
-      int var1 = var0.length();
-      StringBuilder var2 = new StringBuilder(var1);
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 < 97 || var4 > 122) && (var4 < 65 || var4 > 90) && (var4 < 48 || var4 > 57) && var4 != 46 && var4 != 45 && var4 != 42 && var4 != 95) {
-            if(var4 == 32) {
-               var2.append('+');
-            } else {
-               byte var5 = TextureProvider.method2403(var4);
-               var2.append('%');
-               int var6 = var5 >> 4 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-
-               var6 = var5 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-            }
-         } else {
-            var2.append(var4);
-         }
-      }
-
-      return var2.toString();
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(I)LModel;",
-      garbageValue = "-1914243094"
+      signature = "(B)Lej;",
+      garbageValue = "19"
    )
    protected final Model getModel() {
       if(this.composition == null) {
          return null;
       } else {
-         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?class224.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation != -1 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?class224.getAnimation(super.poseAnimation):null;
-         Model var3 = this.composition.method4651(var1, super.actionFrame, var2, super.poseFrame);
+         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?class112.getAnimation(super.animation):null;
+         Sequence var2 = super.poseAnimation != -1 && (super.poseAnimation != super.idlePoseAnimation || var1 == null)?class112.getAnimation(super.poseAnimation):null;
+         Model var3 = this.composition.method4570(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;
          } else {
-            var3.method2493();
-            super.field1288 = var3.modelHeight;
-            if(super.graphic != -1 && super.field1244 != -1) {
-               Model var4 = Renderable.method2864(super.graphic).method4338(super.field1244);
+            var3.method2542();
+            super.field1235 = var3.modelHeight;
+            if(super.graphic != -1 && super.field1250 != -1) {
+               Model var4 = InvType.getSpotAnimType(super.graphic).method4283(super.field1250);
                if(var4 != null) {
-                  var4.method2504(0, -super.field1238, 0);
+                  var4.method2575(0, -super.field1255, 0);
                   Model[] var5 = new Model[]{var3, var4};
                   var3 = new Model(var5, 2);
                }
             }
 
-            if(this.composition.field3561 == 1) {
-               var3.field1950 = true;
+            if(this.composition.field3557 == 1) {
+               var3.field1975 = true;
             }
 
             return var3;
@@ -126,21 +54,22 @@ public final class NPC extends Actor {
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-2061214073"
+      signature = "(B)Z",
+      garbageValue = "-42"
    )
-   final boolean vmethod1695() {
+   @Export("hasConfig")
+   final boolean hasConfig() {
       return this.composition != null;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(IBI)V",
-      garbageValue = "1906615223"
+      garbageValue = "-2144066856"
    )
-   final void method1696(int var1, byte var2) {
+   final void method1663(int var1, byte var2) {
       int var3 = super.pathX[0];
       int var4 = super.pathY[0];
       if(var1 == 0) {
@@ -179,7 +108,7 @@ public final class NPC extends Actor {
          --var4;
       }
 
-      if(super.animation != -1 && class224.getAnimation(super.animation).priority == 1) {
+      if(super.animation != -1 && class112.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 
@@ -190,42 +119,177 @@ public final class NPC extends Actor {
       for(int var5 = super.queueSize; var5 > 0; --var5) {
          super.pathX[var5] = super.pathX[var5 - 1];
          super.pathY[var5] = super.pathY[var5 - 1];
-         super.field1297[var5] = super.field1297[var5 - 1];
+         super.field1239[var5] = super.field1239[var5 - 1];
       }
 
       super.pathX[0] = var3;
       super.pathY[0] = var4;
-      super.field1297[0] = var2;
+      super.field1239[0] = var2;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(IIZI)V",
+      garbageValue = "254801652"
+   )
+   final void method1672(int var1, int var2, boolean var3) {
+      if(super.animation != -1 && class112.getAnimation(super.animation).priority == 1) {
+         super.animation = -1;
+      }
+
+      if(!var3) {
+         int var4 = var1 - super.pathX[0];
+         int var5 = var2 - super.pathY[0];
+         if(var4 >= -8 && var4 <= 8 && var5 >= -8 && var5 <= 8) {
+            if(super.queueSize < 9) {
+               ++super.queueSize;
+            }
+
+            for(int var6 = super.queueSize; var6 > 0; --var6) {
+               super.pathX[var6] = super.pathX[var6 - 1];
+               super.pathY[var6] = super.pathY[var6 - 1];
+               super.field1239[var6] = super.field1239[var6 - 1];
+            }
+
+            super.pathX[0] = var1;
+            super.pathY[0] = var2;
+            super.field1239[0] = 1;
+            return;
+         }
+      }
+
+      super.queueSize = 0;
+      super.field1273 = 0;
+      super.field1272 = 0;
+      super.pathX[0] = var1;
+      super.pathY[0] = var2;
+      super.x = super.field1218 * 64 + super.pathX[0] * 128;
+      super.y = super.field1218 * 64 + 128 * super.pathY[0];
    }
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1723086244"
+      signature = "(I)I",
+      garbageValue = "-2040162370"
    )
-   public static void method1704() {
-      class241.field3290.reset();
+   static int method1677() {
+      return ++class98.field1521 - 1;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IB)LOverlay;",
-      garbageValue = "76"
+      signature = "(Ljava/lang/String;ILjava/lang/String;I)Z",
+      garbageValue = "-1544039310"
    )
-   public static Overlay method1706(int var0) {
-      Overlay var1 = (Overlay)Overlay.field3593.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Overlay.field3595.getConfigData(4, var0);
-         var1 = new Overlay();
-         if(var2 != null) {
-            var1.method4669(new Buffer(var2), var0);
+   static boolean method1664(String var0, int var1, String var2) {
+      if(var1 == 0) {
+         try {
+            if(!class56.field667.startsWith("win")) {
+               throw new Exception();
+            } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
+               throw new Exception();
+            } else {
+               String var13 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
+
+               for(int var4 = 0; var4 < var0.length(); ++var4) {
+                  if(var13.indexOf(var0.charAt(var4)) == -1) {
+                     throw new Exception();
+                  }
+               }
+
+               Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
+               return true;
+            }
+         } catch (Throwable var8) {
+            return false;
+         }
+      } else if(var1 == 1) {
+         try {
+            Applet var7 = class56.field674;
+            Object[] var5 = new Object[]{(new URL(class56.field674.getCodeBase(), var0)).toString()};
+            Object var3 = JSObject.getWindow(var7).call(var2, var5);
+            return var3 != null;
+         } catch (Throwable var9) {
+            return false;
+         }
+      } else if(var1 == 2) {
+         try {
+            class56.field674.getAppletContext().showDocument(new URL(class56.field674.getCodeBase(), var0), "_blank");
+            return true;
+         } catch (Exception var10) {
+            return false;
+         }
+      } else if(var1 == 3) {
+         try {
+            class52.method787(class56.field674, "loggedout");
+         } catch (Throwable var12) {
+            ;
          }
 
-         var1.method4680();
-         Overlay.field3593.put(var1, (long)var0);
-         return var1;
+         try {
+            class56.field674.getAppletContext().showDocument(new URL(class56.field674.getCodeBase(), var0), "_top");
+            return true;
+         } catch (Exception var11) {
+            return false;
+         }
+      } else {
+         throw new IllegalArgumentException();
       }
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "([BI)Lcg;",
+      garbageValue = "1475118035"
+   )
+   static Script method1676(byte[] var0) {
+      Script var1 = new Script();
+      Buffer var2 = new Buffer(var0);
+      var2.offset = var2.payload.length - 2;
+      int var3 = var2.readUnsignedShort();
+      int var4 = var2.payload.length - 2 - var3 - 12;
+      var2.offset = var4;
+      int var5 = var2.readInt();
+      var1.localIntCount = var2.readUnsignedShort();
+      var1.localStringCount = var2.readUnsignedShort();
+      var1.intStackCount = var2.readUnsignedShort();
+      var1.stringStackCount = var2.readUnsignedShort();
+      int var6 = var2.readUnsignedByte();
+      int var7;
+      int var8;
+      if(var6 > 0) {
+         var1.switches = var1.method1837(var6);
+
+         for(var7 = 0; var7 < var6; ++var7) {
+            var8 = var2.readUnsignedShort();
+            class186 var9 = new class186(class152.method2922(var8));
+            var1.switches[var7] = var9;
+
+            while(var8-- > 0) {
+               int var10 = var2.readInt();
+               int var11 = var2.readInt();
+               var9.method3501(new WidgetConfig(var11), (long)var10);
+            }
+         }
+      }
+
+      var2.offset = 0;
+      var2.getNullString();
+      var1.instructions = new int[var5];
+      var1.intOperands = new int[var5];
+      var1.stringOperands = new String[var5];
+
+      for(var7 = 0; var2.offset < var4; var1.instructions[var7++] = var8) {
+         var8 = var2.readUnsignedShort();
+         if(var8 == 3) {
+            var1.stringOperands[var7] = var2.readString();
+         } else if(var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
+            var1.intOperands[var7] = var2.readInt();
+         } else {
+            var1.intOperands[var7] = var2.readUnsignedByte();
+         }
+      }
+
+      return var1;
    }
 }

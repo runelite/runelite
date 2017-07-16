@@ -1,23 +1,18 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jq")
+@ObfuscatedName("ji")
 public class class265 {
-   @ObfuscatedName("i")
-   public static class165 field3665;
-
-   @ObfuscatedName("o")
+   @ObfuscatedName("dd")
    @ObfuscatedSignature(
-      signature = "(CII)Ljava/lang/String;",
-      garbageValue = "-2045060561"
+      signature = "Lig;"
    )
-   public static String method4836(char var0, int var1) {
-      char[] var2 = new char[var1];
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2[var3] = var0;
-      }
-
-      return new String(var2);
-   }
+   @Export("indexScripts")
+   static IndexData indexScripts;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lfa;"
+   )
+   public static Huffman field3657;
 }

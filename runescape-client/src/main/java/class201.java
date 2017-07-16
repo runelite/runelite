@@ -1,38 +1,45 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gx")
+@ObfuscatedName("gz")
 public class class201 implements Iterable {
-   @ObfuscatedName("i")
-   public CacheableNode field2492;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lgn;"
+   )
+   public CacheableNode field2484;
 
-   @ObfuscatedName("w")
-   public void method3642(CacheableNode var1) {
-      if(var1.next != null) {
-         var1.method3604();
+   public class201() {
+      this.field2484 = new CacheableNode();
+      this.field2484.previous = this.field2484;
+      this.field2484.next = this.field2484;
+   }
+
+   @ObfuscatedName("a")
+   public void method3670() {
+      while(this.field2484.previous != this.field2484) {
+         this.field2484.previous.unlinkDual();
       }
 
-      var1.next = this.field2492.next;
-      var1.previous = this.field2492;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lgn;)V"
+   )
+   public void method3674(CacheableNode var1) {
+      if(var1.next != null) {
+         var1.unlinkDual();
+      }
+
+      var1.next = this.field2484.next;
+      var1.previous = this.field2484;
       var1.next.previous = var1;
       var1.previous.next = var1;
    }
 
    public Iterator iterator() {
       return new class200(this);
-   }
-
-   public class201() {
-      this.field2492 = new CacheableNode();
-      this.field2492.previous = this.field2492;
-      this.field2492.next = this.field2492;
-   }
-
-   @ObfuscatedName("i")
-   public void method3645() {
-      while(this.field2492 != this.field2492.previous) {
-         this.field2492.previous.method3604();
-      }
-
    }
 }

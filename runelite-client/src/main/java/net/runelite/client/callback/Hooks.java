@@ -32,8 +32,10 @@ import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.*;
 import net.runelite.client.game.DeathChecker;
+import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.rs.api.MainBufferProvider;
+import net.runelite.rs.api.MessageNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,16 +43,23 @@ public class Hooks
 {
 	private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
 
+	private static final long CHECK = 600; // ms - how often to run checks
+
 	private static final RuneLite runelite = RuneLite.getRunelite();
 	private static final DeathChecker death = new DeathChecker(runelite);
 
-	public static void draw(Object provider, Graphics graphics, int x, int y)
-	{
-		// XXX fix injector to use interface in signature
-		MainBufferProvider mpb = (MainBufferProvider) provider;
-		BufferedImage image = (BufferedImage) mpb.getImage();
+	private static long lastCheck;
 
-		OverlayRenderer renderer = runelite.getRenderer();
+	public static void clientMainLoop(Object client, boolean arg1)
+	{
+		long now = System.currentTimeMillis();
+
+		if (now - lastCheck < CHECK)
+		{
+			return;
+		}
+
+		lastCheck = now;
 
 		try
 		{
@@ -60,6 +69,18 @@ public class Hooks
 		{
 			logger.warn("error during death check", ex);
 		}
+
+		Scheduler scheduler = runelite.getScheduler();
+		scheduler.tick();
+	}
+
+	public static void draw(Object provider, Graphics graphics, int x, int y)
+	{
+		// XXX fix injector to use interface in signature
+		MainBufferProvider mpb = (MainBufferProvider) provider;
+		BufferedImage image = (BufferedImage) mpb.getImage();
+
+		OverlayRenderer renderer = runelite.getRenderer();
 
 		try
 		{
@@ -159,6 +180,17 @@ public class Hooks
 		runelite.getEventBus().post(menuOptionClicked);
 	}
 
+	public static void projectileSpawned(Object projectile, int id, int floor, int x1, int y1, int height, int startTime, int cycle, int slope, int start, int interacting, int endHeight)
+	{
+		if (logger.isDebugEnabled())
+		{
+			logger.debug("Projectile Spawned at {}, {}", x1, y1);
+		}
+
+		ProjectileSpawned projSpawn = new ProjectileSpawned(id, floor, x1, y1, height, startTime, cycle, slope, start, interacting, endHeight);
+		runelite.getEventBus().post(projSpawn);
+	}
+
 	public static void addChatMessage(int type, String sender, String message, String clan)
 	{
 		if (logger.isDebugEnabled())
@@ -169,5 +201,21 @@ public class Hooks
 		ChatMessage chatMessage = new ChatMessage(type, sender, message, clan);
 
 		runelite.getEventBus().post(chatMessage);
+	}
+
+	public static void setMessage(Object object, int type, String name, String sender, String value)
+	{
+		MessageNode messageNode = (MessageNode) object;
+
+		// Hook is fired prior to actually setting these on the MessageNode, so send them
+		// in the event too.
+		SetMessage setMessage = new SetMessage();
+		setMessage.setMessageNode(new net.runelite.api.MessageNode(messageNode));
+		setMessage.setType(ChatMessageType.of(type));
+		setMessage.setName(name);
+		setMessage.setSender(sender);
+		setMessage.setValue(value);
+
+		runelite.getEventBus().post(setMessage);
 	}
 }

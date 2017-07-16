@@ -4,41 +4,34 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bw")
+@ObfuscatedName("bo")
 @Implements("ScriptState")
 public class ScriptState {
-   @ObfuscatedName("w")
+   @ObfuscatedName("pm")
    @ObfuscatedGetter(
-      intValue = 536829453
+      intValue = 363033299
+   )
+   static int field771;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 1316567765
    )
    @Export("invokedFromPc")
    int invokedFromPc;
    @ObfuscatedName("a")
-   @Export("savedLocalInts")
-   int[] savedLocalInts;
-   @ObfuscatedName("t")
-   @Export("savedLocalStrings")
-   String[] savedLocalStrings;
-   @ObfuscatedName("jx")
-   @ObfuscatedGetter(
-      intValue = -1741716253
+   @ObfuscatedSignature(
+      signature = "Lcg;"
    )
-   @Export("menuX")
-   static int menuX;
-   @ObfuscatedName("i")
    @Export("invokedFromScript")
    Script invokedFromScript;
+   @ObfuscatedName("n")
+   @Export("savedLocalInts")
+   int[] savedLocalInts;
+   @ObfuscatedName("r")
+   @Export("savedLocalStrings")
+   String[] savedLocalStrings;
 
    ScriptState() {
       this.invokedFromPc = -1;
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "-2061837013"
-   )
-   public static int method1103(CharSequence var0) {
-      return class181.parseInt(var0, 10, true);
    }
 }

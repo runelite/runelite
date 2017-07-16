@@ -25,8 +25,6 @@
 
 package net.runelite.asm.attributes.annotation;
 
-import net.runelite.asm.signature.Type;
-
 public class Element
 {
 	private final Annotation annotation;

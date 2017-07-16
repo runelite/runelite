@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -52,6 +53,13 @@ public class ILoad extends Instruction implements LVTInstruction
 	public ILoad(Instructions instructions, InstructionType type)
 	{
 		super(instructions, type);
+	}
+
+	@Override
+	public String toString()
+	{
+		Method m = this.getInstructions().getCode().getMethod();
+		return "iload " + index + " in " + m;
 	}
 
 	@Override

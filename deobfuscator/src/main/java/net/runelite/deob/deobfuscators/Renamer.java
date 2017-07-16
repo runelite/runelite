@@ -127,7 +127,19 @@ public class Renamer implements Deobfuscator
 					builder.setReturnType(signature.getReturnValue());
 				}
 
-				method.setDescriptor(builder.build());
+				Signature newSignature = builder.build();
+
+				if (!method.getDescriptor().equals(newSignature))
+				{
+					//Signature was updated. Annotate it
+					if (method.getAnnotations().find(DeobAnnotations.OBFUSCATED_SIGNATURE) == null)
+					{
+						//Signature was not previously renamed
+						method.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_SIGNATURE, "signature", method.getDescriptor().toString());
+					}
+				}
+
+				method.setDescriptor(newSignature);
 
 				// rename on exceptions thrown
 				if (method.getExceptions() != null)
@@ -141,6 +153,12 @@ public class Renamer implements Deobfuscator
 			{
 				if (field.getType().getType().equals("L" + cf.getName() + ";"))
 				{
+					if (field.getAnnotations().find(DeobAnnotations.OBFUSCATED_SIGNATURE) == null)
+					{
+						//Signature was updated. Annotate it
+						field.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_SIGNATURE, "signature", field.getType().getFullType());
+					}
+
 					field.setType(new Type("L" + name + ";", field.getType().getArrayDims()));
 				}
 			}

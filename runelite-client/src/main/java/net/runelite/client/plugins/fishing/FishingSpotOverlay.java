@@ -82,19 +82,19 @@ class FishingSpotOverlay extends Overlay
 			{
 				continue;
 			}
-
+			Color color = npc.getId() == FishingSpot.FLYING_FISH ? Color.RED : Color.CYAN;
 			if (config.showIcons())
 			{
 				BufferedImage fishImage = getFishImage(spot);
 				if (fishImage != null)
 				{
-					OverlayUtil.renderActorOverlayImage(graphics, npc, fishImage, Color.cyan.darker());
+					OverlayUtil.renderActorOverlayImage(graphics, npc, fishImage, color.darker());
 				}
 			}
 			else
 			{
 				String text = spot.getName();
-				OverlayUtil.renderActorOverlay(graphics, npc, text, Color.cyan.darker());
+				OverlayUtil.renderActorOverlay(graphics, npc, text, color.darker());
 			}
 		}
 

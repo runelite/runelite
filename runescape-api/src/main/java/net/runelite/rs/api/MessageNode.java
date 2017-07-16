@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
@@ -37,4 +36,10 @@ public interface MessageNode
 
 	@Import("value")
 	String getValue();
+
+	@Import(
+		value = "value",
+		setter = true
+	)
+	void setValue(String value);
 }

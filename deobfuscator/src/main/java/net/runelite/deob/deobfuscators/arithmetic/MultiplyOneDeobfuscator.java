@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators.arithmetic;
 
 import java.util.List;
@@ -32,7 +31,6 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instructions.IMul;
 import net.runelite.asm.attributes.code.instructions.LMul;
-import net.runelite.asm.attributes.code.instructions.NOP;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.MethodContext;
@@ -66,6 +64,7 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 			{
 				continue; // already done
 			}
+
 			StackContext one = ictx.getPops().get(0);
 			StackContext two = ictx.getPops().get(1);
 
@@ -91,8 +90,8 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 				continue;
 			}
 
-			ictx.removeStack(removeIdx);
-			ins.replace(ictx.getInstruction(), new NOP(ins));
+			ictx.removeStack(removeIdx); // remove 1
+			ins.remove(instruction); // remove mul
 
 			++count;
 		}

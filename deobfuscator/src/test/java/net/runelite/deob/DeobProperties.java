@@ -38,7 +38,7 @@ public class DeobProperties extends ExternalResource
 	protected void before() throws Throwable
 	{
 		Properties properties = new Properties();
-		InputStream resourceAsStream = getClass().getResourceAsStream("/deob.properties");
+		InputStream resourceAsStream = getClass().getResourceAsStream("/deob-test.properties");
 		properties.load(resourceAsStream);
 
 		rsClient = (String) properties.get("rs.client");

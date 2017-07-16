@@ -1,92 +1,117 @@
 import java.util.zip.CRC32;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ic")
+@ObfuscatedName("iw")
 public class class238 {
-   @ObfuscatedName("t")
-   public static XHashTable field3260;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1879967263
-   )
-   public static int field3261;
-   @ObfuscatedName("p")
-   static IndexData[] field3262;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      longValue = -9065922425014045625L
-   )
-   public static long field3263;
-   @ObfuscatedName("c")
-   public static Buffer field3264;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 1888769611
-   )
-   public static int field3265;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1818063435
-   )
-   public static int field3266;
-   @ObfuscatedName("y")
-   public static Node2LinkedList field3267;
-   @ObfuscatedName("j")
-   public static XHashTable field3268;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1031228371
-   )
-   public static int field3269;
-   @ObfuscatedName("e")
-   public static XHashTable field3270;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1344104133
-   )
-   public static int field3271;
-   @ObfuscatedName("i")
-   public static RSSocket field3272;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 222246919
-   )
-   public static int field3273;
-   @ObfuscatedName("n")
-   static CRC32 field3274;
-   @ObfuscatedName("r")
-   public static XHashTable field3275;
-   @ObfuscatedName("q")
-   public static byte field3276;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1322706447
+      intValue = -925169405
    )
-   public static int field3277;
-   @ObfuscatedName("h")
+   public static int field3258;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 435265601
+      intValue = -1523340189
    )
-   public static int field3278;
+   public static int field3253;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
+   public static XHashTable field3260;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -618498043
+   )
+   public static int field3252;
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
+   public static XHashTable field3255;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lgb;"
+   )
+   public static Node2LinkedList field3259;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -902905159
+   )
+   public static int field3272;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
+   public static XHashTable field3269;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      longValue = 7278569845670085851L
+   )
+   public static long field3254;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1940519003
+   )
+   public static int field3257;
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
+   public static XHashTable field3262;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 1450828023
+   )
+   public static int field3263;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -260113921
+   )
+   public static int field3256;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "[Lig;"
+   )
+   static IndexData[] field3267;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lfq;"
+   )
+   public static RSSocket field3264;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lfe;"
+   )
+   public static Buffer field3266;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -395343811
+   )
+   public static int field3265;
+   @ObfuscatedName("f")
+   static CRC32 field3261;
+   @ObfuscatedName("i")
+   public static byte field3268;
 
    static {
-      field3261 = 0;
+      field3253 = 0;
+      field3255 = new XHashTable(4096);
+      field3272 = 0;
+      field3269 = new XHashTable(32);
+      field3257 = 0;
+      field3259 = new Node2LinkedList();
       field3260 = new XHashTable(4096);
-      field3266 = 0;
-      field3275 = new XHashTable(32);
+      field3256 = 0;
+      field3262 = new XHashTable(4096);
+      field3263 = 0;
+      field3266 = new Buffer(8);
       field3265 = 0;
-      field3267 = new Node2LinkedList();
-      field3268 = new XHashTable(4096);
-      field3269 = 0;
-      field3270 = new XHashTable(4096);
-      field3271 = 0;
-      field3264 = new Buffer(8);
-      field3273 = 0;
-      field3274 = new CRC32();
-      field3262 = new IndexData[256];
-      field3276 = 0;
-      field3277 = 0;
-      field3278 = 0;
+      field3261 = new CRC32();
+      field3267 = new IndexData[256];
+      field3268 = 0;
+      field3258 = 0;
+      field3252 = 0;
    }
 }

@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.1.32-SNAPSHOT</version>
+	<version>1.1.33-SNAPSHOT</version>
 	<name>Runelite</name>
 	<packaging>pom</packaging>
 
@@ -41,7 +41,7 @@
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
 
-		<rs.version>148</rs.version>
+		<rs.version>149</rs.version>
 	</properties>
 
 	<scm>

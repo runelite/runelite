@@ -24,6 +24,9 @@
  */
 package net.runelite.http.service.item;
 
+import net.runelite.http.api.item.Item;
+import net.runelite.http.api.item.ItemType;
+
 public class RSItem
 {
 	private int id;
@@ -91,5 +94,15 @@ public class RSItem
 	public void setIcon_large(String icon_large)
 	{
 		this.icon_large = icon_large;
+	}
+
+	public Item toItem()
+	{
+		Item item = new Item();
+		item.setId(id);
+		item.setName(name);
+		item.setType(ItemType.of(type));
+		item.setDescription(description);
+		return item;
 	}
 }

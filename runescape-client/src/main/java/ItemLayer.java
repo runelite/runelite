@@ -4,57 +4,71 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dv")
+@ObfuscatedName("dj")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1616879843
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lef;"
    )
-   @Export("flags")
-   int flags;
-   @ObfuscatedName("w")
+   @Export("bottom")
+   Renderable bottom;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -164313745
+      intValue = 1481402509
    )
    @Export("x")
    int x;
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -203665753
+      intValue = -1679345499
    )
    @Export("y")
    int y;
-   @ObfuscatedName("t")
-   @Export("bottom")
-   Renderable bottom;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -462915027
+      intValue = 2039712311
    )
    @Export("hash")
    int hash;
-   @ObfuscatedName("y")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1489572101
+      intValue = -2021271429
+   )
+   @Export("flags")
+   int flags;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lef;"
+   )
+   @Export("middle")
+   Renderable middle;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lef;"
+   )
+   @Export("top")
+   Renderable top;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 396278729
    )
    @Export("height")
    int height;
-   @ObfuscatedName("s")
-   @Export("middle")
-   Renderable middle;
-   @ObfuscatedName("r")
-   @Export("top")
-   Renderable top;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1375879559"
+      signature = "([BII)I",
+      garbageValue = "1414610843"
    )
-   public static void method2407() {
-      class254.field3421.reset();
-      class254.field3422.reset();
-      class254.field3423.reset();
+   public static int method2394(byte[] var0, int var1) {
+      int var3 = -1;
+
+      for(int var4 = 0; var4 < var1; ++var4) {
+         var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
+      }
+
+      var3 = ~var3;
+      return var3;
    }
 }

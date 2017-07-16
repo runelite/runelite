@@ -41,6 +41,12 @@ public class Value
 		assert !(value instanceof Value);
 		this.value = value;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Value{" + "value=" + value + '}';
+	}
 	
 	public boolean isUnknownOrNull()
 	{

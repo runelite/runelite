@@ -103,6 +103,16 @@ public class Client
 		return GameState.of(client.getGameState());
 	}
 
+	public String getUsername()
+	{
+		return client.getUsername();
+	}
+
+	public void setUsername(String name)
+	{
+		client.setUsername(name);
+	}
+
 	public Canvas getCanvas()
 	{
 		return client.getCanvas();
@@ -399,5 +409,10 @@ public class Client
 	public void setGameDrawingMode(int gameDrawingMode)
 	{
 		client.setGameDrawingMode(gameDrawingMode);
+	}
+
+	public void refreshChat()
+	{
+		client.setChatCycle(client.getCycleCntr());
 	}
 }

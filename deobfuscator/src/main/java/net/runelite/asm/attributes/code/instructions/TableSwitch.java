@@ -110,6 +110,12 @@ public class TableSwitch extends Instruction implements JumpingInstruction, Mapp
 	}
 
 	@Override
+	public void setJumps(List<Label> labels)
+	{
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
 	public void setLabel(org.objectweb.asm.Label label)
 	{
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

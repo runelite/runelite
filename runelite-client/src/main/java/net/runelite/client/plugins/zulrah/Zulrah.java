@@ -25,11 +25,9 @@
  */
 package net.runelite.client.plugins.zulrah;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -44,8 +42,8 @@ import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternA;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternB;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternC;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternD;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.util.RunnableExceptionLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,8 +66,6 @@ public class Zulrah extends Plugin
 
 	private Fight fight;
 
-	private ScheduledFuture<?> future;
-
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
@@ -79,17 +75,18 @@ public class Zulrah extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
-		future = executor.scheduleAtFixedRate(RunnableExceptionLogger.wrap(this::update), 100, 100, TimeUnit.MILLISECONDS);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		future.cancel(true);
 	}
 
-	private synchronized void update()
+	@Schedule(
+		period = 600,
+		unit = ChronoUnit.MILLIS
+	)
+	public void update()
 	{
 		if (client == null || client.getGameState() != GameState.LOGGED_IN)
 		{

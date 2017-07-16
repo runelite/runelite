@@ -120,6 +120,8 @@ public class Service implements SparkApplication
 		});
 		path("/item", () ->
 		{
+			get("/search", item::search, transformer);
+
 			get("/:id", item::getItem, transformer);
 			get("/:id/icon", item::getIcon);
 			get("/:id/icon/large", item::getIconLarge);

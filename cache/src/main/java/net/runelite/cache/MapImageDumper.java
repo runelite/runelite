@@ -49,7 +49,6 @@ import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.File;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
-import net.runelite.cache.io.InputStream;
 import net.runelite.cache.region.Location;
 import net.runelite.cache.region.Region;
 import net.runelite.cache.region.RegionLoader;

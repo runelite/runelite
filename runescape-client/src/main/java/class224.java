@@ -1,37 +1,29 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hr")
+@ObfuscatedName("hf")
 public class class224 {
-   @ObfuscatedName("dc")
-   @ObfuscatedGetter(
-      intValue = -1398805273
-   )
-   static int field2853;
-   @ObfuscatedName("e")
-   static ModIcon field2855;
-
-   @ObfuscatedName("w")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)LSequence;",
-      garbageValue = "1100169503"
+      signature = "(II)Lip;",
+      garbageValue = "1954162543"
    )
-   @Export("getAnimation")
-   public static Sequence getAnimation(int var0) {
-      Sequence var1 = (Sequence)Sequence.field3608.get((long)var0);
+   @Export("getNpcDefinition")
+   public static NPCComposition getNpcDefinition(int var0) {
+      NPCComposition var1 = (NPCComposition)NPCComposition.npcs.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = Sequence.field3617.getConfigData(12, var0);
-         var1 = new Sequence();
+         byte[] var2 = NPCComposition.field3560.getConfigData(9, var0);
+         var1 = new NPCComposition();
+         var1.id = var0;
          if(var2 != null) {
-            var1.method4689(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
-         var1.method4732();
-         Sequence.field3608.put(var1, (long)var0);
+         var1.post();
+         NPCComposition.npcs.put(var1, (long)var0);
          return var1;
       }
    }

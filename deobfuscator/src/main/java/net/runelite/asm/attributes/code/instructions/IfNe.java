@@ -49,9 +49,14 @@ public class IfNe extends If0
 		if (thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass())
 			return true;
 		
+		// whether or not it jumps can be negated too, so
+		// ifne vs ificmpne 0
+		// ifne vs ificmpne 1 (invert jump)
+		// ifne vs ificmpeq 1
+		// ifne vs ificmpeq 0 (invert jump)
+		// are all valid
 		if (otherIc.getInstruction() instanceof IfICmpNe || otherIc.getInstruction() instanceof IfICmpEq)
 		{
-			// check for one side being 0
 			StackContext s1 = otherIc.getPops().get(0),
 				s2 = otherIc.getPops().get(1);
 

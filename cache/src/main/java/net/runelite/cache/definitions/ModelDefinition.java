@@ -1,6 +1,5 @@
 package net.runelite.cache.definitions;
 
-import java.util.Arrays;
 import net.runelite.cache.models.CircularAngle;
 import net.runelite.cache.models.FaceNormal;
 import net.runelite.cache.models.VertexNormal;

@@ -49,7 +49,6 @@ public class Execution
 
 	private final ClassGroup group;
 	public List<Frame> frames = new ArrayList<>(), framesOther = new ArrayList<>();
-	public Set<Method> methods = new HashSet<>(); // all methods
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
 	private MultiValueMap<WeakInstructionContext, Method> stepInvokes = new MultiValueMap<>();
 	private Set<Method> invokes = new HashSet<>();
@@ -77,6 +76,8 @@ public class Execution
 
 		for (ClassFile cf : group.getClasses())
 		{
+			boolean extendsApplet = extendsApplet(cf);
+
 			for (Method m : cf.getMethods().getMethods())
 			{
 				if (!Deob.isObfuscated(m.getName()) && !m.getName().equals("<init>"))
@@ -91,7 +92,7 @@ public class Execution
 					logger.debug("Adding initial method {}", m);
 				}
 
-				if (m.getName().equals("<init>") && cf.getSuperName().equals("java/applet/Applet"))
+				if (m.getName().equals("<init>") && extendsApplet)
 				{
 					methods.add(m);
 				}
@@ -101,13 +102,22 @@ public class Execution
 		return methods;
 	}
 
+	private static boolean extendsApplet(ClassFile cf)
+	{
+		if (cf.getParent() != null)
+		{
+			return extendsApplet(cf.getParent());
+		}
+
+		return cf.getSuperName().equals("java/applet/Applet");
+	}
+
 	public void populateInitialMethods()
 	{
 		for (Method m : this.getInitialMethods())
 		{
 			if (m.getCode() == null)
 			{
-				methods.add(m);
 				continue;
 			}
 
@@ -196,8 +206,6 @@ public class Execution
 		{
 			Frame frame = frames.get(0);
 
-			methods.add(frame.getMethod());
-
 			++fcount;
 			frame.execute();
 
@@ -243,6 +251,11 @@ public class Execution
 		this.visitors.add(ev);
 	}
 
+	public void clearExecutionVisitor()
+	{
+		this.visitors.clear();
+	}
+
 	public void accept(InstructionContext ic)
 	{
 		visitors.forEach(v -> v.visit(ic));
@@ -266,6 +279,15 @@ public class Execution
 	public void accept(MethodContext m)
 	{
 		methodContextVisitors.forEach(mc -> mc.visit(m));
+	}
+
+	public void reset()
+	{
+		frames.clear();
+		framesOther.clear();
+		invokes.clear();
+		stepInvokes.clear();
+		executed.clear();
 	}
 
 	public void order(Frame frame, Method method)

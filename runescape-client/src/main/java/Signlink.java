@@ -4,60 +4,81 @@ import java.net.Socket;
 import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eo")
+@ObfuscatedName("en")
 @Implements("Signlink")
 public class Signlink implements Runnable {
-   @ObfuscatedName("w")
-   public static String field2248;
-   @ObfuscatedName("r")
-   boolean field2249;
    @ObfuscatedName("a")
-   class153 field2250;
-   @ObfuscatedName("t")
-   class153 field2251;
-   @ObfuscatedName("s")
-   Thread field2252;
-   @ObfuscatedName("i")
-   public static String field2253;
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "52"
+   @Export("javaVendor")
+   public static String javaVendor;
+   @ObfuscatedName("j")
+   @Export("javaVersion")
+   public static String javaVersion;
+   @ObfuscatedName("ol")
+   @ObfuscatedGetter(
+      intValue = 1657191825
    )
-   public final void method2923() {
-      synchronized(this) {
-         this.field2249 = true;
-         this.notifyAll();
-      }
+   @Export("clanChatCount")
+   static int clanChatCount;
+   @ObfuscatedName("e")
+   @Export("closed")
+   boolean closed;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lev;"
+   )
+   @Export("currentTask")
+   Task currentTask;
+   @ObfuscatedName("v")
+   @Export("sysEventQueue")
+   Thread sysEventQueue;
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lev;"
+   )
+   @Export("cachedTask")
+   Task cachedTask;
+
+   public Signlink() {
+      this.currentTask = null;
+      this.cachedTask = null;
+      this.closed = false;
+      javaVendor = "Unknown";
+      javaVersion = "1.6";
 
       try {
-         this.field2252.join();
-      } catch (InterruptedException var3) {
+         javaVendor = System.getProperty("java.vendor");
+         javaVersion = System.getProperty("java.version");
+      } catch (Exception var2) {
          ;
       }
 
+      this.closed = false;
+      this.sysEventQueue = new Thread(this);
+      this.sysEventQueue.setPriority(10);
+      this.sysEventQueue.setDaemon(true);
+      this.sysEventQueue.start();
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IIILjava/lang/Object;I)Lclass153;",
-      garbageValue = "-1334399042"
+      signature = "(IIILjava/lang/Object;I)Lev;",
+      garbageValue = "-324226504"
    )
-   final class153 method2925(int var1, int var2, int var3, Object var4) {
-      class153 var5 = new class153();
-      var5.field2244 = var1;
-      var5.field2245 = var2;
-      var5.field2246 = var4;
+   final Task method2929(int var1, int var2, int var3, Object var4) {
+      Task var5 = new Task();
+      var5.type = var1;
+      var5.field2222 = var2;
+      var5.field2219 = var4;
       synchronized(this) {
-         if(this.field2251 != null) {
-            this.field2251.field2242 = var5;
-            this.field2251 = var5;
+         if(this.cachedTask != null) {
+            this.cachedTask.task = var5;
+            this.cachedTask = var5;
          } else {
-            this.field2251 = this.field2250 = var5;
+            this.cachedTask = this.currentTask = var5;
          }
 
          this.notify();
@@ -65,38 +86,80 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)Lclass153;",
-      garbageValue = "-718440342"
+      signature = "(Ljava/net/URL;I)Lev;",
+      garbageValue = "1684174835"
    )
-   public final class153 method2926(String var1, int var2) {
-      return this.method2925(1, var2, 0, var1);
+   @Export("createURL")
+   public final Task createURL(URL var1) {
+      return this.method2929(4, 0, 0, var1);
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Runnable;II)Lclass153;",
-      garbageValue = "-1975001180"
+      signature = "(Ljava/lang/Runnable;II)Lev;",
+      garbageValue = "-1950293618"
    )
-   public final class153 method2927(Runnable var1, int var2) {
-      return this.method2925(2, var2, 0, var1);
+   @Export("createRunnable")
+   public final Task createRunnable(Runnable var1, int var2) {
+      return this.method2929(2, var2, 0, var1);
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1898075126"
+   )
+   @Export("join")
+   public final void join() {
+      synchronized(this) {
+         this.closed = true;
+         this.notifyAll();
+      }
+
+      try {
+         this.sysEventQueue.join();
+      } catch (InterruptedException var3) {
+         ;
+      }
+
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;II)Lev;",
+      garbageValue = "-1909314997"
+   )
+   @Export("createSocket")
+   public final Task createSocket(String var1, int var2) {
+      return this.method2929(1, var2, 0, var1);
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(IB)Lev;",
+      garbageValue = "26"
+   )
+   @Export("createHost")
+   public final Task createHost(int var1) {
+      return this.method2929(3, var1, 0, (Object)null);
    }
 
    public final void run() {
       while(true) {
-         class153 var1;
+         Task var1;
          synchronized(this) {
             while(true) {
-               if(this.field2249) {
+               if(this.closed) {
                   return;
                }
 
-               if(this.field2250 != null) {
-                  var1 = this.field2250;
-                  this.field2250 = this.field2250.field2242;
-                  if(this.field2250 == null) {
-                     this.field2251 = null;
+               if(this.currentTask != null) {
+                  var1 = this.currentTask;
+                  this.currentTask = this.currentTask.task;
+                  if(this.currentTask == null) {
+                     this.cachedTask = null;
                   }
                   break;
                }
@@ -110,20 +173,20 @@ public class Signlink implements Runnable {
          }
 
          try {
-            int var5 = var1.field2244;
+            int var5 = var1.type;
             if(var5 == 1) {
-               var1.field2239 = new Socket(InetAddress.getByName((String)var1.field2246), var1.field2245);
+               var1.value = new Socket(InetAddress.getByName((String)var1.field2219), var1.field2222);
             } else if(var5 == 2) {
-               Thread var3 = new Thread((Runnable)var1.field2246);
+               Thread var3 = new Thread((Runnable)var1.field2219);
                var3.setDaemon(true);
                var3.start();
-               var3.setPriority(var1.field2245);
-               var1.field2239 = var3;
+               var3.setPriority(var1.field2222);
+               var1.value = var3;
             } else if(var5 == 4) {
-               var1.field2239 = new DataInputStream(((URL)var1.field2246).openStream());
+               var1.value = new DataInputStream(((URL)var1.field2219).openStream());
             } else if(var5 == 3) {
-               String var10 = (var1.field2245 >> 24 & 255) + "." + (var1.field2245 >> 16 & 255) + "." + (var1.field2245 >> 8 & 255) + "." + (var1.field2245 & 255);
-               var1.field2239 = InetAddress.getByName(var10).getHostName();
+               String var10 = (var1.field2222 >> 24 & 255) + "." + (var1.field2222 >> 16 & 255) + "." + (var1.field2222 >> 8 & 255) + "." + (var1.field2222 & 255);
+               var1.value = InetAddress.getByName(var10).getHostName();
             }
 
             var1.status = 1;
@@ -135,69 +198,58 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("hm")
    @ObfuscatedSignature(
-      signature = "(Ljava/net/URL;B)Lclass153;",
-      garbageValue = "25"
+      signature = "(Lbm;B)V",
+      garbageValue = "46"
    )
-   public final class153 method2928(URL var1) {
-      return this.method2925(4, 0, 0, var1);
-   }
-
-   public Signlink() {
-      this.field2250 = null;
-      this.field2251 = null;
-      this.field2249 = false;
-      field2253 = "Unknown";
-      field2248 = "1.6";
-
-      try {
-         field2253 = System.getProperty("java.vendor");
-         field2248 = System.getProperty("java.version");
-      } catch (Exception var2) {
-         ;
+   static final void method2953(PendingSpawn var0) {
+      int var1 = 0;
+      int var2 = -1;
+      int var3 = 0;
+      int var4 = 0;
+      if(var0.type == 0) {
+         var1 = class29.region.method2688(var0.level, var0.x, var0.y);
       }
 
-      this.field2249 = false;
-      this.field2252 = new Thread(this);
-      this.field2252.setPriority(10);
-      this.field2252.setDaemon(true);
-      this.field2252.start();
+      if(var0.type == 1) {
+         var1 = class29.region.method2693(var0.level, var0.x, var0.y);
+      }
+
+      if(var0.type == 2) {
+         var1 = class29.region.method2675(var0.level, var0.x, var0.y);
+      }
+
+      if(var0.type == 3) {
+         var1 = class29.region.method2747(var0.level, var0.x, var0.y);
+      }
+
+      if(var1 != 0) {
+         int var5 = class29.region.method2743(var0.level, var0.x, var0.y, var1);
+         var2 = var1 >> 14 & 32767;
+         var3 = var5 & 31;
+         var4 = var5 >> 6 & 3;
+      }
+
+      var0.field1193 = var2;
+      var0.field1195 = var3;
+      var0.field1201 = var4;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("gu")
    @ObfuscatedSignature(
-      signature = "(II)Lclass153;",
-      garbageValue = "1927296735"
+      signature = "(I)V",
+      garbageValue = "-48025480"
    )
-   public final class153 method2930(int var1) {
-      return this.method2925(3, var1, 0, (Object)null);
-   }
-
-   @ObfuscatedName("hy")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIIB)V",
-      garbageValue = "17"
-   )
-   @Export("drawWidget")
-   static final void drawWidget(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      if(class66.method1121(var0)) {
-         class262.field3641 = null;
-         WallObject.gameDraw(class46.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
-         if(class262.field3641 != null) {
-            WallObject.gameDraw(class262.field3641, -1412584499, var1, var2, var3, var4, class77.field1237, class270.field3689, var7);
-            class262.field3641 = null;
-         }
-
-      } else {
-         if(var7 != -1) {
-            Client.field1132[var7] = true;
+   static final void method2954() {
+      for(PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.getFront(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.getNext()) {
+         if(var0.hitpoints == -1) {
+            var0.delay = 0;
+            method2953(var0);
          } else {
-            for(int var8 = 0; var8 < 100; ++var8) {
-               Client.field1132[var8] = true;
-            }
+            var0.unlink();
          }
-
       }
+
    }
 }
