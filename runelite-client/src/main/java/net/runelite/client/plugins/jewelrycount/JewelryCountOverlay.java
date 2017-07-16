@@ -81,33 +81,33 @@ class JewelryCountOverlay extends Overlay
 			}
 		}
 
-		Widget[] equipment =
-		{
-			client.getWidget(WidgetInfo.EQUIPMENT_AMULET).getChild(1), client.getWidget(WidgetInfo.EQUIPMENT_RING).getChild(1)
-		};
+		Widget equipment = client.getWidget(WidgetInfo.EQUIPMENT);
 
-		if (equipment == null)
+		if (equipment != null)
 		{
-			return null;
-		}
-
-		for (Widget widget : equipment)
-		{
-			JewelryCharges charges = JewelryCharges.getCharges(widget.getItemId());
-
-			if (charges == null || widget.isHidden())
+			Widget[] equipmentSlots =
 			{
-				continue;
+				client.getWidget(WidgetInfo.EQUIPMENT_AMULET).getChild(1), client.getWidget(WidgetInfo.EQUIPMENT_RING).getChild(1)
+			};
+
+			for (Widget widget : equipmentSlots)
+			{
+				JewelryCharges charges = JewelryCharges.getCharges(widget.getItemId());
+
+				if (charges == null || widget.isHidden())
+				{
+					continue;
+				}
+
+				Rectangle widgetBounds = widget.getBounds();
+
+				//to match inventory text
+				widgetBounds.x -= 5;
+				widgetBounds.y -= 1;
+
+				renderWidgetText(graphics, widgetBounds, charges.getCharges(), Color.white);
+
 			}
-
-			Rectangle widgetBounds = widget.getBounds();
-
-			//to match inventory text
-			widgetBounds.x -= 5;
-			widgetBounds.y -= 1;
-
-			renderWidgetText(graphics, widgetBounds, charges.getCharges(), Color.white);
-
 		}
 
 		return null;
