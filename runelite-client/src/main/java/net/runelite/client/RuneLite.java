@@ -24,6 +24,7 @@
  */
 package net.runelite.client;
 
+import net.runelite.client.game.ItemManager;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.gson.Gson;

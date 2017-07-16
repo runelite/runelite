@@ -48,7 +48,7 @@ import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.ItemManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
