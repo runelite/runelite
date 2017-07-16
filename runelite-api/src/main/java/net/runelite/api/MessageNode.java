@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.mapping.Import;
-
-public interface MessageNode
+public class MessageNode
 {
-	@Import("type")
-	int getType();
+	private final net.runelite.rs.api.MessageNode messageNode;
 
-	@Import("sender")
-	String getSender();
+	public MessageNode(net.runelite.rs.api.MessageNode messageNode)
+	{
+		this.messageNode = messageNode;
+	}
 
-	@Import("value")
-	String getValue();
+	public ChatMessageType getType()
+	{
+		return ChatMessageType.of(messageNode.getType());
+	}
 
-	@Import(
-		value = "value",
-		setter = true
-	)
-	void setValue(String value);
+	public String getSender()
+	{
+		return messageNode.getSender();
+	}
+
+	public String getValue()
+	{
+		return messageNode.getValue();
+	}
+
+	public void setValue(String value)
+	{
+		messageNode.setValue(value);
+	}
 }

@@ -1,4 +1,5 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -32,9 +33,10 @@ public class MessageNode extends CacheableNode {
    @Export("sender")
    String sender;
    @ObfuscatedName("e")
-   @Export("value")
+   @Export(value = "value", setter = true)
    String value;
 
+   @Hook("setMessage")
    MessageNode(int var1, String var2, String var3, String var4) {
       this.id = NPC.method1677();
       this.tick = Client.gameCycle;
@@ -49,7 +51,9 @@ public class MessageNode extends CacheableNode {
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
       garbageValue = "-1548603725"
    )
-   void method1104(int var1, String var2, String var3, String var4) {
+   @Export("setMessage")
+   @Hook("setMessage")
+   void setMessage(int var1, String var2, String var3, String var4) {
       this.id = NPC.method1677();
       this.tick = Client.gameCycle;
       this.type = var1;

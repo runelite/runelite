@@ -234,4 +234,10 @@ public interface Client extends GameEngine
 		setter = true
 	)
 	void setGameDrawingMode(int gameDrawingMode);
+
+	@Import("cycleCntr")
+	int getCycleCntr();
+
+	@Import(value = "chatCycle", setter = true)
+	void setChatCycle(int value);
 }

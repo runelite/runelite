@@ -72,4 +72,37 @@ public class ItemClient
 			throw new IOException(ex);
 		}
 	}
+
+	public SearchResult search(String itemName) throws IOException
+	{
+		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+				.addPathSegment("item")
+				.addPathSegment("search")
+				.addQueryParameter("query", itemName)
+				.build();
+
+		logger.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+				.url(url)
+				.build();
+
+		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
+
+		if (!response.isSuccessful())
+		{
+			logger.debug("Error looking up item {}: {}", itemName, response.message());
+			return null;
+		}
+
+		try (ResponseBody body = response.body())
+		{
+			InputStream in = body.byteStream();
+			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), SearchResult.class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
+	}
 }

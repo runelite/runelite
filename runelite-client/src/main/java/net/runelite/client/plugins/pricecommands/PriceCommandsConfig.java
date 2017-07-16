@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.pricecommands;
 
-import net.runelite.mapping.Import;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public interface MessageNode
+@ConfigGroup(
+	keyName = "pricecommands",
+	name = "Chat commands",
+	description = "Configuration for chat commands"
+)
+public interface PriceCommandsConfig
 {
-	@Import("type")
-	int getType();
-
-	@Import("sender")
-	String getSender();
-
-	@Import("value")
-	String getValue();
-
-	@Import(
-		value = "value",
-		setter = true
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enable",
+		description = "Configures whether chat commands are enabled"
 	)
-	void setValue(String value);
+	default boolean enabled()
+	{
+		return true;
+	}
+
 }

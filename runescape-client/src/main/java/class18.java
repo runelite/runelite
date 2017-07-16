@@ -77,9 +77,9 @@ final class class18 implements Comparator {
          class98.chatLineMap.put(Integer.valueOf(var0), var4);
       }
 
-      MessageNode var5 = var4.method1842(var0, var1, var2, var3);
+      MessageNode var5 = var4.addMessage(var0, var1, var2, var3);
       class98.field1520.method3501(var5, (long)var5.id);
       class98.field1526.method3674(var5);
-      Client.field910 = Client.field1045;
+      Client.chatCycle = Client.cycleCntr;
    }
 }

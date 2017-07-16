@@ -35,6 +35,7 @@ import net.runelite.client.game.DeathChecker;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.rs.api.MainBufferProvider;
+import net.runelite.rs.api.MessageNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -189,5 +190,21 @@ public class Hooks
 		ChatMessage chatMessage = new ChatMessage(type, sender, message, clan);
 
 		runelite.getEventBus().post(chatMessage);
+	}
+
+	public static void setMessage(Object object, int type, String name, String sender, String value)
+	{
+		MessageNode messageNode = (MessageNode) object;
+
+		// Hook is fired prior to actually setting these on the MessageNode, so send them
+		// in the event too.
+		SetMessage setMessage = new SetMessage();
+		setMessage.setMessageNode(new net.runelite.api.MessageNode(messageNode));
+		setMessage.setType(ChatMessageType.of(type));
+		setMessage.setName(name);
+		setMessage.setSender(sender);
+		setMessage.setValue(value);
+
+		runelite.getEventBus().post(setMessage);
 	}
 }

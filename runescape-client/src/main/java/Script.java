@@ -100,7 +100,7 @@ public class Script extends CacheableNode {
                      Client.ignores[var6] = Client.ignores[var6 + 1];
                   }
 
-                  Client.field1099 = Client.field1045;
+                  Client.field1099 = Client.cycleCntr;
                   Client.secretPacketBuffer1.putOpcode(192);
                   Client.secretPacketBuffer1.putByte(DecorativeObject.getLength(var0));
                   Client.secretPacketBuffer1.putString(var0);
