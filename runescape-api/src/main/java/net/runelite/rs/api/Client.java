@@ -24,6 +24,7 @@
  */
 package net.runelite.rs.api;
 
+import java.util.Map;
 import net.runelite.mapping.Import;
 
 public interface Client extends GameEngine
@@ -234,4 +235,10 @@ public interface Client extends GameEngine
 		setter = true
 	)
 	void setGameDrawingMode(int gameDrawingMode);
+
+	@Import("cycleCntr")
+	int getCycleCntr();
+
+	@Import(value = "chatCycle", setter = true)
+	void setChatCycle(int value);
 }

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins;
 
+import net.runelite.client.plugins.pricecommands.PriceCommands;
 import net.runelite.client.task.ScheduledMethod;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.Service;
@@ -102,6 +103,7 @@ public class PluginManager
 		plugins.add(new FishingPlugin());
 		plugins.add(new WoodcuttingPlugin());
 		plugins.add(new RememberUsername());
+		plugins.add(new PriceCommands());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{

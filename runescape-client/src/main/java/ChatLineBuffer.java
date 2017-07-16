@@ -1,4 +1,5 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -35,7 +36,8 @@ public class ChatLineBuffer {
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbv;",
       garbageValue = "-1645741941"
    )
-   MessageNode method1842(int var1, String var2, String var3, String var4) {
+   @Export("addMessage")
+   MessageNode addMessage(int var1, String var2, String var3, String var4) {
       MessageNode var5 = this.lines[99];
 
       for(int var6 = this.length; var6 > 0; --var6) {
@@ -49,7 +51,7 @@ public class ChatLineBuffer {
       } else {
          var5.unlink();
          var5.unlinkDual();
-         var5.method1104(var1, var2, var4, var3);
+         var5.setMessage(var1, var2, var4, var3);
       }
 
       this.lines[0] = var5;

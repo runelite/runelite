@@ -670,7 +670,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1164369799
    )
-   static int field1045;
+   @Export("cycleCntr")
+   static int cycleCntr;
    @ObfuscatedName("qw")
    @ObfuscatedGetter(
       intValue = 1098081135
@@ -1224,7 +1225,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 1712256313
    )
-   static int field910;
+   @Export(value = "chatCycle", setter = true)
+   static int chatCycle;
    @ObfuscatedName("rx")
    static short[] field1181;
    @ObfuscatedName("nw")
@@ -1422,14 +1424,14 @@ public final class Client extends GameEngine {
       field1046 = -1;
       field1089 = -1;
       field1174 = false;
-      field1045 = 1;
+      cycleCntr = 1;
       field1092 = new int[32];
       field1093 = 0;
       interfaceItemTriggers = new int[32];
       field1095 = 0;
       field1096 = new int[32];
       field1097 = 0;
-      field910 = 0;
+      chatCycle = 0;
       field1099 = 0;
       field1100 = 0;
       field1101 = 0;
@@ -2228,7 +2230,7 @@ public final class Client extends GameEngine {
 
             if(packetType == 180) {
                field1056 = 1;
-               field1099 = field1045;
+               field1099 = cycleCntr;
                packetType = -1;
                return true;
             }
@@ -2286,7 +2288,7 @@ public final class Client extends GameEngine {
 
             if(packetType == 186) {
                field986 = secretPacketBuffer2.readUnsignedShortOb1() * 30;
-               field1103 = field1045;
+               field1103 = cycleCntr;
                packetType = -1;
                return true;
             }
@@ -2441,7 +2443,7 @@ public final class Client extends GameEngine {
             if(packetType == 136) {
                class7.method35();
                weight = secretPacketBuffer2.readShort();
-               field1103 = field1045;
+               field1103 = cycleCntr;
                packetType = -1;
                return true;
             }
@@ -2449,7 +2451,7 @@ public final class Client extends GameEngine {
             if(packetType == 72) {
                class7.method35();
                energy = secretPacketBuffer2.readUnsignedByte();
-               field1103 = field1045;
+               field1103 = cycleCntr;
                packetType = -1;
                return true;
             }
@@ -2509,7 +2511,7 @@ public final class Client extends GameEngine {
                   XClanMember.field904 = null;
                }
 
-               field1102 = field1045;
+               field1102 = cycleCntr;
                packetType = -1;
                return true;
             }
@@ -2524,7 +2526,7 @@ public final class Client extends GameEngine {
                   grandExchangeOffers[var2] = new XGrandExchangeOffer(secretPacketBuffer2, false);
                }
 
-               field1101 = field1045;
+               field1101 = cycleCntr;
                packetType = -1;
                return true;
             }
@@ -2905,7 +2907,7 @@ public final class Client extends GameEngine {
                      }
                   }
 
-                  field1099 = field1045;
+                  field1099 = cycleCntr;
                   packetType = -1;
                   return true;
                }
@@ -2959,7 +2961,7 @@ public final class Client extends GameEngine {
                               class27.clanChatRank = var68;
                            }
 
-                           field1100 = field1045;
+                           field1100 = cycleCntr;
                            packetType = -1;
                            return true;
                         }
@@ -2989,7 +2991,7 @@ public final class Client extends GameEngine {
                      }
                   }
 
-                  field1100 = field1045;
+                  field1100 = cycleCntr;
                   packetType = -1;
                   return true;
                }
@@ -3424,7 +3426,7 @@ public final class Client extends GameEngine {
                int var9;
                boolean var73;
                if(packetType == 209) {
-                  field1100 = field1045;
+                  field1100 = cycleCntr;
                   if(packetLength == 0) {
                      clanChatOwner = null;
                      clanChatName = null;
@@ -3583,7 +3585,7 @@ public final class Client extends GameEngine {
                   }
 
                   field1056 = 2;
-                  field1099 = field1045;
+                  field1099 = cycleCntr;
                   var63 = false;
                   var3 = friendCount;
 
@@ -5153,7 +5155,7 @@ public final class Client extends GameEngine {
                      class45.method667(widgetRoot, 0, 0, class77.canvasWidth, FloorUnderlayDefinition.canvasHeight, 0, 0);
                   }
 
-                  ++field1045;
+                  ++cycleCntr;
 
                   while(true) {
                      Widget var39;

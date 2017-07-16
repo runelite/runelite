@@ -575,7 +575,7 @@ public class class45 extends class28 {
                               var9.field2735 = Client.field1097;
                            }
 
-                           if(Client.field910 > var9.field2780 && var9.field2755 != null) {
+                           if(Client.chatCycle > var9.field2780 && var9.field2755 != null) {
                               var30 = new ScriptEvent();
                               var30.widget = var9;
                               var30.field839 = var9.field2755;
@@ -617,7 +617,7 @@ public class class45 extends class28 {
                               Client.field1105.addFront(var30);
                            }
 
-                           var9.field2780 = Client.field1045;
+                           var9.field2780 = Client.cycleCntr;
                            if(var9.field2756 != null) {
                               for(var21 = 0; var21 < Client.field906; ++var21) {
                                  ScriptEvent var32 = new ScriptEvent();
@@ -715,7 +715,7 @@ public class class45 extends class28 {
                      Client.friends[var6] = Client.friends[var6 + 1];
                   }
 
-                  Client.field1099 = Client.field1045;
+                  Client.field1099 = Client.cycleCntr;
                   Client.secretPacketBuffer1.putOpcode(154);
                   Client.secretPacketBuffer1.putByte(DecorativeObject.getLength(var0));
                   Client.secretPacketBuffer1.putString(var0);
