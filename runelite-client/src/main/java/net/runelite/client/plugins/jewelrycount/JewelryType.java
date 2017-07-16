@@ -30,5 +30,7 @@ public enum JewelryType
 	ROD,
 	GAMES,
 	ROW,
-	ROS
+	ROS,
+	SKILLS,
+	CBRACE
 }

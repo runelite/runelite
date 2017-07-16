@@ -83,7 +83,8 @@ class JewelryCountOverlay extends Overlay
 
 		Widget[] equipment =
 		{
-			client.getWidget(WidgetInfo.EQUIPMENT_AMULET).getChild(1), client.getWidget(WidgetInfo.EQUIPMENT_RING).getChild(1)
+			client.getWidget(WidgetInfo.EQUIPMENT_AMULET).getChild(1), client.getWidget(WidgetInfo.EQUIPMENT_RING).getChild(1),
+			client.getWidget(WidgetInfo.EQUIPMENT_GLOVES).getChild(1)
 		};
 
 		if (equipment == null)
