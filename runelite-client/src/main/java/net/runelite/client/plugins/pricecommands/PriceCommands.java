@@ -29,6 +29,7 @@ import com.google.common.eventbus.Subscribe;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.MessageNode;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.RuneLite;
@@ -44,6 +45,7 @@ public class PriceCommands extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(PriceCommands.class);
 
+	private final PriceCommandsConfig config = RuneLite.getRunelite().getConfigManager().getConfig(PriceCommandsConfig.class);
 	private final ItemManager itemManager = RuneLite.getRunelite().getItemManager();
 	private final ItemClient itemClient = new ItemClient();
 	private final RuneLite runelite = RuneLite.getRunelite();
@@ -57,12 +59,16 @@ public class PriceCommands extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-
 	}
 
 	@Subscribe
 	public void onSetMessage(SetMessage setMessage)
 	{
+		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		{
+			return;
+		}
+
 		switch (setMessage.getType())
 		{
 			case PUBLIC:
@@ -119,6 +125,8 @@ public class PriceCommands extends Plugin
 			String response = "Price of " + result.getItems().get(0).getName() + ": GE average " + String.format("%,d", cost);
 
 			logger.debug("Setting response {}", response);
+
+			// XXX hopefully messageNode hasn't been reused yet?
 			messageNode.setValue(response);
 			client.refreshChat();
 		}

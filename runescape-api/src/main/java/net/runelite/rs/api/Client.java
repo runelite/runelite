@@ -24,7 +24,6 @@
  */
 package net.runelite.rs.api;
 
-import java.util.Map;
 import net.runelite.mapping.Import;
 
 public interface Client extends GameEngine
