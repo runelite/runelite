@@ -8,11 +8,20 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("CombatInfo2")
 public class CombatInfo2 extends CacheableNode {
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    public static NodeCache field3364;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("spriteCache")
    static NodeCache spriteCache;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field3373;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
@@ -85,7 +94,7 @@ public class CombatInfo2 extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "-1722354429"
    )
    void method4348(Buffer var1, int var2) {
@@ -117,7 +126,7 @@ public class CombatInfo2 extends CacheableNode {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
+      signature = "(Lfe;B)V",
       garbageValue = "28"
    )
    public void method4352(Buffer var1) {
@@ -133,7 +142,7 @@ public class CombatInfo2 extends CacheableNode {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(I)LSpritePixels;",
+      signature = "(I)Ljt;",
       garbageValue = "-1271518056"
    )
    public SpritePixels method4351() {
@@ -156,7 +165,7 @@ public class CombatInfo2 extends CacheableNode {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(I)LSpritePixels;",
+      signature = "(I)Ljt;",
       garbageValue = "245787093"
    )
    public SpritePixels method4342() {
@@ -187,6 +196,6 @@ public class CombatInfo2 extends CacheableNode {
       int var2 = Varcs.method1804(var0 - 1, var1 - 1) + Varcs.method1804(var0 + 1, var1 - 1) + Varcs.method1804(var0 - 1, var1 + 1) + Varcs.method1804(var0 + 1, var1 + 1);
       int var3 = Varcs.method1804(var0 - 1, var1) + Varcs.method1804(var0 + 1, var1) + Varcs.method1804(var0, var1 - 1) + Varcs.method1804(var0, var1 + 1);
       int var4 = Varcs.method1804(var0, var1);
-      return var3 / 8 + var2 / 16 + var4 / 4;
+      return var2 / 16 + var3 / 8 + var4 / 4;
    }
 }

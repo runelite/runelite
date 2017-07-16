@@ -1,14 +1,21 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ge")
 @Implements("Node")
 public class Node {
    @ObfuscatedName("cd")
+   @ObfuscatedSignature(
+      signature = "Lge;"
+   )
    @Export("previous")
    Node previous;
    @ObfuscatedName("cl")
+   @ObfuscatedSignature(
+      signature = "Lge;"
+   )
    @Export("next")
    public Node next;
    @ObfuscatedName("cf")

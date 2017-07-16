@@ -16,10 +16,19 @@ import net.runelite.rs.Reflection;
 @ObfuscatedName("iu")
 public enum class239 implements RSEnum {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Liu;"
+   )
    field3278(2, 0),
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Liu;"
+   )
    field3274(1, 1),
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Liu;"
+   )
    field3275(0, 2);
 
    @ObfuscatedName("r")
@@ -49,7 +58,7 @@ public enum class239 implements RSEnum {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LPacketBuffer;I)V",
+      signature = "(Lff;I)V",
       garbageValue = "1404195174"
    )
    @Export("encodeClassVerifier")

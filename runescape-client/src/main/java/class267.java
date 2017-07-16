@@ -5,6 +5,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("jo")
 public class class267 {
    @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lcz;"
+   )
    public static class103 field3666;
    @ObfuscatedName("n")
    static final char[] field3665;

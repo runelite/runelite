@@ -8,11 +8,17 @@ public class class96 {
    @ObfuscatedName("n")
    static byte[] field1491;
    @ObfuscatedName("cc")
+   @ObfuscatedSignature(
+      signature = "Lfq;"
+   )
    @Export("rssocket")
    static RSSocket rssocket;
    @ObfuscatedName("r")
    static byte[] field1487;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "[Lfe;"
+   )
    static Buffer[] field1490;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
@@ -42,6 +48,9 @@ public class class96 {
    @ObfuscatedName("k")
    static int[] field1493;
    @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lfe;"
+   )
    static Buffer field1500;
 
    static {
@@ -71,7 +80,7 @@ public class class96 {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(LBuffer;IIIIIIB)V",
+      signature = "(Lfe;IIIIIIB)V",
       garbageValue = "-111"
    )
    @Export("loadTerrain")
@@ -85,7 +94,7 @@ public class class96 {
             if(var7 == 0) {
                if(var1 == 0) {
                   int[] var8 = class61.tileHeights[0][var2];
-                  int var11 = var4 + var2 + 932731;
+                  int var11 = var4 + 932731 + var2;
                   int var12 = var5 + var3 + 556238;
                   int var13 = class98.getSmoothNoise(var11 + '넵', var12 + 91923, 4) - 128 + (class98.getSmoothNoise(var11 + 10294, var12 + '鎽', 2) - 128 >> 1) + (class98.getSmoothNoise(var11, var12, 1) - 128 >> 2);
                   var13 = (int)((double)var13 * 0.3D) + 35;

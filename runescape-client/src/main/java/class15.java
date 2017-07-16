@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 final class class15 implements Comparator {
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lclass14;Lclass14;I)I",
+      signature = "(Lt;Lt;I)I",
       garbageValue = "-1092241554"
    )
    int method89(class14 var1, class14 var2) {

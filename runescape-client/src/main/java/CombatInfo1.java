@@ -51,7 +51,7 @@ public class CombatInfo1 extends Node {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;B)V",
+      signature = "(Lif;Lif;B)V",
       garbageValue = "1"
    )
    public static void method1509(IndexDataBase var0, IndexDataBase var1) {
@@ -71,7 +71,7 @@ public class CombatInfo1 extends Node {
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZB)I",
+      signature = "(ILcg;ZB)I",
       garbageValue = "-76"
    )
    static int method1513(int var0, Script var1, boolean var2) {
@@ -135,7 +135,7 @@ public class CombatInfo1 extends Node {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(LWorld;LWorld;IZI)I",
+      signature = "(Lcx;Lcx;IZI)I",
       garbageValue = "1379190305"
    )
    static int method1508(World var0, World var1, int var2, boolean var3) {

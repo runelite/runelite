@@ -4,8 +4,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("iy")
 public class class244 extends CacheableNode {
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    static NodeCache field3318;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field3320;
    @ObfuscatedName("n")
    public boolean field3321;
@@ -20,7 +26,7 @@ public class class244 extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "-712453"
    )
    void method4278(Buffer var1, int var2) {
@@ -32,7 +38,7 @@ public class class244 extends CacheableNode {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
+      signature = "(Lfe;B)V",
       garbageValue = "-1"
    )
    void method4272(Buffer var1) {

@@ -8,9 +8,15 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("XClanMember")
 public class XClanMember extends Node {
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "[Ljf;"
+   )
    @Export("titlemuteSprite")
    static ModIcon[] titlemuteSprite;
    @ObfuscatedName("re")
+   @ObfuscatedSignature(
+      signature = "Lk;"
+   )
    static class13 field904;
    @ObfuscatedName("j")
    String field898;
@@ -38,7 +44,7 @@ public class XClanMember extends Node {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(LFont;LFont;LFont;ZI)V",
+      signature = "(Ljc;Ljc;Ljc;ZI)V",
       garbageValue = "-1518546957"
    )
    @Export("drawLoginScreen")
@@ -241,7 +247,7 @@ public class XClanMember extends Node {
                }
 
                var0.method4734(Integer.toString(var17.id), var13 + 15, var12 + var33 / 2 + 5, var21, -1);
-               var1.method4734(var19, var13 + 60, var33 / 2 + var12 + 5, 268435455, -1);
+               var1.method4734(var19, var13 + 60, var12 + var33 / 2 + 5, 268435455, -1);
                var12 += var33 + var32;
                ++var14;
                if(var14 >= var7) {
@@ -440,7 +446,7 @@ public class XClanMember extends Node {
                   var8 = 321;
                   class208.field2595.method4952(var7 - 73, var8 - 20);
                   var0.method4734("Recover", var7, var8 + 5, 16777215, 0);
-                  var7 = 180 + class92.loginWindowX + 80;
+                  var7 = class92.loginWindowX + 180 + 80;
                   class208.field2595.method4952(var7 - 73, var8 - 20);
                   var0.method4734("Back", var7, var8 + 5, 16777215, 0);
                } else if(class92.loginIndex == 6) {
@@ -615,7 +621,7 @@ public class XClanMember extends Node {
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
+      signature = "(ILcg;ZI)I",
       garbageValue = "-280896287"
    )
    static int method1141(int var0, Script var1, boolean var2) {

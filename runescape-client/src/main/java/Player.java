@@ -9,10 +9,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Player")
 public final class Player extends Actor {
    @ObfuscatedName("dl")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    static IndexData field881;
    @ObfuscatedName("rz")
    static GarbageCollectorMXBean field894;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lhu;"
+   )
    @Export("composition")
    PlayerComposition composition;
    @ObfuscatedName("n")
@@ -66,6 +72,9 @@ public final class Player extends Actor {
    @ObfuscatedName("q")
    boolean field891;
    @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lej;"
+   )
    @Export("model")
    Model model;
    @ObfuscatedName("d")
@@ -153,7 +162,7 @@ public final class Player extends Actor {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)LModel;",
+      signature = "(B)Lej;",
       garbageValue = "19"
    )
    @Export("getModel")
@@ -235,7 +244,7 @@ public final class Player extends Actor {
       super.pathY[0] = var2;
       int var3 = this.getSize();
       super.x = var3 * 64 + super.pathX[0] * 128;
-      super.y = var3 * 64 + super.pathY[0] * 128;
+      super.y = 64 * var3 + super.pathY[0] * 128;
    }
 
    @ObfuscatedName("j")
@@ -281,7 +290,7 @@ public final class Player extends Actor {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "1040101682"
    )
    @Export("decodeApperance")
@@ -513,7 +522,7 @@ public final class Player extends Actor {
                                     class162.field2299[var36 - 1][var37 - 1] = var27;
                                  }
 
-                                 if(var36 < 126 && var37 > 0 && class162.field2304[var36 + 1][var37 - 1] == 0 && (var33[var25 + 1][var26 - 1] & 19136911) == 0 && (var33[var25 + 2][var26 - 1] & 19136899) == 0 && (var33[var25 + 2][var26] & 19136995) == 0) {
+                                 if(var36 < 126 && var37 > 0 && class162.field2304[var36 + 1][var37 - 1] == 0 && (var33[1 + var25][var26 - 1] & 19136911) == 0 && (var33[var25 + 2][var26 - 1] & 19136899) == 0 && (var33[var25 + 2][var26] & 19136995) == 0) {
                                     class162.field2301[var39] = var16 + 1;
                                     class162.field2303[var39] = var17 - 1;
                                     var39 = var39 + 1 & 4095;
@@ -521,7 +530,7 @@ public final class Player extends Actor {
                                     class162.field2299[var36 + 1][var37 - 1] = var27;
                                  }
 
-                                 if(var36 > 0 && var37 < 126 && class162.field2304[var36 - 1][var37 + 1] == 0 && (var33[var25 - 1][var26 + 1] & 19136830) == 0 && (var33[var25 - 1][var26 + 2] & 19136824) == 0 && (var33[var25][var26 + 2] & 19137016) == 0) {
+                                 if(var36 > 0 && var37 < 126 && class162.field2304[var36 - 1][var37 + 1] == 0 && (var33[var25 - 1][var26 + 1] & 19136830) == 0 && (var33[var25 - 1][var26 + 2] & 19136824) == 0 && (var33[var25][2 + var26] & 19137016) == 0) {
                                     class162.field2301[var39] = var16 - 1;
                                     class162.field2303[var39] = var17 + 1;
                                     var39 = var39 + 1 & 4095;
@@ -529,7 +538,7 @@ public final class Player extends Actor {
                                     class162.field2299[var36 - 1][var37 + 1] = var27;
                                  }
 
-                                 if(var36 < 126 && var37 < 126 && class162.field2304[1 + var36][var37 + 1] == 0 && (var33[var25 + 1][var26 + 2] & 19137016) == 0 && (var33[var25 + 2][var26 + 2] & 19136992) == 0 && (var33[var25 + 2][var26 + 1] & 19136995) == 0) {
+                                 if(var36 < 126 && var37 < 126 && class162.field2304[var36 + 1][1 + var37] == 0 && (var33[var25 + 1][var26 + 2] & 19137016) == 0 && (var33[var25 + 2][var26 + 2] & 19136992) == 0 && (var33[var25 + 2][var26 + 1] & 19136995) == 0) {
                                     class162.field2301[var39] = var16 + 1;
                                     class162.field2303[var39] = var17 + 1;
                                     var39 = var39 + 1 & 4095;
@@ -683,7 +692,7 @@ public final class Player extends Actor {
                                                          break;
                                                       }
 
-                                                      if((var33[var25 - 1][var26 - 1 + var28] & 19136830) != 0 || (var33[var25 - 1 + var28][var26 - 1] & 19136911) != 0) {
+                                                      if((var33[var25 - 1][var28 + (var26 - 1)] & 19136830) != 0 || (var33[var25 - 1 + var28][var26 - 1] & 19136911) != 0) {
                                                          break;
                                                       }
 
@@ -727,7 +736,7 @@ public final class Player extends Actor {
                                                 }
                                              } while(var36 >= 128 - var9);
                                           } while(var37 >= 128 - var9);
-                                       } while(class162.field2304[1 + var36][var37 + 1] != 0);
+                                       } while(class162.field2304[var36 + 1][var37 + 1] != 0);
                                     } while((var33[var9 + var25][var9 + var26] & 19136992) != 0);
 
                                     for(var28 = 1; var28 < var9; ++var28) {
@@ -943,7 +952,7 @@ public final class Player extends Actor {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LHuffman;I)V",
+      signature = "(Lfa;I)V",
       garbageValue = "-16711936"
    )
    public static void method1137(Huffman var0) {

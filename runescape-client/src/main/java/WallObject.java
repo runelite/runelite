@@ -29,6 +29,9 @@ public final class WallObject {
    @Export("x")
    int x;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lef;"
+   )
    @Export("renderable1")
    public Renderable renderable1;
    @ObfuscatedName("n")
@@ -44,6 +47,9 @@ public final class WallObject {
    @Export("floor")
    int floor;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lef;"
+   )
    @Export("renderable2")
    public Renderable renderable2;
    @ObfuscatedName("r")
@@ -66,7 +72,7 @@ public final class WallObject {
 
    @ObfuscatedName("fc")
    @ObfuscatedSignature(
-      signature = "(LActor;B)V",
+      signature = "(Lca;B)V",
       garbageValue = "93"
    )
    static final void method2865(Actor var0) {
@@ -89,7 +95,7 @@ public final class WallObject {
 
          int var10 = var0.x;
          int var2 = var0.y;
-         int var3 = var0.pathX[var0.queueSize - 1] * 128 + var0.field1218 * 64;
+         int var3 = 128 * var0.pathX[var0.queueSize - 1] + var0.field1218 * 64;
          int var4 = var0.pathY[var0.queueSize - 1] * 128 + var0.field1218 * 64;
          if(var10 < var3) {
             if(var2 < var4) {

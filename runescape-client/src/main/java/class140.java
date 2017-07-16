@@ -51,6 +51,6 @@ public class class140 {
    )
    static final int method2854(int var0, int var1, int var2) {
       int var3 = 256 - var2;
-      return (var2 * (var1 & 16711935) + var3 * (var0 & 16711935) & -16711936) + ((var0 & '\uff00') * var3 + (var1 & '\uff00') * var2 & 16711680) >> 8;
+      return (var2 * (var1 & 16711935) + (var0 & 16711935) * var3 & -16711936) + ((var0 & '\uff00') * var3 + var2 * (var1 & '\uff00') & 16711680) >> 8;
    }
 }

@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bo")
 @Implements("ScriptState")
@@ -18,6 +19,9 @@ public class ScriptState {
    @Export("invokedFromPc")
    int invokedFromPc;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lcg;"
+   )
    @Export("invokedFromScript")
    Script invokedFromScript;
    @ObfuscatedName("n")

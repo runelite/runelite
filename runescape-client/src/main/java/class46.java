@@ -6,9 +6,15 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ah")
 public class class46 {
    @ObfuscatedName("mg")
+   @ObfuscatedSignature(
+      signature = "Lcw;"
+   )
    @Export("chatMessages")
    static Varcs chatMessages;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("skin_ref")
    static IndexDataBase skin_ref;
    @ObfuscatedName("j")
@@ -657,7 +663,7 @@ public class class46 {
 
    @ObfuscatedName("jm")
    @ObfuscatedSignature(
-      signature = "(LWidget;B)I",
+      signature = "(Lhy;B)I",
       garbageValue = "19"
    )
    @Export("getWidgetConfig")

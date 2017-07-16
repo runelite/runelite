@@ -8,15 +8,27 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Sequence")
 public class Sequence extends CacheableNode {
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("skeletons")
    public static NodeCache skeletons;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("sequences")
    public static NodeCache sequences;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("skel_ref")
    static IndexDataBase skel_ref;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("seq_ref")
    static IndexDataBase seq_ref;
    @ObfuscatedName("o")
@@ -103,7 +115,7 @@ public class Sequence extends CacheableNode {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "-446509277"
    )
    void method4619(Buffer var1, int var2) {
@@ -177,7 +189,7 @@ public class Sequence extends CacheableNode {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(LModel;IS)LModel;",
+      signature = "(Lej;IS)Lej;",
       garbageValue = "3699"
    )
    public Model method4617(Model var1, int var2) {
@@ -195,7 +207,7 @@ public class Sequence extends CacheableNode {
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(LModel;ILSequence;IB)LModel;",
+      signature = "(Lej;ILjg;IB)Lej;",
       garbageValue = "-101"
    )
    public Model method4620(Model var1, int var2, Sequence var3, int var4) {
@@ -223,7 +235,7 @@ public class Sequence extends CacheableNode {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(LModel;IIB)LModel;",
+      signature = "(Lej;IIB)Lej;",
       garbageValue = "116"
    )
    Model method4618(Model var1, int var2, int var3) {
@@ -258,7 +270,7 @@ public class Sequence extends CacheableNode {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(LModel;II)LModel;",
+      signature = "(Lej;II)Lej;",
       garbageValue = "-2065128073"
    )
    Model method4635(Model var1, int var2) {
@@ -276,7 +288,7 @@ public class Sequence extends CacheableNode {
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(LModel;II)LModel;",
+      signature = "(Lej;II)Lej;",
       garbageValue = "-2032808093"
    )
    public Model method4629(Model var1, int var2) {
@@ -335,7 +347,7 @@ public class Sequence extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-1451573387"
    )
    @Export("decode")

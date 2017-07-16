@@ -30,7 +30,7 @@ public class class89 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LScriptEvent;I)V",
+      signature = "(Lbf;I)V",
       garbageValue = "1209899171"
    )
    public static void method1689(ScriptEvent var0) {
@@ -72,7 +72,7 @@ public class class89 {
 
    @ObfuscatedName("iz")
    @ObfuscatedSignature(
-      signature = "(LWidget;I)LWidget;",
+      signature = "(Lhy;I)Lhy;",
       garbageValue = "-2067760955"
    )
    static Widget method1688(Widget var0) {

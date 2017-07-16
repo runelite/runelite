@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ej")
 @Implements("Model")
@@ -12,10 +13,16 @@ public class Model extends Renderable {
    @ObfuscatedName("bw")
    static int[] field1981;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lej;"
+   )
    static Model field1919;
    @ObfuscatedName("r")
    static byte[] field1920;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lej;"
+   )
    static Model field1953;
    @ObfuscatedName("bb")
    static int field1984;
@@ -184,6 +191,9 @@ public class Model extends Renderable {
       this.field1954 = -1;
    }
 
+   @ObfuscatedSignature(
+      signature = "([Lej;I)V"
+   )
    public Model(Model[] var1, int var2) {
       this.field1941 = 0;
       this.field1972 = 0;
@@ -523,6 +533,9 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(Let;I)V"
+   )
    public void method2519(Frames var1, int var2) {
       if(this.field1957 != null) {
          if(var2 != -1) {
@@ -549,6 +562,9 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(ZLej;[B)Lej;"
+   )
    Model method2493(boolean var1, Model var2, byte[] var3) {
       var2.field1941 = this.field1941;
       var2.field1972 = this.field1972;
@@ -665,6 +681,9 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Z)Lej;"
+   )
    public Model method2495(boolean var1) {
       if(!var1 && field1956.length < this.field1972) {
          field1956 = new byte[this.field1972 + 100];
@@ -696,6 +715,9 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(Z)Lej;"
+   )
    public Model method2496(boolean var1) {
       if(!var1 && field1920.length < this.field1972) {
          field1920 = new byte[this.field1972 + 100];
@@ -719,6 +741,9 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "([[IIIIZI)Lej;"
+   )
    public Model method2525(int[][] var1, int var2, int var3, int var4, boolean var5, int var6) {
       this.method2542();
       int var7 = var2 - this.XYZMag;
@@ -781,8 +806,8 @@ public class Model extends Renderable {
                   var16 = var14 & 127;
                   var17 = var13 >> 7;
                   var18 = var14 >> 7;
-                  var19 = var1[var17 + 1][var18] * var15 + var1[var17][var18] * (128 - var15) >> 7;
-                  var20 = var15 * var1[var17 + 1][var18 + 1] + var1[var17][var18 + 1] * (128 - var15) >> 7;
+                  var19 = var15 * var1[var17 + 1][var18] + var1[var17][var18] * (128 - var15) >> 7;
+                  var20 = var1[var17 + 1][var18 + 1] * var15 + var1[var17][var18 + 1] * (128 - var15) >> 7;
                   var21 = var19 * (128 - var16) + var20 * var16 >> 7;
                   var11.verticesY[var12] = var21 + this.verticesY[var12] - var3;
                }
@@ -796,10 +821,10 @@ public class Model extends Renderable {
                      var17 = var15 & 127;
                      var18 = var14 >> 7;
                      var19 = var15 >> 7;
-                     var20 = var16 * var1[var18 + 1][var19] + var1[var18][var19] * (128 - var16) >> 7;
-                     var21 = var16 * var1[var18 + 1][var19 + 1] + var1[var18][var19 + 1] * (128 - var16) >> 7;
+                     var20 = var1[var18 + 1][var19] * var16 + var1[var18][var19] * (128 - var16) >> 7;
+                     var21 = var1[var18 + 1][var19 + 1] * var16 + var1[var18][var19 + 1] * (128 - var16) >> 7;
                      int var22 = var20 * (128 - var17) + var21 * var17 >> 7;
-                     var11.verticesY[var12] = (var22 - var3) * (var6 - var13) / var6 + this.verticesY[var12];
+                     var11.verticesY[var12] = (var6 - var13) * (var22 - var3) / var6 + this.verticesY[var12];
                   }
                }
             }
@@ -1240,6 +1265,9 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(Let;ILet;I[I)V"
+   )
    public void method2504(Frames var1, int var2, Frames var3, int var4, int[] var5) {
       if(var2 != -1) {
          if(var5 != null && var4 != -1) {

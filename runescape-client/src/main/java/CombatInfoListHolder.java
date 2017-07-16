@@ -7,19 +7,34 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("CombatInfoListHolder")
 public class CombatInfoListHolder extends Node {
    @ObfuscatedName("et")
+   @ObfuscatedSignature(
+      signature = "Ljy;"
+   )
    static class262 field1362;
    @ObfuscatedName("fk")
    @Export("landRegionFielIds")
    static int[] landRegionFielIds;
    @ObfuscatedName("ge")
+   @ObfuscatedSignature(
+      signature = "[Ljt;"
+   )
    static SpritePixels[] field1359;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgi;"
+   )
    @Export("combatInfo1")
    CombatInfoList combatInfo1;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Liq;"
+   )
    @Export("combatInfo2")
    CombatInfo2 combatInfo2;
 
+   @ObfuscatedSignature(
+      signature = "(Liq;)V"
+   )
    CombatInfoListHolder(CombatInfo2 var1) {
       this.combatInfo1 = new CombatInfoList();
       this.combatInfo2 = var1;
@@ -62,7 +77,7 @@ public class CombatInfoListHolder extends Node {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IB)LCombatInfo1;",
+      signature = "(IB)Lcs;",
       garbageValue = "1"
    )
    CombatInfo1 method1651(int var1) {

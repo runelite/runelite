@@ -6,6 +6,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ay")
 public class class48 implements WorldMapSectionBase {
    @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lfu;"
+   )
    @Export("timer")
    static Timer timer;
    @ObfuscatedName("cd")
@@ -89,7 +92,7 @@ public class class48 implements WorldMapSectionBase {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LWorldMapData;I)V",
+      signature = "(Lam;I)V",
       garbageValue = "-1824757307"
    )
    public void vmethod720(WorldMapData var1) {
@@ -113,7 +116,7 @@ public class class48 implements WorldMapSectionBase {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(III)LCoordinates;",
+      signature = "(III)Lhd;",
       garbageValue = "665140774"
    )
    public Coordinates vmethod743(int var1, int var2) {
@@ -135,14 +138,14 @@ public class class48 implements WorldMapSectionBase {
       if(!this.vmethod721(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{this.field602 * 8 - this.field600 * 8 + this.field598 * 64 - this.field596 * 64 + var2, this.field603 * 8 - this.field609 * 8 + var3 + (this.field604 * 64 - this.field599 * 64)};
+         int[] var4 = new int[]{this.field602 * 8 - this.field600 * 8 + this.field598 * 64 - this.field596 * 64 + var2, this.field603 * 8 - this.field609 * 8 + this.field604 * 64 - this.field599 * 64 + var3};
          return var4;
       }
    }
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-1909314997"
    )
    public void vmethod746(Buffer var1) {
@@ -169,7 +172,7 @@ public class class48 implements WorldMapSectionBase {
 
    @ObfuscatedName("ir")
    @ObfuscatedSignature(
-      signature = "(LWidget;B)V",
+      signature = "(Lhy;B)V",
       garbageValue = "-94"
    )
    static void method749(Widget var0) {
@@ -200,7 +203,7 @@ public class class48 implements WorldMapSectionBase {
          var8 = var3 * var5 - var4 * var1 >> 16;
          var1 = var5 * var1 + var3 * var4 >> 16;
          if(var1 >= 50) {
-            Client.screenY = var0 * Client.scale / var1 + Client.viewportHeight / 2;
+            Client.screenY = Client.scale * var0 / var1 + Client.viewportHeight / 2;
             Client.screenX = var8 * Client.scale / var1 + Client.viewportWidth / 2;
          } else {
             Client.screenY = -1;

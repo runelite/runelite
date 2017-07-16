@@ -17,9 +17,15 @@ public final class IndexFile {
    @ObfuscatedName("a")
    static byte[] field2279;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Ldg;"
+   )
    @Export("dataFile")
    CacheFile dataFile;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Ldg;"
+   )
    @Export("indexFile")
    CacheFile indexFile;
    @ObfuscatedName("v")
@@ -39,6 +45,9 @@ public final class IndexFile {
       field2279 = new byte[520];
    }
 
+   @ObfuscatedSignature(
+      signature = "(ILdg;Ldg;I)V"
+   )
    public IndexFile(int var1, CacheFile var2, CacheFile var3, int var4) {
       this.dataFile = null;
       this.indexFile = null;
@@ -68,7 +77,7 @@ public final class IndexFile {
 
                this.indexFile.seek((long)(var1 * 6));
                this.indexFile.method2338(field2279, 0, 6);
-               var6 = ((field2279[3] & 255) << 16) + ((field2279[4] & 255) << 8) + (field2279[5] & 255);
+               var6 = ((field2279[4] & 255) << 8) + ((field2279[3] & 255) << 16) + (field2279[5] & 255);
                if(var6 <= 0 || (long)var6 > this.dataFile.method2331() / 520L) {
                   var10000 = false;
                   return var10000;
@@ -273,7 +282,7 @@ public final class IndexFile {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lclass186;ILjava/lang/String;I)Ljava/lang/String;",
+      signature = "(Lgl;ILjava/lang/String;I)Ljava/lang/String;",
       garbageValue = "1061388201"
    )
    static String method3005(class186 var0, int var1, String var2) {
@@ -287,7 +296,7 @@ public final class IndexFile {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LScriptEvent;IB)V",
+      signature = "(Lbf;IB)V",
       garbageValue = "-63"
    )
    static void method3018(ScriptEvent var0, int var1) {
@@ -436,7 +445,7 @@ public final class IndexFile {
                                                                               while(true) {
                                                                                  while(true) {
                                                                                     while(true) {
-                                                                                       label2232:
+                                                                                       label2234:
                                                                                        while(true) {
                                                                                           ++var12;
                                                                                           if(var12 > var1) {
@@ -491,7 +500,7 @@ public final class IndexFile {
 
                                                                                                                                                                            while(true) {
                                                                                                                                                                               if(var29 >= var101) {
-                                                                                                                                                                                 continue label2232;
+                                                                                                                                                                                 continue label2234;
                                                                                                                                                                               }
 
                                                                                                                                                                               class83.SHAPE_VERTICIES[var26][var29] = var90;
@@ -977,7 +986,7 @@ public final class IndexFile {
                                                                                                                         if(var55 != null) {
                                                                                                                            var18 = 0;
 
-                                                                                                                           label2044:
+                                                                                                                           label2046:
                                                                                                                            while(true) {
                                                                                                                               if(var18 >= Client.friendCount) {
                                                                                                                                  for(var18 = 0; var18 < Client.ignoreCount; ++var18) {
@@ -985,14 +994,14 @@ public final class IndexFile {
                                                                                                                                     var93 = class202.method3682(var57.name, class164.field2317);
                                                                                                                                     if(var93 != null && var93.equals(var55)) {
                                                                                                                                        WidgetNode.sendGameMessage(30, "", "Please remove " + var73 + " from your ignore list first");
-                                                                                                                                       break label2044;
+                                                                                                                                       break label2046;
                                                                                                                                     }
 
                                                                                                                                     if(var57.previousName != null) {
                                                                                                                                        var21 = class202.method3682(var57.previousName, class164.field2317);
                                                                                                                                        if(var21 != null && var21.equals(var55)) {
                                                                                                                                           WidgetNode.sendGameMessage(30, "", "Please remove " + var73 + " from your ignore list first");
-                                                                                                                                          break label2044;
+                                                                                                                                          break label2046;
                                                                                                                                        }
                                                                                                                                     }
                                                                                                                                  }
@@ -1043,7 +1052,7 @@ public final class IndexFile {
                                                                                                                         if(var55 != null) {
                                                                                                                            var18 = 0;
 
-                                                                                                                           label2078:
+                                                                                                                           label2080:
                                                                                                                            while(true) {
                                                                                                                               if(var18 >= Client.ignoreCount) {
                                                                                                                                  for(var18 = 0; var18 < Client.friendCount; ++var18) {
@@ -1051,14 +1060,14 @@ public final class IndexFile {
                                                                                                                                     var93 = class202.method3682(var58.name, class164.field2317);
                                                                                                                                     if(var93 != null && var93.equals(var55)) {
                                                                                                                                        WidgetNode.sendGameMessage(31, "", "Please remove " + var73 + " from your friend list first");
-                                                                                                                                       break label2078;
+                                                                                                                                       break label2080;
                                                                                                                                     }
 
                                                                                                                                     if(var58.previousName != null) {
                                                                                                                                        var21 = class202.method3682(var58.previousName, class164.field2317);
                                                                                                                                        if(var21 != null && var21.equals(var55)) {
                                                                                                                                           WidgetNode.sendGameMessage(31, "", "Please remove " + var73 + " from your friend list first");
-                                                                                                                                          break label2078;
+                                                                                                                                          break label2080;
                                                                                                                                        }
                                                                                                                                     }
                                                                                                                                  }
@@ -2325,7 +2334,7 @@ public final class IndexFile {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;ZIB)V",
+      signature = "(Lif;Lif;ZIB)V",
       garbageValue = "79"
    )
    static void method3007(IndexDataBase var0, IndexDataBase var1, boolean var2, int var3) {
@@ -2418,7 +2427,7 @@ public final class IndexFile {
          }
 
          for(var11 = 0; var11 < 64; ++var11) {
-            World.field1287[var11 + 64] = var11 * 262144 + 255;
+            World.field1287[var11 + 64] = 262144 * var11 + 255;
          }
 
          for(var11 = 0; var11 < 64; ++var11) {

@@ -8,6 +8,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("FrameMap")
 public class FrameMap extends Node {
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("item_ref")
    static IndexDataBase item_ref;
    @ObfuscatedName("v")

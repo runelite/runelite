@@ -30,6 +30,9 @@ public class Coordinates {
       this.plane = -1;
    }
 
+   @ObfuscatedSignature(
+      signature = "(Lhd;)V"
+   )
    public Coordinates(Coordinates var1) {
       this.plane = var1.plane;
       this.worldX = var1.worldX;
@@ -75,7 +78,7 @@ public class Coordinates {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LCoordinates;B)Z",
+      signature = "(Lhd;B)Z",
       garbageValue = "-6"
    )
    boolean method3917(Coordinates var1) {

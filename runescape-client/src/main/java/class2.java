@@ -8,6 +8,9 @@ final class class2 implements class0 {
    @Export("cacheLocations")
    public static String[] cacheLocations;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("varplayer_ref")
    static IndexDataBase varplayer_ref;
 
@@ -24,7 +27,7 @@ final class class2 implements class0 {
 
    @ObfuscatedName("ij")
    @ObfuscatedSignature(
-      signature = "(LWidget;II)I",
+      signature = "(Lhy;II)I",
       garbageValue = "-139753544"
    )
    static final int method4(Widget var0, int var1) {
@@ -104,7 +107,7 @@ final class class2 implements class0 {
                   var11 = var2[var4++];
                   if(var11 != -1 && (!class83.getItemDefinition(var11).isMembers || Client.isMembers)) {
                      for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(var11 + 1 == var10.itemIds[var12]) {
+                        if(1 + var11 == var10.itemIds[var12]) {
                            var7 = 999999999;
                            break;
                         }

@@ -193,7 +193,7 @@ public class MilliTimer extends Timer {
 
    @ObfuscatedName("jc")
    @ObfuscatedSignature(
-      signature = "(LWidgetNode;ZB)V",
+      signature = "(Lbr;ZB)V",
       garbageValue = "0"
    )
    static final void method2909(WidgetNode var0, boolean var1) {
@@ -265,7 +265,7 @@ public class MilliTimer extends Timer {
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(IIIIIZB)LSpritePixels;",
+      signature = "(IIIIIZB)Ljt;",
       garbageValue = "120"
    )
    @Export("createSprite")

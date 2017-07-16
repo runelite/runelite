@@ -20,18 +20,18 @@ public class FaceNormal {
    )
    @Export("z")
    int z;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -666058631
-   )
-   @Export("y")
-   int y;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 1514479043
    )
    @Export("x")
    int x;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -666058631
+   )
+   @Export("y")
+   int y;
 
    @ObfuscatedName("hb")
    @ObfuscatedSignature(

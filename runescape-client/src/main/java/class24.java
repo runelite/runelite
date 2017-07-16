@@ -6,13 +6,25 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("q")
 public class class24 {
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Ldx;"
+   )
    @Export("task")
    static SoundTask task;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lq;"
+   )
    public static final class24 field355;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lq;"
+   )
    public static final class24 field358;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lq;"
+   )
    public static final class24 field354;
    @ObfuscatedName("l")
    @ObfuscatedGetter(

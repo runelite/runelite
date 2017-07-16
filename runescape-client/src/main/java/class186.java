@@ -1,5 +1,6 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gl")
 public final class class186 implements Iterable {
@@ -8,10 +9,19 @@ public final class class186 implements Iterable {
    @ObfuscatedName("v")
    int field2443;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "[Lge;"
+   )
    Node[] field2444;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lge;"
+   )
    Node field2447;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lge;"
+   )
    Node field2445;
 
    public class186(int var1) {
@@ -28,6 +38,9 @@ public final class class186 implements Iterable {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(J)Lge;"
+   )
    public Node method3482(long var1) {
       Node var3 = this.field2444[(int)(var1 & (long)(this.field2446 - 1))];
 
@@ -44,6 +57,9 @@ public final class class186 implements Iterable {
    }
 
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "()Lge;"
+   )
    public Node method3485() {
       Node var1;
       if(this.field2443 > 0 && this.field2444[this.field2443 - 1] != this.field2445) {
@@ -65,6 +81,9 @@ public final class class186 implements Iterable {
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lge;J)V"
+   )
    public void method3501(Node var1, long var2) {
       if(var1.previous != null) {
          var1.unlink();
@@ -79,6 +98,9 @@ public final class class186 implements Iterable {
    }
 
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "()Lge;"
+   )
    public Node method3484() {
       this.field2443 = 0;
       return this.method3485();

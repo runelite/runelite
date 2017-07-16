@@ -42,18 +42,27 @@ public final class RSSocket implements Runnable {
    @Export("outbuffer")
    byte[] outbuffer;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lev;"
+   )
    @Export("socketThread")
    Task socketThread;
    @ObfuscatedName("j")
    @Export("outputStream")
    OutputStream outputStream;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Len;"
+   )
    @Export("manager")
    Signlink manager;
    @ObfuscatedName("n")
    @Export("socket")
    Socket socket;
 
+   @ObfuscatedSignature(
+      signature = "(Ljava/net/Socket;Len;)V"
+   )
    public RSSocket(Socket var1, Signlink var2) throws IOException {
       this.closed = false;
       this.streamOffset = 0;

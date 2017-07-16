@@ -12,6 +12,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("KeyFocusListener")
 public final class KeyFocusListener implements KeyListener, FocusListener {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lac;"
+   )
    @Export("keyboard")
    public static KeyFocusListener keyboard;
    @ObfuscatedName("cd")
@@ -22,6 +25,9 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    @ObfuscatedName("cr")
    static int[] field643;
    @ObfuscatedName("bt")
+   @ObfuscatedSignature(
+      signature = "Lbq;"
+   )
    static class71 field641;
    @ObfuscatedName("ch")
    public static boolean[] field626;
@@ -65,6 +71,9 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    @Export("keyboardIdleTicks")
    public static volatile int keyboardIdleTicks;
    @ObfuscatedName("pp")
+   @ObfuscatedSignature(
+      signature = "Lds;"
+   )
    @Export("soundSystem1")
    static AbstractSoundSystem soundSystem1;
    @ObfuscatedName("cc")

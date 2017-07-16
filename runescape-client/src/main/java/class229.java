@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 public final class class229 {
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;B)V",
+      signature = "(Lif;Lif;B)V",
       garbageValue = "-6"
    )
    public static void method4070(IndexDataBase var0, IndexDataBase var1) {

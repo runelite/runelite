@@ -7,6 +7,9 @@ public class class39 {
    @ObfuscatedName("fj")
    static byte[][] field525;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Law;"
+   )
    final class33 field520;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
@@ -19,8 +22,14 @@ public class class39 {
    )
    int field521;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lhd;"
+   )
    public final Coordinates field522;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lhd;"
+   )
    public final Coordinates field516;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
@@ -38,6 +47,9 @@ public class class39 {
    )
    final int field519;
 
+   @ObfuscatedSignature(
+      signature = "(ILhd;Lhd;Law;)V"
+   )
    class39(int var1, Coordinates var2, Coordinates var3, class33 var4) {
       this.field523 = var1;
       this.field522 = var2;
@@ -136,7 +148,7 @@ public class class39 {
 
    @ObfuscatedName("fh")
    @ObfuscatedSignature(
-      signature = "(B)LRenderOverview;",
+      signature = "(B)Lke;",
       garbageValue = "0"
    )
    static RenderOverview method548() {

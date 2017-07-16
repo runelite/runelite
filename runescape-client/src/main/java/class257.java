@@ -5,10 +5,19 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ib")
 public enum class257 implements RSEnum {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lib;"
+   )
    field3545(0, 0),
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lib;"
+   )
    field3546(1, 1),
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lib;"
+   )
    field3547(2, 2);
 
    @ObfuscatedName("v")

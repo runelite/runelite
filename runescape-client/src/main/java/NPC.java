@@ -13,12 +13,15 @@ public final class NPC extends Actor {
    @Export("tt")
    static int[] tt;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lip;"
+   )
    @Export("composition")
    NPCComposition composition;
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)LModel;",
+      signature = "(B)Lej;",
       garbageValue = "19"
    )
    protected final Model getModel() {
@@ -236,7 +239,7 @@ public final class NPC extends Actor {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "([BI)LScript;",
+      signature = "([BI)Lcg;",
       garbageValue = "1475118035"
    )
    static Script method1676(byte[] var0) {

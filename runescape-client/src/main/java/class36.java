@@ -9,8 +9,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ag")
 public class class36 {
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lag;"
+   )
    static final class36 field488;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lag;"
+   )
    static final class36 field489;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
@@ -101,7 +107,7 @@ public class class36 {
 
    @ObfuscatedName("io")
    @ObfuscatedSignature(
-      signature = "([LWidget;LWidget;ZI)V",
+      signature = "([Lhy;Lhy;ZI)V",
       garbageValue = "657691016"
    )
    static void method487(Widget[] var0, Widget var1, boolean var2) {
@@ -182,7 +188,7 @@ public class class36 {
 
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
+      signature = "(ILcg;ZI)I",
       garbageValue = "-2009731891"
    )
    static int method488(int var0, Script var1, boolean var2) {

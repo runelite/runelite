@@ -8,6 +8,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 public abstract class class28 {
    @ObfuscatedName("an")
    @Export("clientInstance")
+   @ObfuscatedSignature(
+      signature = "Lclient;"
+   )
    static Client clientInstance;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
@@ -27,6 +30,9 @@ public abstract class class28 {
    )
    int field404;
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "[[[[Lar;"
+   )
    class31[][][][] field409;
    @ObfuscatedName("s")
    short[][][] field410;
@@ -65,7 +71,7 @@ public abstract class class28 {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(IILBuffer;II)V",
+      signature = "(IILfe;II)V",
       garbageValue = "532552929"
    )
    void method221(int var1, int var2, Buffer var3, int var4) {
@@ -109,7 +115,7 @@ public abstract class class28 {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IILBuffer;II)V",
+      signature = "(IILfe;II)V",
       garbageValue = "-1910673030"
    )
    void method231(int var1, int var2, Buffer var3, int var4) {
@@ -141,7 +147,7 @@ public abstract class class28 {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(IILBuffer;I)V",
+      signature = "(IILfe;I)V",
       garbageValue = "-503831883"
    )
    void method219(int var1, int var2, Buffer var3) {

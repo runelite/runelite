@@ -1,4 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dm")
 public class class107 extends class122 {
@@ -29,6 +30,9 @@ public class class107 extends class122 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Ldo;)Ldm;"
+   )
    public class107 method1955(class116 var1) {
       this.field1607 = var1.method2092(this.field1607);
       this.field1603 = var1.method2100(this.field1603);

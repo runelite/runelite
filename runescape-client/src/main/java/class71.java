@@ -6,6 +6,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bq")
 public class class71 implements Runnable {
    @ObfuscatedName("de")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    @Export("vorbisIndex")
    static IndexData vorbisIndex;
    @ObfuscatedName("a")
@@ -46,7 +49,7 @@ public class class71 implements Runnable {
 
    @ObfuscatedName("il")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;LWidget;I)Ljava/lang/String;",
+      signature = "(Ljava/lang/String;Lhy;I)Ljava/lang/String;",
       garbageValue = "1663922504"
    )
    static String method1103(String var0, Widget var1) {

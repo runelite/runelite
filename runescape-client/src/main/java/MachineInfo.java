@@ -342,7 +342,7 @@ public class MachineInfo extends Node {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-910438586"
    )
    public void method5282(Buffer var1) {

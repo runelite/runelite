@@ -8,6 +8,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("GroundObject")
 public final class GroundObject {
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lef;"
+   )
    @Export("renderable")
    public Renderable renderable;
    @ObfuscatedName("v")
@@ -58,7 +61,7 @@ public final class GroundObject {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LPacketBuffer;II)V",
+      signature = "(Lff;II)V",
       garbageValue = "-429997307"
    )
    static final void method2477(PacketBuffer var0, int var1) {

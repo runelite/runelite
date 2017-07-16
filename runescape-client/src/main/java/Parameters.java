@@ -1,39 +1,85 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jn")
 @Implements("Parameters")
 public class Parameters {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3727;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3713;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3714;
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3712;
    @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3722;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3717;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3715;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3718;
    @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3720;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3716;
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3724;
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3721;
    @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3725;
    @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3726;
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
    public static final Parameters field3719;
    @ObfuscatedName("c")
    @Export("key")

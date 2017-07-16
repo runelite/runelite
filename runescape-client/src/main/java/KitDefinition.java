@@ -13,11 +13,20 @@ public class KitDefinition extends CacheableNode {
    )
    public static int field3352;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("identKits")
    public static NodeCache identKits;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    static IndexDataBase field3361;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("identKit_ref")
    static IndexDataBase identKit_ref;
    @ObfuscatedName("e")
@@ -60,7 +69,7 @@ public class KitDefinition extends CacheableNode {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "-2139614307"
    )
    void method4327(Buffer var1, int var2) {
@@ -122,7 +131,7 @@ public class KitDefinition extends CacheableNode {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(S)LModelData;",
+      signature = "(S)Ldv;",
       garbageValue = "8099"
    )
    public ModelData method4317() {
@@ -176,7 +185,7 @@ public class KitDefinition extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-715955591"
    )
    @Export("decode")
@@ -193,7 +202,7 @@ public class KitDefinition extends CacheableNode {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(B)LModelData;",
+      signature = "(B)Ldv;",
       garbageValue = "-41"
    )
    @Export("getModelData")
@@ -233,7 +242,7 @@ public class KitDefinition extends CacheableNode {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(I)[LSpritePixels;",
+      signature = "(I)[Ljt;",
       garbageValue = "1388441058"
    )
    static SpritePixels[] method4339() {

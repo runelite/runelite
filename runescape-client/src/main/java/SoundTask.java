@@ -7,6 +7,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("SoundTask")
 public class SoundTask implements Runnable {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "[Lds;"
+   )
    @Export("systems")
    volatile AbstractSoundSystem[] systems;
 
@@ -30,7 +33,7 @@ public class SoundTask implements Runnable {
 
    @ObfuscatedName("js")
    @ObfuscatedSignature(
-      signature = "(LWidget;I)Z",
+      signature = "(Lhy;I)Z",
       garbageValue = "-1676634311"
    )
    static final boolean method2059(Widget var0) {

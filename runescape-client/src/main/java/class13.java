@@ -31,7 +31,7 @@ public class class13 {
    }
 
    @ObfuscatedSignature(
-      signature = "(LBuffer;Z)V",
+      signature = "(Lfe;Z)V",
       garbageValue = "1"
    )
    public class13(Buffer var1, boolean var2) {

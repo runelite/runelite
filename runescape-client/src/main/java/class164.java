@@ -4,11 +4,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fj")
 public class class164 {
    @ObfuscatedName("ba")
+   @ObfuscatedSignature(
+      signature = "Lko;"
+   )
    static class289 field2317;
 
    @ObfuscatedName("ix")
    @ObfuscatedSignature(
-      signature = "(LWidget;III)V",
+      signature = "(Lhy;III)V",
       garbageValue = "524878373"
    )
    static void method3055(Widget var0, int var1, int var2) {

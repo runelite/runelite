@@ -19,8 +19,14 @@ public class class14 {
    )
    public final int field301;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lo;"
+   )
    public final XGrandExchangeOffer field297;
 
+   @ObfuscatedSignature(
+      signature = "(Lfe;BI)V"
+   )
    class14(Buffer var1, byte var2, int var3) {
       this.field299 = var1.readString();
       this.field300 = var1.readString();
@@ -78,7 +84,7 @@ public class class14 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;I)I",
+      signature = "(Lif;Lif;I)I",
       garbageValue = "1402451631"
    )
    static int method86(IndexDataBase var0, IndexDataBase var1) {

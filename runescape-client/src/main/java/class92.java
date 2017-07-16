@@ -84,6 +84,9 @@ public class class92 {
    @Export("password")
    static String password;
    @ObfuscatedName("as")
+   @ObfuscatedSignature(
+      signature = "Lek;"
+   )
    static class149 field1430;
    @ObfuscatedName("at")
    static boolean field1446;
@@ -104,10 +107,19 @@ public class class92 {
    )
    static int field1448;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Ljf;"
+   )
    static ModIcon field1419;
    @ObfuscatedName("ac")
+   @ObfuscatedSignature(
+      signature = "[Ljt;"
+   )
    static SpritePixels[] field1437;
    @ObfuscatedName("af")
+   @ObfuscatedSignature(
+      signature = "[Ljf;"
+   )
    static ModIcon[] field1418;
    @ObfuscatedName("h")
    static int[] field1424;
@@ -142,7 +154,7 @@ public class class92 {
 
    @ObfuscatedName("jh")
    @ObfuscatedSignature(
-      signature = "(IIIILSpritePixels;Lclass210;S)V",
+      signature = "(IIIILjt;Lhe;S)V",
       garbageValue = "3910"
    )
    static final void method1733(int var0, int var1, int var2, int var3, SpritePixels var4, class210 var5) {
@@ -153,7 +165,7 @@ public class class92 {
          int var9 = Graphics3D.COSINE[var7];
          var8 = var8 * 256 / (Client.mapScaleDelta + 256);
          var9 = var9 * 256 / (Client.mapScaleDelta + 256);
-         int var10 = var9 * var2 + var8 * var3 >> 16;
+         int var10 = var9 * var2 + var3 * var8 >> 16;
          int var11 = var3 * var9 - var8 * var2 >> 16;
          double var12 = Math.atan2((double)var10, (double)var11);
          int var14 = (int)(Math.sin(var12) * 63.0D);

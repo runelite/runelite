@@ -13,12 +13,24 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("RenderOverview")
 public class RenderOverview {
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Ljk;"
+   )
    static final class261 field3811;
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Ljk;"
+   )
    static final class261 field3812;
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Ljk;"
+   )
    static final class261 field3813;
    @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "[Ljf;"
+   )
    ModIcon[] field3816;
    @ObfuscatedName("ak")
    boolean field3835;
@@ -54,6 +66,9 @@ public class RenderOverview {
    )
    int field3837;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    IndexDataBase field3810;
    @ObfuscatedName("k")
    HashMap field3817;
@@ -62,6 +77,9 @@ public class RenderOverview {
    @ObfuscatedName("ap")
    HashSet field3834;
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lkl;"
+   )
    class287 field3806;
    @ObfuscatedName("at")
    Iterator field3840;
@@ -75,8 +93,14 @@ public class RenderOverview {
    @ObfuscatedName("b")
    float field3827;
    @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "Lam;"
+   )
    WorldMapData field3819;
    @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lam;"
+   )
    WorldMapData field3818;
    @ObfuscatedName("aq")
    @ObfuscatedGetter(
@@ -106,10 +130,19 @@ public class RenderOverview {
    )
    int field3847;
    @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lam;"
+   )
    WorldMapData field3820;
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Ljc;"
+   )
    Font field3807;
    @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Las;"
+   )
    class41 field3838;
    @ObfuscatedName("am")
    @ObfuscatedGetter(
@@ -170,7 +203,7 @@ public class RenderOverview {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IIIB)LWorldMapData;",
+      signature = "(IIIB)Lam;",
       garbageValue = "-7"
    )
    public WorldMapData method5114(int var1, int var2, int var3) {
@@ -199,7 +232,7 @@ public class RenderOverview {
 
    @ObfuscatedName("ak")
    @ObfuscatedSignature(
-      signature = "(II)LWorldMapData;",
+      signature = "(II)Lam;",
       garbageValue = "1552841712"
    )
    public WorldMapData method5107(int var1) {
@@ -219,7 +252,7 @@ public class RenderOverview {
 
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(LWorldMapData;I)V",
+      signature = "(Lam;I)V",
       garbageValue = "70324129"
    )
    void method5120(WorldMapData var1) {
@@ -239,7 +272,7 @@ public class RenderOverview {
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(LWorldMapData;I)V",
+      signature = "(Lam;I)V",
       garbageValue = "869179672"
    )
    void method5119(WorldMapData var1) {
@@ -364,7 +397,7 @@ public class RenderOverview {
 
    @ObfuscatedName("bb")
    @ObfuscatedSignature(
-      signature = "(I)Lclass39;",
+      signature = "(I)Lad;",
       garbageValue = "-2100739728"
    )
    public class39 method5270() {
@@ -397,7 +430,7 @@ public class RenderOverview {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LFont;Ljava/util/HashMap;[LModIcon;B)V",
+      signature = "(Lif;Ljc;Ljava/util/HashMap;[Ljf;B)V",
       garbageValue = "59"
    )
    public void method5160(IndexDataBase var1, Font var2, HashMap var3, ModIcon[] var4) {
@@ -501,7 +534,7 @@ public class RenderOverview {
 
    @ObfuscatedName("bl")
    @ObfuscatedSignature(
-      signature = "(IILCoordinates;LCoordinates;I)V",
+      signature = "(IILhd;Lhd;I)V",
       garbageValue = "1222087812"
    )
    public void method5257(int var1, int var2, Coordinates var3, Coordinates var4) {
@@ -692,7 +725,7 @@ public class RenderOverview {
 
    @ObfuscatedName("ag")
    @ObfuscatedSignature(
-      signature = "(I)LCoordinates;",
+      signature = "(I)Lhd;",
       garbageValue = "1023427320"
    )
    public Coordinates method5138() {
@@ -765,7 +798,7 @@ public class RenderOverview {
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(I)LWorldMapData;",
+      signature = "(I)Lam;",
       garbageValue = "641538834"
    )
    public WorldMapData method5250() {
@@ -891,7 +924,7 @@ public class RenderOverview {
 
    @ObfuscatedName("bc")
    @ObfuscatedSignature(
-      signature = "(B)Lclass39;",
+      signature = "(B)Lad;",
       garbageValue = "100"
    )
    public class39 method5201() {
@@ -984,7 +1017,7 @@ public class RenderOverview {
 
    @ObfuscatedName("bd")
    @ObfuscatedSignature(
-      signature = "(ILCoordinates;B)LCoordinates;",
+      signature = "(ILhd;B)Lhd;",
       garbageValue = "0"
    )
    public Coordinates method5156(int var1, Coordinates var2) {
@@ -1030,7 +1063,7 @@ public class RenderOverview {
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(LWorldMapData;LCoordinates;LCoordinates;ZI)V",
+      signature = "(Lam;Lhd;Lhd;ZI)V",
       garbageValue = "1616663843"
    )
    public void method5227(WorldMapData var1, Coordinates var2, Coordinates var3, boolean var4) {

@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("em")
 @Implements("Region")
@@ -17,6 +18,9 @@ public class Region {
    @ObfuscatedName("ab")
    static int field2095;
    @ObfuscatedName("al")
+   @ObfuscatedSignature(
+      signature = "Lgt;"
+   )
    @Export("tileDeque")
    static Deque tileDeque;
    @ObfuscatedName("b")
@@ -31,6 +35,9 @@ public class Region {
    @Export("MAX_OCCLUDER_LEVELS")
    static int MAX_OCCLUDER_LEVELS;
    @ObfuscatedName("av")
+   @ObfuscatedSignature(
+      signature = "[[Ler;"
+   )
    @Export("levelOccluders")
    static Occluder[][] levelOccluders;
    @ObfuscatedName("aa")
@@ -40,6 +47,9 @@ public class Region {
    @Export("tileUpdateCount")
    static int tileUpdateCount;
    @ObfuscatedName("at")
+   @ObfuscatedSignature(
+      signature = "[Ler;"
+   )
    static Occluder[] field2096;
    @ObfuscatedName("y")
    @Export("cameraZ2")
@@ -48,6 +58,9 @@ public class Region {
    @Export("checkClick")
    static boolean checkClick;
    @ObfuscatedName("ap")
+   @ObfuscatedSignature(
+      signature = "[Lee;"
+   )
    @Export("entityBuffer")
    static GameObject[] entityBuffer;
    @ObfuscatedName("q")
@@ -147,9 +160,15 @@ public class Region {
    @Export("maxY")
    int maxY;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "[[[Lei;"
+   )
    @Export("tiles")
    Tile[][][] tiles;
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "[Lee;"
+   )
    @Export("objects")
    GameObject[] objects;
    @ObfuscatedName("r")
@@ -230,6 +249,9 @@ public class Region {
    }
 
    @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(Lee;)V"
+   )
    @Export("removeEntity")
    void removeEntity(GameObject var1) {
       for(int var2 = var1.relativeX; var2 <= var1.offsetX; ++var2) {
@@ -263,6 +285,9 @@ public class Region {
    }
 
    @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIILef;IZII)Z"
+   )
    @Export("addEntityMarker")
    boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, Renderable var9, int var10, boolean var11, int var12, int var13) {
       int var15;
@@ -346,10 +371,10 @@ public class Region {
          if(var5.testDirection == 1) {
             var6 = var5.minX - var1;
             if(var6 > 0) {
-               var7 = (var6 * var5.minNormalX >> 8) + var5.minZ;
+               var7 = (var5.minNormalX * var6 >> 8) + var5.minZ;
                var8 = (var5.maxNormalX * var6 >> 8) + var5.maxZ;
                var9 = (var6 * var5.minNormalY >> 8) + var5.minY;
-               var10 = (var6 * var5.maxNormalY >> 8) + var5.maxY;
+               var10 = (var5.maxNormalY * var6 >> 8) + var5.maxY;
                if(var3 >= var7 && var3 <= var8 && var2 >= var9 && var2 <= var10) {
                   return true;
                }
@@ -357,9 +382,9 @@ public class Region {
          } else if(var5.testDirection == 2) {
             var6 = var1 - var5.minX;
             if(var6 > 0) {
-               var7 = (var5.minNormalX * var6 >> 8) + var5.minZ;
+               var7 = (var6 * var5.minNormalX >> 8) + var5.minZ;
                var8 = (var6 * var5.maxNormalX >> 8) + var5.maxZ;
-               var9 = (var5.minNormalY * var6 >> 8) + var5.minY;
+               var9 = (var6 * var5.minNormalY >> 8) + var5.minY;
                var10 = (var6 * var5.maxNormalY >> 8) + var5.maxY;
                if(var3 >= var7 && var3 <= var8 && var2 >= var9 && var2 <= var10) {
                   return true;
@@ -368,8 +393,8 @@ public class Region {
          } else if(var5.testDirection == 3) {
             var6 = var5.minZ - var3;
             if(var6 > 0) {
-               var7 = (var6 * var5.field2152 >> 8) + var5.minX;
-               var8 = (var6 * var5.field2153 >> 8) + var5.maxX;
+               var7 = (var5.field2152 * var6 >> 8) + var5.minX;
+               var8 = (var5.field2153 * var6 >> 8) + var5.maxX;
                var9 = (var5.minNormalY * var6 >> 8) + var5.minY;
                var10 = (var5.maxNormalY * var6 >> 8) + var5.maxY;
                if(var1 >= var7 && var1 <= var8 && var2 >= var9 && var2 <= var10) {
@@ -381,8 +406,8 @@ public class Region {
             if(var6 > 0) {
                var7 = (var5.field2152 * var6 >> 8) + var5.minX;
                var8 = (var6 * var5.field2153 >> 8) + var5.maxX;
-               var9 = (var5.minNormalY * var6 >> 8) + var5.minY;
-               var10 = (var6 * var5.maxNormalY >> 8) + var5.maxY;
+               var9 = (var6 * var5.minNormalY >> 8) + var5.minY;
+               var10 = (var5.maxNormalY * var6 >> 8) + var5.maxY;
                if(var1 >= var7 && var1 <= var8 && var2 >= var9 && var2 <= var10) {
                   return true;
                }
@@ -391,9 +416,9 @@ public class Region {
             var6 = var2 - var5.minY;
             if(var6 > 0) {
                var7 = (var6 * var5.field2152 >> 8) + var5.minX;
-               var8 = (var6 * var5.field2153 >> 8) + var5.maxX;
-               var9 = (var5.minNormalX * var6 >> 8) + var5.minZ;
-               var10 = (var5.maxNormalX * var6 >> 8) + var5.maxZ;
+               var8 = (var5.field2153 * var6 >> 8) + var5.maxX;
+               var9 = (var6 * var5.minNormalX >> 8) + var5.minZ;
+               var10 = (var6 * var5.maxNormalX >> 8) + var5.maxZ;
                if(var1 >= var7 && var1 <= var8 && var3 >= var9 && var3 <= var10) {
                   return true;
                }
@@ -438,6 +463,9 @@ public class Region {
    }
 
    @ObfuscatedName("ax")
+   @ObfuscatedSignature(
+      signature = "(Ldv;IIIII)V"
+   )
    void method2699(ModelData var1, int var2, int var3, int var4, int var5, int var6) {
       boolean var7 = true;
       int var8 = var3;
@@ -669,6 +697,9 @@ public class Region {
    }
 
    @ObfuscatedName("ay")
+   @ObfuscatedSignature(
+      signature = "(Lez;IIIIIII)V"
+   )
    @Export("drawTileUnderlay")
    void drawTileUnderlay(SceneTilePaint var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var9;
@@ -697,14 +728,14 @@ public class Region {
          var11 = var3 * var18 + var11 * var4 >> 16;
          var18 = var21;
          if(var11 >= 50) {
-            var21 = var13 * var6 + var5 * var16 >> 16;
+            var21 = var13 * var6 + var16 * var5 >> 16;
             var16 = var16 * var6 - var5 * var13 >> 16;
             var13 = var21;
             var21 = var19 * var4 - var3 * var16 >> 16;
             var16 = var3 * var19 + var16 * var4 >> 16;
             var19 = var21;
             if(var16 >= 50) {
-               var21 = var9 * var6 + var5 * var15 >> 16;
+               var21 = var9 * var6 + var15 * var5 >> 16;
                var15 = var15 * var6 - var5 * var9 >> 16;
                var9 = var21;
                var21 = var20 * var4 - var3 * var15 >> 16;
@@ -777,6 +808,9 @@ public class Region {
    }
 
    @ObfuscatedName("ao")
+   @ObfuscatedSignature(
+      signature = "(Ldt;IIIIII)V"
+   )
    @Export("drawTileOverlay")
    void drawTileOverlay(SceneTileModel var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = var1.vertexX.length;
@@ -853,6 +887,9 @@ public class Region {
    }
 
    @ObfuscatedName("aj")
+   @ObfuscatedSignature(
+      signature = "(Ldv;III)V"
+   )
    void method2845(ModelData var1, int var2, int var3, int var4) {
       Tile var5;
       ModelData var6;
@@ -1097,6 +1134,9 @@ public class Region {
    }
 
    @ObfuscatedName("an")
+   @ObfuscatedSignature(
+      signature = "(Lei;Z)V"
+   )
    @Export("draw")
    void draw(Tile var1, boolean var2) {
       tileDeque.addFront(var1);
@@ -1632,6 +1672,9 @@ public class Region {
    }
 
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIIILef;ILef;Lef;)V"
+   )
    @Export("addItemPile")
    public void addItemPile(int var1, int var2, int var3, int var4, Renderable var5, int var6, Renderable var7, Renderable var8) {
       ItemLayer var9 = new ItemLayer();
@@ -1665,12 +1708,18 @@ public class Region {
    }
 
    @ObfuscatedName("ae")
+   @ObfuscatedSignature(
+      signature = "(III)Lea;"
+   )
    public WallObject method2815(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       return var4 == null?null:var4.wallObject;
    }
 
    @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(IIIIILef;IIZ)Z"
+   )
    public boolean method2677(int var1, int var2, int var3, int var4, int var5, Renderable var6, int var7, int var8, boolean var9) {
       if(var6 == null) {
          return true;
@@ -1706,12 +1755,18 @@ public class Region {
    }
 
    @ObfuscatedName("au")
+   @ObfuscatedSignature(
+      signature = "(III)Lex;"
+   )
    public DecorativeObject method2689(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       return var4 == null?null:var4.decorativeObject;
    }
 
    @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(IIIIILef;IIIIII)Z"
+   )
    public boolean method2678(int var1, int var2, int var3, int var4, int var5, Renderable var6, int var7, int var8, int var9, int var10, int var11, int var12) {
       return var6 == null?true:this.addEntityMarker(var1, var9, var10, var11 - var9 + 1, var12 - var10 + 1, var2, var3, var4, var6, var7, true, var8, 0);
    }
@@ -1781,6 +1836,9 @@ public class Region {
    }
 
    @ObfuscatedName("ak")
+   @ObfuscatedSignature(
+      signature = "(III)Lee;"
+   )
    public GameObject method2690(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       if(var4 == null) {
@@ -1855,6 +1913,9 @@ public class Region {
    }
 
    @ObfuscatedName("ap")
+   @ObfuscatedSignature(
+      signature = "(III)Ldq;"
+   )
    public GroundObject method2735(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       return var4 != null && var4.groundObject != null?var4.groundObject:null;
@@ -1900,6 +1961,9 @@ public class Region {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(IIIILef;II)V"
+   )
    @Export("groundObjectSpawned")
    public void groundObjectSpawned(int var1, int var2, int var3, int var4, Renderable var5, int var6, int var7) {
       if(var5 != null) {
@@ -1919,17 +1983,23 @@ public class Region {
    }
 
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(IIIIIILef;III)Z"
+   )
    public boolean method2808(int var1, int var2, int var3, int var4, int var5, int var6, Renderable var7, int var8, int var9, int var10) {
       if(var7 == null) {
          return true;
       } else {
          int var11 = 64 * var5 + var2 * 128;
-         int var12 = var6 * 64 + var3 * 128;
+         int var12 = 64 * var6 + var3 * 128;
          return this.addEntityMarker(var1, var2, var3, var5, var6, var11, var12, var4, var7, var8, false, var9, var10);
       }
    }
 
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IIIILef;Lef;IIII)V"
+   )
    @Export("addBoundary")
    public void addBoundary(int var1, int var2, int var3, int var4, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10) {
       if(var5 != null || var6 != null) {
@@ -1955,6 +2025,9 @@ public class Region {
    }
 
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(IIIILef;Lef;IIIIII)V"
+   )
    @Export("addBoundaryDecoration")
    public void addBoundaryDecoration(int var1, int var2, int var3, int var4, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10, int var11, int var12) {
       if(var5 != null) {
@@ -2349,7 +2422,7 @@ public class Region {
       var2 = pitchSin * var1 + var2 * pitchCos >> 16;
       var2 |= 1;
       int var4 = var0 * Graphics3D.field2026 / var2 + Graphics3D.centerX + Rasterizer2D.draw_region_x;
-      int var5 = Graphics3D.field2026 * var3 / var2 + Graphics3D.centerY + Rasterizer2D.drawingAreaTop;
+      int var5 = var3 * Graphics3D.field2026 / var2 + Graphics3D.centerY + Rasterizer2D.drawingAreaTop;
       return new int[]{var4, var5};
    }
 
@@ -2452,7 +2525,7 @@ public class Region {
    static boolean method2702(int var0, int var1, int var2) {
       int var3 = var0 * yawCos + var2 * yawSin >> 16;
       int var4 = var2 * yawCos - var0 * yawSin >> 16;
-      int var5 = var4 * pitchCos + pitchSin * var1 >> 16;
+      int var5 = var4 * pitchCos + var1 * pitchSin >> 16;
       int var6 = pitchCos * var1 - var4 * pitchSin >> 16;
       if(var5 >= 50 && var5 <= 3500) {
          int var7 = var3 * 390 / var5 + field2114;

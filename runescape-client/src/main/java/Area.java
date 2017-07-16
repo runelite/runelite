@@ -8,9 +8,15 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Area")
 public class Area extends CacheableNode {
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("skeletonsIndex")
    public static NodeCache skeletonsIndex;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field3294;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
@@ -34,6 +40,9 @@ public class Area extends CacheableNode {
    @Export("name")
    public String name;
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lib;"
+   )
    public class257 field3303;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
@@ -46,6 +55,9 @@ public class Area extends CacheableNode {
    )
    int field3299;
    @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Liu;"
+   )
    public class239 field3304;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
@@ -107,7 +119,7 @@ public class Area extends CacheableNode {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(ZI)LSpritePixels;",
+      signature = "(ZI)Ljt;",
       garbageValue = "-1519748465"
    )
    public SpritePixels method4249(boolean var1) {
@@ -117,7 +129,7 @@ public class Area extends CacheableNode {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(II)LSpritePixels;",
+      signature = "(II)Ljt;",
       garbageValue = "-66071668"
    )
    SpritePixels method4250(int var1) {
@@ -140,7 +152,7 @@ public class Area extends CacheableNode {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "-1484379949"
    )
    void method4256(Buffer var1, int var2) {
@@ -238,7 +250,7 @@ public class Area extends CacheableNode {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-1451049353"
    )
    public void method4247(Buffer var1) {

@@ -13,10 +13,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("aq")
 public class class34 {
    @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lhd;"
+   )
    static final Coordinates field476;
    @ObfuscatedName("p")
    int[][] field463;
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Ljt;"
+   )
    SpritePixels field472;
    @ObfuscatedName("u")
    List field473;
@@ -25,6 +31,9 @@ public class class34 {
    @ObfuscatedName("g")
    HashMap field465;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Ld;"
+   )
    class22 field467;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
@@ -80,7 +89,7 @@ public class class34 {
 
    @ObfuscatedName("ai")
    @ObfuscatedSignature(
-      signature = "(IILclass28;B)V",
+      signature = "(IILau;B)V",
       garbageValue = "-63"
    )
    void method376(int var1, int var2, class28 var3) {
@@ -117,7 +126,7 @@ public class class34 {
                      }
 
                      if(var8.field434 == 3) {
-                        Rasterizer2D.method4927(this.field471 * var1, (63 - var2) * this.field471 + this.field471 - 1, 1, var10);
+                        Rasterizer2D.method4927(this.field471 * var1, this.field471 * (63 - var2) + this.field471 - 1, 1, var10);
                      }
                   }
 
@@ -171,7 +180,7 @@ public class class34 {
 
    @ObfuscatedName("az")
    @ObfuscatedSignature(
-      signature = "(LArea;I)Lclass33;",
+      signature = "(Lie;I)Law;",
       garbageValue = "-993041197"
    )
    class33 method390(Area var1) {
@@ -229,7 +238,7 @@ public class class34 {
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(IILclass28;[LModIcon;B)V",
+      signature = "(IILau;[Ljf;B)V",
       garbageValue = "37"
    )
    void method371(int var1, int var2, class28 var3, ModIcon[] var4) {
@@ -260,7 +269,7 @@ public class class34 {
 
    @ObfuscatedName("ar")
    @ObfuscatedSignature(
-      signature = "(LArea;IIB)V",
+      signature = "(Lie;IIB)V",
       garbageValue = "0"
    )
    void method424(Area var1, int var2, int var3) {
@@ -275,7 +284,7 @@ public class class34 {
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IILclass28;Lclass46;I)V",
+      signature = "(IILau;Lah;I)V",
       garbageValue = "1890691279"
    )
    void method368(int var1, int var2, class28 var3, class46 var4) {
@@ -326,7 +335,7 @@ public class class34 {
 
    @ObfuscatedName("ag")
    @ObfuscatedSignature(
-      signature = "(LSpritePixels;Lclass257;I)I",
+      signature = "(Ljt;Lib;I)I",
       garbageValue = "1271001057"
    )
    int method386(SpritePixels var1, class257 var2) {
@@ -366,7 +375,7 @@ public class class34 {
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(IILclass28;Lclass46;[LModIcon;B)V",
+      signature = "(IILau;Lah;[Ljf;B)V",
       garbageValue = "109"
    )
    void method367(int var1, int var2, class28 var3, class46 var4, ModIcon[] var5) {
@@ -376,7 +385,7 @@ public class class34 {
 
    @ObfuscatedName("am")
    @ObfuscatedSignature(
-      signature = "(Lclass39;LArea;IIFI)V",
+      signature = "(Lad;Lie;IIFI)V",
       garbageValue = "-1110888446"
    )
    void method382(class39 var1, Area var2, int var3, int var4, float var5) {
@@ -408,7 +417,7 @@ public class class34 {
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "([Lclass34;B)Z",
+      signature = "([Laq;B)Z",
       garbageValue = "-4"
    )
    boolean method370(class34[] var1) {
@@ -435,7 +444,7 @@ public class class34 {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(IIIILclass28;I)V",
+      signature = "(IIIILau;I)V",
       garbageValue = "-117293994"
    )
    void method402(int var1, int var2, int var3, int var4, class28 var5) {
@@ -494,7 +503,7 @@ public class class34 {
 
    @ObfuscatedName("aa")
    @ObfuscatedSignature(
-      signature = "(IILclass28;S)V",
+      signature = "(IILau;S)V",
       garbageValue = "-24901"
    )
    void method464(int var1, int var2, class28 var3) {
@@ -554,7 +563,7 @@ public class class34 {
 
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IILclass28;Lclass46;I)V",
+      signature = "(IILau;Lah;I)V",
       garbageValue = "-280210877"
    )
    void method369(int var1, int var2, class28 var3, class46 var4) {
@@ -574,7 +583,7 @@ public class class34 {
 
    @ObfuscatedName("aj")
    @ObfuscatedSignature(
-      signature = "(LSpritePixels;Lclass239;I)I",
+      signature = "(Ljt;Liu;I)I",
       garbageValue = "-701317261"
    )
    int method439(SpritePixels var1, class239 var2) {
@@ -590,7 +599,7 @@ public class class34 {
 
    @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(IIIILclass28;Lclass43;I)V",
+      signature = "(IIIILau;Lab;I)V",
       garbageValue = "1694574091"
    )
    void method372(int var1, int var2, int var3, int var4, class28 var5, class43 var6) {
@@ -608,7 +617,7 @@ public class class34 {
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IILclass28;I)I",
+      signature = "(IILau;I)I",
       garbageValue = "1650574864"
    )
    int method374(int var1, int var2, class28 var3) {
@@ -617,7 +626,7 @@ public class class34 {
 
    @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "([Lclass34;Lclass43;I)V",
+      signature = "([Laq;Lab;I)V",
       garbageValue = "-1742647183"
    )
    void method471(class34[] var1, class43 var2) {
@@ -683,7 +692,7 @@ public class class34 {
 
    @ObfuscatedName("ax")
    @ObfuscatedSignature(
-      signature = "(II)LArea;",
+      signature = "(II)Lie;",
       garbageValue = "371596270"
    )
    Area method388(int var1) {
@@ -700,7 +709,7 @@ public class class34 {
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lclass43;B)V",
+      signature = "(Lab;B)V",
       garbageValue = "33"
    )
    void method456(class43 var1) {
@@ -716,7 +725,7 @@ public class class34 {
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lclass46;[Lclass34;[LModIcon;B)V",
+      signature = "(Lah;[Laq;[Ljf;B)V",
       garbageValue = "14"
    )
    void method365(class46 var1, class34[] var2, ModIcon[] var3) {
@@ -739,7 +748,7 @@ public class class34 {
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lclass46;[LModIcon;I)V",
+      signature = "(Lah;[Ljf;I)V",
       garbageValue = "730437136"
    )
    void method366(class46 var1, ModIcon[] var2) {
@@ -787,7 +796,7 @@ public class class34 {
 
    @ObfuscatedName("ak")
    @ObfuscatedSignature(
-      signature = "(LArea;IIIIB)V",
+      signature = "(Lie;IIIIB)V",
       garbageValue = "2"
    )
    void method379(Area var1, int var2, int var3, int var4, int var5) {
@@ -804,7 +813,7 @@ public class class34 {
 
    @ObfuscatedName("ad")
    @ObfuscatedSignature(
-      signature = "(IB)Lclass33;",
+      signature = "(IB)Law;",
       garbageValue = "-20"
    )
    class33 method389(int var1) {
@@ -842,7 +851,7 @@ public class class34 {
 
    @ObfuscatedName("ap")
    @ObfuscatedSignature(
-      signature = "(Lclass39;IIFI)V",
+      signature = "(Lad;IIFI)V",
       garbageValue = "-1584344202"
    )
    void method380(class39 var1, int var2, int var3, float var4) {
@@ -890,7 +899,7 @@ public class class34 {
       }
 
       if(var3 == 3) {
-         Rasterizer2D.method4927(this.field471 * var1, this.field471 * (63 - var2) + this.field471 - 1, this.field471, var4);
+         Rasterizer2D.method4927(this.field471 * var1, (63 - var2) * this.field471 + this.field471 - 1, this.field471, var4);
       }
 
    }
@@ -948,7 +957,7 @@ public class class34 {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(ILclass46;[Lclass34;[LModIcon;B)Z",
+      signature = "(ILah;[Laq;[Ljf;B)Z",
       garbageValue = "-61"
    )
    boolean method361(int var1, class46 var2, class34[] var3, ModIcon[] var4) {
@@ -971,7 +980,7 @@ public class class34 {
 
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(IIIIIILclass34;Lclass43;I)V",
+      signature = "(IIIIIILaq;Lab;I)V",
       garbageValue = "-2138587628"
    )
    void method373(int var1, int var2, int var3, int var4, int var5, int var6, class34 var7, class43 var8) {
@@ -1005,7 +1014,7 @@ public class class34 {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lclass22;Ljava/util/List;I)V",
+      signature = "(Ld;Ljava/util/List;I)V",
       garbageValue = "2049626438"
    )
    void method357(class22 var1, List var2) {

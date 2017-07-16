@@ -12,10 +12,16 @@ public class class287 {
    )
    int field3804;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    IndexDataBase field3799;
    @ObfuscatedName("e")
    String field3802;
 
+   @ObfuscatedSignature(
+      signature = "(Lif;)V"
+   )
    class287(IndexDataBase var1) {
       this.field3804 = 0;
       this.field3803 = false;

@@ -5,23 +5,50 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("hn")
 public enum class228 implements RSEnum {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lhn;"
+   )
    field3155(6, 0),
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lhn;"
+   )
    field3159(5, 1),
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lhn;"
+   )
    field3153(2, 2),
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lhn;"
+   )
    field3154(1, 3),
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lhn;"
+   )
    field3161(4, 4),
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lhn;"
+   )
    field3156(3, 5),
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lhn;"
+   )
    field3157(7, 6),
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lhn;"
+   )
    field3158(0, 7);
 
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Ljf;"
+   )
    static ModIcon field3151;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
@@ -50,7 +77,7 @@ public enum class228 implements RSEnum {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)Lclass251;",
+      signature = "(II)Liv;",
       garbageValue = "-505208587"
    )
    public static class251 method4068(int var0) {

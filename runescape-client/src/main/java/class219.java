@@ -5,24 +5,54 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("hx")
 public class class219 implements class218 {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
    public static final class219 field2798;
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
    public static final class219 field2792;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
    public static final class219 field2802;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
    public static final class219 field2793;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
    public static final class219 field2794;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
    public static final class219 field2795;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
    public static final class219 field2796;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
    public static final class219 field2797;
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
    public static final class219 field2805;
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
    static final class219 field2799;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
@@ -47,10 +77,16 @@ public class class219 implements class218 {
       this(var1, var2, false, (ScriptVarType[])null, false, (ScriptVarType[])null);
    }
 
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;IZ[Ll;Z[Ll;)V"
+   )
    class219(String var1, int var2, boolean var3, ScriptVarType[] var4, boolean var5, ScriptVarType[] var6) {
       this.field2801 = var2;
    }
 
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I[Ll;[Ll;)V"
+   )
    class219(String var1, int var2, ScriptVarType[] var3, ScriptVarType[] var4) {
       this(var1, var2, var3 != null, var3, null != var4, var4);
    }

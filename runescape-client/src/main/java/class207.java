@@ -7,6 +7,9 @@ public class class207 extends Node {
    @ObfuscatedName("s")
    int[] field2585;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "[Ldm;"
+   )
    class107[] field2579;
    @ObfuscatedName("n")
    short[] field2580;
@@ -15,6 +18,9 @@ public class class207 extends Node {
    @ObfuscatedName("v")
    byte[] field2582;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "[Lgv;"
+   )
    class202[] field2578;
    @ObfuscatedName("l")
    byte[] field2584;
@@ -393,7 +399,7 @@ public class class207 extends Node {
          for(var29 = 2; var29 < var39.length; var29 += 2) {
             var30 = var39[var29];
             var43 = var39[var29 + 1] << 1;
-            var32 = (var30 - var44) * var47 + (var30 - var44) / 2;
+            var32 = var47 * (var30 - var44) + (var30 - var44) / 2;
 
             for(var33 = var44; var33 < var30; ++var33) {
                var34 = class67.method1088(var32, var30 - var44);
@@ -480,7 +486,7 @@ public class class207 extends Node {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lclass112;[B[IB)Z",
+      signature = "(Ldu;[B[IB)Z",
       garbageValue = "45"
    )
    boolean method3857(class112 var1, byte[] var2, int[] var3) {

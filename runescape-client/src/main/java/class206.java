@@ -1,4 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gk")
 public class class206 {
@@ -9,6 +10,9 @@ public class class206 {
    @ObfuscatedName("r")
    int[] field2567;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lfe;"
+   )
    Buffer field2564;
    @ObfuscatedName("l")
    int field2570;

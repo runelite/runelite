@@ -8,6 +8,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("ItemLayer")
 public final class ItemLayer {
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lef;"
+   )
    @Export("bottom")
    Renderable bottom;
    @ObfuscatedName("j")
@@ -35,9 +38,15 @@ public final class ItemLayer {
    @Export("flags")
    int flags;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lef;"
+   )
    @Export("middle")
    Renderable middle;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lef;"
+   )
    @Export("top")
    Renderable top;
    @ObfuscatedName("s")

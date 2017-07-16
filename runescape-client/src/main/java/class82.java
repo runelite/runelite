@@ -6,6 +6,9 @@ import net.runelite.rs.Reflection;
 @ObfuscatedName("cn")
 public final class class82 extends Node {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lgt;"
+   )
    static Deque field1322;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
@@ -13,6 +16,9 @@ public final class class82 extends Node {
    )
    int field1318;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
    ObjectComposition field1311;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
@@ -32,6 +38,9 @@ public final class class82 extends Node {
    @ObfuscatedName("g")
    int[] field1325;
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Ldr;"
+   )
    class117 field1324;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
@@ -59,6 +68,9 @@ public final class class82 extends Node {
    )
    int field1312;
    @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Ldr;"
+   )
    class117 field1321;
    @ObfuscatedName("k")
    @ObfuscatedGetter(

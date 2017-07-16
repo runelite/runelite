@@ -8,12 +8,21 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Overlay")
 public class Overlay extends CacheableNode {
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("overlays")
    public static NodeCache overlays;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("overlay_ref")
    static IndexDataBase overlay_ref;
    @ObfuscatedName("pi")
+   @ObfuscatedSignature(
+      signature = "Ldo;"
+   )
    static class116 field3593;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
@@ -86,7 +95,7 @@ public class Overlay extends CacheableNode {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(LBuffer;IIB)V",
+      signature = "(Lfe;IIB)V",
       garbageValue = "80"
    )
    void method4599(Buffer var1, int var2, int var3) {
@@ -190,7 +199,7 @@ public class Overlay extends CacheableNode {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "647325151"
    )
    @Export("decode")

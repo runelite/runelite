@@ -21,6 +21,9 @@ public class class87 {
    @ObfuscatedName("e")
    static final BigInteger field1378;
    @ObfuscatedName("gg")
+   @ObfuscatedSignature(
+      signature = "Ljt;"
+   )
    @Export("compass")
    static SpritePixels compass;
    @ObfuscatedName("rj")

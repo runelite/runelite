@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dz")
 @Implements("SoundEffect3")
@@ -107,6 +108,9 @@ public class SoundEffect3 {
    }
 
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(Lfe;Ldc;)V"
+   )
    @Export("decode")
    final void decode(Buffer var1, AudioEnvelope var2) {
       int var3 = var1.readUnsignedByte();

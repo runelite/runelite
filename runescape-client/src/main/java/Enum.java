@@ -8,6 +8,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Enum")
 public class Enum extends CacheableNode {
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    static NodeCache field3395;
    @ObfuscatedName("v")
    @Export("defaultString")
@@ -51,7 +54,7 @@ public class Enum extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "-1925864743"
    )
    void method4423(Buffer var1, int var2) {
@@ -90,7 +93,7 @@ public class Enum extends CacheableNode {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "2057364237"
    )
    @Export("decode")

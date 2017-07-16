@@ -10,7 +10,7 @@ public class class177 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IS)Lclass244;",
+      signature = "(IS)Liy;",
       garbageValue = "512"
    )
    @Export("getVarClientStringType")
@@ -32,7 +32,7 @@ public class class177 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;I)V",
+      signature = "(Lif;I)V",
       garbageValue = "-1824904467"
    )
    public static void method3372(IndexDataBase var0) {

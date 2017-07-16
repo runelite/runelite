@@ -6,13 +6,25 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("u")
 public class class11 {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lu;"
+   )
    public static final class11 field273;
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("widgetIndex")
    public static IndexDataBase widgetIndex;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lu;"
+   )
    public static final class11 field270;
    @ObfuscatedName("af")
+   @ObfuscatedSignature(
+      signature = "Lhz;"
+   )
    static BuildType field269;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
@@ -21,6 +33,9 @@ public class class11 {
    @Export("priority")
    public static int priority;
    @ObfuscatedName("ry")
+   @ObfuscatedSignature(
+      signature = "Lke;"
+   )
    @Export("renderOverview")
    static RenderOverview renderOverview;
    @ObfuscatedName("km")
@@ -69,7 +84,7 @@ public class class11 {
 
    @ObfuscatedName("fi")
    @ObfuscatedSignature(
-      signature = "(LSequence;IIIB)V",
+      signature = "(Ljg;IIIB)V",
       garbageValue = "-42"
    )
    static void method58(Sequence var0, int var1, int var2, int var3) {

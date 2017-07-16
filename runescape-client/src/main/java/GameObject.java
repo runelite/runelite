@@ -73,6 +73,9 @@ public final class GameObject {
    @Export("height")
    int height;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lef;"
+   )
    @Export("renderable")
    public Renderable renderable;
    @ObfuscatedName("e")
@@ -101,7 +104,7 @@ public final class GameObject {
 
    @ObfuscatedName("jy")
    @ObfuscatedSignature(
-      signature = "(IIIB)LWidgetNode;",
+      signature = "(IIIB)Lbr;",
       garbageValue = "4"
    )
    static final WidgetNode method2891(int var0, int var1, int var2) {

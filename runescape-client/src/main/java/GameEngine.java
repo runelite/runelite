@@ -30,6 +30,9 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    @Export("focused")
    static volatile boolean focused;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lbb;"
+   )
    @Export("shell")
    static GameEngine shell;
    @ObfuscatedName("v")
@@ -60,6 +63,9 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    @ObfuscatedName("k")
    static long[] field690;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Len;"
+   )
    @Export("taskManager")
    public static Signlink taskManager;
    @ObfuscatedName("m")
@@ -92,6 +98,9 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    @ObfuscatedName("e")
    boolean field703;
    @ObfuscatedName("as")
+   @ObfuscatedSignature(
+      signature = "Lao;"
+   )
    class49 field707;
    @ObfuscatedName("ar")
    java.awt.Frame field682;
@@ -228,7 +237,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
    @ObfuscatedName("ab")
    @ObfuscatedSignature(
-      signature = "(I)Lclass278;",
+      signature = "(I)Ljj;",
       garbageValue = "-1130280805"
    )
    class278 method913() {
@@ -488,7 +497,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(I)Lclass156;",
+      signature = "(I)Lfh;",
       garbageValue = "-533671705"
    )
    protected class156 method853() {
@@ -1007,7 +1016,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ILclass219;I)LScript;",
+      signature = "(ILhx;I)Lcg;",
       garbageValue = "-2062997227"
    )
    static Script method1003(int var0, class219 var1) {

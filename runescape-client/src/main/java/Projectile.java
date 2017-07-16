@@ -122,6 +122,9 @@ public final class Projectile extends Renderable {
    @Export("rotationX")
    int rotationX;
    @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Ljg;"
+   )
    @Export("animationSequence")
    Sequence animationSequence;
 
@@ -152,7 +155,7 @@ public final class Projectile extends Renderable {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)LModel;",
+      signature = "(B)Lej;",
       garbageValue = "19"
    )
    protected final Model getModel() {
@@ -230,7 +233,7 @@ public final class Projectile extends Renderable {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;IIB)LModIcon;",
+      signature = "(Lif;IIB)Ljf;",
       garbageValue = "-7"
    )
    static ModIcon method1743(IndexDataBase var0, int var1, int var2) {
@@ -253,7 +256,7 @@ public final class Projectile extends Renderable {
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
+      signature = "(ILcg;ZI)I",
       garbageValue = "1461535418"
    )
    static int method1734(int var0, Script var1, boolean var2) {

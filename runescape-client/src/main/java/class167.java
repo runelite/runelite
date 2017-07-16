@@ -1,9 +1,13 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ft")
 public final class class167 {
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lfi;"
+   )
    @Export("state")
    static DState state;
 
@@ -33,6 +37,9 @@ public final class class167 {
    }
 
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Lfi;)V"
+   )
    static void method3078(DState var0) {
       boolean var4 = false;
       boolean var5 = false;
@@ -326,7 +333,7 @@ public final class class167 {
                         if(var46 == 0) {
                            var48 += var49;
                         } else if(var46 == 1) {
-                           var48 += 2 * var49;
+                           var48 += var49 * 2;
                         }
 
                         var49 *= 2;
@@ -402,11 +409,17 @@ public final class class167 {
    }
 
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(Lfi;)B"
+   )
    static byte method3079(DState var0) {
       return (byte)method3102(8, var0);
    }
 
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(ILfi;)I"
+   )
    static int method3102(int var0, DState var1) {
       while(var1.total_in_lo32 < var0) {
          var1.total_in_hi32 = var1.total_in_hi32 << 8 | var1.strm[var1.next_in] & 255;
@@ -424,11 +437,17 @@ public final class class167 {
    }
 
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(Lfi;)B"
+   )
    static byte method3080(DState var0) {
       return (byte)method3102(1, var0);
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(Lfi;)V"
+   )
    static void method3082(DState var0) {
       var0.nInUse = 0;
 
@@ -486,6 +505,9 @@ public final class class167 {
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lfi;)V"
+   )
    static void method3077(DState var0) {
       byte var2 = var0.out_ch;
       int var3 = var0.out_len;

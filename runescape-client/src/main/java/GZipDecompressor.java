@@ -8,8 +8,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
    @ObfuscatedName("az")
+   @ObfuscatedSignature(
+      signature = "Lju;"
+   )
    public static BufferProvider field2327;
    @ObfuscatedName("gf")
+   @ObfuscatedSignature(
+      signature = "[Ljf;"
+   )
    static ModIcon[] field2330;
    @ObfuscatedName("a")
    @Export("inflator")
@@ -28,7 +34,7 @@ public class GZipDecompressor {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LBuffer;[BB)V",
+      signature = "(Lfe;[BB)V",
       garbageValue = "105"
    )
    @Export("decompress")

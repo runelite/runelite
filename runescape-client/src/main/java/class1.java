@@ -6,22 +6,49 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("j")
 public class class1 {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lj;"
+   )
    static final class1 field1;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lj;"
+   )
    static final class1 field2;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lj;"
+   )
    static final class1 field10;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lj;"
+   )
    static final class1 field3;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lj;"
+   )
    static final class1 field4;
    @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "Lfe;"
+   )
    public static Buffer field0;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lj;"
+   )
    static final class1 field5;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lj;"
+   )
    static final class1 field6;
    @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    static Widget field9;
    @ObfuscatedName("s")
    @ObfuscatedGetter(

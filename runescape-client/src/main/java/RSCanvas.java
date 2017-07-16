@@ -53,7 +53,7 @@ public final class RSCanvas extends Canvas {
 
    @ObfuscatedName("hp")
    @ObfuscatedSignature(
-      signature = "(III)Lclass163;",
+      signature = "(III)Lfs;",
       garbageValue = "1197080112"
    )
    static class163 method796(int var0, int var1) {
@@ -66,7 +66,7 @@ public final class RSCanvas extends Canvas {
 
    @ObfuscatedName("gn")
    @ObfuscatedSignature(
-      signature = "(LActor;IIIIII)V",
+      signature = "(Lca;IIIIII)V",
       garbageValue = "-371986604"
    )
    static final void method791(Actor var0, int var1, int var2, int var3, int var4, int var5) {
@@ -121,7 +121,7 @@ public final class RSCanvas extends Canvas {
                   if(var10.field1275 > var18) {
                      var20 = var11.field3363 == 0?0:var11.field3363 * (var18 / var11.field3363);
                      var21 = var14 * var10.healthRatio / var11.healthScale;
-                     var88 = var20 * (var19 - var21) / var10.field1275 + var21;
+                     var88 = (var19 - var21) * var20 / var10.field1275 + var21;
                   } else {
                      var88 = var19;
                      var20 = var10.field1275 + var11.field3372 - var18;
@@ -514,8 +514,8 @@ public final class RSCanvas extends Canvas {
 
                      var61 = var0.hitsplatCycles[var75] - Client.gameCycle;
                      int var62 = var87.field3417 - var61 * var87.field3417 / var87.field3418;
-                     int var63 = var61 * var87.field3424 / var87.field3418 + -var87.field3424;
-                     int var64 = var2 + Client.screenY - (var50 >> 1) + var62;
+                     int var63 = var87.field3424 * var61 / var87.field3418 + -var87.field3424;
+                     int var64 = Client.screenY + var2 - (var50 >> 1) + var62;
                      int var65 = var63 + (var3 + Client.screenX - 12);
                      int var66 = var65;
                      int var67 = var41 + var65;
@@ -534,7 +534,7 @@ public final class RSCanvas extends Canvas {
                      int var72;
                      int var73;
                      if(var79 != null) {
-                        var71 = 15 + var65 + var79.field3432;
+                        var71 = var65 + 15 + var79.field3432;
                         var72 = var71 - var43.minSpacing;
                         var73 = var71 + var43.maxSpacing;
                         if(var72 < var66) {

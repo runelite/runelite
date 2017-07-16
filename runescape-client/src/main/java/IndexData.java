@@ -12,6 +12,9 @@ public class IndexData extends IndexDataBase {
    @Export("crc32")
    static CRC32 crc32;
    @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lfz;"
+   )
    IndexFile field3238;
    @ObfuscatedName("ai")
    @ObfuscatedGetter(
@@ -20,6 +23,9 @@ public class IndexData extends IndexDataBase {
    @Export("crcValue")
    int crcValue;
    @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lfz;"
+   )
    IndexFile field3245;
    @ObfuscatedName("d")
    volatile boolean field3240;
@@ -48,6 +54,9 @@ public class IndexData extends IndexDataBase {
       crc32 = new CRC32();
    }
 
+   @ObfuscatedSignature(
+      signature = "(Lfz;Lfz;IZZZ)V"
+   )
    public IndexData(IndexFile var1, IndexFile var2, int var3, boolean var4, boolean var5, boolean var6) {
       super(var4, var5);
       this.field3240 = false;
@@ -152,7 +161,7 @@ public class IndexData extends IndexDataBase {
 
    @ObfuscatedName("cv")
    @ObfuscatedSignature(
-      signature = "(LIndexFile;I[BZB)V",
+      signature = "(Lfz;I[BZB)V",
       garbageValue = "-99"
    )
    void method4179(IndexFile var1, int var2, byte[] var3, boolean var4) {
@@ -352,7 +361,7 @@ public class IndexData extends IndexDataBase {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;III)Z",
+      signature = "(Lif;III)Z",
       garbageValue = "627007602"
    )
    public static boolean method4200(IndexDataBase var0, int var1, int var2) {

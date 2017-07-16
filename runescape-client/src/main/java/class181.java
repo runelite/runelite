@@ -17,7 +17,7 @@ public class class181 {
 
    @ObfuscatedName("ie")
    @ObfuscatedSignature(
-      signature = "(LWidget;IIZB)V",
+      signature = "(Lhy;IIZB)V",
       garbageValue = "34"
    )
    static void method3424(Widget var0, int var1, int var2, boolean var3) {

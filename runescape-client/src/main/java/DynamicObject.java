@@ -8,6 +8,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("DynamicObject")
 public class DynamicObject extends Renderable {
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Ljg;"
+   )
    Sequence field1543;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
@@ -56,6 +59,9 @@ public class DynamicObject extends Renderable {
    @Export("sceneY")
    int sceneY;
 
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIZLef;)V"
+   )
    DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
       this.id = var1;
       this.type = var2;
@@ -86,7 +92,7 @@ public class DynamicObject extends Renderable {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)LModel;",
+      signature = "(B)Lej;",
       garbageValue = "19"
    )
    protected final Model getModel() {
@@ -135,7 +141,7 @@ public class DynamicObject extends Renderable {
          }
 
          int var4 = this.sceneX + (var2 >> 1);
-         int var5 = (var2 + 1 >> 1) + this.sceneX;
+         int var5 = (1 + var2 >> 1) + this.sceneX;
          int var6 = this.sceneY + (var3 >> 1);
          int var7 = (var3 + 1 >> 1) + this.sceneY;
          int[][] var8 = class61.tileHeights[this.level];

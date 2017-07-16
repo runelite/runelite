@@ -8,10 +8,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("ScriptEvent")
 public class ScriptEvent extends Node {
    @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
    class219 field834;
    @ObfuscatedName("a")
    Object[] field839;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    @Export("widget")
    Widget widget;
    @ObfuscatedName("r")
@@ -25,6 +31,9 @@ public class ScriptEvent extends Node {
    )
    int field828;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    Widget field833;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
@@ -66,7 +75,7 @@ public class ScriptEvent extends Node {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lclass219;B)V",
+      signature = "(Lhx;B)V",
       garbageValue = "45"
    )
    public void method1098(class219 var1) {

@@ -14,8 +14,14 @@ public class class7 {
    @ObfuscatedName("n")
    public static boolean field228;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lu;"
+   )
    public static class11 field229;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lgi;"
+   )
    public static CombatInfoList field226;
    @ObfuscatedName("ga")
    @ObfuscatedGetter(

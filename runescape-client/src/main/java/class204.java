@@ -25,14 +25,26 @@ public class class204 extends class119 {
    @ObfuscatedName("s")
    int[] field2521;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
    XHashTable field2528;
    @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "[[Lgq;"
+   )
    class205[][] field2532;
    @ObfuscatedName("h")
    int[] field2526;
    @ObfuscatedName("ae")
+   @ObfuscatedSignature(
+      signature = "Lgk;"
+   )
    class206 field2529;
    @ObfuscatedName("aw")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
    class208 field2540;
    @ObfuscatedName("e")
    int[] field2523;
@@ -60,6 +72,9 @@ public class class204 extends class119 {
    )
    int field2517;
    @ObfuscatedName("ai")
+   @ObfuscatedSignature(
+      signature = "[[Lgq;"
+   )
    class205[][] field2533;
    @ObfuscatedName("au")
    boolean field2535;
@@ -235,7 +250,7 @@ public class class204 extends class119 {
             var6.field2544 = var9.field2578[var2];
             var6.field2548 = var9.field2584[var2];
             var6.field2546 = var2;
-            var6.field2547 = var9.field2583[var2] * var3 * var3 * var9.field2581 + 1024 >> 11;
+            var6.field2547 = var3 * var3 * var9.field2581 * var9.field2583[var2] + 1024 >> 11;
             var6.field2563 = var9.field2582[var2] & 255;
             var6.field2549 = (var2 << 8) - (var9.field2580[var2] & 32767);
             var6.field2552 = 0;
@@ -379,13 +394,16 @@ public class class204 extends class119 {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "()Ldf;"
+   )
    protected synchronized class119 vmethod3882() {
       return null;
    }
 
    @ObfuscatedName("ay")
    @ObfuscatedSignature(
-      signature = "(Lclass205;I)I",
+      signature = "(Lgq;I)I",
       garbageValue = "1620062431"
    )
    int method3722(class205 var1) {
@@ -411,7 +429,7 @@ public class class204 extends class119 {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LTrack1;LIndexDataBase;Lclass112;II)Z",
+      signature = "(Lhc;Lif;Ldu;II)Z",
       garbageValue = "-1876587443"
    )
    public synchronized boolean method3699(Track1 var1, IndexDataBase var2, class112 var3, int var4) {
@@ -449,7 +467,7 @@ public class class204 extends class119 {
 
    @ObfuscatedName("bp")
    @ObfuscatedSignature(
-      signature = "(Lclass205;I)Z",
+      signature = "(Lgq;I)Z",
       garbageValue = "-2061627458"
    )
    boolean method3731(class205 var1) {
@@ -739,7 +757,7 @@ public class class204 extends class119 {
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(LTrack1;ZB)V",
+      signature = "(Lhc;ZB)V",
       garbageValue = "30"
    )
    public synchronized void method3702(Track1 var1, boolean var2) {
@@ -762,7 +780,7 @@ public class class204 extends class119 {
 
    @ObfuscatedName("bi")
    @ObfuscatedSignature(
-      signature = "(Lclass205;[IIII)Z",
+      signature = "(Lgq;[IIII)Z",
       garbageValue = "555631900"
    )
    boolean method3780(class205 var1, int[] var2, int var3, int var4) {
@@ -871,6 +889,9 @@ public class class204 extends class119 {
    }
 
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "()Ldf;"
+   )
    protected synchronized class119 vmethod3883() {
       return this.field2540;
    }
@@ -923,7 +944,7 @@ public class class204 extends class119 {
 
    @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Lclass205;ZB)V",
+      signature = "(Lgq;ZB)V",
       garbageValue = "0"
    )
    void method3709(class205 var1, boolean var2) {
@@ -951,14 +972,14 @@ public class class204 extends class119 {
 
    @ObfuscatedName("ao")
    @ObfuscatedSignature(
-      signature = "(Lclass205;I)I",
+      signature = "(Lgq;I)I",
       garbageValue = "-1685397867"
    )
    int method3800(class205 var1) {
       class202 var2 = var1.field2544;
       int var3 = this.field2523[var1.field2545] * this.field2534[var1.field2545] + 4096 >> 13;
       var3 = var3 * var3 + 16384 >> 15;
-      var3 = var1.field2547 * var3 + 16384 >> 15;
+      var3 = var3 * var1.field2547 + 16384 >> 15;
       var3 = var3 * this.field2515 + 128 >> 8;
       if(var2.field2494 > 0) {
          var3 = (int)((double)var3 * Math.pow(0.5D, (double)var2.field2494 * (double)var1.field2552 * 1.953125E-5D) + 0.5D);
@@ -997,7 +1018,7 @@ public class class204 extends class119 {
 
    @ObfuscatedName("ac")
    @ObfuscatedSignature(
-      signature = "(Lclass205;I)I",
+      signature = "(Lgq;I)I",
       garbageValue = "-1352492662"
    )
    int method3724(class205 var1) {

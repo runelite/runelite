@@ -1,5 +1,6 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("de")
 public class class106 extends Node {
@@ -15,6 +16,9 @@ public class class106 extends Node {
    @Export("bitPosition")
    static int bitPosition;
    @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "[Ldd;"
+   )
    @Export("codeBooks")
    static CodeBook[] codeBooks;
    @ObfuscatedName("m")
@@ -36,6 +40,9 @@ public class class106 extends Node {
    @ObfuscatedName("ai")
    static float[] field1595;
    @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "[Ldp;"
+   )
    @Export("mappings")
    static Mapping[] mappings;
    @ObfuscatedName("q")
@@ -47,6 +54,9 @@ public class class106 extends Node {
    @ObfuscatedName("au")
    static float[] field1572;
    @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "[Ldb;"
+   )
    @Export("floors")
    static Floor1[] floors;
    @ObfuscatedName("ak")
@@ -54,6 +64,9 @@ public class class106 extends Node {
    @ObfuscatedName("ap")
    static int[] field1600;
    @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "[Ldi;"
+   )
    @Export("residues")
    static Residue[] residues;
    @ObfuscatedName("a")
@@ -123,6 +136,9 @@ public class class106 extends Node {
    }
 
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "([I)Ldm;"
+   )
    class107 method1926(int[] var1) {
       if(var1 != null && var1[0] <= 0) {
          return null;
@@ -274,11 +290,11 @@ public class class106 extends Node {
          float var30;
          float var31;
          for(var25 = 0; var25 < var41; ++var25) {
-            var26 = var20[var25 * 4 + var17 + 3];
+            var26 = var20[4 * var25 + var17 + 3];
             var27 = var20[var17 + 1 + var25 * 4];
             var28 = var20[var25 * 4 + 3];
             var29 = var20[var25 * 4 + 1];
-            var20[4 * var25 + var17 + 3] = var26 + var28;
+            var20[var25 * 4 + var17 + 3] = var26 + var28;
             var20[var17 + 1 + var25 * 4] = var27 + var29;
             var30 = var44[var17 - 4 - var25 * 4];
             var31 = var44[var17 - 3 - var25 * 4];
@@ -298,7 +314,7 @@ public class class106 extends Node {
 
             for(var50 = 0; var50 < 2 << var47; ++var50) {
                int var51 = var4 - var48 * 2 * var50;
-               int var52 = var4 - (var50 * 2 + 1) * var48;
+               int var52 = var4 - (2 * var50 + 1) * var48;
 
                for(int var32 = 0; var32 < var4 >> var47 + 4; ++var32) {
                   int var33 = var32 * 4;
@@ -350,15 +366,15 @@ public class class106 extends Node {
          for(var47 = 0; var47 < var41; ++var47) {
             var27 = var23[var47 * 2];
             var28 = var23[var47 * 2 + 1];
-            var29 = var20[var47 * 2 + var17];
-            var30 = var20[2 * var47 + var17 + 1];
+            var29 = var20[2 * var47 + var17];
+            var30 = var20[var47 * 2 + var17 + 1];
             var31 = var20[var4 - 2 - var47 * 2];
             float var53 = var20[var4 - 1 - var47 * 2];
             float var54 = var28 * (var29 - var31) + var27 * (var30 + var53);
             var20[var47 * 2 + var17] = (var29 + var31 + var54) * 0.5F;
             var20[var4 - 2 - var47 * 2] = (var29 + var31 - var54) * 0.5F;
             var54 = var28 * (var30 + var53) - var27 * (var29 - var31);
-            var20[2 * var47 + var17 + 1] = (var30 - var53 + var54) * 0.5F;
+            var20[var47 * 2 + var17 + 1] = (var30 - var53 + var54) * 0.5F;
             var20[var4 - 1 - var47 * 2] = (-var30 + var53 + var54) * 0.5F;
          }
 
@@ -467,6 +483,9 @@ public class class106 extends Node {
    }
 
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lif;)Z"
+   )
    static boolean method1936(IndexDataBase var0) {
       if(!field1569) {
          byte[] var1 = var0.getConfigData(0, 0);
@@ -482,6 +501,9 @@ public class class106 extends Node {
    }
 
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lif;II)Lde;"
+   )
    static class106 method1924(IndexDataBase var0, int var1, int var2) {
       if(!method1936(var0)) {
          var0.method4085(var1, var2);

@@ -17,8 +17,14 @@ public class class25 {
    )
    int field372;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lhd;"
+   )
    Coordinates field366;
 
+   @ObfuscatedSignature(
+      signature = "(ILhd;)V"
+   )
    class25(int var1, Coordinates var2) {
       this.field372 = var1;
       this.field366 = var2;
@@ -26,7 +32,7 @@ public class class25 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IILclass163;LCollisionData;I)Z",
+      signature = "(IILfs;Lfv;I)Z",
       garbageValue = "238164154"
    )
    public static final boolean method173(int var0, int var1, class163 var2, CollisionData var3) {
@@ -109,7 +115,7 @@ public class class25 {
             class162.field2299[var16 + 1][var17 - 1] = var15;
          }
 
-         if(var16 > 0 && var17 < 127 && class162.field2304[var16 - 1][var17 + 1] == 0 && (var12[var13 - 1][var14 + 1] & 19136824) == 0 && (var12[var13 - 1][var14] & 19136776) == 0 && (var12[var13][1 + var14] & 19136800) == 0) {
+         if(var16 > 0 && var17 < 127 && class162.field2304[var16 - 1][var17 + 1] == 0 && (var12[var13 - 1][var14 + 1] & 19136824) == 0 && (var12[var13 - 1][var14] & 19136776) == 0 && (var12[var13][var14 + 1] & 19136800) == 0) {
             class162.field2301[var18] = var4 - 1;
             class162.field2303[var18] = var5 + 1;
             var18 = var18 + 1 & 4095;
@@ -159,7 +165,7 @@ public class class25 {
       short var15;
       if(var7 < Client.field1164) {
          var15 = Client.field1164;
-         var6 = var15 * var2 * 334 / (var3 * 512);
+         var6 = var2 * var15 * 334 / (var3 * 512);
          if(var6 > Client.field1127) {
             var6 = Client.field1127;
             var8 = var3 * var6 * 512 / (var15 * 334);
@@ -191,7 +197,7 @@ public class class25 {
          }
       }
 
-      var8 = var5 * (Client.field1161 - Client.field1160) / 100 + Client.field1160;
+      var8 = (Client.field1161 - Client.field1160) * var5 / 100 + Client.field1160;
       Client.scale = var8 * var3 * var6 / 85504 << 1;
       if(var2 != Client.viewportHeight || var3 != Client.viewportWidth) {
          int[] var14 = new int[9];
@@ -214,7 +220,7 @@ public class class25 {
 
    @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZB)I",
+      signature = "(ILcg;ZB)I",
       garbageValue = "125"
    )
    static int method174(int var0, Script var1, boolean var2) {

@@ -5,6 +5,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("e")
 final class class5 implements class0 {
    @ObfuscatedName("er")
+   @ObfuscatedSignature(
+      signature = "Ljc;"
+   )
    @Export("font_p12full")
    static Font font_p12full;
 

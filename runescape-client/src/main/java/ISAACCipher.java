@@ -8,6 +8,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("ISAACCipher")
 public final class ISAACCipher {
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Ljf;"
+   )
    static ModIcon field2431;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
@@ -229,7 +232,7 @@ public final class ISAACCipher {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;B)LModIcon;",
+      signature = "(Lif;Ljava/lang/String;Ljava/lang/String;B)Ljf;",
       garbageValue = "-94"
    )
    @Export("getSprite")

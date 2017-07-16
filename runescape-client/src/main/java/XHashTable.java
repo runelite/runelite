@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gd")
 @Implements("XHashTable")
@@ -9,14 +10,23 @@ public final class XHashTable {
    @Export("size")
    int size;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "[Lge;"
+   )
    @Export("buckets")
    Node[] buckets;
    @ObfuscatedName("v")
    @Export("index")
    int index;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lge;"
+   )
    Node field2461;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lge;"
+   )
    Node field2460;
 
    public XHashTable(int var1) {
@@ -33,12 +43,18 @@ public final class XHashTable {
    }
 
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "()Lge;"
+   )
    public Node method3538() {
       this.index = 0;
       return this.method3539();
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(J)Lge;"
+   )
    @Export("get")
    public Node get(long var1) {
       Node var3 = this.buckets[(int)(var1 & (long)(this.size - 1))];
@@ -56,6 +72,9 @@ public final class XHashTable {
    }
 
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "()Lge;"
+   )
    public Node method3539() {
       Node var1;
       if(this.index > 0 && this.buckets[this.index - 1] != this.field2460) {
@@ -96,6 +115,9 @@ public final class XHashTable {
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lge;J)V"
+   )
    @Export("put")
    public void put(Node var1, long var2) {
       if(var1.previous != null) {

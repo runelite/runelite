@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dc")
 @Implements("AudioEnvelope")
@@ -50,6 +51,9 @@ public class AudioEnvelope {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lfe;)V"
+   )
    @Export("decode")
    final void decode(Buffer var1) {
       this.form = var1.readUnsignedByte();
@@ -69,6 +73,9 @@ public class AudioEnvelope {
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lfe;)V"
+   )
    @Export("decodeSegments")
    final void decodeSegments(Buffer var1) {
       this.segments = var1.readUnsignedByte();

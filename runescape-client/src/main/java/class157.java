@@ -11,6 +11,9 @@ public class class157 {
    @ObfuscatedName("n")
    static Hashtable field2251;
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Ljf;"
+   )
    @Export("logoSprite")
    static ModIcon logoSprite;
    @ObfuscatedName("j")
@@ -93,7 +96,7 @@ public class class157 {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(LPacketBuffer;II)Z",
+      signature = "(Lff;II)Z",
       garbageValue = "2109247934"
    )
    @Export("decodeRegionHash")

@@ -1,4 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dn")
 public abstract class class113 extends Node {
@@ -9,5 +10,8 @@ public abstract class class113 extends Node {
    abstract void method2082();
 
    @ObfuscatedName("j")
-   abstract int method2083(class102 var1);
+   @ObfuscatedSignature(
+      signature = "(Lce;)I"
+   )
+   abstract int method2083();
 }

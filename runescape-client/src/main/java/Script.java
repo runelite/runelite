@@ -8,8 +8,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Script")
 public class Script extends CacheableNode {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    static NodeCache field1530;
    @ObfuscatedName("ib")
+   @ObfuscatedSignature(
+      signature = "Lbe;"
+   )
    @Export("localPlayer")
    static Player localPlayer;
    @ObfuscatedName("j")
@@ -46,6 +52,9 @@ public class Script extends CacheableNode {
    @Export("stringStackCount")
    int stringStackCount;
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "[Lgl;"
+   )
    @Export("switches")
    class186[] switches;
 
@@ -55,7 +64,7 @@ public class Script extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IB)[Lclass186;",
+      signature = "(IB)[Lgl;",
       garbageValue = "68"
    )
    class186[] method1837(int var1) {
@@ -64,7 +73,7 @@ public class Script extends CacheableNode {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ILclass219;I)I",
+      signature = "(ILhx;I)I",
       garbageValue = "-1532471377"
    )
    public static int method1835(int var0, class219 var1) {

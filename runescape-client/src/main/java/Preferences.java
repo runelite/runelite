@@ -41,6 +41,9 @@ public class Preferences {
       this.method1565(true);
    }
 
+   @ObfuscatedSignature(
+      signature = "(Lfe;)V"
+   )
    Preferences(Buffer var1) {
       this.screenType = 1;
       this.preferences = new LinkedHashMap();
@@ -87,7 +90,7 @@ public class Preferences {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(I)LBuffer;",
+      signature = "(I)Lfe;",
       garbageValue = "462545159"
    )
    @Export("serialize")

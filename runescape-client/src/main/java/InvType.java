@@ -8,8 +8,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("InvType")
 public class InvType extends CacheableNode {
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    public static NodeCache field3280;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field3281;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
@@ -27,7 +33,7 @@ public class InvType extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "1728090237"
    )
    void method4223(Buffer var1, int var2) {
@@ -39,7 +45,7 @@ public class InvType extends CacheableNode {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-389165341"
    )
    @Export("decode")
@@ -56,7 +62,7 @@ public class InvType extends CacheableNode {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(II)LSpotanim;",
+      signature = "(II)Lii;",
       garbageValue = "1672639787"
    )
    @Export("getSpotAnimType")

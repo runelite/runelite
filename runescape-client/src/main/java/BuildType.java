@@ -8,18 +8,33 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("BuildType")
 public class BuildType {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lhz;"
+   )
    @Export("RC")
    public static final BuildType RC;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lhz;"
+   )
    @Export("WIP")
    public static final BuildType WIP;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lhz;"
+   )
    @Export("LIVE")
    public static final BuildType LIVE;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lhz;"
+   )
    @Export("BUILD_LIVE")
    public static final BuildType BUILD_LIVE;
    @ObfuscatedName("cj")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    static IndexData field3190;
    @ObfuscatedName("v")
    @Export("identifier")

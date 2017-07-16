@@ -16,7 +16,7 @@ public class class227 {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LModel;IIIIB)V",
+      signature = "(Lej;IIIIB)V",
       garbageValue = "-65"
    )
    public static final void method4064(Model var0, int var1, int var2, int var3, int var4) {
@@ -25,7 +25,7 @@ public class class227 {
 
    @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZB)I",
+      signature = "(ILcg;ZB)I",
       garbageValue = "43"
    )
    static int method4065(int var0, Script var1, boolean var2) {
@@ -130,7 +130,7 @@ public class class227 {
                      var3 = class45.plane;
                      var4 = (Script.localPlayer.x >> 7) + class163.baseX;
                      var12 = (Script.localPlayer.y >> 7) + class10.baseY;
-                     class83.intStack[++WorldMapType2.intStackSize - 1] = (var3 << 28) + (var4 << 14) + var12;
+                     class83.intStack[++WorldMapType2.intStackSize - 1] = (var4 << 14) + (var3 << 28) + var12;
                      return 1;
                   } else if(var0 == 3309) {
                      var3 = class83.intStack[--WorldMapType2.intStackSize];

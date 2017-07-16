@@ -13,6 +13,9 @@ public class WorldMapType2 implements WorldMapSectionBase {
    )
    public static int field512;
    @ObfuscatedName("cp")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    static IndexData field502;
    @ObfuscatedName("fr")
    @ObfuscatedGetter(
@@ -76,7 +79,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LWorldMapData;I)V",
+      signature = "(Lam;I)V",
       garbageValue = "-1824757307"
    )
    public void vmethod720(WorldMapData var1) {
@@ -100,7 +103,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(III)LCoordinates;",
+      signature = "(III)Lhd;",
       garbageValue = "665140774"
    )
    public Coordinates vmethod743(int var1, int var2) {
@@ -137,7 +140,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-1909314997"
    )
    public void vmethod746(Buffer var1) {

@@ -24,12 +24,18 @@ public final class class41 {
    @ObfuscatedName("j")
    boolean field537;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Ljt;"
+   )
    SpritePixels field539;
    @ObfuscatedName("a")
    boolean field549;
    @ObfuscatedName("v")
    HashMap field544;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "[[Laq;"
+   )
    class34[][] field540;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
@@ -44,10 +50,16 @@ public final class class41 {
    @ObfuscatedName("l")
    HashMap field542;
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "[Ljf;"
+   )
    ModIcon[] field543;
    @ObfuscatedName("w")
    final HashMap field536;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lat;"
+   )
    class44 field538;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
@@ -60,6 +72,9 @@ public final class class41 {
    )
    int field548;
 
+   @ObfuscatedSignature(
+      signature = "([Ljf;Ljava/util/HashMap;)V"
+   )
    public class41(ModIcon[] var1, HashMap var2) {
       this.field549 = false;
       this.field537 = false;
@@ -103,7 +118,7 @@ public final class class41 {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IIIII)Lclass29;",
+      signature = "(IIIII)Lak;",
       garbageValue = "-626746864"
    )
    class29 method561(int var1, int var2, int var3, int var4) {
@@ -220,7 +235,7 @@ public final class class41 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;Ljava/lang/String;ZS)V",
+      signature = "(Lif;Ljava/lang/String;ZS)V",
       garbageValue = "-1527"
    )
    public void method565(IndexDataBase var1, String var2, boolean var3) {
@@ -306,7 +321,7 @@ public final class class41 {
 
          for(int var17 = var12.field417; var17 < var12.field412 + var12.field417; ++var17) {
             for(int var18 = var12.field414; var18 < var12.field413 + var12.field414; ++var18) {
-               List var19 = this.field540[var17][var18].method457(var5 + (this.field540[var17][var18].field470 * 64 - var15) * var14 / 64, var8 + var6 - var14 * (64 + (this.field540[var17][var18].field466 * 64 - var16)) / 64, var14, var9, var10);
+               List var19 = this.field540[var17][var18].method457(var5 + (this.field540[var17][var18].field470 * 64 - var15) * var14 / 64, var8 + var6 - var14 * (this.field540[var17][var18].field466 * 64 - var16 + 64) / 64, var14, var9, var10);
                if(!var19.isEmpty()) {
                   var11.addAll(var19);
                }
@@ -328,7 +343,7 @@ public final class class41 {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(II[Lclass34;I)V",
+      signature = "(II[Laq;I)V",
       garbageValue = "683892967"
    )
    void method587(int var1, int var2, class34[] var3) {

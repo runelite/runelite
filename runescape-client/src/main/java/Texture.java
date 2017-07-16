@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("eo")
 @Implements("Texture")
@@ -31,6 +32,9 @@ public class Texture extends Node {
    @ObfuscatedName("w")
    int[] field1872;
 
+   @ObfuscatedSignature(
+      signature = "(Lfe;)V"
+   )
    Texture(Buffer var1) {
       this.loaded = false;
       this.field1868 = var1.readUnsignedShort();
@@ -81,6 +85,9 @@ public class Texture extends Node {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(DILif;)Z"
+   )
    boolean method2487(double var1, int var3, IndexDataBase var4) {
       int var5;
       for(var5 = 0; var5 < this.fileIds.length; ++var5) {

@@ -31,7 +31,7 @@ public abstract class Timer {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lclass186;IIS)I",
+      signature = "(Lgl;IIS)I",
       garbageValue = "-9571"
    )
    static int method2973(class186 var0, int var1, int var2) {
@@ -85,7 +85,7 @@ public abstract class Timer {
 
    @ObfuscatedName("fg")
    @ObfuscatedSignature(
-      signature = "(LPlayer;III)V",
+      signature = "(Lbe;III)V",
       garbageValue = "-1891484616"
    )
    static void method2981(Player var0, int var1, int var2) {

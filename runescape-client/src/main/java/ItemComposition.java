@@ -8,14 +8,26 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("ItemComposition")
 public class ItemComposition extends CacheableNode {
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("items")
    public static NodeCache items;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    static IndexDataBase field3504;
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("itemModelCache")
    public static NodeCache itemModelCache;
    @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("itemSpriteCache")
    public static NodeCache itemSpriteCache;
    @ObfuscatedName("s")
@@ -27,6 +39,9 @@ public class ItemComposition extends CacheableNode {
    )
    public static int field3491;
    @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Ljc;"
+   )
    static Font field3495;
    @ObfuscatedName("as")
    @ObfuscatedGetter(
@@ -56,6 +71,9 @@ public class ItemComposition extends CacheableNode {
    @Export("team")
    int team;
    @ObfuscatedName("bd")
+   @ObfuscatedSignature(
+      signature = "Lgl;"
+   )
    class186 field3541;
    @ObfuscatedName("av")
    @ObfuscatedGetter(
@@ -319,7 +337,7 @@ public class ItemComposition extends CacheableNode {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "-1736448167"
    )
    @Export("populateFromBuffer")
@@ -447,7 +465,7 @@ public class ItemComposition extends CacheableNode {
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IB)LModel;",
+      signature = "(IB)Lej;",
       garbageValue = "1"
    )
    @Export("getModel")
@@ -501,7 +519,7 @@ public class ItemComposition extends CacheableNode {
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IB)LModelData;",
+      signature = "(IB)Ldv;",
       garbageValue = "11"
    )
    public final ModelData method4508(int var1) {
@@ -584,7 +602,7 @@ public class ItemComposition extends CacheableNode {
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(ZB)LModelData;",
+      signature = "(ZB)Ldv;",
       garbageValue = "-97"
    )
    public final ModelData method4518(boolean var1) {
@@ -624,7 +642,7 @@ public class ItemComposition extends CacheableNode {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "1882926117"
    )
    @Export("loadBuffer")
@@ -677,7 +695,7 @@ public class ItemComposition extends CacheableNode {
 
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(ZB)LModelData;",
+      signature = "(ZB)Ldv;",
       garbageValue = "-54"
    )
    @Export("getWornModelData")
@@ -734,7 +752,7 @@ public class ItemComposition extends CacheableNode {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(LItemComposition;LItemComposition;S)V",
+      signature = "(Liz;Liz;S)V",
       garbageValue = "-25017"
    )
    void method4547(ItemComposition var1, ItemComposition var2) {
@@ -757,7 +775,7 @@ public class ItemComposition extends CacheableNode {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(LItemComposition;LItemComposition;I)V",
+      signature = "(Liz;Liz;I)V",
       garbageValue = "1618307093"
    )
    void method4530(ItemComposition var1, ItemComposition var2) {
@@ -800,7 +818,7 @@ public class ItemComposition extends CacheableNode {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(LItemComposition;LItemComposition;I)V",
+      signature = "(Liz;Liz;I)V",
       garbageValue = "-185636026"
    )
    void method4505(ItemComposition var1, ItemComposition var2) {
@@ -824,7 +842,7 @@ public class ItemComposition extends CacheableNode {
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(II)LItemComposition;",
+      signature = "(II)Liz;",
       garbageValue = "677179053"
    )
    public ItemComposition method4514(int var1) {

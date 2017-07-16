@@ -5,16 +5,34 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ir")
 public class class254 extends CacheableNode {
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    public static NodeCache field3427;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    public static NodeCache field3412;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    public static NodeCache field3430;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field3409;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field3408;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field3410;
    @ObfuscatedName("i")
    String field3411;
@@ -117,7 +135,7 @@ public class class254 extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "-1558652446"
    )
    void method4437(Buffer var1, int var2) {
@@ -185,7 +203,7 @@ public class class254 extends CacheableNode {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "1392968529"
    )
    void method4450(Buffer var1) {
@@ -201,7 +219,7 @@ public class class254 extends CacheableNode {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(I)Lclass254;",
+      signature = "(I)Lir;",
       garbageValue = "109846675"
    )
    public final class254 method4431() {
@@ -224,7 +242,7 @@ public class class254 extends CacheableNode {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)LSpritePixels;",
+      signature = "(I)Ljt;",
       garbageValue = "470317651"
    )
    public SpritePixels method4457() {
@@ -247,7 +265,7 @@ public class class254 extends CacheableNode {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(I)LSpritePixels;",
+      signature = "(I)Ljt;",
       garbageValue = "1997915107"
    )
    public SpritePixels method4432() {
@@ -270,7 +288,7 @@ public class class254 extends CacheableNode {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(I)LSpritePixels;",
+      signature = "(I)Ljt;",
       garbageValue = "-1481569320"
    )
    public SpritePixels method4461() {
@@ -293,7 +311,7 @@ public class class254 extends CacheableNode {
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)LSpritePixels;",
+      signature = "(I)Ljt;",
       garbageValue = "-1939096175"
    )
    public SpritePixels method4436() {
@@ -316,7 +334,7 @@ public class class254 extends CacheableNode {
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)LFont;",
+      signature = "(I)Ljc;",
       garbageValue = "-1264705011"
    )
    public Font method4434() {

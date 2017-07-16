@@ -13,6 +13,9 @@ public class class182 {
    @ObfuscatedName("n")
    public static Calendar field2438;
    @ObfuscatedName("cq")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    @Export("indexTrack1")
    static IndexData indexTrack1;
 

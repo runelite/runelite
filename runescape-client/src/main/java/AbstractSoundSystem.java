@@ -11,6 +11,9 @@ public class AbstractSoundSystem {
    @Export("highMemory")
    public static boolean highMemory;
    @ObfuscatedName("aw")
+   @ObfuscatedSignature(
+      signature = "[Ldf;"
+   )
    class119[] field1637;
    @ObfuscatedName("k")
    @Export("samples")
@@ -18,6 +21,9 @@ public class AbstractSoundSystem {
    @ObfuscatedName("y")
    boolean field1634;
    @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Ldf;"
+   )
    class119 field1620;
    @ObfuscatedName("ar")
    @ObfuscatedGetter(
@@ -36,6 +42,9 @@ public class AbstractSoundSystem {
    )
    int field1624;
    @ObfuscatedName("am")
+   @ObfuscatedSignature(
+      signature = "[Ldf;"
+   )
    class119[] field1636;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
@@ -254,7 +263,7 @@ public class AbstractSoundSystem {
 
    @ObfuscatedName("aj")
    @ObfuscatedSignature(
-      signature = "(Lclass119;II)V",
+      signature = "(Ldf;II)V",
       garbageValue = "982288994"
    )
    final void method2022(class119 var1, int var2) {
@@ -428,7 +437,7 @@ public class AbstractSoundSystem {
 
    @ObfuscatedName("ak")
    @ObfuscatedSignature(
-      signature = "(Lclass119;B)V",
+      signature = "(Ldf;B)V",
       garbageValue = "115"
    )
    public final synchronized void method1984(class119 var1) {
@@ -445,7 +454,7 @@ public class AbstractSoundSystem {
 
    @ObfuscatedName("ii")
    @ObfuscatedSignature(
-      signature = "(LWidget;I)Z",
+      signature = "(Lhy;I)Z",
       garbageValue = "2056681027"
    )
    static final boolean method2039(Widget var0) {
@@ -478,7 +487,7 @@ public class AbstractSoundSystem {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(IB)LMessageNode;",
+      signature = "(IB)Lbv;",
       garbageValue = "-20"
    )
    static MessageNode method2025(int var0) {

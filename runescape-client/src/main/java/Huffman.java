@@ -12,6 +12,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Huffman")
 public class Huffman {
    @ObfuscatedName("ba")
+   @ObfuscatedSignature(
+      signature = "Ljf;"
+   )
    static ModIcon field2322;
    @ObfuscatedName("a")
    @Export("masks")
@@ -365,7 +368,7 @@ public class Huffman {
 
    @ObfuscatedName("fj")
    @ObfuscatedSignature(
-      signature = "(IZZZI)LIndexData;",
+      signature = "(IZZZI)Lig;",
       garbageValue = "-1463115621"
    )
    @Export("openCacheIndex")
@@ -380,7 +383,7 @@ public class Huffman {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
+      signature = "(ILcg;ZI)I",
       garbageValue = "-114050941"
    )
    static int method3065(int var0, Script var1, boolean var2) {

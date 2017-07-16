@@ -20,6 +20,9 @@ public class class33 {
    @ObfuscatedName("a")
    String field462;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lq;"
+   )
    class24 field457;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
@@ -32,6 +35,9 @@ public class class33 {
    )
    int field456;
 
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;IILq;)V"
+   )
    class33(String var1, int var2, int var3, class24 var4) {
       this.field462 = var1;
       this.field455 = var2;
@@ -111,7 +117,7 @@ public class class33 {
 
    @ObfuscatedName("hj")
    @ObfuscatedSignature(
-      signature = "(Lclass89;III)V",
+      signature = "(Lcf;III)V",
       garbageValue = "-1626532354"
    )
    static final void method353(class89 var0, int var1, int var2) {
@@ -120,7 +126,7 @@ public class class33 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;ZLFont;I)V",
+      signature = "(Lif;Lif;ZLjc;I)V",
       garbageValue = "-177003912"
    )
    public static void method349(IndexDataBase var0, IndexDataBase var1, boolean var2, Font var3) {
@@ -143,7 +149,7 @@ public class class33 {
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
+      signature = "(ILcg;ZI)I",
       garbageValue = "-1627678455"
    )
    static int method350(int var0, Script var1, boolean var2) {

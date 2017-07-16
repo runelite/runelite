@@ -6,6 +6,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("x")
 final class class17 implements Comparator {
    @ObfuscatedName("cr")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    @Export("indexSprites")
    static IndexData indexSprites;
    @ObfuscatedName("ae")
@@ -13,7 +16,7 @@ final class class17 implements Comparator {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lclass14;Lclass14;I)I",
+      signature = "(Lt;Lt;I)I",
       garbageValue = "777054383"
    )
    int method119(class14 var1, class14 var2) {
@@ -30,7 +33,7 @@ final class class17 implements Comparator {
 
    @ObfuscatedName("ik")
    @ObfuscatedSignature(
-      signature = "([LWidget;IIIZI)V",
+      signature = "([Lhy;IIIZI)V",
       garbageValue = "1473992678"
    )
    static void method120(Widget[] var0, int var1, int var2, int var3, boolean var4) {

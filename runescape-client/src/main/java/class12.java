@@ -6,6 +6,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("g")
 final class class12 implements Comparator {
    @ObfuscatedName("cw")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    @Export("indexMaps")
    static IndexData indexMaps;
    @ObfuscatedName("e")
@@ -14,7 +17,7 @@ final class class12 implements Comparator {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lclass14;Lclass14;I)I",
+      signature = "(Lt;Lt;I)I",
       garbageValue = "705783682"
    )
    int method61(class14 var1, class14 var2) {
@@ -31,7 +34,7 @@ final class class12 implements Comparator {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)[Lclass239;",
+      signature = "(B)[Liu;",
       garbageValue = "-87"
    )
    static class239[] method72() {
@@ -61,7 +64,7 @@ final class class12 implements Comparator {
 
    @ObfuscatedName("ho")
    @ObfuscatedSignature(
-      signature = "(LNPCComposition;IIII)V",
+      signature = "(Lip;IIII)V",
       garbageValue = "43376750"
    )
    static final void method65(NPCComposition var0, int var1, int var2, int var3) {
@@ -199,7 +202,7 @@ final class class12 implements Comparator {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(III)LWidget;",
+      signature = "(III)Lhy;",
       garbageValue = "1473459012"
    )
    public static Widget method70(int var0, int var1) {
@@ -209,7 +212,7 @@ final class class12 implements Comparator {
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZS)I",
+      signature = "(ILcg;ZS)I",
       garbageValue = "-29528"
    )
    static int method69(int var0, Script var1, boolean var2) {
