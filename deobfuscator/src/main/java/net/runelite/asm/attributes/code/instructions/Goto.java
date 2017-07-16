@@ -24,7 +24,6 @@
  */
 package net.runelite.asm.attributes.code.instructions;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import net.runelite.asm.attributes.code.Instruction;

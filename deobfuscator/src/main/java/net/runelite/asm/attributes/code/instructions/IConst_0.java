@@ -34,7 +34,6 @@ import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Value;
-import org.objectweb.asm.MethodVisitor;
 
 public class IConst_0 extends Instruction implements PushConstantInstruction
 {

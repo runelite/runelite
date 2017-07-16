@@ -27,7 +27,6 @@ package net.runelite.client.plugins.xpglobes;
 import com.google.common.eventbus.Subscribe;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
-import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;

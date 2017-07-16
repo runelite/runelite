@@ -27,7 +27,6 @@ package net.runelite.asm.execution;
 import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Exception;

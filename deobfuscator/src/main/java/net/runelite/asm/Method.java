@@ -31,8 +31,6 @@ import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.Exceptions;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.Label;
-import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.signature.Signature;
 import org.objectweb.asm.AnnotationVisitor;

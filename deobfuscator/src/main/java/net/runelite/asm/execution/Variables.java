@@ -25,8 +25,6 @@
 
 package net.runelite.asm.execution;
 
-import java.util.Arrays;
-
 public class Variables
 {
 	private final VariableContext[] variables;
