@@ -13,6 +13,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ab")
 public class class43 {
    @ObfuscatedName("go")
+   @ObfuscatedSignature(
+      signature = "[Ljt;"
+   )
    @Export("mapfunctions")
    static SpritePixels[] mapfunctions;
    @ObfuscatedName("pa")
@@ -70,7 +73,7 @@ public class class43 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IIILFloorUnderlayDefinition;I)V",
+      signature = "(IIILij;I)V",
       garbageValue = "-1450139735"
    )
    void method623(int var1, int var2, int var3, FloorUnderlayDefinition var4) {
@@ -107,7 +110,7 @@ public class class43 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([BI)LSpritePixels;",
+      signature = "([BI)Ljt;",
       garbageValue = "1989840981"
    )
    public static final SpritePixels method622(byte[] var0) {

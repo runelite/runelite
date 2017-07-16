@@ -10,23 +10,47 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedName("a")
    public static boolean field3441;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("objects")
    public static NodeCache objects;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field3435;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("objects_ref")
    public static IndexDataBase objects_ref;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    public static NodeCache field3439;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("cachedModels")
    public static NodeCache cachedModels;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    public static NodeCache field3446;
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "[Ldv;"
+   )
    static ModelData[] field3440;
    @ObfuscatedName("ac")
+   @ObfuscatedSignature(
+      signature = "Lgl;"
+   )
    class186 field3483;
    @ObfuscatedName("ab")
    @ObfuscatedGetter(
@@ -268,7 +292,7 @@ public class ObjectComposition extends CacheableNode {
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(B)LObjectComposition;",
+      signature = "(B)Lim;",
       garbageValue = "83"
    )
    @Export("getImpostor")
@@ -292,7 +316,7 @@ public class ObjectComposition extends CacheableNode {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "1250411708"
    )
    @Export("loadData")
@@ -466,7 +490,7 @@ public class ObjectComposition extends CacheableNode {
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(III)LModelData;",
+      signature = "(III)Ldv;",
       garbageValue = "1218142477"
    )
    @Export("getModel")
@@ -633,7 +657,7 @@ public class ObjectComposition extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-957974841"
    )
    @Export("decode")
@@ -650,7 +674,7 @@ public class ObjectComposition extends CacheableNode {
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II[[IIIILSequence;IB)LModel;",
+      signature = "(II[[IIIILjg;IB)Lej;",
       garbageValue = "8"
    )
    public final Model method4463(int var1, int var2, int[][] var3, int var4, int var5, int var6, Sequence var7, int var8) {
@@ -761,7 +785,7 @@ public class ObjectComposition extends CacheableNode {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(II[[IIIIS)LModel;",
+      signature = "(II[[IIIIS)Lej;",
       garbageValue = "29886"
    )
    public final Model method4489(int var1, int var2, int[][] var3, int var4, int var5, int var6) {
@@ -769,7 +793,7 @@ public class ObjectComposition extends CacheableNode {
       if(this.objectTypes == null) {
          var7 = (long)(var2 + (this.id << 10));
       } else {
-         var7 = (long)(var2 + (this.id << 10) + (var1 << 3));
+         var7 = (long)(var2 + (var1 << 3) + (this.id << 10));
       }
 
       Model var9 = (Model)field3439.get(var7);
@@ -792,7 +816,7 @@ public class ObjectComposition extends CacheableNode {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(II[[IIIIB)LRenderable;",
+      signature = "(II[[IIIIB)Lef;",
       garbageValue = "-126"
    )
    @Export("getModel")

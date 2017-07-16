@@ -6,9 +6,15 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ak")
 public final class class29 {
    @ObfuscatedName("fl")
+   @ObfuscatedSignature(
+      signature = "Lem;"
+   )
    @Export("region")
    static Region region;
    // $FF: synthetic field
+   @ObfuscatedSignature(
+      signature = "Las;"
+   )
    final class41 this$0;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
@@ -31,13 +37,16 @@ public final class class29 {
    )
    int field413;
 
+   @ObfuscatedSignature(
+      signature = "(Las;)V"
+   )
    class29(class41 var1) {
       this.this$0 = var1;
    }
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LGameEngine;I)V",
+      signature = "(Lbb;I)V",
       garbageValue = "-276361538"
    )
    static void method239(GameEngine var0) {
@@ -538,7 +547,7 @@ public final class class29 {
 
    @ObfuscatedName("gc")
    @ObfuscatedSignature(
-      signature = "(Lclass66;I)V",
+      signature = "(Lbt;I)V",
       garbageValue = "-116828835"
    )
    static final void method238(class66 var0) {

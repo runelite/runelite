@@ -77,7 +77,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LWorldMapData;I)V",
+      signature = "(Lam;I)V",
       garbageValue = "-1824757307"
    )
    public void vmethod720(WorldMapData var1) {
@@ -101,7 +101,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(III)LCoordinates;",
+      signature = "(III)Lhd;",
       garbageValue = "665140774"
    )
    public Coordinates vmethod743(int var1, int var2) {
@@ -130,7 +130,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-1909314997"
    )
    public void vmethod746(Buffer var1) {
@@ -157,7 +157,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;I)[LSpritePixels;",
+      signature = "(Lif;Ljava/lang/String;Ljava/lang/String;I)[Ljt;",
       garbageValue = "1073091837"
    )
    public static SpritePixels[] method274(IndexDataBase var0, String var1, String var2) {
@@ -175,7 +175,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
 
    @ObfuscatedName("fb")
    @ObfuscatedSignature(
-      signature = "(LActor;II)V",
+      signature = "(Lca;II)V",
       garbageValue = "-2068043986"
    )
    static final void method272(Actor var0, int var1) {
@@ -201,7 +201,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
          var0.graphic = -1;
          var0.field1260 = 0;
          var0.field1261 = 0;
-         var0.x = var0.pathX[0] * 128 + var0.field1218 * 64;
+         var0.x = 128 * var0.pathX[0] + var0.field1218 * 64;
          var0.y = var0.pathY[0] * 128 + var0.field1218 * 64;
          var0.method1487();
       }
@@ -382,7 +382,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(B)LWorld;",
+      signature = "(B)Lcx;",
       garbageValue = "51"
    )
    static World method273() {

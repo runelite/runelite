@@ -6,12 +6,24 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("cd")
 public enum class91 implements RSEnum {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lcd;"
+   )
    field1410(0),
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lcd;"
+   )
    field1416(1),
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lcd;"
+   )
    field1413(2),
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lcd;"
+   )
    field1409(3);
 
    @ObfuscatedName("v")
@@ -37,7 +49,7 @@ public enum class91 implements RSEnum {
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IB)LFrames;",
+      signature = "(IB)Let;",
       garbageValue = "-57"
    )
    @Export("getFrames")
@@ -142,7 +154,7 @@ public enum class91 implements RSEnum {
 
    @ObfuscatedName("id")
    @ObfuscatedSignature(
-      signature = "(LWidget;III)V",
+      signature = "(Lhy;III)V",
       garbageValue = "-1292109678"
    )
    static final void method1699(Widget var0, int var1, int var2) {

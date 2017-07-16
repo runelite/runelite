@@ -88,7 +88,7 @@ public final class PendingSpawn extends Node {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([LRSEnum;II)LRSEnum;",
+      signature = "([Lfc;II)Lfc;",
       garbageValue = "1279462914"
    )
    @Export("forOrdinal")
@@ -133,7 +133,7 @@ public final class PendingSpawn extends Node {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;I)V",
+      signature = "(Lif;I)V",
       garbageValue = "-987515946"
    )
    public static void method1477(IndexDataBase var0) {
@@ -142,7 +142,7 @@ public final class PendingSpawn extends Node {
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(LRegion;[LCollisionData;S)V",
+      signature = "(Lem;[Lfv;S)V",
       garbageValue = "128"
    )
    static final void method1476(Region var0, CollisionData[] var1) {
@@ -206,12 +206,12 @@ public final class PendingSpawn extends Node {
             for(var12 = 1; var12 < 103; ++var12) {
                var13 = class61.tileHeights[var2][var12 + 1][var11] - class61.tileHeights[var2][var12 - 1][var11];
                var14 = class61.tileHeights[var2][var12][var11 + 1] - class61.tileHeights[var2][var12][var11 - 1];
-               var15 = (int)Math.sqrt((double)(65536 + var13 * var13 + var14 * var14));
+               var15 = (int)Math.sqrt((double)(var13 * var13 + 65536 + var14 * var14));
                var16 = (var13 << 8) / var15;
                var17 = 65536 / var15;
                var18 = (var14 << 8) / var15;
                var19 = (var17 * -10 + var16 * -50 + var18 * -50) / var10 + 96;
-               var20 = (var42[var12][var11] >> 1) + (var42[var12 + 1][var11] >> 3) + (var42[var12 - 1][var11] >> 2) + (var42[var12][var11 - 1] >> 2) + (var42[var12][1 + var11] >> 3);
+               var20 = (var42[var12][var11] >> 1) + (var42[var12][1 + var11] >> 3) + (var42[var12 + 1][var11] >> 3) + (var42[var12 - 1][var11] >> 2) + (var42[var12][var11 - 1] >> 2);
                FileRequest.field3211[var12][var11] = var19 - var20;
             }
          }
@@ -470,7 +470,7 @@ public final class PendingSpawn extends Node {
                         var45 = 240;
                         var15 = class61.tileHeights[var12][var8][var9] - var45;
                         var16 = class61.tileHeights[var11][var8][var9];
-                        Region.addOcclude(var5, 1, var8 * 128, var8 * 128, var9 * 128, 128 * var10 + 128, var15, var16);
+                        Region.addOcclude(var5, 1, var8 * 128, var8 * 128, var9 * 128, var10 * 128 + 128, var15, var16);
 
                         for(var17 = var11; var17 <= var12; ++var17) {
                            for(var18 = var9; var18 <= var10; ++var18) {
@@ -567,7 +567,7 @@ public final class PendingSpawn extends Node {
 
                      if((var12 - var11 + 1) * (var10 - var9 + 1) >= 4) {
                         var13 = class61.tileHeights[var6][var9][var11];
-                        Region.addOcclude(var5, 4, var9 * 128, 128 * var10 + 128, var11 * 128, var12 * 128 + 128, var13, var13);
+                        Region.addOcclude(var5, 4, var9 * 128, var10 * 128 + 128, var11 * 128, var12 * 128 + 128, var13, var13);
 
                         for(var14 = var9; var14 <= var10; ++var14) {
                            for(var15 = var11; var15 <= var12; ++var15) {

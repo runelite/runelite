@@ -10,12 +10,24 @@ public class class205 extends Node {
    )
    int field2550;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgv;"
+   )
    class202 field2544;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lgu;"
+   )
    class207 field2542;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Ldm;"
+   )
    class107 field2543;
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Ldr;"
+   )
    class117 field2557;
    @ObfuscatedName("m")
    @ObfuscatedGetter(

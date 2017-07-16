@@ -2,11 +2,15 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bj")
 @Implements("Ignore")
 public class Ignore {
    @ObfuscatedName("io")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    static Widget field841;
    @ObfuscatedName("ll")
    @ObfuscatedGetter(

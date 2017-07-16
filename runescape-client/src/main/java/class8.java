@@ -9,8 +9,14 @@ public final class class8 extends class9 {
    @Export("sessionToken")
    static String sessionToken;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Ljt;"
+   )
    static SpritePixels field245;
    @ObfuscatedName("ct")
+   @ObfuscatedSignature(
+      signature = "Lev;"
+   )
    static Task field244;
    @ObfuscatedName("gq")
    @ObfuscatedGetter(
@@ -73,7 +79,7 @@ public final class class8 extends class9 {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "([BIIIIIII[LCollisionData;I)V",
+      signature = "([BIIIIIII[Lfv;I)V",
       garbageValue = "-607441205"
    )
    static final void method41(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, CollisionData[] var8) {

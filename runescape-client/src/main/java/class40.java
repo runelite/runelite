@@ -5,14 +5,29 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("az")
 public class class40 {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Laz;"
+   )
    public static final class40 field535;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Laz;"
+   )
    public static final class40 field528;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Laz;"
+   )
    public static final class40 field533;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Laz;"
+   )
    public static final class40 field529;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Laz;"
+   )
    public static final class40 field531;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
@@ -98,7 +113,7 @@ public class class40 {
                var9 = 256 - var7;
                var7 = class92.field1445[var7];
                var10 = GZipDecompressor.field2327.pixels[var2];
-               GZipDecompressor.field2327.pixels[var2++] = (var8 * (var7 & '\uff00') + var9 * (var10 & '\uff00') & 16711680) + (var9 * (var10 & 16711935) + var8 * (var7 & 16711935) & -16711936) >> 8;
+               GZipDecompressor.field2327.pixels[var2++] = (var8 * (var7 & '\uff00') + var9 * (var10 & '\uff00') & 16711680) + ((var7 & 16711935) * var8 + var9 * (var10 & 16711935) & -16711936) >> 8;
             } else {
                ++var2;
             }
@@ -111,7 +126,7 @@ public class class40 {
       class8.field245.method4981(class92.field1436 + 382, 0);
       Rasterizer2D.noClip();
       var1 = 0;
-      var2 = 637 + GZipDecompressor.field2327.width * 9 + 24 + class92.field1436;
+      var2 = 24 + GZipDecompressor.field2327.width * 9 + 637 + class92.field1436;
 
       for(var3 = 1; var3 < var0 - 1; ++var3) {
          var4 = class92.field1444[var3] * (var0 - var3) / var0;
@@ -125,7 +140,7 @@ public class class40 {
                var9 = 256 - var7;
                var7 = class92.field1445[var7];
                var10 = GZipDecompressor.field2327.pixels[var2];
-               GZipDecompressor.field2327.pixels[var2++] = (var8 * (var7 & '\uff00') + var9 * (var10 & '\uff00') & 16711680) + ((var7 & 16711935) * var8 + var9 * (var10 & 16711935) & -16711936) >> 8;
+               GZipDecompressor.field2327.pixels[var2++] = (var8 * (var7 & '\uff00') + var9 * (var10 & '\uff00') & 16711680) + (var8 * (var7 & 16711935) + var9 * (var10 & 16711935) & -16711936) >> 8;
             } else {
                ++var2;
             }

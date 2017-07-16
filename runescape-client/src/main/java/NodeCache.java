@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gc")
 @Implements("NodeCache")
@@ -8,12 +9,21 @@ public final class NodeCache {
    @ObfuscatedName("n")
    int field2454;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
    @Export("table")
    XHashTable table;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lgb;"
+   )
    @Export("list")
    Node2LinkedList list;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lgn;"
+   )
    CacheableNode field2455;
    @ObfuscatedName("j")
    int field2453;
@@ -33,6 +43,9 @@ public final class NodeCache {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(J)Lgn;"
+   )
    @Export("get")
    public CacheableNode get(long var1) {
       CacheableNode var3 = (CacheableNode)this.table.get(var1);
@@ -44,6 +57,9 @@ public final class NodeCache {
    }
 
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Lgn;J)V"
+   )
    @Export("put")
    public void put(CacheableNode var1, long var2) {
       if(this.field2454 == 0) {

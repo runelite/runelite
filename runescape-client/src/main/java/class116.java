@@ -145,7 +145,7 @@ public class class116 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)LFloorUnderlayDefinition;",
+      signature = "(II)Lij;",
       garbageValue = "-2110615204"
    )
    public static FloorUnderlayDefinition method2104(int var0) {

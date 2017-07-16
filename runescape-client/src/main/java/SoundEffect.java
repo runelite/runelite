@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dl")
 @Implements("SoundEffect")
@@ -9,12 +10,18 @@ public class SoundEffect {
    @Export("start")
    int start;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "[Ldh;"
+   )
    @Export("instruments")
    AudioInstrument[] instruments;
    @ObfuscatedName("r")
    @Export("end")
    int end;
 
+   @ObfuscatedSignature(
+      signature = "(Lfe;)V"
+   )
    SoundEffect(Buffer var1) {
       this.instruments = new AudioInstrument[10];
 
@@ -71,6 +78,9 @@ public class SoundEffect {
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "()Ldm;"
+   )
    public class107 method1906() {
       byte[] var1 = this.mix();
       return new class107(22050, var1, this.start * 22050 / 1000, this.end * 22050 / 1000);
@@ -111,6 +121,9 @@ public class SoundEffect {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lif;II)Ldl;"
+   )
    @Export("getTrack")
    public static SoundEffect getTrack(IndexDataBase var0, int var1, int var2) {
       byte[] var3 = var0.getConfigData(var1, var2);

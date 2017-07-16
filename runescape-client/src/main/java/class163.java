@@ -15,6 +15,9 @@ public abstract class class163 {
    @Export("baseX")
    static int baseX;
    @ObfuscatedName("gt")
+   @ObfuscatedSignature(
+      signature = "[Ljt;"
+   )
    @Export("mapDots")
    static SpritePixels[] mapDots;
    @ObfuscatedName("a")
@@ -40,14 +43,14 @@ public abstract class class163 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IIILCollisionData;I)Z",
+      signature = "(IIILfv;I)Z",
       garbageValue = "1809467862"
    )
    public abstract boolean vmethod3052(int var1, int var2, int var3, CollisionData var4);
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "-1653646613"
    )
    @Export("decodeClassVerifier")

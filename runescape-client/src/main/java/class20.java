@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class class20 {
    @ObfuscatedName("jk")
    @ObfuscatedSignature(
-      signature = "(LWidget;B)V",
+      signature = "(Lhy;B)V",
       garbageValue = "6"
    )
    static final void method150(Widget var0) {

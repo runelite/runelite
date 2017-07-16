@@ -19,6 +19,9 @@ public final class PacketBuffer extends Buffer {
    @Export("bitPosition")
    int bitPosition;
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lfg;"
+   )
    @Export("cipher")
    ISAACCipher cipher;
 
@@ -117,7 +120,7 @@ public final class PacketBuffer extends Buffer {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "([LWorld;II[I[II)V",
+      signature = "([Lcx;II[I[II)V",
       garbageValue = "962627328"
    )
    static void method3403(World[] var0, int var1, int var2, int[] var3, int[] var4) {

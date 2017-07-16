@@ -6,6 +6,9 @@ public class class214 {
    @ObfuscatedName("a")
    public static final short[] field2635;
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field2637;
    @ObfuscatedName("j")
    public static final short[][] field2634;
@@ -23,7 +26,7 @@ public class class214 {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(ILIndexDataBase;Ljava/lang/String;Ljava/lang/String;IZB)V",
+      signature = "(ILif;Ljava/lang/String;Ljava/lang/String;IZB)V",
       garbageValue = "2"
    )
    public static void method3963(int var0, IndexDataBase var1, String var2, String var3, int var4, boolean var5) {

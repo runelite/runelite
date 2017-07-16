@@ -14,9 +14,15 @@ public class FloorUnderlayDefinition extends CacheableNode {
    @Export("canvasHeight")
    protected static int canvasHeight;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("underlays")
    public static NodeCache underlays;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("underlay_ref")
    public static IndexDataBase underlay_ref;
    @ObfuscatedName("n")
@@ -137,7 +143,7 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;III)V",
+      signature = "(Lfe;III)V",
       garbageValue = "367702870"
    )
    @Export("decode")
@@ -160,7 +166,7 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "962262833"
    )
    @Export("decode")
@@ -177,7 +183,7 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IB)LKitDefinition;",
+      signature = "(IB)Lit;",
       garbageValue = "39"
    )
    @Export("getKitDefinition")
@@ -199,7 +205,7 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;I)V",
+      signature = "(Lif;I)V",
       garbageValue = "676980092"
    )
    public static void method4314(IndexDataBase var0) {

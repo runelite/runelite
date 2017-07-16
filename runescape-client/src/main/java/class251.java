@@ -5,6 +5,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("iv")
 public class class251 extends CacheableNode {
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    static NodeCache field3385;
    @ObfuscatedName("fp")
    @ObfuscatedGetter(
@@ -12,6 +15,9 @@ public class class251 extends CacheableNode {
    )
    static int field3390;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field3386;
    @ObfuscatedName("n")
    char field3391;
@@ -35,7 +41,7 @@ public class class251 extends CacheableNode {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;IB)V",
+      signature = "(Lfe;IB)V",
       garbageValue = "3"
    )
    void method4388(Buffer var1, int var2) {
@@ -70,7 +76,7 @@ public class class251 extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-1015913555"
    )
    void method4380(Buffer var1) {

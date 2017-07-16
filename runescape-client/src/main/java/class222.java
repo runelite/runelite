@@ -24,7 +24,7 @@ public class class222 {
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
+      signature = "(ILcg;ZI)I",
       garbageValue = "-929296159"
    )
    static int method4057(int var0, Script var1, boolean var2) {

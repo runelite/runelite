@@ -41,6 +41,9 @@ public class CacheFile {
    )
    long field1739;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Ldk;"
+   )
    FileOnDisk field1741;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
@@ -60,6 +63,9 @@ public class CacheFile {
    @Export("length")
    long length;
 
+   @ObfuscatedSignature(
+      signature = "(Ldk;II)V"
+   )
    public CacheFile(FileOnDisk var1, int var2, int var3) throws IOException {
       this.field1739 = -1L;
       this.field1751 = -1L;

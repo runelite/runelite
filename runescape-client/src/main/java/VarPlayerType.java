@@ -8,6 +8,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("VarPlayerType")
 public class VarPlayerType extends CacheableNode {
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("varplayers")
    static NodeCache varplayers;
    @ObfuscatedName("j")
@@ -16,6 +19,9 @@ public class VarPlayerType extends CacheableNode {
    )
    public static int field3283;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field3286;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
@@ -34,7 +40,7 @@ public class VarPlayerType extends CacheableNode {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "327096854"
    )
    @Export("decode")
@@ -47,7 +53,7 @@ public class VarPlayerType extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
+      signature = "(Lfe;B)V",
       garbageValue = "11"
    )
    @Export("decode")

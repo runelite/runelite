@@ -23,8 +23,14 @@ public class World {
    @ObfuscatedName("w")
    static int[] field1303;
    @ObfuscatedName("rs")
+   @ObfuscatedSignature(
+      signature = "Lfz;"
+   )
    static IndexFile field1295;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "[Lcx;"
+   )
    @Export("worldList")
    static World[] worldList;
    @ObfuscatedName("i")
@@ -175,7 +181,7 @@ public class World {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LBuffer;Lclass186;I)Lclass186;",
+      signature = "(Lfe;Lgl;I)Lgl;",
       garbageValue = "-1898535264"
    )
    static final class186 method1549(Buffer var0, class186 var1) {

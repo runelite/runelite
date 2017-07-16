@@ -10,6 +10,9 @@ public class class56 {
    @ObfuscatedName("j")
    static String field667;
    @ObfuscatedName("dm")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    static IndexData field675;
 
    static {
@@ -34,7 +37,7 @@ public class class56 {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LPacketBuffer;II)V",
+      signature = "(Lff;II)V",
       garbageValue = "1920903424"
    )
    @Export("decodeMovement")
@@ -52,7 +55,7 @@ public class class56 {
          } else if(Client.localInteractingIndex == var1) {
             throw new RuntimeException();
          } else {
-            class96.field1495[var1] = (var4.field889 << 28) + (var4.pathX[0] + class163.baseX >> 13 << 14) + (var4.pathY[0] + class10.baseY >> 13);
+            class96.field1495[var1] = (var4.field889 << 28) + (class163.baseX + var4.pathX[0] >> 13 << 14) + (var4.pathY[0] + class10.baseY >> 13);
             if(var4.field1242 != -1) {
                class96.field1496[var1] = var4.field1242;
             } else {
@@ -241,7 +244,7 @@ public class class56 {
 
    @ObfuscatedName("iv")
    @ObfuscatedSignature(
-      signature = "([LWidget;II)V",
+      signature = "([Lhy;II)V",
       garbageValue = "122580462"
    )
    static final void method833(Widget[] var0, int var1) {
@@ -386,7 +389,7 @@ public class class56 {
 
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZB)I",
+      signature = "(ILcg;ZB)I",
       garbageValue = "22"
    )
    static int method827(int var0, Script var1, boolean var2) {

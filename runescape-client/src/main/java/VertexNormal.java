@@ -35,6 +35,9 @@ public class VertexNormal {
    VertexNormal() {
    }
 
+   @ObfuscatedSignature(
+      signature = "(Leq;)V"
+   )
    VertexNormal(VertexNormal var1) {
       this.x = var1.x;
       this.y = var1.y;

@@ -47,16 +47,16 @@ public class WorldMapType3 implements WorldMapSectionBase {
       intValue = 2053070521
    )
    int field389;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -382249999
-   )
-   int field382;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -1645770289
    )
    int field385;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -382249999
+   )
+   int field382;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 264725575
@@ -93,12 +93,12 @@ public class WorldMapType3 implements WorldMapSectionBase {
       garbageValue = "-1671303044"
    )
    public boolean vmethod721(int var1, int var2, int var3) {
-      return var1 >= this.field379 && var1 < this.field387 + this.field379?var2 >= (this.field384 << 6) + (this.field376 << 3) && var2 <= (this.field382 << 3) + (this.field384 << 6) + 7 && var3 >= (this.field377 << 6) + (this.field388 << 3) && var3 <= (this.field377 << 6) + (this.field383 << 3) + 7:false;
+      return var1 >= this.field379 && var1 < this.field387 + this.field379?var2 >= (this.field384 << 6) + (this.field376 << 3) && var2 <= (this.field384 << 6) + (this.field382 << 3) + 7 && var3 >= (this.field377 << 6) + (this.field388 << 3) && var3 <= (this.field383 << 3) + (this.field377 << 6) + 7:false;
    }
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LWorldMapData;I)V",
+      signature = "(Lam;I)V",
       garbageValue = "-1824757307"
    )
    public void vmethod720(WorldMapData var1) {
@@ -122,7 +122,7 @@ public class WorldMapType3 implements WorldMapSectionBase {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(III)LCoordinates;",
+      signature = "(III)Lhd;",
       garbageValue = "665140774"
    )
    public Coordinates vmethod743(int var1, int var2) {
@@ -151,7 +151,7 @@ public class WorldMapType3 implements WorldMapSectionBase {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-1909314997"
    )
    public void vmethod746(Buffer var1) {

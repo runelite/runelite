@@ -8,13 +8,25 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Spotanim")
 public class Spotanim extends CacheableNode {
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    public static NodeCache field3327;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("spotanims")
    public static NodeCache spotanims;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    static IndexDataBase field3324;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    static IndexDataBase field3337;
    @ObfuscatedName("ad")
    protected static String field3340;
@@ -86,7 +98,7 @@ public class Spotanim extends CacheableNode {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "1799084945"
    )
    void method4291(Buffer var1, int var2) {
@@ -132,7 +144,7 @@ public class Spotanim extends CacheableNode {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(IB)LModel;",
+      signature = "(IB)Lej;",
       garbageValue = "13"
    )
    public final Model method4283(int var1) {
@@ -193,7 +205,7 @@ public class Spotanim extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-705078404"
    )
    @Export("decode")

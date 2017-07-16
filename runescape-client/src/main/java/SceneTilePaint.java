@@ -60,7 +60,7 @@ public final class SceneTilePaint {
 
    @ObfuscatedName("ai")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
+      signature = "(ILcg;ZI)I",
       garbageValue = "-487322870"
    )
    static int method2662(int var0, Script var1, boolean var2) {

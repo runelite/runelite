@@ -54,147 +54,129 @@ public class MappingDumper
 	{
 		ClassGroup group = JarUtil.loadJar(new File(properties.getRsClient()));
 
+		final String GAP = "%-40s";
 		int classes = 0, methods = 0, fields = 0;
 
-		StringBuilder builder = new StringBuilder();
+		StringBuilder mBuilder = new StringBuilder();
 		StringBuilder sBuilder = new StringBuilder();
+		StringBuilder tmp;
 
 		for (ClassFile cf : group.getClasses())
 		{
-			String impl = DeobAnnotations.getImplements(cf),
-				obfName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
+			String implName = DeobAnnotations.getImplements(cf);
+			String className = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 
-			String classPrefix = obfName + ".";
-
-			if (impl != null)
+			if (implName != null)
 			{
-				builder.append("\n").append(impl).append(" -> ").append(obfName).append("\n");
+				mBuilder.append("\n").append(implName).append(" -> ").append(className).append("\n");
 				++classes;
 			}
 
 			for (Field f : cf.getFields().getFields())
 			{
-				obfName = DeobAnnotations.getObfuscatedName(f.getAnnotations());
-				String deobName = DeobAnnotations.getExportedName(f.getAnnotations());
-				Number getter = DeobAnnotations.getObfuscatedGetter(f);
+				String exportName = DeobAnnotations.getExportedName(f.getAnnotations());
 
-				if (deobName == null)
+				if (exportName == null)
 				{
 					continue;
 				}
 
 				++fields;
 
-				String type = typeToString(f.getType());
+				String fieldName = DeobAnnotations.getObfuscatedName(f.getAnnotations());
+				Type type = DeobAnnotations.getObfuscatedType(f);
+				Number getter = DeobAnnotations.getObfuscatedGetter(f);
+
+				if (type == null)
+				{
+					type = f.getType();
+				}
+
+				String fieldType = typeToString(type);
 
 				if (f.isStatic())
 				{
-					sBuilder.append("\t").append(String.format("%-25s", type)).append(String.format("%-25s", deobName))
-						.append(classPrefix).append(obfName);
-
-					if (getter != null)
-					{
-						sBuilder.append(" * ").append(getter).append("\n");
-					}
-
-					else
-					{
-						sBuilder.append("\n");
-					}
+					tmp = sBuilder;
 				}
 
 				else
 				{
-					builder.append("\t").append(String.format("%-25s", type)).append(String.format("%-25s", deobName))
-							.append(classPrefix).append(obfName);
+					tmp = mBuilder;
+				}
 
-					if (getter != null)
-					{
-						builder.append(" * ").append(getter).append("\n");
-					}
+				tmp.append("\t").append(String.format(GAP, fieldType)).append(String.format(GAP, exportName))
+						.append(className).append(".").append(fieldName);
 
-					else
-					{
-						builder.append("\n");
-					}
+				if (getter != null)
+				{
+					tmp.append(" * ").append(getter).append("\n");
+				}
+
+				else
+				{
+					tmp.append("\n");
 				}
 			}
 
 			for (Method m : cf.getMethods().getMethods())
 			{
-				obfName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
-				Signature obfSignature = DeobAnnotations.getObfuscatedSignature(m);
+				String exportName = DeobAnnotations.getExportedName(m.getAnnotations());
 
-				String deobName = DeobAnnotations.getExportedName(m.getAnnotations());
-				Number predicate = DeobAnnotations.getObfuscatedPredicate(m);
-				Signature deobSig = m.getDescriptor();
-
-				if (deobName == null)
+				if (exportName == null)
 				{
 					continue;
 				}
 
 				methods++;
 
-				String type = typeToString(deobSig.getReturnValue());
-				String[] params;
+				String methodName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
+				Signature signature = DeobAnnotations.getObfuscatedSignature(m);
+				String garbageValue = DeobAnnotations.getObfuscatedValue(m);
 
-				if (obfSignature != null)
+				if (signature == null)
 				{
-					params = new String[obfSignature.size()];
-					for (int i = 0; i < params.length; i++)
-					{
-						params[i] = typeToString(obfSignature.getTypeOfArg(i));
-					}
+					signature = m.getDescriptor();
 				}
 
-				else
+				String returnType = typeToString(signature.getReturnValue());
+				String[] paramTypes = new String[signature.size()];
+				for (int i = 0; i < paramTypes.length; i++)
 				{
-					params = new String[deobSig.size()];
-					for (int i = 0; i < params.length; i++)
-					{
-						params[i] = typeToString(deobSig.getTypeOfArg(i));
-					}
+					paramTypes[i] = typeToString(signature.getTypeOfArg(i));
 				}
 
 				if (m.isStatic())
 				{
-					sBuilder.append("\t").append(String.format("%-25s", type)).append(String.format("%-25s", deobName))
-							.append(classPrefix).append(obfName);
-
-					sBuilder.append("(");
-					for (int i = 0; i < params.length; i++)
-					{
-						sBuilder.append(params[i]).append((i == params.length - 1 ? "" : ", "));
-					}
-					sBuilder.append(")\n");
+					tmp = sBuilder;
 				}
 
 				else
 				{
-					builder.append("\t").append(String.format("%-25s", type)).append(String.format("%-25s", deobName))
-							.append(classPrefix).append(obfName);
+					tmp = mBuilder;
+				}
 
-					builder.append("(");
-					for (int i = 0; i < params.length; i++)
+				tmp.append("\t").append(String.format(GAP, returnType)).append(String.format(GAP, exportName))
+						.append(className).append(".").append(methodName);
+
+				tmp.append("(");
+				for (int i = 0; i < paramTypes.length; i++)
+				{
+					tmp.append(paramTypes[i]);
+
+					if (i == paramTypes.length - 1)
 					{
-						builder.append(params[i]);
-
-						if (i == params.length - 1)
+						if (garbageValue != null)
 						{
-							if (predicate != null)
-							{
-								builder.append(" = ").append(predicate);
-							}
-						}
-
-						else
-						{
-							builder.append(", ");
+							tmp.append(" = ").append(garbageValue);
 						}
 					}
-					builder.append(")\n");
+
+					else
+					{
+						tmp.append(", ");
+					}
 				}
+				tmp.append(")\n");
 			}
 		}
 
@@ -202,7 +184,7 @@ public class MappingDumper
 		System.out.println("Run " + Instant.now());
 		System.out.println("Classes: " + classes + ", methods: " + methods + ", fields: " + fields);
 		System.out.println("Gamepack " + properties.getRsVersion());
-		System.out.println(builder.toString());
+		System.out.println(mBuilder.toString());
 		System.out.println("Static ->");
 		System.out.println(sBuilder.toString());
 	}
@@ -219,27 +201,30 @@ public class MappingDumper
 
 		for (ClassFile cf : group.getClasses())
 		{
-			String impl = DeobAnnotations.getImplements(cf), obfName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
-			String classPrefix = obfName;
+			String implName = DeobAnnotations.getImplements(cf);
+			String className = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 
 			for (Field f : cf.getFields().getFields())
 			{
-				obfName = DeobAnnotations.getObfuscatedName(f.getAnnotations());
-				String deobName = DeobAnnotations.getExportedName(f.getAnnotations());
-				Number getter = DeobAnnotations.getObfuscatedGetter(f);
+				String exportName = DeobAnnotations.getExportedName(f.getAnnotations());
 
-				if (deobName == null)
+				if (exportName == null)
 				{
 					continue;
 				}
 
+				String fieldName = DeobAnnotations.getObfuscatedName(f.getAnnotations());
+				Type obfType = DeobAnnotations.getObfuscatedType(f);
+				Number getter = DeobAnnotations.getObfuscatedGetter(f);
+
 				JsonObject jField = new JsonObject();
 
-				jField.addProperty("name", deobName);
-				jField.addProperty("owner", f.isStatic() ? "" : impl);
-				jField.addProperty("class", classPrefix);
-				jField.addProperty("field", obfName);
-				jField.addProperty("signiture", f.getType().getFullType());
+				jField.addProperty("name", exportName);
+				jField.addProperty("owner", f.isStatic() ? "" : implName);
+				jField.addProperty("class", className);
+				jField.addProperty("field", fieldName);
+				jField.addProperty("obfSignature", (obfType != null ? obfType.getFullType() : ""));
+				jField.addProperty("signature", f.getType().getFullType());
 				jField.addProperty("multiplier", (getter != null ? getter : 0));
 				jField.addProperty("static", f.isStatic());
 
@@ -248,27 +233,27 @@ public class MappingDumper
 
 			for (Method m : cf.getMethods().getMethods())
 			{
-				obfName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
-				Signature obfSignature = DeobAnnotations.getObfuscatedSignature(m);
 
-				String deobName = DeobAnnotations.getExportedName(m.getAnnotations());
-				Number predicate = DeobAnnotations.getObfuscatedPredicate(m);
-				Signature deobSig = m.getDescriptor();
+				String exportName = DeobAnnotations.getExportedName(m.getAnnotations());
 
-				if (deobName == null)
+				if (exportName == null)
 				{
 					continue;
 				}
 
+				String methodName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
+				Signature obfSignature = DeobAnnotations.getObfuscatedSignature(m);
+				String predicate = DeobAnnotations.getObfuscatedValue(m);
+
 				JsonObject jMethod = new JsonObject();
 
-				jMethod.addProperty("name", deobName);
-				jMethod.addProperty("owner", m.isStatic() ? "" : impl);
-				jMethod.addProperty("class", classPrefix);
-				jMethod.addProperty("field", obfName);
-				jMethod.addProperty("obfSigniture", (obfSignature != null ? obfSignature.toString() : ""));
-				jMethod.addProperty("signiture", (deobSig != null ? deobSig.toString() : ""));
-				jMethod.addProperty("predicate", (predicate != null ? predicate : 0));
+				jMethod.addProperty("name", exportName);
+				jMethod.addProperty("owner", m.isStatic() ? "" : implName);
+				jMethod.addProperty("class", className);
+				jMethod.addProperty("field", methodName);
+				jMethod.addProperty("obfSignature", (obfSignature != null ? obfSignature.toString() : ""));
+				jMethod.addProperty("signature", m.getDescriptor().toString());
+				jMethod.addProperty("predicate", (predicate != null ? predicate : ""));
 				jMethod.addProperty("static", m.isStatic());
 
 				jMethods.add(jMethod);

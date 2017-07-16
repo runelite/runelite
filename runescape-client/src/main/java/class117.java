@@ -34,6 +34,9 @@ public class class117 extends class119 {
    @ObfuscatedName("c")
    int field1679;
 
+   @ObfuscatedSignature(
+      signature = "(Ldm;III)V"
+   )
    class117(class107 var1, int var2, int var3, int var4) {
       super.field1706 = var1;
       this.field1685 = var1.field1605;
@@ -46,6 +49,9 @@ public class class117 extends class119 {
       this.method2162();
    }
 
+   @ObfuscatedSignature(
+      signature = "(Ldm;II)V"
+   )
    class117(class107 var1, int var2, int var3) {
       super.field1706 = var1;
       this.field1685 = var1.field1605;
@@ -499,6 +505,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "()Ldf;"
+   )
    protected class119 vmethod3882() {
       return null;
    }
@@ -591,6 +600,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "()Ldf;"
+   )
    protected class119 vmethod3883() {
       return null;
    }
@@ -818,6 +830,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("af")
+   @ObfuscatedSignature(
+      signature = "(II[B[IIIIIIILdr;II)I"
+   )
    static int method2140(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, class117 var10, int var11, int var12) {
       if(var11 == 0 || (var7 = var5 + (var11 + (var9 - var4) - 257) / var11) > var8) {
          var7 = var8;
@@ -848,6 +863,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("bi")
+   @ObfuscatedSignature(
+      signature = "(II[B[IIIIIIILdr;II)I"
+   )
    static int method2142(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, class117 var10, int var11, int var12) {
       if(var11 == 0 || (var7 = var5 + (var11 + (var9 + 256 - var4)) / var11) > var8) {
          var7 = var8;
@@ -878,6 +896,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("an")
+   @ObfuscatedSignature(
+      signature = "([B[IIIIIIILdr;)I"
+   )
    static int method2210(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, class117 var8) {
       var2 >>= 8;
       var7 >>= 8;
@@ -906,6 +927,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("bp")
+   @ObfuscatedSignature(
+      signature = "(II[B[IIIIIIIILdr;II)I"
+   )
    static int method2169(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, class117 var11, int var12, int var13) {
       if(var12 == 0 || (var8 = var5 + (var10 - var4 + var12 - 257) / var12) > var9) {
          var8 = var9;
@@ -945,6 +969,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("ao")
+   @ObfuscatedSignature(
+      signature = "([B[IIIIIIILdr;)I"
+   )
    static int method2138(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, class117 var8) {
       var2 >>= 8;
       var7 >>= 8;
@@ -973,6 +1000,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("ba")
+   @ObfuscatedSignature(
+      signature = "(II[B[IIIIIIIILdr;II)I"
+   )
    static int method2143(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, class117 var11, int var12, int var13) {
       if(var12 == 0 || (var8 = var5 + (var10 + 256 - var4 + var12) / var12) > var9) {
          var8 = var9;
@@ -1010,6 +1040,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("ay")
+   @ObfuscatedSignature(
+      signature = "(I[B[IIIIIIIILdr;)I"
+   )
    static int method2137(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, class117 var10) {
       var3 >>= 8;
       var9 >>= 8;
@@ -1058,6 +1091,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("ac")
+   @ObfuscatedSignature(
+      signature = "(I[B[IIIIIIIILdr;)I"
+   )
    static int method2139(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, class117 var10) {
       var3 >>= 8;
       var9 >>= 8;
@@ -1106,6 +1142,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("bn")
+   @ObfuscatedSignature(
+      signature = "(II[B[IIIIIIIILdr;II)I"
+   )
    static int method2148(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, class117 var11, int var12, int var13) {
       var11.field1682 -= var11.field1684 * var5;
       var11.field1683 -= var11.field1679 * var5;
@@ -1143,6 +1182,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("bh")
+   @ObfuscatedSignature(
+      signature = "(II[B[IIIIIIIILdr;II)I"
+   )
    static int method2150(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, class117 var11, int var12, int var13) {
       var11.field1682 -= var11.field1684 * var5;
       var11.field1683 -= var11.field1679 * var5;
@@ -1180,6 +1222,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("bd")
+   @ObfuscatedSignature(
+      signature = "([B[IIIIIIIILdr;)I"
+   )
    static int method2171(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, class117 var9) {
       var2 >>= 8;
       var8 >>= 8;
@@ -1218,6 +1263,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("bc")
+   @ObfuscatedSignature(
+      signature = "([B[IIIIIIIILdr;)I"
+   )
    static int method2146(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, class117 var9) {
       var2 >>= 8;
       var8 >>= 8;
@@ -1256,6 +1304,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("bs")
+   @ObfuscatedSignature(
+      signature = "(II[B[IIIIIIIIIILdr;II)I"
+   )
    static int method2121(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, class117 var13, int var14, int var15) {
       var13.field1677 -= var5 * var13.field1689;
       if(var14 == 0 || (var10 = var5 + (var12 - var4 + var14 - 257) / var14) > var11) {
@@ -1304,6 +1355,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("bo")
+   @ObfuscatedSignature(
+      signature = "(II[B[IIIIIIIIIILdr;II)I"
+   )
    static int method2151(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, class117 var13, int var14, int var15) {
       var13.field1677 -= var5 * var13.field1689;
       if(var14 == 0 || (var10 = var5 + (var12 + 256 - var4 + var14) / var14) > var11) {
@@ -1350,6 +1404,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("bl")
+   @ObfuscatedSignature(
+      signature = "(I[B[IIIIIIIIIILdr;)I"
+   )
    static int method2145(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, class117 var12) {
       var3 >>= 8;
       var11 >>= 8;
@@ -1413,6 +1470,9 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("bb")
+   @ObfuscatedSignature(
+      signature = "(I[B[IIIIIIIIIILdr;)I"
+   )
    static int method2147(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, class117 var12) {
       var3 >>= 8;
       var11 >>= 8;
@@ -1476,11 +1536,17 @@ public class class117 extends class119 {
    }
 
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(Ldm;III)Ldr;"
+   )
    public static class117 method2178(class107 var0, int var1, int var2, int var3) {
       return var0.field1607 != null && var0.field1607.length != 0?new class117(var0, var1, var2, var3):null;
    }
 
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Ldm;II)Ldr;"
+   )
    public static class117 method2195(class107 var0, int var1, int var2) {
       return var0.field1607 != null && var0.field1607.length != 0?new class117(var0, (int)((long)var0.field1603 * 256L * (long)var1 / (long)(ChatLineBuffer.sampleRate * 100)), var2 << 6):null;
    }

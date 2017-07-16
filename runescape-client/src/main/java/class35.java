@@ -5,12 +5,24 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("aa")
 public class class35 {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Laa;"
+   )
    static final class35 field487;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Laa;"
+   )
    static final class35 field481;
    @ObfuscatedName("ig")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    static Widget field482;
    @ObfuscatedName("kp")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    static Widget field483;
    @ObfuscatedName("n")
    @ObfuscatedGetter(

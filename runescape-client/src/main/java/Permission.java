@@ -7,16 +7,34 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Permission")
 public enum Permission implements RSEnum {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
    field3176(0, -1, true, false, true),
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
    field3174(1, 0, true, true, true),
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
    field3179(2, 1, true, true, false),
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
    field3175(3, 2, false, false, true),
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
    field3177(4, 3, false, false, true),
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
    field3180(5, 10, false, false, true);
 
    @ObfuscatedName("l")

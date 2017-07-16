@@ -8,6 +8,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("XGrandExchangeOffer")
 public class XGrandExchangeOffer {
    @ObfuscatedName("ka")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    static Widget field308;
    @ObfuscatedName("a")
    @Export("progress")
@@ -47,7 +50,7 @@ public class XGrandExchangeOffer {
    }
 
    @ObfuscatedSignature(
-      signature = "(LBuffer;Z)V",
+      signature = "(Lfe;Z)V",
       garbageValue = "0"
    )
    public XGrandExchangeOffer(Buffer var1, boolean var2) {
@@ -122,7 +125,7 @@ public class XGrandExchangeOffer {
          var1 /= 2;
       }
 
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
+      int var3 = (var0 / 4 << 10) + (var1 / 32 << 7) + var2 / 2;
       return var3;
    }
 

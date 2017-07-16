@@ -21,14 +21,14 @@ public interface WorldMapSectionBase {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LWorldMapData;I)V",
+      signature = "(Lam;I)V",
       garbageValue = "-1824757307"
    )
    void vmethod720(WorldMapData var1);
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(III)LCoordinates;",
+      signature = "(III)Lhd;",
       garbageValue = "665140774"
    )
    Coordinates vmethod743(int var1, int var2);
@@ -42,7 +42,7 @@ public interface WorldMapSectionBase {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-1909314997"
    )
    void vmethod746(Buffer var1);

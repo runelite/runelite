@@ -27,12 +27,18 @@ public class Signlink implements Runnable {
    @Export("closed")
    boolean closed;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lev;"
+   )
    @Export("currentTask")
    Task currentTask;
    @ObfuscatedName("v")
    @Export("sysEventQueue")
    Thread sysEventQueue;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lev;"
+   )
    @Export("cachedTask")
    Task cachedTask;
 
@@ -59,7 +65,7 @@ public class Signlink implements Runnable {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IIILjava/lang/Object;I)LTask;",
+      signature = "(IIILjava/lang/Object;I)Lev;",
       garbageValue = "-324226504"
    )
    final Task method2929(int var1, int var2, int var3, Object var4) {
@@ -82,7 +88,7 @@ public class Signlink implements Runnable {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/net/URL;I)LTask;",
+      signature = "(Ljava/net/URL;I)Lev;",
       garbageValue = "1684174835"
    )
    @Export("createURL")
@@ -92,7 +98,7 @@ public class Signlink implements Runnable {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Runnable;II)LTask;",
+      signature = "(Ljava/lang/Runnable;II)Lev;",
       garbageValue = "-1950293618"
    )
    @Export("createRunnable")
@@ -122,7 +128,7 @@ public class Signlink implements Runnable {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)LTask;",
+      signature = "(Ljava/lang/String;II)Lev;",
       garbageValue = "-1909314997"
    )
    @Export("createSocket")
@@ -132,7 +138,7 @@ public class Signlink implements Runnable {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(IB)LTask;",
+      signature = "(IB)Lev;",
       garbageValue = "26"
    )
    @Export("createHost")
@@ -194,7 +200,7 @@ public class Signlink implements Runnable {
 
    @ObfuscatedName("hm")
    @ObfuscatedSignature(
-      signature = "(LPendingSpawn;B)V",
+      signature = "(Lbm;B)V",
       garbageValue = "46"
    )
    static final void method2953(PendingSpawn var0) {

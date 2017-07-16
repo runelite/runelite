@@ -44,7 +44,7 @@ public class class210 extends CacheableNode {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)[LModIcon;",
+      signature = "(I)[Ljf;",
       garbageValue = "601873716"
    )
    static ModIcon[] method3911() {

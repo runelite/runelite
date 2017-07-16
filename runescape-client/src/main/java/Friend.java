@@ -38,7 +38,7 @@ public class Friend {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;IIIZI)V",
+      signature = "(Lif;IIIZI)V",
       garbageValue = "-1354685471"
    )
    public static void method1083(IndexDataBase var0, int var1, int var2, int var3, boolean var4) {

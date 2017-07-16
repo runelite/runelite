@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class class169 {
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(II)LVarPlayerType;",
+      signature = "(II)Lik;",
       garbageValue = "-1277856486"
    )
    public static VarPlayerType method3109(int var0) {

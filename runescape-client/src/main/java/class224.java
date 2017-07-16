@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class class224 {
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)LNPCComposition;",
+      signature = "(II)Lip;",
       garbageValue = "1954162543"
    )
    @Export("getNpcDefinition")

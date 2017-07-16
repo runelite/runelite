@@ -5,18 +5,39 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("jk")
 public class class261 {
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Ljk;"
+   )
    public static final class261 field3624;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Ljk;"
+   )
    public static final class261 field3628;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Ljk;"
+   )
    public static final class261 field3625;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Ljk;"
+   )
    public static final class261 field3626;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Ljk;"
+   )
    public static final class261 field3622;
    @ObfuscatedName("eg")
+   @ObfuscatedSignature(
+      signature = "Lfq;"
+   )
    static RSSocket field3623;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Ljk;"
+   )
    public static final class261 field3621;
    @ObfuscatedName("l")
    final String field3627;
@@ -39,7 +60,7 @@ public class class261 {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(I)LPreferences;",
+      signature = "(I)Lct;",
       garbageValue = "1601250515"
    )
    static Preferences method4654() {
@@ -76,7 +97,7 @@ public class class261 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)[Lclass261;",
+      signature = "(I)[Ljk;",
       garbageValue = "-1843484348"
    )
    public static class261[] method4649() {
@@ -85,7 +106,7 @@ public class class261 {
 
    @ObfuscatedName("fx")
    @ObfuscatedSignature(
-      signature = "(LActor;I)V",
+      signature = "(Lca;I)V",
       garbageValue = "1021176354"
    )
    static final void method4647(Actor var0) {

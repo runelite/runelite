@@ -8,9 +8,15 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("varbits")
    public static NodeCache varbits;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("varbit_ref")
    public static IndexDataBase varbit_ref;
    @ObfuscatedName("n")
@@ -38,7 +44,7 @@ public class Varbit extends CacheableNode {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LBuffer;IB)V",
+      signature = "(Lfe;IB)V",
       garbageValue = "-6"
    )
    void method4369(Buffer var1, int var2) {
@@ -52,7 +58,7 @@ public class Varbit extends CacheableNode {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
+      signature = "(Lfe;B)V",
       garbageValue = "45"
    )
    @Export("decode")

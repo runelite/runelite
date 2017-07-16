@@ -12,18 +12,33 @@ public class Widget extends Node {
    @ObfuscatedName("c")
    public static boolean field2759;
    @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    static NodeCache field2647;
    @ObfuscatedName("l")
    @Export("validInterfaces")
    public static boolean[] validInterfaces;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "[[Lhy;"
+   )
    @Export("widgets")
    public static Widget[][] widgets;
    @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    static NodeCache field2684;
    @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    static NodeCache field2783;
    @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    static NodeCache field2650;
    @ObfuscatedName("bi")
    @ObfuscatedGetter(
@@ -242,6 +257,9 @@ public class Widget extends Node {
    @Export("tableActions")
    public int[] tableActions;
    @ObfuscatedName("et")
+   @ObfuscatedSignature(
+      signature = "[Lhy;"
+   )
    @Export("children")
    public Widget[] children;
    @ObfuscatedName("aq")
@@ -351,6 +369,9 @@ public class Widget extends Node {
    @ObfuscatedName("ah")
    public boolean field2682;
    @ObfuscatedName("an")
+   @ObfuscatedSignature(
+      signature = "Ljp;"
+   )
    public class283 field2683;
    @ObfuscatedName("ao")
    @ObfuscatedGetter(
@@ -476,6 +497,9 @@ public class Widget extends Node {
    @Export("name")
    public String name;
    @ObfuscatedName("cj")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    @Export("dragParent")
    public Widget dragParent;
    @ObfuscatedName("cg")
@@ -684,7 +708,7 @@ public class Widget extends Node {
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(ZB)LSpritePixels;",
+      signature = "(ZB)Ljt;",
       garbageValue = "121"
    )
    public SpritePixels method4011(boolean var1) {
@@ -742,7 +766,7 @@ public class Widget extends Node {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "1915353826"
    )
    @Export("decode")
@@ -999,7 +1023,7 @@ public class Widget extends Node {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-1314014150"
    )
    @Export("decodeActive")
@@ -1141,7 +1165,7 @@ public class Widget extends Node {
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(ZI)Lclass210;",
+      signature = "(ZI)Lhe;",
       garbageValue = "-973123110"
    )
    public class210 method3980(boolean var1) {
@@ -1172,14 +1196,14 @@ public class Widget extends Node {
 
                   int var13;
                   for(var13 = 0; var13 < var7.width; ++var13) {
-                     if(var7.image[var7.width * var10 + var13] == 0) {
+                     if(var7.image[var13 + var7.width * var10] == 0) {
                         var11 = var13;
                         break;
                      }
                   }
 
                   for(var13 = var7.width - 1; var13 >= var11; --var13) {
-                     if(var7.image[var13 + var10 * var7.width] == 0) {
+                     if(var7.image[var13 + var7.width * var10] == 0) {
                         var12 = var13 + 1;
                         break;
                      }
@@ -1199,7 +1223,7 @@ public class Widget extends Node {
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)LFont;",
+      signature = "(I)Ljc;",
       garbageValue = "309277874"
    )
    public Font method3977() {
@@ -1244,7 +1268,7 @@ public class Widget extends Node {
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(II)LSpritePixels;",
+      signature = "(II)Ljt;",
       garbageValue = "-787324995"
    )
    public SpritePixels method3976(int var1) {
@@ -1275,7 +1299,7 @@ public class Widget extends Node {
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(LSequence;IZLPlayerComposition;B)LModel;",
+      signature = "(Ljg;IZLhu;B)Lej;",
       garbageValue = "16"
    )
    public Model method3979(Sequence var1, int var2, boolean var3, PlayerComposition var4) {
@@ -1356,7 +1380,7 @@ public class Widget extends Node {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)[Ljava/lang/Object;",
+      signature = "(Lfe;B)[Ljava/lang/Object;",
       garbageValue = "0"
    )
    Object[] method3973(Buffer var1) {
@@ -1416,7 +1440,7 @@ public class Widget extends Node {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)[I",
+      signature = "(Lfe;I)[I",
       garbageValue = "1570128146"
    )
    int[] method3974(Buffer var1) {

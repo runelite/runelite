@@ -66,7 +66,7 @@ public class InjectHookMethod
 		String obfuscatedMethodName = DeobAnnotations.getObfuscatedName(an),
 			obfuscatedClassName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 
-		Signature obfuscatedSignature = inject.getObfuscatedSignature(method);
+		Signature obfuscatedSignature = inject.getMethodSignature(method);
 
 		ClassGroup vanilla = inject.getVanilla();
 		ClassFile vanillaClass = vanilla.findClass(obfuscatedClassName);

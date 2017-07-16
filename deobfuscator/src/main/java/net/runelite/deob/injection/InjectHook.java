@@ -157,7 +157,7 @@ public class InjectHook
 	{
 		String obfuscatedClassName = DeobAnnotations.getObfuscatedName(field.getFields().getClassFile().getAnnotations());
 		String obfuscatedFieldName = DeobAnnotations.getObfuscatedName(field.getAnnotations()); // obfuscated name of field
-		Type type = inject.toObType(field.getType());
+		Type type = inject.getFieldType(field);
 
 		ClassGroup vanilla = inject.getVanilla();
 

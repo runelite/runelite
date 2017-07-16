@@ -8,14 +8,26 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("NPCComposition")
 public class NPCComposition extends CacheableNode {
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("npcModelCache")
    public static NodeCache npcModelCache;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    @Export("npcs")
    public static NodeCache npcs;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field3560;
    @ObfuscatedName("ag")
+   @ObfuscatedSignature(
+      signature = "Lgl;"
+   )
    class186 field3587;
    @ObfuscatedName("ar")
    @ObfuscatedGetter(
@@ -183,7 +195,7 @@ public class NPCComposition extends CacheableNode {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(I)LNPCComposition;",
+      signature = "(I)Lip;",
       garbageValue = "2106360692"
    )
    @Export("transform")
@@ -207,7 +219,7 @@ public class NPCComposition extends CacheableNode {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "-41435342"
    )
    void method4569(Buffer var1, int var2) {
@@ -331,7 +343,7 @@ public class NPCComposition extends CacheableNode {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)LModelData;",
+      signature = "(I)Ldv;",
       garbageValue = "-1347318813"
    )
    public final ModelData method4571() {
@@ -385,7 +397,7 @@ public class NPCComposition extends CacheableNode {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(LSequence;ILSequence;II)LModel;",
+      signature = "(Ljg;ILjg;II)Lej;",
       garbageValue = "-1462771291"
    )
    public final Model method4570(Sequence var1, int var2, Sequence var3, int var4) {
@@ -467,7 +479,7 @@ public class NPCComposition extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
+      signature = "(Lfe;B)V",
       garbageValue = "43"
    )
    @Export("decode")

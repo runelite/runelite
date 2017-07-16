@@ -9,6 +9,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Varcs")
 public class Varcs {
    @ObfuscatedName("bi")
+   @ObfuscatedSignature(
+      signature = "Lho;"
+   )
    static class232 field1515;
    @ObfuscatedName("k")
    static int[] field1508;
@@ -76,7 +79,7 @@ public class Varcs {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(ZI)LFileOnDisk;",
+      signature = "(ZI)Ldk;",
       garbageValue = "-1223007917"
    )
    @Export("getVarPrefs")
@@ -171,7 +174,7 @@ public class Varcs {
    void deserialize() {
       FileOnDisk var1 = this.getVarPrefs(false);
 
-      label200: {
+      label202: {
          try {
             byte[] var2 = new byte[(int)var1.length()];
 
@@ -184,44 +187,44 @@ public class Varcs {
             }
 
             Buffer var13 = new Buffer(var2);
-            if(var13.payload.length - var13.offset < 1) {
+            if(var13.payload.length - var13.offset >= 1) {
+               int var5 = var13.readUnsignedByte();
+               if(var5 >= 0 && var5 <= 1) {
+                  int var6 = var13.readUnsignedShort();
+
+                  int var7;
+                  int var8;
+                  int var9;
+                  for(var7 = 0; var7 < var6; ++var7) {
+                     var8 = var13.readUnsignedShort();
+                     var9 = var13.readInt();
+                     if(this.varcSerials[var8]) {
+                        this.varcs[var8] = var9;
+                     }
+                  }
+
+                  var7 = var13.readUnsignedShort();
+                  var8 = 0;
+
+                  while(true) {
+                     if(var8 >= var7) {
+                        break label202;
+                     }
+
+                     var9 = var13.readUnsignedShort();
+                     String var10 = var13.readString();
+                     if(this.varcstringSerials[var9]) {
+                        this.varcstrings[var9] = var10;
+                     }
+
+                     ++var8;
+                  }
+               }
+
                return;
             }
-
-            int var5 = var13.readUnsignedByte();
-            if(var5 >= 0 && var5 <= 1) {
-               int var6 = var13.readUnsignedShort();
-
-               int var7;
-               int var8;
-               int var9;
-               for(var7 = 0; var7 < var6; ++var7) {
-                  var8 = var13.readUnsignedShort();
-                  var9 = var13.readInt();
-                  if(this.varcSerials[var8]) {
-                     this.varcs[var8] = var9;
-                  }
-               }
-
-               var7 = var13.readUnsignedShort();
-               var8 = 0;
-
-               while(true) {
-                  if(var8 >= var7) {
-                     break label200;
-                  }
-
-                  var9 = var13.readUnsignedShort();
-                  String var10 = var13.readString();
-                  if(this.varcstringSerials[var9]) {
-                     this.varcstrings[var9] = var10;
-                  }
-
-                  ++var8;
-               }
-            }
          } catch (Exception var24) {
-            break label200;
+            break label202;
          } finally {
             try {
                var1.close();
@@ -445,13 +448,13 @@ public class Varcs {
    static final int method1804(int var0, int var1) {
       int var2 = var1 * 57 + var0;
       var2 ^= var2 << 13;
-      int var3 = var2 * (15731 * var2 * var2 + 789221) + 1376312589 & Integer.MAX_VALUE;
+      int var3 = var2 * (789221 + var2 * var2 * 15731) + 1376312589 & Integer.MAX_VALUE;
       return var3 >> 19 & 255;
    }
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
+      signature = "(ILcg;ZI)I",
       garbageValue = "-1741724367"
    )
    static int method1795(int var0, Script var1, boolean var2) {

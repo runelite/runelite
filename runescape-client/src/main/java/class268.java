@@ -1,9 +1,13 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ja")
 public final class class268 {
    @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lin;"
+   )
    @Export("currentRequest")
    public static FileRequest currentRequest;
    @ObfuscatedName("a")

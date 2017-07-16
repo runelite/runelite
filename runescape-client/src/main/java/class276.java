@@ -1,13 +1,23 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jm")
 public class class276 {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Ljm;"
+   )
    public static final class276 field3730;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Ljm;"
+   )
    public static final class276 field3734;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Ljm;"
+   )
    public static final class276 field3732;
    @ObfuscatedName("r")
    @ObfuscatedGetter(

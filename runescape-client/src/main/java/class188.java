@@ -1,15 +1,28 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("go")
 public class class188 implements Iterator {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lgi;"
+   )
    CombatInfoList field2449;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lge;"
+   )
    Node field2450;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lge;"
+   )
    Node field2451;
 
+   @ObfuscatedSignature(
+      signature = "(Lgi;)V"
+   )
    class188(CombatInfoList var1) {
       this.field2451 = null;
       this.field2449 = var1;

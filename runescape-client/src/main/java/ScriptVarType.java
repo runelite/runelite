@@ -8,376 +8,934 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("ScriptVarType")
 public class ScriptVarType implements RSEnum, class292 {
    @ObfuscatedName("gf")
+   @ObfuscatedSignature(
+      signature = "[Ll;"
+   )
    static ScriptVarType[] field84;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    public static final ScriptVarType field194;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field116;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field128;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field41;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field140;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field43;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field44;
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field107;
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field59;
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field47;
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field198;
    @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field156;
    @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field50;
    @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field66;
    @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field191;
    @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field104;
    @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field54;
    @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field55;
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field56;
    @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field57;
    @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field93;
    @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field197;
    @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field190;
    @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field61;
    @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field62;
    @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field60;
    @ObfuscatedName("ai")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field203;
    @ObfuscatedName("ae")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field65;
    @ObfuscatedName("au")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field175;
    @ObfuscatedName("ak")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field67;
    @ObfuscatedName("ap")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field68;
    @ObfuscatedName("ar")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field53;
    @ObfuscatedName("am")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field70;
    @ObfuscatedName("aw")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field71;
    @ObfuscatedName("aq")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field72;
    @ObfuscatedName("aa")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field73;
    @ObfuscatedName("ag")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field79;
    @ObfuscatedName("aj")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field75;
    @ObfuscatedName("ax")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field76;
    @ObfuscatedName("ad")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field49;
    @ObfuscatedName("az")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field201;
    @ObfuscatedName("as")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field131;
    @ObfuscatedName("av")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field192;
    @ObfuscatedName("ab")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field146;
    @ObfuscatedName("at")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field82;
    @ObfuscatedName("al")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field40;
    @ObfuscatedName("ah")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field182;
    @ObfuscatedName("an")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field195;
    @ObfuscatedName("ay")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field187;
    @ObfuscatedName("ao")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field87;
    @ObfuscatedName("ac")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field200;
    @ObfuscatedName("af")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field141;
    @ObfuscatedName("bp")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field90;
    @ObfuscatedName("bi")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field91;
    @ObfuscatedName("ba")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field92;
    @ObfuscatedName("bd")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field69;
    @ObfuscatedName("bl")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field94;
    @ObfuscatedName("bc")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field95;
    @ObfuscatedName("bb")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field96;
    @ObfuscatedName("bn")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field97;
    @ObfuscatedName("bs")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field42;
    @ObfuscatedName("bh")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field99;
    @ObfuscatedName("bo")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field100;
    @ObfuscatedName("bk")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field101;
    @ObfuscatedName("bw")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field102;
    @ObfuscatedName("bg")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field103;
    @ObfuscatedName("bt")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field98;
    @ObfuscatedName("bz")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field121;
    @ObfuscatedName("br")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field135;
    @ObfuscatedName("bf")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field52;
    @ObfuscatedName("bj")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field108;
    @ObfuscatedName("bq")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field109;
    @ObfuscatedName("bv")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field110;
    @ObfuscatedName("bu")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field111;
    @ObfuscatedName("be")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field106;
    @ObfuscatedName("bx")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field113;
    @ObfuscatedName("bm")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field114;
    @ObfuscatedName("by")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field115;
    @ObfuscatedName("ca")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field205;
    @ObfuscatedName("cs")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field117;
    @ObfuscatedName("cx")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field118;
    @ObfuscatedName("ct")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field119;
    @ObfuscatedName("cn")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field222;
    @ObfuscatedName("cu")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field212;
    @ObfuscatedName("cy")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field122;
    @ObfuscatedName("ck")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field166;
    @ObfuscatedName("ch")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field124;
    @ObfuscatedName("cv")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field83;
    @ObfuscatedName("cc")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field126;
    @ObfuscatedName("cf")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field127;
    @ObfuscatedName("cl")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field86;
    @ObfuscatedName("cd")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field129;
    @ObfuscatedName("cb")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field45;
    @ObfuscatedName("ci")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field224;
    @ObfuscatedName("co")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field132;
    @ObfuscatedName("cj")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field133;
    @ObfuscatedName("cp")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field134;
    @ObfuscatedName("cw")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field123;
    @ObfuscatedName("cq")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field85;
    @ObfuscatedName("cg")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field137;
    @ObfuscatedName("cr")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field138;
    @ObfuscatedName("cm")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field139;
    @ObfuscatedName("ce")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field125;
    @ObfuscatedName("cz")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field64;
    @ObfuscatedName("dd")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field204;
    @ObfuscatedName("dl")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field143;
    @ObfuscatedName("de")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field144;
    @ObfuscatedName("dm")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field145;
    @ObfuscatedName("db")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field120;
    @ObfuscatedName("ds")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field88;
    @ObfuscatedName("dc")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field148;
    @ObfuscatedName("dx")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field149;
    @ObfuscatedName("du")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field150;
    @ObfuscatedName("dn")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field151;
    @ObfuscatedName("dy")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field152;
    @ObfuscatedName("di")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field153;
    @ObfuscatedName("do")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field154;
    @ObfuscatedName("dr")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field155;
    @ObfuscatedName("dz")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field39;
    @ObfuscatedName("df")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field168;
    @ObfuscatedName("dp")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field158;
    @ObfuscatedName("dh")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field159;
    @ObfuscatedName("dw")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field160;
    @ObfuscatedName("dg")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field161;
    @ObfuscatedName("dk")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field162;
    @ObfuscatedName("da")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field48;
    @ObfuscatedName("dj")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field164;
    @ObfuscatedName("dv")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field165;
    @ObfuscatedName("dt")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field78;
    @ObfuscatedName("dq")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field167;
    @ObfuscatedName("eo")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field63;
    @ObfuscatedName("eg")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field169;
    @ObfuscatedName("ei")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field170;
    @ObfuscatedName("ej")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field171;
    @ObfuscatedName("ew")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field172;
    @ObfuscatedName("eq")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field173;
    @ObfuscatedName("ep")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field174;
    @ObfuscatedName("ez")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field130;
    @ObfuscatedName("eb")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field176;
    @ObfuscatedName("em")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field177;
    @ObfuscatedName("el")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field178;
    @ObfuscatedName("ef")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field179;
    @ObfuscatedName("ea")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field180;
    @ObfuscatedName("eu")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field181;
    @ObfuscatedName("et")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field51;
    @ObfuscatedName("eh")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field183;
    @ObfuscatedName("er")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field147;
    @ObfuscatedName("ex")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field185;
    @ObfuscatedName("ee")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field186;
    @ObfuscatedName("ek")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field136;
    @ObfuscatedName("ec")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field188;
    @ObfuscatedName("ed")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field189;
    @ObfuscatedName("es")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field74;
    @ObfuscatedName("ev")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field58;
    @ObfuscatedName("en")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field81;
    @ObfuscatedName("ey")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field193;
    @ObfuscatedName("fh")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field80;
    @ObfuscatedName("fd")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field89;
    @ObfuscatedName("fu")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field196;
    @ObfuscatedName("fq")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field218;
    @ObfuscatedName("fz")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field213;
    @ObfuscatedName("fv")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field199;
    @ObfuscatedName("fk")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field184;
    @ObfuscatedName("fs")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field38;
    @ObfuscatedName("fj")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field202;
    @ObfuscatedName("fa")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field163;
    @ObfuscatedName("fl")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field157;
    @ObfuscatedName("ft")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field208;
    @ObfuscatedName("fm")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field206;
    @ObfuscatedName("fw")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field207;
    @ObfuscatedName("fr")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field77;
    @ObfuscatedName("fp")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field209;
    @ObfuscatedName("fi")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field210;
    @ObfuscatedName("fe")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field211;
    @ObfuscatedName("fn")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field225;
    @ObfuscatedName("fo")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field112;
    @ObfuscatedName("fb")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field214;
    @ObfuscatedName("fx")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field215;
    @ObfuscatedName("fc")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field216;
    @ObfuscatedName("ff")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field217;
    @ObfuscatedName("fg")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field142;
    @ObfuscatedName("fy")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field219;
    @ObfuscatedName("gh")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field220;
    @ObfuscatedName("gy")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field221;
    @ObfuscatedName("gb")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
    static final ScriptVarType field105;
    @ObfuscatedName("gg")
    @ObfuscatedGetter(
@@ -577,6 +1135,9 @@ public class ScriptVarType implements RSEnum, class292 {
       field105 = new ScriptVarType((BaseVarType)null, Integer.valueOf(-1), '*');
    }
 
+   @ObfuscatedSignature(
+      signature = "(ICLv;Ljava/lang/Object;Ljava/lang/String;[Lj;)V"
+   )
    ScriptVarType(int var1, char var2, BaseVarType var3, Object var4, String var5, class1[] var6) {
       this.id = var1;
       this.typeChar = var2;
@@ -591,10 +1152,16 @@ public class ScriptVarType implements RSEnum, class292 {
       field84[class157.method2970(this.typeChar) & 255] = this;
    }
 
+   @ObfuscatedSignature(
+      signature = "(ICLv;Ljava/lang/Object;[Lj;)V"
+   )
    ScriptVarType(int var1, char var2, BaseVarType var3, Object var4, class1[] var5) {
       this(var1, var2, var3, var4, (String)null, var5);
    }
 
+   @ObfuscatedSignature(
+      signature = "(Lv;Ljava/lang/Object;C)V"
+   )
    ScriptVarType(BaseVarType var1, Object var2, char var3) {
       this(-1, var3, var1, var2, new class1[0]);
    }
@@ -610,7 +1177,7 @@ public class ScriptVarType implements RSEnum, class292 {
 
    @ObfuscatedName("jo")
    @ObfuscatedSignature(
-      signature = "(IIIILSpritePixels;Lclass210;I)V",
+      signature = "(IIIILjt;Lhe;I)V",
       garbageValue = "-223502628"
    )
    @Export("drawDot")
@@ -637,7 +1204,7 @@ public class ScriptVarType implements RSEnum, class292 {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
+      signature = "(ILcg;ZI)I",
       garbageValue = "1473889185"
    )
    static int method18(int var0, Script var1, boolean var2) {
@@ -690,7 +1257,7 @@ public class ScriptVarType implements RSEnum, class292 {
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
+      signature = "(ILcg;ZI)I",
       garbageValue = "1695954718"
    )
    static int method16(int var0, Script var1, boolean var2) {

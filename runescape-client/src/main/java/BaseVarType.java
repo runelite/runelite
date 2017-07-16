@@ -8,12 +8,21 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("BaseVarType")
 public enum BaseVarType implements RSEnum {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lv;"
+   )
    @Export("INTEGER")
    INTEGER(2, 0, Integer.class, new class2()),
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lv;"
+   )
    @Export("LONG")
    LONG(1, 1, Long.class, new class3()),
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lv;"
+   )
    @Export("STRING")
    STRING(0, 2, String.class, new class5());
 
@@ -34,6 +43,9 @@ public enum BaseVarType implements RSEnum {
    )
    final int field26;
    @ObfuscatedName("cv")
+   @ObfuscatedSignature(
+      signature = "Lev;"
+   )
    @Export("socket")
    static Task socket;
    @ObfuscatedName("pu")
@@ -42,6 +54,9 @@ public enum BaseVarType implements RSEnum {
    )
    static int field29;
 
+   @ObfuscatedSignature(
+      signature = "(IILjava/lang/Class;La;)V"
+   )
    BaseVarType(int var3, int var4, Class var5, class0 var6) {
       this.field25 = var3;
       this.field26 = var4;

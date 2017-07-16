@@ -12,7 +12,7 @@ public class class272 {
 
    @ObfuscatedName("ic")
    @ObfuscatedSignature(
-      signature = "([LWidget;II)V",
+      signature = "([Lhy;II)V",
       garbageValue = "883853763"
    )
    static final void method4829(Widget[] var0, int var1) {

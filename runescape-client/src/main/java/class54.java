@@ -6,10 +6,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ba")
 public class class54 {
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "[Lie;"
+   )
    public static Area[] field662;
    @ObfuscatedName("ak")
    static java.awt.Font field657;
    @ObfuscatedName("ce")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    static IndexData field660;
    @ObfuscatedName("hv")
    @ObfuscatedGetter(

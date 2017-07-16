@@ -6,6 +6,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ha")
 public class class217 {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field2790;
 
    @ObfuscatedName("ar")

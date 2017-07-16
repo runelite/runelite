@@ -14,10 +14,19 @@ public class class203 {
    @Export("colorsToReplace")
    public static short[][] colorsToReplace;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lga;"
+   )
    public static class204 field2500;
    @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Ldu;"
+   )
    public static class112 field2506;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field2502;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
@@ -25,10 +34,19 @@ public class class203 {
    )
    public static int field2503;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field2499;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field2512;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field2498;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
@@ -38,10 +56,19 @@ public class class203 {
    @ObfuscatedName("m")
    public static boolean field2505;
    @ObfuscatedName("ps")
+   @ObfuscatedSignature(
+      signature = "Lce;"
+   )
    static class102 field2511;
    @ObfuscatedName("lj")
+   @ObfuscatedSignature(
+      signature = "[Lhy;"
+   )
    static Widget[] field2508;
    @ObfuscatedName("gl")
+   @ObfuscatedSignature(
+      signature = "Ljt;"
+   )
    @Export("mapedge")
    static SpritePixels mapedge;
    @ObfuscatedName("cv")
@@ -53,7 +80,7 @@ public class class203 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;IB)Lclass207;",
+      signature = "(Lif;IB)Lgu;",
       garbageValue = "-30"
    )
    static class207 method3695(IndexDataBase var0, int var1) {

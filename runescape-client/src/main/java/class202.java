@@ -5,6 +5,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("gv")
 public class class202 {
    @ObfuscatedName("rn")
+   @ObfuscatedSignature(
+      signature = "Lkk;"
+   )
    static MachineInfo field2496;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
@@ -57,7 +60,7 @@ public class class202 {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;Lclass289;I)Ljava/lang/String;",
+      signature = "(Ljava/lang/CharSequence;Lko;I)Ljava/lang/String;",
       garbageValue = "-3230014"
    )
    public static String method3682(CharSequence var0, class289 var1) {

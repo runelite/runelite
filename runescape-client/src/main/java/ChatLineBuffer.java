@@ -14,6 +14,9 @@ public class ChatLineBuffer {
    @Export("sampleRate")
    public static int sampleRate;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "[Lbv;"
+   )
    @Export("lines")
    MessageNode[] lines;
    @ObfuscatedName("n")
@@ -29,7 +32,7 @@ public class ChatLineBuffer {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)LMessageNode;",
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbv;",
       garbageValue = "-1645741941"
    )
    MessageNode method1842(int var1, String var2, String var3, String var4) {
@@ -59,7 +62,7 @@ public class ChatLineBuffer {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(II)LMessageNode;",
+      signature = "(II)Lbv;",
       garbageValue = "-1978449528"
    )
    MessageNode method1843(int var1) {

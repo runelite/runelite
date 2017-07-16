@@ -1,12 +1,19 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("df")
 public abstract class class119 extends Node {
    @ObfuscatedName("w")
    volatile boolean field1707;
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Ldw;"
+   )
    class122 field1706;
    @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Ldf;"
+   )
    class119 field1705;
    @ObfuscatedName("x")
    int field1704;
@@ -32,9 +39,15 @@ public abstract class class119 extends Node {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "()Ldf;"
+   )
    protected abstract class119 vmethod3882();
 
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "()Ldf;"
+   )
    protected abstract class119 vmethod3883();
 
    @ObfuscatedName("al")

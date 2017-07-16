@@ -2,6 +2,7 @@ import java.util.Random;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("js")
 @Implements("FontTypeFace")
@@ -35,6 +36,9 @@ public abstract class FontTypeFace extends Rasterizer2D {
    @ObfuscatedName("h")
    static int field3654;
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "[Ljf;"
+   )
    @Export("modIcons")
    public static ModIcon[] modIcons;
    @ObfuscatedName("j")
@@ -999,14 +1003,14 @@ public abstract class FontTypeFace extends Rasterizer2D {
    @ObfuscatedName("ax")
    @Export("renderRGBA")
    static void renderRGBA(int[] var0, byte[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
-      var2 = ((var2 & '\uff00') * var9 & 16711680) + ((var2 & 16711935) * var9 & -16711936) >> 8;
+      var2 = (var9 * (var2 & '\uff00') & 16711680) + ((var2 & 16711935) * var9 & -16711936) >> 8;
       var9 = 256 - var9;
 
       for(int var10 = -var6; var10 < 0; ++var10) {
          for(int var11 = -var5; var11 < 0; ++var11) {
             if(var1[var3++] != 0) {
                int var12 = var0[var4];
-               var0[var4++] = var2 + ((var9 * (var12 & 16711935) & -16711936) + ((var12 & '\uff00') * var9 & 16711680) >> 8);
+               var0[var4++] = var2 + (((var12 & '\uff00') * var9 & 16711680) + ((var12 & 16711935) * var9 & -16711936) >> 8);
             } else {
                ++var4;
             }

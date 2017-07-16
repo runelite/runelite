@@ -6,6 +6,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("b")
 public class class23 {
    @ObfuscatedName("ru")
+   @ObfuscatedSignature(
+      signature = "Lct;"
+   )
    @Export("preferences")
    static Preferences preferences;
    @ObfuscatedName("jj")
@@ -15,6 +18,9 @@ public class class23 {
    @Export("menuHeight")
    static int menuHeight;
    @ObfuscatedName("gd")
+   @ObfuscatedSignature(
+      signature = "[Ljt;"
+   )
    @Export("pkIcons")
    static SpritePixels[] pkIcons;
 

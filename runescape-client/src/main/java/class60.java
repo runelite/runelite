@@ -54,7 +54,7 @@ public final class class60 {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IIIIIILRegion;LCollisionData;I)V",
+      signature = "(IIIIIILem;Lfv;I)V",
       garbageValue = "1829593573"
    )
    @Export("addObject")
@@ -99,7 +99,7 @@ public final class class60 {
          int var16 = var15[var12][var14] + var15[var11][var14] + var15[var12][var13] + var15[var11][var13] >> 2;
          int var17 = (var1 << 7) + (var9 << 6);
          int var18 = (var2 << 7) + (var10 << 6);
-         int var19 = (var2 << 7) + var1 + (var3 << 14) + 1073741824;
+         int var19 = (var3 << 14) + (var2 << 7) + var1 + 1073741824;
          if(var8.field3453 == 0) {
             var19 -= Integer.MIN_VALUE;
          }
@@ -430,7 +430,7 @@ public final class class60 {
 
    @ObfuscatedName("jz")
    @ObfuscatedSignature(
-      signature = "(LWidget;II)Ljava/lang/String;",
+      signature = "(Lhy;II)Ljava/lang/String;",
       garbageValue = "1921831222"
    )
    static String method1033(Widget var0, int var1) {

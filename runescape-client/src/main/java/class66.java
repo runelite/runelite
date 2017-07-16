@@ -5,17 +5,32 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bt")
 public class class66 {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lbt;"
+   )
    static final class66 field809;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lbt;"
+   )
    static final class66 field808;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lbt;"
+   )
    static final class66 field810;
    @ObfuscatedName("ik")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    static Widget field813;
    @ObfuscatedName("d")
    @Export("userHome")
    public static String userHome;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lbt;"
+   )
    static final class66 field811;
 
    static {
@@ -42,7 +57,7 @@ public class class66 {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(LModIcon;B)V",
+      signature = "(Ljf;B)V",
       garbageValue = "-34"
    )
    static final void method1084(ModIcon var0) {

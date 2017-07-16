@@ -1,10 +1,17 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gp")
 public class class196 {
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lgp;"
+   )
    class196 field2473;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgp;"
+   )
    class196 field2474;
 
    @ObfuscatedName("a")

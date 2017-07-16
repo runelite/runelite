@@ -25,7 +25,7 @@ public class class152 extends RuntimeException {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)LFileOnDisk;",
+      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Ldk;",
       garbageValue = "-127441284"
    )
    @Export("getPreferencesFile")

@@ -32,7 +32,7 @@ public class class67 extends class196 {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(III)LMessageNode;",
+      signature = "(III)Lbv;",
       garbageValue = "82652202"
    )
    static MessageNode method1087(int var0, int var1) {

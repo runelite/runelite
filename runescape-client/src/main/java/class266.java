@@ -12,7 +12,7 @@ public class class266 {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;I)[LModIcon;",
+      signature = "(Lif;Ljava/lang/String;Ljava/lang/String;I)[Ljf;",
       garbageValue = "-1038978163"
    )
    public static ModIcon[] method4774(IndexDataBase var0, String var1, String var2) {

@@ -1,6 +1,7 @@
 import java.util.zip.CRC32;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("iw")
 public class class238 {
@@ -15,6 +16,9 @@ public class class238 {
    )
    public static int field3253;
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
    public static XHashTable field3260;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
@@ -22,8 +26,14 @@ public class class238 {
    )
    public static int field3252;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
    public static XHashTable field3255;
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lgb;"
+   )
    public static Node2LinkedList field3259;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
@@ -31,6 +41,9 @@ public class class238 {
    )
    public static int field3272;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
    public static XHashTable field3269;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
@@ -43,6 +56,9 @@ public class class238 {
    )
    public static int field3257;
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
    public static XHashTable field3262;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
@@ -55,10 +71,19 @@ public class class238 {
    )
    public static int field3256;
    @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "[Lig;"
+   )
    static IndexData[] field3267;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lfq;"
+   )
    public static RSSocket field3264;
    @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lfe;"
+   )
    public static Buffer field3266;
    @ObfuscatedName("o")
    @ObfuscatedGetter(

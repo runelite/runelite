@@ -6,13 +6,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("i")
 public class class21 {
    @ObfuscatedName("ex")
+   @ObfuscatedSignature(
+      signature = "Ljc;"
+   )
    static Font field338;
    @ObfuscatedName("al")
    protected static boolean field339;
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)Lclass254;",
+      signature = "(II)Lir;",
       garbageValue = "-1766720437"
    )
    public static class254 method154(int var0) {
@@ -33,12 +36,12 @@ public class class21 {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LIndexData;II)V",
+      signature = "(Lig;II)V",
       garbageValue = "1341567098"
    )
    static void method155(IndexData var0, int var1) {
       if(class44.field568 != null) {
-         class44.field568.offset = 8 * var1 + 5;
+         class44.field568.offset = var1 * 8 + 5;
          int var2 = class44.field568.readInt();
          int var3 = class44.field568.readInt();
          var0.setInformation(var2, var3);
@@ -96,7 +99,7 @@ public class class21 {
 
    @ObfuscatedName("ak")
    @ObfuscatedSignature(
-      signature = "(ILCoordinates;ZB)V",
+      signature = "(ILhd;ZB)V",
       garbageValue = "-30"
    )
    static void method151(int var0, Coordinates var1, boolean var2) {

@@ -6,6 +6,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("an")
 public class class47 {
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    public static IndexDataBase field592;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
@@ -13,10 +16,19 @@ public class class47 {
    )
    public int field590;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lhd;"
+   )
    public Coordinates field589;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lhd;"
+   )
    public Coordinates field593;
 
+   @ObfuscatedSignature(
+      signature = "(ILhd;Lhd;)V"
+   )
    public class47(int var1, Coordinates var2, Coordinates var3) {
       this.field590 = var1;
       this.field589 = var2;
@@ -78,7 +90,7 @@ public class class47 {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
+      signature = "(ILcg;ZI)I",
       garbageValue = "744635069"
    )
    static int method718(int var0, Script var1, boolean var2) {
@@ -180,7 +192,7 @@ public class class47 {
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
+      signature = "(ILcg;ZI)I",
       garbageValue = "1959893192"
    )
    static int method715(int var0, Script var1, boolean var2) {
@@ -218,7 +230,7 @@ public class class47 {
 
    @ObfuscatedName("gm")
    @ObfuscatedSignature(
-      signature = "(LActor;II)V",
+      signature = "(Lca;II)V",
       garbageValue = "1366239204"
    )
    @Export("characterToScreen")

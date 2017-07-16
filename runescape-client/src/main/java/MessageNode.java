@@ -60,7 +60,7 @@ public class MessageNode extends CacheableNode {
 
    @ObfuscatedName("ae")
    @ObfuscatedSignature(
-      signature = "(ILScript;ZI)I",
+      signature = "(ILcg;ZI)I",
       garbageValue = "41773227"
    )
    static int method1107(int var0, Script var1, boolean var2) {

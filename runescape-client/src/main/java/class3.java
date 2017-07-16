@@ -6,6 +6,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("r")
 final class class3 implements class0 {
    @ObfuscatedName("db")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    @Export("indexWorldMap")
    static IndexData indexWorldMap;
    @ObfuscatedName("ix")
@@ -22,7 +25,7 @@ final class class3 implements class0 {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(LModel;IIII)Z",
+      signature = "(Lej;IIII)Z",
       garbageValue = "-623009937"
    )
    static final boolean method9(Model var0, int var1, int var2, int var3) {

@@ -25,7 +25,7 @@ public final class Item extends Renderable {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)LModel;",
+      signature = "(B)Lej;",
       garbageValue = "19"
    )
    protected final Model getModel() {

@@ -28,7 +28,7 @@ public class class37 {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LPacketBuffer;B)I",
+      signature = "(Lff;B)I",
       garbageValue = "1"
    )
    static int method490(PacketBuffer var0) {
@@ -49,7 +49,7 @@ public class class37 {
 
    @ObfuscatedName("it")
    @ObfuscatedSignature(
-      signature = "(LWidget;IIB)V",
+      signature = "(Lhy;IIB)V",
       garbageValue = "15"
    )
    static final void method500(Widget var0, int var1, int var2) {

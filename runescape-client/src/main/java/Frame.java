@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("eg")
 @Implements("Frame")
@@ -17,6 +18,9 @@ public class Frame {
    @Export("showing")
    boolean showing;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Leb;"
+   )
    @Export("skin")
    FrameMap skin;
    @ObfuscatedName("e")
@@ -40,6 +44,9 @@ public class Frame {
       field1882 = new int[500];
    }
 
+   @ObfuscatedSignature(
+      signature = "([BLeb;)V"
+   )
    Frame(byte[] var1, FrameMap var2) {
       this.skin = null;
       this.field1884 = -1;

@@ -4,6 +4,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bw")
 public class class64 {
    @ObfuscatedName("gi")
+   @ObfuscatedSignature(
+      signature = "[Ljt;"
+   )
    static SpritePixels[] field799;
 
    @ObfuscatedName("gf")
@@ -72,7 +75,7 @@ public class class64 {
          }
 
          var29 = Client.field969 + Client.mapAngle & 2047;
-         class182.method3428(class54.field659, Actor.getTileHeight(Script.localPlayer.x, Script.localPlayer.y, class45.plane) - Client.field995, class48.field605, var5, var29, var5 * 3 + 600);
+         class182.method3428(class54.field659, Actor.getTileHeight(Script.localPlayer.x, Script.localPlayer.y, class45.plane) - Client.field995, class48.field605, var5, var29, 3 * var5 + 600);
       }
 
       int var8;
@@ -373,7 +376,7 @@ public class class64 {
             if(Client.field1163[var18] == 4) {
                var26 = (150 - Client.field1167[var18]) * (class21.field338.method4721(var31) + 100) / 150;
                Rasterizer2D.setInnerDrawRegion(var0 + Client.screenY - 50, var1, var0 + Client.screenY + 50, var3 + var1);
-               class21.field338.method4725(var31, var0 + Client.screenY + 50 - var26, Client.screenX + var1, var25, 0);
+               class21.field338.method4725(var31, Client.screenY + var0 + 50 - var26, Client.screenX + var1, var25, 0);
                Rasterizer2D.setDrawRegion(var0, var1, var0 + var2, var3 + var1);
             }
 

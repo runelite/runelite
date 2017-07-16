@@ -5,12 +5,21 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("jy")
 public class class262 {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    IndexDataBase field3633;
    @ObfuscatedName("n")
    HashMap field3634;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    IndexDataBase field3632;
 
+   @ObfuscatedSignature(
+      signature = "(Lif;Lif;)V"
+   )
    public class262(IndexDataBase var1, IndexDataBase var2) {
       this.field3633 = var1;
       this.field3632 = var2;
@@ -19,7 +28,7 @@ public class class262 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([Lclass261;I)Ljava/util/HashMap;",
+      signature = "([Ljk;I)Ljava/util/HashMap;",
       garbageValue = "-1123358068"
    )
    public HashMap method4656(class261[] var1) {

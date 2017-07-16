@@ -18,7 +18,7 @@ public class class73 extends class163 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IIILCollisionData;I)Z",
+      signature = "(IIILfv;I)Z",
       garbageValue = "1809467862"
    )
    public boolean vmethod3052(int var1, int var2, int var3, CollisionData var4) {

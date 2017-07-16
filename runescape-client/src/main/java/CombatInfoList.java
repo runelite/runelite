@@ -2,13 +2,20 @@ import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gi")
 @Implements("CombatInfoList")
 public class CombatInfoList implements Iterable {
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lge;"
+   )
    Node field2463;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lge;"
+   )
    @Export("node")
    Node node;
 
@@ -19,6 +26,9 @@ public class CombatInfoList implements Iterable {
    }
 
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Lge;)Lge;"
+   )
    Node method3579(Node var1) {
       Node var2;
       if(var1 == null) {
@@ -42,11 +52,17 @@ public class CombatInfoList implements Iterable {
    }
 
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "()Lge;"
+   )
    public Node method3558() {
       return this.method3579((Node)null);
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "()Lge;"
+   )
    public Node method3560() {
       Node var1 = this.field2463;
       if(var1 == this.node) {
@@ -59,6 +75,9 @@ public class CombatInfoList implements Iterable {
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lge;)V"
+   )
    public void method3555(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
@@ -71,6 +90,9 @@ public class CombatInfoList implements Iterable {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lge;)V"
+   )
    public void method3563(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
@@ -83,6 +105,9 @@ public class CombatInfoList implements Iterable {
    }
 
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "()Lge;"
+   )
    public Node method3559() {
       Node var1 = this.node.next;
       if(var1 == this.node) {
@@ -98,6 +123,9 @@ public class CombatInfoList implements Iterable {
    }
 
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Lge;Lge;)V"
+   )
    public static void method3556(Node var0, Node var1) {
       if(var0.previous != null) {
          var0.unlink();

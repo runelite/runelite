@@ -9,6 +9,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Renderable")
 public abstract class Renderable extends CacheableNode {
    @ObfuscatedName("cg")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    @Export("indexModels")
    static IndexData indexModels;
    @ObfuscatedName("cc")
@@ -24,7 +27,7 @@ public abstract class Renderable extends CacheableNode {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)LModel;",
+      signature = "(B)Lej;",
       garbageValue = "19"
    )
    @Export("getModel")
@@ -45,7 +48,7 @@ public abstract class Renderable extends CacheableNode {
 
    @ObfuscatedName("ju")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "-1611362339"
    )
    static void method2863(Buffer var0) {

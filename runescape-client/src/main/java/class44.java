@@ -8,8 +8,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("at")
 public class class44 extends WorldMapData {
    @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lfe;"
+   )
    static Buffer field568;
    @ObfuscatedName("oa")
+   @ObfuscatedSignature(
+      signature = "[Lbx;"
+   )
    @Export("clanMembers")
    static XClanMember[] clanMembers;
    @ObfuscatedName("t")
@@ -21,7 +27,7 @@ public class class44 extends WorldMapData {
 
    @ObfuscatedName("be")
    @ObfuscatedSignature(
-      signature = "(LBuffer;ZI)V",
+      signature = "(Lfe;ZI)V",
       garbageValue = "-1577245512"
    )
    void method632(Buffer var1, boolean var2) {
@@ -41,7 +47,7 @@ public class class44 extends WorldMapData {
 
    @ObfuscatedName("bu")
    @ObfuscatedSignature(
-      signature = "(LBuffer;LBuffer;LBuffer;IZI)V",
+      signature = "(Lfe;Lfe;Lfe;IZI)V",
       garbageValue = "230365169"
    )
    void method633(Buffer var1, Buffer var2, Buffer var3, int var4, boolean var5) {

@@ -5,16 +5,34 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("hm")
 public class class208 extends class119 {
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Ljf;"
+   )
    static ModIcon field2595;
    @ObfuscatedName("gm")
+   @ObfuscatedSignature(
+      signature = "[Ljf;"
+   )
    static ModIcon[] field2592;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lce;"
+   )
    class102 field2591;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lga;"
+   )
    class204 field2594;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lgt;"
+   )
    Deque field2590;
 
+   @ObfuscatedSignature(
+      signature = "(Lga;)V"
+   )
    class208(class204 var1) {
       this.field2590 = new Deque();
       this.field2591 = new class102();
@@ -70,6 +88,9 @@ public class class208 extends class119 {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "()Ldf;"
+   )
    protected class119 vmethod3882() {
       class205 var1;
       do {
@@ -84,14 +105,14 @@ public class class208 extends class119 {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lclass205;II)V",
+      signature = "(Lgq;II)V",
       garbageValue = "2012250581"
    )
    void method3889(class205 var1, int var2) {
       if((this.field2594.field2526[var1.field2545] & 4) != 0 && var1.field2551 < 0) {
          int var3 = this.field2594.field2531[var1.field2545] / ChatLineBuffer.sampleRate;
          int var4 = (var3 + 1048575 - var1.field2561) / var3;
-         var1.field2561 = var3 * var2 + var1.field2561 & 1048575;
+         var1.field2561 = var2 * var3 + var1.field2561 & 1048575;
          if(var4 <= var2) {
             if(this.field2594.field2516[var1.field2545] == 0) {
                var1.field2557 = class117.method2178(var1.field2543, var1.field2557.method2129(), var1.field2557.method2116(), var1.field2557.method2135());
@@ -113,7 +134,7 @@ public class class208 extends class119 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lclass205;[IIIIB)V",
+      signature = "(Lgq;[IIIIB)V",
       garbageValue = "114"
    )
    void method3874(class205 var1, int[] var2, int var3, int var4, int var5) {
@@ -162,6 +183,9 @@ public class class208 extends class119 {
    }
 
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "()Ldf;"
+   )
    protected class119 vmethod3883() {
       class205 var1 = (class205)this.field2590.getFront();
       return (class119)(var1 == null?null:(var1.field2557 != null?var1.field2557:this.vmethod3882()));

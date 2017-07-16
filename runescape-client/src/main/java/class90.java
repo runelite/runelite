@@ -21,7 +21,7 @@ public class class90 {
 
    @ObfuscatedName("jj")
    @ObfuscatedSignature(
-      signature = "(LWidget;I)Z",
+      signature = "(Lhy;I)Z",
       garbageValue = "631404057"
    )
    static boolean method1690(Widget var0) {
@@ -82,7 +82,7 @@ public class class90 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LPacketBuffer;B)V",
+      signature = "(Lff;B)V",
       garbageValue = "66"
    )
    @Export("initializeGPI")

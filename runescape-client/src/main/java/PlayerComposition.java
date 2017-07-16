@@ -11,6 +11,9 @@ public class PlayerComposition {
    @ObfuscatedName("m")
    static final int[] field2624;
    @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
    public static NodeCache field2627;
    @ObfuscatedName("l")
    @Export("colorsToFind")
@@ -123,7 +126,7 @@ public class PlayerComposition {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(LSequence;ILSequence;IB)LModel;",
+      signature = "(Ljg;ILjg;IB)Lej;",
       garbageValue = "127"
    )
    public Model method3940(Sequence var1, int var2, Sequence var3, int var4) {
@@ -236,7 +239,7 @@ public class PlayerComposition {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)LModelData;",
+      signature = "(B)Ldv;",
       garbageValue = "35"
    )
    ModelData method3947() {
@@ -305,7 +308,7 @@ public class PlayerComposition {
       garbageValue = "1383977182"
    )
    public int method3941() {
-      return this.transformedNpcId == -1?this.equipmentIds[1] + (this.equipmentIds[11] << 5) + (this.bodyPartColours[0] << 25) + (this.bodyPartColours[4] << 20) + (this.equipmentIds[0] << 15) + (this.equipmentIds[8] << 10):305419896 + class224.getNpcDefinition(this.transformedNpcId).id;
+      return this.transformedNpcId == -1?this.equipmentIds[1] + (this.equipmentIds[0] << 15) + (this.bodyPartColours[0] << 25) + (this.bodyPartColours[4] << 20) + (this.equipmentIds[8] << 10) + (this.equipmentIds[11] << 5):305419896 + class224.getNpcDefinition(this.transformedNpcId).id;
    }
 
    @ObfuscatedName("j")
@@ -395,7 +398,7 @@ public class PlayerComposition {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
+      signature = "(Lfe;I)V",
       garbageValue = "2144022345"
    )
    public void method3938(Buffer var1) {
@@ -419,7 +422,7 @@ public class PlayerComposition {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)LObjectComposition;",
+      signature = "(II)Lim;",
       garbageValue = "-2086324149"
    )
    @Export("getObjectDefinition")

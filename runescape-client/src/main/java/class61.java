@@ -74,7 +74,7 @@ public final class class61 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)LWidget;",
+      signature = "(II)Lhy;",
       garbageValue = "-890117828"
    )
    public static Widget method1038(int var0) {
@@ -92,7 +92,7 @@ public final class class61 {
 
    @ObfuscatedName("ag")
    @ObfuscatedSignature(
-      signature = "(Lclass119;B)V",
+      signature = "(Ldf;B)V",
       garbageValue = "119"
    )
    static final void method1077(class119 var0) {

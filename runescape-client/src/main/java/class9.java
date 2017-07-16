@@ -40,7 +40,7 @@ public abstract class class9 extends Node {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)LEnum;",
+      signature = "(II)Lis;",
       garbageValue = "-547286080"
    )
    public static Enum method45(int var0) {

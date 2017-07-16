@@ -20,7 +20,7 @@ final class class95 implements Comparator {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lclass14;Lclass14;I)I",
+      signature = "(Lt;Lt;I)I",
       garbageValue = "-515627641"
    )
    int method1748(class14 var1, class14 var2) {

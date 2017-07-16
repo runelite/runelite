@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class class51 implements class103 {
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)LAbstractSoundSystem;",
+      signature = "(I)Lds;",
       garbageValue = "1201696267"
    )
    public AbstractSoundSystem vmethod1892() {
@@ -14,7 +14,7 @@ public class class51 implements class103 {
 
    @ObfuscatedName("ji")
    @ObfuscatedSignature(
-      signature = "(LWidget;IIII)V",
+      signature = "(Lhy;IIII)V",
       garbageValue = "-341650785"
    )
    static final void method785(Widget var0, int var1, int var2, int var3) {

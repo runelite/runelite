@@ -13,11 +13,17 @@ public class FileSystem extends Node {
    )
    int field3204;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lfz;"
+   )
    @Export("index")
    IndexFile index;
    @ObfuscatedName("j")
    byte[] field3202;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    @Export("data")
    IndexData data;
 

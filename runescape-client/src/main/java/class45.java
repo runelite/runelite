@@ -66,7 +66,7 @@ public class class45 extends class28 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LBuffer;LBuffer;I)V",
+      signature = "(Lfe;Lfe;I)V",
       garbageValue = "246644215"
    )
    void method660(Buffer var1, Buffer var2) {
@@ -156,7 +156,7 @@ public class class45 extends class28 {
 
    @ObfuscatedName("ia")
    @ObfuscatedSignature(
-      signature = "([LWidget;IIIIIIII)V",
+      signature = "([Lhy;IIIIIIII)V",
       garbageValue = "1116699053"
    )
    static final void method662(Widget[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
@@ -247,7 +247,7 @@ public class class45 extends class28 {
                               var23 = Graphics3D.SINE[var22];
                               var24 = Graphics3D.COSINE[var22];
                               var23 = (Client.mapScaleDelta + 256) * var23 >> 8;
-                              var24 = var24 * (256 + Client.mapScaleDelta) >> 8;
+                              var24 = var24 * (Client.mapScaleDelta + 256) >> 8;
                               var25 = var36 * var24 + var23 * var21 >> 11;
                               var26 = var24 * var21 - var23 * var36 >> 11;
                               int var27 = var25 + Script.localPlayer.x >> 7;

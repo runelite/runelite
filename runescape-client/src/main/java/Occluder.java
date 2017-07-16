@@ -8,6 +8,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Occluder")
 public final class Occluder {
    @ObfuscatedName("eo")
+   @ObfuscatedSignature(
+      signature = "Lfq;"
+   )
    @Export("rssocket")
    static RSSocket rssocket;
    @ObfuscatedName("u")
@@ -119,7 +122,7 @@ public final class Occluder {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ILIndexFile;LIndexData;B)V",
+      signature = "(ILfz;Lig;B)V",
       garbageValue = "23"
    )
    static void method2888(int var0, IndexFile var1, IndexData var2) {
@@ -144,7 +147,7 @@ public final class Occluder {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;I)V",
+      signature = "(Lif;Lif;I)V",
       garbageValue = "1570497041"
    )
    public static void method2887(IndexDataBase var0, IndexDataBase var1) {

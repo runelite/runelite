@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fo")
 public class class175 {
@@ -14,5 +15,8 @@ public class class175 {
    )
    static long field2411;
    @ObfuscatedName("bp")
+   @ObfuscatedSignature(
+      signature = "[Ljf;"
+   )
    static ModIcon[] field2409;
 }

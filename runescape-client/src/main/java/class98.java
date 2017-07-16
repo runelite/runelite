@@ -16,10 +16,19 @@ public class class98 {
    @Export("chatLineMap")
    static final Map chatLineMap;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lgl;"
+   )
    static final class186 field1520;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lgz;"
+   )
    static final class201 field1526;
    @ObfuscatedName("ks")
+   @ObfuscatedSignature(
+      signature = "Lcf;"
+   )
    static class89 field1525;
    @ObfuscatedName("m")
    @Export("blendedSaturation")

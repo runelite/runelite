@@ -7,13 +7,19 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Frames")
 public class Frames extends CacheableNode {
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "[Ljf;"
+   )
    static ModIcon[] field2137;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "[Leg;"
+   )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;IZ)V",
+      signature = "(Lif;Lif;IZ)V",
       garbageValue = "0"
    )
    public Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
@@ -56,7 +62,7 @@ public class Frames extends CacheableNode {
 
    @ObfuscatedName("if")
    @ObfuscatedSignature(
-      signature = "([LWidget;IIIIIIIIS)V",
+      signature = "([Lhy;IIIIIIIIS)V",
       garbageValue = "28686"
    )
    @Export("gameDraw")
@@ -326,7 +332,7 @@ public class Frames extends CacheableNode {
                                  for(var24 = 0; var24 < 104; ++var24) {
                                     Deque var48 = Client.groundItemDeque[class45.plane][var23][var24];
                                     if(var48 != null) {
-                                       var26 = var23 * 4 + 2 - Script.localPlayer.x / 32;
+                                       var26 = 4 * var23 + 2 - Script.localPlayer.x / 32;
                                        var49 = var24 * 4 + 2 - Script.localPlayer.y / 32;
                                        ScriptVarType.drawDot(var12, var13, var26, var49, class163.mapDots[0], var57);
                                     }
@@ -624,7 +630,7 @@ public class Frames extends CacheableNode {
                                        for(var24 = 0; var24 < var22; ++var24) {
                                           for(var25 = 0; var25 < var23; ++var25) {
                                              if(var10.textureId != 0) {
-                                                var56.method5023(var12 + var24 * var20 + var20 / 2, var13 + var21 * var25 + var21 / 2, var10.textureId, 4096);
+                                                var56.method5023(var24 * var20 + var12 + var20 / 2, var13 + var21 * var25 + var21 / 2, var10.textureId, 4096);
                                              } else if(var14 != 0) {
                                                 var56.method4989(var12 + var20 * var24, var13 + var21 * var25, 256 - (var14 & 255));
                                              } else {
@@ -720,8 +726,8 @@ public class Frames extends CacheableNode {
                                                 var47 = class46.getColTags(16748608) + var53.name + "</col>" + " " + 'x' + class56.method830(var10.itemQuantities[var20]);
                                              }
 
-                                             var25 = var22 * (var10.paddingX + 115) + var12;
-                                             var26 = var21 * (var10.paddingY + 12) + var13;
+                                             var25 = var22 * (115 + var10.paddingX) + var12;
+                                             var26 = var21 * (12 + var10.paddingY) + var13;
                                              if(var10.field2716 == 0) {
                                                 var55.method4725(var47, var25, var26, var10.textColor, var10.textShadowed?0:-1);
                                              } else if(var10.field2716 == 1) {
@@ -762,7 +768,7 @@ public class Frames extends CacheableNode {
                                     var46 += 6;
                                     var20 += 7;
                                     var24 = var12 + var10.width - 5 - var46;
-                                    var25 = var10.height + var13 + 5;
+                                    var25 = var13 + var10.height + 5;
                                     if(var24 < var12 + 5) {
                                        var24 = var12 + 5;
                                     }

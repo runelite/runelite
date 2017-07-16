@@ -19,9 +19,15 @@ public class TextureProvider implements ITextureLoader {
    @Export("brightness")
    double brightness;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "[Leo;"
+   )
    @Export("textures")
    Texture[] textures;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lgt;"
+   )
    @Export("deque")
    Deque deque;
    @ObfuscatedName("r")
@@ -31,6 +37,9 @@ public class TextureProvider implements ITextureLoader {
    @Export("size")
    int size;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("sprites")
    IndexDataBase sprites;
    @ObfuscatedName("n")
@@ -40,6 +49,9 @@ public class TextureProvider implements ITextureLoader {
    @Export("maxSize")
    int maxSize;
 
+   @ObfuscatedSignature(
+      signature = "(Lif;Lif;IDI)V"
+   )
    public TextureProvider(IndexDataBase var1, IndexDataBase var2, int var3, double var4, int var6) {
       this.deque = new Deque();
       this.size = 0;
@@ -164,7 +176,7 @@ public class TextureProvider implements ITextureLoader {
 
    @ObfuscatedName("au")
    @ObfuscatedSignature(
-      signature = "(LSignlink;IIB)LAbstractSoundSystem;",
+      signature = "(Len;IIB)Lds;",
       garbageValue = "-54"
    )
    public static final AbstractSoundSystem method2381(Signlink var0, int var1, int var2) {

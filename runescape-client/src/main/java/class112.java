@@ -5,19 +5,37 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("du")
 public class class112 {
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lby;"
+   )
    @Export("worldServersDownload")
    static class77 worldServersDownload;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("vorbis_index")
    IndexDataBase vorbis_index;
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lif;"
+   )
    @Export("sfx_index")
    IndexDataBase sfx_index;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
    XHashTable field1657;
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
    XHashTable field1658;
 
+   @ObfuscatedSignature(
+      signature = "(Lif;Lif;)V"
+   )
    public class112(IndexDataBase var1, IndexDataBase var2) {
       this.field1658 = new XHashTable(256);
       this.field1657 = new XHashTable(256);
@@ -27,7 +45,7 @@ public class class112 {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(II[II)Lclass107;",
+      signature = "(II[II)Ldm;",
       garbageValue = "972050229"
    )
    class107 method2060(int var1, int var2, int[] var3) {
@@ -63,7 +81,7 @@ public class class112 {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II[II)Lclass107;",
+      signature = "(II[II)Ldm;",
       garbageValue = "2100864803"
    )
    class107 method2061(int var1, int var2, int[] var3) {
@@ -93,7 +111,7 @@ public class class112 {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(I[II)Lclass107;",
+      signature = "(I[II)Ldm;",
       garbageValue = "671573384"
    )
    public class107 method2063(int var1, int[] var2) {
@@ -108,7 +126,7 @@ public class class112 {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(I[II)Lclass107;",
+      signature = "(I[II)Ldm;",
       garbageValue = "2016154789"
    )
    public class107 method2064(int var1, int[] var2) {
@@ -123,7 +141,7 @@ public class class112 {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IB)LSequence;",
+      signature = "(IB)Ljg;",
       garbageValue = "-93"
    )
    @Export("getAnimation")

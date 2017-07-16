@@ -1,9 +1,13 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gz")
 public class class201 implements Iterable {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lgn;"
+   )
    public CacheableNode field2484;
 
    public class201() {
@@ -21,6 +25,9 @@ public class class201 implements Iterable {
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lgn;)V"
+   )
    public void method3674(CacheableNode var1) {
       if(var1.next != null) {
          var1.unlinkDual();

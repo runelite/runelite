@@ -9,18 +9,33 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Tile")
 public final class Tile extends Node {
    @ObfuscatedName("co")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    @Export("configsIndex")
    static IndexData configsIndex;
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lez;"
+   )
    @Export("paint")
    SceneTilePaint paint;
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lex;"
+   )
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Ldj;"
+   )
    @Export("itemLayer")
    ItemLayer itemLayer;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lea;"
+   )
    @Export("wallObject")
    WallObject wallObject;
    @ObfuscatedName("m")
@@ -30,9 +45,15 @@ public final class Tile extends Node {
    @Export("entityCount")
    int entityCount;
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Ldq;"
+   )
    @Export("groundObject")
    GroundObject groundObject;
    @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "[Lee;"
+   )
    @Export("objects")
    GameObject[] objects;
    @ObfuscatedName("t")
@@ -42,12 +63,18 @@ public final class Tile extends Node {
    @Export("physicalLevel")
    int physicalLevel;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Ldt;"
+   )
    @Export("overlay")
    SceneTileModel overlay;
    @ObfuscatedName("g")
    @Export("entityFlags")
    int[] entityFlags;
    @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Lei;"
+   )
    @Export("bridge")
    Tile bridge;
    @ObfuscatedName("k")

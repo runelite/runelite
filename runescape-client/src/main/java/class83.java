@@ -24,6 +24,9 @@ public class class83 {
    @Export("scriptStackCount")
    static int scriptStackCount;
    @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "[Lbo;"
+   )
    @Export("scriptStack")
    static ScriptState[] scriptStack;
    @ObfuscatedName("t")
@@ -36,6 +39,9 @@ public class class83 {
    )
    static int field1334;
    @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lan;"
+   )
    static class47 field1330;
    @ObfuscatedName("n")
    @Export("scriptLocalInts")
@@ -44,6 +50,9 @@ public class class83 {
    @Export("scriptLocalStrings")
    static String[] scriptLocalStrings;
    @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    static Widget field1336;
 
    static {
@@ -69,7 +78,7 @@ public class class83 {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(II)LItemComposition;",
+      signature = "(II)Liz;",
       garbageValue = "-1986557717"
    )
    @Export("getItemDefinition")

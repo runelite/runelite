@@ -14,6 +14,9 @@ public class class31 {
    )
    static int field437;
    @ObfuscatedName("cb")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    @Export("indexInterfaces")
    static IndexData indexInterfaces;
    @ObfuscatedName("en")
@@ -45,7 +48,7 @@ public class class31 {
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(LWorld;B)V",
+      signature = "(Lcx;B)V",
       garbageValue = "91"
    )
    static void method276(World var0) {

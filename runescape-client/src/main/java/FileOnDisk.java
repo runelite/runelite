@@ -126,7 +126,7 @@ public final class FileOnDisk {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LIndexData;IIIBZI)V",
+      signature = "(Lig;IIIBZI)V",
       garbageValue = "-108821052"
    )
    static void method2368(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
@@ -172,7 +172,7 @@ public final class FileOnDisk {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;Ljava/lang/String;Ljava/lang/String;IZI)V",
+      signature = "(Lif;Ljava/lang/String;Ljava/lang/String;IZI)V",
       garbageValue = "1709750485"
    )
    public static void method2367(IndexDataBase var0, String var1, String var2, int var3, boolean var4) {

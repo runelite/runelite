@@ -4,6 +4,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("hg")
 public class class223 {
    @ObfuscatedName("eh")
+   @ObfuscatedSignature(
+      signature = "Ljc;"
+   )
    static Font field2847;
 
    @ObfuscatedName("g")

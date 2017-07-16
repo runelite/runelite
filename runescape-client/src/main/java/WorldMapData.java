@@ -32,6 +32,9 @@ public class WorldMapData {
    )
    int field445;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lhd;"
+   )
    Coordinates field444;
    @ObfuscatedName("u")
    LinkedList field449;
@@ -70,7 +73,7 @@ public class WorldMapData {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
+      signature = "(Lfe;II)V",
       garbageValue = "-1815537963"
    )
    @Export("loadMapData")
@@ -201,7 +204,7 @@ public class WorldMapData {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIB)LCoordinates;",
+      signature = "(IIB)Lhd;",
       garbageValue = "87"
    )
    public Coordinates method283(int var1, int var2) {
@@ -272,7 +275,7 @@ public class WorldMapData {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)LWorldMapSectionBase;",
+      signature = "(Lfe;B)Lav;",
       garbageValue = "-33"
    )
    WorldMapSectionBase method315(Buffer var1) {
@@ -347,7 +350,7 @@ public class WorldMapData {
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(B)LCoordinates;",
+      signature = "(B)Lhd;",
       garbageValue = "-87"
    )
    public Coordinates method298() {
@@ -396,7 +399,7 @@ public class WorldMapData {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lclass289;I)I",
+      signature = "(Lko;I)I",
       garbageValue = "-1893753654"
    )
    static final int method345(class289 var0) {

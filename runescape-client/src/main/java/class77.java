@@ -19,6 +19,9 @@ public class class77 {
    @ObfuscatedName("r")
    byte[] field1207;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lev;"
+   )
    Task field1204;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
@@ -45,6 +48,9 @@ public class class77 {
    )
    int field1205;
 
+   @ObfuscatedSignature(
+      signature = "(Len;Ljava/net/URL;)V"
+   )
    class77(Signlink var1, URL var2) {
       this.field1207 = new byte[4];
       this.field1204 = var1.createURL(var2);
@@ -94,7 +100,7 @@ public class class77 {
 
    @ObfuscatedName("jv")
    @ObfuscatedSignature(
-      signature = "(LWidget;I)LWidget;",
+      signature = "(Lhy;I)Lhy;",
       garbageValue = "2055211907"
    )
    static Widget method1480(Widget var0) {

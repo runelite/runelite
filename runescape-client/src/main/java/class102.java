@@ -1,10 +1,17 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ce")
 public class class102 extends class119 {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lgt;"
+   )
    Deque field1558;
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lgt;"
+   )
    Deque field1556;
    @ObfuscatedName("r")
    int field1555;
@@ -56,7 +63,7 @@ public class class102 extends class119 {
          this.method1855();
          class113 var5 = (class113)this.field1556.getFront();
          synchronized(var5) {
-            int var7 = var5.method2083(this);
+            int var7 = var5.method2083();
             if(var7 < 0) {
                var5.field1661 = 0;
                this.method1857(var5);
@@ -90,7 +97,7 @@ public class class102 extends class119 {
          this.method1855();
          class113 var3 = (class113)this.field1556.getFront();
          synchronized(var3) {
-            int var5 = var3.method2083(this);
+            int var5 = var3.method2083();
             if(var5 < 0) {
                var3.field1661 = 0;
                this.method1857(var3);
@@ -104,6 +111,9 @@ public class class102 extends class119 {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "()Ldf;"
+   )
    protected class119 vmethod3882() {
       return (class119)this.field1558.getNext();
    }
@@ -122,21 +132,33 @@ public class class102 extends class119 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Ldf;)V"
+   )
    public final synchronized void method1880(class119 var1) {
       this.field1558.addTail(var1);
    }
 
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "()Ldf;"
+   )
    protected class119 vmethod3883() {
       return (class119)this.field1558.getFront();
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Ldf;)V"
+   )
    public final synchronized void method1867(class119 var1) {
       var1.unlink();
    }
 
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(Ldn;)V"
+   )
    void method1857(class113 var1) {
       var1.unlink();
       var1.method2082();
@@ -150,6 +172,9 @@ public class class102 extends class119 {
    }
 
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(Lge;Ldn;)V"
+   )
    void method1856(Node var1, class113 var2) {
       while(this.field1556.head != var1 && ((class113)var1).field1661 <= var2.field1661) {
          var1 = var1.next;

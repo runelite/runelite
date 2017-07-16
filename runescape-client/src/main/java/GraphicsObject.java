@@ -32,6 +32,9 @@ public final class GraphicsObject extends Renderable {
    )
    int field1345;
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Ljg;"
+   )
    Sequence field1349;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
@@ -86,7 +89,7 @@ public final class GraphicsObject extends Renderable {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)LModel;",
+      signature = "(B)Lej;",
       garbageValue = "19"
    )
    protected final Model getModel() {
@@ -124,7 +127,7 @@ public final class GraphicsObject extends Renderable {
 
    @ObfuscatedName("hs")
    @ObfuscatedSignature(
-      signature = "(LPlayer;IIII)V",
+      signature = "(Lbe;IIII)V",
       garbageValue = "-2036841632"
    )
    static final void method1644(Player var0, int var1, int var2, int var3) {

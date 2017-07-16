@@ -8,6 +8,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("IndexDataBase")
 public abstract class IndexDataBase {
    @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lfl;"
+   )
    @Export("gzip")
    static GZipDecompressor gzip;
    @ObfuscatedName("o")
@@ -29,9 +32,15 @@ public abstract class IndexDataBase {
    @ObfuscatedName("t")
    boolean field3227;
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "[Lgf;"
+   )
    @Export("childIdentifiers")
    Identifiers[] childIdentifiers;
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgf;"
+   )
    @Export("identifiers")
    Identifiers identifiers;
    @ObfuscatedName("e")

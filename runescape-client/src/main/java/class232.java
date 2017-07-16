@@ -5,16 +5,34 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ho")
 public enum class232 implements RSEnum {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lho;"
+   )
    field3195("runescape", "RuneScape", 0),
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lho;"
+   )
    field3196("stellardawn", "Stellar Dawn", 1),
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lho;"
+   )
    field3194("game3", "Game 3", 2),
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lho;"
+   )
    field3197("game4", "Game 4", 3),
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lho;"
+   )
    field3192("game5", "Game 5", 4),
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lho;"
+   )
    field3193("oldscape", "RuneScape 2007", 5);
 
    @ObfuscatedName("l")

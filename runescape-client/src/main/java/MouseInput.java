@@ -13,6 +13,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("MouseInput")
 public class MouseInput implements MouseListener, MouseMotionListener, FocusListener {
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lbn;"
+   )
    @Export("mouse")
    public static MouseInput mouse;
    @ObfuscatedName("v")
@@ -93,6 +96,9 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
    @ObfuscatedName("bb")
    static String field733;
    @ObfuscatedName("nn")
+   @ObfuscatedSignature(
+      signature = "Ljm;"
+   )
    static class276 field732;
 
    static {
@@ -209,7 +215,7 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
 
    @ObfuscatedName("jb")
    @ObfuscatedSignature(
-      signature = "(LWidget;B)Ljava/lang/String;",
+      signature = "(Lhy;B)Ljava/lang/String;",
       garbageValue = "-14"
    )
    static String method1029(Widget var0) {

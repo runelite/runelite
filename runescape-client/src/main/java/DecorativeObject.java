@@ -55,9 +55,15 @@ public final class DecorativeObject {
    @Export("floor")
    int floor;
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lef;"
+   )
    @Export("renderable1")
    public Renderable renderable1;
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lef;"
+   )
    @Export("renderable2")
    public Renderable renderable2;
    @ObfuscatedName("r")
@@ -182,7 +188,7 @@ public final class DecorativeObject {
             int var18;
             if(var15 + var2 <= 104) {
                var17 = var2 + (var15 >> 1);
-               var18 = (var15 + 1 >> 1) + var2;
+               var18 = (1 + var15 >> 1) + var2;
             } else {
                var17 = var2;
                var18 = var2 + 1;

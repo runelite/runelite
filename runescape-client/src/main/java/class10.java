@@ -6,6 +6,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("m")
 public final class class10 extends class9 {
    @ObfuscatedName("dq")
+   @ObfuscatedSignature(
+      signature = "Lev;"
+   )
    static Task field262;
    @ObfuscatedName("jm")
    @ObfuscatedGetter(
@@ -26,10 +29,16 @@ public final class class10 extends class9 {
    @Export("baseY")
    static int baseY;
    @ObfuscatedName("bi")
+   @ObfuscatedSignature(
+      signature = "[Ljf;"
+   )
    static ModIcon[] field263;
    @ObfuscatedName("fv")
    static int[] field259;
    @ObfuscatedName("cz")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    @Export("indexTrack2")
    static IndexData indexTrack2;
    @ObfuscatedName("u")
@@ -70,6 +79,9 @@ public final class class10 extends class9 {
    )
    final int field268;
 
+   @ObfuscatedSignature(
+      signature = "(Lej;IIII)V"
+   )
    class10(Model var1, int var2, int var3, int var4, int var5) {
       this.field258 = var2 + var1.field1949 - var1.field1947;
       this.field252 = var3 + var1.field1950 - var1.field1974;
@@ -136,7 +148,7 @@ public final class class10 extends class9 {
             if(var14 != null) {
                int var15 = (var13.sizeX * 4 - var14.originalWidth) / 2;
                int var16 = (var13.sizeY * 4 - var14.height) / 2;
-               var14.method4952(var15 + var1 * 4 + 48, var16 + (104 - var2 - var13.sizeY) * 4 + 48);
+               var14.method4952(var15 + 4 * var1 + 48, var16 + (104 - var2 - var13.sizeY) * 4 + 48);
             }
          } else {
             if(var8 == 0 || var8 == 2) {
@@ -188,7 +200,7 @@ public final class class10 extends class9 {
                   var10[var11 + 3] = var9;
                } else if(var7 == 1) {
                   var10[var11 + 3] = var9;
-                  var10[var11 + 3 + 512] = var9;
+                  var10[3 + var11 + 512] = var9;
                   var10[var11 + 3 + 1024] = var9;
                   var10[var11 + 3 + 1536] = var9;
                } else if(var7 == 2) {
@@ -214,7 +226,7 @@ public final class class10 extends class9 {
             if(var17 != null) {
                var12 = (var23.sizeX * 4 - var17.originalWidth) / 2;
                var18 = (var23.sizeY * 4 - var17.height) / 2;
-               var17.method4952(4 * var1 + 48 + var12, var18 + (104 - var2 - var23.sizeY) * 4 + 48);
+               var17.method4952(var1 * 4 + 48 + var12, var18 + (104 - var2 - var23.sizeY) * 4 + 48);
             }
          } else if(var8 == 9) {
             var11 = 15658734;
@@ -247,7 +259,7 @@ public final class class10 extends class9 {
             if(var20 != null) {
                var9 = (var19.sizeX * 4 - var20.originalWidth) / 2;
                int var21 = (var19.sizeY * 4 - var20.height) / 2;
-               var20.method4952(var9 + 48 + var1 * 4, var21 + 4 * (104 - var2 - var19.sizeY) + 48);
+               var20.method4952(var9 + 48 + var1 * 4, var21 + (104 - var2 - var19.sizeY) * 4 + 48);
             }
          }
       }

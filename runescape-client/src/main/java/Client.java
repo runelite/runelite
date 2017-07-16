@@ -37,6 +37,9 @@ public final class Client extends GameEngine {
    @Export("widgetRoot")
    static int widgetRoot;
    @ObfuscatedName("la")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    static Widget field1079;
    @ObfuscatedName("dc")
    @ObfuscatedGetter(
@@ -163,6 +166,9 @@ public final class Client extends GameEngine {
    )
    static int field915;
    @ObfuscatedName("ew")
+   @ObfuscatedSignature(
+      signature = "Lff;"
+   )
    @Export("secretPacketBuffer2")
    static PacketBuffer secretPacketBuffer2;
    @ObfuscatedName("ky")
@@ -225,6 +231,9 @@ public final class Client extends GameEngine {
    @Export("menuActionParams0")
    static int[] menuActionParams0;
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "[Lfv;"
+   )
    @Export("collisionMaps")
    static CollisionData[] collisionMaps;
    @ObfuscatedName("lb")
@@ -255,6 +264,9 @@ public final class Client extends GameEngine {
    )
    static int field1085;
    @ObfuscatedName("ei")
+   @ObfuscatedSignature(
+      signature = "Lff;"
+   )
    @Export("secretPacketBuffer1")
    static PacketBuffer secretPacketBuffer1;
    @ObfuscatedName("bz")
@@ -263,6 +275,9 @@ public final class Client extends GameEngine {
    )
    static int field917;
    @ObfuscatedName("ma")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
    @Export("widgetFlags")
    static XHashTable widgetFlags;
    @ObfuscatedName("br")
@@ -293,12 +308,18 @@ public final class Client extends GameEngine {
    )
    static int field982;
    @ObfuscatedName("lz")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    static Widget field920;
    @ObfuscatedName("bj")
    static boolean field1069;
    @ObfuscatedName("iq")
    static boolean field1023;
    @ObfuscatedName("kn")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
    @Export("componentTable")
    static XHashTable componentTable;
    @ObfuscatedName("bq")
@@ -414,6 +435,9 @@ public final class Client extends GameEngine {
    )
    static int field1017;
    @ObfuscatedName("rt")
+   @ObfuscatedSignature(
+      signature = "Lbu;"
+   )
    static final class73 field1184;
    @ObfuscatedName("by")
    @ObfuscatedGetter(
@@ -438,6 +462,9 @@ public final class Client extends GameEngine {
    )
    static int field943;
    @ObfuscatedName("ld")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    static Widget field1078;
    @ObfuscatedName("mn")
    @ObfuscatedGetter(
@@ -460,6 +487,9 @@ public final class Client extends GameEngine {
    )
    static int field1046;
    @ObfuscatedName("cu")
+   @ObfuscatedSignature(
+      signature = "Lcd;"
+   )
    static class91 field931;
    @ObfuscatedName("ch")
    @ObfuscatedGetter(
@@ -479,6 +509,9 @@ public final class Client extends GameEngine {
    @Export("energy")
    static int energy;
    @ObfuscatedName("cy")
+   @ObfuscatedSignature(
+      signature = "Lcd;"
+   )
    static class91 field932;
    @ObfuscatedName("ly")
    @ObfuscatedGetter(
@@ -492,6 +525,9 @@ public final class Client extends GameEngine {
    )
    static int field1172;
    @ObfuscatedName("id")
+   @ObfuscatedSignature(
+      signature = "[Lbe;"
+   )
    @Export("cachedPlayers")
    static Player[] cachedPlayers;
    @ObfuscatedName("hs")
@@ -500,6 +536,9 @@ public final class Client extends GameEngine {
    )
    static int field1013;
    @ObfuscatedName("mp")
+   @ObfuscatedSignature(
+      signature = "Lgt;"
+   )
    static Deque field1105;
    @ObfuscatedName("in")
    @ObfuscatedGetter(
@@ -518,6 +557,9 @@ public final class Client extends GameEngine {
    )
    static int field1090;
    @ObfuscatedName("ci")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    @Export("indexSoundEffects")
    static IndexData indexSoundEffects;
    @ObfuscatedName("if")
@@ -557,11 +599,17 @@ public final class Client extends GameEngine {
    )
    static int field954;
    @ObfuscatedName("cm")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
    @Export("indexTextures")
    static IndexData indexTextures;
    @ObfuscatedName("df")
    static byte[] field942;
    @ObfuscatedName("dg")
+   @ObfuscatedSignature(
+      signature = "[Lch;"
+   )
    @Export("cachedNPCs")
    static NPC[] cachedNPCs;
    @ObfuscatedName("dk")
@@ -584,6 +632,9 @@ public final class Client extends GameEngine {
    @Export("pendingNpcFlagsIndices")
    static int[] pendingNpcFlagsIndices;
    @ObfuscatedName("rl")
+   @ObfuscatedSignature(
+      signature = "[Lo;"
+   )
    @Export("grandExchangeOffers")
    static XGrandExchangeOffer[] grandExchangeOffers;
    @ObfuscatedName("qn")
@@ -592,16 +643,28 @@ public final class Client extends GameEngine {
    )
    static int field1178;
    @ObfuscatedName("ki")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    static Widget field1070;
    @ObfuscatedName("qo")
+   @ObfuscatedSignature(
+      signature = "Lhu;"
+   )
    static PlayerComposition field1177;
    @ObfuscatedName("ej")
+   @ObfuscatedSignature(
+      signature = "Lff;"
+   )
    static PacketBuffer field949;
    @ObfuscatedName("pn")
    static boolean[] field1153;
    @ObfuscatedName("pw")
    static int[] field1154;
    @ObfuscatedName("lg")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
    static Widget field1083;
    @ObfuscatedName("lt")
    @ObfuscatedGetter(
@@ -650,6 +713,9 @@ public final class Client extends GameEngine {
    )
    static int field1056;
    @ObfuscatedName("qe")
+   @ObfuscatedSignature(
+      signature = "[Lbj;"
+   )
    @Export("ignores")
    static Ignore[] ignores;
    @ObfuscatedName("mx")
@@ -669,6 +735,9 @@ public final class Client extends GameEngine {
    )
    static int field1059;
    @ObfuscatedName("qg")
+   @ObfuscatedSignature(
+      signature = "[Lbg;"
+   )
    @Export("friends")
    static Friend[] friends;
    @ObfuscatedName("hb")
@@ -722,6 +791,9 @@ public final class Client extends GameEngine {
    @Export("interfaceItemTriggers")
    static int[] interfaceItemTriggers;
    @ObfuscatedName("pe")
+   @ObfuscatedSignature(
+      signature = "[Ldl;"
+   )
    @Export("audioEffects")
    static SoundEffect[] audioEffects;
    @ObfuscatedName("mr")
@@ -756,6 +828,9 @@ public final class Client extends GameEngine {
    )
    static int field983;
    @ObfuscatedName("jo")
+   @ObfuscatedSignature(
+      signature = "Lgt;"
+   )
    @Export("pendingSpawns")
    static Deque pendingSpawns;
    @ObfuscatedName("ff")
@@ -765,6 +840,9 @@ public final class Client extends GameEngine {
    @Export("mapScale")
    static int mapScale;
    @ObfuscatedName("jh")
+   @ObfuscatedSignature(
+      signature = "[[[Lgt;"
+   )
    @Export("groundItemDeque")
    static Deque[][][] groundItemDeque;
    @ObfuscatedName("fm")
@@ -797,6 +875,9 @@ public final class Client extends GameEngine {
    )
    static long field1130;
    @ObfuscatedName("qi")
+   @ObfuscatedSignature(
+      signature = "Lgm;"
+   )
    static class195 field1179;
    @ObfuscatedName("ok")
    @Export("clanChatOwner")
@@ -864,6 +945,9 @@ public final class Client extends GameEngine {
    )
    static int field974;
    @ObfuscatedName("ob")
+   @ObfuscatedSignature(
+      signature = "[Ljt;"
+   )
    static SpritePixels[] field1035;
    @ObfuscatedName("fn")
    @ObfuscatedGetter(
@@ -914,6 +998,9 @@ public final class Client extends GameEngine {
    )
    static int field1060;
    @ObfuscatedName("jl")
+   @ObfuscatedSignature(
+      signature = "Lgt;"
+   )
    @Export("graphicsObjectDeque")
    static Deque graphicsObjectDeque;
    @ObfuscatedName("gh")
@@ -932,6 +1019,9 @@ public final class Client extends GameEngine {
    )
    static int field981;
    @ObfuscatedName("ja")
+   @ObfuscatedSignature(
+      signature = "Lgt;"
+   )
    @Export("projectiles")
    static Deque projectiles;
    @ObfuscatedName("kh")
@@ -1086,10 +1176,16 @@ public final class Client extends GameEngine {
    @ObfuscatedName("hn")
    static String[] field1008;
    @ObfuscatedName("mb")
+   @ObfuscatedSignature(
+      signature = "Lgt;"
+   )
    static Deque field1106;
    @ObfuscatedName("nq")
    static int[] field1001;
    @ObfuscatedName("mm")
+   @ObfuscatedSignature(
+      signature = "Lgt;"
+   )
    static Deque field1115;
    @ObfuscatedName("hz")
    @ObfuscatedGetter(
@@ -5264,7 +5360,7 @@ public final class Client extends GameEngine {
                                                 }
 
                                                 if(XItemContainer.cameraZ > var5) {
-                                                   XItemContainer.cameraZ -= (XItemContainer.cameraZ - var5) * class43.field559 / 1000 + DecorativeObject.field2171;
+                                                   XItemContainer.cameraZ -= class43.field559 * (XItemContainer.cameraZ - var5) / 1000 + DecorativeObject.field2171;
                                                    if(XItemContainer.cameraZ < var5) {
                                                       XItemContainer.cameraZ = var5;
                                                    }
@@ -5325,7 +5421,7 @@ public final class Client extends GameEngine {
                                                 }
 
                                                 if(var12 > 0) {
-                                                   Friend.cameraYaw += var12 * class37.field498 / 1000 + Timer.field2255;
+                                                   Friend.cameraYaw += Timer.field2255 + var12 * class37.field498 / 1000;
                                                    Friend.cameraYaw &= 2047;
                                                 }
 
@@ -5511,7 +5607,7 @@ public final class Client extends GameEngine {
 
    @ObfuscatedName("iu")
    @ObfuscatedSignature(
-      signature = "(LWidget;I)V",
+      signature = "(Lhy;I)V",
       garbageValue = "-2100373548"
    )
    void method1346(Widget var1) {
@@ -6156,7 +6252,7 @@ public final class Client extends GameEngine {
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;LIndexDataBase;LIndexDataBase;I)V",
+      signature = "(Lif;Lif;Lif;I)V",
       garbageValue = "-2047908332"
    )
    public static void method1165(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2) {

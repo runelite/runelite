@@ -6,12 +6,24 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ae")
 public enum class27 implements RSEnum {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lae;"
+   )
    field395(0, (byte)0),
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lae;"
+   )
    field391(3, (byte)1),
    @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lae;"
+   )
    field394(1, (byte)2),
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lae;"
+   )
    field393(2, (byte)3);
 
    @ObfuscatedName("oe")
@@ -54,7 +66,7 @@ public enum class27 implements RSEnum {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)[Lclass27;",
+      signature = "(B)[Lae;",
       garbageValue = "-88"
    )
    static class27[] method208() {
@@ -63,7 +75,7 @@ public enum class27 implements RSEnum {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(LIndexDataBase;III)LSpritePixels;",
+      signature = "(Lif;III)Ljt;",
       garbageValue = "-1859053298"
    )
    public static SpritePixels method217(IndexDataBase var0, int var1, int var2) {
@@ -92,7 +104,7 @@ public enum class27 implements RSEnum {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "([BIIIIIIILRegion;[LCollisionData;I)V",
+      signature = "([BIIIIIIILem;[Lfv;I)V",
       garbageValue = "577911489"
    )
    static final void method216(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, Region var8, CollisionData[] var9) {

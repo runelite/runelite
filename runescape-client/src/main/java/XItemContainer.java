@@ -8,11 +8,20 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("XItemContainer")
 public class XItemContainer extends Node {
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
    @Export("itemContainers")
    static XHashTable itemContainers;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Ljt;"
+   )
    static SpritePixels field781;
    @ObfuscatedName("gc")
+   @ObfuscatedSignature(
+      signature = "[Ljt;"
+   )
    @Export("hitmarks")
    static SpritePixels[] hitmarks;
    @ObfuscatedName("gw")
