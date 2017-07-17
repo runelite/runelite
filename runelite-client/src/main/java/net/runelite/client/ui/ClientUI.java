@@ -63,6 +63,7 @@ public final class ClientUI extends JFrame
 	private void init() throws Exception
 	{
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 
 		addWindowListener(new WindowAdapter()
 		{
