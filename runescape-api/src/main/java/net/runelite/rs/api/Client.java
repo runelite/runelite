@@ -240,4 +240,34 @@ public interface Client extends GameEngine
 
 	@Import(value = "chatCycle", setter = true)
 	void setChatCycle(int value);
+
+	@Import(
+			value = "loginIndex",
+			setter = true
+	)
+	void setLoginIndex(int index);
+
+	@Import(
+		value = "loginIndex2",
+		setter = true
+	)
+	void setLoginIndex2(int index);
+
+	@Import(
+			value = "loginMessage1",
+			setter = true
+	)
+	void setLoginMessage1(String str);
+
+	@Import(
+			value = "loginMessage2",
+			setter = true
+	)
+	void setLoginMessage2(String str);
+
+	@Import(
+			value = "loginMessage3",
+			setter = true
+	)
+	void setLoginMessage3(String str);
 }

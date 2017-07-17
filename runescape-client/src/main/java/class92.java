@@ -22,7 +22,10 @@ public class class92 {
    @ObfuscatedGetter(
       intValue = 2143465867
    )
-   @Export("loginIndex")
+   @Export(
+		   value = "loginIndex",
+		   setter = true
+   )
    static int loginIndex;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
@@ -65,15 +68,24 @@ public class class92 {
    static String loadingText;
    @ObfuscatedName("aa")
    static String field1434;
-   @ObfuscatedName("ag")
-   @Export("loginMessage1")
-   static String loginMessage1;
-   @ObfuscatedName("aj")
-   @Export("loginMessage2")
-   static String loginMessage2;
-   @ObfuscatedName("ax")
-   @Export("loginMessage3")
-   static String loginMessage3;
+	@ObfuscatedName("ag")
+	@Export(
+			value = "loginMessage1",
+			setter = true
+	)
+	static String loginMessage1;
+	@ObfuscatedName("aj")
+	@Export(
+			value = "loginMessage2",
+			setter = true
+	)
+	static String loginMessage2;
+	@ObfuscatedName("ax")
+	@Export(
+			value = "loginMessage3",
+			setter = true
+	)
+	static String loginMessage3;
    @ObfuscatedName("ad")
    @Export(
       value = "username",
@@ -94,7 +106,10 @@ public class class92 {
    @ObfuscatedGetter(
       intValue = -525751797
    )
-   @Export("loginIndex2")
+   @Export(
+		   value = "loginIndex2",
+		   setter = true
+   )
    static int loginIndex2;
    @ObfuscatedName("ao")
    @Export("worldSelectShown")

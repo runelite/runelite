@@ -56,23 +56,22 @@ public class RememberUsername extends Plugin
 			return;
 		}
 
-		if (event.getGameState() == GameState.LOGIN_SCREEN)
+		if (event.getGameState() == GameState.LOGIN_SCREEN &&
+				config.username() != null &&
+				!config.username().isEmpty())
 		{
-			if (config.username() == null || config.username().isEmpty())
-			{
-				return;
-			}
-
 			client.setUsername(config.username());
+			client.setLoginMessage1("");
+			client.setLoginMessage2("Enter your username/email & password.");
+			client.setLoginMessage3("");
+			//Go to login screen/password input immediately.
+			client.setLoginIndex(2);
+			client.setLoginIndex2(1);
 		}
 
-		if (event.getGameState() == GameState.LOGGED_IN)
+		if (event.getGameState() == GameState.LOGGED_IN &&
+				!config.username().equals(client.getUsername()))
 		{
-			if (config.username().equals(client.getUsername()))
-			{
-				return;
-			}
-
 			config.username(client.getUsername());
 		}
 	}
