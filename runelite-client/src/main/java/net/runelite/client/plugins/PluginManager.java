@@ -24,8 +24,6 @@
  */
 package net.runelite.client.plugins;
 
-import net.runelite.client.plugins.pricecommands.PriceCommands;
-import net.runelite.client.task.ScheduledMethod;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.Service;
 import com.google.common.util.concurrent.ServiceManager;
@@ -39,6 +37,7 @@ import net.runelite.client.plugins.account.AccountPlugin;
 import net.runelite.client.plugins.boosts.Boosts;
 import net.runelite.client.plugins.bosstimer.BossTimers;
 import net.runelite.client.plugins.clanchat.ClanChat;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.plugins.combatnotifier.CombatNotifier;
 import net.runelite.client.plugins.config.ConfigPlugin;
 import net.runelite.client.plugins.devtools.DevTools;
@@ -53,6 +52,7 @@ import net.runelite.client.plugins.jewelrycount.JewelryCount;
 import net.runelite.client.plugins.mousehighlight.MouseHighlight;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 import net.runelite.client.plugins.pestcontrol.PestControl;
+import net.runelite.client.plugins.pricecommands.PriceCommands;
 import net.runelite.client.plugins.rememberusername.RememberUsername;
 import net.runelite.client.plugins.runecraft.Runecraft;
 import net.runelite.client.plugins.woodcutting.WoodcuttingPlugin;
@@ -61,6 +61,7 @@ import net.runelite.client.plugins.xptracker.XPTracker;
 import net.runelite.client.plugins.xtea.Xtea;
 import net.runelite.client.plugins.zulrah.Zulrah;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.task.ScheduledMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,6 +105,7 @@ public class PluginManager
 		plugins.add(new WoodcuttingPlugin());
 		plugins.add(new RememberUsername());
 		plugins.add(new PriceCommands());
+		plugins.add(new ClueScrollPlugin());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
