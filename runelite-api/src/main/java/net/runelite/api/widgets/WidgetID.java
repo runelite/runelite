@@ -33,6 +33,7 @@ class WidgetID
 	static final int CLAN_CHAT_GROUP_ID = 7;
 	static final int MINIMAP_GROUP_ID = 160;
 	static final int LOGIN_CLICK_TO_PLAY_GROUP_ID = 378;
+	static final int CLUE_SCROLL_GROUP_ID = 203;
 
 	static class PestControl
 	{
@@ -80,6 +81,11 @@ class WidgetID
 		static final int BOOTS = 14;
 		static final int RING = 15;
 		static final int AMMO = 16;
+	}
+
+	static class Cluescroll
+	{
+		static final int CLUE_TEXT = 2;
 	}
 
 	static class Minimap
