@@ -27,6 +27,7 @@ package net.runelite.http.service.hiscore;
 import java.io.IOException;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.hiscore.HiscoreResult;
+import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import okhttp3.HttpUrl;
 import okhttp3.ResponseBody;
@@ -41,6 +42,44 @@ public class HiscoreService
 	private static final HttpUrl RUNESCAPE_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool/index_lite.ws");
 
 	private HttpUrl url = RUNESCAPE_HISCORE_SERVICE;
+
+	private enum skillIndex
+	{
+		OVERALL(0),
+		ATTACK(1),
+		DEFENCE(2),
+		STRENGTH(3),
+		HITPOINTS(4),
+		RANGED(5),
+		PRAYER(6),
+		MAGIC(7),
+		COOKING(8),
+		WOODCUTTING(9),
+		FLETCHING(10),
+		FISHING(11),
+		FIREMAKING(12),
+		CRAFTING(13),
+		SMITHING(14),
+		MINING(15),
+		HERBLORE(16),
+		AGILITY(17),
+		THIEVING(18),
+		SLAYER(19),
+		FARMING(20),
+		RUNECRAFT(21),
+		HUNTER(22),
+		CONSTRUCTION(23);
+
+		private final int index;
+		skillIndex(int index)
+		{
+			this.index = index;
+		}
+		public int getIndex()
+		{
+			return index;
+		}
+	}
 
 	public HiscoreResult lookup(Request request, Response response) throws IOException
 	{
@@ -87,6 +126,57 @@ public class HiscoreService
 
 		response.type("application/json");
 		return hiscoreBuilder.build();
+	}
+
+	public SingleHiscoreSkillResult singleSkillLookup(Request request, Response response) throws IOException
+	{
+		String username = request.queryParams("username");
+		String skillname = request.params("skill");
+
+		HttpUrl hiscoreUrl = url.newBuilder()
+				.addQueryParameter("player", username)
+				.build();
+
+		okhttp3.Request okrequest = new okhttp3.Request.Builder()
+				.url(hiscoreUrl)
+				.build();
+
+		okhttp3.Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute();
+		String responseStr;
+
+		try (ResponseBody body = okresponse.body())
+		{
+			responseStr = body.string();
+		}
+
+		CSVParser parser = CSVParser.parse(responseStr, CSVFormat.DEFAULT);
+
+		SingleHiscoreSkillResult result = new SingleHiscoreSkillResult();
+		result.setPlayer(username);
+
+		int count = 0;
+
+		for (CSVRecord record : parser.getRecords())
+		{
+			if (count >= HiscoreResultBuilder.NUM_SKILLS)
+			{
+				break; // rest is other things?
+			}
+			if (count == skillIndex.valueOf(skillname.toUpperCase()).getIndex())
+			{
+				// rank, level, experience
+				int rank = Integer.parseInt(record.get(0));
+				int level = Integer.parseInt(record.get(1));
+				long experience = Long.parseLong(record.get(2));
+
+				Skill skill = new Skill(rank, level, experience);
+				result.setSkill(skill);
+				response.type("application/json");
+				return  result;
+			}
+			count++;
+		}
+		throw new IOException();
 	}
 
 	public HttpUrl getUrl()
