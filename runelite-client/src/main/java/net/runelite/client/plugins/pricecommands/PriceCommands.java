@@ -27,9 +27,11 @@ package net.runelite.client.plugins.pricecommands;
 
 import com.google.common.eventbus.Subscribe;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.http.api.item.Item;
 import net.runelite.api.MessageNode;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.RuneLite;
@@ -61,6 +63,10 @@ public class PriceCommands extends Plugin
 	{
 	}
 
+	/**
+	 * Checks if the chat message is a command.
+	 * @param setMessage The chat message
+	 */
 	@Subscribe
 	public void onSetMessage(SetMessage setMessage)
 	{
@@ -92,6 +98,11 @@ public class PriceCommands extends Plugin
 		}
 	}
 
+	/**
+	 * Looks up the item price and changes the original message to the reponse.
+	 * @param messageNode The chat message containing the command.
+	 * @param search The item given with the command.
+	 */
 	private void lookup(MessageNode messageNode, String search)
 	{
 		SearchResult result;
@@ -106,9 +117,15 @@ public class PriceCommands extends Plugin
 			return;
 		}
 
-		if (result != null && result.getItems().size() == 1)
+		if (result != null && result.getItems().size() > 0)
 		{
-			int itemId = result.getItems().get(0).getId();
+			Item tempItem = retrieveFromList(result.getItems(), search);
+			if (tempItem == null)
+			{
+				logger.warn("Unable to fetch item price for {}", search);
+				return;
+			}
+			int itemId = tempItem.getId();
 			ItemPrice itemPrice;
 
 			try
@@ -130,5 +147,23 @@ public class PriceCommands extends Plugin
 			messageNode.setValue(response);
 			client.refreshChat();
 		}
+	}
+
+	/**
+	 * Compares the names of the items in the list with the original input. returns the item if its name is equal to the original input or null if it can't find the item.
+	 * @param items List of items.
+	 * @param originalInput String with the original input.
+	 * @return Item which has a name equal to the original input.
+	 */
+	private Item retrieveFromList(List<Item> items, String originalInput)
+	{
+		for (Item item : items)
+		{
+			if (item.getName().toLowerCase().equals(originalInput.toLowerCase()))
+			{
+				return item;
+			}
+		}
+		return null;
 	}
 }
