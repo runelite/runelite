@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui.overlay.infobox;
 
+import com.google.common.base.Preconditions;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
@@ -39,6 +40,8 @@ public class Timer extends InfoBox
 	public Timer(long period, ChronoUnit unit, BufferedImage image)
 	{
 		super(image);
+
+		Preconditions.checkArgument(period > 0, "negative period!");
 
 		startTime = Instant.now();
 		duration = Duration.of(period, unit);
@@ -70,7 +73,7 @@ public class Timer extends InfoBox
 		Duration timeLeft = Duration.between(Instant.now(), endTime);
 
 		//check if timer has 10% of time left
-		if (timeLeft.isNegative() || timeLeft.getSeconds() < (duration.getSeconds() * .10))
+		if (timeLeft.getSeconds() < (duration.getSeconds() * .10))
 		{
 			return Color.RED.brighter();
 		}

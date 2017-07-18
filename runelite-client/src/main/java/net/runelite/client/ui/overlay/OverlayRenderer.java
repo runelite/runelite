@@ -25,11 +25,8 @@
 package net.runelite.client.ui.overlay;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 
 public class OverlayRenderer

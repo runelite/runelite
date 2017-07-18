@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Executor;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
 
 public abstract class Plugin extends AbstractIdleService
 {

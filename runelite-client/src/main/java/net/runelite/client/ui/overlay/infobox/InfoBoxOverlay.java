@@ -40,7 +40,7 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 
 public class InfoBoxOverlay extends Overlay
 {
-	private static final int BOXSIZE = 40;
+	private static final int BOXSIZE = 35;
 	private static final int SEPARATOR = 2;
 	private static final Color BACKGROUND = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
 
@@ -69,11 +69,8 @@ public class InfoBoxOverlay extends Overlay
 
 		FontMetrics metrics = graphics.getFontMetrics();
 
-		int WIDTH = infoBoxes.size() * BOXSIZE;
+		int width = infoBoxes.size() * BOXSIZE;
 		int x = 0;
-
-		graphics.setColor(BACKGROUND);
-		graphics.fillRect(0, 0, WIDTH, BOXSIZE);
 
 		for (InfoBox box : infoBoxes)
 		{
@@ -81,6 +78,12 @@ public class InfoBoxOverlay extends Overlay
 			{
 				continue;
 			}
+
+			graphics.setColor(BACKGROUND);
+			graphics.fillRect(x, 0, BOXSIZE, BOXSIZE);
+
+			graphics.setColor(Color.darkGray);
+			graphics.drawRect(x, 0, BOXSIZE, BOXSIZE);
 
 			String str = box.getText();
 			Color color = box.getTextColor();
@@ -91,17 +94,17 @@ public class InfoBoxOverlay extends Overlay
 				graphics.drawImage(image, x + (BOXSIZE - image.getWidth()) / 2, SEPARATOR, null);
 			}
 
-			//text shaddow
+			// text shaddow
 			graphics.setColor(Color.black);
 			graphics.drawString(str, x + ((BOXSIZE - metrics.stringWidth(str)) / 2) + 1, BOXSIZE - SEPARATOR + 1);
 
 			graphics.setColor(color);
 			graphics.drawString(str, x + ((BOXSIZE - metrics.stringWidth(str)) / 2), BOXSIZE - SEPARATOR);
 
-			x += BOXSIZE;
+			x += BOXSIZE + SEPARATOR;
 		}
 
-		return new Dimension(WIDTH, BOXSIZE);
+		return new Dimension(width, BOXSIZE);
 	}
 
 }
