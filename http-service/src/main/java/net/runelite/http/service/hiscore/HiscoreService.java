@@ -85,18 +85,9 @@ public class HiscoreService
 	{
 		String username = request.queryParams("username");
 
-		HttpUrl hiscoreUrl = url.newBuilder()
-			.addQueryParameter("player", username)
-			.build();
-
-		okhttp3.Request okrequest = new okhttp3.Request.Builder()
-			.url(hiscoreUrl)
-			.build();
-
-		okhttp3.Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute();
 		String responseStr;
 
-		try (ResponseBody body = okresponse.body())
+		try (ResponseBody body = webRequestHiscore(username).body())
 		{
 			responseStr = body.string();
 		}
@@ -133,18 +124,9 @@ public class HiscoreService
 		String username = request.queryParams("username");
 		String skillname = request.params("skill");
 
-		HttpUrl hiscoreUrl = url.newBuilder()
-				.addQueryParameter("player", username)
-				.build();
-
-		okhttp3.Request okrequest = new okhttp3.Request.Builder()
-				.url(hiscoreUrl)
-				.build();
-
-		okhttp3.Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute();
 		String responseStr;
 
-		try (ResponseBody body = okresponse.body())
+		try (ResponseBody body = webRequestHiscore(username).body())
 		{
 			responseStr = body.string();
 		}
@@ -177,6 +159,19 @@ public class HiscoreService
 			count++;
 		}
 		throw new IOException();
+	}
+
+	public okhttp3.Response webRequestHiscore (String username) throws IOException
+	{
+		HttpUrl hiscoreUrl = url.newBuilder()
+				.addQueryParameter("player", username)
+				.build();
+
+		okhttp3.Request okrequest = new okhttp3.Request.Builder()
+				.url(hiscoreUrl)
+				.build();
+
+		return RuneliteAPI.CLIENT.newCall(okrequest).execute();
 	}
 
 	public HttpUrl getUrl()
