@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,38 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.client.ui.overlay.infobox;
 
-import com.google.common.util.concurrent.AbstractIdleService;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.concurrent.Executor;
-import net.runelite.client.ui.overlay.Overlay;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 
-public abstract class Plugin extends AbstractIdleService
+public class Counter extends InfoBox
 {
-	public Overlay getOverlay()
+	private String text;
+
+	public Counter(BufferedImage image, String text)
 	{
-		return null;
+		super(image);
+		this.text = text;
 	}
 
-	public Collection<Overlay> getOverlays()
-	{
-		Overlay overlay = getOverlay();
-		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
-	}
-
-	/**
-	 * Override AbstractIdleService's default executor to instead execute in
-	 * the main thread. Prevents plugins from all being initialized from
-	 * different threads, which causes the plugin order on the navbar to be
-	 * undefined
-	 *
-	 * @return
-	 */
 	@Override
-	protected Executor executor()
+	public String toString()
 	{
-		return r -> r.run();
+		return "Counter{" + "text=" + text + '}';
 	}
+
+	@Override
+	public String getText()
+	{
+		return text;
+	}
+
+	public void setText(String text)
+	{
+		this.text = text;
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		return Color.WHITE;
+	}
+
 }
