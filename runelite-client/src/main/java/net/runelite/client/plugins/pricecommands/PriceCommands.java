@@ -27,9 +27,11 @@ package net.runelite.client.plugins.pricecommands;
 
 import com.google.common.eventbus.Subscribe;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.http.api.item.Item;
 import net.runelite.api.MessageNode;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.RuneLite;
@@ -38,6 +40,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
+import net.runelite.rs.api.ItemComposition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +54,11 @@ public class PriceCommands extends Plugin
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final Client client = RuneLite.getClient();
 
+	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+
+	private static String hexColor1;
+	private static String hexColor2;
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -61,6 +69,10 @@ public class PriceCommands extends Plugin
 	{
 	}
 
+	/**
+	 * Checks if the chat message is a command.
+	 * @param setMessage The chat message
+	 */
 	@Subscribe
 	public void onSetMessage(SetMessage setMessage)
 	{
@@ -72,11 +84,26 @@ public class PriceCommands extends Plugin
 		switch (setMessage.getType())
 		{
 			case PUBLIC:
+				hexColor1 = config.getPublicRecolor();
+				hexColor2 = config.getPublicHRecolor();
+				break;
 			case CLANCHAT:
+				hexColor1 = config.getCcRecolor();
+				hexColor2 = config.getCcHRecolor();
+				break;
 			case PRIVATE_MESSAGE_RECEIVED:
+			case PRIVATE_MESSAGE_SENT:
+				hexColor1 = config.getPrivateRecolor();
+				hexColor2 = config.getPrivateHRecolor();
 				break;
 			default:
 				return;
+		}
+
+		if (!config.recolorEnabled())
+		{
+			hexColor1 = "";
+			hexColor2 = "";
 		}
 
 		String message = setMessage.getValue();
@@ -92,6 +119,11 @@ public class PriceCommands extends Plugin
 		}
 	}
 
+	/**
+	 * Looks up the item price and changes the original message to the reponse.
+	 * @param messageNode The chat message containing the command.
+	 * @param search The item given with the command.
+	 */
 	private void lookup(MessageNode messageNode, String search)
 	{
 		SearchResult result;
@@ -103,12 +135,22 @@ public class PriceCommands extends Plugin
 		catch (IOException ex)
 		{
 			logger.warn("Unable to search for item {}", search, ex);
+			messageNode.setValue("<col=" + hexColor1 + ">Could not find price for <col=" + hexColor2 + ">" + search);
+			client.refreshChat();
 			return;
 		}
 
-		if (result != null && result.getItems().size() == 1)
+		if (result != null && result.getItems().size() > 0)
 		{
-			int itemId = result.getItems().get(0).getId();
+			Item tempItem = retrieveFromList(result.getItems(), search);
+			if (tempItem == null)
+			{
+				logger.warn("Unable to fetch item price for {}", search);
+				messageNode.setValue("<col=" + hexColor1 + ">Could not find price for <col=" + hexColor2 + ">" + search);
+				client.refreshChat();
+				return;
+			}
+			int itemId = tempItem.getId();
 			ItemPrice itemPrice;
 
 			try
@@ -118,11 +160,19 @@ public class PriceCommands extends Plugin
 			catch (IOException ex)
 			{
 				logger.warn("Unable to fetch item price for {}", itemId, ex);
+				messageNode.setValue("<col=" + hexColor1 + ">Could not find price for <col=" + hexColor2 + ">" + search);
+				client.refreshChat();
 				return;
 			}
 
-			int cost = itemPrice.getPrice();
-			String response = "Price of " + result.getItems().get(0).getName() + ": GE average " + String.format("%,d", cost);
+			ItemComposition itemComposition = client.getItemDefinition(itemId);
+			int HaPrice = -1;
+			if (itemComposition != null)
+			{
+				HaPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+			}
+			int GePrice = itemPrice.getPrice();
+			String response = "<col=" + hexColor1 + ">Price of <col=" + hexColor2 + ">" + result.getItems().get(0).getName() + "<col=" + hexColor1 + ">: GE average <col=" + hexColor2 + ">" + String.format("%,d", GePrice) + "<col=" + hexColor1 + "> HA value <col=" + hexColor2 + ">" + String.format("%,d", HaPrice);
 
 			logger.debug("Setting response {}", response);
 
@@ -130,5 +180,29 @@ public class PriceCommands extends Plugin
 			messageNode.setValue(response);
 			client.refreshChat();
 		}
+		else
+		{
+			logger.warn("Unable to fetch item price for {}", search);
+			messageNode.setValue("<col=" + hexColor1 + ">Could not find price for <col=" + hexColor2 + ">" + search);
+			client.refreshChat();
+		}
+	}
+
+	/**
+	 * Compares the names of the items in the list with the original input. returns the item if its name is equal to the original input or null if it can't find the item.
+	 * @param items List of items.
+	 * @param originalInput String with the original input.
+	 * @return Item which has a name equal to the original input.
+	 */
+	private Item retrieveFromList(List<Item> items, String originalInput)
+	{
+		for (Item item : items)
+		{
+			if (item.getName().toLowerCase().equals(originalInput.toLowerCase()))
+			{
+				return item;
+			}
+		}
+		return null;
 	}
 }
