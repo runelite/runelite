@@ -56,9 +56,6 @@ public class PriceCommands extends Plugin
 
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
-	private static String hexColor1;
-	private static String hexColor2;
-
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -84,26 +81,12 @@ public class PriceCommands extends Plugin
 		switch (setMessage.getType())
 		{
 			case PUBLIC:
-				hexColor1 = config.getPublicRecolor();
-				hexColor2 = config.getPublicHRecolor();
-				break;
 			case CLANCHAT:
-				hexColor1 = config.getCcRecolor();
-				hexColor2 = config.getCcHRecolor();
-				break;
 			case PRIVATE_MESSAGE_RECEIVED:
 			case PRIVATE_MESSAGE_SENT:
-				hexColor1 = config.getPrivateRecolor();
-				hexColor2 = config.getPrivateHRecolor();
 				break;
 			default:
 				return;
-		}
-
-		if (!config.recolorEnabled())
-		{
-			hexColor1 = "";
-			hexColor2 = "";
 		}
 
 		String message = setMessage.getValue();
@@ -166,7 +149,7 @@ public class PriceCommands extends Plugin
 				HaPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
 			}
 			int GePrice = itemPrice.getPrice();
-			String response = "<col=" + hexColor1 + ">Price of <col=" + hexColor2 + ">" + result.getItems().get(0).getName() + "<col=" + hexColor1 + ">: GE average <col=" + hexColor2 + ">" + String.format("%,d", GePrice) + "<col=" + hexColor1 + "> HA value <col=" + hexColor2 + ">" + String.format("%,d", HaPrice);
+			String response = "Price of " + result.getItems().get(0).getName() + ": GE average " + String.format("%,d", GePrice) + " HA value " + String.format("%,d", HaPrice);
 
 			logger.debug("Setting response {}", response);
 
