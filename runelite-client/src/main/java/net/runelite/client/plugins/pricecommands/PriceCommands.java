@@ -40,6 +40,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
+import net.runelite.rs.api.ItemComposition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +53,8 @@ public class PriceCommands extends Plugin
 	private final ItemClient itemClient = new ItemClient();
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final Client client = RuneLite.getClient();
+
+	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
 	@Override
 	protected void startUp() throws Exception
@@ -143,13 +146,20 @@ public class PriceCommands extends Plugin
 				return;
 			}
 
-			int cost = itemPrice.getPrice();
-			String response = "Price of " + item.getName() + ": GE average " + String.format("%,d", cost);
+			StringBuilder builder = new StringBuilder();
+			builder.append("Price of ").append(item.getName()).append(": GE average ").append(String.format("%,d", itemPrice.getPrice()));
 
-			logger.debug("Setting response {}", response);
+			ItemComposition itemComposition = client.getItemDefinition(itemId);
+			if (itemComposition != null)
+			{
+				int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+				builder.append(" HA value ").append(alchPrice);
+			}
+
+			logger.debug("Setting response {}", builder.toString());
 
 			// XXX hopefully messageNode hasn't been reused yet?
-			messageNode.setValue(response);
+			messageNode.setValue(builder.toString());
 			client.refreshChat();
 		}
 	}
