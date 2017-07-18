@@ -81,6 +81,7 @@ public class PriceCommands extends Plugin
 			case PUBLIC:
 			case CLANCHAT:
 			case PRIVATE_MESSAGE_RECEIVED:
+			case PRIVATE_MESSAGE_SENT:
 				break;
 			default:
 				return;
