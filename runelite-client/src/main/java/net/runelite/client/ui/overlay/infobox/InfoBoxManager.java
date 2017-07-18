@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,38 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.client.ui.overlay.infobox;
 
-import com.google.common.util.concurrent.AbstractIdleService;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.Executor;
-import net.runelite.client.ui.overlay.Overlay;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Predicate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public abstract class Plugin extends AbstractIdleService
+public class InfoBoxManager
 {
-	public Overlay getOverlay()
+	private static final Logger logger = LoggerFactory.getLogger(InfoBoxManager.class);
+
+	private final List<InfoBox> infoBoxes = new ArrayList<>();
+
+	public void addInfoBox(InfoBox infoBox)
 	{
-		return null;
+		logger.debug("Adding InfoBox {}", infoBox);
+		infoBoxes.add(infoBox);
 	}
 
-	public Collection<Overlay> getOverlays()
+	public void removeInfoBox(InfoBox infoBox)
 	{
-		Overlay overlay = getOverlay();
-		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
+		logger.debug("Removing InfoBox {}", infoBox);
+		infoBoxes.remove(infoBox);
 	}
 
-	/**
-	 * Override AbstractIdleService's default executor to instead execute in
-	 * the main thread. Prevents plugins from all being initialized from
-	 * different threads, which causes the plugin order on the navbar to be
-	 * undefined
-	 *
-	 * @return
-	 */
-	@Override
-	protected Executor executor()
+	public void removeIf(Predicate<InfoBox> filter)
 	{
-		return r -> r.run();
+		logger.debug("Removing InfoBoxs for filter {}", filter);
+		infoBoxes.removeIf(filter);
+	}
+
+	public List<InfoBox> getInfoBoxes()
+	{
+		return Collections.unmodifiableList(infoBoxes);
+	}
+
+	public void cull()
+	{
+		for (Iterator<InfoBox> it = infoBoxes.iterator(); it.hasNext();)
+		{
+			InfoBox box = it.next();
+
+			if (box.cull())
+			{
+				logger.debug("Culling InfoBox {}", box);
+				it.remove();
+			}
+		}
 	}
 }

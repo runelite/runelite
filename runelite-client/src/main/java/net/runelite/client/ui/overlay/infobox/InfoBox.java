@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,38 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.client.ui.overlay.infobox;
 
-import com.google.common.util.concurrent.AbstractIdleService;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.concurrent.Executor;
-import net.runelite.client.ui.overlay.Overlay;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 
-public abstract class Plugin extends AbstractIdleService
+public abstract class InfoBox
 {
-	public Overlay getOverlay()
+	private final BufferedImage image;
+
+	public InfoBox(BufferedImage image)
 	{
-		return null;
+		this.image = image;
 	}
 
-	public Collection<Overlay> getOverlays()
+	public BufferedImage getImage()
 	{
-		Overlay overlay = getOverlay();
-		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
+		return image;
 	}
 
-	/**
-	 * Override AbstractIdleService's default executor to instead execute in
-	 * the main thread. Prevents plugins from all being initialized from
-	 * different threads, which causes the plugin order on the navbar to be
-	 * undefined
-	 *
-	 * @return
-	 */
-	@Override
-	protected Executor executor()
+	public abstract String getText();
+
+	public abstract Color getTextColor();
+
+	public boolean render()
 	{
-		return r -> r.run();
+		return true;
+	}
+
+	public boolean cull()
+	{
+		return false;
 	}
 }

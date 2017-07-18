@@ -34,6 +34,7 @@ import net.runelite.client.events.*;
 import net.runelite.client.game.DeathChecker;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.rs.api.MainBufferProvider;
 import net.runelite.rs.api.MessageNode;
 import org.slf4j.Logger;
@@ -70,8 +71,13 @@ public class Hooks
 			logger.warn("error during death check", ex);
 		}
 
+		// tick pending scheduled tasks
 		Scheduler scheduler = runelite.getScheduler();
 		scheduler.tick();
+
+		// cull infoboxes
+		InfoBoxManager infoBoxManager = runelite.getInfoBoxManager();
+		infoBoxManager.cull();
 	}
 
 	public static void draw(Object provider, Graphics graphics, int x, int y)

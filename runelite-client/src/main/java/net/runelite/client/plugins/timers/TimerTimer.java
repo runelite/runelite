@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,38 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.client.plugins.timers;
 
-import com.google.common.util.concurrent.AbstractIdleService;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.concurrent.Executor;
-import net.runelite.client.ui.overlay.Overlay;
+import java.time.temporal.ChronoUnit;
+import net.runelite.client.ui.overlay.infobox.Timer;
 
-public abstract class Plugin extends AbstractIdleService
+public class TimerTimer extends Timer
 {
-	public Overlay getOverlay()
+	private final GameTimer timer;
+
+	public TimerTimer(GameTimer timer)
 	{
-		return null;
+		super(timer.getDuration().toMillis(), ChronoUnit.MILLIS, timer.getImage());
+		this.timer = timer;
 	}
 
-	public Collection<Overlay> getOverlays()
+	public GameTimer getTimer()
 	{
-		Overlay overlay = getOverlay();
-		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
+		return timer;
 	}
 
-	/**
-	 * Override AbstractIdleService's default executor to instead execute in
-	 * the main thread. Prevents plugins from all being initialized from
-	 * different threads, which causes the plugin order on the navbar to be
-	 * undefined
-	 *
-	 * @return
-	 */
-	@Override
-	protected Executor executor()
-	{
-		return r -> r.run();
-	}
 }

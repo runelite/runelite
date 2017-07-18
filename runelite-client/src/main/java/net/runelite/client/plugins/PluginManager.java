@@ -55,6 +55,7 @@ import net.runelite.client.plugins.pestcontrol.PestControl;
 import net.runelite.client.plugins.pricecommands.PriceCommands;
 import net.runelite.client.plugins.rememberusername.RememberUsername;
 import net.runelite.client.plugins.runecraft.Runecraft;
+import net.runelite.client.plugins.timers.Timers;
 import net.runelite.client.plugins.woodcutting.WoodcuttingPlugin;
 import net.runelite.client.plugins.xpglobes.XpGlobes;
 import net.runelite.client.plugins.xptracker.XPTracker;
@@ -106,6 +107,7 @@ public class PluginManager
 		plugins.add(new RememberUsername());
 		plugins.add(new PriceCommands());
 		plugins.add(new ClueScrollPlugin());
+		plugins.add(new Timers());
 
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
