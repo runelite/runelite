@@ -26,10 +26,8 @@ package net.runelite.client.plugins.runecraft;
 
 import java.awt.*;
 
-import net.runelite.api.Client;
-import net.runelite.api.ItemID;
+import net.runelite.api.*;
 import net.runelite.api.Point;
-import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
@@ -49,6 +47,11 @@ public class RunecraftOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (client.getGameState() != GameState.LOGGED_IN || client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		{
+			return null;
+		}
+
 		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 
 		if (inventoryWidget == null || inventoryWidget.isHidden())
@@ -82,6 +85,11 @@ public class RunecraftOverlay extends Overlay
 			if (location != null)
 			{
 				int value = client.getSetting(varbits);
+
+				graphics.setColor(Color.black);
+				graphics.drawString("" + value, location.getX() + 1, location.getY() + graphics.getFontMetrics().getHeight() + 1);
+
+				graphics.setColor(Color.white);
 				graphics.drawString("" + value, location.getX(), location.getY() + graphics.getFontMetrics().getHeight());
 			}
 		}
