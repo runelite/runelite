@@ -54,6 +54,32 @@ public class ChatCommands extends Plugin
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final Client client = RuneLite.getClient();
 
+	private enum SkillAbbreviations
+	{
+		ATT("Attack"),
+		DEF("Defence"),
+		STR("Strength"),
+		HP("Hitpoints"),
+		RANGE("Ranged"),
+		WC("Woodcutting"),
+		FM("Firemaking"),
+		RC("Runecraft"),
+		CON("Construction"),
+		TOTAL("Overall");
+
+		private final String name;
+
+		SkillAbbreviations(String name)
+		{
+			this.name = name;
+		}
+
+		public String getName()
+		{
+			return name;
+		}
+	}
+
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
 	@Override
