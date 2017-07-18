@@ -135,6 +135,8 @@ public class PriceCommands extends Plugin
 		catch (IOException ex)
 		{
 			logger.warn("Unable to search for item {}", search, ex);
+			messageNode.setValue("<col=" + hexColor1 + ">Could not find price for <col=" + hexColor2 + ">" + search);
+			client.refreshChat();
 			return;
 		}
 
@@ -144,6 +146,8 @@ public class PriceCommands extends Plugin
 			if (tempItem == null)
 			{
 				logger.warn("Unable to fetch item price for {}", search);
+				messageNode.setValue("<col=" + hexColor1 + ">Could not find price for <col=" + hexColor2 + ">" + search);
+				client.refreshChat();
 				return;
 			}
 			int itemId = tempItem.getId();
@@ -156,6 +160,8 @@ public class PriceCommands extends Plugin
 			catch (IOException ex)
 			{
 				logger.warn("Unable to fetch item price for {}", itemId, ex);
+				messageNode.setValue("<col=" + hexColor1 + ">Could not find price for <col=" + hexColor2 + ">" + search);
+				client.refreshChat();
 				return;
 			}
 
@@ -172,6 +178,12 @@ public class PriceCommands extends Plugin
 
 			// XXX hopefully messageNode hasn't been reused yet?
 			messageNode.setValue(response);
+			client.refreshChat();
+		}
+		else
+		{
+			logger.warn("Unable to fetch item price for {}", search);
+			messageNode.setValue("<col=" + hexColor1 + ">Could not find price for <col=" + hexColor2 + ">" + search);
 			client.refreshChat();
 		}
 	}
