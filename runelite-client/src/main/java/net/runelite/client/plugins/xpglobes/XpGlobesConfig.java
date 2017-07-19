@@ -28,18 +28,28 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-		keyName = "xpglobes",
-		name = "XP Globes",
-		description = "Configuration for the xp globes plugin"
+	keyName = "xpglobes",
+	name = "XP Globes",
+	description = "Configuration for the xp globes plugin"
 )
 public interface XpGlobesConfig
 {
 	@ConfigItem(
-			keyName = "enabled",
-			name = "Enabled",
-			description = "Configures whether or not xp globes are displayed"
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Configures whether or not xp globes are displayed"
 	)
 	default boolean enabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "enableTooltips",
+		name = "Enable Tooltips",
+		description = "Configures whether or not to show tooltips"
+	)
+	default boolean enableTooltips()
 	{
 		return true;
 	}

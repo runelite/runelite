@@ -27,6 +27,8 @@ package net.runelite.client.plugins.xpglobes;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
+import net.runelite.api.Point;
+import net.runelite.api.Experience;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -35,11 +37,13 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.FontMetrics;
 import javax.imageio.ImageIO;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +70,10 @@ public class XpGlobesOverlay extends Overlay
 	private static final int DEFAULT_START_Y = 10;
 
 	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length - 1];
+
+	private static final int TOOLTIP_RECT_SIZE_X = 140;
+	private static final int TOOLTIP_TEXT_RECT_SIZE_X = TOOLTIP_RECT_SIZE_X - 10;
+	private static final int TOOLTIP_RECT_SIZE_Y = 80;
 
 	public XpGlobesOverlay(XpGlobes plugin)
 	{
@@ -103,7 +111,6 @@ public class XpGlobesOverlay extends Overlay
 				renderProgressCircle(graphics, xpGlobe, startDrawX, DEFAULT_START_Y);
 				startDrawX += MINIMUM_STEP_WIDTH;
 			}
-
 			plugin.removeExpiredXpGlobes();
 		}
 
@@ -115,7 +122,7 @@ public class XpGlobesOverlay extends Overlay
 		double radiusCurrentXp = skillToDraw.getSkillProgressRadius();
 		double radiusToGoalXp = 360; //draw a circle
 
-		drawEllipse(graphics, x, y);
+		Ellipse2D backgroundCircle = drawEllipse(graphics, x, y);
 		drawProgressArc(
 			graphics,
 			x, y,
@@ -131,8 +138,12 @@ public class XpGlobesOverlay extends Overlay
 			PROGRESS_RADIUS_START, radiusCurrentXp,
 			2,
 			DEFAULT_PROGRESS_ARC_COLOR);
-
 		drawSkillImage(graphics, skillToDraw, x, y);
+
+		if (config.enableTooltips())
+		{
+			drawTooltipIfMouseover(graphics, skillToDraw, backgroundCircle);
+		}
 	}
 
 	private void drawProgressArc(Graphics2D graphics, int x, int y, int w, int h, double radiusStart, double radiusEnd, int strokeWidth, Color color)
@@ -146,12 +157,13 @@ public class XpGlobesOverlay extends Overlay
 			Arc2D.OPEN));
 	}
 
-	private void drawEllipse(Graphics2D graphics, int x, int y)
+	private Ellipse2D drawEllipse(Graphics2D graphics, int x, int y)
 	{
 		graphics.setColor(DEFAULT_XPGLOBE_BACKGROUND_COLOR);
-		Ellipse2D backgroundCircle = new Ellipse2D.Double(x, y, DEFAULT_CIRCLE_WIDTH, DEFAULT_CIRCLE_HEIGHT);
-		graphics.fill(backgroundCircle);
-		graphics.draw(backgroundCircle);
+		Ellipse2D ellipse = new Ellipse2D.Double(x, y, DEFAULT_CIRCLE_WIDTH, DEFAULT_CIRCLE_HEIGHT);
+		graphics.fill(ellipse);
+		graphics.draw(ellipse);
+		return ellipse;
 	}
 
 	private void drawSkillImage(Graphics2D graphics, XpGlobe xpGlobe, int x, int y)
@@ -194,5 +206,72 @@ public class XpGlobesOverlay extends Overlay
 		}
 
 		return skillImage;
+	}
+
+	private void drawTooltipIfMouseover(Graphics2D graphics, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
+	{
+		Point mouse = client.getMouseCanvasPosition();
+		int mouseX = mouse.getX();
+		int mouseY = mouse.getY();
+
+		if (!drawnGlobe.contains(mouseX, mouseY))
+		{
+			return;
+		}
+
+		//draw tooltip under the globe of the mouse location
+		int x = (int) drawnGlobe.getX() - (TOOLTIP_RECT_SIZE_X / 2) + (DEFAULT_CIRCLE_WIDTH / 2);
+		int y = (int) drawnGlobe.getY() + DEFAULT_CIRCLE_HEIGHT + 10;
+		int padding = (TOOLTIP_RECT_SIZE_X - TOOLTIP_TEXT_RECT_SIZE_X) / 2;
+		int stringX = x + padding;
+
+		String skillLevel = Integer.toString(mouseOverSkill.getCurrentLevel());
+		String skillCurrentXp = Integer.toString(mouseOverSkill.getCurrentXp());
+		String skillXpToLvl = Integer.toString((mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp()));
+
+		FontMetrics fm = graphics.getFontMetrics();
+		int skillLevelX = x + padding + (TOOLTIP_TEXT_RECT_SIZE_X - fm.stringWidth(skillLevel));
+		int skillCurrentXpX = x + padding + (TOOLTIP_TEXT_RECT_SIZE_X - fm.stringWidth(skillCurrentXp));
+		int skillXpToLvlX = x + padding + (TOOLTIP_TEXT_RECT_SIZE_X - fm.stringWidth(skillXpToLvl));
+		int stringHeight = fm.getHeight();
+
+		//draw tooltip container
+		graphics.setPaint(DEFAULT_XPGLOBE_BACKGROUND_COLOR);
+		graphics.fillRect(x, y, TOOLTIP_RECT_SIZE_X, TOOLTIP_RECT_SIZE_Y);
+		graphics.setPaint(DEFAULT_PROGRESS_REMAINDER_ARC_COLOR);
+		graphics.setStroke(new BasicStroke(2));
+		graphics.drawRect(x, y, TOOLTIP_RECT_SIZE_X, TOOLTIP_RECT_SIZE_Y);
+
+
+		//draw the text
+		graphics.setPaint(Color.WHITE);
+		graphics.drawString(mouseOverSkill.getSkillName(), stringX, y + stringHeight);
+		graphics.drawString(skillLevel, skillLevelX, y + stringHeight);
+		graphics.drawString("Current exp:", stringX, y + (stringHeight * 2));
+		graphics.drawString(skillCurrentXp, skillCurrentXpX, y + (stringHeight * 2));
+		graphics.drawString("Exp to level:", stringX, y + (stringHeight * 3));
+		graphics.drawString(skillXpToLvl, skillXpToLvlX, y + (stringHeight * 3));
+
+		//draw the progress bar
+		double progress = mouseOverSkill.getSkillProgress(Experience.getXpForLevel(mouseOverSkill.getCurrentLevel()), mouseOverSkill.getCurrentXp(), mouseOverSkill.getGoalXp());
+		int barWidth = TOOLTIP_TEXT_RECT_SIZE_X;
+		int barHeight = 16;
+		int barX = x + padding;
+		int barY = y + (stringHeight * 3) + 10;
+
+		DecimalFormat df = new DecimalFormat("#.00");
+		String progressText = df.format(progress) + "%";
+		int progressTextLength = fm.stringWidth(progressText);
+		int progressTextX = barX + (barWidth / 2) - (progressTextLength / 2);
+		int progressTextY = barY + 12;
+
+		int progressFill = (int)((barWidth / 100F) * progress);
+
+		graphics.setColor(Color.WHITE);
+		graphics.fillRect(barX, barY, barWidth, barHeight);
+		graphics.setColor(Color.GREEN);
+		graphics.fillRect(barX, barY, progressFill, barHeight);
+		graphics.setPaint(Color.BLACK);
+		graphics.drawString(progressText, progressTextX, progressTextY);
 	}
 }
