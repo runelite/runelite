@@ -103,9 +103,15 @@ public class XpGlobe
 
 	public void setSkillProgressRadius(int startXp, int currentXp, int goalXp)
 	{
+		this.skillProgressRadius = -(3.6 * getSkillProgress(startXp, currentXp, goalXp)); //arc goes backwards
+	}
+
+	public double getSkillProgress(int startXp, int currentXp, int goalXp)
+	{
 		double xpGained = currentXp - startXp;
 		double xpGoal = goalXp - startXp;
-		this.skillProgressRadius = -(3.6 * ((xpGained / xpGoal) * 100)); //arc goes backwards
+
+		return ((xpGained / xpGoal) * 100);
 	}
 
 	public Instant getTime()
