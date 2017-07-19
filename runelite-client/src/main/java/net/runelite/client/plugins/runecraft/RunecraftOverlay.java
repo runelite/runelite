@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.runecraft;
 
-import java.awt.*;
-
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.Varbits;
@@ -41,14 +43,24 @@ public class RunecraftOverlay extends Overlay
 {
 	private final Client client = RuneLite.getClient();
 
-	public RunecraftOverlay()
+	private final RunecraftConfig config;
+
+	public RunecraftOverlay(Runecraft plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
+		this.config = plugin.getConfig();
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (client.getGameState() != GameState.LOGGED_IN
+				|| !config.showPouch()
+				|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		{
+			return null;
+		}
+
 		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 
 		if (inventoryWidget == null || inventoryWidget.isHidden())
@@ -82,6 +94,10 @@ public class RunecraftOverlay extends Overlay
 			if (location != null)
 			{
 				int value = client.getSetting(varbits);
+				graphics.setColor(Color.black);
+				graphics.drawString("" + value, location.getX() + 1, location.getY() + graphics.getFontMetrics().getHeight() + 1);
+
+				graphics.setColor(Color.white);
 				graphics.drawString("" + value, location.getX(), location.getY() + graphics.getFontMetrics().getHeight());
 			}
 		}
