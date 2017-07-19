@@ -134,10 +134,9 @@ public class CacheClient implements AutoCloseable
 	{
 		assert handshakeFuture != null;
 
-		handshakeFuture.complete(response);
-
 		if (response != HelloHandshake.RESPONSE_OK)
 		{
+			handshakeFuture.complete(response);
 			close();
 			return;
 		}
@@ -153,6 +152,8 @@ public class CacheClient implements AutoCloseable
 		state = ClientState.CONNECTED;
 
 		logger.info("Client is now connected!");
+
+		handshakeFuture.complete(response);
 	}
 
 	@Override
