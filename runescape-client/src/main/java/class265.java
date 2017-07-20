@@ -2,17 +2,17 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ji")
+@ObfuscatedName("jh")
 public class class265 {
-   @ObfuscatedName("dd")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lig;"
+      signature = "Lbx;"
    )
-   @Export("indexScripts")
-   static IndexData indexScripts;
-   @ObfuscatedName("a")
+   @Export("worldServersDownload")
+   static class77 worldServersDownload;
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lfa;"
+      signature = "Lfq;"
    )
-   public static Huffman field3657;
+   public static Huffman field3642;
 }

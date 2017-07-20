@@ -2,48 +2,48 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("av")
+@ObfuscatedName("ah")
 @Implements("WorldMapSectionBase")
 public interface WorldMapSectionBase {
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "-2141582860"
+      signature = "(IIS)Z",
+      garbageValue = "-1713"
    )
-   boolean vmethod722(int var1, int var2);
+   boolean vmethod676(int var1, int var2);
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(IIII)Z",
-      garbageValue = "-1671303044"
+      garbageValue = "-762941504"
    )
-   boolean vmethod721(int var1, int var2, int var3);
+   boolean vmethod675(int var1, int var2, int var3);
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lam;I)V",
-      garbageValue = "-1824757307"
+      signature = "(Lab;S)V",
+      garbageValue = "-29128"
    )
-   void vmethod720(WorldMapData var1);
+   void vmethod693(WorldMapData var1);
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(III)Lhd;",
-      garbageValue = "665140774"
+      signature = "(III)Lhs;",
+      garbageValue = "861336956"
    )
-   Coordinates vmethod743(int var1, int var2);
+   Coordinates vmethod696(int var1, int var2);
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(IIIB)[I",
-      garbageValue = "13"
+      signature = "(IIII)[I",
+      garbageValue = "-1119600547"
    )
-   int[] vmethod731(int var1, int var2, int var3);
+   int[] vmethod677(int var1, int var2, int var3);
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lfe;I)V",
-      garbageValue = "-1909314997"
+      signature = "(Lfp;B)V",
+      garbageValue = "-58"
    )
-   void vmethod746(Buffer var1);
+   void vmethod678(Buffer var1);
 }

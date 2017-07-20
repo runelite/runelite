@@ -2,53 +2,57 @@ import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("go")
+@ObfuscatedName("gj")
 public class class188 implements Iterator {
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lgi;"
+      signature = "Lgg;"
    )
-   CombatInfoList field2449;
-   @ObfuscatedName("j")
+   CombatInfoList field2421;
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lge;"
+      signature = "Lgh;"
    )
-   Node field2450;
-   @ObfuscatedName("n")
+   Node field2422;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lge;"
+      signature = "Lgh;"
    )
-   Node field2451;
+   Node field2423;
 
    @ObfuscatedSignature(
-      signature = "(Lgi;)V"
+      signature = "(Lgg;)V"
    )
    class188(CombatInfoList var1) {
-      this.field2451 = null;
-      this.field2449 = var1;
-      this.field2450 = this.field2449.node.next;
-      this.field2451 = null;
+      this.field2423 = null;
+      this.field2421 = var1;
+      this.field2422 = this.field2421.node.next;
+      this.field2423 = null;
    }
 
    public Object next() {
-      Node var1 = this.field2450;
-      if(var1 == this.field2449.node) {
+      Node var1 = this.field2422;
+      if(var1 == this.field2421.node) {
          var1 = null;
-         this.field2450 = null;
+         this.field2422 = null;
       } else {
-         this.field2450 = var1.next;
+         this.field2422 = var1.next;
       }
 
-      this.field2451 = var1;
+      this.field2423 = var1;
       return var1;
    }
 
    public boolean hasNext() {
-      return this.field2449.node != this.field2450;
+      return this.field2421.node != this.field2422;
    }
 
    public void remove() {
-      this.field2451.unlink();
-      this.field2451 = null;
+      if(this.field2423 == null) {
+         throw new IllegalStateException();
+      } else {
+         this.field2423.unlink();
+         this.field2423 = null;
+      }
    }
 }

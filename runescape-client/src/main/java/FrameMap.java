@@ -4,33 +4,25 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eb")
+@ObfuscatedName("em")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lif;"
-   )
-   @Export("item_ref")
-   static IndexDataBase item_ref;
-   @ObfuscatedName("v")
-   static Thread field2049;
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -478955957
+      intValue = -1806685349
    )
    @Export("id")
    int id;
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1438586063
+      intValue = 253180977
    )
    @Export("count")
    int count;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @Export("types")
    int[] types;
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @Export("list")
    int[][] list;
 
@@ -58,34 +50,48 @@ public class FrameMap extends Node {
 
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-53"
+      signature = "(I)V",
+      garbageValue = "2040109837"
    )
-   public static void method2664() {
-      try {
-         class155.field2237.method2329();
-
-         for(int var0 = 0; var0 < class155.field2241; ++var0) {
-            class155.field2247[var0].method2329();
-         }
-
-         class155.field2246.method2329();
-         class155.field2239.method2329();
-      } catch (Exception var2) {
-         ;
+   static void method2614() {
+      if(Signlink.javaVendor.toLowerCase().indexOf("microsoft") != -1) {
+         KeyFocusListener.field648[186] = 57;
+         KeyFocusListener.field648[187] = 27;
+         KeyFocusListener.field648[188] = 71;
+         KeyFocusListener.field648[189] = 26;
+         KeyFocusListener.field648[190] = 72;
+         KeyFocusListener.field648[191] = 73;
+         KeyFocusListener.field648[192] = 58;
+         KeyFocusListener.field648[219] = 42;
+         KeyFocusListener.field648[220] = 74;
+         KeyFocusListener.field648[221] = 43;
+         KeyFocusListener.field648[222] = 59;
+         KeyFocusListener.field648[223] = 28;
+      } else {
+         KeyFocusListener.field648[44] = 71;
+         KeyFocusListener.field648[45] = 26;
+         KeyFocusListener.field648[46] = 72;
+         KeyFocusListener.field648[47] = 73;
+         KeyFocusListener.field648[59] = 57;
+         KeyFocusListener.field648[61] = 27;
+         KeyFocusListener.field648[91] = 42;
+         KeyFocusListener.field648[92] = 74;
+         KeyFocusListener.field648[93] = 43;
+         KeyFocusListener.field648[192] = 28;
+         KeyFocusListener.field648[222] = 58;
+         KeyFocusListener.field648[520] = 59;
       }
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "961581326"
+      signature = "(I)V",
+      garbageValue = "-693525702"
    )
-   static int method2663(int var0) {
-      MessageNode var1 = (MessageNode)class98.field1520.method3482((long)var0);
-      return var1 == null?-1:(var1.next == class98.field1526.field2484?-1:((MessageNode)var1.next).id);
+   public static void method2615() {
+      FloorUnderlayDefinition.underlays.reset();
    }
 }

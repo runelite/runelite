@@ -1,154 +1,103 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cp")
+@ObfuscatedName("cs")
 public class class96 {
-   @ObfuscatedName("n")
-   static byte[] field1491;
-   @ObfuscatedName("cc")
-   @ObfuscatedSignature(
-      signature = "Lfq;"
-   )
-   @Export("rssocket")
-   static RSSocket rssocket;
-   @ObfuscatedName("r")
-   static byte[] field1487;
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "[Lfe;"
-   )
-   static Buffer[] field1490;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1584673371
-   )
-   static int field1499;
-   @ObfuscatedName("l")
-   static int[] field1492;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -976319507
-   )
-   static int field1489;
-   @ObfuscatedName("w")
-   static int[] field1494;
-   @ObfuscatedName("p")
-   static int[] field1495;
-   @ObfuscatedName("m")
-   static int[] field1496;
+   @ObfuscatedName("i")
+   static byte[] field1466;
    @ObfuscatedName("u")
-   static int[] field1497;
+   static byte[] field1467;
    @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1499032993
+   @ObfuscatedSignature(
+      signature = "[Lfp;"
    )
-   static int field1498;
+   static Buffer[] field1475;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 1892351531
+   )
+   static int field1469;
+   @ObfuscatedName("s")
+   static int[] field1470;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1688696245
+   )
+   static int field1476;
+   @ObfuscatedName("p")
+   static int[] field1472;
    @ObfuscatedName("k")
-   static int[] field1493;
+   static int[] field1473;
+   @ObfuscatedName("r")
+   static int[] field1474;
+   @ObfuscatedName("w")
+   static int[] field1471;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -298906535
+   )
+   static int field1480;
+   @ObfuscatedName("h")
+   static int[] field1465;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lfe;"
+      signature = "Lfp;"
    )
-   static Buffer field1500;
+   static Buffer field1464;
+   @ObfuscatedName("cl")
+   @ObfuscatedGetter(
+      longValue = 901218529665921569L
+   )
+   static long field1479;
+   @ObfuscatedName("pm")
+   @ObfuscatedGetter(
+      intValue = -828221107
+   )
+   static int field1481;
 
    static {
-      field1491 = new byte[2048];
-      field1487 = new byte[2048];
-      field1490 = new Buffer[2048];
-      field1499 = 0;
-      field1492 = new int[2048];
-      field1489 = 0;
-      field1494 = new int[2048];
-      field1495 = new int[2048];
-      field1496 = new int[2048];
-      field1497 = new int[2048];
-      field1498 = 0;
-      field1493 = new int[2048];
-      field1500 = new Buffer(new byte[5000]);
+      field1466 = new byte[2048];
+      field1467 = new byte[2048];
+      field1475 = new Buffer[2048];
+      field1469 = 0;
+      field1470 = new int[2048];
+      field1476 = 0;
+      field1472 = new int[2048];
+      field1473 = new int[2048];
+      field1474 = new int[2048];
+      field1471 = new int[2048];
+      field1480 = 0;
+      field1465 = new int[2048];
+      field1464 = new Buffer(new byte[5000]);
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("fg")
    @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "-663163711"
+      signature = "(I)V",
+      garbageValue = "-2112046475"
    )
-   static final boolean method1769(char var0) {
-      return var0 == 160 || var0 == 32 || var0 == 95 || var0 == 45;
-   }
+   static final void method1732() {
+      int[] var0 = field1470;
 
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(Lfe;IIIIIIB)V",
-      garbageValue = "-111"
-   )
-   @Export("loadTerrain")
-   static final void loadTerrain(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7;
-      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
-         class61.tileSettings[var1][var2][var3] = 0;
-
-         while(true) {
-            var7 = var0.readUnsignedByte();
-            if(var7 == 0) {
-               if(var1 == 0) {
-                  int[] var8 = class61.tileHeights[0][var2];
-                  int var11 = var4 + 932731 + var2;
-                  int var12 = var5 + var3 + 556238;
-                  int var13 = class98.getSmoothNoise(var11 + '넵', var12 + 91923, 4) - 128 + (class98.getSmoothNoise(var11 + 10294, var12 + '鎽', 2) - 128 >> 1) + (class98.getSmoothNoise(var11, var12, 1) - 128 >> 2);
-                  var13 = (int)((double)var13 * 0.3D) + 35;
-                  if(var13 < 10) {
-                     var13 = 10;
-                  } else if(var13 > 60) {
-                     var13 = 60;
-                  }
-
-                  var8[var3] = -var13 * 8;
-               } else {
-                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
-               }
-               break;
-            }
-
-            if(var7 == 1) {
-               int var14 = var0.readUnsignedByte();
-               if(var14 == 1) {
-                  var14 = 0;
-               }
-
-               if(var1 == 0) {
-                  class61.tileHeights[0][var2][var3] = -var14 * 8;
-               } else {
-                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - var14 * 8;
-               }
-               break;
-            }
-
-            if(var7 <= 49) {
-               class61.overlayIds[var1][var2][var3] = var0.readByte();
-               class12.overlayPaths[var1][var2][var3] = (byte)((var7 - 2) / 4);
-               class61.overlayRotations[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
-            } else if(var7 <= 81) {
-               class61.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
-            } else {
-               Item.underlayIds[var1][var2][var3] = (byte)(var7 - 81);
+      int var1;
+      for(var1 = 0; var1 < field1469; ++var1) {
+         Player var2 = Client.cachedPlayers[var0[var1]];
+         if(var2 != null && var2.field1225 > 0) {
+            --var2.field1225;
+            if(var2.field1225 == 0) {
+               var2.overhead = null;
             }
          }
-      } else {
-         while(true) {
-            var7 = var0.readUnsignedByte();
-            if(var7 == 0) {
-               break;
-            }
+      }
 
-            if(var7 == 1) {
-               var0.readUnsignedByte();
-               break;
-            }
-
-            if(var7 <= 49) {
-               var0.readUnsignedByte();
+      for(var1 = 0; var1 < Client.field953; ++var1) {
+         int var4 = Client.npcIndices[var1];
+         NPC var3 = Client.cachedNPCs[var4];
+         if(var3 != null && var3.field1225 > 0) {
+            --var3.field1225;
+            if(var3.field1225 == 0) {
+               var3.overhead = null;
             }
          }
       }

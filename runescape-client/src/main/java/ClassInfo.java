@@ -5,36 +5,36 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("jz")
+@ObfuscatedName("jf")
 @Implements("ClassInfo")
 public class ClassInfo extends Node {
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1604389559
+      intValue = 1472756127
    )
-   int field3745;
-   @ObfuscatedName("j")
+   int field3737;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1606776473
+      intValue = -1184574139
    )
    @Export("count")
    int count;
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @Export("errorIdentifiers")
    int[] errorIdentifiers;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @Export("type")
    int[] type;
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @Export("fields")
    Field[] fields;
-   @ObfuscatedName("e")
+   @ObfuscatedName("s")
    @Export("fieldValues")
    int[] fieldValues;
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @Export("methods")
    Method[] methods;
-   @ObfuscatedName("s")
+   @ObfuscatedName("m")
    @Export("args")
    byte[][][] args;
 }

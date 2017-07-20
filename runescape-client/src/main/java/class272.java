@@ -1,81 +1,87 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("je")
+@ObfuscatedName("jo")
 public class class272 {
-   @ObfuscatedName("gr")
-   public static final int[] field3703;
+   @ObfuscatedName("gs")
+   public static final int[] field3690;
 
    static {
-      field3703 = new int[]{-2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, -1, 0, 0, 2, 0, -2, -1, 0, 5, 0, 0, 0, -1, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, -2, -2, 0, -2, 0, 0, 6, 0, 0, 0, 0, -2, 0, 0, 0, 3, 10, 0, -1, -2, 0, -1, 0, 0, 0, 0, 0, 0, 0, -2, 10, 1, 0, 0, 0, 0, 0, 8, 0, 2, -1, 0, 0, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2, 0, 0, 0, 0, 0, 4, 0, 6, 0, 0, 5, 0, 1, 0, 2, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 14, 1, 0, 0, 8, 4, -2, 2, 0, 0, 0, 0, 0, 0, 2, -2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2, 0, -2, 5, 0, 0, 0, 0, 0, 0, 6, 8, 0, 0, 0, 0, -2, 2, 12, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 4, 2, 0, 0, 3, 6, 0, 0, 0, 0, 0, 0, 0, 6, 0, 6, 0, 0, -2, 0, 0, 0, 0, 0, -2, 0, 0, 2, 0, 7, 8, 20, 6, 0, 0, 0, 15, 0, -2, 0, 0, 6, 6, 0, 0, 0, 0, 28, 0, 5, 0, 0, 0, 0, 6, 0, 0, 0, 0, -2, 0, 0, 0, 5, 0, 0, 0, 6, 0, 0, 0};
+      field3690 = new int[]{0, 0, 2, 0, 0, 0, -2, 0, 0, -2, 0, 0, 5, 0, 0, 0, 0, 0, 5, -2, 0, 3, 0, 7, -2, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2, 2, 0, 0, 0, -1, 0, 0, -2, 0, 12, 0, 0, 0, 4, 0, 0, 0, 0, 0, 6, 0, 0, 1, -2, 0, 1, 0, 0, -2, 0, 0, 4, 0, 0, 8, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, -2, 0, 0, 0, 0, 2, -2, 0, 2, 0, 0, 5, 0, 0, 0, 0, 0, 2, 0, 0, 0, -2, 0, 0, 0, 0, 0, 28, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 6, -2, 0, 0, 7, 0, 0, 0, 0, -2, 0, 0, 0, -1, 5, 0, 0, -2, 4, 8, 2, 0, 8, 2, 0, 0, 0, 0, 0, 4, 0, 4, 0, -2, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 15, 0, 0, 0, 6, 0, 0, 0, 0, 1, 0, 0, 10, 0, 0, -2, 6, 0, 2, -2, -2, 0, 0, 8, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 14, -2, 6, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 4, 0, 0, 6, 0, 0, 0, 0, 5, 3, 6, 4, 2, 0, 0, 0, 0, 2, -1, 0, 0, 0, 0, 0, 0};
    }
 
-   @ObfuscatedName("ic")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "([Lhy;II)V",
-      garbageValue = "883853763"
+      signature = "(Ljava/lang/CharSequence;I)[B",
+      garbageValue = "-1726416221"
    )
-   static final void method4829(Widget[] var0, int var1) {
-      for(int var2 = 0; var2 < var0.length; ++var2) {
-         Widget var3 = var0[var2];
-         if(var3 != null && var3.parentId == var1 && (!var3.hasScript || !class90.method1690(var3))) {
-            int var5;
-            if(var3.type == 0) {
-               if(!var3.hasScript && class90.method1690(var3) && var3 != XGrandExchangeOffer.field308) {
-                  continue;
-               }
+   public static byte[] method4794(CharSequence var0) {
+      int var1 = var0.length();
+      byte[] var2 = new byte[var1];
 
-               method4829(var0, var3.id);
-               if(var3.children != null) {
-                  method4829(var3.children, var3.id);
-               }
-
-               WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var3.id);
-               if(var4 != null) {
-                  var5 = var4.id;
-                  if(class33.loadWidget(var5)) {
-                     method4829(Widget.widgets[var5], -1);
-                  }
-               }
-            }
-
-            if(var3.type == 6) {
-               if(var3.field2777 != -1 || var3.field2701 != -1) {
-                  boolean var7 = AbstractSoundSystem.method2039(var3);
-                  if(var7) {
-                     var5 = var3.field2701;
-                  } else {
-                     var5 = var3.field2777;
-                  }
-
-                  if(var5 != -1) {
-                     Sequence var6 = class112.getAnimation(var5);
-
-                     for(var3.field2776 += Client.field982; var3.field2776 > var6.frameLenghts[var3.field2772]; class48.method749(var3)) {
-                        var3.field2776 -= var6.frameLenghts[var3.field2772];
-                        ++var3.field2772;
-                        if(var3.field2772 >= var6.frameIDs.length) {
-                           var3.field2772 -= var6.frameStep;
-                           if(var3.field2772 < 0 || var3.field2772 >= var6.frameIDs.length) {
-                              var3.field2772 = 0;
-                           }
-                        }
-                     }
-                  }
-               }
-
-               if(var3.field2709 != 0 && !var3.hasScript) {
-                  int var8 = var3.field2709 >> 16;
-                  var5 = var3.field2709 << 16 >> 16;
-                  var8 *= Client.field982;
-                  var5 *= Client.field982;
-                  var3.rotationX = var8 + var3.rotationX & 2047;
-                  var3.rotationZ = var5 + var3.rotationZ & 2047;
-                  class48.method749(var3);
-               }
-            }
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if(var4 > 0 && var4 < 128 || var4 >= 160 && var4 <= 255) {
+            var2[var3] = (byte)var4;
+         } else if(var4 == 8364) {
+            var2[var3] = -128;
+         } else if(var4 == 8218) {
+            var2[var3] = -126;
+         } else if(var4 == 402) {
+            var2[var3] = -125;
+         } else if(var4 == 8222) {
+            var2[var3] = -124;
+         } else if(var4 == 8230) {
+            var2[var3] = -123;
+         } else if(var4 == 8224) {
+            var2[var3] = -122;
+         } else if(var4 == 8225) {
+            var2[var3] = -121;
+         } else if(var4 == 710) {
+            var2[var3] = -120;
+         } else if(var4 == 8240) {
+            var2[var3] = -119;
+         } else if(var4 == 352) {
+            var2[var3] = -118;
+         } else if(var4 == 8249) {
+            var2[var3] = -117;
+         } else if(var4 == 338) {
+            var2[var3] = -116;
+         } else if(var4 == 381) {
+            var2[var3] = -114;
+         } else if(var4 == 8216) {
+            var2[var3] = -111;
+         } else if(var4 == 8217) {
+            var2[var3] = -110;
+         } else if(var4 == 8220) {
+            var2[var3] = -109;
+         } else if(var4 == 8221) {
+            var2[var3] = -108;
+         } else if(var4 == 8226) {
+            var2[var3] = -107;
+         } else if(var4 == 8211) {
+            var2[var3] = -106;
+         } else if(var4 == 8212) {
+            var2[var3] = -105;
+         } else if(var4 == 732) {
+            var2[var3] = -104;
+         } else if(var4 == 8482) {
+            var2[var3] = -103;
+         } else if(var4 == 353) {
+            var2[var3] = -102;
+         } else if(var4 == 8250) {
+            var2[var3] = -101;
+         } else if(var4 == 339) {
+            var2[var3] = -100;
+         } else if(var4 == 382) {
+            var2[var3] = -98;
+         } else if(var4 == 376) {
+            var2[var3] = -97;
+         } else {
+            var2[var3] = 63;
          }
       }
 
+      return var2;
    }
 }

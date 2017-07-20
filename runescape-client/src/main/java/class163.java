@@ -1,165 +1,116 @@
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("fs")
+@ObfuscatedName("fk")
 public abstract class class163 {
-   @ObfuscatedName("ed")
+   @ObfuscatedName("s")
+   @Export("validInterfaces")
+   static boolean[] validInterfaces;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -71304227
+      intValue = 1854780565
    )
-   @Export("baseX")
-   static int baseX;
-   @ObfuscatedName("gt")
+   public int field2274;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1593368737
+   )
+   public int field2272;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1916007497
+   )
+   public int field2273;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 534552955
+   )
+   public int field2275;
+
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "[Ljt;"
+      signature = "(IIILfu;I)Z",
+      garbageValue = "2144325259"
    )
-   @Export("mapDots")
-   static SpritePixels[] mapDots;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -2129602153
-   )
-   public int field2308;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 539123419
-   )
-   public int field2311;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1831966495
-   )
-   public int field2307;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 309432097
-   )
-   public int field2306;
+   protected abstract boolean vmethod2998(int var1, int var2, int var3, CollisionData var4);
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IIILfv;I)Z",
-      garbageValue = "1809467862"
+      signature = "(II)Liy;",
+      garbageValue = "-1424986909"
    )
-   public abstract boolean vmethod3052(int var1, int var2, int var3, CollisionData var4);
+   public static FloorUnderlayDefinition method3000(int var0) {
+      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.underlays.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = FloorUnderlayDefinition.underlay_ref.getConfigData(1, var0);
+         var1 = new FloorUnderlayDefinition();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2), var0);
+         }
 
-   @ObfuscatedName("r")
+         var1.post();
+         FloorUnderlayDefinition.underlays.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("ff")
    @ObfuscatedSignature(
-      signature = "(Lfe;II)V",
-      garbageValue = "-1653646613"
+      signature = "(Ljava/lang/String;ZB)V",
+      garbageValue = "24"
    )
-   @Export("decodeClassVerifier")
-   public static void decodeClassVerifier(Buffer var0, int var1) {
-      ClassInfo var2 = new ClassInfo();
-      var2.count = var0.readUnsignedByte();
-      var2.field3745 = var0.readInt();
-      var2.type = new int[var2.count];
-      var2.errorIdentifiers = new int[var2.count];
-      var2.fields = new Field[var2.count];
-      var2.fieldValues = new int[var2.count];
-      var2.methods = new Method[var2.count];
-      var2.args = new byte[var2.count][][];
+   @Export("drawStatusBox")
+   static final void drawStatusBox(String var0, boolean var1) {
+      byte var2 = 4;
+      int var3 = var2 + 6;
+      int var4 = var2 + 6;
+      int var5 = class112.font_p12full.method4637(var0, 250);
+      int var6 = class112.font_p12full.method4638(var0, 250) * 13;
+      Rasterizer2D.method4828(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6, 0);
+      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 16777215);
+      class112.font_p12full.method4644(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
+      class140.method2793(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6);
+      if(var1) {
+         WorldMapType1.field417.vmethod4917(0, 0);
+      } else {
+         int var7 = var3;
+         int var8 = var4;
+         int var9 = var5;
+         int var10 = var6;
 
-      for(int var3 = 0; var3 < var2.count; ++var3) {
-         try {
-            int var4 = var0.readUnsignedByte();
-            String var5;
-            String var6;
-            int var7;
-            if(var4 != 0 && var4 != 1 && var4 != 2) {
-               if(var4 == 3 || var4 == 4) {
-                  var5 = var0.readString();
-                  var6 = var0.readString();
-                  var7 = var0.readUnsignedByte();
-                  String[] var8 = new String[var7];
-
-                  for(int var9 = 0; var9 < var7; ++var9) {
-                     var8[var9] = var0.readString();
-                  }
-
-                  String var20 = var0.readString();
-                  byte[][] var10 = new byte[var7][];
-                  int var12;
-                  if(var4 == 3) {
-                     for(int var11 = 0; var11 < var7; ++var11) {
-                        var12 = var0.readInt();
-                        var10[var11] = new byte[var12];
-                        var0.readBytes(var10[var11], 0, var12);
-                     }
-                  }
-
-                  var2.type[var3] = var4;
-                  Class[] var21 = new Class[var7];
-
-                  for(var12 = 0; var12 < var7; ++var12) {
-                     var21[var12] = class82.method1585(var8[var12]);
-                  }
-
-                  Class var22 = class82.method1585(var20);
-                  if(class82.method1585(var5).getClassLoader() == null) {
-                     throw new SecurityException();
-                  }
-
-                  Method[] var13 = class82.method1585(var5).getDeclaredMethods();
-                  Method[] var14 = var13;
-
-                  for(int var15 = 0; var15 < var14.length; ++var15) {
-                     Method var16 = var14[var15];
-                     if(Reflection.getMethodName(var16).equals(var6)) {
-                        Class[] var17 = Reflection.getParameterTypes(var16);
-                        if(var21.length == var17.length) {
-                           boolean var18 = true;
-
-                           for(int var19 = 0; var19 < var21.length; ++var19) {
-                              if(var17[var19] != var21[var19]) {
-                                 var18 = false;
-                                 break;
-                              }
-                           }
-
-                           if(var18 && var22 == var16.getReturnType()) {
-                              var2.methods[var3] = var16;
-                           }
-                        }
-                     }
-                  }
-
-                  var2.args[var3] = var10;
-               }
-            } else {
-               var5 = var0.readString();
-               var6 = var0.readString();
-               var7 = 0;
-               if(var4 == 1) {
-                  var7 = var0.readInt();
-               }
-
-               var2.type[var3] = var4;
-               var2.fieldValues[var3] = var7;
-               if(class82.method1585(var5).getClassLoader() == null) {
-                  throw new SecurityException();
-               }
-
-               var2.fields[var3] = Reflection.findField(class82.method1585(var5), var6);
+         for(int var11 = 0; var11 < Client.field1107; ++var11) {
+            if(Client.widgetBoundsWidth[var11] + Client.widgetPositionX[var11] > var7 && Client.widgetPositionX[var11] < var7 + var9 && Client.widgetBoundsHeight[var11] + Client.widgetPositionY[var11] > var8 && Client.widgetPositionY[var11] < var10 + var8) {
+               Client.field1064[var11] = true;
             }
-         } catch (ClassNotFoundException var24) {
-            var2.errorIdentifiers[var3] = -1;
-         } catch (SecurityException var25) {
-            var2.errorIdentifiers[var3] = -2;
-         } catch (NullPointerException var26) {
-            var2.errorIdentifiers[var3] = -3;
-         } catch (Exception var27) {
-            var2.errorIdentifiers[var3] = -4;
-         } catch (Throwable var28) {
-            var2.errorIdentifiers[var3] = -5;
          }
       }
 
-      class280.field3753.method3563(var2);
+   }
+
+   @ObfuscatedName("hs")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-1666451503"
+   )
+   static boolean method2999(int var0) {
+      return var0 == 57 || var0 == 58 || var0 == 1007 || var0 == 25 || var0 == 30;
+   }
+
+   @ObfuscatedName("fy")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1704605380"
+   )
+   static final int method2994() {
+      if(class34.preferences.hideRoofs) {
+         return class10.plane;
+      } else {
+         int var0 = class23.getTileHeight(class73.cameraX, Client.cameraY, class10.plane);
+         return var0 - WidgetNode.cameraZ < 800 && (class61.tileSettings[class10.plane][class73.cameraX >> 7][Client.cameraY >> 7] & 4) != 0?class10.plane:3;
+      }
    }
 }

@@ -4,44 +4,39 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("o")
+@ObfuscatedName("e")
 @Implements("XGrandExchangeOffer")
 public class XGrandExchangeOffer {
-   @ObfuscatedName("ka")
-   @ObfuscatedSignature(
-      signature = "Lhy;"
-   )
-   static Widget field308;
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @Export("progress")
    byte progress;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1770728449
+      intValue = -1742462719
    )
    @Export("price")
    public int price;
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1966590447
+      intValue = -943557443
    )
    @Export("totalQuantity")
    public int totalQuantity;
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1495023969
+      intValue = 777929655
    )
    @Export("itemId")
    public int itemId;
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 637688835
+      intValue = 1568272623
    )
    @Export("quantitySold")
    public int quantitySold;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 267246811
+      intValue = -1296865761
    )
    @Export("spent")
    public int spent;
@@ -50,7 +45,7 @@ public class XGrandExchangeOffer {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lfe;Z)V",
+      signature = "(Lfp;Z)V",
       garbageValue = "0"
    )
    public XGrandExchangeOffer(Buffer var1, boolean var2) {
@@ -62,22 +57,22 @@ public class XGrandExchangeOffer {
       this.spent = var1.readInt();
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1933794168"
+      signature = "(IB)V",
+      garbageValue = "49"
    )
-   void method114(int var1) {
+   void method112(int var1) {
       this.progress &= -8;
       this.progress = (byte)(this.progress | var1 & 7);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1395540811"
+      signature = "(IB)V",
+      garbageValue = "14"
    )
-   void method111(int var1) {
+   void method114(int var1) {
       this.progress &= -9;
       if(var1 == 1) {
          this.progress = (byte)(this.progress | 8);
@@ -85,127 +80,42 @@ public class XGrandExchangeOffer {
 
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "2116910357"
+      garbageValue = "-1304723411"
    )
-   public int method98() {
+   public int method96() {
       return (this.progress & 8) == 8?1:0;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-790025627"
+      signature = "(B)I",
+      garbageValue = "-68"
    )
    public int method95() {
       return this.progress & 7;
    }
 
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-70364969"
-   )
-   static int method99(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
-      }
-
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var0 / 4 << 10) + (var1 / 32 << 7) + var2 / 2;
-      return var3;
-   }
-
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/lang/String;",
-      garbageValue = "-593689911"
+      signature = "(IB)Z",
+      garbageValue = "53"
    )
-   public static String method116(String var0) {
-      int var1 = var0.length();
-      char[] var2 = new char[var1];
-      byte var3 = 2;
-
-      for(int var4 = 0; var4 < var1; ++var4) {
-         char var5 = var0.charAt(var4);
-         if(var3 == 0) {
-            var5 = Character.toLowerCase(var5);
-         } else if(var3 == 2 || Character.isUpperCase(var5)) {
-            char var6;
-            if(var5 != 181 && var5 != 131) {
-               var6 = Character.toTitleCase(var5);
-            } else {
-               var6 = var5;
-            }
-
-            var5 = var6;
-         }
-
-         if(Character.isLetter(var5)) {
-            var3 = 0;
-         } else if(var5 != 46 && var5 != 63 && var5 != 33) {
-            if(Character.isSpaceChar(var5)) {
-               if(var3 != 2) {
-                  var3 = 1;
-               }
-            } else {
-               var3 = 1;
-            }
-         } else {
-            var3 = 2;
-         }
-
-         var2[var4] = var5;
-      }
-
-      return new String(var2);
+   public static boolean method99(int var0) {
+      return (var0 >> 29 & 1) != 0;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(IIIS)V",
-      garbageValue = "31556"
+      signature = "(III)I",
+      garbageValue = "1096345650"
    )
-   static final void method117(int var0, int var1, int var2) {
-      int var3;
-      for(var3 = 0; var3 < 8; ++var3) {
-         for(int var4 = 0; var4 < 8; ++var4) {
-            class61.tileHeights[var0][var3 + var1][var4 + var2] = 0;
-         }
-      }
-
-      if(var1 > 0) {
-         for(var3 = 1; var3 < 8; ++var3) {
-            class61.tileHeights[var0][var1][var3 + var2] = class61.tileHeights[var0][var1 - 1][var3 + var2];
-         }
-      }
-
-      if(var2 > 0) {
-         for(var3 = 1; var3 < 8; ++var3) {
-            class61.tileHeights[var0][var3 + var1][var2] = class61.tileHeights[var0][var3 + var1][var2 - 1];
-         }
-      }
-
-      if(var1 > 0 && class61.tileHeights[var0][var1 - 1][var2] != 0) {
-         class61.tileHeights[var0][var1][var2] = class61.tileHeights[var0][var1 - 1][var2];
-      } else if(var2 > 0 && class61.tileHeights[var0][var1][var2 - 1] != 0) {
-         class61.tileHeights[var0][var1][var2] = class61.tileHeights[var0][var1][var2 - 1];
-      } else if(var1 > 0 && var2 > 0 && class61.tileHeights[var0][var1 - 1][var2 - 1] != 0) {
-         class61.tileHeights[var0][var1][var2] = class61.tileHeights[var0][var1 - 1][var2 - 1];
-      }
-
+   static final int method101(int var0, int var1) {
+      int var2 = var1 * 57 + var0;
+      var2 ^= var2 << 13;
+      int var3 = (var2 * var2 * 15731 + 789221) * var2 + 1376312589 & Integer.MAX_VALUE;
+      return var3 >> 19 & 255;
    }
 }

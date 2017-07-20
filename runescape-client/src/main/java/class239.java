@@ -1,158 +1,65 @@
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.OptionalDataException;
-import java.io.StreamCorruptedException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("iu")
+@ObfuscatedName("ir")
 public enum class239 implements RSEnum {
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Liu;"
+      signature = "Lir;"
    )
-   field3278(2, 0),
-   @ObfuscatedName("j")
+   field3244(0, 0),
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Liu;"
+      signature = "Lir;"
    )
-   field3274(1, 1),
-   @ObfuscatedName("n")
+   field3246(2, 1),
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Liu;"
+      signature = "Lir;"
    )
-   field3275(0, 2);
+   field3245(1, 2);
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -457783113
+      intValue = -1989103333
    )
-   public final int field3276;
-   @ObfuscatedName("v")
+   final int field3243;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1294687273
+      intValue = -1386691351
    )
-   final int field3277;
+   public final int field3247;
 
    class239(int var3, int var4) {
-      this.field3276 = var3;
-      this.field3277 = var4;
+      this.field3247 = var3;
+      this.field3243 = var4;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1952293135"
+      garbageValue = "-1443879177"
    )
    public int rsOrdinal() {
-      return this.field3277;
+      return this.field3243;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lff;I)V",
-      garbageValue = "1404195174"
+      signature = "(IB)Lho;",
+      garbageValue = "0"
    )
-   @Export("encodeClassVerifier")
-   public static void encodeClassVerifier(PacketBuffer var0) {
-      ClassInfo var1 = (ClassInfo)class280.field3753.method3558();
-      if(var1 != null) {
-         int var2 = var0.offset;
-         var0.putInt(var1.field3745);
-
-         for(int var3 = 0; var3 < var1.count; ++var3) {
-            if(var1.errorIdentifiers[var3] != 0) {
-               var0.putByte(var1.errorIdentifiers[var3]);
-            } else {
-               try {
-                  int var4 = var1.type[var3];
-                  Field var5;
-                  int var6;
-                  if(var4 == 0) {
-                     var5 = var1.fields[var3];
-                     var6 = Reflection.getInt(var5, (Object)null);
-                     var0.putByte(0);
-                     var0.putInt(var6);
-                  } else if(var4 == 1) {
-                     var5 = var1.fields[var3];
-                     Reflection.setInt(var5, (Object)null, var1.fieldValues[var3]);
-                     var0.putByte(0);
-                  } else if(var4 == 2) {
-                     var5 = var1.fields[var3];
-                     var6 = var5.getModifiers();
-                     var0.putByte(0);
-                     var0.putInt(var6);
-                  }
-
-                  Method var25;
-                  if(var4 != 3) {
-                     if(var4 == 4) {
-                        var25 = var1.methods[var3];
-                        var6 = var25.getModifiers();
-                        var0.putByte(0);
-                        var0.putInt(var6);
-                     }
-                  } else {
-                     var25 = var1.methods[var3];
-                     byte[][] var10 = var1.args[var3];
-                     Object[] var7 = new Object[var10.length];
-
-                     for(int var8 = 0; var8 < var10.length; ++var8) {
-                        ObjectInputStream var9 = new ObjectInputStream(new ByteArrayInputStream(var10[var8]));
-                        var7[var8] = var9.readObject();
-                     }
-
-                     Object var11 = Reflection.invoke(var25, (Object)null, var7);
-                     if(var11 == null) {
-                        var0.putByte(0);
-                     } else if(var11 instanceof Number) {
-                        var0.putByte(1);
-                        var0.putLong(((Number)var11).longValue());
-                     } else if(var11 instanceof String) {
-                        var0.putByte(2);
-                        var0.putString((String)var11);
-                     } else {
-                        var0.putByte(4);
-                     }
-                  }
-               } catch (ClassNotFoundException var13) {
-                  var0.putByte(-10);
-               } catch (InvalidClassException var14) {
-                  var0.putByte(-11);
-               } catch (StreamCorruptedException var15) {
-                  var0.putByte(-12);
-               } catch (OptionalDataException var16) {
-                  var0.putByte(-13);
-               } catch (IllegalAccessException var17) {
-                  var0.putByte(-14);
-               } catch (IllegalArgumentException var18) {
-                  var0.putByte(-15);
-               } catch (InvocationTargetException var19) {
-                  var0.putByte(-16);
-               } catch (SecurityException var20) {
-                  var0.putByte(-17);
-               } catch (IOException var21) {
-                  var0.putByte(-18);
-               } catch (NullPointerException var22) {
-                  var0.putByte(-19);
-               } catch (Exception var23) {
-                  var0.putByte(-20);
-               } catch (Throwable var24) {
-                  var0.putByte(-21);
-               }
-            }
+   public static Widget method4167(int var0) {
+      int var1 = var0 >> 16;
+      int var2 = var0 & '\uffff';
+      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
+         boolean var3 = class9.loadWidget(var1);
+         if(!var3) {
+            return null;
          }
-
-         var0.putCrc(var2);
-         var1.unlink();
       }
+
+      return Widget.widgets[var1][var2];
    }
 }

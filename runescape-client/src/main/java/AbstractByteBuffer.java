@@ -3,68 +3,40 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fb")
+@ObfuscatedName("fx")
 @Implements("AbstractByteBuffer")
 public abstract class AbstractByteBuffer {
-   @ObfuscatedName("j")
-   static boolean field2412;
+   @ObfuscatedName("o")
+   static boolean field2376;
+   @ObfuscatedName("bu")
+   @ObfuscatedSignature(
+      signature = "Lhl;"
+   )
+   static BuildType field2373;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "[Ljx;"
+   )
+   @Export("titlemuteSprite")
+   static ModIcon[] titlemuteSprite;
 
    static {
-      field2412 = false;
+      field2376 = false;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(I)[B",
-      garbageValue = "-1186436178"
+      garbageValue = "-227926536"
    )
    @Export("get")
    abstract byte[] get();
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "([BI)V",
-      garbageValue = "-1077499557"
+      garbageValue = "-834931198"
    )
    @Export("put")
    abstract void put(byte[] var1);
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/CharSequence;IIB)Ljava/lang/String;",
-      garbageValue = "-1"
-   )
-   public static String method3369(CharSequence[] var0, int var1, int var2) {
-      if(var2 == 0) {
-         return "";
-      } else if(var2 == 1) {
-         CharSequence var3 = var0[var1];
-         return var3 == null?"null":var3.toString();
-      } else {
-         int var8 = var2 + var1;
-         int var4 = 0;
-
-         for(int var5 = var1; var5 < var8; ++var5) {
-            CharSequence var6 = var0[var5];
-            if(var6 == null) {
-               var4 += 4;
-            } else {
-               var4 += var6.length();
-            }
-         }
-
-         StringBuilder var9 = new StringBuilder(var4);
-
-         for(int var10 = var1; var10 < var8; ++var10) {
-            CharSequence var7 = var0[var10];
-            if(var7 == null) {
-               var9.append("null");
-            } else {
-               var9.append(var7);
-            }
-         }
-
-         return var9.toString();
-      }
-   }
 }

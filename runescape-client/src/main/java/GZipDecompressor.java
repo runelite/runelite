@@ -1,23 +1,25 @@
 import java.util.zip.Inflater;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("fw")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-   @ObfuscatedName("az")
-   @ObfuscatedSignature(
-      signature = "Lju;"
+   @ObfuscatedName("lg")
+   @ObfuscatedGetter(
+      intValue = 1351917969
    )
-   public static BufferProvider field2327;
-   @ObfuscatedName("gf")
+   static int field2293;
+   @ObfuscatedName("fv")
    @ObfuscatedSignature(
-      signature = "[Ljf;"
+      signature = "[Ljj;"
    )
-   static ModIcon[] field2330;
-   @ObfuscatedName("a")
+   @Export("mapfunctions")
+   static SpritePixels[] mapfunctions;
+   @ObfuscatedName("c")
    @Export("inflator")
    Inflater inflator;
 
@@ -32,10 +34,10 @@ public class GZipDecompressor {
       this(-1, 1000000, 1000000);
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lfe;[BB)V",
-      garbageValue = "105"
+      signature = "(Lfp;[BI)V",
+      garbageValue = "2098687063"
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
@@ -56,17 +58,5 @@ public class GZipDecompressor {
       } else {
          throw new RuntimeException("");
       }
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2034737161"
-   )
-   public static void method3074() {
-      Widget.field2647.reset();
-      Widget.field2783.reset();
-      Widget.field2684.reset();
-      Widget.field2650.reset();
    }
 }

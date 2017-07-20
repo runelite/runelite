@@ -1,96 +1,82 @@
-import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import javax.imageio.ImageIO;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ab")
+@ObfuscatedName("ax")
 public class class43 {
-   @ObfuscatedName("go")
+   @ObfuscatedName("oi")
    @ObfuscatedSignature(
-      signature = "[Ljt;"
+      signature = "Ljj;"
    )
-   @Export("mapfunctions")
-   static SpritePixels[] mapfunctions;
-   @ObfuscatedName("pa")
+   static SpritePixels field576;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -757455759
+      intValue = -115459627
    )
-   static int field559;
-   @ObfuscatedName("a")
+   int field574;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1078706799
+      intValue = 1704135035
    )
-   int field552;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1297976311
-   )
-   int field562;
-   @ObfuscatedName("n")
-   int[][] field554;
-   @ObfuscatedName("v")
-   int[][] field556;
-   @ObfuscatedName("r")
-   int[][] field560;
-   @ObfuscatedName("e")
-   int[][] field557;
+   int field570;
+   @ObfuscatedName("i")
+   int[][] field571;
+   @ObfuscatedName("g")
+   int[][] field575;
+   @ObfuscatedName("u")
+   int[][] field573;
+   @ObfuscatedName("m")
+   int[][] field572;
 
    class43(int var1, int var2) {
-      this.field552 = var1;
-      this.field562 = var2;
-      this.field554 = new int[var1][var2];
-      this.field560 = new int[var1][var2];
-      this.field556 = new int[var1][var2];
-      this.field557 = new int[var1][var2];
+      this.field574 = var1;
+      this.field570 = var2;
+      this.field571 = new int[var1][var2];
+      this.field573 = new int[var1][var2];
+      this.field575 = new int[var1][var2];
+      this.field572 = new int[var1][var2];
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "899579177"
+      signature = "(IIS)I",
+      garbageValue = "6609"
    )
-   int method629(int var1, int var2) {
-      if(var1 >= 0 && var2 >= 0 && var1 < this.field552 && var2 < this.field562) {
-         if(this.field556[var1][var2] == 0) {
+   int method587(int var1, int var2) {
+      if(var1 >= 0 && var2 >= 0 && var1 < this.field574 && var2 < this.field570) {
+         if(this.field575[var1][var2] == 0) {
             return 0;
          } else {
-            int var3 = this.field554[var1][var2] / this.field557[var1][var2];
-            int var4 = this.field560[var1][var2] / this.field557[var1][var2];
-            int var5 = this.field556[var1][var2] / this.field557[var1][var2];
-            return DState.method3120((double)var3 / 256.0D, (double)var4 / 256.0D, (double)var5 / 256.0D);
+            int var3 = this.field571[var1][var2] / this.field572[var1][var2];
+            int var4 = this.field573[var1][var2] / this.field572[var1][var2];
+            int var5 = this.field575[var1][var2] / this.field572[var1][var2];
+            return class271.method4793((double)var3 / 256.0D, (double)var4 / 256.0D, (double)var5 / 256.0D);
          }
       } else {
          return 0;
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IIILij;I)V",
-      garbageValue = "-1450139735"
+      signature = "(IIILiy;I)V",
+      garbageValue = "1061329979"
    )
-   void method623(int var1, int var2, int var3, FloorUnderlayDefinition var4) {
+   void method592(int var1, int var2, int var3, FloorUnderlayDefinition var4) {
       if(var4 != null) {
          if(var3 + var1 >= 0 && var3 + var2 >= 0) {
-            if(var1 - var3 <= this.field552 && var2 - var3 <= this.field562) {
+            if(var1 - var3 <= this.field574 && var2 - var3 <= this.field570) {
                int var5 = Math.max(0, var1 - var3);
-               int var6 = Math.min(this.field552, var3 + var1);
+               int var6 = Math.min(this.field574, var3 + var1);
                int var7 = Math.max(0, var2 - var3);
-               int var8 = Math.min(this.field562, var3 + var2);
+               int var8 = Math.min(this.field570, var3 + var2);
 
                for(int var9 = var5; var9 < var6; ++var9) {
                   for(int var10 = var7; var10 < var8; ++var10) {
-                     this.field554[var9][var10] += var4.hue * 256 / var4.hueMultiplier;
-                     this.field560[var9][var10] += var4.saturation;
-                     this.field556[var9][var10] += var4.lightness;
-                     ++this.field557[var9][var10];
+                     this.field571[var9][var10] += var4.hue * 256 / var4.hueMultiplier;
+                     this.field573[var9][var10] += var4.saturation;
+                     this.field575[var9][var10] += var4.lightness;
+                     ++this.field572[var9][var10];
                   }
                }
 
@@ -99,76 +85,47 @@ public class class43 {
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1248332865"
+      signature = "(II)I",
+      garbageValue = "1356251449"
    )
-   static final boolean method630() {
-      return class134.field1999;
+   public static int method593(int var0) {
+      --var0;
+      var0 |= var0 >>> 1;
+      var0 |= var0 >>> 2;
+      var0 |= var0 >>> 4;
+      var0 |= var0 >>> 8;
+      var0 |= var0 >>> 16;
+      return var0 + 1;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "([BI)Ljt;",
-      garbageValue = "1989840981"
+      signature = "(I[BLfz;I)V",
+      garbageValue = "1327191770"
    )
-   public static final SpritePixels method622(byte[] var0) {
-      BufferedImage var1 = null;
-
-      try {
-         var1 = ImageIO.read(new ByteArrayInputStream(var0));
-         int var2 = var1.getWidth();
-         int var3 = var1.getHeight();
-         int[] var4 = new int[var2 * var3];
-         PixelGrabber var5 = new PixelGrabber(var1, 0, 0, var2, var3, var4, 0, var2);
-         var5.grabPixels();
-         return new SpritePixels(var4, var2, var3);
-      } catch (IOException var7) {
-         ;
-      } catch (InterruptedException var8) {
-         ;
+   static void method594(int var0, byte[] var1, IndexFile var2) {
+      FileSystem var3 = new FileSystem();
+      var3.field3171 = 0;
+      var3.hash = (long)var0;
+      var3.field3170 = var1;
+      var3.index = var2;
+      Deque var4 = class236.field3207;
+      synchronized(class236.field3207) {
+         class236.field3207.addFront(var3);
       }
 
-      return new SpritePixels(0, 0);
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-910593024"
-   )
-   public static void method628() {
-      try {
-         File var0 = new File(class66.userHome, "random.dat");
-         int var2;
-         if(var0.exists()) {
-            class155.field2239 = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
-         } else {
-            label37:
-            for(int var4 = 0; var4 < class77.field1212.length; ++var4) {
-               for(var2 = 0; var2 < class2.cacheLocations.length; ++var2) {
-                  File var3 = new File(class2.cacheLocations[var2] + class77.field1212[var4] + File.separatorChar + "random.dat");
-                  if(var3.exists()) {
-                     class155.field2239 = new CacheFile(new FileOnDisk(var3, "rw", 25L), 24, 0);
-                     break label37;
-                  }
-               }
-            }
+      Object var9 = class236.field3203;
+      synchronized(class236.field3203) {
+         if(class236.field3205 == 0) {
+            class19.field316 = new Thread(new class236());
+            class19.field316.setDaemon(true);
+            class19.field316.start();
+            class19.field316.setPriority(5);
          }
 
-         if(class155.field2239 == null) {
-            RandomAccessFile var1 = new RandomAccessFile(var0, "rw");
-            var2 = var1.read();
-            var1.seek(0L);
-            var1.write(var2);
-            var1.seek(0L);
-            var1.close();
-            class155.field2239 = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
-         }
-      } catch (IOException var5) {
-         ;
+         class236.field3205 = 600;
       }
-
    }
 }

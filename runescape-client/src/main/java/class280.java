@@ -1,18 +1,15 @@
-import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jb")
+@ObfuscatedName("js")
 public class class280 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lgi;"
+      signature = "Lgg;"
    )
-   static CombatInfoList field3753;
-   @ObfuscatedName("s")
-   static ScheduledExecutorService field3754;
+   static CombatInfoList field3739;
 
    static {
-      field3753 = new CombatInfoList();
+      field3739 = new CombatInfoList();
    }
 }

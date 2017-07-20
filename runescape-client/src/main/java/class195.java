@@ -1,66 +1,66 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gm")
+@ObfuscatedName("gf")
 public class class195 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "Lgp;"
    )
-   class196 field2471;
-   @ObfuscatedName("j")
+   class196 field2444;
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lgp;"
    )
-   class196 field2472;
+   class196 field2443;
 
    public class195() {
-      this.field2471 = new class196();
-      this.field2471.field2474 = this.field2471;
-      this.field2471.field2473 = this.field2471;
+      this.field2444 = new class196();
+      this.field2444.field2446 = this.field2444;
+      this.field2444.field2445 = this.field2444;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "()Lgp;"
    )
-   public class196 method3636() {
-      class196 var1 = this.field2471.field2474;
-      if(var1 == this.field2471) {
-         this.field2472 = null;
+   public class196 method3576() {
+      class196 var1 = this.field2444.field2446;
+      if(var1 == this.field2444) {
+         this.field2443 = null;
          return null;
       } else {
-         this.field2472 = var1.field2474;
+         this.field2443 = var1.field2446;
          return var1;
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(Lgp;)V"
    )
-   public void method3627(class196 var1) {
-      if(var1.field2473 != null) {
-         var1.method3639();
+   public void method3580(class196 var1) {
+      if(var1.field2445 != null) {
+         var1.method3588();
       }
 
-      var1.field2473 = this.field2471.field2473;
-      var1.field2474 = this.field2471;
-      var1.field2473.field2474 = var1;
-      var1.field2474.field2473 = var1;
+      var1.field2445 = this.field2444.field2445;
+      var1.field2446 = this.field2444;
+      var1.field2445.field2446 = var1;
+      var1.field2446.field2445 = var1;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "()Lgp;"
    )
-   public class196 method3629() {
-      class196 var1 = this.field2472;
-      if(var1 == this.field2471) {
-         this.field2472 = null;
+   public class196 method3577() {
+      class196 var1 = this.field2443;
+      if(var1 == this.field2444) {
+         this.field2443 = null;
          return null;
       } else {
-         this.field2472 = var1.field2474;
+         this.field2443 = var1.field2446;
          return var1;
       }
    }

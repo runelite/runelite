@@ -1,66 +1,70 @@
+import java.io.File;
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ea")
+@ObfuscatedName("et")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("ab")
-   @Export("authCode")
-   static String authCode;
-   @ObfuscatedName("s")
+   @ObfuscatedName("fg")
    @ObfuscatedGetter(
-      intValue = -941617951
+      intValue = 745087661
+   )
+   static int field2088;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 541205427
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("w")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1029687505
+      intValue = -1101047643
    )
    @Export("config")
    int config;
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1965593273
+      intValue = -490277897
    )
    @Export("x")
    int x;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lef;"
+      signature = "Lev;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1758108003
+      intValue = -551719327
    )
    @Export("y")
    int y;
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 896642659
+      intValue = 515348083
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("l")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lef;"
+      signature = "Lev;"
    )
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -2060967649
+      intValue = 767886203
    )
    @Export("orientationA")
    int orientationA;
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 610135463
+      intValue = -127976599
    )
    @Export("orientationB")
    int orientationB;
@@ -70,164 +74,86 @@ public final class WallObject {
       this.config = 0;
    }
 
-   @ObfuscatedName("fc")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lca;B)V",
-      garbageValue = "93"
+      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Ldx;",
+      garbageValue = "-1805732718"
    )
-   static final void method2865(Actor var0) {
-      var0.poseAnimation = var0.idlePoseAnimation;
-      if(var0.queueSize == 0) {
-         var0.field1272 = 0;
-      } else {
-         if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
-            Sequence var1 = class112.getAnimation(var0.animation);
-            if(var0.field1273 > 0 && var1.precedenceAnimating == 0) {
-               ++var0.field1272;
-               return;
-            }
-
-            if(var0.field1273 <= 0 && var1.priority == 0) {
-               ++var0.field1272;
-               return;
-            }
-         }
-
-         int var10 = var0.x;
-         int var2 = var0.y;
-         int var3 = 128 * var0.pathX[var0.queueSize - 1] + var0.field1218 * 64;
-         int var4 = var0.pathY[var0.queueSize - 1] * 128 + var0.field1218 * 64;
-         if(var10 < var3) {
-            if(var2 < var4) {
-               var0.orientation = 1280;
-            } else if(var2 > var4) {
-               var0.orientation = 1792;
-            } else {
-               var0.orientation = 1536;
-            }
-         } else if(var10 > var3) {
-            if(var2 < var4) {
-               var0.orientation = 768;
-            } else if(var2 > var4) {
-               var0.orientation = 256;
-            } else {
-               var0.orientation = 512;
-            }
-         } else if(var2 < var4) {
-            var0.orientation = 1024;
-         } else if(var2 > var4) {
-            var0.orientation = 0;
-         }
-
-         byte var5 = var0.field1239[var0.queueSize - 1];
-         if(var3 - var10 <= 256 && var3 - var10 >= -256 && var4 - var2 <= 256 && var4 - var2 >= -256) {
-            int var6 = var0.orientation - var0.angle & 2047;
-            if(var6 > 1024) {
-               var6 -= 2048;
-            }
-
-            int var7 = var0.field1223;
-            if(var6 >= -256 && var6 <= 256) {
-               var7 = var0.field1251;
-            } else if(var6 >= 256 && var6 < 768) {
-               var7 = var0.field1225;
-            } else if(var6 >= -768 && var6 <= -256) {
-               var7 = var0.field1224;
-            }
-
-            if(var7 == -1) {
-               var7 = var0.field1251;
-            }
-
-            var0.poseAnimation = var7;
-            int var8 = 4;
-            boolean var9 = true;
-            if(var0 instanceof NPC) {
-               var9 = ((NPC)var0).composition.isClickable;
-            }
-
-            if(var9) {
-               if(var0.orientation != var0.angle && var0.interacting == -1 && var0.field1267 != 0) {
-                  var8 = 2;
-               }
-
-               if(var0.queueSize > 2) {
-                  var8 = 6;
-               }
-
-               if(var0.queueSize > 3) {
-                  var8 = 8;
-               }
-
-               if(var0.field1272 > 0 && var0.queueSize > 1) {
-                  var8 = 8;
-                  --var0.field1272;
-               }
-            } else {
-               if(var0.queueSize > 1) {
-                  var8 = 6;
-               }
-
-               if(var0.queueSize > 2) {
-                  var8 = 8;
-               }
-
-               if(var0.field1272 > 0 && var0.queueSize > 1) {
-                  var8 = 8;
-                  --var0.field1272;
-               }
-            }
-
-            if(var5 == 2) {
-               var8 <<= 1;
-            }
-
-            if(var8 >= 8 && var0.poseAnimation == var0.field1251 && var0.field1221 != -1) {
-               var0.poseAnimation = var0.field1221;
-            }
-
-            if(var3 != var10 || var4 != var2) {
-               if(var10 < var3) {
-                  var0.x += var8;
-                  if(var0.x > var3) {
-                     var0.x = var3;
-                  }
-               } else if(var10 > var3) {
-                  var0.x -= var8;
-                  if(var0.x < var3) {
-                     var0.x = var3;
-                  }
-               }
-
-               if(var2 < var4) {
-                  var0.y += var8;
-                  if(var0.y > var4) {
-                     var0.y = var4;
-                  }
-               } else if(var2 > var4) {
-                  var0.y -= var8;
-                  if(var0.y < var4) {
-                     var0.y = var4;
-                  }
-               }
-            }
-
-            if(var3 == var0.x && var4 == var0.y) {
-               --var0.queueSize;
-               if(var0.field1273 > 0) {
-                  --var0.field1273;
-               }
-            }
-
-         } else {
-            var0.x = var3;
-            var0.y = var4;
-            --var0.queueSize;
-            if(var0.field1273 > 0) {
-               --var0.field1273;
-            }
-
+   @Export("getPreferencesFile")
+   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
+      File var3 = new File(class268.field3656, "preferences" + var0 + ".dat");
+      if(var3.exists()) {
+         try {
+            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
+            return var10;
+         } catch (IOException var9) {
+            ;
          }
       }
+
+      String var4 = "";
+      if(class155.field2209 == 33) {
+         var4 = "_rc";
+      } else if(class155.field2209 == 34) {
+         var4 = "_wip";
+      }
+
+      File var5 = new File(class64.userHome, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
+      FileOnDisk var6;
+      if(!var2 && var5.exists()) {
+         try {
+            var6 = new FileOnDisk(var5, "rw", 10000L);
+            return var6;
+         } catch (IOException var8) {
+            ;
+         }
+      }
+
+      try {
+         var6 = new FileOnDisk(var3, "rw", 10000L);
+         return var6;
+      } catch (IOException var7) {
+         throw new RuntimeException();
+      }
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "([BZI)Ljava/lang/Object;",
+      garbageValue = "-1265754630"
+   )
+   public static Object method2806(byte[] var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else {
+         if(var0.length > 136 && !AbstractByteBuffer.field2376) {
+            try {
+               DirectByteBuffer var2 = new DirectByteBuffer();
+               var2.put(var0);
+               return var2;
+            } catch (Throwable var3) {
+               AbstractByteBuffer.field2376 = true;
+            }
+         }
+
+         return var0;
+      }
+   }
+
+   @ObfuscatedName("er")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "457691810"
+   )
+   static void method2805(int var0, int var1, int var2) {
+      if(Client.field1136 != 0 && var1 != 0 && Client.field935 < 50) {
+         Client.field1081[Client.field935] = var0;
+         Client.field1151[Client.field935] = var1;
+         Client.field1010[Client.field935] = var2;
+         Client.audioEffects[Client.field935] = null;
+         Client.field1148[Client.field935] = 0;
+         ++Client.field935;
+      }
+
    }
 }

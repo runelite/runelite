@@ -4,35 +4,75 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hs")
+@ObfuscatedName("hx")
 @Implements("FileSystem")
 public class FileSystem extends Node {
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 300161705
+      intValue = -1911631875
    )
-   int field3204;
-   @ObfuscatedName("n")
+   int field3171;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lfz;"
    )
    @Export("index")
    IndexFile index;
-   @ObfuscatedName("j")
-   byte[] field3202;
-   @ObfuscatedName("r")
+   @ObfuscatedName("o")
+   byte[] field3170;
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Lig;"
+      signature = "Lix;"
    )
    @Export("data")
    IndexData data;
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "-2090714293"
+      signature = "(III)I",
+      garbageValue = "-202851467"
    )
-   public static String method4078(int var0) {
-      return (var0 >> 24 & 255) + "." + (var0 >> 16 & 255) + "." + (var0 >> 8 & 255) + "." + (var0 & 255);
+   public static int method4002(int var0, int var1) {
+      int var2 = var0 >>> 31;
+      return (var0 + var2) / var1 - var2;
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(ILcv;ZI)I",
+      garbageValue = "-1907637253"
+   )
+   static int method4003(int var0, Script var1, boolean var2) {
+      Widget var3 = class239.method4167(class83.intStack[--BufferProvider.intStackSize]);
+      if(var0 == 2800) {
+         int[] var4 = class83.intStack;
+         int var5 = ++BufferProvider.intStackSize - 1;
+         int var7 = class60.getWidgetConfig(var3);
+         int var6 = var7 >> 11 & 63;
+         var4[var5] = var6;
+         return 1;
+      } else if(var0 != 2801) {
+         if(var0 == 2802) {
+            if(var3.name == null) {
+               class83.scriptStringStack[++class83.scriptStringStackSize - 1] = "";
+            } else {
+               class83.scriptStringStack[++class83.scriptStringStackSize - 1] = var3.name;
+            }
+
+            return 1;
+         } else {
+            return 2;
+         }
+      } else {
+         int var8 = class83.intStack[--BufferProvider.intStackSize];
+         --var8;
+         if(var3.actions != null && var8 < var3.actions.length && var3.actions[var8] != null) {
+            class83.scriptStringStack[++class83.scriptStringStackSize - 1] = var3.actions[var8];
+         } else {
+            class83.scriptStringStack[++class83.scriptStringStackSize - 1] = "";
+         }
+
+         return 1;
+      }
    }
 }

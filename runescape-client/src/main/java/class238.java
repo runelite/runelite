@@ -1,117 +1,124 @@
 import java.util.zip.CRC32;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iw")
+@ObfuscatedName("ig")
 public class class238 {
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -925169405
-   )
-   public static int field3258;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1523340189
-   )
-   public static int field3253;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lgd;"
-   )
-   public static XHashTable field3260;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -618498043
-   )
-   public static int field3252;
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lgd;"
-   )
-   public static XHashTable field3255;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lgb;"
-   )
-   public static Node2LinkedList field3259;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -902905159
-   )
-   public static int field3272;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lgd;"
-   )
-   public static XHashTable field3269;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
-      longValue = 7278569845670085851L
+      intValue = -1891706057
    )
-   public static long field3254;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1940519003
-   )
-   public static int field3257;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lgd;"
-   )
-   public static XHashTable field3262;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 1450828023
-   )
-   public static int field3263;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -260113921
-   )
-   public static int field3256;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "[Lig;"
-   )
-   static IndexData[] field3267;
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "Lfq;"
-   )
-   public static RSSocket field3264;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lfe;"
-   )
-   public static Buffer field3266;
+   public static int field3240;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -395343811
+      intValue = -1771074653
    )
-   public static int field3265;
-   @ObfuscatedName("f")
-   static CRC32 field3261;
+   public static int field3229;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lgi;"
+   )
+   public static XHashTable field3227;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 295162567
+   )
+   public static int field3241;
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lgi;"
+   )
+   public static XHashTable field3224;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lgv;"
+   )
+   public static Node2LinkedList field3232;
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   @Export("currentRequest")
+   public static FileRequest currentRequest;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 354672287
+   )
+   public static int field3225;
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lgi;"
+   )
+   public static XHashTable field3233;
    @ObfuscatedName("i")
-   public static byte field3268;
+   @ObfuscatedGetter(
+      longValue = 18000550360069087L
+   )
+   public static long field3223;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1091411351
+   )
+   public static int field3238;
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgi;"
+   )
+   public static XHashTable field3231;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1864044107
+   )
+   public static int field3221;
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "[Lix;"
+   )
+   public static IndexData[] field3242;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1730041669
+   )
+   public static int field3228;
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "Lfb;"
+   )
+   public static RSSocket field3226;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lfp;"
+   )
+   public static Buffer field3234;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -1977859723
+   )
+   public static int field3235;
+   @ObfuscatedName("l")
+   public static CRC32 field3222;
+   @ObfuscatedName("j")
+   public static byte field3239;
 
    static {
-      field3253 = 0;
-      field3255 = new XHashTable(4096);
-      field3272 = 0;
-      field3269 = new XHashTable(32);
-      field3257 = 0;
-      field3259 = new Node2LinkedList();
-      field3260 = new XHashTable(4096);
-      field3256 = 0;
-      field3262 = new XHashTable(4096);
-      field3263 = 0;
-      field3266 = new Buffer(8);
-      field3265 = 0;
-      field3261 = new CRC32();
-      field3267 = new IndexData[256];
-      field3268 = 0;
-      field3258 = 0;
-      field3252 = 0;
+      field3229 = 0;
+      field3224 = new XHashTable(4096);
+      field3225 = 0;
+      field3233 = new XHashTable(32);
+      field3238 = 0;
+      field3232 = new Node2LinkedList();
+      field3227 = new XHashTable(4096);
+      field3221 = 0;
+      field3231 = new XHashTable(4096);
+      field3228 = 0;
+      field3234 = new Buffer(8);
+      field3235 = 0;
+      field3222 = new CRC32();
+      field3242 = new IndexData[256];
+      field3239 = 0;
+      field3240 = 0;
+      field3241 = 0;
    }
 }

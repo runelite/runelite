@@ -5,59 +5,77 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cq")
+@ObfuscatedName("co")
 public class class98 {
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 268244061
+      intValue = -408530371
    )
-   static int field1521;
-   @ObfuscatedName("a")
+   static int field1496;
+   @ObfuscatedName("bg")
+   @ObfuscatedSignature(
+      signature = "Lhe;"
+   )
+   static class232 field1497;
+   @ObfuscatedName("c")
    @Export("chatLineMap")
    static final Map chatLineMap;
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lgl;"
+      signature = "Lgk;"
    )
-   static final class186 field1520;
-   @ObfuscatedName("n")
+   static final class186 field1495;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lgz;"
+      signature = "Lgm;"
    )
-   static final class201 field1526;
-   @ObfuscatedName("ks")
-   @ObfuscatedSignature(
-      signature = "Lcf;"
-   )
-   static class89 field1525;
-   @ObfuscatedName("m")
-   @Export("blendedSaturation")
-   static int[] blendedSaturation;
+   static final class201 field1493;
 
    static {
       chatLineMap = new HashMap();
-      field1520 = new class186(1024);
-      field1526 = new class201();
-      field1521 = 0;
+      field1495 = new class186(1024);
+      field1493 = new class201();
+      field1496 = 0;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "1846948257"
+      signature = "(IIB)Z",
+      garbageValue = "1"
    )
-   @Export("getSmoothNoise")
-   static final int getSmoothNoise(int var0, int var1, int var2) {
-      int var3 = var0 / var2;
-      int var4 = var0 & var2 - 1;
-      int var5 = var1 / var2;
-      int var6 = var1 & var2 - 1;
-      int var7 = CombatInfo2.getSmoothNoise2D(var3, var5);
-      int var8 = CombatInfo2.getSmoothNoise2D(var3 + 1, var5);
-      int var9 = CombatInfo2.getSmoothNoise2D(var3, var5 + 1);
-      int var10 = CombatInfo2.getSmoothNoise2D(var3 + 1, var5 + 1);
-      int var11 = class33.method352(var7, var8, var4, var2);
-      int var12 = class33.method352(var9, var10, var4, var2);
-      return class33.method352(var11, var12, var6, var2);
+   public static boolean method1779(int var0, int var1) {
+      return (var0 >> var1 + 1 & 1) != 0;
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "36"
+   )
+   public static void method1769(int var0) {
+      if(var0 != -1) {
+         if(class163.validInterfaces[var0]) {
+            class35.widgetIndex.method4021(var0);
+            if(Widget.widgets[var0] != null) {
+               boolean var1 = true;
+
+               for(int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
+                  if(Widget.widgets[var0][var2] != null) {
+                     if(Widget.widgets[var0][var2].type != 2) {
+                        Widget.widgets[var0][var2] = null;
+                     } else {
+                        var1 = false;
+                     }
+                  }
+               }
+
+               if(var1) {
+                  Widget.widgets[var0] = null;
+               }
+
+               class163.validInterfaces[var0] = false;
+            }
+         }
+      }
    }
 }

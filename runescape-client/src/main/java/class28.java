@@ -1,60 +1,53 @@
 import java.util.LinkedList;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("au")
+@ObfuscatedName("am")
 public abstract class class28 {
-   @ObfuscatedName("an")
-   @Export("clientInstance")
-   @ObfuscatedSignature(
-      signature = "Lclient;"
-   )
-   static Client clientInstance;
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1249089651
+      intValue = -931652045
    )
-   int field399;
-   @ObfuscatedName("n")
+   int field392;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1781889243
+      intValue = -1286042623
    )
-   int field401;
-   @ObfuscatedName("l")
-   short[][][] field405;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1480932171
-   )
-   int field404;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "[[[[Lar;"
-   )
-   class31[][][][] field409;
+   int field394;
    @ObfuscatedName("s")
-   short[][][] field410;
-   @ObfuscatedName("v")
+   short[][][] field398;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -437437171
+      intValue = 1700732753
    )
-   int field407;
-   @ObfuscatedName("w")
-   byte[][][] field406;
-   @ObfuscatedName("a")
+   int field405;
+   @ObfuscatedName("x")
+   short[][][] field399;
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "[[[[Lal;"
+   )
+   class31[][][][] field397;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1070955015
+      intValue = -2041189871
+   )
+   int field396;
+   @ObfuscatedName("p")
+   byte[][][] field400;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 45281111
    )
    int field403;
-   @ObfuscatedName("p")
-   byte[][][] field408;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
+   byte[][][] field401;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -586331605
+      intValue = 1362559205
    )
-   int field400;
+   int field393;
 
    class28() {
       new LinkedList();
@@ -62,23 +55,23 @@ public abstract class class28 {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "436002722"
+      signature = "(IIB)I",
+      garbageValue = "-107"
    )
-   int method222(int var1, int var2) {
-      return var1 >= 0 && var2 >= 0?(var1 < 64 && var2 < 64?this.field405[0][var1][var2] - 1:-1):-1;
+   int method220(int var1, int var2) {
+      return var1 >= 0 && var2 >= 0?(var1 < 64 && var2 < 64?this.field398[0][var1][var2] - 1:-1):-1;
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IILfe;II)V",
-      garbageValue = "532552929"
+      signature = "(IILfp;II)V",
+      garbageValue = "978585539"
    )
-   void method221(int var1, int var2, Buffer var3, int var4) {
+   void method219(int var1, int var2, Buffer var3, int var4) {
       int var5 = ((var4 & 24) >> 3) + 1;
       boolean var6 = (var4 & 2) != 0;
       boolean var7 = (var4 & 4) != 0;
-      this.field405[0][var1][var2] = (short)var3.readUnsignedByte();
+      this.field398[0][var1][var2] = (short)var3.readUnsignedByte();
       int var8;
       int var9;
       int var11;
@@ -88,10 +81,10 @@ public abstract class class28 {
          for(var9 = 0; var9 < var8; ++var9) {
             int var10 = var3.readUnsignedByte();
             if(var10 != 0) {
-               this.field410[var9][var1][var2] = (short)var10;
+               this.field399[var9][var1][var2] = (short)var10;
                var11 = var3.readUnsignedByte();
-               this.field406[var9][var1][var2] = (byte)(var11 >> 2);
-               this.field408[var9][var1][var2] = (byte)(var11 & 3);
+               this.field400[var9][var1][var2] = (byte)(var11 >> 2);
+               this.field401[var9][var1][var2] = (byte)(var11 & 3);
             }
          }
       }
@@ -100,10 +93,10 @@ public abstract class class28 {
          for(var8 = 0; var8 < var5; ++var8) {
             var9 = var3.readUnsignedByte();
             if(var9 != 0) {
-               class31[] var14 = this.field409[var8][var1][var2] = new class31[var9];
+               class31[] var14 = this.field397[var8][var1][var2] = new class31[var9];
 
                for(var11 = 0; var11 < var9; ++var11) {
-                  int var12 = var3.method3221();
+                  int var12 = var3.method3266();
                   int var13 = var3.readUnsignedByte();
                   var14[var11] = new class31(var12, var13 >> 2, var13 & 3);
                }
@@ -113,52 +106,73 @@ public abstract class class28 {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IILfe;II)V",
-      garbageValue = "-1910673030"
+      signature = "(IILfp;II)V",
+      garbageValue = "239111145"
    )
-   void method231(int var1, int var2, Buffer var3, int var4) {
+   void method223(int var1, int var2, Buffer var3, int var4) {
       boolean var5 = (var4 & 2) != 0;
       if(var5) {
-         this.field410[0][var1][var2] = (short)var3.readUnsignedByte();
+         this.field399[0][var1][var2] = (short)var3.readUnsignedByte();
       }
 
-      this.field405[0][var1][var2] = (short)var3.readUnsignedByte();
+      this.field398[0][var1][var2] = (short)var3.readUnsignedByte();
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1659670791"
+      signature = "(B)I",
+      garbageValue = "-15"
    )
-   int method223() {
-      return this.field401;
+   int method236() {
+      return this.field394;
    }
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "2129285286"
+      garbageValue = "836171332"
    )
-   int method234() {
-      return this.field399;
+   int method222() {
+      return this.field392;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(IILfe;I)V",
-      garbageValue = "-503831883"
+      signature = "(IILfp;I)V",
+      garbageValue = "1521478243"
    )
-   void method219(int var1, int var2, Buffer var3) {
+   void method224(int var1, int var2, Buffer var3) {
       int var4 = var3.readUnsignedByte();
       if(var4 != 0) {
          if((var4 & 1) != 0) {
-            this.method231(var1, var2, var3, var4);
+            this.method223(var1, var2, var3, var4);
          } else {
-            this.method221(var1, var2, var3, var4);
+            this.method219(var1, var2, var3, var4);
          }
 
+      }
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Lfp;IB)Ljava/lang/String;",
+      garbageValue = "1"
+   )
+   public static String method239(Buffer var0, int var1) {
+      try {
+         int var2 = var0.getUSmart();
+         if(var2 > var1) {
+            var2 = var1;
+         }
+
+         byte[] var3 = new byte[var2];
+         var0.offset += class265.field3642.decompress(var0.payload, var0.offset, var3, 0, var2);
+         String var4 = DynamicObject.getString(var3, 0, var2);
+         return var4;
+      } catch (Exception var6) {
+         return "Cabbage";
       }
    }
 }

@@ -3,107 +3,100 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bh")
+@ObfuscatedName("bk")
 public final class class61 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @Export("tileHeights")
    static int[][][] tileHeights;
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @Export("tileSettings")
    static byte[][][] tileSettings;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1562199555
-   )
-   static int field747;
-   @ObfuscatedName("jq")
-   @ObfuscatedGetter(
-      intValue = -286808623
-   )
-   @Export("menuX")
-   static int menuX;
-   @ObfuscatedName("f")
-   static final int[] field749;
-   @ObfuscatedName("h")
-   static final int[] field756;
-   @ObfuscatedName("z")
-   static final int[] field748;
    @ObfuscatedName("i")
-   static final int[] field752;
-   @ObfuscatedName("d")
-   static final int[] field757;
-   @ObfuscatedName("b")
-   static final int[] field758;
-   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -416485739
+      intValue = 1322371761
    )
-   static int field745;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -1858562407
-   )
-   static int field760;
-   @ObfuscatedName("v")
-   @Export("overlayIds")
-   static byte[][][] overlayIds;
+   static int field754;
    @ObfuscatedName("l")
-   @Export("overlayRotations")
-   static byte[][][] overlayRotations;
-   @ObfuscatedName("s")
-   static byte[][][] field750;
+   static final int[] field763;
+   @ObfuscatedName("q")
+   static final int[] field757;
+   @ObfuscatedName("f")
+   static final int[] field758;
+   @ObfuscatedName("j")
+   static final int[] field759;
+   @ObfuscatedName("n")
+   static final int[] field760;
+   @ObfuscatedName("z")
+   static final int[] field761;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 368215453
+   )
+   static int field750;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -959853157
+   )
+   static int field753;
+   @ObfuscatedName("m")
+   @Export("overlayPaths")
+   static byte[][][] overlayPaths;
+   @ObfuscatedName("t")
+   static int[][][] field755;
    @ObfuscatedName("p")
-   @Export("blendedHue")
-   static int[] blendedHue;
-   @ObfuscatedName("g")
-   static int[] field763;
+   static int[][] field756;
 
    static {
       tileHeights = new int[4][105][105];
       tileSettings = new byte[4][104][104];
-      field747 = 99;
-      field749 = new int[]{1, 2, 4, 8};
-      field756 = new int[]{16, 32, 64, 128};
-      field748 = new int[]{1, 0, -1, 0};
-      field752 = new int[]{0, -1, 0, 1};
-      field757 = new int[]{1, -1, -1, 1};
-      field758 = new int[]{-1, -1, 1, 1};
-      field745 = (int)(Math.random() * 17.0D) - 8;
-      field760 = (int)(Math.random() * 33.0D) - 16;
+      field754 = 99;
+      field763 = new int[]{1, 2, 4, 8};
+      field757 = new int[]{16, 32, 64, 128};
+      field758 = new int[]{1, 0, -1, 0};
+      field759 = new int[]{0, -1, 0, 1};
+      field760 = new int[]{1, -1, -1, 1};
+      field761 = new int[]{-1, -1, 1, 1};
+      field750 = (int)(Math.random() * 17.0D) - 8;
+      field753 = (int)(Math.random() * 33.0D) - 16;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(II)Lhy;",
-      garbageValue = "-890117828"
+      signature = "(I)Ljj;",
+      garbageValue = "-1199902157"
    )
-   public static Widget method1038(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & '\uffff';
-      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
-         boolean var3 = class33.loadWidget(var1);
-         if(!var3) {
-            return null;
-         }
+   static SpritePixels method1019() {
+      SpritePixels var0 = new SpritePixels();
+      var0.maxWidth = class286.field3780;
+      var0.maxHeight = class286.field3781;
+      var0.offsetX = class286.field3782[0];
+      var0.offsetY = class286.offsetsY[0];
+      var0.width = class286.field3779[0];
+      var0.height = class286.field3787[0];
+      int var1 = var0.width * var0.height;
+      byte[] var2 = class286.spritePixels[0];
+      var0.image = new int[var1];
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var0.image[var3] = class286.field3786[var2[var3] & 255];
       }
 
-      return Widget.widgets[var1][var2];
+      class286.field3782 = null;
+      class286.offsetsY = null;
+      class286.field3779 = null;
+      class286.field3787 = null;
+      class286.field3786 = null;
+      class286.spritePixels = null;
+      return var0;
    }
 
-   @ObfuscatedName("ag")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Ldf;B)V",
-      garbageValue = "119"
+      signature = "(IIII)I",
+      garbageValue = "-359908698"
    )
-   static final void method1077(class119 var0) {
-      var0.field1707 = false;
-      if(var0.field1706 != null) {
-         var0.field1706.field1738 = 0;
-      }
-
-      for(class119 var1 = var0.vmethod3883(); var1 != null; var1 = var0.vmethod3882()) {
-         method1077(var1);
-      }
-
+   static final int method1020(int var0, int var1, int var2) {
+      int var3 = 256 - var2;
+      return ((var0 & '\uff00') * var3 + var2 * (var1 & '\uff00') & 16711680) + ((var0 & 16711935) * var3 + (var1 & 16711935) * var2 & -16711936) >> 8;
    }
 }

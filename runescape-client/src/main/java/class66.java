@@ -1,128 +1,93 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bt")
+@ObfuscatedName("bc")
 public class class66 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lbt;"
-   )
-   static final class66 field809;
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Lbt;"
-   )
-   static final class66 field808;
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Lbt;"
+      signature = "Lbc;"
    )
    static final class66 field810;
-   @ObfuscatedName("ik")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lhy;"
+      signature = "Lbc;"
    )
-   static Widget field813;
-   @ObfuscatedName("d")
-   @Export("userHome")
-   public static String userHome;
-   @ObfuscatedName("r")
+   static final class66 field808;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lbt;"
+      signature = "Lbc;"
    )
    static final class66 field811;
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lbc;"
+   )
+   static final class66 field809;
+   @ObfuscatedName("fo")
+   static int[] field807;
 
    static {
-      field809 = new class66();
-      field808 = new class66();
       field810 = new class66();
+      field808 = new class66();
       field811 = new class66();
+      field809 = new class66();
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-14"
+      signature = "(II)Liu;",
+      garbageValue = "1847990125"
    )
-   public static void method1086() {
-      if(MouseInput.mouse != null) {
-         MouseInput var0 = MouseInput.mouse;
-         synchronized(MouseInput.mouse) {
-            MouseInput.mouse = null;
+   public static class243 method1041(int var0) {
+      class243 var1 = (class243)class243.field3287.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class243.field3286.getConfigData(19, var0);
+         var1 = new class243();
+         if(var2 != null) {
+            var1.method4206(new Buffer(var2));
          }
-      }
 
+         class243.field3287.put(var1, (long)var0);
+         return var1;
+      }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Ljf;B)V",
-      garbageValue = "-34"
+      signature = "([Ljava/lang/String;[SIII)V",
+      garbageValue = "2125551955"
    )
-   static final void method1084(ModIcon var0) {
-      short var1 = 256;
+   static void method1042(String[] var0, short[] var1, int var2, int var3) {
+      if(var2 < var3) {
+         int var4 = (var3 + var2) / 2;
+         int var5 = var2;
+         String var6 = var0[var4];
+         var0[var4] = var0[var3];
+         var0[var3] = var6;
+         short var7 = var1[var4];
+         var1[var4] = var1[var3];
+         var1[var3] = var7;
 
-      int var2;
-      for(var2 = 0; var2 < Spotanim.field3339.length; ++var2) {
-         Spotanim.field3339[var2] = 0;
-      }
-
-      int var3;
-      for(var2 = 0; var2 < 5000; ++var2) {
-         var3 = (int)(Math.random() * 128.0D * (double)var1);
-         Spotanim.field3339[var3] = (int)(Math.random() * 256.0D);
-      }
-
-      int var4;
-      int var5;
-      for(var2 = 0; var2 < 20; ++var2) {
-         for(var3 = 1; var3 < var1 - 1; ++var3) {
-            for(var4 = 1; var4 < 127; ++var4) {
-               var5 = var4 + (var3 << 7);
-               class18.field323[var5] = (Spotanim.field3339[var5 + 128] + Spotanim.field3339[var5 - 128] + Spotanim.field3339[var5 + 1] + Spotanim.field3339[var5 - 1]) / 4;
+         for(int var8 = var2; var8 < var3; ++var8) {
+            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
+               String var9 = var0[var8];
+               var0[var8] = var0[var5];
+               var0[var5] = var9;
+               short var10 = var1[var8];
+               var1[var8] = var1[var5];
+               var1[var5++] = var10;
             }
          }
 
-         int[] var8 = Spotanim.field3339;
-         Spotanim.field3339 = class18.field323;
-         class18.field323 = var8;
+         var0[var3] = var0[var5];
+         var0[var5] = var6;
+         var1[var3] = var1[var5];
+         var1[var5] = var7;
+         method1042(var0, var1, var2, var5 - 1);
+         method1042(var0, var1, var5 + 1, var3);
       }
 
-      if(var0 != null) {
-         var2 = 0;
-
-         for(var3 = 0; var3 < var0.height; ++var3) {
-            for(var4 = 0; var4 < var0.originalWidth; ++var4) {
-               if(var0.pixels[var2++] != 0) {
-                  var5 = var4 + 16 + var0.offsetX;
-                  int var6 = var3 + 16 + var0.offsetY;
-                  int var7 = var5 + (var6 << 7);
-                  Spotanim.field3339[var7] = 0;
-               }
-            }
-         }
-      }
-
-   }
-
-   @ObfuscatedName("hg")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1154879824"
-   )
-   static void method1085() {
-      if(Client.spellSelected) {
-         Widget var0 = class12.method70(class41.field550, Client.field1062);
-         if(var0 != null && var0.field2745 != null) {
-            ScriptEvent var1 = new ScriptEvent();
-            var1.widget = var0;
-            var1.field839 = var0.field2745;
-            class89.method1689(var1);
-         }
-
-         Client.spellSelected = false;
-         class48.method749(var0);
-      }
    }
 }

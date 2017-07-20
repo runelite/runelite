@@ -2,149 +2,144 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hh")
+@ObfuscatedName("hr")
 public enum class221 implements RSEnum {
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2824(0, 0),
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2813(1, 0),
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2812(2, 0),
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2815(3, 0),
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2830(9, 2),
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2817(4, 1),
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2818(5, 1),
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2819(6, 1),
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2820(7, 1),
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2821(8, 1),
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2822(12, 2),
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2823(13, 2),
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2832(14, 2),
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2814(15, 2),
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2835(16, 2),
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhr;"
    )
-   field2827(17, 2),
+   field2789(0, 0),
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhr;"
    )
-   field2828(18, 2),
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2829(19, 2),
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2836(20, 2),
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2825(21, 2),
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2831(10, 2),
+   field2787(1, 0),
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhr;"
    )
-   field2826(11, 2),
-   @ObfuscatedName("d")
+   field2788(2, 0),
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhr;"
    )
-   field2834(22, 3);
+   field2790(3, 0),
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2798(9, 2),
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2792(4, 1),
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2793(5, 1),
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2794(6, 1),
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2795(7, 1),
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2796(8, 1),
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2797(12, 2),
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2791(13, 2),
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2812(14, 2),
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2800(15, 2),
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2801(16, 2),
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2802(17, 2),
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2804(18, 2),
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2799(19, 2),
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2805(20, 2),
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2806(21, 2),
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2807(10, 2),
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2808(11, 2),
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   field2809(22, 3);
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 885315965
+      intValue = 555390395
    )
-   public final int field2816;
-   @ObfuscatedName("oh")
-   @ObfuscatedSignature(
-      signature = "Ljt;"
-   )
-   static SpritePixels field2833;
+   public final int field2803;
 
    @ObfuscatedSignature(
       signature = "(II)V",
       garbageValue = "0"
    )
    class221(int var3, int var4) {
-      this.field2816 = var3;
+      this.field2803 = var3;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1952293135"
+      garbageValue = "-1443879177"
    )
    public int rsOrdinal() {
-      return this.field2816;
+      return this.field2803;
    }
 }

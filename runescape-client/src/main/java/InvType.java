@@ -4,49 +4,55 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("io")
+@ObfuscatedName("if")
 @Implements("InvType")
 public class InvType extends CacheableNode {
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lgc;"
+      signature = "Lgq;"
    )
-   public static NodeCache field3280;
-   @ObfuscatedName("a")
+   public static NodeCache field3249;
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lif;"
+      signature = "Lip;"
    )
-   public static IndexDataBase field3281;
-   @ObfuscatedName("n")
+   @Export("item_ref")
+   public static IndexDataBase item_ref;
+   @ObfuscatedName("qc")
+   @ObfuscatedSignature(
+      signature = "Lh;"
+   )
+   static class13 field3251;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -135933061
+      intValue = 2038853075
    )
-   public int field3279;
+   public int field3248;
 
    static {
-      field3280 = new NodeCache(64);
+      field3249 = new NodeCache(64);
    }
 
    public InvType() {
-      this.field3279 = 0;
+      this.field3248 = 0;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lfe;II)V",
-      garbageValue = "1728090237"
+      signature = "(Lfp;IB)V",
+      garbageValue = "11"
    )
-   void method4223(Buffer var1, int var2) {
+   void method4173(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3279 = var1.readUnsignedShort();
+         this.field3248 = var1.readUnsignedShort();
       }
 
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lfe;I)V",
-      garbageValue = "-389165341"
+      signature = "(Lfp;B)V",
+      garbageValue = "-82"
    )
    @Export("decode")
    public void decode(Buffer var1) {
@@ -56,30 +62,7 @@ public class InvType extends CacheableNode {
             return;
          }
 
-         this.method4223(var1, var2);
-      }
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(II)Lii;",
-      garbageValue = "1672639787"
-   )
-   @Export("getSpotAnimType")
-   public static Spotanim getSpotAnimType(int var0) {
-      Spotanim var1 = (Spotanim)Spotanim.spotanims.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Spotanim.field3337.getConfigData(13, var0);
-         var1 = new Spotanim();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         Spotanim.spotanims.put(var1, (long)var0);
-         return var1;
+         this.method4173(var1, var2);
       }
    }
 }

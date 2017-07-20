@@ -1,113 +1,165 @@
+import java.awt.Component;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("b")
+@ObfuscatedName("z")
 public class class23 {
-   @ObfuscatedName("ru")
+   @ObfuscatedName("ay")
    @ObfuscatedSignature(
-      signature = "Lct;"
+      signature = "[Ljj;"
    )
-   @Export("preferences")
-   static Preferences preferences;
-   @ObfuscatedName("jj")
-   @ObfuscatedGetter(
-      intValue = 661739531
-   )
-   @Export("menuHeight")
-   static int menuHeight;
-   @ObfuscatedName("gd")
-   @ObfuscatedSignature(
-      signature = "[Ljt;"
-   )
-   @Export("pkIcons")
-   static SpritePixels[] pkIcons;
+   static SpritePixels[] field340;
 
-   @ObfuscatedName("ft")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "855699432"
+      signature = "(Ljava/awt/Component;B)V",
+      garbageValue = "-32"
    )
-   static void method169(int var0) {
-      if(var0 == -3) {
-         class2.method6("Connection timed out.", "Please try using a different world.", "");
-      } else if(var0 == -2) {
-         class2.method6("", "Error connecting to server.", "");
-      } else if(var0 == -1) {
-         class2.method6("No response from server.", "Please try using a different world.", "");
-      } else if(var0 == 3) {
-         class92.loginIndex = 3;
-      } else if(var0 == 4) {
-         class2.method6("Your account has been disabled.", "Please check your message-centre for details.", "");
-      } else if(var0 == 5) {
-         class2.method6("Your account has not logged out from its last", "session or the server is too busy right now.", "Please try again in a few minutes.");
-      } else if(var0 == 6) {
-         class2.method6("RuneScape has been updated!", "Please reload this page.", "");
-      } else if(var0 == 7) {
-         class2.method6("This world is full.", "Please use a different world.", "");
-      } else if(var0 == 8) {
-         class2.method6("Unable to connect.", "Login server offline.", "");
-      } else if(var0 == 9) {
-         class2.method6("Login limit exceeded.", "Too many connections from your address.", "");
-      } else if(var0 == 10) {
-         class2.method6("Unable to connect.", "Bad session id.", "");
-      } else if(var0 == 11) {
-         class2.method6("We suspect someone knows your password.", "Press \'change your password\' on front page.", "");
-      } else if(var0 == 12) {
-         class2.method6("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
-      } else if(var0 == 13) {
-         class2.method6("Could not complete login.", "Please try using a different world.", "");
-      } else if(var0 == 14) {
-         class2.method6("The server is being updated.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 16) {
-         class2.method6("Too many login attempts.", "Please wait a few minutes before trying again.", "");
-      } else if(var0 == 17) {
-         class2.method6("You are standing in a members-only area.", "To play on this world move to a free area first", "");
-      } else if(var0 == 18) {
-         class2.method6("Account locked as we suspect it has been stolen.", "Press \'recover a locked account\' on front page.", "");
-      } else if(var0 == 19) {
-         class2.method6("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
-      } else if(var0 == 20) {
-         class2.method6("Invalid loginserver requested.", "Please try using a different world.", "");
-      } else if(var0 == 22) {
-         class2.method6("Malformed login packet.", "Please try again.", "");
-      } else if(var0 == 23) {
-         class2.method6("No reply from loginserver.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 24) {
-         class2.method6("Error loading your profile.", "Please contact customer support.", "");
-      } else if(var0 == 25) {
-         class2.method6("Unexpected loginserver response.", "Please try using a different world.", "");
-      } else if(var0 == 26) {
-         class2.method6("This computers address has been blocked", "as it was used to break our rules.", "");
-      } else if(var0 == 27) {
-         class2.method6("", "Service unavailable.", "");
-      } else if(var0 == 31) {
-         class2.method6("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
-      } else if(var0 == 32) {
-         class2.method6("Your attempt to log into your account was", "unsuccessful.  Don\'t worry, you can sort", "this out by visiting the billing system.");
-      } else if(var0 == 37) {
-         class2.method6("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
-      } else if(var0 == 38) {
-         class2.method6("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
-      } else if(var0 == 55) {
-         class2.method6("Sorry, but your account is not eligible to", "play this version of the game.  Please try", "playing the main game instead!");
+   static void method168(Component var0) {
+      var0.removeKeyListener(KeyFocusListener.keyboard);
+      var0.removeFocusListener(KeyFocusListener.keyboard);
+      KeyFocusListener.field639 = -1;
+   }
+
+   @ObfuscatedName("fv")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "-101"
+   )
+   @Export("getTileHeight")
+   static final int getTileHeight(int var0, int var1, int var2) {
+      int var3 = var0 >> 7;
+      int var4 = var1 >> 7;
+      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
+         int var5 = var2;
+         if(var2 < 3 && (class61.tileSettings[1][var3][var4] & 2) == 2) {
+            var5 = var2 + 1;
+         }
+
+         int var6 = var0 & 127;
+         int var7 = var1 & 127;
+         int var8 = (128 - var6) * class61.tileHeights[var5][var3][var4] + var6 * class61.tileHeights[var5][var3 + 1][var4] >> 7;
+         int var9 = var6 * class61.tileHeights[var5][var3 + 1][var4 + 1] + class61.tileHeights[var5][var3][var4 + 1] * (128 - var6) >> 7;
+         return var8 * (128 - var7) + var7 * var9 >> 7;
       } else {
-         if(var0 == 56) {
-            class2.method6("Enter the 6-digit code generated by your", "authenticator app.", "");
-            WorldMapType2.setGameState(11);
-            return;
-         }
-
-         if(var0 == 57) {
-            class2.method6("The code you entered was incorrect.", "Please try again.", "");
-            WorldMapType2.setGameState(11);
-            return;
-         }
-
-         class2.method6("Unexpected server response", "Please try using a different world.", "");
+         return 0;
       }
+   }
 
-      WorldMapType2.setGameState(10);
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Lfv;II)Z",
+      garbageValue = "-357282896"
+   )
+   @Export("decodeRegionHash")
+   static boolean decodeRegionHash(PacketBuffer var0, int var1) {
+      int var2 = var0.getBits(2);
+      int var3;
+      int var4;
+      int var7;
+      int var8;
+      int var9;
+      int var10;
+      if(var2 == 0) {
+         if(var0.getBits(1) != 0) {
+            decodeRegionHash(var0, var1);
+         }
+
+         var3 = var0.getBits(13);
+         var4 = var0.getBits(13);
+         boolean var12 = var0.getBits(1) == 1;
+         if(var12) {
+            class96.field1465[++class96.field1480 - 1] = var1;
+         }
+
+         if(Client.cachedPlayers[var1] != null) {
+            throw new RuntimeException();
+         } else {
+            Player var6 = Client.cachedPlayers[var1] = new Player();
+            var6.field901 = var1;
+            if(class96.field1475[var1] != null) {
+               var6.decodeApperance(class96.field1475[var1]);
+            }
+
+            var6.orientation = class96.field1474[var1];
+            var6.interacting = class96.field1471[var1];
+            var7 = class96.field1473[var1];
+            var8 = var7 >> 28;
+            var9 = var7 >> 14 & 255;
+            var10 = var7 & 255;
+            var6.field1266[0] = class96.field1467[var1];
+            var6.field896 = (byte)var8;
+            var6.method1076((var9 << 13) + var3 - class21.baseX, (var10 << 13) + var4 - class164.baseY);
+            var6.field898 = false;
+            return true;
+         }
+      } else if(var2 == 1) {
+         var3 = var0.getBits(2);
+         var4 = class96.field1473[var1];
+         class96.field1473[var1] = (((var4 >> 28) + var3 & 3) << 28) + (var4 & 268435455);
+         return false;
+      } else {
+         int var5;
+         int var11;
+         if(var2 == 2) {
+            var3 = var0.getBits(5);
+            var4 = var3 >> 3;
+            var5 = var3 & 7;
+            var11 = class96.field1473[var1];
+            var7 = (var11 >> 28) + var4 & 3;
+            var8 = var11 >> 14 & 255;
+            var9 = var11 & 255;
+            if(var5 == 0) {
+               --var8;
+               --var9;
+            }
+
+            if(var5 == 1) {
+               --var9;
+            }
+
+            if(var5 == 2) {
+               ++var8;
+               --var9;
+            }
+
+            if(var5 == 3) {
+               --var8;
+            }
+
+            if(var5 == 4) {
+               ++var8;
+            }
+
+            if(var5 == 5) {
+               --var8;
+               ++var9;
+            }
+
+            if(var5 == 6) {
+               ++var9;
+            }
+
+            if(var5 == 7) {
+               ++var8;
+               ++var9;
+            }
+
+            class96.field1473[var1] = (var8 << 14) + (var7 << 28) + var9;
+            return false;
+         } else {
+            var3 = var0.getBits(18);
+            var4 = var3 >> 16;
+            var5 = var3 >> 8 & 255;
+            var11 = var3 & 255;
+            var7 = class96.field1473[var1];
+            var8 = (var7 >> 28) + var4 & 3;
+            var9 = var5 + (var7 >> 14) & 255;
+            var10 = var7 + var11 & 255;
+            class96.field1473[var1] = var10 + (var9 << 14) + (var8 << 28);
+            return false;
+         }
+      }
    }
 }

@@ -2,53 +2,75 @@ import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gr")
+@ObfuscatedName("gs")
 public class class197 implements Iterator {
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Lge;"
+      signature = "Lgh;"
    )
-   Node field2478;
-   @ObfuscatedName("a")
+   Node field2447;
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lgl;"
+      signature = "Lgk;"
    )
-   class186 field2475;
-   @ObfuscatedName("n")
-   int field2477;
-   @ObfuscatedName("j")
+   class186 field2449;
+   @ObfuscatedName("i")
+   int field2450;
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lge;"
+      signature = "Lgh;"
    )
-   Node field2476;
+   Node field2448;
 
    @ObfuscatedSignature(
-      signature = "(Lgl;)V"
+      signature = "(Lgk;)V"
    )
    class197(class186 var1) {
-      this.field2478 = null;
-      this.field2475 = var1;
-      this.method3644();
+      this.field2447 = null;
+      this.field2449 = var1;
+      this.method3592();
    }
 
-   @ObfuscatedName("u")
-   void method3644() {
-      this.field2476 = this.field2475.field2444[0].next;
-      this.field2477 = 1;
-      this.field2478 = null;
+   @ObfuscatedName("k")
+   void method3592() {
+      this.field2448 = this.field2449.field2416[0].next;
+      this.field2450 = 1;
+      this.field2447 = null;
+   }
+
+   public Object next() {
+      Node var1;
+      if(this.field2449.field2416[this.field2450 - 1] != this.field2448) {
+         var1 = this.field2448;
+         this.field2448 = var1.next;
+         this.field2447 = var1;
+         return var1;
+      } else {
+         do {
+            if(this.field2450 >= this.field2449.field2419) {
+               return null;
+            }
+
+            var1 = this.field2449.field2416[this.field2450++].next;
+         } while(var1 == this.field2449.field2416[this.field2450 - 1]);
+
+         this.field2448 = var1.next;
+         this.field2447 = var1;
+         return var1;
+      }
    }
 
    public boolean hasNext() {
-      if(this.field2475.field2444[this.field2477 - 1] != this.field2476) {
+      if(this.field2449.field2416[this.field2450 - 1] != this.field2448) {
          return true;
       } else {
-         while(this.field2477 < this.field2475.field2446) {
-            if(this.field2475.field2444[this.field2477++].next != this.field2475.field2444[this.field2477 - 1]) {
-               this.field2476 = this.field2475.field2444[this.field2477 - 1].next;
+         while(this.field2450 < this.field2449.field2419) {
+            if(this.field2449.field2416[this.field2450++].next != this.field2449.field2416[this.field2450 - 1]) {
+               this.field2448 = this.field2449.field2416[this.field2450 - 1].next;
                return true;
             }
 
-            this.field2476 = this.field2475.field2444[this.field2477 - 1];
+            this.field2448 = this.field2449.field2416[this.field2450 - 1];
          }
 
          return false;
@@ -56,33 +78,11 @@ public class class197 implements Iterator {
    }
 
    public void remove() {
-      if(this.field2478 == null) {
+      if(this.field2447 == null) {
          throw new IllegalStateException();
       } else {
-         this.field2478.unlink();
-         this.field2478 = null;
-      }
-   }
-
-   public Object next() {
-      Node var1;
-      if(this.field2475.field2444[this.field2477 - 1] != this.field2476) {
-         var1 = this.field2476;
-         this.field2476 = var1.next;
-         this.field2478 = var1;
-         return var1;
-      } else {
-         do {
-            if(this.field2477 >= this.field2475.field2446) {
-               return null;
-            }
-
-            var1 = this.field2475.field2444[this.field2477++].next;
-         } while(var1 == this.field2475.field2444[this.field2477 - 1]);
-
-         this.field2476 = var1.next;
-         this.field2478 = var1;
-         return var1;
+         this.field2447.unlink();
+         this.field2447 = null;
       }
    }
 }

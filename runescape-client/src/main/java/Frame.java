@@ -3,53 +3,53 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eg")
+@ObfuscatedName("ed")
 @Implements("Frame")
 public class Frame {
-   @ObfuscatedName("a")
-   static int[] field1887;
-   @ObfuscatedName("j")
-   static int[] field1880;
-   @ObfuscatedName("n")
-   static int[] field1885;
+   @ObfuscatedName("c")
+   static int[] field1849;
+   @ObfuscatedName("o")
+   static int[] field1843;
+   @ObfuscatedName("i")
+   static int[] field1852;
+   @ObfuscatedName("u")
+   static int[] field1844;
    @ObfuscatedName("r")
-   static int[] field1882;
-   @ObfuscatedName("m")
    @Export("showing")
    boolean showing;
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Leb;"
+      signature = "Lem;"
    )
    @Export("skin")
    FrameMap skin;
-   @ObfuscatedName("e")
-   int field1884;
-   @ObfuscatedName("l")
-   int[] field1886;
+   @ObfuscatedName("m")
+   int field1847;
    @ObfuscatedName("s")
+   int[] field1842;
+   @ObfuscatedName("x")
    @Export("translator_x")
    int[] translator_x;
-   @ObfuscatedName("w")
+   @ObfuscatedName("p")
    @Export("translator_y")
    int[] translator_y;
-   @ObfuscatedName("p")
+   @ObfuscatedName("k")
    @Export("translator_z")
    int[] translator_z;
 
    static {
-      field1887 = new int[500];
-      field1880 = new int[500];
-      field1885 = new int[500];
-      field1882 = new int[500];
+      field1849 = new int[500];
+      field1843 = new int[500];
+      field1852 = new int[500];
+      field1844 = new int[500];
    }
 
    @ObfuscatedSignature(
-      signature = "([BLeb;)V"
+      signature = "([BLem;)V"
    )
    Frame(byte[] var1, FrameMap var2) {
       this.skin = null;
-      this.field1884 = -1;
+      this.field1847 = -1;
       this.showing = false;
       this.skin = var2;
       Buffer var3 = new Buffer(var1);
@@ -67,38 +67,38 @@ public class Frame {
             if(this.skin.types[var8] != 0) {
                for(int var10 = var8 - 1; var10 > var6; --var10) {
                   if(this.skin.types[var10] == 0) {
-                     field1887[var7] = var10;
-                     field1880[var7] = 0;
-                     field1885[var7] = 0;
-                     field1882[var7] = 0;
+                     field1849[var7] = var10;
+                     field1843[var7] = 0;
+                     field1852[var7] = 0;
+                     field1844[var7] = 0;
                      ++var7;
                      break;
                   }
                }
             }
 
-            field1887[var7] = var8;
+            field1849[var7] = var8;
             short var11 = 0;
             if(this.skin.types[var8] == 3) {
                var11 = 128;
             }
 
             if((var9 & 1) != 0) {
-               field1880[var7] = var4.readShortSmart();
+               field1843[var7] = var4.readShortSmart();
             } else {
-               field1880[var7] = var11;
+               field1843[var7] = var11;
             }
 
             if((var9 & 2) != 0) {
-               field1885[var7] = var4.readShortSmart();
+               field1852[var7] = var4.readShortSmart();
             } else {
-               field1885[var7] = var11;
+               field1852[var7] = var11;
             }
 
             if((var9 & 4) != 0) {
-               field1882[var7] = var4.readShortSmart();
+               field1844[var7] = var4.readShortSmart();
             } else {
-               field1882[var7] = var11;
+               field1844[var7] = var11;
             }
 
             var6 = var8;
@@ -112,17 +112,17 @@ public class Frame {
       if(var1.length != var4.offset) {
          throw new RuntimeException();
       } else {
-         this.field1884 = var7;
-         this.field1886 = new int[var7];
+         this.field1847 = var7;
+         this.field1842 = new int[var7];
          this.translator_x = new int[var7];
          this.translator_y = new int[var7];
          this.translator_z = new int[var7];
 
          for(var8 = 0; var8 < var7; ++var8) {
-            this.field1886[var8] = field1887[var8];
-            this.translator_x[var8] = field1880[var8];
-            this.translator_y[var8] = field1885[var8];
-            this.translator_z[var8] = field1882[var8];
+            this.field1842[var8] = field1849[var8];
+            this.translator_x[var8] = field1843[var8];
+            this.translator_y[var8] = field1852[var8];
+            this.translator_z[var8] = field1844[var8];
          }
 
       }

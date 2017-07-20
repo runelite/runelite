@@ -1,22 +1,15 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ef")
+@ObfuscatedName("ev")
 @Implements("Renderable")
 public abstract class Renderable extends CacheableNode {
-   @ObfuscatedName("cg")
-   @ObfuscatedSignature(
-      signature = "Lig;"
-   )
-   @Export("indexModels")
-   static IndexData indexModels;
-   @ObfuscatedName("cc")
+   @ObfuscatedName("ci")
    @ObfuscatedGetter(
-      intValue = 1819144275
+      intValue = -813140231
    )
    @Export("modelHeight")
    public int modelHeight;
@@ -25,17 +18,17 @@ public abstract class Renderable extends CacheableNode {
       this.modelHeight = 1000;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(B)Lej;",
-      garbageValue = "19"
+      signature = "(B)Leo;",
+      garbageValue = "1"
    )
    @Export("getModel")
    protected Model getModel() {
       return null;
    }
 
-   @ObfuscatedName("cf")
+   @ObfuscatedName("cb")
    @Export("draw")
    void draw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
       Model var10 = this.getModel();
@@ -46,36 +39,73 @@ public abstract class Renderable extends CacheableNode {
 
    }
 
-   @ObfuscatedName("ju")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lfe;I)V",
-      garbageValue = "-1611362339"
+      signature = "([BI)[B",
+      garbageValue = "197737729"
    )
-   static void method2863(Buffer var0) {
-      if(Client.field942 != null) {
-         var0.putBytes(Client.field942, 0, Client.field942.length);
+   static byte[] method2800(byte[] var0) {
+      int var1 = var0.length;
+      byte[] var2 = new byte[var1];
+      System.arraycopy(var0, 0, var2, 0, var1);
+      return var2;
+   }
+
+   @ObfuscatedName("hc")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIIB)V",
+      garbageValue = "104"
+   )
+   @Export("drawWidget")
+   static final void drawWidget(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+      if(class9.loadWidget(var0)) {
+         class24.field346 = null;
+         class77.gameDraw(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
+         if(class24.field346 != null) {
+            class77.gameDraw(class24.field346, -1412584499, var1, var2, var3, var4, class29.field410, GZipDecompressor.field2293, var7);
+            class24.field346 = null;
+         }
+
       } else {
-         byte[] var2 = new byte[24];
-
-         try {
-            class155.field2239.seek(0L);
-            class155.field2239.read(var2);
-
-            int var3;
-            for(var3 = 0; var3 < 24 && var2[var3] == 0; ++var3) {
-               ;
-            }
-
-            if(var3 >= 24) {
-               throw new IOException();
-            }
-         } catch (Exception var6) {
-            for(int var4 = 0; var4 < 24; ++var4) {
-               var2[var4] = -1;
+         if(var7 != -1) {
+            Client.field1109[var7] = true;
+         } else {
+            for(int var8 = 0; var8 < 100; ++var8) {
+               Client.field1109[var8] = true;
             }
          }
 
-         var0.putBytes(var2, 0, var2.length);
       }
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Lip;B)V",
+      garbageValue = "3"
+   )
+   public static void method2801(IndexDataBase var0) {
+      class251.field3362 = var0;
+   }
+
+   @ObfuscatedName("gz")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "-1930280793"
+   )
+   static void method2794(int var0, int var1, int var2, int var3) {
+      Widget var4 = CollisionData.method2946(var0, var1);
+      if(var4 != null && var4.field2747 != null) {
+         ScriptEvent var5 = new ScriptEvent();
+         var5.widget = var4;
+         var5.field831 = var4.field2747;
+         Ignore.method1054(var5);
+      }
+
+      Client.field1061 = var3;
+      Client.spellSelected = true;
+      class60.field747 = var0;
+      Client.field1055 = var1;
+      class39.field534 = var2;
+      class21.method156(var4);
    }
 }

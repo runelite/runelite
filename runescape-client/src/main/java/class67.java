@@ -1,42 +1,96 @@
+import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bz")
+@ObfuscatedName("bw")
 public class class67 extends class196 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("l")
+   static int[] field816;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 831416131
+      intValue = -285289231
    )
-   int field820;
-   @ObfuscatedName("j")
-   String field817;
-   @ObfuscatedName("n")
-   short field818;
+   int field819;
+   @ObfuscatedName("o")
+   String field813;
+   @ObfuscatedName("i")
+   short field815;
 
    class67(String var1, int var2) {
-      this.field820 = (int)(class46.currentTimeMs() / 1000L);
-      this.field817 = var1;
-      this.field818 = (short)var2;
+      this.field819 = (int)(class157.currentTimeMs() / 1000L);
+      this.field813 = var1;
+      this.field815 = (short)var2;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "1445712581"
+      signature = "(ILfz;Lix;I)V",
+      garbageValue = "-204360795"
    )
-   public static int method1088(int var0, int var1) {
-      int var2 = var0 >>> 31;
-      return (var0 + var2) / var1 - var2;
+   static void method1043(int var0, IndexFile var1, IndexData var2) {
+      FileSystem var3 = new FileSystem();
+      var3.field3171 = 1;
+      var3.hash = (long)var0;
+      var3.index = var1;
+      var3.data = var2;
+      Deque var4 = class236.field3207;
+      synchronized(class236.field3207) {
+         class236.field3207.addFront(var3);
+      }
+
+      Object var9 = class236.field3203;
+      synchronized(class236.field3203) {
+         if(class236.field3205 == 0) {
+            class19.field316 = new Thread(new class236());
+            class19.field316.setDaemon(true);
+            class19.field316.start();
+            class19.field316.setPriority(5);
+         }
+
+         class236.field3205 = 600;
+      }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(III)Lbv;",
-      garbageValue = "82652202"
+      signature = "(I)Z",
+      garbageValue = "-568782269"
    )
-   static MessageNode method1087(int var0, int var1) {
-      ChatLineBuffer var2 = (ChatLineBuffer)class98.chatLineMap.get(Integer.valueOf(var0));
-      return var2.method1843(var1);
+   @Export("loadWorlds")
+   static boolean loadWorlds() {
+      try {
+         if(class265.worldServersDownload == null) {
+            class265.worldServersDownload = new class77(GameEngine.taskManager, new URL(class220.field2783));
+         } else {
+            byte[] var0 = class265.worldServersDownload.method1470();
+            if(var0 != null) {
+               Buffer var1 = new Buffer(var0);
+               World.worldCount = var1.readUnsignedShort();
+               class64.worldList = new World[World.worldCount];
+
+               World var3;
+               for(int var2 = 0; var2 < World.worldCount; var3.index = var2++) {
+                  var3 = class64.worldList[var2] = new World();
+                  var3.id = var1.readUnsignedShort();
+                  var3.mask = var1.readInt();
+                  var3.address = var1.readString();
+                  var3.activity = var1.readString();
+                  var3.location = var1.readUnsignedByte();
+                  var3.playerCount = var1.readShort();
+               }
+
+               class1.method1(class64.worldList, 0, class64.worldList.length - 1, World.field1281, World.field1285);
+               class265.worldServersDownload = null;
+               return true;
+            }
+         }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+         class265.worldServersDownload = null;
+      }
+
+      return false;
    }
 }

@@ -9,59 +9,54 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fq")
+@ObfuscatedName("fb")
 @Implements("RSSocket")
 public final class RSSocket implements Runnable {
-   @ObfuscatedName("ro")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -103700771
-   )
-   static int field2260;
-   @ObfuscatedName("r")
-   @Export("closed")
-   boolean closed;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 414978889
-   )
-   @Export("outbufLen")
-   int outbufLen;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1617308983
+      intValue = 1572924235
    )
    @Export("streamOffset")
    int streamOffset;
+   @ObfuscatedName("u")
+   @Export("closed")
+   boolean closed;
    @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -596375455
+   )
+   @Export("outbufLen")
+   int outbufLen;
+   @ObfuscatedName("k")
    @Export("throwException")
    boolean throwException;
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @Export("inputStream")
    InputStream inputStream;
-   @ObfuscatedName("l")
+   @ObfuscatedName("s")
    @Export("outbuffer")
    byte[] outbuffer;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lev;"
+      signature = "Ler;"
    )
    @Export("socketThread")
    Task socketThread;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @Export("outputStream")
    OutputStream outputStream;
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Len;"
+      signature = "Lew;"
    )
    @Export("manager")
    Signlink manager;
-   @ObfuscatedName("n")
+   @ObfuscatedName("o")
    @Export("socket")
    Socket socket;
 
    @ObfuscatedSignature(
-      signature = "(Ljava/net/Socket;Len;)V"
+      signature = "(Ljava/net/Socket;Lew;)V"
    )
    public RSSocket(Socket var1, Signlink var2) throws IOException {
       this.closed = false;
@@ -78,10 +73,10 @@ public final class RSSocket implements Runnable {
       this.outputStream = this.socket.getOutputStream();
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1410042969"
+      garbageValue = "-2112917472"
    )
    @Export("close")
    public void close() {
@@ -93,7 +88,7 @@ public final class RSSocket implements Runnable {
 
          if(this.socketThread != null) {
             while(this.socketThread.status == 0) {
-               class33.method354(1L);
+               Occluder.method2829(1L);
             }
 
             if(this.socketThread.status == 1) {
@@ -109,20 +104,20 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1332240488"
+      garbageValue = "-1328764489"
    )
    @Export("available")
    public int available() throws IOException {
       return this.closed?0:this.inputStream.available();
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "-554842251"
+      signature = "([BIIB)V",
+      garbageValue = "-63"
    )
    @Export("read")
    public void read(byte[] var1, int var2, int var3) throws IOException {
@@ -140,10 +135,10 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "1296647025"
+      signature = "([BIIB)V",
+      garbageValue = "-24"
    )
    @Export("queueForWrite")
    public void queueForWrite(byte[] var1, int var2, int var3) throws IOException {
@@ -160,7 +155,7 @@ public final class RSSocket implements Runnable {
                for(int var5 = 0; var5 < var3; ++var5) {
                   this.outbuffer[this.outbufLen] = var1[var5 + var2];
                   this.outbufLen = (this.outbufLen + 1) % 5000;
-                  if(this.outbufLen == (this.streamOffset + 4900) % 5000) {
+                  if((this.streamOffset + 4900) % 5000 == this.outbufLen) {
                      throw new IOException();
                   }
                }
@@ -175,18 +170,14 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-22"
+      signature = "(I)I",
+      garbageValue = "403672251"
    )
    @Export("readByte")
    public int readByte() throws IOException {
       return this.closed?0:this.inputStream.read();
-   }
-
-   protected void finalize() {
-      this.close();
    }
 
    public void run() {
@@ -195,7 +186,7 @@ public final class RSSocket implements Runnable {
             int var1;
             int var2;
             synchronized(this) {
-               if(this.outbufLen == this.streamOffset) {
+               if(this.streamOffset == this.outbufLen) {
                   if(this.closed) {
                      break;
                   }
@@ -225,7 +216,7 @@ public final class RSSocket implements Runnable {
                this.streamOffset = (var1 + this.streamOffset) % 5000;
 
                try {
-                  if(this.outbufLen == this.streamOffset) {
+                  if(this.streamOffset == this.outbufLen) {
                      this.outputStream.flush();
                   }
                } catch (IOException var8) {
@@ -252,8 +243,21 @@ public final class RSSocket implements Runnable {
 
          this.outbuffer = null;
       } catch (Exception var12) {
-         class54.method800((String)null, var12);
+         WorldMapType2.method495((String)null, var12);
       }
 
+   }
+
+   protected void finalize() {
+      this.close();
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(IB)Z",
+      garbageValue = "-1"
+   )
+   public static boolean method2936(int var0) {
+      return (var0 >> 21 & 1) != 0;
    }
 }

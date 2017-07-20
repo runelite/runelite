@@ -1,42 +1,46 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fw")
+@ObfuscatedName("ff")
 public class class169 {
-   @ObfuscatedName("j")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(II)Lik;",
-      garbageValue = "-1277856486"
+      signature = "(IS)Lit;",
+      garbageValue = "32767"
    )
-   public static VarPlayerType method3109(int var0) {
-      VarPlayerType var1 = (VarPlayerType)VarPlayerType.varplayers.get((long)var0);
+   @Export("getObjectDefinition")
+   public static ObjectComposition getObjectDefinition(int var0) {
+      ObjectComposition var1 = (ObjectComposition)ObjectComposition.objects.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = class2.varplayer_ref.getConfigData(16, var0);
-         var1 = new VarPlayerType();
+         byte[] var2 = ObjectComposition.objects_ref.getConfigData(6, var0);
+         var1 = new ObjectComposition();
+         var1.id = var0;
          if(var2 != null) {
             var1.decode(new Buffer(var2));
          }
 
-         VarPlayerType.varplayers.put(var1, (long)var0);
+         var1.post();
+         if(var1.isSolid) {
+            var1.interactType = 0;
+            var1.field3439 = false;
+         }
+
+         ObjectComposition.objects.put(var1, (long)var0);
          return var1;
       }
    }
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IIIIIII)I",
-      garbageValue = "-1482813773"
+      signature = "(B)V",
+      garbageValue = "72"
    )
-   public static int method3108(int var0, int var1, int var2, int var3, int var4, int var5) {
-      if((var5 & 1) == 1) {
-         int var6 = var3;
-         var3 = var4;
-         var4 = var6;
-      }
-
-      var2 &= 3;
-      return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
+   public static void method3060() {
+      ItemComposition.items.reset();
+      ItemComposition.itemModelCache.reset();
+      ItemComposition.itemSpriteCache.reset();
    }
 }

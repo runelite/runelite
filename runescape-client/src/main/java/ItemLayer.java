@@ -4,71 +4,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dj")
+@ObfuscatedName("dv")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("r")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lef;"
+      signature = "Lfm;"
+   )
+   @Export("timer")
+   protected static Timer timer;
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lev;"
    )
    @Export("bottom")
    Renderable bottom;
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1481402509
+      intValue = 342140687
    )
    @Export("x")
    int x;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1679345499
+      intValue = 737810837
    )
    @Export("y")
    int y;
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 2039712311
+      intValue = -1486925155
    )
    @Export("hash")
    int hash;
-   @ObfuscatedName("l")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -2021271429
+      intValue = -1912436045
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lef;"
+      signature = "Lev;"
    )
    @Export("middle")
    Renderable middle;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lef;"
+      signature = "Lev;"
    )
    @Export("top")
    Renderable top;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 396278729
+      intValue = 1030190021
    )
    @Export("height")
    int height;
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "([BII)I",
-      garbageValue = "1414610843"
-   )
-   public static int method2394(byte[] var0, int var1) {
-      int var3 = -1;
-
-      for(int var4 = 0; var4 < var1; ++var4) {
-         var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
-      }
-
-      var3 = ~var3;
-      return var3;
-   }
 }

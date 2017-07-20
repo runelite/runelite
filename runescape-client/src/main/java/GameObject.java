@@ -4,95 +4,95 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ee")
+@ObfuscatedName("ez")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("do")
-   @ObfuscatedGetter(
-      intValue = 879084215
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lfp;"
    )
-   static int field2188;
-   @ObfuscatedName("l")
+   public static Buffer field2154;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -166007035
+      intValue = 944799741
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -222954029
+      intValue = 909095651
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("g")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -2033407771
+      intValue = -1241766575
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -523216843
+      intValue = -519047511
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("w")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1149718661
+      intValue = -1546219947
    )
    @Export("relativeY")
    int relativeY;
-   @ObfuscatedName("p")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 196080681
+      intValue = 1715717349
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -447952619
+      intValue = 983419613
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -316182449
+      intValue = 1580295459
    )
    @Export("x")
    int x;
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1441468757
+      intValue = 2125707219
    )
    @Export("y")
    int y;
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1827820859
+      intValue = -1127690729
    )
    @Export("height")
    int height;
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lef;"
+      signature = "Lev;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1890287651
+      intValue = 910652283
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("u")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 698402003
+      intValue = 663162621
    )
    @Export("cycle")
    int cycle;
-   @ObfuscatedName("m")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1962356795
+      intValue = 1066154637
    )
    @Export("drawPriority")
    int drawPriority;
@@ -102,31 +102,21 @@ public final class GameObject {
       this.flags = 0;
    }
 
-   @ObfuscatedName("jy")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(IIIB)Lbr;",
-      garbageValue = "4"
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "959025532"
    )
-   static final WidgetNode method2891(int var0, int var1, int var2) {
-      WidgetNode var3 = new WidgetNode();
-      var3.id = var1;
-      var3.owner = var2;
-      Client.componentTable.put(var3, (long)var0);
-      class22.method168(var1);
-      Widget var4 = class61.method1038(var0);
-      class48.method749(var4);
-      if(Client.field1070 != null) {
-         class48.method749(Client.field1070);
-         Client.field1070 = null;
-      }
+   public static int method2836(CharSequence var0) {
+      return class162.parseInt(var0, 10, true);
+   }
 
-      class36.method486();
-      class36.method487(Widget.widgets[var0 >> 16], var4, false);
-      class229.method4069(var1);
-      if(Client.widgetRoot != -1) {
-         class31.method275(Client.widgetRoot, 1);
-      }
-
-      return var3;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(CB)Z",
+      garbageValue = "53"
+   )
+   static final boolean method2835(char var0) {
+      return var0 == 160 || var0 == 32 || var0 == 95 || var0 == 45;
    }
 }

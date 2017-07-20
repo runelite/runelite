@@ -2,25 +2,25 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dd")
+@ObfuscatedName("du")
 @Implements("CodeBook")
 public class CodeBook {
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @Export("valueVector")
    float[][] valueVector;
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @Export("entries")
    int entries;
-   @ObfuscatedName("e")
-   int[] field1564;
-   @ObfuscatedName("n")
+   @ObfuscatedName("m")
+   int[] field1536;
+   @ObfuscatedName("i")
    @Export("entryLengths")
    int[] entryLengths;
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @Export("dimensions")
    int dimensions;
-   @ObfuscatedName("r")
-   int[] field1562;
+   @ObfuscatedName("u")
+   int[] field1535;
 
    CodeBook() {
       class106.getInt(24);
@@ -35,7 +35,7 @@ public class CodeBook {
          var2 = 0;
 
          for(var3 = class106.getInt(5) + 1; var2 < this.entries; ++var3) {
-            int var4 = class106.getInt(class220.ilog(this.entries - var2));
+            int var4 = class106.getInt(class1.ilog(this.entries - var2));
 
             for(var5 = 0; var5 < var4; ++var5) {
                this.entryLengths[var2++] = var3;
@@ -62,16 +62,16 @@ public class CodeBook {
          boolean var6 = class106.getBit() != 0;
          int var7;
          if(var2 == 1) {
-            var7 = method1903(this.entries, this.dimensions);
+            var7 = method1851(this.entries, this.dimensions);
          } else {
             var7 = this.entries * this.dimensions;
          }
 
-         this.field1562 = new int[var7];
+         this.field1535 = new int[var7];
 
          int var8;
          for(var8 = 0; var8 < var7; ++var8) {
-            this.field1562[var8] = class106.getInt(var5);
+            this.field1535[var8] = class106.getInt(var5);
          }
 
          this.valueVector = new float[this.entries][this.dimensions];
@@ -85,7 +85,7 @@ public class CodeBook {
 
                for(var11 = 0; var11 < this.dimensions; ++var11) {
                   int var12 = var8 / var10 % var7;
-                  float var13 = (float)this.field1562[var12] * var16 + var15 + var9;
+                  float var13 = (float)this.field1535[var12] * var16 + var15 + var9;
                   this.valueVector[var8][var11] = var13;
                   if(var6) {
                      var9 = var13;
@@ -100,7 +100,7 @@ public class CodeBook {
                var10 = var8 * this.dimensions;
 
                for(var11 = 0; var11 < this.dimensions; ++var11) {
-                  float var17 = (float)this.field1562[var10] * var16 + var15 + var9;
+                  float var17 = (float)this.field1535[var10] * var16 + var15 + var9;
                   this.valueVector[var8][var11] = var17;
                   if(var6) {
                      var9 = var17;
@@ -114,23 +114,23 @@ public class CodeBook {
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @Export("getHuffmanRoot")
    int getHuffmanRoot() {
       int var1;
-      for(var1 = 0; this.field1564[var1] >= 0; var1 = class106.getBit() != 0?this.field1564[var1]:var1 + 1) {
+      for(var1 = 0; this.field1536[var1] >= 0; var1 = class106.getBit() != 0?this.field1536[var1]:var1 + 1) {
          ;
       }
 
-      return ~this.field1564[var1];
+      return ~this.field1536[var1];
    }
 
-   @ObfuscatedName("r")
-   float[] method1897() {
+   @ObfuscatedName("u")
+   float[] method1862() {
       return this.valueVector[this.getHuffmanRoot()];
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @Export("createHuffmanTree")
    void createHuffmanTree() {
       int[] var1 = new int[this.entries];
@@ -182,7 +182,7 @@ public class CodeBook {
          }
       }
 
-      this.field1564 = new int[8];
+      this.field1536 = new int[8];
       int var11 = 0;
 
       for(var3 = 0; var3 < this.entries; ++var3) {
@@ -194,29 +194,29 @@ public class CodeBook {
             for(var7 = 0; var7 < var4; ++var7) {
                var8 = Integer.MIN_VALUE >>> var7;
                if((var5 & var8) != 0) {
-                  if(this.field1564[var6] == 0) {
-                     this.field1564[var6] = var11;
+                  if(this.field1536[var6] == 0) {
+                     this.field1536[var6] = var11;
                   }
 
-                  var6 = this.field1564[var6];
+                  var6 = this.field1536[var6];
                } else {
                   ++var6;
                }
 
-               if(var6 >= this.field1564.length) {
-                  int[] var12 = new int[this.field1564.length * 2];
+               if(var6 >= this.field1536.length) {
+                  int[] var12 = new int[this.field1536.length * 2];
 
-                  for(var10 = 0; var10 < this.field1564.length; ++var10) {
-                     var12[var10] = this.field1564[var10];
+                  for(var10 = 0; var10 < this.field1536.length; ++var10) {
+                     var12[var10] = this.field1536[var10];
                   }
 
-                  this.field1564 = var12;
+                  this.field1536 = var12;
                }
 
                var8 >>>= 1;
             }
 
-            this.field1564[var6] = ~var3;
+            this.field1536[var6] = ~var3;
             if(var6 >= var11) {
                var11 = var6 + 1;
             }
@@ -225,8 +225,8 @@ public class CodeBook {
 
    }
 
-   @ObfuscatedName("a")
-   static int method1903(int var0, int var1) {
+   @ObfuscatedName("c")
+   static int method1851(int var0, int var1) {
       int var2 = (int)Math.pow((double)var0, 1.0D / (double)var1) + 1;
 
       while(true) {
@@ -244,7 +244,7 @@ public class CodeBook {
 
          int var3;
          if(var5 == 1) {
-            var3 = var4 * var6;
+            var3 = var6 * var4;
          } else {
             var3 = var6;
          }

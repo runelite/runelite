@@ -1,11 +1,13 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hk")
+@ObfuscatedName("hd")
 public class class226 {
-   @ObfuscatedName("gn")
+   @ObfuscatedName("iq")
    @ObfuscatedSignature(
-      signature = "[Ljf;"
+      signature = "Lbt;"
    )
-   static ModIcon[] field3142;
+   @Export("localPlayer")
+   static Player localPlayer;
 }

@@ -4,111 +4,76 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cg")
+@ObfuscatedName("cv")
 @Implements("Script")
 public class Script extends CacheableNode {
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lgc;"
+      signature = "Lgq;"
    )
-   static NodeCache field1530;
-   @ObfuscatedName("ib")
-   @ObfuscatedSignature(
-      signature = "Lbe;"
-   )
-   @Export("localPlayer")
-   static Player localPlayer;
-   @ObfuscatedName("j")
+   static NodeCache field1506;
+   @ObfuscatedName("o")
    @Export("instructions")
    int[] instructions;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @Export("intOperands")
    int[] intOperands;
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1613300093
+      intValue = 1274028583
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1673906801
+      intValue = -823888683
    )
    @Export("localStringCount")
    int localStringCount;
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("l")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1732810093
+      intValue = -1484383199
    )
    @Export("intStackCount")
    int intStackCount;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 269316271
-   )
-   @Export("stringStackCount")
-   int stringStackCount;
-   @ObfuscatedName("w")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "[Lgl;"
+      signature = "[Lgk;"
    )
    @Export("switches")
    class186[] switches;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -75435077
+   )
+   @Export("stringStackCount")
+   int stringStackCount;
 
    static {
-      field1530 = new NodeCache(128);
+      field1506 = new NodeCache(128);
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IB)[Lgl;",
-      garbageValue = "68"
+      signature = "(II)[Lgk;",
+      garbageValue = "-1652382305"
    )
-   class186[] method1837(int var1) {
+   class186[] method1781(int var1) {
       return new class186[var1];
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(ILhx;I)I",
-      garbageValue = "-1532471377"
+      signature = "(I)V",
+      garbageValue = "405912795"
    )
-   public static int method1835(int var0, class219 var1) {
-      return (var0 + '鱀' << 8) + var1.field2801;
-   }
-
-   @ObfuscatedName("jw")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-337634088"
-   )
-   static final void method1831(String var0) {
-      if(var0 != null) {
-         String var1 = class202.method3682(var0, class164.field2317);
-         if(var1 != null) {
-            for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
-               Ignore var3 = Client.ignores[var2];
-               String var4 = var3.name;
-               String var5 = class202.method3682(var4, class164.field2317);
-               if(class46.method713(var0, var1, var4, var5)) {
-                  --Client.ignoreCount;
-
-                  for(int var6 = var2; var6 < Client.ignoreCount; ++var6) {
-                     Client.ignores[var6] = Client.ignores[var6 + 1];
-                  }
-
-                  Client.field1099 = Client.cycleCntr;
-                  Client.secretPacketBuffer1.putOpcode(192);
-                  Client.secretPacketBuffer1.putByte(DecorativeObject.getLength(var0));
-                  Client.secretPacketBuffer1.putString(var0);
-                  break;
-               }
-            }
-
-         }
+   public static void method1786() {
+      if(class238.field3226 != null) {
+         class238.field3226.close();
       }
+
    }
 }

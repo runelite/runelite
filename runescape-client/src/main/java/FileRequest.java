@@ -4,29 +4,39 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("in")
+@ObfuscatedName("im")
 @Implements("FileRequest")
 public class FileRequest extends CacheableNode {
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1450681237
-   )
-   static int field3207;
-   @ObfuscatedName("w")
-   static int[][] field3211;
-   @ObfuscatedName("n")
-   @Export("padding")
-   byte padding;
-   @ObfuscatedName("a")
+   @ObfuscatedName("ga")
    @ObfuscatedSignature(
-      signature = "Lig;"
+      signature = "[Ljx;"
+   )
+   static ModIcon[] field3179;
+   @ObfuscatedName("i")
+   @Export("padding")
+   public byte padding;
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "Lix;"
    )
    @Export("index")
-   IndexData index;
-   @ObfuscatedName("j")
+   public IndexData index;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1630955271
+      intValue = -181415639
    )
    @Export("crc")
-   int crc;
+   public int crc;
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "76"
+   )
+   static void method4004() {
+      if(class67.loadWorlds()) {
+         class92.worldSelectShown = true;
+      }
+
+   }
 }

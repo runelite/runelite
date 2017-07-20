@@ -1,20 +1,38 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hg")
+@ObfuscatedName("hv")
 public class class223 {
-   @ObfuscatedName("eh")
+   @ObfuscatedName("ge")
    @ObfuscatedSignature(
-      signature = "Ljc;"
+      signature = "(ZI)V",
+      garbageValue = "-2024907259"
    )
-   static Font field2847;
+   static final void method3979(boolean var0) {
+      Client.field1027 = 0;
+      Client.pendingNpcFlagsCount = 0;
+      class225.method3982();
+      IndexDataBase.method4093(var0);
+      class48.method690();
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "1312827069"
-   )
-   public static String method4058(CharSequence var0) {
-      return GroundObject.method2480('*', var0.length());
+      int var1;
+      for(var1 = 0; var1 < Client.field1027; ++var1) {
+         int var2 = Client.field1028[var1];
+         if(Client.cachedNPCs[var2].field1258 != Client.gameCycle) {
+            Client.cachedNPCs[var2].composition = null;
+            Client.cachedNPCs[var2] = null;
+         }
+      }
+
+      if(Client.packetLength != Client.secretPacketBuffer2.offset) {
+         throw new RuntimeException(Client.secretPacketBuffer2.offset + "," + Client.packetLength);
+      } else {
+         for(var1 = 0; var1 < Client.field953; ++var1) {
+            if(Client.cachedNPCs[Client.npcIndices[var1]] == null) {
+               throw new RuntimeException(var1 + "," + Client.field953);
+            }
+         }
+
+      }
    }
 }

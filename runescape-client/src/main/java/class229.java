@@ -1,39 +1,35 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hw")
+@ObfuscatedName("hj")
 public final class class229 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lif;Lif;B)V",
-      garbageValue = "-6"
+      signature = "(I)V",
+      garbageValue = "1117744906"
    )
-   public static void method4070(IndexDataBase var0, IndexDataBase var1) {
-      Spotanim.field3337 = var0;
-      Spotanim.field3324 = var1;
+   public static void method3989() {
+      class280.field3739 = new CombatInfoList();
    }
 
-   @ObfuscatedName("au")
+   @ObfuscatedName("iq")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-71"
+      signature = "(I)V",
+      garbageValue = "1958650846"
    )
-   static void method4069(int var0) {
-      if(var0 != -1) {
-         if(class33.loadWidget(var0)) {
-            Widget[] var1 = Widget.widgets[var0];
+   static final void method3988() {
+      Client.secretPacketBuffer1.putOpcode(170);
 
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               Widget var3 = var1[var2];
-               if(var3.field2775 != null) {
-                  ScriptEvent var4 = new ScriptEvent();
-                  var4.widget = var3;
-                  var4.field839 = var3.field2775;
-                  IndexFile.method3018(var4, 2000000);
-               }
-            }
-
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3492(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3493()) {
+         if(var0.owner == 0 || var0.owner == 3) {
+            ScriptState.method1021(var0, true);
          }
       }
+
+      if(Client.field1068 != null) {
+         class21.method156(Client.field1068);
+         Client.field1068 = null;
+      }
+
    }
 }

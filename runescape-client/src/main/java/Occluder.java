@@ -4,154 +4,163 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("er")
+@ObfuscatedName("eq")
 @Implements("Occluder")
 public final class Occluder {
-   @ObfuscatedName("eo")
-   @ObfuscatedSignature(
-      signature = "Lfq;"
-   )
-   @Export("rssocket")
-   static RSSocket rssocket;
-   @ObfuscatedName("u")
+   @ObfuscatedName("ax")
+   @Export("authCode")
+   static String authCode;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -2011790505
+      intValue = 782422459
    )
    @Export("testDirection")
    int testDirection;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1631809755
+      intValue = -1484610523
    )
    @Export("minX")
    int minX;
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -275803047
+      intValue = -76521329
    )
    @Export("type")
    int type;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -935818403
+      intValue = 139696185
    )
    @Export("minNormalX")
    int minNormalX;
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 947857959
+      intValue = -1023829937
    )
    @Export("minTileX")
    int minTileX;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1656003067
+      intValue = 667754897
    )
    @Export("minZ")
    int minZ;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -91598111
+      intValue = 1753328701
    )
    @Export("minTileZ")
    int minTileZ;
-   @ObfuscatedName("c")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -348823123
+      intValue = -531341369
    )
    @Export("maxNormalX")
    int maxNormalX;
-   @ObfuscatedName("g")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1650635419
+      intValue = -1817049325
    )
-   int field2152;
-   @ObfuscatedName("w")
+   int field2116;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1799084335
+      intValue = -240311403
    )
    @Export("maxZ")
    int maxZ;
-   @ObfuscatedName("p")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -934787641
+      intValue = 721832507
    )
    @Export("minY")
    int minY;
-   @ObfuscatedName("o")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1953113309
+      intValue = -1964684551
    )
    @Export("minNormalY")
    int minNormalY;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -973795785
+      intValue = -2142662919
    )
-   int field2153;
-   @ObfuscatedName("l")
+   int field2104;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -965493659
+      intValue = 1629126893
    )
    @Export("maxX")
    int maxX;
-   @ObfuscatedName("x")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1464645297
+      intValue = -405098539
    )
    @Export("maxNormalY")
    int maxNormalY;
-   @ObfuscatedName("m")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -2075134731
+      intValue = 1525497335
    )
    @Export("maxY")
    int maxY;
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -134272417
+      intValue = 1913799435
    )
    @Export("maxTileZ")
    int maxTileZ;
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -454761341
+      intValue = 1924973569
    )
    @Export("maxTIleX")
    int maxTIleX;
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(ILfz;Lig;B)V",
-      garbageValue = "23"
-   )
-   static void method2888(int var0, IndexFile var1, IndexData var2) {
-      byte[] var3 = null;
-      Deque var4 = class236.field3235;
-      synchronized(class236.field3235) {
-         for(FileSystem var5 = (FileSystem)class236.field3235.getFront(); var5 != null; var5 = (FileSystem)class236.field3235.getNext()) {
-            if(var5.hash == (long)var0 && var1 == var5.index && var5.field3204 == 0) {
-               var3 = var5.field3202;
-               break;
-            }
+   @ObfuscatedName("c")
+   public static final void method2829(long var0) {
+      if(var0 > 0L) {
+         if(0L == var0 % 10L) {
+            class3.method9(var0 - 1L);
+            class3.method9(1L);
+         } else {
+            class3.method9(var0);
          }
-      }
 
-      if(var3 != null) {
-         var2.method4179(var1, var0, var3, true);
-      } else {
-         byte[] var8 = var1.method3011(var0);
-         var2.method4179(var1, var0, var8, true);
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lif;Lif;I)V",
-      garbageValue = "1570497041"
+      signature = "(Lip;Ljava/lang/String;Ljava/lang/String;I)Ljx;",
+      garbageValue = "-1832478642"
    )
-   public static void method2887(IndexDataBase var0, IndexDataBase var1) {
-      CombatInfo2.field3373 = var0;
-      class293.field3898 = var1;
+   @Export("getSprite")
+   public static ModIcon getSprite(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
+      ModIcon var5;
+      if(!ISAACCipher.method3381(var0, var3, var4)) {
+         var5 = null;
+      } else {
+         ModIcon var7 = new ModIcon();
+         var7.width = class286.field3780;
+         var7.originalHeight = class286.field3781;
+         var7.offsetX = class286.field3782[0];
+         var7.offsetY = class286.offsetsY[0];
+         var7.originalWidth = class286.field3779[0];
+         var7.height = class286.field3787[0];
+         var7.palette = class286.field3786;
+         var7.pixels = class286.spritePixels[0];
+         class286.field3782 = null;
+         class286.offsetsY = null;
+         class286.field3779 = null;
+         class286.field3787 = null;
+         class286.field3786 = null;
+         class286.spritePixels = null;
+         var5 = var7;
+      }
+
+      return var5;
    }
 }

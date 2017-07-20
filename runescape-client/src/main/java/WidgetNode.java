@@ -4,72 +4,45 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("br")
+@ObfuscatedName("bp")
 @Implements("WidgetNode")
 public class WidgetNode extends Node {
-   @ObfuscatedName("n")
-   boolean field824;
-   @ObfuscatedName("a")
+   @ObfuscatedName("dg")
    @ObfuscatedGetter(
-      intValue = 246644215
+      intValue = -705561133
+   )
+   static int field827;
+   @ObfuscatedName("gc")
+   @ObfuscatedGetter(
+      intValue = 1872642347
+   )
+   @Export("cameraZ")
+   static int cameraZ;
+   @ObfuscatedName("i")
+   boolean field823;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -532834593
    )
    @Export("id")
    int id;
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -22027933
+      intValue = -1115058349
    )
    @Export("owner")
    int owner;
 
    WidgetNode() {
-      this.field824 = false;
+      this.field823 = false;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;S)V",
-      garbageValue = "610"
+      signature = "(IIII)I",
+      garbageValue = "-1807152720"
    )
-   @Export("sendGameMessage")
-   static void sendGameMessage(int var0, String var1, String var2) {
-      class18.addChatMessage(var0, var1, var2, (String)null);
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-15"
-   )
-   static int method1091() {
-      return 9;
-   }
-
-   @ObfuscatedName("jx")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
-      garbageValue = "1470626583"
-   )
-   static String method1089(String var0, boolean var1) {
-      String var2 = var1?"https://":"http://";
-      if(Client.socketType == 1) {
-         var0 = var0 + "-wtrc";
-      } else if(Client.socketType == 2) {
-         var0 = var0 + "-wtqa";
-      } else if(Client.socketType == 3) {
-         var0 = var0 + "-wtwip";
-      } else if(Client.socketType == 5) {
-         var0 = var0 + "-wti";
-      } else if(Client.socketType == 4) {
-         var0 = "local";
-      }
-
-      String var3 = "";
-      if(class8.sessionToken != null) {
-         var3 = "/p=" + class8.sessionToken;
-      }
-
-      String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + class25.field371 + var3 + "/";
+   static int method1045(int var0, int var1, int var2) {
+      return (class61.tileSettings[var0][var1][var2] & 8) != 0?0:(var0 > 0 && (class61.tileSettings[1][var1][var2] & 2) != 0?var0 - 1:var0);
    }
 }

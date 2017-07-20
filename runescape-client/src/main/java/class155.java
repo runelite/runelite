@@ -6,171 +6,63 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ey")
 public class class155 {
-   @ObfuscatedName("u")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Ldg;"
+      signature = "Lds;"
    )
-   public static CacheFile field2239;
+   public static CacheFile field2207;
    @ObfuscatedName("v")
-   public static File field2243;
-   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Ldg;"
+      signature = "Lds;"
    )
-   public static CacheFile field2237;
-   @ObfuscatedName("k")
+   public static CacheFile field2211;
+   @ObfuscatedName("f")
+   @Export("osNameLC")
+   public static String osNameLC;
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Ldg;"
+      signature = "Lds;"
    )
-   public static CacheFile field2246;
-   @ObfuscatedName("e")
+   public static CacheFile field2203;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 726040489
+      intValue = -1349167385
    )
-   public static int field2241;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "[Ldg;"
+   static int field2209;
+   @ObfuscatedName("y")
+   static String[] field2210;
+   @ObfuscatedName("u")
+   static File field2204;
+   @ObfuscatedName("gn")
+   @ObfuscatedGetter(
+      intValue = 646510957
    )
-   public static CacheFile[] field2247;
-   @ObfuscatedName("i")
-   @Export("osName")
-   public static String osName;
-   @ObfuscatedName("r")
-   public static File field2244;
+   static int field2213;
 
    static {
-      field2239 = null;
-      field2237 = null;
-      field2246 = null;
+      field2207 = null;
+      field2211 = null;
+      field2203 = null;
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(IIZI)Ljava/lang/String;",
-      garbageValue = "-495080869"
+      signature = "(II)Lia;",
+      garbageValue = "-498037943"
    )
-   static String method2955(int var0, int var1, boolean var2) {
-      if(var1 >= 2 && var1 <= 36) {
-         if(var2 && var0 >= 0) {
-            int var3 = 2;
-
-            for(int var4 = var0 / var1; var4 != 0; ++var3) {
-               var4 /= var1;
-            }
-
-            char[] var5 = new char[var3];
-            var5[0] = 43;
-
-            for(int var6 = var3 - 1; var6 > 0; --var6) {
-               int var7 = var0;
-               var0 /= var1;
-               int var8 = var7 - var0 * var1;
-               if(var8 >= 10) {
-                  var5[var6] = (char)(var8 + 87);
-               } else {
-                  var5[var6] = (char)(var8 + 48);
-               }
-            }
-
-            return new String(var5);
-         } else {
-            return Integer.toString(var0, var1);
-         }
+   public static Varbit method2895(int var0) {
+      Varbit var1 = (Varbit)Varbit.varbits.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         throw new IllegalArgumentException("");
-      }
-   }
+         byte[] var2 = Varbit.varbit_ref.getConfigData(14, var0);
+         var1 = new Varbit();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
+         }
 
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(CB)C",
-      garbageValue = "-56"
-   )
-   static char method2959(char var0) {
-      switch(var0) {
-      case ' ':
-      case '-':
-      case '_':
-      case ' ':
-         return '_';
-      case '#':
-      case '[':
-      case ']':
-         return var0;
-      case 'À':
-      case 'Á':
-      case 'Â':
-      case 'Ã':
-      case 'Ä':
-      case 'à':
-      case 'á':
-      case 'â':
-      case 'ã':
-      case 'ä':
-         return 'a';
-      case 'Ç':
-      case 'ç':
-         return 'c';
-      case 'È':
-      case 'É':
-      case 'Ê':
-      case 'Ë':
-      case 'è':
-      case 'é':
-      case 'ê':
-      case 'ë':
-         return 'e';
-      case 'Í':
-      case 'Î':
-      case 'Ï':
-      case 'í':
-      case 'î':
-      case 'ï':
-         return 'i';
-      case 'Ñ':
-      case 'ñ':
-         return 'n';
-      case 'Ò':
-      case 'Ó':
-      case 'Ô':
-      case 'Õ':
-      case 'Ö':
-      case 'ò':
-      case 'ó':
-      case 'ô':
-      case 'õ':
-      case 'ö':
-         return 'o';
-      case 'Ù':
-      case 'Ú':
-      case 'Û':
-      case 'Ü':
-      case 'ù':
-      case 'ú':
-      case 'û':
-      case 'ü':
-         return 'u';
-      case 'ß':
-         return 'b';
-      case 'ÿ':
-      case 'Ÿ':
-         return 'y';
-      default:
-         return Character.toLowerCase(var0);
+         Varbit.varbits.put(var1, (long)var0);
+         return var1;
       }
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(IIS)V",
-      garbageValue = "256"
-   )
-   public static final void method2961(int var0, int var1) {
-      class134.field1991 = var0;
-      class134.field1996 = var1;
-      class134.field1999 = true;
-      class134.field1995 = 0;
-      class134.field1990 = false;
    }
 }

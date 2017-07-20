@@ -4,45 +4,47 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ez")
+@ObfuscatedName("ei")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
-   @ObfuscatedName("e")
+   @ObfuscatedName("fd")
+   static byte[][] field2003;
+   @ObfuscatedName("m")
    @Export("flatShade")
    boolean flatShade;
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -750542463
+      intValue = 647942793
    )
    @Export("swColor")
    int swColor;
-   @ObfuscatedName("l")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1994664169
+      intValue = 1074758273
    )
    @Export("rgb")
    int rgb;
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 794606609
+      intValue = 1524711411
    )
    @Export("seColor")
    int seColor;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1165042523
+      intValue = -356868279
    )
    @Export("neColor")
    int neColor;
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1529833647
+      intValue = 1468905647
    )
    @Export("nwColor")
    int nwColor;
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -718405985
+      intValue = 1228279237
    )
    @Export("texture")
    int texture;
@@ -58,86 +60,12 @@ public final class SceneTilePaint {
       this.flatShade = var7;
    }
 
-   @ObfuscatedName("ai")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(ILcg;ZI)I",
-      garbageValue = "-487322870"
+      signature = "(II)Z",
+      garbageValue = "24518772"
    )
-   static int method2662(int var0, Script var1, boolean var2) {
-      if(var0 == 6200) {
-         WorldMapType2.intStackSize -= 2;
-         Client.field1007 = (short)class83.intStack[WorldMapType2.intStackSize];
-         if(Client.field1007 <= 0) {
-            Client.field1007 = 256;
-         }
-
-         Client.field1159 = (short)class83.intStack[WorldMapType2.intStackSize + 1];
-         if(Client.field1159 <= 0) {
-            Client.field1159 = 205;
-         }
-
-         return 1;
-      } else if(var0 == 6201) {
-         WorldMapType2.intStackSize -= 2;
-         Client.field1160 = (short)class83.intStack[WorldMapType2.intStackSize];
-         if(Client.field1160 <= 0) {
-            Client.field1160 = 256;
-         }
-
-         Client.field1161 = (short)class83.intStack[WorldMapType2.intStackSize + 1];
-         if(Client.field1161 <= 0) {
-            Client.field1161 = 320;
-         }
-
-         return 1;
-      } else if(var0 == 6202) {
-         WorldMapType2.intStackSize -= 4;
-         Client.field1162 = (short)class83.intStack[WorldMapType2.intStackSize];
-         if(Client.field1162 <= 0) {
-            Client.field1162 = 1;
-         }
-
-         Client.field1127 = (short)class83.intStack[WorldMapType2.intStackSize + 1];
-         if(Client.field1127 <= 0) {
-            Client.field1127 = 32767;
-         } else if(Client.field1127 < Client.field1162) {
-            Client.field1127 = Client.field1162;
-         }
-
-         Client.field1164 = (short)class83.intStack[WorldMapType2.intStackSize + 2];
-         if(Client.field1164 <= 0) {
-            Client.field1164 = 1;
-         }
-
-         Client.field1165 = (short)class83.intStack[WorldMapType2.intStackSize + 3];
-         if(Client.field1165 <= 0) {
-            Client.field1165 = 32767;
-         } else if(Client.field1165 < Client.field1164) {
-            Client.field1165 = Client.field1164;
-         }
-
-         return 1;
-      } else if(var0 == 6203) {
-         if(Client.field1078 != null) {
-            class25.method175(0, 0, Client.field1078.width, Client.field1078.height, false);
-            class83.intStack[++WorldMapType2.intStackSize - 1] = Client.viewportHeight;
-            class83.intStack[++WorldMapType2.intStackSize - 1] = Client.viewportWidth;
-         } else {
-            class83.intStack[++WorldMapType2.intStackSize - 1] = -1;
-            class83.intStack[++WorldMapType2.intStackSize - 1] = -1;
-         }
-
-         return 1;
-      } else if(var0 == 6204) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = Client.field1160;
-         class83.intStack[++WorldMapType2.intStackSize - 1] = Client.field1161;
-         return 1;
-      } else if(var0 == 6205) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = Client.field1007;
-         class83.intStack[++WorldMapType2.intStackSize - 1] = Client.field1159;
-         return 1;
-      } else {
-         return 2;
-      }
+   public static boolean method2613(int var0) {
+      return var0 >= class221.field2789.field2803 && var0 <= class221.field2790.field2803 || var0 == class221.field2798.field2803;
    }
 }

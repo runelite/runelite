@@ -1,97 +1,125 @@
-import java.net.URL;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.OptionalDataException;
+import java.io.StreamCorruptedException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Reflection;
 
-@ObfuscatedName("ha")
+@ObfuscatedName("hc")
 public class class217 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lif;"
+      signature = "(III)Z",
+      garbageValue = "-1375970533"
    )
-   public static IndexDataBase field2790;
+   static boolean method3965(int var0, int var1) {
+      return var0 != 4 || var1 < 8;
+   }
 
-   @ObfuscatedName("ar")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "([BI)[B",
-      garbageValue = "768665446"
+      signature = "(Lfv;B)V",
+      garbageValue = "0"
    )
-   @Export("decodeContainer")
-   static final byte[] decodeContainer(byte[] var0) {
-      Buffer var1 = new Buffer(var0);
-      int var2 = var1.readUnsignedByte();
-      int var3 = var1.readInt();
-      if(var3 < 0 || IndexDataBase.field3229 != 0 && var3 > IndexDataBase.field3229) {
-         throw new RuntimeException();
-      } else if(var2 == 0) {
-         byte[] var4 = new byte[var3];
-         var1.readBytes(var4, 0, var3);
-         return var4;
-      } else {
-         int var6 = var1.readInt();
-         if(var6 < 0 || IndexDataBase.field3229 != 0 && var6 > IndexDataBase.field3229) {
-            throw new RuntimeException();
-         } else {
-            byte[] var5 = new byte[var6];
-            if(var2 == 1) {
-               class167.method3076(var5, var6, var0, var3, 9);
+   @Export("encodeClassVerifier")
+   public static void encodeClassVerifier(PacketBuffer var0) {
+      ClassInfo var1 = (ClassInfo)class280.field3739.method3513();
+      if(var1 != null) {
+         int var2 = var0.offset;
+         var0.putInt(var1.field3737);
+
+         for(int var3 = 0; var3 < var1.count; ++var3) {
+            if(var1.errorIdentifiers[var3] != 0) {
+               var0.putByte(var1.errorIdentifiers[var3]);
             } else {
-               IndexDataBase.gzip.decompress(var1, var5);
-            }
+               try {
+                  int var4 = var1.type[var3];
+                  Field var5;
+                  int var6;
+                  if(var4 == 0) {
+                     var5 = var1.fields[var3];
+                     var6 = Reflection.getInt(var5, (Object)null);
+                     var0.putByte(0);
+                     var0.putInt(var6);
+                  } else if(var4 == 1) {
+                     var5 = var1.fields[var3];
+                     Reflection.setInt(var5, (Object)null, var1.fieldValues[var3]);
+                     var0.putByte(0);
+                  } else if(var4 == 2) {
+                     var5 = var1.fields[var3];
+                     var6 = var5.getModifiers();
+                     var0.putByte(0);
+                     var0.putInt(var6);
+                  }
 
-            return var5;
-         }
-      }
-   }
+                  Method var25;
+                  if(var4 != 3) {
+                     if(var4 == 4) {
+                        var25 = var1.methods[var3];
+                        var6 = var25.getModifiers();
+                        var0.putByte(0);
+                        var0.putInt(var6);
+                     }
+                  } else {
+                     var25 = var1.methods[var3];
+                     byte[][] var10 = var1.args[var3];
+                     Object[] var7 = new Object[var10.length];
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "-69"
-   )
-   @Export("loadWorlds")
-   static boolean loadWorlds() {
-      try {
-         if(class112.worldServersDownload == null) {
-            class112.worldServersDownload = new class77(GameEngine.taskManager, new URL(MouseInput.field733));
-         } else {
-            byte[] var0 = class112.worldServersDownload.method1481();
-            if(var0 != null) {
-               Buffer var1 = new Buffer(var0);
-               World.worldCount = var1.readUnsignedShort();
-               World.worldList = new World[World.worldCount];
+                     for(int var8 = 0; var8 < var10.length; ++var8) {
+                        ObjectInputStream var9 = new ObjectInputStream(new ByteArrayInputStream(var10[var8]));
+                        var7[var8] = var9.readObject();
+                     }
 
-               World var3;
-               for(int var2 = 0; var2 < World.worldCount; var3.index = var2++) {
-                  var3 = World.worldList[var2] = new World();
-                  var3.id = var1.readUnsignedShort();
-                  var3.mask = var1.readInt();
-                  var3.address = var1.readString();
-                  var3.activity = var1.readString();
-                  var3.location = var1.readUnsignedByte();
-                  var3.playerCount = var1.readShort();
+                     Object var11 = Reflection.invoke(var25, (Object)null, var7);
+                     if(var11 == null) {
+                        var0.putByte(0);
+                     } else if(var11 instanceof Number) {
+                        var0.putByte(1);
+                        var0.putLong(((Number)var11).longValue());
+                     } else if(var11 instanceof String) {
+                        var0.putByte(2);
+                        var0.putString((String)var11);
+                     } else {
+                        var0.putByte(4);
+                     }
+                  }
+               } catch (ClassNotFoundException var13) {
+                  var0.putByte(-10);
+               } catch (InvalidClassException var14) {
+                  var0.putByte(-11);
+               } catch (StreamCorruptedException var15) {
+                  var0.putByte(-12);
+               } catch (OptionalDataException var16) {
+                  var0.putByte(-13);
+               } catch (IllegalAccessException var17) {
+                  var0.putByte(-14);
+               } catch (IllegalArgumentException var18) {
+                  var0.putByte(-15);
+               } catch (InvocationTargetException var19) {
+                  var0.putByte(-16);
+               } catch (SecurityException var20) {
+                  var0.putByte(-17);
+               } catch (IOException var21) {
+                  var0.putByte(-18);
+               } catch (NullPointerException var22) {
+                  var0.putByte(-19);
+               } catch (Exception var23) {
+                  var0.putByte(-20);
+               } catch (Throwable var24) {
+                  var0.putByte(-21);
                }
-
-               PacketBuffer.method3403(World.worldList, 0, World.worldList.length - 1, World.field1303, World.field1288);
-               class112.worldServersDownload = null;
-               return true;
             }
          }
-      } catch (Exception var4) {
-         var4.printStackTrace();
-         class112.worldServersDownload = null;
+
+         var0.putCrc(var2);
+         var1.unlink();
       }
-
-      return false;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "297953057"
-   )
-   static int method4042(int var0) {
-      ChatLineBuffer var1 = (ChatLineBuffer)class98.chatLineMap.get(Integer.valueOf(var0));
-      return var1 == null?0:var1.method1844();
    }
 }
