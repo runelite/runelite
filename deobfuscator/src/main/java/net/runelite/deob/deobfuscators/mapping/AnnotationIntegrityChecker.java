@@ -95,7 +95,7 @@ public class AnnotationIntegrityChecker
 				{
 					if (isImported)
 					{
-						logger.error("Missing imported exported field on {} named {}",
+						logger.error("Missing IMPORTED field on {} named {}",
 							other,
 							DeobAnnotations.getExportedName(f1.getAnnotations()));
 
@@ -132,17 +132,19 @@ public class AnnotationIntegrityChecker
 				{
 					if (isImported)
 					{
-						logger.error("Missing imported exported method on {} named {}",
+						logger.error("Missing IMPORTED method on {} named {} ({})",
 							other,
-							DeobAnnotations.getExportedName(m1.getAnnotations()));
+							DeobAnnotations.getExportedName(m1.getAnnotations()),
+							m1);
 
 						++errors;
 					}
 					else
 					{
-						logger.warn("Missing exported method on {} named {}",
+						logger.warn("Missing exported method on {} named {} ({})",
 							other,
-							DeobAnnotations.getExportedName(m1.getAnnotations()));
+							DeobAnnotations.getExportedName(m1.getAnnotations()),
+							m1);
 
 						++warnings;
 					}
