@@ -620,7 +620,7 @@ public class Graphics3D extends Rasterizer2D {
                   var2 = field1987;
                }
 
-               var6 = var19 + ((var6 << 8) - var19 * var3);
+               var6 = var19 + ((var6 << 8) - var3 * var19);
                if(var1 < var2) {
                   var5 = var3 <<= 14;
                   if(var0 < 0) {
@@ -1145,7 +1145,7 @@ public class Graphics3D extends Rasterizer2D {
                      var2 = field1987;
                   }
 
-                  var6 = var30 + ((var6 << 9) - var3 * var30);
+                  var6 = var30 + ((var6 << 9) - var30 * var3);
                   if(var1 < var2) {
                      var5 = var3 <<= 14;
                      if(var0 < 0) {
@@ -1791,7 +1791,7 @@ public class Graphics3D extends Rasterizer2D {
             } else {
                int var6 = rasterAlpha;
                int var7 = 256 - rasterAlpha;
-               var2 = (var7 * (var2 & '\uff00') >> 8 & '\uff00') + ((var2 & 16711935) * var7 >> 8 & 16711935);
+               var2 = ((var2 & '\uff00') * var7 >> 8 & '\uff00') + (var7 * (var2 & 16711935) >> 8 & 16711935);
 
                while(true) {
                   --var3;
@@ -1907,7 +1907,7 @@ public class Graphics3D extends Rasterizer2D {
                      var2 = field1987;
                   }
 
-                  var6 = var30 + ((var6 << 9) - var3 * var30);
+                  var6 = var30 + ((var6 << 9) - var30 * var3);
                   if(var1 < var2) {
                      var5 = var3 <<= 14;
                      if(var0 < 0) {
@@ -2533,7 +2533,7 @@ public class Graphics3D extends Rasterizer2D {
                var3 = var5 - var4 & 3;
                if(var3 > 0) {
                   var2 = colorPalette[var6 >> 8];
-                  var2 = (var9 * (var2 & '\uff00') >> 8 & '\uff00') + ((var2 & 16711935) * var9 >> 8 & 16711935);
+                  var2 = ((var2 & '\uff00') * var9 >> 8 & '\uff00') + ((var2 & 16711935) * var9 >> 8 & 16711935);
 
                   do {
                      var10 = var0[var1];
@@ -2558,7 +2558,7 @@ public class Graphics3D extends Rasterizer2D {
                do {
                   var2 = colorPalette[var6 >> 8];
                   var6 += var7;
-                  var2 = (var9 * (var2 & '\uff00') >> 8 & '\uff00') + (var9 * (var2 & 16711935) >> 8 & 16711935);
+                  var2 = ((var2 & '\uff00') * var9 >> 8 & '\uff00') + ((var2 & 16711935) * var9 >> 8 & 16711935);
                   var10 = var0[var1];
                   var0[var1++] = var2 + (var8 * (var10 & 16711935) >> 8 & 16711935) + (var8 * (var10 & '\uff00') >> 8 & '\uff00');
                   --var3;
@@ -2664,7 +2664,7 @@ public class Graphics3D extends Rasterizer2D {
             int var29 = (int)(var13 * 256.0D);
             int var20 = (int)(var15 * 256.0D);
             int var30 = (int)(var17 * 256.0D);
-            int var22 = var30 + (var20 << 8) + (var29 << 16);
+            int var22 = var30 + (var29 << 16) + (var20 << 8);
             var22 = adjustRGB(var22, var0);
             if(var22 == 0) {
                var22 = 1;
@@ -2696,7 +2696,7 @@ public class Graphics3D extends Rasterizer2D {
 
       if(var5 < var6) {
          var4 += var5;
-         var7 += var8 * var5;
+         var7 += var5 * var8;
          int var17 = var6 - var5;
          int var15;
          int var16;
@@ -2711,7 +2711,7 @@ public class Graphics3D extends Rasterizer2D {
             var23 = var5 - centerX;
             var9 += (var12 >> 3) * var23;
             var10 += (var13 >> 3) * var23;
-            var11 += var23 * (var14 >> 3);
+            var11 += (var14 >> 3) * var23;
             var22 = var11 >> 12;
             if(var22 != 0) {
                var18 = var9 / var22;
@@ -2906,7 +2906,7 @@ public class Graphics3D extends Rasterizer2D {
             var23 = var5 - centerX;
             var9 += (var12 >> 3) * var23;
             var10 += (var13 >> 3) * var23;
-            var11 += var23 * (var14 >> 3);
+            var11 += (var14 >> 3) * var23;
             var22 = var11 >> 14;
             if(var22 != 0) {
                var18 = var9 / var22;
@@ -3129,7 +3129,7 @@ public class Graphics3D extends Rasterizer2D {
 
       if(var5 < var6) {
          var4 += var5;
-         var7 += var5 * var8;
+         var7 += var8 * var5;
          int var17 = var6 - var5;
          int var15;
          int var16;
@@ -3143,7 +3143,7 @@ public class Graphics3D extends Rasterizer2D {
             var23 = var5 - centerX;
             var9 += var12 * var23;
             var10 += var13 * var23;
-            var11 += var14 * var23;
+            var11 += var23 * var14;
             var22 = var11 >> 12;
             if(var22 != 0) {
                var18 = var9 / var22;
@@ -3286,7 +3286,7 @@ public class Graphics3D extends Rasterizer2D {
             var23 = var5 - centerX;
             var9 += var12 * var23;
             var10 += var13 * var23;
-            var11 += var14 * var23;
+            var11 += var23 * var14;
             var22 = var11 >> 14;
             if(var22 != 0) {
                var18 = var9 / var22;

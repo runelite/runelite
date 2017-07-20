@@ -78,7 +78,7 @@ public class Buffer extends Node {
    @Export("readInt")
    public int readInt() {
       this.offset += 4;
-      return ((this.payload[this.offset - 3] & 255) << 16) + ((this.payload[this.offset - 4] & 255) << 24) + ((this.payload[this.offset - 2] & 255) << 8) + (this.payload[this.offset - 1] & 255);
+      return ((this.payload[this.offset - 2] & 255) << 8) + ((this.payload[this.offset - 4] & 255) << 24) + ((this.payload[this.offset - 3] & 255) << 16) + (this.payload[this.offset - 1] & 255);
    }
 
    @ObfuscatedName("c")
@@ -526,7 +526,7 @@ public class Buffer extends Node {
    )
    public int method3142() {
       this.offset += 4;
-      return ((this.payload[this.offset - 4] & 255) << 16) + ((this.payload[this.offset - 3] & 255) << 24) + ((this.payload[this.offset - 1] & 255) << 8) + (this.payload[this.offset - 2] & 255);
+      return ((this.payload[this.offset - 1] & 255) << 8) + ((this.payload[this.offset - 4] & 255) << 16) + ((this.payload[this.offset - 3] & 255) << 24) + (this.payload[this.offset - 2] & 255);
    }
 
    @ObfuscatedName("bo")
@@ -567,7 +567,7 @@ public class Buffer extends Node {
    )
    public int method3141() {
       this.offset += 4;
-      return (this.payload[this.offset - 3] & 255) + ((this.payload[this.offset - 2] & 255) << 24) + ((this.payload[this.offset - 1] & 255) << 16) + ((this.payload[this.offset - 4] & 255) << 8);
+      return (this.payload[this.offset - 3] & 255) + ((this.payload[this.offset - 4] & 255) << 8) + ((this.payload[this.offset - 2] & 255) << 24) + ((this.payload[this.offset - 1] & 255) << 16);
    }
 
    @ObfuscatedName("bu")
@@ -852,7 +852,7 @@ public class Buffer extends Node {
          int var6 = 0;
          int var7 = -1640531527;
 
-         for(int var8 = 32; var8-- > 0; var5 += var4 + (var4 << 4 ^ var4 >>> 5) ^ var1[var6 >>> 11 & 3] + var6) {
+         for(int var8 = 32; var8-- > 0; var5 += (var4 << 4 ^ var4 >>> 5) + var4 ^ var1[var6 >>> 11 & 3] + var6) {
             var4 += var5 + (var5 << 4 ^ var5 >>> 5) ^ var6 + var1[var6 & 3];
             var6 += var7;
          }
@@ -984,7 +984,7 @@ public class Buffer extends Node {
          int var9 = 0;
          int var10 = -1640531527;
 
-         for(int var11 = 32; var11-- > 0; var8 += var7 + (var7 << 4 ^ var7 >>> 5) ^ var1[var9 >>> 11 & 3] + var9) {
+         for(int var11 = 32; var11-- > 0; var8 += (var7 << 4 ^ var7 >>> 5) + var7 ^ var1[var9 >>> 11 & 3] + var9) {
             var7 += var8 + (var8 << 4 ^ var8 >>> 5) ^ var1[var9 & 3] + var9;
             var9 += var10;
          }

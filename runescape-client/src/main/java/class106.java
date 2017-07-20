@@ -366,7 +366,7 @@ public class class106 extends Node {
          for(var47 = 0; var47 < var42; ++var47) {
             var27 = var23[var47 * 2];
             var28 = var23[var47 * 2 + 1];
-            var29 = var43[2 * var47 + var17];
+            var29 = var43[var47 * 2 + var17];
             var30 = var43[2 * var47 + var17 + 1];
             var31 = var43[var4 - 2 - var47 * 2];
             float var53 = var43[var4 - 1 - var47 * 2];

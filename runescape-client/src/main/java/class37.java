@@ -89,7 +89,7 @@ public class class37 {
                Client.audioEffects[Client.field935] = null;
                int var8 = (var2 - 64) / 128;
                int var9 = (var3 - 64) / 128;
-               Client.field1148[Client.field935] = var7 + (var9 << 8) + (var8 << 16);
+               Client.field1148[Client.field935] = var7 + (var8 << 16) + (var9 << 8);
                ++Client.field935;
             }
          }

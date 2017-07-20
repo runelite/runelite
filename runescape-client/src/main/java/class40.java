@@ -546,7 +546,7 @@ public class class40 {
                   for(var14 = 1; var14 < 103; ++var14) {
                      var15 = class61.tileHeights[var4][var14 + 1][var13] - class61.tileHeights[var4][var14 - 1][var13];
                      var16 = class61.tileHeights[var4][var14][var13 + 1] - class61.tileHeights[var4][var14][var13 - 1];
-                     var17 = (int)Math.sqrt((double)(65536 + var15 * var15 + var16 * var16));
+                     var17 = (int)Math.sqrt((double)(var15 * var15 + 65536 + var16 * var16));
                      var18 = (var15 << 8) / var17;
                      var54 = 65536 / var17;
                      var20 = (var16 << 8) / var17;
@@ -842,7 +842,7 @@ public class class40 {
                            label1019:
                            while(var14 < var64) {
                               for(var15 = var11; var15 <= var65; ++var15) {
-                                 if((class61.field755[var14 + 1][var15][var9] & var5) == 0) {
+                                 if((class61.field755[1 + var14][var15][var9] & var5) == 0) {
                                     break label1019;
                                  }
                               }
@@ -892,7 +892,7 @@ public class class40 {
                            label1072:
                            while(var65 < 104) {
                               for(var15 = var13; var15 <= var14; ++var15) {
-                                 if((class61.field755[var51][var65 + 1][var15] & var6) == 0) {
+                                 if((class61.field755[var51][1 + var65][var15] & var6) == 0) {
                                     break label1072;
                                  }
                               }
@@ -902,7 +902,7 @@ public class class40 {
 
                            if((1 + (var14 - var13)) * (var65 - var11 + 1) >= 4) {
                               var15 = class61.tileHeights[var51][var11][var13];
-                              Region.addOcclude(var64, 4, var11 * 128, 128 * var65 + 128, var13 * 128, var14 * 128 + 128, var15, var15);
+                              Region.addOcclude(var64, 4, var11 * 128, var65 * 128 + 128, var13 * 128, var14 * 128 + 128, var15, var15);
 
                               for(var16 = var11; var16 <= var65; ++var16) {
                                  for(var17 = var13; var17 <= var14; ++var17) {
@@ -1007,7 +1007,7 @@ public class class40 {
             var7 = var0.readUnsignedByte();
             if(var7 == 0) {
                if(var1 == 0) {
-                  class61.tileHeights[0][var2][var3] = -class140.method2792(var2 + 932731 + var4, var5 + var3 + 556238) * 8;
+                  class61.tileHeights[0][var2][var3] = -class140.method2792(var2 + 932731 + var4, var5 + 556238 + var3) * 8;
                } else {
                   class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
                }

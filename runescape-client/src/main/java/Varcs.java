@@ -173,7 +173,7 @@ public class Varcs {
    void deserialize() {
       FileOnDisk var1 = this.getVarPrefs(false);
 
-      label200: {
+      label185: {
          try {
             byte[] var2 = new byte[(int)var1.length()];
 
@@ -186,44 +186,44 @@ public class Varcs {
             }
 
             Buffer var13 = new Buffer(var2);
-            if(var13.payload.length - var13.offset >= 1) {
-               int var5 = var13.readUnsignedByte();
-               if(var5 >= 0 && var5 <= 1) {
-                  int var6 = var13.readUnsignedShort();
+            if(var13.payload.length - var13.offset < 1) {
+               return;
+            }
 
-                  int var7;
-                  int var8;
-                  int var9;
-                  for(var7 = 0; var7 < var6; ++var7) {
-                     var8 = var13.readUnsignedShort();
-                     var9 = var13.readInt();
-                     if(this.varcSerials[var8]) {
-                        this.varcs[var8] = var9;
-                     }
-                  }
+            int var5 = var13.readUnsignedByte();
+            if(var5 >= 0 && var5 <= 1) {
+               int var6 = var13.readUnsignedShort();
 
-                  var7 = var13.readUnsignedShort();
-                  var8 = 0;
-
-                  while(true) {
-                     if(var8 >= var7) {
-                        break label200;
-                     }
-
-                     var9 = var13.readUnsignedShort();
-                     String var10 = var13.readString();
-                     if(this.varcstringSerials[var9]) {
-                        this.varcstrings[var9] = var10;
-                     }
-
-                     ++var8;
+               int var7;
+               int var8;
+               int var9;
+               for(var7 = 0; var7 < var6; ++var7) {
+                  var8 = var13.readUnsignedShort();
+                  var9 = var13.readInt();
+                  if(this.varcSerials[var8]) {
+                     this.varcs[var8] = var9;
                   }
                }
 
-               return;
+               var7 = var13.readUnsignedShort();
+               var8 = 0;
+
+               while(true) {
+                  if(var8 >= var7) {
+                     break label185;
+                  }
+
+                  var9 = var13.readUnsignedShort();
+                  String var10 = var13.readString();
+                  if(this.varcstringSerials[var9]) {
+                     this.varcstrings[var9] = var10;
+                  }
+
+                  ++var8;
+               }
             }
          } catch (Exception var24) {
-            break label200;
+            break label185;
          } finally {
             try {
                var1.close();
@@ -381,7 +381,7 @@ public class Varcs {
          } else if(Client.localInteractingIndex == var1) {
             throw new RuntimeException();
          } else {
-            class96.field1473[var1] = (var4.pathY[0] + class164.baseY >> 13) + (var4.field896 << 28) + (var4.pathX[0] + class21.baseX >> 13 << 14);
+            class96.field1473[var1] = (class164.baseY + var4.pathY[0] >> 13) + (var4.field896 << 28) + (class21.baseX + var4.pathX[0] >> 13 << 14);
             if(var4.field1237 != -1) {
                class96.field1474[var1] = var4.field1237;
             } else {
@@ -547,7 +547,7 @@ public class Varcs {
                var8 = var6 >> 14 & 16383;
                var9 = var6 & 16383;
                var10 = (var8 + var4.pathX[0] + class21.baseX & 16383) - class21.baseX;
-               var11 = (var9 + var4.pathY[0] + class164.baseY & 16383) - class164.baseY;
+               var11 = (var9 + class164.baseY + var4.pathY[0] & 16383) - class164.baseY;
                if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
                   if(var2) {
                      var4.field898 = true;

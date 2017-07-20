@@ -156,7 +156,7 @@ public class WorldMapType3 implements WorldMapSectionBase {
          return null;
       } else {
          int var3 = this.field359 * 8 - this.field369 * 8 + this.field378 * 64 - this.field363 * 64 + var1;
-         int var4 = this.field366 * 8 - this.field370 * 8 + var2 + (this.field362 * 64 - this.field364 * 64);
+         int var4 = this.field366 * 8 - this.field370 * 8 + this.field362 * 64 - this.field364 * 64 + var2;
          return new Coordinates(this.field377, var3, var4);
       }
    }

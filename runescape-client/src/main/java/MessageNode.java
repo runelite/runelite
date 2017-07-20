@@ -187,7 +187,7 @@ public class MessageNode extends CacheableNode {
                            if(var1 == 6) {
                               var37.renderable1 = new DynamicObject(var9, 4, var2 + 4, class10.plane, var6, var30, var4, false, var37.renderable1);
                            } else if(var1 == 7) {
-                              var37.renderable1 = new DynamicObject(var9, 4, (2 + var2 & 3) + 4, class10.plane, var6, var30, var4, false, var37.renderable1);
+                              var37.renderable1 = new DynamicObject(var9, 4, (var2 + 2 & 3) + 4, class10.plane, var6, var30, var4, false, var37.renderable1);
                            } else if(var1 == 8) {
                               var37.renderable1 = new DynamicObject(var9, 4, var2 + 4, class10.plane, var6, var30, var4, false, var37.renderable1);
                               var37.renderable2 = new DynamicObject(var9, 4, (var2 + 2 & 3) + 4, class10.plane, var6, var30, var4, false, var37.renderable2);
@@ -358,7 +358,7 @@ public class MessageNode extends CacheableNode {
                            var15.field904 = var0 + Client.gameCycle;
                            var15.field875 = var9 + Client.gameCycle;
                            var15.model = var27;
-                           var15.field885 = 128 * var13 + var17 * 64;
+                           var15.field885 = var13 * 128 + var17 * 64;
                            var15.field876 = 128 * var14 + var18 * 64;
                            var15.field886 = var24;
                            byte var28;
@@ -396,8 +396,8 @@ public class MessageNode extends CacheableNode {
                      int var11 = Client.secretPacketBuffer2.readUnsignedByte();
                      var12 = Client.secretPacketBuffer2.readUnsignedByte();
                      if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104 && var3 >= 0 && var4 >= 0 && var3 < 104 && var4 < 104 && var6 != '\uffff') {
-                        var1 = 128 * var1 + 64;
-                        var2 = 128 * var2 + 64;
+                        var1 = var1 * 128 + 64;
+                        var2 = var2 * 128 + 64;
                         var3 = 128 * var3 + 64;
                         var4 = var4 * 128 + 64;
                         Projectile var34 = new Projectile(var6, class10.plane, var1, var2, class23.getTileHeight(var1, var2, class10.plane) - var30, var9 + Client.gameCycle, var10 + Client.gameCycle, var11, var12, var5, var33);

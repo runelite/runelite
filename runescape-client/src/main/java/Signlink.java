@@ -530,7 +530,7 @@ public class Signlink implements Runnable {
 
                      var0 = Client.renderOverview.method5089();
                      if(var0 < 100) {
-                        class92.loadingText = "Loading world map - " + (var0 * 9 / 10 + 10) + "%";
+                        class92.loadingText = "Loading world map - " + (9 * var0 / 10 + 10) + "%";
                      } else {
                         class92.loadingText = "Loaded world map";
                         class92.loadingBarPercentage = 100;
@@ -929,7 +929,7 @@ public class Signlink implements Runnable {
                               return;
                            }
 
-                           var13 = 180 + class92.loginWindowX + 80;
+                           var13 = class92.loginWindowX + 180 + 80;
                            if(var1 == 1 && var10 >= var13 - 75 && var10 <= var13 + 75 && var11 >= var17 - 20 && var11 <= var17 + 20) {
                               class92.loginMessage1 = "";
                               class92.loginMessage2 = "Enter your username/email & password.";

@@ -97,12 +97,12 @@ public final class SpritePixels extends Rasterizer2D {
          int var9 = (int)Math.floor(Math.sin(var7) * (double)var6 + 0.5D);
          int var10 = (int)Math.floor(Math.cos(var7) * (double)var6 + 0.5D);
          int var11 = var10 * -var1 + -var2 * var9;
-         int var12 = -var2 * var10 + var9 * -(-var1);
+         int var12 = -var2 * var10 + -(-var1) * var9;
          int var13 = -var2 * var9 + ((this.width << 4) - var1) * var10;
          int var14 = var9 * -((this.width << 4) - var1) + -var2 * var10;
-         int var15 = var9 * ((this.height << 4) - var2) + var10 * -var1;
+         int var15 = ((this.height << 4) - var2) * var9 + -var1 * var10;
          int var16 = var10 * ((this.height << 4) - var2) + -(-var1) * var9;
-         int var17 = var9 * ((this.height << 4) - var2) + ((this.width << 4) - var1) * var10;
+         int var17 = ((this.height << 4) - var2) * var9 + ((this.width << 4) - var1) * var10;
          int var18 = var9 * -((this.width << 4) - var1) + var10 * ((this.height << 4) - var2);
          int var19;
          int var20;
@@ -624,8 +624,8 @@ public final class SpritePixels extends Rasterizer2D {
    @ObfuscatedName("al")
    public void method4973(int var1, int var2, int var3, int var4) {
       if(var3 <= this.maxWidth && var4 <= this.maxHeight) {
-         int var5 = this.offsetX * var3 / this.maxWidth + var1;
-         int var6 = (var3 * (this.offsetX + this.width) + this.maxWidth - 1) / this.maxWidth + var1;
+         int var5 = var3 * this.offsetX / this.maxWidth + var1;
+         int var6 = ((this.offsetX + this.width) * var3 + this.maxWidth - 1) / this.maxWidth + var1;
          int var7 = var2 + var4 * this.offsetY / this.maxHeight;
          int var8 = var2 + (this.maxHeight + (this.offsetY + this.height) * var4 - 1) / this.maxHeight;
          if(var5 < Rasterizer2D.draw_region_x) {
@@ -713,7 +713,7 @@ public final class SpritePixels extends Rasterizer2D {
                                  }
 
                                  var27 += var32;
-                                 var24 += (var31 >> 16 & 255) * var32;
+                                 var24 += var32 * (var31 >> 16 & 255);
                                  var25 += var32 * (var31 >> 8 & 255);
                                  var26 += (var31 & 255) * var32;
                               }
@@ -863,7 +863,7 @@ public final class SpritePixels extends Rasterizer2D {
             var5 = this.maxHeight - this.offsetY - this.height;
          }
 
-         int var6 = var3 + var2 + this.width;
+         int var6 = var3 + this.width + var2;
          int var7 = var5 + var4 + this.height;
          int[] var8 = new int[var6 * var7];
 
@@ -942,7 +942,7 @@ public final class SpritePixels extends Rasterizer2D {
             int var21 = var16 - var13 * var18;
 
             for(var1 = -var10[var2]; var1 < 0; ++var1) {
-               Rasterizer2D.graphicsPixels[var19++] = this.image[this.width * (var21 >> 16) + (var20 >> 16)];
+               Rasterizer2D.graphicsPixels[var19++] = this.image[(var21 >> 16) * this.width + (var20 >> 16)];
                var20 += var14;
                var21 -= var13;
             }
@@ -1177,7 +1177,7 @@ public final class SpritePixels extends Rasterizer2D {
             int var19 = var15;
 
             for(var1 = -var3; var1 < 0; ++var1) {
-               int var20 = this.image[this.width * (var19 >> 16) + (var18 >> 16)];
+               int var20 = this.image[(var19 >> 16) * this.width + (var18 >> 16)];
                if(var20 != 0) {
                   Rasterizer2D.graphicsPixels[var17++] = var20;
                } else {
@@ -1276,7 +1276,7 @@ public final class SpritePixels extends Rasterizer2D {
             var2 = var1[var3++];
             if(var2 != 0) {
                int var13 = var0[var4];
-               var0[var4++] = ((var13 & 16711935) * var10 + (var2 & 16711935) * var9 & -16711936) + ((var13 & '\uff00') * var10 + var9 * (var2 & '\uff00') & 16711680) >> 8;
+               var0[var4++] = ((var13 & 16711935) * var10 + (var2 & 16711935) * var9 & -16711936) + (var10 * (var13 & '\uff00') + (var2 & '\uff00') * var9 & 16711680) >> 8;
             } else {
                ++var4;
             }
@@ -1377,7 +1377,7 @@ public final class SpritePixels extends Rasterizer2D {
             var2 = var1[(var3 >> 16) + var16];
             if(var2 != 0) {
                int var18 = var0[var5];
-               var0[var5++] = ((var18 & '\uff00') * var13 + (var2 & '\uff00') * var12 & 16711680) + ((var2 & 16711935) * var12 + var13 * (var18 & 16711935) & -16711936) >> 8;
+               var0[var5++] = ((var2 & '\uff00') * var12 + var13 * (var18 & '\uff00') & 16711680) + ((var2 & 16711935) * var12 + var13 * (var18 & 16711935) & -16711936) >> 8;
             } else {
                ++var5;
             }

@@ -816,7 +816,7 @@ public abstract class Actor extends Renderable {
             if(var14 != null) {
                int var15 = (var13.sizeX * 4 - var14.originalWidth) / 2;
                int var16 = (var13.sizeY * 4 - var14.height) / 2;
-               var14.method4941(var15 + var1 * 4 + 48, var16 + (104 - var2 - var13.sizeY) * 4 + 48);
+               var14.method4941(var15 + var1 * 4 + 48, var16 + 48 + (104 - var2 - var13.sizeY) * 4);
             }
          } else {
             if(var8 == 0 || var8 == 2) {
@@ -832,8 +832,8 @@ public abstract class Actor extends Renderable {
                   var10[var11 + 3] = var9;
                } else if(var7 == 2) {
                   var10[var11 + 3] = var9;
-                  var10[3 + var11 + 512] = var9;
-                  var10[var11 + 3 + 1024] = var9;
+                  var10[var11 + 3 + 512] = var9;
+                  var10[3 + var11 + 1024] = var9;
                   var10[3 + var11 + 1536] = var9;
                } else if(var7 == 3) {
                   var10[var11 + 1536] = var9;
@@ -873,7 +873,7 @@ public abstract class Actor extends Renderable {
                   var10[var11 + 3 + 1536] = var9;
                } else if(var7 == 2) {
                   var10[var11 + 1536] = var9;
-                  var10[var11 + 1536 + 1] = var9;
+                  var10[1536 + var11 + 1] = var9;
                   var10[var11 + 1536 + 2] = var9;
                   var10[var11 + 1536 + 3] = var9;
                }
@@ -903,7 +903,7 @@ public abstract class Actor extends Renderable {
             }
 
             int[] var22 = class43.field576.image;
-            var18 = var1 * 4 + 24624 + (103 - var2) * 2048;
+            var18 = 4 * var1 + 24624 + (103 - var2) * 2048;
             if(var7 != 0 && var7 != 2) {
                var22[var18] = var11;
                var22[512 + var18 + 1] = var11;
@@ -911,7 +911,7 @@ public abstract class Actor extends Renderable {
                var22[var18 + 1536 + 3] = var11;
             } else {
                var22[var18 + 1536] = var11;
-               var22[1024 + var18 + 1] = var11;
+               var22[var18 + 1024 + 1] = var11;
                var22[var18 + 512 + 2] = var11;
                var22[var18 + 3] = var11;
             }

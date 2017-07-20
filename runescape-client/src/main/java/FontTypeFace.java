@@ -1006,7 +1006,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
          for(int var11 = -var5; var11 < 0; ++var11) {
             if(var1[var3++] != 0) {
                int var12 = var0[var4];
-               var0[var4++] = var2 + ((var9 * (var12 & 16711935) & -16711936) + ((var12 & '\uff00') * var9 & 16711680) >> 8);
+               var0[var4++] = var2 + (((var12 & '\uff00') * var9 & 16711680) + ((var12 & 16711935) * var9 & -16711936) >> 8);
             } else {
                ++var4;
             }

@@ -807,7 +807,7 @@ public class Model extends Renderable {
                   var17 = var13 >> 7;
                   var18 = var14 >> 7;
                   var19 = var1[var17 + 1][var18] * var15 + var1[var17][var18] * (128 - var15) >> 7;
-                  var20 = var15 * var1[var17 + 1][var18 + 1] + var1[var17][var18 + 1] * (128 - var15) >> 7;
+                  var20 = var1[var17 + 1][var18 + 1] * var15 + var1[var17][var18 + 1] * (128 - var15) >> 7;
                   var21 = var19 * (128 - var16) + var20 * var16 >> 7;
                   var11.verticesY[var12] = var21 + this.verticesY[var12] - var3;
                }
@@ -821,8 +821,8 @@ public class Model extends Renderable {
                      var17 = var15 & 127;
                      var18 = var14 >> 7;
                      var19 = var15 >> 7;
-                     var20 = var1[var18 + 1][var19] * var16 + var1[var18][var19] * (128 - var16) >> 7;
-                     var21 = var1[var18 + 1][var19 + 1] * var16 + var1[var18][var19 + 1] * (128 - var16) >> 7;
+                     var20 = var16 * var1[var18 + 1][var19] + var1[var18][var19] * (128 - var16) >> 7;
+                     var21 = var16 * var1[var18 + 1][var19 + 1] + var1[var18][var19 + 1] * (128 - var16) >> 7;
                      int var22 = var20 * (128 - var17) + var21 * var17 >> 7;
                      var11.verticesY[var12] = (var22 - var3) * (var6 - var13) / var6 + this.verticesY[var12];
                   }
@@ -871,7 +871,7 @@ public class Model extends Renderable {
                int var18 = var2 * this.XYZMag >> 16;
                int var19 = (var17 + var18) * Graphics3D.field1983;
                if(var19 / var13 > Graphics3D.field1990) {
-                  int var20 = (super.modelHeight * var3 >> 16) + var18;
+                  int var20 = (var3 * super.modelHeight >> 16) + var18;
                   int var21 = (var17 - var20) * Graphics3D.field1983;
                   if(var21 / var13 < Graphics3D.field1991) {
                      int var22 = var12 + (var2 * super.modelHeight >> 16);

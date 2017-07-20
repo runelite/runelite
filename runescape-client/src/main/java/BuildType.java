@@ -508,7 +508,7 @@ public class BuildType {
 
                      var61 = var0.hitsplatCycles[var75] - Client.gameCycle;
                      int var62 = var87.field3395 - var61 * var87.field3395 / var87.field3396;
-                     int var63 = var61 * var87.field3391 / var87.field3396 + -var87.field3391;
+                     int var63 = var87.field3391 * var61 / var87.field3396 + -var87.field3391;
                      int var64 = var2 + Client.screenY - (var50 >> 1) + var62;
                      int var65 = var63 + (var3 + Client.screenX - 12);
                      int var66 = var65;

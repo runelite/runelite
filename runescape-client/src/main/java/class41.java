@@ -743,7 +743,7 @@ public final class class41 {
                            if(var0 == 6633) {
                               BufferProvider.intStackSize -= 2;
                               var3 = class83.intStack[BufferProvider.intStackSize];
-                              var4 = class83.intStack[1 + BufferProvider.intStackSize] == 1;
+                              var4 = class83.intStack[BufferProvider.intStackSize + 1] == 1;
                               class73.method1070().method5131(var3, var4);
                               return 1;
                            } else if(var0 == 6634) {

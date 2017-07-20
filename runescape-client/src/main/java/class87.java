@@ -42,12 +42,12 @@ public class class87 {
          if(var7 <= 6400) {
             int var8 = Graphics3D.SINE[var6];
             int var9 = Graphics3D.COSINE[var6];
-            int var10 = var3 * var8 + var9 * var2 >> 16;
+            int var10 = var8 * var3 + var9 * var2 >> 16;
             int var11 = var3 * var9 - var8 * var2 >> 16;
             if(var7 > 2500) {
                var4.method4968(var10 + var5.field2569 / 2 - var4.maxWidth / 2, var5.field2566 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2569, var5.field2566, var5.field2568, var5.field2567);
             } else {
-               var4.method4958(var10 + var0 + var5.field2569 / 2 - var4.maxWidth / 2, var5.field2566 / 2 + var1 - var11 - var4.maxHeight / 2);
+               var4.method4958(var10 + var5.field2569 / 2 + var0 - var4.maxWidth / 2, var5.field2566 / 2 + var1 - var11 - var4.maxHeight / 2);
             }
 
          }

@@ -564,7 +564,7 @@ public enum Permission implements RSEnum {
          if(class92.field1412 > 0) {
             var29 = class92.field1412;
             var30 = 256;
-            class92.field1410 += 128 * var29;
+            class92.field1410 += var29 * 128;
             if(class92.field1410 > class92.field1406.length) {
                class92.field1410 -= class92.field1406.length;
                var31 = (int)(Math.random() * 12.0D);
@@ -576,7 +576,7 @@ public enum Permission implements RSEnum {
             var32 = (var30 - var29) * 128;
 
             for(var9 = 0; var9 < var32; ++var9) {
-               var10 = class24.field348[var7 + var31] - var29 * class92.field1406[class92.field1410 + var31 & class92.field1406.length - 1] / 6;
+               var10 = class24.field348[var7 + var31] - var29 * class92.field1406[var31 + class92.field1410 & class92.field1406.length - 1] / 6;
                if(var10 < 0) {
                   var10 = 0;
                }

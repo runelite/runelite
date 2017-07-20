@@ -479,11 +479,11 @@ public class class77 {
                         }
 
                         var24 = var20 * (var21 - 32 - var23) / (var22 - var21);
-                        Rasterizer2D.method4828(var32, var24 + 16 + var13, 16, var23, Client.field1032);
+                        Rasterizer2D.method4828(var32, var24 + var13 + 16, 16, var23, Client.field1032);
                         Rasterizer2D.method4864(var32, var24 + var13 + 16, var23, Client.field1127);
                         Rasterizer2D.method4864(var32 + 1, var13 + 16 + var24, var23, Client.field1127);
                         Rasterizer2D.method4837(var32, var13 + 16 + var24, 16, Client.field1127);
-                        Rasterizer2D.method4837(var32, 17 + var13 + var24, 16, Client.field1127);
+                        Rasterizer2D.method4837(var32, var13 + 17 + var24, 16, Client.field1127);
                         Rasterizer2D.method4864(var32 + 15, var24 + var13 + 16, var23, Client.field982);
                         Rasterizer2D.method4864(var32 + 14, var13 + 17 + var24, var23 - 1, Client.field982);
                         Rasterizer2D.method4837(var32, var23 + var24 + var13 + 15, 16, Client.field982);
@@ -816,8 +816,8 @@ public class class77 {
                                                 var33 = class8.getColTags(16748608) + var40.name + "</col>" + " " + 'x' + NPC.method1650(var10.itemQuantities[var20]);
                                              }
 
-                                             var25 = var12 + var22 * (115 + var10.paddingX);
-                                             var26 = var21 * (var10.paddingY + 12) + var13;
+                                             var25 = var12 + var22 * (var10.paddingX + 115);
+                                             var26 = var21 * (12 + var10.paddingY) + var13;
                                              if(var10.field2718 == 0) {
                                                 var41.method4640(var33, var25, var26, var10.textColor, var10.textShadowed?0:-1);
                                              } else if(var10.field2718 == 1) {

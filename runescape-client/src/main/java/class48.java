@@ -77,7 +77,7 @@ public class class48 implements WorldMapSectionBase {
       garbageValue = "-1713"
    )
    public boolean vmethod676(int var1, int var2) {
-      return var1 >= (this.field612 << 6) + (this.field610 << 3) && var1 <= (this.field612 << 6) + (this.field610 << 3) + 7 && var2 >= (this.field613 << 6) + (this.field617 << 3) && var2 <= (this.field613 << 6) + (this.field617 << 3) + 7;
+      return var1 >= (this.field612 << 6) + (this.field610 << 3) && var1 <= (this.field610 << 3) + (this.field612 << 6) + 7 && var2 >= (this.field613 << 6) + (this.field617 << 3) && var2 <= (this.field613 << 6) + (this.field617 << 3) + 7;
    }
 
    @ObfuscatedName("o")
@@ -86,7 +86,7 @@ public class class48 implements WorldMapSectionBase {
       garbageValue = "-762941504"
    )
    public boolean vmethod675(int var1, int var2, int var3) {
-      return var1 >= this.field619 && var1 < this.field611 + this.field619?var2 >= (this.field609 << 6) + (this.field618 << 3) && var2 <= (this.field618 << 3) + (this.field609 << 6) + 7 && var3 >= (this.field608 << 6) + (this.field615 << 3) && var3 <= (this.field608 << 6) + (this.field615 << 3) + 7:false;
+      return var1 >= this.field619 && var1 < this.field611 + this.field619?var2 >= (this.field609 << 6) + (this.field618 << 3) && var2 <= (this.field609 << 6) + (this.field618 << 3) + 7 && var3 >= (this.field608 << 6) + (this.field615 << 3) && var3 <= (this.field608 << 6) + (this.field615 << 3) + 7:false;
    }
 
    @ObfuscatedName("c")

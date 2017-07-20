@@ -141,7 +141,7 @@ public class World {
          double var12 = Math.atan2((double)var10, (double)var11);
          int var14 = (int)(Math.sin(var12) * 63.0D);
          int var15 = (int)(Math.cos(var12) * 57.0D);
-         class9.mapedge.method4970(var14 + 94 + var0 + 4 - 10, var1 + 83 - var15 - 20, 20, 20, 15, 15, var12, 256);
+         class9.mapedge.method4970(94 + var0 + var14 + 4 - 10, var1 + 83 - var15 - 20, 20, 20, 15, 15, var12, 256);
       } else {
          class87.drawDot(var0, var1, var2, var3, var4, var5);
       }

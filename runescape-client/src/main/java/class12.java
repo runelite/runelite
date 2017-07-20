@@ -115,7 +115,7 @@ final class class12 implements Comparator {
          }
 
          for(var11 = 0; var11 < 64; ++var11) {
-            class31.field431[var11 + 128] = var11 * 4 + 16776960;
+            class31.field431[var11 + 128] = 4 * var11 + 16776960;
          }
 
          for(var11 = 0; var11 < 64; ++var11) {

@@ -66,6 +66,8 @@ public class class204 extends class119 {
    long field2500;
    @ObfuscatedName("n")
    int[] field2484;
+   @ObfuscatedName("j")
+   int[] field2492;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -624122463
@@ -78,8 +80,6 @@ public class class204 extends class119 {
    class205[][] field2497;
    @ObfuscatedName("am")
    boolean field2499;
-   @ObfuscatedName("j")
-   int[] field2492;
    @ObfuscatedName("v")
    int[] field2488;
    @ObfuscatedName("al")
@@ -408,7 +408,7 @@ public class class204 extends class119 {
    )
    int method3705(class205 var1) {
       int var2 = (var1.field2518 * var1.field2508 >> 12) + var1.field2516;
-      var2 += (this.field2486[var1.field2526] - 8192) * this.field2492[var1.field2526] >> 12;
+      var2 += this.field2492[var1.field2526] * (this.field2486[var1.field2526] - 8192) >> 12;
       class202 var3 = var1.field2511;
       int var4;
       if(var3.field2466 > 0 && (var3.field2464 > 0 || this.field2487[var1.field2526] > 0)) {
@@ -797,7 +797,7 @@ public class class204 extends class119 {
                var1.field2521 += 2;
             }
 
-            if(var6.field2467.length - 2 == var1.field2521 && var6.field2467[var1.field2521 + 1] == 0) {
+            if(var6.field2467.length - 2 == var1.field2521 && var6.field2467[1 + var1.field2521] == 0) {
                var7 = true;
             }
          }
@@ -1003,7 +1003,7 @@ public class class204 extends class119 {
          if(var1.field2521 < var2.field2467.length - 2) {
             var6 = (var2.field2467[var1.field2521] & 255) << 8;
             var7 = (var2.field2467[var1.field2521 + 2] & 255) << 8;
-            var5 += (var4 - var6) * (var2.field2467[3 + var1.field2521] - var5) / (var7 - var6);
+            var5 += (var4 - var6) * (var2.field2467[var1.field2521 + 3] - var5) / (var7 - var6);
          }
 
          var3 = var3 * var5 + 32 >> 6;
@@ -1031,7 +1031,7 @@ public class class204 extends class119 {
    )
    int method3669(class205 var1) {
       int var2 = this.field2479[var1.field2526];
-      return var2 < 8192?var1.field2515 * var2 + 32 >> 6:16384 - ((128 - var1.field2515) * (16384 - var2) + 32 >> 6);
+      return var2 < 8192?var2 * var1.field2515 + 32 >> 6:16384 - ((128 - var1.field2515) * (16384 - var2) + 32 >> 6);
    }
 
    @ObfuscatedName("h")

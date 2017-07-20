@@ -246,7 +246,7 @@ public final class Player extends Actor {
       super.pathX[0] = var1;
       super.pathY[0] = var2;
       int var3 = this.getSize();
-      super.x = 64 * var3 + super.pathX[0] * 128;
+      super.x = 64 * var3 + 128 * super.pathX[0];
       super.y = var3 * 64 + super.pathY[0] * 128;
    }
 

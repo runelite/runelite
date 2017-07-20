@@ -185,7 +185,7 @@ public final class ISAACCipher {
          var6 += this.mm[var1 + 4];
          var7 += this.mm[var1 + 5];
          var8 += this.mm[var1 + 6];
-         var9 += this.mm[7 + var1];
+         var9 += this.mm[var1 + 7];
          var2 ^= var3 << 11;
          var5 += var2;
          var3 += var4;
@@ -368,7 +368,7 @@ public final class ISAACCipher {
             var41.putString(var39);
             var41.offset = var11;
             var41.encryptXtea2(var10);
-            Buffer var13 = new Buffer(var9.offset + var27.offset + 5 + var41.offset);
+            Buffer var13 = new Buffer(var9.offset + 5 + var27.offset + var41.offset);
             var13.putByte(2);
             var13.putByte(var27.offset);
             var13.putBytes(var27.payload, 0, var27.offset);

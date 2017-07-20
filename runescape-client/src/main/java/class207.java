@@ -364,7 +364,7 @@ public class class207 extends Node {
          }
 
          for(var42 = var44; var42 < 128; ++var42) {
-            this.field2544[var42] = (byte)(var41 * this.field2544[var42] + 32 >> 6);
+            this.field2544[var42] = (byte)(this.field2544[var42] * var41 + 32 >> 6);
          }
 
          var38 = null;

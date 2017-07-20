@@ -13,18 +13,18 @@ public final class Tile extends Node {
    )
    @Export("paint")
    SceneTilePaint paint;
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lel;"
-   )
-   @Export("decorativeObject")
-   DecorativeObject decorativeObject;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Ldv;"
    )
    @Export("itemLayer")
    ItemLayer itemLayer;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lel;"
+   )
+   @Export("decorativeObject")
+   DecorativeObject decorativeObject;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Let;"
@@ -37,18 +37,18 @@ public final class Tile extends Node {
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Ldr;"
-   )
-   @Export("groundObject")
-   GroundObject groundObject;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "[Lez;"
    )
    @Export("objects")
    GameObject[] objects;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Ldr;"
+   )
+   @Export("groundObject")
+   GroundObject groundObject;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -1515767947
