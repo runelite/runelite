@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators;
 
 import com.google.common.collect.HashMultimap;
@@ -49,46 +48,58 @@ import net.runelite.deob.Deob;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UnusedParameters implements Deobfuscator
 {
-	private Map<List<Method>, Collection<Integer>> unused = new HashMap<>();
-	private Multimap<Instruction, InstructionContext> invokes = HashMultimap.create();
-	
+	private static final Logger logger = LoggerFactory.getLogger(UnusedParameters.class);
+
+	private final Map<List<Method>, Collection<Integer>> unused = new HashMap<>();
+	private final Multimap<Instruction, InstructionContext> invokes = HashMultimap.create();
+
 	private void visit(InstructionContext ictx)
 	{
 		Instruction i = ictx.getInstruction();
-		
+
 		if (!(i instanceof InvokeInstruction))
+		{
 			return;
-		
-		InvokeInstruction ii = (InvokeInstruction) i;
+		}
 
 		invokes.put(i, ictx);
 	}
-	
+
 	private void buildUnused(ClassGroup group)
 	{
 		unused.clear();
-		
+
 		for (ClassFile cf : group.getClasses())
+		{
 			for (Method m : cf.getMethods().getMethods())
 			{
 				if (!Deob.isObfuscated(m.getName()))
+				{
 					continue;
-				
+				}
+
 				List<Method> ms = VirtualMethods.getVirtualMethods(m);
 				Collection<Integer> u = this.findUnusedParameters(ms);
 				if (!u.isEmpty())
+				{
 					unused.put(ms, u);
+				}
 			}
+		}
 	}
 
 	private boolean shouldRemove(Method m, int parameter)
 	{
 		Signature obSig = DeobAnnotations.getObfuscatedSignature(m);
 		if (obSig == null)
+		{
 			return false;
+		}
 
 		return parameter + 1 == obSig.size();
 	}
@@ -96,7 +107,7 @@ public class UnusedParameters implements Deobfuscator
 	private int processUnused(Execution execution, ClassGroup group)
 	{
 		int count = 0;
-		
+
 		for (List<Method> m : unused.keySet())
 		{
 			Collection<Integer> u = unused.get(m);
@@ -106,97 +117,112 @@ public class UnusedParameters implements Deobfuscator
 			for (int unusedParameter : u)
 			{
 				if (!shouldRemove(m.get(0), unusedParameter))
+				{
 					continue;
+				}
 
 				Signature signature = m.get(0).getDescriptor();
 				int lvtIndex = this.getLvtIndex(signature, offset, unusedParameter);
 				/* removing the parameter can't cause collisions on other (overloaded) methods because prior to this we rename
 				 * all classes/fields/methods to have unique names.
 				 */
-				System.out.println("Removing parameter " + unusedParameter + " at index " + lvtIndex + " from " + m);
+				logger.debug("Removing parameter {} at index {} from {}", unusedParameter, lvtIndex, m);
 				removeParameter(group, m, signature, execution, unusedParameter, lvtIndex);
 				break;
 			}
 
 			++count;
 		}
-		
+
 		return count;
 	}
-	
+
 	public List<Integer> findUnusedParameters(Method method)
 	{
 		int offset = method.isStatic() ? 0 : 1;
 		Signature signature = method.getDescriptor();
 		List<Integer> unusedParams = new ArrayList<>();
-		
+
 		for (int variableIndex = 0, lvtIndex = offset;
-				variableIndex < signature.size();
-				lvtIndex += signature.getTypeOfArg(variableIndex++).getSlots())
-		{		
+			variableIndex < signature.size();
+			lvtIndex += signature.getTypeOfArg(variableIndex++).getSlots())
+		{
 			List<? extends Instruction> lv = method.findLVTInstructionsForVariable(lvtIndex);
 			if (lv == null || lv.isEmpty())
+			{
 				unusedParams.add(variableIndex);
+			}
 		}
-		
+
 		return unusedParams;
 	}
-	
+
 	@SuppressWarnings("empty-statement")
 	private int getLvtIndex(Signature signature, int offset, int parameter)
 	{
 		// get lvt index for parameter
 		int lvtIndex = offset;
 		for (int variableIndex = 0;
-				variableIndex < parameter;
-				lvtIndex += signature.getTypeOfArg(variableIndex++).getSlots());
+			variableIndex < parameter;
+			lvtIndex += signature.getTypeOfArg(variableIndex++).getSlots());
 		return lvtIndex;
 	}
-	
+
 	public Collection<Integer> findUnusedParameters(Collection<Method> methods)
 	{
 		Collection<Integer> list = null;
-		
+
 		for (Method m : methods)
 		{
 			List<Integer> p = findUnusedParameters(m);
-			
+
 			if (list == null)
+			{
 				list = p;
+			}
 			else
+			{
 				list = CollectionUtils.intersection(list, p);
+			}
 		}
-		
+
 		List<Integer> l = new ArrayList<>(list);
 		Collections.sort(l);
 		Collections.reverse(l);
 		return l;
 	}
-	
+
 	public void removeParameter(ClassGroup group, List<Method> methods, Signature signature, Execution execution, int paramIndex, int lvtIndex)
 	{
 		int slots = signature.getTypeOfArg(paramIndex).getSlots();
-		
+
 		for (ClassFile cf : group.getClasses())
+		{
 			for (Method m : cf.getMethods().getMethods())
 			{
 				Code c = m.getCode();
-				
+
 				if (c == null)
+				{
 					continue;
-				
+				}
+
 				for (Instruction i : new ArrayList<>(c.getInstructions().getInstructions()))
 				{
 					if (!(i instanceof InvokeInstruction))
+					{
 						continue;
-					
+					}
+
 					InvokeInstruction ii = (InvokeInstruction) i;
-					
+
 					if (!ii.getMethods().containsAll(methods))
+					{
 						continue;
-					
+					}
+
 					ii.removeParameter(paramIndex); // remove parameter from instruction
-					
+
 					Collection<InstructionContext> ics = invokes.get(i);
 					assert ics != null;
 					if (ics != null)
@@ -207,47 +233,56 @@ public class UnusedParameters implements Deobfuscator
 
 							StackContext sctx = ins.getPops().get(pops);
 							if (sctx.getPushed().getInstruction().getInstructions() == null)
+							{
 								continue;
+							}
 
 							ins.removeStack(pops); // remove parameter from stack
 						}
 					}
 				}
 			}
-		
+		}
+
 		for (Method method : methods)
+		{
 			if (method.getCode() != null)
-				// adjust lvt indexes to get rid of idx in the method
+			// adjust lvt indexes to get rid of idx in the method
+			{
 				for (Instruction ins : method.getCode().getInstructions().getInstructions())
 				{
 					if (ins instanceof LVTInstruction)
 					{
 						LVTInstruction lins = (LVTInstruction) ins;
-						
+
 						int i = lins.getVariableIndex();
 						assert i != lvtIndex; // current unused variable detection just looks for no accesses
-						
+
 						// reassign
 						if (i > lvtIndex)
 						{
 							assert i > 0;
 							assert i >= lvtIndex + slots;
-							
+
 							Instruction newIns = lins.setVariableIndex(i - slots);
 							assert ins == newIns;
 						}
 					}
 				}
-		
+			}
+		}
+
 		for (Method method : methods)
+		{
 			method.getDescriptor().remove(paramIndex);
+		}
 	}
 
 	private int count;
-	
+
 	@Override
 	public void run(ClassGroup group)
-	{		
+	{
 		int i;
 		int pnum = 1;
 		do
@@ -261,7 +296,7 @@ public class UnusedParameters implements Deobfuscator
 			execution.addExecutionVisitor(ictx -> visit(ictx));
 			execution.populateInitialMethods();
 			execution.run();
-			
+
 			i = this.processUnused(execution, group);
 			System.out.println("PASS " + pnum++ + " " + i);
 
@@ -269,8 +304,8 @@ public class UnusedParameters implements Deobfuscator
 			break;
 		}
 		while (i > 0);
-		
-		System.out.println("Removed " + count + " unused parameters");
+
+		logger.info("Removed {} unused parameters", count);
 	}
 
 	public int getCount()

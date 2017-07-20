@@ -67,9 +67,13 @@ import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.map.MultiValueMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ModArith implements Deobfuscator
 {
+	private static final Logger logger = LoggerFactory.getLogger(ModArith.class);
+
 	private ClassGroup group;
 	private Execution execution;
 	private Set<Field> obfuscatedFields = new HashSet<>();
@@ -462,7 +466,7 @@ public class ModArith implements Deobfuscator
 				}
 				else
 				{
-					System.out.println("cant guess " + field.getName());
+					//System.out.println("cant guess " + field.getName());
 					return null;
 				}
 			}
@@ -490,7 +494,7 @@ public class ModArith implements Deobfuscator
 				}
 				else
 				{
-					System.out.println("cant guess " + field.getName());
+					//System.out.println("cant guess " + field.getName());
 					return null;
 				}
 			}
@@ -508,10 +512,12 @@ public class ModArith implements Deobfuscator
 		}
 		
 		if (g == g2)
-			System.out.println("BAD  " + field.getName() + " " + s1 + " * " + s2 + " = " + smallest + " " + g + " " + g2);
+		{
+			//System.out.println("BAD  " + field.getName() + " " + s1 + " * " + s2 + " = " + smallest + " " + g + " " + g2);
+		}
 		else
 		{
-			System.out.println("GOOD " + field.getName() + " " + s1 + " * " + s2 + " = " + smallest + " " + g + " " + g2);
+			//System.out.println("GOOD " + field.getName() + " " + s1 + " * " + s2 + " = " + smallest + " " + g + " " + g2);
 			Pair p = new Pair();
 			p.field = field.getPoolField();
 			if (g != inverse)
@@ -744,7 +750,7 @@ public class ModArith implements Deobfuscator
 		Encryption encr = new Encryption();
 		for (Pair pair : pairs)
 		{
-			System.out.println("Processing " + pair.field.getName() + " getter " + pair.getter + " setter " + pair.setter);
+			logger.debug("Processing {} getter {} setter {}", pair.field.getName(), pair.getter, pair.setter);
 
 			encr.addPair(pair);
 			encryption.addPair(pair); // sum total

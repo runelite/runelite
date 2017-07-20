@@ -75,7 +75,7 @@ public class UnusedMethods implements Deobfuscator
 
 				if (!methods.contains(method))
 				{
-					logger.info("Removing unused method {}", method);
+					logger.debug("Removing unused method {}", method);
 
 					cf.getMethods().removeMethod(method);
 					++count;
