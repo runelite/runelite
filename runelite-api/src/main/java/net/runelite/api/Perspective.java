@@ -141,7 +141,7 @@ public class Perspective
 	 */
 	public static Point worldToMiniMap(Client client, int x, int y, int distance)
 	{
-		int angle = client.getMapScale() + client.getMapAngle() & 0x7FF;
+		int angle = client.getMapAngle() & 0x7FF;
 
 		Point localLocation = client.getLocalPlayer().getLocalLocation();
 		x = x / 32 - localLocation.getX() / 32;
@@ -152,9 +152,6 @@ public class Perspective
 		{
 			int sin = SINE[angle];
 			int cos = COSINE[angle];
-
-			sin = sin * 256 / (client.getMapOffset() + 256);
-			cos = cos * 256 / (client.getMapOffset() + 256);
 
 			int xx = y * sin + cos * x >> 16;
 			int yy = sin * x - y * cos >> 16;

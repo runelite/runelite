@@ -52,14 +52,8 @@ public interface Client extends GameEngine
 	@Import("FPS")
 	int getFPS();
 
-	@Import("mapScale")
-	int getMapScale();
-
 	@Import("mapAngle")
 	int getMapAngle();
-
-	@Import("mapOffset")
-	int getMapOffset();
 
 	@Import("tileHeights")
 	int[][][] getTileHeights();
