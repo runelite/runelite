@@ -298,19 +298,9 @@ public class Client
 		return client.isMenuOpen();
 	}
 
-	public int getMapScale()
-	{
-		return client.getMapScale();
-	}
-
 	public int getMapAngle()
 	{
 		return client.getMapAngle();
-	}
-
-	public int getMapOffset()
-	{
-		return client.getMapOffset();
 	}
 
 	public boolean isResized()
