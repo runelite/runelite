@@ -415,4 +415,30 @@ public class Client
 	{
 		client.setChatCycle(client.getCycleCntr());
 	}
+
+	public void setLoginIndex(int index)
+	{
+		client.setLoginIndex(index);
+	}
+
+	public void setLoginIndex2(int index)
+	{
+		client.setLoginIndex2(index);
+	}
+
+	public void setLoginMessage1(String str)
+	{
+		client.setLoginMessage1(str);
+	}
+
+	public void setLoginMessage2(String str)
+	{
+		client.setLoginMessage2(str);
+	}
+
+	public void setLoginMessage3(String str)
+	{
+		client.setLoginMessage3(str);
+	}
+
 }
