@@ -180,7 +180,7 @@ public class PacketHandlerOrder implements Deobfuscator
 
 		for (PacketHandler handler : sortedHandlers)
 		{
-			logger.info("Hancler {} mappable {} reads {} invokes {} freads {} fwrites {}",
+			logger.info("Handler {} mappable {} reads {} invokes {} freads {} fwrites {}",
 				handler.getOpcode(), handler.sizeMap, handler.reads.size(), handler.methodInvokes.size(),
 				handler.fieldRead.size(), handler.fieldWrite.size());
 		}
