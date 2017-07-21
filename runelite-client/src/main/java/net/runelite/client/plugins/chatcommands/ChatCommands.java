@@ -31,12 +31,16 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.http.api.item.Item;
 import net.runelite.api.MessageNode;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.SetMessage;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.http.api.hiscore.HiscoreClient;
+import net.runelite.http.api.hiscore.HiscoreSkill;
+import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
+import net.runelite.http.api.hiscore.Skill;
+import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
@@ -53,6 +57,7 @@ public class ChatCommands extends Plugin
 	private final ItemClient itemClient = new ItemClient();
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final Client client = RuneLite.getClient();
+	private final HiscoreClient hiscoreClient = new HiscoreClient();
 
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
@@ -74,7 +79,7 @@ public class ChatCommands extends Plugin
 	@Subscribe
 	public void onSetMessage(SetMessage setMessage)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -92,14 +97,22 @@ public class ChatCommands extends Plugin
 
 		String message = setMessage.getValue();
 
-		if (message.toLowerCase().startsWith("!price") && message.length() > 7)
+		if (config.price() && message.toLowerCase().startsWith("!price") && message.length() > 7)
 		{
 			String search = message.substring(7);
 
-			logger.debug("Running lookup for {}", search);
+			logger.debug("Running price lookup for {}", search);
 
 			ScheduledExecutorService executor = runelite.getExecutor();
 			executor.submit(() -> lookup(setMessage.getMessageNode(), search));
+		}
+		else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
+		{
+			String search = message.substring(5);
+
+			logger.debug("Running level lookup for {}", search);
+			ScheduledExecutorService executor = runelite.getExecutor();
+			executor.submit(() -> playerSkillLookup(setMessage, search));
 		}
 	}
 
@@ -165,6 +178,58 @@ public class ChatCommands extends Plugin
 	}
 
 	/**
+	 * Looks up the player skill and changes the original message to the
+	 * reponse.
+	 *
+	 * @param setMessage The chat message containing the command.
+	 * @param search The item given with the command.
+	 */
+	private void playerSkillLookup(SetMessage setMessage, String search)
+	{
+		String player = sanitize(setMessage.getName());
+
+		try
+		{
+			search = SkillAbbreviations.valueOf(search.toUpperCase()).getName();
+		}
+		catch (IllegalArgumentException i)
+		{
+		}
+
+		HiscoreSkill skill;
+		try
+		{
+			skill = HiscoreSkill.valueOf(search.toUpperCase());
+		}
+		catch (IllegalArgumentException i)
+		{
+			return;
+		}
+
+		try
+		{
+			SingleHiscoreSkillResult result = hiscoreClient.lookup(player, skill);
+			Skill hiscoreSkill = result.getSkill();
+
+			String response = new StringBuilder().append("Level ").append(skill.getName()).append(": ")
+				.append(hiscoreSkill.getLevel())
+				.append(" Experience: ").append(String.format("%,d", hiscoreSkill.getExperience()))
+				.append(" Rank: ").append(String.format("%,d", hiscoreSkill.getRank()))
+				.toString();
+
+			logger.debug("Setting response {}", response);
+
+			// XXX hopefully messageNode hasn't been reused yet?
+			setMessage.getMessageNode().setValue(response);
+			client.refreshChat();
+		}
+		catch (IOException ex)
+		{
+			logger.warn("unable to look up skill {} for {}", skill, search, ex);
+		}
+	}
+
+	/**
 	 * Compares the names of the items in the list with the original input.
 	 * returns the item if its name is equal to the original input or null
 	 * if it can't find the item.
@@ -183,5 +248,18 @@ public class ChatCommands extends Plugin
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Cleans the playername string from ironman status icon if present and
+	 * corrects spaces
+	 *
+	 * @param lookup Playername to lookup
+	 * @return Cleaned playername
+	 */
+	private static String sanitize(String lookup)
+	{
+		String cleaned = lookup.contains("<img") ? lookup.substring(lookup.lastIndexOf('>') + 1) : lookup;
+		return cleaned.replace('\u00A0', ' ');
 	}
 }

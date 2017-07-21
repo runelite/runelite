@@ -24,33 +24,28 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup(
-	keyName = "chatcommands",
-	name = "Chat commands",
-	description = "Configuration for chat commands"
-)
-public interface ChatCommandsConfig
+enum SkillAbbreviations
 {
-	@ConfigItem(
-		keyName = "price",
-		name = "Price Command",
-		description = "Configures whether the Price command is enabled"
-	)
-	default boolean price()
+	ATT("Attack"),
+	DEF("Defence"),
+	STR("Strength"),
+	HP("Hitpoints"),
+	RANGE("Ranged"),
+	WC("Woodcutting"),
+	FM("Firemaking"),
+	RC("Runecraft"),
+	CON("Construction"),
+	TOTAL("Overall");
+
+	private final String name;
+
+	SkillAbbreviations(String name)
 	{
-		return true;
+		this.name = name;
 	}
 
-	@ConfigItem(
-		keyName = "lvl",
-		name = "Level Command",
-		description = "Configures whether the Level command is enabled"
-	)
-	default boolean lvl()
+	public String getName()
 	{
-		return true;
+		return name;
 	}
 }
