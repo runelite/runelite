@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pricecommands;
+package net.runelite.client.plugins.chatcommands;
 
 import com.google.common.eventbus.Subscribe;
 import java.io.IOException;
@@ -44,15 +44,41 @@ import net.runelite.rs.api.ItemComposition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PriceCommands extends Plugin
+public class ChatCommands extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(PriceCommands.class);
+	private static final Logger logger = LoggerFactory.getLogger(ChatCommands.class);
 
-	private final PriceCommandsConfig config = RuneLite.getRunelite().getConfigManager().getConfig(PriceCommandsConfig.class);
+	private final ChatCommandsConfig config = RuneLite.getRunelite().getConfigManager().getConfig(ChatCommandsConfig.class);
 	private final ItemManager itemManager = RuneLite.getRunelite().getItemManager();
 	private final ItemClient itemClient = new ItemClient();
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final Client client = RuneLite.getClient();
+
+	private enum SkillAbbreviations
+	{
+		ATT("Attack"),
+		DEF("Defence"),
+		STR("Strength"),
+		HP("Hitpoints"),
+		RANGE("Ranged"),
+		WC("Woodcutting"),
+		FM("Firemaking"),
+		RC("Runecraft"),
+		CON("Construction"),
+		TOTAL("Overall");
+
+		private final String name;
+
+		SkillAbbreviations(String name)
+		{
+			this.name = name;
+		}
+
+		public String getName()
+		{
+			return name;
+		}
+	}
 
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
