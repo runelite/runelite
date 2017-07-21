@@ -27,7 +27,9 @@ package net.runelite.http.service.hiscore;
 import java.io.IOException;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.hiscore.HiscoreResult;
+import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
+import net.runelite.http.api.hiscore.HiscoreSkill;
 import okhttp3.HttpUrl;
 import okhttp3.ResponseBody;
 import org.apache.commons.csv.CSVFormat;
@@ -42,10 +44,8 @@ public class HiscoreService
 
 	private HttpUrl url = RUNESCAPE_HISCORE_SERVICE;
 
-	public HiscoreResult lookup(Request request, Response response) throws IOException
+	private HiscoreResultBuilder lookup(String username) throws IOException
 	{
-		String username = request.queryParams("username");
-
 		HttpUrl hiscoreUrl = url.newBuilder()
 			.addQueryParameter("player", username)
 			.build();
@@ -71,7 +71,7 @@ public class HiscoreService
 
 		for (CSVRecord record : parser.getRecords())
 		{
-			if (count++ >= HiscoreResultBuilder.NUM_SKILLS)
+			if (count++ >= HiscoreSkill.values().length)
 			{
 				break; // rest is other things?
 			}
@@ -85,8 +85,38 @@ public class HiscoreService
 			hiscoreBuilder.setNextSkill(skill);
 		}
 
+		return hiscoreBuilder;
+	}
+
+	public HiscoreResult lookup(Request request, Response response) throws IOException
+	{
+		String username = request.queryParams("username");
+		HiscoreResultBuilder result = lookup(username);
+
 		response.type("application/json");
-		return hiscoreBuilder.build();
+		return result.build();
+	}
+
+	public SingleHiscoreSkillResult singleSkillLookup(Request request, Response response) throws IOException
+	{
+		String username = request.queryParams("username");
+		String skillName = request.params("skill");
+
+		HiscoreSkill skill = HiscoreSkill.valueOf(skillName.toUpperCase());
+
+		// RS api only supports looking up all stats
+		HiscoreResultBuilder result = lookup(username);
+
+		// Find the skill to return
+		Skill requested = result.getSkill(skill.ordinal());
+
+		SingleHiscoreSkillResult skillResult = new SingleHiscoreSkillResult();
+		skillResult.setPlayer(username);
+		skillResult.setSkillName(skillName);
+		skillResult.setSkill(requested);
+
+		response.type("application/json");
+		return skillResult;
 	}
 
 	public HttpUrl getUrl()
