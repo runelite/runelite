@@ -28,8 +28,8 @@ public final class class60 {
    )
    @Export("getWidgetConfig")
    static int getWidgetConfig(Widget var0) {
-      WidgetConfig var1 = (WidgetConfig)Client.widgetFlags.get(((long)var0.id << 32) + (long)var0.index);
-      return var1 != null?var1.config:var0.config;
+      IntegerNode var1 = (IntegerNode)Client.widgetFlags.get(((long)var0.id << 32) + (long)var0.index);
+      return var1 != null?var1.value :var0.config;
    }
 
    @ObfuscatedName("hg")

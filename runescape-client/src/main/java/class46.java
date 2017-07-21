@@ -654,7 +654,7 @@ public class class46 {
          if(var4) {
             var6 = new class185(var0.readString());
          } else {
-            var6 = new WidgetConfig(var0.readInt());
+            var6 = new IntegerNode(var0.readInt());
          }
 
          var1.method3440((Node)var6, (long)var5);

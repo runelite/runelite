@@ -168,7 +168,7 @@ public class Friend {
             while(var8-- > 0) {
                int var10 = var2.readInt();
                int var11 = var2.readInt();
-               var9.method3440(new WidgetConfig(var11), (long)var10);
+               var9.method3440(new IntegerNode(var11), (long)var10);
             }
          }
       }

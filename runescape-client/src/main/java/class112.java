@@ -154,8 +154,8 @@ public class class112 {
       if(var0 == null) {
          return var2;
       } else {
-         WidgetConfig var3 = (WidgetConfig)var0.method3439((long)var1);
-         return var3 == null?var2:var3.config;
+         IntegerNode var3 = (IntegerNode)var0.method3439((long)var1);
+         return var3 == null?var2:var3.value;
       }
    }
 

@@ -3,13 +3,13 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("gx")
-@Implements("WidgetConfig")
-public class WidgetConfig extends Node {
+@Implements("IntegerNode")
+public class IntegerNode extends Node {
    @ObfuscatedName("c")
-   @Export("config")
-   public int config;
+   @Export("value")
+   public int value;
 
-   public WidgetConfig(int var1) {
-      this.config = var1;
+   public IntegerNode(int var1) {
+      this.value = var1;
    }
 }

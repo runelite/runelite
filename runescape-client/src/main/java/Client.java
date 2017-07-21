@@ -2651,7 +2651,7 @@ public final class Client extends GameEngine {
                         var63.unlink();
                      }
 
-                     widgetFlags.put(new WidgetConfig(var5), var7);
+                     widgetFlags.put(new IntegerNode(var5), var7);
                   }
 
                   packetType = -1;
@@ -3461,7 +3461,7 @@ public final class Client extends GameEngine {
 
                         for(var31 = var26; var31 <= var29; ++var31) {
                            var10 = ((long)var5 << 32) + (long)var31;
-                           widgetFlags.put(new WidgetConfig(var30), var10);
+                           widgetFlags.put(new IntegerNode(var30), var10);
                         }
                      }
 

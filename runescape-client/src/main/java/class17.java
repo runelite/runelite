@@ -272,9 +272,9 @@ final class class17 implements Comparator {
                                                                                                                                                                         }
 
                                                                                                                                                                         class186 var83 = var3.switches[var56[var30]];
-                                                                                                                                                                        WidgetConfig var87 = (WidgetConfig)var83.method3439((long)class83.intStack[--BufferProvider.intStackSize]);
+                                                                                                                                                                        IntegerNode var87 = (IntegerNode)var83.method3439((long)class83.intStack[--BufferProvider.intStackSize]);
                                                                                                                                                                         if(var87 != null) {
-                                                                                                                                                                           var30 += var87.config;
+                                                                                                                                                                           var30 += var87.value;
                                                                                                                                                                         }
                                                                                                                                                                      }
                                                                                                                                                                   } else {
