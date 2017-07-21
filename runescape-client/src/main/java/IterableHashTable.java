@@ -120,7 +120,7 @@ public final class IterableHashTable implements Iterable {
    }
 
    public Iterator iterator() {
-      return new class197(this);
+      return new HashTableIterator(this);
    }
 
    @ObfuscatedName("i")
