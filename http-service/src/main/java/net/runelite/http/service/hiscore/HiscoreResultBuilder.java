@@ -24,58 +24,59 @@
  */
 package net.runelite.http.service.hiscore;
 
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.Skill;
 
 public class HiscoreResultBuilder
 {
-	public static final int NUM_SKILLS = 24;
-
-	private final HiscoreResult result = new HiscoreResult();
-
-	private final Consumer<Skill>[] consumers = new Consumer[]
-	{
-		(s) -> result.setOverall((Skill) s),
-		(s) -> result.setAttack((Skill) s),
-		(s) -> result.setDefence((Skill) s),
-		(s) -> result.setStrength((Skill) s),
-		(s) -> result.setHitpoints((Skill) s),
-		(s) -> result.setRanged((Skill) s),
-		(s) -> result.setPrayer((Skill) s),
-		(s) -> result.setMagic((Skill) s),
-		(s) -> result.setCooking((Skill) s),
-		(s) -> result.setWoodcutting((Skill) s),
-		(s) -> result.setFletching((Skill) s),
-		(s) -> result.setFishing((Skill) s),
-		(s) -> result.setFiremaking((Skill) s),
-		(s) -> result.setCrafting((Skill) s),
-		(s) -> result.setSmithing((Skill) s),
-		(s) -> result.setMining((Skill) s),
-		(s) -> result.setHerblore((Skill) s),
-		(s) -> result.setAgility((Skill) s),
-		(s) -> result.setThieving((Skill) s),
-		(s) -> result.setSlayer((Skill) s),
-		(s) -> result.setFarming((Skill) s),
-		(s) -> result.setRunecraft((Skill) s),
-		(s) -> result.setHunter((Skill) s),
-		(s) -> result.setConstruction((Skill) s),
-	};
-
-	private int position;
+	private String player;
+	private final List<Skill> skills = new ArrayList<>();
 
 	public void setPlayer(String player)
 	{
-		result.setPlayer(player);
+		this.player = player;
 	}
 
 	public void setNextSkill(Skill skill)
 	{
-		consumers[position++].accept(skill);
+		skills.add(skill);
+	}
+
+	public Skill getSkill(int index)
+	{
+		return skills.get(index);
 	}
 
 	public HiscoreResult build()
 	{
-		return result;
+		HiscoreResult hiscoreResult = new HiscoreResult();
+		hiscoreResult.setPlayer(player);
+		hiscoreResult.setOverall(skills.get(0));
+		hiscoreResult.setAttack(skills.get(1));
+		hiscoreResult.setDefence(skills.get(2));
+		hiscoreResult.setStrength(skills.get(3));
+		hiscoreResult.setHitpoints(skills.get(4));
+		hiscoreResult.setRanged(skills.get(5));
+		hiscoreResult.setPrayer(skills.get(6));
+		hiscoreResult.setMagic(skills.get(7));
+		hiscoreResult.setCooking(skills.get(8));
+		hiscoreResult.setWoodcutting(skills.get(9));
+		hiscoreResult.setFletching(skills.get(10));
+		hiscoreResult.setFishing(skills.get(11));
+		hiscoreResult.setFiremaking(skills.get(12));
+		hiscoreResult.setCrafting(skills.get(13));
+		hiscoreResult.setSmithing(skills.get(14));
+		hiscoreResult.setMining(skills.get(15));
+		hiscoreResult.setHerblore(skills.get(16));
+		hiscoreResult.setAgility(skills.get(17));
+		hiscoreResult.setThieving(skills.get(18));
+		hiscoreResult.setSlayer(skills.get(19));
+		hiscoreResult.setFarming(skills.get(20));
+		hiscoreResult.setRunecraft(skills.get(21));
+		hiscoreResult.setHunter(skills.get(22));
+		hiscoreResult.setConstruction(skills.get(23));
+		return hiscoreResult;
 	}
 }

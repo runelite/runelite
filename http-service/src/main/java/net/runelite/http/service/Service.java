@@ -93,7 +93,11 @@ public class Service implements SparkApplication
 
 		get("/version", (request, response) -> RuneliteAPI.getVersion());
 		get("/update-check", updateCheck::check, transformer);
-		get("/hiscore", hiscores::lookup, transformer);
+		path("/hiscore", () ->
+		{
+			get("", hiscores::lookup, transformer);
+			get("/:skill", hiscores::singleSkillLookup, transformer);
+		});
 		get("/worlds", worlds::listWorlds, transformer);
 		post("/xtea", xtea::submit);
 		get("/xtea/:rev", xtea::get, transformer);

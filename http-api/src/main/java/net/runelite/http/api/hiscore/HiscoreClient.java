@@ -66,4 +66,32 @@ public class HiscoreClient
 			throw new IOException(ex);
 		}
 	}
+
+	public SingleHiscoreSkillResult lookup(String username, HiscoreSkill skill) throws IOException
+	{
+		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
+				.addPathSegment("hiscore")
+				.addPathSegment(skill.toString().toLowerCase())
+				.addQueryParameter("username", username);
+
+		HttpUrl url = builder.build();
+
+		logger.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+				.url(url)
+				.build();
+
+		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
+
+		try (ResponseBody body = response.body())
+		{
+			InputStream in = body.byteStream();
+			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), SingleHiscoreSkillResult.class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
+	}
 }
