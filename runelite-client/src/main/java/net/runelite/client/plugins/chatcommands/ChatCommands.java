@@ -23,14 +23,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pricecommands;
+package net.runelite.client.plugins.chatcommands;
 
+import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Skill;
+import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.item.Item;
 import net.runelite.api.MessageNode;
 import net.runelite.client.game.ItemManager;
@@ -44,15 +47,42 @@ import net.runelite.rs.api.ItemComposition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PriceCommands extends Plugin
+public class ChatCommands extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(PriceCommands.class);
+	private static final Logger logger = LoggerFactory.getLogger(ChatCommands.class);
 
-	private final PriceCommandsConfig config = RuneLite.getRunelite().getConfigManager().getConfig(PriceCommandsConfig.class);
+	private final ChatCommandsConfig config = RuneLite.getRunelite().getConfigManager().getConfig(ChatCommandsConfig.class);
 	private final ItemManager itemManager = RuneLite.getRunelite().getItemManager();
 	private final ItemClient itemClient = new ItemClient();
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final Client client = RuneLite.getClient();
+	private final HiscoreClient hiscoreClient = new HiscoreClient();
+
+	private enum SkillAbbreviations
+	{
+		ATT("Attack"),
+		DEF("Defence"),
+		STR("Strength"),
+		HP("Hitpoints"),
+		RANGE("Ranged"),
+		WC("Woodcutting"),
+		FM("Firemaking"),
+		RC("Runecraft"),
+		CON("Construction"),
+		TOTAL("Overall");
+
+		private final String name;
+
+		SkillAbbreviations(String name)
+		{
+			this.name = name;
+		}
+
+		public String getName()
+		{
+			return name;
+		}
+	}
 
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
@@ -100,6 +130,14 @@ public class PriceCommands extends Plugin
 
 			ScheduledExecutorService executor = runelite.getExecutor();
 			executor.submit(() -> lookup(setMessage.getMessageNode(), search));
+		}
+		else if (message.toLowerCase().startsWith("!lvl") && message.length() > 5)
+		{
+			String search = message.substring(5);
+
+			logger.debug("Running lookup for {}", search);
+			ScheduledExecutorService executor = runelite.getExecutor();
+			executor.submit(() -> playerSkillLookup(setMessage, search));
 		}
 	}
 
@@ -165,6 +203,52 @@ public class PriceCommands extends Plugin
 	}
 
 	/**
+	 * Looks up the player skill and changes the original message to the reponse.
+	 * @param setMessage The chat message containing the command.
+	 * @param search The item given with the command.
+	 */
+	private void playerSkillLookup(SetMessage setMessage, String search)
+	{
+		String player = sanitize(setMessage.getName());
+		Skill skill = null;
+		try
+		{
+			search = SkillAbbreviations.valueOf(search.toUpperCase()).getName();
+		}
+		catch (IllegalArgumentException i)
+		{
+		}
+		try
+		{
+			skill = Skill.valueOf(search.toUpperCase());
+		}
+		catch (IllegalArgumentException i)
+		{
+		}
+		if (skill == null || Strings.isNullOrEmpty(player))
+		{
+			logger.warn("Skill or player is null");
+			return;
+		}
+		try
+		{
+
+			net.runelite.http.api.hiscore.Skill hiscoreSkill = hiscoreClient.lookup(player, skill.getName()).getSkill();
+			String response = new StringBuilder().append("Level ").append(skill.getName()).append(": ").append(hiscoreSkill.getLevel()).append(" Experience: ").append(String.format("%,d", hiscoreSkill.getExperience())).append(" Rank: ").append(String.format("%,d", hiscoreSkill.getRank())).toString();//"<col=" + hexColor1 + ">Level <col=" + hexColor2 + ">" + skill.getName() + ": " + hiscoreSkill.getLevel() + "<col=" + hexColor1 + "> Experience: <col=" + hexColor2 + ">" + String.format("%,d", hiscoreSkill.getExperience()) + "<col=" + hexColor1 + "> Rank: <col=" + hexColor2 + ">" + String.format("%,d", hiscoreSkill.getRank());
+
+			logger.debug("Setting response {}", response);
+
+			// XXX hopefully messageNode hasn't been reused yet?
+			setMessage.getMessageNode().setValue(response);
+			client.refreshChat();
+		}
+		catch (IOException ex)
+		{
+			logger.warn(null, ex);
+		}
+	}
+
+	/**
 	 * Compares the names of the items in the list with the original input.
 	 * returns the item if its name is equal to the original input or null
 	 * if it can't find the item.
@@ -183,5 +267,16 @@ public class PriceCommands extends Plugin
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Cleans the playername string from ironman status icon if present and corrects spaces
+	 * @param lookup Playername to lookup
+	 * @return Cleaned playername
+	 */
+	private static String sanitize(String lookup)
+	{
+		String cleaned = lookup.contains("<img") ? lookup.substring(lookup.lastIndexOf('>') + 1) : lookup;
+		return cleaned.replace('\u00A0', ' ');
 	}
 }
