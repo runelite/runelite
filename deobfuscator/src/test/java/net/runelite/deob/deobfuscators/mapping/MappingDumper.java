@@ -84,13 +84,8 @@ public class MappingDumper
 				++fields;
 
 				String fieldName = DeobAnnotations.getObfuscatedName(f.getAnnotations());
-				Type type = DeobAnnotations.getObfuscatedType(f);
+				Type type = f.getType();
 				Number getter = DeobAnnotations.getObfuscatedGetter(f);
-
-				if (type == null)
-				{
-					type = f.getType();
-				}
 
 				String fieldType = typeToString(type);
 
@@ -138,7 +133,7 @@ public class MappingDumper
 					signature = m.getDescriptor();
 				}
 
-				String returnType = typeToString(signature.getReturnValue());
+				String returnType = typeToString(m.getDescriptor().getReturnValue());
 				String[] paramTypes = new String[signature.size()];
 				for (int i = 0; i < paramTypes.length; i++)
 				{
