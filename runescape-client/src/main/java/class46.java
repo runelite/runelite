@@ -652,7 +652,7 @@ public class class46 {
          int var5 = var0.read24BitInt();
          Object var6;
          if(var4) {
-            var6 = new class185(var0.readString());
+            var6 = new ObjectNode(var0.readString());
          } else {
             var6 = new IntegerNode(var0.readInt());
          }

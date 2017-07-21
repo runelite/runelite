@@ -71,8 +71,8 @@ public enum class232 implements RSEnum {
       if(var0 == null) {
          return var2;
       } else {
-         class185 var3 = (class185)var0.method3439((long)var1);
-         return var3 == null?var2:(String)var3.field2414;
+         ObjectNode var3 = (ObjectNode)var0.method3439((long)var1);
+         return var3 == null?var2:(String)var3.value;
       }
    }
 }
