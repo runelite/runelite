@@ -136,14 +136,14 @@ public final class Occluder {
       garbageValue = "-1832478642"
    )
    @Export("getSprite")
-   public static ModIcon getSprite(IndexDataBase var0, String var1, String var2) {
+   public static IndexedSprite getSprite(IndexDataBase var0, String var1, String var2) {
       int var3 = var0.getFile(var1);
       int var4 = var0.getChild(var3, var2);
-      ModIcon var5;
+      IndexedSprite var5;
       if(!ISAACCipher.method3381(var0, var3, var4)) {
          var5 = null;
       } else {
-         ModIcon var7 = new ModIcon();
+         IndexedSprite var7 = new IndexedSprite();
          var7.width = class286.field3780;
          var7.originalHeight = class286.field3781;
          var7.offsetX = class286.field3782[0];

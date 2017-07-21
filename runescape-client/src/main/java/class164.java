@@ -15,7 +15,7 @@ public class class164 {
    @ObfuscatedSignature(
       signature = "[Ljx;"
    )
-   static ModIcon[] field2280;
+   static IndexedSprite[] field2280;
 
    @ObfuscatedName("iy")
    @ObfuscatedSignature(

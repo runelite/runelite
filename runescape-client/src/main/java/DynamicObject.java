@@ -15,7 +15,7 @@ public class DynamicObject extends Renderable {
    @ObfuscatedSignature(
       signature = "[Ljx;"
    )
-   static ModIcon[] field1519;
+   static IndexedSprite[] field1519;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Ljc;"

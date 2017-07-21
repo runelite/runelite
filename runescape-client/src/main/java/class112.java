@@ -243,11 +243,11 @@ public class class112 {
       signature = "(I)[Ljx;",
       garbageValue = "1539977190"
    )
-   static ModIcon[] method2032() {
-      ModIcon[] var0 = new ModIcon[class286.field3785];
+   static IndexedSprite[] method2032() {
+      IndexedSprite[] var0 = new IndexedSprite[class286.field3785];
 
       for(int var1 = 0; var1 < class286.field3785; ++var1) {
-         ModIcon var2 = var0[var1] = new ModIcon();
+         IndexedSprite var2 = var0[var1] = new IndexedSprite();
          var2.width = class286.field3780;
          var2.originalHeight = class286.field3781;
          var2.offsetX = class286.field3782[var1];

@@ -110,11 +110,11 @@ public class Texture extends Node {
             var9 = true;
          }
 
-         ModIcon var7;
+         IndexedSprite var7;
          if(!var9) {
             var7 = null;
          } else {
-            ModIcon var11 = new ModIcon();
+            IndexedSprite var11 = new IndexedSprite();
             var11.width = class286.field3780;
             var11.originalHeight = class286.field3781;
             var11.offsetX = class286.field3782[0];

@@ -46,7 +46,7 @@ public final class class41 {
    @ObfuscatedSignature(
       signature = "[Ljx;"
    )
-   ModIcon[] field562;
+   IndexedSprite[] field562;
    @ObfuscatedName("p")
    final HashMap field560;
    @ObfuscatedName("i")
@@ -68,7 +68,7 @@ public final class class41 {
    @ObfuscatedSignature(
       signature = "([Ljx;Ljava/util/HashMap;)V"
    )
-   public class41(ModIcon[] var1, HashMap var2) {
+   public class41(IndexedSprite[] var1, HashMap var2) {
       this.field568 = false;
       this.field553 = false;
       this.field558 = new HashMap();

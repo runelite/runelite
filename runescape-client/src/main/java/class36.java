@@ -19,7 +19,7 @@ public class class36 {
    @ObfuscatedSignature(
       signature = "[Ljx;"
    )
-   static ModIcon[] field493;
+   static IndexedSprite[] field493;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 10128781

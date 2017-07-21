@@ -124,7 +124,7 @@ public class class269 {
       signature = "(Lip;Ljava/lang/String;Ljava/lang/String;I)[Ljx;",
       garbageValue = "-1153173118"
    )
-   public static ModIcon[] method4758(IndexDataBase var0, String var1, String var2) {
+   public static IndexedSprite[] method4758(IndexDataBase var0, String var1, String var2) {
       int var3 = var0.getFile(var1);
       int var4 = var0.getChild(var3, var2);
       return IndexFile.method2942(var0, var3, var4);

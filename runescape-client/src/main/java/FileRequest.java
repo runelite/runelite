@@ -11,7 +11,7 @@ public class FileRequest extends CacheableNode {
    @ObfuscatedSignature(
       signature = "[Ljx;"
    )
-   static ModIcon[] field3179;
+   static IndexedSprite[] field3179;
    @ObfuscatedName("i")
    @Export("padding")
    public byte padding;

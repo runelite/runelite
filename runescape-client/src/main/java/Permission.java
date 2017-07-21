@@ -502,7 +502,7 @@ public enum Permission implements RSEnum {
                   var0.method4640("for 30 days: ", class92.loginWindowX + 180 - 9, var29, 16776960, 0);
                   var9 = class92.loginWindowX + 180 - 9 + var0.method4635("for 30 days: ") + 15;
                   var10 = var29 - var0.verticalSpace;
-                  ModIcon var27;
+                  IndexedSprite var27;
                   if(class92.field1424) {
                      var27 = WorldMapType1.field413;
                   } else {

@@ -8,7 +8,7 @@ public class class177 {
    @ObfuscatedSignature(
       signature = "Ljx;"
    )
-   static ModIcon field2382;
+   static IndexedSprite field2382;
    @ObfuscatedName("pb")
    @ObfuscatedGetter(
       intValue = -983021227

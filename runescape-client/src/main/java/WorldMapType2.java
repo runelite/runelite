@@ -15,12 +15,12 @@ public class WorldMapType2 implements WorldMapSectionBase {
    @ObfuscatedSignature(
       signature = "[Ljx;"
    )
-   static ModIcon[] field521;
+   static IndexedSprite[] field521;
    @ObfuscatedName("bu")
    @ObfuscatedSignature(
       signature = "Ljx;"
    )
-   static ModIcon field522;
+   static IndexedSprite field522;
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "Ljt;"
