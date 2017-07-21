@@ -22,17 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pricecommands;
+package net.runelite.client.plugins.chatcommands;
 
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "pricecommands",
+	keyName = "chatcommands",
 	name = "Chat commands",
 	description = "Configuration for chat commands"
 )
-public interface PriceCommandsConfig
+public interface ChatCommandsConfig
 {
 	@ConfigItem(
 		keyName = "enabled",
