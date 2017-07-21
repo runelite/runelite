@@ -182,7 +182,7 @@ public final class DecorativeObject {
       garbageValue = "-1444588260"
    )
    static int method2831(int var0) {
-      MessageNode var1 = (MessageNode)class98.field1495.method3439((long)var0);
+      MessageNode var1 = (MessageNode)class98.field1495.get((long)var0);
       return var1 == null?-1:(var1.previous == class98.field1493.field2456?-1:((MessageNode)var1.previous).id);
    }
 }

@@ -67,11 +67,11 @@ public enum class232 implements RSEnum {
       signature = "(Lgk;ILjava/lang/String;I)Ljava/lang/String;",
       garbageValue = "279658673"
    )
-   static String method4001(class186 var0, int var1, String var2) {
+   static String method4001(IterableHashTable var0, int var1, String var2) {
       if(var0 == null) {
          return var2;
       } else {
-         ObjectNode var3 = (ObjectNode)var0.method3439((long)var1);
+         ObjectNode var3 = (ObjectNode)var0.get((long)var1);
          return var3 == null?var2:(String)var3.value;
       }
    }

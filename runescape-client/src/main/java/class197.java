@@ -13,7 +13,7 @@ public class class197 implements Iterator {
    @ObfuscatedSignature(
       signature = "Lgk;"
    )
-   class186 field2449;
+   IterableHashTable field2449;
    @ObfuscatedName("i")
    int field2450;
    @ObfuscatedName("o")
@@ -25,7 +25,7 @@ public class class197 implements Iterator {
    @ObfuscatedSignature(
       signature = "(Lgk;)V"
    )
-   class197(class186 var1) {
+   class197(IterableHashTable var1) {
       this.field2447 = null;
       this.field2449 = var1;
       this.method3592();
@@ -33,26 +33,26 @@ public class class197 implements Iterator {
 
    @ObfuscatedName("k")
    void method3592() {
-      this.field2448 = this.field2449.field2416[0].next;
+      this.field2448 = this.field2449.buckets[0].next;
       this.field2450 = 1;
       this.field2447 = null;
    }
 
    public Object next() {
       Node var1;
-      if(this.field2449.field2416[this.field2450 - 1] != this.field2448) {
+      if(this.field2449.buckets[this.field2450 - 1] != this.field2448) {
          var1 = this.field2448;
          this.field2448 = var1.next;
          this.field2447 = var1;
          return var1;
       } else {
          do {
-            if(this.field2450 >= this.field2449.field2419) {
+            if(this.field2450 >= this.field2449.size) {
                return null;
             }
 
-            var1 = this.field2449.field2416[this.field2450++].next;
-         } while(var1 == this.field2449.field2416[this.field2450 - 1]);
+            var1 = this.field2449.buckets[this.field2450++].next;
+         } while(var1 == this.field2449.buckets[this.field2450 - 1]);
 
          this.field2448 = var1.next;
          this.field2447 = var1;
@@ -61,16 +61,16 @@ public class class197 implements Iterator {
    }
 
    public boolean hasNext() {
-      if(this.field2449.field2416[this.field2450 - 1] != this.field2448) {
+      if(this.field2449.buckets[this.field2450 - 1] != this.field2448) {
          return true;
       } else {
-         while(this.field2450 < this.field2449.field2419) {
-            if(this.field2449.field2416[this.field2450++].next != this.field2449.field2416[this.field2450 - 1]) {
-               this.field2448 = this.field2449.field2416[this.field2450 - 1].next;
+         while(this.field2450 < this.field2449.size) {
+            if(this.field2449.buckets[this.field2450++].next != this.field2449.buckets[this.field2450 - 1]) {
+               this.field2448 = this.field2449.buckets[this.field2450 - 1].next;
                return true;
             }
 
-            this.field2448 = this.field2449.field2416[this.field2450 - 1];
+            this.field2448 = this.field2449.buckets[this.field2450 - 1];
          }
 
          return false;

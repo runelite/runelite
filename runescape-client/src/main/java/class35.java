@@ -109,6 +109,6 @@ public class class35 {
       garbageValue = "1464710283"
    )
    static MessageNode method483(int var0) {
-      return (MessageNode)class98.field1495.method3439((long)var0);
+      return (MessageNode)class98.field1495.get((long)var0);
    }
 }

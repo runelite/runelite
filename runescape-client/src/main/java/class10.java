@@ -138,7 +138,7 @@ public final class class10 extends class9 {
             if(var1.field3512 != null) {
                boolean var3 = false;
 
-               for(Node var4 = var1.field3512.method3456(); var4 != null; var4 = var1.field3512.method3442()) {
+               for(Node var4 = var1.field3512.getHead(); var4 != null; var4 = var1.field3512.getTail()) {
                   class251 var5 = Varbit.method4309((int)var4.hash);
                   if(var5.field3361) {
                      var4.unlink();

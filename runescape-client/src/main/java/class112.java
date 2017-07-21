@@ -150,11 +150,11 @@ public class class112 {
       signature = "(Lgk;III)I",
       garbageValue = "1670776060"
    )
-   static int method2023(class186 var0, int var1, int var2) {
+   static int method2023(IterableHashTable var0, int var1, int var2) {
       if(var0 == null) {
          return var2;
       } else {
-         IntegerNode var3 = (IntegerNode)var0.method3439((long)var1);
+         IntegerNode var3 = (IntegerNode)var0.get((long)var1);
          return var3 == null?var2:var3.value;
       }
    }
