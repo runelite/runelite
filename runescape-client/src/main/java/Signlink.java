@@ -354,7 +354,7 @@ public class Signlink implements Runnable {
                      IndexFile.isMembersWorld = var10;
                      ItemComposition.field3467 = InvType.item_ref.fileCount(10);
                      WorldMapType2.field523 = var11;
-                     class77.method1471(Client.configsIndex, class37.indexInterfaces, class112.indexSoundEffects);
+                     WorldListFetcher.method1471(Client.configsIndex, class37.indexInterfaces, class112.indexSoundEffects);
                      IndexData var12 = Client.configsIndex;
                      IndexData var13 = class1.indexModels;
                      Spotanim.field3297 = var12;
@@ -638,7 +638,7 @@ public class Signlink implements Runnable {
                      }
                   }
 
-                  if(class265.worldServersDownload != null) {
+                  if(class265.listFetcher != null) {
                      FileRequest.method4004();
                   }
                }

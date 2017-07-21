@@ -8,8 +8,8 @@ public class class265 {
    @ObfuscatedSignature(
       signature = "Lbx;"
    )
-   @Export("worldServersDownload")
-   static class77 worldServersDownload;
+   @Export("listFetcher")
+   static WorldListFetcher listFetcher;
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "Lfq;"

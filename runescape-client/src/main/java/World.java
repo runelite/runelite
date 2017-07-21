@@ -290,7 +290,7 @@ public class World {
             var3.scrollHeight = class83.intStack[BufferProvider.intStackSize + 1];
             class21.method156(var3);
             if(var4 != -1 && var3.type == 0) {
-               class77.method1465(Widget.widgets[var4 >> 16], var3, false);
+               WorldListFetcher.method1465(Widget.widgets[var4 >> 16], var3, false);
             }
 
             return 1;

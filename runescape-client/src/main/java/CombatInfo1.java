@@ -165,7 +165,7 @@ public class CombatInfo1 extends Node {
          class21.method156(var4);
          CombatInfoListHolder.clientInstance.method1252(var4);
          if(var3 != -1 && var4.type == 0) {
-            class77.method1465(Widget.widgets[var3 >> 16], var4, false);
+            WorldListFetcher.method1465(Widget.widgets[var3 >> 16], var4, false);
          }
 
          return 1;
@@ -178,7 +178,7 @@ public class CombatInfo1 extends Node {
          class21.method156(var4);
          CombatInfoListHolder.clientInstance.method1252(var4);
          if(var3 != -1 && var4.type == 0) {
-            class77.method1465(Widget.widgets[var3 >> 16], var4, false);
+            WorldListFetcher.method1465(Widget.widgets[var3 >> 16], var4, false);
          }
 
          return 1;

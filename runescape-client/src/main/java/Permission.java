@@ -401,7 +401,7 @@ public enum Permission implements RSEnum {
 
                var0.method4640(FontTypeFace.appendTags(var22), class92.loginWindowX + 180 - 70, var29, 16777215, 0);
                var29 += 15;
-               var0.method4640("Password: " + class77.method1472(class92.password), class92.loginWindowX + 180 - 108, var29, 16777215, 0);
+               var0.method4640("Password: " + WorldListFetcher.method1472(class92.password), class92.loginWindowX + 180 - 108, var29, 16777215, 0);
                var29 += 15;
             }
          }
@@ -456,7 +456,7 @@ public enum Permission implements RSEnum {
 
                   var0.method4640(FontTypeFace.appendTags(var22) + (class92.loginIndex2 == 0 & Client.gameCycle % 40 < 20?class8.getColTags(16776960) + "|":""), class92.loginWindowX + 180 - 70, var29, 16777215, 0);
                   var29 += 15;
-                  var0.method4640("Password: " + class77.method1472(class92.password) + (class92.loginIndex2 == 1 & Client.gameCycle % 40 < 20?class8.getColTags(16776960) + "|":""), class92.loginWindowX + 180 - 108, var29, 16777215, 0);
+                  var0.method4640("Password: " + WorldListFetcher.method1472(class92.password) + (class92.loginIndex2 == 1 & Client.gameCycle % 40 < 20?class8.getColTags(16776960) + "|":""), class92.loginWindowX + 180 - 108, var29, 16777215, 0);
                   var29 += 15;
                   var7 = class92.loginWindowX + 180 - 80;
                   var8 = 321;
@@ -702,7 +702,7 @@ public enum Permission implements RSEnum {
                byte var34 = 35;
                WorldMapType2.field522.method4941(var29, var30);
                var0.method4643("World" + " " + Client.world, var29 + var33 / 2, var30 + var34 / 2 - 2, 16777215, 0);
-               if(class265.worldServersDownload != null) {
+               if(class265.listFetcher != null) {
                   var1.method4643("Loading...", var29 + var33 / 2, var30 + var34 / 2 + 12, 16777215, 0);
                } else {
                   var1.method4643("Click to switch", var29 + var33 / 2, var30 + var34 / 2 + 12, 16777215, 0);

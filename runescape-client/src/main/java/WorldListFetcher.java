@@ -3,58 +3,64 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URL;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
+
+import net.runelite.mapping.*;
 
 @ObfuscatedName("bx")
-public class class77 {
+@Implements("WorldListFetcher")
+public class WorldListFetcher {
    @ObfuscatedName("fk")
    @Export("mapRegions")
    @Hook("mapRegionsChanged")
    static int[] mapRegions;
    @ObfuscatedName("i")
-   byte[] field1202;
+   @Export("sizeBytes")
+   byte[] sizeBytes;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   Task field1199;
+   @Export("task")
+   Task task;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = -129690293
    )
-   int field1206;
+   @Export("state")
+   int state;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       longValue = 1507070217419571009L
    )
-   long field1203;
+   @Export("timeout")
+   long timeout;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 543494229
    )
-   int field1201;
+   @Export("sizeOffset")
+   int sizeOffset;
    @ObfuscatedName("u")
-   DataInputStream field1208;
+   @Export("dis")
+   DataInputStream dis;
    @ObfuscatedName("m")
-   byte[] field1204;
+   @Export("payloadBytes")
+   byte[] payloadBytes;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -622563887
    )
-   int field1205;
+   @Export("payloadOffset")
+   int payloadOffset;
 
    @ObfuscatedSignature(
       signature = "(Lew;Ljava/net/URL;)V"
    )
-   class77(Signlink var1, URL var2) {
-      this.field1202 = new byte[4];
-      this.field1199 = var1.createURL(var2);
-      this.field1206 = 0;
-      this.field1203 = class157.currentTimeMs() + 30000L;
+   WorldListFetcher(Signlink var1, URL var2) {
+      this.sizeBytes = new byte[4];
+      this.task = var1.createURL(var2);
+      this.state = 0;
+      this.timeout = class157.currentTimeMs() + 30000L;
    }
 
    @ObfuscatedName("c")
@@ -62,34 +68,35 @@ public class class77 {
       signature = "(I)[B",
       garbageValue = "-1904326993"
    )
-   byte[] method1470() throws IOException {
-      if(class157.currentTimeMs() > this.field1203) {
+   @Export("fetch")
+   byte[] fetch() throws IOException {
+      if(class157.currentTimeMs() > this.timeout) {
          throw new IOException();
       } else {
-         if(this.field1206 == 0) {
-            if(this.field1199.status == 2) {
+         if(this.state == 0) {
+            if(this.task.status == 2) {
                throw new IOException();
             }
 
-            if(this.field1199.status == 1) {
-               this.field1208 = (DataInputStream)this.field1199.value;
-               this.field1206 = 1;
+            if(this.task.status == 1) {
+               this.dis = (DataInputStream)this.task.value;
+               this.state = 1;
             }
          }
 
-         if(this.field1206 == 1) {
-            this.field1201 += this.field1208.read(this.field1202, this.field1201, this.field1202.length - this.field1201);
-            if(this.field1201 == 4) {
-               int var1 = (new Buffer(this.field1202)).readInt();
-               this.field1204 = new byte[var1];
-               this.field1206 = 2;
+         if(this.state == 1) {
+            this.sizeOffset += this.dis.read(this.sizeBytes, this.sizeOffset, this.sizeBytes.length - this.sizeOffset);
+            if(this.sizeOffset == 4) {
+               int var1 = (new Buffer(this.sizeBytes)).readInt();
+               this.payloadBytes = new byte[var1];
+               this.state = 2;
             }
          }
 
-         if(this.field1206 == 2) {
-            this.field1205 += this.field1208.read(this.field1204, this.field1205, this.field1204.length - this.field1205);
-            if(this.field1204.length == this.field1205) {
-               return this.field1204;
+         if(this.state == 2) {
+            this.payloadOffset += this.dis.read(this.payloadBytes, this.payloadOffset, this.payloadBytes.length - this.payloadOffset);
+            if(this.payloadBytes.length == this.payloadOffset) {
+               return this.payloadBytes;
             }
          }
 

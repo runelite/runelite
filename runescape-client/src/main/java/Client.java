@@ -2416,7 +2416,7 @@ public final class Client extends GameEngine {
                   class21.method156(var83);
                   this.method1252(var83);
                   if(var83.type == 0) {
-                     class77.method1465(Widget.widgets[var2 >> 16], var83, false);
+                     WorldListFetcher.method1465(Widget.widgets[var2 >> 16], var83, false);
                   }
                }
 
@@ -3367,7 +3367,7 @@ public final class Client extends GameEngine {
                      var6 = class239.method4167(var2);
                      if(var6 != null) {
                         class21.method156(var6);
-                        class77.method1465(Widget.widgets[var6.id >>> 16], var6, true);
+                        WorldListFetcher.method1465(Widget.widgets[var6.id >>> 16], var6, true);
                      }
 
                      if(widgetRoot != -1) {

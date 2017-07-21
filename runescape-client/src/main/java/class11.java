@@ -152,7 +152,7 @@ public class class11 {
       }
 
       class7.method37();
-      class77.method1465(Widget.widgets[var0 >> 16], var4, false);
+      WorldListFetcher.method1465(Widget.widgets[var0 >> 16], var4, false);
       class157.method2907(var1);
       if(Client.widgetRoot != -1) {
          class208.method3824(Client.widgetRoot, 1);

@@ -651,7 +651,7 @@ public abstract class Actor extends Renderable {
 
             if(var7 != null) {
                var37 = new File(var7, "test.dat");
-               if(!class77.method1466(var37, true)) {
+               if(!WorldListFetcher.method1466(var37, true)) {
                   var7 = null;
                }
             }
@@ -662,7 +662,7 @@ public abstract class Actor extends Renderable {
             for(int var18 = 0; var18 < class155.field2210.length; ++var18) {
                for(int var19 = 0; var19 < class91.cacheLocations.length; ++var19) {
                   File var20 = new File(class91.cacheLocations[var19] + class155.field2210[var18] + File.separatorChar + var0 + File.separatorChar);
-                  if(var20.exists() && class77.method1466(new File(var20, "test.dat"), true)) {
+                  if(var20.exists() && WorldListFetcher.method1466(new File(var20, "test.dat"), true)) {
                      var7 = var20.toString();
                      var9 = true;
                      break label266;
@@ -733,7 +733,7 @@ public abstract class Actor extends Renderable {
 
             for(int var22 = 0; var22 < var38.length; ++var22) {
                File var23 = var38[var22];
-               if(!class77.method1466(var23, false)) {
+               if(!WorldListFetcher.method1466(var23, false)) {
                   ++var4;
                   continue label292;
                }

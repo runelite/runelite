@@ -490,7 +490,7 @@ public final class class41 {
             }
 
             if(var6.type == 0) {
-               class77.method1465(var0, var6, var4);
+               WorldListFetcher.method1465(var0, var6, var4);
             }
          }
       }
