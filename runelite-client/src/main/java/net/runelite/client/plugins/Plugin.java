@@ -28,6 +28,7 @@ import com.google.common.util.concurrent.AbstractIdleService;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Executor;
+import javax.swing.SwingUtilities;
 import net.runelite.client.ui.overlay.Overlay;
 
 public abstract class Plugin extends AbstractIdleService
@@ -54,6 +55,6 @@ public abstract class Plugin extends AbstractIdleService
 	@Override
 	protected Executor executor()
 	{
-		return r -> r.run();
+		return r -> SwingUtilities.invokeLater(r);
 	}
 }

@@ -55,14 +55,18 @@ public class AccountPlugin extends Plugin
 
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final ClientUI ui = runelite.getGui();
-	private final NavigationButton loginButton = new NavigationButton("Login");
-	private final NavigationButton logoutButton = new NavigationButton("Logout");
+
+	private NavigationButton loginButton;
+	private NavigationButton logoutButton;
 
 	private final AccountClient loginClient = new AccountClient();
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		loginButton = new NavigationButton("Login");
+		logoutButton = new NavigationButton("Logout");
+
 		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("login_icon.png")));
 		loginButton.getButton().setIcon(icon);
 

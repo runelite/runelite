@@ -38,13 +38,16 @@ public class ConfigPlugin extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigPlugin.class);
 
-	private final NavigationButton navButton = new NavigationButton("Configuration");
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final ClientUI ui = runelite.getGui();
+
+	private NavigationButton navButton;
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		navButton = new NavigationButton("Configuration");
+
 		navButton.getButton().addActionListener(this::setPluginPanel);
 
 		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("config_icon.png")));

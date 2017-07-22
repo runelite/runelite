@@ -28,19 +28,22 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.Objects;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class ClientUI extends JFrame
 {
+	private static final Logger logger = LoggerFactory.getLogger(ClientUI.class);
+
 	private static final int PANEL_WIDTH = 805;
 	private static final int PANEL_HEIGHT = 541;
 	private static final int EXPANDED_WIDTH = PANEL_WIDTH + PluginPanel.PANEL_WIDTH;
@@ -51,7 +54,7 @@ public final class ClientUI extends JFrame
 	private NavigationPanel navigationPanel;
 	private PluginPanel pluginPanel;
 
-	public ClientUI() throws Exception
+	public ClientUI()
 	{
 		init();
 		pack();
@@ -62,8 +65,10 @@ public final class ClientUI extends JFrame
 		setVisible(true);
 	}
 
-	private void init() throws Exception
+	private void init()
 	{
+		assert SwingUtilities.isEventDispatchThread();
+
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 
@@ -76,19 +81,21 @@ public final class ClientUI extends JFrame
 			}
 		});
 
-		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-		try
-		{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}
-		catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ignored)
-		{
-		}
-
 		container = new JPanel();
 		container.setLayout(new BorderLayout(0, 0));
 
-		panel = new ClientPanel(!RuneLite.getOptions().has("no-rs"));
+		panel = new ClientPanel();
+		if (!RuneLite.getOptions().has("no-rs"))
+		{
+			try
+			{
+				panel.loadRs();
+			}
+			catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException ex)
+			{
+				logger.warn("Error loading RS!", ex);
+			}
+		}
 		container.add(panel, BorderLayout.CENTER);
 
 		navContainer = new JPanel();
