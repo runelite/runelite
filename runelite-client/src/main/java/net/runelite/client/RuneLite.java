@@ -41,6 +41,7 @@ import java.io.InputStreamReader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
+import javax.swing.SwingUtilities;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
@@ -118,9 +119,12 @@ public class RuneLite
 
 	public void start() throws Exception
 	{
-		gui = new ClientUI();
+		SwingUtilities.invokeAndWait(() ->
+		{
+			gui = new ClientUI();
 
-		setupTrayIcon();
+			setupTrayIcon();
+		});
 
 		configManager.load();
 

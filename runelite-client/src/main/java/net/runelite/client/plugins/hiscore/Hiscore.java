@@ -46,12 +46,15 @@ public class Hiscore extends Plugin
 	private final RuneLite runeLite = RuneLite.getRunelite();
 	private final ClientUI ui = runeLite.getGui();
 
-	private final NavigationButton navButton = new NavigationButton("Hiscore");
-	private final HiscorePanel hiscorePanel = new HiscorePanel(runeLite);
+	private NavigationButton navButton;
+	private HiscorePanel hiscorePanel;
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		navButton = new NavigationButton("Hiscore");
+		hiscorePanel = new HiscorePanel(runeLite);
+
 		navButton.getButton().addActionListener(this::setPluginPanel);
 
 		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("hiscore.gif")));

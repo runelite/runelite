@@ -39,8 +39,8 @@ import net.runelite.client.ui.overlay.Overlay;
 public class DevTools extends Plugin
 {
 	private final DevToolsOverlay overlay = new DevToolsOverlay(this);
-	private final DevToolsPanel panel = new DevToolsPanel(this);
-	private final NavigationButton navButton = new NavigationButton("DevTools");
+	private DevToolsPanel panel;
+	private NavigationButton navButton;
 	private final ClientUI ui = RuneLite.getRunelite().getGui();
 
 	private boolean togglePlayers;
@@ -61,6 +61,9 @@ public class DevTools extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		panel = new DevToolsPanel(this);
+		navButton = new NavigationButton("DevTools");
+
 		navButton.getButton().addActionListener(this::setPluginPanel);
 
 		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("devtools_icon.png")));
