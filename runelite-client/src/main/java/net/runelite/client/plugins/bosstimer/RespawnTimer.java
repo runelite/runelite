@@ -24,26 +24,21 @@
  */
 package net.runelite.client.plugins.bosstimer;
 
-import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import net.runelite.client.ui.overlay.infobox.Timer;
 
-public class RespawnTimer
+class RespawnTimer extends Timer
 {
 	private final Boss boss;
-	private final Instant respawnTime;
 
-	public RespawnTimer(Boss boss, Instant respawnTime)
+	public RespawnTimer(Boss boss)
 	{
+		super(boss.getSpawnTime().toMillis(), ChronoUnit.MILLIS, boss.getImage());
 		this.boss = boss;
-		this.respawnTime = respawnTime;
 	}
 
 	public Boss getBoss()
 	{
 		return boss;
-	}
-
-	public Instant getRespawnTime()
-	{
-		return respawnTime;
 	}
 }

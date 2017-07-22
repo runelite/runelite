@@ -25,18 +25,93 @@
  */
 package net.runelite.client.plugins.bosstimer;
 
-public class Boss
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
+import javax.imageio.ImageIO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+enum Boss
 {
-	private String name;
-	private int spawnTime;
+	GENERAL_GRAARDOR("General Graardor", 90, ChronoUnit.SECONDS, "bando"),
+	KRIL_TSUTSAROTH("K'ril Tsutsaroth", 90, ChronoUnit.SECONDS, "zammy"),
+	KREEARRA("Kree'arra", 90, ChronoUnit.SECONDS, "arma"),
+	COMMANDER_ZILYANA("Commander Zilyana", 90, ChronoUnit.SECONDS, "sara"),
+	CALLISTO("Callisto", 30, ChronoUnit.SECONDS, "callisto"),
+	CHAOS_FANATIC("Chaos fanatic", 30, ChronoUnit.SECONDS, "chaos_fanatic"),
+	CRAZY_ARCHAEOLOGIST("Crazy archaeologist", 30, ChronoUnit.SECONDS, "crazy_arch"),
+	KING_BLACK_DRAGON("King Black Dragon", 10, ChronoUnit.SECONDS, "kbd"),
+	SCORPIA("Scorpia", 10, ChronoUnit.SECONDS, "scorpia"),
+	VENENATIS("Venenatis", 30, ChronoUnit.SECONDS, "venenatis"),
+	VETION("Vet'ion", 30, ChronoUnit.SECONDS, "vetion"),
+	DAGANNOTH_PRIME("Dagannoth Prime", 90, ChronoUnit.SECONDS, "prime"),
+	DAGANNOTH_REX("Dagannoth Rex", 90, ChronoUnit.SECONDS, "rex"),
+	DAGANNOTH_SUPREME("Dagannoth Supreme", 90, ChronoUnit.SECONDS, "supreme"),
+	CORPOREAL_BEAST("Corporeal Beast", 30, ChronoUnit.SECONDS, "corp"),
+	GIANT_MOLE("Giant Mole", 10, ChronoUnit.SECONDS, "mole");
+
+	private static final Logger logger = LoggerFactory.getLogger(Boss.class);
+
+	private static final Map<String, Boss> bosses = new HashMap<>();
+
+	private final String name;
+	private final Duration spawnTime;
+	private final String imageResource;
+
+	private BufferedImage image;
+
+	static
+	{
+		for (Boss boss : values())
+		{
+			bosses.put(boss.getName(), boss);
+		}
+	}
+
+	private Boss(String name, long period, ChronoUnit unit, String imageResource)
+	{
+		this.name = name;
+		this.spawnTime = Duration.of(period, unit);
+		this.imageResource = imageResource;
+	}
 
 	public String getName()
 	{
 		return name;
 	}
 
-	public int getSpawnTime()
+	public Duration getSpawnTime()
 	{
 		return spawnTime;
+	}
+
+	public BufferedImage getImage()
+	{
+		if (image != null)
+		{
+			return image;
+		}
+
+		InputStream in = Boss.class.getResourceAsStream(imageResource + ".png");
+		try
+		{
+			image = ImageIO.read(in);
+		}
+		catch (IOException ex)
+		{
+			logger.warn("unable to load image", ex);
+		}
+
+		return image;
+	}
+
+	public static Boss find(String name)
+	{
+		return bosses.get(name);
 	}
 }
