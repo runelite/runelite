@@ -260,7 +260,7 @@ public class class34 {
       signature = "(IILam;[Ljx;I)V",
       garbageValue = "-1238454493"
    )
-   void method392(int var1, int var2, class28 var3, ModIcon[] var4) {
+   void method392(int var1, int var2, class28 var3, IndexedSprite[] var4) {
       for(int var5 = 0; var5 < var3.field405; ++var5) {
          class31[] var6 = var3.field397[var5][var1][var2];
          if(var6 != null && var6.length != 0) {
@@ -400,7 +400,7 @@ public class class34 {
       signature = "(IILam;Laq;[Ljx;I)V",
       garbageValue = "-1203149734"
    )
-   void method360(int var1, int var2, class28 var3, class46 var4, ModIcon[] var5) {
+   void method360(int var1, int var2, class28 var3, class46 var4, IndexedSprite[] var5) {
       this.method405(var1, var2, var3);
       this.method392(var1, var2, var3, var5);
    }
@@ -736,7 +736,7 @@ public class class34 {
       signature = "(Laq;[Ljx;I)V",
       garbageValue = "2040435981"
    )
-   void method363(class46 var1, ModIcon[] var2) {
+   void method363(class46 var1, IndexedSprite[] var2) {
       Iterator var3 = this.field467.iterator();
 
       class45 var4;
@@ -772,7 +772,7 @@ public class class34 {
       signature = "(Laq;[Lak;[Ljx;B)V",
       garbageValue = "-111"
    )
-   void method431(class46 var1, class34[] var2, ModIcon[] var3) {
+   void method431(class46 var1, class34[] var2, IndexedSprite[] var3) {
       int var4;
       int var5;
       for(var4 = 0; var4 < 64; ++var4) {
@@ -968,7 +968,7 @@ public class class34 {
       signature = "(ILaq;[Lak;[Ljx;B)Z",
       garbageValue = "6"
    )
-   boolean method354(int var1, class46 var2, class34[] var3, ModIcon[] var4) {
+   boolean method354(int var1, class46 var2, class34[] var3, IndexedSprite[] var4) {
       if(!this.method357(var1)) {
          return false;
       } else if(this.field466 == null && this.field467.isEmpty()) {

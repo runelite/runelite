@@ -31,7 +31,7 @@ public class RenderOverview {
    @ObfuscatedSignature(
       signature = "[Ljx;"
    )
-   ModIcon[] field3807;
+   IndexedSprite[] field3807;
    @ObfuscatedName("ag")
    boolean field3829;
    @ObfuscatedName("an")
@@ -433,7 +433,7 @@ public class RenderOverview {
       signature = "(Lip;Ljt;Ljava/util/HashMap;[Ljx;I)V",
       garbageValue = "-1209745074"
    )
-   public void method5088(IndexDataBase var1, Font var2, HashMap var3, ModIcon[] var4) {
+   public void method5088(IndexDataBase var1, Font var2, HashMap var3, IndexedSprite[] var4) {
       this.field3807 = var4;
       this.field3801 = var1;
       this.field3823 = var2;

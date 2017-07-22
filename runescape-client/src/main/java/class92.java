@@ -119,17 +119,17 @@ public class class92 {
       signature = "Ljx;"
    )
    @Export("logoSprite")
-   static ModIcon logoSprite;
+   static IndexedSprite logoSprite;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Ljx;"
    )
-   static ModIcon field1396;
+   static IndexedSprite field1396;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Ljx;"
    )
-   static ModIcon field1397;
+   static IndexedSprite field1397;
    @ObfuscatedName("dh")
    @ObfuscatedSignature(
       signature = "Lix;"

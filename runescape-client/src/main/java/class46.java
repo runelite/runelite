@@ -639,12 +639,12 @@ public class class46 {
       signature = "(Lfp;Lgk;B)Lgk;",
       garbageValue = "0"
    )
-   static final class186 method629(Buffer var0, class186 var1) {
+   static final IterableHashTable method629(Buffer var0, IterableHashTable var1) {
       int var2 = var0.readUnsignedByte();
       int var3;
       if(var1 == null) {
          var3 = class43.method593(var2);
-         var1 = new class186(var3);
+         var1 = new IterableHashTable(var3);
       }
 
       for(var3 = 0; var3 < var2; ++var3) {
@@ -652,12 +652,12 @@ public class class46 {
          int var5 = var0.read24BitInt();
          Object var6;
          if(var4) {
-            var6 = new class185(var0.readString());
+            var6 = new ObjectNode(var0.readString());
          } else {
-            var6 = new WidgetConfig(var0.readInt());
+            var6 = new IntegerNode(var0.readInt());
          }
 
-         var1.method3440((Node)var6, (long)var5);
+         var1.put((Node)var6, (long)var5);
       }
 
       return var1;

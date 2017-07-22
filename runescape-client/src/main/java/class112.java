@@ -150,12 +150,12 @@ public class class112 {
       signature = "(Lgk;III)I",
       garbageValue = "1670776060"
    )
-   static int method2023(class186 var0, int var1, int var2) {
+   static int method2023(IterableHashTable var0, int var1, int var2) {
       if(var0 == null) {
          return var2;
       } else {
-         WidgetConfig var3 = (WidgetConfig)var0.method3439((long)var1);
-         return var3 == null?var2:var3.config;
+         IntegerNode var3 = (IntegerNode)var0.get((long)var1);
+         return var3 == null?var2:var3.value;
       }
    }
 
@@ -243,11 +243,11 @@ public class class112 {
       signature = "(I)[Ljx;",
       garbageValue = "1539977190"
    )
-   static ModIcon[] method2032() {
-      ModIcon[] var0 = new ModIcon[class286.field3785];
+   static IndexedSprite[] method2032() {
+      IndexedSprite[] var0 = new IndexedSprite[class286.field3785];
 
       for(int var1 = 0; var1 < class286.field3785; ++var1) {
-         ModIcon var2 = var0[var1] = new ModIcon();
+         IndexedSprite var2 = var0[var1] = new IndexedSprite();
          var2.width = class286.field3780;
          var2.originalHeight = class286.field3781;
          var2.offsetX = class286.field3782[var1];

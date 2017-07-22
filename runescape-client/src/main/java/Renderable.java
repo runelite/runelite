@@ -60,9 +60,9 @@ public abstract class Renderable extends CacheableNode {
    static final void drawWidget(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       if(class9.loadWidget(var0)) {
          class24.field346 = null;
-         class77.gameDraw(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
+         WorldListFetcher.gameDraw(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
          if(class24.field346 != null) {
-            class77.gameDraw(class24.field346, -1412584499, var1, var2, var3, var4, class29.field410, GZipDecompressor.field2293, var7);
+            WorldListFetcher.gameDraw(class24.field346, -1412584499, var1, var2, var3, var4, class29.field410, GZipDecompressor.field2293, var7);
             class24.field346 = null;
          }
 

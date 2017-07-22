@@ -271,10 +271,10 @@ final class class17 implements Comparator {
                                                                                                                                                                            throw new IllegalStateException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class186 var83 = var3.switches[var56[var30]];
-                                                                                                                                                                        WidgetConfig var87 = (WidgetConfig)var83.method3439((long)class83.intStack[--BufferProvider.intStackSize]);
+                                                                                                                                                                        IterableHashTable var83 = var3.switches[var56[var30]];
+                                                                                                                                                                        IntegerNode var87 = (IntegerNode)var83.get((long)class83.intStack[--BufferProvider.intStackSize]);
                                                                                                                                                                         if(var87 != null) {
-                                                                                                                                                                           var30 += var87.config;
+                                                                                                                                                                           var30 += var87.value;
                                                                                                                                                                         }
                                                                                                                                                                      }
                                                                                                                                                                   } else {
@@ -1665,7 +1665,7 @@ final class class17 implements Comparator {
                                                                                                                   var16 = class83.intStack[--BufferProvider.intStackSize];
                                                                                                                   var17 = class83.intStack;
                                                                                                                   var18 = ++BufferProvider.intStackSize - 1;
-                                                                                                                  MessageNode var99 = (MessageNode)class98.field1495.method3439((long)var16);
+                                                                                                                  MessageNode var99 = (MessageNode)class98.field1495.get((long)var16);
                                                                                                                   if(var99 == null) {
                                                                                                                      var35 = -1;
                                                                                                                   } else if(var99.next == class98.field1493.field2456) {

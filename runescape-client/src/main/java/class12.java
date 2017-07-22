@@ -161,7 +161,7 @@ final class class12 implements Comparator {
          class67.field816 = new int[256];
          class92.field1406 = new int['耀'];
          class92.field1409 = new int['耀'];
-         class20.method151((ModIcon)null);
+         class20.method151((IndexedSprite)null);
          class24.field348 = new int['耀'];
          CombatInfo1.field1271 = new int['耀'];
          if(var2) {

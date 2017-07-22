@@ -3,8 +3,8 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("jx")
-@Implements("ModIcon")
-public final class ModIcon extends Rasterizer2D {
+@Implements("IndexedSprite")
+public final class IndexedSprite extends Rasterizer2D {
    @ObfuscatedName("g")
    @Export("offsetX")
    public int offsetX;

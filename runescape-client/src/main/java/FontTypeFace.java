@@ -40,7 +40,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
       signature = "[Ljx;"
    )
    @Export("modIcons")
-   public static ModIcon[] modIcons;
+   public static IndexedSprite[] modIcons;
    @ObfuscatedName("o")
    int[] field3632;
    @ObfuscatedName("s")
@@ -314,7 +314,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
                         if(var8.startsWith("img=")) {
                            try {
                               var9 = GameObject.method2836(var8.substring(4));
-                              ModIcon var12 = modIcons[var9];
+                              IndexedSprite var12 = modIcons[var9];
                               var12.method4941(var2, var3 + this.verticalSpace - var12.originalHeight);
                               var2 += var12.width;
                               var5 = -1;
@@ -492,7 +492,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
 
                               ++var8;
                               var14 = GameObject.method2836(var11.substring(4));
-                              ModIcon var17 = modIcons[var14];
+                              IndexedSprite var17 = modIcons[var14];
                               var17.method4941(var12 + var2, var13 + (var3 + this.verticalSpace - var17.originalHeight));
                               var2 += var17.width;
                               var7 = -1;

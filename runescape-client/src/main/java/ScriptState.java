@@ -58,7 +58,7 @@ public class ScriptState {
          class98.method1769(var2);
       }
 
-      for(WidgetConfig var4 = (WidgetConfig)Client.widgetFlags.method3492(); var4 != null; var4 = (WidgetConfig)Client.widgetFlags.method3493()) {
+      for(IntegerNode var4 = (IntegerNode)Client.widgetFlags.method3492(); var4 != null; var4 = (IntegerNode)Client.widgetFlags.method3493()) {
          if((var4.hash >> 48 & 65535L) == (long)var2) {
             var4.unlink();
          }

@@ -162,13 +162,13 @@ public class Friend {
 
          for(var7 = 0; var7 < var6; ++var7) {
             var8 = var2.readUnsignedShort();
-            class186 var9 = new class186(class43.method593(var8));
+            IterableHashTable var9 = new IterableHashTable(class43.method593(var8));
             var1.switches[var7] = var9;
 
             while(var8-- > 0) {
                int var10 = var2.readInt();
                int var11 = var2.readInt();
-               var9.method3440(new WidgetConfig(var11), (long)var10);
+               var9.put(new IntegerNode(var11), (long)var10);
             }
          }
       }

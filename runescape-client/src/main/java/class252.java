@@ -17,7 +17,7 @@ public class class252 extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lgk;"
    )
-   class186 field3367;
+   IterableHashTable field3367;
 
    static {
       field3368 = new NodeCache(64);

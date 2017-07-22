@@ -173,7 +173,7 @@ public final class FileOnDisk {
       }
 
       MessageNode var5 = var4.addMessage(var0, var1, var2, var3);
-      class98.field1495.method3440(var5, (long)var5.id);
+      class98.field1495.put(var5, (long)var5.id);
       class98.field1493.method3616(var5);
       Client.chatCycle = Client.cycleCntr;
    }

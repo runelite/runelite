@@ -44,7 +44,7 @@ public class Script extends CacheableNode {
       signature = "[Lgk;"
    )
    @Export("switches")
-   class186[] switches;
+   IterableHashTable[] switches;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -75435077
@@ -61,8 +61,8 @@ public class Script extends CacheableNode {
       signature = "(II)[Lgk;",
       garbageValue = "-1652382305"
    )
-   class186[] method1781(int var1) {
-      return new class186[var1];
+   IterableHashTable[] method1781(int var1) {
+      return new IterableHashTable[var1];
    }
 
    @ObfuscatedName("m")

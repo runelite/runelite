@@ -99,8 +99,8 @@ public class class40 {
          for(var1 = 0; var1 < SceneTilePaint.field2003.length; ++var1) {
             byte[] var2 = Huffman.field2286[var1];
             if(var2 != null) {
-               var3 = (class77.mapRegions[var1] >> 8) * 64 - class21.baseX;
-               var4 = (class77.mapRegions[var1] & 255) * 64 - class164.baseY;
+               var3 = (WorldListFetcher.mapRegions[var1] >> 8) * 64 - class21.baseX;
+               var4 = (WorldListFetcher.mapRegions[var1] & 255) * 64 - class164.baseY;
                if(Client.isDynamicRegion) {
                   var3 = 10;
                   var4 = 10;
@@ -220,8 +220,8 @@ public class class40 {
             if(!Client.isDynamicRegion) {
                byte[] var50;
                for(var49 = 0; var49 < var1; ++var49) {
-                  var3 = (class77.mapRegions[var49] >> 8) * 64 - class21.baseX;
-                  var4 = (class77.mapRegions[var49] & 255) * 64 - class164.baseY;
+                  var3 = (WorldListFetcher.mapRegions[var49] >> 8) * 64 - class21.baseX;
+                  var4 = (WorldListFetcher.mapRegions[var49] & 255) * 64 - class164.baseY;
                   var50 = SceneTilePaint.field2003[var49];
                   if(var50 != null) {
                      class140.method2791();
@@ -230,8 +230,8 @@ public class class40 {
                }
 
                for(var49 = 0; var49 < var1; ++var49) {
-                  var3 = (class77.mapRegions[var49] >> 8) * 64 - class21.baseX;
-                  var4 = (class77.mapRegions[var49] & 255) * 64 - class164.baseY;
+                  var3 = (WorldListFetcher.mapRegions[var49] >> 8) * 64 - class21.baseX;
+                  var4 = (WorldListFetcher.mapRegions[var49] & 255) * 64 - class164.baseY;
                   var50 = SceneTilePaint.field2003[var49];
                   if(var50 == null && WallObject.field2088 < 800) {
                      class140.method2791();
@@ -244,8 +244,8 @@ public class class40 {
                for(var49 = 0; var49 < var1; ++var49) {
                   byte[] var55 = Huffman.field2286[var49];
                   if(var55 != null) {
-                     var4 = (class77.mapRegions[var49] >> 8) * 64 - class21.baseX;
-                     var5 = (class77.mapRegions[var49] & 255) * 64 - class164.baseY;
+                     var4 = (WorldListFetcher.mapRegions[var49] >> 8) * 64 - class21.baseX;
+                     var5 = (WorldListFetcher.mapRegions[var49] & 255) * 64 - class164.baseY;
                      class140.method2791();
                      GameEngine.method935(var55, var4, var5, class19.region, Client.collisionMaps);
                   }
@@ -295,8 +295,8 @@ public class class40 {
                            var10 = var6 >> 3 & 2047;
                            var11 = (var9 / 8 << 8) + var10 / 8;
 
-                           for(var65 = 0; var65 < class77.mapRegions.length; ++var65) {
-                              if(class77.mapRegions[var65] == var11 && SceneTilePaint.field2003[var65] != null) {
+                           for(var65 = 0; var65 < WorldListFetcher.mapRegions.length; ++var65) {
+                              if(WorldListFetcher.mapRegions[var65] == var11 && SceneTilePaint.field2003[var65] != null) {
                                  byte[] var52 = SceneTilePaint.field2003[var65];
                                  var14 = var3 * 8;
                                  var15 = var4 * 8;
@@ -391,8 +391,8 @@ public class class40 {
                            var9 = var5 >> 3 & 2047;
                            var10 = (var51 / 8 << 8) + var9 / 8;
 
-                           for(var11 = 0; var11 < class77.mapRegions.length; ++var11) {
-                              if(class77.mapRegions[var11] == var10 && Huffman.field2286[var11] != null) {
+                           for(var11 = 0; var11 < WorldListFetcher.mapRegions.length; ++var11) {
+                              if(WorldListFetcher.mapRegions[var11] == var10 && Huffman.field2286[var11] != null) {
                                  byte[] var56 = Huffman.field2286[var11];
                                  var13 = var3 * 8;
                                  var14 = var4 * 8;

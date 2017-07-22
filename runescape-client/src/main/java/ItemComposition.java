@@ -66,7 +66,7 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lgk;"
    )
-   class186 field3512;
+   IterableHashTable field3512;
    @ObfuscatedName("ah")
    @ObfuscatedGetter(
       intValue = -1500513995

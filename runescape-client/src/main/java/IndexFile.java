@@ -278,7 +278,7 @@ public final class IndexFile {
       signature = "(Lip;IIB)[Ljx;",
       garbageValue = "4"
    )
-   static ModIcon[] method2942(IndexDataBase var0, int var1, int var2) {
+   static IndexedSprite[] method2942(IndexDataBase var0, int var1, int var2) {
       return !ISAACCipher.method3381(var0, var1, var2)?null:class112.method2032();
    }
 }

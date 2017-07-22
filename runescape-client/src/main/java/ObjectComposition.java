@@ -46,7 +46,7 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lgk;"
    )
-   class186 field3459;
+   IterableHashTable field3459;
    @ObfuscatedName("ax")
    @ObfuscatedGetter(
       intValue = -561417545

@@ -131,7 +131,7 @@ public class class261 {
       Client.isMenuOpen = false;
       class82.method1564(0);
       class98.chatLineMap.clear();
-      class98.field1495.method3455();
+      class98.field1495.clear();
       class98.field1493.method3613();
       class98.field1496 = 0;
       Client.itemSelectionState = 0;

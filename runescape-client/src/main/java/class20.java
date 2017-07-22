@@ -20,7 +20,7 @@ public class class20 {
       signature = "(Ljx;I)V",
       garbageValue = "1654627615"
    )
-   static final void method151(ModIcon var0) {
+   static final void method151(IndexedSprite var0) {
       short var1 = 256;
 
       int var2;

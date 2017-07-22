@@ -28,7 +28,7 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lgk;"
    )
-   class186 field3562;
+   IterableHashTable field3562;
    @ObfuscatedName("al")
    @ObfuscatedGetter(
       intValue = 488176719

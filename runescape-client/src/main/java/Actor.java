@@ -651,7 +651,7 @@ public abstract class Actor extends Renderable {
 
             if(var7 != null) {
                var37 = new File(var7, "test.dat");
-               if(!class77.method1466(var37, true)) {
+               if(!WorldListFetcher.method1466(var37, true)) {
                   var7 = null;
                }
             }
@@ -662,7 +662,7 @@ public abstract class Actor extends Renderable {
             for(int var18 = 0; var18 < class155.field2210.length; ++var18) {
                for(int var19 = 0; var19 < class91.cacheLocations.length; ++var19) {
                   File var20 = new File(class91.cacheLocations[var19] + class155.field2210[var18] + File.separatorChar + var0 + File.separatorChar);
-                  if(var20.exists() && class77.method1466(new File(var20, "test.dat"), true)) {
+                  if(var20.exists() && WorldListFetcher.method1466(new File(var20, "test.dat"), true)) {
                      var7 = var20.toString();
                      var9 = true;
                      break label266;
@@ -733,7 +733,7 @@ public abstract class Actor extends Renderable {
 
             for(int var22 = 0; var22 < var38.length; ++var22) {
                File var23 = var38[var22];
-               if(!class77.method1466(var23, false)) {
+               if(!WorldListFetcher.method1466(var23, false)) {
                   ++var4;
                   continue label292;
                }
@@ -812,7 +812,7 @@ public abstract class Actor extends Renderable {
          var12 = var5 >> 14 & 32767;
          ObjectComposition var13 = class169.getObjectDefinition(var12);
          if(var13.mapSceneId != -1) {
-            ModIcon var14 = DynamicObject.field1519[var13.mapSceneId];
+            IndexedSprite var14 = DynamicObject.field1519[var13.mapSceneId];
             if(var14 != null) {
                int var15 = (var13.sizeX * 4 - var14.originalWidth) / 2;
                int var16 = (var13.sizeY * 4 - var14.height) / 2;
@@ -890,7 +890,7 @@ public abstract class Actor extends Renderable {
          ObjectComposition var23 = class169.getObjectDefinition(var9);
          int var18;
          if(var23.mapSceneId != -1) {
-            ModIcon var17 = DynamicObject.field1519[var23.mapSceneId];
+            IndexedSprite var17 = DynamicObject.field1519[var23.mapSceneId];
             if(var17 != null) {
                var12 = (var23.sizeX * 4 - var17.originalWidth) / 2;
                var18 = (var23.sizeY * 4 - var17.height) / 2;
@@ -923,7 +923,7 @@ public abstract class Actor extends Renderable {
          var6 = var5 >> 14 & 32767;
          ObjectComposition var19 = class169.getObjectDefinition(var6);
          if(var19.mapSceneId != -1) {
-            ModIcon var20 = DynamicObject.field1519[var19.mapSceneId];
+            IndexedSprite var20 = DynamicObject.field1519[var19.mapSceneId];
             if(var20 != null) {
                var9 = (var19.sizeX * 4 - var20.originalWidth) / 2;
                int var21 = (var19.sizeY * 4 - var20.height) / 2;

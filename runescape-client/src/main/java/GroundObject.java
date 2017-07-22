@@ -70,7 +70,7 @@ public final class GroundObject {
             }
          }
 
-         class77.mapRegions = new int[var3];
+         WorldListFetcher.mapRegions = new int[var3];
          class66.field807 = new int[var3];
          class222.landRegionFielIds = new int[var3];
          SceneTilePaint.field2003 = new byte[var3][];
@@ -90,7 +90,7 @@ public final class GroundObject {
             for(var6 = (var2 - 6) / 8; var6 <= (var2 + 6) / 8; ++var6) {
                var7 = var6 + (var5 << 8);
                if(!var15 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
-                  class77.mapRegions[var3] = var7;
+                  WorldListFetcher.mapRegions[var3] = var7;
                   class66.field807[var3] = ISAACCipher.indexMaps.getFile("m" + var5 + "_" + var6);
                   class222.landRegionFielIds[var3] = ISAACCipher.indexMaps.getFile("l" + var5 + "_" + var6);
                   ++var3;
@@ -129,7 +129,7 @@ public final class GroundObject {
             }
          }
 
-         class77.mapRegions = new int[var4];
+         WorldListFetcher.mapRegions = new int[var4];
          class66.field807 = new int[var4];
          class222.landRegionFielIds = new int[var4];
          SceneTilePaint.field2003 = new byte[var4][];
@@ -147,14 +147,14 @@ public final class GroundObject {
 
                      int var12;
                      for(var12 = 0; var12 < var4; ++var12) {
-                        if(class77.mapRegions[var12] == var11) {
+                        if(WorldListFetcher.mapRegions[var12] == var11) {
                            var11 = -1;
                            break;
                         }
                      }
 
                      if(var11 != -1) {
-                        class77.mapRegions[var4] = var11;
+                        WorldListFetcher.mapRegions[var4] = var11;
                         var12 = var11 >> 8 & 255;
                         int var13 = var11 & 255;
                         class66.field807[var4] = ISAACCipher.indexMaps.getFile("m" + var12 + "_" + var13);

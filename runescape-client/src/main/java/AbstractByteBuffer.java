@@ -18,7 +18,7 @@ public abstract class AbstractByteBuffer {
       signature = "[Ljx;"
    )
    @Export("titlemuteSprite")
-   static ModIcon[] titlemuteSprite;
+   static IndexedSprite[] titlemuteSprite;
 
    static {
       field2376 = false;

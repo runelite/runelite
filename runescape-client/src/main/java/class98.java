@@ -24,7 +24,7 @@ public class class98 {
    @ObfuscatedSignature(
       signature = "Lgk;"
    )
-   static final class186 field1495;
+   static final IterableHashTable field1495;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lgm;"
@@ -33,7 +33,7 @@ public class class98 {
 
    static {
       chatLineMap = new HashMap();
-      field1495 = new class186(1024);
+      field1495 = new IterableHashTable(1024);
       field1493 = new class201();
       field1496 = 0;
    }

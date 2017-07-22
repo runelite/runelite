@@ -16,7 +16,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
    @ObfuscatedSignature(
       signature = "Ljx;"
    )
-   static ModIcon field413;
+   static IndexedSprite field413;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 968476905

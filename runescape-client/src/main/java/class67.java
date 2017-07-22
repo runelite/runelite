@@ -61,10 +61,10 @@ public class class67 extends class196 {
    @Export("loadWorlds")
    static boolean loadWorlds() {
       try {
-         if(class265.worldServersDownload == null) {
-            class265.worldServersDownload = new class77(GameEngine.taskManager, new URL(class220.field2783));
+         if(class265.listFetcher == null) {
+            class265.listFetcher = new WorldListFetcher(GameEngine.taskManager, new URL(class220.field2783));
          } else {
-            byte[] var0 = class265.worldServersDownload.method1470();
+            byte[] var0 = class265.listFetcher.fetch();
             if(var0 != null) {
                Buffer var1 = new Buffer(var0);
                World.worldCount = var1.readUnsignedShort();
@@ -82,13 +82,13 @@ public class class67 extends class196 {
                }
 
                class1.method1(class64.worldList, 0, class64.worldList.length - 1, World.field1281, World.field1285);
-               class265.worldServersDownload = null;
+               class265.listFetcher = null;
                return true;
             }
          }
       } catch (Exception var4) {
          var4.printStackTrace();
-         class265.worldServersDownload = null;
+         class265.listFetcher = null;
       }
 
       return false;
