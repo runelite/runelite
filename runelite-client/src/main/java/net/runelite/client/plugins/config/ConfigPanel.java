@@ -52,8 +52,8 @@ public class ConfigPanel extends PluginPanel
 	private static final Logger logger = LoggerFactory.getLogger(ConfigPanel.class);
 
 	private static final EmptyBorder BORDER_PADDING = new EmptyBorder(6, 6, 6, 6);
-	private static final int TEXT_FIELD_WIDTH = 12;
-	private static final int SPINNER_FIELD_WIDTH = 10;
+	private static final int TEXT_FIELD_WIDTH = 7;
+	private static final int SPINNER_FIELD_WIDTH = 6;
 
 	private final RuneLite runelite = RuneLite.getRunelite();
 

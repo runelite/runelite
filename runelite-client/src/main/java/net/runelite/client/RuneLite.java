@@ -24,7 +24,6 @@
  */
 package net.runelite.client;
 
-import net.runelite.client.game.ItemManager;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.gson.Gson;
@@ -41,14 +40,19 @@ import java.io.InputStreamReader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.account.AccountSession;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.task.Scheduler;
@@ -56,6 +60,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.http.api.account.AccountClient;
+import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -121,6 +126,18 @@ public class RuneLite
 	{
 		SwingUtilities.invokeAndWait(() ->
 		{
+			JFrame.setDefaultLookAndFeelDecorated(true);
+			JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
+			try
+			{
+				UIManager.setLookAndFeel(new SubstanceGraphiteLookAndFeel());
+			}
+			catch (UnsupportedLookAndFeelException ex)
+			{
+				logger.warn("unable to set look and feel", ex);
+			}
+
 			gui = new ClientUI();
 
 			setupTrayIcon();
