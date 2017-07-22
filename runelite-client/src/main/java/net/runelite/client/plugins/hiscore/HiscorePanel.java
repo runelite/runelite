@@ -92,8 +92,7 @@ public class HiscorePanel extends PluginPanel
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
 		setVisible(true);
 
-		input = new JTextField();
-		input.setColumns(16);
+		input = new JTextField(11);
 		add(input);
 
 		lookupButton = new JButton("Lookup");
