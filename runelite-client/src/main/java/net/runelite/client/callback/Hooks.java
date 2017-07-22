@@ -26,8 +26,6 @@ package net.runelite.client.callback;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
-import javax.swing.SwingUtilities;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Skill;
@@ -90,24 +88,11 @@ public class Hooks
 
 		OverlayRenderer renderer = runelite.getRenderer();
 
-		assert !SwingUtilities.isEventDispatchThread();
-
 		try
 		{
-			SwingUtilities.invokeAndWait(() ->
-			{
-
-				try
-				{
-					renderer.render(image);
-				}
-				catch (Exception ex)
-				{
-					logger.warn("Error during overlay rendering", ex);
-				}
-			});
+			renderer.render(image);
 		}
-		catch (InterruptedException | InvocationTargetException ex)
+		catch (Exception ex)
 		{
 			logger.warn("Error during overlay rendering", ex);
 		}
