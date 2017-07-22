@@ -35,6 +35,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
 
 public final class ClientUI extends JFrame
@@ -129,7 +131,14 @@ public final class ClientUI extends JFrame
 
 	private void checkExit()
 	{
-		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+		Client client = RuneLite.getClient();
+		int result = JOptionPane.OK_OPTION;
+
+		// only ask if not logged out
+		if (client != null && client.getGameState() != GameState.LOGIN_SCREEN)
+		{
+			result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+		}
 
 		if (result == JOptionPane.OK_OPTION)
 		{
