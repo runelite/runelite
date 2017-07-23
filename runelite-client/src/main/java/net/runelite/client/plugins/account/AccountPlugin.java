@@ -41,7 +41,7 @@ import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.NavigationPanel;
+import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.http.api.account.AccountClient;
 import net.runelite.http.api.account.OAuthResponse;
@@ -76,7 +76,7 @@ public class AccountPlugin extends Plugin
 		loginButton.getButton().addActionListener(this::loginClick);
 		logoutButton.getButton().addActionListener(this::logoutClick);
 
-		ui.getNavigationPanel().addNavigation(loginButton);
+		ui.getPluginToolbar().addNavigation(loginButton);
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class AccountPlugin extends Plugin
 		runelite.deleteSession(); // delete saved session file
 
 		// Replace logout nav button with login
-		NavigationPanel navigationPanel = ui.getNavigationPanel();
+		PluginToolbar navigationPanel = ui.getPluginToolbar();
 		navigationPanel.removeNavigation(logoutButton);
 		navigationPanel.addNavigation(loginButton);
 	}
@@ -199,7 +199,7 @@ public class AccountPlugin extends Plugin
 	private void replaceLoginWithLogout()
 	{
 		// Replace login nav button with logout
-		NavigationPanel navigationPanel = ui.getNavigationPanel();
+		PluginToolbar navigationPanel = ui.getPluginToolbar();
 		navigationPanel.removeNavigation(loginButton);
 		navigationPanel.addNavigation(logoutButton);
 	}

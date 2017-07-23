@@ -36,7 +36,6 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.ActionEvent;
 import java.time.temporal.ChronoUnit;
 import net.runelite.client.task.Schedule;
 
@@ -55,13 +54,11 @@ public class XPTracker extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		navButton = new NavigationButton("XP Tracker");
+		navButton = new NavigationButton("XP Tracker", () -> xpPanel);
 		xpPanel = new XPPanel(runeLite, this);
 
-		navButton.getButton().addActionListener(this::setPluginPanel);
-
 		navButton.getButton().setText("XP");
-		ui.getNavigationPanel().addNavigation(navButton);
+		ui.getPluginToolbar().addNavigation(navButton);
 
 		Font font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape.ttf"));
 		font = font.deriveFont(Font.BOLD, 16);
@@ -72,11 +69,6 @@ public class XPTracker extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-	}
-
-	private void setPluginPanel(ActionEvent e)
-	{
-		ui.expand(xpPanel);
 	}
 
 	@Subscribe
