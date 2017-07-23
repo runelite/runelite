@@ -29,14 +29,15 @@
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
 	<version>1.2.0-SNAPSHOT</version>
-	<name>Runelite</name>
 	<packaging>pom</packaging>
+
+	<name>Runelite</name>
+	<description>Open source RuneScape client and deobfuscator</description>
+	<url>http://runelite.net</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<java.version>1.8</java.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
@@ -44,12 +45,39 @@
 		<rs.version>150</rs.version>
 	</properties>
 
+	<licenses>
+		<license>
+			<name>2-Clause BSD License</name>
+			<url>https://opensource.org/licenses/BSD-2-Clause</url>
+		</license>
+	</licenses>
+
+	<inceptionYear>2014</inceptionYear>
+
 	<scm>
 		<url>https://github.com/runelite/runelite</url>
 		<connection>scm:git:git://github.com/runelite/runelite</connection>
 		<developerConnection>scm:git:git@github.com:runelite/runelite</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
+	
+	<developers>
+		<developer>
+			<id>Adam-</id>
+			<name>Adam</name>
+			<email>Adam@sigterm.info</email>
+		</developer>
+	</developers>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/runelite/runelite/issues</url>
+	</issueManagement>
+
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/runelite/runelite</url>
+	</ciManagement>
 
 	<distributionManagement>
 		<repository>
@@ -84,6 +112,15 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
