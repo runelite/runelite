@@ -24,6 +24,7 @@
  */
 package net.runelite.client;
 
+import com.google.common.base.Strings;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.gson.Gson;
@@ -79,6 +80,7 @@ public class RuneLite
 	private static RuneLite runelite;
 	private static TrayIcon trayIcon;
 
+	private final RuneliteProperties properties = new RuneliteProperties();
 	private ClientUI gui;
 	private PluginManager pluginManager;
 	private final MenuManager menuManager = new MenuManager(this);
@@ -139,6 +141,7 @@ public class RuneLite
 			}
 
 			gui = new ClientUI();
+			setTitle(null);
 
 			setupTrayIcon();
 		});
@@ -162,6 +165,18 @@ public class RuneLite
 		renderer = new OverlayRenderer();
 
 		loadSession();
+	}
+
+	public void setTitle(String extra)
+	{
+		if (!Strings.isNullOrEmpty(extra))
+		{
+			gui.setTitle("RuneLite " + properties.getVersion() + " " + extra);
+		}
+		else
+		{
+			gui.setTitle("RuneLite " + properties.getVersion());
+		}
 	}
 
 	private void setupTrayIcon()
@@ -316,6 +331,11 @@ public class RuneLite
 	public static RuneLite getRunelite()
 	{
 		return runelite;
+	}
+
+	public RuneliteProperties getProperties()
+	{
+		return properties;
 	}
 
 	public ClientUI getGui()

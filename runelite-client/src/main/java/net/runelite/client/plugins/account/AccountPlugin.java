@@ -167,7 +167,6 @@ public class AccountPlugin extends Plugin
 	{
 		logger.debug("Now logged in as {}", loginResponse.getUsername());
 
-		//runelite.getGui().setTitle("RuneLite (" + loginResponse.getUsername() + ")");
 		AccountSession session = runelite.getAccountSession();
 		session.setUsername(loginResponse.getUsername());
 
@@ -191,7 +190,7 @@ public class AccountPlugin extends Plugin
 
 		logger.debug("Session opened as {}", session.getUsername());
 
-		runelite.getGui().setTitle("RuneLite (" + session.getUsername() + ")");
+		runelite.setTitle("(" + session.getUsername() + ")");
 
 		replaceLoginWithLogout();
 	}
@@ -207,7 +206,7 @@ public class AccountPlugin extends Plugin
 	@Subscribe
 	public void onSessionClose(SessionClose sessionClose)
 	{
-		runelite.getGui().setTitle("RuneLite");
+		runelite.setTitle(null);
 	}
 
 }
