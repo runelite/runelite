@@ -36,7 +36,7 @@ public class PluginToolbar extends JToolBar
 {
 	private static final Logger logger = LoggerFactory.getLogger(PluginToolbar.class);
 
-	public static final int TOOLBAR_WIDTH = 36, TOOLBAR_BEIGHT = 503;
+	public static final int TOOLBAR_WIDTH = 36, TOOLBAR_HEIGHT = 503;
 
 	private final ClientUI ui;
 	private final List<NavigationButton> buttons = new ArrayList<>();
@@ -48,9 +48,9 @@ public class PluginToolbar extends JToolBar
 		super(JToolBar.VERTICAL);
 		this.ui = ui;
 
-		setSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_BEIGHT));
-		setMinimumSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_BEIGHT));
-		setPreferredSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_BEIGHT));
+		setSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
+		setMinimumSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
+		setPreferredSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
 	}
 
 	public void addNavigation(NavigationButton button)
