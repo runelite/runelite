@@ -24,18 +24,31 @@
  */
 package net.runelite.client.ui;
 
+import java.util.function.Supplier;
 import javax.swing.JButton;
 
 public class NavigationButton
 {
 	private final JButton button = new JButton();
+	private final Supplier<PluginPanel> panelSupplier;
 
 	public NavigationButton(String name)
 	{
+		this.panelSupplier = null;
+	}
+
+	public NavigationButton(String name, Supplier<PluginPanel> panelSupplier)
+	{
+		this.panelSupplier = panelSupplier;
 	}
 
 	public JButton getButton()
 	{
 		return button;
+	}
+
+	public Supplier<PluginPanel> getPanelSupplier()
+	{
+		return panelSupplier;
 	}
 }

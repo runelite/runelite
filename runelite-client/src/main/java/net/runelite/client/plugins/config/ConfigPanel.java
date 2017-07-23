@@ -34,16 +34,25 @@ import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.swing.*;
-
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.PluginPanel;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,12 +75,6 @@ public class ConfigPanel extends PluginPanel
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
 		setLayout(new BorderLayout());
 		setVisible(true);
-	}
-
-	@Override
-	public boolean equals(Object other)
-	{
-		return other.getClass() == this.getClass();
 	}
 
 	public void init()

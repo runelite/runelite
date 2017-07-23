@@ -27,27 +27,36 @@ package net.runelite.client.ui;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JPanel;
+import java.util.function.Supplier;
+import javax.swing.JToolBar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NavigationPanel extends JPanel
+public class PluginToolbar extends JToolBar
 {
-	private static final Logger logger = LoggerFactory.getLogger(NavigationPanel.class);
+	private static final Logger logger = LoggerFactory.getLogger(PluginToolbar.class);
 
-	public static final int PANEL_WIDTH = 24, PANEL_HEIGHT = 503;
+	public static final int TOOLBAR_WIDTH = 36, TOOLBAR_BEIGHT = 503;
 
+	private final ClientUI ui;
 	private final List<NavigationButton> buttons = new ArrayList<>();
 
-	public NavigationPanel()
+	private NavigationButton current;
+
+	public PluginToolbar(ClientUI ui)
 	{
-		setSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		super(JToolBar.VERTICAL);
+		this.ui = ui;
+
+		setSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_BEIGHT));
+		setMinimumSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_BEIGHT));
+		setPreferredSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_BEIGHT));
 	}
 
 	public void addNavigation(NavigationButton button)
 	{
+		button.getButton().addActionListener((ae) -> onClick(button));
+
 		buttons.add(button);
 		add(button.getButton());
 		revalidate();
@@ -58,5 +67,34 @@ public class NavigationPanel extends JPanel
 		buttons.remove(button);
 		remove(button.getButton());
 		revalidate();
+	}
+
+	private void onClick(NavigationButton button)
+	{
+		Supplier<PluginPanel> panelSupplier = button.getPanelSupplier();
+		if (panelSupplier == null)
+		{
+			return;
+		}
+
+		if (current != null)
+		{
+			current.getButton().setSelected(false);
+		}
+
+		if (current == button)
+		{
+			ui.contract();
+			current = null;
+		}
+		else
+		{
+
+			PluginPanel pluginPanel = panelSupplier.get();
+			ui.expand(pluginPanel);
+
+			current = button;
+			current.getButton().setSelected(true);
+		}
 	}
 }

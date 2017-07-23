@@ -26,7 +26,6 @@ package net.runelite.client.plugins.devtools;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.ActionEvent;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -62,14 +61,12 @@ public class DevTools extends Plugin
 	protected void startUp() throws Exception
 	{
 		panel = new DevToolsPanel(this);
-		navButton = new NavigationButton("DevTools");
-
-		navButton.getButton().addActionListener(this::setPluginPanel);
+		navButton = new NavigationButton("DevTools", () -> panel);
 
 		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("devtools_icon.png")));
 		navButton.getButton().setIcon(icon);
 
-		ui.getNavigationPanel().addNavigation(navButton);
+		ui.getPluginToolbar().addNavigation(navButton);
 
 		font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape.ttf"));
 
@@ -87,11 +84,6 @@ public class DevTools extends Plugin
 	public Overlay getOverlay()
 	{
 		return overlay;
-	}
-
-	private void setPluginPanel(ActionEvent e)
-	{
-		ui.expand(panel);
 	}
 
 	Font getFont()

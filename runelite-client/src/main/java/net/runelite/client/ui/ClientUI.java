@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.util.Objects;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -51,7 +50,7 @@ public final class ClientUI extends JFrame
 	private JPanel container;
 	private JPanel navContainer;
 	private ClientPanel panel;
-	private NavigationPanel navigationPanel;
+	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
 
 	public ClientUI()
@@ -102,38 +101,36 @@ public final class ClientUI extends JFrame
 		navContainer.setLayout(new BorderLayout(0, 0));
 		container.add(navContainer, BorderLayout.EAST);
 
-		navigationPanel = new NavigationPanel();
-		navContainer.add(navigationPanel, BorderLayout.EAST);
+		pluginToolbar = new PluginToolbar(this);
+		navContainer.add(pluginToolbar, BorderLayout.EAST);
 
 		add(container);
 	}
 
-	public void expand(PluginPanel panel)
+	void expand(PluginPanel panel)
 	{
-		if (Objects.equals(pluginPanel, panel))
+		if (pluginPanel != null)
 		{
 			navContainer.remove(1);
 			container.validate();
-			this.setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-			if (this.getWidth() == EXPANDED_WIDTH)
-			{
-				this.setSize(PANEL_WIDTH, PANEL_HEIGHT);
-			}
-			pluginPanel = null;
 		}
-		else
-		{
-			if (pluginPanel != null)
-			{
-				navContainer.remove(1);
-				container.validate();
-			}
 
-			pluginPanel = panel;
-			navContainer.add(pluginPanel, BorderLayout.WEST);
-			container.validate();
-			this.setMinimumSize(new Dimension(EXPANDED_WIDTH, PANEL_HEIGHT));
+		pluginPanel = panel;
+		navContainer.add(pluginPanel, BorderLayout.WEST);
+		container.validate();
+		this.setMinimumSize(new Dimension(EXPANDED_WIDTH, PANEL_HEIGHT));
+	}
+
+	void contract()
+	{
+		navContainer.remove(1);
+		container.validate();
+		this.setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		if (this.getWidth() == EXPANDED_WIDTH)
+		{
+			this.setSize(PANEL_WIDTH, PANEL_HEIGHT);
 		}
+		pluginPanel = null;
 	}
 
 	private void checkExit()
@@ -153,9 +150,9 @@ public final class ClientUI extends JFrame
 		}
 	}
 
-	public NavigationPanel getNavigationPanel()
+	public PluginToolbar getPluginToolbar()
 	{
-		return navigationPanel;
+		return pluginToolbar;
 	}
 
 	public PluginPanel getPluginPanel()
