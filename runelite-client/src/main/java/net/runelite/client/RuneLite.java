@@ -29,10 +29,13 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.gson.Gson;
 import java.awt.AWTException;
+import java.awt.Frame;
 import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -198,7 +201,19 @@ public class RuneLite
 		catch (AWTException ex)
 		{
 			logger.debug("Unable to add system tray icon", ex);
+			return;
 		}
+
+		// bring to front when tray icon is clicked
+		trayIcon.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				gui.setVisible(true);
+				gui.setState(Frame.NORMAL); // unminimize
+			}
+		});
 	}
 
 	private void loadSession()
