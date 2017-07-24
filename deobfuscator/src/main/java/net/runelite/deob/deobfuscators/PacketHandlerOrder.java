@@ -44,8 +44,11 @@ import net.runelite.asm.attributes.code.instructions.IfICmpEq;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.Frame;
+import net.runelite.asm.signature.Signature;
+import net.runelite.asm.signature.Type;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.deobfuscators.packethandler.BufferFinder;
+import net.runelite.deob.deobfuscators.packethandler.PacketRead;
 import net.runelite.deob.deobfuscators.packethandler.PacketTypeFinder;
 import net.runelite.deob.s2c.HandlerFinder;
 import net.runelite.deob.s2c.PacketHandler;
@@ -108,9 +111,15 @@ public class PacketHandlerOrder implements Deobfuscator
 						.anyMatch(cf -> cf == bf.getBuffer() || cf == bf.getPacketBuffer());
 					if (matches)
 					{
-						if (!handler.reads.contains(ictx.getInstruction()))
+						Method method = ii.getMethods().get(0);
+						Signature signature = method.getDescriptor();
+						Type returnValue = signature.getReturnValue();
+
+						PacketRead packetRead = new PacketRead(returnValue, ictx.getInstruction());
+
+						if (!handler.reads.contains(packetRead))
 						{
-							handler.reads.add(ictx.getInstruction());
+							handler.reads.add(packetRead);
 						}
 					}
 				}
@@ -121,7 +130,7 @@ public class PacketHandlerOrder implements Deobfuscator
 				{
 					InvokeInstruction ii = (InvokeInstruction) ictx.getInstruction();
 					// read methods are scrambled so cant count them
-					if (!handler.reads.contains(ictx.getInstruction()))
+					if (!handler.hasPacketRead(ictx.getInstruction()))
 					{
 						handler.methodInvokes.addAll(ii.getMethods());
 					}
@@ -155,9 +164,10 @@ public class PacketHandlerOrder implements Deobfuscator
 		List<PacketHandler> sortedHandlers = new ArrayList<>(handlers.getHandlers()).stream()
 			.sorted((PacketHandler p1, PacketHandler p2) ->
 			{
-				if (p1.reads.size() != p2.reads.size())
+				int c = compareReads(p1.reads, p2.reads);
+				if (c != 0)
 				{
-					return Integer.compare(p1.reads.size(), p2.reads.size());
+					return c;
 				}
 				if (p1.methodInvokes.size() != p2.methodInvokes.size())
 				{
@@ -171,7 +181,14 @@ public class PacketHandlerOrder implements Deobfuscator
 				{
 					return Integer.compare(p1.fieldWrite.size(), p2.fieldWrite.size());
 				}
-				return Integer.compare(p1.sizeMap, p2.sizeMap);
+				int i = Integer.compare(p1.sizeMap, p2.sizeMap);
+				if (i != 0)
+				{
+					return i;
+				}
+
+				logger.warn("Unable to diffentiate {} from {}", p1, p2);
+				return 0;
 			})
 			.map(s -> s.clone())
 			.collect(Collectors.toList());
@@ -240,6 +257,44 @@ public class PacketHandlerOrder implements Deobfuscator
 				}
 			}
 		}
+	}
+
+	private int compareReads(List<PacketRead> r1, List<PacketRead> r2)
+	{
+		List<Type> t1 = r1.stream()
+			.map(pr -> pr.getType())
+			.sorted(this::compareType)
+			.collect(Collectors.toList());
+		List<Type> t2 = r2.stream()
+			.map(pr -> pr.getType())
+			.sorted(this::compareType)
+			.collect(Collectors.toList());
+		if (t1.size() != t2.size())
+		{
+			return Integer.compare(t1.size(), t2.size());
+		}
+
+		for (int i = 0; i < t1.size(); ++i)
+		{
+			Type type1 = t1.get(i), type2 = t2.get(i);
+
+			int cmp = compareType(type1, type2);
+			if (cmp != 0)
+			{
+				return cmp;
+			}
+		}
+
+		return 0;
+	}
+
+	private int compareType(Type t1, Type t2)
+	{
+		if (t1.getArrayDims() != t2.getArrayDims())
+		{
+			return Integer.compare(t1.getArrayDims(), t2.getArrayDims());
+		}
+		return t1.getType().compareTo(t2.getType());
 	}
 
 }

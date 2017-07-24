@@ -32,6 +32,7 @@ import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.execution.Frame;
+import net.runelite.deob.deobfuscators.packethandler.PacketRead;
 
 public class PacketHandler implements Cloneable
 {
@@ -47,7 +48,7 @@ public class PacketHandler implements Cloneable
 	public Frame jumpFrame;
 
 	public int sizeMap; // number of mappable instructions in handler
-	public List<Instruction> reads = new ArrayList<>(); // instructions which read packet data
+	public List<PacketRead> reads = new ArrayList<>(); // instructions which read packet data
 
 	public Set<Field> fieldRead = new HashSet<>();
 	public Set<Field> fieldWrite = new HashSet<>();
@@ -124,5 +125,17 @@ public class PacketHandler implements Cloneable
 	public int getOpcode()
 	{
 		return opcode;
+	}
+
+	public boolean hasPacketRead(Instruction i)
+	{
+		for (PacketRead pr : reads)
+		{
+			if (pr.getInvoke() == i)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
