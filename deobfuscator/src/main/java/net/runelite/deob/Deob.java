@@ -54,6 +54,7 @@ import net.runelite.deob.deobfuscators.cfg.ControlFlowDeobfuscator;
 import net.runelite.deob.deobfuscators.transformers.ClientErrorTransformer;
 import net.runelite.deob.deobfuscators.transformers.MaxMemoryTransformer;
 import net.runelite.deob.deobfuscators.transformers.ReflectionTransformer;
+import net.runelite.deob.deobfuscators.transformers.RuneliteBufferTransformer;
 import net.runelite.deob.util.JarUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,6 +150,7 @@ public class Deob
 		new ClientErrorTransformer().transform(group);
 		new ReflectionTransformer().transform(group);
 		new MaxMemoryTransformer().transform(group);
+		new RuneliteBufferTransformer().transform(group);
 
 		JarUtil.saveJar(group, new File(args[1]));
 

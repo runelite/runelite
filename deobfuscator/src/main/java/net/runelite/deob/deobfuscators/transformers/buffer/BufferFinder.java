@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.deob.deobfuscators.packethandler;
+package net.runelite.deob.deobfuscators.transformers.buffer;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
@@ -34,6 +34,11 @@ import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Class which identifies Buffer and PacketBuffer
+ *
+ * @author Adam
+ */
 public class BufferFinder
 {
 	private static final Logger logger = LoggerFactory.getLogger(BufferFinder.class);
