@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm;
 
 import net.runelite.asm.attributes.Annotations;
@@ -34,29 +33,20 @@ import org.objectweb.asm.Opcodes;
 
 public class Field
 {
-	public static int ACC_PUBLIC = 0x0001;
-	public static int ACC_PRIVATE = 0x0002;
-	public static int ACC_PROTECTED = 0x0004;
-	public static int ACC_STATIC = 0x0008;
-	public static int ACC_FINAL = 0x0010;
-	public static int ACC_VOLATILE = 0x0040;
-	public static int ACC_TRANSIENT = 0x0080;
-	public static int ACC_ENUM = 0x4000;
-
 	private Fields fields;
 
 	private int accessFlags;
 	private String name;
 	private Type type;
 	private Object value; // ConstantValue
-	private Annotations annotations;
-	
+	private final Annotations annotations;
+
 	public Field(Fields fields, String name, Type type)
 	{
 		this.fields = fields;
 		this.name = name;
 		this.type = type;
-		
+
 		annotations = new Annotations();
 	}
 
@@ -67,7 +57,7 @@ public class Field
 			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().getFullType(), true);
 			annotation.accept(av);
 		}
-		
+
 		visitor.visitEnd();
 	}
 
@@ -75,7 +65,7 @@ public class Field
 	{
 		return fields;
 	}
-	
+
 	public void setFields(Fields fields)
 	{
 		this.fields = fields;
@@ -90,15 +80,15 @@ public class Field
 	{
 		this.accessFlags = accessFlags;
 	}
-	
+
 	public boolean isStatic()
 	{
-		return (accessFlags & ACC_STATIC) != 0;
+		return (accessFlags & Opcodes.ACC_STATIC) != 0;
 	}
-	
+
 	public void setStatic()
 	{
-		accessFlags |= ACC_STATIC;
+		accessFlags |= Opcodes.ACC_STATIC;
 	}
 
 	public boolean isSynthetic()
@@ -115,7 +105,7 @@ public class Field
 	{
 		return name;
 	}
-	
+
 	public void setName(String name)
 	{
 		this.name = name;
@@ -125,7 +115,7 @@ public class Field
 	{
 		return type;
 	}
-	
+
 	public void setType(Type type)
 	{
 		this.type = type;
@@ -140,12 +130,12 @@ public class Field
 	{
 		this.value = value;
 	}
-	
+
 	public Annotations getAnnotations()
 	{
 		return annotations;
 	}
-	
+
 	public net.runelite.asm.pool.Field getPoolField()
 	{
 		return new net.runelite.asm.pool.Field(
@@ -154,7 +144,7 @@ public class Field
 			this.getType()
 		);
 	}
-	
+
 	@Override
 	public String toString()
 	{
