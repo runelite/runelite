@@ -28,6 +28,8 @@ import java.util.Objects;
 
 public class Type
 {
+	public static final Type BYTE = new Type("B");
+	public static final Type SHORT = new Type("S");
 	public static final Type INT = new Type("I");
 	public static final Type VOID = new Type("V");
 	public static final Type BOOLEAN = new Type("Z");

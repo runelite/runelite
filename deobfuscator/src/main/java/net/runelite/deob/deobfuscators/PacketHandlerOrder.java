@@ -24,30 +24,45 @@
  */
 package net.runelite.deob.deobfuscators;
 
+import com.google.common.primitives.Ints;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
+import net.runelite.asm.attributes.code.instruction.types.ComparisonInstruction;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
+import net.runelite.asm.attributes.code.instructions.GetStatic;
 import net.runelite.asm.attributes.code.instructions.Goto;
 import net.runelite.asm.attributes.code.instructions.If;
+import net.runelite.asm.attributes.code.instructions.IfEq;
 import net.runelite.asm.attributes.code.instructions.IfICmpEq;
+import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.PutStatic;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.Frame;
+import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.deobfuscators.packethandler.BufferFinder;
+import net.runelite.deob.deobfuscators.transformers.buffer.BufferFinder;
+import net.runelite.deob.deobfuscators.packethandler.PacketLengthFinder;
 import net.runelite.deob.deobfuscators.packethandler.PacketRead;
 import net.runelite.deob.deobfuscators.packethandler.PacketTypeFinder;
 import net.runelite.deob.s2c.HandlerFinder;
@@ -59,6 +74,22 @@ import org.slf4j.LoggerFactory;
 public class PacketHandlerOrder implements Deobfuscator
 {
 	private static final Logger logger = LoggerFactory.getLogger(PacketHandlerOrder.class);
+
+	private static final String RUNELITE_PACKET = "RUNELITE_PACKET";
+
+	private static final MessageDigest sha256;
+
+	static
+	{
+		try
+		{
+			sha256 = MessageDigest.getInstance("SHA-256");
+		}
+		catch (NoSuchAlgorithmException ex)
+		{
+			throw new RuntimeException(ex);
+		}
+	}
 
 	@Override
 	public void run(ClassGroup group)
@@ -107,6 +138,7 @@ public class PacketHandlerOrder implements Deobfuscator
 
 					// check if the invoke is on buffer/packetbuffer classes
 					boolean matches = ii.getMethods().stream()
+						.filter(m -> m.getDescriptor().size() == 0)
 						.map(method -> method.getMethods().getClassFile())
 						.anyMatch(cf -> cf == bf.getBuffer() || cf == bf.getPacketBuffer());
 					if (matches)
@@ -115,7 +147,13 @@ public class PacketHandlerOrder implements Deobfuscator
 						Signature signature = method.getDescriptor();
 						Type returnValue = signature.getReturnValue();
 
-						PacketRead packetRead = new PacketRead(returnValue, ictx.getInstruction());
+						assert ictx.getPops().size() == 1; // buffer reference
+						InstructionContext bufferCtx = ictx.getPops().get(0).getPushed();
+						if (bufferCtx.getInstruction().getType() != InstructionType.GETSTATIC)
+						{
+							return; // sometimes buffer is passed to a function and then invoked.
+						}
+						PacketRead packetRead = new PacketRead(returnValue, bufferCtx.getInstruction(), ictx);
 
 						if (!handler.reads.contains(packetRead))
 						{
@@ -153,11 +191,32 @@ public class PacketHandlerOrder implements Deobfuscator
 						handler.fieldRead.add(field);
 					}
 				}
+				if (ictx.getInstruction() instanceof LVTInstruction)
+				{
+					LVTInstruction lvt = (LVTInstruction) ictx.getInstruction();
+					if (!lvt.store())
+					{
+						// get lvt access order
+						Frame frame = ictx.getFrame();
+						int order = frame.getNextOrder();
+						if (!handler.lvtOrder.containsKey(lvt.getVariableIndex()))
+						{
+							handler.lvtOrder.put(lvt.getVariableIndex(), order);
+						}
+					}
+				}
+				if (ictx.getInstruction() instanceof PushConstantInstruction)
+				{
+					PushConstantInstruction pci = (PushConstantInstruction) ictx.getInstruction();
+					handler.constants.add(pci.getConstant());
+				}
 			});
 
 			e.run();
 
 			logger.info("Executed opcode {}: {} mappable instructions", handler.getOpcode(), handler.sizeMap);
+
+			handler.findReorderableReads();
 		}
 
 		List<PacketHandler> unsortedHandlers = new ArrayList<>(handlers.getHandlers());
@@ -187,7 +246,13 @@ public class PacketHandlerOrder implements Deobfuscator
 					return i;
 				}
 
-				logger.warn("Unable to diffentiate {} from {}", p1, p2);
+				int s1 = hashConstants(p1.constants), s2 = hashConstants(p2.constants);
+				if (s1 != s2)
+				{
+					return Integer.compare(s1, s2);
+				}
+
+				logger.warn("Unable to differentiate {} from {}", p1, p2);
 				return 0;
 			})
 			.map(s -> s.clone())
@@ -197,9 +262,54 @@ public class PacketHandlerOrder implements Deobfuscator
 
 		for (PacketHandler handler : sortedHandlers)
 		{
+			handler.sortedReads = new ArrayList<>(handler.reads);
+			Collections.sort(handler.sortedReads, (PacketRead p1, PacketRead p2) ->
+			{
+				LVTInstruction l1 = (LVTInstruction) p1.getStore();
+				LVTInstruction l2 = (LVTInstruction) p2.getStore();
+
+				if (l1 == null && l2 == null)
+				{
+					return 0;
+				}
+				if (l1 == null)
+				{
+					return 1;
+				}
+				if (l2 == null)
+				{
+					return -1;
+				}
+
+				if (l1.getVariableIndex() == l2.getVariableIndex())
+				{
+					return 0;
+				}
+
+				Integer i1 = handler.lvtOrder.get(l1.getVariableIndex());
+				Integer i2 = handler.lvtOrder.get(l2.getVariableIndex());
+				assert i1 != null;
+				assert i2 != null;
+				int i = Integer.compare(i1, i2);
+
+				if (i == 0)
+				{
+					logger.warn("Cannot differentiate {} from {}", p1, p2);
+				}
+
+				return i;
+			});
+			Collections.reverse(handler.sortedReads);
+		}
+
+		int count = 0;
+		for (PacketHandler handler : sortedHandlers)
+		{
 			logger.info("Handler {} mappable {} reads {} invokes {} freads {} fwrites {}",
 				handler.getOpcode(), handler.sizeMap, handler.reads.size(), handler.methodInvokes.size(),
 				handler.fieldRead.size(), handler.fieldWrite.size());
+
+			handler.newOpcode = (byte) count++;
 		}
 
 		// Find unique methods
@@ -231,8 +341,30 @@ public class PacketHandlerOrder implements Deobfuscator
 
 				assert unsorted.getOpcode() == ((Number) pci.getConstant()).intValue();
 
-				// unsorted.getPush() might be bipush which cant hold 0-255
 				Instructions instructions = unsorted.getMethod().getCode().getInstructions();
+				Label pushLabel = instructions.createLabelFor(unsorted.getPush());
+
+				int idx = instructions.getInstructions().indexOf(unsorted.getPush());
+				assert idx != -1;
+
+				Label nextLabel = instructions.createLabelFor(instructions.getInstructions().get(idx + 1));
+
+				instructions.getInstructions().indexOf(unsorted.getPush());
+				assert idx != -1;
+				--idx; // step back to label
+
+				net.runelite.asm.pool.Field field = new net.runelite.asm.pool.Field(
+					new net.runelite.asm.pool.Class(findClient(group).getName()),
+					RUNELITE_PACKET,
+					Type.BOOLEAN
+				);
+
+				instructions.addInstruction(idx++, new GetStatic(instructions, field));
+				instructions.addInstruction(idx++, new IfEq(instructions, pushLabel));
+				instructions.addInstruction(idx++, new LDC_W(instructions, sortedh.newOpcode));
+				instructions.addInstruction(idx++, new Goto(instructions, nextLabel));
+
+				// unsorted.getPush() might be bipush which cant hold 0-255
 				instructions.replace(unsorted.getPush(), new LDC_W(instructions, sortedh.getOpcode()));
 
 				assert jump.getType() == InstructionType.IF_ICMPEQ || jump.getType() == InstructionType.IF_ICMPNE;
@@ -246,7 +378,7 @@ public class PacketHandlerOrder implements Deobfuscator
 				else if (jump.getType() == InstructionType.IF_ICMPNE)
 				{
 					// insert a jump after to go to sortedh start
-					int idx = instructions.getInstructions().indexOf(jump);
+					idx = instructions.getInstructions().indexOf(jump);
 					assert idx != -1;
 
 					instructions.addInstruction(idx + 1, new Goto(instructions, startLabel));
@@ -256,6 +388,150 @@ public class PacketHandlerOrder implements Deobfuscator
 					throw new IllegalStateException();
 				}
 			}
+		}
+
+		insertSortedReads(group, sortedHandlers);
+		insertPacketLength(group, ptf);
+	}
+
+	private void insertSortedReads(ClassGroup group, List<PacketHandler> handlers)
+	{
+		outer:
+		for (PacketHandler handler : handlers)
+		{
+			Method method = handler.getMethod();
+			Instructions instructions = method.getCode().getInstructions();
+			List<Instruction> ins = instructions.getInstructions();
+
+			Instruction afterRead = handler.getAfterRead();
+			if (afterRead == null)
+			{
+				continue;
+			}
+
+			for (PacketRead read : handler.reads)
+			{
+				if (read.getStore() == null)
+				{
+					continue outer;
+				}
+			}
+
+			List<Instruction> follow = follow(instructions, handler.getStart(), afterRead);
+			if (follow == null)
+			{
+				continue;
+			}
+
+			for (Instruction i : follow)
+			{
+				if (i instanceof ComparisonInstruction)
+				{
+					continue outer;
+				}
+			}
+
+			Label afterReadLabel = instructions.createLabelFor(afterRead);
+
+			int idx = ins.indexOf(handler.getStart());
+			assert idx != -1;
+
+			if (handler.getStart() instanceof Label)
+			{
+				++idx;
+			}
+
+			net.runelite.asm.pool.Field field = new net.runelite.asm.pool.Field(
+				new net.runelite.asm.pool.Class(findClient(group).getName()),
+				RUNELITE_PACKET,
+				Type.BOOLEAN
+			);
+
+			instructions.addInstruction(idx, new GetStatic(instructions, field));
+			++idx;
+
+			instructions.addInstruction(idx, new IfEq(instructions, instructions.createLabelFor(ins.get(idx))));
+			++idx;
+
+			List<Instruction> toCopy = new ArrayList<>();
+			for (Instruction i : follow)
+			{
+				assert !(i instanceof JumpingInstruction);
+				if (i instanceof Label)
+				{
+					continue;
+				}
+
+				toCopy.add(i);
+			}
+
+			// Remove getstatic/invoke/store for packet reads
+			for (PacketRead read : handler.reads)
+			{
+				boolean b = toCopy.remove(read.getGetBuffer());
+				assert b;
+				b = toCopy.remove(read.getInvoke());
+				assert b;
+				b = toCopy.remove(read.getStore());
+				assert b;
+			}
+
+			// Add sorted reads
+			for (PacketRead read : handler.sortedReads)
+			{
+				toCopy.add(0, read.getGetBuffer());
+
+				// replace invoke instruction with typed read
+				InvokeInstruction ii = (InvokeInstruction) read.getInvoke();
+				net.runelite.asm.pool.Method invokeMethod;
+				if (read.getType().equals(Type.BYTE))
+				{
+					invokeMethod = new net.runelite.asm.pool.Method(
+						ii.getMethod().getClazz(),
+						"runeliteReadByte",
+						new Signature("()B")
+					);
+				}
+				else if (read.getType().equals(Type.SHORT))
+				{
+					invokeMethod = new net.runelite.asm.pool.Method(
+						ii.getMethod().getClazz(),
+						"runeliteReadShort",
+						new Signature("()S")
+					);
+				}
+				else if (read.getType().equals(Type.INT))
+				{
+					invokeMethod = new net.runelite.asm.pool.Method(
+						ii.getMethod().getClazz(),
+						"runeliteReadInt",
+						new Signature("()I")
+					);
+				}
+				else if (read.getType().equals(Type.STRING))
+				{
+					invokeMethod = new net.runelite.asm.pool.Method(
+						ii.getMethod().getClazz(),
+						"runeliteReadString",
+						new Signature("()Ljava/lang/String;")
+					);
+				}
+				else
+				{
+					throw new UnsupportedOperationException("Unknown type " + read.getType());
+				}
+				toCopy.add(1, new InvokeVirtual(instructions, invokeMethod));
+
+				toCopy.add(2, read.getStore());
+			}
+
+			for (Instruction i : toCopy)
+			{
+				instructions.addInstruction(idx++, i.clone());
+			}
+
+			instructions.addInstruction(idx, new Goto(instructions, afterReadLabel));
+			++idx;
 		}
 	}
 
@@ -297,4 +573,100 @@ public class PacketHandlerOrder implements Deobfuscator
 		return t1.getType().compareTo(t2.getType());
 	}
 
+	public static int hashConstants(List<Object> constants)
+	{
+		sha256.reset();
+		for (Object o : constants)
+		{
+			if (o instanceof Number)
+			{
+				sha256.update(((Number) o).byteValue());
+			}
+			else if (o instanceof String)
+			{
+				String s = (String) o;
+				sha256.update(s.getBytes());
+			}
+		}
+		byte[] b = sha256.digest();
+		return Ints.fromByteArray(b);
+	}
+
+	private void insertPacketLength(ClassGroup group, PacketTypeFinder ptf)
+	{
+		PacketLengthFinder pfl = new PacketLengthFinder(group, ptf);
+		pfl.find();
+
+		GetStatic getArray = pfl.getGetArray();
+		PutStatic ps = pfl.getStore(); // instruction to store packet length
+
+		Instructions instructions = ps.getInstructions();
+		List<Instruction> ins = instructions.getInstructions();
+
+		Label getArrayLabel = instructions.createLabelFor(getArray);
+		Label storeLabel = instructions.createLabelFor(ps);
+
+		int idx = ins.indexOf(getArray);
+		assert idx != -1;
+
+		--idx; // to go before label, which must exist
+
+		net.runelite.asm.pool.Field field = new net.runelite.asm.pool.Field(
+			new net.runelite.asm.pool.Class(findClient(group).getName()),
+			RUNELITE_PACKET,
+			Type.BOOLEAN
+		);
+
+		instructions.addInstruction(idx++, new GetStatic(instructions, field));
+		instructions.addInstruction(idx++, new IfEq(instructions, getArrayLabel));
+		instructions.addInstruction(idx++, new LDC_W(instructions, -2)); // 2 byte length
+		instructions.addInstruction(idx++, new Goto(instructions, storeLabel));
+	}
+
+	private ClassFile findClient(ClassGroup group)
+	{
+		// "client" in vainlla but "Client" in deob..
+		ClassFile cf = group.findClass("client");
+		return cf != null ? cf : group.findClass("Client");
+	}
+
+	private List<Instruction> follow(Instructions instructions, Instruction start, Instruction end)
+	{
+		List<Instruction> list = new ArrayList<>();
+
+		int idx = instructions.getInstructions().indexOf(start);
+		assert idx != -1;
+
+		for (;;)
+		{
+			Instruction i = instructions.getInstructions().get(idx);
+
+			// end is the following instruction post read.. not included
+			if (i == end)
+			{
+				break;
+			}
+
+			if (i instanceof Goto)
+			{
+				Goto g = (Goto) i;
+				Label to = g.getTo();
+
+				idx = instructions.getInstructions().indexOf(to);
+				assert idx != -1;
+				continue;
+			}
+
+			list.add(i);
+
+			if (i instanceof ComparisonInstruction)
+			{
+				return list;
+			}
+
+			++idx;
+		}
+
+		return list;
+	}
 }

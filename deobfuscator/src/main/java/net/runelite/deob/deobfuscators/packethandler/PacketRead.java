@@ -26,17 +26,23 @@ package net.runelite.deob.deobfuscators.packethandler;
 
 import java.util.Objects;
 import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.signature.Type;
 
 public class PacketRead
 {
 	private final Type type; // type of read, from return of function
+	private final Instruction getBuffer; // getstatic
+	private final InstructionContext invokeCtx;
 	private final Instruction invoke; // invoke instruction to read data
+	private Instruction store; // lvt store for reorderable reads
 
-	public PacketRead(Type type, Instruction invoke)
+	public PacketRead(Type type, Instruction getBuffer, InstructionContext invokeCtx)
 	{
 		this.type = type;
-		this.invoke = invoke;
+		this.getBuffer = getBuffer;
+		this.invokeCtx = invokeCtx;
+		this.invoke = invokeCtx.getInstruction();
 	}
 
 	public Type getType()
@@ -44,9 +50,29 @@ public class PacketRead
 		return type;
 	}
 
+	public Instruction getGetBuffer()
+	{
+		return getBuffer;
+	}
+
+	public InstructionContext getInvokeCtx()
+	{
+		return invokeCtx;
+	}
+
 	public Instruction getInvoke()
 	{
 		return invoke;
+	}
+
+	public Instruction getStore()
+	{
+		return store;
+	}
+
+	public void setStore(Instruction store)
+	{
+		this.store = store;
 	}
 
 	@Override
