@@ -179,7 +179,7 @@ public final class class29 {
             }
 
             int[][] var21 = class61.tileHeights[var11];
-            int var22 = var21[var18][var20] + var21[var18][var19] + var21[var17][var19] + var21[var17][var20] >> 2;
+            int var22 = var21[var18][var20] + var21[var17][var20] + var21[var18][var19] + var21[var17][var19] >> 2;
             int var23 = (var2 << 7) + (var15 << 6);
             int var24 = (var3 << 7) + (var16 << 6);
             int var25 = (var3 << 7) + var2 + (var4 << 14) + 1073741824;

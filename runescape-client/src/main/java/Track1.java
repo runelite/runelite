@@ -21,7 +21,7 @@ public class Track1 extends Node {
       var1.offset = var1.payload.length - 3;
       int var2 = var1.readUnsignedByte();
       int var3 = var1.readUnsignedShort();
-      int var4 = var2 * 10 + 14;
+      int var4 = 14 + var2 * 10;
       var1.offset = 0;
       int var5 = 0;
       int var6 = 0;
@@ -73,11 +73,11 @@ public class Track1 extends Node {
          }
       }
 
-      var4 += 5 * var5;
-      var4 += (var7 + var8 + var6 + var9 + var11) * 2;
-      var4 += var10 + var12;
+      var4 += var5 * 5;
+      var4 += 2 * (var7 + var8 + var6 + var9 + var11);
+      var4 = var4 + var10 + var12;
       var13 = var1.offset;
-      var14 = var9 + var2 + var5 + var6 + var7 + var8 + var10 + var11 + var12;
+      var14 = var2 + var5 + var6 + var7 + var8 + var9 + var10 + var11 + var12;
 
       for(var15 = 0; var15 < var14; ++var15) {
          var1.readVarInt();
@@ -149,7 +149,7 @@ public class Track1 extends Node {
       int var36 = var1.offset;
       var1.offset += var20;
       int var37 = var1.offset;
-      var1.offset += var11 + var7 + var8;
+      var1.offset += var7 + var8 + var11;
       int var38 = var1.offset;
       var1.offset += var7;
       int var39 = var1.offset;

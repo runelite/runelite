@@ -85,7 +85,7 @@ public final class ISAACCipher {
 
          this.field2396 += this.mm[var1 + 128 & 255];
          int var3;
-         this.mm[var1] = var3 = this.field2397 + this.field2396 + this.mm[(var2 & 1020) >> 2];
+         this.mm[var1] = var3 = this.field2396 + this.field2397 + this.mm[(var2 & 1020) >> 2];
          this.randResult[var1] = this.field2397 = var2 + this.mm[(var3 >> 8 & 1020) >> 2];
       }
 
@@ -139,7 +139,7 @@ public final class ISAACCipher {
          var3 += this.randResult[var1 + 1];
          var4 += this.randResult[var1 + 2];
          var5 += this.randResult[var1 + 3];
-         var6 += this.randResult[4 + var1];
+         var6 += this.randResult[var1 + 4];
          var7 += this.randResult[var1 + 5];
          var8 += this.randResult[var1 + 6];
          var9 += this.randResult[var1 + 7];
@@ -368,7 +368,7 @@ public final class ISAACCipher {
             var41.putString(var39);
             var41.offset = var11;
             var41.encryptXtea2(var10);
-            Buffer var13 = new Buffer(var9.offset + 5 + var27.offset + var41.offset);
+            Buffer var13 = new Buffer(var27.offset + var9.offset + var41.offset + 5);
             var13.putByte(2);
             var13.putByte(var27.offset);
             var13.putBytes(var27.payload, 0, var27.offset);

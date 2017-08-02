@@ -88,16 +88,16 @@ public class WorldMapType3 implements WorldMapSectionBase {
       intValue = 939750575
    )
    int field374;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1540997849
-   )
-   int field366;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -1107825569
    )
    int field362;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1540997849
+   )
+   int field366;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 191115807
@@ -155,8 +155,8 @@ public class WorldMapType3 implements WorldMapSectionBase {
       if(!this.vmethod676(var1, var2)) {
          return null;
       } else {
-         int var3 = this.field359 * 8 - this.field369 * 8 + this.field378 * 64 - this.field363 * 64 + var1;
-         int var4 = this.field366 * 8 - this.field370 * 8 + this.field362 * 64 - this.field364 * 64 + var2;
+         int var3 = this.field359 * 8 - this.field369 * 8 + (this.field378 * 64 - this.field363 * 64) + var1;
+         int var4 = var2 + (this.field362 * 64 - this.field364 * 64) + (this.field366 * 8 - this.field370 * 8);
          return new Coordinates(this.field377, var3, var4);
       }
    }
@@ -170,7 +170,7 @@ public class WorldMapType3 implements WorldMapSectionBase {
       if(!this.vmethod675(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{this.field369 * 8 - this.field359 * 8 + this.field363 * 64 - this.field378 * 64 + var2, this.field370 * 8 - this.field366 * 8 + this.field364 * 64 - this.field362 * 64 + var3};
+         int[] var4 = new int[]{this.field363 * 64 - this.field378 * 64 + var2 + (this.field369 * 8 - this.field359 * 8), this.field364 * 64 - this.field362 * 64 + var3 + (this.field370 * 8 - this.field366 * 8)};
          return var4;
       }
    }

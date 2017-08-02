@@ -55,8 +55,8 @@ public class class20 {
          for(var3 = 0; var3 < var0.height; ++var3) {
             for(var4 = 0; var4 < var0.originalWidth; ++var4) {
                if(var0.pixels[var2++] != 0) {
-                  var5 = var4 + 16 + var0.offsetX;
-                  int var6 = var3 + 16 + var0.offsetY;
+                  var5 = var4 + var0.offsetX + 16;
+                  int var6 = var3 + var0.offsetY + 16;
                   int var7 = var5 + (var6 << 7);
                   class92.field1406[var7] = 0;
                }
@@ -87,7 +87,7 @@ public class class20 {
          var5 = 100;
       }
 
-      int var6 = var5 * (Client.field1157 - Client.field1163) / 100 + Client.field1163;
+      int var6 = Client.field1163 + (Client.field1157 - Client.field1163) * var5 / 100;
       int var7 = var3 * var6 * 512 / (var2 * 334);
       int var8;
       int var9;
@@ -110,7 +110,7 @@ public class class20 {
          }
       } else if(var7 > Client.field965) {
          var15 = Client.field965;
-         var6 = var2 * var15 * 334 / (var3 * 512);
+         var6 = var15 * var2 * 334 / (var3 * 512);
          if(var6 < Client.field913) {
             var6 = Client.field913;
             var8 = var15 * var2 * 334 / (var6 * 512);
@@ -127,13 +127,13 @@ public class class20 {
       }
 
       var8 = (Client.field1159 - Client.field1158) * var5 / 100 + Client.field1158;
-      Client.scale = var8 * var3 * var6 / 85504 << 1;
+      Client.scale = var3 * var8 * var6 / 85504 << 1;
       if(var2 != Client.viewportHeight || var3 != Client.viewportWidth) {
          int[] var14 = new int[9];
 
          for(int var10 = 0; var10 < 9; ++var10) {
-            int var11 = var10 * 32 + 128 + 15;
-            int var12 = var11 * 3 + 600;
+            int var11 = var10 * 32 + 15 + 128;
+            int var12 = 600 + var11 * 3;
             int var13 = Graphics3D.SINE[var11];
             var14[var10] = var12 * var13 >> 16;
          }

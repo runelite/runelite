@@ -64,7 +64,7 @@ public class class37 {
       int var12 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
       int var11 = ((65536 - var12) * var7 >> 16) + (var8 * var12 >> 16);
       int var14 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
-      int var13 = (var10 * var14 >> 16) + ((65536 - var14) * var9 >> 16);
+      int var13 = ((65536 - var14) * var9 >> 16) + (var10 * var14 >> 16);
       int var16 = 65536 - Graphics3D.COSINE[var6 * 1024 / var2] >> 1;
       int var15 = (var13 * var16 >> 16) + ((65536 - var16) * var11 >> 16);
       return var15;
@@ -89,7 +89,7 @@ public class class37 {
                Client.audioEffects[Client.field935] = null;
                int var8 = (var2 - 64) / 128;
                int var9 = (var3 - 64) / 128;
-               Client.field1148[Client.field935] = var7 + (var8 << 16) + (var9 << 8);
+               Client.field1148[Client.field935] = var7 + (var9 << 8) + (var8 << 16);
                ++Client.field935;
             }
          }

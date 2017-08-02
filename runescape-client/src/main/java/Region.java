@@ -372,8 +372,8 @@ public class Region {
             var6 = var5.minX - var1;
             if(var6 > 0) {
                var7 = (var6 * var5.minNormalX >> 8) + var5.minZ;
-               var8 = (var5.maxNormalX * var6 >> 8) + var5.maxZ;
-               var9 = (var5.minNormalY * var6 >> 8) + var5.minY;
+               var8 = (var6 * var5.maxNormalX >> 8) + var5.maxZ;
+               var9 = (var6 * var5.minNormalY >> 8) + var5.minY;
                var10 = (var6 * var5.maxNormalY >> 8) + var5.maxY;
                if(var3 >= var7 && var3 <= var8 && var2 >= var9 && var2 <= var10) {
                   return true;
@@ -382,10 +382,10 @@ public class Region {
          } else if(var5.testDirection == 2) {
             var6 = var1 - var5.minX;
             if(var6 > 0) {
-               var7 = (var6 * var5.minNormalX >> 8) + var5.minZ;
-               var8 = (var5.maxNormalX * var6 >> 8) + var5.maxZ;
+               var7 = var5.minZ + (var6 * var5.minNormalX >> 8);
+               var8 = var5.maxZ + (var6 * var5.maxNormalX >> 8);
                var9 = (var6 * var5.minNormalY >> 8) + var5.minY;
-               var10 = (var5.maxNormalY * var6 >> 8) + var5.maxY;
+               var10 = var5.maxY + (var6 * var5.maxNormalY >> 8);
                if(var3 >= var7 && var3 <= var8 && var2 >= var9 && var2 <= var10) {
                   return true;
                }
@@ -393,8 +393,8 @@ public class Region {
          } else if(var5.testDirection == 3) {
             var6 = var5.minZ - var3;
             if(var6 > 0) {
-               var7 = (var5.field2116 * var6 >> 8) + var5.minX;
-               var8 = (var5.field2104 * var6 >> 8) + var5.maxX;
+               var7 = (var6 * var5.field2116 >> 8) + var5.minX;
+               var8 = (var6 * var5.field2104 >> 8) + var5.maxX;
                var9 = (var6 * var5.minNormalY >> 8) + var5.minY;
                var10 = (var6 * var5.maxNormalY >> 8) + var5.maxY;
                if(var1 >= var7 && var1 <= var8 && var2 >= var9 && var2 <= var10) {
@@ -405,8 +405,8 @@ public class Region {
             var6 = var3 - var5.minZ;
             if(var6 > 0) {
                var7 = (var6 * var5.field2116 >> 8) + var5.minX;
-               var8 = (var6 * var5.field2104 >> 8) + var5.maxX;
-               var9 = (var6 * var5.minNormalY >> 8) + var5.minY;
+               var8 = var5.maxX + (var6 * var5.field2104 >> 8);
+               var9 = var5.minY + (var6 * var5.minNormalY >> 8);
                var10 = (var6 * var5.maxNormalY >> 8) + var5.maxY;
                if(var1 >= var7 && var1 <= var8 && var2 >= var9 && var2 <= var10) {
                   return true;
@@ -415,10 +415,10 @@ public class Region {
          } else if(var5.testDirection == 5) {
             var6 = var2 - var5.minY;
             if(var6 > 0) {
-               var7 = (var5.field2116 * var6 >> 8) + var5.minX;
-               var8 = (var6 * var5.field2104 >> 8) + var5.maxX;
-               var9 = (var5.minNormalX * var6 >> 8) + var5.minZ;
-               var10 = (var6 * var5.maxNormalX >> 8) + var5.maxZ;
+               var7 = (var6 * var5.field2116 >> 8) + var5.minX;
+               var8 = var5.maxX + (var6 * var5.field2104 >> 8);
+               var9 = var5.minZ + (var6 * var5.minNormalX >> 8);
+               var10 = var5.maxZ + (var6 * var5.maxNormalX >> 8);
                if(var1 >= var7 && var1 <= var8 && var3 >= var9 && var3 <= var10) {
                   return true;
                }
@@ -481,7 +481,7 @@ public class Region {
                      if(var14 >= 0 && var14 < this.maxZ && (!var7 || var13 >= var9 || var14 >= var11 || var14 < var4 && var3 != var13)) {
                         Tile var15 = this.tiles[var12][var13][var14];
                         if(var15 != null) {
-                           int var16 = (this.tileHeights[var12][var13 + 1][var14 + 1] + this.tileHeights[var12][var13][var14] + this.tileHeights[var12][var13 + 1][var14] + this.tileHeights[var12][var13][var14 + 1]) / 4 - (this.tileHeights[var2][var3][var4 + 1] + this.tileHeights[var2][var3][var4] + this.tileHeights[var2][var3 + 1][var4] + this.tileHeights[var2][var3 + 1][var4 + 1]) / 4;
+                           int var16 = (this.tileHeights[var12][var13][var14] + this.tileHeights[var12][var13 + 1][var14] + this.tileHeights[var12][var13][var14 + 1] + this.tileHeights[var12][var13 + 1][var14 + 1]) / 4 - (this.tileHeights[var2][var3][var4] + this.tileHeights[var2][var3 + 1][var4] + this.tileHeights[var2][var3][var4 + 1] + this.tileHeights[var2][var3 + 1][var4 + 1]) / 4;
                            WallObject var17 = var15.wallObject;
                            if(var17 != null) {
                               ModelData var18;
@@ -492,7 +492,7 @@ public class Region {
 
                               if(var17.renderable2 instanceof ModelData) {
                                  var18 = (ModelData)var17.renderable2;
-                                 ModelData.method2353(var1, var18, (1 - var5) * 64 + (var13 - var3) * 128, var16, (1 - var6) * 64 + (var14 - var4) * 128, var7);
+                                 ModelData.method2353(var1, var18, (var13 - var3) * 128 + (1 - var5) * 64, var16, (1 - var6) * 64 + (var14 - var4) * 128, var7);
                               }
                            }
 
@@ -502,7 +502,7 @@ public class Region {
                                  ModelData var20 = (ModelData)var19.renderable;
                                  int var21 = var19.offsetX - var19.relativeX + 1;
                                  int var22 = var19.offsetY - var19.relativeY + 1;
-                                 ModelData.method2353(var1, var20, (var21 - var5) * 64 + (var19.relativeX - var3) * 128, var16, (var19.relativeY - var4) * 128 + (var22 - var6) * 64, var7);
+                                 ModelData.method2353(var1, var20, (var19.relativeX - var3) * 128 + (var21 - var5) * 64, var16, (var19.relativeY - var4) * 128 + (var22 - var6) * 64, var7);
                               }
                            }
                         }
@@ -714,28 +714,28 @@ public class Region {
       int var18 = this.tileHeights[var2][var7 + 1][var8] - cameraY2;
       int var19 = this.tileHeights[var2][var7 + 1][var8 + 1] - cameraY2;
       int var20 = this.tileHeights[var2][var7][var8 + 1] - cameraY2;
-      int var21 = var10 * var6 + var12 * var5 >> 16;
+      int var21 = var10 * var6 + var5 * var12 >> 16;
       var12 = var12 * var6 - var5 * var10 >> 16;
       var10 = var21;
       var21 = var17 * var4 - var3 * var12 >> 16;
       var12 = var3 * var17 + var12 * var4 >> 16;
       var17 = var21;
       if(var12 >= 50) {
-         var21 = var14 * var6 + var11 * var5 >> 16;
+         var21 = var14 * var6 + var5 * var11 >> 16;
          var11 = var11 * var6 - var5 * var14 >> 16;
          var14 = var21;
          var21 = var18 * var4 - var3 * var11 >> 16;
          var11 = var3 * var18 + var11 * var4 >> 16;
          var18 = var21;
          if(var11 >= 50) {
-            var21 = var13 * var6 + var16 * var5 >> 16;
+            var21 = var13 * var6 + var5 * var16 >> 16;
             var16 = var16 * var6 - var5 * var13 >> 16;
             var13 = var21;
             var21 = var19 * var4 - var3 * var16 >> 16;
             var16 = var3 * var19 + var16 * var4 >> 16;
             var19 = var21;
             if(var16 >= 50) {
-               var21 = var9 * var6 + var5 * var15 >> 16;
+               var21 = var5 * var15 + var9 * var6 >> 16;
                var15 = var15 * var6 - var5 * var9 >> 16;
                var9 = var21;
                var21 = var20 * var4 - var3 * var15 >> 16;
@@ -743,12 +743,12 @@ public class Region {
                if(var15 >= 50) {
                   int var22 = var10 * Graphics3D.field1983 / var12 + Graphics3D.centerX;
                   int var23 = var17 * Graphics3D.field1983 / var12 + Graphics3D.centerY;
-                  int var24 = var14 * Graphics3D.field1983 / var11 + Graphics3D.centerX;
+                  int var24 = Graphics3D.centerX + var14 * Graphics3D.field1983 / var11;
                   int var25 = var18 * Graphics3D.field1983 / var11 + Graphics3D.centerY;
-                  int var26 = var13 * Graphics3D.field1983 / var16 + Graphics3D.centerX;
+                  int var26 = Graphics3D.centerX + var13 * Graphics3D.field1983 / var16;
                   int var27 = var19 * Graphics3D.field1983 / var16 + Graphics3D.centerY;
                   int var28 = var9 * Graphics3D.field1983 / var15 + Graphics3D.centerX;
-                  int var29 = var21 * Graphics3D.field1983 / var15 + Graphics3D.centerY;
+                  int var29 = Graphics3D.centerY + var21 * Graphics3D.field1983 / var15;
                   Graphics3D.rasterAlpha = 0;
                   int var30;
                   if((var26 - var28) * (var25 - var29) - (var27 - var29) * (var24 - var28) > 0) {
@@ -840,7 +840,7 @@ public class Region {
          }
 
          SceneTileModel.tmpScreenX[var9] = var10 * Graphics3D.field1983 / var12 + Graphics3D.centerX;
-         SceneTileModel.tmpScreenY[var9] = var13 * Graphics3D.field1983 / var12 + Graphics3D.centerY;
+         SceneTileModel.tmpScreenY[var9] = Graphics3D.centerY + var13 * Graphics3D.field1983 / var12;
       }
 
       Graphics3D.rasterAlpha = 0;
@@ -1990,8 +1990,8 @@ public class Region {
       if(var7 == null) {
          return true;
       } else {
-         int var11 = var5 * 64 + var2 * 128;
-         int var12 = 64 * var6 + var3 * 128;
+         int var11 = var2 * 128 + var5 * 64;
+         int var12 = var6 * 64 + var3 * 128;
          return this.addEntityMarker(var1, var2, var3, var5, var6, var11, var12, var4, var7, var8, false, var9, var10);
       }
    }
@@ -2421,8 +2421,8 @@ public class Region {
       var3 = pitchCos * var1 - var2 * pitchSin >> 16;
       var2 = pitchSin * var1 + var2 * pitchCos >> 16;
       var2 |= 1;
-      int var4 = var0 * Graphics3D.field1983 / var2 + Graphics3D.centerX + Rasterizer2D.draw_region_x;
-      int var5 = var3 * Graphics3D.field1983 / var2 + Graphics3D.centerY + Rasterizer2D.drawingAreaTop;
+      int var4 = Graphics3D.centerX + var0 * Graphics3D.field1983 / var2 + Rasterizer2D.draw_region_x;
+      int var5 = Graphics3D.field1983 * var3 / var2 + Graphics3D.centerY + Rasterizer2D.drawingAreaTop;
       return new int[]{var4, var5};
    }
 
@@ -2525,7 +2525,7 @@ public class Region {
    static boolean method2688(int var0, int var1, int var2) {
       int var3 = var0 * yawCos + var2 * yawSin >> 16;
       int var4 = var2 * yawCos - var0 * yawSin >> 16;
-      int var5 = var4 * pitchCos + var1 * pitchSin >> 16;
+      int var5 = pitchSin * var1 + var4 * pitchCos >> 16;
       int var6 = pitchCos * var1 - var4 * pitchSin >> 16;
       if(var5 >= 50 && var5 <= 3500) {
          int var7 = var3 * 390 / var5 + field2074;

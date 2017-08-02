@@ -217,7 +217,7 @@ public final class class167 {
             int var55;
             for(var35 = 15; var35 >= 0; --var35) {
                for(var55 = 15; var55 >= 0; --var55) {
-                  var0.field2343[var56] = (byte)(var55 + var35 * 16);
+                  var0.field2343[var56] = (byte)(var35 * 16 + var55);
                   --var56;
                }
 
@@ -333,7 +333,7 @@ public final class class167 {
                         if(var46 == 0) {
                            var48 += var49;
                         } else if(var46 == 1) {
-                           var48 += 2 * var49;
+                           var48 += var49 * 2;
                         }
 
                         var49 *= 2;
@@ -394,7 +394,7 @@ public final class class167 {
                ++var0.nblock_used;
                var0.field2352 = var47;
                method3048(var0);
-               if(var0.field2352 + 1 == var0.nblock_used && var0.out_len == 0) {
+               if(var0.nblock_used == var0.field2352 + 1 && var0.out_len == 0) {
                   var26 = true;
                   break;
                }

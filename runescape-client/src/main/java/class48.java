@@ -77,7 +77,7 @@ public class class48 implements WorldMapSectionBase {
       garbageValue = "-1713"
    )
    public boolean vmethod676(int var1, int var2) {
-      return var1 >= (this.field612 << 6) + (this.field610 << 3) && var1 <= (this.field610 << 3) + (this.field612 << 6) + 7 && var2 >= (this.field613 << 6) + (this.field617 << 3) && var2 <= (this.field613 << 6) + (this.field617 << 3) + 7;
+      return var1 >= (this.field612 << 6) + (this.field610 << 3) && var1 <= (this.field612 << 6) + (this.field610 << 3) + 7 && var2 >= (this.field613 << 6) + (this.field617 << 3) && var2 <= (this.field613 << 6) + (this.field617 << 3) + 7;
    }
 
    @ObfuscatedName("o")
@@ -123,7 +123,7 @@ public class class48 implements WorldMapSectionBase {
          return null;
       } else {
          int var3 = this.field609 * 64 - this.field612 * 64 + var1 + (this.field618 * 8 - this.field610 * 8);
-         int var4 = this.field615 * 8 - this.field617 * 8 + this.field608 * 64 - this.field613 * 64 + var2;
+         int var4 = this.field615 * 8 - this.field617 * 8 + (this.field608 * 64 - this.field613 * 64) + var2;
          return new Coordinates(this.field619, var3, var4);
       }
    }
@@ -137,7 +137,7 @@ public class class48 implements WorldMapSectionBase {
       if(!this.vmethod675(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{this.field610 * 8 - this.field618 * 8 + this.field612 * 64 - this.field609 * 64 + var2, this.field617 * 8 - this.field615 * 8 + var3 + (this.field613 * 64 - this.field608 * 64)};
+         int[] var4 = new int[]{this.field610 * 8 - this.field618 * 8 + var2 + (this.field612 * 64 - this.field609 * 64), var3 + (this.field617 * 8 - this.field615 * 8) + (this.field613 * 64 - this.field608 * 64)};
          return var4;
       }
    }

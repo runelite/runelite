@@ -338,7 +338,7 @@ public final class class41 {
 
          for(int var17 = var12.field408; var17 < var12.field407 + var12.field408; ++var17) {
             for(int var18 = var12.field406; var18 < var12.field409 + var12.field406; ++var18) {
-               List var19 = this.field557[var17][var18].method437(var5 + (this.field557[var17][var18].field464 * 64 - var15) * var14 / 64, var8 + var6 - var14 * (this.field557[var17][var18].field465 * 64 - var16 + 64) / 64, var14, var9, var10);
+               List var19 = this.field557[var17][var18].method437(var5 + (this.field557[var17][var18].field464 * 64 - var15) * var14 / 64, var8 + var6 - var14 * (64 + (this.field557[var17][var18].field465 * 64 - var16)) / 64, var14, var9, var10);
                if(!var19.isEmpty()) {
                   var11.addAll(var19);
                }
@@ -448,7 +448,7 @@ public final class class41 {
                this.field557[var19][var20].method378();
             }
 
-            this.field557[var19][var20].method355(var5 + (this.field557[var19][var20].field464 * 64 - var17) * var16 / 64, var8 - (this.field557[var19][var20].field465 * 64 - var18 + 64) * var16 / 64, var16, var9);
+            this.field557[var19][var20].method355((this.field557[var19][var20].field464 * 64 - var17) * var16 / 64 + var5, var8 - (this.field557[var19][var20].field465 * 64 - var18 + 64) * var16 / 64, var16, var9);
          }
       }
 
@@ -743,7 +743,7 @@ public final class class41 {
                            if(var0 == 6633) {
                               BufferProvider.intStackSize -= 2;
                               var3 = class83.intStack[BufferProvider.intStackSize];
-                              var4 = class83.intStack[BufferProvider.intStackSize + 1] == 1;
+                              var4 = 1 == class83.intStack[BufferProvider.intStackSize + 1];
                               class73.method1070().method5131(var3, var4);
                               return 1;
                            } else if(var0 == 6634) {

@@ -41,7 +41,7 @@ public class class23 {
          int var7 = var1 & 127;
          int var8 = (128 - var6) * class61.tileHeights[var5][var3][var4] + var6 * class61.tileHeights[var5][var3 + 1][var4] >> 7;
          int var9 = var6 * class61.tileHeights[var5][var3 + 1][var4 + 1] + class61.tileHeights[var5][var3][var4 + 1] * (128 - var6) >> 7;
-         return var8 * (128 - var7) + var7 * var9 >> 7;
+         return var7 * var9 + var8 * (128 - var7) >> 7;
       } else {
          return 0;
       }
@@ -146,7 +146,7 @@ public class class23 {
                ++var9;
             }
 
-            class96.field1473[var1] = (var8 << 14) + (var7 << 28) + var9;
+            class96.field1473[var1] = (var8 << 14) + var9 + (var7 << 28);
             return false;
          } else {
             var3 = var0.getBits(18);
@@ -157,7 +157,7 @@ public class class23 {
             var8 = (var7 >> 28) + var4 & 3;
             var9 = var5 + (var7 >> 14) & 255;
             var10 = var7 + var11 & 255;
-            class96.field1473[var1] = var10 + (var9 << 14) + (var8 << 28);
+            class96.field1473[var1] = (var9 << 14) + var10 + (var8 << 28);
             return false;
          }
       }

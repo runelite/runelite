@@ -291,7 +291,7 @@ public class class106 extends Node {
          float var31;
          for(var25 = 0; var25 < var42; ++var25) {
             var26 = var43[var25 * 4 + var17 + 3];
-            var27 = var43[var17 + 1 + var25 * 4];
+            var27 = var43[var25 * 4 + var17 + 1];
             var28 = var43[var25 * 4 + 3];
             var29 = var43[var25 * 4 + 1];
             var43[var25 * 4 + var17 + 3] = var26 + var28;
@@ -313,8 +313,8 @@ public class class106 extends Node {
             var49 = 8 << var47;
 
             for(var50 = 0; var50 < 2 << var47; ++var50) {
-               int var51 = var4 - var48 * 2 * var50;
-               int var52 = var4 - (2 * var50 + 1) * var48;
+               int var51 = var4 - var48 * var50 * 2;
+               int var52 = var4 - var48 * (var50 * 2 + 1);
 
                for(int var32 = 0; var32 < var4 >> var47 + 4; ++var32) {
                   int var33 = var32 * 4;
@@ -366,21 +366,21 @@ public class class106 extends Node {
          for(var47 = 0; var47 < var42; ++var47) {
             var27 = var23[var47 * 2];
             var28 = var23[var47 * 2 + 1];
-            var29 = var43[var47 * 2 + var17];
-            var30 = var43[2 * var47 + var17 + 1];
+            var29 = var43[var17 + var47 * 2];
+            var30 = var43[var17 + var47 * 2 + 1];
             var31 = var43[var4 - 2 - var47 * 2];
             float var53 = var43[var4 - 1 - var47 * 2];
             float var54 = var28 * (var29 - var31) + var27 * (var30 + var53);
             var43[var47 * 2 + var17] = (var29 + var31 + var54) * 0.5F;
             var43[var4 - 2 - var47 * 2] = (var29 + var31 - var54) * 0.5F;
             var54 = var28 * (var30 + var53) - var27 * (var29 - var31);
-            var43[2 * var47 + var17 + 1] = (var30 - var53 + var54) * 0.5F;
+            var43[var17 + var47 * 2 + 1] = (var30 - var53 + var54) * 0.5F;
             var43[var4 - 1 - var47 * 2] = (-var30 + var53 + var54) * 0.5F;
          }
 
          for(var47 = 0; var47 < var40; ++var47) {
             var43[var47] = var43[var47 * 2 + var17] * var22[var47 * 2] + var43[var47 * 2 + 1 + var17] * var22[var47 * 2 + 1];
-            var43[var17 - 1 - var47] = var43[var47 * 2 + var17] * var22[var47 * 2 + 1] - var43[var47 * 2 + 1 + var17] * var22[var47 * 2];
+            var43[var17 - 1 - var47] = var43[var47 * 2 + var17] * var22[var47 * 2 + 1] - var43[var47 * 2 + var17 + 1] * var22[var47 * 2];
          }
 
          for(var47 = 0; var47 < var40; ++var47) {

@@ -230,7 +230,7 @@ public final class class82 extends Node {
 
                var2 = var0.x;
                var3 = var0.y;
-               var4 = var0.pathX[var0.queueSize - 1] * 128 + var0.field1213 * 64;
+               var4 = var0.field1213 * 64 + var0.pathX[var0.queueSize - 1] * 128;
                int var5 = var0.pathY[var0.queueSize - 1] * 128 + var0.field1213 * 64;
                if(var2 < var4) {
                   if(var3 < var5) {
@@ -381,7 +381,7 @@ public final class class82 extends Node {
          var0.field1255 = 0;
          var0.field1268 = 0;
          var0.x = var0.pathX[0] * 128 + var0.field1213 * 64;
-         var0.y = var0.pathY[0] * 128 + var0.field1213 * 64;
+         var0.y = var0.field1213 * 64 + var0.pathY[0] * 128;
          var0.method1474();
       }
 

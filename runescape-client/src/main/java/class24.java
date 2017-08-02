@@ -178,14 +178,14 @@ public class class24 {
          int var14;
          if(var10 + var2 <= 104) {
             var13 = var2 + (var10 >> 1);
-            var14 = (1 + var10 >> 1) + var2;
+            var14 = (var10 + 1 >> 1) + var2;
          } else {
             var13 = var2;
             var14 = var2 + 1;
          }
 
          int[][] var15 = class61.tileHeights[var0];
-         int var16 = var15[var12][var14] + var15[var11][var13] + var15[var12][var13] + var15[var11][var14] >> 2;
+         int var16 = var15[var11][var14] + var15[var11][var13] + var15[var12][var13] + var15[var12][var14] >> 2;
          int var17 = (var1 << 7) + (var9 << 6);
          int var18 = (var2 << 7) + (var10 << 6);
          int var19 = (var3 << 14) + (var2 << 7) + var1 + 1073741824;

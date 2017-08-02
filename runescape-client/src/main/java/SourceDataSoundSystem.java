@@ -98,7 +98,7 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
          }
 
          this.bytes[var2 * 2] = (byte)(var3 >> 8);
-         this.bytes[var2 * 2 + 1] = (byte)(var3 >> 16);
+         this.bytes[1 + var2 * 2] = (byte)(var3 >> 16);
       }
 
       this.source.write(this.bytes, 0, var1 << 1);

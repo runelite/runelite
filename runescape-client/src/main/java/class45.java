@@ -52,7 +52,7 @@ public class class45 extends class28 {
       garbageValue = "-2060605761"
    )
    boolean method608(int var1, int var2) {
-      return var1 < this.field585 * 8?false:(var2 < this.field586 * 8?false:(var1 >= this.field585 * 8 + 8?false:var2 < this.field586 * 8 + 8));
+      return var1 < this.field585 * 8?false:(var2 < this.field586 * 8?false:(var1 >= this.field585 * 8 + 8?false:var2 < 8 + this.field586 * 8));
    }
 
    @ObfuscatedName("ab")

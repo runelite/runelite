@@ -423,13 +423,13 @@ final class class17 implements Comparator {
                                                                                                                   }
                                                                                                                } else {
                                                                                                                   BufferProvider.intStackSize -= 2;
-                                                                                                                  if(class83.intStack[BufferProvider.intStackSize] == class83.intStack[BufferProvider.intStackSize + 1]) {
+                                                                                                                  if(class83.intStack[BufferProvider.intStackSize + 1] == class83.intStack[BufferProvider.intStackSize]) {
                                                                                                                      var30 += var56[var30];
                                                                                                                   }
                                                                                                                }
                                                                                                             } else {
                                                                                                                BufferProvider.intStackSize -= 2;
-                                                                                                               if(class83.intStack[BufferProvider.intStackSize] != class83.intStack[BufferProvider.intStackSize + 1]) {
+                                                                                                               if(class83.intStack[BufferProvider.intStackSize + 1] != class83.intStack[BufferProvider.intStackSize]) {
                                                                                                                   var30 += var56[var30];
                                                                                                                }
                                                                                                             }
@@ -747,7 +747,7 @@ final class class17 implements Comparator {
                                                                                                                var16 = class10.plane;
                                                                                                                var34 = (class226.localPlayer.x >> 7) + class21.baseX;
                                                                                                                var18 = (class226.localPlayer.y >> 7) + class164.baseY;
-                                                                                                               class83.intStack[++BufferProvider.intStackSize - 1] = var18 + (var34 << 14) + (var16 << 28);
+                                                                                                               class83.intStack[++BufferProvider.intStackSize - 1] = (var34 << 14) + var18 + (var16 << 28);
                                                                                                                var15 = 1;
                                                                                                             } else if(var57 == 3309) {
                                                                                                                var16 = class83.intStack[--BufferProvider.intStackSize];
@@ -2012,7 +2012,7 @@ final class class17 implements Comparator {
                                                                                                                   } else if(var57 == 6507) {
                                                                                                                      BufferProvider.intStackSize -= 4;
                                                                                                                      var16 = class83.intStack[BufferProvider.intStackSize];
-                                                                                                                     boolean var105 = class83.intStack[1 + BufferProvider.intStackSize] == 1;
+                                                                                                                     boolean var105 = class83.intStack[BufferProvider.intStackSize + 1] == 1;
                                                                                                                      var18 = class83.intStack[BufferProvider.intStackSize + 2];
                                                                                                                      var90 = class83.intStack[BufferProvider.intStackSize + 3] == 1;
                                                                                                                      Preferences.method1551(var16, var105, var18, var90);
@@ -2643,8 +2643,8 @@ final class class17 implements Comparator {
 
                   if(Client.field1004[var18] == 4) {
                      var26 = (150 - Client.field1005[var18]) * (Area.field3285.method4635(var33) + 100) / 150;
-                     Rasterizer2D.setInnerDrawRegion(var0 + Client.screenY - 50, var1, Client.screenY + var0 + 50, var3 + var1);
-                     Area.field3285.method4640(var33, Client.screenY + var0 + 50 - var26, Client.screenX + var1, var25, 0);
+                     Rasterizer2D.setInnerDrawRegion(var0 + Client.screenY - 50, var1, var0 + Client.screenY + 50, var3 + var1);
+                     Area.field3285.method4640(var33, var0 + Client.screenY + 50 - var26, Client.screenX + var1, var25, 0);
                      Rasterizer2D.setDrawRegion(var0, var1, var0 + var2, var3 + var1);
                   }
 

@@ -587,7 +587,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             var6.fillRect(2, 2, var1 * 3, 30);
             var6.setColor(Color.black);
             var6.drawRect(1, 1, 301, 31);
-            var6.fillRect(3 * var1 + 2, 2, 300 - var1 * 3, 30);
+            var6.fillRect(2 + var1 * 3, 2, 300 - var1 * 3, 30);
             var6.setFont(class17.field308);
             var6.setColor(Color.white);
             var6.drawString(var2, (304 - class11.field254.stringWidth(var2)) / 2, 22);
@@ -600,7 +600,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             var4.fillRect(var7 + 2, var8 + 2, var1 * 3, 30);
             var4.setColor(Color.black);
             var4.drawRect(var7 + 1, var8 + 1, 301, 31);
-            var4.fillRect(var1 * 3 + var7 + 2, var8 + 2, 300 - var1 * 3, 30);
+            var4.fillRect(var1 * 3 + 2 + var7, var8 + 2, 300 - var1 * 3, 30);
             var4.setFont(class17.field308);
             var4.setColor(Color.white);
             var4.drawString(var2, var7 + (304 - class11.field254.stringWidth(var2)) / 2, var8 + 22);

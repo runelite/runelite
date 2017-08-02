@@ -116,12 +116,21 @@ public class MessageNode extends CacheableNode {
       int var4;
       int var5;
       int var6;
-      if(Client.packetType == 45) {
-         var0 = Client.secretPacketBuffer2.readUnsignedByte();
-         var1 = var0 >> 2;
-         var2 = var0 & 3;
-         var3 = Client.field978[var1];
-         var4 = Client.secretPacketBuffer2.method3280();
+      if(Client.packetType == (Client.RUNELITE_PACKET?38:45)) {
+         if(Client.RUNELITE_PACKET) {
+            var0 = Client.secretPacketBuffer2.runeliteReadInt();
+            var4 = Client.secretPacketBuffer2.runeliteReadInt();
+            var1 = var0 >> 2;
+            var2 = var0 & 3;
+            var3 = Client.field978[var1];
+         } else {
+            var0 = Client.secretPacketBuffer2.readUnsignedByte();
+            var1 = var0 >> 2;
+            var2 = var0 & 3;
+            var3 = Client.field978[var1];
+            var4 = Client.secretPacketBuffer2.method3280();
+         }
+
          var5 = (var4 >> 4 & 7) + World.field1293;
          var6 = (var4 & 7) + Signlink.field2193;
          if(var5 >= 0 && var6 >= 0 && var5 < 104 && var6 < 104) {
@@ -130,11 +139,19 @@ public class MessageNode extends CacheableNode {
 
       } else {
          Item var32;
-         if(Client.packetType == 240) {
-            var0 = Client.secretPacketBuffer2.readUnsignedByte();
-            var1 = (var0 >> 4 & 7) + World.field1293;
-            var2 = (var0 & 7) + Signlink.field2193;
-            var3 = Client.secretPacketBuffer2.method3132();
+         if(Client.packetType == (Client.RUNELITE_PACKET?39:240)) {
+            if(Client.RUNELITE_PACKET) {
+               var0 = Client.secretPacketBuffer2.runeliteReadInt();
+               var3 = Client.secretPacketBuffer2.runeliteReadInt();
+               var1 = (var0 >> 4 & 7) + World.field1293;
+               var2 = (var0 & 7) + Signlink.field2193;
+            } else {
+               var0 = Client.secretPacketBuffer2.readUnsignedByte();
+               var1 = (var0 >> 4 & 7) + World.field1293;
+               var2 = (var0 & 7) + Signlink.field2193;
+               var3 = Client.secretPacketBuffer2.method3132();
+            }
+
             if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                Deque var31 = Client.groundItemDeque[class10.plane][var1][var2];
                if(var31 != null) {
@@ -156,13 +173,23 @@ public class MessageNode extends CacheableNode {
          } else {
             int var9;
             int var30;
-            if(Client.packetType == 76) {
-               var0 = Client.secretPacketBuffer2.method3124();
-               var1 = var0 >> 2;
-               var2 = var0 & 3;
-               var3 = Client.field978[var1];
-               var4 = Client.secretPacketBuffer2.method3132();
-               var5 = Client.secretPacketBuffer2.readUnsignedByte();
+            if(Client.packetType == (Client.RUNELITE_PACKET?46:76)) {
+               if(Client.RUNELITE_PACKET) {
+                  var0 = Client.secretPacketBuffer2.runeliteReadInt();
+                  var5 = Client.secretPacketBuffer2.runeliteReadInt();
+                  var4 = Client.secretPacketBuffer2.runeliteReadInt();
+                  var1 = var0 >> 2;
+                  var2 = var0 & 3;
+                  var3 = Client.field978[var1];
+               } else {
+                  var0 = Client.secretPacketBuffer2.method3124();
+                  var1 = var0 >> 2;
+                  var2 = var0 & 3;
+                  var3 = Client.field978[var1];
+                  var4 = Client.secretPacketBuffer2.method3132();
+                  var5 = Client.secretPacketBuffer2.readUnsignedByte();
+               }
+
                var6 = (var5 >> 4 & 7) + World.field1293;
                var30 = (var5 & 7) + Signlink.field2193;
                if(var6 >= 0 && var30 >= 0 && var6 < 103 && var30 < 103) {
@@ -187,7 +214,7 @@ public class MessageNode extends CacheableNode {
                            if(var1 == 6) {
                               var37.renderable1 = new DynamicObject(var9, 4, var2 + 4, class10.plane, var6, var30, var4, false, var37.renderable1);
                            } else if(var1 == 7) {
-                              var37.renderable1 = new DynamicObject(var9, 4, (var2 + 2 & 3) + 4, class10.plane, var6, var30, var4, false, var37.renderable1);
+                              var37.renderable1 = new DynamicObject(var9, 4, 4 + (var2 + 2 & 3), class10.plane, var6, var30, var4, false, var37.renderable1);
                            } else if(var1 == 8) {
                               var37.renderable1 = new DynamicObject(var9, 4, var2 + 4, class10.plane, var6, var30, var4, false, var37.renderable1);
                               var37.renderable2 = new DynamicObject(var9, 4, (var2 + 2 & 3) + 4, class10.plane, var6, var30, var4, false, var37.renderable2);
@@ -217,23 +244,40 @@ public class MessageNode extends CacheableNode {
                   }
                }
 
-            } else if(Client.packetType == 157) {
-               var0 = Client.secretPacketBuffer2.readUnsignedShort();
-               var1 = Client.secretPacketBuffer2.method3124();
-               var2 = var1 >> 2;
-               var3 = var1 & 3;
-               var4 = Client.field978[var2];
-               var5 = Client.secretPacketBuffer2.method3280();
+            } else if(Client.packetType == (Client.RUNELITE_PACKET?48:157)) {
+               if(Client.RUNELITE_PACKET) {
+                  var1 = Client.secretPacketBuffer2.runeliteReadInt();
+                  var5 = Client.secretPacketBuffer2.runeliteReadInt();
+                  var0 = Client.secretPacketBuffer2.runeliteReadInt();
+                  var2 = var1 >> 2;
+                  var3 = var1 & 3;
+                  var4 = Client.field978[var2];
+               } else {
+                  var0 = Client.secretPacketBuffer2.readUnsignedShort();
+                  var1 = Client.secretPacketBuffer2.method3124();
+                  var2 = var1 >> 2;
+                  var3 = var1 & 3;
+                  var4 = Client.field978[var2];
+                  var5 = Client.secretPacketBuffer2.method3280();
+               }
+
                var6 = (var5 >> 4 & 7) + World.field1293;
                var30 = (var5 & 7) + Signlink.field2193;
                if(var6 >= 0 && var30 >= 0 && var6 < 104 && var30 < 104) {
                   Client.method1268(class10.plane, var6, var30, var4, var0, var2, var3, 0, -1);
                }
 
-            } else if(Client.packetType == 153) {
-               var0 = Client.secretPacketBuffer2.readUnsignedShort();
-               var1 = Client.secretPacketBuffer2.readByteOb1();
-               var2 = Client.secretPacketBuffer2.readUnsignedByte();
+            } else if(Client.packetType == (Client.RUNELITE_PACKET?52:153)) {
+               if(Client.RUNELITE_PACKET) {
+                  var2 = Client.secretPacketBuffer2.runeliteReadInt();
+                  var1 = Client.secretPacketBuffer2.runeliteReadInt();
+                  var0 = Client.secretPacketBuffer2.runeliteReadInt();
+               } else {
+                  var0 = Client.secretPacketBuffer2.readUnsignedShort();
+                  var1 = Client.secretPacketBuffer2.readByteOb1();
+                  var2 = Client.secretPacketBuffer2.readUnsignedByte();
+               }
+
                var3 = (var2 >> 4 & 7) + World.field1293;
                var4 = (var2 & 7) + Signlink.field2193;
                if(var3 >= 0 && var4 >= 0 && var3 < 104 && var4 < 104) {
@@ -250,15 +294,27 @@ public class MessageNode extends CacheableNode {
 
             } else {
                int var33;
-               if(Client.packetType == 239) {
-                  var0 = Client.secretPacketBuffer2.readUnsignedByte();
-                  var1 = (var0 >> 4 & 7) + World.field1293;
-                  var2 = (var0 & 7) + Signlink.field2193;
-                  var3 = Client.secretPacketBuffer2.readUnsignedShort();
-                  var4 = Client.secretPacketBuffer2.readUnsignedByte();
-                  var5 = var4 >> 4 & 15;
-                  var6 = var4 & 7;
-                  var30 = Client.secretPacketBuffer2.readUnsignedByte();
+               if(Client.packetType == (Client.RUNELITE_PACKET?58:239)) {
+                  if(Client.RUNELITE_PACKET) {
+                     var0 = Client.secretPacketBuffer2.runeliteReadInt();
+                     var4 = Client.secretPacketBuffer2.runeliteReadInt();
+                     var3 = Client.secretPacketBuffer2.runeliteReadInt();
+                     var30 = Client.secretPacketBuffer2.runeliteReadInt();
+                     var1 = (var0 >> 4 & 7) + World.field1293;
+                     var2 = (var0 & 7) + Signlink.field2193;
+                     var5 = var4 >> 4 & 15;
+                     var6 = var4 & 7;
+                  } else {
+                     var0 = Client.secretPacketBuffer2.readUnsignedByte();
+                     var1 = (var0 >> 4 & 7) + World.field1293;
+                     var2 = (var0 & 7) + Signlink.field2193;
+                     var3 = Client.secretPacketBuffer2.readUnsignedShort();
+                     var4 = Client.secretPacketBuffer2.readUnsignedByte();
+                     var5 = var4 >> 4 & 15;
+                     var6 = var4 & 7;
+                     var30 = Client.secretPacketBuffer2.readUnsignedByte();
+                  }
+
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                      var33 = var5 + 1;
                      if(class226.localPlayer.pathX[0] >= var1 - var33 && class226.localPlayer.pathX[0] <= var33 + var1 && class226.localPlayer.pathY[0] >= var2 - var33 && class226.localPlayer.pathY[0] <= var33 + var2 && Client.field1035 != 0 && var6 > 0 && Client.field935 < 50) {
@@ -266,32 +322,52 @@ public class MessageNode extends CacheableNode {
                         Client.field1151[Client.field935] = var6;
                         Client.field1010[Client.field935] = var30;
                         Client.audioEffects[Client.field935] = null;
-                        Client.field1148[Client.field935] = var5 + (var1 << 16) + (var2 << 8);
+                        Client.field1148[Client.field935] = var5 + (var2 << 8) + (var1 << 16);
                         ++Client.field935;
                      }
                   }
 
-               } else if(Client.packetType == 234) {
-                  var0 = Client.secretPacketBuffer2.readUnsignedByte();
-                  var1 = (var0 >> 4 & 7) + World.field1293;
-                  var2 = (var0 & 7) + Signlink.field2193;
-                  var3 = Client.secretPacketBuffer2.readUnsignedShort();
-                  var4 = Client.secretPacketBuffer2.readUnsignedByte();
-                  var5 = Client.secretPacketBuffer2.readUnsignedShort();
+               } else if(Client.packetType == (Client.RUNELITE_PACKET?59:234)) {
+                  if(Client.RUNELITE_PACKET) {
+                     var0 = Client.secretPacketBuffer2.runeliteReadInt();
+                     var3 = Client.secretPacketBuffer2.runeliteReadInt();
+                     var4 = Client.secretPacketBuffer2.runeliteReadInt();
+                     var5 = Client.secretPacketBuffer2.runeliteReadInt();
+                     var1 = (var0 >> 4 & 7) + World.field1293;
+                     var2 = (var0 & 7) + Signlink.field2193;
+                  } else {
+                     var0 = Client.secretPacketBuffer2.readUnsignedByte();
+                     var1 = (var0 >> 4 & 7) + World.field1293;
+                     var2 = (var0 & 7) + Signlink.field2193;
+                     var3 = Client.secretPacketBuffer2.readUnsignedShort();
+                     var4 = Client.secretPacketBuffer2.readUnsignedByte();
+                     var5 = Client.secretPacketBuffer2.readUnsignedShort();
+                  }
+
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
-                     var1 = var1 * 128 + 64;
+                     var1 = 64 + var1 * 128;
                      var2 = var2 * 128 + 64;
                      GraphicsObject var41 = new GraphicsObject(var3, class10.plane, var1, var2, class23.getTileHeight(var1, var2, class10.plane) - var4, var5, Client.gameCycle);
                      Client.graphicsObjectDeque.addFront(var41);
                   }
 
-               } else if(Client.packetType == 23) {
-                  var0 = Client.secretPacketBuffer2.readUnsignedByte();
-                  var1 = (var0 >> 4 & 7) + World.field1293;
-                  var2 = (var0 & 7) + Signlink.field2193;
-                  var3 = Client.secretPacketBuffer2.readUnsignedShort();
-                  var4 = Client.secretPacketBuffer2.readUnsignedShort();
-                  var5 = Client.secretPacketBuffer2.readUnsignedShort();
+               } else if(Client.packetType == (Client.RUNELITE_PACKET?62:23)) {
+                  if(Client.RUNELITE_PACKET) {
+                     var0 = Client.secretPacketBuffer2.runeliteReadInt();
+                     var3 = Client.secretPacketBuffer2.runeliteReadInt();
+                     var4 = Client.secretPacketBuffer2.runeliteReadInt();
+                     var5 = Client.secretPacketBuffer2.runeliteReadInt();
+                     var1 = (var0 >> 4 & 7) + World.field1293;
+                     var2 = (var0 & 7) + Signlink.field2193;
+                  } else {
+                     var0 = Client.secretPacketBuffer2.readUnsignedByte();
+                     var1 = (var0 >> 4 & 7) + World.field1293;
+                     var2 = (var0 & 7) + Signlink.field2193;
+                     var3 = Client.secretPacketBuffer2.readUnsignedShort();
+                     var4 = Client.secretPacketBuffer2.readUnsignedShort();
+                     var5 = Client.secretPacketBuffer2.readUnsignedShort();
+                  }
+
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                      Deque var29 = Client.groundItemDeque[class10.plane][var1][var2];
                      if(var29 != null) {
@@ -309,20 +385,41 @@ public class MessageNode extends CacheableNode {
                } else {
                   int var10;
                   int var12;
-                  if(Client.packetType == 217) {
-                     var0 = Client.secretPacketBuffer2.readUnsignedShort();
-                     byte var35 = Client.secretPacketBuffer2.method3298();
-                     byte var36 = Client.secretPacketBuffer2.method3298();
-                     var3 = Client.secretPacketBuffer2.readByteOb1();
-                     var4 = Client.secretPacketBuffer2.method3122();
-                     var5 = var4 >> 2;
-                     var6 = var4 & 3;
-                     var30 = Client.field978[var5];
-                     byte var42 = Client.secretPacketBuffer2.method3187();
-                     var9 = Client.secretPacketBuffer2.readUnsignedShort();
-                     var10 = Client.secretPacketBuffer2.method3132();
-                     byte var40 = Client.secretPacketBuffer2.readByte();
-                     var12 = Client.secretPacketBuffer2.readUnsignedByte();
+                  if(Client.packetType == (Client.RUNELITE_PACKET?75:217)) {
+                     byte var35;
+                     byte var36;
+                     byte var40;
+                     byte var42;
+                     if(Client.RUNELITE_PACKET) {
+                        var4 = Client.secretPacketBuffer2.runeliteReadInt();
+                        var12 = Client.secretPacketBuffer2.runeliteReadInt();
+                        var10 = Client.secretPacketBuffer2.runeliteReadInt();
+                        var3 = Client.secretPacketBuffer2.runeliteReadInt();
+                        var0 = Client.secretPacketBuffer2.runeliteReadInt();
+                        var35 = Client.secretPacketBuffer2.runeliteReadByte();
+                        var36 = Client.secretPacketBuffer2.runeliteReadByte();
+                        var9 = Client.secretPacketBuffer2.runeliteReadInt();
+                        var42 = Client.secretPacketBuffer2.runeliteReadByte();
+                        var40 = Client.secretPacketBuffer2.runeliteReadByte();
+                        var5 = var4 >> 2;
+                        var6 = var4 & 3;
+                        var30 = Client.field978[var5];
+                     } else {
+                        var0 = Client.secretPacketBuffer2.readUnsignedShort();
+                        var35 = Client.secretPacketBuffer2.method3298();
+                        var36 = Client.secretPacketBuffer2.method3298();
+                        var3 = Client.secretPacketBuffer2.readByteOb1();
+                        var4 = Client.secretPacketBuffer2.method3122();
+                        var5 = var4 >> 2;
+                        var6 = var4 & 3;
+                        var30 = Client.field978[var5];
+                        var42 = Client.secretPacketBuffer2.method3187();
+                        var9 = Client.secretPacketBuffer2.readUnsignedShort();
+                        var10 = Client.secretPacketBuffer2.method3132();
+                        var40 = Client.secretPacketBuffer2.readByte();
+                        var12 = Client.secretPacketBuffer2.readUnsignedByte();
+                     }
+
                      int var13 = (var12 >> 4 & 7) + World.field1293;
                      int var14 = (var12 & 7) + Signlink.field2193;
                      Player var15;
@@ -345,11 +442,11 @@ public class MessageNode extends CacheableNode {
                         }
 
                         int var19 = var13 + (var17 >> 1);
-                        int var20 = var13 + (var17 + 1 >> 1);
+                        int var20 = (var17 + 1 >> 1) + var13;
                         int var21 = var14 + (var18 >> 1);
                         int var22 = var14 + (var18 + 1 >> 1);
                         int[][] var23 = class61.tileHeights[class10.plane];
-                        int var24 = var23[var20][var22] + var23[var20][var21] + var23[var19][var21] + var23[var19][var22] >> 2;
+                        int var24 = var23[var19][var22] + var23[var20][var21] + var23[var19][var21] + var23[var20][var22] >> 2;
                         int var25 = (var13 << 7) + (var17 << 6);
                         int var26 = (var14 << 7) + (var18 << 6);
                         Model var27 = var16.method4404(var5, var6, var23, var25, var24, var26);
@@ -358,8 +455,8 @@ public class MessageNode extends CacheableNode {
                            var15.field904 = var0 + Client.gameCycle;
                            var15.field875 = var9 + Client.gameCycle;
                            var15.model = var27;
-                           var15.field885 = var13 * 128 + var17 * 64;
-                           var15.field876 = 128 * var14 + var18 * 64;
+                           var15.field885 = var17 * 64 + var13 * 128;
+                           var15.field876 = var18 * 64 + var14 * 128;
                            var15.field886 = var24;
                            byte var28;
                            if(var35 > var42) {
@@ -381,7 +478,7 @@ public class MessageNode extends CacheableNode {
                         }
                      }
 
-                  } else if(Client.packetType == 183) {
+                  } else if(Client.packetType == (Client.RUNELITE_PACKET?77:183)) {
                      var0 = Client.secretPacketBuffer2.readUnsignedByte();
                      var1 = (var0 >> 4 & 7) + World.field1293;
                      var2 = (var0 & 7) + Signlink.field2193;
@@ -396,9 +493,9 @@ public class MessageNode extends CacheableNode {
                      int var11 = Client.secretPacketBuffer2.readUnsignedByte();
                      var12 = Client.secretPacketBuffer2.readUnsignedByte();
                      if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104 && var3 >= 0 && var4 >= 0 && var3 < 104 && var4 < 104 && var6 != '\uffff') {
-                        var1 = var1 * 128 + 64;
-                        var2 = var2 * 128 + 64;
-                        var3 = 128 * var3 + 64;
+                        var1 = 64 + var1 * 128;
+                        var2 = 64 + var2 * 128;
+                        var3 = 64 + var3 * 128;
                         var4 = var4 * 128 + 64;
                         Projectile var34 = new Projectile(var6, class10.plane, var1, var2, class23.getTileHeight(var1, var2, class10.plane) - var30, var9 + Client.gameCycle, var10 + Client.gameCycle, var11, var12, var5, var33);
                         var34.method1696(var3, var4, class23.getTileHeight(var3, var4, class10.plane) - var33, var9 + Client.gameCycle);

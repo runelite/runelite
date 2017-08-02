@@ -58,7 +58,7 @@ public class class207 extends Node {
       var2.offset += var3;
 
       int var6;
-      for(var6 = 0; var2.payload[var2.offset + var6] != 0; ++var6) {
+      for(var6 = 0; 0 != var2.payload[var6 + var2.offset]; ++var6) {
          ;
       }
 
@@ -308,7 +308,7 @@ public class class207 extends Node {
             var19 = 0;
 
             for(var29 = 2; var29 < var28.field2458.length; var29 += 2) {
-               var19 = var19 + 1 + var2.readUnsignedByte();
+               var19 = 1 + var19 + var2.readUnsignedByte();
                var28.field2458[var29] = (byte)var19;
             }
          }
@@ -320,7 +320,7 @@ public class class207 extends Node {
             var19 = 0;
 
             for(var29 = 2; var29 < var28.field2467.length; var29 += 2) {
-               var19 = var19 + 1 + var2.readUnsignedByte();
+               var19 = 1 + var19 + var2.readUnsignedByte();
                var28.field2467[var29] = (byte)var19;
             }
          }
@@ -364,7 +364,7 @@ public class class207 extends Node {
          }
 
          for(var42 = var44; var42 < 128; ++var42) {
-            this.field2544[var42] = (byte)(this.field2544[var42] * var41 + 32 >> 6);
+            this.field2544[var42] = (byte)(var41 * this.field2544[var42] + 32 >> 6);
          }
 
          var38 = null;
@@ -375,7 +375,7 @@ public class class207 extends Node {
          var39[0] = (byte)var19;
 
          for(var27 = 2; var27 < var39.length; var27 += 2) {
-            var19 = var19 + 1 + var2.readUnsignedByte();
+            var19 = 1 + var19 + var2.readUnsignedByte();
             var39[var27] = (byte)var19;
          }
 

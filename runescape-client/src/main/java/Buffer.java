@@ -1,3 +1,4 @@
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
@@ -516,7 +517,7 @@ public class Buffer extends Node {
    )
    public int method3285() {
       this.offset += 4;
-      return (this.payload[this.offset - 4] & 255) + ((this.payload[this.offset - 3] & 255) << 8) + ((this.payload[this.offset - 1] & 255) << 24) + ((this.payload[this.offset - 2] & 255) << 16);
+      return ((this.payload[this.offset - 1] & 255) << 24) + (this.payload[this.offset - 4] & 255) + ((this.payload[this.offset - 3] & 255) << 8) + ((this.payload[this.offset - 2] & 255) << 16);
    }
 
    @ObfuscatedName("by")
@@ -567,7 +568,7 @@ public class Buffer extends Node {
    )
    public int method3141() {
       this.offset += 4;
-      return (this.payload[this.offset - 3] & 255) + ((this.payload[this.offset - 4] & 255) << 8) + ((this.payload[this.offset - 2] & 255) << 24) + ((this.payload[this.offset - 1] & 255) << 16);
+      return ((this.payload[this.offset - 1] & 255) << 16) + ((this.payload[this.offset - 4] & 255) << 8) + (this.payload[this.offset - 3] & 255) + ((this.payload[this.offset - 2] & 255) << 24);
    }
 
    @ObfuscatedName("bu")
@@ -728,7 +729,7 @@ public class Buffer extends Node {
                      var11 = '�';
                   }
                } else if(var10 < 248) {
-                  if(var8 + 2 < var9 && (var4[var8] & 192) == 128 && (var4[var8 + 1] & 192) == 128 && (var4[2 + var8] & 192) == 128) {
+                  if(var8 + 2 < var9 && (var4[var8] & 192) == 128 && (var4[var8 + 1] & 192) == 128 && 128 == (var4[var8 + 2] & 192)) {
                      var11 = (var10 & 7) << 18 | (var4[var8++] & 63) << 12 | (var4[var8++] & 63) << 6 | var4[var8++] & 63;
                      if(var11 >= 65536 && var11 <= 1114111) {
                         var11 = '�';
@@ -852,7 +853,7 @@ public class Buffer extends Node {
          int var6 = 0;
          int var7 = -1640531527;
 
-         for(int var8 = 32; var8-- > 0; var5 += (var4 << 4 ^ var4 >>> 5) + var4 ^ var1[var6 >>> 11 & 3] + var6) {
+         for(int var8 = 32; var8-- > 0; var5 += var4 + (var4 << 4 ^ var4 >>> 5) ^ var1[var6 >>> 11 & 3] + var6) {
             var4 += var5 + (var5 << 4 ^ var5 >>> 5) ^ var6 + var1[var6 & 3];
             var6 += var7;
          }
@@ -871,7 +872,7 @@ public class Buffer extends Node {
    )
    public int method3136() {
       this.offset += 3;
-      return ((this.payload[this.offset - 3] & 255) << 8) + ((this.payload[this.offset - 2] & 255) << 16) + (this.payload[this.offset - 1] & 255);
+      return ((this.payload[this.offset - 3] & 255) << 8) + (this.payload[this.offset - 1] & 255) + ((this.payload[this.offset - 2] & 255) << 16);
    }
 
    @ObfuscatedName("aa")
@@ -984,8 +985,8 @@ public class Buffer extends Node {
          int var9 = 0;
          int var10 = -1640531527;
 
-         for(int var11 = 32; var11-- > 0; var8 += (var7 << 4 ^ var7 >>> 5) + var7 ^ var1[var9 >>> 11 & 3] + var9) {
-            var7 += var8 + (var8 << 4 ^ var8 >>> 5) ^ var1[var9 & 3] + var9;
+         for(int var11 = 32; var11-- > 0; var8 += var7 + (var7 << 4 ^ var7 >>> 5) ^ var1[var9 >>> 11 & 3] + var9) {
+            var7 += var8 + (var8 << 4 ^ var8 >>> 5) ^ var9 + var1[var9 & 3];
             var9 += var10;
          }
 
@@ -1032,5 +1033,86 @@ public class Buffer extends Node {
    )
    static int method3304() {
       return 9;
+   }
+
+   byte runeliteReadByte() {
+      ++this.offset;
+      return this.payload[this.offset - 1];
+   }
+
+   short runeliteReadShort() {
+      this.offset += 2;
+      return (short)((this.payload[this.offset - 2] & 255) << 8 | this.payload[this.offset - 1] & 255);
+   }
+
+   int runeliteReadInt() {
+      this.offset += 4;
+      return (this.payload[this.offset - 4] & 255) << 24 | (this.payload[this.offset - 3] & 255) << 16 | (this.payload[this.offset - 2] & 255) << 8 | this.payload[this.offset - 1] & 255;
+   }
+
+   long runeliteReadLong() {
+      this.offset += 8;
+      return ((long)this.payload[this.offset - 8] & 255L) << 56 | ((long)this.payload[this.offset - 7] & 255L) << 48 | ((long)this.payload[this.offset - 6] & 255L) << 40 | ((long)this.payload[this.offset - 5] & 255L) << 32 | ((long)this.payload[this.offset - 4] & 255L) << 24 | ((long)this.payload[this.offset - 3] & 255L) << 16 | ((long)this.payload[this.offset - 2] & 255L) << 8 | (long)this.payload[this.offset - 1] & 255L;
+   }
+
+   String runeliteReadString() {
+      short var1 = this.runeliteReadShort();
+      if(var1 < 0) {
+         throw new RuntimeException("length < 0");
+      } else {
+         this.offset += var1;
+
+         try {
+            return new String(this.payload, this.offset - var1, var1, "UTF-8");
+         } catch (UnsupportedEncodingException var3) {
+            throw new RuntimeException(var3);
+         }
+      }
+   }
+
+   void runeliteWriteByte(byte var1) {
+      this.payload[this.offset++] = var1;
+   }
+
+   void runeliteWriteShort(short var1) {
+      this.payload[this.offset++] = (byte)(var1 >> 8);
+      this.payload[this.offset++] = (byte)var1;
+   }
+
+   void runeliteWriteInt(int var1) {
+      this.payload[this.offset++] = (byte)(var1 >> 24);
+      this.payload[this.offset++] = (byte)(var1 >> 16);
+      this.payload[this.offset++] = (byte)(var1 >> 8);
+      this.payload[this.offset++] = (byte)var1;
+   }
+
+   void runeliteWriteLong(long var1) {
+      this.payload[this.offset++] = (byte)((int)(var1 >> 56));
+      this.payload[this.offset++] = (byte)((int)(var1 >> 48));
+      this.payload[this.offset++] = (byte)((int)(var1 >> 40));
+      this.payload[this.offset++] = (byte)((int)(var1 >> 32));
+      this.payload[this.offset++] = (byte)((int)(var1 >> 24));
+      this.payload[this.offset++] = (byte)((int)(var1 >> 16));
+      this.payload[this.offset++] = (byte)((int)(var1 >> 8));
+      this.payload[this.offset++] = (byte)((int)var1);
+   }
+
+   void runeliteWriteString(String var1) {
+      byte[] var2;
+      try {
+         var2 = var1.getBytes("UTF-8");
+      } catch (UnsupportedEncodingException var7) {
+         throw new RuntimeException(var7);
+      }
+
+      this.runeliteWriteShort((short)var2.length);
+      byte[] var3 = var2;
+      int var4 = var2.length;
+
+      for(int var5 = 0; var5 < var4; ++var5) {
+         byte var6 = var3[var5];
+         this.payload[this.offset++] = var6;
+      }
+
    }
 }

@@ -81,7 +81,7 @@ public class class202 {
          }
 
          int var15 = class162.field2265[var16][var17] + 1;
-         if(var16 > 0 && class162.field2262[var16 - 1][var17] == 0 && (var12[var13 - 1][var14] & 19136782) == 0 && (var12[var13 - 1][1 + var14] & 19136824) == 0) {
+         if(var16 > 0 && class162.field2262[var16 - 1][var17] == 0 && (var12[var13 - 1][var14] & 19136782) == 0 && (var12[var13 - 1][var14 + 1] & 19136824) == 0) {
             class162.field2268[var18] = var4 - 1;
             class162.field2269[var18] = var5;
             var18 = var18 + 1 & 4095;
@@ -105,7 +105,7 @@ public class class202 {
             class162.field2265[var16][var17 - 1] = var15;
          }
 
-         if(var17 < 126 && class162.field2262[var16][var17 + 1] == 0 && (var12[var13][var14 + 2] & 19136824) == 0 && (var12[1 + var13][2 + var14] & 19136992) == 0) {
+         if(var17 < 126 && 0 == class162.field2262[var16][var17 + 1] && (var12[var13][var14 + 2] & 19136824) == 0 && 0 == (var12[var13 + 1][var14 + 2] & 19136992)) {
             class162.field2268[var18] = var4;
             class162.field2269[var18] = var5 + 1;
             var18 = var18 + 1 & 4095;
@@ -129,7 +129,7 @@ public class class202 {
             class162.field2265[var16 + 1][var17 - 1] = var15;
          }
 
-         if(var16 > 0 && var17 < 126 && class162.field2262[var16 - 1][var17 + 1] == 0 && (var12[var13 - 1][var14 + 1] & 19136830) == 0 && (var12[var13 - 1][var14 + 2] & 19136824) == 0 && (var12[var13][2 + var14] & 19137016) == 0) {
+         if(var16 > 0 && var17 < 126 && class162.field2262[var16 - 1][var17 + 1] == 0 && (var12[var13 - 1][var14 + 1] & 19136830) == 0 && (var12[var13 - 1][var14 + 2] & 19136824) == 0 && (var12[var13][var14 + 2] & 19137016) == 0) {
             class162.field2268[var18] = var4 - 1;
             class162.field2269[var18] = var5 + 1;
             var18 = var18 + 1 & 4095;
@@ -137,7 +137,7 @@ public class class202 {
             class162.field2265[var16 - 1][var17 + 1] = var15;
          }
 
-         if(var16 < 126 && var17 < 126 && class162.field2262[var16 + 1][var17 + 1] == 0 && (var12[var13 + 1][var14 + 2] & 19137016) == 0 && (var12[var13 + 2][var14 + 2] & 19136992) == 0 && (var12[var13 + 2][var14 + 1] & 19136995) == 0) {
+         if(var16 < 126 && var17 < 126 && class162.field2262[var16 + 1][var17 + 1] == 0 && 0 == (var12[var13 + 1][var14 + 2] & 19137016) && 0 == (var12[var13 + 2][var14 + 2] & 19136992) && (var12[var13 + 2][var14 + 1] & 19136995) == 0) {
             class162.field2268[var18] = var4 + 1;
             class162.field2269[var18] = var5 + 1;
             var18 = var18 + 1 & 4095;

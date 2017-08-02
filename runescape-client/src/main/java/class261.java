@@ -231,9 +231,9 @@ public class class261 {
       if(var0.field1268 == Client.gameCycle || var0.animation == -1 || var0.actionAnimationDisable != 0 || var0.field1243 + 1 > class31.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
          int var1 = var0.field1268 - var0.field1255;
          int var2 = Client.gameCycle - var0.field1255;
-         int var3 = var0.field1236 * 128 + var0.field1213 * 64;
-         int var4 = var0.field1253 * 128 + var0.field1213 * 64;
-         int var5 = var0.field1265 * 128 + var0.field1213 * 64;
+         int var3 = var0.field1213 * 64 + var0.field1236 * 128;
+         int var4 = var0.field1213 * 64 + var0.field1253 * 128;
+         int var5 = var0.field1213 * 64 + var0.field1265 * 128;
          int var6 = var0.field1254 * 128 + var0.field1213 * 64;
          var0.x = (var5 * var2 + var3 * (var1 - var2)) / var1;
          var0.y = (var2 * var6 + var4 * (var1 - var2)) / var1;

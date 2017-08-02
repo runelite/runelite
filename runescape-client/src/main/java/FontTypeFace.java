@@ -52,12 +52,12 @@ public abstract class FontTypeFace extends Rasterizer2D {
    @ObfuscatedName("x")
    @Export("minSpacing")
    public int minSpacing;
-   @ObfuscatedName("p")
-   @Export("maxSpacing")
-   public int maxSpacing;
    @ObfuscatedName("g")
    @Export("horizontalOffsets")
    int[] horizontalOffsets;
+   @ObfuscatedName("p")
+   @Export("maxSpacing")
+   public int maxSpacing;
    @ObfuscatedName("m")
    @Export("verticalOffsets")
    int[] verticalOffsets;
@@ -536,16 +536,16 @@ public abstract class FontTypeFace extends Rasterizer2D {
                   if(var10 != 32) {
                      if(field3640 == 256) {
                         if(shadow != -1) {
-                           renderShadeRGB(this.gylphs[var10], var2 + this.horizontalOffsets[var10] + 1 + var13, var14 + var3 + this.verticalOffsets[var10] + 1, var16, var12, shadow);
+                           renderShadeRGB(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10] + 1, var3 + var14 + this.verticalOffsets[var10] + 1, var16, var12, shadow);
                         }
 
-                        this.renderRGB(this.gylphs[var10], var2 + this.horizontalOffsets[var10] + var13, var14 + var3 + this.verticalOffsets[var10], var16, var12, color);
+                        this.renderRGB(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10], var3 + var14 + this.verticalOffsets[var10], var16, var12, color);
                      } else {
                         if(shadow != -1) {
-                           renderShadeRGBA(this.gylphs[var10], var2 + this.horizontalOffsets[var10] + 1 + var13, var14 + var3 + this.verticalOffsets[var10] + 1, var16, var12, shadow, field3640);
+                           renderShadeRGBA(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10] + 1, var3 + var14 + this.verticalOffsets[var10] + 1, var16, var12, shadow, field3640);
                         }
 
-                        this.renderRGBA(this.gylphs[var10], var2 + this.horizontalOffsets[var10] + var13, var14 + var3 + this.verticalOffsets[var10], var16, var12, color, field3640);
+                        this.renderRGBA(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10], var3 + var14 + this.verticalOffsets[var10], var16, var12, color, field3640);
                      }
                   } else if(field3637 > 0) {
                      field3638 += field3637;
@@ -645,7 +645,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
          if(var9 == 0) {
             var13 = var3 + this.minSpacing;
          } else if(var9 == 1) {
-            var13 = var3 + this.minSpacing + (var5 - this.minSpacing - this.maxSpacing - var10 * (var12 - 1)) / 2;
+            var13 = var3 + (var5 - this.minSpacing - this.maxSpacing - var10 * (var12 - 1)) / 2 + this.minSpacing;
          } else if(var9 == 2) {
             var13 = var3 + var5 - this.maxSpacing - var10 * (var12 - 1);
          } else {
@@ -654,7 +654,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
                var14 = 0;
             }
 
-            var13 = var3 + this.minSpacing + var14;
+            var13 = var3 + var14 + this.minSpacing;
             var10 += var14;
          }
 
@@ -1006,7 +1006,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
          for(int var11 = -var5; var11 < 0; ++var11) {
             if(var1[var3++] != 0) {
                int var12 = var0[var4];
-               var0[var4++] = var2 + (((var12 & '\uff00') * var9 & 16711680) + ((var12 & 16711935) * var9 & -16711936) >> 8);
+               var0[var4++] = ((var9 * (var12 & 16711935) & -16711936) + ((var12 & '\uff00') * var9 & 16711680) >> 8) + var2;
             } else {
                ++var4;
             }

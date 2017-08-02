@@ -29,7 +29,7 @@ public final class class60 {
    @Export("getWidgetConfig")
    static int getWidgetConfig(Widget var0) {
       IntegerNode var1 = (IntegerNode)Client.widgetFlags.get(((long)var0.id << 32) + (long)var0.index);
-      return var1 != null?var1.value :var0.config;
+      return var1 != null?var1.value:var0.config;
    }
 
    @ObfuscatedName("hg")
@@ -57,7 +57,7 @@ public final class class60 {
          }
 
          int var13 = var5 * var12 >> 17;
-         int var14 = var12 * var5 + 1 >> 17;
+         int var14 = var5 * var12 + 1 >> 17;
          int var15 = var5 * var11 >> 17;
          int var16 = var5 * var11 + 1 >> 17;
          var0 -= Rasterizer2D.draw_region_x;
@@ -69,7 +69,7 @@ public final class class60 {
          int var21 = var15 + var1;
          int var22 = var1 - var16;
          int var23 = var7 + var1 - var16;
-         int var24 = var15 + var7 + var1;
+         int var24 = var7 + var15 + var1;
          Graphics3D.setRasterClippingEnabled(var17, var18, var19);
          Graphics3D.rasterFlat(var21, var22, var23, var17, var18, var19, var4);
          Graphics3D.setRasterClippingEnabled(var17, var19, var20);

@@ -341,11 +341,11 @@ public enum Permission implements RSEnum {
 
                var0.method4643(Integer.toString(var17.id), var36 + 15, var12 + var35 / 2 + 5, var21, -1);
                var1.method4643(var19, var36 + 60, var12 + var35 / 2 + 5, 268435455, -1);
-               var12 += var9 + var35;
+               var12 = var12 + var9 + var35;
                ++var14;
                if(var14 >= var7) {
                   var12 = var11 + 23;
-                  var36 += var4 + var32;
+                  var36 = var36 + var4 + var32;
                   var14 = 0;
                }
             }
@@ -353,9 +353,9 @@ public enum Permission implements RSEnum {
             if(var15) {
                var16 = var1.method4635(class64.worldList[class92.field1426].activity) + 6;
                int var23 = var1.verticalSpace + 8;
-               Rasterizer2D.method4828(MouseInput.field730 - var16 / 2, MouseInput.field731 + 20 + 5, var16, var23, 16777120);
-               Rasterizer2D.drawRectangle(MouseInput.field730 - var16 / 2, MouseInput.field731 + 20 + 5, var16, var23, 0);
-               var1.method4643(class64.worldList[class92.field1426].activity, MouseInput.field730, var1.verticalSpace + MouseInput.field731 + 20 + 5 + 4, 0, -1);
+               Rasterizer2D.method4828(MouseInput.field730 - var16 / 2, MouseInput.field731 + 5 + 20, var16, var23, 16777120);
+               Rasterizer2D.drawRectangle(MouseInput.field730 - var16 / 2, MouseInput.field731 + 5 + 20, var16, var23, 0);
+               var1.method4643(class64.worldList[class92.field1426].activity, MouseInput.field730, MouseInput.field731 + var1.verticalSpace + 4 + 5 + 20, 0, -1);
             }
          }
 
@@ -576,7 +576,7 @@ public enum Permission implements RSEnum {
             var32 = (var30 - var29) * 128;
 
             for(var9 = 0; var9 < var32; ++var9) {
-               var10 = class24.field348[var7 + var31] - var29 * class92.field1406[var31 + class92.field1410 & class92.field1406.length - 1] / 6;
+               var10 = class24.field348[var7 + var31] - class92.field1406[var31 + class92.field1410 & class92.field1406.length - 1] * var29 / 6;
                if(var10 < 0) {
                   var10 = 0;
                }

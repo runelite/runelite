@@ -131,17 +131,17 @@ public class World {
       garbageValue = "-13"
    )
    static final void method1536(int var0, int var1, int var2, int var3, SpritePixels var4, class210 var5) {
-      int var6 = var3 * var3 + var2 * var2;
+      int var6 = var2 * var2 + var3 * var3;
       if(var6 > 4225 && var6 < 90000) {
          int var7 = Client.mapAngle & 2047;
          int var8 = Graphics3D.SINE[var7];
          int var9 = Graphics3D.COSINE[var7];
-         int var10 = var9 * var2 + var3 * var8 >> 16;
+         int var10 = var3 * var8 + var9 * var2 >> 16;
          int var11 = var3 * var9 - var8 * var2 >> 16;
          double var12 = Math.atan2((double)var10, (double)var11);
          int var14 = (int)(Math.sin(var12) * 63.0D);
          int var15 = (int)(Math.cos(var12) * 57.0D);
-         class9.mapedge.method4970(94 + var0 + var14 + 4 - 10, var1 + 83 - var15 - 20, 20, 20, 15, 15, var12, 256);
+         class9.mapedge.method4970(var0 + var14 + 4 + 94 - 10, var1 + 83 - var15 - 20, 20, 20, 15, 15, var12, 256);
       } else {
          class87.drawDot(var0, var1, var2, var3, var4, var5);
       }

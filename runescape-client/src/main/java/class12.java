@@ -115,7 +115,7 @@ final class class12 implements Comparator {
          }
 
          for(var11 = 0; var11 < 64; ++var11) {
-            class31.field431[var11 + 128] = 4 * var11 + 16776960;
+            class31.field431[var11 + 128] = var11 * 4 + 16776960;
          }
 
          for(var11 = 0; var11 < 64; ++var11) {
@@ -133,7 +133,7 @@ final class class12 implements Comparator {
          }
 
          for(var11 = 0; var11 < 64; ++var11) {
-            class92.field1405[var11 + 128] = var11 * 262144 + '\uffff';
+            class92.field1405[var11 + 128] = '\uffff' + var11 * 262144;
          }
 
          for(var11 = 0; var11 < 64; ++var11) {
@@ -147,7 +147,7 @@ final class class12 implements Comparator {
          }
 
          for(var11 = 0; var11 < 64; ++var11) {
-            VertexNormal.field1970[var11 + 64] = 262144 * var11 + 255;
+            VertexNormal.field1970[var11 + 64] = 255 + var11 * 262144;
          }
 
          for(var11 = 0; var11 < 64; ++var11) {

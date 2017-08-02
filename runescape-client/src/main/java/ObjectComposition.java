@@ -677,7 +677,7 @@ public class ObjectComposition extends CacheableNode {
       if(this.objectTypes == null) {
          var9 = (long)(var2 + (this.id << 10));
       } else {
-         var9 = (long)((var1 << 3) + (this.id << 10) + var2);
+         var9 = (long)((var1 << 3) + var2 + (this.id << 10));
       }
 
       Model var11 = (Model)field3413.get(var9);
@@ -766,7 +766,7 @@ public class ObjectComposition extends CacheableNode {
       if(this.objectTypes == null) {
          var7 = (long)(var2 + (this.id << 10));
       } else {
-         var7 = (long)(var2 + (var1 << 3) + (this.id << 10));
+         var7 = (long)((var1 << 3) + var2 + (this.id << 10));
       }
 
       Model var9 = (Model)field3413.get(var7);
@@ -838,7 +838,7 @@ public class ObjectComposition extends CacheableNode {
       if(this.objectTypes == null) {
          var7 = (long)(var2 + (this.id << 10));
       } else {
-         var7 = (long)((var1 << 3) + (this.id << 10) + var2);
+         var7 = (long)((var1 << 3) + var2 + (this.id << 10));
       }
 
       Object var9 = (Renderable)cachedModels.get(var7);

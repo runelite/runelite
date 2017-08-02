@@ -427,7 +427,7 @@ public abstract class Actor extends Renderable {
          this.hitsplatTypes[var9] = var2;
          this.field1261[var9] = var3;
          this.field1269[var9] = var4;
-         this.hitsplatCycles[var9] = var6 + var5 + var11;
+         this.hitsplatCycles[var9] = var5 + var11 + var6;
       }
    }
 
@@ -808,7 +808,7 @@ public abstract class Actor extends Renderable {
          }
 
          int[] var10 = class43.field576.image;
-         var11 = (103 - var2) * 2048 + var1 * 4 + 24624;
+         var11 = var1 * 4 + (103 - var2) * 2048 + 24624;
          var12 = var5 >> 14 & 32767;
          ObjectComposition var13 = class169.getObjectDefinition(var12);
          if(var13.mapSceneId != -1) {
@@ -816,7 +816,7 @@ public abstract class Actor extends Renderable {
             if(var14 != null) {
                int var15 = (var13.sizeX * 4 - var14.originalWidth) / 2;
                int var16 = (var13.sizeY * 4 - var14.height) / 2;
-               var14.method4941(var15 + var1 * 4 + 48, var16 + 48 + (104 - var2 - var13.sizeY) * 4);
+               var14.method4941(var15 + 48 + var1 * 4, 48 + (104 - var2 - var13.sizeY) * 4 + var16);
             }
          } else {
             if(var8 == 0 || var8 == 2) {
@@ -832,9 +832,9 @@ public abstract class Actor extends Renderable {
                   var10[var11 + 3] = var9;
                } else if(var7 == 2) {
                   var10[var11 + 3] = var9;
-                  var10[var11 + 3 + 512] = var9;
-                  var10[3 + var11 + 1024] = var9;
-                  var10[3 + var11 + 1536] = var9;
+                  var10[var11 + 512 + 3] = var9;
+                  var10[var11 + 1024 + 3] = var9;
+                  var10[var11 + 1536 + 3] = var9;
                } else if(var7 == 3) {
                   var10[var11 + 1536] = var9;
                   var10[var11 + 1536 + 1] = var9;
@@ -849,7 +849,7 @@ public abstract class Actor extends Renderable {
                } else if(var7 == 1) {
                   var10[var11 + 3] = var9;
                } else if(var7 == 2) {
-                  var10[var11 + 3 + 1536] = var9;
+                  var10[var11 + 1536 + 3] = var9;
                } else if(var7 == 3) {
                   var10[var11 + 1536] = var9;
                }
@@ -868,12 +868,12 @@ public abstract class Actor extends Renderable {
                   var10[var11 + 3] = var9;
                } else if(var7 == 1) {
                   var10[var11 + 3] = var9;
-                  var10[var11 + 3 + 512] = var9;
-                  var10[var11 + 3 + 1024] = var9;
-                  var10[var11 + 3 + 1536] = var9;
+                  var10[var11 + 512 + 3] = var9;
+                  var10[var11 + 1024 + 3] = var9;
+                  var10[var11 + 1536 + 3] = var9;
                } else if(var7 == 2) {
                   var10[var11 + 1536] = var9;
-                  var10[1536 + var11 + 1] = var9;
+                  var10[var11 + 1536 + 1] = var9;
                   var10[var11 + 1536 + 2] = var9;
                   var10[var11 + 1536 + 3] = var9;
                }
@@ -894,7 +894,7 @@ public abstract class Actor extends Renderable {
             if(var17 != null) {
                var12 = (var23.sizeX * 4 - var17.originalWidth) / 2;
                var18 = (var23.sizeY * 4 - var17.height) / 2;
-               var17.method4941(var1 * 4 + 48 + var12, var18 + (104 - var2 - var23.sizeY) * 4 + 48);
+               var17.method4941(var1 * 4 + 48 + var12, (104 - var2 - var23.sizeY) * 4 + 48 + var18);
             }
          } else if(var8 == 9) {
             var11 = 15658734;
@@ -903,10 +903,10 @@ public abstract class Actor extends Renderable {
             }
 
             int[] var22 = class43.field576.image;
-            var18 = 4 * var1 + 24624 + (103 - var2) * 2048;
+            var18 = var1 * 4 + (103 - var2) * 2048 + 24624;
             if(var7 != 0 && var7 != 2) {
                var22[var18] = var11;
-               var22[512 + var18 + 1] = var11;
+               var22[var18 + 512 + 1] = var11;
                var22[var18 + 1024 + 2] = var11;
                var22[var18 + 1536 + 3] = var11;
             } else {
@@ -927,7 +927,7 @@ public abstract class Actor extends Renderable {
             if(var20 != null) {
                var9 = (var19.sizeX * 4 - var20.originalWidth) / 2;
                int var21 = (var19.sizeY * 4 - var20.height) / 2;
-               var20.method4941(var1 * 4 + 48 + var9, var21 + (104 - var2 - var19.sizeY) * 4 + 48);
+               var20.method4941(var9 + var1 * 4 + 48, (104 - var2 - var19.sizeY) * 4 + 48 + var21);
             }
          }
       }

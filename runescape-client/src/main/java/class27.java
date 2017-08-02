@@ -92,7 +92,7 @@ public enum class27 implements RSEnum {
          } else if(var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
             var0.scrollY += 4;
             class21.method156(var0);
-         } else if(var5 >= var1 - Client.field985 && var5 < var1 + 16 + Client.field985 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
+         } else if(var5 >= var1 - Client.field985 && var5 < Client.field985 + var1 + 16 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
             var7 = var3 * (var3 - 32) / var4;
             if(var7 < 8) {
                var7 = 8;

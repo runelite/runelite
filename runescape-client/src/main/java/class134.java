@@ -137,7 +137,7 @@ public class class134 {
       } else if(var0.field2623 == 3) {
          var0.relativeY = var2 * var0.originalY >> 14;
       } else if(var0.field2623 == 4) {
-         var0.relativeY = (var2 * var0.originalY >> 14) + (var2 - var0.height) / 2;
+         var0.relativeY = (var2 - var0.height) / 2 + (var2 * var0.originalY >> 14);
       } else {
          var0.relativeY = var2 - var0.height - (var2 * var0.originalY >> 14);
       }

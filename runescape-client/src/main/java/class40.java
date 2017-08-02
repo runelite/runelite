@@ -546,12 +546,12 @@ public class class40 {
                   for(var14 = 1; var14 < 103; ++var14) {
                      var15 = class61.tileHeights[var4][var14 + 1][var13] - class61.tileHeights[var4][var14 - 1][var13];
                      var16 = class61.tileHeights[var4][var14][var13 + 1] - class61.tileHeights[var4][var14][var13 - 1];
-                     var17 = (int)Math.sqrt((double)(var15 * var15 + 65536 + var16 * var16));
+                     var17 = (int)Math.sqrt((double)(var16 * var16 + 65536 + var15 * var15));
                      var18 = (var15 << 8) / var17;
                      var54 = 65536 / var17;
                      var20 = (var16 << 8) / var17;
-                     var21 = (-50 * var18 + var54 * -10 + var20 * -50) / var65 + 96;
-                     var22 = (var70[var14][var13] >> 1) + (var70[var14 + 1][var13] >> 3) + (var70[var14 - 1][var13] >> 2) + (var70[var14][var13 - 1] >> 2) + (var70[var14][1 + var13] >> 3);
+                     var21 = (var54 * -10 + var18 * -50 + var20 * -50) / var65 + 96;
+                     var22 = (var70[var14 + 1][var13] >> 3) + (var70[var14 - 1][var13] >> 2) + (var70[var14][var13 - 1] >> 2) + (var70[var14][var13 + 1] >> 3) + (var70[var14][var13] >> 1);
                      class61.field756[var14][var13] = var21 - var22;
                   }
                }
@@ -842,7 +842,7 @@ public class class40 {
                            label1019:
                            while(var14 < var64) {
                               for(var15 = var11; var15 <= var65; ++var15) {
-                                 if((class61.field755[1 + var14][var15][var9] & var5) == 0) {
+                                 if((class61.field755[var14 + 1][var15][var9] & var5) == 0) {
                                     break label1019;
                                  }
                               }
@@ -850,7 +850,7 @@ public class class40 {
                               ++var14;
                            }
 
-                           var15 = (var65 - var11 + 1) * (var14 + 1 - var13);
+                           var15 = (var14 + 1 - var13) * (var65 - var11 + 1);
                            if(var15 >= 8) {
                               var67 = 240;
                               var17 = class61.tileHeights[var14][var11][var9] - var67;
@@ -892,7 +892,7 @@ public class class40 {
                            label1072:
                            while(var65 < 104) {
                               for(var15 = var13; var15 <= var14; ++var15) {
-                                 if((class61.field755[var51][1 + var65][var15] & var6) == 0) {
+                                 if((class61.field755[var51][var65 + 1][var15] & var6) == 0) {
                                     break label1072;
                                  }
                               }
@@ -900,9 +900,9 @@ public class class40 {
                               ++var65;
                            }
 
-                           if((1 + (var14 - var13)) * (var65 - var11 + 1) >= 4) {
+                           if((var65 - var11 + 1) * (var14 - var13 + 1) >= 4) {
                               var15 = class61.tileHeights[var51][var11][var13];
-                              Region.addOcclude(var64, 4, var11 * 128, var65 * 128 + 128, var13 * 128, var14 * 128 + 128, var15, var15);
+                              Region.addOcclude(var64, 4, var11 * 128, 128 + var65 * 128, var13 * 128, 128 + var14 * 128, var15, var15);
 
                               for(var16 = var11; var16 <= var65; ++var16) {
                                  for(var17 = var13; var17 <= var14; ++var17) {
@@ -1007,7 +1007,7 @@ public class class40 {
             var7 = var0.readUnsignedByte();
             if(var7 == 0) {
                if(var1 == 0) {
-                  class61.tileHeights[0][var2][var3] = -class140.method2792(var2 + 932731 + var4, var5 + 556238 + var3) * 8;
+                  class61.tileHeights[0][var2][var3] = -class140.method2792(var2 + var4 + 932731, var3 + var5 + 556238) * 8;
                } else {
                   class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
                }

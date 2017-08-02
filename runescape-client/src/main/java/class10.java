@@ -66,8 +66,8 @@ public final class class10 extends class9 {
       this.field249 = var2 + var1.field1896 - var1.field1913;
       this.field241 = var3 + var1.field1911 - var1.field1917;
       this.field242 = var4 + var1.field1912 - var1.field1901;
-      this.field243 = var2 + var1.field1896 + var1.field1913;
-      this.field245 = var1.field1911 + var3 + var1.field1917;
+      this.field243 = var2 + var1.field1913 + var1.field1896;
+      this.field245 = var3 + var1.field1917 + var1.field1911;
       this.field246 = var4 + var1.field1912 + var1.field1901;
       this.field240 = var5;
    }

@@ -871,7 +871,7 @@ public class class117 extends class119 {
       signature = "(II[B[IIIIIIILde;II)I"
    )
    static int method2137(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, class117 var10, int var11, int var12) {
-      if(var11 == 0 || (var7 = var5 + (var11 + (var9 + 256 - var4)) / var11) > var8) {
+      if(var11 == 0 || (var7 = var5 + (var9 + 256 - var4 + var11) / var11) > var8) {
          var7 = var8;
       }
 
@@ -880,7 +880,7 @@ public class class117 extends class119 {
          var1 = var4 >> 8;
          byte var13 = var2[var1 - 1];
          var10001 = var5++;
-         var3[var10001] += ((var2[var1] - var13) * (var4 & 255) + (var13 << 8)) * var6 >> 6;
+         var3[var10001] += ((var13 << 8) + (var2[var1] - var13) * (var4 & 255)) * var6 >> 6;
          var4 += var11;
       }
 
@@ -1333,7 +1333,7 @@ public class class117 extends class119 {
          var7 += var9;
       }
 
-      if(var14 == 0 || (var10 = (var12 - var4 + var14 - 1) / var14 + (var5 >> 1)) > var11) {
+      if(var14 == 0 || (var10 = (var5 >> 1) + (var12 - var4 + var14 - 1) / var14) > var11) {
          var10 = var11;
       }
 
@@ -1374,7 +1374,7 @@ public class class117 extends class119 {
       for(var10 <<= 1; var5 < var10; var4 += var14) {
          var1 = var4 >> 8;
          byte var16 = var2[var1 - 1];
-         var0 = (var2[var1] - var16) * (var4 & 255) + (var16 << 8);
+         var0 = (var16 << 8) + (var2[var1] - var16) * (var4 & 255);
          var10001 = var5++;
          var3[var10001] += var0 * var6 >> 6;
          var6 += var8;

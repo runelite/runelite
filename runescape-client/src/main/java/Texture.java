@@ -237,7 +237,7 @@ public class Texture extends Node {
             }
 
             var3 = this.pixels.length;
-            var4 = var2 * var1 * this.field1838;
+            var4 = var2 * this.field1838 * var1;
             var5 = var3 - 1;
             if(this.field1834 == 1) {
                var4 = -var4;

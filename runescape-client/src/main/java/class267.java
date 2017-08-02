@@ -61,7 +61,7 @@ public class class267 {
          var1 /= 2;
       }
 
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
+      int var3 = (var1 / 32 << 7) + var2 / 2 + (var0 / 4 << 10);
       return var3;
    }
 }

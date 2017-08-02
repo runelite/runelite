@@ -166,7 +166,7 @@ public final class PendingSpawn extends Node {
                            }
                         }
 
-                        if(var18 < 128 - var2 && class162.field2262[var18 + 1][var19] == 0 && (var13[var14 + var2][var15] & 19136899) == 0 && (var13[var14 + var2][var15 + var2 - 1] & 19136992) == 0) {
+                        if(var18 < 128 - var2 && class162.field2262[var18 + 1][var19] == 0 && 0 == (var13[var14 + var2][var15] & 19136899) && 0 == (var13[var14 + var2][var15 + var2 - 1] & 19136992)) {
                            var17 = 1;
 
                            while(true) {
@@ -179,7 +179,7 @@ public final class PendingSpawn extends Node {
                                  break;
                               }
 
-                              if((var13[var2 + var14][var15 + var17] & 19136995) != 0) {
+                              if(0 != (var13[var14 + var2][var15 + var17] & 19136995)) {
                                  break;
                               }
 
@@ -208,7 +208,7 @@ public final class PendingSpawn extends Node {
                            }
                         }
 
-                        if(var19 < 128 - var2 && class162.field2262[var18][var19 + 1] == 0 && (var13[var14][var15 + var2] & 19136824) == 0 && (var13[var14 + var2 - 1][var15 + var2] & 19136992) == 0) {
+                        if(var19 < 128 - var2 && class162.field2262[var18][var19 + 1] == 0 && (var13[var14][var15 + var2] & 19136824) == 0 && 0 == (var13[var14 + var2 - 1][var15 + var2] & 19136992)) {
                            var17 = 1;
 
                            while(true) {
@@ -250,7 +250,7 @@ public final class PendingSpawn extends Node {
                            }
                         }
 
-                        if(var18 < 128 - var2 && var19 > 0 && class162.field2262[1 + var18][var19 - 1] == 0 && (var13[var14 + var2][var15 - 1] & 19136899) == 0) {
+                        if(var18 < 128 - var2 && var19 > 0 && 0 == class162.field2262[var18 + 1][var19 - 1] && (var13[var14 + var2][var15 - 1] & 19136899) == 0) {
                            var17 = 1;
 
                            while(true) {
@@ -271,7 +271,7 @@ public final class PendingSpawn extends Node {
                            }
                         }
 
-                        if(var18 > 0 && var19 < 128 - var2 && class162.field2262[var18 - 1][var19 + 1] == 0 && (var13[var14 - 1][var15 + var2] & 19136824) == 0) {
+                        if(var18 > 0 && var19 < 128 - var2 && 0 == class162.field2262[var18 - 1][var19 + 1] && (var13[var14 - 1][var15 + var2] & 19136824) == 0) {
                            for(var17 = 1; var17 < var2; ++var17) {
                               if((var13[var14 - 1][var17 + var15] & 19136830) != 0 || (var13[var14 - 1 + var17][var15 + var2] & 19137016) != 0) {
                                  continue label277;
@@ -287,10 +287,10 @@ public final class PendingSpawn extends Node {
                      } while(var18 >= 128 - var2);
                   } while(var19 >= 128 - var2);
                } while(class162.field2262[var18 + 1][var19 + 1] != 0);
-            } while((var13[var14 + var2][var15 + var2] & 19136992) != 0);
+            } while(0 != (var13[var14 + var2][var15 + var2] & 19136992));
 
             for(var17 = 1; var17 < var2; ++var17) {
-               if((var13[var14 + var17][var15 + var2] & 19137016) != 0 || (var13[var2 + var14][var15 + var17] & 19136995) != 0) {
+               if(0 != (var13[var14 + var17][var15 + var2] & 19137016) || 0 != (var13[var14 + var2][var15 + var17] & 19136995)) {
                   continue label300;
                }
             }

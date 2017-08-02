@@ -295,7 +295,7 @@ public class class73 extends class163 {
          for(var4 = 0; var4 < var0.height; ++var4) {
             for(var5 = 0; var5 < var0.width; ++var5) {
                var6 = (var0.paddingX + 32) * var5;
-               int var7 = (var0.paddingY + 32) * var4;
+               int var7 = var4 * (var0.paddingY + 32);
                if(var20 < 20) {
                   var6 += var0.xSprites[var20];
                   var7 += var0.field2677[var20];

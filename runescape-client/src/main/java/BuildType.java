@@ -508,12 +508,12 @@ public class BuildType {
 
                      var61 = var0.hitsplatCycles[var75] - Client.gameCycle;
                      int var62 = var87.field3395 - var61 * var87.field3395 / var87.field3396;
-                     int var63 = var87.field3391 * var61 / var87.field3396 + -var87.field3391;
+                     int var63 = var61 * var87.field3391 / var87.field3396 + -var87.field3391;
                      int var64 = var2 + Client.screenY - (var50 >> 1) + var62;
                      int var65 = var63 + (var3 + Client.screenX - 12);
                      int var66 = var65;
                      int var67 = var65 + var41;
-                     int var68 = var87.field3406 + var65 + 15;
+                     int var68 = var65 + var87.field3406 + 15;
                      int var69 = var68 - var84.minSpacing;
                      int var70 = var68 + var84.maxSpacing;
                      if(var69 < var65) {
@@ -528,7 +528,7 @@ public class BuildType {
                      int var72;
                      int var73;
                      if(var79 != null) {
-                        var71 = var79.field3406 + var65 + 15;
+                        var71 = var65 + var79.field3406 + 15;
                         var72 = var71 - var43.minSpacing;
                         var73 = var71 + var43.maxSpacing;
                         if(var72 < var66) {
@@ -556,7 +556,7 @@ public class BuildType {
 
                         if(var81 != null) {
                            for(var73 = 0; var73 < var48; ++var73) {
-                              var81.method5024(var73 * var22 + (var64 + var53 - var26), var65, var72);
+                              var81.method5024(var64 + var53 - var26 + var73 * var22, var65, var72);
                            }
                         }
 
@@ -576,7 +576,7 @@ public class BuildType {
 
                            if(var30 != null) {
                               for(var73 = 0; var73 < var49; ++var73) {
-                                 var30.method5024(var34 * var73 + (var58 + var64 - var38), var65, var72);
+                                 var30.method5024(var58 + var64 - var38 + var34 * var73, var65, var72);
                               }
                            }
 

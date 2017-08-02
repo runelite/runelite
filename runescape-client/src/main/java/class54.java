@@ -37,7 +37,7 @@ public class class54 {
    )
    public static int method753(boolean var0, boolean var1) {
       byte var2 = 0;
-      int var3 = class238.field3225 + class238.field3238 + var2;
+      int var3 = var2 + class238.field3225 + class238.field3238;
       return var3;
    }
 }

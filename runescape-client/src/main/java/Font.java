@@ -16,7 +16,7 @@ public final class Font extends FontTypeFace {
    @ObfuscatedName("c")
    @Export("renderRGB")
    final void renderRGB(byte[] var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = var3 * Rasterizer2D.graphicsPixelsWidth + var2;
+      int var7 = var2 + var3 * Rasterizer2D.graphicsPixelsWidth;
       int var8 = Rasterizer2D.graphicsPixelsWidth - var4;
       int var9 = 0;
       int var10 = 0;
@@ -58,7 +58,7 @@ public final class Font extends FontTypeFace {
    @ObfuscatedName("o")
    @Export("renderRGBA")
    final void renderRGBA(byte[] var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      int var8 = var3 * Rasterizer2D.graphicsPixelsWidth + var2;
+      int var8 = var2 + var3 * Rasterizer2D.graphicsPixelsWidth;
       int var9 = Rasterizer2D.graphicsPixelsWidth - var4;
       int var10 = 0;
       int var11 = 0;

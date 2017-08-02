@@ -143,7 +143,7 @@ public class class51 implements class103 {
             } else if(var0 == 3916) {
                BufferProvider.intStackSize -= 2;
                var13 = class83.intStack[BufferProvider.intStackSize] == 1;
-               boolean var4 = class83.intStack[BufferProvider.intStackSize + 1] == 1;
+               boolean var4 = 1 == class83.intStack[BufferProvider.intStackSize + 1];
                if(InvType.field3251 != null) {
                   InvType.field3251.method70(new class95(var4), var13);
                }

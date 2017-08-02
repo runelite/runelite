@@ -104,7 +104,7 @@ public class ScriptEvent extends Node {
       int var8;
       int var9;
       for(var7 = 0; var7 < Client.menuOptionCount; ++var7) {
-         var8 = var1 + 31 + (Client.menuOptionCount - 1 - var7) * 15;
+         var8 = var1 + (Client.menuOptionCount - 1 - var7) * 15 + 31;
          var9 = 16777215;
          if(var5 > var0 && var5 < var2 + var0 && var6 > var8 - 13 && var6 < var8 + 3) {
             var9 = 16776960;

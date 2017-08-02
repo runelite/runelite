@@ -71,9 +71,9 @@ public abstract class class163 {
       int var5 = class112.font_p12full.method4637(var0, 250);
       int var6 = class112.font_p12full.method4638(var0, 250) * 13;
       Rasterizer2D.method4828(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6, 0);
-      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 16777215);
+      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var5 + var2 + var2, var6 + var2 + var2, 16777215);
       class112.font_p12full.method4644(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-      class140.method2793(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6);
+      class140.method2793(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var6 + var2);
       if(var1) {
          WorldMapType1.field417.vmethod4917(0, 0);
       } else {

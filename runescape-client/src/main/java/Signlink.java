@@ -530,7 +530,7 @@ public class Signlink implements Runnable {
 
                      var0 = Client.renderOverview.method5089();
                      if(var0 < 100) {
-                        class92.loadingText = "Loading world map - " + (9 * var0 / 10 + 10) + "%";
+                        class92.loadingText = "Loading world map - " + (var0 * 9 / 10 + 10) + "%";
                      } else {
                         class92.loadingText = "Loaded world map";
                         class92.loadingBarPercentage = 100;
@@ -545,7 +545,7 @@ public class Signlink implements Runnable {
             int[] var20 = new int[9];
 
             for(var1 = 0; var1 < 9; ++var1) {
-               var2 = var1 * 32 + 128 + 15;
+               var2 = var1 * 32 + 15 + 128;
                var3 = var2 * 3 + 600;
                var4 = Graphics3D.SINE[var2];
                var20[var1] = var3 * var4 >> 16;
@@ -749,7 +749,7 @@ public class Signlink implements Runnable {
                            return;
                         }
 
-                        var9 = 180 + class92.loginWindowX + 80;
+                        var9 = class92.loginWindowX + 180 + 80;
                         if(var1 == 1 && var10 >= var9 - 75 && var10 <= var9 + 75 && var11 >= var6 - 20 && var11 <= var6 + 20) {
                            class92.loginIndex = 0;
                            class92.username = "";
@@ -867,11 +867,11 @@ public class Signlink implements Runnable {
                               class92.field1424 = !class92.field1424;
                            }
 
-                           if(var1 == 1 && var10 >= class92.loginWindowX + 180 - 34 && var10 <= 180 + class92.loginWindowX + 34 && var11 >= 351 && var11 <= 363) {
+                           if(var1 == 1 && var10 >= class92.loginWindowX + 180 - 34 && var10 <= class92.loginWindowX + 34 + 180 && var11 >= 351 && var11 <= 363) {
                               class37.method488(WorldMapData.method347("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
                            }
 
-                           var13 = 180 + class92.loginWindowX + 80;
+                           var13 = class92.loginWindowX + 180 + 80;
                            if(var1 == 1 && var10 >= var13 - 75 && var10 <= var13 + 75 && var11 >= var17 - 20 && var11 <= var17 + 20) {
                               class92.loginIndex = 0;
                               class92.username = "";
@@ -1097,7 +1097,7 @@ public class Signlink implements Runnable {
                var9 = 256 - var7;
                var7 = class67.field816[var7];
                var10 = WorldMapType1.field417.pixels[var2];
-               WorldMapType1.field417.pixels[var2++] = (var9 * (var10 & '\uff00') + var8 * (var7 & '\uff00') & 16711680) + ((var10 & 16711935) * var9 + var8 * (var7 & 16711935) & -16711936) >> 8;
+               WorldMapType1.field417.pixels[var2++] = (var9 * (var10 & '\uff00') + var8 * (var7 & '\uff00') & 16711680) + (var8 * (var7 & 16711935) + var9 * (var10 & 16711935) & -16711936) >> 8;
             } else {
                ++var2;
             }
@@ -1110,7 +1110,7 @@ public class Signlink implements Runnable {
       class92.field1399.method4956(class92.field1417 + 382, 0);
       Rasterizer2D.noClip();
       var1 = 0;
-      var2 = 24 + WorldMapType1.field417.width * 9 + 637 + class92.field1417;
+      var2 = class92.field1417 + 24 + WorldMapType1.field417.width * 9 + 637;
 
       for(var3 = 1; var3 < var0 - 1; ++var3) {
          var4 = class92.field1423[var3] * (var0 - var3) / var0;
@@ -1124,7 +1124,7 @@ public class Signlink implements Runnable {
                var9 = 256 - var7;
                var7 = class67.field816[var7];
                var10 = WorldMapType1.field417.pixels[var2];
-               WorldMapType1.field417.pixels[var2++] = (var9 * (var10 & 16711935) + var8 * (var7 & 16711935) & -16711936) + (var9 * (var10 & '\uff00') + var8 * (var7 & '\uff00') & 16711680) >> 8;
+               WorldMapType1.field417.pixels[var2++] = (var9 * (var10 & '\uff00') + var8 * (var7 & '\uff00') & 16711680) + (var9 * (var10 & 16711935) + var8 * (var7 & 16711935) & -16711936) >> 8;
             } else {
                ++var2;
             }

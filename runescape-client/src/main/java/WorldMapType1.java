@@ -120,7 +120,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
          return null;
       } else {
          int var3 = this.field414 * 64 - this.field415 * 64 + var1;
-         int var4 = this.field424 * 64 - this.field419 * 64 + var2;
+         int var4 = var2 + (this.field424 * 64 - this.field419 * 64);
          return new Coordinates(this.field422, var3, var4);
       }
    }
@@ -134,7 +134,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
       if(!this.vmethod675(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{this.field415 * 64 - this.field414 * 64 + var2, var3 + (this.field419 * 64 - this.field424 * 64)};
+         int[] var4 = new int[]{this.field415 * 64 - this.field414 * 64 + var2, this.field419 * 64 - this.field424 * 64 + var3};
          return var4;
       }
    }

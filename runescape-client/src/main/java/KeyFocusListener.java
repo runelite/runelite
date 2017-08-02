@@ -250,7 +250,7 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
                   class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5 - 1][var4];
                }
 
-               if(var2 + var0 == var5 && var5 < 103) {
+               if(var0 + var2 == var5 && var5 < 103) {
                   class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5 + 1][var4];
                }
 

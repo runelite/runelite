@@ -108,8 +108,8 @@ public class WorldMapType2 implements WorldMapSectionBase {
       if(!this.vmethod676(var1, var2)) {
          return null;
       } else {
-         int var3 = this.field515 * 64 - this.field519 * 64 + var1;
-         int var4 = this.field516 * 64 - this.field518 * 64 + var2;
+         int var3 = var1 + (this.field515 * 64 - this.field519 * 64);
+         int var4 = var2 + (this.field516 * 64 - this.field518 * 64);
          return new Coordinates(this.field520, var3, var4);
       }
    }

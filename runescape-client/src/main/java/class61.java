@@ -97,6 +97,6 @@ public final class class61 {
    )
    static final int method1020(int var0, int var1, int var2) {
       int var3 = 256 - var2;
-      return ((var0 & '\uff00') * var3 + (var1 & '\uff00') * var2 & 16711680) + (var3 * (var0 & 16711935) + (var1 & 16711935) * var2 & -16711936) >> 8;
+      return (var2 * (var1 & 16711935) + var3 * (var0 & 16711935) & -16711936) + ((var0 & '\uff00') * var3 + (var1 & '\uff00') * var2 & 16711680) >> 8;
    }
 }

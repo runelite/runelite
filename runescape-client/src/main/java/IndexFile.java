@@ -80,7 +80,7 @@ public final class IndexFile {
 
                this.indexFile.seek((long)(var1 * 6));
                this.indexFile.method2258(field2243, 0, 6);
-               var6 = ((field2243[4] & 255) << 8) + ((field2243[3] & 255) << 16) + (field2243[5] & 255);
+               var6 = ((field2243[4] & 255) << 8) + (field2243[5] & 255) + ((field2243[3] & 255) << 16);
                if(var6 <= 0 || (long)var6 > this.dataFile.method2257() / 520L) {
                   var10000 = false;
                   return var10000;
@@ -119,7 +119,7 @@ public final class IndexFile {
 
                         var10 = ((field2243[0] & 255) << 8) + (field2243[1] & 255);
                         int var11 = (field2243[3] & 255) + ((field2243[2] & 255) << 8);
-                        var9 = (field2243[6] & 255) + ((field2243[4] & 255) << 16) + ((field2243[5] & 255) << 8);
+                        var9 = ((field2243[5] & 255) << 8) + (field2243[6] & 255) + ((field2243[4] & 255) << 16);
                         int var12 = field2243[7] & 255;
                         if(var10 != var1 || var11 != var8 || var12 != this.index) {
                            var10000 = false;
@@ -211,14 +211,14 @@ public final class IndexFile {
       synchronized(this.dataFile) {
          try {
             Object var10000;
-            if(this.indexFile.method2257() < (long)(6 * var1 + 6)) {
+            if(this.indexFile.method2257() < (long)(6 + var1 * 6)) {
                var10000 = null;
                return (byte[])var10000;
             } else {
                this.indexFile.seek((long)(var1 * 6));
                this.indexFile.method2258(field2243, 0, 6);
-               int var3 = (field2243[2] & 255) + ((field2243[0] & 255) << 16) + ((field2243[1] & 255) << 8);
-               int var4 = ((field2243[4] & 255) << 8) + ((field2243[3] & 255) << 16) + (field2243[5] & 255);
+               int var3 = ((field2243[0] & 255) << 16) + ((field2243[1] & 255) << 8) + (field2243[2] & 255);
+               int var4 = ((field2243[4] & 255) << 8) + (field2243[5] & 255) + ((field2243[3] & 255) << 16);
                if(var3 < 0 || var3 > this.maxSize) {
                   var10000 = null;
                   return (byte[])var10000;
@@ -244,7 +244,7 @@ public final class IndexFile {
                      this.dataFile.method2258(field2243, 0, var8 + 8);
                      int var9 = ((field2243[0] & 255) << 8) + (field2243[1] & 255);
                      int var10 = (field2243[3] & 255) + ((field2243[2] & 255) << 8);
-                     int var11 = (field2243[6] & 255) + ((field2243[5] & 255) << 8) + ((field2243[4] & 255) << 16);
+                     int var11 = ((field2243[5] & 255) << 8) + (field2243[6] & 255) + ((field2243[4] & 255) << 16);
                      int var12 = field2243[7] & 255;
                      if(var9 != var1 || var7 != var10 || var12 != this.index) {
                         var10000 = null;

@@ -628,7 +628,7 @@ public class RenderOverview {
       if(this.field3813.method5077()) {
          int var7 = (int)Math.ceil((double)((float)var3 / this.field3809));
          int var8 = (int)Math.ceil((double)((float)var4 / this.field3809));
-         List var9 = this.field3812.method537(this.field3814 - var7 / 2 - 1, this.field3815 - var8 / 2 - 1, var7 / 2 + this.field3814 + 1, this.field3815 + var8 / 2 + 1, var1, var2, var3, var4, var5, var6);
+         List var9 = this.field3812.method537(this.field3814 - var7 / 2 - 1, this.field3815 - var8 / 2 - 1, this.field3814 + var7 / 2 + 1, this.field3815 + var8 / 2 + 1, var1, var2, var3, var4, var5, var6);
          if(!var9.isEmpty()) {
             Iterator var10 = var9.iterator();
 

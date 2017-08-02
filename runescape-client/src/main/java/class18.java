@@ -89,11 +89,11 @@ final class class18 implements Comparator {
       garbageValue = "-1889448231"
    )
    static final void method138() {
-      int var0 = Player.field902 * 128 + 64;
-      int var1 = class40.field550 * 128 + 64;
+      int var0 = 64 + Player.field902 * 128;
+      int var1 = 64 + class40.field550 * 128;
       int var2 = class23.getTileHeight(var0, var1, class10.plane) - WorldMapData.field448;
       if(class73.cameraX < var0) {
-         class73.cameraX += Friend.field798 * (var0 - class73.cameraX) / 1000 + DecorativeObject.field2136;
+         class73.cameraX += DecorativeObject.field2136 + (var0 - class73.cameraX) * Friend.field798 / 1000;
          if(class73.cameraX > var0) {
             class73.cameraX = var0;
          }
@@ -107,7 +107,7 @@ final class class18 implements Comparator {
       }
 
       if(WidgetNode.cameraZ < var2) {
-         WidgetNode.cameraZ += (var2 - WidgetNode.cameraZ) * Friend.field798 / 1000 + DecorativeObject.field2136;
+         WidgetNode.cameraZ = (var2 - WidgetNode.cameraZ) * Friend.field798 / 1000 + WidgetNode.cameraZ + DecorativeObject.field2136;
          if(WidgetNode.cameraZ > var2) {
             WidgetNode.cameraZ = var2;
          }
@@ -121,7 +121,7 @@ final class class18 implements Comparator {
       }
 
       if(Client.cameraY < var1) {
-         Client.cameraY += DecorativeObject.field2136 + Friend.field798 * (var1 - Client.cameraY) / 1000;
+         Client.cameraY += DecorativeObject.field2136 + (var1 - Client.cameraY) * Friend.field798 / 1000;
          if(Client.cameraY > var1) {
             Client.cameraY = var1;
          }
@@ -134,7 +134,7 @@ final class class18 implements Comparator {
          }
       }
 
-      var0 = class12.field258 * 128 + 64;
+      var0 = 64 + class12.field258 * 128;
       var1 = class96.field1481 * 128 + 64;
       var2 = class23.getTileHeight(var0, var1, class10.plane) - class177.field2380;
       int var3 = var0 - class73.cameraX;
@@ -159,7 +159,7 @@ final class class18 implements Comparator {
       }
 
       if(class10.cameraPitch > var7) {
-         class10.cameraPitch -= class22.field333 * (class10.cameraPitch - var7) / 1000 + class269.field3659;
+         class10.cameraPitch -= class269.field3659 + class22.field333 * (class10.cameraPitch - var7) / 1000;
          if(class10.cameraPitch < var7) {
             class10.cameraPitch = var7;
          }
@@ -175,7 +175,7 @@ final class class18 implements Comparator {
       }
 
       if(var9 > 0) {
-         class236.cameraYaw += class269.field3659 + var9 * class22.field333 / 1000;
+         class236.cameraYaw = class236.cameraYaw + class269.field3659 + var9 * class22.field333 / 1000;
          class236.cameraYaw &= 2047;
       }
 

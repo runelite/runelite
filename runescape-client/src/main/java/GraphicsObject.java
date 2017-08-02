@@ -184,7 +184,7 @@ public final class GraphicsObject extends Renderable {
                   var3 -= Integer.MIN_VALUE;
                }
 
-               class19.region.method2671(class10.plane, var2.x, var2.y, class23.getTileHeight(var2.field1213 * 64 - 64 + var2.x, var2.field1213 * 64 - 64 + var2.y, class10.plane), var2.field1213 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1233);
+               class19.region.method2671(class10.plane, var2.x, var2.y, class23.getTileHeight(var2.field1213 * 64 - 64 + var2.x, var2.y + (var2.field1213 * 64 - 64), class10.plane), 60 + (var2.field1213 * 64 - 64), var2, var2.angle, var3, var2.field1233);
             }
          }
       }

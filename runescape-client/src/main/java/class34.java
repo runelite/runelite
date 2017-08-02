@@ -127,7 +127,7 @@ public class class34 {
                      }
 
                      if(var8.field426 == 2) {
-                        Rasterizer2D.method4837(this.field474 + this.field474 * var1 - 1, this.field474 * (63 - var2) + this.field474 - 1, 1, var10);
+                        Rasterizer2D.method4837(this.field474 + this.field474 * var1 - 1, this.field474 + this.field474 * (63 - var2) - 1, 1, var10);
                      }
 
                      if(var8.field426 == 3) {
@@ -281,7 +281,7 @@ public class class34 {
                   if(var12.mapSceneId != 46 && var12.mapSceneId != 52) {
                      var4[var12.mapSceneId].method4927(this.field474 * var1, this.field474 * (63 - var2), this.field474 * 2, this.field474 * 2);
                   } else {
-                     var4[var12.mapSceneId].method4927(this.field474 * var1, this.field474 * (63 - var2), this.field474 * 2 + 1, this.field474 * 2 + 1);
+                     var4[var12.mapSceneId].method4927(this.field474 * var1, this.field474 * (63 - var2), 1 + this.field474 * 2, this.field474 * 2 + 1);
                   }
                }
             }
@@ -548,7 +548,7 @@ public class class34 {
                      class31 var13 = var11[var12];
                      Area var14 = this.method382(var13.field433);
                      if(var14 != null) {
-                        Coordinates var15 = new Coordinates(var9, var6 + this.field464 * 64, var7 + this.field465 * 64);
+                        Coordinates var15 = new Coordinates(var9, var6 + this.field464 * 64, this.field465 * 64 + var7);
                         Coordinates var16 = null;
                         if(this.field466 != null) {
                            var16 = new Coordinates(this.field466.field396 + var9, var6 + this.field466.field403 * 64, var7 + this.field466.field393 * 64);
@@ -1011,7 +1011,7 @@ public class class34 {
    )
    void method417(int var1, int var2, int var3) {
       if(this.field471 != null) {
-         if(var3 == this.field474 * 64) {
+         if(this.field474 * 64 == var3) {
             this.field471.method4956(var1, var2);
          } else {
             this.field471.method4973(var1, var2, var3, var3);

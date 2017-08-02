@@ -406,6 +406,6 @@ public class PlayerComposition {
       garbageValue = "119629141"
    )
    public int method3891() {
-      return this.transformedNpcId == -1?(this.equipmentIds[11] << 5) + (this.equipmentIds[8] << 10) + (this.equipmentIds[0] << 15) + (this.bodyPartColours[0] << 25) + (this.bodyPartColours[4] << 20) + this.equipmentIds[1]:305419896 + WorldMapType3.getNpcDefinition(this.transformedNpcId).id;
+      return this.transformedNpcId == -1?(this.bodyPartColours[4] << 20) + (this.equipmentIds[0] << 15) + (this.equipmentIds[11] << 5) + (this.equipmentIds[8] << 10) + this.equipmentIds[1] + (this.bodyPartColours[0] << 25):305419896 + WorldMapType3.getNpcDefinition(this.transformedNpcId).id;
    }
 }

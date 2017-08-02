@@ -3,8 +3,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URL;
-
-import net.runelite.mapping.*;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
+import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bx")
 @Implements("WorldListFetcher")
@@ -378,7 +382,7 @@ public class WorldListFetcher {
                                        }
 
                                        if(Client.field992 == 2) {
-                                          var25 = Client.hintArrowX * 4 - class21.baseX * 4 + 2 - class226.localPlayer.x / 32;
+                                          var25 = 2 + (Client.hintArrowX * 4 - class21.baseX * 4) - class226.localPlayer.x / 32;
                                           var26 = Client.hintArrowY * 4 - class164.baseY * 4 + 2 - class226.localPlayer.y / 32;
                                           World.method1536(var12, var13, var25, var26, class27.field388[1], var43);
                                        }
@@ -394,7 +398,7 @@ public class WorldListFetcher {
                                     }
 
                                     if(Client.destinationX != 0) {
-                                       var25 = Client.destinationX * 4 + 2 - class226.localPlayer.x / 32;
+                                       var25 = 2 + Client.destinationX * 4 - class226.localPlayer.x / 32;
                                        var26 = Client.destinationY * 4 + 2 - class226.localPlayer.y / 32;
                                        class87.drawDot(var12, var13, var25, var26, class27.field388[0], var43);
                                     }
@@ -486,15 +490,15 @@ public class WorldListFetcher {
                         }
 
                         var24 = var20 * (var21 - 32 - var23) / (var22 - var21);
-                        Rasterizer2D.method4828(var32, var24 + var13 + 16, 16, var23, Client.field1032);
+                        Rasterizer2D.method4828(var32, var13 + var24 + 16, 16, var23, Client.field1032);
                         Rasterizer2D.method4864(var32, var24 + var13 + 16, var23, Client.field1127);
-                        Rasterizer2D.method4864(var32 + 1, var13 + 16 + var24, var23, Client.field1127);
-                        Rasterizer2D.method4837(var32, var13 + 16 + var24, 16, Client.field1127);
-                        Rasterizer2D.method4837(var32, var13 + 17 + var24, 16, Client.field1127);
+                        Rasterizer2D.method4864(var32 + 1, var24 + var13 + 16, var23, Client.field1127);
+                        Rasterizer2D.method4837(var32, var24 + var13 + 16, 16, Client.field1127);
+                        Rasterizer2D.method4837(var32, var24 + var13 + 17, 16, Client.field1127);
                         Rasterizer2D.method4864(var32 + 15, var24 + var13 + 16, var23, Client.field982);
-                        Rasterizer2D.method4864(var32 + 14, var13 + 17 + var24, var23 - 1, Client.field982);
+                        Rasterizer2D.method4864(var32 + 14, var13 + var24 + 17, var23 - 1, Client.field982);
                         Rasterizer2D.method4837(var32, var23 + var24 + var13 + 15, 16, Client.field982);
-                        Rasterizer2D.method4837(var32 + 1, var23 + 14 + var13 + var24, 15, Client.field982);
+                        Rasterizer2D.method4837(var32 + 1, var23 + var24 + var13 + 14, 15, Client.field982);
                      }
 
                      if(var10.type != 1) {
@@ -503,7 +507,7 @@ public class WorldListFetcher {
 
                            for(var20 = 0; var20 < var10.field2629; ++var20) {
                               for(var21 = 0; var21 < var10.originalWidth; ++var21) {
-                                 var22 = var12 + var21 * (var10.paddingX + 32);
+                                 var22 = var21 * (var10.paddingX + 32) + var12;
                                  var23 = var20 * (var10.paddingY + 32) + var13;
                                  if(var32 < 20) {
                                     var22 += var10.xSprites[var32];
@@ -792,9 +796,9 @@ public class WorldListFetcher {
                                     } else {
                                        var49.method2433();
                                        if(var10.field2680) {
-                                          var49.method2446(0, var10.rotationZ, var10.rotationY, var10.rotationX, var10.field2661, var10.field2667 + var22 + var23, var24 + var10.field2667, var10.modelZoom);
+                                          var49.method2446(0, var10.rotationZ, var10.rotationY, var10.rotationX, var10.field2661, var22 + var23 + var10.field2667, var24 + var10.field2667, var10.modelZoom);
                                        } else {
-                                          var49.method2476(0, var10.rotationZ, var10.rotationY, var10.rotationX, var10.field2661, var10.field2667 + var23 + var22, var24 + var10.field2667);
+                                          var49.method2476(0, var10.rotationZ, var10.rotationY, var10.rotationX, var10.field2661, var23 + var22 + var10.field2667, var24 + var10.field2667);
                                        }
                                     }
                                  }
@@ -823,8 +827,8 @@ public class WorldListFetcher {
                                                 var33 = class8.getColTags(16748608) + var40.name + "</col>" + " " + 'x' + NPC.method1650(var10.itemQuantities[var20]);
                                              }
 
-                                             var25 = var12 + var22 * (var10.paddingX + 115);
-                                             var26 = var21 * (12 + var10.paddingY) + var13;
+                                             var25 = var22 * (var10.paddingX + 115) + var12;
+                                             var26 = var21 * (var10.paddingY + 12) + var13;
                                              if(var10.field2718 == 0) {
                                                 var41.method4640(var33, var25, var26, var10.textColor, var10.textShadowed?0:-1);
                                              } else if(var10.field2718 == 1) {
@@ -846,7 +850,7 @@ public class WorldListFetcher {
                                     String var35 = var10.text;
 
                                     String var59;
-                                    for(var35 = Friend.method1038(var35, var10); var35.length() > 0; var20 += var34.verticalSpace + 1) {
+                                    for(var35 = Friend.method1038(var35, var10); var35.length() > 0; var20 = var20 + var34.verticalSpace + 1) {
                                        var24 = var35.indexOf("<br>");
                                        if(var24 != -1) {
                                           var59 = var35.substring(0, var24);
@@ -881,9 +885,9 @@ public class WorldListFetcher {
                                     Rasterizer2D.method4828(var24, var25, var32, var20, 16777120);
                                     Rasterizer2D.drawRectangle(var24, var25, var32, var20, 0);
                                     var35 = var10.text;
-                                    var26 = var34.verticalSpace + var25 + 2;
+                                    var26 = var25 + var34.verticalSpace + 2;
 
-                                    for(var35 = Friend.method1038(var35, var10); var35.length() > 0; var26 += var34.verticalSpace + 1) {
+                                    for(var35 = Friend.method1038(var35, var10); var35.length() > 0; var26 = var26 + var34.verticalSpace + 1) {
                                        var37 = var35.indexOf("<br>");
                                        if(var37 != -1) {
                                           var59 = var35.substring(0, var37);

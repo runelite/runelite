@@ -173,7 +173,7 @@ public class Varcs {
    void deserialize() {
       FileOnDisk var1 = this.getVarPrefs(false);
 
-      label185: {
+      label198: {
          try {
             byte[] var2 = new byte[(int)var1.length()];
 
@@ -210,7 +210,7 @@ public class Varcs {
 
                while(true) {
                   if(var8 >= var7) {
-                     break label185;
+                     break label198;
                   }
 
                   var9 = var13.readUnsignedShort();
@@ -223,7 +223,7 @@ public class Varcs {
                }
             }
          } catch (Exception var24) {
-            break label185;
+            break label198;
          } finally {
             try {
                var1.close();
@@ -381,7 +381,7 @@ public class Varcs {
          } else if(Client.localInteractingIndex == var1) {
             throw new RuntimeException();
          } else {
-            class96.field1473[var1] = (class164.baseY + var4.pathY[0] >> 13) + (var4.field896 << 28) + (class21.baseX + var4.pathX[0] >> 13 << 14);
+            class96.field1473[var1] = (var4.field896 << 28) + (var4.pathX[0] + class21.baseX >> 13 << 14) + (var4.pathY[0] + class164.baseY >> 13);
             if(var4.field1237 != -1) {
                class96.field1474[var1] = var4.field1237;
             } else {
@@ -522,18 +522,16 @@ public class Varcs {
 
                var10 = var8 + var4.pathX[0];
                var11 = var9 + var4.pathY[0];
-               if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-                  if(var2) {
-                     var4.field898 = true;
-                     var4.field899 = var10;
-                     var4.field900 = var11;
-                  } else {
-                     var4.field898 = false;
-                     var4.method1075(var10, var11, class96.field1467[var1]);
-                  }
-               } else {
+               if(Client.localInteractingIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
                   var4.method1076(var10, var11);
                   var4.field898 = false;
+               } else if(var2) {
+                  var4.field898 = true;
+                  var4.field899 = var10;
+                  var4.field900 = var11;
+               } else {
+                  var4.field898 = false;
+                  var4.method1075(var10, var11, class96.field1467[var1]);
                }
 
                var4.field896 = (byte)(var7 + var4.field896 & 3);
@@ -547,7 +545,7 @@ public class Varcs {
                var8 = var6 >> 14 & 16383;
                var9 = var6 & 16383;
                var10 = (var8 + var4.pathX[0] + class21.baseX & 16383) - class21.baseX;
-               var11 = (var9 + class164.baseY + var4.pathY[0] & 16383) - class164.baseY;
+               var11 = (var9 + var4.pathY[0] + class164.baseY & 16383) - class164.baseY;
                if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
                   if(var2) {
                      var4.field898 = true;

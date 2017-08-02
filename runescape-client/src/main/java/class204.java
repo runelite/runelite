@@ -66,8 +66,6 @@ public class class204 extends class119 {
    long field2500;
    @ObfuscatedName("n")
    int[] field2484;
-   @ObfuscatedName("j")
-   int[] field2492;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -624122463
@@ -80,6 +78,8 @@ public class class204 extends class119 {
    class205[][] field2497;
    @ObfuscatedName("am")
    boolean field2499;
+   @ObfuscatedName("j")
+   int[] field2492;
    @ObfuscatedName("v")
    int[] field2488;
    @ObfuscatedName("al")
@@ -258,7 +258,7 @@ public class class204 extends class119 {
             var6.field2511 = var9.field2549[var2];
             var6.field2527 = var9.field2550[var2];
             var6.field2513 = var2;
-            var6.field2514 = var3 * var3 * var9.field2546 * var9.field2544[var2] + 1024 >> 11;
+            var6.field2514 = var3 * var3 * var9.field2544[var2] * var9.field2546 + 1024 >> 11;
             var6.field2515 = var9.field2545[var2] & 255;
             var6.field2516 = (var2 << 8) - (var9.field2548[var2] & 32767);
             var6.field2519 = 0;
@@ -407,8 +407,8 @@ public class class204 extends class119 {
       garbageValue = "-128151989"
    )
    int method3705(class205 var1) {
-      int var2 = (var1.field2518 * var1.field2508 >> 12) + var1.field2516;
-      var2 += this.field2492[var1.field2526] * (this.field2486[var1.field2526] - 8192) >> 12;
+      int var2 = var1.field2516 + (var1.field2518 * var1.field2508 >> 12);
+      var2 += (this.field2486[var1.field2526] - 8192) * this.field2492[var1.field2526] >> 12;
       class202 var3 = var1.field2511;
       int var4;
       if(var3.field2466 > 0 && (var3.field2464 > 0 || this.field2487[var1.field2526] > 0)) {
@@ -646,7 +646,7 @@ public class class204 extends class119 {
          }
 
          if(var4 == 100) {
-            this.field2491[var3] = var5 + (this.field2491[var3] & 16256) + 16384;
+            this.field2491[var3] = (this.field2491[var3] & 16256) + var5 + 16384;
          }
 
          if(var4 == 120) {
@@ -777,7 +777,7 @@ public class class204 extends class119 {
          boolean var7 = false;
          ++var1.field2524;
          var1.field2512 += var6.field2466;
-         double var8 = (double)((var1.field2513 - 60 << 8) + (var1.field2508 * var1.field2518 >> 12)) * 5.086263020833333E-6D;
+         double var8 = (double)((var1.field2508 * var1.field2518 >> 12) + (var1.field2513 - 60 << 8)) * 5.086263020833333E-6D;
          if(var6.field2459 > 0) {
             if(var6.field2462 > 0) {
                var1.field2519 += (int)(128.0D * Math.pow(2.0D, var8 * (double)var6.field2462) + 0.5D);
@@ -797,7 +797,7 @@ public class class204 extends class119 {
                var1.field2521 += 2;
             }
 
-            if(var6.field2467.length - 2 == var1.field2521 && var6.field2467[1 + var1.field2521] == 0) {
+            if(var6.field2467.length - 2 == var1.field2521 && var6.field2467[var1.field2521 + 1] == 0) {
                var7 = true;
             }
          }
@@ -1003,7 +1003,7 @@ public class class204 extends class119 {
          if(var1.field2521 < var2.field2467.length - 2) {
             var6 = (var2.field2467[var1.field2521] & 255) << 8;
             var7 = (var2.field2467[var1.field2521 + 2] & 255) << 8;
-            var5 += (var4 - var6) * (var2.field2467[var1.field2521 + 3] - var5) / (var7 - var6);
+            var5 += (var2.field2467[var1.field2521 + 3] - var5) * (var4 - var6) / (var7 - var6);
          }
 
          var3 = var3 * var5 + 32 >> 6;
@@ -1015,10 +1015,10 @@ public class class204 extends class119 {
          if(var1.field2525 < var2.field2458.length - 2) {
             var6 = (var2.field2458[var1.field2525] & 255) << 8;
             var7 = (var2.field2458[var1.field2525 + 2] & 255) << 8;
-            var5 += (var2.field2458[var1.field2525 + 3] - var5) * (var4 - var6) / (var7 - var6);
+            var5 += (var4 - var6) * (var2.field2458[var1.field2525 + 3] - var5) / (var7 - var6);
          }
 
-         var3 = var3 * var5 + 32 >> 6;
+         var3 = 32 + var3 * var5 >> 6;
       }
 
       return var3;
@@ -1031,7 +1031,7 @@ public class class204 extends class119 {
    )
    int method3669(class205 var1) {
       int var2 = this.field2479[var1.field2526];
-      return var2 < 8192?var2 * var1.field2515 + 32 >> 6:16384 - ((128 - var1.field2515) * (16384 - var2) + 32 >> 6);
+      return var2 < 8192?32 + var2 * var1.field2515 >> 6:16384 - ((128 - var1.field2515) * (16384 - var2) + 32 >> 6);
    }
 
    @ObfuscatedName("h")

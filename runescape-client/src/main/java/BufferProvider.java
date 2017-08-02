@@ -88,7 +88,7 @@ public abstract class BufferProvider {
             int var9 = var8 >> 16;
             int var10 = var8 >> 8 & 597;
             int var11 = var8 & 597;
-            class96.field1473[var7] = (var9 << 28) + (var10 << 14) + var11;
+            class96.field1473[var7] = (var10 << 14) + var11 + (var9 << 28);
             class96.field1474[var7] = 0;
             class96.field1471[var7] = -1;
             class96.field1472[++class96.field1476 - 1] = var7;
