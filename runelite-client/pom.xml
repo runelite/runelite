@@ -189,7 +189,6 @@
 				</executions>
 				<configuration>
 					<skip>${jarsigner.skip}</skip>
-					<verbose>true</verbose>
 					<keystore>${jarsigner.keystore}</keystore>
 					<alias>${jarsigner.alias}</alias>
 					<storepass>${jarsigner.storepass}</storepass>
