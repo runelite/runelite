@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.deob.injection;
+package net.runelite.injector;
 
 import java.io.IOException;
 import java.util.List;

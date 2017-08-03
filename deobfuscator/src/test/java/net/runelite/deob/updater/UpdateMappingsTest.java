@@ -32,7 +32,7 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.deob.DeobAnnotations;
-import net.runelite.deob.DeobProperties;
+import net.runelite.deob.DeobTestProperties;
 import net.runelite.deob.deobfuscators.mapping.AnnotationIntegrityChecker;
 import net.runelite.deob.deobfuscators.mapping.AnnotationMapper;
 import net.runelite.deob.deobfuscators.mapping.Mapper;
@@ -53,7 +53,7 @@ public class UpdateMappingsTest
 		OUT = "d:/rs/07/adamout.jar";
 
 	@Rule
-	public DeobProperties properties = new DeobProperties();
+	public DeobTestProperties properties = new DeobTestProperties();
 
 	@Test
 	@Ignore

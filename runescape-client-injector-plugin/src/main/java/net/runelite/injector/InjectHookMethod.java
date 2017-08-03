@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.deob.injection;
+package net.runelite.injector;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
@@ -36,7 +36,7 @@ import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.deob.DeobAnnotations;
-import static net.runelite.deob.injection.InjectHook.HOOKS;
+import static net.runelite.injector.InjectHook.HOOKS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

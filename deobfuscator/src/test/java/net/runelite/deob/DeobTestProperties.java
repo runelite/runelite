@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.util.Properties;
 import org.junit.rules.ExternalResource;
 
-public class DeobProperties extends ExternalResource
+public class DeobTestProperties extends ExternalResource
 {
 	private String rsClient;
 	private int rsVersion;

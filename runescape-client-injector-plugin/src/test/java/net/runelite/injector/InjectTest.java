@@ -22,12 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.deob.injection;
+package net.runelite.injector;
 
 import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.DeobProperties;
+import net.runelite.deob.DeobTestProperties;
 import net.runelite.deob.TemporyFolderLocation;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
@@ -40,7 +40,7 @@ import org.junit.rules.TemporaryFolder;
 public class InjectTest
 {
 	@Rule
-	public DeobProperties properties = new DeobProperties();
+	public DeobTestProperties properties = new DeobTestProperties();
 
 	@Rule
 	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();

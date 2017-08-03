@@ -33,14 +33,18 @@ import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.deob.DeobAnnotations;
-import net.runelite.deob.injection.Inject;
 import net.runelite.mapping.Import;
+import net.runelite.rs.api.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AnnotationIntegrityChecker
 {
 	private static final Logger logger = LoggerFactory.getLogger(AnnotationIntegrityChecker.class);
+
+	public static final java.lang.Class<?> CLIENT_CLASS = Client.class;
+
+	public static final String API_PACKAGE_BASE = "net.runelite.rs.api.";
 
 	private final ClassGroup one;
 	private final ClassGroup two;
@@ -198,7 +202,7 @@ public class AnnotationIntegrityChecker
 		if (isStatic)
 		{
 			// Use client
-			clazz = Inject.CLIENT_CLASS;
+			clazz = CLIENT_CLASS;
 		}
 		else
 		{
@@ -211,7 +215,7 @@ public class AnnotationIntegrityChecker
 
 			try
 			{
-				clazz = Class.forName(Inject.API_PACKAGE_BASE + iface);
+				clazz = Class.forName(API_PACKAGE_BASE + iface);
 			}
 			catch (ClassNotFoundException ex)
 			{

@@ -54,6 +54,20 @@
 			<artifactId>maven-plugin-annotations</artifactId>
 			<version>3.4</version>
 		</dependency>
+
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>deob</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
