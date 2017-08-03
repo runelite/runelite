@@ -1,132 +1,46 @@
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("m")
+@ObfuscatedName("f")
 final class class5 implements class0 {
-   @ObfuscatedName("g")
-   @Export("overlayIds")
-   static byte[][][] overlayIds;
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lip;"
+   @ObfuscatedName("r")
+   public static short[][] field33;
+   @ObfuscatedName("bd")
+   @ObfuscatedGetter(
+      intValue = -856137223
    )
-   public static IndexDataBase field30;
+   static int field34;
 
-   @ObfuscatedName("ez")
+   @ObfuscatedName("ht")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-471725507"
+      signature = "(II)V",
+      garbageValue = "10128141"
    )
-   static final void method17() {
-      Actor.method1480();
-      FrameMap.method2615();
-      class90.method1659();
-      ObjectComposition.objects.reset();
-      ObjectComposition.field3443.reset();
-      ObjectComposition.cachedModels.reset();
-      ObjectComposition.field3413.reset();
-      WorldMapType3.method179();
-      class169.method3060();
-      class64.method1033();
-      class222.method3977();
-      Varbit.varbits.reset();
-      VarPlayerType.varplayers.reset();
-      class162.method2992();
-      class175.method3310();
-      class252.field3368.reset();
-      class251.field3364.reset();
-      Area.skeletonsIndex.reset();
-      class56.method782();
-      Widget.field2611.reset();
-      Widget.field2612.reset();
-      Widget.field2709.reset();
-      Widget.field2614.reset();
-      ((TextureProvider)Graphics3D.textureLoader).reset();
-      Script.field1506.reset();
-      class37.indexInterfaces.reset();
-      class112.indexSoundEffects.reset();
-      Overlay.field3568.reset();
-      class25.field353.reset();
-      ISAACCipher.indexMaps.reset();
-      class8.indexTrack1.reset();
-      class1.indexModels.reset();
-      class271.indexSprites.reset();
-      WorldMapType3.indexTextures.reset();
-      class27.field387.reset();
-      class222.indexTrack2.reset();
-      class13.indexScripts.reset();
+   static final void method13(int var0) {
+      if(var0 >= 0) {
+         int var1 = Client.menuActionParams0[var0];
+         int var2 = Client.menuActionParams1[var0];
+         int var3 = Client.menuTypes[var0];
+         int var4 = Client.menuIdentifiers[var0];
+         String var5 = Client.menuOptions[var0];
+         String var6 = Client.menuTargets[var0];
+         class214.menuAction(var1, var2, var3, var4, var5, var6, MouseInput.field709, MouseInput.field713);
+      }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("ii")
    @ObfuscatedSignature(
-      signature = "([BI)V",
-      garbageValue = "-1248642527"
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "-117"
    )
-   @Export("decodeSprite")
-   public static void decodeSprite(byte[] var0) {
-      Buffer var1 = new Buffer(var0);
-      var1.offset = var0.length - 2;
-      class286.field3785 = var1.readUnsignedShort();
-      class286.field3782 = new int[class286.field3785];
-      class286.offsetsY = new int[class286.field3785];
-      class286.field3779 = new int[class286.field3785];
-      class286.field3787 = new int[class286.field3785];
-      class286.spritePixels = new byte[class286.field3785][];
-      var1.offset = var0.length - 7 - class286.field3785 * 8;
-      class286.field3780 = var1.readUnsignedShort();
-      class286.field3781 = var1.readUnsignedShort();
-      int var2 = (var1.readUnsignedByte() & 255) + 1;
+   static final String method14(int var0) {
+      String var1 = Integer.toString(var0);
 
-      int var3;
-      for(var3 = 0; var3 < class286.field3785; ++var3) {
-         class286.field3782[var3] = var1.readUnsignedShort();
+      for(int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
+         var1 = var1.substring(0, var2) + "," + var1.substring(var2);
       }
 
-      for(var3 = 0; var3 < class286.field3785; ++var3) {
-         class286.offsetsY[var3] = var1.readUnsignedShort();
-      }
-
-      for(var3 = 0; var3 < class286.field3785; ++var3) {
-         class286.field3779[var3] = var1.readUnsignedShort();
-      }
-
-      for(var3 = 0; var3 < class286.field3785; ++var3) {
-         class286.field3787[var3] = var1.readUnsignedShort();
-      }
-
-      var1.offset = var0.length - 7 - class286.field3785 * 8 - (var2 - 1) * 3;
-      class286.field3786 = new int[var2];
-
-      for(var3 = 1; var3 < var2; ++var3) {
-         class286.field3786[var3] = var1.read24BitInt();
-         if(class286.field3786[var3] == 0) {
-            class286.field3786[var3] = 1;
-         }
-      }
-
-      var1.offset = 0;
-
-      for(var3 = 0; var3 < class286.field3785; ++var3) {
-         int var4 = class286.field3779[var3];
-         int var5 = class286.field3787[var3];
-         int var6 = var4 * var5;
-         byte[] var7 = new byte[var6];
-         class286.spritePixels[var3] = var7;
-         int var8 = var1.readUnsignedByte();
-         int var9;
-         if(var8 == 0) {
-            for(var9 = 0; var9 < var6; ++var9) {
-               var7[var9] = var1.readByte();
-            }
-         } else if(var8 == 1) {
-            for(var9 = 0; var9 < var4; ++var9) {
-               for(int var10 = 0; var10 < var5; ++var10) {
-                  var7[var9 + var4 * var10] = var1.readByte();
-               }
-            }
-         }
-      }
-
+      return var1.length() > 9?" " + CacheFile.getColTags('ﾀ') + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + CacheFile.getColTags(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + CacheFile.getColTags(16776960) + var1 + "</col>");
    }
 }

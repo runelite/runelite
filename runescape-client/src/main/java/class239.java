@@ -2,64 +2,46 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ir")
+@ObfuscatedName("is")
 public enum class239 implements RSEnum {
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lir;"
+      signature = "Lis;"
    )
-   field3244(0, 0),
-   @ObfuscatedName("o")
+   field3255(1, 0),
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lir;"
+      signature = "Lis;"
    )
-   field3246(2, 1),
-   @ObfuscatedName("i")
+   field3254(0, 1),
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lir;"
+      signature = "Lis;"
    )
-   field3245(1, 2);
+   field3262(2, 2);
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1989103333
+      intValue = 1056692171
    )
-   final int field3243;
-   @ObfuscatedName("u")
+   public final int field3256;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1386691351
+      intValue = -2004694379
    )
-   public final int field3247;
+   final int field3257;
 
    class239(int var3, int var4) {
-      this.field3247 = var3;
-      this.field3243 = var4;
+      this.field3256 = var3;
+      this.field3257 = var4;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1443879177"
+      garbageValue = "-1661971028"
    )
    public int rsOrdinal() {
-      return this.field3243;
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(IB)Lho;",
-      garbageValue = "0"
-   )
-   public static Widget method4167(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & '\uffff';
-      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
-         boolean var3 = class9.loadWidget(var1);
-         if(!var3) {
-            return null;
-         }
-      }
-
-      return Widget.widgets[var1][var2];
+      return this.field3257;
    }
 }

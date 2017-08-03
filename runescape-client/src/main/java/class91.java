@@ -3,89 +3,51 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cr")
+@ObfuscatedName("cw")
 public enum class91 implements RSEnum {
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lcr;"
+      signature = "Lcw;"
    )
    field1386(0),
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lcr;"
+      signature = "Lcw;"
    )
-   field1387(1),
-   @ObfuscatedName("i")
+   field1384(1),
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lcr;"
+      signature = "Lcw;"
    )
-   field1388(2),
-   @ObfuscatedName("u")
+   field1385(2),
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lcr;"
+      signature = "Lcw;"
    )
    field1393(3);
 
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -2118507031
-   )
-   final int field1389;
    @ObfuscatedName("e")
-   @Export("cacheLocations")
-   static String[] cacheLocations;
+   @ObfuscatedGetter(
+      intValue = -1628848871
+   )
+   final int field1387;
+   @ObfuscatedName("dv")
+   @ObfuscatedSignature(
+      signature = "Lib;"
+   )
+   @Export("vorbisIndex")
+   static IndexData vorbisIndex;
 
    class91(int var3) {
-      this.field1389 = var3;
+      this.field1387 = var3;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1443879177"
+      garbageValue = "-1661971028"
    )
    public int rsOrdinal() {
-      return this.field1389;
-   }
-
-   @ObfuscatedName("hf")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2119863672"
-   )
-   static final void method1663() {
-      boolean var0 = false;
-
-      while(!var0) {
-         var0 = true;
-
-         for(int var1 = 0; var1 < Client.menuOptionCount - 1; ++var1) {
-            if(Client.menuTypes[var1] < 1000 && Client.menuTypes[var1 + 1] > 1000) {
-               String var2 = Client.menuTargets[var1];
-               Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
-               Client.menuTargets[var1 + 1] = var2;
-               String var3 = Client.menuOptions[var1];
-               Client.menuOptions[var1] = Client.menuOptions[var1 + 1];
-               Client.menuOptions[var1 + 1] = var3;
-               int var4 = Client.menuTypes[var1];
-               Client.menuTypes[var1] = Client.menuTypes[var1 + 1];
-               Client.menuTypes[var1 + 1] = var4;
-               var4 = Client.menuActionParams0[var1];
-               Client.menuActionParams0[var1] = Client.menuActionParams0[var1 + 1];
-               Client.menuActionParams0[var1 + 1] = var4;
-               var4 = Client.menuActionParams1[var1];
-               Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
-               Client.menuActionParams1[var1 + 1] = var4;
-               var4 = Client.menuIdentifiers[var1];
-               Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
-               Client.menuIdentifiers[var1 + 1] = var4;
-               boolean var5 = Client.field984[var1];
-               Client.field984[var1] = Client.field984[var1 + 1];
-               Client.field984[var1 + 1] = var5;
-               var0 = false;
-            }
-         }
-      }
-
+      return this.field1387;
    }
 }

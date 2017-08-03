@@ -4,77 +4,77 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("el")
+@ObfuscatedName("ec")
 @Implements("DecorativeObject")
 public final class DecorativeObject {
-   @ObfuscatedName("pt")
+   @ObfuscatedName("fw")
    @ObfuscatedGetter(
-      intValue = -254887449
+      intValue = -1853673167
    )
-   static int field2136;
-   @ObfuscatedName("k")
+   static int field2152;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -696837367
+      intValue = 1748972165
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("r")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 529093423
+      intValue = -224100975
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
-   @ObfuscatedName("m")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 591492731
+      intValue = -605170993
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -679614565
+      intValue = -913038811
    )
    @Export("x")
    int x;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -2024178417
+      intValue = 33614573
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1462581815
+      intValue = -407693163
    )
    @Export("y")
    int y;
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 164525907
+      intValue = -1858221351
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("x")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lev;"
+      signature = "Lep;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lev;"
+      signature = "Lep;"
    )
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1177051805
+      intValue = -1253309511
    )
    @Export("renderFlag")
    int renderFlag;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -2017291905
+      intValue = -382753515
    )
    @Export("rotation")
    int rotation;
@@ -84,105 +84,35 @@ public final class DecorativeObject {
       this.renderInfoBitPacked = 0;
    }
 
-   @ObfuscatedName("i")
-   public static String method2833(long var0) {
-      if(var0 > 0L && var0 < 6582952005840035281L) {
-         if(0L == var0 % 37L) {
-            return null;
-         } else {
-            int var2 = 0;
-
-            for(long var3 = var0; var3 != 0L; var3 /= 37L) {
-               ++var2;
-            }
-
-            StringBuilder var5;
-            char var8;
-            for(var5 = new StringBuilder(var2); var0 != 0L; var5.append(var8)) {
-               long var6 = var0;
-               var0 /= 37L;
-               var8 = class268.field3654[(int)(var6 - 37L * var0)];
-               if(var8 == 95) {
-                  int var9 = var5.length() - 1;
-                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
-                  var8 = 160;
-               }
-            }
-
-            var5.reverse();
-            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
-            return var5.toString();
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(IIS)I",
+      garbageValue = "-14360"
+   )
+   public static int method2920(int var0, int var1) {
+      int var2;
+      for(var2 = 1; var1 > 1; var1 >>= 1) {
+         if((var1 & 1) != 0) {
+            var2 = var0 * var2;
          }
+
+         var0 *= var0;
+      }
+
+      if(var1 == 1) {
+         return var0 * var2;
       } else {
-         return null;
+         return var2;
       }
    }
 
-   @ObfuscatedName("id")
+   @ObfuscatedName("ie")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)Z",
-      garbageValue = "-1220034008"
+      signature = "(IIB)Ljava/lang/String;",
+      garbageValue = "-125"
    )
-   @Export("isFriended")
-   static boolean isFriended(String var0, boolean var1) {
-      if(var0 == null) {
-         return false;
-      } else {
-         String var2 = class215.method3908(var0, class22.field331);
-
-         for(int var3 = 0; var3 < Client.friendCount; ++var3) {
-            if(var2.equalsIgnoreCase(class215.method3908(Client.friends[var3].name, class22.field331)) && (!var1 || Client.friends[var3].world != 0)) {
-               return true;
-            }
-         }
-
-         if(var2.equalsIgnoreCase(class215.method3908(class226.localPlayer.name, class22.field331))) {
-            return true;
-         } else {
-            return false;
-         }
-      }
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(ILcv;ZI)I",
-      garbageValue = "1075732825"
-   )
-   static int method2834(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 >= 2000) {
-         var0 -= 1000;
-         var3 = class239.method4167(class83.intStack[--BufferProvider.intStackSize]);
-      } else {
-         var3 = var2?class48.field614:FaceNormal.field2099;
-      }
-
-      if(var0 == 1927) {
-         if(class83.field1333 >= 10) {
-            throw new RuntimeException();
-         } else if(var3.field2672 == null) {
-            return 0;
-         } else {
-            ScriptEvent var4 = new ScriptEvent();
-            var4.widget = var3;
-            var4.field831 = var3.field2672;
-            var4.field839 = class83.field1333 + 1;
-            Client.field1103.addFront(var4);
-            return 1;
-         }
-      } else {
-         return 2;
-      }
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1444588260"
-   )
-   static int method2831(int var0) {
-      MessageNode var1 = (MessageNode)class98.field1495.get((long)var0);
-      return var1 == null?-1:(var1.previous == class98.field1493.field2456?-1:((MessageNode)var1.previous).id);
+   static final String method2921(int var0, int var1) {
+      int var2 = var1 - var0;
+      return var2 < -9?CacheFile.getColTags(16711680):(var2 < -6?CacheFile.getColTags(16723968):(var2 < -3?CacheFile.getColTags(16740352):(var2 < 0?CacheFile.getColTags(16756736):(var2 > 9?CacheFile.getColTags('\uff00'):(var2 > 6?CacheFile.getColTags(4259584):(var2 > 3?CacheFile.getColTags(8453888):(var2 > 0?CacheFile.getColTags(12648192):CacheFile.getColTags(16776960))))))));
    }
 }

@@ -4,47 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ei")
+@ObfuscatedName("ex")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
-   @ObfuscatedName("fd")
-   static byte[][] field2003;
-   @ObfuscatedName("m")
+   @ObfuscatedName("t")
+   @Export("colorsToReplace")
+   public static short[][] colorsToReplace;
+   @ObfuscatedName("f")
    @Export("flatShade")
    boolean flatShade;
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 647942793
+      intValue = 1160916813
    )
    @Export("swColor")
    int swColor;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1074758273
+      intValue = -577039723
    )
    @Export("rgb")
    int rgb;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1524711411
+      intValue = -1514021983
    )
    @Export("seColor")
    int seColor;
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -356868279
+      intValue = -1636973739
    )
    @Export("neColor")
    int neColor;
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1468905647
+      intValue = -2039752957
    )
    @Export("nwColor")
    int nwColor;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1228279237
+      intValue = 1976815923
    )
    @Export("texture")
    int texture;
@@ -60,12 +61,35 @@ public final class SceneTilePaint {
       this.flatShade = var7;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "24518772"
+      signature = "(Lim;Lim;ZI)V",
+      garbageValue = "-942970909"
    )
-   public static boolean method2613(int var0) {
-      return var0 >= class221.field2789.field2803 && var0 <= class221.field2790.field2803 || var0 == class221.field2798.field2803;
+   public static void method2696(IndexDataBase var0, IndexDataBase var1, boolean var2) {
+      ObjectComposition.objects_ref = var0;
+      ObjectComposition.field3446 = var1;
+      ObjectComposition.field3439 = var2;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Lfw;IB)Ljava/lang/String;",
+      garbageValue = "-1"
+   )
+   public static String method2695(Buffer var0, int var1) {
+      try {
+         int var2 = var0.getUSmart();
+         if(var2 > var1) {
+            var2 = var1;
+         }
+
+         byte[] var3 = new byte[var2];
+         var0.offset += class265.field3639.decompress(var0.payload, var0.offset, var3, 0, var2);
+         String var4 = class211.getString(var3, 0, var2);
+         return var4;
+      } catch (Exception var6) {
+         return "Cabbage";
+      }
    }
 }

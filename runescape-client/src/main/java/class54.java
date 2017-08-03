@@ -1,43 +1,31 @@
 import javax.imageio.ImageIO;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bu")
 public class class54 {
-   @ObfuscatedName("jx")
+   @ObfuscatedName("cv")
    @ObfuscatedSignature(
-      signature = "Lcb;"
+      signature = "Lib;"
    )
-   static class89 field669;
+   @Export("indexModels")
+   static IndexData indexModels;
+   @ObfuscatedName("p")
+   static int[] field641;
 
    static {
       ImageIO.setUseCache(false);
    }
 
-   @ObfuscatedName("fb")
+   @ObfuscatedName("jy")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1491893349"
+      signature = "(II)V",
+      garbageValue = "210263866"
    )
-   static final void method752() {
-      for(int var0 = 0; var0 < Client.field953; ++var0) {
-         int var1 = Client.npcIndices[var0];
-         NPC var2 = Client.cachedNPCs[var1];
-         if(var2 != null) {
-            class82.method1554(var2, var2.composition.field3532);
-         }
+   static final void method804(int var0) {
+      if(class7.loadWidget(var0)) {
+         class31.method272(class170.widgets[var0], -1);
       }
-
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(ZZI)I",
-      garbageValue = "1143291701"
-   )
-   public static int method753(boolean var0, boolean var1) {
-      byte var2 = 0;
-      int var3 = var2 + class238.field3225 + class238.field3238;
-      return var3;
    }
 }

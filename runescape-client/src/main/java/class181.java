@@ -1,19 +1,11 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fc")
+@ObfuscatedName("fr")
 public class class181 {
-   @ObfuscatedName("ft")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "[Ljj;"
+      signature = "Lim;"
    )
-   @Export("hitmarks")
-   static SpritePixels[] hitmarks;
-   @ObfuscatedName("fr")
-   @ObfuscatedGetter(
-      intValue = -1544891413
-   )
-   static int field2404;
+   public static IndexDataBase field2407;
 }

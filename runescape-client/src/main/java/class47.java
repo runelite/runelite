@@ -2,69 +2,81 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("as")
+@ObfuscatedName("ap")
 public class class47 {
-   @ObfuscatedName("el")
+   @ObfuscatedName("hc")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Lhn;"
    )
-   static class262 field602;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Las;"
-   )
-   static class47 field598;
-   @ObfuscatedName("c")
+   static Widget field564;
+   @ObfuscatedName("az")
+   protected static String field567;
+   @ObfuscatedName("m")
+   static int[] field566;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -655402443
+      intValue = 1088218201
    )
-   public int field606;
-   @ObfuscatedName("o")
+   public int field568;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lhs;"
+      signature = "Lhy;"
    )
-   public Coordinates field601;
-   @ObfuscatedName("i")
+   public Coordinates field565;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lhs;"
+      signature = "Lhy;"
    )
-   public Coordinates field603;
+   public Coordinates field569;
 
    @ObfuscatedSignature(
-      signature = "(ILhs;Lhs;)V"
+      signature = "(ILhy;Lhy;)V"
    )
    public class47(int var1, Coordinates var2, Coordinates var3) {
-      this.field606 = var1;
-      this.field601 = var2;
-      this.field603 = var3;
+      this.field568 = var1;
+      this.field565 = var2;
+      this.field569 = var3;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)I",
-      garbageValue = "-749324736"
+      signature = "(II)Lig;",
+      garbageValue = "890939420"
    )
-   public static int method672(String var0) {
-      return var0.length() + 2;
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Leo;IS)V",
-      garbageValue = "-14639"
-   )
-   public static final void method671(Model var0, int var1) {
-      for(int var2 = 0; var2 < var0.field1886; ++var2) {
-         if(var0.field1892[var2] != -2) {
-            int var3 = var0.indices1[var2];
-            int var4 = var0.indices2[var2];
-            int var5 = var0.indices3[var2];
-            int var6 = Model.field1931[var3];
-            int var7 = Model.field1931[var4];
-            int var8 = Model.field1931[var5];
-            class204.method3645(Model.field1920[var3], Model.field1920[var4], Model.field1920[var5], var6, var7, var8, var1);
+   public static class244 method710(int var0) {
+      class244 var1 = (class244)class244.field3303.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class270.field3668.getConfigData(15, var0);
+         var1 = new class244();
+         if(var2 != null) {
+            var1.method4300(new Buffer(var2));
          }
-      }
 
+         class244.field3303.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("hw")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/String;IIIIZI)V",
+      garbageValue = "1095664410"
+   )
+   static final void method711(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
+      if(!Client.isMenuOpen) {
+         if(Client.menuOptionCount < 500) {
+            Client.menuOptions[Client.menuOptionCount] = var0;
+            Client.menuTargets[Client.menuOptionCount] = var1;
+            Client.menuTypes[Client.menuOptionCount] = var2;
+            Client.menuIdentifiers[Client.menuOptionCount] = var3;
+            Client.menuActionParams0[Client.menuOptionCount] = var4;
+            Client.menuActionParams1[Client.menuOptionCount] = var5;
+            Client.field1013[Client.menuOptionCount] = var6;
+            ++Client.menuOptionCount;
+         }
+
+      }
    }
 }

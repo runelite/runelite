@@ -1,56 +1,92 @@
 import java.math.BigInteger;
+import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ct")
+@ObfuscatedName("cm")
 public class class87 {
-   @ObfuscatedName("g")
-   static final BigInteger field1362;
-   @ObfuscatedName("m")
-   static final BigInteger field1363;
+   @ObfuscatedName("e")
+   static final BigInteger field1347;
+   @ObfuscatedName("f")
+   static final BigInteger field1348;
 
    static {
-      field1362 = new BigInteger("80782894952180643741752986186714059433953886149239752893425047584684715842049");
-      field1363 = new BigInteger("7237300117305667488707183861728052766358166655052137727439795191253340127955075499635575104901523446809299097934591732635674173519120047404024393881551683");
+      field1347 = new BigInteger("80782894952180643741752986186714059433953886149239752893425047584684715842049");
+      field1348 = new BigInteger("7237300117305667488707183861728052766358166655052137727439795191253340127955075499635575104901523446809299097934591732635674173519120047404024393881551683");
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Leo;IIII)V",
-      garbageValue = "231108919"
+      signature = "(Lim;Lim;III)Ljt;",
+      garbageValue = "-481016505"
    )
-   public static final void method1653(Model var0, int var1, int var2, int var3) {
-      if(class112.method2029(var0, var1, var2, var3)) {
-         class7.field219.method3509(new class10(var0, var1, var2, var3, -65281));
-      } else if(class7.field224 == class11.field253) {
-         class7.field219.method3509(new class10(var0, var1, var2, var3, -16776961));
-      }
-
-   }
-
-   @ObfuscatedName("ih")
-   @ObfuscatedSignature(
-      signature = "(IIIILjj;Lhm;I)V",
-      garbageValue = "950596493"
-   )
-   @Export("drawDot")
-   static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, class210 var5) {
-      if(var4 != null) {
-         int var6 = Client.mapAngle & 2047;
-         int var7 = var3 * var3 + var2 * var2;
-         if(var7 <= 6400) {
-            int var8 = Graphics3D.SINE[var6];
-            int var9 = Graphics3D.COSINE[var6];
-            int var10 = var3 * var8 + var9 * var2 >> 16;
-            int var11 = var3 * var9 - var8 * var2 >> 16;
-            if(var7 > 2500) {
-               var4.method4968(var10 + var5.field2569 / 2 - var4.maxWidth / 2, var5.field2566 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2569, var5.field2566, var5.field2568, var5.field2567);
-            } else {
-               var4.method4958(var0 + var10 + var5.field2569 / 2 - var4.maxWidth / 2, var5.field2566 / 2 + var1 - var11 - var4.maxHeight / 2);
-            }
-
+   public static Font method1713(IndexDataBase var0, IndexDataBase var1, int var2, int var3) {
+      if(!WallObject.method2899(var0, var2, var3)) {
+         return null;
+      } else {
+         byte[] var5 = var1.getConfigData(var2, var3);
+         Font var4;
+         if(var5 == null) {
+            var4 = null;
+         } else {
+            Font var6 = new Font(var5, class270.field3666, class286.offsetsY, class286.field3778, class286.field3782, class286.field3783, class177.spritePixels);
+            class229.method4093();
+            var4 = var6;
          }
+
+         return var4;
       }
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-1759089571"
+   )
+   @Export("loadWorlds")
+   static boolean loadWorlds() {
+      try {
+         if(World.listFetcher == null) {
+            World.listFetcher = new WorldListFetcher(GameEngine.taskManager, new URL(class251.field3368));
+         } else {
+            byte[] var0 = World.listFetcher.fetch();
+            if(var0 != null) {
+               Buffer var1 = new Buffer(var0);
+               World.worldCount = var1.readUnsignedShort();
+               World.worldList = new World[World.worldCount];
+
+               World var3;
+               for(int var2 = 0; var2 < World.worldCount; var3.index = var2++) {
+                  var3 = World.worldList[var2] = new World();
+                  var3.id = var1.readUnsignedShort();
+                  var3.mask = var1.readInt();
+                  var3.address = var1.readString();
+                  var3.activity = var1.readString();
+                  var3.location = var1.readUnsignedByte();
+                  var3.playerCount = var1.readShort();
+               }
+
+               class13.method76(World.worldList, 0, World.worldList.length - 1, World.field1266, World.field1265);
+               World.listFetcher = null;
+               return true;
+            }
+         }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+         World.listFetcher = null;
+      }
+
+      return false;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "66"
+   )
+   static int method1711(int var0, int var1) {
+      XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.get((long)var0);
+      return var2 == null?0:(var1 >= 0 && var1 < var2.stackSizes.length?var2.stackSizes[var1]:0);
    }
 }

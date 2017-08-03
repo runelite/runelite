@@ -1,11 +1,13 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jd")
+@ObfuscatedName("ja")
 public final class class270 {
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 217709875
+   @ObfuscatedName("y")
+   public static int[] field3666;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Lim;"
    )
-   static int field3665;
+   public static IndexDataBase field3668;
 }

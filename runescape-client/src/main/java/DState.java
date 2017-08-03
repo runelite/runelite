@@ -4,194 +4,262 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fs")
+@ObfuscatedName("fj")
 @Implements("DState")
 public final class DState {
-   @ObfuscatedName("b")
-   @Export("tt")
-   static int[] tt;
-   @ObfuscatedName("c")
-   final int field2347;
-   @ObfuscatedName("o")
-   final int field2322;
-   @ObfuscatedName("i")
-   final int field2328;
-   @ObfuscatedName("u")
-   final int field2323;
-   @ObfuscatedName("g")
-   final int field2346;
-   @ObfuscatedName("m")
-   final int field2319;
-   @ObfuscatedName("x")
+   @ObfuscatedName("cs")
    @ObfuscatedGetter(
-      intValue = 637691221
+      intValue = 219472487
+   )
+   public static int field2348;
+   @ObfuscatedName("d")
+   final int field2349;
+   @ObfuscatedName("q")
+   final int field2324;
+   @ObfuscatedName("x")
+   final int field2328;
+   @ObfuscatedName("y")
+   final int field2326;
+   @ObfuscatedName("e")
+   final int field2327;
+   @ObfuscatedName("f")
+   final int field2337;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 1419227975
    )
    @Export("next_in")
    int next_in;
-   @ObfuscatedName("r")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1067606789
+      intValue = -514916487
    )
    @Export("next_out")
    int next_out;
-   @ObfuscatedName("j")
-   int[] field2335;
-   @ObfuscatedName("z")
-   int[] field2337;
-   @ObfuscatedName("ap")
+   @ObfuscatedName("m")
+   int[] field2323;
+   @ObfuscatedName("h")
+   int[] field2346;
+   @ObfuscatedName("am")
    @Export("inUse")
    boolean[] inUse;
-   @ObfuscatedName("aj")
-   boolean[] field2341;
-   @ObfuscatedName("am")
+   @ObfuscatedName("ac")
+   boolean[] field2335;
+   @ObfuscatedName("ax")
    @Export("seqToUnseq")
    byte[] seqToUnseq;
-   @ObfuscatedName("ag")
+   @ObfuscatedName("at")
    byte[] field2343;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @Export("strm")
    byte[] strm;
-   @ObfuscatedName("av")
-   int[] field2344;
-   @ObfuscatedName("al")
-   byte[] field2345;
-   @ObfuscatedName("ab")
+   @ObfuscatedName("ag")
+   int[] field2352;
+   @ObfuscatedName("ar")
+   byte[] field2353;
+   @ObfuscatedName("ae")
    byte[] field2325;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @Export("out")
    byte[] out;
-   @ObfuscatedName("af")
-   byte[][] field2332;
-   @ObfuscatedName("ak")
-   int[][] field2348;
-   @ObfuscatedName("ar")
-   int[][] field2349;
-   @ObfuscatedName("an")
-   int[][] field2350;
+   @ObfuscatedName("ai")
+   byte[][] field2355;
+   @ObfuscatedName("au")
+   int[][] field2356;
+   @ObfuscatedName("ad")
+   int[][] field2361;
+   @ObfuscatedName("ah")
+   int[][] field2358;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1997179591
+   )
+   int field2334;
+   @ObfuscatedName("ao")
+   int[] field2359;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1374537197
-   )
-   int field2316;
-   @ObfuscatedName("at")
-   int[] field2315;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 496519713
+      intValue = -1412656681
    )
    @Export("total_in_lo32")
    int total_in_lo32;
-   @ObfuscatedName("a")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 587161887
+      intValue = -555403793
    )
    @Export("total_in_hi32")
    int total_in_hi32;
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1622124361
+      intValue = 1090833563
    )
    @Export("total_out_lo32")
    int total_out_lo32;
-   @ObfuscatedName("v")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1707586967
+      intValue = 579196889
    )
    @Export("total_out_hi32")
    int total_out_hi32;
-   @ObfuscatedName("y")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1294508553
+      intValue = -2046301907
    )
    @Export("blockSize100k")
    int blockSize100k;
-   @ObfuscatedName("l")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1018573911
+      intValue = 1308397529
    )
-   int field2351;
-   @ObfuscatedName("d")
+   int field2341;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -575810811
+      intValue = -1622834189
    )
    @Export("nInUse")
    int nInUse;
-   @ObfuscatedName("t")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1673654491
+      intValue = -1245002857
    )
    @Export("out_len")
    int out_len;
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @Export("out_ch")
    byte out_ch;
-   @ObfuscatedName("q")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1888135771
+      intValue = -2001994055
    )
    @Export("tPos")
    int tPos;
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -425186177
+      intValue = -2008388337
    )
    @Export("nblock_used")
    int nblock_used;
-   @ObfuscatedName("f")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -926641465
+      intValue = 692493305
    )
    @Export("k0")
    int k0;
-   @ObfuscatedName("aw")
+   @ObfuscatedName("av")
    @ObfuscatedGetter(
-      intValue = 255255685
+      intValue = -1273985769
    )
-   int field2352;
+   int field2360;
 
    DState() {
-      this.field2347 = 4096;
-      this.field2322 = 16;
+      this.field2349 = 4096;
+      this.field2324 = 16;
       this.field2328 = 258;
-      this.field2323 = 6;
-      this.field2346 = 50;
-      this.field2319 = 18002;
+      this.field2326 = 6;
+      this.field2327 = 50;
+      this.field2337 = 18002;
       this.next_in = 0;
       this.next_out = 0;
-      this.field2335 = new int[256];
-      this.field2337 = new int[257];
+      this.field2323 = new int[256];
+      this.field2346 = new int[257];
       this.inUse = new boolean[256];
-      this.field2341 = new boolean[16];
+      this.field2335 = new boolean[16];
       this.seqToUnseq = new byte[256];
       this.field2343 = new byte[4096];
-      this.field2344 = new int[16];
-      this.field2345 = new byte[18002];
+      this.field2352 = new int[16];
+      this.field2353 = new byte[18002];
       this.field2325 = new byte[18002];
-      this.field2332 = new byte[6][258];
-      this.field2348 = new int[6][258];
-      this.field2349 = new int[6][258];
-      this.field2350 = new int[6][258];
-      this.field2315 = new int[6];
+      this.field2355 = new byte[6][258];
+      this.field2356 = new int[6][258];
+      this.field2361 = new int[6][258];
+      this.field2358 = new int[6][258];
+      this.field2359 = new int[6];
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("ge")
    @ObfuscatedSignature(
-      signature = "(IB)Lid;",
-      garbageValue = "3"
+      signature = "(I)V",
+      garbageValue = "-772444402"
    )
-   public static class254 method3078(int var0) {
-      class254 var1 = (class254)class254.field3401.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class254.field3389.getConfigData(32, var0);
-         var1 = new class254();
-         if(var2 != null) {
-            var1.method4369(new Buffer(var2));
-         }
+   static final void method3183() {
+      Client.field1002 = 0;
+      int var0 = (class224.localPlayer.x >> 7) + class33.baseX;
+      int var1 = (class224.localPlayer.y >> 7) + class17.baseY;
+      if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
+         Client.field1002 = 1;
+      }
 
-         class254.field3401.put(var1, (long)var0);
-         return var1;
+      if(var0 >= 3072 && var0 <= 3118 && var1 >= 9492 && var1 <= 9535) {
+         Client.field1002 = 1;
+      }
+
+      if(Client.field1002 == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
+         Client.field1002 = 0;
+      }
+
+   }
+
+   @ObfuscatedName("im")
+   @ObfuscatedSignature(
+      signature = "(Lbg;IIII)V",
+      garbageValue = "-2013283586"
+   )
+   static final void method3184(Player var0, int var1, int var2, int var3) {
+      if(class224.localPlayer != var0) {
+         if(Client.menuOptionCount < 400) {
+            String var4;
+            if(var0.totalLevel == 0) {
+               var4 = var0.actions[0] + var0.name + var0.actions[1] + DecorativeObject.method2921(var0.combatLevel, class224.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
+            } else {
+               var4 = var0.actions[0] + var0.name + var0.actions[1] + " " + " (" + "skill-" + var0.totalLevel + ")" + var0.actions[2];
+            }
+
+            int var5;
+            if(Client.itemSelectionState == 1) {
+               class164.addMenuEntry("Use", Client.field1037 + " " + "->" + " " + CacheFile.getColTags(16777215) + var4, 14, var1, var2, var3);
+            } else if(Client.spellSelected) {
+               if((class96.field1481 & 8) == 8) {
+                  class164.addMenuEntry(Client.field972, Client.field1042 + " " + "->" + " " + CacheFile.getColTags(16777215) + var4, 15, var1, var2, var3);
+               }
+            } else {
+               for(var5 = 7; var5 >= 0; --var5) {
+                  if(Client.playerOptions[var5] != null) {
+                     short var6 = 0;
+                     if(Client.playerOptions[var5].equalsIgnoreCase("Attack")) {
+                        if(class91.field1393 == Client.field1117) {
+                           continue;
+                        }
+
+                        if(class91.field1384 == Client.field1117 || Client.field1117 == class91.field1386 && var0.combatLevel > class224.localPlayer.combatLevel) {
+                           var6 = 2000;
+                        }
+
+                        if(class224.localPlayer.team != 0 && var0.team != 0) {
+                           if(var0.team == class224.localPlayer.team) {
+                              var6 = 2000;
+                           } else {
+                              var6 = 0;
+                           }
+                        }
+                     } else if(Client.playerOptionsPriorities[var5]) {
+                        var6 = 2000;
+                     }
+
+                     boolean var7 = false;
+                     int var8 = Client.playerMenuTypes[var5] + var6;
+                     class164.addMenuEntry(Client.playerOptions[var5], CacheFile.getColTags(16777215) + var4, var8, var1, var2, var3);
+                  }
+               }
+            }
+
+            for(var5 = 0; var5 < Client.menuOptionCount; ++var5) {
+               if(Client.menuTypes[var5] == 23) {
+                  Client.menuTargets[var5] = CacheFile.getColTags(16777215) + var4;
+                  break;
+               }
+            }
+
+         }
       }
    }
 }

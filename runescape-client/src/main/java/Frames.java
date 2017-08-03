@@ -3,23 +3,21 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ea")
+@ObfuscatedName("en")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("o")
-   @Export("javaVersion")
-   public static String javaVersion;
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "[Led;"
+      signature = "[Lei;"
    )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Lip;Lip;IZ)V"
+      signature = "(Lim;Lim;IZ)V",
+      garbageValue = "0"
    )
-   Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
+   public Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
       Deque var5 = new Deque();
       int var6 = var1.fileCount(var3);
       this.skeletons = new Frame[var6];
@@ -38,13 +36,7 @@ public class Frames extends CacheableNode {
          }
 
          if(var10 == null) {
-            byte[] var13;
-            if(var4) {
-               var13 = var2.getChild(0, var11);
-            } else {
-               var13 = var2.getChild(var11, 0);
-            }
-
+            byte[] var13 = var2.getChild(var11, 0);
             var10 = new FrameMap(var11, var13);
             var5.addFront(var10);
          }
@@ -54,12 +46,12 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "1008429437"
+      garbageValue = "303678808"
    )
-   public boolean method2810(int var1) {
+   public boolean method2905(int var1) {
       return this.skeletons[var1].showing;
    }
 }

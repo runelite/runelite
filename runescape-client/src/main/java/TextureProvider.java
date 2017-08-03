@@ -4,51 +4,57 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dl")
+@ObfuscatedName("da")
 @Implements("TextureProvider")
 public class TextureProvider implements ITextureLoader {
-   @ObfuscatedName("m")
+   @ObfuscatedName("gw")
+   @ObfuscatedSignature(
+      signature = "[Lji;"
+   )
+   @Export("mapDots")
+   static SpritePixels[] mapDots;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1239198817
+      intValue = 1619772605
    )
    @Export("width")
    int width;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @Export("brightness")
    double brightness;
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "[Leg;"
+      signature = "[Led;"
    )
    @Export("textures")
    Texture[] textures;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lge;"
+      signature = "Lgs;"
    )
    @Export("deque")
    Deque deque;
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1593734889
+      intValue = 1973110985
    )
    @Export("size")
    int size;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lip;"
+      signature = "Lim;"
    )
    @Export("sprites")
    IndexDataBase sprites;
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1686189469
+      intValue = -578120309
    )
    @Export("maxSize")
    int maxSize;
 
    @ObfuscatedSignature(
-      signature = "(Lip;Lip;IDI)V"
+      signature = "(Lim;Lim;IDI)V"
    )
    public TextureProvider(IndexDataBase var1, IndexDataBase var2, int var3, double var4, int var6) {
       this.deque = new Deque();
@@ -71,10 +77,10 @@ public class TextureProvider implements ITextureLoader {
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "1"
+      signature = "(I)V",
+      garbageValue = "1583323874"
    )
    @Export("reset")
    public void reset() {
@@ -88,20 +94,20 @@ public class TextureProvider implements ITextureLoader {
       this.size = this.maxSize;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(IB)I",
-      garbageValue = "76"
+      garbageValue = "56"
    )
    @Export("getAverageTextureRGB")
    public int getAverageTextureRGB(int var1) {
-      return this.textures[var1] != null?this.textures[var1].field1831:0;
+      return this.textures[var1] != null?this.textures[var1].field1847:0;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(IB)[I",
-      garbageValue = "55"
+      signature = "(II)[I",
+      garbageValue = "1718409907"
    )
    @Export("load")
    public int[] load(int var1) {
@@ -113,7 +119,7 @@ public class TextureProvider implements ITextureLoader {
             return var2.pixels;
          }
 
-         boolean var3 = var2.method2415(this.brightness, this.width, this.sprites);
+         boolean var3 = var2.method2495(this.brightness, this.width, this.sprites);
          if(var3) {
             if(this.size == 0) {
                Texture var4 = (Texture)this.deque.popTail();
@@ -131,44 +137,100 @@ public class TextureProvider implements ITextureLoader {
       return null;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "3"
+      signature = "(IS)Z",
+      garbageValue = "-30594"
    )
-   public boolean vmethod2816(int var1) {
+   public boolean vmethod2909(int var1) {
       return this.width == 64;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "647122249"
+      signature = "(IB)Z",
+      garbageValue = "29"
    )
-   public boolean vmethod2825(int var1) {
-      return this.textures[var1].field1840;
+   public boolean vmethod2908(int var1) {
+      return this.textures[var1].field1846;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @Export("brightness")
    public void brightness(double var1) {
       this.brightness = var1;
       this.reset();
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(IB)V",
-      garbageValue = "59"
+      garbageValue = "104"
    )
-   public void method2312(int var1) {
+   public void method2399(int var1) {
       for(int var2 = 0; var2 < this.textures.length; ++var2) {
          Texture var3 = this.textures[var2];
-         if(var3 != null && var3.field1834 != 0 && var3.loaded) {
-            var3.method2422(var1);
+         if(var3 != null && var3.field1851 != 0 && var3.loaded) {
+            var3.method2497(var1);
             var3.loaded = false;
          }
       }
 
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "([BB)Lcd;",
+      garbageValue = "73"
+   )
+   static Script method2414(byte[] var0) {
+      Script var1 = new Script();
+      Buffer var2 = new Buffer(var0);
+      var2.offset = var2.payload.length - 2;
+      int var3 = var2.readUnsignedShort();
+      int var4 = var2.payload.length - 2 - var3 - 12;
+      var2.offset = var4;
+      int var5 = var2.readInt();
+      var1.localIntCount = var2.readUnsignedShort();
+      var1.localStringCount = var2.readUnsignedShort();
+      var1.intStackCount = var2.readUnsignedShort();
+      var1.stringStackCount = var2.readUnsignedShort();
+      int var6 = var2.readUnsignedByte();
+      int var7;
+      int var8;
+      if(var6 > 0) {
+         var1.switches = var1.method1858(var6);
+
+         for(var7 = 0; var7 < var6; ++var7) {
+            var8 = var2.readUnsignedShort();
+            IterableHashTable var9 = new IterableHashTable(WorldMapType1.method249(var8));
+            var1.switches[var7] = var9;
+
+            while(var8-- > 0) {
+               int var10 = var2.readInt();
+               int var11 = var2.readInt();
+               var9.put(new IntegerNode(var11), (long)var10);
+            }
+         }
+      }
+
+      var2.offset = 0;
+      var2.getNullString();
+      var1.instructions = new int[var5];
+      var1.intOperands = new int[var5];
+      var1.stringOperands = new String[var5];
+
+      for(var7 = 0; var2.offset < var4; var1.instructions[var7++] = var8) {
+         var8 = var2.readUnsignedShort();
+         if(var8 == 3) {
+            var1.stringOperands[var7] = var2.readString();
+         } else if(var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
+            var1.intOperands[var7] = var2.readInt();
+         } else {
+            var1.intOperands[var7] = var2.readUnsignedByte();
+         }
+      }
+
+      return var1;
    }
 }

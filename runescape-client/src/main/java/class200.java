@@ -2,57 +2,53 @@ import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gy")
+@ObfuscatedName("gu")
 public class class200 implements Iterator {
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lgm;"
+      signature = "Lgf;"
    )
-   class201 field2455;
-   @ObfuscatedName("o")
+   class201 field2457;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgc;"
+      signature = "Lgq;"
    )
-   CacheableNode field2453;
-   @ObfuscatedName("i")
+   CacheableNode field2456;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lgc;"
+      signature = "Lgq;"
    )
-   CacheableNode field2454;
+   CacheableNode field2455;
 
    @ObfuscatedSignature(
-      signature = "(Lgm;)V"
+      signature = "(Lgf;)V"
    )
    class200(class201 var1) {
-      this.field2454 = null;
-      this.field2455 = var1;
-      this.field2453 = this.field2455.field2456.previous;
-      this.field2454 = null;
+      this.field2455 = null;
+      this.field2457 = var1;
+      this.field2456 = this.field2457.field2458.previous;
+      this.field2455 = null;
    }
 
    public Object next() {
-      CacheableNode var1 = this.field2453;
-      if(var1 == this.field2455.field2456) {
+      CacheableNode var1 = this.field2456;
+      if(var1 == this.field2457.field2458) {
          var1 = null;
-         this.field2453 = null;
+         this.field2456 = null;
       } else {
-         this.field2453 = var1.previous;
+         this.field2456 = var1.previous;
       }
 
-      this.field2454 = var1;
+      this.field2455 = var1;
       return var1;
    }
 
-   public boolean hasNext() {
-      return this.field2455.field2456 != this.field2453;
+   public void remove() {
+      this.field2455.unlinkDual();
+      this.field2455 = null;
    }
 
-   public void remove() {
-      if(this.field2454 == null) {
-         throw new IllegalStateException();
-      } else {
-         this.field2454.unlinkDual();
-         this.field2454 = null;
-      }
+   public boolean hasNext() {
+      return this.field2457.field2458 != this.field2456;
    }
 }

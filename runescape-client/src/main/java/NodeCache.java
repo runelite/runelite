@@ -3,35 +3,35 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gq")
+@ObfuscatedName("gg")
 @Implements("NodeCache")
 public final class NodeCache {
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    int field2428;
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lgi;"
+      signature = "Lgx;"
    )
    @Export("table")
    XHashTable table;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgv;"
+      signature = "Lgw;"
    )
    @Export("list")
    Node2LinkedList list;
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lgc;"
+      signature = "Lgq;"
    )
    CacheableNode field2426;
-   @ObfuscatedName("o")
-   int field2425;
+   @ObfuscatedName("q")
+   int field2430;
 
    public NodeCache(int var1) {
       this.field2426 = new CacheableNode();
       this.list = new Node2LinkedList();
-      this.field2425 = var1;
+      this.field2430 = var1;
       this.field2428 = var1;
 
       int var2;
@@ -42,9 +42,9 @@ public final class NodeCache {
       this.table = new XHashTable(var2);
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(J)Lgc;"
+      signature = "(J)Lgq;"
    )
    @Export("get")
    public CacheableNode get(long var1) {
@@ -56,9 +56,9 @@ public final class NodeCache {
       return var3;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lgc;J)V"
+      signature = "(Lgq;J)V"
    )
    @Export("put")
    public void put(CacheableNode var1, long var2) {
@@ -79,16 +79,16 @@ public final class NodeCache {
       this.list.push(var1);
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @Export("reset")
    public void reset() {
       this.list.clear();
-      this.table.method3497();
+      this.table.method3563();
       this.field2426 = new CacheableNode();
-      this.field2428 = this.field2425;
+      this.field2428 = this.field2430;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @Export("remove")
    public void remove(long var1) {
       CacheableNode var3 = (CacheableNode)this.table.get(var1);

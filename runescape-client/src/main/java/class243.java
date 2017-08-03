@@ -1,61 +1,54 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("iu")
 public class class243 extends CacheableNode {
-   @ObfuscatedName("k")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Ldw;"
+      signature = "Lgg;"
    )
-   @Export("task")
-   static SoundTask task;
-   @ObfuscatedName("o")
+   public static NodeCache field3297;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lgq;"
+      signature = "Lim;"
    )
-   static NodeCache field3287;
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   public static IndexDataBase field3286;
-   @ObfuscatedName("i")
-   public boolean field3289;
+   public static IndexDataBase field3298;
+   @ObfuscatedName("x")
+   public boolean field3296;
 
    static {
-      field3287 = new NodeCache(64);
+      field3297 = new NodeCache(64);
    }
 
-   class243() {
-      this.field3289 = false;
+   public class243() {
+      this.field3296 = false;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lfp;II)V",
-      garbageValue = "2130374377"
+      signature = "(Lfw;II)V",
+      garbageValue = "2067490943"
    )
-   void method4205(Buffer var1, int var2) {
+   void method4293(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3289 = true;
+         this.field3296 = true;
       }
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lfp;I)V",
-      garbageValue = "-107370927"
+      signature = "(Lfw;I)V",
+      garbageValue = "-111183920"
    )
-   void method4206(Buffer var1) {
+   public void method4297(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4205(var1, var2);
+         this.method4293(var1, var2);
       }
    }
 }

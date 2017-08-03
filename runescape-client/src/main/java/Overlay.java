@@ -4,80 +4,75 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("io")
+@ObfuscatedName("iz")
 @Implements("Overlay")
 public class Overlay extends CacheableNode {
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgq;"
+      signature = "Lgg;"
    )
    @Export("overlays")
-   static NodeCache overlays;
-   @ObfuscatedName("c")
+   public static NodeCache overlays;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lip;"
+      signature = "Lim;"
    )
    @Export("overlay_ref")
-   public static IndexDataBase overlay_ref;
-   @ObfuscatedName("co")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   static IndexData field3568;
-   @ObfuscatedName("m")
+   static IndexDataBase overlay_ref;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1375991333
+      intValue = 1426499409
    )
    @Export("otherRgbColor")
    public int otherRgbColor;
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 621808005
+      intValue = -280996339
    )
    @Export("color")
    public int color;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @Export("isHidden")
    public boolean isHidden;
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -839152167
+      intValue = 1558970253
    )
    @Export("texture")
    public int texture;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 100474525
+      intValue = -344229977
    )
    @Export("hue")
    public int hue;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1932887233
+      intValue = 890431933
    )
    @Export("otherHue")
    public int otherHue;
-   @ObfuscatedName("x")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1496644645
+      intValue = 2141163159
    )
    @Export("saturation")
    public int saturation;
-   @ObfuscatedName("r")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 764464317
+      intValue = 1269563719
    )
    @Export("otherSaturation")
    public int otherSaturation;
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 754327857
+      intValue = -1888026539
    )
    @Export("lightness")
    public int lightness;
-   @ObfuscatedName("w")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -800728615
+      intValue = -2071820855
    )
    @Export("otherLightness")
    public int otherLightness;
@@ -93,12 +88,12 @@ public class Overlay extends CacheableNode {
       this.otherRgbColor = -1;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lfp;III)V",
-      garbageValue = "1882436428"
+      signature = "(Lfw;III)V",
+      garbageValue = "-1473049480"
    )
-   void method4553(Buffer var1, int var2, int var3) {
+   void method4661(Buffer var1, int var2, int var3) {
       if(var2 == 1) {
          this.color = var1.read24BitInt();
       } else if(var2 == 2) {
@@ -113,10 +108,10 @@ public class Overlay extends CacheableNode {
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "56"
+      signature = "(II)V",
+      garbageValue = "445690403"
    )
    @Export("setHSL")
    void setHSL(int var1) {
@@ -143,8 +138,8 @@ public class Overlay extends CacheableNode {
 
       double var12 = 0.0D;
       double var14 = 0.0D;
-      double var16 = (var8 + var10) / 2.0D;
-      if(var8 != var10) {
+      double var16 = (var10 + var8) / 2.0D;
+      if(var10 != var8) {
          if(var16 < 0.5D) {
             var14 = (var10 - var8) / (var8 + var10);
          }
@@ -156,16 +151,16 @@ public class Overlay extends CacheableNode {
          if(var10 == var2) {
             var12 = (var4 - var6) / (var10 - var8);
          } else if(var10 == var4) {
-            var12 = (var6 - var2) / (var10 - var8) + 2.0D;
-         } else if(var10 == var6) {
+            var12 = 2.0D + (var6 - var2) / (var10 - var8);
+         } else if(var6 == var10) {
             var12 = 4.0D + (var2 - var4) / (var10 - var8);
          }
       }
 
       var12 /= 6.0D;
       this.hue = (int)(var12 * 256.0D);
-      this.saturation = (int)(256.0D * var14);
-      this.lightness = (int)(256.0D * var16);
+      this.saturation = (int)(var14 * 256.0D);
+      this.lightness = (int)(var16 * 256.0D);
       if(this.saturation < 0) {
          this.saturation = 0;
       } else if(this.saturation > 255) {
@@ -180,10 +175,10 @@ public class Overlay extends CacheableNode {
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "2"
+      signature = "(I)V",
+      garbageValue = "1830444178"
    )
    @Export("post")
    void post() {
@@ -197,10 +192,10 @@ public class Overlay extends CacheableNode {
       this.setHSL(this.color);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Lfp;II)V",
-      garbageValue = "2126608060"
+      signature = "(Lfw;IB)V",
+      garbageValue = "39"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -210,7 +205,7 @@ public class Overlay extends CacheableNode {
             return;
          }
 
-         this.method4553(var1, var3, var2);
+         this.method4661(var1, var3, var2);
       }
    }
 }

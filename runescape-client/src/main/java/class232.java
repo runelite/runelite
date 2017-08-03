@@ -2,77 +2,58 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("he")
+@ObfuscatedName("hc")
 public enum class232 implements RSEnum {
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lhe;"
+      signature = "Lhc;"
    )
-   field3161("runescape", "RuneScape", 0),
-   @ObfuscatedName("o")
+   field3179("runescape", "RuneScape", 0),
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lhe;"
+      signature = "Lhc;"
    )
-   field3160("stellardawn", "Stellar Dawn", 1),
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lhe;"
-   )
-   field3166("game3", "Game 3", 2),
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "Lhe;"
-   )
-   field3162("game4", "Game 4", 3),
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lhe;"
-   )
-   field3163("game5", "Game 5", 4),
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lhe;"
-   )
-   field3164("oldscape", "RuneScape 2007", 5);
-
-   @ObfuscatedName("s")
-   public final String field3159;
+   field3172("stellardawn", "Stellar Dawn", 1),
    @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -251857401
+   @ObfuscatedSignature(
+      signature = "Lhc;"
    )
-   final int field3165;
-   @ObfuscatedName("gz")
-   @ObfuscatedGetter(
-      intValue = 2029261165
+   field3173("game3", "Game 3", 2),
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Lhc;"
    )
-   static int field3168;
+   field3178("game4", "Game 4", 3),
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lhc;"
+   )
+   field3175("game5", "Game 5", 4),
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lhc;"
+   )
+   field3176("oldscape", "RuneScape 2007", 5);
+
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 914892731
+   )
+   final int field3174;
+   @ObfuscatedName("v")
+   public final String field3177;
 
    class232(String var3, String var4, int var5) {
-      this.field3159 = var3;
-      this.field3165 = var5;
+      this.field3177 = var3;
+      this.field3174 = var5;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1443879177"
+      garbageValue = "-1661971028"
    )
    public int rsOrdinal() {
-      return this.field3165;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Lgk;ILjava/lang/String;I)Ljava/lang/String;",
-      garbageValue = "279658673"
-   )
-   static String method4001(IterableHashTable var0, int var1, String var2) {
-      if(var0 == null) {
-         return var2;
-      } else {
-         ObjectNode var3 = (ObjectNode)var0.get((long)var1);
-         return var3 == null?var2:(String)var3.value;
-      }
+      return this.field3174;
    }
 }

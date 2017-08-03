@@ -2,52 +2,52 @@ import java.util.HashMap;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jn")
+@ObfuscatedName("jy")
 public class class262 {
-   @ObfuscatedName("c")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lip;"
+      signature = "Lim;"
    )
-   IndexDataBase field3617;
-   @ObfuscatedName("i")
-   HashMap field3614;
-   @ObfuscatedName("o")
+   public static IndexDataBase field3614;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lip;"
+      signature = "Lim;"
    )
-   IndexDataBase field3615;
+   IndexDataBase field3610;
+   @ObfuscatedName("x")
+   HashMap field3612;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   IndexDataBase field3611;
 
    @ObfuscatedSignature(
-      signature = "(Lip;Lip;)V"
+      signature = "(Lim;Lim;)V"
    )
    public class262(IndexDataBase var1, IndexDataBase var2) {
-      this.field3617 = var1;
-      this.field3615 = var2;
-      this.field3614 = new HashMap();
+      this.field3610 = var1;
+      this.field3611 = var2;
+      this.field3612 = new HashMap();
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "([Ljp;I)Ljava/util/HashMap;",
-      garbageValue = "1656473001"
+      signature = "([Ljf;B)Ljava/util/HashMap;",
+      garbageValue = "0"
    )
-   public HashMap method4620(class261[] var1) {
+   public HashMap method4718(class261[] var1) {
       HashMap var2 = new HashMap();
       class261[] var3 = var1;
 
       for(int var4 = 0; var4 < var3.length; ++var4) {
          class261 var5 = var3[var4];
-         if(this.field3614.containsKey(var5)) {
-            var2.put(var5, this.field3614.get(var5));
+         if(this.field3612.containsKey(var5)) {
+            var2.put(var5, this.field3612.get(var5));
          } else {
-            IndexDataBase var7 = this.field3617;
-            IndexDataBase var8 = this.field3615;
-            String var9 = var5.field3606;
-            int var10 = var7.getFile(var9);
-            int var11 = var7.getChild(var10, "");
-            Font var6 = class254.method4396(var7, var8, var10, var11);
+            Font var6 = class276.method4910(this.field3610, this.field3611, var5.field3606, "");
             if(var6 != null) {
-               this.field3614.put(var5, var6);
+               this.field3612.put(var5, var6);
                var2.put(var5, var6);
             }
          }

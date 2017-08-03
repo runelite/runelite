@@ -4,36 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ia")
+@ObfuscatedName("iw")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgq;"
+      signature = "Lgg;"
    )
    @Export("varbits")
-   public static NodeCache varbits;
-   @ObfuscatedName("c")
+   static NodeCache varbits;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lip;"
+      signature = "Lim;"
    )
    @Export("varbit_ref")
    public static IndexDataBase varbit_ref;
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1770880303
+      intValue = -381006165
    )
    @Export("configId")
    public int configId;
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1655250519
+      intValue = -2135933811
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -264977817
+      intValue = 1822521877
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
@@ -42,12 +42,12 @@ public class Varbit extends CacheableNode {
       varbits = new NodeCache(64);
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lfp;II)V",
-      garbageValue = "1005161960"
+      signature = "(Lfw;II)V",
+      garbageValue = "1336831530"
    )
-   void method4313(Buffer var1, int var2) {
+   void method4394(Buffer var1, int var2) {
       if(var2 == 1) {
          this.configId = var1.readUnsignedShort();
          this.leastSignificantBit = var1.readUnsignedByte();
@@ -56,42 +56,20 @@ public class Varbit extends CacheableNode {
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lfp;I)V",
-      garbageValue = "-1815058463"
+      signature = "(Lfw;I)V",
+      garbageValue = "516503983"
    )
    @Export("decode")
-   public void decode(Buffer var1) {
+   void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4313(var1, var2);
-      }
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(IB)Lij;",
-      garbageValue = "0"
-   )
-   public static class251 method4309(int var0) {
-      class251 var1 = (class251)class251.field3364.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class251.field3362.getConfigData(11, var0);
-         var1 = new class251();
-         if(var2 != null) {
-            var1.method4316(new Buffer(var2));
-         }
-
-         var1.method4315();
-         class251.field3364.put(var1, (long)var0);
-         return var1;
+         this.method4394(var1, var2);
       }
    }
 }

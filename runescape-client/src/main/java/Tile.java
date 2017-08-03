@@ -4,132 +4,132 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("en")
+@ObfuscatedName("eb")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lei;"
+      signature = "Lex;"
    )
    @Export("paint")
    SceneTilePaint paint;
-   @ObfuscatedName("x")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lel;"
+      signature = "Lec;"
    )
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Ldv;"
+      signature = "Ldx;"
    )
    @Export("itemLayer")
    ItemLayer itemLayer;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Let;"
+      signature = "Lew;"
    )
    @Export("wallObject")
    WallObject wallObject;
-   @ObfuscatedName("r")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1711454415
+      intValue = -1976454559
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Ldr;"
+      signature = "Lds;"
    )
    @Export("groundObject")
    GroundObject groundObject;
-   @ObfuscatedName("w")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "[Lez;"
    )
    @Export("objects")
    GameObject[] objects;
-   @ObfuscatedName("t")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1515767947
+      intValue = 1393231975
    )
    @Export("physicalLevel")
    int physicalLevel;
-   @ObfuscatedName("m")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Ldd;"
+      signature = "Ldj;"
    )
    @Export("overlay")
    SceneTileModel overlay;
-   @ObfuscatedName("v")
+   @ObfuscatedName("o")
    @Export("entityFlags")
    int[] entityFlags;
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Len;"
+      signature = "Leb;"
    )
    @Export("bridge")
    Tile bridge;
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 794925593
+      intValue = -1888297059
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1218040179
+      intValue = -140769371
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @Export("visible")
    boolean visible;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 459590027
+      intValue = 1910906369
    )
    @Export("x")
    int x;
-   @ObfuscatedName("i")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 541937511
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 1243868789
+      intValue = -1263341881
    )
    @Export("renderLevel")
    int renderLevel;
-   @ObfuscatedName("a")
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1447577433
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("b")
    @Export("draw")
    boolean draw;
-   @ObfuscatedName("l")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 534741531
+      intValue = 619212105
    )
    @Export("wallCullDirection")
    int wallCullDirection;
-   @ObfuscatedName("y")
+   @ObfuscatedName("k")
    @Export("drawEntities")
    boolean drawEntities;
-   @ObfuscatedName("q")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1234135791
+      intValue = 1573100023
    )
    @Export("wallUncullDirection")
    int wallUncullDirection;
-   @ObfuscatedName("j")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 825476067
+      intValue = 370150347
    )
    @Export("wallDrawFlags")
    int wallDrawFlags;
-   @ObfuscatedName("f")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1587388025
+      intValue = 59001903
    )
    @Export("wallCullOppositeDirection")
    int wallCullOppositeDirection;

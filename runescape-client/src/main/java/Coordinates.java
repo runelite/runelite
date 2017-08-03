@@ -4,34 +4,34 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hs")
+@ObfuscatedName("hy")
 @Implements("Coordinates")
 public class Coordinates {
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 700402515
+      intValue = 1481631845
    )
    @Export("plane")
    public int plane;
-   @ObfuscatedName("i")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 71740711
-   )
-   @Export("worldY")
-   public int worldY;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1022398379
+      intValue = -1026105029
    )
    @Export("worldX")
    public int worldX;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1026669109
+   )
+   @Export("worldY")
+   public int worldY;
 
    public Coordinates() {
       this.plane = -1;
    }
 
    @ObfuscatedSignature(
-      signature = "(Lhs;)V"
+      signature = "(Lhy;)V"
    )
    public Coordinates(Coordinates var1) {
       this.plane = var1.plane;
@@ -56,53 +56,61 @@ public class Coordinates {
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "113785647"
+      garbageValue = "470770301"
    )
-   public int method3866() {
+   public int method3941() {
       return this.plane << 28 | this.worldX << 14 | this.worldY;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "1831541056"
+      garbageValue = "74770548"
    )
-   public void method3874(int var1, int var2, int var3) {
+   public void method3940(int var1, int var2, int var3) {
       this.plane = var1;
       this.worldX = var2;
       this.worldY = var3;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lhs;I)Z",
-      garbageValue = "-591313480"
+      signature = "(Lhy;I)Z",
+      garbageValue = "1149290784"
    )
-   boolean method3863(Coordinates var1) {
+   boolean method3939(Coordinates var1) {
       return this.plane != var1.plane?false:(this.worldX != var1.worldX?false:this.worldY == var1.worldY);
+   }
+
+   public boolean equals(Object var1) {
+      return this == var1?true:(!(var1 instanceof Coordinates)?false:this.method3939((Coordinates)var1));
    }
 
    public String toString() {
       return this.plane + "," + (this.worldX >> 6) + "," + (this.worldY >> 6) + "," + (this.worldX & 63) + "," + (this.worldY & 63);
    }
 
-   public boolean equals(Object var1) {
-      return this == var1?true:(!(var1 instanceof Coordinates)?false:this.method3863((Coordinates)var1));
-   }
-
    public int hashCode() {
-      return this.method3866();
+      return this.method3941();
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "2147409620"
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "1125868299"
    )
-   public static boolean method3860() {
-      return class203.field2471 != 0?true:class203.field2470.method3649();
+   public static String method3955(CharSequence var0) {
+      int var2 = var0.length();
+      char[] var3 = new char[var2];
+
+      for(int var4 = 0; var4 < var2; ++var4) {
+         var3[var4] = 42;
+      }
+
+      String var1 = new String(var3);
+      return var1;
    }
 }

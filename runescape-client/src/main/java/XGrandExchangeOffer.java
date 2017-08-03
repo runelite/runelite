@@ -4,39 +4,44 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("e")
+@ObfuscatedName("w")
 @Implements("XGrandExchangeOffer")
 public class XGrandExchangeOffer {
-   @ObfuscatedName("c")
+   @ObfuscatedName("ch")
+   @ObfuscatedSignature(
+      signature = "Ley;"
+   )
+   static Task field295;
+   @ObfuscatedName("d")
    @Export("progress")
    byte progress;
-   @ObfuscatedName("i")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1742462719
-   )
-   @Export("price")
-   public int price;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -943557443
+      intValue = -1824045555
    )
    @Export("totalQuantity")
    public int totalQuantity;
-   @ObfuscatedName("o")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 777929655
+      intValue = -581910843
+   )
+   @Export("price")
+   public int price;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -457817791
    )
    @Export("itemId")
    public int itemId;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1568272623
+      intValue = -920872559
    )
    @Export("quantitySold")
    public int quantitySold;
-   @ObfuscatedName("m")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1296865761
+      intValue = 1158968297
    )
    @Export("spent")
    public int spent;
@@ -45,7 +50,7 @@ public class XGrandExchangeOffer {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lfp;Z)V",
+      signature = "(Lfw;Z)V",
       garbageValue = "0"
    )
    public XGrandExchangeOffer(Buffer var1, boolean var2) {
@@ -57,22 +62,22 @@ public class XGrandExchangeOffer {
       this.spent = var1.readInt();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "49"
+      signature = "(II)V",
+      garbageValue = "1113626653"
    )
-   void method112(int var1) {
+   void method101(int var1) {
       this.progress &= -8;
       this.progress = (byte)(this.progress | var1 & 7);
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "14"
+      signature = "(II)V",
+      garbageValue = "-1425869878"
    )
-   void method114(int var1) {
+   void method100(int var1) {
       this.progress &= -9;
       if(var1 == 1) {
          this.progress = (byte)(this.progress | 8);
@@ -80,42 +85,72 @@ public class XGrandExchangeOffer {
 
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1304723411"
+      garbageValue = "65280"
    )
-   public int method96() {
+   public int method97() {
       return (this.progress & 8) == 8?1:0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-68"
+      signature = "(I)I",
+      garbageValue = "1484189310"
    )
-   public int method95() {
+   public int method103() {
       return this.progress & 7;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("hv")
    @ObfuscatedSignature(
       signature = "(IB)Z",
-      garbageValue = "53"
+      garbageValue = "-86"
    )
-   public static boolean method99(int var0) {
-      return (var0 >> 29 & 1) != 0;
+   static final boolean method111(int var0) {
+      if(var0 < 0) {
+         return false;
+      } else {
+         int var1 = Client.menuTypes[var0];
+         if(var1 >= 2000) {
+            var1 -= 2000;
+         }
+
+         return var1 == 1007;
+      }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "1096345650"
+      signature = "(IIIIIIII)V",
+      garbageValue = "-654078905"
    )
-   static final int method101(int var0, int var1) {
-      int var2 = var1 * 57 + var0;
-      var2 ^= var2 << 13;
-      int var3 = 1376312589 + (var2 * var2 * 15731 + 789221) * var2 & Integer.MAX_VALUE;
-      return var3 >> 19 & 255;
+   static final void method113(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int[] var7 = Region.method2753(var0, var1, var2);
+      int[] var8 = Region.method2753(var3, var4, var5);
+      Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Lim;S)V",
+      garbageValue = "-4818"
+   )
+   public static void method114(IndexDataBase var0) {
+      Overlay.overlay_ref = var0;
+   }
+
+   @ObfuscatedName("jo")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "1037442929"
+   )
+   static final void method112(String var0) {
+      if(!var0.equals("")) {
+         Client.secretPacketBuffer1.putOpcode(209);
+         Client.secretPacketBuffer1.putByte(VertexNormal.getLength(var0));
+         Client.secretPacketBuffer1.putString(var0);
+      }
    }
 }

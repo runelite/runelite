@@ -4,25 +4,31 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("em")
+@ObfuscatedName("eq")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("c")
+   @ObfuscatedName("fc")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   @Export("compass")
+   static SpritePixels compass;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1806685349
+      intValue = -336652367
    )
    @Export("id")
    int id;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 253180977
+      intValue = 229431419
    )
    @Export("count")
    int count;
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @Export("types")
    int[] types;
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @Export("list")
    int[][] list;
 
@@ -50,48 +56,74 @@ public class FrameMap extends Node {
 
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2040109837"
+      signature = "(Lfw;Lgc;B)Lgc;",
+      garbageValue = "112"
    )
-   static void method2614() {
-      if(Signlink.javaVendor.toLowerCase().indexOf("microsoft") != -1) {
-         KeyFocusListener.field648[186] = 57;
-         KeyFocusListener.field648[187] = 27;
-         KeyFocusListener.field648[188] = 71;
-         KeyFocusListener.field648[189] = 26;
-         KeyFocusListener.field648[190] = 72;
-         KeyFocusListener.field648[191] = 73;
-         KeyFocusListener.field648[192] = 58;
-         KeyFocusListener.field648[219] = 42;
-         KeyFocusListener.field648[220] = 74;
-         KeyFocusListener.field648[221] = 43;
-         KeyFocusListener.field648[222] = 59;
-         KeyFocusListener.field648[223] = 28;
-      } else {
-         KeyFocusListener.field648[44] = 71;
-         KeyFocusListener.field648[45] = 26;
-         KeyFocusListener.field648[46] = 72;
-         KeyFocusListener.field648[47] = 73;
-         KeyFocusListener.field648[59] = 57;
-         KeyFocusListener.field648[61] = 27;
-         KeyFocusListener.field648[91] = 42;
-         KeyFocusListener.field648[92] = 74;
-         KeyFocusListener.field648[93] = 43;
-         KeyFocusListener.field648[192] = 28;
-         KeyFocusListener.field648[222] = 58;
-         KeyFocusListener.field648[520] = 59;
+   static final IterableHashTable method2698(Buffer var0, IterableHashTable var1) {
+      int var2 = var0.readUnsignedByte();
+      int var3;
+      if(var1 == null) {
+         var3 = WorldMapType1.method249(var2);
+         var1 = new IterableHashTable(var3);
       }
 
+      for(var3 = 0; var3 < var2; ++var3) {
+         boolean var4 = var0.readUnsignedByte() == 1;
+         int var5 = var0.read24BitInt();
+         Object var6;
+         if(var4) {
+            var6 = new ObjectNode(var0.readString());
+         } else {
+            var6 = new IntegerNode(var0.readInt());
+         }
+
+         var1.put((Node)var6, (long)var5);
+      }
+
+      return var1;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("is")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-693525702"
+      signature = "(Ljava/lang/String;Lhn;I)Ljava/lang/String;",
+      garbageValue = "-1305163050"
    )
-   public static void method2615() {
-      FloorUnderlayDefinition.underlays.reset();
+   static String method2697(String var0, Widget var1) {
+      if(var0.indexOf("%") != -1) {
+         int var2;
+         for(var2 = 1; var2 <= 5; ++var2) {
+            while(true) {
+               int var3 = var0.indexOf("%" + var2);
+               if(var3 == -1) {
+                  break;
+               }
+
+               var0 = var0.substring(0, var3) + class174.method3396(class92.method1758(var1, var2 - 1)) + var0.substring(var3 + 2);
+            }
+         }
+
+         while(true) {
+            var2 = var0.indexOf("%dns");
+            if(var2 == -1) {
+               break;
+            }
+
+            String var6 = "";
+            if(XGrandExchangeOffer.field295 != null) {
+               int var5 = XGrandExchangeOffer.field295.field2202;
+               String var4 = (var5 >> 24 & 255) + "." + (var5 >> 16 & 255) + "." + (var5 >> 8 & 255) + "." + (var5 & 255);
+               var6 = var4;
+               if(XGrandExchangeOffer.field295.value != null) {
+                  var6 = (String)XGrandExchangeOffer.field295.value;
+               }
+            }
+
+            var0 = var0.substring(0, var2) + var6 + var0.substring(var2 + 4);
+         }
+      }
+
+      return var0;
    }
 }

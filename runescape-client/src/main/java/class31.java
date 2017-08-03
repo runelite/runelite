@@ -3,123 +3,158 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("al")
+@ObfuscatedName("ar")
 public class class31 {
-   @ObfuscatedName("aa")
-   protected static boolean field425;
-   @ObfuscatedName("bj")
-   @Export("sessionToken")
-   static String sessionToken;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -2062777737
+   )
+   @Export("canvasWidth")
+   public static int canvasWidth;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1636651773
+   )
+   final int field422;
    @ObfuscatedName("q")
-   static int[] field431;
-   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 875591035
+      intValue = 633537861
    )
-   final int field433;
-   @ObfuscatedName("o")
+   final int field417;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 885418291
+      intValue = 1946155559
    )
-   final int field432;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1836191379
-   )
-   final int field426;
+   final int field416;
 
    class31(int var1, int var2, int var3) {
-      this.field433 = var1;
-      this.field432 = var2;
-      this.field426 = var3;
+      this.field422 = var1;
+      this.field417 = var2;
+      this.field416 = var3;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("jt")
    @ObfuscatedSignature(
-      signature = "(II)Ljc;",
-      garbageValue = "1796291299"
+      signature = "([Lhn;IB)V",
+      garbageValue = "29"
    )
-   @Export("getAnimation")
-   public static Sequence getAnimation(int var0) {
-      Sequence var1 = (Sequence)Sequence.sequences.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Sequence.seq_ref.getConfigData(12, var0);
-         var1 = new Sequence();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
+   static final void method272(Widget[] var0, int var1) {
+      for(int var2 = 0; var2 < var0.length; ++var2) {
+         Widget var3 = var0[var2];
+         if(var3 != null && var3.parentId == var1 && (!var3.hasScript || !class177.method3423(var3))) {
+            if(var3.type == 0) {
+               if(!var3.hasScript && class177.method3423(var3) && var3 != class244.field3302) {
+                  continue;
+               }
 
-         var1.post();
-         Sequence.sequences.put(var1, (long)var0);
-         return var1;
-      }
-   }
+               method272(var0, var3.id);
+               if(var3.children != null) {
+                  method272(var3.children, var3.id);
+               }
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "([BIIII[Lfu;I)V",
-      garbageValue = "69365252"
-   )
-   static final void method269(byte[] var0, int var1, int var2, int var3, int var4, CollisionData[] var5) {
-      int var7;
-      int var8;
-      for(int var6 = 0; var6 < 4; ++var6) {
-         for(var7 = 0; var7 < 64; ++var7) {
-            for(var8 = 0; var8 < 64; ++var8) {
-               if(var7 + var1 > 0 && var7 + var1 < 103 && var8 + var2 > 0 && var8 + var2 < 103) {
-                  var5[var6].flags[var7 + var1][var8 + var2] &= -16777217;
+               WidgetNode var7 = (WidgetNode)Client.componentTable.get((long)var3.id);
+               if(var7 != null) {
+                  class54.method804(var7.id);
+               }
+            }
+
+            if(var3.type == 6) {
+               int var5;
+               if(var3.field2676 != -1 || var3.field2734 != -1) {
+                  boolean var4 = World.method1597(var3);
+                  if(var4) {
+                     var5 = var3.field2734;
+                  } else {
+                     var5 = var3.field2676;
+                  }
+
+                  if(var5 != -1) {
+                     Sequence var6 = class40.getAnimation(var5);
+
+                     for(var3.field2699 += Client.field1078; var3.field2699 > var6.frameLenghts[var3.field2751]; class48.method732(var3)) {
+                        var3.field2699 -= var6.frameLenghts[var3.field2751];
+                        ++var3.field2751;
+                        if(var3.field2751 >= var6.frameIDs.length) {
+                           var3.field2751 -= var6.frameStep;
+                           if(var3.field2751 < 0 || var3.field2751 >= var6.frameIDs.length) {
+                              var3.field2751 = 0;
+                           }
+                        }
+                     }
+                  }
+               }
+
+               if(var3.field2618 != 0 && !var3.hasScript) {
+                  int var8 = var3.field2618 >> 16;
+                  var5 = var3.field2618 << 16 >> 16;
+                  var8 *= Client.field1078;
+                  var5 *= Client.field1078;
+                  var3.rotationX = var8 + var3.rotationX & 2047;
+                  var3.rotationZ = var5 + var3.rotationZ & 2047;
+                  class48.method732(var3);
                }
             }
          }
       }
 
-      Buffer var10 = new Buffer(var0);
-
-      for(var7 = 0; var7 < 4; ++var7) {
-         for(var8 = 0; var8 < 64; ++var8) {
-            for(int var9 = 0; var9 < 64; ++var9) {
-               class40.loadTerrain(var10, var7, var8 + var1, var9 + var2, var3, var4, 0);
-            }
-         }
-      }
-
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("jv")
    @ObfuscatedSignature(
-      signature = "(IIILit;IB)V",
-      garbageValue = "-6"
+      signature = "(Ljava/lang/String;ZB)Z",
+      garbageValue = "-79"
    )
-   static void method270(int var0, int var1, int var2, ObjectComposition var3, int var4) {
-      class82 var5 = new class82();
-      var5.field1304 = var0;
-      var5.field1315 = var1 * 128;
-      var5.field1306 = var2 * 128;
-      int var6 = var3.sizeX;
-      int var7 = var3.sizeY;
-      if(var4 == 1 || var4 == 3) {
-         var6 = var3.sizeY;
-         var7 = var3.sizeX;
-      }
+   @Export("isFriended")
+   static boolean isFriended(String var0, boolean var1) {
+      if(var0 == null) {
+         return false;
+      } else {
+         String var2 = class9.method48(var0, MouseInput.field715);
 
-      var5.field1307 = (var6 + var1) * 128;
-      var5.field1317 = (var7 + var2) * 128;
-      var5.field1312 = var3.ambientSoundId;
-      var5.field1309 = var3.field3455 * 128;
-      var5.field1305 = var3.field3456;
-      var5.field1313 = var3.field3418;
-      var5.field1314 = var3.field3458;
-      if(var3.impostorIds != null) {
-         var5.field1310 = var3;
-         var5.method1560();
-      }
+         for(int var3 = 0; var3 < Client.friendCount; ++var3) {
+            if(var2.equalsIgnoreCase(class9.method48(Client.friends[var3].name, MouseInput.field715)) && (!var1 || Client.friends[var3].world != 0)) {
+               return true;
+            }
+         }
 
-      class82.field1311.addFront(var5);
-      if(var5.field1314 != null) {
-         var5.field1303 = var5.field1305 + (int)(Math.random() * (double)(var5.field1313 - var5.field1305));
+         if(var2.equalsIgnoreCase(class9.method48(class224.localPlayer.name, MouseInput.field715))) {
+            return true;
+         } else {
+            return false;
+         }
       }
+   }
 
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Lim;III)Ljw;",
+      garbageValue = "-1871409236"
+   )
+   static IndexedSprite method273(IndexDataBase var0, int var1, int var2) {
+      if(!WallObject.method2899(var0, var1, var2)) {
+         return null;
+      } else {
+         IndexedSprite var4 = new IndexedSprite();
+         var4.width = class286.field3779;
+         var4.originalHeight = class286.field3780;
+         var4.offsetX = class270.field3666[0];
+         var4.offsetY = class286.offsetsY[0];
+         var4.originalWidth = class286.field3778[0];
+         var4.height = class286.field3782[0];
+         var4.palette = class286.field3783;
+         var4.pixels = class177.spritePixels[0];
+         class229.method4093();
+         return var4;
+      }
+   }
+
+   @ObfuscatedName("gb")
+   @ObfuscatedSignature(
+      signature = "(Lcj;II)V",
+      garbageValue = "163499978"
+   )
+   @Export("characterToScreen")
+   static final void characterToScreen(Actor var0, int var1) {
+      BaseVarType.method12(var0.x, var0.y, var1);
    }
 }

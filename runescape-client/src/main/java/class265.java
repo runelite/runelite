@@ -1,18 +1,17 @@
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jh")
+@ObfuscatedName("jp")
 public class class265 {
-   @ObfuscatedName("k")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lbx;"
+      signature = "Lfx;"
    )
-   @Export("listFetcher")
-   static WorldListFetcher listFetcher;
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lfq;"
+   public static Huffman field3639;
+   @ObfuscatedName("pk")
+   @ObfuscatedGetter(
+      intValue = 1861321255
    )
-   public static Huffman field3642;
+   static int field3638;
 }

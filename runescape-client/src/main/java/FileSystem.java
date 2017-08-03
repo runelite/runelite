@@ -4,75 +4,50 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hx")
+@ObfuscatedName("hp")
 @Implements("FileSystem")
 public class FileSystem extends Node {
-   @ObfuscatedName("c")
+   @ObfuscatedName("f")
+   @Export("overlayPaths")
+   static byte[][][] overlayPaths;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1911631875
+      intValue = -1053808249
    )
-   int field3171;
-   @ObfuscatedName("i")
+   int field3180;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lfz;"
+      signature = "Lfv;"
    )
    @Export("index")
-   IndexFile index;
-   @ObfuscatedName("o")
-   byte[] field3170;
-   @ObfuscatedName("u")
+   public IndexFile index;
+   @ObfuscatedName("q")
+   public byte[] field3181;
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lix;"
+      signature = "Lib;"
    )
    @Export("data")
-   IndexData data;
+   public IndexData data;
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-202851467"
+      signature = "(II)Lip;",
+      garbageValue = "1894419434"
    )
-   public static int method4002(int var0, int var1) {
-      int var2 = var0 >>> 31;
-      return (var0 + var2) / var1 - var2;
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(ILcv;ZI)I",
-      garbageValue = "-1907637253"
-   )
-   static int method4003(int var0, Script var1, boolean var2) {
-      Widget var3 = class239.method4167(class83.intStack[--BufferProvider.intStackSize]);
-      if(var0 == 2800) {
-         int[] var4 = class83.intStack;
-         int var5 = ++BufferProvider.intStackSize - 1;
-         int var7 = class60.getWidgetConfig(var3);
-         int var6 = var7 >> 11 & 63;
-         var4[var5] = var6;
-         return 1;
-      } else if(var0 != 2801) {
-         if(var0 == 2802) {
-            if(var3.name == null) {
-               class83.scriptStringStack[++class83.scriptStringStackSize - 1] = "";
-            } else {
-               class83.scriptStringStack[++class83.scriptStringStackSize - 1] = var3.name;
-            }
-
-            return 1;
-         } else {
-            return 2;
-         }
+   public static class254 method4110(int var0) {
+      class254 var1 = (class254)class254.field3392.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         int var8 = class83.intStack[--BufferProvider.intStackSize];
-         --var8;
-         if(var3.actions != null && var8 < var3.actions.length && var3.actions[var8] != null) {
-            class83.scriptStringStack[++class83.scriptStringStackSize - 1] = var3.actions[var8];
-         } else {
-            class83.scriptStringStack[++class83.scriptStringStackSize - 1] = "";
+         byte[] var2 = class254.field3410.getConfigData(32, var0);
+         var1 = new class254();
+         if(var2 != null) {
+            var1.method4473(new Buffer(var2));
          }
 
-         return 1;
+         class254.field3392.put(var1, (long)var0);
+         return var1;
       }
    }
 }

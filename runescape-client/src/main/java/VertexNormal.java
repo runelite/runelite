@@ -4,43 +4,30 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ec")
+@ObfuscatedName("ek")
 @Implements("VertexNormal")
 public class VertexNormal {
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   static IndexDataBase field1966;
-   @ObfuscatedName("ov")
-   @ObfuscatedSignature(
-      signature = "Ldi;"
-   )
-   @Export("soundSystem0")
-   static AbstractSoundSystem soundSystem0;
-   @ObfuscatedName("j")
-   static int[] field1970;
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1870301765
+      intValue = -239062631
    )
    @Export("x")
    int x;
-   @ObfuscatedName("i")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 2067580631
+      intValue = -1067631925
    )
    @Export("y")
    int y;
-   @ObfuscatedName("u")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -288502447
+      intValue = 590327475
    )
    @Export("z")
    int z;
-   @ObfuscatedName("g")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1826101339
+      intValue = -184794091
    )
    @Export("magnitude")
    int magnitude;
@@ -49,7 +36,7 @@ public class VertexNormal {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lec;)V"
+      signature = "(Lek;)V"
    )
    VertexNormal(VertexNormal var1) {
       this.x = var1.x;
@@ -58,99 +45,25 @@ public class VertexNormal {
       this.magnitude = var1.magnitude;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IIS)I",
-      garbageValue = "-28963"
+      signature = "(Ljava/lang/String;I)I",
+      garbageValue = "1665132698"
    )
-   static int method2522(int var0, int var1) {
-      Overlay var2 = class157.method2908(var0);
-      if(var2 == null) {
-         return var1;
-      } else if(var2.otherRgbColor >= 0) {
-         return var2.otherRgbColor | -16777216;
-      } else {
-         int var4;
-         int var5;
-         if(var2.texture >= 0) {
-            var4 = Graphics3D.textureLoader.getAverageTextureRGB(var2.texture);
-            byte var11 = 96;
-            int var3;
-            if(var4 == -2) {
-               var3 = 12345678;
-            } else if(var4 == -1) {
-               if(var11 < 0) {
-                  var11 = 0;
-               } else if(var11 > 127) {
-                  var11 = 127;
-               }
+   @Export("getLength")
+   public static int getLength(String var0) {
+      return var0.length() + 1;
+   }
 
-               var5 = 127 - var11;
-               var3 = var5;
-            } else {
-               var5 = var11 * (var4 & 127) / 128;
-               if(var5 < 2) {
-                  var5 = 2;
-               } else if(var5 > 126) {
-                  var5 = 126;
-               }
-
-               var3 = var5 + (var4 & 'ﾀ');
-            }
-
-            return Graphics3D.colorPalette[var3] | -16777216;
-         } else if(var2.color == 16711935) {
-            return var1;
-         } else {
-            var4 = var2.hue;
-            var5 = var2.saturation;
-            int var6 = var2.lightness;
-            if(var6 > 179) {
-               var5 /= 2;
-            }
-
-            if(var6 > 192) {
-               var5 /= 2;
-            }
-
-            if(var6 > 217) {
-               var5 /= 2;
-            }
-
-            if(var6 > 243) {
-               var5 /= 2;
-            }
-
-            int var7 = (var4 / 4 << 10) + (var5 / 32 << 7) + var6 / 2;
-            byte var9 = 96;
-            int var8;
-            if(var7 == -2) {
-               var8 = 12345678;
-            } else {
-               int var12;
-               if(var7 == -1) {
-                  if(var9 < 0) {
-                     var9 = 0;
-                  } else if(var9 > 127) {
-                     var9 = 127;
-                  }
-
-                  var12 = 127 - var9;
-                  var8 = var12;
-               } else {
-                  var12 = var9 * (var7 & 127) / 128;
-                  if(var12 < 2) {
-                     var12 = 2;
-                  } else if(var12 > 126) {
-                     var12 = 126;
-                  }
-
-                  var8 = var12 + (var7 & 'ﾀ');
-               }
-            }
-
-            return Graphics3D.colorPalette[var8] | -16777216;
-         }
-      }
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "37"
+   )
+   public static void method2603() {
+      Widget.field2623.reset();
+      Widget.field2624.reset();
+      Widget.field2625.reset();
+      Widget.field2626.reset();
    }
 }

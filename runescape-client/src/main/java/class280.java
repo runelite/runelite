@@ -1,15 +1,15 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("js")
+@ObfuscatedName("jb")
 public class class280 {
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lgg;"
+      signature = "Lgt;"
    )
-   static CombatInfoList field3739;
+   public static CombatInfoList field3735;
 
    static {
-      field3739 = new CombatInfoList();
+      field3735 = new CombatInfoList();
    }
 }

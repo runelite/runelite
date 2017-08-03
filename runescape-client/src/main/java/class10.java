@@ -1,186 +1,196 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("r")
+@ObfuscatedName("g")
 public final class class10 extends class9 {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1864000131
-   )
-   @Export("canvasHeight")
-   protected static int canvasHeight;
-   @ObfuscatedName("iu")
-   @ObfuscatedGetter(
-      intValue = -2001195991
-   )
-   @Export("plane")
-   static int plane;
-   @ObfuscatedName("gp")
-   @ObfuscatedGetter(
-      intValue = -1467917035
-   )
-   @Export("cameraPitch")
-   static int cameraPitch;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 344777515
+      intValue = 885832765
    )
    final int field249;
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -781544715
-   )
-   final int field243;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1824126255
-   )
-   final int field241;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1331369649
-   )
-   final int field245;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -51412327
-   )
-   final int field242;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -130304675
-   )
-   final int field246;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -788753823
+      intValue = -1689581941
    )
    final int field240;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -95628779
+   )
+   final int field241;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 684743171
+   )
+   final int field243;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 106170877
+   )
+   final int field242;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 468954469
+   )
+   final int field245;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 197575781
+   )
+   final int field250;
 
    @ObfuscatedSignature(
-      signature = "(Leo;IIII)V"
+      signature = "(Lev;IIII)V"
    )
    class10(Model var1, int var2, int var3, int var4, int var5) {
-      this.field249 = var2 + var1.field1896 - var1.field1913;
-      this.field241 = var3 + var1.field1911 - var1.field1917;
-      this.field242 = var4 + var1.field1912 - var1.field1901;
-      this.field243 = var2 + var1.field1913 + var1.field1896;
-      this.field245 = var3 + var1.field1917 + var1.field1911;
-      this.field246 = var4 + var1.field1912 + var1.field1901;
-      this.field240 = var5;
+      this.field249 = var2 + var1.field1925 - var1.field1906;
+      this.field241 = var3 + var1.field1953 - var1.field1928;
+      this.field242 = var4 + var1.field1926 - var1.field1929;
+      this.field240 = var2 + var1.field1906 + var1.field1925;
+      this.field243 = var3 + var1.field1953 + var1.field1928;
+      this.field245 = var4 + var1.field1929 + var1.field1926;
+      this.field250 = var5;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-23"
+      signature = "(I)V",
+      garbageValue = "-1775908210"
    )
-   public final void vmethod49() {
+   final void vmethod55() {
       for(int var4 = 0; var4 < 8; ++var4) {
-         int var1 = (var4 & 1) == 0?this.field249:this.field243;
-         int var2 = (var4 & 2) == 0?this.field241:this.field245;
-         int var3 = (var4 & 4) == 0?this.field242:this.field246;
+         int var1 = (var4 & 1) == 0?this.field249:this.field240;
+         int var2 = (var4 & 2) == 0?this.field241:this.field243;
+         int var3 = (var4 & 4) == 0?this.field242:this.field245;
          if((var4 & 1) == 0) {
-            class207.method3821(var1, var2, var3, this.field243, var2, var3, this.field240);
+            XGrandExchangeOffer.method113(var1, var2, var3, this.field240, var2, var3, this.field250);
          }
 
          if((var4 & 2) == 0) {
-            class207.method3821(var1, var2, var3, var1, this.field245, var3, this.field240);
+            XGrandExchangeOffer.method113(var1, var2, var3, var1, this.field243, var3, this.field250);
          }
 
          if((var4 & 4) == 0) {
-            class207.method3821(var1, var2, var3, var1, var2, this.field246, this.field240);
+            XGrandExchangeOffer.method113(var1, var2, var3, var1, var2, this.field245, this.field250);
          }
       }
 
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("gz")
    @ObfuscatedSignature(
-      signature = "(IB)Lic;",
-      garbageValue = "56"
+      signature = "(B)I",
+      garbageValue = "-14"
    )
-   @Export("getItemDefinition")
-   public static ItemComposition getItemDefinition(int var0) {
-      ItemComposition var1 = (ItemComposition)ItemComposition.items.get((long)var0);
-      if(var1 != null) {
-         return var1;
+   static int method52() {
+      return Client.isResized?2:1;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Lim;Lim;I)V",
+      garbageValue = "2035834798"
+   )
+   public static void method54(IndexDataBase var0, IndexDataBase var1) {
+      class140.field2086 = var0;
+      NPCComposition.field3557 = var1;
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-467691730"
+   )
+   static void method50() {
+      class92.username = class92.username.trim();
+      if(class92.username.length() == 0) {
+         PendingSpawn.method1526("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
       } else {
-         byte[] var2 = InvType.item_ref.getConfigData(10, var0);
-         var1 = new ItemComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.loadBuffer(new Buffer(var2));
+         long var1 = class2.method3();
+         int var0;
+         if(var1 == 0L) {
+            var0 = 5;
+         } else {
+            var0 = Parameters.method4905(var1, class92.username);
          }
 
-         var1.post();
-         if(var1.notedTemplate != -1) {
-            var1.method4470(getItemDefinition(var1.notedTemplate), getItemDefinition(var1.note));
+         switch(var0) {
+         case 2:
+            PendingSpawn.method1526("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+            class92.loginIndex = 6;
+            break;
+         case 3:
+            PendingSpawn.method1526("", "Error connecting to server.", "");
+            break;
+         case 4:
+            PendingSpawn.method1526("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
+            break;
+         case 5:
+            PendingSpawn.method1526("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
+            break;
+         case 6:
+            PendingSpawn.method1526("", "Error connecting to server.", "");
+            break;
+         case 7:
+            PendingSpawn.method1526("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
          }
 
-         if(var1.notedId != -1) {
-            var1.method4479(getItemDefinition(var1.notedId), getItemDefinition(var1.unnotedId));
-         }
-
-         if(var1.field3492 != -1) {
-            var1.method4447(getItemDefinition(var1.field3492), getItemDefinition(var1.field3516));
-         }
-
-         if(!IndexFile.isMembersWorld && var1.isMembers) {
-            var1.name = "Members object";
-            var1.field3513 = false;
-            var1.groundActions = null;
-            var1.inventoryActions = null;
-            var1.team = -1;
-            var1.field3511 = 0;
-            if(var1.field3512 != null) {
-               boolean var3 = false;
-
-               for(Node var4 = var1.field3512.getHead(); var4 != null; var4 = var1.field3512.getTail()) {
-                  class251 var5 = Varbit.method4309((int)var4.hash);
-                  if(var5.field3361) {
-                     var4.unlink();
-                  } else {
-                     var3 = true;
-                  }
-               }
-
-               if(!var3) {
-                  var1.field3512 = null;
-               }
-            }
-         }
-
-         ItemComposition.items.put(var1, (long)var0);
-         return var1;
       }
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("gu")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "0"
+      signature = "(IIIIIII)V",
+      garbageValue = "-311503497"
    )
-   static void method51() {
-      FileOnDisk var0 = null;
-
-      try {
-         var0 = WallObject.getPreferencesFile("", class98.field1497.field3159, true);
-         Buffer var1 = class34.preferences.serialize();
-         var0.write(var1.payload, 0, var1.offset);
-      } catch (Exception var3) {
-         ;
+   static final void method56(int var0, int var1, int var2, int var3, int var4, int var5) {
+      int var6 = 2048 - var3 & 2047;
+      int var7 = 2048 - var4 & 2047;
+      int var8 = 0;
+      int var9 = 0;
+      int var10 = var5;
+      int var11;
+      int var12;
+      int var13;
+      if(var6 != 0) {
+         var11 = Graphics3D.SINE[var6];
+         var12 = Graphics3D.COSINE[var6];
+         var13 = var12 * var9 - var11 * var5 >> 16;
+         var10 = var11 * var9 + var5 * var12 >> 16;
+         var9 = var13;
       }
 
-      try {
-         if(var0 != null) {
-            var0.close();
-         }
-      } catch (Exception var2) {
-         ;
+      if(var7 != 0) {
+         var11 = Graphics3D.SINE[var7];
+         var12 = Graphics3D.COSINE[var7];
+         var13 = var11 * var10 + var8 * var12 >> 16;
+         var10 = var10 * var12 - var11 * var8 >> 16;
+         var8 = var13;
       }
 
+      class89.cameraX = var0 - var8;
+      WallObject.cameraZ = var1 - var9;
+      KeyFocusListener.cameraY = var2 - var10;
+      Client.cameraPitch = var3;
+      ScriptState.cameraYaw = var4;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(CI)C",
+      garbageValue = "1072895559"
+   )
+   public static char method49(char var0) {
+      return (char)(var0 == 198?'E':(var0 == 230?'e':(var0 == 223?'s':(var0 == 338?'E':(var0 == 339?'e':'\u0000')))));
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "106"
+   )
+   public static int method53() {
+      return ++MouseInput.mouseIdleTicks - 1;
    }
 }

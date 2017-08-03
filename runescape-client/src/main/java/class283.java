@@ -2,56 +2,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jm")
+@ObfuscatedName("jk")
 public enum class283 implements RSEnum {
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Ljm;"
+      signature = "Ljk;"
    )
    field3755(0, 0),
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Ljm;"
+      signature = "Ljk;"
    )
-   field3752(1, 1),
-   @ObfuscatedName("i")
+   field3749(1, 1),
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Ljm;"
+      signature = "Ljk;"
    )
-   field3753(2, 2),
-   @ObfuscatedName("u")
+   field3750(2, 2),
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Ljm;"
+      signature = "Ljk;"
    )
-   field3756(3, 3),
-   @ObfuscatedName("g")
+   field3751(3, 3),
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Ljm;"
+      signature = "Ljk;"
    )
    field3754(4, 4);
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1610941511
+      intValue = 2103577687
    )
-   public final int field3751;
-   @ObfuscatedName("s")
+   public final int field3753;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 2097204823
+      intValue = -818564945
    )
-   final int field3757;
+   final int field3756;
 
    class283(int var3, int var4) {
-      this.field3751 = var3;
-      this.field3757 = var4;
+      this.field3753 = var3;
+      this.field3756 = var4;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1443879177"
+      garbageValue = "-1661971028"
    )
    public int rsOrdinal() {
-      return this.field3757;
+      return this.field3756;
    }
 }

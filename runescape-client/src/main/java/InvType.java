@@ -4,65 +4,54 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("if")
+@ObfuscatedName("ii")
 @Implements("InvType")
 public class InvType extends CacheableNode {
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgq;"
+      signature = "Lgg;"
    )
-   public static NodeCache field3249;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   @Export("item_ref")
-   public static IndexDataBase item_ref;
-   @ObfuscatedName("qc")
-   @ObfuscatedSignature(
-      signature = "Lh;"
-   )
-   static class13 field3251;
-   @ObfuscatedName("i")
+   static NodeCache field3265;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 2038853075
+      intValue = 600511317
    )
-   public int field3248;
+   public int field3264;
 
    static {
-      field3249 = new NodeCache(64);
+      field3265 = new NodeCache(64);
    }
 
-   public InvType() {
-      this.field3248 = 0;
+   InvType() {
+      this.field3264 = 0;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lfp;IB)V",
-      garbageValue = "11"
+      signature = "(Lfw;IB)V",
+      garbageValue = "43"
    )
-   void method4173(Buffer var1, int var2) {
+   void method4250(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3248 = var1.readUnsignedShort();
+         this.field3264 = var1.readUnsignedShort();
       }
 
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lfp;B)V",
-      garbageValue = "-82"
+      signature = "(Lfw;I)V",
+      garbageValue = "-1883446509"
    )
    @Export("decode")
-   public void decode(Buffer var1) {
+   void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4173(var1, var2);
+         this.method4250(var1, var2);
       }
    }
 }

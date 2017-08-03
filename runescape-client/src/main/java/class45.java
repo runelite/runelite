@@ -1,107 +1,95 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aa")
+@ObfuscatedName("ak")
 public class class45 extends class28 {
-   @ObfuscatedName("z")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -828985169
+      intValue = -115352407
    )
-   @Export("canvasWidth")
-   public static int canvasWidth;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1084059471
-   )
-   static int field587;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -569688479
-   )
-   int field584;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -144957381
-   )
-   int field589;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 376404815
-   )
-   int field585;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 723245069
-   )
-   int field586;
-
-   @ObfuscatedName("al")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1646991287"
-   )
-   int method611() {
-      return this.field585;
-   }
-
+   int field553;
    @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "-2060605761"
+   @ObfuscatedGetter(
+      intValue = 2087375717
    )
-   boolean method608(int var1, int var2) {
-      return var1 < this.field585 * 8?false:(var2 < this.field586 * 8?false:(var1 >= this.field585 * 8 + 8?false:var2 < 8 + this.field586 * 8));
-   }
+   int field557;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1563995373
+   )
+   int field554;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -560055171
+   )
+   int field556;
 
-   @ObfuscatedName("ab")
+   @ObfuscatedName("ag")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-271406584"
+      garbageValue = "-469819449"
    )
-   int method609() {
-      return this.field586;
+   int method650() {
+      return this.field554;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lfp;Lfp;I)V",
-      garbageValue = "414887534"
+      signature = "(IIS)Z",
+      garbageValue = "300"
    )
-   void method617(Buffer var1, Buffer var2) {
+   boolean method645(int var1, int var2) {
+      return var1 < this.field554 * 8?false:(var2 < this.field556 * 8?false:(var1 >= this.field554 * 8 + 8?false:var2 < this.field556 * 8 + 8));
+   }
+
+   @ObfuscatedName("ar")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "2075149772"
+   )
+   int method643() {
+      return this.field556;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Lfw;Lfw;I)V",
+      garbageValue = "1198543138"
+   )
+   void method644(Buffer var1, Buffer var2) {
       int var3 = var2.readUnsignedByte();
-      if(var3 != class36.field492.field500) {
+      if(var3 != class36.field477.field478) {
          throw new IllegalStateException("");
       } else {
-         super.field396 = var2.readUnsignedByte();
-         super.field405 = var2.readUnsignedByte();
-         super.field403 = var2.readUnsignedShort();
-         super.field393 = var2.readUnsignedShort();
-         this.field589 = var2.readUnsignedByte();
-         this.field584 = var2.readUnsignedByte();
-         super.field394 = var2.readUnsignedShort();
-         super.field392 = var2.readUnsignedShort();
-         this.field585 = var2.readUnsignedByte();
-         this.field586 = var2.readUnsignedByte();
-         super.field405 = Math.min(super.field405, 4);
-         super.field398 = new short[1][64][64];
-         super.field399 = new short[super.field405][64][64];
-         super.field400 = new byte[super.field405][64][64];
-         super.field401 = new byte[super.field405][64][64];
-         super.field397 = new class31[super.field405][64][64][];
+         super.field383 = var2.readUnsignedByte();
+         super.field382 = var2.readUnsignedByte();
+         super.field384 = var2.readUnsignedShort();
+         super.field380 = var2.readUnsignedShort();
+         this.field553 = var2.readUnsignedByte();
+         this.field557 = var2.readUnsignedByte();
+         super.field381 = var2.readUnsignedShort();
+         super.field390 = var2.readUnsignedShort();
+         this.field554 = var2.readUnsignedByte();
+         this.field556 = var2.readUnsignedByte();
+         super.field382 = Math.min(super.field382, 4);
+         super.field385 = new short[1][64][64];
+         super.field386 = new short[super.field382][64][64];
+         super.field388 = new byte[super.field382][64][64];
+         super.field387 = new byte[super.field382][64][64];
+         super.field389 = new class31[super.field382][64][64][];
          var3 = var1.readUnsignedByte();
-         if(var3 != class35.field482.field481) {
+         if(var3 != class35.field469.field470) {
             throw new IllegalStateException("");
          } else {
             int var4 = var1.readUnsignedByte();
             int var5 = var1.readUnsignedByte();
             int var6 = var1.readUnsignedByte();
             int var7 = var1.readUnsignedByte();
-            if(var4 == super.field394 && var5 == super.field392 && var6 == this.field585 && var7 == this.field586) {
+            if(var4 == super.field381 && var5 == super.field390 && var6 == this.field554 && var7 == this.field556) {
                for(int var8 = 0; var8 < 8; ++var8) {
                   for(int var9 = 0; var9 < 8; ++var9) {
-                     this.method224(this.field585 * 8 + var8, this.field586 * 8 + var9, var1);
+                     this.method212(this.field554 * 8 + var8, this.field556 * 8 + var9, var1);
                   }
                }
 
@@ -112,26 +100,22 @@ public class class45 extends class28 {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1706247622"
+      garbageValue = "1840939897"
    )
-   int method625() {
-      return this.field589;
+   int method648() {
+      return this.field553;
    }
 
-   @ObfuscatedName("av")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "823501395"
+      garbageValue = "-987976933"
    )
-   int method606() {
-      return this.field584;
-   }
-
-   public int hashCode() {
-      return super.field394 | super.field392 << 8 | this.field585 << 16 | this.field586 << 24;
+   int method649() {
+      return this.field557;
    }
 
    public boolean equals(Object var1) {
@@ -139,7 +123,11 @@ public class class45 extends class28 {
          return false;
       } else {
          class45 var2 = (class45)var1;
-         return super.field394 == var2.field394 && var2.field392 == super.field392?this.field585 == var2.field585 && this.field586 == var2.field586:false;
+         return var2.field381 == super.field381 && super.field390 == var2.field390?this.field554 == var2.field554 && var2.field556 == this.field556:false;
       }
+   }
+
+   public int hashCode() {
+      return super.field381 | super.field390 << 8 | this.field554 << 16 | this.field556 << 24;
    }
 }

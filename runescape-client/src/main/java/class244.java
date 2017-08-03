@@ -1,72 +1,89 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ii")
+@ObfuscatedName("ig")
 public class class244 extends CacheableNode {
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgq;"
+      signature = "Lgg;"
    )
-   public static NodeCache field3292;
-   @ObfuscatedName("p")
-   public static short[] field3296;
-   @ObfuscatedName("c")
+   static NodeCache field3303;
+   @ObfuscatedName("ji")
    @ObfuscatedSignature(
-      signature = "Lip;"
+      signature = "Lhn;"
    )
-   public static IndexDataBase field3293;
-   @ObfuscatedName("i")
-   public boolean field3294;
+   static Widget field3302;
+   @ObfuscatedName("x")
+   public boolean field3301;
 
    static {
-      field3292 = new NodeCache(64);
+      field3303 = new NodeCache(64);
    }
 
-   public class244() {
-      this.field3294 = false;
+   class244() {
+      this.field3301 = false;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lfp;IB)V",
-      garbageValue = "4"
+      signature = "(Lfw;II)V",
+      garbageValue = "-1230219673"
    )
-   void method4217(Buffer var1, int var2) {
+   void method4301(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3294 = true;
+         this.field3301 = true;
       }
 
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lfp;B)V",
-      garbageValue = "-23"
+      signature = "(Lfw;I)V",
+      garbageValue = "1723477205"
    )
-   public void method4215(Buffer var1) {
+   void method4300(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4217(var1, var2);
+         this.method4301(var1, var2);
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "2105124159"
+      signature = "(Lim;I)V",
+      garbageValue = "1849099308"
    )
-   public static int method4222(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
+   public static void method4307(IndexDataBase var0) {
+      class95.field1464 = var0;
+   }
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + var0.charAt(var3);
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "15"
+   )
+   static final int method4299(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
       }
 
-      return var2;
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = (var1 / 32 << 7) + var2 / 2 + (var0 / 4 << 10);
+      return var3;
    }
 }

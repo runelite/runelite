@@ -1,132 +1,92 @@
+import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ba")
+@ObfuscatedName("bw")
 public class class64 {
-   @ObfuscatedName("n")
-   @Export("userHome")
-   static String userHome;
-   @ObfuscatedName("g")
+   @ObfuscatedName("ca")
    @ObfuscatedSignature(
-      signature = "[Lcw;"
+      signature = "Lib;"
    )
-   @Export("worldList")
-   static World[] worldList;
+   @Export("indexSoundEffects")
+   static IndexData indexSoundEffects;
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "3"
+      signature = "([BB)Lji;",
+      garbageValue = "-63"
    )
-   public static void method1033() {
-      Sequence.sequences.reset();
-      Sequence.skeletons.reset();
-   }
+   public static final SpritePixels method1103(byte[] var0) {
+      BufferedImage var1 = null;
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(ILcv;ZB)I",
-      garbageValue = "9"
-   )
-   static int method1035(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 >= 2000) {
-         var0 -= 1000;
-         var3 = class239.method4167(class83.intStack[--BufferProvider.intStackSize]);
-      } else {
-         var3 = var2?class48.field614:FaceNormal.field2099;
+      try {
+         var1 = ImageIO.read(new ByteArrayInputStream(var0));
+         int var2 = var1.getWidth();
+         int var3 = var1.getHeight();
+         int[] var4 = new int[var2 * var3];
+         PixelGrabber var5 = new PixelGrabber(var1, 0, 0, var2, var3, var4, 0, var2);
+         var5.grabPixels();
+         return new SpritePixels(var4, var2, var3);
+      } catch (IOException var7) {
+         ;
+      } catch (InterruptedException var8) {
+         ;
       }
 
-      int var4;
-      if(var0 == 1300) {
-         var4 = class83.intStack[--BufferProvider.intStackSize] - 1;
-         if(var4 >= 0 && var4 <= 9) {
-            var3.method3921(var4, class83.scriptStringStack[--class83.scriptStringStackSize]);
-            return 1;
-         } else {
-            --class83.scriptStringStackSize;
-            return 1;
-         }
-      } else if(var0 == 1301) {
-         BufferProvider.intStackSize -= 2;
-         var4 = class83.intStack[BufferProvider.intStackSize];
-         int var5 = class83.intStack[BufferProvider.intStackSize + 1];
-         var3.dragParent = CollisionData.method2946(var4, var5);
-         return 1;
-      } else if(var0 == 1302) {
-         var3.field2712 = class83.intStack[--BufferProvider.intStackSize] == 1;
-         return 1;
-      } else if(var0 == 1303) {
-         var3.field2693 = class83.intStack[--BufferProvider.intStackSize];
-         return 1;
-      } else if(var0 == 1304) {
-         var3.field2701 = class83.intStack[--BufferProvider.intStackSize];
-         return 1;
-      } else if(var0 == 1305) {
-         var3.name = class83.scriptStringStack[--class83.scriptStringStackSize];
-         return 1;
-      } else if(var0 == 1306) {
-         var3.selectedAction = class83.scriptStringStack[--class83.scriptStringStackSize];
-         return 1;
-      } else if(var0 == 1307) {
-         var3.actions = null;
-         return 1;
+      return new SpritePixels(0, 0);
+   }
+
+   @ObfuscatedName("jd")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)Z",
+      garbageValue = "1807291556"
+   )
+   @Export("isIgnored")
+   static boolean isIgnored(String var0) {
+      if(var0 == null) {
+         return false;
       } else {
-         return 2;
-      }
-   }
+         String var1 = class9.method48(var0, MouseInput.field715);
 
-   @ObfuscatedName("gu")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "1158056244"
-   )
-   static void method1034(int var0, int var1) {
-      Client.secretPacketBuffer1.putOpcode(189);
-      Client.secretPacketBuffer1.putLEInt(var1);
-      Client.secretPacketBuffer1.putLEShortA(var0);
-   }
-
-   @ObfuscatedName("ix")
-   @ObfuscatedSignature(
-      signature = "(Lho;III)V",
-      garbageValue = "2080574126"
-   )
-   static final void method1036(Widget var0, int var1, int var2) {
-      if(Client.field1077 == null && !Client.isMenuOpen) {
-         if(var0 != null) {
-            Widget var4 = class14.method83(var0);
-            if(var4 == null) {
-               var4 = var0.dragParent;
+         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
+            Ignore var3 = Client.ignores[var2];
+            if(var1.equalsIgnoreCase(class9.method48(var3.name, MouseInput.field715))) {
+               return true;
             }
 
-            if(var4 != null) {
-               Client.field1077 = var0;
-               var4 = class14.method83(var0);
-               if(var4 == null) {
-                  var4 = var0.dragParent;
-               }
-
-               Client.field1147 = var4;
-               Client.field1079 = var1;
-               Client.field1160 = var2;
-               class261.field3610 = 0;
-               Client.field1088 = false;
-               int var5 = class37.method492();
-               if(var5 != -1) {
-                  class54.field669 = new class89();
-                  class54.field669.field1379 = Client.menuActionParams0[var5];
-                  class54.field669.field1377 = Client.menuActionParams1[var5];
-                  class54.field669.field1378 = Client.menuTypes[var5];
-                  class54.field669.field1380 = Client.menuIdentifiers[var5];
-                  class54.field669.field1381 = Client.menuOptions[var5];
-               }
-
-               return;
+            if(var1.equalsIgnoreCase(class9.method48(var3.previousName, MouseInput.field715))) {
+               return true;
             }
          }
 
+         return false;
       }
+   }
+
+   @ObfuscatedName("jm")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;II)V",
+      garbageValue = "762171443"
+   )
+   static final void method1102(String var0, int var1) {
+      Client.secretPacketBuffer1.putOpcode(251);
+      Client.secretPacketBuffer1.putByte(VertexNormal.getLength(var0) + 1);
+      Client.secretPacketBuffer1.putString(var0);
+      Client.secretPacketBuffer1.method3227(var1);
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "751249002"
+   )
+   static int method1104(int var0) {
+      MessageNode var1 = (MessageNode)class98.field1494.get((long)var0);
+      return var1 == null?-1:(var1.previous == class98.field1495.field2458?-1:((MessageNode)var1.previous).id);
    }
 }

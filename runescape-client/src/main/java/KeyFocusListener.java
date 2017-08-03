@@ -1,101 +1,105 @@
+import java.awt.Component;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.net.MalformedURLException;
-import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ay")
+@ObfuscatedName("ab")
 @Implements("KeyFocusListener")
 public final class KeyFocusListener implements KeyListener, FocusListener {
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lay;"
+      signature = "Lab;"
    )
    @Export("keyboard")
-   static KeyFocusListener keyboard;
-   @ObfuscatedName("cr")
+   public static KeyFocusListener keyboard;
+   @ObfuscatedName("cw")
    @ObfuscatedGetter(
-      intValue = 1414829953
+      intValue = -103316675
    )
-   static int field639;
-   @ObfuscatedName("ce")
-   static int[] field648;
-   @ObfuscatedName("cj")
-   public static boolean[] field636;
-   @ObfuscatedName("cb")
-   static int[] field643;
+   public static int field607;
+   @ObfuscatedName("cq")
+   static int[] field594;
+   @ObfuscatedName("cf")
+   public static boolean[] field604;
+   @ObfuscatedName("cy")
+   public static int[] field605;
    @ObfuscatedName("cz")
    @ObfuscatedGetter(
-      intValue = 1401585691
+      intValue = 2025951343
    )
-   static int field644;
-   @ObfuscatedName("cn")
+   public static int field606;
+   @ObfuscatedName("ck")
    @ObfuscatedGetter(
-      intValue = -884486673
+      intValue = 508458877
    )
-   static int field645;
-   @ObfuscatedName("cu")
-   static char[] field629;
-   @ObfuscatedName("cs")
+   public static int field597;
+   @ObfuscatedName("ca")
    @ObfuscatedGetter(
-      intValue = -1416652927
+      intValue = -2094195467
    )
-   static int field638;
-   @ObfuscatedName("cg")
-   static int[] field641;
-   @ObfuscatedName("cl")
-   public static int[] field642;
+   public static int field612;
+   @ObfuscatedName("cb")
+   static char[] field608;
+   @ObfuscatedName("co")
+   static int[] field616;
+   @ObfuscatedName("ce")
+   public static int[] field617;
    @ObfuscatedName("cd")
    @ObfuscatedGetter(
-      intValue = -1748625475
-   )
-   public static int field627;
-   @ObfuscatedName("cv")
-   @ObfuscatedGetter(
-      intValue = 1115770065
+      intValue = 1426752629
    )
    @Export("keyboardIdleTicks")
-   static volatile int keyboardIdleTicks;
-   @ObfuscatedName("co")
+   public static volatile int keyboardIdleTicks;
+   @ObfuscatedName("cx")
    @ObfuscatedGetter(
-      intValue = -1559801817
+      intValue = 376484171
    )
-   static int field646;
-   @ObfuscatedName("ni")
+   public static int field611;
+   @ObfuscatedName("cr")
+   @ObfuscatedGetter(
+      intValue = 318111533
+   )
+   public static int field614;
+   @ObfuscatedName("ow")
    @ObfuscatedSignature(
-      signature = "[Lbf;"
+      signature = "Lji;"
    )
-   @Export("clanMembers")
-   static XClanMember[] clanMembers;
+   static SpritePixels field619;
+   @ObfuscatedName("gj")
+   @ObfuscatedGetter(
+      intValue = 1721700547
+   )
+   @Export("cameraY")
+   static int cameraY;
 
    static {
       keyboard = new KeyFocusListener();
-      field636 = new boolean[112];
-      field643 = new int[128];
-      field644 = 0;
-      field639 = 0;
-      field629 = new char[128];
-      field641 = new int[128];
-      field642 = new int[128];
-      field627 = 0;
-      field638 = 0;
-      field645 = 0;
-      field646 = 0;
+      field604 = new boolean[112];
+      field605 = new int[128];
+      field606 = 0;
+      field607 = 0;
+      field608 = new char[128];
+      field616 = new int[128];
+      field617 = new int[128];
+      field611 = 0;
+      field612 = 0;
+      field597 = 0;
+      field614 = 0;
       keyboardIdleTicks = 0;
-      field648 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+      field594 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
    }
 
    public final synchronized void keyPressed(KeyEvent var1) {
       if(keyboard != null) {
          int var2 = var1.getKeyCode();
-         if(var2 >= 0 && var2 < field648.length) {
-            var2 = field648[var2];
+         if(var2 >= 0 && var2 < field594.length) {
+            var2 = field594[var2];
             if((var2 & 128) != 0) {
                var2 = -1;
             }
@@ -103,21 +107,21 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
             var2 = -1;
          }
 
-         if(field639 >= 0 && var2 >= 0) {
-            field643[field639] = var2;
-            field639 = field639 + 1 & 127;
-            if(field644 == field639) {
-               field639 = -1;
+         if(field607 >= 0 && var2 >= 0) {
+            field605[field607] = var2;
+            field607 = field607 + 1 & 127;
+            if(field606 == field607) {
+               field607 = -1;
             }
          }
 
          int var3;
          if(var2 >= 0) {
-            var3 = field645 + 1 & 127;
-            if(var3 != field638) {
-               field641[field645] = var2;
-               field629[field645] = 0;
-               field645 = var3;
+            var3 = field597 + 1 & 127;
+            if(var3 != field612) {
+               field616[field597] = var2;
+               field608[field597] = 0;
+               field597 = var3;
             }
          }
 
@@ -132,17 +136,33 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    public final synchronized void keyReleased(KeyEvent var1) {
       if(keyboard != null) {
          int var2 = var1.getKeyCode();
-         if(var2 >= 0 && var2 < field648.length) {
-            var2 = field648[var2] & -129;
+         if(var2 >= 0 && var2 < field594.length) {
+            var2 = field594[var2] & -129;
          } else {
             var2 = -1;
          }
 
-         if(field639 >= 0 && var2 >= 0) {
-            field643[field639] = ~var2;
-            field639 = field639 + 1 & 127;
-            if(field644 == field639) {
-               field639 = -1;
+         if(field607 >= 0 && var2 >= 0) {
+            field605[field607] = ~var2;
+            field607 = field607 + 1 & 127;
+            if(field607 == field606) {
+               field607 = -1;
+            }
+         }
+      }
+
+      var1.consume();
+   }
+
+   public final void keyTyped(KeyEvent var1) {
+      if(keyboard != null) {
+         char var2 = var1.getKeyChar();
+         if(var2 != 0 && var2 != '\uffff' && Script.method1865(var2)) {
+            int var3 = field597 + 1 & 127;
+            if(var3 != field612) {
+               field616[field597] = -1;
+               field608[field597] = var2;
+               field597 = var3;
             }
          }
       }
@@ -152,136 +172,174 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
 
    public final synchronized void focusLost(FocusEvent var1) {
       if(keyboard != null) {
-         field639 = -1;
+         field607 = -1;
       }
 
-   }
-
-   public final void keyTyped(KeyEvent var1) {
-      if(keyboard != null) {
-         char var2 = var1.getKeyChar();
-         if(var2 != 0 && var2 != '\uffff') {
-            boolean var3;
-            if(var2 > 0 && var2 < 128 || var2 >= 160 && var2 <= 255) {
-               var3 = true;
-            } else {
-               label58: {
-                  if(var2 != 0) {
-                     char[] var7 = class266.field3645;
-
-                     for(int var5 = 0; var5 < var7.length; ++var5) {
-                        char var6 = var7[var5];
-                        if(var2 == var6) {
-                           var3 = true;
-                           break label58;
-                        }
-                     }
-                  }
-
-                  var3 = false;
-               }
-            }
-
-            if(var3) {
-               int var4 = field645 + 1 & 127;
-               if(var4 != field638) {
-                  field641[field645] = -1;
-                  field629[field645] = var2;
-                  field645 = var4;
-               }
-            }
-         }
-      }
-
-      var1.consume();
    }
 
    public final void focusGained(FocusEvent var1) {
    }
 
-   @ObfuscatedName("it")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)Z",
-      garbageValue = "8"
+      signature = "(Ljava/awt/Component;I)V",
+      garbageValue = "1910067055"
    )
-   @Export("isIgnored")
-   static boolean isIgnored(String var0) {
-      if(var0 == null) {
-         return false;
+   static void method786(Component var0) {
+      var0.removeMouseListener(MouseInput.mouse);
+      var0.removeMouseMotionListener(MouseInput.mouse);
+      var0.removeFocusListener(MouseInput.mouse);
+      MouseInput.field701 = 0;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Lfy;II)V",
+      garbageValue = "1159429005"
+   )
+   static final void method784(PacketBuffer var0, int var1) {
+      int var2 = var0.offset;
+      class96.field1477 = 0;
+      int var3 = 0;
+      var0.bitAccess();
+
+      int var4;
+      int var5;
+      int var6;
+      for(var4 = 0; var4 < class96.field1470; ++var4) {
+         var5 = class96.field1468[var4];
+         if((class96.field1471[var5] & 1) == 0) {
+            if(var3 > 0) {
+               --var3;
+               class96.field1471[var5] = (byte)(class96.field1471[var5] | 2);
+            } else {
+               var6 = var0.getBits(1);
+               if(var6 == 0) {
+                  var3 = class238.method4236(var0);
+                  class96.field1471[var5] = (byte)(class96.field1471[var5] | 2);
+               } else {
+                  class1.decodeMovement(var0, var5);
+               }
+            }
+         }
+      }
+
+      var0.byteAccess();
+      if(var3 != 0) {
+         throw new RuntimeException();
       } else {
-         String var1 = class215.method3908(var0, class22.field331);
+         var0.bitAccess();
 
-         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
-            Ignore var3 = Client.ignores[var2];
-            if(var1.equalsIgnoreCase(class215.method3908(var3.name, class22.field331))) {
-               return true;
-            }
-
-            if(var1.equalsIgnoreCase(class215.method3908(var3.previousName, class22.field331))) {
-               return true;
-            }
-         }
-
-         return false;
-      }
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(Lip;Lip;I)V",
-      garbageValue = "-1424018737"
-   )
-   public static void method738(IndexDataBase var0, IndexDataBase var1) {
-      NPCComposition.field3544 = var0;
-      class140.field2081 = var1;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "29"
-   )
-   static final void method739(int var0, int var1, int var2, int var3) {
-      for(int var4 = var1; var4 <= var3 + var1; ++var4) {
-         for(int var5 = var0; var5 <= var0 + var2; ++var5) {
-            if(var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
-               class134.field1949[0][var5][var4] = 127;
-               if(var0 == var5 && var5 > 0) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5 - 1][var4];
-               }
-
-               if(var0 + var2 == var5 && var5 < 103) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5 + 1][var4];
-               }
-
-               if(var4 == var1 && var4 > 0) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5][var4 - 1];
-               }
-
-               if(var4 == var3 + var1 && var4 < 103) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5][var4 + 1];
+         for(var4 = 0; var4 < class96.field1470; ++var4) {
+            var5 = class96.field1468[var4];
+            if((class96.field1471[var5] & 1) != 0) {
+               if(var3 > 0) {
+                  --var3;
+                  class96.field1471[var5] = (byte)(class96.field1471[var5] | 2);
+               } else {
+                  var6 = var0.getBits(1);
+                  if(var6 == 0) {
+                     var3 = class238.method4236(var0);
+                     class96.field1471[var5] = (byte)(class96.field1471[var5] | 2);
+                  } else {
+                     class1.decodeMovement(var0, var5);
+                  }
                }
             }
          }
-      }
 
-   }
+         var0.byteAccess();
+         if(var3 != 0) {
+            throw new RuntimeException();
+         } else {
+            var0.bitAccess();
 
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)Z",
-      garbageValue = "123"
-   )
-   static boolean method737(String var0) {
-      if(var0 == null) {
-         return false;
-      } else {
-         try {
-            new URL(var0);
-            return true;
-         } catch (MalformedURLException var2) {
-            return false;
+            for(var4 = 0; var4 < class96.field1472; ++var4) {
+               var5 = class96.field1480[var4];
+               if((class96.field1471[var5] & 1) != 0) {
+                  if(var3 > 0) {
+                     --var3;
+                     class96.field1471[var5] = (byte)(class96.field1471[var5] | 2);
+                  } else {
+                     var6 = var0.getBits(1);
+                     if(var6 == 0) {
+                        var3 = class238.method4236(var0);
+                        class96.field1471[var5] = (byte)(class96.field1471[var5] | 2);
+                     } else if(class88.decodeRegionHash(var0, var5)) {
+                        class96.field1471[var5] = (byte)(class96.field1471[var5] | 2);
+                     }
+                  }
+               }
+            }
+
+            var0.byteAccess();
+            if(var3 != 0) {
+               throw new RuntimeException();
+            } else {
+               var0.bitAccess();
+
+               for(var4 = 0; var4 < class96.field1472; ++var4) {
+                  var5 = class96.field1480[var4];
+                  if((class96.field1471[var5] & 1) == 0) {
+                     if(var3 > 0) {
+                        --var3;
+                        class96.field1471[var5] = (byte)(class96.field1471[var5] | 2);
+                     } else {
+                        var6 = var0.getBits(1);
+                        if(var6 == 0) {
+                           var3 = class238.method4236(var0);
+                           class96.field1471[var5] = (byte)(class96.field1471[var5] | 2);
+                        } else if(class88.decodeRegionHash(var0, var5)) {
+                           class96.field1471[var5] = (byte)(class96.field1471[var5] | 2);
+                        }
+                     }
+                  }
+               }
+
+               var0.byteAccess();
+               if(var3 != 0) {
+                  throw new RuntimeException();
+               } else {
+                  class96.field1470 = 0;
+                  class96.field1472 = 0;
+
+                  Player var7;
+                  for(var4 = 1; var4 < 2048; ++var4) {
+                     class96.field1471[var4] = (byte)(class96.field1471[var4] >> 1);
+                     var7 = Client.cachedPlayers[var4];
+                     if(var7 != null) {
+                        class96.field1468[++class96.field1470 - 1] = var4;
+                     } else {
+                        class96.field1480[++class96.field1472 - 1] = var4;
+                     }
+                  }
+
+                  for(var3 = 0; var3 < class96.field1477; ++var3) {
+                     var4 = class96.field1478[var3];
+                     var7 = Client.cachedPlayers[var4];
+                     var6 = var0.readUnsignedByte();
+                     if((var6 & 4) != 0) {
+                        var6 += var0.readUnsignedByte() << 8;
+                     }
+
+                     class82.method1618(var0, var4, var7, var6);
+                  }
+
+                  if(var0.offset - var2 != var1) {
+                     throw new RuntimeException(var0.offset - var2 + " " + var1);
+                  }
+               }
+            }
          }
       }
+   }
+
+   @ObfuscatedName("jb")
+   @ObfuscatedSignature(
+      signature = "(Lhn;I)Ljava/lang/String;",
+      garbageValue = "1318461698"
+   )
+   static String method760(Widget var0) {
+      return MilliTimer.method2938(class169.getWidgetConfig(var0)) == 0?null:(var0.selectedAction != null && var0.selectedAction.trim().length() != 0?var0.selectedAction:null);
    }
 }

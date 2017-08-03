@@ -1,128 +1,149 @@
+import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("by")
+@ObfuscatedName("bc")
 @Implements("ScriptEvent")
 public class ScriptEvent extends Node {
-   @ObfuscatedName("w")
+   @ObfuscatedName("as")
+   static GarbageCollectorMXBean field824;
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lhg;"
+      signature = "Lhh;"
    )
-   class219 field830;
-   @ObfuscatedName("c")
-   Object[] field831;
-   @ObfuscatedName("i")
+   class219 field819;
+   @ObfuscatedName("d")
+   Object[] field818;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lho;"
+      signature = "Lhn;"
    )
    @Export("widget")
    Widget widget;
-   @ObfuscatedName("m")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1652123197
+      intValue = 337044451
    )
-   int field837;
-   @ObfuscatedName("k")
-   String field838;
-   @ObfuscatedName("u")
+   int field813;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -566884547
+      intValue = 1376404355
    )
-   int field832;
+   int field814;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lhn;"
+   )
+   Widget field821;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1234268307
+      intValue = 601167049
    )
-   int field833;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lho;"
-   )
-   Widget field835;
+   int field820;
    @ObfuscatedName("r")
+   String field826;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1291640887
+      intValue = 1337235041
    )
-   int field839;
-   @ObfuscatedName("x")
+   int field822;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 464674339
+      intValue = 1343817259
    )
-   int field836;
-   @ObfuscatedName("p")
+   int field817;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1070708355
+      intValue = 721311099
    )
-   int field840;
-   @ObfuscatedName("o")
-   boolean field834;
+   int field810;
+   @ObfuscatedName("q")
+   boolean field811;
 
    public ScriptEvent() {
-      this.field830 = class219.field2768;
+      this.field819 = class219.field2767;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/Object;B)V",
-      garbageValue = "-121"
+      signature = "([Ljava/lang/Object;I)V",
+      garbageValue = "-2056416400"
    )
-   public void method1047(Object[] var1) {
-      this.field831 = var1;
+   public void method1115(Object[] var1) {
+      this.field818 = var1;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lhg;I)V",
-      garbageValue = "-981177936"
+      signature = "(Lhh;I)V",
+      garbageValue = "1692707346"
    )
-   public void method1048(class219 var1) {
-      this.field830 = var1;
+   public void method1116(class219 var1) {
+      this.field819 = var1;
    }
 
-   @ObfuscatedName("gx")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1654931903"
+      signature = "(IIILiv;II)V",
+      garbageValue = "1631557728"
    )
-   static final void method1046() {
-      int var0 = class37.menuX;
-      int var1 = IndexDataBase.menuY;
-      int var2 = WorldMapData.menuWidth;
-      int var3 = MilliTimer.menuHeight;
-      int var4 = 6116423;
-      Rasterizer2D.method4828(var0, var1, var2, var3, var4);
-      Rasterizer2D.method4828(var0 + 1, var1 + 1, var2 - 2, 16, 0);
-      Rasterizer2D.drawRectangle(var0 + 1, var1 + 18, var2 - 2, var3 - 19, 0);
-      Area.field3285.method4640("Choose Option", var0 + 3, var1 + 14, var4, -1);
-      int var5 = MouseInput.field730;
-      int var6 = MouseInput.field731;
-
-      int var7;
-      int var8;
-      int var9;
-      for(var7 = 0; var7 < Client.menuOptionCount; ++var7) {
-         var8 = var1 + (Client.menuOptionCount - 1 - var7) * 15 + 31;
-         var9 = 16777215;
-         if(var5 > var0 && var5 < var2 + var0 && var6 > var8 - 13 && var6 < var8 + 3) {
-            var9 = 16776960;
-         }
-
-         Area.field3285.method4640(MessageNode.method1060(var7), var0 + 3, var8, var9, 0);
+   static void method1124(int var0, int var1, int var2, ObjectComposition var3, int var4) {
+      class82 var5 = new class82();
+      var5.field1284 = var0;
+      var5.field1285 = var1 * 128;
+      var5.field1298 = var2 * 128;
+      int var6 = var3.sizeX;
+      int var7 = var3.sizeY;
+      if(var4 == 1 || var4 == 3) {
+         var6 = var3.sizeY;
+         var7 = var3.sizeX;
       }
 
-      var7 = class37.menuX;
-      var8 = IndexDataBase.menuY;
-      var9 = WorldMapData.menuWidth;
-      int var10 = MilliTimer.menuHeight;
-
-      for(int var11 = 0; var11 < Client.field1107; ++var11) {
-         if(Client.widgetPositionX[var11] + Client.widgetBoundsWidth[var11] > var7 && Client.widgetPositionX[var11] < var9 + var7 && Client.widgetPositionY[var11] + Client.widgetBoundsHeight[var11] > var8 && Client.widgetPositionY[var11] < var10 + var8) {
-            Client.field1064[var11] = true;
-         }
+      var5.field1287 = (var6 + var1) * 128;
+      var5.field1292 = (var7 + var2) * 128;
+      var5.field1290 = var3.ambientSoundId;
+      var5.field1289 = var3.field3460 * 128;
+      var5.field1297 = var3.field3461;
+      var5.field1293 = var3.field3462;
+      var5.field1294 = var3.field3449;
+      if(var3.impostorIds != null) {
+         var5.field1295 = var3;
+         var5.method1610();
       }
 
+      class82.field1286.addFront(var5);
+      if(var5.field1294 != null) {
+         var5.field1283 = var5.field1297 + (int)(Math.random() * (double)(var5.field1293 - var5.field1297));
+      }
+
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(ILcd;ZI)I",
+      garbageValue = "697926000"
+   )
+   static int method1125(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class214.field2615:class73.field851;
+      if(var0 == 1700) {
+         class83.intStack[++class83.intStackSize - 1] = var3.itemId;
+         return 1;
+      } else if(var0 == 1701) {
+         if(var3.itemId != -1) {
+            class83.intStack[++class83.intStackSize - 1] = var3.itemQuantity;
+         } else {
+            class83.intStack[++class83.intStackSize - 1] = 0;
+         }
+
+         return 1;
+      } else if(var0 == 1702) {
+         class83.intStack[++class83.intStackSize - 1] = var3.index;
+         return 1;
+      } else {
+         return 2;
+      }
    }
 }

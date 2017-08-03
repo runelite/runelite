@@ -3,40 +3,42 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fx")
+@ObfuscatedName("fc")
 @Implements("AbstractByteBuffer")
 public abstract class AbstractByteBuffer {
-   @ObfuscatedName("o")
-   static boolean field2376;
-   @ObfuscatedName("bu")
-   @ObfuscatedSignature(
-      signature = "Lhl;"
-   )
-   static BuildType field2373;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "[Ljx;"
-   )
-   @Export("titlemuteSprite")
-   static IndexedSprite[] titlemuteSprite;
+   @ObfuscatedName("q")
+   static boolean field2384;
 
    static {
-      field2376 = false;
+      field2384 = false;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)[B",
-      garbageValue = "-227926536"
+      garbageValue = "1901218247"
    )
    @Export("get")
    abstract byte[] get();
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "([BI)V",
-      garbageValue = "-834931198"
+      signature = "([BB)V",
+      garbageValue = "3"
    )
    @Export("put")
    abstract void put(byte[] var1);
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Lim;Lim;ZLjt;I)V",
+      garbageValue = "1827936438"
+   )
+   public static void method3399(IndexDataBase var0, IndexDataBase var1, boolean var2, Font var3) {
+      ItemComposition.item_ref = var0;
+      ItemComposition.field3470 = var1;
+      class37.isMembersWorld = var2;
+      class118.field1676 = ItemComposition.item_ref.fileCount(10);
+      class207.field2551 = var3;
+   }
 }

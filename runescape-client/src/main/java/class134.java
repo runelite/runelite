@@ -3,146 +3,100 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("er")
 public class class134 {
-   @ObfuscatedName("c")
-   public static boolean field1957;
+   @ObfuscatedName("d")
+   public static boolean field1973;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -804609895
+   )
+   static int field1967;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -219695799
+   )
+   static int field1964;
+   @ObfuscatedName("y")
+   static boolean field1965;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 193794875
+   )
+   public static int field1970;
+   @ObfuscatedName("u")
+   public static int[] field1971;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1117684469
+   )
+   static int field1966;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 2087106583
+   )
+   static int field1968;
+   @ObfuscatedName("fa")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   @Export("mapedge")
+   static SpritePixels mapedge;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1772774401
+      intValue = -1884481097
    )
-   public static int field1953;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -726767917
-   )
-   public static int field1948;
-   @ObfuscatedName("u")
-   public static boolean field1951;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1279648285
-   )
-   public static int field1954;
-   @ObfuscatedName("t")
-   public static int[] field1955;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 332248537
-   )
-   static int field1952;
+   static int field1972;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 298386455
+      intValue = 1684743551
    )
-   static int field1950;
-   @ObfuscatedName("x")
-   static byte[][][] field1949;
+   static int field1969;
 
    static {
-      field1957 = false;
-      field1953 = 0;
-      field1948 = 0;
-      field1951 = false;
-      field1954 = 0;
-      field1955 = new int[1000];
+      field1973 = false;
+      field1967 = 0;
+      field1964 = 0;
+      field1965 = false;
+      field1970 = 0;
+      field1971 = new int[1000];
    }
 
-   @ObfuscatedName("hd")
+   @ObfuscatedName("iy")
    @ObfuscatedSignature(
-      signature = "(Lho;IIZB)V",
-      garbageValue = "3"
+      signature = "(Lhn;III)V",
+      garbageValue = "-1362267790"
    )
-   static void method2520(Widget var0, int var1, int var2, boolean var3) {
-      int var4 = var0.width;
-      int var5 = var0.height;
-      if(var0.field2624 == 0) {
-         var0.width = var0.originalWidth;
-      } else if(var0.field2624 == 1) {
-         var0.width = var1 - var0.originalWidth;
-      } else if(var0.field2624 == 2) {
-         var0.width = var0.originalWidth * var1 >> 14;
-      }
-
-      if(var0.buttonType == 0) {
-         var0.height = var0.field2629;
-      } else if(var0.buttonType == 1) {
-         var0.height = var2 - var0.field2629;
-      } else if(var0.buttonType == 2) {
-         var0.height = var2 * var0.field2629 >> 14;
-      }
-
-      if(var0.field2624 == 4) {
-         var0.width = var0.height * var0.field2634 / var0.field2749;
-      }
-
-      if(var0.buttonType == 4) {
-         var0.height = var0.width * var0.field2749 / var0.field2634;
-      }
-
-      if(Client.field1074 && var0.type == 0) {
-         if(var0.height < 5 && var0.width < 5) {
-            var0.height = 5;
-            var0.width = 5;
-         } else {
-            if(var0.height <= 0) {
-               var0.height = 5;
-            }
-
-            if(var0.width <= 0) {
-               var0.width = 5;
-            }
-         }
-      }
-
-      if(var0.contentType == 1337) {
-         Client.field977 = var0;
-      }
-
-      if(var3 && var0.field2672 != null && (var4 != var0.width || var5 != var0.height)) {
-         ScriptEvent var6 = new ScriptEvent();
-         var6.widget = var0;
-         var6.field831 = var0.field2672;
-         Client.field1103.addFront(var6);
-      }
-
-   }
-
-   @ObfuscatedName("hb")
-   @ObfuscatedSignature(
-      signature = "(Lho;III)V",
-      garbageValue = "-887447286"
-   )
-   static void method2521(Widget var0, int var1, int var2) {
-      if(var0.field2714 == 0) {
+   static void method2600(Widget var0, int var1, int var2) {
+      if(var0.field2634 == 0) {
          var0.relativeX = var0.originalX;
-      } else if(var0.field2714 == 1) {
+      } else if(var0.field2634 == 1) {
          var0.relativeX = var0.originalX + (var1 - var0.width) / 2;
-      } else if(var0.field2714 == 2) {
+      } else if(var0.field2634 == 2) {
          var0.relativeX = var1 - var0.width - var0.originalX;
-      } else if(var0.field2714 == 3) {
+      } else if(var0.field2634 == 3) {
          var0.relativeX = var0.originalX * var1 >> 14;
-      } else if(var0.field2714 == 4) {
+      } else if(var0.field2634 == 4) {
          var0.relativeX = (var0.originalX * var1 >> 14) + (var1 - var0.width) / 2;
       } else {
          var0.relativeX = var1 - var0.width - (var0.originalX * var1 >> 14);
       }
 
-      if(var0.field2623 == 0) {
+      if(var0.field2696 == 0) {
          var0.relativeY = var0.originalY;
-      } else if(var0.field2623 == 1) {
+      } else if(var0.field2696 == 1) {
          var0.relativeY = var0.originalY + (var2 - var0.height) / 2;
-      } else if(var0.field2623 == 2) {
+      } else if(var0.field2696 == 2) {
          var0.relativeY = var2 - var0.height - var0.originalY;
-      } else if(var0.field2623 == 3) {
+      } else if(var0.field2696 == 3) {
          var0.relativeY = var2 * var0.originalY >> 14;
-      } else if(var0.field2623 == 4) {
-         var0.relativeY = (var2 - var0.height) / 2 + (var2 * var0.originalY >> 14);
+      } else if(var0.field2696 == 4) {
+         var0.relativeY = (var2 * var0.originalY >> 14) + (var2 - var0.height) / 2;
       } else {
          var0.relativeY = var2 - var0.height - (var2 * var0.originalY >> 14);
       }
 
-      if(Client.field1074 && var0.type == 0) {
+      if(Client.field1120 && var0.type == 0) {
          if(var0.relativeX < 0) {
             var0.relativeX = 0;
          } else if(var0.relativeX + var0.width > var1) {
@@ -151,67 +105,42 @@ public class class134 {
 
          if(var0.relativeY < 0) {
             var0.relativeY = 0;
-         } else if(var0.relativeY + var0.height > var2) {
+         } else if(var0.height + var0.relativeY > var2) {
             var0.relativeY = var2 - var0.height;
          }
       }
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("fj")
    @ObfuscatedSignature(
-      signature = "(I)Lfm;",
-      garbageValue = "657474099"
+      signature = "(B)V",
+      garbageValue = "20"
    )
-   public static Timer method2507() {
-      try {
-         return new NanoTimer();
-      } catch (Throwable var1) {
-         return new MilliTimer();
+   static final void method2601() {
+      if(Renderable.soundSystem1 != null) {
+         Renderable.soundSystem1.method2077();
       }
+
+      if(class13.soundSystem0 != null) {
+         class13.soundSystem0.method2077();
+      }
+
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(ILip;IIIZI)V",
-      garbageValue = "-1469777312"
+      signature = "(IIIIIII)I",
+      garbageValue = "1336754469"
    )
-   public static void method2519(int var0, IndexDataBase var1, int var2, int var3, int var4, boolean var5) {
-      class203.field2471 = 1;
-      class222.field2815 = var1;
-      class203.field2468 = var2;
-      class203.field2473 = var3;
-      WorldMapType2.field513 = var4;
-      class203.field2474 = var5;
-      ChatLineBuffer.field1524 = var0;
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-2039216149"
-   )
-   @Export("adjustHSLListness0")
-   static final int adjustHSLListness0(int var0, int var1) {
-      if(var0 == -2) {
-         return 12345678;
-      } else if(var0 == -1) {
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return var1;
-      } else {
-         var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return (var0 & 'ﾀ') + var1;
+   public static int method2598(int var0, int var1, int var2, int var3, int var4, int var5) {
+      if((var5 & 1) == 1) {
+         int var6 = var3;
+         var3 = var4;
+         var4 = var6;
       }
+
+      var2 &= 3;
+      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0 - (var3 - 1):7 - var1 - (var4 - 1)));
    }
 }

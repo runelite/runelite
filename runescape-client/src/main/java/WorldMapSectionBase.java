@@ -2,48 +2,48 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ah")
+@ObfuscatedName("an")
 @Implements("WorldMapSectionBase")
 public interface WorldMapSectionBase {
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(IIS)Z",
-      garbageValue = "-1713"
+      signature = "(III)Z",
+      garbageValue = "-198305855"
    )
-   boolean vmethod676(int var1, int var2);
+   boolean vmethod715(int var1, int var2);
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(IIII)Z",
-      garbageValue = "-762941504"
+      signature = "(IIIS)Z",
+      garbageValue = "4496"
    )
-   boolean vmethod675(int var1, int var2, int var3);
+   boolean vmethod714(int var1, int var2, int var3);
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lab;S)V",
-      garbageValue = "-29128"
+      signature = "(Lae;B)V",
+      garbageValue = "103"
    )
-   void vmethod693(WorldMapData var1);
+   void vmethod713(WorldMapData var1);
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(III)Lhs;",
-      garbageValue = "861336956"
+      signature = "(IIB)Lhy;",
+      garbageValue = "-93"
    )
-   Coordinates vmethod696(int var1, int var2);
+   Coordinates vmethod717(int var1, int var2);
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "-1119600547"
+      signature = "(IIIB)[I",
+      garbageValue = "32"
    )
-   int[] vmethod677(int var1, int var2, int var3);
+   int[] vmethod716(int var1, int var2, int var3);
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(Lfp;B)V",
-      garbageValue = "-58"
+      signature = "(Lfw;I)V",
+      garbageValue = "996105043"
    )
-   void vmethod678(Buffer var1);
+   void vmethod718(Buffer var1);
 }

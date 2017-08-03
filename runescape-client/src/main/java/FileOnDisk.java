@@ -3,38 +3,37 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dx")
+@ObfuscatedName("cn")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 702214533
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lim;"
    )
-   static int field1730;
-   @ObfuscatedName("i")
+   public static IndexDataBase field1544;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      longValue = -8838535059392606211L
+      longValue = 6029850626035004263L
    )
    @Export("position")
    long position;
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @Export("file")
    RandomAccessFile file;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      longValue = 3002344540474477281L
+      longValue = 1327944110921867863L
    )
    @Export("length")
    long length;
 
    public FileOnDisk(File var1, String var2, long var3) throws IOException {
-      if(-1L == var3) {
+      if(var3 == -1L) {
          var3 = Long.MAX_VALUE;
       }
 
@@ -54,20 +53,20 @@ public final class FileOnDisk {
       this.file.seek(0L);
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(B)J",
-      garbageValue = "1"
+      signature = "(I)J",
+      garbageValue = "-1294255984"
    )
    @Export("length")
    public final long length() throws IOException {
       return this.file.length();
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1107471226"
+      signature = "(B)V",
+      garbageValue = "-80"
    )
    @Export("close")
    public final void close() throws IOException {
@@ -78,10 +77,10 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "([BIII)I",
-      garbageValue = "210606768"
+      garbageValue = "948351038"
    )
    @Export("read")
    public final int read(byte[] var1, int var2, int var3) throws IOException {
@@ -93,17 +92,17 @@ public final class FileOnDisk {
       return var4;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @Export("seek")
    final void seek(long var1) throws IOException {
       this.file.seek(var1);
       this.position = var1;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "829435026"
+      signature = "([BIIS)V",
+      garbageValue = "6618"
    )
    @Export("write")
    public final void write(byte[] var1, int var2, int var3) throws IOException {
@@ -125,188 +124,182 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("al")
+   @ObfuscatedName("gi")
    @ObfuscatedSignature(
-      signature = "([BB)[B",
-      garbageValue = "102"
+      signature = "(Lcj;I)V",
+      garbageValue = "1555091999"
    )
-   @Export("decodeContainer")
-   static final byte[] decodeContainer(byte[] var0) {
-      Buffer var1 = new Buffer(var0);
-      int var2 = var1.readUnsignedByte();
-      int var3 = var1.readInt();
-      if(var3 < 0 || IndexDataBase.field3198 != 0 && var3 > IndexDataBase.field3198) {
-         throw new RuntimeException();
-      } else if(var2 == 0) {
-         byte[] var4 = new byte[var3];
-         var1.readBytes(var4, 0, var3);
-         return var4;
+   static final void method1934(Actor var0) {
+      var0.poseAnimation = var0.idlePoseAnimation;
+      if(var0.queueSize == 0) {
+         var0.field1247 = 0;
       } else {
-         int var6 = var1.readInt();
-         if(var6 < 0 || IndexDataBase.field3198 != 0 && var6 > IndexDataBase.field3198) {
-            throw new RuntimeException();
+         if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
+            Sequence var1 = class40.getAnimation(var0.animation);
+            if(var0.field1248 > 0 && var1.precedenceAnimating == 0) {
+               ++var0.field1247;
+               return;
+            }
+
+            if(var0.field1248 <= 0 && var1.priority == 0) {
+               ++var0.field1247;
+               return;
+            }
+         }
+
+         int var10 = var0.x;
+         int var2 = var0.y;
+         int var3 = var0.field1216 * 64 + var0.pathX[var0.queueSize - 1] * 128;
+         int var4 = var0.pathY[var0.queueSize - 1] * 128 + var0.field1216 * 64;
+         if(var10 < var3) {
+            if(var2 < var4) {
+               var0.orientation = 1280;
+            } else if(var2 > var4) {
+               var0.orientation = 1792;
+            } else {
+               var0.orientation = 1536;
+            }
+         } else if(var10 > var3) {
+            if(var2 < var4) {
+               var0.orientation = 768;
+            } else if(var2 > var4) {
+               var0.orientation = 256;
+            } else {
+               var0.orientation = 512;
+            }
+         } else if(var2 < var4) {
+            var0.orientation = 1024;
+         } else if(var2 > var4) {
+            var0.orientation = 0;
+         }
+
+         byte var5 = var0.field1246[var0.queueSize - 1];
+         if(var3 - var10 <= 256 && var3 - var10 >= -256 && var4 - var2 <= 256 && var4 - var2 >= -256) {
+            int var6 = var0.orientation - var0.angle & 2047;
+            if(var6 > 1024) {
+               var6 -= 2048;
+            }
+
+            int var7 = var0.field1205;
+            if(var6 >= -256 && var6 <= 256) {
+               var7 = var0.field1197;
+            } else if(var6 >= 256 && var6 < 768) {
+               var7 = var0.field1200;
+            } else if(var6 >= -768 && var6 <= -256) {
+               var7 = var0.field1249;
+            }
+
+            if(var7 == -1) {
+               var7 = var0.field1197;
+            }
+
+            var0.poseAnimation = var7;
+            int var8 = 4;
+            boolean var9 = true;
+            if(var0 instanceof NPC) {
+               var9 = ((NPC)var0).composition.isClickable;
+            }
+
+            if(var9) {
+               if(var0.angle != var0.orientation && var0.interacting == -1 && var0.field1242 != 0) {
+                  var8 = 2;
+               }
+
+               if(var0.queueSize > 2) {
+                  var8 = 6;
+               }
+
+               if(var0.queueSize > 3) {
+                  var8 = 8;
+               }
+
+               if(var0.field1247 > 0 && var0.queueSize > 1) {
+                  var8 = 8;
+                  --var0.field1247;
+               }
+            } else {
+               if(var0.queueSize > 1) {
+                  var8 = 6;
+               }
+
+               if(var0.queueSize > 2) {
+                  var8 = 8;
+               }
+
+               if(var0.field1247 > 0 && var0.queueSize > 1) {
+                  var8 = 8;
+                  --var0.field1247;
+               }
+            }
+
+            if(var5 == 2) {
+               var8 <<= 1;
+            }
+
+            if(var8 >= 8 && var0.field1197 == var0.poseAnimation && var0.field1217 != -1) {
+               var0.poseAnimation = var0.field1217;
+            }
+
+            if(var3 != var10 || var2 != var4) {
+               if(var10 < var3) {
+                  var0.x += var8;
+                  if(var0.x > var3) {
+                     var0.x = var3;
+                  }
+               } else if(var10 > var3) {
+                  var0.x -= var8;
+                  if(var0.x < var3) {
+                     var0.x = var3;
+                  }
+               }
+
+               if(var2 < var4) {
+                  var0.y += var8;
+                  if(var0.y > var4) {
+                     var0.y = var4;
+                  }
+               } else if(var2 > var4) {
+                  var0.y -= var8;
+                  if(var0.y < var4) {
+                     var0.y = var4;
+                  }
+               }
+            }
+
+            if(var3 == var0.x && var4 == var0.y) {
+               --var0.queueSize;
+               if(var0.field1248 > 0) {
+                  --var0.field1248;
+               }
+            }
+
          } else {
-            byte[] var5 = new byte[var6];
-            if(var2 == 1) {
-               class167.method3027(var5, var6, var0, var3, 9);
-            } else {
-               IndexDataBase.gzip.decompress(var1, var5);
+            var0.x = var3;
+            var0.y = var4;
+            --var0.queueSize;
+            if(var0.field1248 > 0) {
+               --var0.field1248;
             }
 
-            return var5;
          }
       }
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("jj")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "1403112964"
+      signature = "([Ljava/lang/String;I)[Ljava/lang/String;",
+      garbageValue = "1415040013"
    )
-   @Export("addChatMessage")
-   @Hook("addChatMessage")
-   static void addChatMessage(int var0, String var1, String var2, String var3) {
-      ChatLineBuffer var4 = (ChatLineBuffer)class98.chatLineMap.get(Integer.valueOf(var0));
-      if(var4 == null) {
-         var4 = new ChatLineBuffer();
-         class98.chatLineMap.put(Integer.valueOf(var0), var4);
-      }
+   static final String[] method1920(String[] var0) {
+      String[] var1 = new String[5];
 
-      MessageNode var5 = var4.addMessage(var0, var1, var2, var3);
-      class98.field1495.put(var5, (long)var5.id);
-      class98.field1493.method3616(var5);
-      Client.chatCycle = Client.cycleCntr;
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(IIIIIZI)Ljj;",
-      garbageValue = "524257191"
-   )
-   @Export("createSprite")
-   public static final SpritePixels createSprite(int var0, int var1, int var2, int var3, int var4, boolean var5) {
-      if(var1 == -1) {
-         var4 = 0;
-      } else if(var4 == 2 && var1 != 1) {
-         var4 = 1;
-      }
-
-      long var6 = ((long)var4 << 40) + ((long)var2 << 38) + ((long)var1 << 16) + (long)var0 + ((long)var3 << 42);
-      SpritePixels var8;
-      if(!var5) {
-         var8 = (SpritePixels)ItemComposition.itemSpriteCache.get(var6);
-         if(var8 != null) {
-            return var8;
+      for(int var2 = 0; var2 < 5; ++var2) {
+         var1[var2] = var2 + ": ";
+         if(var0 != null && var0[var2] != null) {
+            var1[var2] = var1[var2] + var0[var2];
          }
       }
 
-      ItemComposition var9 = class10.getItemDefinition(var0);
-      if(var1 > 1 && var9.countObj != null) {
-         int var10 = -1;
-
-         for(int var11 = 0; var11 < 10; ++var11) {
-            if(var1 >= var9.countCo[var11] && var9.countCo[var11] != 0) {
-               var10 = var9.countObj[var11];
-            }
-         }
-
-         if(var10 != -1) {
-            var9 = class10.getItemDefinition(var10);
-         }
-      }
-
-      Model var21 = var9.getModel(1);
-      if(var21 == null) {
-         return null;
-      } else {
-         SpritePixels var22 = null;
-         if(var9.notedTemplate != -1) {
-            var22 = createSprite(var9.note, 10, 1, 0, 0, true);
-            if(var22 == null) {
-               return null;
-            }
-         } else if(var9.notedId != -1) {
-            var22 = createSprite(var9.unnotedId, var1, var2, var3, 0, false);
-            if(var22 == null) {
-               return null;
-            }
-         } else if(var9.field3492 != -1) {
-            var22 = createSprite(var9.field3516, var1, 0, 0, 0, false);
-            if(var22 == null) {
-               return null;
-            }
-         }
-
-         int[] var12 = Rasterizer2D.graphicsPixels;
-         int var13 = Rasterizer2D.graphicsPixelsWidth;
-         int var14 = Rasterizer2D.graphicsPixelsHeight;
-         int[] var15 = new int[4];
-         Rasterizer2D.copyDrawRegion(var15);
-         var8 = new SpritePixels(36, 32);
-         Rasterizer2D.setRasterBuffer(var8.image, 36, 32);
-         Rasterizer2D.reset();
-         Graphics3D.method2524();
-         Graphics3D.method2602(16, 16);
-         Graphics3D.rasterGouraudLowRes = false;
-         if(var9.field3492 != -1) {
-            var22.method4958(0, 0);
-         }
-
-         int var16 = var9.zoom2d;
-         if(var5) {
-            var16 = (int)(1.5D * (double)var16);
-         } else if(var2 == 2) {
-            var16 = (int)((double)var16 * 1.04D);
-         }
-
-         int var17 = var16 * Graphics3D.SINE[var9.xan2d] >> 16;
-         int var18 = var16 * Graphics3D.COSINE[var9.xan2d] >> 16;
-         var21.method2433();
-         var21.method2476(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var17 + var21.modelHeight / 2 + var9.offsetY2d, var18 + var9.offsetY2d);
-         if(var9.notedId != -1) {
-            var22.method4958(0, 0);
-         }
-
-         if(var2 >= 1) {
-            var8.method5011(1);
-         }
-
-         if(var2 >= 2) {
-            var8.method5011(16777215);
-         }
-
-         if(var3 != 0) {
-            var8.method4955(var3);
-         }
-
-         Rasterizer2D.setRasterBuffer(var8.image, 36, 32);
-         if(var9.notedTemplate != -1) {
-            var22.method4958(0, 0);
-         }
-
-         if(var4 == 1 || var4 == 2 && var9.isStackable == 1) {
-            Font var19 = WorldMapType2.field523;
-            String var20;
-            if(var1 < 100000) {
-               var20 = "<col=ffff00>" + var1 + "</col>";
-            } else if(var1 < 10000000) {
-               var20 = "<col=ffffff>" + var1 / 1000 + "K" + "</col>";
-            } else {
-               var20 = "<col=00ff80>" + var1 / 1000000 + "M" + "</col>";
-            }
-
-            var19.method4640(var20, 0, 9, 16776960, 1);
-         }
-
-         if(!var5) {
-            ItemComposition.itemSpriteCache.put(var8, var6);
-         }
-
-         Rasterizer2D.setRasterBuffer(var12, var13, var14);
-         Rasterizer2D.setDrawRegion(var15);
-         Graphics3D.method2524();
-         Graphics3D.rasterGouraudLowRes = true;
-         return var8;
-      }
+      return var1;
    }
 }

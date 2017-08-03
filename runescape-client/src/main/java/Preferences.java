@@ -7,49 +7,49 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cc")
+@ObfuscatedName("ci")
 @Implements("Preferences")
 public class Preferences {
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1456529283
+      intValue = 1909158009
    )
-   static int field1299;
-   @ObfuscatedName("g")
+   static int field1278;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -880262315
+      intValue = -1612664663
    )
    @Export("screenType")
    int screenType;
-   @ObfuscatedName("m")
+   @ObfuscatedName("f")
    @Export("preferences")
    LinkedHashMap preferences;
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @Export("hideRoofs")
    boolean hideRoofs;
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @Export("muted")
    boolean muted;
 
    static {
-      field1299 = 4;
+      field1278 = 4;
    }
 
    Preferences() {
       this.screenType = 1;
       this.preferences = new LinkedHashMap();
-      this.method1540(true);
+      this.method1599(true);
    }
 
    @ObfuscatedSignature(
-      signature = "(Lfp;)V"
+      signature = "(Lfw;)V"
    )
    Preferences(Buffer var1) {
       this.screenType = 1;
       this.preferences = new LinkedHashMap();
       if(var1 != null && var1.payload != null) {
          int var2 = var1.readUnsignedByte();
-         if(var2 >= 0 && var2 <= field1299) {
+         if(var2 >= 0 && var2 <= field1278) {
             if(var1.readUnsignedByte() == 1) {
                this.hideRoofs = true;
             }
@@ -72,31 +72,31 @@ public class Preferences {
                }
             }
          } else {
-            this.method1540(true);
+            this.method1599(true);
          }
       } else {
-         this.method1540(true);
+         this.method1599(true);
       }
 
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(ZI)V",
-      garbageValue = "-1090042905"
+      garbageValue = "472735235"
    )
-   void method1540(boolean var1) {
+   void method1599(boolean var1) {
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(S)Lfp;",
-      garbageValue = "-17634"
+      signature = "(B)Lfw;",
+      garbageValue = "-21"
    )
    @Export("serialize")
    Buffer serialize() {
       Buffer var1 = new Buffer(100);
-      var1.putByte(field1299);
+      var1.putByte(field1278);
       var1.putByte(this.hideRoofs?1:0);
       var1.putByte(this.muted?1:0);
       var1.putByte(this.screenType);
@@ -110,26 +110,5 @@ public class Preferences {
       }
 
       return var1;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(IZIZI)V",
-      garbageValue = "-264360141"
-   )
-   static void method1551(int var0, boolean var1, int var2, boolean var3) {
-      if(class64.worldList != null) {
-         PendingSpawn.method1464(0, class64.worldList.length - 1, var0, var1, var2, var3);
-      }
-
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SI)V",
-      garbageValue = "-470110690"
-   )
-   public static void method1539(String[] var0, short[] var1) {
-      class66.method1042(var0, var1, 0, var0.length - 1);
    }
 }

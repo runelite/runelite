@@ -2,157 +2,104 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ij")
+@ObfuscatedName("it")
 public class class251 extends CacheableNode {
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgq;"
+      signature = "Lgg;"
    )
-   public static NodeCache field3364;
-   @ObfuscatedName("c")
+   static NodeCache field3366;
+   @ObfuscatedName("bl")
+   static String field3368;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lip;"
+      signature = "Lim;"
    )
-   static IndexDataBase field3362;
-   @ObfuscatedName("i")
-   char field3359;
-   @ObfuscatedName("m")
-   boolean field3361;
-   @ObfuscatedName("u")
+   static IndexDataBase field3365;
+   @ObfuscatedName("x")
+   char field3367;
+   @ObfuscatedName("f")
+   boolean field3370;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 658089969
+      intValue = -1827197167
    )
-   public int field3360;
-   @ObfuscatedName("g")
-   public String field3363;
+   public int field3371;
+   @ObfuscatedName("e")
+   public String field3369;
 
    static {
-      field3364 = new NodeCache(64);
+      field3366 = new NodeCache(64);
    }
 
    class251() {
-      this.field3361 = true;
+      this.field3370 = true;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lfp;II)V",
-      garbageValue = "-1397465776"
+      signature = "(Lfw;II)V",
+      garbageValue = "-245270070"
    )
-   void method4317(Buffer var1, int var2) {
+   void method4403(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field3359 = WorldMapType3.method206(var1.readByte());
+         byte var4 = var1.readByte();
+         int var5 = var4 & 255;
+         if(var5 == 0) {
+            throw new IllegalArgumentException("");
+         }
+
+         if(var5 >= 128 && var5 < 160) {
+            char var6 = class266.field3645[var5 - 128];
+            if(var6 == 0) {
+               var6 = 63;
+            }
+
+            var5 = var6;
+         }
+
+         char var3 = (char)var5;
+         this.field3367 = var3;
       } else if(var2 == 2) {
-         this.field3360 = var1.readInt();
+         this.field3371 = var1.readInt();
       } else if(var2 == 4) {
-         this.field3361 = false;
+         this.field3370 = false;
       } else if(var2 == 5) {
-         this.field3363 = var1.readString();
+         this.field3369 = var1.readString();
       }
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1401407587"
+      signature = "(B)Z",
+      garbageValue = "-51"
    )
-   public boolean method4325() {
-      return this.field3359 == 115;
+   public boolean method4404() {
+      return this.field3367 == 115;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "119"
+      signature = "(I)V",
+      garbageValue = "1561106484"
    )
-   void method4315() {
+   void method4416() {
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Lfp;I)V",
-      garbageValue = "1555597925"
+      signature = "(Lfw;I)V",
+      garbageValue = "-758159836"
    )
-   void method4316(Buffer var1) {
+   void method4402(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4317(var1, var2);
+         this.method4403(var1, var2);
       }
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(CII)C",
-      garbageValue = "1873036940"
-   )
-   static char method4331(char var0, int var1) {
-      if(var0 >= 192 && var0 <= 255) {
-         if(var0 >= 192 && var0 <= 198) {
-            return 'A';
-         }
-
-         if(var0 == 199) {
-            return 'C';
-         }
-
-         if(var0 >= 200 && var0 <= 203) {
-            return 'E';
-         }
-
-         if(var0 >= 204 && var0 <= 207) {
-            return 'I';
-         }
-
-         if(var0 >= 210 && var0 <= 214) {
-            return 'O';
-         }
-
-         if(var0 >= 217 && var0 <= 220) {
-            return 'U';
-         }
-
-         if(var0 == 221) {
-            return 'Y';
-         }
-
-         if(var0 == 223) {
-            return 's';
-         }
-
-         if(var0 >= 224 && var0 <= 230) {
-            return 'a';
-         }
-
-         if(var0 == 231) {
-            return 'c';
-         }
-
-         if(var0 >= 232 && var0 <= 235) {
-            return 'e';
-         }
-
-         if(var0 >= 236 && var0 <= 239) {
-            return 'i';
-         }
-
-         if(var0 >= 242 && var0 <= 246) {
-            return 'o';
-         }
-
-         if(var0 >= 249 && var0 <= 252) {
-            return 'u';
-         }
-
-         if(var0 == 253 || var0 == 255) {
-            return 'y';
-         }
-      }
-
-      return var0 == 338?'O':(var0 == 339?'o':(var0 == 376?'Y':var0));
    }
 }

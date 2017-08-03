@@ -1,40 +1,58 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bq")
+@ObfuscatedName("bm")
 @Implements("Ignore")
 public class Ignore {
-   @ObfuscatedName("ah")
-   @ObfuscatedGetter(
-      intValue = 1154346919
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Lfw;"
    )
-   @Export("authCodeForLogin")
-   static int authCodeForLogin;
-   @ObfuscatedName("c")
+   public static Buffer field833;
+   @ObfuscatedName("d")
    @Export("name")
    String name;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @Export("previousName")
    String previousName;
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lby;B)V",
-      garbageValue = "32"
+      signature = "(Lbc;I)V",
+      garbageValue = "-584134567"
    )
-   public static void method1054(ScriptEvent var0) {
-      class17.method123(var0, 200000);
+   public static void method1126(ScriptEvent var0) {
+      class92.method1743(var0, 200000);
    }
 
-   @ObfuscatedName("am")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lcx;I)V",
-      garbageValue = "-2134044293"
+      signature = "(III)I",
+      garbageValue = "-2076753706"
    )
-   public static final void method1055(class103 var0) {
-      class22.field332 = var0;
+   @Export("adjustHSLListness0")
+   static final int adjustHSLListness0(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return var1;
+      } else {
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return (var0 & 'ﾀ') + var1;
+      }
    }
 }

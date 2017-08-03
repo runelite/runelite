@@ -1,35 +1,47 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hj")
+@ObfuscatedName("hk")
 public final class class229 {
-   @ObfuscatedName("c")
+   @ObfuscatedName("de")
+   @ObfuscatedGetter(
+      intValue = -453035021
+   )
+   static int field3149;
+
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1117744906"
+      garbageValue = "-1737578803"
    )
-   public static void method3989() {
-      class280.field3739 = new CombatInfoList();
+   public static void method4093() {
+      class270.field3666 = null;
+      class286.offsetsY = null;
+      class286.field3778 = null;
+      class286.field3782 = null;
+      class286.field3783 = null;
+      class177.spritePixels = null;
    }
 
-   @ObfuscatedName("iq")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1958650846"
+      signature = "(B)V",
+      garbageValue = "-93"
    )
-   static final void method3988() {
-      Client.secretPacketBuffer1.putOpcode(170);
+   public static void method4094() {
+      Object var0 = class236.field3213;
+      synchronized(class236.field3213) {
+         if(class236.field3216 != 0) {
+            class236.field3216 = 1;
 
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3492(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3493()) {
-         if(var0.owner == 0 || var0.owner == 3) {
-            ScriptState.method1021(var0, true);
+            try {
+               class236.field3213.wait();
+            } catch (InterruptedException var3) {
+               ;
+            }
          }
-      }
 
-      if(Client.field1068 != null) {
-         class21.method156(Client.field1068);
-         Client.field1068 = null;
       }
-
    }
 }

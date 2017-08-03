@@ -1,96 +1,105 @@
-import java.net.URL;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bw")
+@ObfuscatedName("bp")
 public class class67 extends class196 {
-   @ObfuscatedName("l")
-   static int[] field816;
-   @ObfuscatedName("c")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -285289231
+      intValue = 1349512873
    )
-   int field819;
-   @ObfuscatedName("o")
-   String field813;
-   @ObfuscatedName("i")
-   short field815;
+   @Export("canvasHeight")
+   protected static int canvasHeight;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   @Export("widgetIndex")
+   public static IndexDataBase widgetIndex;
+   @ObfuscatedName("ct")
+   static boolean field792;
+   @ObfuscatedName("lt")
+   @ObfuscatedSignature(
+      signature = "[Lhn;"
+   )
+   static Widget[] field797;
+   @ObfuscatedName("bw")
+   @ObfuscatedGetter(
+      intValue = -1068403625
+   )
+   static int field794;
+   @ObfuscatedName("cx")
+   @ObfuscatedSignature(
+      signature = "Lib;"
+   )
+   @Export("indexInterfaces")
+   static IndexData indexInterfaces;
+   @ObfuscatedName("nv")
+   @Export("clanChatRank")
+   static byte clanChatRank;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 551392761
+   )
+   int field798;
+   @ObfuscatedName("q")
+   String field800;
+   @ObfuscatedName("x")
+   short field793;
 
    class67(String var1, int var2) {
-      this.field819 = (int)(class157.currentTimeMs() / 1000L);
-      this.field813 = var1;
-      this.field815 = (short)var2;
+      this.field798 = (int)(BuildType.currentTimeMs() / 1000L);
+      this.field800 = var1;
+      this.field793 = (short)var2;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("ax")
    @ObfuscatedSignature(
-      signature = "(ILfz;Lix;I)V",
-      garbageValue = "-204360795"
+      signature = "(Leg;III)Ldu;",
+      garbageValue = "1981392773"
    )
-   static void method1043(int var0, IndexFile var1, IndexData var2) {
-      FileSystem var3 = new FileSystem();
-      var3.field3171 = 1;
-      var3.hash = (long)var0;
-      var3.index = var1;
-      var3.data = var2;
-      Deque var4 = class236.field3207;
-      synchronized(class236.field3207) {
-         class236.field3207.addFront(var3);
-      }
-
-      Object var9 = class236.field3203;
-      synchronized(class236.field3203) {
-         if(class236.field3205 == 0) {
-            class19.field316 = new Thread(new class236());
-            class19.field316.setDaemon(true);
-            class19.field316.start();
-            class19.field316.setPriority(5);
+   public static final AbstractSoundSystem method1110(Signlink var0, int var1, int var2) {
+      if(AbstractSoundSystem.sampleRate == 0) {
+         throw new IllegalStateException();
+      } else if(var1 >= 0 && var1 < 2) {
+         if(var2 < 256) {
+            var2 = 256;
          }
 
-         class236.field3205 = 600;
-      }
-   }
+         try {
+            AbstractSoundSystem var3 = GraphicsObject.field1325.vmethod1989();
+            var3.samples = new int[256 * (XClanMember.highMemory?2:1)];
+            var3.field1623 = var2;
+            var3.vmethod2084();
+            var3.offset = (var2 & -1024) + 1024;
+            if(var3.offset > 16384) {
+               var3.offset = 16384;
+            }
 
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-568782269"
-   )
-   @Export("loadWorlds")
-   static boolean loadWorlds() {
-      try {
-         if(class265.listFetcher == null) {
-            class265.listFetcher = new WorldListFetcher(GameEngine.taskManager, new URL(class220.field2783));
-         } else {
-            byte[] var0 = class265.listFetcher.fetch();
-            if(var0 != null) {
-               Buffer var1 = new Buffer(var0);
-               World.worldCount = var1.readUnsignedShort();
-               class64.worldList = new World[World.worldCount];
+            var3.create(var3.offset);
+            if(class174.priority > 0 && AbstractSoundSystem.task == null) {
+               AbstractSoundSystem.task = new SoundTask();
+               AbstractSoundSystem.field1622 = Executors.newScheduledThreadPool(1);
+               AbstractSoundSystem.field1622.scheduleAtFixedRate(AbstractSoundSystem.task, 0L, 10L, TimeUnit.MILLISECONDS);
+            }
 
-               World var3;
-               for(int var2 = 0; var2 < World.worldCount; var3.index = var2++) {
-                  var3 = class64.worldList[var2] = new World();
-                  var3.id = var1.readUnsignedShort();
-                  var3.mask = var1.readInt();
-                  var3.address = var1.readString();
-                  var3.activity = var1.readString();
-                  var3.location = var1.readUnsignedByte();
-                  var3.playerCount = var1.readShort();
+            if(AbstractSoundSystem.task != null) {
+               if(AbstractSoundSystem.task.systems[var1] != null) {
+                  throw new IllegalArgumentException();
                }
 
-               class1.method1(class64.worldList, 0, class64.worldList.length - 1, World.field1281, World.field1285);
-               class265.listFetcher = null;
-               return true;
+               AbstractSoundSystem.task.systems[var1] = var3;
             }
-         }
-      } catch (Exception var4) {
-         var4.printStackTrace();
-         class265.listFetcher = null;
-      }
 
-      return false;
+            return var3;
+         } catch (Throwable var4) {
+            return new AbstractSoundSystem();
+         }
+      } else {
+         throw new IllegalArgumentException();
+      }
    }
 }

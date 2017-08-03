@@ -1,88 +1,89 @@
 import java.io.File;
 import java.util.Hashtable;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fg")
+@ObfuscatedName("fk")
 public class class157 {
-   @ObfuscatedName("c")
-   static boolean field2220;
-   @ObfuscatedName("i")
-   static Hashtable field2217;
-   @ObfuscatedName("ed")
-   @ObfuscatedGetter(
-      longValue = -531109440243321561L
-   )
-   static long field2215;
-   @ObfuscatedName("o")
-   static File field2216;
+   @ObfuscatedName("d")
+   static boolean field2232;
+   @ObfuscatedName("x")
+   static Hashtable field2235;
+   @ObfuscatedName("q")
+   static File field2233;
 
    static {
-      field2220 = false;
-      field2217 = new Hashtable(16);
+      field2232 = false;
+      field2235 = new Hashtable(16);
    }
 
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(B)J",
-      garbageValue = "4"
-   )
-   @Export("currentTimeMs")
-   public static synchronized long currentTimeMs() {
-      long var0 = System.currentTimeMillis();
-      if(var0 < class175.field2371) {
-         class20.field321 += class175.field2371 - var0;
-      }
-
-      class175.field2371 = var0;
-      return class20.field321 + var0;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(IS)Lio;",
-      garbageValue = "4110"
-   )
-   public static Overlay method2908(int var0) {
-      Overlay var1 = (Overlay)Overlay.overlays.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Overlay.overlay_ref.getConfigData(4, var0);
-         var1 = new Overlay();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2), var0);
-         }
-
-         var1.post();
-         Overlay.overlays.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("j")
+   @ObfuscatedName("gn")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-1251924090"
+      garbageValue = "563490659"
    )
-   static void method2907(int var0) {
-      if(var0 != -1) {
-         if(class9.loadWidget(var0)) {
-            Widget[] var1 = Widget.widgets[var0];
+   static final void method2998(int var0) {
+      int[] var1 = KeyFocusListener.field619.image;
+      int var2 = var1.length;
 
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               Widget var3 = var1[var2];
-               if(var3.field2698 != null) {
-                  ScriptEvent var4 = new ScriptEvent();
-                  var4.widget = var3;
-                  var4.field831 = var3.field2698;
-                  class17.method123(var4, 2000000);
-               }
+      int var3;
+      for(var3 = 0; var3 < var2; ++var3) {
+         var1[var3] = 0;
+      }
+
+      int var4;
+      int var5;
+      for(var3 = 1; var3 < 103; ++var3) {
+         var4 = (103 - var3) * 2048 + 24628;
+
+         for(var5 = 1; var5 < 103; ++var5) {
+            if((class62.tileSettings[var0][var5][var3] & 24) == 0) {
+               class51.region.method2733(var1, var4, 512, var0, var5, var3);
             }
 
+            if(var0 < 3 && (class62.tileSettings[var0 + 1][var5][var3] & 8) != 0) {
+               class51.region.method2733(var1, var4, 512, var0 + 1, var5, var3);
+            }
+
+            var4 += 4;
          }
       }
+
+      var3 = (238 + (int)(Math.random() * 20.0D) - 10 << 16) + (238 + (int)(Math.random() * 20.0D) - 10 << 8) + (238 + (int)(Math.random() * 20.0D) - 10);
+      var4 = 238 + (int)(Math.random() * 20.0D) - 10 << 16;
+      KeyFocusListener.field619.method5060();
+
+      int var6;
+      for(var5 = 1; var5 < 103; ++var5) {
+         for(var6 = 1; var6 < 103; ++var6) {
+            if((class62.tileSettings[var0][var6][var5] & 24) == 0) {
+               class174.method3393(var0, var6, var5, var3, var4);
+            }
+
+            if(var0 < 3 && (class62.tileSettings[var0 + 1][var6][var5] & 8) != 0) {
+               class174.method3393(var0 + 1, var6, var5, var3, var4);
+            }
+         }
+      }
+
+      Client.field1112 = 0;
+
+      for(var5 = 0; var5 < 104; ++var5) {
+         for(var6 = 0; var6 < 104; ++var6) {
+            int var7 = class51.region.method2699(class8.plane, var5, var6);
+            if(var7 != 0) {
+               var7 = var7 >> 14 & 32767;
+               int var8 = WidgetNode.getObjectDefinition(var7).mapIconId;
+               if(var8 >= 0) {
+                  Client.field1127[Client.field1112] = Area.field3286[var8].method4271(false);
+                  Client.field1113[Client.field1112] = var5;
+                  Client.field1114[Client.field1112] = var6;
+                  ++Client.field1112;
+               }
+            }
+         }
+      }
+
+      class48.field582.setRaster();
    }
 }

@@ -1,93 +1,63 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bc")
+@ObfuscatedName("bt")
 public class class66 {
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lbc;"
+      signature = "Lbt;"
    )
-   static final class66 field810;
-   @ObfuscatedName("o")
+   static final class66 field784;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lbc;"
+      signature = "Lbt;"
    )
-   static final class66 field808;
-   @ObfuscatedName("i")
+   static final class66 field785;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lbc;"
+      signature = "Lbt;"
    )
-   static final class66 field811;
-   @ObfuscatedName("u")
+   static final class66 field786;
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lbc;"
+      signature = "Lbt;"
    )
-   static final class66 field809;
-   @ObfuscatedName("fo")
-   static int[] field807;
+   static final class66 field787;
+   @ObfuscatedName("bu")
+   @ObfuscatedSignature(
+      signature = "Ljw;"
+   )
+   static IndexedSprite field788;
 
    static {
-      field810 = new class66();
-      field808 = new class66();
-      field811 = new class66();
-      field809 = new class66();
+      field784 = new class66();
+      field785 = new class66();
+      field786 = new class66();
+      field787 = new class66();
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(II)Liu;",
-      garbageValue = "1847990125"
+      signature = "(ILfv;Lib;S)V",
+      garbageValue = "26536"
    )
-   public static class243 method1041(int var0) {
-      class243 var1 = (class243)class243.field3287.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class243.field3286.getConfigData(19, var0);
-         var1 = new class243();
-         if(var2 != null) {
-            var1.method4206(new Buffer(var2));
-         }
-
-         class243.field3287.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIII)V",
-      garbageValue = "2125551955"
-   )
-   static void method1042(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var3 + var2) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
-
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
+   static void method1109(int var0, IndexFile var1, IndexData var2) {
+      byte[] var3 = null;
+      Deque var4 = class236.field3220;
+      synchronized(class236.field3220) {
+         for(FileSystem var5 = (FileSystem)class236.field3220.getFront(); var5 != null; var5 = (FileSystem)class236.field3220.getNext()) {
+            if(var5.hash == (long)var0 && var1 == var5.index && var5.field3180 == 0) {
+               var3 = var5.field3181;
+               break;
             }
          }
-
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method1042(var0, var1, var2, var5 - 1);
-         method1042(var0, var1, var5 + 1, var3);
       }
 
+      if(var3 != null) {
+         var2.method4235(var1, var0, var3, true);
+      } else {
+         byte[] var8 = var1.method3043(var0);
+         var2.method4235(var1, var0, var8, true);
+      }
    }
 }

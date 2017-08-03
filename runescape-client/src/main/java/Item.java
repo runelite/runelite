@@ -4,53 +4,28 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cl")
+@ObfuscatedName("ce")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("dw")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   @Export("indexWorldMap")
-   static IndexData indexWorldMap;
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -678064429
+      intValue = 1854574669
    )
    @Export("id")
    int id;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -192784633
+      intValue = -618264655
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(B)Leo;",
-      garbageValue = "1"
+      signature = "(I)Lev;",
+      garbageValue = "1458652918"
    )
    protected final Model getModel() {
-      return class10.getItemDefinition(this.id).getModel(this.quantity);
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;B)V",
-      garbageValue = "16"
-   )
-   @Export("sendGameMessage")
-   static void sendGameMessage(int var0, String var1, String var2) {
-      FileOnDisk.addChatMessage(var0, var1, var2, (String)null);
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "-49"
-   )
-   public static int method1707(int var0) {
-      return var0 >> 17 & 7;
+      return Friend.getItemDefinition(this.id).getModel(this.quantity);
    }
 }

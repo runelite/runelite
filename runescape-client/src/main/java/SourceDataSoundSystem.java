@@ -9,37 +9,37 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bh")
+@ObfuscatedName("bq")
 @Implements("SourceDataSoundSystem")
 public class SourceDataSoundSystem extends AbstractSoundSystem {
-   @ObfuscatedName("c")
-   AudioFormat field671;
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
+   AudioFormat field648;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1144521471
+      intValue = -1266881477
    )
    @Export("size")
    int size;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @Export("source")
    SourceDataLine source;
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @Export("bytes")
    byte[] bytes;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "32"
+      signature = "(I)V",
+      garbageValue = "-1362352874"
    )
-   protected void vmethod1953() {
+   protected void vmethod2089() {
       this.source.flush();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1951583267"
+      garbageValue = "-526456117"
    )
    @Export("close")
    protected void close() {
@@ -50,44 +50,50 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "57"
+   )
+   @Export("size")
+   protected int size() {
+      return this.size - (this.source.available() >> (XClanMember.highMemory?2:1));
+   }
+
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(IB)V",
-      garbageValue = "69"
+      garbageValue = "-33"
    )
    @Export("create")
    protected void create(int var1) throws LineUnavailableException {
       try {
-         Info var2 = new Info(SourceDataLine.class, this.field671, var1 << (class8.highMemory?2:1));
+         Info var2 = new Info(SourceDataLine.class, this.field648, var1 << (XClanMember.highMemory?2:1));
          this.source = (SourceDataLine)AudioSystem.getLine(var2);
          this.source.open();
          this.source.start();
          this.size = var1;
-      } catch (LineUnavailableException var3) {
-         if(GraphicsObject.method1619(var1) != 1) {
-            this.create(class43.method593(var1));
+      } catch (LineUnavailableException var5) {
+         int var4 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
+         var4 = (var4 & 858993459) + (var4 >>> 2 & 858993459);
+         var4 = var4 + (var4 >>> 4) & 252645135;
+         var4 += var4 >>> 8;
+         var4 += var4 >>> 16;
+         int var3 = var4 & 255;
+         if(var3 != 1) {
+            this.create(WorldMapType1.method249(var1));
          } else {
             this.source = null;
-            throw var3;
+            throw var5;
          }
       }
    }
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-616733124"
-   )
-   @Export("size")
-   protected int size() {
-      return this.size - (this.source.available() >> (class8.highMemory?2:1));
-   }
-
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @Export("write")
    protected void write() {
       int var1 = 256;
-      if(class8.highMemory) {
+      if(XClanMember.highMemory) {
          var1 <<= 1;
       }
 
@@ -104,13 +110,13 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
       this.source.write(this.bytes, 0, var1 << 1);
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1959858206"
+      garbageValue = "-1385995989"
    )
-   protected void vmethod1948() {
-      this.field671 = new AudioFormat((float)CombatInfo1.sampleRate, 16, class8.highMemory?2:1, true, false);
-      this.bytes = new byte[256 << (class8.highMemory?2:1)];
+   protected void vmethod2084() {
+      this.field648 = new AudioFormat((float)AbstractSoundSystem.sampleRate, 16, XClanMember.highMemory?2:1, true, false);
+      this.bytes = new byte[256 << (XClanMember.highMemory?2:1)];
    }
 }

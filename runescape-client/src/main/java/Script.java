@@ -4,76 +4,116 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cv")
+@ObfuscatedName("cd")
 @Implements("Script")
 public class Script extends CacheableNode {
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lgq;"
+      signature = "Lgg;"
    )
-   static NodeCache field1506;
-   @ObfuscatedName("o")
+   static NodeCache field1501;
+   @ObfuscatedName("du")
+   @ObfuscatedSignature(
+      signature = "Lib;"
+   )
+   @Export("indexWorldMap")
+   static IndexData indexWorldMap;
+   @ObfuscatedName("q")
    @Export("instructions")
    int[] instructions;
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @Export("intOperands")
    int[] intOperands;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1274028583
+      intValue = 1416837639
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("m")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -823888683
+      intValue = 1554979711
    )
    @Export("localStringCount")
    int localStringCount;
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1484383199
+      intValue = -269619001
    )
    @Export("intStackCount")
    int intStackCount;
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "[Lgk;"
+      signature = "[Lgc;"
    )
    @Export("switches")
    IterableHashTable[] switches;
-   @ObfuscatedName("x")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -75435077
+      intValue = 551729665
    )
    @Export("stringStackCount")
    int stringStackCount;
 
    static {
-      field1506 = new NodeCache(128);
+      field1501 = new NodeCache(128);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(II)[Lgk;",
-      garbageValue = "-1652382305"
+      signature = "(II)[Lgc;",
+      garbageValue = "-2055107344"
    )
-   IterableHashTable[] method1781(int var1) {
+   IterableHashTable[] method1858(int var1) {
       return new IterableHashTable[var1];
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "405912795"
+      signature = "(CI)Z",
+      garbageValue = "-826754024"
    )
-   public static void method1786() {
-      if(class238.field3226 != null) {
-         class238.field3226.close();
-      }
+   public static boolean method1865(char var0) {
+      if((var0 <= 0 || var0 >= 128) && (var0 < 160 || var0 > 255)) {
+         if(var0 != 0) {
+            char[] var1 = class266.field3645;
 
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               char var3 = var1[var2];
+               if(var0 == var3) {
+                  return true;
+               }
+            }
+         }
+
+         return false;
+      } else {
+         return true;
+      }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(IB)Lit;",
+      garbageValue = "85"
+   )
+   public static class251 method1857(int var0) {
+      class251 var1 = (class251)class251.field3366.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class251.field3365.getConfigData(11, var0);
+         var1 = new class251();
+         if(var2 != null) {
+            var1.method4402(new Buffer(var2));
+         }
+
+         var1.method4416();
+         class251.field3366.put(var1, (long)var0);
+         return var1;
+      }
    }
 }

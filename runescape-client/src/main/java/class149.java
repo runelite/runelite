@@ -1,117 +1,92 @@
-import java.applet.Applet;
-import java.net.URL;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import netscape.javascript.JSObject;
 
 @ObfuscatedName("eu")
 public enum class149 implements RSEnum {
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Leu;"
    )
-   field2157(3, 0),
-   @ObfuscatedName("o")
+   field2177(0, 0),
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Leu;"
    )
-   field2158(1, 1),
-   @ObfuscatedName("i")
+   field2176(3, 1),
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Leu;"
    )
-   field2161(0, 2),
-   @ObfuscatedName("u")
+   field2174(2, 2),
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "Leu;"
    )
-   field2160(2, 3);
+   field2175(1, 3);
 
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1915150849
+   )
+   public final int field2172;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1181260843
+   )
+   final int field2173;
    @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1850388851
+   @ObfuscatedSignature(
+      signature = "Ljw;"
    )
-   public final int field2159;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1695682079
-   )
-   final int field2162;
+   static IndexedSprite field2178;
 
    class149(int var3, int var4) {
-      this.field2159 = var3;
-      this.field2162 = var4;
+      this.field2172 = var3;
+      this.field2173 = var4;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1443879177"
+      garbageValue = "-1661971028"
    )
    public int rsOrdinal() {
-      return this.field2162;
+      return this.field2173;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ILjava/lang/String;I)Z",
-      garbageValue = "-291542696"
+      signature = "(IIB)Z",
+      garbageValue = "122"
    )
-   static boolean method2837(String var0, int var1, String var2) {
-      if(var1 == 0) {
-         try {
-            if(!class56.field675.startsWith("win")) {
-               throw new Exception();
-            } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
-               throw new Exception();
-            } else {
-               String var14 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
+   public static boolean method2924(int var0, int var1) {
+      return (var0 >> var1 + 1 & 1) != 0;
+   }
 
-               for(int var4 = 0; var4 < var0.length(); ++var4) {
-                  if(var14.indexOf(var0.charAt(var4)) == -1) {
-                     throw new Exception();
-                  }
-               }
-
-               Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
-               return true;
-            }
-         } catch (Throwable var8) {
-            return false;
+   @ObfuscatedName("hb")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "145922732"
+   )
+   static final void method2927() {
+      for(PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.getFront(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.getNext()) {
+         if(var0.hitpoints == -1) {
+            var0.delay = 0;
+            class152.method2949(var0);
+         } else {
+            var0.unlink();
          }
-      } else if(var1 == 1) {
-         try {
-            Applet var7 = class56.field674;
-            Object[] var5 = new Object[]{(new URL(class56.field674.getCodeBase(), var0)).toString()};
-            Object var13 = JSObject.getWindow(var7).call(var2, var5);
-            return var13 != null;
-         } catch (Throwable var9) {
-            return false;
-         }
-      } else if(var1 == 2) {
-         try {
-            class56.field674.getAppletContext().showDocument(new URL(class56.field674.getCodeBase(), var0), "_blank");
-            return true;
-         } catch (Exception var10) {
-            return false;
-         }
-      } else if(var1 == 3) {
-         try {
-            Applet var3 = class56.field674;
-            JSObject.getWindow(var3).call("loggedout", (Object[])null);
-         } catch (Throwable var12) {
-            ;
-         }
-
-         try {
-            class56.field674.getAppletContext().showDocument(new URL(class56.field674.getCodeBase(), var0), "_top");
-            return true;
-         } catch (Exception var11) {
-            return false;
-         }
-      } else {
-         throw new IllegalArgumentException();
       }
+
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "911649273"
+   )
+   public static boolean method2928(int var0) {
+      return (var0 >> 31 & 1) != 0;
    }
 }

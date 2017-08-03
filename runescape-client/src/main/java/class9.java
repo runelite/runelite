@@ -1,76 +1,84 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("k")
+@ObfuscatedName("r")
 public abstract class class9 extends Node {
-   @ObfuscatedName("pf")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Ldy;"
+      signature = "(I)V",
+      garbageValue = "-1775908210"
    )
-   static class116 field237;
-   @ObfuscatedName("fl")
-   @ObfuscatedSignature(
-      signature = "Ljj;"
-   )
-   @Export("mapedge")
-   static SpritePixels mapedge;
+   abstract void vmethod55();
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-23"
+      signature = "(Ljava/lang/CharSequence;Lke;I)Ljava/lang/String;",
+      garbageValue = "-921054791"
    )
-   public abstract void vmethod49();
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(IS)Z",
-      garbageValue = "10381"
-   )
-   @Export("loadWidget")
-   public static boolean loadWidget(int var0) {
-      if(class163.validInterfaces[var0]) {
-         return true;
-      } else if(!class35.widgetIndex.containsFile(var0)) {
-         return false;
+   public static String method48(CharSequence var0, class289 var1) {
+      if(var0 == null) {
+         return null;
       } else {
-         int var1 = class35.widgetIndex.fileCount(var0);
-         if(var1 == 0) {
-            class163.validInterfaces[var0] = true;
-            return true;
-         } else {
-            if(Widget.widgets[var0] == null) {
-               Widget.widgets[var0] = new Widget[var1];
+         int var2 = 0;
+
+         int var3;
+         boolean var4;
+         char var5;
+         for(var3 = var0.length(); var2 < var3; ++var2) {
+            var5 = var0.charAt(var2);
+            var4 = var5 == 160 || var5 == 32 || var5 == 95 || var5 == 45;
+            if(!var4) {
+               break;
+            }
+         }
+
+         while(var3 > var2) {
+            var5 = var0.charAt(var3 - 1);
+            var4 = var5 == 160 || var5 == 32 || var5 == 95 || var5 == 45;
+            if(!var4) {
+               break;
             }
 
-            for(int var2 = 0; var2 < var1; ++var2) {
-               if(Widget.widgets[var0][var2] == null) {
-                  byte[] var3 = class35.widgetIndex.getConfigData(var0, var2);
-                  if(var3 != null) {
-                     Widget.widgets[var0][var2] = new Widget();
-                     Widget.widgets[var0][var2].id = var2 + (var0 << 16);
-                     if(var3[0] == -1) {
-                        Widget.widgets[var0][var2].decodeActive(new Buffer(var3));
-                     } else {
-                        Widget.widgets[var0][var2].decode(new Buffer(var3));
-                     }
-                  }
+            --var3;
+         }
+
+         int var10 = var3 - var2;
+         if(var10 >= 1) {
+            byte var6;
+            if(var1 == null) {
+               var6 = 12;
+            } else {
+               switch(var1.field3840) {
+               case 7:
+                  var6 = 20;
+                  break;
+               default:
+                  var6 = 12;
                }
             }
 
-            class163.validInterfaces[var0] = true;
-            return true;
-         }
-      }
-   }
+            if(var10 <= var6) {
+               StringBuilder var9 = new StringBuilder(var10);
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-942671943"
-   )
-   public static boolean method46(int var0) {
-      return (var0 >> 28 & 1) != 0;
+               for(int var11 = var2; var11 < var3; ++var11) {
+                  char var7 = var0.charAt(var11);
+                  if(class7.method39(var7)) {
+                     char var8 = class43.method634(var7);
+                     if(var8 != 0) {
+                        var9.append(var8);
+                     }
+                  }
+               }
+
+               if(var9.length() == 0) {
+                  return null;
+               }
+
+               return var9.toString();
+            }
+         }
+
+         return null;
+      }
    }
 }
