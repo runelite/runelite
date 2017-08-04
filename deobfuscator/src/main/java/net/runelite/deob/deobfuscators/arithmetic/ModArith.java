@@ -55,8 +55,7 @@ import net.runelite.asm.attributes.code.instructions.If;
 import net.runelite.asm.attributes.code.instructions.If0;
 import net.runelite.asm.attributes.code.instructions.LAdd;
 import net.runelite.asm.attributes.code.instructions.LCmp;
-import net.runelite.asm.attributes.code.instructions.LDC2_W;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
@@ -121,7 +120,7 @@ public class ModArith implements Deobfuscator
 
 				InstructionContext pushedsfi = ctx.getPops().get(0).getPushed();
 				pushedsfi = pushedsfi.resolve(ctx.getPops().get(0));
-				if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
+				if (pushedsfi.getInstruction() instanceof LDC)
 				{
 					PushConstantInstruction ldc = (PushConstantInstruction) pushedsfi.getInstruction();
 					if (ldc.getConstant() instanceof Integer || ldc.getConstant() instanceof Long)
@@ -140,12 +139,12 @@ public class ModArith implements Deobfuscator
 
 					PushConstantInstruction pci = null;
 					Instruction other = null;
-					if (one instanceof LDC_W || one instanceof LDC2_W)
+					if (one instanceof LDC)
 					{
 						pci = (PushConstantInstruction) one;
 						other = two;
 					}
-					else if (two instanceof LDC_W || two instanceof LDC2_W)
+					else if (two instanceof LDC)
 					{
 						pci = (PushConstantInstruction) two;
 						other = one;
@@ -181,12 +180,12 @@ public class ModArith implements Deobfuscator
 
 			PushConstantInstruction pc = null;
 			GetFieldInstruction other = null;
-			if ((one instanceof LDC_W || one instanceof LDC2_W) && two instanceof GetFieldInstruction)
+			if (one instanceof LDC && two instanceof GetFieldInstruction)
 			{
 				pc = (PushConstantInstruction) one;
 				other = (GetFieldInstruction) two;
 			}
-			else if ((two instanceof LDC_W || two instanceof LDC2_W) && one instanceof GetFieldInstruction)
+			else if (two instanceof LDC && one instanceof GetFieldInstruction)
 			{
 				pc = (PushConstantInstruction) two;
 				other = (GetFieldInstruction) one;
@@ -280,7 +279,7 @@ public class ModArith implements Deobfuscator
 					InstructionContext pushedsfi = ctx.getPops().get(0).getPushed(); // value being set
 					pushedsfi = pushedsfi.resolve(ctx.getPops().get(0));
 
-					if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
+					if (pushedsfi.getInstruction() instanceof LDC)
 					{
 						constant = true;
 					}
@@ -288,7 +287,7 @@ public class ModArith implements Deobfuscator
 
 				for (InstructionContext i : l)
 				{
-					if (i.getInstruction() instanceof LDC_W || i.getInstruction() instanceof LDC2_W)
+					if (i.getInstruction() instanceof LDC)
 					{
 						PushConstantInstruction w = (PushConstantInstruction) i.getInstruction();
 						if (w.getConstant() instanceof Integer || w.getConstant() instanceof Long)
@@ -357,7 +356,7 @@ public class ModArith implements Deobfuscator
 				if (!(pushedsfi.getInstruction() instanceof IMul) && !(pushedsfi.getInstruction() instanceof LMul)
 					&& !(pushedsfi.getInstruction() instanceof IAdd) && !(pushedsfi.getInstruction() instanceof LAdd))
 				{
-					if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
+					if (pushedsfi.getInstruction() instanceof LDC)
 					{
 						PushConstantInstruction ldc = (PushConstantInstruction) pushedsfi.getInstruction();
 
@@ -683,12 +682,12 @@ public class ModArith implements Deobfuscator
 
 						if (p.getType() == Integer.class)
 						{
-							ilist.add(i++, new LDC_W(ins, (int) p.getter));
+							ilist.add(i++, new LDC(ins, (int) p.getter));
 							ilist.add(i++, new IMul(ins));
 						}
 						else if (p.getType() == Long.class)
 						{
-							ilist.add(i++, new LDC2_W(ins, (long) p.getter));
+							ilist.add(i++, new LDC(ins, (long) p.getter));
 							ilist.add(i++, new LMul(ins));
 						}
 						else
@@ -710,12 +709,12 @@ public class ModArith implements Deobfuscator
 						// imul
 						if (p.getType() == Integer.class)
 						{
-							ilist.add(++i, new LDC_W(ins, (int) p.setter));
+							ilist.add(++i, new LDC(ins, (int) p.setter));
 							ilist.add(++i, new IMul(ins));
 						}
 						else if (p.getType() == Long.class)
 						{
-							ilist.add(++i, new LDC2_W(ins, (long) p.setter));
+							ilist.add(++i, new LDC(ins, (long) p.setter));
 							ilist.add(++i, new LMul(ins));
 						}
 						else

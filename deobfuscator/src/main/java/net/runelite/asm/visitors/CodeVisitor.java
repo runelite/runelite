@@ -44,8 +44,7 @@ import net.runelite.asm.attributes.code.instruction.types.TypeInstruction;
 import net.runelite.asm.attributes.code.instructions.IInc;
 import net.runelite.asm.attributes.code.instructions.InvokeDynamic;
 import net.runelite.asm.attributes.code.instructions.InvokeInterface;
-import net.runelite.asm.attributes.code.instructions.LDC2_W;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.LookupSwitch;
 import net.runelite.asm.attributes.code.instructions.MultiANewArray;
 import net.runelite.asm.attributes.code.instructions.TableSwitch;
@@ -57,6 +56,20 @@ import org.objectweb.asm.Handle;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import static org.objectweb.asm.Opcodes.DCONST_0;
+import static org.objectweb.asm.Opcodes.DCONST_1;
+import static org.objectweb.asm.Opcodes.FCONST_0;
+import static org.objectweb.asm.Opcodes.FCONST_1;
+import static org.objectweb.asm.Opcodes.FCONST_2;
+import static org.objectweb.asm.Opcodes.ICONST_0;
+import static org.objectweb.asm.Opcodes.ICONST_1;
+import static org.objectweb.asm.Opcodes.ICONST_2;
+import static org.objectweb.asm.Opcodes.ICONST_3;
+import static org.objectweb.asm.Opcodes.ICONST_4;
+import static org.objectweb.asm.Opcodes.ICONST_5;
+import static org.objectweb.asm.Opcodes.ICONST_M1;
+import static org.objectweb.asm.Opcodes.LCONST_0;
+import static org.objectweb.asm.Opcodes.LCONST_1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -110,8 +123,6 @@ public class CodeVisitor extends MethodVisitor
 			Constructor<? extends Instruction> con = type.getInstructionClass().getConstructor(Instructions.class, InstructionType.class);
 			Instruction ins = con.newInstance(code.getInstructions(), type);
 
-			ins = ins.makeGeneric();
-
 			code.getInstructions().addInstruction(ins);
 			return ins;
 		}
@@ -125,7 +136,97 @@ public class CodeVisitor extends MethodVisitor
 	@Override
 	public void visitInsn(int opcode)
 	{
-		createInstructionFromOpcode(opcode);
+		switch (opcode)
+		{
+			case DCONST_0:
+			{
+				Instruction i = new LDC(code.getInstructions(), 0d);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			case DCONST_1:
+			{
+				Instruction i = new LDC(code.getInstructions(), 1d);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			case FCONST_0:
+			{
+				Instruction i = new LDC(code.getInstructions(), 0f);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			case FCONST_1:
+			{
+				Instruction i = new LDC(code.getInstructions(), 1f);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			case FCONST_2:
+			{
+				Instruction i = new LDC(code.getInstructions(), 2f);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			case ICONST_M1:
+			{
+				Instruction i = new LDC(code.getInstructions(), -1);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			case ICONST_0:
+			{
+				Instruction i = new LDC(code.getInstructions(), 0);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			case ICONST_1:
+			{
+			{
+				Instruction i = new LDC(code.getInstructions(), 1);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			}
+			case ICONST_2:
+			{
+				Instruction i = new LDC(code.getInstructions(), 2);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			case ICONST_3:
+			{
+				Instruction i = new LDC(code.getInstructions(), 3);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			case ICONST_4:
+			{
+				Instruction i = new LDC(code.getInstructions(), 4);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			case ICONST_5:
+			{
+				Instruction i = new LDC(code.getInstructions(), 5);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			case LCONST_0:
+			{
+				Instruction i = new LDC(code.getInstructions(), 0L);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			case LCONST_1:
+			{
+				Instruction i = new LDC(code.getInstructions(), 1L);
+				code.getInstructions().addInstruction(i);
+				break;
+			}
+			default:
+				createInstructionFromOpcode(opcode);
+		}
 	}
 
 	@Override
@@ -209,16 +310,8 @@ public class CodeVisitor extends MethodVisitor
 			entry = new net.runelite.asm.pool.Class((String) t.getClassName());
 		}
 
-		if (cst instanceof Long || cst instanceof Double)
-		{
-			LDC2_W ldc = new LDC2_W(code.getInstructions(), entry);
-			code.getInstructions().addInstruction(ldc);
-		}
-		else
-		{
-			LDC_W ldc = new LDC_W(code.getInstructions(), entry);
-			code.getInstructions().addInstruction(ldc);
-		}
+		LDC ldc = new LDC(code.getInstructions(), entry);
+		code.getInstructions().addInstruction(ldc);
 	}
 
 	@Override

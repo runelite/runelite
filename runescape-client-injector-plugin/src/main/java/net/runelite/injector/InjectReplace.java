@@ -46,8 +46,7 @@ import net.runelite.asm.attributes.code.instructions.FLoad;
 import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
-import net.runelite.asm.attributes.code.instructions.LDC2_W;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.LLoad;
 import net.runelite.asm.attributes.code.instructions.New;
 import net.runelite.asm.attributes.code.instructions.Pop;
@@ -336,16 +335,16 @@ public class InjectReplace
 								ins.add(offset, new SiPush(instructions, Short.parseShort(garbageValue)));
 								break;
 							case "I":
-								ins.add(offset, new LDC_W(instructions, Integer.parseInt(garbageValue)));
+								ins.add(offset, new LDC(instructions, Integer.parseInt(garbageValue)));
 								break;
 							case "D":
-								ins.add(offset, new LDC2_W(instructions, Double.parseDouble(garbageValue)));
+								ins.add(offset, new LDC(instructions, Double.parseDouble(garbageValue)));
 								break;
 							case "F":
-								ins.add(offset, new LDC_W(instructions, Float.parseFloat(garbageValue)));
+								ins.add(offset, new LDC(instructions, Float.parseFloat(garbageValue)));
 								break;
 							case "J":
-								ins.add(offset, new LDC2_W(instructions, Long.parseLong(garbageValue)));
+								ins.add(offset, new LDC(instructions, Long.parseLong(garbageValue)));
 								break;
 							default:
 								throw new RuntimeException("Unknown type");

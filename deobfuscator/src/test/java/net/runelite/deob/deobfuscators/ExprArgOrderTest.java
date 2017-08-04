@@ -31,10 +31,9 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.IAdd;
-import net.runelite.asm.attributes.code.instructions.IConst_3;
 import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.IStore;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.attributes.code.instructions.VReturn;
@@ -56,7 +55,7 @@ public class ExprArgOrderTest
 		// vars[0] = 3
 		Instruction[] prepareVariables =
 		{
-			new IConst_3(ins),
+			new LDC(ins, 3),
 			new IStore(ins, 0)
 		};
 
@@ -68,7 +67,7 @@ public class ExprArgOrderTest
 		Instruction body[] =
 		{
 			// 3 + var0 -> var0 + 3
-			new LDC_W(ins, 3), // 2
+			new LDC(ins, 3), // 2
 			new ILoad(ins, 0),
 			new IAdd(ins),
 			new Pop(ins),
@@ -86,7 +85,7 @@ public class ExprArgOrderTest
 		List<Instruction> instructions = ins.getInstructions();
 
 		Assert.assertEquals(InstructionType.ILOAD, instructions.get(2).getType());
-		Assert.assertEquals(InstructionType.LDC_W, instructions.get(3).getType());
+		Assert.assertEquals(InstructionType.LDC, instructions.get(3).getType());
 		Assert.assertEquals(InstructionType.IADD, instructions.get(4).getType());
 	}
 
@@ -102,7 +101,7 @@ public class ExprArgOrderTest
 		// vars[0] = 3
 		Instruction[] prepareVariables =
 		{
-			new IConst_3(ins),
+			new LDC(ins, 3),
 			new IStore(ins, 0)
 		};
 
@@ -115,11 +114,11 @@ public class ExprArgOrderTest
 		{
 			// var0 + 3 -> var0 + 3
 			new ILoad(ins, 0), // 2
-			new LDC_W(ins, 3),
+			new LDC(ins, 3),
 			new IAdd(ins),
 			new Pop(ins),
 			// (3 + var0) + 512 -> (var0 + 3) + 512
-			new LDC_W(ins, 3), // 6
+			new LDC(ins, 3), // 6
 			new ILoad(ins, 0),
 			new IAdd(ins),
 			new SiPush(ins, (short) 512),
@@ -139,7 +138,7 @@ public class ExprArgOrderTest
 		List<Instruction> instructions = ins.getInstructions();
 
 		Assert.assertEquals(InstructionType.ILOAD, instructions.get(2).getType());
-		Assert.assertEquals(InstructionType.LDC_W, instructions.get(3).getType());
+		Assert.assertEquals(InstructionType.LDC, instructions.get(3).getType());
 		Assert.assertEquals(InstructionType.IADD, instructions.get(4).getType());
 
 		Assert.assertEquals(InstructionType.ILOAD, instructions.get(6).getType());
@@ -159,7 +158,7 @@ public class ExprArgOrderTest
 		// vars[0] = 3
 		Instruction[] prepareVariables =
 		{
-			new IConst_3(ins),
+			new LDC(ins, 3),
 			new IStore(ins, 0)
 		};
 
@@ -171,8 +170,8 @@ public class ExprArgOrderTest
 		Instruction body[] =
 		{
 			// 512 + (3 + var1) -> var1 + 3 + 512
-			new LDC_W(ins, 512),
-			new IConst_3(ins),
+			new LDC(ins, 512),
+			new LDC(ins, 3),
 			new ILoad(ins, 0),
 			new IAdd(ins),
 			new IAdd(ins),

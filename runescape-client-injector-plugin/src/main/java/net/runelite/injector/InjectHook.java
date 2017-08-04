@@ -42,9 +42,8 @@ import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.asm.attributes.code.instructions.AConstNull;
 import net.runelite.asm.attributes.code.instructions.ArrayStore;
-import net.runelite.asm.attributes.code.instructions.IConst_M1;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.PutField;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
@@ -317,7 +316,7 @@ public class InjectHook
 		// invokestatic net/runelite/inject/callbacks/Hooks/callHook(Ljava/lang/String;ILjava/lang/Object;)V
 
 		// hook name
-		LDC_W ldc = new LDC_W(ins, hookName);
+		LDC ldc = new LDC(ins, hookName);
 
 		InvokeStatic invoke = new InvokeStatic(ins,
 			new net.runelite.asm.pool.Method(
@@ -334,7 +333,7 @@ public class InjectHook
 		}
 		else
 		{
-			ins.getInstructions().add(idx++, new IConst_M1(ins));
+			ins.getInstructions().add(idx++, new LDC(ins, -1));
 		}
 		ins.getInstructions().add(idx++, objectPusher);
 		ins.getInstructions().add(idx++, invoke);

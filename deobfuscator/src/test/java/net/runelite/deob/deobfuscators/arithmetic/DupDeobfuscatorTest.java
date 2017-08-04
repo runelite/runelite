@@ -33,11 +33,10 @@ import net.runelite.asm.attributes.code.instructions.Dup;
 import net.runelite.asm.attributes.code.instructions.Dup_X1;
 import net.runelite.asm.attributes.code.instructions.GetField;
 import net.runelite.asm.attributes.code.instructions.IAdd;
-import net.runelite.asm.attributes.code.instructions.IConst_1;
 import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.IMul;
 import net.runelite.asm.attributes.code.instructions.IStore;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.Pop2;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.execution.Execution;
@@ -62,7 +61,7 @@ public class DupDeobfuscatorTest
 
 		Instruction[] prepareVariables =
 		{
-			new IConst_1(ins),
+			new LDC(ins, 1),
 			new IStore(ins, 0)
 		};
 
@@ -71,10 +70,10 @@ public class DupDeobfuscatorTest
 			ins.addInstruction(i);
 		}
 
-		LDC_W constant1 = new LDC_W(ins, 1129258489),
-			constant2 = new LDC_W(ins, -1692330935),
-			constant3 = new LDC_W(ins, 1641298955),
-			constant4 = new LDC_W(ins, 1043501435);
+		LDC constant1 = new LDC(ins, 1129258489),
+			constant2 = new LDC(ins, -1692330935),
+			constant3 = new LDC(ins, 1641298955),
+			constant4 = new LDC(ins, 1043501435);
 
 		Instruction body[] =
 		{
@@ -141,12 +140,12 @@ public class DupDeobfuscatorTest
 			new AConstNull(ins), // this
 			new Dup(ins), // this this
 			new GetField(ins, new Field(new Class("test"), "field", new Type("I"))),
-			new LDC_W(ins, 830083863), // this this I I
+			new LDC(ins, 830083863), // this this I I
 			new IMul(ins), // this this I
-			new LDC_W(ins, 830083863),
+			new LDC(ins, 830083863),
 			new IAdd(ins),
 			new Dup_X1(ins),
-			new LDC_W(ins, 636900519),
+			new LDC(ins, 636900519),
 			new IMul(ins), // pops dup
 			new VReturn(ins)
 		};

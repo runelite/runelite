@@ -36,13 +36,11 @@ import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instructions.BiPush;
 import net.runelite.asm.attributes.code.instructions.IAdd;
-import net.runelite.asm.attributes.code.instructions.IConst_M1;
 import net.runelite.asm.attributes.code.instructions.IInc;
 import net.runelite.asm.attributes.code.instructions.IMul;
 import net.runelite.asm.attributes.code.instructions.ISub;
 import net.runelite.asm.attributes.code.instructions.LAdd;
-import net.runelite.asm.attributes.code.instructions.LDC2_W;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.attributes.code.instructions.LSub;
 import net.runelite.asm.attributes.code.instructions.SiPush;
@@ -117,8 +115,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		
 		if (ctx.getInstruction() instanceof PushConstantInstruction)
 		{
-			if (ctx.getInstruction() instanceof BiPush || ctx.getInstruction() instanceof SiPush
-				|| ctx.getInstruction() instanceof IConst_M1)
+			if (ctx.getInstruction() instanceof BiPush || ctx.getInstruction() instanceof SiPush)
 			{
 				throw new IllegalStateException();
 			}
@@ -211,7 +208,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 						//assert otherCtxI.getInstruction() instanceof IMul;
 
 						InstructionContext pushConstant = otherCtxI.getPops().get(0).getPushed(); // other side of that imul
-						assert pushConstant.getInstruction() instanceof LDC_W || pushConstant.getInstruction() instanceof LDC2_W;
+						assert pushConstant.getInstruction() instanceof LDC;
 
 						me.dupmagic = pushConstant;
 

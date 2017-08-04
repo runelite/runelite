@@ -38,7 +38,7 @@ import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.PutStatic;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
@@ -202,8 +202,8 @@ public class EnumDeobfuscator implements Deobfuscator
 				if (i.getType() == InstructionType.DUP && !seenDup)
 				{
 					// XXX this should actually be the field name, but it seems to have no effect on fernflower
-					ins.addInstruction(j + 1, new LDC_W(ins, "runelite"));
-					ins.addInstruction(j + 2, new LDC_W(ins, count++));
+					ins.addInstruction(j + 1, new LDC(ins, "runelite"));
+					ins.addInstruction(j + 2, new LDC(ins, count++));
 					seenDup = true;
 				}
 				else if (i.getType() == InstructionType.INVOKESPECIAL)

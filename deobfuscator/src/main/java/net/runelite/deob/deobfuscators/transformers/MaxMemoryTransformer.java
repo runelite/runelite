@@ -35,7 +35,7 @@ import net.runelite.asm.attributes.code.instructions.I2L;
 import net.runelite.asm.attributes.code.instructions.IAdd;
 import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.New;
 import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.pool.Class;
@@ -105,9 +105,9 @@ public class MaxMemoryTransformer implements Transformer
 		ins.getInstructions().add(idx++, new New(ins, randomClass));
 		ins.getInstructions().add(idx++, new Dup(ins));
 		ins.getInstructions().add(idx++, new InvokeSpecial(ins, new net.runelite.asm.pool.Method(randomClass, "<init>", new Signature("()V")))); // new Random
-		ins.getInstructions().add(idx++, new LDC_W(ins, 31457280));
+		ins.getInstructions().add(idx++, new LDC(ins, 31457280));
 		ins.getInstructions().add(idx++, new InvokeVirtual(ins, new net.runelite.asm.pool.Method(randomClass, "nextInt", new Signature("(I)I")))); // nextInt(31457280)
-		ins.getInstructions().add(idx++, new LDC_W(ins, 230686720));
+		ins.getInstructions().add(idx++, new LDC(ins, 230686720));
 		ins.getInstructions().add(idx++, new IAdd(ins)); // 230686720 + nextInt(31457280)
 		ins.getInstructions().add(idx++, new I2L(ins));
 	}

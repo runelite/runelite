@@ -30,9 +30,8 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.AConstNull;
 import net.runelite.asm.attributes.code.instructions.AStore;
-import net.runelite.asm.attributes.code.instructions.IConst_0;
 import net.runelite.asm.attributes.code.instructions.IStore;
-import net.runelite.asm.attributes.code.instructions.LConst_0;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.LStore;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.deob.ClassGroupFactory;
@@ -59,17 +58,17 @@ public class LvtTest
 			new AStore(ins, 0),
 			// var0 = 0
 			// this forces a reindex to varn
-			new IConst_0(ins),
+			new LDC(ins, 0),
 			new IStore(ins, 0),
 			// var2 = null
 			new AConstNull(ins),
 			new AStore(ins, 2),
 			// var2 = 0
 			// this forces a reindex to varn+1
-			new IConst_0(ins),
+			new LDC(ins, 0),
 			new IStore(ins, 2),
 			//var0 = 0L
-			new LConst_0(ins),
+			new LDC(ins, 0L),
 			new LStore(ins, 0),
 			new VReturn(ins)
 		};

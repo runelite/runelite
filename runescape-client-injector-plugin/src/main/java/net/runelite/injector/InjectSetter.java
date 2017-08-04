@@ -33,8 +33,7 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.IMul;
-import net.runelite.asm.attributes.code.instructions.LDC2_W;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.attributes.code.instructions.PutField;
 import net.runelite.asm.attributes.code.instructions.PutStatic;
@@ -116,12 +115,12 @@ public class InjectSetter
 
 			if (setter instanceof Integer)
 			{
-				ins.add(new LDC_W(instructions, (int) setter));
+				ins.add(new LDC(instructions, (int) setter));
 				ins.add(new IMul(instructions));
 			}
 			else
 			{
-				ins.add(new LDC2_W(instructions, (long) setter));
+				ins.add(new LDC(instructions, (long) setter));
 				ins.add(new LMul(instructions));
 			}
 		}

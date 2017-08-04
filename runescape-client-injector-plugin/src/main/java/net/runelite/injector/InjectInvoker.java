@@ -38,8 +38,7 @@ import net.runelite.asm.attributes.code.instructions.BiPush;
 import net.runelite.asm.attributes.code.instructions.DLoad;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
-import net.runelite.asm.attributes.code.instructions.LDC2_W;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.LLoad;
 import net.runelite.asm.attributes.code.instructions.Return;
 import net.runelite.asm.attributes.code.instructions.SiPush;
@@ -204,16 +203,16 @@ public class InjectInvoker
 					ins.add(new SiPush(instructions, Short.parseShort(garbage)));
 					break;
 				case "I":
-					ins.add(new LDC_W(instructions, Integer.parseInt(garbage)));
+					ins.add(new LDC(instructions, Integer.parseInt(garbage)));
 					break;
 				case "D":
-					ins.add(new LDC2_W(instructions, Double.parseDouble(garbage)));
+					ins.add(new LDC(instructions, Double.parseDouble(garbage)));
 					break;
 				case "F":
-					ins.add(new LDC_W(instructions, Float.parseFloat(garbage)));
+					ins.add(new LDC(instructions, Float.parseFloat(garbage)));
 					break;
 				case "J":
-					ins.add(new LDC2_W(instructions, Long.parseLong(garbage)));
+					ins.add(new LDC(instructions, Long.parseLong(garbage)));
 					break;
 				default:
 					throw new RuntimeException("Unknown type");

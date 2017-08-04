@@ -45,8 +45,7 @@ import net.runelite.asm.attributes.code.instructions.GetField;
 import net.runelite.asm.attributes.code.instructions.GetStatic;
 import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.IMul;
-import net.runelite.asm.attributes.code.instructions.LDC2_W;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.LLoad;
 import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.attributes.code.instructions.Return;
@@ -382,12 +381,12 @@ public class Inject
 			
 			if (getter instanceof Integer)
 			{
-				ins.add(new LDC_W(instructions, (int) getter));
+				ins.add(new LDC(instructions, (int) getter));
 				ins.add(new IMul(instructions));
 			}
 			else
 			{
-				ins.add(new LDC2_W(instructions, (long) getter));
+				ins.add(new LDC(instructions, (long) getter));
 				ins.add(new LMul(instructions));
 			}
 		}
@@ -439,7 +438,7 @@ public class Inject
 	{
 		if (type.getArrayDims() > 0 || !type.isPrimitive())
 		{
-			return new ALoad(instructions, index).makeSpecific();
+			return new ALoad(instructions, index);
 		}
 
 		switch (type.getType())
@@ -449,13 +448,13 @@ public class Inject
 			case "I":
 			case "S":
 			case "Z":
-				return new ILoad(instructions, index).makeSpecific();
+				return new ILoad(instructions, index);
 			case "D":
-				return new DLoad(instructions, index).makeSpecific();
+				return new DLoad(instructions, index);
 			case "F":
-				return new FLoad(instructions, index).makeSpecific();
+				return new FLoad(instructions, index);
 			case "J":
-				return new LLoad(instructions, index).makeSpecific();
+				return new LLoad(instructions, index);
 			default:
 				throw new RuntimeException("Unknown type");
 		}

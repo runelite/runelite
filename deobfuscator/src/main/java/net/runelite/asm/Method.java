@@ -112,7 +112,6 @@ public class Method
 
 			for (Instruction i : code.getInstructions().getInstructions())
 			{
-				i = i.makeSpecific();
 				i.accept(visitor);
 			}
 

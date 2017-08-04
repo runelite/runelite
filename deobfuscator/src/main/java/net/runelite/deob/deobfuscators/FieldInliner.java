@@ -41,7 +41,7 @@ import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.deob.Deobfuscator;
 
 public class FieldInliner implements Deobfuscator
@@ -142,7 +142,7 @@ public class FieldInliner implements Deobfuscator
 				// remove fin, add push constant
 				Instruction i = (Instruction) fin;
 				
-				Instruction pushIns = new LDC_W(i.getInstructions(), value);
+				Instruction pushIns = new LDC(i.getInstructions(), value);
 				
 				List<Instruction> instructions = i.getInstructions().getInstructions();
 				

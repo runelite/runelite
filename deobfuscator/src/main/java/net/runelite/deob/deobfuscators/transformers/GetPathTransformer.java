@@ -30,7 +30,7 @@ import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.deob.Transformer;
 import org.slf4j.Logger;
@@ -92,7 +92,7 @@ public class GetPathTransformer implements Transformer
 
 		ins.remove(i);
 		ins.getInstructions().add(idx, new Pop(ins)); // pop File
-		ins.getInstructions().add(idx + 1, new LDC_W(ins, ""));
+		ins.getInstructions().add(idx + 1, new LDC(ins, ""));
 	}
 
 }
