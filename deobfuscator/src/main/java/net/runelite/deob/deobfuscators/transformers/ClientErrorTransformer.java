@@ -30,7 +30,7 @@ import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instructions.ALoad_1;
+import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.signature.Signature;
@@ -72,7 +72,7 @@ public class ClientErrorTransformer implements Transformer
 		code.getExceptions().clear();
 		ins.clear();
 
-		Instruction aload1 = new ALoad_1(ins); // load throwable
+		Instruction aload1 = new ALoad(ins, 1); // load throwable
 
 		InvokeVirtual printStackTrace = new InvokeVirtual(ins,
 			new net.runelite.asm.pool.Method(

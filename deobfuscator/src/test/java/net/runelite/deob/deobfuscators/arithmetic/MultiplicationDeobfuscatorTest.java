@@ -43,7 +43,6 @@ import net.runelite.asm.attributes.code.instructions.IConst_M1;
 import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.IMul;
 import net.runelite.asm.attributes.code.instructions.IStore;
-import net.runelite.asm.attributes.code.instructions.IStore_0;
 import net.runelite.asm.attributes.code.instructions.IfEq;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.attributes.code.instructions.LConst_1;
@@ -51,7 +50,7 @@ import net.runelite.asm.attributes.code.instructions.LDC2_W;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
 import net.runelite.asm.attributes.code.instructions.LLoad;
 import net.runelite.asm.attributes.code.instructions.LMul;
-import net.runelite.asm.attributes.code.instructions.LStore_0;
+import net.runelite.asm.attributes.code.instructions.LStore;
 import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.attributes.code.instructions.Pop2;
 import net.runelite.asm.attributes.code.instructions.Swap;
@@ -87,7 +86,7 @@ public class MultiplicationDeobfuscatorTest
 		// vars[0] = 3
 		Instruction[] prepareVariables = {
 			new IConst_3(ins),
-			new IStore_0(ins)
+			new IStore(ins, 0)
 		};
 		
 		for (Instruction i : prepareVariables)
@@ -157,7 +156,7 @@ public class MultiplicationDeobfuscatorTest
 		// vars[0] = 3
 		Instruction[] prepareVariables = {
 			new IConst_3(ins),
-			new IStore_0(ins)
+			new IStore(ins, 0)
 		};
 		
 		for (Instruction i : prepareVariables)
@@ -215,7 +214,7 @@ public class MultiplicationDeobfuscatorTest
 		
 		Instruction[] prepareVariables = {
 			new IConst_3(ins),
-			new IStore_0(ins),
+			new IStore(ins, 0),
 		};
 		
 		for (Instruction i : prepareVariables)
@@ -287,7 +286,7 @@ public class MultiplicationDeobfuscatorTest
 		
 		Instruction[] prepareVariables = {
 			new IConst_3(ins),
-			new IStore_0(ins),
+			new IStore(ins, 0),
 		};
 		
 		for (Instruction i : prepareVariables)
@@ -344,7 +343,7 @@ public class MultiplicationDeobfuscatorTest
 		
 		Instruction[] prepareVariables = {
 			new IConst_3(ins),
-			new IStore_0(ins),
+			new IStore(ins, 0),
 			new IConst_2(ins),
 			new IStore(ins, 1)
 		};
@@ -404,7 +403,7 @@ public class MultiplicationDeobfuscatorTest
 		
 		Instruction[] prepareVariables = {
 			new IConst_3(ins),
-			new IStore_0(ins),
+			new IStore(ins, 0),
 			new IConst_2(ins),
 			new IStore(ins, 1)
 		};
@@ -456,7 +455,7 @@ public class MultiplicationDeobfuscatorTest
 		
 		Instruction[] prepareVariables = {
 			new IConst_3(ins),
-			new IStore_0(ins),
+			new IStore(ins, 0),
 			new IConst_2(ins),
 			new IStore(ins, 1)
 		};
@@ -506,7 +505,7 @@ public class MultiplicationDeobfuscatorTest
 		
 		Instruction[] prepareVariables = {
 			new IConst_3(ins),
-			new IStore_0(ins)
+			new IStore(ins, 0)
 		};
 		
 		for (Instruction i : prepareVariables)
@@ -584,7 +583,7 @@ public class MultiplicationDeobfuscatorTest
 		
 		Instruction[] prepareVariables = {
 			new LConst_1(ins),
-			new LStore_0(ins)
+			new LStore(ins, 0)
 		};
 		
 		for (Instruction i : prepareVariables)
@@ -646,7 +645,7 @@ public class MultiplicationDeobfuscatorTest
 		// vars[0] = 3
 		Instruction[] prepareVariables = {
 			new IConst_3(ins),
-			new IStore_0(ins)
+			new IStore(ins, 0)
 		};
 
 		for (Instruction i : prepareVariables)

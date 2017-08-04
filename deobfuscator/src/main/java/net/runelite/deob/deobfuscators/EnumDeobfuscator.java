@@ -35,9 +35,8 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
-import net.runelite.asm.attributes.code.instructions.ALoad_0;
-import net.runelite.asm.attributes.code.instructions.ALoad_1;
-import net.runelite.asm.attributes.code.instructions.ILoad_2;
+import net.runelite.asm.attributes.code.instructions.ALoad;
+import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
 import net.runelite.asm.attributes.code.instructions.PutStatic;
@@ -157,9 +156,9 @@ public class EnumDeobfuscator implements Deobfuscator
 			}
 			while (i.getType() != InstructionType.INVOKESPECIAL);
 
-			ins.addInstruction(0, new ALoad_0(ins)); // load this
-			ins.addInstruction(1, new ALoad_1(ins)); // load constant name
-			ins.addInstruction(2, new ILoad_2(ins)); // ordinal
+			ins.addInstruction(0, new ALoad(ins, 0)); // load this
+			ins.addInstruction(1, new ALoad(ins, 1)); // load constant name
+			ins.addInstruction(2, new ILoad(ins, 2)); // ordinal
 			ins.addInstruction(3, new InvokeSpecial(ins, ENUM_INIT)); // invoke enum constructor
 
 			// Shift all indexes after this up +2 because of the new String and int argument

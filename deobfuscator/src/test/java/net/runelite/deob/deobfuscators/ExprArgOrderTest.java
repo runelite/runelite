@@ -33,8 +33,7 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.IAdd;
 import net.runelite.asm.attributes.code.instructions.IConst_3;
 import net.runelite.asm.attributes.code.instructions.ILoad;
-import net.runelite.asm.attributes.code.instructions.ILoad_0;
-import net.runelite.asm.attributes.code.instructions.IStore_0;
+import net.runelite.asm.attributes.code.instructions.IStore;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
 import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.attributes.code.instructions.SiPush;
@@ -58,7 +57,7 @@ public class ExprArgOrderTest
 		Instruction[] prepareVariables =
 		{
 			new IConst_3(ins),
-			new IStore_0(ins)
+			new IStore(ins, 0)
 		};
 
 		for (Instruction i : prepareVariables)
@@ -104,7 +103,7 @@ public class ExprArgOrderTest
 		Instruction[] prepareVariables =
 		{
 			new IConst_3(ins),
-			new IStore_0(ins)
+			new IStore(ins, 0)
 		};
 
 		for (Instruction i : prepareVariables)
@@ -161,7 +160,7 @@ public class ExprArgOrderTest
 		Instruction[] prepareVariables =
 		{
 			new IConst_3(ins),
-			new IStore_0(ins)
+			new IStore(ins, 0)
 		};
 
 		for (Instruction i : prepareVariables)
@@ -174,7 +173,7 @@ public class ExprArgOrderTest
 			// 512 + (3 + var1) -> var1 + 3 + 512
 			new LDC_W(ins, 512),
 			new IConst_3(ins),
-			new ILoad_0(ins),
+			new ILoad(ins, 0),
 			new IAdd(ins),
 			new IAdd(ins),
 			new Pop(ins),

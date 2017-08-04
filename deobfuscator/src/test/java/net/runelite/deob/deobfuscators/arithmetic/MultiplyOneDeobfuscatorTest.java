@@ -38,8 +38,7 @@ import net.runelite.asm.attributes.code.instructions.IConst_M1;
 import net.runelite.asm.attributes.code.instructions.IDiv;
 import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.IMul;
-import net.runelite.asm.attributes.code.instructions.IStore_0;
-import net.runelite.asm.attributes.code.instructions.IStore_1;
+import net.runelite.asm.attributes.code.instructions.IStore;
 import net.runelite.asm.attributes.code.instructions.IfEq;
 import net.runelite.asm.attributes.code.instructions.IfICmpEq;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
@@ -65,7 +64,7 @@ public class MultiplyOneDeobfuscatorTest
 		// vars[0] = 3
 		Instruction[] prepareVariables = {
 			new IConst_3(ins),
-			new IStore_0(ins)
+			new IStore(ins, 0)
 		};
 		
 		for (Instruction i : prepareVariables)
@@ -120,7 +119,7 @@ public class MultiplyOneDeobfuscatorTest
 		// vars[0] = 3
 		Instruction[] prepareVariables = {
 			new IConst_3(ins),
-			new IStore_0(ins)
+			new IStore(ins, 0)
 		};
 		
 		for (Instruction i : prepareVariables)
@@ -200,9 +199,9 @@ public class MultiplyOneDeobfuscatorTest
 		// vars[0] = 3
 		Instruction[] prepareVariables = {
 			new IConst_3(ins),
-			new IStore_0(ins),
+			new IStore(ins, 0),
 			new IConst_2(ins),
-			new IStore_1(ins)
+			new IStore(ins, 1)
 		};
 		
 		for (Instruction i : prepareVariables)
