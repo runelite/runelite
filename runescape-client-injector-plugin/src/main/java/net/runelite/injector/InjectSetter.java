@@ -31,7 +31,7 @@ import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instructions.ALoad_0;
+import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.IMul;
 import net.runelite.asm.attributes.code.instructions.LDC2_W;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
@@ -104,7 +104,7 @@ public class InjectSetter
 		// load this
 		if (!field.isStatic())
 		{
-			ins.add(new ALoad_0(instructions));
+			ins.add(new ALoad(instructions, 0));
 		}
 
 		// load argument

@@ -31,7 +31,7 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instructions.ALoad_0;
+import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
@@ -101,7 +101,7 @@ public class InjectHookMethod
 		{
 			// Add variable to signature
 			builder.addArgument(0, new Type("Ljava/lang/Object;")); // XXX this should be the API class..
-			instructions.addInstruction(insertPos++, new ALoad_0(instructions));
+			instructions.addInstruction(insertPos++, new ALoad(instructions, 0));
 		}
 
 		Signature signature = builder.build();
