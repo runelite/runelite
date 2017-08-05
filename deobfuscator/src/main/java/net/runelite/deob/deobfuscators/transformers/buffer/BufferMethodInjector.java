@@ -29,7 +29,6 @@ import java.io.InputStream;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
-import net.runelite.asm.Methods;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
@@ -58,7 +57,7 @@ public class BufferMethodInjector
 
 		ClassFile bufferClass = buffer.getClassFile();
 
-		for (Method m : runeliteBuffer.getMethods().getMethods())
+		for (Method m : runeliteBuffer.getMethods())
 		{
 			if (m.getName().startsWith("<"))
 			{
@@ -73,8 +72,7 @@ public class BufferMethodInjector
 	{
 		assert method.getExceptions().getExceptions().isEmpty();
 
-		Methods methods = bufferClass.getMethods();
-		Method newMethod = new Method(methods, method.getName(), method.getDescriptor());
+		Method newMethod = new Method(bufferClass, method.getName(), method.getDescriptor());
 		Code code = new Code(newMethod);
 		newMethod.setCode(code);
 
@@ -105,7 +103,7 @@ public class BufferMethodInjector
 
 		code.getExceptions().getExceptions().addAll(method.getCode().getExceptions().getExceptions());
 
-		methods.addMethod(newMethod);
+		bufferClass.addMethod(newMethod);
 	}
 
 	static ClassFile loadClass(InputStream in) throws IOException

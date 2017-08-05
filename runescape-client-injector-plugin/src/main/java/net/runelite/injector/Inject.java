@@ -56,6 +56,7 @@ import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import net.runelite.mapping.Import;
 import net.runelite.rs.api.Client;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -279,7 +280,7 @@ public class Inject
 				injectGetter(targetClass, apiMethod, otherf, getter);
 			}
 			
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				hookMethod.process(m);
 				invokes.process(m, other, implementingClass);
@@ -349,8 +350,8 @@ public class Inject
 		Signature sig = new Signature.Builder()
 			.setReturnType(classToType(method.getReturnType()))
 			.build();
-		Method getterMethod = new Method(clazz.getMethods(), method.getName(), sig);
-		getterMethod.setAccessFlags(Method.ACC_PUBLIC);
+		Method getterMethod = new Method(clazz, method.getName(), sig);
+		getterMethod.setAccessFlags(ACC_PUBLIC);
 		
 		// create code
 		Code code = new Code(getterMethod);
@@ -423,7 +424,7 @@ public class Inject
 		
 		ins.add(new Return(instructions, returnType));
 		
-		clazz.getMethods().addMethod(getterMethod);
+		clazz.addMethod(getterMethod);
 	}
 
 	/**

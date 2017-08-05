@@ -61,7 +61,7 @@ public class ClassMapper
 	
 	private List<Integer> methodCardinalities(ClassFile cf)
 	{
-		List<Signature> t = cf.getMethods().getMethods().stream()
+		List<Signature> t = cf.getMethods().stream()
 			.filter(m -> !m.isStatic())
 			.filter(m -> !m.getName().startsWith("<"))
 			.map(m -> m.getDescriptor())

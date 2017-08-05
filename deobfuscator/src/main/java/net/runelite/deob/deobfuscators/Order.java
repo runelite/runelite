@@ -30,7 +30,6 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
-import net.runelite.asm.Methods;
 import net.runelite.asm.execution.Execution;
 import net.runelite.deob.Deobfuscator;
 import org.slf4j.Logger;
@@ -64,8 +63,7 @@ public class Order implements Deobfuscator
 
 		for (ClassFile cf : group.getClasses())
 		{
-			Methods methods = cf.getMethods();
-			List<Method> m = methods.getMethods();
+			List<Method> m = cf.getMethods();
 			Collections.sort(m, this::compareMethod);
 
 			sortedMethods += m.size();

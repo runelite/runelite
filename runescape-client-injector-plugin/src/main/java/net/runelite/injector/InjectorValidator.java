@@ -105,7 +105,7 @@ public class InjectorValidator
 
 		Set<NameAndSignature> signatures = new HashSet<>();
 
-		for (net.runelite.asm.Method method : cf.getMethods().getMethods())
+		for (net.runelite.asm.Method method : cf.getMethods())
 		{
 			NameAndSignature nas = new NameAndSignature(method.getName(), method.getDescriptor());
 

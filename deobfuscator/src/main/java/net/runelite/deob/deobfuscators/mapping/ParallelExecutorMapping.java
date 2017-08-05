@@ -178,8 +178,8 @@ public class ParallelExecutorMapping
 				return;
 			}
 
-			cf1 = m1.getMethods().getClassFile();
-			cf2 = m2.getMethods().getClassFile();
+			cf1 = m1.getClassFile();
+			cf2 = m2.getClassFile();
 		}
 		else
 		{
@@ -295,7 +295,7 @@ public class ParallelExecutorMapping
 				{
 					// these are both probably very small
 					long nonStaticFields = cf.getFields().stream().filter(f -> !f.isStatic()).count(),
-						nonStaticMethods = cf.getMethods().getMethods().stream().filter(m2 -> !m2.isStatic()).count();
+						nonStaticMethods = cf.getMethods().stream().filter(m2 -> !m2.isStatic()).count();
 
 					logger.info("Build classes fallback {} -> {}, non static fields: {}, non static methods: {}",
 						cf, other, nonStaticFields, nonStaticMethods);
@@ -339,7 +339,7 @@ public class ParallelExecutorMapping
 		else if (o instanceof Method)
 		{
 			Method m = (Method) o;
-			assert m.getMethods().getClassFile().getGroup() == to;
+			assert m.getClassFile().getGroup() == to;
 		}
 		else if (o instanceof ClassFile)
 		{
@@ -394,7 +394,7 @@ public class ParallelExecutorMapping
 		else if (o instanceof Method)
 		{
 			Method m = (Method) o;
-			return m.getMethods().getClassFile().getClassName() + "." + m.getName();
+			return m.getClassFile().getClassName() + "." + m.getName();
 		}
 		else if (o instanceof ClassFile)
 		{

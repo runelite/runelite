@@ -139,7 +139,7 @@ public class PacketHandlerOrder implements Deobfuscator
 					// check if the invoke is on buffer/packetbuffer classes
 					boolean matches = ii.getMethods().stream()
 						.filter(m -> m.getDescriptor().size() == 0)
-						.map(method -> method.getMethods().getClassFile())
+						.map(method -> method.getClassFile())
 						.anyMatch(cf -> cf == bf.getBuffer() || cf == bf.getPacketBuffer());
 					if (matches)
 					{

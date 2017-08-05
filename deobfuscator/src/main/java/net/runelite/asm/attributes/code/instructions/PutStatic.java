@@ -103,7 +103,7 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 	{
 		Class clazz = field.getClazz();
 
-		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
+		ClassGroup group = this.getInstructions().getCode().getMethod().getClassFile().getGroup();
 		ClassFile cf = group.findClass(clazz.getName());
 		if (cf == null)
 		{

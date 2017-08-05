@@ -40,6 +40,7 @@ import net.runelite.asm.attributes.code.instructions.PutStatic;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,9 +91,9 @@ public class InjectSetter
 			.addArgument(inject.classToType(method.getParameterTypes()[0]))
 			.build();
 
-		Method setterMethod = new Method(targetClass.getMethods(), method.getName(), sig);
-		setterMethod.setAccessFlags(Method.ACC_PUBLIC);
-		targetClass.getMethods().addMethod(setterMethod);
+		Method setterMethod = new Method(targetClass, method.getName(), sig);
+		setterMethod.setAccessFlags(ACC_PUBLIC);
+		targetClass.addMethod(setterMethod);
 
 		Code code = new Code(setterMethod);
 		setterMethod.setCode(code);

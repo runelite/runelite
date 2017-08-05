@@ -46,7 +46,7 @@ public class UnusedClass implements Deobfuscator
 				continue;
 			}
 
-			if (!cf.getMethods().getMethods().isEmpty())
+			if (!cf.getMethods().isEmpty())
 			{
 				continue;
 			}

@@ -90,7 +90,7 @@ public class New extends Instruction implements TypeInstruction
 	@Override
 	public void lookup()
 	{
-		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
+		ClassGroup group = this.getInstructions().getCode().getMethod().getClassFile().getGroup();
 		myClass = group.findClass(clazz.getName());
 	}
 	

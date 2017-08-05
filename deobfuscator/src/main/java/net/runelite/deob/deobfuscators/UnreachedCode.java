@@ -99,7 +99,7 @@ public class UnreachedCode implements Deobfuscator
 		
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				if (m.getCode() == null)
 					continue;

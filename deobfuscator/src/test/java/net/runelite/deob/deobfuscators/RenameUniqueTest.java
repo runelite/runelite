@@ -91,7 +91,7 @@ public class RenameUniqueTest
 				Assert.assertTrue(f.getName().startsWith("field"));
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Assert.assertTrue(m.getName().length() > 2);
 

@@ -46,6 +46,7 @@ import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.deob.DeobAnnotations;
 import static net.runelite.deob.DeobAnnotations.EXPORT;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,7 +129,7 @@ public class InjectInvoker
 		}
 
 		assert invokeMethod.isStatic() == deobfuscatedMethod.isStatic();
-		assert invokeMethod.isStatic() || invokeMethod.getMethods().getClassFile() == clazz;
+		assert invokeMethod.isStatic() || invokeMethod.getClassFile() == clazz;
 
 		Type lastGarbageArgumentType = null;
 
@@ -143,8 +144,8 @@ public class InjectInvoker
 
 		// Injected method signature is always the same as the API
 		Signature apiSignature = inject.javaMethodToSignature(method);
-		Method invokerMethodSignature = new Method(clazz.getMethods(), method.getName(), apiSignature);
-		invokerMethodSignature.setAccessFlags(Method.ACC_PUBLIC);
+		Method invokerMethodSignature = new Method(clazz, method.getName(), apiSignature);
+		invokerMethodSignature.setAccessFlags(ACC_PUBLIC);
 
 		// create code attribute
 		Code code = new Code(invokerMethodSignature);
@@ -263,6 +264,6 @@ public class InjectInvoker
 
 		ins.add(new Return(instructions, returnType));
 
-		clazz.getMethods().addMethod(invokerMethodSignature);
+		clazz.addMethod(invokerMethodSignature);
 	}
 }

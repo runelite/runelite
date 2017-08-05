@@ -97,7 +97,7 @@ public class UpdateMappingsTest
 				f.getAnnotations().clearAnnotations();
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				m.getAnnotations().clearAnnotations();
 			}
@@ -127,7 +127,7 @@ public class UpdateMappingsTest
 				Assert.assertEquals(name + " <-> " + otherName, name, otherName);
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Method otherm = other.findMethod(m.getName(), m.getDescriptor());
 
@@ -172,7 +172,7 @@ public class UpdateMappingsTest
 		for (ClassFile cf : cg.getClasses())
 		{
 			++classes;
-			methods += cf.getMethods().getMethods().size();
+			methods += cf.getMethods().size();
 			fields += cf.getFields().size();
 		}
 		int total = methods + fields + classes;
@@ -195,7 +195,7 @@ public class UpdateMappingsTest
 			else if (o instanceof Method)
 			{
 				Method m = (Method) o;
-				assert m.getMethods().getClassFile().getGroup() == in;
+				assert m.getClassFile().getGroup() == in;
 
 				if (m.isStatic())
 				{

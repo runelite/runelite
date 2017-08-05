@@ -43,7 +43,7 @@ public class MethodSignatureMapper
 	{
 		List<Method> methods = new ArrayList<>();
 		for (ClassFile cf : group.getClasses())
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 				if (!m.isStatic() && !m.getName().equals("<init>") && m.getCode() != null)
 					methods.add(m);
 		return methods;
@@ -52,7 +52,7 @@ public class MethodSignatureMapper
 	private List<Method> getMethodsOfSignature(ClassGroup group, ClassFile cf, Signature sig)
 	{
 		return getMethods(group).stream()
-			.filter(m -> MappingExecutorUtil.isMaybeEqual(cf, m.getMethods().getClassFile()))
+			.filter(m -> MappingExecutorUtil.isMaybeEqual(cf, m.getClassFile()))
 			.filter(m -> MappingExecutorUtil.isMaybeEqual(m.getDescriptor(), sig))
 			.collect(Collectors.toList());
 	}
@@ -61,7 +61,7 @@ public class MethodSignatureMapper
 	{
 		for (Method m : getMethods(group1))
 		{
-			map.putAll(m, getMethodsOfSignature(group2, m.getMethods().getClassFile(), m.getDescriptor()));
+			map.putAll(m, getMethodsOfSignature(group2, m.getClassFile(), m.getDescriptor()));
 		}
 	}
 

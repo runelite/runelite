@@ -170,7 +170,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 
 	private net.runelite.asm.Method lookupMethod()
 	{
-		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
+		ClassGroup group = this.getInstructions().getCode().getMethod().getClassFile().getGroup();
 
 		ClassFile otherClass = group.findClass(method.getClazz().getName());
 		if (otherClass == null)

@@ -53,8 +53,8 @@ public class MappingExecutorUtil
 {	
 	public static ParallelExecutorMapping map(Method m1, Method m2)
 	{
-		ClassGroup group1 = m1.getMethods().getClassFile().getGroup();
-		ClassGroup group2 = m2.getMethods().getClassFile().getGroup();
+		ClassGroup group1 = m1.getClassFile().getGroup();
+		ClassGroup group2 = m2.getClassFile().getGroup();
 
 		Execution e = new Execution(group1);
 		e.step = true;
@@ -72,8 +72,8 @@ public class MappingExecutorUtil
 		frame2.other = frame;
 		
 		ParallellMappingExecutor parallel = new ParallellMappingExecutor(e, e2);
-		ParallelExecutorMapping mappings = new ParallelExecutorMapping(m1.getMethods().getClassFile().getGroup(),
-			m2.getMethods().getClassFile().getGroup());
+		ParallelExecutorMapping mappings = new ParallelExecutorMapping(m1.getClassFile().getGroup(),
+			m2.getClassFile().getGroup());
 		
 		mappings.m1 = m1;
 		mappings.m2 = m2;

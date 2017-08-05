@@ -47,7 +47,7 @@ public class ReflectionTransformer implements Transformer
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method method : cf.getMethods().getMethods())
+			for (Method method : cf.getMethods())
 			{
 				transform(method);
 			}

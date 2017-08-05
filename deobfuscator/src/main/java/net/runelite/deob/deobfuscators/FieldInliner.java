@@ -52,11 +52,9 @@ public class FieldInliner implements Deobfuscator
 	
 	private void findFieldIns()
 	{
-		List<FieldInstruction> ins = new ArrayList<>();
-		
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Code code = m.getCode();
 				

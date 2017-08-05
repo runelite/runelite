@@ -78,7 +78,7 @@ public class Execution
 		{
 			boolean extendsApplet = extendsApplet(cf);
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				if (!Deob.isObfuscated(m.getName()) && !m.getName().equals("<init>"))
 				{

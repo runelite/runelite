@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.injector;
 
 import java.io.IOException;
@@ -31,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Method;
-import net.runelite.asm.Methods;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.annotation.Annotation;
@@ -57,6 +55,7 @@ import net.runelite.asm.signature.Type;
 import net.runelite.asm.visitors.ClassFileVisitor;
 import net.runelite.deob.DeobAnnotations;
 import org.objectweb.asm.ClassReader;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 
 public class InjectReplace
 {
@@ -72,25 +71,25 @@ public class InjectReplace
 	{
 		Annotations an = cf.getAnnotations();
 		if (an == null)
+		{
 			return;
+		}
 
 		Annotation a = an.find(DeobAnnotations.REPLACE);
 		if (a == null)
+		{
 			return;
+		}
 
 		// cf = deobfuscated class with @Replace("net.runelite.whatever")
-
 		// generate a new class. make it inherit from 'vanilla'.
-
 		// make all classes which inherit from 'vanilla' instead inherit from the new class
 		// and adjust their constructors
-
 		// add constructors to new class
 		//   cf must implement an interface from the api?
 		//   methods can have @ObfuscatedOverride("name") to be renamed
 		//   to override ob'd method.
 		// replace all instances of new 'vanilla' with new 'new class'
-
 		Class<?> c = Class.forName(a.getElement().getString());
 		ClassFile classToInject;
 		try (InputStream is = c.getClassLoader().getResourceAsStream(c.getName().replace('.', '/') + ".class"))
@@ -112,7 +111,7 @@ public class InjectReplace
 		classToInject.setParentClass(vanilla.getPoolClass());
 		vanilla.clearFinal(); // can't be final anymore now that we inherit from it
 		classToInject.clearAbstract(); // this is being instantiated now, so is no longer abstract
-		
+
 		injectConstructors(classToInject);
 
 		overideMethods(classToInject);
@@ -124,15 +123,13 @@ public class InjectReplace
 	}
 
 	private static final String INITFN = "init";
-	
+
 	private void injectConstructors(ClassFile classToInject)
 	{
 		// Delete compiler generated constructors
-		Methods methods = classToInject.getMethods();
-		Methods vanillaMethods = vanilla.getMethods();
-
 		boolean seen = false;
-		for (Method m : methods.getMethods())
+		for (Method m : classToInject.getMethods())
+		{
 			if (m.getName().equals("<init>"))
 			{
 				assert seen == false; // only one ctor allowed
@@ -144,11 +141,12 @@ public class InjectReplace
 				m.setName(INITFN); // magic
 
 				// replace invokespecial call
-
 				for (Instruction i : instructions.getInstructions())
 				{
 					if (!(i instanceof InvokeSpecial))
+					{
 						continue;
+					}
 
 					InvokeSpecial is = (InvokeSpecial) i;
 					net.runelite.asm.pool.Method method = is.getMethod();
@@ -163,17 +161,19 @@ public class InjectReplace
 
 				// now we'll just add a call to init in the constructors
 			}
+		}
 
 		// Add constructors
-		for (Method m : vanillaMethods.getMethods())
+		for (Method m : vanilla.getMethods())
+		{
 			if (m.getName().equals("<init>"))
 			{
 				// create new constructor with same signature
-				Method constructor = new Method(methods, "<init>", m.getDescriptor());
-				constructor.setAccessFlags(Method.ACC_PUBLIC);
+				Method constructor = new Method(classToInject, "<init>", m.getDescriptor());
+				constructor.setAccessFlags(ACC_PUBLIC);
 
 				// ensure vanilla ctor is public too
-				m.setAccessFlags(Method.ACC_PUBLIC);
+				m.setAccessFlags(ACC_PUBLIC);
 
 				// create code
 				Code code = new Code(constructor);
@@ -225,7 +225,7 @@ public class InjectReplace
 				ins.add(new InvokeSpecial(instructions, m.getPoolMethod()));
 
 				// invoke our init func if it exists
-				Method initfn = methods.findMethod(INITFN);
+				Method initfn = classToInject.findMethod(INITFN);
 				if (initfn != null)
 				{
 					ins.add(new ALoad(instructions, 0)); // this
@@ -234,22 +234,23 @@ public class InjectReplace
 
 				ins.add(new Return(instructions, InstructionType.RETURN));
 
-				methods.addMethod(constructor);
+				classToInject.addMethod(constructor);
 			}
+		}
 	}
 
 	private void overideMethods(ClassFile classToInject)
 	{
 		// find methods in methods that are supposed to override obfuscated methods, and rename them.
-		
-		Methods methods = classToInject.getMethods();
 
-		for (Method m : methods.getMethods())
+		for (Method m : classToInject.getMethods())
 		{
 			Annotations annotations = m.getAnnotations();
 
 			if (annotations == null || annotations.find(DeobAnnotations.OBFUSCATED_OVERRIDE) == null)
+			{
 				continue;
+			}
 
 			Annotation annotation = annotations.find(DeobAnnotations.OBFUSCATED_OVERRIDE);
 			String overridenMethod = annotation.getElement().getString(); // name of @Exported method to override
@@ -259,13 +260,13 @@ public class InjectReplace
 			Method vanillaMethodToOverride = findVanillaMethodFromDeobfuscatedMethod(obfuscatedMethodToOverride);
 			String deobfuscatedName = m.getName();
 			Signature deobfuscatedSignature = m.getDescriptor();
-			
+
 			assert obfuscatedMethodToOverride != null;
 			assert vanillaMethodToOverride != null;
 
 			vanillaMethodToOverride.setFinal(false);
 			vanillaMethodToOverride.setPublic();
-			
+
 			assert !vanillaMethodToOverride.isFinal();
 			assert !vanillaMethodToOverride.isPrivate();
 
@@ -293,12 +294,13 @@ public class InjectReplace
 
 			// Now that the function is overriden, when the invoke injector is called, it turns around and invokevirtuals
 			// the parent method, which hits ours.
-
 			// locate super.method() calls and modify...
 			for (Instruction i : new ArrayList<>(m.getCode().getInstructions().getInstructions()))
 			{
 				if (!(i instanceof InvokeSpecial))
+				{
 					continue;
+				}
 
 				if (originalSignature != null)
 				{
@@ -308,7 +310,7 @@ public class InjectReplace
 					List<Instruction> ins = instructions.getInstructions();
 					Type type = m.getDescriptor().getTypeOfArg(m.getDescriptor().size() - 1);
 					int offset = ins.indexOf(i);
-					
+
 					assert offset != -1;
 
 					// XXX we could maybe just pull the variable off of the lvt here, instead
@@ -370,7 +372,7 @@ public class InjectReplace
 
 	private Method findMethodByExportedName(String name)
 	{
-		for (Method m : cf.getMethods().getMethods())
+		for (Method m : cf.getMethods())
 		{
 			String exportedName = DeobAnnotations.getExportedName(m.getAnnotations());
 			if (name.equals(exportedName))
@@ -409,19 +411,23 @@ public class InjectReplace
 	private void replaceSuperclass(ClassFile classToInject)
 	{
 		for (ClassFile cf : vanilla.getGroup().getClasses())
+		{
 			if (cf.getParentClass().equals(vanilla.getPoolClass()))
 			{
 				if (cf == classToInject) // of course this inherits from it.
+				{
 					continue;
+				}
 
 				cf.setParentClass(classToInject.getPoolClass());
-				
+
 				// adjust constructors
-				
-				for (Method m : cf.getMethods().getMethods())
+				for (Method m : cf.getMethods())
 				{
 					if (!m.getName().equals("<init>"))
+					{
 						continue;
+					}
 
 					Code code = m.getCode();
 					Instructions ins = code.getInstructions();
@@ -429,7 +435,9 @@ public class InjectReplace
 					for (Instruction i : ins.getInstructions())
 					{
 						if (!(i instanceof InvokeSpecial))
+						{
 							continue;
+						}
 
 						// The super constructor invokespecial will be the first invokespecial instruction encountered
 						InvokeSpecial is = (InvokeSpecial) i;
@@ -448,6 +456,7 @@ public class InjectReplace
 					}
 				}
 			}
+		}
 	}
 
 	private void replaceNew(ClassFile classToInject)
@@ -457,14 +466,18 @@ public class InjectReplace
 		for (ClassFile cf : vanilla.getGroup().getClasses())
 		{
 			if (cf == classToInject)
+			{
 				continue;
+			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Code code = m.getCode();
 
 				if (code == null)
+				{
 					continue;
+				}
 
 				Instructions ins = code.getInstructions();
 
@@ -477,7 +490,9 @@ public class InjectReplace
 						New n = (New) i;
 
 						if (!n.getNewClass().equals(vanilla.getPoolClass()))
+						{
 							continue;
+						}
 
 						n.setNewClass(classToInject.getPoolClass());
 					}
@@ -496,7 +511,9 @@ public class InjectReplace
 						net.runelite.asm.pool.Method method = is.getMethod();
 
 						if (!method.getName().equals("<init>") || !method.getClazz().equals(vanilla.getPoolClass()))
+						{
 							continue;
+						}
 
 						is.setMethod(new net.runelite.asm.pool.Method(
 							classToInject.getPoolClass(),

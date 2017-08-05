@@ -73,7 +73,7 @@ public class AnnotationRenamer
 					mappings.map(f.getPoolField(), name);
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				name = DeobAnnotations.getExportedName(m.getAnnotations());
 				if (name != null)

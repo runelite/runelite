@@ -113,7 +113,7 @@ public class MappingDumper
 				}
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				String exportName = DeobAnnotations.getExportedName(m.getAnnotations());
 
@@ -226,7 +226,7 @@ public class MappingDumper
 				jFields.add(jField);
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 
 				String exportName = DeobAnnotations.getExportedName(m.getAnnotations());

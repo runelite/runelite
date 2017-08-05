@@ -78,7 +78,7 @@ public class Frame
 		int pos = 0;
 		if (!method.isStatic())
 		{
-			variables.set(pos++, new VariableContext(new Type(method.getMethods().getClassFile().getName())).markParameter());
+			variables.set(pos++, new VariableContext(new Type(method.getClassFile().getName())).markParameter());
 		}
 
 		for (int i = 0; i < method.getDescriptor().size(); ++i)

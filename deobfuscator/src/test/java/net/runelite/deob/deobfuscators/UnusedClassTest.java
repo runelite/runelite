@@ -58,7 +58,7 @@ public class UnusedClassTest
 		load("ClassA.class");
 		ClassFile emptyClass = load("EmptyClass.class");
 		
-		emptyClass.getMethods().removeMethod(emptyClass.getMethods().findMethod("<init>"));
+		emptyClass.removeMethod(emptyClass.findMethod("<init>"));
 	}
 
 	private ClassFile load(String name) throws IOException

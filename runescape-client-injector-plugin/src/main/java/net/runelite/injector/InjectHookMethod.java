@@ -63,7 +63,7 @@ public class InjectHookMethod
 		String hookName = DeobAnnotations.getHookName(an); // hook name
 
 		// Find equivalent method in vanilla, and insert callback at the beginning
-		ClassFile cf = method.getMethods().getClassFile();
+		ClassFile cf = method.getClassFile();
 		String obfuscatedMethodName = DeobAnnotations.getObfuscatedName(an),
 			obfuscatedClassName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 

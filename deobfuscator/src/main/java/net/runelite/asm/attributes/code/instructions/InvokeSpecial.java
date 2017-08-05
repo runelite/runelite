@@ -160,7 +160,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 	public void lookup()
 	{
 		myMethod = null;
-		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
+		ClassGroup group = this.getInstructions().getCode().getMethod().getClassFile().getGroup();
 
 		ClassFile otherClass = group.findClass(method.getClazz().getName());
 		if (otherClass == null)
@@ -275,7 +275,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 			net.runelite.asm.Method m1 = thisMethods.get(i);
 			net.runelite.asm.Method m2 = otherMethods.get(i);
 
-			if (!MappingExecutorUtil.isMaybeEqual(m1.getMethods().getClassFile(), m2.getMethods().getClassFile()))
+			if (!MappingExecutorUtil.isMaybeEqual(m1.getClassFile(), m2.getClassFile()))
 			{
 				return false;
 			}

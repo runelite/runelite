@@ -51,7 +51,7 @@ public class ClassFile
 	private String source;
 	private final Interfaces interfaces;
 	private final List<Field> fields = new ArrayList<>();
-	private final Methods methods;
+	private final List<Method> methods = new ArrayList<>();
 	private final Annotations annotations;
 
 	public ClassFile(ClassGroup group)
@@ -59,7 +59,6 @@ public class ClassFile
 		this.group = group;
 
 		interfaces = new Interfaces(this);
-		methods = new Methods(this);
 		annotations = new Annotations();
 	}
 
@@ -113,7 +112,7 @@ public class ClassFile
 			field.accept(fv);
 		}
 
-		for (Method method : methods.getMethods())
+		for (Method method : methods)
 		{
 			String[] exceptions = method.getExceptions().getExceptions().stream().map(cl -> cl.getName()).toArray(String[]::new);
 			if (exceptions.length == 0)
@@ -158,9 +157,19 @@ public class ClassFile
 		fields.remove(field);
 	}
 
-	public Methods getMethods()
+	public List<Method> getMethods()
 	{
 		return methods;
+	}
+
+	public void addMethod(Method method)
+	{
+		methods.add(method);
+	}
+
+	public void removeMethod(Method method)
+	{
+		methods.remove(method);
 	}
 
 	public Annotations getAnnotations()
@@ -274,9 +283,33 @@ public class ClassFile
 		return null;
 	}
 
+	public Method findMethod(String name, Signature type)
+	{
+		for (Method m : methods)
+		{
+			if (m.getName().equals(name) && m.getDescriptor().equals(type))
+			{
+				return m;
+			}
+		}
+		return null;
+	}
+
+	public Method findMethod(String name)
+	{
+		for (Method m : methods)
+		{
+			if (m.getName().equals(name))
+			{
+				return m;
+			}
+		}
+		return null;
+	}
+
 	public Method findMethodDeep(String name, Signature type)
 	{
-		Method m = methods.findMethod(name, type);
+		Method m = findMethod(name, type);
 		if (m != null)
 		{
 			return m;
@@ -293,7 +326,7 @@ public class ClassFile
 
 	public Method findMethodDeepStatic(String name, Signature type)
 	{
-		Method m = methods.findMethod(name, type);
+		Method m = findMethod(name, type);
 		if (m != null && m.isStatic())
 		{
 			return m;
@@ -308,19 +341,9 @@ public class ClassFile
 		return null;
 	}
 
-	public Method findMethod(String name, Signature type)
-	{
-		return methods.findMethod(name, type);
-	}
-
-	public Method findMethod(String name)
-	{
-		return methods.findMethod(name);
-	}
-
 	public Method findMethodDeep(String name)
 	{
-		Method m = methods.findMethod(name);
+		Method m = findMethod(name);
 		if (m != null)
 		{
 			return m;

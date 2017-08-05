@@ -82,7 +82,7 @@ public class Renamer implements Deobfuscator
 			// rename on child interfaces and classes
 			renameClass(c, cf, name);
 
-			for (Method method : c.getMethods().getMethods())
+			for (Method method : c.getMethods())
 			{
 				// rename on instructions. this includes method calls and field accesses.
 				if (method.getCode() != null)
@@ -176,7 +176,7 @@ public class Renamer implements Deobfuscator
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Code c = m.getCode();
 				if (c == null)
@@ -221,7 +221,7 @@ public class Renamer implements Deobfuscator
 		// rename methods
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method method : cf.getMethods().getMethods())
+			for (Method method : cf.getMethods())
 			{
 				String newName = mappings.get(method.getPoolMethod());
 

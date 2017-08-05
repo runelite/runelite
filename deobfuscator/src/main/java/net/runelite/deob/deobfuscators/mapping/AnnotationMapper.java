@@ -95,7 +95,7 @@ public class AnnotationMapper
 			count += copyAnnotations(f.getAnnotations(), other.getAnnotations());
 		}
 
-		for (Method m : from.getMethods().getMethods())
+		for (Method m : from.getMethods())
 		{
 			if (!hasCopyableAnnotation(m.getAnnotations()))
 				continue;

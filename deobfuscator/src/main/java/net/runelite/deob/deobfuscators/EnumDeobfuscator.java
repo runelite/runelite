@@ -85,7 +85,7 @@ public class EnumDeobfuscator implements Deobfuscator
 		}
 
 		// number of non static methods should be 1
-		long count = cf.getMethods().getMethods()
+		long count = cf.getMethods()
 			.stream()
 			.filter(m -> !m.isStatic())
 			.filter(m -> !m.getName().startsWith("<"))
@@ -102,12 +102,12 @@ public class EnumDeobfuscator implements Deobfuscator
 	{
 		assert cf.isInterface();
 
-		if (cf.getMethods().getMethods().size() != 1)
+		if (cf.getMethods().size() != 1)
 		{
 			return false;
 		}
 
-		Method method = cf.getMethods().getMethods().get(0);
+		Method method = cf.getMethods().get(0);
 		return method.getDescriptor().toString().equals("()I"); // ordinal
 	}
 
@@ -128,7 +128,7 @@ public class EnumDeobfuscator implements Deobfuscator
 			}
 		}
 
-		for (Method method : cf.getMethods().getMethods())
+		for (Method method : cf.getMethods())
 		{
 			if (!method.getName().equals("<init>"))
 			{
@@ -182,7 +182,7 @@ public class EnumDeobfuscator implements Deobfuscator
 		// the enum fields are actually in
 		List<Field> order = new ArrayList<>();
 
-		for (Method method : cf.getMethods().getMethods())
+		for (Method method : cf.getMethods())
 		{
 			if (!method.getName().equals("<clinit>"))
 			{

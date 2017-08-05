@@ -242,7 +242,7 @@ public class HookImporter
 	{
 		Signature sig = new Signature(signature);
 
-		for (Method m : c.getMethods().getMethods())
+		for (Method m : c.getMethods())
 		{
 			Annotations an = m.getAnnotations();
 			if (getAnnotation(an, OBFUSCATED_NAME).equals(name))

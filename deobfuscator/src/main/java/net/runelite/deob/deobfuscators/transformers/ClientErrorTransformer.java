@@ -50,7 +50,7 @@ public class ClientErrorTransformer implements Transformer
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				transform(m);
 			}

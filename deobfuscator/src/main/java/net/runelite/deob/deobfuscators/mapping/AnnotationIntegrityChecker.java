@@ -174,7 +174,7 @@ public class AnnotationIntegrityChecker
 				}
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				int num = this.getNumberOfExports(m.getAnnotations());
 
@@ -251,7 +251,7 @@ public class AnnotationIntegrityChecker
 	private List<Method> getExportedMethods(ClassFile clazz)
 	{
 		List<Method> list = new ArrayList<>();
-		for (Method m : clazz.getMethods().getMethods())
+		for (Method m : clazz.getMethods())
 		{
 			if (DeobAnnotations.getExportedName(m.getAnnotations()) != null)
 			{
@@ -310,7 +310,7 @@ public class AnnotationIntegrityChecker
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				if (m.isStatic())
 				{

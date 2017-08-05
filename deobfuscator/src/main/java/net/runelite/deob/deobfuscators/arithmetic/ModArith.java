@@ -652,7 +652,7 @@ public class ModArith implements Deobfuscator
 		// after getfield insert imul * setter
 		// before setfield insert imul * getter
 		for (ClassFile cf : group.getClasses())
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Code code = m.getCode();
 				if (code == null)

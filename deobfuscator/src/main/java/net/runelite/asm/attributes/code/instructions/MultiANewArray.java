@@ -87,7 +87,7 @@ public class MultiANewArray extends Instruction
 			name = name.substring(1, name.length() - 1);
 		}
 
-		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
+		ClassGroup group = this.getInstructions().getCode().getMethod().getClassFile().getGroup();
 		myClass = group.findClass(name);
 	}
 

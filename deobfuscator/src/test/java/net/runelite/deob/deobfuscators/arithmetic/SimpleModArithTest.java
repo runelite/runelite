@@ -100,7 +100,7 @@ public class SimpleModArithTest
 {
 	private void checkConstants(ClassFile cf)
 	{
-		for (Method m : cf.getMethods().getMethods())
+		for (Method m : cf.getMethods())
 		{
 			Code code = m.getCode();
 			Instructions instructions = code.getInstructions();

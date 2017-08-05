@@ -87,7 +87,7 @@ public class CodeVisitor extends MethodVisitor
 
 		this.classFile = classFile;
 
-		method = new Method(classFile.getMethods(), name, signature);
+		method = new Method(classFile, name, signature);
 		method.setAccessFlags(access);
 
 		net.runelite.asm.attributes.Exceptions exceptions = method.getExceptions();
@@ -407,6 +407,6 @@ public class CodeVisitor extends MethodVisitor
 			method.setCode(code);
 		}
 
-		classFile.getMethods().addMethod(method);
+		classFile.addMethod(method);
 	}
 }

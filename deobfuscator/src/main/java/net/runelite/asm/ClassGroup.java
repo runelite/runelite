@@ -94,7 +94,7 @@ public class ClassGroup
 	{
 		for (ClassFile cf : this.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Code code = m.getCode();
 
