@@ -28,6 +28,7 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import net.runelite.api.widgets.Widget;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
@@ -51,9 +52,8 @@ public class DevTools extends Plugin
 	private boolean toggleDecor;
 	private boolean toggleInventory;
 
-	private int widgetParent = -1;
-	private int widgetChild = -1;
-	private int widgetItem = -1;
+	Widget currentWidget;
+	int itemIndex = -1;
 
 	private Font font;
 
@@ -169,36 +169,6 @@ public class DevTools extends Plugin
 	boolean isToggleInventory()
 	{
 		return toggleInventory;
-	}
-
-	void setWidgetParent(int id)
-	{
-		widgetParent = id;
-	}
-
-	void setWidgetChild(int id)
-	{
-		widgetChild = id;
-	}
-
-	void setWidgetItem(int id)
-	{
-		widgetItem = id;
-	}
-
-	int getWidgetParent()
-	{
-		return widgetParent;
-	}
-
-	int getWidgetChild()
-	{
-		return widgetChild;
-	}
-
-	int getWidgetItem()
-	{
-		return widgetItem;
 	}
 
 }
