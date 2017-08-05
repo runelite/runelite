@@ -33,7 +33,7 @@ import org.objectweb.asm.Opcodes;
 
 public class Field
 {
-	private Fields fields;
+	private final ClassFile classFile;
 
 	private int accessFlags;
 	private String name;
@@ -41,9 +41,9 @@ public class Field
 	private Object value; // ConstantValue
 	private final Annotations annotations;
 
-	public Field(Fields fields, String name, Type type)
+	public Field(ClassFile classFile, String name, Type type)
 	{
-		this.fields = fields;
+		this.classFile = classFile;
 		this.name = name;
 		this.type = type;
 
@@ -61,14 +61,9 @@ public class Field
 		visitor.visitEnd();
 	}
 
-	public Fields getFields()
+	public ClassFile getClassFile()
 	{
-		return fields;
-	}
-
-	public void setFields(Fields fields)
-	{
-		this.fields = fields;
+		return classFile;
 	}
 
 	public int getAccessFlags()
@@ -139,7 +134,7 @@ public class Field
 	public net.runelite.asm.pool.Field getPoolField()
 	{
 		return new net.runelite.asm.pool.Field(
-			new net.runelite.asm.pool.Class(this.getFields().getClassFile().getName()),
+			new net.runelite.asm.pool.Class(classFile.getName()),
 			this.getName(),
 			this.getType()
 		);
@@ -148,6 +143,6 @@ public class Field
 	@Override
 	public String toString()
 	{
-		return (this.isStatic() ? "static " : "") + this.type + " " + this.getFields().getClassFile().getName() + "." + this.getName();
+		return (this.isStatic() ? "static " : "") + this.type + " " + classFile.getName() + "." + this.getName();
 	}
 }

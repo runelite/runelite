@@ -72,7 +72,7 @@ public class MappingDumper
 				++classes;
 			}
 
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				String exportName = DeobAnnotations.getExportedName(f.getAnnotations());
 
@@ -199,7 +199,7 @@ public class MappingDumper
 			String implName = DeobAnnotations.getImplements(cf);
 			String className = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				String exportName = DeobAnnotations.getExportedName(f.getAnnotations());
 

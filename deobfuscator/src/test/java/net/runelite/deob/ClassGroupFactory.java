@@ -27,7 +27,6 @@ package net.runelite.deob;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
-import net.runelite.asm.Fields;
 import net.runelite.asm.Method;
 import net.runelite.asm.Methods;
 import net.runelite.asm.attributes.Code;
@@ -60,10 +59,9 @@ public class ClassGroupFactory
 		cf.setSuperName("java/lang/Object");
 		group.addClass(cf);
 
-		Fields fields = cf.getFields();
-		Field field = new Field(fields, "field", new Type("I"));
+		Field field = new Field(cf, "field", new Type("I"));
 		field.setStatic();
-		fields.addField(field);
+		cf.addField(field);
 
 		Methods methods = cf.getMethods();
 		Method method = new Method(methods, "func", new Signature("()V"));

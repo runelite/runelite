@@ -149,7 +149,7 @@ public class Renamer implements Deobfuscator
 			}
 
 			// rename on fields
-			for (Field field : c.getFields().getFields())
+			for (Field field : c.getFields())
 			{
 				if (field.getType().getType().equals("L" + cf.getName() + ";"))
 				{
@@ -200,7 +200,7 @@ public class Renamer implements Deobfuscator
 		// rename fields
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Field field : cf.getFields().getFields())
+			for (Field field : cf.getFields())
 			{
 				String newName = mappings.get(field.getPoolField());
 				if (newName == null)

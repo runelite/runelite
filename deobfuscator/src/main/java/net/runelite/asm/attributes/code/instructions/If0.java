@@ -200,7 +200,7 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 			return false;
 
 		if (!f1.isStatic())
-			if (!MappingExecutorUtil.isMaybeEqual(f1.getFields().getClassFile(), f2.getFields().getClassFile()))
+			if (!MappingExecutorUtil.isMaybeEqual(f1.getClassFile(), f2.getClassFile()))
 				return false;
 		
 		return MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());

@@ -80,7 +80,7 @@ public class AnnotationMapper
 			}
 		}
 
-		for (Field f : from.getFields().getFields())
+		for (Field f : from.getFields())
 		{
 			if (!hasCopyableAnnotation(f.getAnnotations()))
 				continue;

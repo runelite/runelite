@@ -58,7 +58,7 @@ public class RenameUnique implements Deobfuscator
 		int i = 0;
 		
 		for (ClassFile cf : group.getClasses())
-			for (Field field : cf.getFields().getFields())
+			for (Field field : cf.getFields())
 			{
 				if (field.getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN)
 					continue;

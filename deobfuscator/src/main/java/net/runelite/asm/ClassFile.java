@@ -50,7 +50,7 @@ public class ClassFile
 	private Class super_class;
 	private String source;
 	private final Interfaces interfaces;
-	private final Fields fields;
+	private final List<Field> fields = new ArrayList<>();
 	private final Methods methods;
 	private final Annotations annotations;
 
@@ -59,17 +59,13 @@ public class ClassFile
 		this.group = group;
 
 		interfaces = new Interfaces(this);
-		fields = new Fields(this);
 		methods = new Methods(this);
 		annotations = new Annotations();
 	}
 
 	public ClassFile()
 	{
-		interfaces = new Interfaces(this);
-		fields = new Fields(this);
-		methods = new Methods(this);
-		annotations = new Annotations();
+		this(null);
 	}
 
 	@Override
@@ -111,7 +107,7 @@ public class ClassFile
 			annotation.accept(av);
 		}
 
-		for (Field field : fields.getFields())
+		for (Field field : fields)
 		{
 			FieldVisitor fv = visitor.visitField(field.getAccessFlags(), field.getName(), field.getType().getFullType(), null, field.getValue());
 			field.accept(fv);
@@ -147,9 +143,19 @@ public class ClassFile
 		return interfaces;
 	}
 
-	public Fields getFields()
+	public List<Field> getFields()
 	{
 		return fields;
+	}
+
+	public void addField(Field field)
+	{
+		fields.add(field);
+	}
+
+	public void removeField(Field field)
+	{
+		fields.remove(field);
 	}
 
 	public Methods getMethods()
@@ -222,14 +228,28 @@ public class ClassFile
 		return children;
 	}
 
-	public Field findField(String name)
-	{
-		return fields.findField(name);
-	}
-
 	public Field findField(String name, Type type)
 	{
-		return fields.findField(name, type);
+		for (Field f : fields)
+		{
+			if (f.getName().equals(name) && f.getType().equals(type))
+			{
+				return f;
+			}
+		}
+		return null;
+	}
+
+	public Field findField(String name)
+	{
+		for (Field f : fields)
+		{
+			if (f.getName().equals(name))
+			{
+				return f;
+			}
+		}
+		return null;
 	}
 
 	public Class getPoolClass()
@@ -239,7 +259,7 @@ public class ClassFile
 
 	public Field findFieldDeep(String name, Type type)
 	{
-		Field f = fields.findField(name, type);
+		Field f = findField(name, type);
 		if (f != null)
 		{
 			return f;

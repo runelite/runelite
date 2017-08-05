@@ -83,7 +83,7 @@ public class FieldInliner implements Deobfuscator
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				if (!f.isStatic() || !f.getType().getFullType().equals("Ljava/lang/String;"))
 					continue;
@@ -154,8 +154,8 @@ public class FieldInliner implements Deobfuscator
 				
 				++count;
 			}
-			
-			f.getFields().getFields().remove(f);
+
+			f.getClassFile().removeField(f);
 		}
 		
 		return count;

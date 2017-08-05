@@ -227,7 +227,7 @@ public class HookImporter
 
 	private Field findFieldWithObfuscatedName(ClassFile c, String name)
 	{
-		for (Field f : c.getFields().getFields())
+		for (Field f : c.getFields())
 		{
 			Annotations an = f.getAnnotations();
 			if (getAnnotation(an, OBFUSCATED_NAME).equals(name))

@@ -47,7 +47,7 @@ public class ClassMapper
 	
 	private List<Integer> fieldCardinalities(ClassFile cf)
 	{
-		List<Type> t = cf.getFields().getFields().stream()
+		List<Type> t = cf.getFields().stream()
 			.filter(f -> !f.isStatic())
 			.map(f -> f.getType())
 			.collect(Collectors.toList());

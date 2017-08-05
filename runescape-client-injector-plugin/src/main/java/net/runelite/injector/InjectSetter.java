@@ -83,7 +83,7 @@ public class InjectSetter
 		logger.info("Injecting setter for {} on {}", exportedName, targetApiClass);
 
 		assert targetClass.findMethod(method.getName()) == null;
-		assert field.isStatic() || field.getFields().getClassFile() == targetClass;
+		assert field.isStatic() || field.getClassFile() == targetClass;
 
 		Signature sig = new Signature.Builder()
 			.setReturnType(Type.VOID)

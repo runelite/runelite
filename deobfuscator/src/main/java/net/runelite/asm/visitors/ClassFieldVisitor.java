@@ -44,7 +44,7 @@ public class ClassFieldVisitor extends FieldVisitor
 
 		this.classFile = cf;
 
-		field = new Field(classFile.getFields(), name, desc);
+		field = new Field(cf, name, desc);
 		field.setAccessFlags(access);
 		field.setValue(value);
 	}
@@ -65,6 +65,6 @@ public class ClassFieldVisitor extends FieldVisitor
 	@Override
 	public void visitEnd()
 	{
-		classFile.getFields().addField(field);
+		classFile.addField(field);
 	}
 }

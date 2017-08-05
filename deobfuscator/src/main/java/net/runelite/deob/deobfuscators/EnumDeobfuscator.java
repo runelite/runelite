@@ -120,7 +120,7 @@ public class EnumDeobfuscator implements Deobfuscator
 		cf.setSuperName("java/lang/Enum");
 
 		// all static fields of the type of the class become enum members
-		for (Field field : cf.getFields().getFields())
+		for (Field field : cf.getFields())
 		{
 			if (field.isStatic() && field.getType().equals(new Type("L" + cf.getName() + ";")))
 			{
@@ -241,7 +241,7 @@ public class EnumDeobfuscator implements Deobfuscator
 
 		// Enum fields must be first. Also they are in order in clinit.
 		// Sort fields
-		Collections.sort(cf.getFields().getFields(), (f1, f2) ->
+		Collections.sort(cf.getFields(), (f1, f2) ->
 		{
 			int idx1 = order.indexOf(f1);
 			int idx2 = order.indexOf(f2);

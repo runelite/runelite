@@ -82,7 +82,7 @@ public class RenameUniqueTest
 		{
 			Assert.assertTrue(cf.getName().startsWith("class") || cf.getName().equals("client"));
 
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				// synthetic fields arent obfuscated
 				if (f.isSynthetic())

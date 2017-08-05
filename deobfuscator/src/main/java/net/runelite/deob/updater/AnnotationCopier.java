@@ -57,7 +57,7 @@ public class AnnotationCopier
 
 			copy(cf1.getAnnotations(), cf2.getAnnotations());
 
-			for (Field f : cf1.getFields().getFields())
+			for (Field f : cf1.getFields())
 			{
 				Field f2 = cf2.findField(f.getName(), f.getType());
 

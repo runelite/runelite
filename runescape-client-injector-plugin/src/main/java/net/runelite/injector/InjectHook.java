@@ -154,7 +154,7 @@ public class InjectHook
 
 	private boolean isField(Field field, Field fieldBeingSet)
 	{
-		String obfuscatedClassName = DeobAnnotations.getObfuscatedName(field.getFields().getClassFile().getAnnotations());
+		String obfuscatedClassName = DeobAnnotations.getObfuscatedName(field.getClassFile().getAnnotations());
 		String obfuscatedFieldName = DeobAnnotations.getObfuscatedName(field.getAnnotations()); // obfuscated name of field
 		Type type = inject.getFieldType(field);
 

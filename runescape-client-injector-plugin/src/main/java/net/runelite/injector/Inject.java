@@ -213,7 +213,7 @@ public class Inject
 				assert false;
 			}
 			
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				an = f.getAnnotations();
 				
@@ -344,7 +344,7 @@ public class Inject
 		// getter = encryption getter
 		
 		assert clazz.findMethod(method.getName()) == null;
-		assert field.isStatic() || field.getFields().getClassFile() == clazz;
+		assert field.isStatic() || field.getClassFile() == clazz;
 		
 		Signature sig = new Signature.Builder()
 			.setReturnType(classToType(method.getReturnType()))

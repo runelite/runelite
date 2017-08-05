@@ -215,7 +215,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 			return false;
 		}
 
-		if (!MappingExecutorUtil.isMaybeEqual(f1.getFields().getClassFile(), f2.getFields().getClassFile())
+		if (!MappingExecutorUtil.isMaybeEqual(f1.getClassFile(), f2.getClassFile())
 			|| !MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType()))
 		{
 			return false;

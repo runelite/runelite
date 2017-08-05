@@ -601,7 +601,7 @@ public class ModArith implements Deobfuscator
 	private void reduce2()
 	{
 		for (ClassFile cf : group.getClasses())
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				Collection<AssociatedConstant> col = constants.getCollection(f); // all constants in instructions associated with the field
 				if (col == null)
@@ -767,7 +767,7 @@ public class ModArith implements Deobfuscator
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				Pair pair = encryption.getField(f.getPoolField());
 				if (pair == null)

@@ -41,7 +41,7 @@ public class UnusedClass implements Deobfuscator
 		int count = 0;
 		for (ClassFile cf : new ArrayList<>(group.getClasses()))
 		{
-			if (!cf.getFields().getFields().isEmpty())
+			if (!cf.getFields().isEmpty())
 			{
 				continue;
 			}

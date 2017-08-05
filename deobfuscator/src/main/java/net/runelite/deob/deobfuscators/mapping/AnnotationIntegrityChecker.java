@@ -163,7 +163,7 @@ public class AnnotationIntegrityChecker
 	{
 		for (ClassFile cf : two.getClasses())
 		{
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				int num = this.getNumberOfExports(f.getAnnotations());
 
@@ -238,7 +238,7 @@ public class AnnotationIntegrityChecker
 	private List<Field> getExportedFields(ClassFile clazz)
 	{
 		List<Field> list = new ArrayList<>();
-		for (Field f : clazz.getFields().getFields())
+		for (Field f : clazz.getFields())
 		{
 			if (DeobAnnotations.getExportedName(f.getAnnotations()) != null)
 			{
@@ -292,7 +292,7 @@ public class AnnotationIntegrityChecker
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				if (f.isStatic())
 				{

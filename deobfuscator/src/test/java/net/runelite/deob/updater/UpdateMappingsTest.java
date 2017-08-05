@@ -92,7 +92,7 @@ public class UpdateMappingsTest
 		{
 			cf.getAnnotations().clearAnnotations();
 
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				f.getAnnotations().clearAnnotations();
 			}
@@ -115,7 +115,7 @@ public class UpdateMappingsTest
 
 			Assert.assertEquals(implname, otherimplname);
 
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				Field otherf = other.findField(f.getName(), f.getType());
 
@@ -173,7 +173,7 @@ public class UpdateMappingsTest
 		{
 			++classes;
 			methods += cf.getMethods().getMethods().size();
-			fields += cf.getFields().getFields().size();
+			fields += cf.getFields().size();
 		}
 		int total = methods + fields + classes;
 		return "total: " + total + ", " + methods + " methods, " + fields + " fields, " + classes + " classes";
@@ -190,7 +190,7 @@ public class UpdateMappingsTest
 				++fields;
 
 				Field f = (Field) o;
-				assert f.getFields().getClassFile().getGroup() == in;
+				assert f.getClassFile().getGroup() == in;
 			}
 			else if (o instanceof Method)
 			{

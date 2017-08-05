@@ -29,7 +29,6 @@ import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
-import net.runelite.asm.Fields;
 import net.runelite.asm.Method;
 import net.runelite.asm.Methods;
 import net.runelite.asm.execution.Execution;
@@ -74,8 +73,7 @@ public class Order implements Deobfuscator
 			// field order of enums is mostly handled in EnumDeobfuscator
 			if (!cf.isEnum())
 			{
-				Fields fields = cf.getFields();
-				List<Field> f = fields.getFields();
+				List<Field> f = cf.getFields();
 				Collections.sort(f, this::compareFields);
 
 				sortedFields += f.size();
