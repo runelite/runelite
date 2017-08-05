@@ -49,7 +49,7 @@ public class BufferMethodInjector
 		Field buffer = bp.getBuffer();
 		Field offset = bp.getOffset();
 
-		assert buffer.getClassFile()== offset.getClassFile();
+		assert buffer.getClassFile() == offset.getClassFile();
 
 		InputStream in = getClass().getResourceAsStream("RuneliteBuffer.class");
 		assert in != null : "no RuneliteBuffer";
