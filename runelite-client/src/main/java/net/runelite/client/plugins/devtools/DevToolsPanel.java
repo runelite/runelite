@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Kronos <https://github.com/KronosDesign>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,14 +34,18 @@ import javax.swing.tree.DefaultTreeModel;
 
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
-import static net.runelite.client.plugins.devtools.DevToolsOverlay.ITEM_EMPTY;
-import static net.runelite.client.plugins.devtools.DevToolsOverlay.ITEM_FILLED;
 import net.runelite.client.ui.PluginPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DevToolsPanel extends PluginPanel
 {
+	private static final Logger logger = LoggerFactory.getLogger(DevToolsPanel.class);
+
 	private final EmptyBorder PADDING_BORDER = new EmptyBorder(3, 3, 3, 3);
 
 	private final Client client = RuneLite.getClient();
@@ -65,8 +70,6 @@ public class DevToolsPanel extends PluginPanel
 	private JLabel contentTypeLbl = new JLabel();
 
 	private DevTools plugin;
-
-	private DefaultMutableTreeNode widgetListRoot = new DefaultMutableTreeNode();
 
 	private final SettingsTracker settingsTracker = new SettingsTracker(client);
 
@@ -170,16 +173,27 @@ public class DevToolsPanel extends PluginPanel
 		JPanel container = new JPanel();
 		container.setLayout(new BorderLayout());
 
-		JTree tree = new JTree(widgetListRoot);
+		JTree tree = new JTree(new DefaultMutableTreeNode());
 		tree.setRootVisible(false);
 		tree.setShowsRootHandles(true);
 		tree.getSelectionModel().addTreeSelectionListener(e ->
 		{
-			Object[] path = e.getPath().getPath();
-			plugin.setWidgetParent(Integer.parseInt(path[1].toString()));
-			plugin.setWidgetChild((path.length > 2) ? Integer.parseInt(path[2].toString()) : -1);
-			plugin.setWidgetItem((path.length > 3) ? Integer.parseInt(path[3].toString()) : -1);
-			setWidgetInfo();
+			Object selected = tree.getLastSelectedPathComponent();
+			if (selected instanceof WidgetTreeNode)
+			{
+				WidgetTreeNode node = (WidgetTreeNode) selected;
+				Widget widget = node.getWidget();
+				plugin.currentWidget = widget;
+				plugin.itemIndex = widget.getItemId();
+				setWidgetInfo(widget);
+				logger.debug("Set widget to {} and item index to {}", widget, widget.getItemId());
+			}
+			else if (selected instanceof WidgetItemNode)
+			{
+				WidgetItemNode node = (WidgetItemNode) selected;
+				plugin.itemIndex = node.getWidgetItem().getIndex();
+				logger.debug("Set item index to {}", plugin.itemIndex);
+			}
 		});
 
 		JScrollPane scrollPane = new JScrollPane(tree);
@@ -189,8 +203,8 @@ public class DevToolsPanel extends PluginPanel
 		JButton refreshWidgetsBtn = new JButton("Refresh Widgets");
 		refreshWidgetsBtn.addActionListener(e ->
 		{
-			refreshWidgets();
-			tree.setModel(new DefaultTreeModel(widgetListRoot));
+			DefaultMutableTreeNode root = refreshWidgets();
+			tree.setModel(new DefaultTreeModel(root));
 		});
 
 		JPanel btnContainer = new JPanel();
@@ -225,18 +239,8 @@ public class DevToolsPanel extends PluginPanel
 		return container;
 	}
 
-	private void setWidgetInfo()
+	private void setWidgetInfo(Widget widget)
 	{
-		int parent = plugin.getWidgetParent();
-		int child = plugin.getWidgetChild();
-
-		if (parent == -1)
-		{
-			return;
-		}
-
-		Widget widget = client.getWidget(parent, (child == -1) ? 0 : child);
-
 		if (widget == null)
 		{
 			return;
@@ -247,8 +251,9 @@ public class DevToolsPanel extends PluginPanel
 		nameLbl.setText("Name: " + widget.getName().trim());
 		modelLbl.setText("Model ID: " + widget.getModelId());
 		textureLbl.setText("Sprite ID: " + widget.getSpriteId());
-		typeLbl.setText("Type: " + widget.getType());
-		contentTypeLbl.setText("Content Type: " + widget.getContentType());
+		typeLbl.setText("Type: " + widget.getType()
+			+ " Parent " + (widget.getParentId() == -1 ? -1 : TO_GROUP(widget.getParentId()) + "." + TO_CHILD(widget.getParentId())));
+		contentTypeLbl.setText("Content Type: " + widget.getContentType() + " Hidden " + widget.isHidden());
 	}
 
 	private void highlightButton(JButton button)
@@ -263,83 +268,89 @@ public class DevToolsPanel extends PluginPanel
 		}
 	}
 
-	private void refreshWidgets()
+	private DefaultMutableTreeNode refreshWidgets()
 	{
-		Widget[][] widgets = client.getWidgets();
-		boolean[] validInterfaces = client.getValidInterfaces();
+		Widget[] rootWidgets = client.getWidgetRoots();
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
 
-		plugin.setWidgetParent(-1);
-		plugin.setWidgetChild(-1);
-		plugin.setWidgetItem(-1);
+		plugin.currentWidget = null;
+		plugin.itemIndex = -1;
 
-		int idx = -1;
-
-		for (Widget[] children : widgets)
+		for (Widget widget : rootWidgets)
 		{
-			++idx;
-
-			if (!validInterfaces[idx])
+			DefaultMutableTreeNode childNode = addWidget("R", widget);
+			if (childNode != null)
 			{
-				continue;
+				root.add(childNode);
 			}
+		}
 
-			if (children == null)
+		return root;
+	}
+
+	private DefaultMutableTreeNode addWidget(String type, Widget widget)
+	{
+		if (widget == null || widget.isHidden())
+		{
+			return null;
+		}
+
+		DefaultMutableTreeNode node = new WidgetTreeNode(type, widget);
+
+		Widget[] childComponents = widget.getDynamicChildren();
+		if (childComponents != null)
+		{
+			for (Widget component : childComponents)
 			{
-				continue;
-			}
-
-			DefaultMutableTreeNode parent = new DefaultMutableTreeNode(idx);
-			root.add(parent);
-
-			for (Widget widgetChild : children)
-			{
-				if (widgetChild == null || widgetChild.isHidden())
+				DefaultMutableTreeNode childNode = addWidget("D", component);
+				if (childNode != null)
 				{
-					continue;
-				}
-
-				DefaultMutableTreeNode child = new DefaultMutableTreeNode(widgetChild.getId() & 0xFFFF);
-				parent.add(child);
-
-				Widget[] childComponents = widgetChild.getChildren();
-				if (childComponents != null)
-				{
-					int index = -1;
-					for (Widget component : childComponents)
-					{
-						index++;
-						if (component == null || component.isHidden()
-								|| component.getItemId() == ITEM_EMPTY
-								|| component.getItemId() == ITEM_FILLED)
-						{
-							continue;
-						}
-
-						child.add(new DefaultMutableTreeNode(index));
-					}
-				}
-
-				Collection<WidgetItem> items = widgetChild.getWidgetItems();
-				if (items == null)
-				{
-					continue;
-				}
-
-				for (WidgetItem item : items)
-				{
-
-					if (item == null)
-					{
-						continue;
-					}
-
-					child.add(new DefaultMutableTreeNode(item.getIndex()));
+					node.add(childNode);
 				}
 			}
 		}
 
-		widgetListRoot = root;
+		childComponents = widget.getStaticChildren();
+		if (childComponents != null)
+		{
+			for (Widget component : childComponents)
+			{
+				DefaultMutableTreeNode childNode = addWidget("S", component);
+				if (childNode != null)
+				{
+					node.add(childNode);
+				}
+			}
+		}
+
+		childComponents = widget.getNestedChildren();
+		if (childComponents != null)
+		{
+			for (Widget component : childComponents)
+			{
+				DefaultMutableTreeNode childNode = addWidget("N", component);
+				if (childNode != null)
+				{
+					node.add(childNode);
+				}
+			}
+		}
+
+		Collection<WidgetItem> items = widget.getWidgetItems();
+		if (items != null)
+		{
+			for (WidgetItem item : items)
+			{
+				if (item == null)
+				{
+					continue;
+				}
+
+				node.add(new WidgetItemNode(item));
+			}
+		}
+
+		return node;
 	}
 
 }
