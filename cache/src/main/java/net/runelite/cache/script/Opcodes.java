@@ -119,6 +119,7 @@ public class Opcodes
 	public static final int WIDGET_GET_NAME_WIDGET = WIDGET_GET_NAME + 1000;
 	public static final int SEND_GAME_MESSAGE = 3100;
 	public static final int GET_GAMECYCLE = 3300;
+	public static final int GET_INVENTORY_SIZE = 3304;
 	public static final int GET_BOOSTEDSKILLLEVELS = 3305;
 	public static final int GET_REALSKILLLEVELS = 3306;
 	public static final int GET_SKILLEXPERIENCES = 3307;
