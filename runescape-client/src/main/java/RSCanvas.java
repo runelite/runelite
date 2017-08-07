@@ -1,22 +1,20 @@
 import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Graphics;
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bi")
+@ObfuscatedName("bo")
 @Implements("RSCanvas")
 public final class RSCanvas extends Canvas {
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1038937693
+   @ObfuscatedName("qk")
+   @ObfuscatedSignature(
+      signature = "Lfq;"
    )
-   static int field633;
-   @ObfuscatedName("d")
+   static IndexFile field650;
+   @ObfuscatedName("e")
    @Export("component")
    Component component;
 
@@ -24,40 +22,52 @@ public final class RSCanvas extends Canvas {
       this.component = var1;
    }
 
-   public final void update(Graphics var1) {
-      this.component.update(var1);
-   }
-
    public final void paint(Graphics var1) {
       this.component.paint(var1);
    }
 
-   @ObfuscatedName("y")
+   public final void update(Graphics var1) {
+      this.component.update(var1);
+   }
+
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(B)[B",
-      garbageValue = "5"
+      signature = "(Ljava/lang/String;S)I",
+      garbageValue = "-13969"
    )
-   public static byte[] method803() {
-      byte[] var0 = new byte[24];
+   public static int method788(String var0) {
+      return var0.length() + 2;
+   }
 
-      try {
-         class155.field2223.seek(0L);
-         class155.field2223.read(var0);
-
-         int var1;
-         for(var1 = 0; var1 < 24 && var0[var1] == 0; ++var1) {
-            ;
-         }
-
-         if(var1 >= 24) {
-            throw new IOException();
-         }
-      } catch (Exception var4) {
-         for(int var2 = 0; var2 < 24; ++var2) {
-            var0[var2] = -1;
-         }
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(ILcc;ZI)I",
+      garbageValue = "1804659498"
+   )
+   static int method787(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = class266.method4862(class84.intStack[--class84.intStackSize]);
+      } else {
+         var3 = var2?class269.field3661:DecorativeObject.field2164;
       }
 
-      return var0;
+      if(var0 == 1927) {
+         if(class84.field1339 >= 10) {
+            throw new RuntimeException();
+         } else if(var3.field2732 == null) {
+            return 0;
+         } else {
+            ScriptEvent var4 = new ScriptEvent();
+            var4.widget = var3;
+            var4.field849 = var3.field2732;
+            var4.field848 = class84.field1339 + 1;
+            Client.field1101.addFront(var4);
+            return 1;
+         }
+      } else {
+         return 2;
+      }
    }
 }

@@ -4,210 +4,205 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("io")
+@ObfuscatedName("ib")
 @Implements("Spotanim")
 public class Spotanim extends CacheableNode {
    @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lgg;"
+      signature = "Lgq;"
    )
-   static NodeCache field3307;
-   @ObfuscatedName("x")
+   static NodeCache field3318;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lgg;"
+      signature = "Lgq;"
    )
    @Export("spotanims")
    static NodeCache spotanims;
-   @ObfuscatedName("eb")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Ley;"
+      signature = "Lit;"
    )
-   static Task field3320;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lim;"
-   )
-   public static IndexDataBase field3318;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lim;"
-   )
-   public static IndexDataBase field3310;
+   static IndexDataBase field3316;
    @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lit;"
+   )
+   static IndexDataBase field3322;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 905873819
+      intValue = -1444316309
    )
    @Export("id")
    int id;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1572846505
+      intValue = -256540037
    )
-   public int field3309;
-   @ObfuscatedName("f")
+   public int field3331;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -272671689
+      intValue = 174464101
    )
-   int field3306;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1136597933
-   )
-   int field3315;
+   int field3320;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -544796869
+      intValue = -2031911797
    )
-   int field3316;
-   @ObfuscatedName("p")
+   int field3326;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -350513263
+      intValue = -1008916159
    )
-   int field3304;
+   int field3329;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 421245411
+   )
+   int field3328;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1105093419
+   )
+   int field3323;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -1439663829
+   )
+   int field3330;
+   @ObfuscatedName("z")
+   short[] field3315;
    @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1189341009
-   )
-   int field3308;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -884834735
-   )
-   int field3319;
-   @ObfuscatedName("t")
-   short[] field3311;
+   short[] field3324;
    @ObfuscatedName("r")
-   short[] field3305;
-   @ObfuscatedName("i")
-   short[] field3312;
-   @ObfuscatedName("g")
-   short[] field3314;
+   short[] field3321;
+   @ObfuscatedName("d")
+   short[] field3325;
 
    static {
       spotanims = new NodeCache(64);
-      field3307 = new NodeCache(30);
+      field3318 = new NodeCache(30);
    }
 
    Spotanim() {
-      this.field3309 = -1;
-      this.field3315 = 128;
-      this.field3316 = 128;
-      this.field3304 = 0;
-      this.field3308 = 0;
-      this.field3319 = 0;
+      this.field3331 = -1;
+      this.field3326 = 128;
+      this.field3329 = 128;
+      this.field3328 = 0;
+      this.field3323 = 0;
+      this.field3330 = 0;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Lfw;II)V",
-      garbageValue = "-2076912658"
+      signature = "(Lfh;IB)V",
+      garbageValue = "127"
    )
-   void method4313(Buffer var1, int var2) {
+   void method4335(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field3306 = var1.readUnsignedShort();
+         this.field3320 = var1.readUnsignedShort();
       } else if(var2 == 2) {
-         this.field3309 = var1.readUnsignedShort();
+         this.field3331 = var1.readUnsignedShort();
       } else if(var2 == 4) {
-         this.field3315 = var1.readUnsignedShort();
+         this.field3326 = var1.readUnsignedShort();
       } else if(var2 == 5) {
-         this.field3316 = var1.readUnsignedShort();
+         this.field3329 = var1.readUnsignedShort();
       } else if(var2 == 6) {
-         this.field3304 = var1.readUnsignedShort();
+         this.field3328 = var1.readUnsignedShort();
       } else if(var2 == 7) {
-         this.field3308 = var1.readUnsignedByte();
+         this.field3323 = var1.readUnsignedByte();
       } else if(var2 == 8) {
-         this.field3319 = var1.readUnsignedByte();
+         this.field3330 = var1.readUnsignedByte();
       } else {
          int var3;
          int var4;
          if(var2 == 40) {
             var3 = var1.readUnsignedByte();
-            this.field3311 = new short[var3];
-            this.field3312 = new short[var3];
+            this.field3315 = new short[var3];
+            this.field3321 = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field3311[var4] = (short)var1.readUnsignedShort();
-               this.field3312[var4] = (short)var1.readUnsignedShort();
+               this.field3315[var4] = (short)var1.readUnsignedShort();
+               this.field3321[var4] = (short)var1.readUnsignedShort();
             }
          } else if(var2 == 41) {
             var3 = var1.readUnsignedByte();
-            this.field3305 = new short[var3];
-            this.field3314 = new short[var3];
+            this.field3324 = new short[var3];
+            this.field3325 = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field3305[var4] = (short)var1.readUnsignedShort();
-               this.field3314[var4] = (short)var1.readUnsignedShort();
+               this.field3324[var4] = (short)var1.readUnsignedShort();
+               this.field3325[var4] = (short)var1.readUnsignedShort();
             }
          }
       }
 
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)Lev;",
-      garbageValue = "-407013775"
+      signature = "(II)Lew;",
+      garbageValue = "1521061038"
    )
-   public final Model method4310(int var1) {
-      Model var2 = (Model)field3307.get((long)this.id);
+   public final Model method4337(int var1) {
+      Model var2 = (Model)field3318.get((long)this.id);
       if(var2 == null) {
-         ModelData var3 = ModelData.method2477(field3318, this.field3306, 0);
+         ModelData var3 = ModelData.method2434(field3316, this.field3320, 0);
          if(var3 == null) {
             return null;
          }
 
          int var4;
-         if(this.field3311 != null) {
-            for(var4 = 0; var4 < this.field3311.length; ++var4) {
-               var3.recolor(this.field3311[var4], this.field3312[var4]);
+         if(this.field3315 != null) {
+            for(var4 = 0; var4 < this.field3315.length; ++var4) {
+               var3.recolor(this.field3315[var4], this.field3321[var4]);
             }
          }
 
-         if(this.field3305 != null) {
-            for(var4 = 0; var4 < this.field3305.length; ++var4) {
-               var3.method2429(this.field3305[var4], this.field3314[var4]);
+         if(this.field3324 != null) {
+            for(var4 = 0; var4 < this.field3324.length; ++var4) {
+               var3.method2447(this.field3324[var4], this.field3325[var4]);
             }
          }
 
-         var2 = var3.light(this.field3308 + 64, this.field3319 + 850, -30, -50, -30);
-         field3307.put(var2, (long)this.id);
+         var2 = var3.light(this.field3323 + 64, this.field3330 + 850, -30, -50, -30);
+         field3318.put(var2, (long)this.id);
       }
 
       Model var5;
-      if(this.field3309 != -1 && var1 != -1) {
-         var5 = class40.getAnimation(this.field3309).method4688(var2, var1);
+      if(this.field3331 != -1 && var1 != -1) {
+         var5 = Ignore.getAnimation(this.field3331).method4717(var2, var1);
       } else {
-         var5 = var2.method2527(true);
+         var5 = var2.method2554(true);
       }
 
-      if(this.field3315 != 128 || this.field3316 != 128) {
-         var5.method2521(this.field3315, this.field3316, this.field3315);
+      if(this.field3326 != 128 || this.field3329 != 128) {
+         var5.method2531(this.field3326, this.field3329, this.field3326);
       }
 
-      if(this.field3304 != 0) {
-         if(this.field3304 == 90) {
-            var5.method2516();
+      if(this.field3328 != 0) {
+         if(this.field3328 == 90) {
+            var5.method2556();
          }
 
-         if(this.field3304 == 180) {
-            var5.method2516();
-            var5.method2516();
+         if(this.field3328 == 180) {
+            var5.method2556();
+            var5.method2556();
          }
 
-         if(this.field3304 == 270) {
-            var5.method2516();
-            var5.method2516();
-            var5.method2516();
+         if(this.field3328 == 270) {
+            var5.method2556();
+            var5.method2556();
+            var5.method2556();
          }
       }
 
       return var5;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lfw;I)V",
-      garbageValue = "-2115051497"
+      signature = "(Lfh;I)V",
+      garbageValue = "-172334859"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -217,7 +212,7 @@ public class Spotanim extends CacheableNode {
             return;
          }
 
-         this.method4313(var1, var2);
+         this.method4335(var1, var2);
       }
    }
 }

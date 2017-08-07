@@ -1,135 +1,98 @@
-import java.lang.management.GarbageCollectorMXBean;
-import java.lang.management.ManagementFactory;
-import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("e")
+@ObfuscatedName("w")
 @Implements("BaseVarType")
 public enum BaseVarType implements RSEnum {
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Le;"
+      signature = "Lw;"
    )
    @Export("INTEGER")
-   INTEGER(2, 0, Integer.class, new class2()),
-   @ObfuscatedName("q")
+   INTEGER(1, 0, Integer.class, new class2()),
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Le;"
+      signature = "Lw;"
    )
    @Export("LONG")
-   LONG(1, 1, Long.class, new class3()),
-   @ObfuscatedName("x")
+   LONG(0, 1, Long.class, new class3()),
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Le;"
+      signature = "Lw;"
    )
    @Export("STRING")
-   STRING(0, 2, String.class, new class5());
+   STRING(2, 2, String.class, new class5());
 
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1685440183
+      intValue = -988049291
    )
-   final int field29;
-   @ObfuscatedName("e")
+   final int field23;
+   @ObfuscatedName("ef")
    @ObfuscatedGetter(
-      intValue = -1812606769
+      longValue = 2586484368240924733L
    )
-   final int field30;
+   static long field26;
+   @ObfuscatedName("fn")
+   static int[] field27;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 1076168961
+   )
+   final int field28;
+   @ObfuscatedName("rh")
+   @ObfuscatedSignature(
+      signature = "Lkv;"
+   )
+   @Export("renderOverview")
+   static RenderOverview renderOverview;
 
    @ObfuscatedSignature(
-      signature = "(IILjava/lang/Class;Ld;)V"
+      signature = "(IILjava/lang/Class;Le;)V"
    )
    BaseVarType(int var3, int var4, Class var5, class0 var6) {
-      this.field29 = var3;
-      this.field30 = var4;
+      this.field23 = var3;
+      this.field28 = var4;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1661971028"
+      garbageValue = "834678576"
    )
    public int rsOrdinal() {
-      return this.field30;
+      return this.field28;
    }
 
-   @ObfuscatedName("ak")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1312276653"
+      signature = "(ZB)V",
+      garbageValue = "-95"
    )
-   protected static int method11() {
-      int var0 = 0;
-      if(ScriptEvent.field824 == null || !ScriptEvent.field824.isValid()) {
-         try {
-            Iterator var1 = ManagementFactory.getGarbageCollectorMXBeans().iterator();
-
-            while(var1.hasNext()) {
-               GarbageCollectorMXBean var2 = (GarbageCollectorMXBean)var1.next();
-               if(var2.isValid()) {
-                  ScriptEvent.field824 = var2;
-                  GameEngine.field694 = -1L;
-                  GameEngine.field693 = -1L;
-               }
-            }
-         } catch (Throwable var11) {
-            ;
-         }
+   public static void method9(boolean var0) {
+      if(var0 != ItemComposition.isMembersWorld) {
+         ItemComposition.items.reset();
+         ItemComposition.itemModelCache.reset();
+         ItemComposition.itemSpriteCache.reset();
+         ItemComposition.isMembersWorld = var0;
       }
 
-      if(ScriptEvent.field824 != null) {
-         long var9 = BuildType.currentTimeMs();
-         long var3 = ScriptEvent.field824.getCollectionTime();
-         if(GameEngine.field693 != -1L) {
-            long var5 = var3 - GameEngine.field693;
-            long var7 = var9 - GameEngine.field694;
-            if(0L != var7) {
-               var0 = (int)(100L * var5 / var7);
-            }
-         }
-
-         GameEngine.field693 = var3;
-         GameEngine.field694 = var9;
-      }
-
-      return var0;
    }
 
-   @ObfuscatedName("gy")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIIB)V",
-      garbageValue = "-124"
+      signature = "(Lit;Lit;Lit;Lit;I)V",
+      garbageValue = "-353005852"
    )
-   static final void method12(int var0, int var1, int var2) {
-      if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
-         int var3 = class18.getTileHeight(var0, var1, class8.plane) - var2;
-         var0 -= class89.cameraX;
-         var3 -= WallObject.cameraZ;
-         var1 -= KeyFocusListener.cameraY;
-         int var4 = Graphics3D.SINE[Client.cameraPitch];
-         int var5 = Graphics3D.COSINE[Client.cameraPitch];
-         int var6 = Graphics3D.SINE[ScriptState.cameraYaw];
-         int var7 = Graphics3D.COSINE[ScriptState.cameraYaw];
-         int var8 = var6 * var1 + var0 * var7 >> 16;
-         var1 = var7 * var1 - var0 * var6 >> 16;
-         var0 = var8;
-         var8 = var3 * var5 - var4 * var1 >> 16;
-         var1 = var3 * var4 + var5 * var1 >> 16;
-         if(var1 >= 50) {
-            Client.screenY = var0 * Client.scale / var1 + Client.viewportHeight / 2;
-            Client.screenX = var8 * Client.scale / var1 + Client.viewportWidth / 2;
-         } else {
-            Client.screenY = -1;
-            Client.screenX = -1;
-         }
-
-      } else {
-         Client.screenY = -1;
-         Client.screenX = -1;
-      }
+   public static void method8(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2, IndexDataBase var3) {
+      Widget.widgetIndex = var0;
+      Widget.field2615 = var1;
+      class267.field3652 = var2;
+      Widget.field2703 = var3;
+      Item.widgets = new Widget[Widget.widgetIndex.size()][];
+      Timer.validInterfaces = new boolean[Widget.widgetIndex.size()];
    }
 }

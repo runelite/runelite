@@ -1,83 +1,82 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hz")
-public enum class228 implements RSEnum {
-   @ObfuscatedName("d")
+@ObfuscatedName("hw")
+public class class228 {
+   @ObfuscatedName("pf")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Ldu;"
    )
-   field3137(2, 0),
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field3128(6, 1),
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field3134(7, 2),
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field3130(0, 3),
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field3131(5, 4),
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field3139(3, 5),
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field3133(4, 6),
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field3132(1, 7);
+   static class117 field3114;
 
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -2019839363
+   @ObfuscatedName("iy")
+   @ObfuscatedSignature(
+      signature = "(Lhg;IIB)V",
+      garbageValue = "-83"
    )
-   public final int field3135;
+   static void method4086(Widget var0, int var1, int var2) {
+      if(var0.field2715 == 0) {
+         var0.relativeX = var0.originalX;
+      } else if(var0.field2715 == 1) {
+         var0.relativeX = var0.originalX + (var1 - var0.width) / 2;
+      } else if(var0.field2715 == 2) {
+         var0.relativeX = var1 - var0.width - var0.originalX;
+      } else if(var0.field2715 == 3) {
+         var0.relativeX = var0.originalX * var1 >> 14;
+      } else if(var0.field2715 == 4) {
+         var0.relativeX = (var0.originalX * var1 >> 14) + (var1 - var0.width) / 2;
+      } else {
+         var0.relativeX = var1 - var0.width - (var0.originalX * var1 >> 14);
+      }
+
+      if(var0.field2629 == 0) {
+         var0.relativeY = var0.originalY;
+      } else if(var0.field2629 == 1) {
+         var0.relativeY = (var2 - var0.height) / 2 + var0.originalY;
+      } else if(var0.field2629 == 2) {
+         var0.relativeY = var2 - var0.height - var0.originalY;
+      } else if(var0.field2629 == 3) {
+         var0.relativeY = var2 * var0.originalY >> 14;
+      } else if(var0.field2629 == 4) {
+         var0.relativeY = (var2 * var0.originalY >> 14) + (var2 - var0.height) / 2;
+      } else {
+         var0.relativeY = var2 - var0.height - (var2 * var0.originalY >> 14);
+      }
+
+      if(Client.field1072 && var0.type == 0) {
+         if(var0.relativeX < 0) {
+            var0.relativeX = 0;
+         } else if(var0.width + var0.relativeX > var1) {
+            var0.relativeX = var1 - var0.width;
+         }
+
+         if(var0.relativeY < 0) {
+            var0.relativeY = 0;
+         } else if(var0.relativeY + var0.height > var2) {
+            var0.relativeY = var2 - var0.height;
+         }
+      }
+
+   }
+
    @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 2049172391
-   )
-   final int field3136;
-
-   class228(int var3, int var4) {
-      this.field3135 = var3;
-      this.field3136 = var4;
-   }
-
-   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1661971028"
+      signature = "(I)V",
+      garbageValue = "1478277317"
    )
-   public int rsOrdinal() {
-      return this.field3136;
-   }
+   public static void method4087() {
+      try {
+         class156.field2231.method2357();
 
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "48"
-   )
-   public static void method4089() {
-      ItemComposition.items.reset();
-      ItemComposition.itemModelCache.reset();
-      ItemComposition.itemSpriteCache.reset();
+         for(int var0 = 0; var0 < class156.field2229; ++var0) {
+            class156.field2227[var0].method2357();
+         }
+
+         class156.field2232.method2357();
+         class156.field2230.method2357();
+      } catch (Exception var2) {
+         ;
+      }
+
    }
 }

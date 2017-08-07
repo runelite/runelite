@@ -1,89 +1,90 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ig")
+@ObfuscatedName("ir")
 public class class244 extends CacheableNode {
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lgg;"
+      signature = "Lgq;"
    )
-   static NodeCache field3303;
-   @ObfuscatedName("ji")
+   static NodeCache field3305;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lhn;"
+      signature = "Lit;"
    )
-   static Widget field3302;
-   @ObfuscatedName("x")
-   public boolean field3301;
+   static IndexDataBase field3301;
+   @ObfuscatedName("cw")
+   @ObfuscatedSignature(
+      signature = "Lid;"
+   )
+   @Export("indexTrack1")
+   static IndexData indexTrack1;
+   @ObfuscatedName("g")
+   public boolean field3302;
 
    static {
-      field3303 = new NodeCache(64);
+      field3305 = new NodeCache(64);
    }
 
    class244() {
-      this.field3301 = false;
+      this.field3302 = false;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Lfw;II)V",
-      garbageValue = "-1230219673"
+      signature = "(Lfh;IB)V",
+      garbageValue = "47"
    )
-   void method4301(Buffer var1, int var2) {
+   void method4311(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3301 = true;
+         this.field3302 = true;
       }
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lfw;I)V",
-      garbageValue = "1723477205"
+      signature = "(Lfh;I)V",
+      garbageValue = "-935800789"
    )
-   void method4300(Buffer var1) {
+   void method4312(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4301(var1, var2);
+         this.method4311(var1, var2);
       }
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("fm")
    @ObfuscatedSignature(
-      signature = "(Lim;I)V",
-      garbageValue = "1849099308"
+      signature = "(Lbk;III)V",
+      garbageValue = "1110488029"
    )
-   public static void method4307(IndexDataBase var0) {
-      class95.field1464 = var0;
-   }
+   static void method4319(Player var0, int var1, int var2) {
+      if(var0.animation == var1 && var1 != -1) {
+         int var3 = Ignore.getAnimation(var1).replyMode;
+         if(var3 == 1) {
+            var0.actionFrame = 0;
+            var0.field1239 = 0;
+            var0.actionAnimationDisable = var2;
+            var0.field1246 = 0;
+         }
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(IIIB)I",
-      garbageValue = "15"
-   )
-   static final int method4299(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
+         if(var3 == 2) {
+            var0.field1246 = 0;
+         }
+      } else if(var1 == -1 || var0.animation == -1 || Ignore.getAnimation(var1).forcedPriority >= Ignore.getAnimation(var0.animation).forcedPriority) {
+         var0.animation = var1;
+         var0.actionFrame = 0;
+         var0.field1239 = 0;
+         var0.actionAnimationDisable = var2;
+         var0.field1246 = 0;
+         var0.field1264 = var0.queueSize;
       }
 
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var1 / 32 << 7) + var2 / 2 + (var0 / 4 << 10);
-      return var3;
    }
 }

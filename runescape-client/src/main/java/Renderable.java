@@ -4,18 +4,12 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ep")
+@ObfuscatedName("eg")
 @Implements("Renderable")
 public abstract class Renderable extends CacheableNode {
-   @ObfuscatedName("ou")
-   @ObfuscatedSignature(
-      signature = "Ldu;"
-   )
-   @Export("soundSystem1")
-   static AbstractSoundSystem soundSystem1;
-   @ObfuscatedName("cs")
+   @ObfuscatedName("ch")
    @ObfuscatedGetter(
-      intValue = -1486227731
+      intValue = -2010156075
    )
    @Export("modelHeight")
    public int modelHeight;
@@ -24,17 +18,17 @@ public abstract class Renderable extends CacheableNode {
       this.modelHeight = 1000;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)Lev;",
-      garbageValue = "1458652918"
+      signature = "(I)Lew;",
+      garbageValue = "-2113451941"
    )
    @Export("getModel")
    protected Model getModel() {
       return null;
    }
 
-   @ObfuscatedName("cu")
+   @ObfuscatedName("cg")
    @Export("draw")
    void draw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
       Model var10 = this.getModel();
@@ -45,29 +39,93 @@ public abstract class Renderable extends CacheableNode {
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("hx")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "1681738841"
+      signature = "(Lbk;IIII)V",
+      garbageValue = "-1950339678"
    )
-   static int method2898(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
-      }
+   static final void method2898(Player var0, int var1, int var2, int var3) {
+      if(class54.localPlayer != var0) {
+         if(Client.menuOptionCount < 400) {
+            String var4;
+            int var7;
+            if(var0.totalLevel == 0) {
+               String var5 = var0.actions[0] + var0.name + var0.actions[1];
+               var7 = var0.combatLevel;
+               int var8 = class54.localPlayer.combatLevel;
+               int var9 = var8 - var7;
+               String var6;
+               if(var9 < -9) {
+                  var6 = RSSocket.getColTags(16711680);
+               } else if(var9 < -6) {
+                  var6 = RSSocket.getColTags(16723968);
+               } else if(var9 < -3) {
+                  var6 = RSSocket.getColTags(16740352);
+               } else if(var9 < 0) {
+                  var6 = RSSocket.getColTags(16756736);
+               } else if(var9 > 9) {
+                  var6 = RSSocket.getColTags('\uff00');
+               } else if(var9 > 6) {
+                  var6 = RSSocket.getColTags(4259584);
+               } else if(var9 > 3) {
+                  var6 = RSSocket.getColTags(8453888);
+               } else if(var9 > 0) {
+                  var6 = RSSocket.getColTags(12648192);
+               } else {
+                  var6 = RSSocket.getColTags(16776960);
+               }
 
-      if(var2 > 192) {
-         var1 /= 2;
-      }
+               var4 = var5 + var6 + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
+            } else {
+               var4 = var0.actions[0] + var0.name + var0.actions[1] + " " + " (" + "skill-" + var0.totalLevel + ")" + var0.actions[2];
+            }
 
-      if(var2 > 217) {
-         var1 /= 2;
-      }
+            int var10;
+            if(Client.itemSelectionState == 1) {
+               class165.addMenuEntry("Use", Client.field1056 + " " + "->" + " " + RSSocket.getColTags(16777215) + var4, 14, var1, var2, var3);
+            } else if(Client.spellSelected) {
+               if((class1.field4 & 8) == 8) {
+                  class165.addMenuEntry(Client.field997, Client.field1061 + " " + "->" + " " + RSSocket.getColTags(16777215) + var4, 15, var1, var2, var3);
+               }
+            } else {
+               for(var10 = 7; var10 >= 0; --var10) {
+                  if(Client.playerOptions[var10] != null) {
+                     short var11 = 0;
+                     if(Client.playerOptions[var10].equalsIgnoreCase("Attack")) {
+                        if(Client.field940 == class92.field1410) {
+                           continue;
+                        }
 
-      if(var2 > 243) {
-         var1 /= 2;
-      }
+                        if(class92.field1417 == Client.field940 || Client.field940 == class92.field1408 && var0.combatLevel > class54.localPlayer.combatLevel) {
+                           var11 = 2000;
+                        }
 
-      int var3 = (var1 / 32 << 7) + var2 / 2 + (var0 / 4 << 10);
-      return var3;
+                        if(class54.localPlayer.team != 0 && var0.team != 0) {
+                           if(var0.team == class54.localPlayer.team) {
+                              var11 = 2000;
+                           } else {
+                              var11 = 0;
+                           }
+                        }
+                     } else if(Client.playerOptionsPriorities[var10]) {
+                        var11 = 2000;
+                     }
+
+                     boolean var12 = false;
+                     var7 = Client.playerMenuTypes[var10] + var11;
+                     class165.addMenuEntry(Client.playerOptions[var10], RSSocket.getColTags(16777215) + var4, var7, var1, var2, var3);
+                  }
+               }
+            }
+
+            for(var10 = 0; var10 < Client.menuOptionCount; ++var10) {
+               if(Client.menuTypes[var10] == 23) {
+                  Client.menuTargets[var10] = RSSocket.getColTags(16777215) + var4;
+                  break;
+               }
+            }
+
+         }
+      }
    }
 }

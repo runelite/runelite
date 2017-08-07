@@ -4,24 +4,31 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ik")
+@ObfuscatedName("is")
 @Implements("VarPlayerType")
 public class VarPlayerType extends CacheableNode {
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lgg;"
+      signature = "Lgq;"
    )
    @Export("varplayers")
    static NodeCache varplayers;
-   @ObfuscatedName("d")
+   @ObfuscatedName("fd")
+   static byte[][] field3269;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -1383272857
+   )
+   public static int field3270;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lim;"
+      signature = "Lit;"
    )
    @Export("varplayer_ref")
-   public static IndexDataBase varplayer_ref;
+   static IndexDataBase varplayer_ref;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1352458539
+      intValue = -1526769239
    )
    @Export("configType")
    public int configType;
@@ -34,10 +41,10 @@ public class VarPlayerType extends CacheableNode {
       this.configType = 0;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Lfw;II)V",
-      garbageValue = "1909031740"
+      signature = "(Lfh;IB)V",
+      garbageValue = "103"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -47,10 +54,10 @@ public class VarPlayerType extends CacheableNode {
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lfw;I)V",
-      garbageValue = "262120825"
+      signature = "(Lfh;B)V",
+      garbageValue = "47"
    )
    @Export("decode")
    void decode(Buffer var1) {

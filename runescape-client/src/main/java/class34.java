@@ -4,158 +4,145 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("au")
+@ObfuscatedName("az")
 public class class34 {
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "Lhy;"
-   )
-   static final Coordinates field463;
-   @ObfuscatedName("iz")
-   @ObfuscatedGetter(
-      intValue = 773214525
-   )
-   static int field450;
-   @ObfuscatedName("pc")
-   @ObfuscatedGetter(
-      intValue = -1184353143
-   )
-   static int field466;
-   @ObfuscatedName("qv")
-   @ObfuscatedSignature(
-      signature = "Lkb;"
-   )
-   static MachineInfo field467;
-   @ObfuscatedName("r")
-   int[][] field458;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lji;"
-   )
-   SpritePixels field459;
    @ObfuscatedName("s")
-   List field464;
-   @ObfuscatedName("v")
-   LinkedList field453;
-   @ObfuscatedName("o")
-   HashMap field460;
-   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "La;"
+      signature = "Lhq;"
    )
-   class22 field461;
+   static final Coordinates field482;
+   @ObfuscatedName("ez")
+   @ObfuscatedSignature(
+      signature = "Ley;"
+   )
+   static Task field496;
+   @ObfuscatedName("o")
+   List field481;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Lkn;"
+   )
+   SpritePixels field491;
+   @ObfuscatedName("u")
+   int[][] field490;
+   @ObfuscatedName("v")
+   LinkedList field487;
+   @ObfuscatedName("l")
+   HashMap field485;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lx;"
+   )
+   class22 field486;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1515407595
+      intValue = -1031326915
    )
-   int field455;
-   @ObfuscatedName("i")
+   int field484;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1755060415
+      intValue = -947220285
    )
-   int field457;
-   @ObfuscatedName("t")
+   int field489;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 773673049
+      intValue = 1302299117
    )
-   int field456;
-   @ObfuscatedName("p")
-   final HashMap field462;
-   @ObfuscatedName("e")
+   int field493;
+   @ObfuscatedName("h")
+   final HashMap field488;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1770943433
+      intValue = 2079020345
    )
-   int field465;
+   int field492;
 
    static {
-      field463 = new Coordinates();
+      field482 = new Coordinates();
    }
 
    class34(int var1, int var2, int var3, HashMap var4) {
-      this.field455 = var1;
-      this.field465 = var2;
-      this.field453 = new LinkedList();
-      this.field464 = new LinkedList();
-      this.field460 = new HashMap();
-      this.field456 = var3 | -16777216;
-      this.field462 = var4;
+      this.field484 = var1;
+      this.field492 = var2;
+      this.field487 = new LinkedList();
+      this.field481 = new LinkedList();
+      this.field485 = new HashMap();
+      this.field493 = var3 | -16777216;
+      this.field488 = var4;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(IB)Z",
-      garbageValue = "40"
+      garbageValue = "42"
    )
-   boolean method467(int var1) {
-      if(this.field459 != null && this.field457 == var1) {
+   boolean method362(int var1) {
+      if(this.field491 != null && this.field489 == var1) {
          return false;
       } else {
-         this.field457 = var1;
-         this.field459 = new SpritePixels(this.field457 * 64, this.field457 * 64);
+         this.field489 = var1;
+         this.field491 = new SpritePixels(this.field489 * 64, this.field489 * 64);
          return true;
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("ag")
    @ObfuscatedSignature(
-      signature = "(IILax;B)V",
-      garbageValue = "122"
+      signature = "(IILau;S)V",
+      garbageValue = "255"
    )
-   void method416(int var1, int var2, class28 var3) {
-      for(int var4 = 0; var4 < var3.field382; ++var4) {
-         class31[] var5 = var3.field389[var4][var1][var2];
+   void method375(int var1, int var2, class28 var3) {
+      for(int var4 = 0; var4 < var3.field407; ++var4) {
+         class31[] var5 = var3.field412[var4][var1][var2];
          if(var5 != null && var5.length != 0) {
             class31[] var6 = var5;
 
             for(int var7 = 0; var7 < var6.length; ++var7) {
                class31 var8 = var6[var7];
-               int var10 = var8.field417;
-               boolean var9 = var10 >= class221.field2811.field2813 && var10 <= class221.field2792.field2813 || var10 == class221.field2804.field2813;
-               if(var9) {
-                  ObjectComposition var11 = WidgetNode.getObjectDefinition(var8.field422);
-                  int var12 = var11.field3463 != 0?-3407872:-3355444;
-                  if(var8.field417 == class221.field2811.field2813) {
-                     this.method396(var1, var2, var8.field416, var12);
+               if(Preferences.method1607(var8.field445)) {
+                  ObjectComposition var9 = WorldMapType1.getObjectDefinition(var8.field448);
+                  int var10 = var9.field3435 != 0?-3407872:-3355444;
+                  if(var8.field445 == class222.field2801.field2804) {
+                     this.method392(var1, var2, var8.field446, var10);
                   }
 
-                  if(var8.field417 == class221.field2805.field2813) {
-                     this.method396(var1, var2, var8.field416, -3355444);
-                     this.method396(var1, var2, var8.field416 + 1, var12);
+                  if(var8.field445 == class222.field2783.field2804) {
+                     this.method392(var1, var2, var8.field446, -3355444);
+                     this.method392(var1, var2, var8.field446 + 1, var10);
                   }
 
-                  if(var8.field417 == class221.field2792.field2813) {
-                     if(var8.field416 == 0) {
-                        Rasterizer2D.method5003(this.field457 * var1, this.field457 * (63 - var2), 1, var12);
+                  if(var8.field445 == class222.field2792.field2804) {
+                     if(var8.field446 == 0) {
+                        Rasterizer2D.method4982(this.field489 * var1, this.field489 * (63 - var2), 1, var10);
                      }
 
-                     if(var8.field416 == 1) {
-                        Rasterizer2D.method5003(this.field457 * var1 + this.field457 - 1, this.field457 * (63 - var2), 1, var12);
+                     if(var8.field446 == 1) {
+                        Rasterizer2D.method4982(this.field489 * var1 + this.field489 - 1, this.field489 * (63 - var2), 1, var10);
                      }
 
-                     if(var8.field416 == 2) {
-                        Rasterizer2D.method5003(this.field457 * var1 + this.field457 - 1, this.field457 * (63 - var2) + this.field457 - 1, 1, var12);
+                     if(var8.field446 == 2) {
+                        Rasterizer2D.method4982(this.field489 + this.field489 * var1 - 1, this.field489 * (63 - var2) + this.field489 - 1, 1, var10);
                      }
 
-                     if(var8.field416 == 3) {
-                        Rasterizer2D.method5003(this.field457 * var1, this.field457 + this.field457 * (63 - var2) - 1, 1, var12);
+                     if(var8.field446 == 3) {
+                        Rasterizer2D.method4982(this.field489 * var1, this.field489 * (63 - var2) + this.field489 - 1, 1, var10);
                      }
                   }
 
-                  if(var8.field417 == class221.field2804.field2813) {
-                     int var13 = var8.field416 % 2;
-                     int var14;
-                     if(var13 == 0) {
-                        for(var14 = 0; var14 < this.field457; ++var14) {
-                           Rasterizer2D.method5003(var14 + this.field457 * var1, (64 - var2) * this.field457 - 1 - var14, 1, var12);
+                  if(var8.field445 == class222.field2785.field2804) {
+                     int var11 = var8.field446 % 2;
+                     int var12;
+                     if(var11 == 0) {
+                        for(var12 = 0; var12 < this.field489; ++var12) {
+                           Rasterizer2D.method4982(this.field489 * var1 + var12, (64 - var2) * this.field489 - 1 - var12, 1, var10);
                         }
                      } else {
-                        for(var14 = 0; var14 < this.field457; ++var14) {
-                           Rasterizer2D.method5003(var14 + this.field457 * var1, this.field457 * (63 - var2) + var14, 1, var12);
+                        for(var12 = 0; var12 < this.field489; ++var12) {
+                           Rasterizer2D.method4982(var12 + this.field489 * var1, var12 + this.field489 * (63 - var2), 1, var10);
                         }
                      }
                   }
@@ -166,85 +153,65 @@ public class class34 {
 
    }
 
-   @ObfuscatedName("am")
+   @ObfuscatedName("ay")
    @ObfuscatedSignature(
       signature = "(IILjava/util/HashSet;II)V",
-      garbageValue = "-2065970529"
+      garbageValue = "-2102627657"
    )
-   void method380(int var1, int var2, HashSet var3, int var4) {
+   void method465(int var1, int var2, HashSet var3, int var4) {
       float var5 = (float)var4 / 64.0F;
       float var6 = var5 / 2.0F;
-      Iterator var7 = this.field460.entrySet().iterator();
+      Iterator var7 = this.field485.entrySet().iterator();
 
       while(var7.hasNext()) {
          Entry var8 = (Entry)var7.next();
          Coordinates var9 = (Coordinates)var8.getKey();
-         int var10 = (int)(var5 * (float)var9.worldX + (float)var1 - var6);
-         int var11 = (int)((float)(var2 + var4) - (float)var9.worldY * var5 - var6);
+         int var10 = (int)((float)var9.worldX * var5 + (float)var1 - var6);
+         int var11 = (int)((float)(var2 + var4) - var5 * (float)var9.worldY - var6);
          class39 var12 = (class39)var8.getValue();
          if(var12 != null) {
-            var12.field498 = var10;
-            var12.field499 = var11;
-            Area var13 = Area.field3286[var12.field505];
-            if(!var3.contains(Integer.valueOf(var13.method4273()))) {
-               this.method369(var12, var10, var11, var5);
+            var12.field532 = var10;
+            var12.field533 = var11;
+            Area var13 = Area.field3276[var12.field534];
+            if(!var3.contains(Integer.valueOf(var13.method4293()))) {
+               this.method379(var12, var10, var11, var5);
             }
          }
       }
 
    }
 
-   @ObfuscatedName("az")
+   @ObfuscatedName("at")
    @ObfuscatedSignature(
-      signature = "(Lij;I)Lai;",
-      garbageValue = "-1054885944"
+      signature = "(Lio;I)Lax;",
+      garbageValue = "1819856518"
    )
-   class33 method379(Area var1) {
-      if(var1.name != null && this.field462 != null && this.field462.get(class24.field338) != null) {
-         int var3 = var1.field3283;
-         class24[] var4 = new class24[]{class24.field338, class24.field336, class24.field337};
-         class24[] var5 = var4;
-         int var6 = 0;
-
-         class24 var2;
-         while(true) {
-            if(var6 >= var5.length) {
-               var2 = null;
-               break;
-            }
-
-            class24 var7 = var5[var6];
-            if(var3 == var7.field335) {
-               var2 = var7;
-               break;
-            }
-
-            ++var6;
-         }
-
+   class33 method389(Area var1) {
+      if(var1.name != null && this.field488 != null && this.field488.get(class24.field358) != null) {
+         class24 var2 = class24.method177(var1.field3284);
          if(var2 == null) {
             return null;
          } else {
-            Font var14 = (Font)this.field462.get(var2);
-            if(var14 == null) {
+            Font var3 = (Font)this.field488.get(var2);
+            if(var3 == null) {
                return null;
             } else {
-               var6 = var14.method4791(var1.name, 1000000);
-               String[] var15 = new String[var6];
-               var14.method4827(var1.name, (int[])null, var15);
-               int var8 = var15.length * var14.verticalSpace / 2;
-               int var9 = 0;
-               String[] var10 = var15;
+               int var4 = var3.method4774(var1.name, 1000000);
+               String[] var5 = new String[var4];
+               var3.method4777(var1.name, (int[])null, var5);
+               int var6 = var5.length * var3.verticalSpace / 2;
+               int var7 = 0;
+               String[] var8 = var5;
 
-               for(int var11 = 0; var11 < var10.length; ++var11) {
-                  String var12 = var10[var11];
-                  int var13 = var14.method4820(var12);
-                  if(var13 > var9) {
-                     var9 = var13;
+               for(int var9 = 0; var9 < var8.length; ++var9) {
+                  String var10 = var8[var9];
+                  int var11 = var3.method4771(var10);
+                  if(var11 > var7) {
+                     var7 = var11;
                   }
                }
 
-               return new class33(var1.name, var9, var8, var2);
+               return new class33(var1.name, var7, var6, var2);
             }
          }
       } else {
@@ -252,29 +219,33 @@ public class class34 {
       }
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(IILax;[Ljw;S)V",
-      garbageValue = "6559"
+      signature = "(IILau;[Ljp;I)V",
+      garbageValue = "-2024422738"
    )
-   void method378(int var1, int var2, class28 var3, IndexedSprite[] var4) {
-      for(int var5 = 0; var5 < var3.field382; ++var5) {
-         class31[] var6 = var3.field389[var5][var1][var2];
+   void method356(int var1, int var2, class28 var3, IndexedSprite[] var4) {
+      for(int var5 = 0; var5 < var3.field407; ++var5) {
+         class31[] var6 = var3.field412[var5][var1][var2];
          if(var6 != null && var6.length != 0) {
             class31[] var7 = var6;
 
             for(int var8 = 0; var8 < var7.length; ++var8) {
                class31 var9 = var7[var8];
-               int var11 = var9.field417;
-               boolean var10 = var11 >= class221.field2809.field2813 && var11 <= class221.field2810.field2813;
-               if(var10 || class60.method1048(var9.field417)) {
-                  ObjectComposition var12 = WidgetNode.getObjectDefinition(var9.field422);
-                  if(var12.mapSceneId != -1) {
-                     if(var12.mapSceneId != 46 && var12.mapSceneId != 52) {
-                        var4[var12.mapSceneId].method5056(this.field457 * var1, this.field457 * (63 - var2), this.field457 * 2, this.field457 * 2);
-                     } else {
-                        var4[var12.mapSceneId].method5056(this.field457 * var1, this.field457 * (63 - var2), this.field457 * 2 + 1, this.field457 * 2 + 1);
-                     }
+               if(!DecorativeObject.method2934(var9.field445)) {
+                  int var11 = var9.field445;
+                  boolean var10 = var11 == class222.field2788.field2804;
+                  if(!var10) {
+                     continue;
+                  }
+               }
+
+               ObjectComposition var12 = WorldMapType1.getObjectDefinition(var9.field448);
+               if(var12.mapSceneId != -1) {
+                  if(var12.mapSceneId != 46 && var12.mapSceneId != 52) {
+                     var4[var12.mapSceneId].method5070(this.field489 * var1, this.field489 * (63 - var2), this.field489 * 2, this.field489 * 2);
+                  } else {
+                     var4[var12.mapSceneId].method5070(this.field489 * var1, this.field489 * (63 - var2), this.field489 * 2 + 1, this.field489 * 2 + 1);
                   }
                }
             }
@@ -283,79 +254,79 @@ public class class34 {
 
    }
 
-   @ObfuscatedName("ag")
+   @ObfuscatedName("al")
    @ObfuscatedSignature(
-      signature = "(Lij;III)V",
-      garbageValue = "-215809061"
+      signature = "(Lio;IIB)V",
+      garbageValue = "-51"
    )
-   void method384(Area var1, int var2, int var3) {
-      SpritePixels var4 = var1.method4271(false);
+   void method380(Area var1, int var2, int var3) {
+      SpritePixels var4 = var1.method4294(false);
       if(var4 != null) {
-         int var5 = this.method389(var4, var1.field3291);
-         int var6 = this.method390(var4, var1.field3293);
-         var4.method5069(var5 + var2, var3 + var6);
+         int var5 = this.method385(var4, var1.field3291);
+         int var6 = this.method490(var4, var1.field3293);
+         var4.method5143(var5 + var2, var3 + var6);
       }
 
    }
 
-   @ObfuscatedName("ae")
+   @ObfuscatedName("ax")
    @ObfuscatedSignature(
-      signature = "(IILjava/util/HashSet;II)V",
-      garbageValue = "-1222565443"
+      signature = "(IILjava/util/HashSet;IB)V",
+      garbageValue = "1"
    )
-   void method386(int var1, int var2, HashSet var3, int var4) {
+   void method397(int var1, int var2, HashSet var3, int var4) {
       float var5 = (float)var4 / 64.0F;
-      Iterator var6 = this.field464.iterator();
+      Iterator var6 = this.field481.iterator();
 
       while(var6.hasNext()) {
          class39 var7 = (class39)var6.next();
-         int var8 = var7.field504.worldX % 64;
-         int var9 = var7.field504.worldY % 64;
-         var7.field498 = (int)(var5 * (float)var8 + (float)var1);
-         var7.field499 = (int)((float)var2 + (float)(63 - var9) * var5);
-         if(!var3.contains(Integer.valueOf(var7.field505))) {
-            this.method369(var7, var7.field498, var7.field499, var5);
+         int var8 = var7.field530.worldX % 64;
+         int var9 = var7.field530.worldY % 64;
+         var7.field532 = (int)((float)var1 + (float)var8 * var5);
+         var7.field533 = (int)(var5 * (float)(63 - var9) + (float)var2);
+         if(!var3.contains(Integer.valueOf(var7.field534))) {
+            this.method379(var7, var7.field532, var7.field533, var5);
          }
       }
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IILax;Las;I)V",
-      garbageValue = "134030085"
+      signature = "(IILau;Lap;I)V",
+      garbageValue = "1655399523"
    )
-   void method370(int var1, int var2, class28 var3, class46 var4) {
-      int var5 = var3.field385[0][var1][var2] - 1;
-      int var6 = var3.field386[0][var1][var2] - 1;
+   void method422(int var1, int var2, class28 var3, class46 var4) {
+      int var5 = var3.field408[0][var1][var2] - 1;
+      int var6 = var3.field403[0][var1][var2] - 1;
       if(var5 == -1 && var6 == -1) {
-         Rasterizer2D.method4937(this.field457 * var1, this.field457 * (63 - var2), this.field457, this.field457, this.field456);
+         Rasterizer2D.method4973(this.field489 * var1, this.field489 * (63 - var2), this.field489, this.field489, this.field493);
       }
 
       int var7 = 16711935;
       if(var6 != -1) {
-         var7 = class140.method2891(var6, this.field456);
+         var7 = class266.method4861(var6, this.field493);
       }
 
-      if(var6 > -1 && var3.field388[0][var1][var2] == 0) {
-         Rasterizer2D.method4937(this.field457 * var1, this.field457 * (63 - var2), this.field457, this.field457, var7);
+      if(var6 > -1 && var3.field410[0][var1][var2] == 0) {
+         Rasterizer2D.method4973(this.field489 * var1, this.field489 * (63 - var2), this.field489, this.field489, var7);
       } else {
-         int var8 = this.method491(var1, var2, var3);
+         int var8 = this.method488(var1, var2, var3);
          if(var6 == -1) {
-            Rasterizer2D.method4937(this.field457 * var1, this.field457 * (63 - var2), this.field457, this.field457, var8);
+            Rasterizer2D.method4973(this.field489 * var1, this.field489 * (63 - var2), this.field489, this.field489, var8);
          } else {
-            var4.method666(this.field457 * var1, this.field457 * (63 - var2), var8, var7, this.field457, this.field457, var3.field388[0][var1][var2], var3.field387[0][var1][var2]);
+            var4.method658(this.field489 * var1, this.field489 * (63 - var2), var8, var7, this.field489, this.field489, var3.field410[0][var1][var2], var3.field413[0][var1][var2]);
          }
       }
    }
 
-   @ObfuscatedName("ad")
+   @ObfuscatedName("av")
    @ObfuscatedSignature(
-      signature = "(Lji;Lid;I)I",
-      garbageValue = "752234481"
+      signature = "(Lkn;Lij;I)I",
+      garbageValue = "-1193011897"
    )
-   int method389(SpritePixels var1, class257 var2) {
-      switch(var2.field3524) {
+   int method385(SpritePixels var1, class258 var2) {
+      switch(var2.field3538) {
       case 1:
          return -var1.width / 2;
       case 2:
@@ -365,22 +336,22 @@ public class class34 {
       }
    }
 
-   @ObfuscatedName("af")
+   @ObfuscatedName("as")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "660353113"
+      signature = "(IIB)I",
+      garbageValue = "-94"
    )
-   int method397(int var1, int var2) {
-      if(this.field461 != null) {
-         return this.field461.method215(var1, var2);
+   int method393(int var1, int var2) {
+      if(this.field486 != null) {
+         return this.field486.method228(var1, var2);
       } else {
-         if(!this.field453.isEmpty()) {
-            Iterator var3 = this.field453.iterator();
+         if(!this.field487.isEmpty()) {
+            Iterator var3 = this.field487.iterator();
 
             while(var3.hasNext()) {
                class45 var4 = (class45)var3.next();
-               if(var4.method645(var1, var2)) {
-                  return var4.method215(var1, var2);
+               if(var4.method626(var1, var2)) {
+                  return var4.method228(var1, var2);
                }
             }
          }
@@ -389,43 +360,43 @@ public class class34 {
       }
    }
 
-   @ObfuscatedName("ar")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Laz;Lij;IIFI)V",
-      garbageValue = "-1393489176"
+      signature = "(IILau;Lap;[Ljp;B)V",
+      garbageValue = "1"
    )
-   void method472(class39 var1, Area var2, int var3, int var4, float var5) {
-      if(var1.field507 != null) {
-         if(var1.field507.field443.method166(var5)) {
-            Font var6 = (Font)this.field462.get(var1.field507.field443);
-            var6.method4833(var1.field507.field444, var3 - var1.field507.field441 / 2, var4, var1.field507.field441, var1.field507.field442, -16777216 | var2.field3282, 0, 1, 0, var6.verticalSpace / 2);
+   void method365(int var1, int var2, class28 var3, class46 var4, IndexedSprite[] var5) {
+      this.method375(var1, var2, var3);
+      this.method356(var1, var2, var3, var5);
+   }
+
+   @ObfuscatedName("ae")
+   @ObfuscatedSignature(
+      signature = "(Lad;Lio;IIFI)V",
+      garbageValue = "2001589627"
+   )
+   void method381(class39 var1, Area var2, int var3, int var4, float var5) {
+      if(var1.field531 != null) {
+         if(var1.field531.field477.method180(var5)) {
+            Font var6 = (Font)this.field488.get(var1.field531.field477);
+            var6.method4780(var1.field531.field471, var3 - var1.field531.field470 / 2, var4, var1.field531.field470, var1.field531.field478, -16777216 | var2.field3283, 0, 1, 0, var6.verticalSpace / 2);
          }
       }
    }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IILax;Las;[Ljw;B)V",
-      garbageValue = "1"
-   )
-   void method493(int var1, int var2, class28 var3, class46 var4, IndexedSprite[] var5) {
-      this.method416(var1, var2, var3);
-      this.method378(var1, var2, var3, var5);
-   }
-
-   @ObfuscatedName("ac")
+   @ObfuscatedName("au")
    @ObfuscatedSignature(
       signature = "(Ljava/util/HashSet;III)V",
-      garbageValue = "1159996837"
+      garbageValue = "1705628388"
    )
-   void method385(HashSet var1, int var2, int var3) {
-      Iterator var4 = this.field464.iterator();
+   void method377(HashSet var1, int var2, int var3) {
+      Iterator var4 = this.field481.iterator();
 
       while(var4.hasNext()) {
          class39 var5 = (class39)var4.next();
-         Area var6 = Area.field3286[var5.field505];
-         if(var6 != null && var1.contains(Integer.valueOf(var6.method4273()))) {
-            this.method382(var6, var5.field498, var5.field499, var2, var3);
+         Area var6 = Area.field3276[var5.field534];
+         if(var6 != null && var1.contains(Integer.valueOf(var6.method4293()))) {
+            this.method448(var6, var5.field532, var5.field533, var2, var3);
          }
       }
 
@@ -433,36 +404,36 @@ public class class34 {
 
    @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(IIIILax;I)V",
-      garbageValue = "-946889055"
+      signature = "(IIIILau;I)V",
+      garbageValue = "-187944078"
    )
-   void method361(int var1, int var2, int var3, int var4, class28 var5) {
+   void method357(int var1, int var2, int var3, int var4, class28 var5) {
       for(int var6 = var1; var6 < var3 + var1; ++var6) {
-         label56:
+         label57:
          for(int var7 = var2; var7 < var2 + var4; ++var7) {
             Coordinates var8 = new Coordinates(0, var6, var7);
 
-            for(int var9 = 0; var9 < var5.field382; ++var9) {
-               class31[] var10 = var5.field389[var9][var6][var7];
+            for(int var9 = 0; var9 < var5.field407; ++var9) {
+               class31[] var10 = var5.field412[var9][var6][var7];
                if(var10 != null && var10.length != 0) {
                   class31[] var11 = var10;
 
                   for(int var12 = 0; var12 < var11.length; ++var12) {
                      class31 var13 = var11[var12];
-                     Area var14 = this.method391(var13.field422);
+                     Area var14 = this.method480(var13.field448);
                      if(var14 != null) {
-                        Coordinates var15 = new Coordinates(var9, var6 + this.field455 * 64, var7 + this.field465 * 64);
+                        Coordinates var15 = new Coordinates(var9, this.field484 * 64 + var6, this.field492 * 64 + var7);
                         Coordinates var16 = null;
-                        if(this.field461 != null) {
-                           var16 = new Coordinates(this.field461.field383 + var9, var6 + this.field461.field384 * 64, var7 + this.field461.field380 * 64);
+                        if(this.field486 != null) {
+                           var16 = new Coordinates(this.field486.field402 + var9, this.field486.field411 * 64 + var6, var7 + this.field486.field409 * 64);
                         } else {
                            class45 var17 = (class45)var5;
-                           var16 = new Coordinates(var9 + var17.field383, var6 + var17.field384 * 64 + var17.method648() * 8, var17.field380 * 64 + var7 + var17.method649() * 8);
+                           var16 = new Coordinates(var9 + var17.field402, var17.field411 * 64 + var6 + var17.method653() * 8, var7 + var17.field409 * 64 + var17.method628() * 8);
                         }
 
-                        class39 var18 = new class39(var14.field3278, var16, var15, this.method379(var14));
-                        this.field460.put(var8, var18);
-                        continue label56;
+                        class39 var18 = new class39(var14.field3297, var16, var15, this.method389(var14));
+                        this.field485.put(var8, var18);
+                        continue label57;
                      }
                   }
                }
@@ -472,101 +443,101 @@ public class class34 {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Ljava/util/List;B)V",
-      garbageValue = "-4"
+      signature = "(Ljava/util/List;I)V",
+      garbageValue = "-971806700"
    )
-   void method362(List var1) {
+   void method358(List var1) {
       Iterator var2 = var1.iterator();
 
       while(var2.hasNext()) {
          class25 var3 = (class25)var2.next();
-         if(var3.field348.worldX >> 6 == this.field455 && var3.field348.worldY >> 6 == this.field465) {
-            class39 var4 = new class39(var3.field346, var3.field348, var3.field348, this.method411(var3.field346));
-            this.field464.add(var4);
+         if(var3.field369.worldX >> 6 == this.field484 && var3.field369.worldY >> 6 == this.field492) {
+            class39 var4 = new class39(var3.field368, var3.field369, var3.field369, this.method382(var3.field368));
+            this.field481.add(var4);
          }
       }
 
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "([Lau;I)Z",
-      garbageValue = "2018012984"
+      signature = "([Laz;I)Z",
+      garbageValue = "-1127047539"
    )
-   boolean method439(class34[] var1) {
-      if(this.field458 != null) {
+   boolean method368(class34[] var1) {
+      if(this.field490 != null) {
          return false;
       } else {
          class43 var2 = new class43(64, 64);
-         if(this.field461 != null) {
-            this.method375(0, 0, 64, 64, this.field461, var2);
+         if(this.field486 != null) {
+            this.method432(0, 0, 64, 64, this.field486, var2);
          } else {
-            Iterator var3 = this.field453.iterator();
+            Iterator var3 = this.field487.iterator();
 
             while(var3.hasNext()) {
                class45 var4 = (class45)var3.next();
-               this.method375(var4.method650() * 8, var4.method643() * 8, 8, 8, var4, var2);
+               this.method432(var4.method644() * 8, var4.method630() * 8, 8, 8, var4, var2);
             }
          }
 
-         this.method374(var1, var2);
-         this.method373(var2);
+         this.method370(var1, var2);
+         this.method369(var2);
          return true;
       }
    }
 
-   @ObfuscatedName("au")
+   @ObfuscatedName("aw")
    @ObfuscatedSignature(
-      signature = "(IILax;I)V",
-      garbageValue = "-1178513638"
+      signature = "(IILau;I)V",
+      garbageValue = "990230250"
    )
-   void method446(int var1, int var2, class28 var3) {
-      field463.method3940(0, var1, var2);
+   void method384(int var1, int var2, class28 var3) {
+      field482.method3934(0, var1, var2);
 
-      for(int var4 = 0; var4 < var3.field382; ++var4) {
-         class31[] var5 = var3.field389[var4][var1][var2];
+      for(int var4 = 0; var4 < var3.field407; ++var4) {
+         class31[] var5 = var3.field412[var4][var1][var2];
          if(var5 != null && var5.length != 0) {
             class31[] var6 = var5;
 
             for(int var7 = 0; var7 < var6.length; ++var7) {
                class31 var8 = var6[var7];
-               Area var9 = this.method391(var8.field422);
+               Area var9 = this.method480(var8.field448);
                if(var9 != null) {
-                  class39 var10 = (class39)this.field460.get(field463);
+                  class39 var10 = (class39)this.field485.get(field482);
                   if(var10 != null) {
-                     if(var9.field3278 != var10.field505) {
-                        class39 var16 = new class39(var9.field3278, var10.field500, var10.field504, this.method379(var9));
-                        this.field460.put(new Coordinates(field463), var16);
+                     if(var9.field3297 != var10.field534) {
+                        class39 var16 = new class39(var9.field3297, var10.field528, var10.field530, this.method389(var9));
+                        this.field485.put(new Coordinates(field482), var16);
                         var10 = var16;
                      }
 
-                     int var15 = var10.field500.plane - var10.field504.plane;
-                     var10.field504.plane = var4;
-                     var10.field500.plane = var15 + var4;
+                     int var15 = var10.field528.plane - var10.field530.plane;
+                     var10.field530.plane = var4;
+                     var10.field528.plane = var4 + var15;
                      return;
                   }
 
-                  Coordinates var11 = new Coordinates(var4, this.field455 * 64 + var1, var2 + this.field465 * 64);
+                  Coordinates var11 = new Coordinates(var4, this.field484 * 64 + var1, this.field492 * 64 + var2);
                   Coordinates var12 = null;
-                  if(this.field461 != null) {
-                     var12 = new Coordinates(this.field461.field383 + var4, this.field461.field384 * 64 + var1, this.field461.field380 * 64 + var2);
+                  if(this.field486 != null) {
+                     var12 = new Coordinates(this.field486.field402 + var4, this.field486.field411 * 64 + var1, var2 + this.field486.field409 * 64);
                   } else {
-                     Iterator var13 = this.field453.iterator();
+                     Iterator var13 = this.field487.iterator();
 
                      while(var13.hasNext()) {
                         class45 var14 = (class45)var13.next();
-                        if(var14.method645(var1, var2)) {
-                           var12 = new Coordinates(var4 + var14.field383, var1 + var14.field384 * 64 + var14.method648() * 8, var2 + var14.field380 * 64 + var14.method649() * 8);
+                        if(var14.method626(var1, var2)) {
+                           var12 = new Coordinates(var4 + var14.field402, var14.field411 * 64 + var1 + var14.method653() * 8, var14.field409 * 64 + var2 + var14.method628() * 8);
                            break;
                         }
                      }
                   }
 
                   if(var12 != null) {
-                     var10 = new class39(var9.field3278, var12, var11, this.method379(var9));
-                     this.field460.put(new Coordinates(field463), var10);
+                     var10 = new class39(var9.field3297, var12, var11, this.method389(var9));
+                     this.field485.put(new Coordinates(field482), var10);
                      return;
                   }
                }
@@ -574,83 +545,83 @@ public class class34 {
          }
       }
 
-      this.field460.remove(field463);
+      this.field485.remove(field482);
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IILax;Las;I)V",
-      garbageValue = "1928548872"
+      signature = "(IILau;Lap;I)V",
+      garbageValue = "-1126683851"
    )
-   void method371(int var1, int var2, class28 var3, class46 var4) {
-      for(int var5 = 1; var5 < var3.field382; ++var5) {
-         int var6 = var3.field386[var5][var1][var2] - 1;
+   void method415(int var1, int var2, class28 var3, class46 var4) {
+      for(int var5 = 1; var5 < var3.field407; ++var5) {
+         int var6 = var3.field403[var5][var1][var2] - 1;
          if(var6 > -1) {
-            int var7 = class140.method2891(var6, this.field456);
-            if(var3.field388[var5][var1][var2] == 0) {
-               Rasterizer2D.method4937(this.field457 * var1, this.field457 * (63 - var2), this.field457, this.field457, var7);
+            int var7 = class266.method4861(var6, this.field493);
+            if(var3.field410[var5][var1][var2] == 0) {
+               Rasterizer2D.method4973(this.field489 * var1, this.field489 * (63 - var2), this.field489, this.field489, var7);
             } else {
-               var4.method666(this.field457 * var1, this.field457 * (63 - var2), 0, var7, this.field457, this.field457, var3.field388[var5][var1][var2], var3.field387[var5][var1][var2]);
+               var4.method658(this.field489 * var1, this.field489 * (63 - var2), 0, var7, this.field489, this.field489, var3.field410[var5][var1][var2], var3.field413[var5][var1][var2]);
             }
          }
       }
 
    }
 
-   @ObfuscatedName("ah")
+   @ObfuscatedName("ac")
    @ObfuscatedSignature(
-      signature = "(Lji;Lis;B)I",
-      garbageValue = "46"
+      signature = "(Lkn;Liy;I)I",
+      garbageValue = "1986836074"
    )
-   int method390(SpritePixels var1, class239 var2) {
-      switch(var2.field3256) {
-      case 0:
-         return -var1.height / 2;
+   int method490(SpritePixels var1, class240 var2) {
+      switch(var2.field3257) {
       case 1:
          return 0;
+      case 2:
+         return -var1.height / 2;
       default:
          return -var1.height;
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IIIILax;Laf;I)V",
-      garbageValue = "300917861"
+      signature = "(IIIILau;Laq;S)V",
+      garbageValue = "-30430"
    )
-   void method375(int var1, int var2, int var3, int var4, class28 var5, class43 var6) {
+   void method432(int var1, int var2, int var3, int var4, class28 var5, class43 var6) {
       for(int var7 = var1; var7 < var3 + var1; ++var7) {
          for(int var8 = var2; var8 < var2 + var4; ++var8) {
-            int var9 = var5.field385[0][var7][var8] - 1;
+            int var9 = var5.field408[0][var7][var8] - 1;
             if(var9 != -1) {
-               FloorUnderlayDefinition var10 = class169.method3168(var9);
-               var6.method635(var7, var8, 5, var10);
+               FloorUnderlayDefinition var10 = method493(var9);
+               var6.method611(var7, var8, 5, var10);
             }
          }
       }
 
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(IILax;I)I",
-      garbageValue = "-1509796023"
+      signature = "(IILau;I)I",
+      garbageValue = "-2063579609"
    )
-   int method491(int var1, int var2, class28 var3) {
-      return var3.field385[0][var1][var2] == 0?this.field456:this.field458[var1][var2];
+   int method488(int var1, int var2, class28 var3) {
+      return var3.field408[0][var1][var2] == 0?this.field493:this.field490[var1][var2];
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "([Lau;Laf;I)V",
-      garbageValue = "1965977487"
+      signature = "([Laz;Laq;B)V",
+      garbageValue = "-33"
    )
-   void method374(class34[] var1, class43 var2) {
-      class228[] var3 = new class228[]{class228.field3134, class228.field3133, class228.field3132, class228.field3139, class228.field3131, class228.field3137, class228.field3128, class228.field3130};
-      class228[] var5 = var3;
+   void method370(class34[] var1, class43 var2) {
+      class229[] var3 = new class229[]{class229.field3130, class229.field3132, class229.field3124, class229.field3126, class229.field3131, class229.field3125, class229.field3127, class229.field3129};
+      class229[] var5 = var3;
 
       for(int var6 = 0; var6 < var5.length; ++var6) {
-         class228 var7 = var5[var6];
+         class229 var7 = var5[var6];
          if(var1[var7.rsOrdinal()] != null) {
             byte var8 = 0;
             byte var9 = 0;
@@ -658,61 +629,61 @@ public class class34 {
             byte var11 = 64;
             byte var12 = 0;
             byte var13 = 0;
-            switch(var7.field3135) {
+            switch(var7.field3128) {
             case 0:
-               var13 = 59;
-               var11 = 5;
-               var8 = 59;
+               var12 = 59;
                var10 = 5;
                break;
             case 1:
-               var9 = 59;
-               var11 = 5;
                var12 = 59;
+               var13 = 59;
                var10 = 5;
+               var11 = 5;
                break;
             case 2:
                var9 = 59;
                var11 = 5;
+               var12 = 59;
+               var10 = 5;
                break;
             case 3:
-               var12 = 59;
                var13 = 59;
-               var10 = 5;
                var11 = 5;
                break;
             case 4:
-               var12 = 59;
+               var13 = 59;
+               var11 = 5;
+               var8 = 59;
                var10 = 5;
                break;
             case 5:
-               var13 = 59;
+               var9 = 59;
                var11 = 5;
                break;
             case 6:
-               var9 = 59;
-               var11 = 5;
                var8 = 59;
                var10 = 5;
                break;
             case 7:
+               var9 = 59;
+               var11 = 5;
                var8 = 59;
                var10 = 5;
             }
 
-            this.method376(var12, var13, var8, var9, var10, var11, var1[var7.rsOrdinal()], var2);
+            this.method372(var12, var13, var8, var9, var10, var11, var1[var7.rsOrdinal()], var2);
          }
       }
 
    }
 
-   @ObfuscatedName("ao")
+   @ObfuscatedName("ak")
    @ObfuscatedSignature(
-      signature = "(II)Lij;",
-      garbageValue = "-1014924228"
+      signature = "(II)Lio;",
+      garbageValue = "-917339696"
    )
-   Area method391(int var1) {
-      ObjectComposition var2 = WidgetNode.getObjectDefinition(var1);
+   Area method480(int var1) {
+      ObjectComposition var2 = WorldMapType1.getObjectDefinition(var1);
       if(var2.impostorIds != null) {
          var2 = var2.getImpostor();
          if(var2 == null) {
@@ -720,32 +691,55 @@ public class class34 {
          }
       }
 
-      return var2.mapIconId != -1?Area.field3286[var2.mapIconId]:null;
+      return var2.mapIconId != -1?Area.field3276[var2.mapIconId]:null;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Laf;B)V",
-      garbageValue = "0"
+      signature = "(Laq;B)V",
+      garbageValue = "-93"
    )
-   void method373(class43 var1) {
-      this.field458 = new int[64][64];
+   void method369(class43 var1) {
+      this.field490 = new int[64][64];
 
       for(int var2 = 0; var2 < 64; ++var2) {
          for(int var3 = 0; var3 < 64; ++var3) {
-            this.field458[var2][var3] = var1.method626(var2, var3) | -16777216;
+            this.field490[var2][var3] = var1.method609(var2, var3) | -16777216;
          }
       }
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Las;[Ljw;B)V",
-      garbageValue = "1"
+      signature = "(Lap;[Laz;[Ljp;I)V",
+      garbageValue = "-1465495626"
    )
-   void method368(class46 var1, IndexedSprite[] var2) {
-      Iterator var3 = this.field453.iterator();
+   void method363(class46 var1, class34[] var2, IndexedSprite[] var3) {
+      int var4;
+      int var5;
+      for(var4 = 0; var4 < 64; ++var4) {
+         for(var5 = 0; var5 < 64; ++var5) {
+            this.method422(var4, var5, this.field486, var1);
+            this.method415(var4, var5, this.field486, var1);
+         }
+      }
+
+      for(var4 = 0; var4 < 64; ++var4) {
+         for(var5 = 0; var5 < 64; ++var5) {
+            this.method365(var4, var5, this.field486, var1, var3);
+         }
+      }
+
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Lap;[Ljp;I)V",
+      garbageValue = "1186480797"
+   )
+   void method364(class46 var1, IndexedSprite[] var2) {
+      Iterator var3 = this.field487.iterator();
 
       class45 var4;
       int var5;
@@ -753,111 +747,88 @@ public class class34 {
       while(var3.hasNext()) {
          var4 = (class45)var3.next();
 
-         for(var5 = var4.method650() * 8; var5 < var4.method650() * 8 + 8; ++var5) {
-            for(var6 = var4.method643() * 8; var6 < var4.method643() * 8 + 8; ++var6) {
-               this.method370(var5, var6, var4, var1);
-               this.method371(var5, var6, var4, var1);
+         for(var5 = var4.method644() * 8; var5 < var4.method644() * 8 + 8; ++var5) {
+            for(var6 = var4.method630() * 8; var6 < var4.method630() * 8 + 8; ++var6) {
+               this.method422(var5, var6, var4, var1);
+               this.method415(var5, var6, var4, var1);
             }
          }
       }
 
-      var3 = this.field453.iterator();
+      var3 = this.field487.iterator();
 
       while(var3.hasNext()) {
          var4 = (class45)var3.next();
 
-         for(var5 = var4.method650() * 8; var5 < var4.method650() * 8 + 8; ++var5) {
-            for(var6 = var4.method643() * 8; var6 < var4.method643() * 8 + 8; ++var6) {
-               this.method493(var5, var6, var4, var1, var2);
+         for(var5 = var4.method644() * 8; var5 < var4.method644() * 8 + 8; ++var5) {
+            for(var6 = var4.method630() * 8; var6 < var4.method630() * 8 + 8; ++var6) {
+               this.method365(var5, var6, var4, var1, var2);
             }
          }
       }
 
    }
 
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(Las;[Lau;[Ljw;I)V",
-      garbageValue = "12930080"
-   )
-   void method377(class46 var1, class34[] var2, IndexedSprite[] var3) {
-      int var4;
-      int var5;
-      for(var4 = 0; var4 < 64; ++var4) {
-         for(var5 = 0; var5 < 64; ++var5) {
-            this.method370(var4, var5, this.field461, var1);
-            this.method371(var4, var5, this.field461, var1);
-         }
-      }
-
-      for(var4 = 0; var4 < 64; ++var4) {
-         for(var5 = 0; var5 < 64; ++var5) {
-            this.method493(var4, var5, this.field461, var1, var3);
-         }
-      }
-
-   }
-
-   @ObfuscatedName("ay")
+   @ObfuscatedName("am")
    @ObfuscatedSignature(
       signature = "(I)Ljava/util/List;",
-      garbageValue = "-1205545245"
+      garbageValue = "655986001"
    )
-   List method395() {
+   List method391() {
       LinkedList var1 = new LinkedList();
-      var1.addAll(this.field464);
-      var1.addAll(this.field460.values());
+      var1.addAll(this.field481);
+      var1.addAll(this.field485.values());
       return var1;
    }
 
-   @ObfuscatedName("ax")
+   @ObfuscatedName("ah")
    @ObfuscatedSignature(
-      signature = "(Lij;IIIIB)V",
-      garbageValue = "-1"
+      signature = "(Lio;IIIII)V",
+      garbageValue = "402364225"
    )
-   void method382(Area var1, int var2, int var3, int var4, int var5) {
-      SpritePixels var6 = var1.method4271(false);
+   void method448(Area var1, int var2, int var3, int var4, int var5) {
+      SpritePixels var6 = var1.method4294(false);
       if(var6 != null) {
-         var6.method5069(var2 - var6.width / 2, var3 - var6.height / 2);
+         var6.method5143(var2 - var6.width / 2, var3 - var6.height / 2);
          if(var4 % var5 < var5 / 2) {
-            Rasterizer2D.method4935(var2, var3, 15, 16776960, 128);
-            Rasterizer2D.method4935(var2, var3, 7, 16777215, 256);
+            Rasterizer2D.method4971(var2, var3, 15, 16776960, 128);
+            Rasterizer2D.method4971(var2, var3, 7, 16777215, 256);
          }
 
       }
    }
 
-   @ObfuscatedName("av")
+   @ObfuscatedName("ad")
    @ObfuscatedSignature(
-      signature = "(II)Lai;",
-      garbageValue = "674662896"
+      signature = "(II)Lax;",
+      garbageValue = "-975611193"
    )
-   class33 method411(int var1) {
-      Area var2 = Area.field3286[var1];
-      return this.method379(var2);
+   class33 method382(int var1) {
+      Area var2 = Area.field3276[var1];
+      return this.method389(var2);
    }
 
-   @ObfuscatedName("ai")
+   @ObfuscatedName("az")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "19"
+      signature = "(I)V",
+      garbageValue = "1567805995"
    )
-   void method445() {
-      if(this.field461 != null) {
+   void method383() {
+      if(this.field486 != null) {
          for(int var1 = 0; var1 < 64; ++var1) {
             for(int var2 = 0; var2 < 64; ++var2) {
-               this.method446(var1, var2, this.field461);
+               this.method384(var1, var2, this.field486);
             }
          }
       } else {
-         Iterator var5 = this.field453.iterator();
+         Iterator var5 = this.field487.iterator();
 
          while(var5.hasNext()) {
             class45 var6 = (class45)var5.next();
 
-            for(int var3 = var6.method650() * 8; var3 < var6.method650() * 8 + 8; ++var3) {
-               for(int var4 = var6.method643() * 8; var4 < var6.method643() * 8 + 8; ++var4) {
-                  this.method446(var3, var4, var6);
+            for(int var3 = var6.method644() * 8; var3 < var6.method644() * 8 + 8; ++var3) {
+               for(int var4 = var6.method630() * 8; var4 < var6.method630() * 8 + 8; ++var4) {
+                  this.method384(var3, var4, var6);
                }
             }
          }
@@ -865,57 +836,57 @@ public class class34 {
 
    }
 
-   @ObfuscatedName("at")
+   @ObfuscatedName("ao")
    @ObfuscatedSignature(
-      signature = "(Laz;IIFI)V",
-      garbageValue = "2034557008"
+      signature = "(Lad;IIFI)V",
+      garbageValue = "-1337050906"
    )
-   void method369(class39 var1, int var2, int var3, float var4) {
-      Area var5 = Area.field3286[var1.field505];
-      this.method384(var5, var2, var3);
-      this.method472(var1, var5, var2, var3, var4);
+   void method379(class39 var1, int var2, int var3, float var4) {
+      Area var5 = Area.field3276[var1.field534];
+      this.method380(var5, var2, var3);
+      this.method381(var1, var5, var2, var3, var4);
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Ljava/util/HashSet;III)V",
-      garbageValue = "-1625164901"
+      signature = "(Ljava/util/HashSet;IIB)V",
+      garbageValue = "-99"
    )
-   void method365(HashSet var1, int var2, int var3) {
-      Iterator var4 = this.field460.values().iterator();
+   void method361(HashSet var1, int var2, int var3) {
+      Iterator var4 = this.field485.values().iterator();
 
       while(var4.hasNext()) {
          class39 var5 = (class39)var4.next();
-         if(var1.contains(Integer.valueOf(var5.field505))) {
-            Area var6 = Area.field3286[var5.field505];
-            this.method382(var6, var5.field498, var5.field499, var2, var3);
+         if(var1.contains(Integer.valueOf(var5.field534))) {
+            Area var6 = Area.field3276[var5.field534];
+            this.method448(var6, var5.field532, var5.field533, var2, var3);
          }
       }
 
-      this.method385(var1, var2, var3);
+      this.method377(var1, var2, var3);
    }
 
-   @ObfuscatedName("an")
+   @ObfuscatedName("aq")
    @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "108"
+      signature = "(IIIII)V",
+      garbageValue = "146054281"
    )
-   void method396(int var1, int var2, int var3, int var4) {
+   void method392(int var1, int var2, int var3, int var4) {
       var3 %= 4;
       if(var3 == 0) {
-         Rasterizer2D.method4948(this.field457 * var1, this.field457 * (63 - var2), this.field457, var4);
+         Rasterizer2D.method4984(this.field489 * var1, this.field489 * (63 - var2), this.field489, var4);
       }
 
       if(var3 == 1) {
-         Rasterizer2D.method5003(this.field457 * var1, this.field457 * (63 - var2), this.field457, var4);
+         Rasterizer2D.method4982(this.field489 * var1, this.field489 * (63 - var2), this.field489, var4);
       }
 
       if(var3 == 2) {
-         Rasterizer2D.method4948(this.field457 * var1 + this.field457 - 1, this.field457 * (63 - var2), this.field457, var4);
+         Rasterizer2D.method4984(this.field489 * var1 + this.field489 - 1, this.field489 * (63 - var2), this.field489, var4);
       }
 
       if(var3 == 3) {
-         Rasterizer2D.method5003(this.field457 * var1, this.field457 * (63 - var2) + this.field457 - 1, this.field457, var4);
+         Rasterizer2D.method4982(this.field489 * var1, this.field489 + this.field489 * (63 - var2) - 1, this.field489, var4);
       }
 
    }
@@ -923,41 +894,41 @@ public class class34 {
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(IIILjava/util/HashSet;I)V",
-      garbageValue = "-1823481678"
+      garbageValue = "-1468058596"
    )
-   void method364(int var1, int var2, int var3, HashSet var4) {
+   void method360(int var1, int var2, int var3, HashSet var4) {
       if(var4 == null) {
          var4 = new HashSet();
       }
 
-      this.method380(var1, var2, var4, var3);
-      this.method386(var1, var2, var4, var3);
+      this.method465(var1, var2, var4, var3);
+      this.method397(var1, var2, var4, var3);
    }
 
-   @ObfuscatedName("aq")
+   @ObfuscatedName("af")
    @ObfuscatedSignature(
-      signature = "(IIIIIB)Ljava/util/List;",
-      garbageValue = "114"
+      signature = "(IIIIII)Ljava/util/List;",
+      garbageValue = "64993158"
    )
-   List method394(int var1, int var2, int var3, int var4, int var5) {
+   List method390(int var1, int var2, int var3, int var4, int var5) {
       LinkedList var6 = new LinkedList();
       if(var4 >= var1 && var5 >= var2) {
          if(var4 < var3 + var1 && var5 < var3 + var2) {
-            Iterator var7 = this.field460.values().iterator();
+            Iterator var7 = this.field485.values().iterator();
 
             class39 var8;
             while(var7.hasNext()) {
                var8 = (class39)var7.next();
-               if(var8.method545(var4, var5)) {
+               if(var8.method529(var4, var5)) {
                   var6.add(var8);
                }
             }
 
-            var7 = this.field464.iterator();
+            var7 = this.field481.iterator();
 
             while(var7.hasNext()) {
                var8 = (class39)var7.next();
-               if(var8.method545(var4, var5)) {
+               if(var8.method529(var4, var5)) {
                   var6.add(var8);
                }
             }
@@ -971,560 +942,161 @@ public class class34 {
       }
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(ILas;[Lau;[Ljw;B)Z",
-      garbageValue = "97"
+      signature = "(ILap;[Laz;[Ljp;B)Z",
+      garbageValue = "40"
    )
-   boolean method433(int var1, class46 var2, class34[] var3, IndexedSprite[] var4) {
-      if(!this.method467(var1)) {
+   boolean method359(int var1, class46 var2, class34[] var3, IndexedSprite[] var4) {
+      if(!this.method362(var1)) {
          return false;
-      } else if(this.field461 == null && this.field453.isEmpty()) {
+      } else if(this.field486 == null && this.field487.isEmpty()) {
          return false;
       } else {
-         this.method439(var3);
-         this.field459.method5060();
-         if(this.field461 != null) {
-            this.method377(var2, var3, var4);
+         this.method368(var3);
+         this.field491.method5091();
+         if(this.field486 != null) {
+            this.method363(var2, var3, var4);
          } else {
-            this.method368(var2, var4);
+            this.method364(var2, var4);
          }
 
          return true;
       }
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(IIIIIILau;Laf;I)V",
-      garbageValue = "196917932"
+      signature = "(IIIIIILaz;Laq;B)V",
+      garbageValue = "103"
    )
-   void method376(int var1, int var2, int var3, int var4, int var5, int var6, class34 var7, class43 var8) {
+   void method372(int var1, int var2, int var3, int var4, int var5, int var6, class34 var7, class43 var8) {
       for(int var9 = 0; var9 < var5; ++var9) {
          for(int var10 = 0; var10 < var6; ++var10) {
-            int var11 = var7.method397(var9 + var1, var10 + var2);
+            int var11 = var7.method393(var9 + var1, var10 + var2);
             if(var11 != -1) {
-               FloorUnderlayDefinition var12 = class169.method3168(var11);
-               var8.method635(var3 + var9, var10 + var4, 5, var12);
+               FloorUnderlayDefinition var12 = method493(var11);
+               var8.method611(var3 + var9, var10 + var4, 5, var12);
             }
          }
       }
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "2060488641"
+      garbageValue = "-1655920059"
    )
-   void method358(int var1, int var2, int var3) {
-      if(this.field459 != null) {
-         if(this.field457 * 64 == var3) {
-            this.field459.method5067(var1, var2);
+   void method354(int var1, int var2, int var3) {
+      if(this.field491 != null) {
+         if(var3 == this.field489 * 64) {
+            this.field491.method5098(var1, var2);
          } else {
-            this.field459.method5084(var1, var2, var3, var3);
+            this.field491.method5147(var1, var2, var3, var3);
          }
 
       }
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(La;Ljava/util/List;I)V",
-      garbageValue = "-1319388347"
+      signature = "(Lx;Ljava/util/List;I)V",
+      garbageValue = "-819541955"
    )
-   void method359(class22 var1, List var2) {
-      this.field460.clear();
-      this.field461 = var1;
-      this.method361(0, 0, 64, 64, this.field461);
-      this.method362(var2);
+   void method425(class22 var1, List var2) {
+      this.field485.clear();
+      this.field486 = var1;
+      this.method357(0, 0, 64, 64, this.field486);
+      this.method358(var2);
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(Ljava/util/HashSet;Ljava/util/List;B)V",
-      garbageValue = "1"
+      garbageValue = "-59"
    )
-   void method421(HashSet var1, List var2) {
-      this.field460.clear();
+   void method374(HashSet var1, List var2) {
+      this.field485.clear();
       Iterator var3 = var1.iterator();
 
       while(var3.hasNext()) {
          class45 var4 = (class45)var3.next();
-         if(var4.method216() == this.field455 && var4.method226() == this.field465) {
-            this.field453.add(var4);
-            this.method361(var4.method650() * 8, var4.method643() * 8, 8, 8, var4);
+         if(var4.method237() == this.field484 && var4.method229() == this.field492) {
+            this.field487.add(var4);
+            this.method357(var4.method644() * 8, var4.method630() * 8, 8, 8, var4);
          }
       }
 
-      this.method362(var2);
+      this.method358(var2);
    }
 
-   @ObfuscatedName("gh")
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Lgw;III)I",
+      garbageValue = "19136824"
+   )
+   static int method494(IterableHashTable var0, int var1, int var2) {
+      if(var0 == null) {
+         return var2;
+      } else {
+         IntegerNode var3 = (IntegerNode)var0.get((long)var1);
+         return var3 == null?var2:var3.value;
+      }
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(II)Lif;",
+      garbageValue = "1450334518"
+   )
+   public static FloorUnderlayDefinition method493(int var0) {
+      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.underlays.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = FloorUnderlayDefinition.underlay_ref.getConfigData(1, var0);
+         var1 = new FloorUnderlayDefinition();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2), var0);
+         }
+
+         var1.post();
+         FloorUnderlayDefinition.underlays.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-2139296136"
+   )
+   static final int method491(int var0, int var1) {
+      int var2 = var1 * 57 + var0;
+      var2 ^= var2 << 13;
+      int var3 = 1376312589 + var2 * (var2 * var2 * 15731 + 789221) & Integer.MAX_VALUE;
+      return var3 >> 19 & 255;
+   }
+
+   @ObfuscatedName("ii")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-233053540"
+      garbageValue = "1253996028"
    )
-   static final void method449() {
-      int var0;
-      int var1;
-      int var2;
-      int var3;
-      int var4;
-      int var5;
-      int var6;
-      if(Client.packetType == (Client.RUNELITE_PACKET?38:132)) {
-         if(Client.RUNELITE_PACKET) {
-            var0 = Client.secretPacketBuffer2.runeliteReadInt();
-            var4 = Client.secretPacketBuffer2.runeliteReadInt();
-            var1 = var0 >> 2;
-            var2 = var0 & 3;
-            var3 = Client.field957[var1];
-         } else {
-            var0 = Client.secretPacketBuffer2.readUnsignedByte();
-            var1 = var0 >> 2;
-            var2 = var0 & 3;
-            var3 = Client.field957[var1];
-            var4 = Client.secretPacketBuffer2.readUnsignedByte();
-         }
+   static final void method462() {
+      Client.secretPacketBuffer1.putOpcode(183);
 
-         var5 = (var4 >> 4 & 7) + DecorativeObject.field2152;
-         var6 = (var4 & 7) + class24.field343;
-         if(var5 >= 0 && var6 >= 0 && var5 < 104 && var6 < 104) {
-            WorldListFetcher.method1532(class8.plane, var5, var6, var3, -1, var1, var2, 0, -1);
-         }
-
-      } else {
-         Item var30;
-         if(Client.packetType == (Client.RUNELITE_PACKET?39:170)) {
-            if(Client.RUNELITE_PACKET) {
-               var0 = Client.secretPacketBuffer2.runeliteReadInt();
-               var3 = Client.secretPacketBuffer2.runeliteReadInt();
-               var1 = (var0 >> 4 & 7) + DecorativeObject.field2152;
-               var2 = (var0 & 7) + class24.field343;
-            } else {
-               var0 = Client.secretPacketBuffer2.method3295();
-               var1 = (var0 >> 4 & 7) + DecorativeObject.field2152;
-               var2 = (var0 & 7) + class24.field343;
-               var3 = Client.secretPacketBuffer2.readUnsignedShortOb1();
-            }
-
-            if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
-               Deque var29 = Client.groundItemDeque[class8.plane][var1][var2];
-               if(var29 != null) {
-                  for(var30 = (Item)var29.getFront(); var30 != null; var30 = (Item)var29.getNext()) {
-                     if((var3 & 32767) == var30.id) {
-                        var30.unlink();
-                        break;
-                     }
-                  }
-
-                  if(var29.getFront() == null) {
-                     Client.groundItemDeque[class8.plane][var1][var2] = null;
-                  }
-
-                  groundItemSpawned(var1, var2);
-               }
-            }
-
-         } else {
-            int var7;
-            int var9;
-            if(Client.packetType == (Client.RUNELITE_PACKET?46:172)) {
-               if(Client.RUNELITE_PACKET) {
-                  var0 = Client.secretPacketBuffer2.runeliteReadInt();
-                  var4 = Client.secretPacketBuffer2.runeliteReadInt();
-                  var7 = Client.secretPacketBuffer2.runeliteReadInt();
-                  var1 = var0 >> 2;
-                  var2 = var0 & 3;
-                  var3 = Client.field957[var1];
-                  var5 = (var4 >> 4 & 7) + DecorativeObject.field2152;
-                  var6 = (var4 & 7) + class24.field343;
-               } else {
-                  var0 = Client.secretPacketBuffer2.readUnsignedByte();
-                  var1 = var0 >> 2;
-                  var2 = var0 & 3;
-                  var3 = Client.field957[var1];
-                  var4 = Client.secretPacketBuffer2.method3228();
-                  var5 = (var4 >> 4 & 7) + DecorativeObject.field2152;
-                  var6 = (var4 & 7) + class24.field343;
-                  var7 = Client.secretPacketBuffer2.readUnsignedShort();
-               }
-
-               if(var5 >= 0 && var6 >= 0 && var5 < 103 && var6 < 103) {
-                  if(var3 == 0) {
-                     WallObject var8 = class51.region.method2722(class8.plane, var5, var6);
-                     if(var8 != null) {
-                        var9 = var8.hash >> 14 & 32767;
-                        if(var1 == 2) {
-                           var8.renderable1 = new DynamicObject(var9, 2, var2 + 4, class8.plane, var5, var6, var7, false, var8.renderable1);
-                           var8.renderable2 = new DynamicObject(var9, 2, var2 + 1 & 3, class8.plane, var5, var6, var7, false, var8.renderable2);
-                        } else {
-                           var8.renderable1 = new DynamicObject(var9, var1, var2, class8.plane, var5, var6, var7, false, var8.renderable1);
-                        }
-                     }
-                  }
-
-                  if(var3 == 1) {
-                     DecorativeObject var38 = class51.region.method2821(class8.plane, var5, var6);
-                     if(var38 != null) {
-                        var9 = var38.hash >> 14 & 32767;
-                        if(var1 != 4 && var1 != 5) {
-                           if(var1 == 6) {
-                              var38.renderable1 = new DynamicObject(var9, 4, var2 + 4, class8.plane, var5, var6, var7, false, var38.renderable1);
-                           } else if(var1 == 7) {
-                              var38.renderable1 = new DynamicObject(var9, 4, (var2 + 2 & 3) + 4, class8.plane, var5, var6, var7, false, var38.renderable1);
-                           } else if(var1 == 8) {
-                              var38.renderable1 = new DynamicObject(var9, 4, var2 + 4, class8.plane, var5, var6, var7, false, var38.renderable1);
-                              var38.renderable2 = new DynamicObject(var9, 4, (var2 + 2 & 3) + 4, class8.plane, var5, var6, var7, false, var38.renderable2);
-                           }
-                        } else {
-                           var38.renderable1 = new DynamicObject(var9, 4, var2, class8.plane, var5, var6, var7, false, var38.renderable1);
-                        }
-                     }
-                  }
-
-                  if(var3 == 2) {
-                     GameObject var39 = class51.region.method2724(class8.plane, var5, var6);
-                     if(var1 == 11) {
-                        var1 = 10;
-                     }
-
-                     if(var39 != null) {
-                        var39.renderable = new DynamicObject(var39.hash >> 14 & 32767, var1, var2, class8.plane, var5, var6, var7, false, var39.renderable);
-                     }
-                  }
-
-                  if(var3 == 3) {
-                     GroundObject var40 = class51.region.method2725(class8.plane, var5, var6);
-                     if(var40 != null) {
-                        var40.renderable = new DynamicObject(var40.hash >> 14 & 32767, 22, var2, class8.plane, var5, var6, var7, false, var40.renderable);
-                     }
-                  }
-               }
-
-            } else if(Client.packetType == (Client.RUNELITE_PACKET?48:214)) {
-               if(Client.RUNELITE_PACKET) {
-                  var0 = Client.secretPacketBuffer2.runeliteReadInt();
-                  var5 = Client.secretPacketBuffer2.runeliteReadInt();
-                  var4 = Client.secretPacketBuffer2.runeliteReadInt();
-                  var1 = var0 >> 2;
-                  var2 = var0 & 3;
-                  var3 = Client.field957[var1];
-               } else {
-                  var0 = Client.secretPacketBuffer2.method3228();
-                  var1 = var0 >> 2;
-                  var2 = var0 & 3;
-                  var3 = Client.field957[var1];
-                  var4 = Client.secretPacketBuffer2.readUnsignedShortOb1();
-                  var5 = Client.secretPacketBuffer2.method3230();
-               }
-
-               var6 = (var5 >> 4 & 7) + DecorativeObject.field2152;
-               var7 = (var5 & 7) + class24.field343;
-               if(var6 >= 0 && var7 >= 0 && var6 < 104 && var7 < 104) {
-                  WorldListFetcher.method1532(class8.plane, var6, var7, var3, var4, var1, var2, 0, -1);
-               }
-
-            } else if(Client.packetType == (Client.RUNELITE_PACKET?52:31)) {
-               if(Client.RUNELITE_PACKET) {
-                  var0 = Client.secretPacketBuffer2.runeliteReadInt();
-                  var4 = Client.secretPacketBuffer2.runeliteReadInt();
-                  var3 = Client.secretPacketBuffer2.runeliteReadInt();
-                  var1 = (var0 >> 4 & 7) + DecorativeObject.field2152;
-                  var2 = (var0 & 7) + class24.field343;
-               } else {
-                  var0 = Client.secretPacketBuffer2.readUnsignedByte();
-                  var1 = (var0 >> 4 & 7) + DecorativeObject.field2152;
-                  var2 = (var0 & 7) + class24.field343;
-                  var3 = Client.secretPacketBuffer2.method3236();
-                  var4 = Client.secretPacketBuffer2.readUnsignedShort();
-               }
-
-               if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
-                  var30 = new Item();
-                  var30.id = var4;
-                  var30.quantity = var3;
-                  if(Client.groundItemDeque[class8.plane][var1][var2] == null) {
-                     Client.groundItemDeque[class8.plane][var1][var2] = new Deque();
-                  }
-
-                  Client.groundItemDeque[class8.plane][var1][var2].addFront(var30);
-                  groundItemSpawned(var1, var2);
-               }
-
-            } else {
-               int var31;
-               if(Client.packetType == (Client.RUNELITE_PACKET?58:134)) {
-                  if(Client.RUNELITE_PACKET) {
-                     var0 = Client.secretPacketBuffer2.runeliteReadInt();
-                     var4 = Client.secretPacketBuffer2.runeliteReadInt();
-                     var3 = Client.secretPacketBuffer2.runeliteReadInt();
-                     var7 = Client.secretPacketBuffer2.runeliteReadInt();
-                     var1 = (var0 >> 4 & 7) + DecorativeObject.field2152;
-                     var2 = (var0 & 7) + class24.field343;
-                     var5 = var4 >> 4 & 15;
-                     var6 = var4 & 7;
-                  } else {
-                     var0 = Client.secretPacketBuffer2.readUnsignedByte();
-                     var1 = (var0 >> 4 & 7) + DecorativeObject.field2152;
-                     var2 = (var0 & 7) + class24.field343;
-                     var3 = Client.secretPacketBuffer2.readUnsignedShort();
-                     var4 = Client.secretPacketBuffer2.readUnsignedByte();
-                     var5 = var4 >> 4 & 15;
-                     var6 = var4 & 7;
-                     var7 = Client.secretPacketBuffer2.readUnsignedByte();
-                  }
-
-                  if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
-                     var31 = var5 + 1;
-                     if(class224.localPlayer.pathX[0] >= var1 - var31 && class224.localPlayer.pathX[0] <= var1 + var31 && class224.localPlayer.pathY[0] >= var2 - var31 && class224.localPlayer.pathY[0] <= var31 + var2 && Client.field1123 != 0 && var6 > 0 && Client.field1124 < 50) {
-                        Client.field1089[Client.field1124] = var3;
-                        Client.field917[Client.field1124] = var6;
-                        Client.field1105[Client.field1124] = var7;
-                        Client.audioEffects[Client.field1124] = null;
-                        Client.field1128[Client.field1124] = var5 + (var2 << 8) + (var1 << 16);
-                        ++Client.field1124;
-                     }
-                  }
-
-               } else if(Client.packetType == (Client.RUNELITE_PACKET?59:164)) {
-                  if(Client.RUNELITE_PACKET) {
-                     var0 = Client.secretPacketBuffer2.runeliteReadInt();
-                     var3 = Client.secretPacketBuffer2.runeliteReadInt();
-                     var4 = Client.secretPacketBuffer2.runeliteReadInt();
-                     var5 = Client.secretPacketBuffer2.runeliteReadInt();
-                     var1 = (var0 >> 4 & 7) + DecorativeObject.field2152;
-                     var2 = (var0 & 7) + class24.field343;
-                  } else {
-                     var0 = Client.secretPacketBuffer2.readUnsignedByte();
-                     var1 = (var0 >> 4 & 7) + DecorativeObject.field2152;
-                     var2 = (var0 & 7) + class24.field343;
-                     var3 = Client.secretPacketBuffer2.readUnsignedShort();
-                     var4 = Client.secretPacketBuffer2.readUnsignedByte();
-                     var5 = Client.secretPacketBuffer2.readUnsignedShort();
-                  }
-
-                  if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
-                     var1 = var1 * 128 + 64;
-                     var2 = 64 + var2 * 128;
-                     GraphicsObject var42 = new GraphicsObject(var3, class8.plane, var1, var2, class18.getTileHeight(var1, var2, class8.plane) - var4, var5, Client.gameCycle);
-                     Client.graphicsObjectDeque.addFront(var42);
-                  }
-
-               } else if(Client.packetType == (Client.RUNELITE_PACKET?62:182)) {
-                  if(Client.RUNELITE_PACKET) {
-                     var0 = Client.secretPacketBuffer2.runeliteReadInt();
-                     var3 = Client.secretPacketBuffer2.runeliteReadInt();
-                     var4 = Client.secretPacketBuffer2.runeliteReadInt();
-                     var5 = Client.secretPacketBuffer2.runeliteReadInt();
-                     var1 = (var0 >> 4 & 7) + DecorativeObject.field2152;
-                     var2 = (var0 & 7) + class24.field343;
-                  } else {
-                     var0 = Client.secretPacketBuffer2.readUnsignedByte();
-                     var1 = (var0 >> 4 & 7) + DecorativeObject.field2152;
-                     var2 = (var0 & 7) + class24.field343;
-                     var3 = Client.secretPacketBuffer2.readUnsignedShort();
-                     var4 = Client.secretPacketBuffer2.readUnsignedShort();
-                     var5 = Client.secretPacketBuffer2.readUnsignedShort();
-                  }
-
-                  if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
-                     Deque var33 = Client.groundItemDeque[class8.plane][var1][var2];
-                     if(var33 != null) {
-                        for(Item var34 = (Item)var33.getFront(); var34 != null; var34 = (Item)var33.getNext()) {
-                           if((var3 & 32767) == var34.id && var4 == var34.quantity) {
-                              var34.quantity = var5;
-                              break;
-                           }
-                        }
-
-                        groundItemSpawned(var1, var2);
-                     }
-                  }
-
-               } else {
-                  int var10;
-                  int var11;
-                  int var12;
-                  if(Client.packetType == (Client.RUNELITE_PACKET?75:3)) {
-                     int var14;
-                     int var32;
-                     byte var35;
-                     byte var36;
-                     byte var37;
-                     byte var41;
-                     if(Client.RUNELITE_PACKET) {
-                        var0 = Client.secretPacketBuffer2.runeliteReadInt();
-                        var9 = Client.secretPacketBuffer2.runeliteReadInt();
-                        var5 = Client.secretPacketBuffer2.runeliteReadInt();
-                        var3 = Client.secretPacketBuffer2.runeliteReadInt();
-                        var32 = Client.secretPacketBuffer2.runeliteReadInt();
-                        var14 = Client.secretPacketBuffer2.runeliteReadInt();
-                        var36 = Client.secretPacketBuffer2.runeliteReadByte();
-                        var37 = Client.secretPacketBuffer2.runeliteReadByte();
-                        var41 = Client.secretPacketBuffer2.runeliteReadByte();
-                        var35 = Client.secretPacketBuffer2.runeliteReadByte();
-                        var1 = (var0 >> 4 & 7) + DecorativeObject.field2152;
-                        var2 = (var0 & 7) + class24.field343;
-                        var10 = var9 >> 2;
-                        var11 = var9 & 3;
-                        var12 = Client.field957[var10];
-                     } else {
-                        var0 = Client.secretPacketBuffer2.method3230();
-                        var1 = (var0 >> 4 & 7) + DecorativeObject.field2152;
-                        var2 = (var0 & 7) + class24.field343;
-                        var3 = Client.secretPacketBuffer2.method3236();
-                        var35 = Client.secretPacketBuffer2.readByte();
-                        var5 = Client.secretPacketBuffer2.readUnsignedShort();
-                        var36 = Client.secretPacketBuffer2.readByte();
-                        var37 = Client.secretPacketBuffer2.readByte();
-                        var41 = Client.secretPacketBuffer2.readByte();
-                        var9 = Client.secretPacketBuffer2.method3228();
-                        var10 = var9 >> 2;
-                        var11 = var9 & 3;
-                        var12 = Client.field957[var10];
-                        var32 = Client.secretPacketBuffer2.readByteOb1();
-                        var14 = Client.secretPacketBuffer2.readUnsignedShortOb1();
-                     }
-
-                     Player var15;
-                     if(var5 == Client.localInteractingIndex) {
-                        var15 = class224.localPlayer;
-                     } else {
-                        var15 = Client.cachedPlayers[var5];
-                     }
-
-                     if(var15 != null) {
-                        ObjectComposition var16 = WidgetNode.getObjectDefinition(var3);
-                        int var17;
-                        int var18;
-                        if(var11 != 1 && var11 != 3) {
-                           var17 = var16.sizeX;
-                           var18 = var16.sizeY;
-                        } else {
-                           var17 = var16.sizeY;
-                           var18 = var16.sizeX;
-                        }
-
-                        int var19 = var1 + (var17 >> 1);
-                        int var20 = var1 + (var17 + 1 >> 1);
-                        int var21 = var2 + (var18 >> 1);
-                        int var22 = (var18 + 1 >> 1) + var2;
-                        int[][] var23 = class62.tileHeights[class8.plane];
-                        int var24 = var23[var20][var22] + var23[var19][var22] + var23[var19][var21] + var23[var20][var21] >> 2;
-                        int var25 = (var1 << 7) + (var17 << 6);
-                        int var26 = (var2 << 7) + (var18 << 6);
-                        Model var27 = var16.method4499(var10, var11, var23, var25, var24, var26);
-                        if(var27 != null) {
-                           WorldListFetcher.method1532(class8.plane, var1, var2, var12, -1, 0, 0, var32 + 1, var14 + 1);
-                           var15.field878 = var32 + Client.gameCycle;
-                           var15.field860 = var14 + Client.gameCycle;
-                           var15.model = var27;
-                           var15.field867 = var1 * 128 + var17 * 64;
-                           var15.field869 = var2 * 128 + var18 * 64;
-                           var15.field856 = var24;
-                           byte var28;
-                           if(var37 > var35) {
-                              var28 = var37;
-                              var37 = var35;
-                              var35 = var28;
-                           }
-
-                           if(var41 > var36) {
-                              var28 = var41;
-                              var41 = var36;
-                              var36 = var28;
-                           }
-
-                           var15.field871 = var1 + var37;
-                           var15.field873 = var1 + var35;
-                           var15.field872 = var2 + var41;
-                           var15.field880 = var2 + var36;
-                        }
-                     }
-
-                  } else if(Client.packetType == (Client.RUNELITE_PACKET?77:138)) {
-                     var0 = Client.secretPacketBuffer2.readUnsignedByte();
-                     var1 = (var0 >> 4 & 7) + DecorativeObject.field2152;
-                     var2 = (var0 & 7) + class24.field343;
-                     var3 = var1 + Client.secretPacketBuffer2.readByte();
-                     var4 = var2 + Client.secretPacketBuffer2.readByte();
-                     var5 = Client.secretPacketBuffer2.readShort();
-                     var6 = Client.secretPacketBuffer2.readUnsignedShort();
-                     var7 = Client.secretPacketBuffer2.readUnsignedByte() * 4;
-                     var31 = Client.secretPacketBuffer2.readUnsignedByte() * 4;
-                     var9 = Client.secretPacketBuffer2.readUnsignedShort();
-                     var10 = Client.secretPacketBuffer2.readUnsignedShort();
-                     var11 = Client.secretPacketBuffer2.readUnsignedByte();
-                     var12 = Client.secretPacketBuffer2.readUnsignedByte();
-                     if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104 && var3 >= 0 && var4 >= 0 && var3 < 104 && var4 < 104 && var6 != '\uffff') {
-                        var1 = var1 * 128 + 64;
-                        var2 = var2 * 128 + 64;
-                        var3 = var3 * 128 + 64;
-                        var4 = var4 * 128 + 64;
-                        Projectile var13 = new Projectile(var6, class8.plane, var1, var2, class18.getTileHeight(var1, var2, class8.plane) - var7, var9 + Client.gameCycle, var10 + Client.gameCycle, var11, var12, var5, var31);
-                        var13.method1765(var3, var4, class18.getTileHeight(var3, var4, class8.plane) - var31, var9 + Client.gameCycle);
-                        Client.projectiles.addFront(var13);
-                     }
-
-                  }
-               }
-            }
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3549(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3556()) {
+         if(var0.owner == 0 || var0.owner == 3) {
+            class18.method141(var0, true);
          }
       }
-   }
 
-   @ObfuscatedName("hy")
-   @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "82"
-   )
-   @Export("groundItemSpawned")
-   static final void groundItemSpawned(int var0, int var1) {
-      Deque var2 = Client.groundItemDeque[class8.plane][var0][var1];
-      if(var2 == null) {
-         class51.region.method2814(class8.plane, var0, var1);
-      } else {
-         long var3 = -99999999L;
-         Item var5 = null;
-
-         Item var6;
-         for(var6 = (Item)var2.getFront(); var6 != null; var6 = (Item)var2.getNext()) {
-            ItemComposition var7 = Friend.getItemDefinition(var6.id);
-            long var8 = (long)var7.price;
-            if(var7.isStackable == 1) {
-               var8 *= (long)(var6.quantity + 1);
-            }
-
-            if(var8 > var3) {
-               var3 = var8;
-               var5 = var6;
-            }
-         }
-
-         if(var5 == null) {
-            class51.region.method2814(class8.plane, var0, var1);
-         } else {
-            var2.addTail(var5);
-            Item var11 = null;
-            Item var10 = null;
-
-            for(var6 = (Item)var2.getFront(); var6 != null; var6 = (Item)var2.getNext()) {
-               if(var6.id != var5.id) {
-                  if(var11 == null) {
-                     var11 = var6;
-                  }
-
-                  if(var6.id != var11.id && var10 == null) {
-                     var10 = var6;
-                  }
-               }
-            }
-
-            int var9 = var0 + (var1 << 7) + 1610612736;
-            class51.region.addItemPile(class8.plane, var0, var1, class18.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class8.plane), var5, var9, var11, var10);
-         }
+      if(Client.field1066 != null) {
+         class255.method4531(Client.field1066);
+         Client.field1066 = null;
       }
+
    }
 }

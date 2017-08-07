@@ -2,39 +2,34 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("p")
+@ObfuscatedName("h")
 public class class13 {
-   @ObfuscatedName("q")
-   public static Comparator field265;
-   @ObfuscatedName("x")
-   public static Comparator field266;
+   @ObfuscatedName("n")
+   public static Comparator field280;
+   @ObfuscatedName("g")
+   public static Comparator field278;
    @ObfuscatedName("y")
-   public static Comparator field275;
+   public static Comparator field277;
+   @ObfuscatedName("w")
+   public static Comparator field285;
+   @ObfuscatedName("p")
+   static int[] field276;
    @ObfuscatedName("e")
-   public static Comparator field268;
-   @ObfuscatedName("oq")
-   @ObfuscatedSignature(
-      signature = "Ldu;"
-   )
-   @Export("soundSystem0")
-   static AbstractSoundSystem soundSystem0;
-   @ObfuscatedName("d")
-   public final List field270;
+   public final List field279;
 
    static {
-      field265 = new class19();
+      field280 = new class19();
       new class12();
-      field266 = new class17();
-      field275 = new class18();
-      field268 = new class15();
+      field278 = new class17();
+      field277 = new class18();
+      field285 = new class15();
    }
 
    @ObfuscatedSignature(
-      signature = "(Lfw;Z)V",
+      signature = "(Lfh;Z)V",
       garbageValue = "1"
    )
    public class13(Buffer var1, boolean var2) {
@@ -48,165 +43,208 @@ public class class13 {
       }
 
       int var6 = var1.readUnsignedShort();
-      this.field270 = new ArrayList(var6);
+      this.field279 = new ArrayList(var6);
 
       for(int var7 = 0; var7 < var6; ++var7) {
-         this.field270.add(new class14(var1, var5, var3));
+         this.field279.add(new class14(var1, var5, var3));
       }
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(Ljava/util/Comparator;ZI)V",
-      garbageValue = "242882797"
+      garbageValue = "-289214238"
    )
-   public void method73(Comparator var1, boolean var2) {
+   public void method64(Comparator var1, boolean var2) {
       if(var2) {
-         Collections.sort(this.field270, var1);
+         Collections.sort(this.field279, var1);
       } else {
-         Collections.sort(this.field270, Collections.reverseOrder(var1));
+         Collections.sort(this.field279, Collections.reverseOrder(var1));
       }
 
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("hw")
    @ObfuscatedSignature(
-      signature = "(Lim;III)Lji;",
-      garbageValue = "2031301144"
+      signature = "(Lin;IIIB)V",
+      garbageValue = "38"
    )
-   public static SpritePixels method72(IndexDataBase var0, int var1, int var2) {
-      if(!WallObject.method2899(var0, var1, var2)) {
-         return null;
-      } else {
-         SpritePixels var4 = new SpritePixels();
-         var4.maxWidth = class286.field3779;
-         var4.maxHeight = class286.field3780;
-         var4.offsetX = class270.field3666[0];
-         var4.offsetY = class286.offsetsY[0];
-         var4.width = class286.field3778[0];
-         var4.height = class286.field3782[0];
-         int var5 = var4.width * var4.height;
-         byte[] var6 = class177.spritePixels[0];
-         var4.image = new int[var5];
-
-         for(int var7 = 0; var7 < var5; ++var7) {
-            var4.image[var7] = class286.field3783[var6[var7] & 255];
+   static final void method68(NPCComposition var0, int var1, int var2, int var3) {
+      if(Client.menuOptionCount < 400) {
+         if(var0.configs != null) {
+            var0 = var0.transform();
          }
 
-         class229.method4093();
-         return var4;
-      }
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "([Lcc;II[I[IB)V",
-      garbageValue = "36"
-   )
-   static void method76(World[] var0, int var1, int var2, int[] var3, int[] var4) {
-      if(var1 < var2) {
-         int var5 = var1 - 1;
-         int var6 = var2 + 1;
-         int var7 = (var2 + var1) / 2;
-         World var8 = var0[var7];
-         var0[var7] = var0[var1];
-         var0[var1] = var8;
-
-         while(var5 < var6) {
-            boolean var9 = true;
-
-            int var10;
-            int var11;
-            int var12;
-            do {
-               --var6;
-
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
-                     var11 = var0[var6].index;
-                     var12 = var8.index;
-                  } else if(var3[var10] == 1) {
-                     var11 = var0[var6].playerCount;
-                     var12 = var8.playerCount;
-                     if(var11 == -1 && var4[var10] == 1) {
-                        var11 = 2001;
+         if(var0 != null) {
+            if(var0.field3574) {
+               if(!var0.field3559 || Client.field954 == var1) {
+                  String var4 = var0.name;
+                  int var7;
+                  int var8;
+                  if(var0.combatLevel != 0) {
+                     var7 = var0.combatLevel;
+                     var8 = class54.localPlayer.combatLevel;
+                     int var9 = var8 - var7;
+                     String var6;
+                     if(var9 < -9) {
+                        var6 = RSSocket.getColTags(16711680);
+                     } else if(var9 < -6) {
+                        var6 = RSSocket.getColTags(16723968);
+                     } else if(var9 < -3) {
+                        var6 = RSSocket.getColTags(16740352);
+                     } else if(var9 < 0) {
+                        var6 = RSSocket.getColTags(16756736);
+                     } else if(var9 > 9) {
+                        var6 = RSSocket.getColTags('\uff00');
+                     } else if(var9 > 6) {
+                        var6 = RSSocket.getColTags(4259584);
+                     } else if(var9 > 3) {
+                        var6 = RSSocket.getColTags(8453888);
+                     } else if(var9 > 0) {
+                        var6 = RSSocket.getColTags(12648192);
+                     } else {
+                        var6 = RSSocket.getColTags(16776960);
                      }
 
-                     if(var12 == -1 && var4[var10] == 1) {
-                        var12 = 2001;
+                     var4 = var4 + var6 + " " + " (" + "level-" + var0.combatLevel + ")";
+                  }
+
+                  if(var0.field3559 && Client.field1142) {
+                     class165.addMenuEntry("Examine", RSSocket.getColTags(16776960) + var4, 1003, var1, var2, var3);
+                  }
+
+                  if(Client.itemSelectionState == 1) {
+                     class165.addMenuEntry("Use", Client.field1056 + " " + "->" + " " + RSSocket.getColTags(16776960) + var4, 7, var1, var2, var3);
+                  } else if(Client.spellSelected) {
+                     if((class1.field4 & 2) == 2) {
+                        class165.addMenuEntry(Client.field997, Client.field1061 + " " + "->" + " " + RSSocket.getColTags(16776960) + var4, 8, var1, var2, var3);
                      }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var6].method1596()?1:0;
-                     var12 = var8.method1596()?1:0;
                   } else {
-                     var11 = var0[var6].id;
-                     var12 = var8.id;
-                  }
-
-                  if(var11 != var12) {
-                     if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
-                        var9 = false;
+                     int var10 = var0.field3559 && Client.field1142?2000:0;
+                     String[] var11 = var0.actions;
+                     if(Client.field934) {
+                        var11 = class84.method1685(var11);
                      }
-                     break;
+
+                     if(var11 != null) {
+                        for(var7 = 4; var7 >= 0; --var7) {
+                           if(var11[var7] != null && !var11[var7].equalsIgnoreCase("Attack")) {
+                              var8 = 0;
+                              if(var7 == 0) {
+                                 var8 = var10 + 9;
+                              }
+
+                              if(var7 == 1) {
+                                 var8 = var10 + 10;
+                              }
+
+                              if(var7 == 2) {
+                                 var8 = var10 + 11;
+                              }
+
+                              if(var7 == 3) {
+                                 var8 = var10 + 12;
+                              }
+
+                              if(var7 == 4) {
+                                 var8 = var10 + 13;
+                              }
+
+                              class165.addMenuEntry(var11[var7], RSSocket.getColTags(16776960) + var4, var8, var1, var2, var3);
+                           }
+                        }
+                     }
+
+                     if(var11 != null) {
+                        for(var7 = 4; var7 >= 0; --var7) {
+                           if(var11[var7] != null && var11[var7].equalsIgnoreCase("Attack")) {
+                              short var12 = 0;
+                              if(Client.field1089 != class92.field1410) {
+                                 if(class92.field1417 == Client.field1089 || Client.field1089 == class92.field1408 && var0.combatLevel > class54.localPlayer.combatLevel) {
+                                    var12 = 2000;
+                                 }
+
+                                 var8 = 0;
+                                 if(var7 == 0) {
+                                    var8 = var12 + 9;
+                                 }
+
+                                 if(var7 == 1) {
+                                    var8 = var12 + 10;
+                                 }
+
+                                 if(var7 == 2) {
+                                    var8 = var12 + 11;
+                                 }
+
+                                 if(var7 == 3) {
+                                    var8 = var12 + 12;
+                                 }
+
+                                 if(var7 == 4) {
+                                    var8 = var12 + 13;
+                                 }
+
+                                 class165.addMenuEntry(var11[var7], RSSocket.getColTags(16776960) + var4, var8, var1, var2, var3);
+                              }
+                           }
+                        }
+                     }
+
+                     if(!var0.field3559 || !Client.field1142) {
+                        class165.addMenuEntry("Examine", RSSocket.getColTags(16776960) + var4, 1003, var1, var2, var3);
+                     }
                   }
 
-                  if(var10 == 3) {
-                     var9 = false;
-                  }
                }
-            } while(var9);
-
-            var9 = true;
-
-            do {
-               ++var5;
-
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
-                     var11 = var0[var5].index;
-                     var12 = var8.index;
-                  } else if(var3[var10] == 1) {
-                     var11 = var0[var5].playerCount;
-                     var12 = var8.playerCount;
-                     if(var11 == -1 && var4[var10] == 1) {
-                        var11 = 2001;
-                     }
-
-                     if(var12 == -1 && var4[var10] == 1) {
-                        var12 = 2001;
-                     }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var5].method1596()?1:0;
-                     var12 = var8.method1596()?1:0;
-                  } else {
-                     var11 = var0[var5].id;
-                     var12 = var8.id;
-                  }
-
-                  if(var12 != var11) {
-                     if((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
-                        var9 = false;
-                     }
-                     break;
-                  }
-
-                  if(var10 == 3) {
-                     var9 = false;
-                  }
-               }
-            } while(var9);
-
-            if(var5 < var6) {
-               World var13 = var0[var5];
-               var0[var5] = var0[var6];
-               var0[var6] = var13;
             }
          }
+      }
+   }
 
-         method76(var0, var1, var6, var3, var4);
-         method76(var0, var6 + 1, var2, var3, var4);
+   @ObfuscatedName("jz")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZI)V",
+      garbageValue = "-976189237"
+   )
+   static void method67(String var0, boolean var1) {
+      var0 = var0.toLowerCase();
+      short[] var2 = new short[16];
+      int var3 = 0;
+
+      for(int var4 = 0; var4 < ItemComposition.field3480; ++var4) {
+         ItemComposition var5 = ClassInfo.getItemDefinition(var4);
+         if((!var1 || var5.field3521) && var5.notedTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
+            if(var3 >= 250) {
+               class25.field373 = -1;
+               MilliTimer.field2190 = null;
+               return;
+            }
+
+            if(var3 >= var2.length) {
+               short[] var6 = new short[var2.length * 2];
+
+               for(int var7 = 0; var7 < var3; ++var7) {
+                  var6[var7] = var2[var7];
+               }
+
+               var2 = var6;
+            }
+
+            var2[var3++] = (short)var4;
+         }
       }
 
+      MilliTimer.field2190 = var2;
+      WidgetNode.field827 = 0;
+      class25.field373 = var3;
+      String[] var8 = new String[class25.field373];
+
+      for(int var9 = 0; var9 < class25.field373; ++var9) {
+         var8[var9] = ClassInfo.getItemDefinition(var2[var9]).name;
+      }
+
+      ScriptVarType.method26(var8, MilliTimer.field2190);
    }
 }

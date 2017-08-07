@@ -4,12 +4,12 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eh")
+@ObfuscatedName("ed")
 @Implements("NanoTimer")
 public class NanoTimer extends Timer {
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      longValue = -7916723330514626727L
+      longValue = 1516039165598380929L
    )
    @Export("nanoTime")
    long nanoTime;
@@ -18,19 +18,19 @@ public class NanoTimer extends Timer {
       this.nanoTime = System.nanoTime();
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "1055561234"
+      garbageValue = "1323858539"
    )
-   public int vmethod3006(int var1, int var2) {
-      long var3 = 1000000L * (long)var2;
+   public int vmethod3018(int var1, int var2) {
+      long var3 = (long)var2 * 1000000L;
       long var5 = this.nanoTime - System.nanoTime();
       if(var5 < var3) {
          var5 = var3;
       }
 
-      GroundObject.method2492(var5 / 1000000L);
+      class41.method585(var5 / 1000000L);
       long var7 = System.nanoTime();
 
       int var9;
@@ -45,12 +45,12 @@ public class NanoTimer extends Timer {
       return var9;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "60"
+      signature = "(I)V",
+      garbageValue = "-1736198972"
    )
-   public void vmethod3003() {
+   public void vmethod3017() {
       this.nanoTime = System.nanoTime();
    }
 }

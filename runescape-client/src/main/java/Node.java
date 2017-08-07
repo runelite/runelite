@@ -3,26 +3,26 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gm")
+@ObfuscatedName("gx")
 @Implements("Node")
 public class Node {
-   @ObfuscatedName("cw")
+   @ObfuscatedName("cd")
    @ObfuscatedSignature(
-      signature = "Lgm;"
+      signature = "Lgx;"
    )
    @Export("previous")
    Node previous;
-   @ObfuscatedName("cz")
+   @ObfuscatedName("ca")
    @ObfuscatedSignature(
-      signature = "Lgm;"
+      signature = "Lgx;"
    )
    @Export("next")
    public Node next;
-   @ObfuscatedName("cy")
+   @ObfuscatedName("cn")
    @Export("hash")
    public long hash;
 
-   @ObfuscatedName("is")
+   @ObfuscatedName("io")
    @Export("unlink")
    public void unlink() {
       if(this.previous != null) {
@@ -33,7 +33,7 @@ public class Node {
       }
    }
 
-   @ObfuscatedName("ii")
+   @ObfuscatedName("ir")
    @Export("linked")
    public boolean linked() {
       return this.previous != null;

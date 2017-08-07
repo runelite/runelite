@@ -2,215 +2,75 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bn")
+@ObfuscatedName("by")
 public final class class60 {
-   @ObfuscatedName("a")
-   @Export("userHome")
-   static String userHome;
-   @ObfuscatedName("n")
-   static int[] field719;
-
-   @ObfuscatedName("q")
+   @ObfuscatedName("fm")
    @ObfuscatedSignature(
-      signature = "(II)Lin;",
-      garbageValue = "-106468967"
+      signature = "Lkn;"
    )
-   @Export("getNpcDefinition")
-   public static NPCComposition getNpcDefinition(int var0) {
-      NPCComposition var1 = (NPCComposition)NPCComposition.npcs.get((long)var0);
-      if(var1 != null) {
-         return var1;
+   @Export("mapedge")
+   static SpritePixels mapedge;
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Lid;II)V",
+      garbageValue = "1469426157"
+   )
+   static void method1027(IndexData var0, int var1) {
+      if(class19.field323 != null) {
+         class19.field323.offset = var1 * 8 + 5;
+         int var2 = class19.field323.readInt();
+         int var3 = class19.field323.readInt();
+         var0.setInformation(var2, var3);
       } else {
-         byte[] var2 = class140.field2086.getConfigData(9, var0);
-         var1 = new NPCComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         var1.post();
-         NPCComposition.npcs.put(var1, (long)var0);
-         return var1;
+         class258.method4651((IndexData)null, 255, 255, 0, (byte)0, true);
+         class239.field3250[var1] = var0;
       }
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("hk")
    @ObfuscatedSignature(
-      signature = "([BILjava/lang/CharSequence;I)I",
-      garbageValue = "-2071466269"
+      signature = "(IIIIB)V",
+      garbageValue = "0"
    )
-   public static int method1053(byte[] var0, int var1, CharSequence var2) {
-      int var3 = var2.length();
-      int var4 = var1;
-
-      for(int var5 = 0; var5 < var3; ++var5) {
-         char var6 = var2.charAt(var5);
-         if(var6 <= 127) {
-            var0[var4++] = (byte)var6;
-         } else if(var6 <= 2047) {
-            var0[var4++] = (byte)(192 | var6 >> 6);
-            var0[var4++] = (byte)(128 | var6 & 63);
-         } else {
-            var0[var4++] = (byte)(224 | var6 >> 12);
-            var0[var4++] = (byte)(128 | var6 >> 6 & 63);
-            var0[var4++] = (byte)(128 | var6 & 63);
+   static final void method1024(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.field1105; ++var4) {
+         if(Client.widgetPositionX[var4] + Client.widgetBoundsWidth[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetBoundsHeight[var4] + Client.widgetPositionY[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field1159[var4] = true;
          }
       }
 
-      return var4 - var1;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1163618220"
+      signature = "(Lcq;I)V",
+      garbageValue = "1959901924"
    )
-   public static boolean method1048(int var0) {
-      return var0 == class221.field2807.field2813;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2104963610"
-   )
-   static void method1050() {
-      class98.chatLineMap.clear();
-      class98.field1494.clear();
-      class98.field1495.method3679();
-      class98.field1493 = 0;
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(ILcd;ZI)I",
-      garbageValue = "1624302120"
-   )
-   static int method1055(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 >= 2000) {
-         var0 -= 1000;
-         var3 = WallObject.method2901(class83.intStack[--class83.intStackSize]);
-      } else {
-         var3 = var2?class214.field2615:class73.field851;
+   static void method1019(World var0) {
+      if(var0.method1550() != Client.isMembers) {
+         Client.isMembers = var0.method1550();
+         BaseVarType.method9(var0.method1550());
       }
 
-      class48.method732(var3);
-      if(var0 != 1200 && var0 != 1205 && var0 != 1212) {
-         if(var0 == 1201) {
-            var3.modelType = 2;
-            var3.modelId = class83.intStack[--class83.intStackSize];
-            return 1;
-         } else if(var0 == 1202) {
-            var3.modelType = 3;
-            var3.modelId = class224.localPlayer.composition.method3968();
-            return 1;
-         } else {
-            return 2;
-         }
-      } else {
-         class83.intStackSize -= 2;
-         int var4 = class83.intStack[class83.intStackSize];
-         int var5 = class83.intStack[class83.intStackSize + 1];
-         var3.itemId = var4;
-         var3.itemQuantity = var5;
-         ItemComposition var6 = Friend.getItemDefinition(var4);
-         var3.rotationX = var6.xan2d;
-         var3.rotationZ = var6.yan2d;
-         var3.rotationY = var6.zan2d;
-         var3.field2678 = var6.offsetX2d;
-         var3.field2693 = var6.offsetY2d;
-         var3.modelZoom = var6.zoom2d;
-         if(var0 == 1205) {
-            var3.field2744 = 0;
-         } else if(var0 == 1212 | var6.isStackable == 1) {
-            var3.field2744 = 1;
-         } else {
-            var3.field2744 = 2;
-         }
-
-         if(var3.field2684 > 0) {
-            var3.modelZoom = var3.modelZoom * 32 / var3.field2684;
-         } else if(var3.originalWidth > 0) {
-            var3.modelZoom = var3.modelZoom * 32 / var3.originalWidth;
-         }
-
-         return 1;
-      }
+      class64.host = var0.address;
+      Client.world = var0.id;
+      Client.flags = var0.mask;
+      class225.field2823 = Client.socketType == 0?'ꩊ':var0.id + '鱀';
+      class69.field832 = Client.socketType == 0?443:var0.id + '썐';
+      class29.myWorldPort = class225.field2823;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(ILcd;ZI)I",
-      garbageValue = "-1727211053"
+      signature = "(IIB)I",
+      garbageValue = "-1"
    )
-   static int method1051(int var0, Script var1, boolean var2) {
-      int var3;
-      int var4;
-      int var6;
-      if(var0 == 3400) {
-         class83.intStackSize -= 2;
-         var3 = class83.intStack[class83.intStackSize];
-         var4 = class83.intStack[class83.intStackSize + 1];
-         Enum var5 = Permission.method4099(var3);
-         if(var5.valType != 115) {
-            ;
-         }
-
-         for(var6 = 0; var6 < var5.size; ++var6) {
-            if(var4 == var5.keys[var6]) {
-               class83.scriptStringStack[++Timer.scriptStringStackSize - 1] = var5.stringVals[var6];
-               var5 = null;
-               break;
-            }
-         }
-
-         if(var5 != null) {
-            class83.scriptStringStack[++Timer.scriptStringStackSize - 1] = var5.defaultString;
-         }
-
-         return 1;
-      } else if(var0 != 3408) {
-         return 2;
-      } else {
-         class83.intStackSize -= 4;
-         var3 = class83.intStack[class83.intStackSize];
-         var4 = class83.intStack[class83.intStackSize + 1];
-         int var9 = class83.intStack[class83.intStackSize + 2];
-         var6 = class83.intStack[class83.intStackSize + 3];
-         Enum var7 = Permission.method4099(var9);
-         if(var3 == var7.keyType && var4 == var7.valType) {
-            for(int var8 = 0; var8 < var7.size; ++var8) {
-               if(var6 == var7.keys[var8]) {
-                  if(var4 == 115) {
-                     class83.scriptStringStack[++Timer.scriptStringStackSize - 1] = var7.stringVals[var8];
-                  } else {
-                     class83.intStack[++class83.intStackSize - 1] = var7.intVals[var8];
-                  }
-
-                  var7 = null;
-                  break;
-               }
-            }
-
-            if(var7 != null) {
-               if(var4 == 115) {
-                  class83.scriptStringStack[++Timer.scriptStringStackSize - 1] = var7.defaultString;
-               } else {
-                  class83.intStack[++class83.intStackSize - 1] = var7.defaultInt;
-               }
-            }
-
-            return 1;
-         } else {
-            if(var4 == 115) {
-               class83.scriptStringStack[++Timer.scriptStringStackSize - 1] = "null";
-            } else {
-               class83.intStack[++class83.intStackSize - 1] = 0;
-            }
-
-            return 1;
-         }
-      }
+   @Export("getSmoothNoise2D")
+   static final int getSmoothNoise2D(int var0, int var1) {
+      int var2 = class34.method491(var0 - 1, var1 - 1) + class34.method491(var0 + 1, var1 - 1) + class34.method491(var0 - 1, var1 + 1) + class34.method491(var0 + 1, var1 + 1);
+      int var3 = class34.method491(var0 - 1, var1) + class34.method491(var0 + 1, var1) + class34.method491(var0, var1 - 1) + class34.method491(var0, var1 + 1);
+      int var4 = class34.method491(var0, var1);
+      return var2 / 16 + var3 / 8 + var4 / 4;
    }
 }

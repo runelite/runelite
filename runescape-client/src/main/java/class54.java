@@ -3,29 +3,40 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bu")
+@ObfuscatedName("bq")
 public class class54 {
-   @ObfuscatedName("cv")
+   @ObfuscatedName("if")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "Lbk;"
    )
-   @Export("indexModels")
-   static IndexData indexModels;
-   @ObfuscatedName("p")
-   static int[] field641;
+   @Export("localPlayer")
+   static Player localPlayer;
+   @ObfuscatedName("aj")
+   @ObfuscatedSignature(
+      signature = "[Lkn;"
+   )
+   static SpritePixels[] field655;
+   @ObfuscatedName("ni")
+   @ObfuscatedSignature(
+      signature = "Ljg;"
+   )
+   static class277 field653;
 
    static {
       ImageIO.setUseCache(false);
    }
 
-   @ObfuscatedName("jy")
+   @ObfuscatedName("iw")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "210263866"
+      signature = "(Lhg;I)Lhg;",
+      garbageValue = "651142881"
    )
-   static final void method804(int var0) {
-      if(class7.loadWidget(var0)) {
-         class31.method272(class170.widgets[var0], -1);
+   static Widget method789(Widget var0) {
+      Widget var1 = Ignore.method1115(var0);
+      if(var1 == null) {
+         var1 = var0.dragParent;
       }
+
+      return var1;
    }
 }

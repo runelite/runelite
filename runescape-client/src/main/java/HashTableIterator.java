@@ -4,33 +4,33 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gb")
+@ObfuscatedName("gs")
 @Implements("HashTableIterator")
 public class HashTableIterator implements Iterator {
    @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lgm;"
+      signature = "Lgx;"
    )
    @Export("head")
    Node head;
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgc;"
+      signature = "Lgw;"
    )
    @Export("table")
    IterableHashTable table;
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @Export("index")
    int index;
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lgm;"
+      signature = "Lgx;"
    )
    @Export("tail")
    Node tail;
 
    @ObfuscatedSignature(
-      signature = "(Lgc;)V"
+      signature = "(Lgw;)V"
    )
    HashTableIterator(IterableHashTable var1) {
       this.head = null;
@@ -38,34 +38,12 @@ public class HashTableIterator implements Iterator {
       this.reset();
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("d")
    @Export("reset")
    void reset() {
       this.tail = this.table.buckets[0].next;
       this.index = 1;
       this.head = null;
-   }
-
-   public Object next() {
-      Node var1;
-      if(this.table.buckets[this.index - 1] != this.tail) {
-         var1 = this.tail;
-         this.tail = var1.next;
-         this.head = var1;
-         return var1;
-      } else {
-         do {
-            if(this.index >= this.table.size) {
-               return null;
-            }
-
-            var1 = this.table.buckets[this.index++].next;
-         } while(var1 == this.table.buckets[this.index - 1]);
-
-         this.tail = var1.next;
-         this.head = var1;
-         return var1;
-      }
    }
 
    public void remove() {
@@ -87,6 +65,28 @@ public class HashTableIterator implements Iterator {
          }
 
          return false;
+      }
+   }
+
+   public Object next() {
+      Node var1;
+      if(this.table.buckets[this.index - 1] != this.tail) {
+         var1 = this.tail;
+         this.tail = var1.next;
+         this.head = var1;
+         return var1;
+      } else {
+         do {
+            if(this.index >= this.table.size) {
+               return null;
+            }
+
+            var1 = this.table.buckets[this.index++].next;
+         } while(var1 == this.table.buckets[this.index - 1]);
+
+         this.tail = var1.next;
+         this.head = var1;
+         return var1;
       }
    }
 }

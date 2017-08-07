@@ -4,30 +4,30 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("eo")
 @Implements("VertexNormal")
 public class VertexNormal {
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -239062631
+      intValue = 1358299643
    )
    @Export("x")
    int x;
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1067631925
+      intValue = 1329126549
    )
    @Export("y")
    int y;
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 590327475
+      intValue = -1822372805
    )
    @Export("z")
    int z;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -184794091
+      intValue = 2001869973
    )
    @Export("magnitude")
    int magnitude;
@@ -36,7 +36,7 @@ public class VertexNormal {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lek;)V"
+      signature = "(Leo;)V"
    )
    VertexNormal(VertexNormal var1) {
       this.x = var1.x;
@@ -45,25 +45,12 @@ public class VertexNormal {
       this.magnitude = var1.magnitude;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)I",
-      garbageValue = "1665132698"
+      signature = "(I)I",
+      garbageValue = "-1936174922"
    )
-   @Export("getLength")
-   public static int getLength(String var0) {
-      return var0.length() + 1;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "37"
-   )
-   public static void method2603() {
-      Widget.field2623.reset();
-      Widget.field2624.reset();
-      Widget.field2625.reset();
-      Widget.field2626.reset();
+   public static int method2625() {
+      return KeyFocusListener.keyboardIdleTicks;
    }
 }

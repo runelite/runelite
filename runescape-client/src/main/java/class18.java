@@ -1,75 +1,151 @@
 import java.util.Comparator;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("n")
+@ObfuscatedName("t")
 final class class18 implements Comparator {
-   @ObfuscatedName("he")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lhn;"
+      signature = "Lit;"
    )
-   static Widget field307;
-   @ObfuscatedName("eu")
-   @ObfuscatedSignature(
-      signature = "Ljt;"
+   @Export("skin_ref")
+   public static IndexDataBase skin_ref;
+   @ObfuscatedName("j")
+   static int[] field316;
+   @ObfuscatedName("pr")
+   @ObfuscatedGetter(
+      intValue = -1469298355
    )
-   @Export("font_p12full")
-   static Font font_p12full;
-   @ObfuscatedName("fg")
-   @ObfuscatedSignature(
-      signature = "[Ljw;"
-   )
-   static IndexedSprite[] field306;
+   static int field315;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lu;Lu;B)I",
-      garbageValue = "-36"
+      signature = "(Ls;Ls;I)I",
+      garbageValue = "1987382456"
    )
-   int method126(class14 var1, class14 var2) {
-      return var1.method79().compareTo(var2.method79());
+   int method139(class14 var1, class14 var2) {
+      return var1.method71().compareTo(var2.method71());
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method126((class14)var1, (class14)var2);
+      return this.method139((class14)var1, (class14)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("go")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-592121588"
+      signature = "(I)V",
+      garbageValue = "-1173298271"
    )
-   @Export("getTileHeight")
-   static final int getTileHeight(int var0, int var1, int var2) {
-      int var3 = var0 >> 7;
-      int var4 = var1 >> 7;
-      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
-         int var5 = var2;
-         if(var2 < 3 && (class62.tileSettings[1][var3][var4] & 2) == 2) {
-            var5 = var2 + 1;
-         }
-
-         int var6 = var0 & 127;
-         int var7 = var1 & 127;
-         int var8 = (128 - var6) * class62.tileHeights[var5][var3][var4] + var6 * class62.tileHeights[var5][var3 + 1][var4] >> 7;
-         int var9 = class62.tileHeights[var5][var3][var4 + 1] * (128 - var6) + class62.tileHeights[var5][var3 + 1][var4 + 1] * var6 >> 7;
-         return var8 * (128 - var7) + var9 * var7 >> 7;
-      } else {
-         return 0;
-      }
+   public static void method142() {
+      class252.field3378.reset();
    }
 
-   @ObfuscatedName("hc")
+   @ObfuscatedName("in")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1411209594"
+      signature = "(Lbb;ZI)V",
+      garbageValue = "763830006"
    )
-   static boolean method133(int var0) {
-      return var0 == 57 || var0 == 58 || var0 == 1007 || var0 == 25 || var0 == 30;
+   static final void method141(WidgetNode var0, boolean var1) {
+      int var2 = var0.id;
+      int var3 = (int)var0.hash;
+      var0.unlink();
+      if(var1) {
+         class99.method1881(var2);
+      }
+
+      class51.method773(var2);
+      Widget var4 = class266.method4862(var3);
+      if(var4 != null) {
+         class255.method4531(var4);
+      }
+
+      class5.method11();
+      if(Client.widgetRoot != -1) {
+         int var5 = Client.widgetRoot;
+         if(class10.loadWidget(var5)) {
+            class31.method280(Item.widgets[var5], 1);
+         }
+      }
+
+   }
+
+   @ObfuscatedName("ju")
+   @ObfuscatedSignature(
+      signature = "([BIB)V",
+      garbageValue = "10"
+   )
+   static void method140(byte[] var0, int var1) {
+      if(Client.field950 == null) {
+         Client.field950 = new byte[24];
+      }
+
+      class184.method3473(var0, var1, Client.field950, 0, 24);
+   }
+
+   @ObfuscatedName("jm")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-1748975864"
+   )
+   static final void method130(String var0) {
+      if(var0 != null) {
+         if((Client.friendCount < 200 || Client.field1077 == 1) && Client.friendCount < 400) {
+            String var1 = class9.method50(var0, class29.field422);
+            if(var1 != null) {
+               int var2;
+               String var4;
+               String var5;
+               for(var2 = 0; var2 < Client.friendCount; ++var2) {
+                  Friend var3 = Client.friends[var2];
+                  var4 = class9.method50(var3.name, class29.field422);
+                  if(var4 != null && var4.equals(var1)) {
+                     WorldMapType3.sendGameMessage(30, "", var0 + " is already on your friend list");
+                     return;
+                  }
+
+                  if(var3.previousName != null) {
+                     var5 = class9.method50(var3.previousName, class29.field422);
+                     if(var5 != null && var5.equals(var1)) {
+                        WorldMapType3.sendGameMessage(30, "", var0 + " is already on your friend list");
+                        return;
+                     }
+                  }
+               }
+
+               for(var2 = 0; var2 < Client.ignoreCount; ++var2) {
+                  Ignore var6 = Client.ignores[var2];
+                  var4 = class9.method50(var6.name, class29.field422);
+                  if(var4 != null && var4.equals(var1)) {
+                     WorldMapType3.sendGameMessage(30, "", "Please remove " + var0 + " from your ignore list first");
+                     return;
+                  }
+
+                  if(var6.previousName != null) {
+                     var5 = class9.method50(var6.previousName, class29.field422);
+                     if(var5 != null && var5.equals(var1)) {
+                        WorldMapType3.sendGameMessage(30, "", "Please remove " + var0 + " from your ignore list first");
+                        return;
+                     }
+                  }
+               }
+
+               if(class9.method50(class54.localPlayer.name, class29.field422).equals(var1)) {
+                  WorldMapType3.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
+               } else {
+                  Client.secretPacketBuffer1.putOpcode(68);
+                  Client.secretPacketBuffer1.putByte(class45.getLength(var0));
+                  Client.secretPacketBuffer1.putString(var0);
+               }
+            }
+         } else {
+            WorldMapType3.sendGameMessage(30, "", "Your friend list is full. Max of 200 for free users, and 400 for members");
+         }
+      }
    }
 }

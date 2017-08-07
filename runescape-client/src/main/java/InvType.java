@@ -4,18 +4,29 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ii")
+@ObfuscatedName("im")
 @Implements("InvType")
 public class InvType extends CacheableNode {
-   @ObfuscatedName("q")
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1521275737
+   )
+   @Export("canvasHeight")
+   protected static int canvasHeight;
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lgg;"
+      signature = "Lgq;"
    )
    @Export("inventoryCache")
-   static NodeCache inventoryCache;
-   @ObfuscatedName("x")
+   public static NodeCache inventoryCache;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lit;"
+   )
+   public static IndexDataBase field3265;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 600511317
+      intValue = -1441477987
    )
    @Export("size")
    public int size;
@@ -24,36 +35,45 @@ public class InvType extends CacheableNode {
       inventoryCache = new NodeCache(64);
    }
 
-   InvType() {
+   public InvType() {
       this.size = 0;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lfw;IB)V",
-      garbageValue = "43"
+      signature = "(Lfh;II)V",
+      garbageValue = "-559368762"
    )
-   void method4250(Buffer var1, int var2) {
+   void method4266(Buffer var1, int var2) {
       if(var2 == 2) {
          this.size = var1.readUnsignedShort();
       }
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lfw;I)V",
-      garbageValue = "-1883446509"
+      signature = "(Lfh;I)V",
+      garbageValue = "-2140478677"
    )
    @Export("decode")
-   void decode(Buffer var1) {
+   public void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4250(var1, var2);
+         this.method4266(var1, var2);
       }
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(CB)Z",
+      garbageValue = "4"
+   )
+   public static boolean method4272(char var0) {
+      return var0 >= 65 && var0 <= 90 || var0 >= 97 && var0 <= 122;
    }
 }

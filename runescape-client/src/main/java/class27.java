@@ -1,71 +1,142 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ac")
+@ObfuscatedName("ay")
 public enum class27 implements RSEnum {
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lac;"
+      signature = "Lay;"
    )
-   field377(1, (byte)0),
-   @ObfuscatedName("q")
+   field398(2, (byte)0),
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lac;"
+      signature = "Lay;"
    )
-   field368(2, (byte)1),
-   @ObfuscatedName("x")
+   field394(3, (byte)1),
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lac;"
+      signature = "Lay;"
    )
-   field369(3, (byte)2),
+   field395(1, (byte)2),
    @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lac;"
+      signature = "Lay;"
    )
-   field367(0, (byte)3);
+   field396(0, (byte)3);
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1600984255
+      intValue = 259470889
    )
-   final int field371;
-   @ObfuscatedName("fq")
-   static int[] field373;
-   @ObfuscatedName("hz")
+   final int field397;
+   @ObfuscatedName("k")
+   final byte field399;
+   @ObfuscatedName("gb")
    @ObfuscatedSignature(
-      signature = "Lhn;"
+      signature = "[Ljp;"
    )
-   static Widget field374;
-   @ObfuscatedName("f")
-   final byte field378;
+   static IndexedSprite[] field401;
 
    class27(int var3, byte var4) {
-      this.field371 = var3;
-      this.field378 = var4;
+      this.field397 = var3;
+      this.field399 = var4;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1661971028"
+      garbageValue = "834678576"
    )
    public int rsOrdinal() {
-      return this.field378;
+      return this.field399;
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-71340778"
+      signature = "(I)[Lay;",
+      garbageValue = "530490508"
    )
-   public static void method210(int var0) {
-      class203.field2475 = 1;
-      class262.field3614 = null;
-      class11.field253 = -1;
-      class203.field2482 = -1;
-      class203.field2474 = 0;
-      class182.field2413 = false;
-      RSCanvas.field633 = var0;
+   static class27[] method216() {
+      return new class27[]{field398, field396, field394, field395};
+   }
+
+   @ObfuscatedName("fz")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "104"
+   )
+   static final void method223() {
+      if(GZipDecompressor.rssocket != null) {
+         GZipDecompressor.rssocket.close();
+         GZipDecompressor.rssocket = null;
+      }
+
+      PendingSpawn.method1523();
+      class84.region.reset();
+
+      for(int var0 = 0; var0 < 4; ++var0) {
+         Client.collisionMaps[var0].reset();
+      }
+
+      System.gc();
+      class204.field2487 = 1;
+      class204.field2488 = null;
+      class12.field273 = -1;
+      class204.field2489 = -1;
+      class204.field2490 = 0;
+      class33.field472 = false;
+      class204.field2491 = 2;
+      Client.field1140 = -1;
+      Client.field1141 = false;
+      class23.method170();
+      WorldMapType1.setGameState(10);
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "1161170087"
+   )
+   @Export("ilog")
+   public static int ilog(int var0) {
+      int var1 = 0;
+      if(var0 < 0 || var0 >= 65536) {
+         var0 >>>= 16;
+         var1 += 16;
+      }
+
+      if(var0 >= 256) {
+         var0 >>>= 8;
+         var1 += 8;
+      }
+
+      if(var0 >= 16) {
+         var0 >>>= 4;
+         var1 += 4;
+      }
+
+      if(var0 >= 4) {
+         var0 >>>= 2;
+         var1 += 2;
+      }
+
+      if(var0 >= 1) {
+         var0 >>>= 1;
+         ++var1;
+      }
+
+      return var0 + var1;
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1772052679"
+   )
+   public static void method217() {
+      Spotanim.spotanims.reset();
+      Spotanim.field3318.reset();
    }
 }

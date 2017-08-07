@@ -3,93 +3,89 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ai")
+@ObfuscatedName("ax")
 public class class33 {
-   @ObfuscatedName("eg")
-   @ObfuscatedGetter(
-      intValue = 1726771343
-   )
-   @Export("baseX")
-   static int baseX;
+   @ObfuscatedName("x")
+   @Export("userHome")
+   static String userHome;
    @ObfuscatedName("d")
-   String field444;
+   public static boolean field472;
+   @ObfuscatedName("bz")
+   @ObfuscatedGetter(
+      intValue = -301076189
+   )
+   static int field469;
+   @ObfuscatedName("df")
+   @ObfuscatedSignature(
+      signature = "Lid;"
+   )
+   @Export("indexTrack2")
+   static IndexData indexTrack2;
+   @ObfuscatedName("o")
+   static int[] field473;
+   @ObfuscatedName("e")
+   String field471;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lz;"
+      signature = "Lj;"
    )
-   class24 field443;
-   @ObfuscatedName("q")
+   class24 field477;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1007272797
+      intValue = -800640515
    )
-   int field441;
-   @ObfuscatedName("x")
+   int field470;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1858183057
+      intValue = 238423427
    )
-   int field442;
+   int field478;
 
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IILz;)V"
+      signature = "(Ljava/lang/String;IILj;)V"
    )
    class33(String var1, int var2, int var3, class24 var4) {
-      this.field444 = var1;
-      this.field441 = var2;
-      this.field442 = var3;
-      this.field443 = var4;
+      this.field471 = var1;
+      this.field470 = var2;
+      this.field478 = var3;
+      this.field477 = var4;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lgc;ILjava/lang/String;B)Ljava/lang/String;",
-      garbageValue = "8"
+      signature = "(IIIIIIIB)V",
+      garbageValue = "-12"
    )
-   static String method356(IterableHashTable var0, int var1, String var2) {
-      if(var0 == null) {
-         return var2;
-      } else {
-         ObjectNode var3 = (ObjectNode)var0.get((long)var1);
-         return var3 == null?var2:(String)var3.value;
-      }
+   static final void method352(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int[] var7 = Region.method2763(var0, var1, var2);
+      int[] var8 = Region.method2763(var3, var4, var5);
+      Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
    }
 
-   @ObfuscatedName("gs")
+   @ObfuscatedName("hl")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "66"
+      signature = "(IIIIIIIII)V",
+      garbageValue = "-1372574044"
    )
-   static final void method355() {
-      for(Projectile var0 = (Projectile)Client.projectiles.getFront(); var0 != null; var0 = (Projectile)Client.projectiles.getNext()) {
-         if(var0.floor == class8.plane && Client.gameCycle <= var0.cycle) {
-            if(Client.gameCycle >= var0.startTime) {
-               if(var0.interacting > 0) {
-                  NPC var1 = Client.cachedNPCs[var0.interacting - 1];
-                  if(var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
-                     var0.method1765(var1.x, var1.y, class18.getTileHeight(var1.x, var1.y, var0.floor) - var0.endHeight, Client.gameCycle);
-                  }
-               }
-
-               if(var0.interacting < 0) {
-                  int var2 = -var0.interacting - 1;
-                  Player var3;
-                  if(var2 == Client.localInteractingIndex) {
-                     var3 = class224.localPlayer;
-                  } else {
-                     var3 = Client.cachedPlayers[var2];
-                  }
-
-                  if(var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
-                     var0.method1765(var3.x, var3.y, class18.getTileHeight(var3.x, var3.y, var0.floor) - var0.endHeight, Client.gameCycle);
-                  }
-               }
-
-               var0.method1774(Client.field1078);
-               class51.region.method2711(class8.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.rotationX, -1, false);
-            }
-         } else {
-            var0.unlink();
+   @Export("drawWidget")
+   static final void drawWidget(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+      if(class10.loadWidget(var0)) {
+         Player.field906 = null;
+         WorldMapType3.gameDraw(Item.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
+         if(Player.field906 != null) {
+            WorldMapType3.gameDraw(Player.field906, -1412584499, var1, var2, var3, var4, class14.field295, class91.field1399, var7);
+            Player.field906 = null;
          }
-      }
 
+      } else {
+         if(var7 != -1) {
+            Client.field1107[var7] = true;
+         } else {
+            for(int var8 = 0; var8 < 100; ++var8) {
+               Client.field1107[var8] = true;
+            }
+         }
+
+      }
    }
 }
