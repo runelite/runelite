@@ -44,7 +44,7 @@ public class RuntimeExceptions implements Deobfuscator
 		int i = 0;
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Code c = m.getCode();
 				if (c == null)

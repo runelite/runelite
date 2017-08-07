@@ -46,7 +46,7 @@ public class BufferPayloadFinder
 
 	public void find()
 	{
-		for (Field field : bufferClass.getFields().getFields())
+		for (Field field : bufferClass.getFields())
 		{
 			if (field.getType().equals(Type.INT))
 			{

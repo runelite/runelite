@@ -57,7 +57,7 @@ public class IllegalStateExceptions implements Deobfuscator
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Code c = m.getCode();
 				if (c == null)

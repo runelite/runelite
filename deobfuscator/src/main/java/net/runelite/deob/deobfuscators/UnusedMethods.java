@@ -49,7 +49,7 @@ public class UnusedMethods implements Deobfuscator
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method method : cf.getMethods().getMethods())
+			for (Method method : cf.getMethods())
 			{
 				run(method);
 			}
@@ -60,7 +60,7 @@ public class UnusedMethods implements Deobfuscator
 		{
 			boolean extendsApplet = extendsApplet(cf);
 
-			for (Method method : new ArrayList<>(cf.getMethods().getMethods()))
+			for (Method method : new ArrayList<>(cf.getMethods()))
 			{
 				// constructors can't be renamed, but are obfuscated
 				if (!Deob.isObfuscated(method.getName()) && !method.getName().equals("<init>"))
@@ -77,7 +77,7 @@ public class UnusedMethods implements Deobfuscator
 				{
 					logger.debug("Removing unused method {}", method);
 
-					cf.getMethods().removeMethod(method);
+					cf.removeMethod(method);
 					++count;
 				}
 			}

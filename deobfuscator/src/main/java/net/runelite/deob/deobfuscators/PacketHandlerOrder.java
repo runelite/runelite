@@ -53,7 +53,7 @@ import net.runelite.asm.attributes.code.instructions.If;
 import net.runelite.asm.attributes.code.instructions.IfEq;
 import net.runelite.asm.attributes.code.instructions.IfICmpEq;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.PutStatic;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.Frame;
@@ -139,7 +139,7 @@ public class PacketHandlerOrder implements Deobfuscator
 					// check if the invoke is on buffer/packetbuffer classes
 					boolean matches = ii.getMethods().stream()
 						.filter(m -> m.getDescriptor().size() == 0)
-						.map(method -> method.getMethods().getClassFile())
+						.map(method -> method.getClassFile())
 						.anyMatch(cf -> cf == bf.getBuffer() || cf == bf.getPacketBuffer());
 					if (matches)
 					{
@@ -361,11 +361,11 @@ public class PacketHandlerOrder implements Deobfuscator
 
 				instructions.addInstruction(idx++, new GetStatic(instructions, field));
 				instructions.addInstruction(idx++, new IfEq(instructions, pushLabel));
-				instructions.addInstruction(idx++, new LDC_W(instructions, sortedh.newOpcode));
+				instructions.addInstruction(idx++, new LDC(instructions, sortedh.newOpcode));
 				instructions.addInstruction(idx++, new Goto(instructions, nextLabel));
 
 				// unsorted.getPush() might be bipush which cant hold 0-255
-				instructions.replace(unsorted.getPush(), new LDC_W(instructions, sortedh.getOpcode()));
+				instructions.replace(unsorted.getPush(), new LDC(instructions, sortedh.getOpcode()));
 
 				assert jump.getType() == InstructionType.IF_ICMPEQ || jump.getType() == InstructionType.IF_ICMPNE;
 
@@ -619,7 +619,7 @@ public class PacketHandlerOrder implements Deobfuscator
 
 		instructions.addInstruction(idx++, new GetStatic(instructions, field));
 		instructions.addInstruction(idx++, new IfEq(instructions, getArrayLabel));
-		instructions.addInstruction(idx++, new LDC_W(instructions, -2)); // 2 byte length
+		instructions.addInstruction(idx++, new LDC(instructions, -2)); // 2 byte length
 		instructions.addInstruction(idx++, new Goto(instructions, storeLabel));
 	}
 

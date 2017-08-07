@@ -26,13 +26,17 @@ package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import net.runelite.api.Client;
 import net.runelite.api.Node;
 import net.runelite.api.Point;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.XHashTable;
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 
 public class Widget
 {
@@ -70,7 +74,7 @@ public class Widget
 			return null;
 		}
 
-		return client.getWidget(id >>> 16, id & 0xFFFF);
+		return client.getWidget(TO_GROUP(id), TO_CHILD(id));
 	}
 
 	public int getParentId()
@@ -81,7 +85,7 @@ public class Widget
 			return parentId;
 		}
 
-		int i = getId() >>> 16;
+		int i = TO_GROUP(getId());
 		XHashTable componentTable = client.getComponentTable();
 		for (Node node : componentTable.getNodes())
 		{
@@ -94,6 +98,70 @@ public class Widget
 		}
 
 		return -1;
+	}
+
+	public Widget getChild(int index)
+	{
+		net.runelite.rs.api.Widget[] widgets = widget.getChildren();
+
+		if (widgets == null || widgets[index] == null)
+		{
+			return null;
+		}
+
+		return new Widget(client, widgets[index]);
+	}
+
+	public Widget[] getDynamicChildren()
+	{
+		net.runelite.rs.api.Widget[] children = widget.getChildren();
+
+		if (children == null)
+		{
+			return new Widget[0];
+		}
+
+		return Arrays.stream(children)
+			.filter(Objects::nonNull)
+			.filter(w -> w.getParentId() == getId())
+			.map(w -> new Widget(client, w))
+			.toArray(Widget[]::new);
+	}
+
+	public Widget[] getStaticChildren()
+	{
+		return Arrays.stream(client.getGroup(TO_GROUP(getId())))
+			.filter(Objects::nonNull)
+			.filter(w -> w.getParentId() == getId())
+			.toArray(Widget[]::new);
+	}
+
+	public Widget[] getNestedChildren()
+	{
+		XHashTable componentTable = client.getComponentTable();
+		int group = -1;
+
+		// XXX can actually use hashtable lookup instead of table
+		// iteration here...
+		for (Node node : componentTable.getNodes())
+		{
+			WidgetNode wn = (WidgetNode) node;
+
+			if (wn.getHash() == getId())
+			{
+				group = wn.getId();
+				break;
+			}
+		}
+
+		if (group == -1)
+		{
+			return new Widget[0];
+		}
+
+		return Arrays.stream(client.getGroup(group))
+			.filter(w -> w.getParentId() == getId())
+			.toArray(Widget[]::new);
 	}
 
 	private int getRelativeX()
@@ -262,37 +330,6 @@ public class Widget
 	private int getPaddingY()
 	{
 		return widget.getPaddingY();
-	}
-
-	public Widget[] getChildren()
-	{
-		net.runelite.rs.api.Widget[] widgets = widget.getChildren();
-
-		if (widgets == null)
-		{
-			return null;
-		}
-
-		Widget[] children = new Widget[widgets.length];
-
-		for (int i = 0; i < widgets.length; ++i)
-		{
-			children[i] = getChild(i);
-		}
-
-		return children;
-	}
-
-	public Widget getChild(int index)
-	{
-		net.runelite.rs.api.Widget[] widgets = widget.getChildren();
-
-		if (widgets == null || widgets[index] == null)
-		{
-			return null;
-		}
-
-		return new Widget(client, widgets[index]);
 	}
 
 	public int getItemId()

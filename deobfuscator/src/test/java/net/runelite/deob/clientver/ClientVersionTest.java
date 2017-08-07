@@ -26,7 +26,7 @@ package net.runelite.deob.clientver;
 
 import java.io.File;
 import java.io.IOException;
-import net.runelite.deob.DeobProperties;
+import net.runelite.deob.DeobTestProperties;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,7 +34,7 @@ import org.junit.Test;
 public class ClientVersionTest
 {
 	@Rule
-	public DeobProperties properties = new DeobProperties();
+	public DeobTestProperties properties = new DeobTestProperties();
 
 	@Test
 	public void test() throws IOException

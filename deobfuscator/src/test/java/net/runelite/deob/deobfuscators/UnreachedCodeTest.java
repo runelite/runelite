@@ -79,7 +79,7 @@ public class UnreachedCodeTest
 		Assert.assertTrue(method.getCode().getExceptions().getExceptions().isEmpty());
 		
 		// Method is now invalid, remove so jar can be saved
-		cf.getMethods().removeMethod(method);
+		cf.removeMethod(method);
 
 		// constructor now has no instructions
 		method = cf.findMethod("<init>");
@@ -87,6 +87,6 @@ public class UnreachedCodeTest
 		Assert.assertFalse(method.getCode().getInstructions().getInstructions().stream().filter(i -> !(i instanceof Label)).findAny().isPresent());
 
 		// remove it too
-		cf.getMethods().removeMethod(method);
+		cf.removeMethod(method);
 	}
 }

@@ -26,7 +26,7 @@ package net.runelite.asm.execution;
 
 import java.io.File;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.DeobProperties;
+import net.runelite.deob.DeobTestProperties;
 import net.runelite.deob.util.JarUtil;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,7 +34,7 @@ import org.junit.Test;
 public class ExecutionTest
 {
 	@Rule
-	public DeobProperties properties = new DeobProperties();
+	public DeobTestProperties properties = new DeobTestProperties();
 
 	@Test
 	public void test() throws Exception

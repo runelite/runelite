@@ -58,7 +58,7 @@ public class Stack
 		if (size == stack.length)
 		{
 			net.runelite.asm.Method m = i.getPushed().getInstruction().getInstructions().getCode().getMethod();
-			System.err.println("stack overflow in " + m.getMethods().getClassFile().getName() + " method " + m.getName());
+			System.err.println("stack overflow in " + m.getClassFile().getName() + " method " + m.getName());
 			for (int c = 0; c < stack.length; ++c)
 				printStack(stack[c], 0);
 			throw new RuntimeException("Stack overflow");

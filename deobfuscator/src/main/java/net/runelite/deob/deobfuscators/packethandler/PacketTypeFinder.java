@@ -63,7 +63,7 @@ public class PacketTypeFinder
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method method : cf.getMethods().getMethods())
+			for (Method method : cf.getMethods())
 			{
 				run(method.getCode());
 			}

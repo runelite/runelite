@@ -57,7 +57,7 @@ public class VirtualMethods
 	
 	private static List<Method> findBaseMethods(Method method)
 	{
-		return findBaseMethods(new ArrayList<>(), method.getMethods().getClassFile(), method.getName(), method.getDescriptor());
+		return findBaseMethods(new ArrayList<>(), method.getClassFile(), method.getName(), method.getDescriptor());
 	}
 	
 	private static void findMethodUp(List<Method> methods, Set<ClassFile> visited, ClassFile cf, String name, Signature type)
@@ -90,7 +90,7 @@ public class VirtualMethods
 		
 		// now search up from bases, appending to list.
 		for (Method m : bases)
-			findMethodUp(list, new HashSet<>(), m.getMethods().getClassFile(), m.getName(), m.getDescriptor());
+			findMethodUp(list, new HashSet<>(), m.getClassFile(), m.getName(), m.getDescriptor());
 
 		return list;
 	}

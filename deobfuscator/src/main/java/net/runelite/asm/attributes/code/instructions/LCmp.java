@@ -129,7 +129,7 @@ public class LCmp extends Instruction implements MappableInstruction
 		{
 			Field f1 = f1s.get(i), f2 = f2s.get(i);
 
-			if (!MappingExecutorUtil.isMaybeEqual(f1.getFields().getClassFile(), f2.getFields().getClassFile())
+			if (!MappingExecutorUtil.isMaybeEqual(f1.getClassFile(), f2.getClassFile())
 				|| !MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType())
 				|| f1.isStatic() != f2.isStatic())
 				return false;

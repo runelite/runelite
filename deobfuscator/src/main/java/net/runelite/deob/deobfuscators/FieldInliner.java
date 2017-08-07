@@ -41,7 +41,7 @@ import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.deob.Deobfuscator;
 
 public class FieldInliner implements Deobfuscator
@@ -52,11 +52,9 @@ public class FieldInliner implements Deobfuscator
 	
 	private void findFieldIns()
 	{
-		List<FieldInstruction> ins = new ArrayList<>();
-		
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Code code = m.getCode();
 				
@@ -83,7 +81,7 @@ public class FieldInliner implements Deobfuscator
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				if (!f.isStatic() || !f.getType().getFullType().equals("Ljava/lang/String;"))
 					continue;
@@ -142,7 +140,7 @@ public class FieldInliner implements Deobfuscator
 				// remove fin, add push constant
 				Instruction i = (Instruction) fin;
 				
-				Instruction pushIns = new LDC_W(i.getInstructions(), value);
+				Instruction pushIns = new LDC(i.getInstructions(), value);
 				
 				List<Instruction> instructions = i.getInstructions().getInstructions();
 				
@@ -154,8 +152,8 @@ public class FieldInliner implements Deobfuscator
 				
 				++count;
 			}
-			
-			f.getFields().getFields().remove(f);
+
+			f.getClassFile().removeField(f);
 		}
 		
 		return count;

@@ -76,7 +76,7 @@ public class UnusedParameters implements Deobfuscator
 
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				if (!Deob.isObfuscated(m.getName()))
 				{
@@ -198,7 +198,7 @@ public class UnusedParameters implements Deobfuscator
 
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Code c = m.getCode();
 

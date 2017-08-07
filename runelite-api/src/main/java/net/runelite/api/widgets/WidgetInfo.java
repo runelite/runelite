@@ -89,4 +89,14 @@ public enum WidgetInfo
 		return childId;
 	}
 
+	public static int TO_GROUP(int id)
+	{
+		return id >>> 16;
+	}
+
+	public static int TO_CHILD(int id)
+	{
+		return id & 0xFFFF;
+	}
+
 }

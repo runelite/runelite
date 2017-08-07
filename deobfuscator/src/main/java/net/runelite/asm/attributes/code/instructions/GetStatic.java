@@ -104,7 +104,7 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 	{
 		Class clazz = field.getClazz();
 
-		ClassFile cf = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup().findClass(clazz.getName());
+		ClassFile cf = this.getInstructions().getCode().getMethod().getClassFile().getGroup().findClass(clazz.getName());
 		if (cf == null)
 		{
 			return null;

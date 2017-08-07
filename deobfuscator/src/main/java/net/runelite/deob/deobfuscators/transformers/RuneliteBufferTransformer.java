@@ -28,7 +28,6 @@ import java.io.IOException;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
-import net.runelite.asm.Fields;
 import net.runelite.asm.signature.Type;
 import net.runelite.deob.Transformer;
 import net.runelite.deob.deobfuscators.transformers.buffer.BufferFinder;
@@ -61,16 +60,14 @@ public class RuneliteBufferTransformer implements Transformer
 		ClassFile client = findClient(group);
 		assert client != null : "no client class";
 
-		Fields fields = client.getFields();
-
-		if (fields.findField(RUNELITE_PACKET) != null)
+		if (client.findField(RUNELITE_PACKET) != null)
 		{
 			return;
 		}
 
-		Field field = new Field(fields, RUNELITE_PACKET, Type.BOOLEAN);
+		Field field = new Field(client, RUNELITE_PACKET, Type.BOOLEAN);
 		field.setAccessFlags(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC);
-		fields.addField(field);
+		client.addField(field);
 	}
 
 	private ClassFile findClient(ClassGroup group)

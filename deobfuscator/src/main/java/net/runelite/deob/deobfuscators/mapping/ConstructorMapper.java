@@ -90,7 +90,7 @@ public class ConstructorMapper
 				continue;
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				if (!m.getName().equals("<init>"))
 				{

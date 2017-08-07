@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import java.awt.Canvas;
 import java.util.Arrays;
+import java.util.Objects;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.rs.api.ItemComposition;
@@ -213,13 +214,14 @@ public class Client
 		return client.getBaseY();
 	}
 
-	public Widget[][] getWidgets()
+	public Widget[] getWidgetRoots()
 	{
-		return Arrays.stream(client.getWidgets())
-			.map(parent -> parent != null ? Arrays.stream(parent)
-			.map(child -> child != null ? new Widget(this, child) : null)
-			.toArray(Widget[]::new) : null
-			).toArray(Widget[][]::new);
+		int topGroup = client.getWidgetRoot();
+		return Arrays.stream(client.getWidgets()[topGroup])
+			.filter(Objects::nonNull)
+			.filter(w -> w.getParentId() == -1) // is a root
+			.map(w -> new Widget(this, w))
+			.toArray(Widget[]::new);
 	}
 
 	public Widget getWidget(WidgetInfo widget)
@@ -228,6 +230,21 @@ public class Client
 		int childId = widget.getChildId();
 
 		return getWidget(groupId, childId);
+	}
+
+	public Widget[] getGroup(int groupId)
+	{
+		net.runelite.rs.api.Widget[][] widgets = client.getWidgets();
+
+		if (widgets == null || groupId < 0 || groupId >= widgets.length)
+		{
+			return null;
+		}
+
+		return Arrays.stream(widgets[groupId])
+			.filter(Objects::nonNull)
+			.map(w -> new Widget(this, w))
+			.toArray(Widget[]::new);
 	}
 
 	public Widget getWidget(int groupId, int childId)
@@ -256,11 +273,6 @@ public class Client
 	public int[] getWidgetPositionsY()
 	{
 		return client.getWidgetPositionsY();
-	}
-
-	public boolean[] getValidInterfaces()
-	{
-		return client.getValidInterfaces();
 	}
 
 	public String[] getPlayerOptions()

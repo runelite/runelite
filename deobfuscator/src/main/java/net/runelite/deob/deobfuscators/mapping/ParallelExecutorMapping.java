@@ -160,8 +160,8 @@ public class ParallelExecutorMapping
 				return;
 			}
 
-			cf1 = f1.getFields().getClassFile();
-			cf2 = f2.getFields().getClassFile();
+			cf1 = f1.getClassFile();
+			cf2 = f2.getClassFile();
 		}
 		else if (one instanceof Method || two instanceof Method)
 		{
@@ -178,8 +178,8 @@ public class ParallelExecutorMapping
 				return;
 			}
 
-			cf1 = m1.getMethods().getClassFile();
-			cf2 = m2.getMethods().getClassFile();
+			cf1 = m1.getClassFile();
+			cf2 = m2.getClassFile();
 		}
 		else
 		{
@@ -294,8 +294,8 @@ public class ParallelExecutorMapping
 				else
 				{
 					// these are both probably very small
-					long nonStaticFields = cf.getFields().getFields().stream().filter(f -> !f.isStatic()).count(),
-						nonStaticMethods = cf.getMethods().getMethods().stream().filter(m2 -> !m2.isStatic()).count();
+					long nonStaticFields = cf.getFields().stream().filter(f -> !f.isStatic()).count(),
+						nonStaticMethods = cf.getMethods().stream().filter(m2 -> !m2.isStatic()).count();
 
 					logger.info("Build classes fallback {} -> {}, non static fields: {}, non static methods: {}",
 						cf, other, nonStaticFields, nonStaticMethods);
@@ -334,12 +334,12 @@ public class ParallelExecutorMapping
 		if (o instanceof Field)
 		{
 			Field f = (Field) o;
-			assert f.getFields().getClassFile().getGroup() == to;
+			assert f.getClassFile().getGroup() == to;
 		}
 		else if (o instanceof Method)
 		{
 			Method m = (Method) o;
-			assert m.getMethods().getClassFile().getGroup() == to;
+			assert m.getClassFile().getGroup() == to;
 		}
 		else if (o instanceof ClassFile)
 		{
@@ -389,12 +389,12 @@ public class ParallelExecutorMapping
 		if (o instanceof Field)
 		{
 			Field f = (Field) o;
-			return f.getFields().getClassFile().getClassName() + "." + f.getName();
+			return f.getClassFile().getClassName() + "." + f.getName();
 		}
 		else if (o instanceof Method)
 		{
 			Method m = (Method) o;
-			return m.getMethods().getClassFile().getClassName() + "." + m.getName();
+			return m.getClassFile().getClassName() + "." + m.getName();
 		}
 		else if (o instanceof ClassFile)
 		{

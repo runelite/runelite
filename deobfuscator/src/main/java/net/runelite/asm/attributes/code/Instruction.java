@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code;
 
 import net.runelite.asm.Method;
@@ -40,7 +39,7 @@ public abstract class Instruction implements Cloneable
 		this.instructions = instructions;
 		this.type = type;
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -54,7 +53,7 @@ public abstract class Instruction implements Cloneable
 			return super.toString() + " <unattached>";
 		}
 	}
-	
+
 	@Override
 	public Instruction clone()
 	{
@@ -67,10 +66,10 @@ public abstract class Instruction implements Cloneable
 		{
 			throw new RuntimeException(ex);
 		}
-		
+
 		return i;
 	}
-	
+
 	protected void remove()
 	{
 		Exceptions exceptions = instructions.getCode().getExceptions();
@@ -81,16 +80,16 @@ public abstract class Instruction implements Cloneable
 			assert this != e.getHandler();
 		}
 	}
-	
+
 	public boolean removeStack()
 	{
 		assert instructions != null;
 
 		this.getInstructions().remove(this); // calls remove()
-		
+
 		return true;
 	}
-	
+
 	// resolve jumps
 	public void resolve()
 	{
@@ -105,48 +104,38 @@ public abstract class Instruction implements Cloneable
 	{
 		return instructions;
 	}
-	
+
 	public void setInstructions(Instructions instructions)
 	{
 		this.instructions = instructions;
 	}
-	
+
 	public InstructionType getType()
 	{
 		return type;
 	}
-	
+
 	protected void setType(InstructionType type)
 	{
 		this.type = type;
 	}
 
 	public abstract InstructionContext execute(Frame e);
-	
+
 	/* does this terminate a block? */
 	public boolean isTerminal()
 	{
 		return false;
 	}
-	
+
 	// look up symbols from pool
 	public void lookup()
 	{
 	}
-	
+
 	// instructions keep resolved method/field/class names, this updates the pool value (if the underlying resolved object changes)
 	public void regeneratePool()
 	{
-	}
-	
-	public Instruction makeGeneric()
-	{
-		return this;
-	}
-	
-	public Instruction makeSpecific()
-	{
-		return this;
 	}
 
 	public void renameClass(String oldName, String newName)

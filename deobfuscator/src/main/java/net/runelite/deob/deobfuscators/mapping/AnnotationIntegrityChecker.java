@@ -33,14 +33,18 @@ import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.deob.DeobAnnotations;
-import net.runelite.deob.injection.Inject;
 import net.runelite.mapping.Import;
+import net.runelite.rs.api.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AnnotationIntegrityChecker
 {
 	private static final Logger logger = LoggerFactory.getLogger(AnnotationIntegrityChecker.class);
+
+	public static final java.lang.Class<?> CLIENT_CLASS = Client.class;
+
+	public static final String API_PACKAGE_BASE = "net.runelite.rs.api.";
 
 	private final ClassGroup one;
 	private final ClassGroup two;
@@ -159,7 +163,7 @@ public class AnnotationIntegrityChecker
 	{
 		for (ClassFile cf : two.getClasses())
 		{
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				int num = this.getNumberOfExports(f.getAnnotations());
 
@@ -170,7 +174,7 @@ public class AnnotationIntegrityChecker
 				}
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				int num = this.getNumberOfExports(m.getAnnotations());
 
@@ -198,7 +202,7 @@ public class AnnotationIntegrityChecker
 		if (isStatic)
 		{
 			// Use client
-			clazz = Inject.CLIENT_CLASS;
+			clazz = CLIENT_CLASS;
 		}
 		else
 		{
@@ -211,7 +215,7 @@ public class AnnotationIntegrityChecker
 
 			try
 			{
-				clazz = Class.forName(Inject.API_PACKAGE_BASE + iface);
+				clazz = Class.forName(API_PACKAGE_BASE + iface);
 			}
 			catch (ClassNotFoundException ex)
 			{
@@ -234,7 +238,7 @@ public class AnnotationIntegrityChecker
 	private List<Field> getExportedFields(ClassFile clazz)
 	{
 		List<Field> list = new ArrayList<>();
-		for (Field f : clazz.getFields().getFields())
+		for (Field f : clazz.getFields())
 		{
 			if (DeobAnnotations.getExportedName(f.getAnnotations()) != null)
 			{
@@ -247,7 +251,7 @@ public class AnnotationIntegrityChecker
 	private List<Method> getExportedMethods(ClassFile clazz)
 	{
 		List<Method> list = new ArrayList<>();
-		for (Method m : clazz.getMethods().getMethods())
+		for (Method m : clazz.getMethods())
 		{
 			if (DeobAnnotations.getExportedName(m.getAnnotations()) != null)
 			{
@@ -288,7 +292,7 @@ public class AnnotationIntegrityChecker
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				if (f.isStatic())
 				{
@@ -306,7 +310,7 @@ public class AnnotationIntegrityChecker
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				if (m.isStatic())
 				{

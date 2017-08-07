@@ -87,7 +87,7 @@ public class Lvt implements Deobfuscator
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				process(m);
 			}

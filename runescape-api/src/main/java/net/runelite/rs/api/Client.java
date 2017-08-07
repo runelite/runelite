@@ -172,9 +172,6 @@ public interface Client extends GameEngine
 	@Import("viewportWidth")
 	int getViewportWidth();
 
-	@Import("validInterfaces")
-	boolean[] getValidInterfaces();
-
 	@Import("isResized")
 	boolean isResized();
 
@@ -234,4 +231,12 @@ public interface Client extends GameEngine
 
 	@Import(value = "chatCycle", setter = true)
 	void setChatCycle(int value);
+
+	/**
+	 * Get the widget top group. widgets[topGroup] contains widgets with
+	 * parentId -1, which are the widget roots.
+	 * @return
+	 */
+	@Import("widgetRoot")
+	int getWidgetRoot();
 }

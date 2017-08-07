@@ -30,8 +30,6 @@ import java.io.IOException;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.deob.clientver.ClientVersion;
-import net.runelite.deob.injection.Injector;
-import net.runelite.deob.injection.InjectorValidator;
 import net.runelite.deob.util.JarUtil;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;

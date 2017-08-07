@@ -59,7 +59,7 @@ public class AnnotationTest
 		// parse it again
 		cf = ClassUtil.loadClass(new ByteArrayInputStream(out));
 
-		Method method = cf.getMethods().getMethods().get(1);
+		Method method = cf.getMethods().get(1);
 		Assert.assertEquals("method1", method.getName());
 
 		Annotations annotations = method.getAnnotations();

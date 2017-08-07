@@ -100,24 +100,6 @@ public class FLoad extends Instruction implements LVTInstruction
 	}
 
 	@Override
-	public Instruction makeSpecific()
-	{
-		switch (index)
-		{
-			case 0:
-				return new FLoad_0(this.getInstructions());
-			case 1:
-				return new FLoad_1(this.getInstructions());
-			case 2:
-				return new FLoad_2(this.getInstructions());
-			case 3:
-				return new FLoad_3(this.getInstructions());
-			default:
-				return this;
-		}
-	}
-
-	@Override
 	public LVTInstructionType type()
 	{
 		return LVTInstructionType.FLOAT;

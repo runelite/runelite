@@ -83,7 +83,7 @@ public class HandlerFinder
 
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method method : cf.getMethods().getMethods())
+			for (Method method : cf.getMethods())
 			{
 				if (method.getCode() == null)
 				{
