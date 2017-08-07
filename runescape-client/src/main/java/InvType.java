@@ -11,19 +11,21 @@ public class InvType extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lgg;"
    )
-   static NodeCache field3265;
+   @Export("inventoryCache")
+   static NodeCache inventoryCache;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 600511317
    )
-   public int field3264;
+   @Export("size")
+   public int size;
 
    static {
-      field3265 = new NodeCache(64);
+      inventoryCache = new NodeCache(64);
    }
 
    InvType() {
-      this.field3264 = 0;
+      this.size = 0;
    }
 
    @ObfuscatedName("x")
@@ -33,7 +35,7 @@ public class InvType extends CacheableNode {
    )
    void method4250(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3264 = var1.readUnsignedShort();
+         this.size = var1.readUnsignedShort();
       }
 
    }

@@ -373,7 +373,7 @@ public class class164 {
                            var3 = 1;
                         } else if(var0 == 3304) {
                            var4 = class83.intStack[--class83.intStackSize];
-                           class83.intStack[++class83.intStackSize - 1] = class8.method41(var4).field3264;
+                           class83.intStack[++class83.intStackSize - 1] = class8.getInventory(var4).size;
                            var3 = 1;
                         } else if(var0 == 3305) {
                            var4 = class83.intStack[--class83.intStackSize];

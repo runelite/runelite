@@ -304,8 +304,9 @@ public final class class8 extends class9 {
       signature = "(II)Lii;",
       garbageValue = "2101636461"
    )
-   public static InvType method41(int var0) {
-      InvType var1 = (InvType)InvType.field3265.get((long)var0);
+   @Export("getInventory")
+   public static InvType getInventory(int var0) {
+      InvType var1 = (InvType)InvType.inventoryCache.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
@@ -315,7 +316,7 @@ public final class class8 extends class9 {
             var1.decode(new Buffer(var2));
          }
 
-         InvType.field3265.put(var1, (long)var0);
+         InvType.inventoryCache.put(var1, (long)var0);
          return var1;
       }
    }
