@@ -75,6 +75,6 @@ public class InventoryDumper
 			}
 		}
 
-		logger.info("Dumped {} areas to {}", count, outDir);
+		logger.info("Dumped {} inventories to {}", count, outDir);
 	}
 }
