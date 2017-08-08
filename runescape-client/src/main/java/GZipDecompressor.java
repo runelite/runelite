@@ -1,15 +1,32 @@
 import java.util.zip.Inflater;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fb")
+@ObfuscatedName("fp")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-   @ObfuscatedName("d")
+   @ObfuscatedName("ei")
+   @ObfuscatedSignature(
+      signature = "Lfy;"
+   )
+   @Export("rssocket")
+   static RSSocket rssocket;
+   @ObfuscatedName("gu")
+   @ObfuscatedGetter(
+      intValue = -1720481451
+   )
+   @Export("cameraY")
+   static int cameraY;
+   @ObfuscatedName("e")
    @Export("inflator")
    Inflater inflator;
+
+   public GZipDecompressor() {
+      this(-1, 1000000, 1000000);
+   }
 
    @ObfuscatedSignature(
       signature = "(III)V",
@@ -18,18 +35,14 @@ public class GZipDecompressor {
    GZipDecompressor(int var1, int var2, int var3) {
    }
 
-   public GZipDecompressor() {
-      this(-1, 1000000, 1000000);
-   }
-
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lfw;[BI)V",
-      garbageValue = "-2134893540"
+      signature = "(Lfh;[BI)V",
+      garbageValue = "-502392635"
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
-      if(var1.payload[var1.offset] == 31 && -117 == var1.payload[var1.offset + 1]) {
+      if(var1.payload[var1.offset] == 31 && var1.payload[var1.offset + 1] == -117) {
          if(this.inflator == null) {
             this.inflator = new Inflater(true);
          }
@@ -45,36 +58,6 @@ public class GZipDecompressor {
          this.inflator.reset();
       } else {
          throw new RuntimeException("");
-      }
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(III)Lhn;",
-      garbageValue = "-284293022"
-   )
-   public static Widget method3133(int var0, int var1) {
-      Widget var2 = WallObject.method2901(var0);
-      return var1 == -1?var2:(var2 != null && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
-   }
-
-   @ObfuscatedName("hz")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1908979599"
-   )
-   static void method3131() {
-      if(Client.spellSelected) {
-         Widget var0 = method3133(class224.field2825, Client.field1039);
-         if(var0 != null && var0.field2721 != null) {
-            ScriptEvent var1 = new ScriptEvent();
-            var1.widget = var0;
-            var1.field818 = var0.field2721;
-            Ignore.method1126(var1);
-         }
-
-         Client.spellSelected = false;
-         class48.method732(var0);
       }
    }
 }

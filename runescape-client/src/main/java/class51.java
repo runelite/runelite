@@ -1,118 +1,100 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aj")
-public class class51 implements class105 {
-   @ObfuscatedName("mi")
+@ObfuscatedName("aa")
+public class class51 implements class104 {
+   @ObfuscatedName("cl")
+   static boolean field645;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lck;"
+      signature = "[Lcq;"
    )
-   @Export("chatMessages")
-   static Varcs chatMessages;
-   @ObfuscatedName("fh")
+   @Export("worldList")
+   static World[] worldList;
+   @ObfuscatedName("dm")
    @ObfuscatedSignature(
-      signature = "Lef;"
+      signature = "Lid;"
    )
-   @Export("region")
-   static Region region;
-   @ObfuscatedName("ly")
-   @ObfuscatedGetter(
-      intValue = -314222045
-   )
-   static int field623;
-   @ObfuscatedName("fy")
-   @ObfuscatedSignature(
-      signature = "[Lji;"
-   )
-   @Export("mapfunctions")
-   static SpritePixels[] mapfunctions;
-   @ObfuscatedName("ga")
-   @ObfuscatedSignature(
-      signature = "[Lji;"
-   )
-   static SpritePixels[] field627;
-   @ObfuscatedName("qp")
-   @ObfuscatedGetter(
-      longValue = 874080582063497731L
-   )
-   static long field622;
+   @Export("vorbisIndex")
+   static IndexData vorbisIndex;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)Ldu;",
-      garbageValue = "329030978"
+      signature = "(I)Ldw;",
+      garbageValue = "1736127050"
    )
-   public AbstractSoundSystem vmethod1989() {
+   public AbstractSoundSystem vmethod1949() {
       return new SourceDataSoundSystem();
    }
 
-   @ObfuscatedName("fh")
+   @ObfuscatedName("ht")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-339617724"
+      signature = "(II)V",
+      garbageValue = "-1087805458"
    )
-   static final void method792() {
-      if(CacheFile.rssocket != null) {
-         CacheFile.rssocket.close();
-         CacheFile.rssocket = null;
+   static final void method772(int var0) {
+      if(var0 >= 0) {
+         int var1 = Client.menuActionParams0[var0];
+         int var2 = Client.menuActionParams1[var0];
+         int var3 = Client.menuTypes[var0];
+         int var4 = Client.menuIdentifiers[var0];
+         String var5 = Client.menuOptions[var0];
+         String var6 = Client.menuTargets[var0];
+         class83.menuAction(var1, var2, var3, var4, var5, var6, MouseInput.field725, MouseInput.field726);
       }
-
-      class92.method1760();
-      region.reset();
-
-      for(int var0 = 0; var0 < 4; ++var0) {
-         Client.collisionMaps[var0].reset();
-      }
-
-      System.gc();
-      class27.method210(2);
-      Client.field1069 = -1;
-      Client.field1121 = false;
-
-      for(class82 var1 = (class82)class82.field1286.getFront(); var1 != null; var1 = (class82)class82.field1286.getNext()) {
-         if(var1.field1291 != null) {
-            class2.field18.method1938(var1.field1291);
-            var1.field1291 = null;
-         }
-
-         if(var1.field1296 != null) {
-            class2.field18.method1938(var1.field1296);
-            var1.field1296 = null;
-         }
-      }
-
-      class82.field1286.clear();
-      class2.setGameState(10);
    }
 
-   @ObfuscatedName("gw")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lbg;IIB)V",
-      garbageValue = "125"
+      signature = "(I)V",
+      garbageValue = "1863267056"
    )
-   static void method793(Player var0, int var1, int var2) {
-      if(var0.animation == var1 && var1 != -1) {
-         int var3 = class40.getAnimation(var1).replyMode;
-         if(var3 == 1) {
-            var0.actionFrame = 0;
-            var0.field1223 = 0;
-            var0.actionAnimationDisable = var2;
-            var0.field1218 = 0;
-         }
+   public static void method768() {
+      CombatInfo2.field3362.reset();
+      CombatInfo2.spriteCache.reset();
+   }
 
-         if(var3 == 2) {
-            var0.field1218 = 0;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "120"
+   )
+   static int method770() {
+      return 9;
+   }
+
+   @ObfuscatedName("jw")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "-87"
+   )
+   static void method773(int var0) {
+      for(IntegerNode var1 = (IntegerNode)Client.widgetFlags.method3549(); var1 != null; var1 = (IntegerNode)Client.widgetFlags.method3556()) {
+         if((long)var0 == (var1.hash >> 48 & 65535L)) {
+            var1.unlink();
          }
-      } else if(var1 == -1 || var0.animation == -1 || class40.getAnimation(var1).forcedPriority >= class40.getAnimation(var0.animation).forcedPriority) {
-         var0.animation = var1;
-         var0.actionFrame = 0;
-         var0.field1223 = 0;
-         var0.actionAnimationDisable = var2;
-         var0.field1218 = 0;
-         var0.field1248 = var0.queueSize;
       }
 
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-114720911"
+   )
+   static void method775() {
+      class91.underlayIds = null;
+      class61.overlayIds = null;
+      class92.overlayPaths = null;
+      class35.overlayRotations = null;
+      class61.field748 = null;
+      ChatLineBuffer.field1546 = null;
+      class61.field756 = null;
+      class20.blendedHue = null;
+      GroundObject.blendedSaturation = null;
+      class33.field473 = null;
+      class61.field746 = null;
+      class61.field742 = null;
    }
 }

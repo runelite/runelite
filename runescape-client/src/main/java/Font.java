@@ -2,7 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("jt")
+@ObfuscatedName("jk")
 @Implements("Font")
 public final class Font extends FontTypeFace {
    public Font(byte[] var1, int[] var2, int[] var3, int[] var4, int[] var5, int[] var6, byte[][] var7) {
@@ -13,10 +13,10 @@ public final class Font extends FontTypeFace {
       super(var1);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @Export("renderRGB")
    final void renderRGB(byte[] var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = var2 + var3 * Rasterizer2D.graphicsPixelsWidth;
+      int var7 = var3 * Rasterizer2D.graphicsPixelsWidth + var2;
       int var8 = Rasterizer2D.graphicsPixelsWidth - var4;
       int var9 = 0;
       int var10 = 0;
@@ -55,7 +55,7 @@ public final class Font extends FontTypeFace {
       }
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @Export("renderRGBA")
    final void renderRGBA(byte[] var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = var2 + var3 * Rasterizer2D.graphicsPixelsWidth;

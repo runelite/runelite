@@ -2,44 +2,57 @@ import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gf")
-public class class201 implements Iterable {
-   @ObfuscatedName("d")
+@ObfuscatedName("gt")
+public class class201 implements Iterator {
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgq;"
+      signature = "Lgj;"
    )
-   public CacheableNode field2458;
+   class202 field2468;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lgz;"
+   )
+   CacheableNode field2469;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lgz;"
+   )
+   CacheableNode field2467;
 
-   public class201() {
-      this.field2458 = new CacheableNode();
-      this.field2458.previous = this.field2458;
-      this.field2458.next = this.field2458;
+   @ObfuscatedSignature(
+      signature = "(Lgj;)V"
+   )
+   class201(class202 var1) {
+      this.field2467 = null;
+      this.field2468 = var1;
+      this.field2469 = this.field2468.field2470.previous;
+      this.field2467 = null;
    }
 
-   @ObfuscatedName("d")
-   public void method3679() {
-      while(this.field2458.previous != this.field2458) {
-         this.field2458.previous.unlinkDual();
+   public Object next() {
+      CacheableNode var1 = this.field2469;
+      if(var1 == this.field2468.field2470) {
+         var1 = null;
+         this.field2469 = null;
+      } else {
+         this.field2469 = var1.previous;
       }
 
+      this.field2467 = var1;
+      return var1;
    }
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lgq;)V"
-   )
-   public void method3678(CacheableNode var1) {
-      if(var1.next != null) {
-         var1.unlinkDual();
+   public boolean hasNext() {
+      return this.field2468.field2470 != this.field2469;
+   }
+
+   public void remove() {
+      if(this.field2467 == null) {
+         throw new IllegalStateException();
+      } else {
+         this.field2467.unlinkDual();
+         this.field2467 = null;
       }
-
-      var1.next = this.field2458.next;
-      var1.previous = this.field2458;
-      var1.next.previous = var1;
-      var1.previous.next = var1;
-   }
-
-   public Iterator iterator() {
-      return new class200(this);
    }
 }

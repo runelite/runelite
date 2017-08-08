@@ -3,25 +3,25 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hb")
+@ObfuscatedName("hu")
 @Implements("Track1")
 public class Track1 extends Node {
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgx;"
+      signature = "Lgk;"
    )
    XHashTable field2575;
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    byte[] field2576;
 
    @ObfuscatedSignature(
-      signature = "(Lfw;)V"
+      signature = "(Lfh;)V"
    )
    Track1(Buffer var1) {
       var1.offset = var1.payload.length - 3;
       int var2 = var1.readUnsignedByte();
       int var3 = var1.readUnsignedShort();
-      int var4 = 14 + var2 * 10;
+      int var4 = var2 * 10 + 14;
       var1.offset = 0;
       int var5 = 0;
       int var6 = 0;
@@ -194,7 +194,7 @@ public class Track1 extends Node {
       int[] var59 = new int[128];
       var28 = 0;
 
-      label220:
+      label232:
       for(int var60 = 0; var60 < var2; ++var60) {
          var51.putInt(1297379947);
          var51.offset += 4;
@@ -216,7 +216,7 @@ public class Track1 extends Node {
                   var51.putByte(47);
                   var51.putByte(0);
                   var51.putLengthInt(var51.offset - var61);
-                  continue label220;
+                  continue label232;
                }
 
                if(var64 == 23) {
@@ -333,36 +333,36 @@ public class Track1 extends Node {
 
    }
 
-   @ObfuscatedName("q")
-   void method3921() {
+   @ObfuscatedName("n")
+   void method3910() {
       if(this.field2575 == null) {
          this.field2575 = new XHashTable(16);
          int[] var1 = new int[16];
          int[] var2 = new int[16];
          var2[9] = 128;
          var1[9] = 128;
-         class206 var4 = new class206(this.field2576);
-         int var5 = var4.method3840();
+         class207 var4 = new class207(this.field2576);
+         int var5 = var4.method3823();
 
          int var6;
          for(var6 = 0; var6 < var5; ++var6) {
-            var4.method3841(var6);
-            var4.method3860(var6);
-            var4.method3842(var6);
+            var4.method3824(var6);
+            var4.method3830(var6);
+            var4.method3839(var6);
          }
 
          label56:
          do {
             while(true) {
-               var6 = var4.method3849();
-               int var7 = var4.field2550[var6];
+               var6 = var4.method3832();
+               int var7 = var4.field2552[var6];
 
-               while(var7 == var4.field2550[var6]) {
-                  var4.method3841(var6);
-                  int var8 = var4.method3836(var6);
+               while(var7 == var4.field2552[var6]) {
+                  var4.method3824(var6);
+                  int var8 = var4.method3828(var6);
                   if(var8 == 1) {
-                     var4.method3843();
-                     var4.method3842(var6);
+                     var4.method3826();
+                     var4.method3839(var6);
                      continue label56;
                   }
 
@@ -395,36 +395,36 @@ public class Track1 extends Node {
                      var12 = var8 >> 16 & 127;
                      if(var12 > 0) {
                         int var13 = var2[var10];
-                        class199 var14 = (class199)this.field2575.get((long)var13);
+                        class200 var14 = (class200)this.field2575.get((long)var13);
                         if(var14 == null) {
-                           var14 = new class199(new byte[128]);
+                           var14 = new class200(new byte[128]);
                            this.field2575.put(var14, (long)var13);
                         }
 
-                        var14.field2454[var11] = 1;
+                        var14.field2466[var11] = 1;
                      }
                   }
 
-                  var4.method3860(var6);
-                  var4.method3842(var6);
+                  var4.method3830(var6);
+                  var4.method3839(var6);
                }
             }
-         } while(!var4.method3850());
+         } while(!var4.method3833());
 
       }
    }
 
-   @ObfuscatedName("x")
-   void method3922() {
+   @ObfuscatedName("g")
+   void method3912() {
       this.field2575 = null;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lim;II)Lhb;"
+      signature = "(Lit;II)Lhu;"
    )
    @Export("getMusicFile")
-   public static Track1 getMusicFile(IndexDataBase var0, int var1, int var2) {
+   static Track1 getMusicFile(IndexDataBase var0, int var1, int var2) {
       byte[] var3 = var0.getConfigData(var1, var2);
       return var3 == null?null:new Track1(new Buffer(var3));
    }

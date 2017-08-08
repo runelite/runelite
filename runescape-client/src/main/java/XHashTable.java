@@ -3,31 +3,31 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gx")
+@ObfuscatedName("gk")
 @Implements("XHashTable")
 public final class XHashTable {
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @Export("size")
    int size;
-   @ObfuscatedName("e")
-   @Export("index")
-   int index;
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "[Lgm;"
+      signature = "[Lgx;"
    )
    @Export("buckets")
    Node[] buckets;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
+   @Export("index")
+   int index;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lgm;"
+      signature = "Lgx;"
    )
-   Node field2433;
+   Node field2445;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lgm;"
+      signature = "Lgx;"
    )
-   Node field2434;
+   Node field2446;
 
    public XHashTable(int var1) {
       this.index = 0;
@@ -44,42 +44,42 @@ public final class XHashTable {
 
    @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "()Lgm;"
+      signature = "()Lgx;"
    )
-   public Node method3564() {
+   public Node method3549() {
       this.index = 0;
-      return this.method3565();
+      return this.method3556();
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(J)Lgm;"
+      signature = "(J)Lgx;"
    )
    @Export("get")
    public Node get(long var1) {
       Node var3 = this.buckets[(int)(var1 & (long)(this.size - 1))];
 
-      for(this.field2433 = var3.next; var3 != this.field2433; this.field2433 = this.field2433.next) {
-         if(this.field2433.hash == var1) {
-            Node var4 = this.field2433;
-            this.field2433 = this.field2433.next;
+      for(this.field2445 = var3.next; var3 != this.field2445; this.field2445 = this.field2445.next) {
+         if(this.field2445.hash == var1) {
+            Node var4 = this.field2445;
+            this.field2445 = this.field2445.next;
             return var4;
          }
       }
 
-      this.field2433 = null;
+      this.field2445 = null;
       return null;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "()Lgm;"
+      signature = "()Lgx;"
    )
-   public Node method3565() {
+   public Node method3556() {
       Node var1;
-      if(this.index > 0 && this.buckets[this.index - 1] != this.field2434) {
-         var1 = this.field2434;
-         this.field2434 = var1.next;
+      if(this.index > 0 && this.buckets[this.index - 1] != this.field2446) {
+         var1 = this.field2446;
+         this.field2446 = var1.next;
          return var1;
       } else {
          do {
@@ -88,15 +88,15 @@ public final class XHashTable {
             }
 
             var1 = this.buckets[this.index++].next;
-         } while(this.buckets[this.index - 1] == var1);
+         } while(var1 == this.buckets[this.index - 1]);
 
-         this.field2434 = var1.next;
+         this.field2446 = var1.next;
          return var1;
       }
    }
 
-   @ObfuscatedName("x")
-   void method3563() {
+   @ObfuscatedName("g")
+   void method3550() {
       for(int var1 = 0; var1 < this.size; ++var1) {
          Node var2 = this.buckets[var1];
 
@@ -110,13 +110,13 @@ public final class XHashTable {
          }
       }
 
-      this.field2433 = null;
-      this.field2434 = null;
+      this.field2445 = null;
+      this.field2446 = null;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lgm;J)V"
+      signature = "(Lgx;J)V"
    )
    @Export("put")
    public void put(Node var1, long var2) {

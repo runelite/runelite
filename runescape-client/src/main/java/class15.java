@@ -1,89 +1,86 @@
 import java.util.Comparator;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("b")
+@ObfuscatedName("c")
 final class class15 implements Comparator {
-   @ObfuscatedName("d")
+   @ObfuscatedName("f")
+   @Export("osNameLC")
+   public static String osNameLC;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lu;Lu;I)I",
-      garbageValue = "824781642"
+      signature = "Leb;"
    )
-   int method88(class14 var1, class14 var2) {
-      return var1.field279.totalQuantity < var2.field279.totalQuantity?-1:(var2.field279.totalQuantity == var1.field279.totalQuantity?0:1);
+   @Export("taskManager")
+   protected static Signlink taskManager;
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Ls;Ls;B)I",
+      garbageValue = "-2"
+   )
+   int method83(class14 var1, class14 var2) {
+      return var1.field288.totalQuantity < var2.field288.totalQuantity?-1:(var2.field288.totalQuantity == var1.field288.totalQuantity?0:1);
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method83((class14)var1, (class14)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   public int compare(Object var1, Object var2) {
-      return this.method88((class14)var1, (class14)var2);
-   }
-
-   @ObfuscatedName("hq")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "-4"
+      signature = "(I)V",
+      garbageValue = "-2015665121"
    )
-   static final void method89(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.field1086; ++var4) {
-         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetBoundsHeight[var4] + Client.widgetPositionY[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
-            Client.field1088[var4] = true;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("gc")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "634175299"
-   )
-   static void method93(int var0) {
-      Client.field955 = 0L;
-      if(var0 >= 2) {
-         Client.isResized = true;
-      } else {
-         Client.isResized = false;
-      }
-
-      if(class10.method52() == 1) {
-         Projectile.clientInstance.method951(765, 503);
-      } else {
-         Projectile.clientInstance.method951(7680, 2160);
-      }
-
-      if(Client.gameState >= 25) {
-         Client.secretPacketBuffer1.putOpcode(197);
-         Client.secretPacketBuffer1.putByte(class10.method52());
-         Client.secretPacketBuffer1.putShort(class31.canvasWidth);
-         Client.secretPacketBuffer1.putShort(class67.canvasHeight);
-      }
-
-   }
-
-   @ObfuscatedName("am")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-2086658202"
-   )
-   static void method95(int var0) {
-      if(var0 != -1) {
-         if(class7.loadWidget(var0)) {
-            Widget[] var1 = class170.widgets[var0];
-
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               Widget var3 = var1[var2];
-               if(var3.field2649 != null) {
-                  ScriptEvent var4 = new ScriptEvent();
-                  var4.widget = var3;
-                  var4.field818 = var3.field2649;
-                  class92.method1743(var4, 2000000);
+   public static void method93() {
+      try {
+         if(class204.field2487 == 1) {
+            int var0 = class204.field2486.method3702();
+            if(var0 > 0 && class204.field2486.method3708()) {
+               var0 -= class204.field2491;
+               if(var0 < 0) {
+                  var0 = 0;
                }
+
+               class204.field2486.method3729(var0);
+               return;
             }
 
+            class204.field2486.method3738();
+            class204.field2486.method3705();
+            if(class204.field2488 != null) {
+               class204.field2487 = 2;
+            } else {
+               class204.field2487 = 0;
+            }
+
+            class169.field2322 = null;
+            CollisionData.field2270 = null;
          }
+      } catch (Exception var2) {
+         var2.printStackTrace();
+         class204.field2486.method3738();
+         class204.field2487 = 0;
+         class169.field2322 = null;
+         CollisionData.field2270 = null;
+         class204.field2488 = null;
       }
+
+   }
+
+   @ObfuscatedName("jj")
+   @ObfuscatedSignature(
+      signature = "(Lhg;B)I",
+      garbageValue = "0"
+   )
+   @Export("getWidgetConfig")
+   static int getWidgetConfig(Widget var0) {
+      IntegerNode var1 = (IntegerNode)Client.widgetFlags.get((long)var0.index + ((long)var0.id << 32));
+      return var1 != null?var1.value:var0.config;
    }
 }

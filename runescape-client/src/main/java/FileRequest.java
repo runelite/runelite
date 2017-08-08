@@ -4,22 +4,22 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("if")
+@ObfuscatedName("ic")
 @Implements("FileRequest")
 public class FileRequest extends CacheableNode {
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @Export("padding")
-   byte padding;
-   @ObfuscatedName("d")
+   public byte padding;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "Lid;"
    )
    @Export("index")
-   IndexData index;
-   @ObfuscatedName("q")
+   public IndexData index;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -2046608179
+      intValue = 495640147
    )
    @Export("crc")
-   int crc;
+   public int crc;
 }

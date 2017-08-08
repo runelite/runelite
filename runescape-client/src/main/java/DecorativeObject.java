@@ -7,74 +7,74 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ec")
 @Implements("DecorativeObject")
 public final class DecorativeObject {
-   @ObfuscatedName("fw")
-   @ObfuscatedGetter(
-      intValue = -1853673167
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lhg;"
    )
-   static int field2152;
-   @ObfuscatedName("r")
+   static Widget field2164;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1748972165
+      intValue = -691856725
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("g")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -224100975
+      intValue = 2064029715
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
-   @ObfuscatedName("f")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -605170993
+      intValue = 942793769
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -913038811
+      intValue = 529888723
    )
    @Export("x")
    int x;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 33614573
+      intValue = -568432803
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -407693163
+      intValue = 1703587219
    )
    @Export("y")
    int y;
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1858221351
+      intValue = -1787392687
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("t")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lep;"
+      signature = "Leg;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lep;"
+      signature = "Leg;"
    )
    @Export("renderable2")
    public Renderable renderable2;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1253309511
+      intValue = -254552543
    )
    @Export("renderFlag")
    int renderFlag;
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -382753515
+      intValue = 1925630649
    )
    @Export("rotation")
    int rotation;
@@ -84,35 +84,47 @@ public final class DecorativeObject {
       this.renderInfoBitPacked = 0;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIS)I",
-      garbageValue = "-14360"
+      signature = "(IIB)Z",
+      garbageValue = "-22"
    )
-   public static int method2920(int var0, int var1) {
-      int var2;
-      for(var2 = 1; var1 > 1; var1 >>= 1) {
-         if((var1 & 1) != 0) {
-            var2 = var0 * var2;
-         }
-
-         var0 *= var0;
-      }
-
-      if(var1 == 1) {
-         return var0 * var2;
-      } else {
-         return var2;
-      }
+   static boolean method2935(int var0, int var1) {
+      return var0 != 4 || var1 < 8;
    }
 
-   @ObfuscatedName("ie")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IIB)Ljava/lang/String;",
-      garbageValue = "-125"
+      signature = "(II)Z",
+      garbageValue = "-1738898059"
    )
-   static final String method2921(int var0, int var1) {
-      int var2 = var1 - var0;
-      return var2 < -9?CacheFile.getColTags(16711680):(var2 < -6?CacheFile.getColTags(16723968):(var2 < -3?CacheFile.getColTags(16740352):(var2 < 0?CacheFile.getColTags(16756736):(var2 > 9?CacheFile.getColTags('\uff00'):(var2 > 6?CacheFile.getColTags(4259584):(var2 > 3?CacheFile.getColTags(8453888):(var2 > 0?CacheFile.getColTags(12648192):CacheFile.getColTags(16776960))))))));
+   public static boolean method2934(int var0) {
+      return var0 >= class222.field2784.field2804 && var0 <= class222.field2802.field2804;
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Lit;Lit;I)Z",
+      garbageValue = "1224744477"
+   )
+   public static boolean method2936(IndexDataBase var0, IndexDataBase var1) {
+      Area.field3286 = var1;
+      if(!var0.method4130()) {
+         return false;
+      } else {
+         Area.field3279 = var0.fileCount(35);
+         Area.field3276 = new Area[Area.field3279];
+
+         for(int var2 = 0; var2 < Area.field3279; ++var2) {
+            byte[] var3 = var0.getConfigData(35, var2);
+            if(var3 != null) {
+               Area.field3276[var2] = new Area(var2);
+               Area.field3276[var2].method4300(new Buffer(var3));
+               Area.field3276[var2].method4290();
+            }
+         }
+
+         return true;
+      }
    }
 }

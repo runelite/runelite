@@ -1,68 +1,58 @@
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ha")
-public class class211 {
-   @ObfuscatedName("d")
-   public static int[] field2582;
-   @ObfuscatedName("q")
-   @Export("settings")
-   public static int[] settings;
-   @ObfuscatedName("x")
-   @Export("widgetSettings")
-   public static int[] widgetSettings;
-
-   static {
-      field2582 = new int[32];
-      int var0 = 2;
-
-      for(int var1 = 0; var1 < 32; ++var1) {
-         field2582[var1] = var0 - 1;
-         var0 += var0;
-      }
-
-      settings = new int[2000];
-      widgetSettings = new int[2000];
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "([BIII)Ljava/lang/String;",
-      garbageValue = "-1294050404"
+public class class211 extends CacheableNode {
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 133339081
    )
-   @Export("getString")
-   public static String getString(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
+   protected static int field2580;
+   @ObfuscatedName("y")
+   public final int[] field2581;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -2020973705
+   )
+   public final int field2577;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -191729773
+   )
+   public final int field2578;
+   @ObfuscatedName("g")
+   public final int[] field2579;
 
-      for(int var5 = 0; var5 < var2; ++var5) {
-         int var6 = var0[var5 + var1] & 255;
-         if(var6 != 0) {
-            if(var6 >= 128 && var6 < 160) {
-               char var7 = class266.field3645[var6 - 128];
-               if(var7 == 0) {
-                  var7 = 63;
-               }
-
-               var6 = var7;
-            }
-
-            var3[var4++] = (char)var6;
-         }
-      }
-
-      return new String(var3, 0, var4);
+   class211(int var1, int var2, int[] var3, int[] var4, int var5) {
+      this.field2577 = var1;
+      this.field2578 = var2;
+      this.field2579 = var3;
+      this.field2581 = var4;
    }
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lim;Ljava/lang/String;Ljava/lang/String;B)[Ljw;",
-      garbageValue = "20"
+      signature = "(III)Z",
+      garbageValue = "1923499807"
    )
-   public static IndexedSprite[] method3938(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.getFile(var1);
-      int var4 = var0.getChild(var3, var2);
-      return class88.method1716(var0, var3, var4);
+   public boolean method3919(int var1, int var2) {
+      if(var2 >= 0 && var2 < this.field2581.length) {
+         int var3 = this.field2581[var2];
+         if(var1 >= var3 && var1 <= var3 + this.field2579[var2]) {
+            return true;
+         }
+      }
+
+      return false;
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Lit;I)V",
+      garbageValue = "2012310958"
+   )
+   public static void method3920(IndexDataBase var0) {
+      FloorUnderlayDefinition.underlay_ref = var0;
    }
 }

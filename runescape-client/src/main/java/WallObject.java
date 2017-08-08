@@ -1,72 +1,68 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ew")
+@ObfuscatedName("en")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("at")
-   static java.awt.Font field2094;
-   @ObfuscatedName("gq")
+   @ObfuscatedName("iz")
    @ObfuscatedGetter(
-      intValue = 903640827
+      intValue = 900785193
    )
-   @Export("cameraZ")
-   static int cameraZ;
-   @ObfuscatedName("t")
+   static int field2113;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 13223679
+      intValue = 1572480857
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 750427611
+      intValue = 1572962761
    )
    @Export("config")
    int config;
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1336109723
+      intValue = 2064834737
    )
    @Export("x")
    int x;
-   @ObfuscatedName("f")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lep;"
+      signature = "Leg;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -602397291
+      intValue = -1155232631
    )
    @Export("y")
    int y;
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 291217615
+      intValue = 398892399
    )
    @Export("floor")
    int floor;
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lep;"
+      signature = "Leg;"
    )
    @Export("renderable2")
    public Renderable renderable2;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1981559819
+      intValue = -354676823
    )
    @Export("orientationA")
    int orientationA;
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1377437617
+      intValue = -2061046043
    )
    @Export("orientationB")
    int orientationB;
@@ -76,61 +72,21 @@ public final class WallObject {
       this.config = 0;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IB)Lhn;",
-      garbageValue = "117"
+      signature = "(Lit;I)V",
+      garbageValue = "-77716496"
    )
-   public static Widget method2901(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & '\uffff';
-      if(class170.widgets[var1] == null || class170.widgets[var1][var2] == null) {
-         boolean var3 = class7.loadWidget(var1);
-         if(!var3) {
-            return null;
-         }
-      }
-
-      return class170.widgets[var1][var2];
+   public static void method2907(IndexDataBase var0) {
+      Varbit.varbit_ref = var0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Lim;III)Z",
-      garbageValue = "2085347341"
+      signature = "(II)Lbs;",
+      garbageValue = "1664501663"
    )
-   static boolean method2899(IndexDataBase var0, int var1, int var2) {
-      byte[] var3 = var0.getConfigData(var1, var2);
-      if(var3 == null) {
-         return false;
-      } else {
-         Timer.decodeSprite(var3);
-         return true;
-      }
-   }
-
-   @ObfuscatedName("gv")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "98259965"
-   )
-   @Export("flush")
-   static final void flush(boolean var0) {
-      class134.method2601();
-      ++Client.audioEffectCount;
-      if(Client.audioEffectCount >= 50 || var0) {
-         Client.audioEffectCount = 0;
-         if(!Client.socketError && CacheFile.rssocket != null) {
-            Client.secretPacketBuffer1.putOpcode(181);
-
-            try {
-               CacheFile.rssocket.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);
-               Client.secretPacketBuffer1.offset = 0;
-            } catch (IOException var2) {
-               Client.socketError = true;
-            }
-         }
-
-      }
+   static MessageNode method2908(int var0) {
+      return (MessageNode)class99.field1516.get((long)var0);
    }
 }

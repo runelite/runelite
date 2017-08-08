@@ -84,14 +84,23 @@ public class AnnotationIntegrityChecker
 				boolean isImported = isImported(cf, f1.getName(), f1.isStatic());
 				Field f2;
 
+				if (other == null)
+				{
+					if (!f1.isStatic() && isImported)
+					{
+						++errors;
+						logger.error("No other class for {} which contains imported field {}", cf, f1);
+					}
+					
+					continue;
+				}
+
 				if (f1.isStatic())
 				{
 					f2 = findExportedFieldStatic(two, DeobAnnotations.getExportedName(f1.getAnnotations()));
 				}
 				else
 				{
-					assert other != null : "other class for " + cf.getName() + " is null";
-
 					f2 = findExportedField(other, DeobAnnotations.getExportedName(f1.getAnnotations()));
 				}
 
@@ -121,14 +130,23 @@ public class AnnotationIntegrityChecker
 				boolean isImported = isImported(cf, m1.getName(), m1.isStatic());
 				Method m2;
 
+				if (other == null)
+				{
+					if (!m1.isStatic() && isImported)
+					{
+						++errors;
+						logger.error("No other class for {} which contains imported method {}", cf, m1);
+					}
+
+					continue;
+				}
+
 				if (m1.isStatic())
 				{
 					m2 = findExportedMethodStatic(two, DeobAnnotations.getExportedName(m1.getAnnotations()));
 				}
 				else
 				{
-					assert other != null : "other class for " + cf.getName() + " is null";
-
 					m2 = findExportedMethod(other, DeobAnnotations.getExportedName(m1.getAnnotations()));
 				}
 

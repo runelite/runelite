@@ -1,122 +1,137 @@
+import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eo")
+@ObfuscatedName("em")
 @Implements("Occluder")
 public final class Occluder {
-   @ObfuscatedName("ck")
-   @ObfuscatedSignature(
-      signature = "Lib;"
-   )
-   @Export("configsIndex")
-   static IndexData configsIndex;
-   @ObfuscatedName("s")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1755177367
+      intValue = -1696982837
    )
    @Export("testDirection")
    int testDirection;
-   @ObfuscatedName("f")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -995530799
+      intValue = -622695179
    )
    @Export("minX")
    int minX;
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 188692291
+      intValue = -1388035847
    )
    @Export("type")
    int type;
-   @ObfuscatedName("t")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1523865717
+      intValue = 1553340709
    )
    @Export("minZ")
    int minZ;
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1212446749
+      intValue = -2080141783
    )
    @Export("minTileX")
    int minTileX;
-   @ObfuscatedName("u")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 854349157
+      intValue = 439699487
    )
    @Export("minNormalX")
    int minNormalX;
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -885684445
+      intValue = -2071800707
    )
    @Export("minTileZ")
    int minTileZ;
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1076444801
-   )
-   @Export("maxZ")
-   int maxZ;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1730840571
-   )
-   int field2118;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -536448465
+      intValue = 1428854653
    )
    @Export("maxNormalX")
    int maxNormalX;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1365991963
+      intValue = -870399035
+   )
+   @Export("maxZ")
+   int maxZ;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -713526291
+   )
+   int field2137;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1936023033
    )
    @Export("minY")
    int minY;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 662665273
+      intValue = 762171611
    )
    @Export("maxX")
    int maxX;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1677014709
+      intValue = -1912887507
    )
    @Export("minNormalY")
    int minNormalY;
-   @ObfuscatedName("p")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1829514561
+      intValue = -1111985889
    )
-   int field2117;
-   @ObfuscatedName("k")
+   int field2147;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -2014262123
+      intValue = 369130017
    )
    @Export("maxNormalY")
    int maxNormalY;
-   @ObfuscatedName("g")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 2134279449
+      intValue = 61504075
    )
    @Export("maxY")
    int maxY;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1999750553
+      intValue = -715996847
    )
    @Export("maxTileZ")
    int maxTileZ;
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1104104057
+      intValue = 1015254663
    )
    @Export("maxTIleX")
    int maxTIleX;
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Ljava/awt/Component;B)V",
+      garbageValue = "73"
+   )
+   static void method2932(Component var0) {
+      var0.addMouseListener(MouseInput.mouse);
+      var0.addMouseMotionListener(MouseInput.mouse);
+      var0.addFocusListener(MouseInput.mouse);
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(I)[Lhb;",
+      garbageValue = "-1521001446"
+   )
+   static BuildType[] method2933() {
+      return new BuildType[]{BuildType.LIVE, BuildType.RC, BuildType.WIP, BuildType.BUILD_LIVE};
+   }
 }

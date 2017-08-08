@@ -1,64 +1,151 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cy")
+@ObfuscatedName("cn")
 public class class89 {
-   @ObfuscatedName("gs")
-   @ObfuscatedGetter(
-      intValue = -1750108695
-   )
-   @Export("cameraX")
-   static int cameraX;
-   @ObfuscatedName("kn")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lhn;"
+      signature = "Lic;"
    )
-   static Widget field1372;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 180469809
-   )
-   int field1373;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 433874517
-   )
-   int field1366;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1516077881
-   )
-   int field1367;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -543424955
-   )
-   int field1371;
-   @ObfuscatedName("e")
-   String field1369;
+   @Export("currentRequest")
+   public static FileRequest currentRequest;
 
-   @ObfuscatedName("js")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IIIILji;Lhr;I)V",
-      garbageValue = "154813873"
+      signature = "([BZI)Ljava/lang/Object;",
+      garbageValue = "1315693030"
    )
-   static final void method1717(int var0, int var1, int var2, int var3, SpritePixels var4, class210 var5) {
-      int var6 = var3 * var3 + var2 * var2;
-      if(var6 > 4225 && var6 < 90000) {
-         int var7 = Client.mapAngle & 2047;
-         int var8 = Graphics3D.SINE[var7];
-         int var9 = Graphics3D.COSINE[var7];
-         int var10 = var9 * var2 + var3 * var8 >> 16;
-         int var11 = var3 * var9 - var8 * var2 >> 16;
-         double var12 = Math.atan2((double)var10, (double)var11);
-         int var14 = (int)(Math.sin(var12) * 63.0D);
-         int var15 = (int)(Math.cos(var12) * 57.0D);
-         class134.mapedge.method5081(var0 + var14 + 4 + 94 - 10, var1 + 83 - var15 - 20, 20, 20, 15, 15, var12, 256);
+   public static Object method1732(byte[] var0, boolean var1) {
+      if(var0 == null) {
+         return null;
       } else {
-         class35.drawDot(var0, var1, var2, var3, var4, var5);
+         if(var0.length > 136 && !AbstractByteBuffer.field2401) {
+            try {
+               DirectByteBuffer var2 = new DirectByteBuffer();
+               var2.put(var0);
+               return var2;
+            } catch (Throwable var3) {
+               AbstractByteBuffer.field2401 = true;
+            }
+         }
+
+         return var0;
+      }
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "544110622"
+   )
+   static void method1730(int var0, int var1, int var2, int var3) {
+      for(class82 var4 = (class82)class82.field1314.getFront(); var4 != null; var4 = (class82)class82.field1314.getNext()) {
+         if(var4.field1310 != -1 || var4.field1311 != null) {
+            int var5 = 0;
+            if(var1 > var4.field1307) {
+               var5 += var1 - var4.field1307;
+            } else if(var1 < var4.field1305) {
+               var5 += var4.field1305 - var1;
+            }
+
+            if(var2 > var4.field1308) {
+               var5 += var2 - var4.field1308;
+            } else if(var2 < var4.field1304) {
+               var5 += var4.field1304 - var2;
+            }
+
+            if(var5 - 64 <= var4.field1306 && Client.field1143 != 0 && var0 == var4.field1315) {
+               var5 -= 64;
+               if(var5 < 0) {
+                  var5 = 0;
+               }
+
+               int var6 = (var4.field1306 - var5) * Client.field1143 / var4.field1306;
+               if(var4.field1316 == null) {
+                  if(var4.field1310 >= 0) {
+                     SoundEffect var7 = SoundEffect.getTrack(CombatInfo1.field1272, var4.field1310, 0);
+                     if(var7 != null) {
+                        class108 var8 = var7.method1964().method2011(class228.field3114);
+                        class118 var9 = class118.method2147(var8, 100, var6);
+                        var9.method2286(-1);
+                        class36.field513.method1911(var9);
+                        var4.field1316 = var9;
+                     }
+                  }
+               } else {
+                  var4.field1316.method2252(var6);
+               }
+
+               if(var4.field1312 == null) {
+                  if(var4.field1311 != null && (var4.field1309 -= var3) <= 0) {
+                     int var11 = (int)(Math.random() * (double)var4.field1311.length);
+                     SoundEffect var12 = SoundEffect.getTrack(CombatInfo1.field1272, var4.field1311[var11], 0);
+                     if(var12 != null) {
+                        class108 var13 = var12.method1964().method2011(class228.field3114);
+                        class118 var10 = class118.method2147(var13, 100, var6);
+                        var10.method2286(0);
+                        class36.field513.method1911(var10);
+                        var4.field1312 = var10;
+                        var4.field1309 = var4.field1303 + (int)(Math.random() * (double)(var4.field1313 - var4.field1303));
+                     }
+                  }
+               } else {
+                  var4.field1312.method2252(var6);
+                  if(!var4.field1312.linked()) {
+                     var4.field1312 = null;
+                  }
+               }
+            } else {
+               if(var4.field1316 != null) {
+                  class36.field513.method1934(var4.field1316);
+                  var4.field1316 = null;
+               }
+
+               if(var4.field1312 != null) {
+                  class36.field513.method1934(var4.field1312);
+                  var4.field1312 = null;
+               }
+            }
+         }
       }
 
+   }
+
+   @ObfuscatedName("jt")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
+      garbageValue = "-460987978"
+   )
+   static String method1733(String var0, boolean var1) {
+      String var2 = var1?"https://":"http://";
+      if(Client.socketType == 1) {
+         var0 = var0 + "-wtrc";
+      } else if(Client.socketType == 2) {
+         var0 = var0 + "-wtqa";
+      } else if(Client.socketType == 3) {
+         var0 = var0 + "-wtwip";
+      } else if(Client.socketType == 5) {
+         var0 = var0 + "-wti";
+      } else if(Client.socketType == 4) {
+         var0 = "local";
+      }
+
+      String var3 = "";
+      if(class72.sessionToken != null) {
+         var3 = "/p=" + class72.sessionToken;
+      }
+
+      String var4 = "runescape.com";
+      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + WorldMapType2.field523 + var3 + "/";
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-406596920"
+   )
+   public static boolean method1734(int var0) {
+      return (var0 >> 21 & 1) != 0;
    }
 }

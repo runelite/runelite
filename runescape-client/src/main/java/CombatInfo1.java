@@ -4,85 +4,84 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cl")
+@ObfuscatedName("cs")
 @Implements("CombatInfo1")
 public class CombatInfo1 extends Node {
-   @ObfuscatedName("cn")
+   @ObfuscatedName("bn")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "[Ljp;"
    )
-   @Export("indexSprites")
-   static IndexData indexSprites;
-   @ObfuscatedName("fn")
-   static byte[][] field1250;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -134326809
+   static IndexedSprite[] field1271;
+   @ObfuscatedName("ec")
+   @ObfuscatedSignature(
+      signature = "Ljy;"
    )
-   int field1257;
-   @ObfuscatedName("q")
+   static class263 field1269;
+   @ObfuscatedName("cr")
+   @ObfuscatedSignature(
+      signature = "Lid;"
+   )
+   static IndexData field1272;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1303115387
+      intValue = 750936155
+   )
+   int field1273;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1011520493
    )
    @Export("healthRatio")
    int healthRatio;
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1520555549
+      intValue = -970602777
    )
    @Export("health")
    int health;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1906868489
+      intValue = 1425275867
    )
-   int field1253;
+   int field1270;
 
    CombatInfo1(int var1, int var2, int var3, int var4) {
-      this.field1257 = var1;
+      this.field1273 = var1;
       this.healthRatio = var2;
       this.health = var3;
-      this.field1253 = var4;
+      this.field1270 = var4;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(IIIII)V",
-      garbageValue = "1331488398"
+      garbageValue = "-131843799"
    )
-   void method1555(int var1, int var2, int var3, int var4) {
-      this.field1257 = var1;
+   void method1546(int var1, int var2, int var3, int var4) {
+      this.field1273 = var1;
       this.healthRatio = var2;
       this.health = var3;
-      this.field1253 = var4;
+      this.field1270 = var4;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "([BIB)I",
-      garbageValue = "-51"
+      signature = "(II)Lix;",
+      garbageValue = "1098357471"
    )
-   public static int method1557(byte[] var0, int var1) {
-      int var3 = -1;
+   public static class255 method1547(int var0) {
+      class255 var1 = (class255)class255.field3419.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class255.field3411.getConfigData(32, var0);
+         var1 = new class255();
+         if(var2 != null) {
+            var1.method4501(new Buffer(var2));
+         }
 
-      for(int var4 = 0; var4 < var1; ++var4) {
-         var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
+         class255.field3419.put(var1, (long)var0);
+         return var1;
       }
-
-      var3 = ~var3;
-      return var3;
-   }
-
-   @ObfuscatedName("fc")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "115"
-   )
-   static final void method1554() {
-      if(Client.field1111 != class8.plane) {
-         Client.field1111 = class8.plane;
-         class157.method2998(class8.plane);
-      }
-
    }
 }

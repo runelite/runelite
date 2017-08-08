@@ -5,360 +5,361 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cj")
+@ObfuscatedName("cp")
 @Implements("Actor")
 public abstract class Actor extends Renderable {
-   @ObfuscatedName("pr")
-   @ObfuscatedGetter(
-      intValue = -683555093
+   @ObfuscatedName("oq")
+   @ObfuscatedSignature(
+      signature = "Ldw;"
    )
-   static int field1198;
-   @ObfuscatedName("bn")
+   @Export("soundSystem0")
+   static AbstractSoundSystem soundSystem0;
+   @ObfuscatedName("by")
    @ObfuscatedGetter(
-      intValue = -1375470861
+      intValue = 1385202237
    )
    @Export("animation")
    @Hook("animationChanged")
    int animation;
    @ObfuscatedName("cu")
+   @Export("pathX")
+   int[] pathX;
+   @ObfuscatedName("cm")
    @ObfuscatedGetter(
-      intValue = -524156841
+      intValue = -1259619637
    )
    @Export("queueSize")
    int queueSize;
-   @ObfuscatedName("cg")
-   @Export("pathX")
-   int[] pathX;
-   @ObfuscatedName("ab")
+   @ObfuscatedName("aj")
    @Export("hitsplatCycles")
    int[] hitsplatCycles;
-   @ObfuscatedName("ch")
+   @ObfuscatedName("cj")
    @Export("pathY")
    int[] pathY;
-   @ObfuscatedName("bs")
+   @ObfuscatedName("bg")
    @ObfuscatedGetter(
-      intValue = 124095517
+      intValue = 818241665
    )
-   int field1209;
-   @ObfuscatedName("ag")
-   boolean field1192;
-   @ObfuscatedName("cm")
-   @ObfuscatedGetter(
-      intValue = 1379995129
-   )
-   int field1248;
-   @ObfuscatedName("ap")
-   byte field1189;
-   @ObfuscatedName("bd")
-   @ObfuscatedGetter(
-      intValue = 717720209
-   )
-   @Export("actionAnimationDisable")
-   int actionAnimationDisable;
-   @ObfuscatedName("cf")
-   @ObfuscatedGetter(
-      intValue = -1652423013
-   )
-   int field1247;
-   @ObfuscatedName("bi")
+   int field1205;
+   @ObfuscatedName("bo")
    @ObfuscatedSignature(
-      signature = "Lgt;"
+      signature = "Lgf;"
    )
    @Export("combatInfoList")
    CombatInfoList combatInfoList;
-   @ObfuscatedName("bv")
+   @ObfuscatedName("ao")
+   boolean field1208;
+   @ObfuscatedName("co")
    @ObfuscatedGetter(
-      intValue = -1309330379
+      intValue = 620063943
+   )
+   int field1264;
+   @ObfuscatedName("ai")
+   byte field1224;
+   @ObfuscatedName("cg")
+   @ObfuscatedGetter(
+      intValue = -1514239131
+   )
+   int field1263;
+   @ObfuscatedName("bd")
+   @ObfuscatedGetter(
+      intValue = -1433917181
    )
    @Export("poseAnimation")
    int poseAnimation;
-   @ObfuscatedName("ar")
-   @ObfuscatedGetter(
-      intValue = -907038979
-   )
-   int field1216;
    @ObfuscatedName("al")
+   @ObfuscatedGetter(
+      intValue = 477560909
+   )
+   int field1254;
+   @ObfuscatedName("bx")
+   @ObfuscatedGetter(
+      intValue = -967413631
+   )
+   @Export("actionAnimationDisable")
+   int actionAnimationDisable;
+   @ObfuscatedName("ar")
    @Export("hitsplatTypes")
    int[] hitsplatTypes;
    @ObfuscatedName("ae")
    @ObfuscatedGetter(
-      intValue = -1732909041
+      intValue = -1212636231
    )
    @Export("idlePoseAnimation")
    int idlePoseAnimation;
-   @ObfuscatedName("bl")
+   @ObfuscatedName("bc")
    @ObfuscatedGetter(
-      intValue = -805060093
+      intValue = 1811432949
    )
    @Export("actionFrame")
    int actionFrame;
-   @ObfuscatedName("ai")
+   @ObfuscatedName("ax")
    @ObfuscatedGetter(
-      intValue = 820645543
+      intValue = -737064629
    )
-   int field1195;
-   @ObfuscatedName("bh")
+   int field1227;
+   @ObfuscatedName("bp")
    @ObfuscatedGetter(
-      intValue = -818341107
+      intValue = 1697482817
    )
    @Export("poseFrame")
    int poseFrame;
-   @ObfuscatedName("au")
+   @ObfuscatedName("az")
    @ObfuscatedGetter(
-      intValue = -1880826869
+      intValue = -1189629849
    )
-   int field1196;
-   @ObfuscatedName("ad")
+   int field1212;
+   @ObfuscatedName("aw")
    @ObfuscatedGetter(
-      intValue = -914218059
+      intValue = 1484888527
    )
-   int field1197;
-   @ObfuscatedName("ct")
-   byte[] field1246;
-   @ObfuscatedName("ah")
+   int field1241;
+   @ObfuscatedName("cl")
+   byte[] field1262;
+   @ObfuscatedName("av")
    @ObfuscatedGetter(
-      intValue = -1820350671
+      intValue = 1116056997
    )
-   int field1205;
-   @ObfuscatedName("ac")
+   int field1214;
+   @ObfuscatedName("ay")
    @ObfuscatedGetter(
-      intValue = 252003539
+      intValue = -1049232225
    )
    @Export("x")
    int x;
-   @ObfuscatedName("aw")
-   int[] field1202;
-   @ObfuscatedName("ao")
+   @ObfuscatedName("an")
+   int[] field1225;
+   @ObfuscatedName("ac")
    @ObfuscatedGetter(
-      intValue = 1202316209
+      intValue = -1795301063
    )
    int field1249;
-   @ObfuscatedName("av")
+   @ObfuscatedName("ak")
    @ObfuscatedGetter(
-      intValue = 382477721
+      intValue = -2059305021
    )
-   int field1200;
-   @ObfuscatedName("ax")
+   int field1211;
+   @ObfuscatedName("au")
    @ObfuscatedGetter(
-      intValue = -1230219673
+      intValue = -1238910647
    )
    @Export("y")
    int y;
-   @ObfuscatedName("aj")
-   int[] field1212;
-   @ObfuscatedName("az")
+   @ObfuscatedName("aa")
+   int[] field1215;
+   @ObfuscatedName("ad")
    @ObfuscatedGetter(
-      intValue = -1762648631
+      intValue = 1357922353
    )
-   int field1217;
-   @ObfuscatedName("cj")
+   int field1256;
+   @ObfuscatedName("cp")
    @ObfuscatedGetter(
-      intValue = 1379369277
+      intValue = 1420875825
    )
-   int field1239;
-   @ObfuscatedName("bz")
-   int[] field1237;
-   @ObfuscatedName("aq")
+   int field1255;
+   @ObfuscatedName("bn")
+   int[] field1243;
+   @ObfuscatedName("at")
    @Export("overhead")
    String overhead;
    @ObfuscatedName("br")
    @ObfuscatedGetter(
-      intValue = -2142054645
+      intValue = 179394683
    )
    @Export("graphic")
    int graphic;
-   @ObfuscatedName("an")
+   @ObfuscatedName("am")
    @Export("inSequence")
    boolean inSequence;
-   @ObfuscatedName("bt")
+   @ObfuscatedName("bm")
    @ObfuscatedGetter(
-      intValue = -939987337
+      intValue = -1679683691
    )
-   int field1227;
-   @ObfuscatedName("af")
+   int field1209;
+   @ObfuscatedName("aq")
    @ObfuscatedGetter(
-      intValue = 1967970627
+      intValue = -942140779
    )
-   int field1213;
-   @ObfuscatedName("aa")
+   int field1221;
+   @ObfuscatedName("as")
    @ObfuscatedGetter(
-      intValue = -237369839
+      intValue = 1647380157
    )
-   int field1206;
-   @ObfuscatedName("ak")
+   int field1222;
+   @ObfuscatedName("ab")
    @ObfuscatedGetter(
-      intValue = 810587401
+      intValue = -1535093425
    )
-   int field1211;
-   @ObfuscatedName("bc")
+   int field1223;
+   @ObfuscatedName("bf")
    @ObfuscatedGetter(
-      intValue = -766215433
+      intValue = 1885512869
    )
-   int field1230;
-   @ObfuscatedName("bu")
+   int field1265;
+   @ObfuscatedName("bq")
    @ObfuscatedGetter(
-      intValue = -948038945
+      intValue = 1647863415
    )
    @Export("interacting")
    int interacting;
-   @ObfuscatedName("bq")
-   boolean field1219;
-   @ObfuscatedName("cl")
+   @ObfuscatedName("ba")
+   boolean field1242;
+   @ObfuscatedName("cs")
    @ObfuscatedGetter(
-      intValue = -1375211551
+      intValue = -1090619129
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("bx")
+   @ObfuscatedName("bi")
    @ObfuscatedGetter(
-      intValue = 1285710067
+      intValue = -1785650393
    )
-   int field1220;
-   @ObfuscatedName("bf")
+   int field1236;
+   @ObfuscatedName("bu")
    @ObfuscatedGetter(
-      intValue = 1262480935
+      intValue = 699322343
    )
-   int field1223;
-   @ObfuscatedName("bw")
+   int field1239;
+   @ObfuscatedName("bz")
    @ObfuscatedGetter(
-      intValue = 1275116641
+      intValue = -489865257
    )
-   int field1218;
-   @ObfuscatedName("bp")
+   int field1246;
+   @ObfuscatedName("bj")
    @ObfuscatedGetter(
-      intValue = 682580059
+      intValue = 2083368521
    )
-   int field1228;
-   @ObfuscatedName("by")
+   int field1244;
+   @ObfuscatedName("be")
    @ObfuscatedGetter(
-      intValue = 493665955
+      intValue = -398281357
    )
-   int field1238;
-   @ObfuscatedName("cc")
+   int field1245;
+   @ObfuscatedName("cq")
    @ObfuscatedGetter(
-      intValue = -68829221
+      intValue = -1694958175
    )
-   int field1241;
-   @ObfuscatedName("ci")
+   int field1257;
+   @ObfuscatedName("ct")
    @ObfuscatedGetter(
-      intValue = -345638833
+      intValue = -190239419
    )
-   int field1242;
-   @ObfuscatedName("ay")
-   boolean field1203;
-   @ObfuscatedName("at")
+   int field1229;
+   @ObfuscatedName("ah")
    @ObfuscatedGetter(
-      intValue = 464036523
+      intValue = 1536013601
    )
    @Export("angle")
    int angle;
-   @ObfuscatedName("ba")
+   @ObfuscatedName("af")
+   boolean field1219;
+   @ObfuscatedName("bb")
    @ObfuscatedGetter(
-      intValue = -456180427
+      intValue = -1168870763
    )
    @Export("graphicsDelay")
    int graphicsDelay;
-   @ObfuscatedName("bg")
+   @ObfuscatedName("bh")
    @ObfuscatedGetter(
-      intValue = -214156823
+      intValue = -524584577
    )
-   int field1235;
-   @ObfuscatedName("bo")
-   @ObfuscatedGetter(
-      intValue = -1306765923
-   )
-   int field1207;
-   @ObfuscatedName("bm")
-   @ObfuscatedGetter(
-      intValue = 127493517
-   )
-   int field1204;
-   @ObfuscatedName("bj")
-   @ObfuscatedGetter(
-      intValue = 1259375431
-   )
-   int field1233;
-   @ObfuscatedName("bb")
-   @ObfuscatedGetter(
-      intValue = 602200643
-   )
-   int field1232;
+   int field1238;
    @ObfuscatedName("bk")
    @ObfuscatedGetter(
-      intValue = -1579291465
+      intValue = 1094875551
    )
-   int field1201;
-   @ObfuscatedName("be")
+   int field1252;
+   @ObfuscatedName("bl")
    @ObfuscatedGetter(
-      intValue = -1590036539
+      intValue = -404660689
    )
-   int field1208;
+   int field1247;
+   @ObfuscatedName("bw")
+   @ObfuscatedGetter(
+      intValue = -1632731483
+   )
+   int field1251;
+   @ObfuscatedName("bt")
+   @ObfuscatedGetter(
+      intValue = 306667053
+   )
+   int field1248;
+   @ObfuscatedName("bs")
+   @ObfuscatedGetter(
+      intValue = 830061191
+   )
+   int field1228;
+   @ObfuscatedName("bv")
+   @ObfuscatedGetter(
+      intValue = 175010221
+   )
+   int field1253;
 
    Actor() {
-      this.field1192 = false;
-      this.field1216 = 1;
+      this.field1208 = false;
+      this.field1254 = 1;
       this.idlePoseAnimation = -1;
-      this.field1195 = -1;
-      this.field1196 = -1;
-      this.field1197 = -1;
-      this.field1205 = -1;
+      this.field1227 = -1;
+      this.field1212 = -1;
+      this.field1241 = -1;
+      this.field1214 = -1;
       this.field1249 = -1;
-      this.field1200 = -1;
-      this.field1217 = -1;
+      this.field1211 = -1;
+      this.field1256 = -1;
       this.overhead = null;
       this.inSequence = false;
-      this.field1213 = 100;
-      this.field1206 = 0;
-      this.field1211 = 0;
-      this.field1189 = 0;
-      this.field1202 = new int[4];
+      this.field1221 = 100;
+      this.field1222 = 0;
+      this.field1223 = 0;
+      this.field1224 = 0;
+      this.field1225 = new int[4];
       this.hitsplatTypes = new int[4];
       this.hitsplatCycles = new int[4];
-      this.field1212 = new int[4];
-      this.field1237 = new int[4];
+      this.field1215 = new int[4];
+      this.field1243 = new int[4];
       this.combatInfoList = new CombatInfoList();
       this.interacting = -1;
-      this.field1219 = false;
-      this.field1209 = -1;
+      this.field1242 = false;
+      this.field1205 = -1;
       this.poseAnimation = -1;
       this.poseFrame = 0;
-      this.field1220 = 0;
+      this.field1236 = 0;
       this.animation = -1;
       this.actionFrame = 0;
-      this.field1223 = 0;
+      this.field1239 = 0;
       this.actionAnimationDisable = 0;
-      this.field1218 = 0;
+      this.field1246 = 0;
       this.graphic = -1;
-      this.field1227 = 0;
-      this.field1228 = 0;
-      this.field1238 = 0;
-      this.field1239 = 200;
-      this.field1241 = 0;
-      this.field1242 = 32;
+      this.field1209 = 0;
+      this.field1244 = 0;
+      this.field1245 = 0;
+      this.field1255 = 200;
+      this.field1257 = 0;
+      this.field1229 = 32;
       this.queueSize = 0;
       this.pathX = new int[10];
       this.pathY = new int[10];
-      this.field1246 = new byte[10];
-      this.field1247 = 0;
-      this.field1248 = 0;
+      this.field1262 = new byte[10];
+      this.field1263 = 0;
+      this.field1264 = 0;
    }
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "2"
+      signature = "(I)Z",
+      garbageValue = "-2046618582"
    )
    @Export("hasConfig")
    boolean hasConfig() {
       return false;
    }
 
-   @ObfuscatedName("ax")
+   @ObfuscatedName("az")
    @ObfuscatedSignature(
       signature = "(IIIIIIB)V",
-      garbageValue = "-3"
+      garbageValue = "-14"
    )
-   final void method1548(int var1, int var2, int var3, int var4, int var5, int var6) {
+   final void method1526(int var1, int var2, int var3, int var4, int var5, int var6) {
       boolean var7 = true;
       boolean var8 = true;
 
@@ -375,9 +376,9 @@ public abstract class Actor extends Renderable {
       int var10 = -1;
       int var11 = 0;
       if(var1 >= 0) {
-         class254 var12 = FileSystem.method4110(var1);
-         var10 = var12.field3411;
-         var11 = var12.field3413;
+         class255 var12 = CombatInfo1.method1547(var1);
+         var10 = var12.field3402;
+         var11 = var12.field3404;
       }
 
       int var14;
@@ -411,12 +412,12 @@ public abstract class Actor extends Renderable {
          }
       } else {
          if(var7) {
-            this.field1189 = 0;
+            this.field1224 = 0;
          }
 
          for(var14 = 0; var14 < 4; ++var14) {
-            byte var15 = this.field1189;
-            this.field1189 = (byte)((this.field1189 + 1) % 4);
+            byte var15 = this.field1224;
+            this.field1224 = (byte)((this.field1224 + 1) % 4);
             if(this.hitsplatCycles[var15] <= var5) {
                var9 = var15;
                break;
@@ -425,218 +426,134 @@ public abstract class Actor extends Renderable {
       }
 
       if(var9 >= 0) {
-         this.field1202[var9] = var1;
+         this.field1225[var9] = var1;
          this.hitsplatTypes[var9] = var2;
-         this.field1212[var9] = var3;
-         this.field1237[var9] = var4;
+         this.field1215[var9] = var3;
+         this.field1243[var9] = var4;
          this.hitsplatCycles[var9] = var5 + var11 + var6;
       }
    }
 
-   @ObfuscatedName("ag")
+   @ObfuscatedName("av")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-1087282105"
+      garbageValue = "926595464"
    )
-   final void method1539(int var1) {
-      CombatInfo2 var3 = (CombatInfo2)CombatInfo2.field3346.get((long)var1);
-      CombatInfo2 var2;
-      if(var3 != null) {
-         var2 = var3;
-      } else {
-         byte[] var4 = CombatInfo2.field3356.getConfigData(33, var1);
-         var3 = new CombatInfo2();
-         if(var4 != null) {
-            var3.method4365(new Buffer(var4));
-         }
+   final void method1530(int var1) {
+      CombatInfo2 var2 = class175.method3381(var1);
 
-         CombatInfo2.field3346.put(var3, (long)var1);
-         var2 = var3;
-      }
-
-      var3 = var2;
-
-      for(CombatInfoListHolder var5 = (CombatInfoListHolder)this.combatInfoList.method3581(); var5 != null; var5 = (CombatInfoListHolder)this.combatInfoList.method3576()) {
-         if(var3 == var5.combatInfo2) {
-            var5.unlink();
+      for(CombatInfoListHolder var3 = (CombatInfoListHolder)this.combatInfoList.method3567(); var3 != null; var3 = (CombatInfoListHolder)this.combatInfoList.method3569()) {
+         if(var2 == var3.combatInfo2) {
+            var3.unlink();
             return;
          }
       }
 
    }
 
-   @ObfuscatedName("at")
+   @ObfuscatedName("aw")
    @ObfuscatedSignature(
       signature = "(IIIIIII)V",
-      garbageValue = "-879771527"
+      garbageValue = "-974039070"
    )
-   final void method1537(int var1, int var2, int var3, int var4, int var5, int var6) {
-      CombatInfo2 var8 = (CombatInfo2)CombatInfo2.field3346.get((long)var1);
-      CombatInfo2 var7;
-      if(var8 != null) {
-         var7 = var8;
-      } else {
-         byte[] var9 = CombatInfo2.field3356.getConfigData(33, var1);
-         var8 = new CombatInfo2();
-         if(var9 != null) {
-            var8.method4365(new Buffer(var9));
-         }
+   final void method1529(int var1, int var2, int var3, int var4, int var5, int var6) {
+      CombatInfo2 var7 = class175.method3381(var1);
+      CombatInfoListHolder var8 = null;
+      CombatInfoListHolder var9 = null;
+      int var10 = var7.field3360;
+      int var11 = 0;
 
-         CombatInfo2.field3346.put(var8, (long)var1);
-         var7 = var8;
-      }
-
-      var8 = var7;
-      CombatInfoListHolder var14 = null;
-      CombatInfoListHolder var10 = null;
-      int var11 = var7.field3348;
-      int var12 = 0;
-
-      CombatInfoListHolder var13;
-      for(var13 = (CombatInfoListHolder)this.combatInfoList.method3581(); var13 != null; var13 = (CombatInfoListHolder)this.combatInfoList.method3576()) {
-         ++var12;
-         if(var13.combatInfo2.field3351 == var8.field3351) {
-            var13.method1688(var2 + var4, var5, var6, var3);
+      CombatInfoListHolder var12;
+      for(var12 = (CombatInfoListHolder)this.combatInfoList.method3567(); var12 != null; var12 = (CombatInfoListHolder)this.combatInfoList.method3569()) {
+         ++var11;
+         if(var12.combatInfo2.field3356 == var7.field3356) {
+            var12.method1695(var2 + var4, var5, var6, var3);
             return;
          }
 
-         if(var13.combatInfo2.field3347 <= var8.field3347) {
-            var14 = var13;
+         if(var12.combatInfo2.field3359 <= var7.field3359) {
+            var8 = var12;
          }
 
-         if(var13.combatInfo2.field3348 > var11) {
-            var10 = var13;
-            var11 = var13.combatInfo2.field3348;
+         if(var12.combatInfo2.field3360 > var10) {
+            var9 = var12;
+            var10 = var12.combatInfo2.field3360;
          }
       }
 
-      if(var10 != null || var12 < 4) {
-         var13 = new CombatInfoListHolder(var8);
-         if(var14 == null) {
-            this.combatInfoList.method3590(var13);
+      if(var9 != null || var11 < 4) {
+         var12 = new CombatInfoListHolder(var7);
+         if(var8 == null) {
+            this.combatInfoList.method3564(var12);
          } else {
-            CombatInfoList.method3579(var13, var14);
+            CombatInfoList.method3576(var12, var8);
          }
 
-         var13.method1688(var2 + var4, var5, var6, var3);
-         if(var12 >= 4) {
-            var10.unlink();
+         var12.method1695(var2 + var4, var5, var6, var3);
+         if(var11 >= 4) {
+            var9.unlink();
          }
 
       }
    }
 
-   @ObfuscatedName("ac")
+   @ObfuscatedName("ax")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-8"
+      signature = "(I)V",
+      garbageValue = "-193242182"
    )
-   final void method1534() {
+   final void method1532() {
       this.queueSize = 0;
-      this.field1248 = 0;
+      this.field1264 = 0;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(II)Liw;",
-      garbageValue = "-1120752491"
+      signature = "(II)Lir;",
+      garbageValue = "1276553241"
    )
-   public static Varbit method1533(int var0) {
-      Varbit var1 = (Varbit)Varbit.varbits.get((long)var0);
+   public static class244 method1545(int var0) {
+      class244 var1 = (class244)class244.field3305.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = Varbit.varbit_ref.getConfigData(14, var0);
-         var1 = new Varbit();
+         byte[] var2 = class244.field3301.getConfigData(19, var0);
+         var1 = new class244();
          if(var2 != null) {
-            var1.decode(new Buffer(var2));
+            var1.method4312(new Buffer(var2));
          }
 
-         Varbit.varbits.put(var1, (long)var0);
+         class244.field3305.put(var1, (long)var0);
          return var1;
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;II[BII)I",
-      garbageValue = "-623370330"
+      signature = "(IIIZIZI)V",
+      garbageValue = "-1250410773"
    )
-   public static int method1542(CharSequence var0, int var1, int var2, byte[] var3, int var4) {
-      int var5 = var2 - var1;
+   static void method1544(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
+      if(var0 < var1) {
+         int var6 = (var0 + var1) / 2;
+         int var7 = var0;
+         World var8 = class51.worldList[var6];
+         class51.worldList[var6] = class51.worldList[var1];
+         class51.worldList[var1] = var8;
 
-      for(int var6 = 0; var6 < var5; ++var6) {
-         char var7 = var0.charAt(var6 + var1);
-         if(var7 > 0 && var7 < 128 || var7 >= 160 && var7 <= 255) {
-            var3[var6 + var4] = (byte)var7;
-         } else if(var7 == 8364) {
-            var3[var6 + var4] = -128;
-         } else if(var7 == 8218) {
-            var3[var6 + var4] = -126;
-         } else if(var7 == 402) {
-            var3[var6 + var4] = -125;
-         } else if(var7 == 8222) {
-            var3[var6 + var4] = -124;
-         } else if(var7 == 8230) {
-            var3[var6 + var4] = -123;
-         } else if(var7 == 8224) {
-            var3[var6 + var4] = -122;
-         } else if(var7 == 8225) {
-            var3[var6 + var4] = -121;
-         } else if(var7 == 710) {
-            var3[var6 + var4] = -120;
-         } else if(var7 == 8240) {
-            var3[var6 + var4] = -119;
-         } else if(var7 == 352) {
-            var3[var6 + var4] = -118;
-         } else if(var7 == 8249) {
-            var3[var6 + var4] = -117;
-         } else if(var7 == 338) {
-            var3[var6 + var4] = -116;
-         } else if(var7 == 381) {
-            var3[var6 + var4] = -114;
-         } else if(var7 == 8216) {
-            var3[var6 + var4] = -111;
-         } else if(var7 == 8217) {
-            var3[var6 + var4] = -110;
-         } else if(var7 == 8220) {
-            var3[var6 + var4] = -109;
-         } else if(var7 == 8221) {
-            var3[var6 + var4] = -108;
-         } else if(var7 == 8226) {
-            var3[var6 + var4] = -107;
-         } else if(var7 == 8211) {
-            var3[var6 + var4] = -106;
-         } else if(var7 == 8212) {
-            var3[var6 + var4] = -105;
-         } else if(var7 == 732) {
-            var3[var6 + var4] = -104;
-         } else if(var7 == 8482) {
-            var3[var6 + var4] = -103;
-         } else if(var7 == 353) {
-            var3[var6 + var4] = -102;
-         } else if(var7 == 8250) {
-            var3[var6 + var4] = -101;
-         } else if(var7 == 339) {
-            var3[var6 + var4] = -100;
-         } else if(var7 == 382) {
-            var3[var6 + var4] = -98;
-         } else if(var7 == 376) {
-            var3[var6 + var4] = -97;
-         } else {
-            var3[var6 + var4] = 63;
+         for(int var9 = var0; var9 < var1; ++var9) {
+            if(CacheFile.method2372(class51.worldList[var9], var8, var2, var3, var4, var5) <= 0) {
+               World var10 = class51.worldList[var9];
+               class51.worldList[var9] = class51.worldList[var7];
+               class51.worldList[var7++] = var10;
+            }
          }
+
+         class51.worldList[var1] = class51.worldList[var7];
+         class51.worldList[var7] = var8;
+         method1544(var0, var7 - 1, var2, var3, var4, var5);
+         method1544(var7 + 1, var1, var2, var3, var4, var5);
       }
 
-      return var5;
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(IIIIII)V",
-      garbageValue = "-595233450"
-   )
-   static final void method1553(int var0, int var1, int var2, int var3, int var4) {
-      class7.field224.method3577(new class8(var0, var1, var2, var3, var4));
    }
 }

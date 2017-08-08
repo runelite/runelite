@@ -3,89 +3,68 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hw")
+@ObfuscatedName("he")
 @Implements("Permission")
 public enum Permission implements RSEnum {
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lhw;"
+      signature = "Lhe;"
    )
-   field3155(0, -1, true, false, true),
-   @ObfuscatedName("q")
+   field3161(0, -1, true, false, true),
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lhw;"
+      signature = "Lhe;"
    )
    field3153(1, 0, true, true, true),
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lhw;"
+      signature = "Lhe;"
    )
    field3154(2, 1, true, true, false),
    @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lhw;"
+      signature = "Lhe;"
    )
-   field3152(3, 2, false, false, true),
-   @ObfuscatedName("e")
+   field3155(3, 2, false, false, true),
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lhw;"
+      signature = "Lhe;"
    )
-   field3156(4, 3, false, false, true),
-   @ObfuscatedName("f")
+   field3159(4, 3, false, false, true),
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lhw;"
+      signature = "Lhe;"
    )
    field3157(5, 10, false, false, true);
 
+   @ObfuscatedName("u")
+   public final boolean field3152;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -898783891
+   )
+   public final int field3158;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1519154251
+      intValue = 1802234199
    )
-   final int field3158;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 928346617
-   )
-   public final int field3159;
-   @ObfuscatedName("i")
-   public final boolean field3160;
+   final int field3160;
    @ObfuscatedName("r")
-   public final boolean field3161;
+   public final boolean field3163;
 
    Permission(int var3, int var4, boolean var5, boolean var6, boolean var7) {
-      this.field3158 = var3;
-      this.field3159 = var4;
-      this.field3160 = var6;
-      this.field3161 = var7;
+      this.field3160 = var3;
+      this.field3158 = var4;
+      this.field3163 = var6;
+      this.field3152 = var7;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1661971028"
+      garbageValue = "834678576"
    )
    public int rsOrdinal() {
-      return this.field3158;
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(II)Lic;",
-      garbageValue = "406109113"
-   )
-   public static Enum method4099(int var0) {
-      Enum var1 = (Enum)Enum.field3376.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Enum.field3375.getConfigData(8, var0);
-         var1 = new Enum();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         Enum.field3376.put(var1, (long)var0);
-         return var1;
-      }
+      return this.field3160;
    }
 }

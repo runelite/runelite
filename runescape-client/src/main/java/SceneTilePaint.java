@@ -7,45 +7,53 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ex")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
-   @ObfuscatedName("t")
-   @Export("colorsToReplace")
-   public static short[][] colorsToReplace;
-   @ObfuscatedName("f")
+   @ObfuscatedName("ca")
+   @ObfuscatedSignature(
+      signature = "Ley;"
+   )
+   @Export("socket")
+   static Task socket;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1676474153
+   )
+   static int field2027;
+   @ObfuscatedName("k")
    @Export("flatShade")
    boolean flatShade;
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1160916813
+      intValue = -1957978079
    )
    @Export("swColor")
    int swColor;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -577039723
+      intValue = 2026194167
    )
    @Export("rgb")
    int rgb;
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1514021983
+      intValue = 1041049003
    )
    @Export("seColor")
    int seColor;
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1636973739
+      intValue = 368283397
    )
    @Export("neColor")
    int neColor;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -2039752957
+      intValue = 639980995
    )
    @Export("nwColor")
    int nwColor;
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1976815923
+      intValue = -589908737
    )
    @Export("texture")
    int texture;
@@ -61,35 +69,13 @@ public final class SceneTilePaint {
       this.flatShade = var7;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lim;Lim;ZI)V",
-      garbageValue = "-942970909"
+      signature = "(III)I",
+      garbageValue = "456718783"
    )
-   public static void method2696(IndexDataBase var0, IndexDataBase var1, boolean var2) {
-      ObjectComposition.objects_ref = var0;
-      ObjectComposition.field3446 = var1;
-      ObjectComposition.field3439 = var2;
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Lfw;IB)Ljava/lang/String;",
-      garbageValue = "-1"
-   )
-   public static String method2695(Buffer var0, int var1) {
-      try {
-         int var2 = var0.getUSmart();
-         if(var2 > var1) {
-            var2 = var1;
-         }
-
-         byte[] var3 = new byte[var2];
-         var0.offset += class265.field3639.decompress(var0.payload, var0.offset, var3, 0, var2);
-         String var4 = class211.getString(var3, 0, var2);
-         return var4;
-      } catch (Exception var6) {
-         return "Cabbage";
-      }
+   static int method2708(int var0, int var1) {
+      XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.get((long)var0);
+      return var2 == null?0:(var1 >= 0 && var1 < var2.stackSizes.length?var2.stackSizes[var1]:0);
    }
 }

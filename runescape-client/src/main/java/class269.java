@@ -1,77 +1,46 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import java.io.IOException;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("js")
-public class class269 {
-   @ObfuscatedName("d")
-   static char[] field3661;
-   @ObfuscatedName("q")
-   static char[] field3660;
-   @ObfuscatedName("x")
-   static int[] field3664;
-   @ObfuscatedName("ce")
-   @ObfuscatedGetter(
-      longValue = 6869412325350852255L
+@ObfuscatedName("ja")
+public final class class269 {
+   @ObfuscatedName("e")
+   public static final char[] field3660;
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lhg;"
    )
-   static long field3665;
+   static Widget field3661;
 
    static {
-      field3661 = new char[64];
+      field3660 = new char[]{'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+   }
 
-      int var0;
-      for(var0 = 0; var0 < 26; ++var0) {
-         field3661[var0] = (char)(var0 + 65);
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "-1759236293"
+   )
+   @Export("sendConInfo")
+   public static void sendConInfo(boolean var0) {
+      if(class239.field3237 != null) {
+         try {
+            Buffer var1 = new Buffer(4);
+            var1.putByte(var0?2:3);
+            var1.put24bitInt(0);
+            class239.field3237.queueForWrite(var1.payload, 0, 4);
+         } catch (IOException var4) {
+            try {
+               class239.field3237.close();
+            } catch (Exception var3) {
+               ;
+            }
+
+            ++class239.field3253;
+            class239.field3237 = null;
+         }
+
       }
-
-      for(var0 = 26; var0 < 52; ++var0) {
-         field3661[var0] = (char)(var0 + 97 - 26);
-      }
-
-      for(var0 = 52; var0 < 62; ++var0) {
-         field3661[var0] = (char)(var0 + 48 - 52);
-      }
-
-      field3661[62] = 43;
-      field3661[63] = 47;
-      field3660 = new char[64];
-
-      for(var0 = 0; var0 < 26; ++var0) {
-         field3660[var0] = (char)(var0 + 65);
-      }
-
-      for(var0 = 26; var0 < 52; ++var0) {
-         field3660[var0] = (char)(var0 + 97 - 26);
-      }
-
-      for(var0 = 52; var0 < 62; ++var0) {
-         field3660[var0] = (char)(var0 + 48 - 52);
-      }
-
-      field3660[62] = 42;
-      field3660[63] = 45;
-      field3664 = new int[128];
-
-      for(var0 = 0; var0 < field3664.length; ++var0) {
-         field3664[var0] = -1;
-      }
-
-      for(var0 = 65; var0 <= 90; ++var0) {
-         field3664[var0] = var0 - 65;
-      }
-
-      for(var0 = 97; var0 <= 122; ++var0) {
-         field3664[var0] = var0 - 97 + 26;
-      }
-
-      for(var0 = 48; var0 <= 57; ++var0) {
-         field3664[var0] = var0 - 48 + 52;
-      }
-
-      int[] var2 = field3664;
-      field3664[43] = 62;
-      var2[42] = 62;
-      int[] var1 = field3664;
-      field3664[47] = 63;
-      var1[45] = 63;
    }
 }

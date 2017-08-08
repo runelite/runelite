@@ -1,64 +1,53 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cf")
+@ObfuscatedName("co")
 @Implements("NPC")
 public final class NPC extends Actor {
-   @ObfuscatedName("er")
-   @ObfuscatedSignature(
-      signature = "Lfz;"
-   )
-   static RSSocket field1339;
-   @ObfuscatedName("v")
-   @Export("colorsToFind")
-   public static short[] colorsToFind;
    @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lim;"
+   @ObfuscatedGetter(
+      intValue = 1546733905
    )
-   public static IndexDataBase field1337;
-   @ObfuscatedName("ez")
-   @ObfuscatedSignature(
-      signature = "Ljt;"
-   )
-   static Font field1340;
-   @ObfuscatedName("d")
+   @Export("canvasWidth")
+   public static int canvasWidth;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lin;"
    )
    @Export("composition")
    NPCComposition composition;
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)Lev;",
-      garbageValue = "1458652918"
+      signature = "(I)Lew;",
+      garbageValue = "-2113451941"
    )
    protected final Model getModel() {
       if(this.composition == null) {
          return null;
       } else {
-         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?class40.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation != -1 && (super.poseAnimation != super.idlePoseAnimation || var1 == null)?class40.getAnimation(super.poseAnimation):null;
-         Model var3 = this.composition.method4627(var1, super.actionFrame, var2, super.poseFrame);
+         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?Ignore.getAnimation(super.animation):null;
+         Sequence var2 = super.poseAnimation != -1 && (super.poseAnimation != super.idlePoseAnimation || var1 == null)?Ignore.getAnimation(super.poseAnimation):null;
+         Model var3 = this.composition.method4660(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;
          } else {
-            var3.method2509();
-            super.field1239 = var3.modelHeight;
-            if(super.graphic != -1 && super.field1227 != -1) {
-               Model var4 = class36.getSpotAnimType(super.graphic).method4310(super.field1227);
+            var3.method2519();
+            super.field1255 = var3.modelHeight;
+            if(super.graphic != -1 && super.field1209 != -1) {
+               Model var4 = GameEngine.getSpotAnimType(super.graphic).method4337(super.field1209);
                if(var4 != null) {
-                  var4.method2520(0, -super.field1230, 0);
+                  var4.method2526(0, -super.field1265, 0);
                   Model[] var5 = new Model[]{var3, var4};
                   var3 = new Model(var5, 2);
                }
             }
 
-            if(this.composition.field3535 == 1) {
-               var3.field1902 = true;
+            if(this.composition.field3547 == 1) {
+               var3.field1938 = true;
             }
 
             return var3;
@@ -66,22 +55,12 @@ public final class NPC extends Actor {
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "2"
+      signature = "(IBI)V",
+      garbageValue = "1201091864"
    )
-   @Export("hasConfig")
-   final boolean hasConfig() {
-      return this.composition != null;
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(IBB)V",
-      garbageValue = "111"
-   )
-   final void method1696(int var1, byte var2) {
+   final void method1708(int var1, byte var2) {
       int var3 = super.pathX[0];
       int var4 = super.pathY[0];
       if(var1 == 0) {
@@ -120,7 +99,7 @@ public final class NPC extends Actor {
          --var4;
       }
 
-      if(super.animation != -1 && class40.getAnimation(super.animation).priority == 1) {
+      if(super.animation != -1 && Ignore.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 
@@ -131,21 +110,31 @@ public final class NPC extends Actor {
       for(int var5 = super.queueSize; var5 > 0; --var5) {
          super.pathX[var5] = super.pathX[var5 - 1];
          super.pathY[var5] = super.pathY[var5 - 1];
-         super.field1246[var5] = super.field1246[var5 - 1];
+         super.field1262[var5] = super.field1262[var5 - 1];
       }
 
       super.pathX[0] = var3;
       super.pathY[0] = var4;
-      super.field1246[0] = var2;
+      super.field1262[0] = var2;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(IIZB)V",
-      garbageValue = "15"
+      signature = "(I)Z",
+      garbageValue = "-2046618582"
    )
-   final void method1697(int var1, int var2, boolean var3) {
-      if(super.animation != -1 && class40.getAnimation(super.animation).priority == 1) {
+   @Export("hasConfig")
+   final boolean hasConfig() {
+      return this.composition != null;
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(IIZI)V",
+      garbageValue = "-133615952"
+   )
+   final void method1709(int var1, int var2, boolean var3) {
+      if(super.animation != -1 && Ignore.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 
@@ -160,22 +149,31 @@ public final class NPC extends Actor {
             for(int var6 = super.queueSize; var6 > 0; --var6) {
                super.pathX[var6] = super.pathX[var6 - 1];
                super.pathY[var6] = super.pathY[var6 - 1];
-               super.field1246[var6] = super.field1246[var6 - 1];
+               super.field1262[var6] = super.field1262[var6 - 1];
             }
 
             super.pathX[0] = var1;
             super.pathY[0] = var2;
-            super.field1246[0] = 1;
+            super.field1262[0] = 1;
             return;
          }
       }
 
       super.queueSize = 0;
-      super.field1248 = 0;
-      super.field1247 = 0;
+      super.field1264 = 0;
+      super.field1263 = 0;
       super.pathX[0] = var1;
       super.pathY[0] = var2;
-      super.x = super.field1216 * 64 + super.pathX[0] * 128;
-      super.y = super.pathY[0] * 128 + super.field1216 * 64;
+      super.x = super.field1254 * 64 + super.pathX[0] * 128;
+      super.y = super.field1254 * 64 + super.pathY[0] * 128;
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/Throwable;B)V",
+      garbageValue = "44"
+   )
+   public static void method1722(String var0, Throwable var1) {
+      var1.printStackTrace();
    }
 }

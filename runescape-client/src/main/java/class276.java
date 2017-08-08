@@ -1,71 +1,35 @@
-import java.awt.FontMetrics;
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jl")
+@ObfuscatedName("jf")
 public class class276 {
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Ljl;"
-   )
-   static final class276 field3720;
-   @ObfuscatedName("ag")
-   static FontMetrics field3723;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Ljl;"
-   )
-   public static final class276 field3718;
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Ljl;"
-   )
-   static final class276 field3719;
-   @ObfuscatedName("nr")
-   @ObfuscatedSignature(
-      signature = "Ljl;"
-   )
-   static class276 field3721;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 425670159
-   )
-   public final int field3722;
+   @ObfuscatedName("n")
+   @Export("javaVersion")
+   public static String javaVersion;
 
-   static {
-      field3720 = new class276(0);
-      field3718 = new class276(1);
-      field3719 = new class276(2);
-   }
-
-   class276(int var1) {
-      this.field3722 = var1;
-   }
-
-   @ObfuscatedName("r")
+   @ObfuscatedName("jy")
    @ObfuscatedSignature(
-      signature = "(Lim;II)Z",
-      garbageValue = "732280810"
+      signature = "(IIIILkn;Lha;I)V",
+      garbageValue = "1695076712"
    )
-   public static boolean method4911(IndexDataBase var0, int var1) {
-      byte[] var2 = var0.method4119(var1);
-      if(var2 == null) {
-         return false;
-      } else {
-         Timer.decodeSprite(var2);
-         return true;
+   @Export("drawDot")
+   static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, class211 var5) {
+      if(var4 != null) {
+         int var6 = Client.mapAngle & 2047;
+         int var7 = var3 * var3 + var2 * var2;
+         if(var7 <= 6400) {
+            int var8 = Graphics3D.SINE[var6];
+            int var9 = Graphics3D.COSINE[var6];
+            int var10 = var9 * var2 + var3 * var8 >> 16;
+            int var11 = var3 * var9 - var8 * var2 >> 16;
+            if(var7 > 2500) {
+               var4.method5110(var10 + var5.field2577 / 2 - var4.maxWidth / 2, var5.field2578 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2577, var5.field2578, var5.field2581, var5.field2579);
+            } else {
+               var4.method5143(var0 + var10 + var5.field2577 / 2 - var4.maxWidth / 2, var5.field2578 / 2 + var1 - var11 - var4.maxHeight / 2);
+            }
+
+         }
       }
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(Lim;Lim;Ljava/lang/String;Ljava/lang/String;B)Ljt;",
-      garbageValue = "-9"
-   )
-   public static Font method4910(IndexDataBase var0, IndexDataBase var1, String var2, String var3) {
-      int var4 = var0.getFile(var2);
-      int var5 = var0.getChild(var4, var3);
-      return class87.method1713(var0, var1, var4, var5);
    }
 }

@@ -1,82 +1,110 @@
+import java.io.IOException;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ap")
+@ObfuscatedName("ai")
 public class class47 {
-   @ObfuscatedName("hc")
+   @ObfuscatedName("mc")
    @ObfuscatedSignature(
-      signature = "Lhn;"
+      signature = "Lcy;"
    )
-   static Widget field564;
-   @ObfuscatedName("az")
-   protected static String field567;
-   @ObfuscatedName("m")
-   static int[] field566;
-   @ObfuscatedName("d")
+   @Export("chatMessages")
+   static Varcs chatMessages;
+   @ObfuscatedName("aq")
+   @Export("authCode")
+   static String authCode;
+   @ObfuscatedName("am")
    @ObfuscatedGetter(
-      intValue = 1088218201
+      intValue = -13931039
    )
-   public int field568;
-   @ObfuscatedName("q")
+   @Export("authCodeForLogin")
+   static int authCodeForLogin;
+   @ObfuscatedName("kg")
    @ObfuscatedSignature(
-      signature = "Lhy;"
+      signature = "Lhg;"
    )
-   public Coordinates field565;
-   @ObfuscatedName("x")
+   static Widget field602;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 871549235
+   )
+   public int field600;
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lhy;"
+      signature = "Lhq;"
    )
-   public Coordinates field569;
+   public Coordinates field597;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lhq;"
+   )
+   public Coordinates field598;
 
    @ObfuscatedSignature(
-      signature = "(ILhy;Lhy;)V"
+      signature = "(ILhq;Lhq;)V"
    )
    public class47(int var1, Coordinates var2, Coordinates var3) {
-      this.field568 = var1;
-      this.field565 = var2;
-      this.field569 = var3;
+      this.field600 = var1;
+      this.field597 = var2;
+      this.field598 = var3;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("gh")
    @ObfuscatedSignature(
-      signature = "(II)Lig;",
-      garbageValue = "890939420"
+      signature = "(ZB)V",
+      garbageValue = "-124"
    )
-   public static class244 method710(int var0) {
-      class244 var1 = (class244)class244.field3303.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class270.field3668.getConfigData(15, var0);
-         var1 = new class244();
-         if(var2 != null) {
-            var1.method4300(new Buffer(var2));
-         }
+   @Export("flush")
+   static final void flush(boolean var0) {
+      class35.method495();
+      ++Client.audioEffectCount;
+      if(Client.audioEffectCount >= 50 || var0) {
+         Client.audioEffectCount = 0;
+         if(!Client.socketError && GZipDecompressor.rssocket != null) {
+            Client.secretPacketBuffer1.putOpcode(98);
 
-         class244.field3303.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("hw")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;IIIIZI)V",
-      garbageValue = "1095664410"
-   )
-   static final void method711(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
-      if(!Client.isMenuOpen) {
-         if(Client.menuOptionCount < 500) {
-            Client.menuOptions[Client.menuOptionCount] = var0;
-            Client.menuTargets[Client.menuOptionCount] = var1;
-            Client.menuTypes[Client.menuOptionCount] = var2;
-            Client.menuIdentifiers[Client.menuOptionCount] = var3;
-            Client.menuActionParams0[Client.menuOptionCount] = var4;
-            Client.menuActionParams1[Client.menuOptionCount] = var5;
-            Client.field1013[Client.menuOptionCount] = var6;
-            ++Client.menuOptionCount;
+            try {
+               GZipDecompressor.rssocket.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);
+               Client.secretPacketBuffer1.offset = 0;
+            } catch (IOException var2) {
+               Client.socketError = true;
+            }
          }
 
       }
+   }
+
+   @ObfuscatedName("fa")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1365276847"
+   )
+   static final void method700() {
+      int[] var0 = class97.field1494;
+
+      int var1;
+      for(var1 = 0; var1 < class97.field1493; ++var1) {
+         Player var2 = Client.cachedPlayers[var0[var1]];
+         if(var2 != null && var2.field1221 > 0) {
+            --var2.field1221;
+            if(var2.field1221 == 0) {
+               var2.overhead = null;
+            }
+         }
+      }
+
+      for(var1 = 0; var1 < Client.field952; ++var1) {
+         int var4 = Client.npcIndices[var1];
+         NPC var3 = Client.cachedNPCs[var4];
+         if(var3 != null && var3.field1221 > 0) {
+            --var3.field1221;
+            if(var3.field1221 == 0) {
+               var3.overhead = null;
+            }
+         }
+      }
+
    }
 }

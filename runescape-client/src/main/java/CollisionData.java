@@ -4,33 +4,38 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("fo")
 @Implements("CollisionData")
 public class CollisionData {
-   @ObfuscatedName("ad")
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Ldp;"
+   )
+   static class113 field2270;
+   @ObfuscatedName("aw")
    @ObfuscatedGetter(
-      intValue = 87360057
+      intValue = -725123897
    )
    @Export("width")
    int width;
-   @ObfuscatedName("ai")
+   @ObfuscatedName("ax")
    @ObfuscatedGetter(
-      intValue = -706880087
+      intValue = -989475895
    )
    @Export("x")
    public int x;
-   @ObfuscatedName("ao")
+   @ObfuscatedName("ac")
    @Export("flags")
    public int[][] flags;
-   @ObfuscatedName("ah")
+   @ObfuscatedName("av")
    @ObfuscatedGetter(
-      intValue = -1892093829
+      intValue = 1263052573
    )
    @Export("height")
    int height;
-   @ObfuscatedName("au")
+   @ObfuscatedName("az")
    @ObfuscatedGetter(
-      intValue = 285466681
+      intValue = -623514599
    )
    @Export("y")
    public int y;
@@ -44,30 +49,30 @@ public class CollisionData {
       this.reset();
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "-1971872299"
+      garbageValue = "-1850056558"
    )
    @Export("remove")
    void remove(int var1, int var2, int var3) {
       this.flags[var1][var2] &= ~var3;
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "-1878892088"
+      garbageValue = "129306540"
    )
    @Export("add")
    void add(int var1, int var2, int var3) {
       this.flags[var1][var2] |= var3;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "2062098045"
+      garbageValue = "-1859362887"
    )
    @Export("reset")
    public void reset() {
@@ -85,8 +90,8 @@ public class CollisionData {
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(IIIIZB)V",
-      garbageValue = "61"
+      signature = "(IIIIZI)V",
+      garbageValue = "1660563726"
    )
    @Export("removeWall")
    public void removeWall(int var1, int var2, int var3, int var4, boolean var5) {
@@ -236,10 +241,10 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "592009634"
+      signature = "(IIB)V",
+      garbageValue = "0"
    )
    @Export("unblock")
    public void unblock(int var1, int var2) {
@@ -248,10 +253,10 @@ public class CollisionData {
       this.flags[var1][var2] &= -262145;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(IIIIIZI)V",
-      garbageValue = "1775261963"
+      garbageValue = "1563282368"
    )
    @Export("removeObject")
    public void removeObject(int var1, int var2, int var3, int var4, int var5, boolean var6) {
@@ -281,10 +286,10 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "-318384986"
+      garbageValue = "-1499783307"
    )
    @Export("block")
    public void block(int var1, int var2) {
@@ -293,10 +298,10 @@ public class CollisionData {
       this.flags[var1][var2] |= 262144;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IIIIZI)V",
-      garbageValue = "-1697575107"
+      signature = "(IIIIZB)V",
+      garbageValue = "27"
    )
    @Export("addObject")
    public void addObject(int var1, int var2, int var3, int var4, boolean var5) {
@@ -320,10 +325,10 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(IIIIZI)V",
-      garbageValue = "1089215932"
+      garbageValue = "-1338096584"
    )
    @Export("addWall")
    public void addWall(int var1, int var2, int var3, int var4, boolean var5) {
@@ -475,8 +480,8 @@ public class CollisionData {
 
    @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(IIS)V",
-      garbageValue = "12659"
+      signature = "(III)V",
+      garbageValue = "-1179379096"
    )
    public void method3060(int var1, int var2) {
       var1 -= this.x;
@@ -484,54 +489,35 @@ public class CollisionData {
       this.flags[var1][var2] |= 2097152;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("gw")
    @ObfuscatedSignature(
-      signature = "([Lfg;II)Lfg;",
-      garbageValue = "-1088613292"
+      signature = "(ZB)V",
+      garbageValue = "-64"
    )
-   @Export("forOrdinal")
-   public static RSEnum forOrdinal(RSEnum[] var0, int var1) {
-      RSEnum[] var2 = var0;
-
-      for(int var3 = 0; var3 < var2.length; ++var3) {
-         RSEnum var4 = var2[var3];
-         if(var1 == var4.rsOrdinal()) {
-            return var4;
-         }
-      }
-
-      return null;
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1035451488"
-   )
-   public static void method3079(int var0) {
-      if(var0 != -1) {
-         if(XItemContainer.validInterfaces[var0]) {
-            class67.widgetIndex.method4126(var0);
-            if(class170.widgets[var0] != null) {
-               boolean var1 = true;
-
-               for(int var2 = 0; var2 < class170.widgets[var0].length; ++var2) {
-                  if(class170.widgets[var0][var2] != null) {
-                     if(class170.widgets[var0][var2].type != 2) {
-                        class170.widgets[var0][var2] = null;
-                     } else {
-                        var1 = false;
-                     }
+   static final void method3085(boolean var0) {
+      for(int var1 = 0; var1 < Client.field952; ++var1) {
+         NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
+         int var3 = (Client.npcIndices[var1] << 14) + 536870912;
+         if(var2 != null && var2.hasConfig() && var2.composition.isVisible == var0 && var2.composition.method4692()) {
+            int var4 = var2.x >> 7;
+            int var5 = var2.y >> 7;
+            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
+               if(var2.field1254 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
+                  if(Client.field1005[var4][var5] == Client.field1006) {
+                     continue;
                   }
+
+                  Client.field1005[var4][var5] = Client.field1006;
                }
 
-               if(var1) {
-                  class170.widgets[var0] = null;
+               if(!var2.composition.field3574) {
+                  var3 -= Integer.MIN_VALUE;
                }
 
-               XItemContainer.validInterfaces[var0] = false;
+               class84.region.method2722(class29.plane, var2.x, var2.y, Friend.getTileHeight(var2.field1254 * 64 - 64 + var2.x, var2.y + (var2.field1254 * 64 - 64), class29.plane), var2.field1254 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1208);
             }
          }
       }
+
    }
 }

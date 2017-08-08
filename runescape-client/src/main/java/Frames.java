@@ -3,18 +3,18 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("en")
+@ObfuscatedName("ea")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "[Lei;"
+      signature = "[Lez;"
    )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Lim;Lim;IZ)V",
+      signature = "(Lit;Lit;IZ)V",
       garbageValue = "0"
    )
    public Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
@@ -46,12 +46,12 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "303678808"
+      garbageValue = "-1901230635"
    )
-   public boolean method2905(int var1) {
+   public boolean method2912(int var1) {
       return this.skeletons[var1].showing;
    }
 }

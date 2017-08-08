@@ -4,36 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iw")
+@ObfuscatedName("ih")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lgg;"
+      signature = "Lgq;"
    )
    @Export("varbits")
-   static NodeCache varbits;
-   @ObfuscatedName("d")
+   public static NodeCache varbits;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lim;"
+      signature = "Lit;"
    )
    @Export("varbit_ref")
    public static IndexDataBase varbit_ref;
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -381006165
+      intValue = -1284096809
    )
    @Export("configId")
    public int configId;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -2135933811
+      intValue = -1680383001
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1822521877
+      intValue = 1085653157
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
@@ -42,12 +42,12 @@ public class Varbit extends CacheableNode {
       varbits = new NodeCache(64);
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lfw;II)V",
-      garbageValue = "1336831530"
+      signature = "(Lfh;II)V",
+      garbageValue = "2016255471"
    )
-   void method4394(Buffer var1, int var2) {
+   void method4443(Buffer var1, int var2) {
       if(var2 == 1) {
          this.configId = var1.readUnsignedShort();
          this.leastSignificantBit = var1.readUnsignedByte();
@@ -56,20 +56,20 @@ public class Varbit extends CacheableNode {
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lfw;I)V",
-      garbageValue = "516503983"
+      signature = "(Lfh;I)V",
+      garbageValue = "644844778"
    )
    @Export("decode")
-   void decode(Buffer var1) {
+   public void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4394(var1, var2);
+         this.method4443(var1, var2);
       }
    }
 }

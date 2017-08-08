@@ -4,54 +4,59 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dx")
+@ObfuscatedName("dr")
 @Implements("ItemLayer")
 public final class ItemLayer {
+   @ObfuscatedName("lc")
+   @ObfuscatedGetter(
+      intValue = -771840719
+   )
+   static int field1779;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lep;"
+      signature = "Leg;"
    )
    @Export("bottom")
    Renderable bottom;
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1764459181
+      intValue = 1968758709
    )
    @Export("x")
    int x;
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 195821065
+      intValue = -1677739219
    )
    @Export("y")
    int y;
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1425378881
+      intValue = 710018217
    )
    @Export("hash")
    int hash;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1945496319
+      intValue = 1255755031
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lep;"
+      signature = "Leg;"
    )
    @Export("middle")
    Renderable middle;
-   @ObfuscatedName("f")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lep;"
+      signature = "Leg;"
    )
    @Export("top")
    Renderable top;
-   @ObfuscatedName("t")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -677779379
+      intValue = 252038669
    )
    @Export("height")
    int height;

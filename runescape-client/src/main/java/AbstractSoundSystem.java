@@ -1,142 +1,138 @@
-import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("du")
+@ObfuscatedName("dw")
 @Implements("AbstractSoundSystem")
 public class AbstractSoundSystem {
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Ldl;"
-   )
-   @Export("task")
-   static SoundTask task;
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1385562627
+      intValue = 1022844451
    )
    @Export("sampleRate")
    public static int sampleRate;
-   @ObfuscatedName("t")
-   static ScheduledExecutorService field1622;
-   @ObfuscatedName("ai")
-   @ObfuscatedSignature(
-      signature = "[Ldz;"
+   @ObfuscatedName("gm")
+   @ObfuscatedGetter(
+      intValue = 567099077
    )
-   class121[] field1620;
-   @ObfuscatedName("p")
+   static int field1623;
+   @ObfuscatedName("ax")
+   @ObfuscatedSignature(
+      signature = "[Ldl;"
+   )
+   class120[] field1635;
+   @ObfuscatedName("h")
    @Export("samples")
    protected int[] samples;
-   @ObfuscatedName("j")
-   boolean field1630;
-   @ObfuscatedName("u")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Ldz;"
+      signature = "Ldl;"
    )
-   class121 field1619;
-   @ObfuscatedName("ar")
+   class120 field1620;
+   @ObfuscatedName("q")
+   boolean field1627;
+   @ObfuscatedName("al")
    @ObfuscatedGetter(
-      intValue = 417852953
+      intValue = 1142418835
    )
-   int field1631;
-   @ObfuscatedName("k")
+   int field1632;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 324818283
+      intValue = -105154451
    )
    @Export("offset")
    int offset;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1353667003
-   )
-   int field1618;
-   @ObfuscatedName("ae")
-   @ObfuscatedSignature(
-      signature = "[Ldz;"
-   )
-   class121[] field1632;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      longValue = 6608270102751499047L
-   )
-   long field1625;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      longValue = -8516031701922993873L
-   )
-   long field1621;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1204011043
-   )
-   int field1626;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -27545887
-   )
-   int field1628;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 885841813
-   )
-   int field1627;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -778790409
-   )
-   int field1623;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -180319161
+      intValue = -1264547485
+   )
+   int field1619;
+   @ObfuscatedName("ae")
+   @ObfuscatedSignature(
+      signature = "[Ldl;"
+   )
+   class120[] field1618;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      longValue = -4018438610054297163L
+   )
+   long field1625;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      longValue = -3254034508329271813L
+   )
+   long field1621;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -1484189553
+   )
+   int field1626;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1749155729
+   )
+   int field1628;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1298695055
+   )
+   int field1616;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1068691987
    )
    int field1624;
-   @ObfuscatedName("z")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      longValue = -968285332397559361L
+      longValue = -1751325912972313203L
    )
    long field1629;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 40447039
+   )
+   int field1633;
 
    protected AbstractSoundSystem() {
-      this.field1618 = 32;
-      this.field1621 = BuildType.currentTimeMs();
+      this.field1619 = 32;
+      this.field1621 = class170.currentTimeMs();
       this.field1625 = 0L;
       this.field1626 = 0;
-      this.field1627 = 0;
+      this.field1616 = 0;
       this.field1628 = 0;
       this.field1629 = 0L;
-      this.field1630 = true;
-      this.field1631 = 0;
-      this.field1632 = new class121[8];
-      this.field1620 = new class121[8];
+      this.field1627 = true;
+      this.field1632 = 0;
+      this.field1618 = new class120[8];
+      this.field1635 = new class120[8];
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1362352874"
+      garbageValue = "-784678513"
    )
-   protected void vmethod2089() throws Exception {
+   protected void vmethod2051() throws Exception {
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-526456117"
+      signature = "(B)V",
+      garbageValue = "28"
    )
    protected void close() {
    }
 
-   @ObfuscatedName("ag")
+   @ObfuscatedName("au")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1502157451"
+      garbageValue = "-621590121"
    )
-   public final synchronized void method2077() {
+   public final synchronized void method2039() {
       if(this.samples != null) {
-         long var1 = BuildType.currentTimeMs();
+         long var1 = class170.currentTimeMs();
 
          try {
             if(0L != this.field1625) {
@@ -146,7 +142,7 @@ public class AbstractSoundSystem {
 
                this.create(this.offset);
                this.field1625 = 0L;
-               this.field1630 = true;
+               this.field1627 = true;
             }
 
             int var3 = this.size();
@@ -154,7 +150,7 @@ public class AbstractSoundSystem {
                this.field1626 = this.field1628 - var3;
             }
 
-            int var4 = this.field1623 + this.field1624;
+            int var4 = this.field1624 + this.field1633;
             if(var4 + 256 > 16384) {
                var4 = 16128;
             }
@@ -168,50 +164,50 @@ public class AbstractSoundSystem {
                this.close();
                this.create(this.offset);
                var3 = 0;
-               this.field1630 = true;
+               this.field1627 = true;
                if(var4 + 256 > this.offset) {
                   var4 = this.offset - 256;
-                  this.field1624 = var4 - this.field1623;
+                  this.field1624 = var4 - this.field1633;
                }
             }
 
             while(var3 < var4) {
-               this.method2082(this.samples, 256);
+               this.method2044(this.samples, 256);
                this.write();
                var3 += 256;
             }
 
             if(var1 > this.field1629) {
-               if(!this.field1630) {
-                  if(this.field1626 == 0 && this.field1627 == 0) {
+               if(!this.field1627) {
+                  if(this.field1626 == 0 && this.field1616 == 0) {
                      this.close();
-                     this.field1625 = 2000L + var1;
+                     this.field1625 = var1 + 2000L;
                      return;
                   }
 
-                  this.field1624 = Math.min(this.field1627, this.field1626);
-                  this.field1627 = this.field1626;
+                  this.field1624 = Math.min(this.field1616, this.field1626);
+                  this.field1616 = this.field1626;
                } else {
-                  this.field1630 = false;
+                  this.field1627 = false;
                }
 
                this.field1626 = 0;
-               this.field1629 = 2000L + var1;
+               this.field1629 = var1 + 2000L;
             }
 
             this.field1628 = var3;
          } catch (Exception var7) {
             this.close();
-            this.field1625 = 2000L + var1;
+            this.field1625 = var1 + 2000L;
          }
 
          try {
-            if(var1 > 500000L + this.field1621) {
+            if(var1 > this.field1621 + 500000L) {
                var1 = this.field1621;
             }
 
             while(var1 > 5000L + this.field1621) {
-               this.method2104(256);
+               this.method2043(256);
                this.field1621 += (long)(256000 / sampleRate);
             }
          } catch (Exception var6) {
@@ -221,99 +217,99 @@ public class AbstractSoundSystem {
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "57"
+      garbageValue = "-112"
    )
    @Export("size")
    protected int size() throws Exception {
       return this.offset;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-33"
+      signature = "(II)V",
+      garbageValue = "-1775773269"
    )
    protected void create(int var1) throws Exception {
    }
 
-   @ObfuscatedName("au")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1188910866"
-   )
-   final void method2104(int var1) {
-      this.field1631 -= var1;
-      if(this.field1631 < 0) {
-         this.field1631 = 0;
-      }
-
-      if(this.field1619 != null) {
-         this.field1619.vmethod3898(var1);
-      }
-
-   }
-
    @ObfuscatedName("ae")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-62"
+      signature = "(II)V",
+      garbageValue = "-272824638"
    )
-   public final synchronized void method2079() {
-      this.field1630 = true;
+   final void method2043(int var1) {
+      this.field1632 -= var1;
+      if(this.field1632 < 0) {
+         this.field1632 = 0;
+      }
 
-      try {
-         this.vmethod2089();
-      } catch (Exception var2) {
-         this.close();
-         this.field1625 = BuildType.currentTimeMs() + 2000L;
+      if(this.field1620 != null) {
+         this.field1620.vmethod3890(var1);
       }
 
    }
 
    @ObfuscatedName("ao")
    @ObfuscatedSignature(
-      signature = "(Ldz;IB)V",
-      garbageValue = "-122"
+      signature = "(B)V",
+      garbageValue = "2"
    )
-   final void method2083(class121 var1, int var2) {
-      int var3 = var2 >> 5;
-      class121 var4 = this.field1620[var3];
-      if(var4 == null) {
-         this.field1632[var3] = var1;
-      } else {
-         var4.field1709 = var1;
+   public final synchronized void method2041() {
+      this.field1627 = true;
+
+      try {
+         this.vmethod2051();
+      } catch (Exception var2) {
+         this.close();
+         this.field1625 = class170.currentTimeMs() + 2000L;
       }
 
-      this.field1620[var3] = var1;
-      var1.field1707 = var2;
    }
 
-   @ObfuscatedName("ai")
+   @ObfuscatedName("aw")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2139737389"
+      signature = "(Ldl;IS)V",
+      garbageValue = "28708"
    )
-   public final synchronized void method2080() {
-      if(task != null) {
+   final void method2045(class120 var1, int var2) {
+      int var3 = var2 >> 5;
+      class120 var4 = this.field1635[var3];
+      if(var4 == null) {
+         this.field1618[var3] = var1;
+      } else {
+         var4.field1706 = var1;
+      }
+
+      this.field1635[var3] = var1;
+      var1.field1705 = var2;
+   }
+
+   @ObfuscatedName("al")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "23"
+   )
+   public final synchronized void method2042() {
+      if(class164.task != null) {
          boolean var1 = true;
 
          for(int var2 = 0; var2 < 2; ++var2) {
-            if(this == task.systems[var2]) {
-               task.systems[var2] = null;
+            if(this == class164.task.systems[var2]) {
+               class164.task.systems[var2] = null;
             }
 
-            if(task.systems[var2] != null) {
+            if(class164.task.systems[var2] != null) {
                var1 = false;
             }
          }
 
          if(var1) {
-            field1622.shutdownNow();
-            field1622 = null;
-            task = null;
+            IndexFile.field2258.shutdownNow();
+            IndexFile.field2258 = null;
+            class164.task = null;
          }
       }
 
@@ -321,33 +317,33 @@ public class AbstractSoundSystem {
       this.samples = null;
    }
 
-   @ObfuscatedName("ar")
+   @ObfuscatedName("ah")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "360101606"
+      signature = "(B)V",
+      garbageValue = "-21"
    )
-   public final void method2130() {
-      this.field1630 = true;
+   public final void method2040() {
+      this.field1627 = true;
    }
 
-   @ObfuscatedName("ad")
-   final void method2082(int[] var1, int var2) {
+   @ObfuscatedName("ax")
+   final void method2044(int[] var1, int var2) {
       int var3 = var2;
-      if(XClanMember.highMemory) {
+      if(class25.highMemory) {
          var3 = var2 << 1;
       }
 
-      class183.method3507(var1, 0, var3);
-      this.field1631 -= var2;
-      if(this.field1619 != null && this.field1631 <= 0) {
-         this.field1631 += sampleRate >> 4;
-         Varcs.method1835(this.field1619);
-         this.method2083(this.field1619, this.field1619.vmethod2352());
+      class184.method3454(var1, 0, var3);
+      this.field1632 -= var2;
+      if(this.field1620 != null && this.field1632 <= 0) {
+         this.field1632 += sampleRate >> 4;
+         Projectile.method1790(this.field1620);
+         this.method2045(this.field1620, this.field1620.vmethod2312());
          int var4 = 0;
          int var5 = 255;
 
          int var6;
-         class121 var10;
+         class120 var10;
          label104:
          for(var6 = 7; var5 != 0; --var6) {
             int var7;
@@ -364,7 +360,7 @@ public class AbstractSoundSystem {
                if((var9 & 1) != 0) {
                   var5 &= ~(1 << var7);
                   var10 = null;
-                  class121 var11 = this.field1632[var7];
+                  class120 var11 = this.field1618[var7];
 
                   label98:
                   while(true) {
@@ -373,40 +369,40 @@ public class AbstractSoundSystem {
                            break label98;
                         }
 
-                        class124 var12 = var11.field1706;
-                        if(var12 != null && var12.field1740 > var8) {
+                        class123 var12 = var11.field1704;
+                        if(var12 != null && var12.field1738 > var8) {
                            var5 |= 1 << var7;
                            var10 = var11;
-                           var11 = var11.field1709;
+                           var11 = var11.field1706;
                         } else {
-                           var11.field1708 = true;
-                           int var13 = var11.vmethod3916();
+                           var11.field1707 = true;
+                           int var13 = var11.vmethod3904();
                            var4 += var13;
                            if(var12 != null) {
-                              var12.field1740 += var13;
+                              var12.field1738 += var13;
                            }
 
-                           if(var4 >= this.field1618) {
+                           if(var4 >= this.field1619) {
                               break label104;
                            }
 
-                           class121 var14 = var11.vmethod3913();
+                           class120 var14 = var11.vmethod3906();
                            if(var14 != null) {
-                              for(int var15 = var11.field1707; var14 != null; var14 = var11.vmethod3895()) {
-                                 this.method2083(var14, var15 * var14.vmethod2352() >> 8);
+                              for(int var15 = var11.field1705; var14 != null; var14 = var11.vmethod3908()) {
+                                 this.method2045(var14, var15 * var14.vmethod2312() >> 8);
                               }
                            }
 
-                           class121 var18 = var11.field1709;
-                           var11.field1709 = null;
+                           class120 var18 = var11.field1706;
+                           var11.field1706 = null;
                            if(var10 == null) {
-                              this.field1632[var7] = var18;
+                              this.field1618[var7] = var18;
                            } else {
-                              var10.field1709 = var18;
+                              var10.field1706 = var18;
                            }
 
                            if(var18 == null) {
-                              this.field1620[var7] = var10;
+                              this.field1635[var7] = var10;
                            }
 
                            var11 = var18;
@@ -421,46 +417,108 @@ public class AbstractSoundSystem {
          }
 
          for(var6 = 0; var6 < 8; ++var6) {
-            class121 var16 = this.field1632[var6];
-            class121[] var17 = this.field1632;
-            this.field1620[var6] = null;
+            class120 var16 = this.field1618[var6];
+            class120[] var17 = this.field1618;
+            this.field1635[var6] = null;
 
             for(var17[var6] = null; var16 != null; var16 = var10) {
-               var10 = var16.field1709;
-               var16.field1709 = null;
+               var10 = var16.field1706;
+               var16.field1706 = null;
             }
          }
       }
 
-      if(this.field1631 < 0) {
-         this.field1631 = 0;
+      if(this.field1632 < 0) {
+         this.field1632 = 0;
       }
 
-      if(this.field1619 != null) {
-         this.field1619.vmethod3897(var1, 0, var2);
+      if(this.field1620 != null) {
+         this.field1620.vmethod3889(var1, 0, var2);
       }
 
-      this.field1621 = BuildType.currentTimeMs();
+      this.field1621 = class170.currentTimeMs();
    }
 
    @ObfuscatedName("y")
    protected void write() throws Exception {
    }
 
-   @ObfuscatedName("at")
+   @ObfuscatedName("ay")
    @ObfuscatedSignature(
-      signature = "(Ldz;B)V",
-      garbageValue = "86"
+      signature = "(Ldl;I)V",
+      garbageValue = "1372028014"
    )
-   public final synchronized void method2114(class121 var1) {
-      this.field1619 = var1;
+   public final synchronized void method2038(class120 var1) {
+      this.field1620 = var1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1385995989"
+      signature = "(B)V",
+      garbageValue = "59"
    )
-   protected void vmethod2084() throws Exception {
+   protected void vmethod2046() throws Exception {
+   }
+
+   @ObfuscatedName("e")
+   static final int method2082(double var0, double var2, double var4) {
+      double var6 = var4;
+      double var8 = var4;
+      double var10 = var4;
+      if(0.0D != var2) {
+         double var12;
+         if(var4 < 0.5D) {
+            var12 = (1.0D + var2) * var4;
+         } else {
+            var12 = var2 + var4 - var4 * var2;
+         }
+
+         double var14 = var4 * 2.0D - var12;
+         double var16 = 0.3333333333333333D + var0;
+         if(var16 > 1.0D) {
+            --var16;
+         }
+
+         double var20 = var0 - 0.3333333333333333D;
+         if(var20 < 0.0D) {
+            ++var20;
+         }
+
+         if(var16 * 6.0D < 1.0D) {
+            var6 = var16 * (var12 - var14) * 6.0D + var14;
+         } else if(2.0D * var16 < 1.0D) {
+            var6 = var12;
+         } else if(3.0D * var16 < 2.0D) {
+            var6 = (var12 - var14) * (0.6666666666666666D - var16) * 6.0D + var14;
+         } else {
+            var6 = var14;
+         }
+
+         if(6.0D * var0 < 1.0D) {
+            var8 = var14 + (var12 - var14) * 6.0D * var0;
+         } else if(2.0D * var0 < 1.0D) {
+            var8 = var12;
+         } else if(var0 * 3.0D < 2.0D) {
+            var8 = var14 + (var12 - var14) * (0.6666666666666666D - var0) * 6.0D;
+         } else {
+            var8 = var14;
+         }
+
+         if(var20 * 6.0D < 1.0D) {
+            var10 = 6.0D * (var12 - var14) * var20 + var14;
+         } else if(var20 * 2.0D < 1.0D) {
+            var10 = var12;
+         } else if(3.0D * var20 < 2.0D) {
+            var10 = (var12 - var14) * (0.6666666666666666D - var20) * 6.0D + var14;
+         } else {
+            var10 = var14;
+         }
+      }
+
+      int var22 = (int)(256.0D * var6);
+      int var13 = (int)(var8 * 256.0D);
+      int var23 = (int)(var10 * 256.0D);
+      int var15 = var23 + (var13 << 8) + (var22 << 16);
+      return var15;
    }
 }

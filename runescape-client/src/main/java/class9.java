@@ -1,21 +1,77 @@
+import java.awt.Desktop;
+import java.awt.Desktop.Action;
+import java.net.URI;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("r")
+@ObfuscatedName("u")
 public abstract class class9 extends Node {
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1775908210"
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 385031027
    )
-   abstract void vmethod55();
+   @Export("priority")
+   public static int priority;
+   @ObfuscatedName("po")
+   @ObfuscatedGetter(
+      intValue = 171439365
+   )
+   static int field248;
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;Lke;I)Ljava/lang/String;",
-      garbageValue = "-921054791"
+      signature = "(B)V",
+      garbageValue = "-36"
    )
-   public static String method48(CharSequence var0, class289 var1) {
+   abstract void vmethod53();
+
+   @ObfuscatedName("n")
+   static final void method41(long var0) {
+      try {
+         Thread.sleep(var0);
+      } catch (InterruptedException var3) {
+         ;
+      }
+
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZZB)V",
+      garbageValue = "0"
+   )
+   public static void method46(String var0, boolean var1, boolean var2) {
+      if(var1) {
+         if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
+            try {
+               Desktop.getDesktop().browse(new URI(var0));
+               return;
+            } catch (Exception var4) {
+               ;
+            }
+         }
+
+         if(class56.field661.startsWith("win")) {
+            ScriptVarType.method24(var0, 0);
+         } else if(class56.field661.startsWith("mac")) {
+            WidgetNode.method1092(var0, 1, "openjs");
+         } else {
+            ScriptVarType.method24(var0, 2);
+         }
+      } else {
+         ScriptVarType.method24(var0, 3);
+      }
+
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;Lkt;I)Ljava/lang/String;",
+      garbageValue = "-787758433"
+   )
+   public static String method50(CharSequence var0, class290 var1) {
       if(var0 == null) {
          return null;
       } else {
@@ -48,8 +104,8 @@ public abstract class class9 extends Node {
             if(var1 == null) {
                var6 = 12;
             } else {
-               switch(var1.field3840) {
-               case 7:
+               switch(var1.field3845) {
+               case 6:
                   var6 = 20;
                   break;
                default:
@@ -62,8 +118,8 @@ public abstract class class9 extends Node {
 
                for(int var11 = var2; var11 < var3; ++var11) {
                   char var7 = var0.charAt(var11);
-                  if(class7.method39(var7)) {
-                     char var8 = class43.method634(var7);
+                  if(class64.method1084(var7)) {
+                     char var8 = class223.method4076(var7);
                      if(var8 != 0) {
                         var9.append(var8);
                      }
@@ -79,6 +135,80 @@ public abstract class class9 extends Node {
          }
 
          return null;
+      }
+   }
+
+   @ObfuscatedName("ff")
+   @ObfuscatedSignature(
+      signature = "(Lcp;B)V",
+      garbageValue = "79"
+   )
+   static final void method43(Actor var0) {
+      int var1 = var0.field1238 - Client.gameCycle;
+      int var2 = var0.field1247 * 128 + var0.field1254 * 64;
+      int var3 = var0.field1254 * 64 + var0.field1251 * 128;
+      var0.x += (var2 - var0.x) / var1;
+      var0.y += (var3 - var0.y) / var1;
+      var0.field1263 = 0;
+      var0.orientation = var0.field1253;
+   }
+
+   @ObfuscatedName("jk")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZI)Z",
+      garbageValue = "1337453017"
+   )
+   @Export("isFriended")
+   static boolean isFriended(String var0, boolean var1) {
+      if(var0 == null) {
+         return false;
+      } else {
+         String var2 = method50(var0, class29.field422);
+
+         for(int var3 = 0; var3 < Client.friendCount; ++var3) {
+            if(var2.equalsIgnoreCase(method50(Client.friends[var3].name, class29.field422)) && (!var1 || Client.friends[var3].world != 0)) {
+               return true;
+            }
+         }
+
+         if(var2.equalsIgnoreCase(method50(class54.localPlayer.name, class29.field422))) {
+            return true;
+         } else {
+            return false;
+         }
+      }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(ILhc;I)Lcc;",
+      garbageValue = "-1522530424"
+   )
+   static Script method49(int var0, class220 var1) {
+      Script var2 = (Script)Script.field1525.get((long)(var0 << 16));
+      if(var2 != null) {
+         return var2;
+      } else {
+         String var3 = String.valueOf(var0);
+         int var4 = class253.indexScripts.getFile(var3);
+         if(var4 == -1) {
+            return null;
+         } else {
+            byte[] var5 = class253.indexScripts.method4120(var4);
+            if(var5 != null) {
+               if(var5.length <= 1) {
+                  return null;
+               }
+
+               var2 = class97.method1829(var5);
+               if(var2 != null) {
+                  Script.field1525.put(var2, (long)(var0 << 16));
+                  return var2;
+               }
+            }
+
+            return null;
+         }
       }
    }
 }

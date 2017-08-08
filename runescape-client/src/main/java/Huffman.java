@@ -1,18 +1,24 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fx")
+@ObfuscatedName("fu")
 @Implements("Huffman")
 public class Huffman {
-   @ObfuscatedName("d")
+   @ObfuscatedName("gn")
+   @ObfuscatedGetter(
+      intValue = -604967875
+   )
+   static int field2305;
+   @ObfuscatedName("e")
    @Export("masks")
    int[] masks;
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @Export("bits")
    byte[] bits;
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @Export("keys")
    int[] keys;
 
@@ -99,10 +105,10 @@ public class Huffman {
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "([BI[BIIB)I",
-      garbageValue = "0"
+      signature = "([BI[BIII)I",
+      garbageValue = "1308744820"
    )
    @Export("decompress")
    public int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
@@ -243,10 +249,10 @@ public class Huffman {
       }
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "([BII[BII)I",
-      garbageValue = "-331425859"
+      garbageValue = "-513538408"
    )
    @Export("compress")
    public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -264,7 +270,7 @@ public class Huffman {
          int var11 = var7 >> 3;
          int var12 = var7 & 7;
          var6 &= -var12 >> 31;
-         int var13 = var11 + (var12 + var10 - 1 >> 3);
+         int var13 = var11 + (var10 + var12 - 1 >> 3);
          var12 += 24;
          var4[var11] = (byte)(var6 |= var9 >>> var12);
          if(var11 < var13) {
@@ -292,5 +298,46 @@ public class Huffman {
       }
 
       return (var7 + 7 >> 3) - var5;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "622717833"
+   )
+   public static String method3110(CharSequence var0) {
+      int var2 = var0.length();
+      char[] var3 = new char[var2];
+
+      for(int var4 = 0; var4 < var2; ++var4) {
+         var3[var4] = 42;
+      }
+
+      String var1 = new String(var3);
+      return var1;
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "1"
+   )
+   static int method3115(int var0, int var1, int var2) {
+      return (class61.tileSettings[var0][var1][var2] & 8) != 0?0:(var0 > 0 && (class61.tileSettings[1][var1][var2] & 2) != 0?var0 - 1:var0);
+   }
+
+   @ObfuscatedName("gc")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "76583296"
+   )
+   static final void method3117(int var0, int var1) {
+      if(Client.field1103 == 2) {
+         class113.method2110((Client.hintArrowX - class25.baseX << 7) + Client.field938, (Client.hintArrowY - ScriptEvent.baseY << 7) + Client.field1014, Client.hintArrowType * 2);
+         if(Client.screenY > -1 && Client.gameCycle % 20 < 10) {
+            class252.pkIcons[0].method5143(var0 + Client.screenY - 12, Client.screenX + var1 - 28);
+         }
+
+      }
    }
 }
