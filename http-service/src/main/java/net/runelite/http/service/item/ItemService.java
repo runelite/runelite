@@ -27,8 +27,6 @@ package net.runelite.http.service.item;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonParseException;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,22 +36,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.ItemType;
 import net.runelite.http.api.item.SearchResult;
 import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
-import spark.Request;
-import spark.Response;
 
+@RestController
+@RequestMapping("/item")
 public class ItemService
 {
 	private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
@@ -94,14 +101,11 @@ public class ItemService
 		.maximumSize(1024L)
 		.build();
 
-	@Inject
-	public ItemService(@Named("Runelite SQL2O") Sql2o sql2o)
+	@Autowired
+	public ItemService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
 	{
 		this.sql2o = sql2o;
-	}
 
-	public void init()
-	{
 		try (Connection con = sql2o.open())
 		{
 			con.createQuery(CREATE_ITEMS)
@@ -132,91 +136,79 @@ public class ItemService
 		}
 	}
 
-	public Item getItem(Request request, Response response)
+	@RequestMapping("/{itemId}")
+	public Item getItem(HttpServletResponse response, @PathVariable int itemId)
 	{
-		int itemId = Integer.parseInt(request.params("id"));
-
 		ItemEntry item = getItem(itemId);
 		if (item != null)
 		{
-			response.type("application/json");
-			response.header(RUNELITE_CACHE, "HIT");
+			response.setHeader(RUNELITE_CACHE, "HIT");
 			return item.toItem();
 		}
 
 		item = fetchItem(itemId);
 		if (item != null)
 		{
-			response.type("application/json");
-			response.header(RUNELITE_CACHE, "MISS");
+			response.setHeader(RUNELITE_CACHE, "MISS");
 			return item.toItem();
 		}
 
 		return null;
 	}
 
-	public byte[] getIcon(Request request, Response response)
+	@RequestMapping(path = "/{itemId}/icon", produces = "image/gif")
+	public byte[] getIcon(HttpServletResponse response, @PathVariable int itemId)
 	{
-		int itemId = Integer.parseInt(request.params("id"));
-
 		ItemEntry item = getItem(itemId);
 		if (item != null && item.getIcon() != null)
 		{
-			response.type("image/gif");
-			response.header(RUNELITE_CACHE, "HIT");
+			response.setHeader(RUNELITE_CACHE, "HIT");
 			return item.getIcon();
 		}
 
 		item = fetchItem(itemId);
 		if (item != null)
 		{
-			response.type("image/gif");
-			response.header(RUNELITE_CACHE, "MISS");
+			response.setHeader(RUNELITE_CACHE, "MISS");
 			return item.getIcon();
 		}
 
 		return null;
 	}
 
-	public byte[] getIconLarge(Request request, Response response)
+	@RequestMapping(path = "/{itemId}/icon/large", produces = "image/gif")
+	public byte[] getIconLarge(HttpServletResponse response, @PathVariable int itemId)
 	{
-		int itemId = Integer.parseInt(request.params("id"));
-
 		ItemEntry item = getItem(itemId);
 		if (item != null && item.getIcon_large() != null)
 		{
-			response.type("image/gif");
-			response.header(RUNELITE_CACHE, "HIT");
+			response.setHeader(RUNELITE_CACHE, "HIT");
 			return item.getIcon_large();
 		}
 
 		item = fetchItem(itemId);
 		if (item != null)
 		{
-			response.type("image/gif");
-			response.header(RUNELITE_CACHE, "MISS");
+			response.setHeader(RUNELITE_CACHE, "MISS");
 			return item.getIcon_large();
 		}
 
 		return null;
 	}
 
-	public ItemPrice getPrice(Request request, Response response)
+	@RequestMapping("/{itemId}/price")
+	public ItemPrice getPrice(
+		HttpServletResponse response,
+		@PathVariable int itemId,
+		@RequestParam(required = false) Instant time
+	)
 	{
-		int itemId = Integer.parseInt(request.params("id"));
-		String ptime = request.params("time");
-		Instant time = null;
 		Instant now = Instant.now();
 		boolean hit = true;
 
-		if (ptime != null)
+		if (time != null && time.isAfter(now))
 		{
-			time = Instant.ofEpochMilli(Long.parseLong(ptime));
-
-			if (time.isAfter(now))
-			{
-				time = now;
-			}
+			time = now;
 		}
 
 		ItemEntry item = getItem(itemId);
@@ -263,23 +255,20 @@ public class ItemService
 		itemPrice.setPrice(priceEntry.getPrice());
 		itemPrice.setTime(priceEntry.getTime());
 
-		response.type("application/json");
-		response.header(RUNELITE_CACHE, hit ? "HIT" : "MISS");
+		response.setHeader(RUNELITE_CACHE, hit ? "HIT" : "MISS");
 		return itemPrice;
 	}
 
-	public SearchResult search(Request request, Response response)
+	@RequestMapping("/search")
+	public SearchResult search(HttpServletResponse response, @RequestParam String query)
 	{
-		String query = request.queryParams("query");
-
 		// rs api seems to require lowercase
 		query = query.toLowerCase();
 
 		SearchResult searchResult = cachedSearches.getIfPresent(query);
 		if (searchResult != null)
 		{
-			response.type("application/json");
-			response.header(RUNELITE_CACHE, "HIT");
+			response.setHeader(RUNELITE_CACHE, "HIT");
 			return searchResult;
 		}
 
@@ -314,8 +303,7 @@ public class ItemService
 				con.commit();
 			}
 
-			response.type("application/json");
-			response.header(RUNELITE_CACHE, "MISS");
+			response.setHeader(RUNELITE_CACHE, "MISS");
 			return searchResult;
 		}
 		catch (IOException ex)
@@ -460,7 +448,7 @@ public class ItemService
 			.addQueryParameter("item", "" + itemId)
 			.build();
 
-		okhttp3.Request request = new okhttp3.Request.Builder()
+		Request request = new Request.Builder()
 			.url(itemUrl)
 			.build();
 
@@ -476,7 +464,7 @@ public class ItemService
 			.addPathSegment(itemId + ".json")
 			.build();
 
-		okhttp3.Request request = new okhttp3.Request.Builder()
+		Request request = new Request.Builder()
 			.url(priceUrl)
 			.build();
 
@@ -490,16 +478,16 @@ public class ItemService
 			.addQueryParameter("alpha", query)
 			.build();
 
-		okhttp3.Request request = new okhttp3.Request.Builder()
+		Request request = new Request.Builder()
 			.url(searchUrl)
 			.build();
 
 		return fetchJson(request, RSSearch.class);
 	}
 
-	private <T> T fetchJson(okhttp3.Request request, Class<T> clazz) throws IOException
+	private <T> T fetchJson(Request request, Class<T> clazz) throws IOException
 	{
-		okhttp3.Response response = RuneliteAPI.CLIENT.newCall(request).execute();
+		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
 
 		if (!response.isSuccessful())
 		{
@@ -521,11 +509,11 @@ public class ItemService
 	{
 		HttpUrl httpUrl = HttpUrl.parse(url);
 
-		okhttp3.Request request = new okhttp3.Request.Builder()
+		Request request = new Request.Builder()
 			.url(httpUrl)
 			.build();
 
-		okhttp3.Response response = RuneliteAPI.CLIENT.newCall(request).execute();
+		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
 
 		if (!response.isSuccessful())
 		{

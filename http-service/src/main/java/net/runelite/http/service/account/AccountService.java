@@ -30,14 +30,15 @@ import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gson.Gson;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.account.OAuthResponse;
 import net.runelite.http.api.ws.messages.LoginResponse;
@@ -46,12 +47,17 @@ import net.runelite.http.service.ws.WSService;
 import net.runelite.http.service.ws.WSSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
-import spark.Request;
-import spark.Response;
 
+@RestController
+@RequestMapping("/account")
 public class AccountService
 {
 	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
@@ -86,21 +92,21 @@ public class AccountService
 	private final Sql2o sql2o;
 	private final String oauthClientId;
 	private final String oauthClientSecret;
+	private final AuthFilter auth;
 
-	@Inject
+	@Autowired
 	public AccountService(
-		@Named("Runelite SQL2O") Sql2o sql2o,
-		@Named("OAuth Client ID") String oauthClientId,
-		@Named("OAuth Client Secret") String oauthClientSecret
+		@Qualifier("Runelite SQL2O") Sql2o sql2o,
+		@Qualifier("OAuth Client ID") String oauthClientId,
+		@Qualifier("OAuth Client Secret") String oauthClientSecret,
+		AuthFilter auth
 	)
 	{
 		this.sql2o = sql2o;
 		this.oauthClientId = oauthClientId;
 		this.oauthClientSecret = oauthClientSecret;
-	}
+		this.auth = auth;
 
-	public void init()
-	{
 		try (Connection con = sql2o.open())
 		{
 			con.createQuery(CREATE_SESSIONS)
@@ -121,7 +127,8 @@ public class AccountService
 		}
 	}
 
-	public OAuthResponse login(Request request, Response response)
+	@RequestMapping("/login")
+	public OAuthResponse login()
 	{
 		UUID uuid = UUID.randomUUID();
 
@@ -143,24 +150,25 @@ public class AccountService
 		lr.setOauthUrl(authorizationUrl);
 		lr.setUid(uuid);
 
-		response.type("application/json");
 		return lr;
 	}
 
-	public Object callback(Request request, Response response) throws IOException, InterruptedException, ExecutionException
+	@RequestMapping("/callback")
+	public Object callback(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		@RequestParam String error,
+		@RequestParam String code,
+		@RequestParam State state
+	) throws InterruptedException, ExecutionException, IOException
 	{
-		String error = request.queryParams("error");
-
 		if (error != null)
 		{
 			logger.info("Error in oauth callback: {}", error);
 			return null;
 		}
 
-		String authorizationCode = request.queryParams("code");
-		State state = gson.fromJson(request.queryParams("state"), State.class);
-
-		logger.info("Got authorization code {} for uuid {}", authorizationCode, state.getUuid());
+		logger.info("Got authorization code {} for uuid {}", code, state.getUuid());
 
 		OAuth20Service service = new ServiceBuilder()
 			.apiKey(oauthClientId)
@@ -170,13 +178,13 @@ public class AccountService
 			.state(gson.toJson(state))
 			.build(GoogleApi20.instance());
 
-		OAuth2AccessToken accessToken = service.getAccessToken(authorizationCode);
+		OAuth2AccessToken accessToken = service.getAccessToken(code);
 
 		// Access user info
 		OAuthRequest orequest = new OAuthRequest(Verb.GET, USERINFO);
 		service.signRequest(accessToken, orequest);
 
-		com.github.scribejava.core.model.Response oresponse = service.execute(orequest);
+		Response oresponse = service.execute(orequest);
 
 		if (oresponse.getCode() / 100 != 2)
 		{
@@ -213,7 +221,7 @@ public class AccountService
 			logger.info("Created session for user {}", userInfo.getEmail());
 		}
 
-		response.redirect(RL_REDIR);
+		response.sendRedirect(RL_REDIR);
 
 		notifySession(state.getUuid(), userInfo.getEmail());
 
@@ -237,9 +245,15 @@ public class AccountService
 		service.send(response);
 	}
 
-	public Object logout(Request request, Response response)
+	@RequestMapping("/logout")
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		SessionEntry session = request.session().attribute("session");
+		SessionEntry session = auth.handle(request, response);
+
+		if (session == null)
+		{
+			return;
+		}
 
 		try (Connection con = sql2o.open())
 		{
@@ -247,13 +261,11 @@ public class AccountService
 				.addParameter("uuid", session.getUuid().toString())
 				.executeUpdate();
 		}
-
-		return "";
 	}
 
-	public Object sessionCheck(Request request, Response response)
+	@RequestMapping("/session-check")
+	public void sessionCheck(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		// Auth filter would kick this out before here
-		return "";
+		auth.handle(request, response);
 	}
 }

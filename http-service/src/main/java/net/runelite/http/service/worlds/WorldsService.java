@@ -32,30 +32,28 @@ import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
 import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
-import spark.Request;
-import spark.Response;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping("/worlds")
 public class WorldsService
 {
 	private static final HttpUrl WORLD_URL = HttpUrl.parse("http://www.runescape.com/g=oldscape/slr.ws?order=LPWM");
 
 	private HttpUrl url = WORLD_URL;
 
-	public WorldResult listWorlds(Request request, Response response) throws IOException
-	{
-		WorldResult result = listWorlds();
-		response.type("application/json");
-		return result;
-	}
-
+	@RequestMapping
 	public WorldResult listWorlds() throws IOException
 	{
-		okhttp3.Request okrequest = new okhttp3.Request.Builder()
+		Request okrequest = new Request.Builder()
 			.url(url)
 			.build();
 
-		okhttp3.Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute();
+		Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute();
 		byte[] b;
 
 		try (ResponseBody body = okresponse.body())

@@ -24,21 +24,25 @@
  */
 package net.runelite.http.service.xtea;
 
-import com.google.gson.Gson;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.runelite.http.api.xtea.XteaKey;
 import net.runelite.http.api.xtea.XteaRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import org.springframework.web.bind.annotation.RestController;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
-import spark.Request;
-import spark.Response;
 
+@RestController
+@RequestMapping("/xtea")
 public class XteaService
 {
 	private static final Logger logger = LoggerFactory.getLogger(XteaService.class);
@@ -54,16 +58,12 @@ public class XteaService
 		+ ") ENGINE=InnoDB;";
 
 	private final Sql2o sql2o;
-	private final Gson gson = new Gson();
 
-	@Inject
-	public XteaService(@Named("Runelite SQL2O") Sql2o sql2o)
+	@Autowired
+	public XteaService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
 	{
 		this.sql2o = sql2o;
-	}
 
-	public void init()
-	{
 		try (Connection con = sql2o.beginTransaction())
 		{
 			con.createQuery(CREATE_SQL)
@@ -71,10 +71,9 @@ public class XteaService
 		}
 	}
 
-	public Object submit(Request request, Response response)
+	@RequestMapping(method = POST)
+	public Object submit(@RequestBody XteaRequest xteaRequest)
 	{
-		XteaRequest xteaRequest = gson.fromJson(request.body(), XteaRequest.class);
-
 		try (Connection con = sql2o.beginTransaction())
 		{
 			Query query = con.createQuery("insert ignore into xtea (rev, region, key1, key2, key3, key4) values (:rev, :region, :key1, :key2, :key3, :key4)");
@@ -97,18 +96,14 @@ public class XteaService
 		return "";
 	}
 
-	public List<XteaKey> get(Request request, Response response)
+	@RequestMapping("/{revision}")
+	public List<XteaKey> get(@PathVariable int revision)
 	{
-		String revStr = request.params("rev");
-		int revision = Integer.parseInt(revStr);
-
 		try (Connection con = sql2o.open())
 		{
 			List<XteaEntry> entries = con.createQuery("select * from xtea where rev = :rev")
 				.addParameter("rev", revision)
 				.executeAndFetch(XteaEntry.class);
-
-			response.type("application/json");
 
 			return entries.stream()
 				.map(XteaService::entryToKey)

@@ -32,9 +32,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.mock;
-import spark.Request;
-import spark.Response;
 
 public class HiscoreServiceTest
 {
@@ -94,10 +91,7 @@ public class HiscoreServiceTest
 		HiscoreService hiscores = new HiscoreService();
 		hiscores.setUrl(server.url("/"));
 
-		Request request = mock(Request.class);
-		Response response = mock(Response.class);
-
-		HiscoreResult result = hiscores.lookup(request, response);
+		HiscoreResult result = hiscores.lookup("zezima");
 
 		Assert.assertEquals(50, result.getAttack().getLevel());
 		Assert.assertEquals(159727L, result.getFishing().getExperience());
