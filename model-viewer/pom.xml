@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>cache</artifactId>
-			<version>1.2.2-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
