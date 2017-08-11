@@ -27,7 +27,6 @@ package net.runelite.api;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.rs.api.Model;
 
 public class Player extends Actor
 {
@@ -57,11 +56,6 @@ public class Player extends Actor
 	public PlayerComposition getPlayerComposition()
 	{
 		return new PlayerComposition(player.getComposition());
-	}
-
-	public Model getModel()
-	{
-		return player.getModel();
 	}
 
 	public Polygon[] getPolygons()

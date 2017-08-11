@@ -22,16 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.api;
 
-package net.runelite.rs.api;
-
-import net.runelite.mapping.Import;
-
-public interface Renderable extends Node
+public class Model
 {
-	@Import("modelHeight")
-	int getModelHeight();
+	private final net.runelite.rs.api.Model model;
 
-	@Import("getModel")
-	Model getModel();
+	public Model(net.runelite.rs.api.Model model)
+	{
+		this.model = model;
+	}
+
+	public int[] getVerticesX()
+	{
+		return model.getVerticesX();
+	}
+
+	public int[] getVerticesY()
+	{
+		return model.getVerticesY();
+	}
+
+	public int[] getVerticesZ()
+	{
+		return model.getVerticesZ();
+	}
+
+	public int[] getTrianglesX()
+	{
+		return model.getTrianglesX();
+	}
+
+	public int[] getTrianglesY()
+	{
+		return model.getTrianglesY();
+	}
+
+	public int[] getTrianglesZ()
+	{
+		return model.getTrianglesZ();
+	}
 }
