@@ -94,7 +94,7 @@ public class HiscorePanel extends PluginPanel
 
         // Panel "constants"
         Border subPanelBorder = new EtchedBorder(EtchedBorder.LOWERED);
-        Insets subPanelInsets = new Insets(2,4,2,4);
+        Insets subPanelInsets = new Insets(2, 4, 2, 4);
 
         // Setting base panel size
         Dimension panelSize = new Dimension(PANEL_WIDTH, PANEL_HEIGHT);
@@ -186,7 +186,7 @@ public class HiscorePanel extends PluginPanel
 
         JPanel totalPanel = new JPanel();
         totalPanel.setBorder(subPanelBorder);
-        totalPanel.setLayout(new GridLayout(1,2));
+        totalPanel.setLayout(new GridLayout(1, 2));
         try
         {
             totalPanel.add(makeSkillPanel(Skill.OVERALL, overallLabel));
@@ -214,10 +214,9 @@ public class HiscorePanel extends PluginPanel
         details.setFont(UIManager.getFont("Label.font"));
         details.setWrapStyleWord(true);
         details.setLineWrap(true);
-        details.setMargin(new Insets(2,4,4,4));
-        details.setText(System.lineSeparator() +
-                        System.lineSeparator() +
-                        System.lineSeparator());
+        details.setMargin(new Insets(2, 4, 4, 4));
+        details.setRows(4);
+        details.setText("");
 
         detailsPanel.add(details, BorderLayout.CENTER);
 
@@ -236,17 +235,19 @@ public class HiscorePanel extends PluginPanel
         switch (skillName)
         {
             case "Overall":
-                text =  "Total Level" + System.lineSeparator() +
+                text = "Total Level" + System.lineSeparator() +
                         "Rank: " + formatter.format(skill.getRank()) + System.lineSeparator() +
                         "Total Experience: " + formatter.format(skill.getExperience());
                 break;
             case "Combat":
-                text =  "Exact Combat Level: " + formatter.format(combatLevel.getPreciseCombatLevel()) + System.lineSeparator() +
-                        "Class: " + System.lineSeparator() +
-                        "Experience: ";
+                text = "Exact Combat Level: " + formatter.format(combatLevel.getPreciseCombatLevel()) + System.lineSeparator() +
+                        "Experience: " + formatter.format(result.getAttack().getExperience() +
+                        result.getStrength().getExperience() + result.getDefence().getExperience() +
+                        result.getHitpoints().getExperience() + result.getMagic().getExperience() +
+                        result.getRanged().getExperience() + result.getPrayer().getExperience());
                 break;
             default:
-                text =  "Skill: " + skillName + System.lineSeparator() +
+                text = "Skill: " + skillName + System.lineSeparator() +
                         "Rank: " + formatter.format(skill.getRank()) + System.lineSeparator() +
                         "Experience: " + formatter.format(skill.getExperience());
                 break;
@@ -274,7 +275,7 @@ public class HiscorePanel extends PluginPanel
             @Override
             public void mouseReleased(MouseEvent e)
             {
-                JLabel source = (JLabel)e.getSource();
+                JLabel source = (JLabel) e.getSource();
                 String skillName = (String) source.getClientProperty("skillName");
                 showSkillDetail(skillName);
             }
@@ -341,6 +342,9 @@ public class HiscorePanel extends PluginPanel
 
         // Special case for combat label, for now
         combatLabel.setText(Integer.toString(combatLevel.getCombatLevel()));
+
+        // Clear details panel
+        details.setText("");
     }
 
     private void showSkillDetail(String skillName)
