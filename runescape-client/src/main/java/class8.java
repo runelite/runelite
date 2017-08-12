@@ -220,7 +220,7 @@ public final class class8 extends class9 {
                                                                                                                                                                                  continue label311;
                                                                                                                                                                               }
 
-                                                                                                                                                                              class84.SHAPE_VERTICIES[var11][var23] = var33;
+                                                                                                                                                                              class84.SHAPE_VERTICES[var11][var23] = var33;
                                                                                                                                                                               ++var23;
                                                                                                                                                                            }
                                                                                                                                                                         }
@@ -233,7 +233,7 @@ public final class class8 extends class9 {
                                                                                                                                                                            throw new RuntimeException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class84.intStack[++class84.intStackSize - 1] = class84.SHAPE_VERTICIES[var11][var12];
+                                                                                                                                                                        class84.intStack[++class84.intStackSize - 1] = class84.SHAPE_VERTICES[var11][var12];
                                                                                                                                                                      } else if(var31 == 46) {
                                                                                                                                                                         var11 = var6[var20];
                                                                                                                                                                         class84.intStackSize -= 2;
@@ -242,7 +242,7 @@ public final class class8 extends class9 {
                                                                                                                                                                            throw new RuntimeException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class84.SHAPE_VERTICIES[var11][var12] = class84.intStack[class84.intStackSize + 1];
+                                                                                                                                                                        class84.SHAPE_VERTICES[var11][var12] = class84.intStack[class84.intStackSize + 1];
                                                                                                                                                                      } else if(var31 == 47) {
                                                                                                                                                                         var21 = class47.chatMessages.getVarcString(var6[var20]);
                                                                                                                                                                         if(var21 == null) {

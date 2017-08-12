@@ -9,8 +9,8 @@ public class class84 {
    @ObfuscatedName("w")
    static int[] field1329;
    @ObfuscatedName("k")
-   @Export("SHAPE_VERTICIES")
-   static int[][] SHAPE_VERTICIES;
+   @Export("SHAPE_VERTICES")
+   static int[][] SHAPE_VERTICES;
    @ObfuscatedName("v")
    @Export("intStack")
    static int[] intStack;
@@ -65,7 +65,7 @@ public class class84 {
 
    static {
       field1329 = new int[5];
-      SHAPE_VERTICIES = new int[5][5000];
+      SHAPE_VERTICES = new int[5][5000];
       intStack = new int[1000];
       scriptStringStack = new String[1000];
       scriptStackCount = 0;
