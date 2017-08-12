@@ -377,6 +377,10 @@ public class ConfigManager
 		{
 			return Integer.parseInt(str);
 		}
+		if (type == Color.class)
+		{
+			return Color.decode(str);
+		}
 		return str;
 	}
 }
