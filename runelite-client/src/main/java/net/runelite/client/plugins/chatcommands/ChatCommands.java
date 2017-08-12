@@ -166,7 +166,7 @@ public class ChatCommands extends Plugin
 			if (itemComposition != null)
 			{
 				int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
-				builder.append(" HA value ").append(alchPrice);
+				builder.append(" HA value ").append(String.format("%,d", alchPrice));
 			}
 
 			logger.debug("Setting response {}", builder.toString());
