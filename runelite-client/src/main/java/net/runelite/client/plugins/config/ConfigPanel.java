@@ -24,30 +24,16 @@
  */
 package net.runelite.client.plugins.config;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
@@ -141,6 +127,12 @@ public class ConfigPanel extends PluginPanel
 			JTextField textField = (JTextField) component;
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), textField.getText());
 		}
+
+		if (component instanceof JColorChooser)
+		{
+			JColorChooser jColorChooser = (JColorChooser) component;
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), String.valueOf(jColorChooser.getColor().getRGB()));
+		}
 	}
 
 	private void openGroupConfigPanel(ConfigDescriptor cd, ConfigManager configManager)
@@ -203,6 +195,42 @@ public class ConfigPanel extends PluginPanel
 				});
 
 				item.add(textField, BorderLayout.EAST);
+			}
+
+			if (cid.getType() == Color.class)
+			{
+				JButton colorPicker = new JButton("Pick a color");
+				colorPicker.setBackground(Color.decode(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
+				colorPicker.addMouseListener(new MouseAdapter()
+				{
+					@Override
+					public void mouseClicked(MouseEvent e)
+					{
+						final JFrame parent = new JFrame();
+						parent.setLocation(RuneLite.getRunelite().getGui().getX(), RuneLite.getRunelite().getGui().getY());
+						JColorChooser jColorChooser = new JColorChooser(Color.decode(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
+						jColorChooser.getSelectionModel().addChangeListener(new ChangeListener()
+						{
+							@Override
+							public void stateChanged(ChangeEvent e)
+							{
+								colorPicker.setBackground(jColorChooser.getColor());
+							}
+						});
+						parent.addWindowListener(new WindowAdapter()
+						{
+							@Override
+							public void windowClosing(WindowEvent e)
+							{
+								changeConfiguration(jColorChooser, cd, cid);
+							}
+						});
+						parent.add(jColorChooser);
+						parent.pack();
+						parent.setVisible(true);
+					}
+				});
+				item.add(colorPicker, BorderLayout.EAST);
 			}
 
 			itemPanel.add(item);
