@@ -407,7 +407,7 @@ public class ModelViewer
 				y *= TILE_SCALE;
 
 				/*
-				 Split into two triangles with verticies
+				 Split into two triangles with vertices
 				 x,y,z1   x+1,y,z2 x,y+1,z3
 				 x,y+1,z3 x+1,y,z2 x+1,y+1,z4
 				
