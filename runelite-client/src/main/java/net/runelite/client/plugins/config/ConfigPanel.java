@@ -200,6 +200,7 @@ public class ConfigPanel extends PluginPanel
 			if (cid.getType() == Color.class)
 			{
 				JButton colorPicker = new JButton("Pick a color");
+				colorPicker.setFocusable(false);
 				colorPicker.setBackground(Color.decode(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
 				colorPicker.addMouseListener(new MouseAdapter()
 				{
