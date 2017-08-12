@@ -38,12 +38,32 @@ public class Model
 		this.model = model;
 	}
 
-	public List<Triangle> getTriangles()
+	public List<Vertex> getVerticies()
 	{
 		int[] verticiesX = model.getVerticesX();
 		int[] verticiesY = model.getVerticesY();
 		int[] verticiesZ = model.getVerticesZ();
 
+		assert verticiesX.length == verticiesY.length;
+		assert verticiesY.length == verticiesZ.length;
+
+		List<Vertex> verticies = new ArrayList<>();
+
+		for (int i = 0; i < verticiesX.length; ++i)
+		{
+			Vertex v = new Vertex(
+				verticiesX[i],
+				verticiesY[i],
+				verticiesZ[i]
+			);
+			verticies.add(v);
+		}
+
+		return verticies;
+	}
+
+	public List<Triangle> getTriangles()
+	{
 		int[] trianglesX = model.getTrianglesX();
 		int[] trianglesY = model.getTrianglesY();
 		int[] trianglesZ = model.getTrianglesZ();
@@ -51,6 +71,7 @@ public class Model
 		assert trianglesX.length == trianglesY.length;
 		assert trianglesY.length == trianglesZ.length;
 
+		List<Vertex> verticies = getVerticies();
 		List<Triangle> triangles = new ArrayList<>(trianglesX.length);
 
 		for (int i = 0; i < trianglesX.length; ++i)
@@ -59,25 +80,11 @@ public class Model
 			int triangleY = trianglesY[i];
 			int triangleZ = trianglesZ[i];
 
-			Vertex x = new Vertex(
-				verticiesX[triangleX],
-				verticiesY[triangleX],
-				verticiesZ[triangleX]
+			Triangle triangle = new Triangle(
+				verticies.get(triangleX),
+				verticies.get(triangleY),
+				verticies.get(triangleZ)
 			);
-
-			Vertex y = new Vertex(
-				verticiesX[triangleY],
-				verticiesY[triangleY],
-				verticiesZ[triangleY]
-			);
-
-			Vertex z = new Vertex(
-				verticiesX[triangleZ],
-				verticiesY[triangleZ],
-				verticiesZ[triangleZ]
-			);
-
-			Triangle triangle = new Triangle(x, y, z);
 			triangles.add(triangle);
 		}
 
