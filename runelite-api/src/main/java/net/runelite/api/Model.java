@@ -24,6 +24,11 @@
  */
 package net.runelite.api;
 
+import java.util.ArrayList;
+import java.util.List;
+import net.runelite.api.model.Triangle;
+import net.runelite.api.model.Vertex;
+
 public class Model
 {
 	private final net.runelite.rs.api.Model model;
@@ -33,33 +38,49 @@ public class Model
 		this.model = model;
 	}
 
-	public int[] getVerticesX()
+	public List<Triangle> getTriangles()
 	{
-		return model.getVerticesX();
-	}
+		int[] verticiesX = model.getVerticesX();
+		int[] verticiesY = model.getVerticesY();
+		int[] verticiesZ = model.getVerticesZ();
 
-	public int[] getVerticesY()
-	{
-		return model.getVerticesY();
-	}
+		int[] trianglesX = model.getTrianglesX();
+		int[] trianglesY = model.getTrianglesY();
+		int[] trianglesZ = model.getTrianglesZ();
 
-	public int[] getVerticesZ()
-	{
-		return model.getVerticesZ();
-	}
+		assert trianglesX.length == trianglesY.length;
+		assert trianglesY.length == trianglesZ.length;
 
-	public int[] getTrianglesX()
-	{
-		return model.getTrianglesX();
-	}
+		List<Triangle> triangles = new ArrayList<>(trianglesX.length);
 
-	public int[] getTrianglesY()
-	{
-		return model.getTrianglesY();
-	}
+		for (int i = 0; i < trianglesX.length; ++i)
+		{
+			int triangleX = trianglesX[i];
+			int triangleY = trianglesY[i];
+			int triangleZ = trianglesZ[i];
 
-	public int[] getTrianglesZ()
-	{
-		return model.getTrianglesZ();
+			Vertex x = new Vertex(
+				verticiesX[triangleX],
+				verticiesY[triangleX],
+				verticiesZ[triangleX]
+			);
+
+			Vertex y = new Vertex(
+				verticiesX[triangleY],
+				verticiesY[triangleY],
+				verticiesZ[triangleY]
+			);
+
+			Vertex z = new Vertex(
+				verticiesX[triangleZ],
+				verticiesY[triangleZ],
+				verticiesZ[triangleZ]
+			);
+
+			Triangle triangle = new Triangle(x, y, z);
+			triangles.add(triangle);
+		}
+
+		return triangles;
 	}
 }
