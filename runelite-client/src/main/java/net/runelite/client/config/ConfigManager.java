@@ -361,7 +361,8 @@ public class ConfigManager
 			{
 				setConfiguration(group.keyName(), item.keyName(), String.valueOf(((Color) defaultValue).getRGB()));
 			}
-			else {
+			else
+			{
 				setConfiguration(group.keyName(), item.keyName(), defaultValue.toString());
 			}
 		}
