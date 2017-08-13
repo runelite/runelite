@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import java.awt.Color;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -52,5 +53,75 @@ public interface ChatCommandsConfig
 	default boolean lvl()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "enableRecolor",
+		name = "Enable command recolor",
+		description = "Configures whether chat commands are recolored"
+	)
+	default boolean recolorEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "hexColorPublic",
+		name = "Public chat",
+		description = "Color of Public chat"
+	)
+	default Color getPublicRecolor()
+	{
+		return Color.decode("#0000FF");
+	}
+
+	@ConfigItem(
+		keyName = "hexColorPublicH",
+		name = "Public chat highlight",
+		description = "Color of Public chat highlight"
+	)
+	default Color getPublicHRecolor()
+	{
+		return Color.decode("#000000");
+	}
+
+	@ConfigItem(
+		keyName = "hexColorPrivate",
+		name = "Private chat",
+		description = "Color of Private chat"
+	)
+	default Color getPrivateRecolor()
+	{
+		return Color.decode("#0088FF");
+	}
+
+	@ConfigItem(
+		keyName = "hexColorPrivateH",
+		name = "Private chat highlight",
+		description = "Color of Private chat highlight"
+	)
+	default Color getPrivateHRecolor()
+	{
+		return Color.decode("#002783");
+	}
+
+	@ConfigItem(
+		keyName = "hexColorCc",
+		name = "Clan chat",
+		description = "Color of Clan chat"
+	)
+	default Color getCcRecolor()
+	{
+		return Color.decode("#900000");
+	}
+
+	@ConfigItem(
+		keyName = "hexColorCcH",
+		name = "Clan chat Highlight",
+		description = "Color of Clan chat highlight"
+	)
+	default Color getCcHRecolor()
+	{
+		return Color.decode("#000000");
 	}
 }
