@@ -83,7 +83,7 @@ public interface ChatCommandsConfig
 	)
 	default Color getPublicHRecolor()
 	{
-		return Color.decode("000000");
+		return Color.decode("#000000");
 	}
 
 	@ConfigItem(
