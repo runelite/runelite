@@ -24,6 +24,8 @@
  */
 package net.runelite.api.model;
 
+import java.util.Objects;
+
 public class Triangle
 {
 	private final Vertex a;
@@ -41,6 +43,43 @@ public class Triangle
 	public String toString()
 	{
 		return "Triangle{" + "a=" + a + ", b=" + b + ", c=" + c + '}';
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 7;
+		hash = 13 * hash + Objects.hashCode(this.a);
+		hash = 13 * hash + Objects.hashCode(this.b);
+		hash = 13 * hash + Objects.hashCode(this.c);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Triangle other = (Triangle) obj;
+		if (!Objects.equals(this.a, other.a))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.b, other.b))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.c, other.c))
+		{
+			return false;
+		}
+		return true;
 	}
 
 	public Vertex getA()

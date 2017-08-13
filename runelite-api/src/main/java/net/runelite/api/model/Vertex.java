@@ -43,6 +43,43 @@ public class Vertex
 		return "Vertex{" + "x=" + x + ", y=" + y + ", z=" + z + '}';
 	}
 
+	@Override
+	public int hashCode()
+	{
+		int hash = 7;
+		hash = 67 * hash + this.x;
+		hash = 67 * hash + this.y;
+		hash = 67 * hash + this.z;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Vertex other = (Vertex) obj;
+		if (this.x != other.x)
+		{
+			return false;
+		}
+		if (this.y != other.y)
+		{
+			return false;
+		}
+		if (this.z != other.z)
+		{
+			return false;
+		}
+		return true;
+	}
+
 	public int getX()
 	{
 		return x;
