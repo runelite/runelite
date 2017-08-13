@@ -30,7 +30,6 @@ import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.PluginPanel;
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.ColorSliderUI;
 import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.ColorWheelChooser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -218,7 +217,8 @@ public class ConfigPanel extends PluginPanel
 						{
 							Image image = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
 							parent.setIconImage(image);
-						} catch (IOException e1)
+						}
+						catch (IOException e1)
 						{
 							logger.warn(null, e1);
 						}
