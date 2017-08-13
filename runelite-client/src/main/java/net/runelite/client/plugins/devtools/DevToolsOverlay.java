@@ -252,6 +252,14 @@ public class DevToolsOverlay extends Overlay
 					{
 						OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
 					}
+
+					// Draw a polygon around the convex hull
+					// of the model vertices
+					Polygon p = gameObject.getConvexHull();
+					if (p != null)
+					{
+						graphics.drawPolygon(p);
+					}
 				}
 			}
 		}
