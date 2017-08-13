@@ -303,18 +303,6 @@ public class HiscorePanel extends PluginPanel
         details.setText("Click a skill to show details");
     }
 
-    private void setLabel(Skill skillName, net.runelite.http.api.hiscore.Skill skill)
-    {
-        for (JLabel label : skillLabels)
-        {
-            if (label.getClientProperty("skillName").equals(skillName.getName()))
-            {
-                label.setText("" + skill.getLevel());
-                break;
-            }
-        }
-    }
-
     private static String sanitize(String lookup)
     {
         return lookup.replace('\u00A0', ' ');
