@@ -41,6 +41,7 @@ import javax.swing.event.MouseInputAdapter;
 
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
+import net.runelite.client.ui.IconTextField;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -53,10 +54,9 @@ public class HiscorePanel extends PluginPanel
 
     private final RuneLite runelite;
 
-    private JTextField input;
-    private JButton lookupButton;
+    private final IconTextField input;
 
-    private List<JLabel> skillLabels = new LinkedList<>();
+    private final List<JLabel> skillLabels = new LinkedList<>();
 
     private final JPanel statsPanel = new JPanel();
     private final JTextArea details = new JTextArea();
@@ -73,6 +73,7 @@ public class HiscorePanel extends PluginPanel
         // This was an EtchedBorder, but the style would change when the window was maximized.
         Border subPanelBorder = BorderFactory.createLineBorder(this.getBackground().brighter(), 2);
         Insets subPanelInsets = new Insets(2, 4, 2, 4);
+        Font labelFont = UIManager.getFont("Label.font");
 
         // Setting base panel size
         Dimension panelSize = new Dimension(PANEL_WIDTH, PANEL_HEIGHT);
@@ -90,26 +91,27 @@ public class HiscorePanel extends PluginPanel
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.NORTH;
 
-        // Text box and submit button
+        // Search box
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BorderLayout(7, 7));
         inputPanel.setBorder(subPanelBorder);
-        input = new JTextField();
+        Icon search = null;
+        try
+        {
+            search = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream("/search.png")));
+        }
+        catch (IOException ex)
+        {
+            logger.warn(null, ex);
+        }
+        input = new IconTextField();
+        input.setIcon(search);
         input.addActionListener((ActionEvent e) ->
         {
             ScheduledExecutorService executor = runelite.getExecutor();
             executor.execute(this::lookup);
         });
         inputPanel.add(input, BorderLayout.CENTER);
-
-        lookupButton = new JButton("Lookup");
-        inputPanel.add(lookupButton, BorderLayout.LINE_END);
-
-        lookupButton.addActionListener((ActionEvent e) ->
-        {
-            ScheduledExecutorService executor = runelite.getExecutor();
-            executor.execute(this::lookup);
-        });
 
         c.gridx = 0;
         c.gridy = 0;
@@ -160,7 +162,7 @@ public class HiscorePanel extends PluginPanel
         details.setCursor(null);
         details.setOpaque(false);
         details.setFocusable(false);
-        details.setFont(UIManager.getFont("Label.font"));
+        details.setFont(labelFont);
         details.setWrapStyleWord(true);
         details.setLineWrap(true);
         details.setMargin(new Insets(2, 4, 4, 4));
@@ -179,6 +181,11 @@ public class HiscorePanel extends PluginPanel
 
     private void changeDetail(String skillName)
     {
+        if (result == null)
+        {
+            return;
+        }
+
         NumberFormat formatter = NumberFormat.getInstance();
         net.runelite.http.api.hiscore.Skill requestedSkill = result.getSkill(skillName);
 
