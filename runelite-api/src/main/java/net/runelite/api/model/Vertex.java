@@ -24,6 +24,8 @@
  */
 package net.runelite.api.model;
 
+import net.runelite.api.Perspective;
+
 public class Vertex
 {
 	private final int x;
@@ -93,5 +95,22 @@ public class Vertex
 	public int getZ()
 	{
 		return z;
+	}
+
+	/**
+	 * Rotate the vertex by the given orientation
+	 * @param orientation
+	 * @return the newly rotated vertex
+	 */
+	public Vertex rotate(int orientation)
+	{
+		int sin = Perspective.SINE[orientation];
+		int cos = Perspective.COSINE[orientation];
+
+		return new Vertex(
+			x * cos + z * sin >> 16,
+			y,
+			z * cos - x * sin >> 16
+		);
 	}
 }
