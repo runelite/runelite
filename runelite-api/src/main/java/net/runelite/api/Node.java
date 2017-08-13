@@ -68,7 +68,7 @@ public class Node
 
 		if (node instanceof net.runelite.rs.api.Renderable)
 		{
-			return new Renderable((net.runelite.rs.api.Renderable) node);
+			return Renderable.of((net.runelite.rs.api.Renderable) node);
 		}
 
 		if (node instanceof net.runelite.rs.api.WidgetNode)
