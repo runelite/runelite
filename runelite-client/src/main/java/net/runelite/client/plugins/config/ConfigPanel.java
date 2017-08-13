@@ -24,23 +24,29 @@
  */
 package net.runelite.client.plugins.config;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.PluginPanel;
+import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.ColorSliderUI;
+import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.ColorWheelChooser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class ConfigPanel extends PluginPanel
 {
@@ -208,8 +214,29 @@ public class ConfigPanel extends PluginPanel
 					public void mouseClicked(MouseEvent e)
 					{
 						final JFrame parent = new JFrame();
+						try
+						{
+							Image image = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
+							parent.setIconImage(image);
+						} catch (IOException e1)
+						{
+							logger.warn(null, e1);
+						}
 						parent.setLocation(RuneLite.getRunelite().getGui().getX(), RuneLite.getRunelite().getGui().getY());
 						JColorChooser jColorChooser = new JColorChooser(Color.decode(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
+						for (AbstractColorChooserPanel abstractColorChooserPanel : jColorChooser.getChooserPanels())
+						{
+							if (abstractColorChooserPanel instanceof ColorWheelChooser)
+							{
+								for (Component component : abstractColorChooserPanel.getComponents())
+								{
+									if (component instanceof JSlider)
+									{
+										((JSlider) component).setUI(new RuneLiteColorSliderUI((JSlider)component));
+									}
+								}
+							}
+						}
 						jColorChooser.getSelectionModel().addChangeListener(new ChangeListener()
 						{
 							@Override
@@ -224,6 +251,7 @@ public class ConfigPanel extends PluginPanel
 							public void windowClosing(WindowEvent e)
 							{
 								changeConfiguration(jColorChooser, cd, cid);
+								super.windowClosing(e);
 							}
 						});
 						parent.add(jColorChooser);
