@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.concurrent.ScheduledExecutorService;
@@ -50,6 +51,17 @@ import org.slf4j.LoggerFactory;
 
 public class HiscorePanel extends PluginPanel
 {
+	private static final List<Skill> SKILL_PANEL_ORDER = Arrays.asList(
+			Skill.ATTACK, Skill.HITPOINTS, Skill.MINING,
+			Skill.STRENGTH, Skill.AGILITY, Skill.SMITHING,
+			Skill.DEFENCE, Skill.HERBLORE, Skill.FISHING,
+			Skill.RANGED, Skill.THIEVING, Skill.COOKING,
+			Skill.PRAYER, Skill.CRAFTING, Skill.FIREMAKING,
+			Skill.MAGIC, Skill.FLETCHING, Skill.WOODCUTTING,
+			Skill.RUNECRAFT, Skill.SLAYER, Skill.FARMING,
+			Skill.CONSTRUCTION, Skill.HUNTER
+	);
+
 	private static final Logger logger = LoggerFactory.getLogger(HiscorePanel.class);
 
 	private final RuneLite runelite;
@@ -126,14 +138,10 @@ public class HiscorePanel extends PluginPanel
 		statsPanel.setLayout(stats);
 		statsPanel.setBorder(subPanelBorder);
 
-		// For each skill in the Skill enum, create a Label and add it to the UI
-		for (Skill skill : Skill.values())
+		// For each skill on the ingame skill panel, create a Label and add it to the UI
+		for (Skill skill : SKILL_PANEL_ORDER)
 		{
-			// We'll create the Total Level label below since it goes in a different subpanel
-			if (!(skill == Skill.OVERALL))
-			{
-				statsPanel.add(makeSkillPanel(skill.getName()));
-			}
+			statsPanel.add(makeSkillPanel(skill.getName()));
 		}
 
 		c.gridx = 0;
