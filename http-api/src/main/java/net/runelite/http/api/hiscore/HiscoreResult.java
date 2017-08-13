@@ -304,6 +304,62 @@ public class HiscoreResult
 		this.construction = construction;
 	}
 
+	public Skill getSkill(String skillRequested)
+	{
+		switch (skillRequested)
+		{
+			case "Attack":
+				return getAttack();
+			case "Defence":
+				return getDefence();
+			case "Strength":
+				return getStrength();
+			case "Hitpoints":
+				return getHitpoints();
+			case "Ranged":
+				return getRanged();
+			case "Prayer":
+				return getPrayer();
+			case "Magic":
+				return getMagic();
+			case "Cooking":
+				return getCooking();
+			case "Woodcutting":
+				return getWoodcutting();
+			case "Fletching":
+				return getFletching();
+			case "Fishing":
+				return getFishing();
+			case "Firemaking":
+				return getFiremaking();
+			case "Crafting":
+				return getCrafting();
+			case "Smithing":
+				return getSmithing();
+			case "Mining":
+				return getMining();
+			case "Herblore":
+				return getHerblore();
+			case "Agility":
+				return getAgility();
+			case "Thieving":
+				return getThieving();
+			case "Slayer":
+				return getSlayer();
+			case "Farming":
+				return getFarming();
+			case "Runecraft":
+				return getRunecraft();
+			case "Hunter":
+				return getHunter();
+			case "Construction":
+				return getConstruction();
+			case "Overall":
+				return getOverall();
+		}
+		throw new IllegalArgumentException("Invalid skill");
+	}
+
 	@Override
 	public int hashCode()
 	{
