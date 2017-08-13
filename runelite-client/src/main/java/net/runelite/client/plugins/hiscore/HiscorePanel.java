@@ -300,7 +300,7 @@ public class HiscorePanel extends PluginPanel
 
         // Clear details panel
         details.setFont(UIManager.getFont("Label.font").deriveFont(Font.ITALIC));
-        details.setText("Click a skill to show details");
+        details.setText("Click a skill for details");
     }
 
     private static String sanitize(String lookup)
