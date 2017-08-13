@@ -27,7 +27,8 @@ package net.runelite.api;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.rs.api.Model;
+import net.runelite.api.model.Triangle;
+import net.runelite.api.model.Vertex;
 
 public class Player extends Actor
 {
@@ -59,44 +60,49 @@ public class Player extends Actor
 		return new PlayerComposition(player.getComposition());
 	}
 
-	public Model getModel()
-	{
-		return player.getModel();
-	}
-
 	public Polygon[] getPolygons()
 	{
-		List<Polygon> polys = new ArrayList<>();
 		Model model = getModel();
-		int localX = player.getX();
-		int localY = player.getY();
-
-		// models are orientated north (1024) and there are 2048 angles total
-		int orientation = (player.getOrientation() + 1024) % 2048;
 
 		if (model == null)
 		{
 			return null;
 		}
 
-		int[] verticesX = model.getVerticesX().clone();
-		int[] verticesY = model.getVerticesY();
-		int[] verticesZ = model.getVerticesZ().clone();
+		int localX = player.getX();
+		int localY = player.getY();
 
-		int[] trianglesX = model.getTrianglesX();
-		int[] trianglesY = model.getTrianglesY();
-		int[] trianglesZ = model.getTrianglesZ();
+		// models are orientated north (1024) and there are 2048 angles total
+		int orientation = (player.getOrientation() + 1024) % 2048;
+
+		List<Triangle> triangles = model.getTriangles();
 
 		if (orientation != 0)
 		{
-			setOrientation(model, orientation, verticesX, verticesZ);
+			triangles = rotate(triangles, orientation);
 		}
 
-		for (int i = 0; i < trianglesX.length; i++)
+		List<Polygon> polys = new ArrayList<>();
+		for (Triangle triangle : triangles)
 		{
-			Point x = Perspective.worldToCanvas(client, localX - verticesX[trianglesX[i]], localY - verticesZ[trianglesX[i]], -verticesY[trianglesX[i]]);
-			Point y = Perspective.worldToCanvas(client, localX - verticesX[trianglesY[i]], localY - verticesZ[trianglesY[i]], -verticesY[trianglesY[i]]);
-			Point z = Perspective.worldToCanvas(client, localX - verticesX[trianglesZ[i]], localY - verticesZ[trianglesZ[i]], -verticesY[trianglesZ[i]]);
+			Vertex vx = triangle.getA();
+			Vertex vy = triangle.getB();
+			Vertex vz = triangle.getC();
+
+			Point x = Perspective.worldToCanvas(client,
+				localX - vx.getX(),
+				localY - vx.getZ(),
+				-vx.getY());
+
+			Point y = Perspective.worldToCanvas(client,
+				localX - vy.getX(),
+				localY - vy.getZ(),
+				-vy.getY());
+
+			Point z = Perspective.worldToCanvas(client,
+				localX - vz.getX(),
+				localY - vz.getZ(),
+				-vz.getY());
 
 			int xx[] =
 			{
@@ -112,18 +118,34 @@ public class Player extends Actor
 		return polys.toArray(new Polygon[polys.size()]);
 	}
 
-	private void setOrientation(Model model, int orientation, int[] verticesX, int[] verticesZ)
+	private List<Triangle> rotate(List<Triangle> triangles, int orientation)
+	{
+		List<Triangle> rotatedTriangles = new ArrayList<>();
+		for (Triangle triangle : triangles)
+		{
+			Vertex a = triangle.getA();
+			Vertex b = triangle.getB();
+			Vertex c = triangle.getC();
+
+			Triangle rotatedTriangle = new Triangle(
+				rotate(a, orientation),
+				rotate(b, orientation),
+				rotate(c, orientation)
+			);
+			rotatedTriangles.add(rotatedTriangle);
+		}
+		return rotatedTriangles;
+	}
+
+	private Vertex rotate(Vertex vertex, int orientation)
 	{
 		int sin = Perspective.SINE[orientation];
 		int cos = Perspective.COSINE[orientation];
 
-		int[] originalX = model.getVerticesX();
-		int[] originalZ = model.getVerticesZ();
-
-		for (int i = 0; i < originalX.length; ++i)
-		{
-			verticesX[i] = originalX[i] * cos + originalZ[i] * sin >> 16;
-			verticesZ[i] = originalZ[i] * cos - originalX[i] * sin >> 16;
-		}
+		return new Vertex(
+			vertex.getX() * cos + vertex.getZ() * sin >> 16,
+			vertex.getY(),
+			vertex.getZ() * cos - vertex.getX() * sin >> 16
+		);
 	}
 }

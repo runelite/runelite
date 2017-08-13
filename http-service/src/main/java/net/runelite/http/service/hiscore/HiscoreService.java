@@ -31,30 +31,42 @@ import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.hiscore.HiscoreSkill;
 import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import spark.Request;
-import spark.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping("/hiscore")
 public class HiscoreService
 {
+	private static final Logger logger = LoggerFactory.getLogger(HiscoreService.class);
+
 	private static final HttpUrl RUNESCAPE_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool/index_lite.ws");
 
 	private HttpUrl url = RUNESCAPE_HISCORE_SERVICE;
 
-	private HiscoreResultBuilder lookup(String username) throws IOException
+	private HiscoreResultBuilder lookupUsername(String username) throws IOException
 	{
 		HttpUrl hiscoreUrl = url.newBuilder()
 			.addQueryParameter("player", username)
 			.build();
 
-		okhttp3.Request okrequest = new okhttp3.Request.Builder()
+		logger.info("Built URL {}", hiscoreUrl);
+
+		Request okrequest = new Request.Builder()
 			.url(hiscoreUrl)
 			.build();
 
-		okhttp3.Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute();
+		Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute();
 		String responseStr;
 
 		try (ResponseBody body = okresponse.body())
@@ -88,24 +100,20 @@ public class HiscoreService
 		return hiscoreBuilder;
 	}
 
-	public HiscoreResult lookup(Request request, Response response) throws IOException
+	@RequestMapping
+	public HiscoreResult lookup(@RequestParam String username) throws IOException
 	{
-		String username = request.queryParams("username");
-		HiscoreResultBuilder result = lookup(username);
-
-		response.type("application/json");
+		HiscoreResultBuilder result = lookupUsername(username);
 		return result.build();
 	}
 
-	public SingleHiscoreSkillResult singleSkillLookup(Request request, Response response) throws IOException
+	@RequestMapping("/{skillName}")
+	public SingleHiscoreSkillResult singleSkillLookup(@PathVariable String skillName, @RequestParam String username) throws IOException
 	{
-		String username = request.queryParams("username");
-		String skillName = request.params("skill");
-
 		HiscoreSkill skill = HiscoreSkill.valueOf(skillName.toUpperCase());
 
 		// RS api only supports looking up all stats
-		HiscoreResultBuilder result = lookup(username);
+		HiscoreResultBuilder result = lookupUsername(username);
 
 		// Find the skill to return
 		Skill requested = result.getSkill(skill.ordinal());
@@ -115,7 +123,6 @@ public class HiscoreService
 		skillResult.setSkillName(skillName);
 		skillResult.setSkill(requested);
 
-		response.type("application/json");
 		return skillResult;
 	}
 

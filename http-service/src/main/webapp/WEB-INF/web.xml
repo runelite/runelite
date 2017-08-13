@@ -29,23 +29,4 @@
 	 version="3.1">
 
 	<display-name>Runelite API</display-name>
-
-	<servlet>
-		<servlet-name>SparkServlet</servlet-name>
-		<servlet-class>net.runelite.http.service.SparkServlet</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>SparkServlet</servlet-name>
-		<url-pattern>/*</url-pattern>
-	</servlet-mapping>
-	
-	<listener> 
-		<listener-class>com.commongroundpublishing.slf4j.impl.ServletContextLoggerSCL</listener-class>
-	</listener>
-
-	<context-param>
-		<param-name>ServletContextLogger.LEVEL</param-name>
-		<param-value>INFO</param-value>
-	</context-param>
 </web-app>

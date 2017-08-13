@@ -24,23 +24,50 @@
  */
 package net.runelite.http.service;
 
-import com.google.gson.Gson;
-import spark.ResponseTransformer;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.sql2o.Sql2o;
+import org.sql2o.converters.Converter;
+import org.sql2o.quirks.NoQuirks;
 
-public class JsonTransformer implements ResponseTransformer
+@SpringBootApplication
+public class SpringBootWebApplicationTest
 {
-	private final Gson gson = new Gson();
-
-	@Override
-	public String render(Object model) throws Exception
+	@Bean("Runelite SQL2O")
+	Sql2o sql2o()
 	{
-		if (model == null)
-		{
-			// gson turns a null object into "null" which
-			// causes spark to return http 200 instead of 404
-			return null;
-		}
+		Map<Class, Converter> converters = new HashMap<>();
+		converters.put(Instant.class, new InstantConverter());
+		return new Sql2o("jdbc:mysql://192.168.1.2/runelite", "adam", "", new NoQuirks(converters));
 
-		return gson.toJson(model);
+	}
+
+	@Bean("OAuth Client ID")
+	String oauthClientId()
+	{
+		return "moo";
+	}
+
+	@Bean("OAuth Client Secret")
+	String oauthClientSecret()
+	{
+		return "moo2";
+	}
+
+	@Test
+	@Ignore
+	public void test() throws InterruptedException
+	{
+		SpringApplication.run(SpringBootWebApplicationTest.class, new String[0]);
+		for (;;)
+		{
+			Thread.sleep(100L);
+		}
 	}
 }

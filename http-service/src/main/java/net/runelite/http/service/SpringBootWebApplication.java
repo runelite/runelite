@@ -24,9 +24,6 @@
  */
 package net.runelite.http.service;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,99 +31,54 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import net.runelite.http.service.account.AccountService;
-import net.runelite.http.service.account.AuthFilter;
-import net.runelite.http.service.config.ConfigService;
-import net.runelite.http.service.examine.ExamineService;
-import net.runelite.http.service.hiscore.HiscoreService;
-import net.runelite.http.service.item.ItemService;
-import net.runelite.http.service.updatecheck.UpdateCheckService;
-import net.runelite.http.service.worlds.WorldsService;
-import net.runelite.http.service.xtea.XteaService;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
 import org.sql2o.quirks.NoQuirks;
 
-public class ServiceModule extends AbstractModule
+@SpringBootApplication
+public class SpringBootWebApplication extends SpringBootServletInitializer
 {
-	private final Service service;
-
-	public ServiceModule(Service service)
-	{
-		this.service = service;
-	}
-
 	private Context getContext() throws NamingException
 	{
 		Context initCtx = new InitialContext();
 		return (Context) initCtx.lookup("java:comp/env");
 	}
 
-	@Provides
-	@Named("Runelite JDBC")
-	DataSource provideDataSource()
+	@Bean("Runelite SQL2O")
+	Sql2o sql2o() throws NamingException
 	{
-		try
-		{
-			return (DataSource) getContext().lookup("jdbc/runelite");
-		}
-		catch (NamingException ex)
-		{
-			throw new RuntimeException(ex);
-		}
-	}
-
-	@Provides
-	@Named("Runelite SQL2O")
-	Sql2o provideSql2o(@Named("Runelite JDBC") DataSource datasource)
-	{
+		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite");
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o(datasource, new NoQuirks(converters));
+		return new Sql2o(dataSource, new NoQuirks(converters));
+
 	}
 
-	@Provides
-	@Named("OAuth Client ID")
-	String provideOAuthClientID()
+	@Bean("OAuth Client ID")
+	String oauthClientId() throws NamingException
 	{
-		try
-		{
-			return (String) getContext().lookup("runelite-oauth-client-id");
-		}
-		catch (NamingException ex)
-		{
-			throw new RuntimeException(ex);
-		}
+		return (String) getContext().lookup("runelite-oauth-client-id");
 	}
 
-	@Provides
-	@Named("OAuth Client Secret")
-	String provideOAuthClientSecret()
+	@Bean("OAuth Client Secret")
+	String oauthClientSecret() throws NamingException
 	{
-		try
-		{
-			return (String) getContext().lookup("runelite-oauth-client-secret");
-		}
-		catch (NamingException ex)
-		{
-			throw new RuntimeException(ex);
-		}
+		return (String) getContext().lookup("runelite-oauth-client-secret");
 	}
 
 	@Override
-	protected void configure()
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application)
 	{
-		bind(Service.class).toInstance(service);
+		return application.sources(SpringBootWebApplication.class);
+	}
 
-		bind(AuthFilter.class);
-
-		bind(AccountService.class);
-		bind(ConfigService.class);
-		bind(ExamineService.class);
-		bind(HiscoreService.class);
-		bind(ItemService.class);
-		bind(UpdateCheckService.class);
-		bind(WorldsService.class);
-		bind(XteaService.class);
+	public static void main(String[] args)
+	{
+		SpringApplication.run(SpringBootWebApplication.class, args);
 	}
 }

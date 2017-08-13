@@ -25,7 +25,6 @@
 package net.runelite.http.service.updatecheck;
 
 import com.google.common.base.Suppliers;
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -41,9 +40,12 @@ import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.service.worlds.WorldsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import spark.Request;
-import spark.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping("/update-check")
 public class UpdateCheckService
 {
 	private static final Logger logger = LoggerFactory.getLogger(UpdateCheckService.class);
@@ -58,15 +60,15 @@ public class UpdateCheckService
 	private final WorldsService worldsService;
 	private final Supplier<Boolean> updateAvailable = Suppliers.memoizeWithExpiration(this::checkUpdate, 1, TimeUnit.MINUTES);
 
-	@Inject
+	@Autowired
 	public UpdateCheckService(WorldsService worldsService)
 	{
 		this.worldsService = worldsService;
 	}
 
-	public Boolean check(Request request, Response response)
+	@RequestMapping
+	public Boolean check()
 	{
-		response.type("application/json");
 		return updateAvailable.get();
 	}
 

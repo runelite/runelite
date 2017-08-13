@@ -34,6 +34,11 @@ public class Renderable extends Node
 		this.renderable = renderable;
 	}
 
+	public Model getModel()
+	{
+		return new Model(renderable.getModel());
+	}
+
 	public static Renderable of(net.runelite.rs.api.Renderable renderable)
 	{
 		return (Renderable) Node.of(renderable);

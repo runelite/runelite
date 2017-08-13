@@ -24,39 +24,38 @@
  */
 package net.runelite.http.service.account;
 
+import java.io.IOException;
 import net.runelite.http.service.account.beans.SessionEntry;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.RuneliteAPI;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
-import spark.Filter;
-import spark.Request;
-import spark.Response;
-import spark.Session;
-import static spark.Spark.halt;
 
-public class AuthFilter implements Filter
+@Service
+public class AuthFilter
 {
 	private final Sql2o sql2o;
 
-	@Inject
-	public AuthFilter(@Named("Runelite SQL2O") Sql2o sql2o)
+	@Autowired
+	public AuthFilter(@Qualifier("Runelite SQL2O") Sql2o sql2o)
 	{
 		this.sql2o = sql2o;
 	}
 
-	@Override
-	public void handle(Request request, Response response) throws Exception
+	public SessionEntry handle(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		String runeliteAuth = request.headers(RuneliteAPI.RUNELITE_AUTH);
+		String runeliteAuth = request.getHeader(RuneliteAPI.RUNELITE_AUTH);
 		if (runeliteAuth == null)
 		{
-			halt(401, "Access denied");
-			return;
+			response.sendError(401, "Access denied");
+			return null;
 		}
 
 		UUID uuid = UUID.fromString(runeliteAuth);
@@ -69,8 +68,8 @@ public class AuthFilter implements Filter
 
 			if (sessionEntry == null)
 			{
-				halt(401, "Access denied");
-				return;
+				response.sendError(401, "Access denied");
+				return null;
 			}
 
 			Instant now = Instant.now();
@@ -82,8 +81,7 @@ public class AuthFilter implements Filter
 
 			sessionEntry.setLastUsed(now);
 
-			Session session = request.session();
-			session.attribute("session", sessionEntry);
+			return sessionEntry;
 		}
 	}
 

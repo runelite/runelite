@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.api.model;
 
-package net.runelite.rs.api;
-
-import net.runelite.mapping.Import;
-
-public interface Renderable extends Node
+public class Vertex
 {
-	@Import("modelHeight")
-	int getModelHeight();
+	private final int x;
+	private final int y;
+	private final int z;
 
-	@Import("getModel")
-	Model getModel();
+	public Vertex(int x, int y, int z)
+	{
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Vertex{" + "x=" + x + ", y=" + y + ", z=" + z + '}';
+	}
+
+	public int getX()
+	{
+		return x;
+	}
+
+	public int getY()
+	{
+		return y;
+	}
+
+	public int getZ()
+	{
+		return z;
+	}
 }
