@@ -6,41 +6,43 @@ import java.awt.*;
 
 public class IconTextField extends JTextField
 {
-    private Border border;
-    private Icon icon;
+	private Border border;
+	private Icon icon;
 
-    @Override
-    public void setBorder(Border border)
-    {
-        this.border = border;
+	@Override
+	public void setBorder(Border border)
+	{
+		this.border = border;
 
-        if (icon == null)
-        {
-            super.setBorder(border);
-        }
-        else
-        {
-            Border margin = BorderFactory.createEmptyBorder(0, icon.getIconWidth() + 4, 0, 0);
-            Border compound = BorderFactory.createCompoundBorder(border, margin);
-            super.setBorder(compound);
-        }
-    }
+		if (icon == null)
+		{
+			super.setBorder(border);
+		}
+		else
+		{
+			Border margin = BorderFactory.createEmptyBorder(0, icon.getIconWidth() + 4, 0, 0);
+			Border compound = BorderFactory.createCompoundBorder(border, margin);
+			super.setBorder(compound);
+		}
+	}
 
-    @Override
-    public void paintComponent(Graphics graphics)
-    {
-        super.paintComponent(graphics);
+	@Override
+	public void paintComponent(Graphics graphics)
+	{
+		super.paintComponent(graphics);
 
-        Insets iconInsets = border.getBorderInsets(this);
-        icon.paintIcon(this, graphics, iconInsets.left, iconInsets.top);
-    }
+		Insets iconInsets = border.getBorderInsets(this);
+		icon.paintIcon(this, graphics, iconInsets.left, iconInsets.top);
+	}
 
-    public void setIcon(Icon icon) {
-        this.icon = icon;
-        resetBorder();
-    }
+	public void setIcon(Icon icon)
+	{
+		this.icon = icon;
+		resetBorder();
+	}
 
-    private void resetBorder() {
-        setBorder(border);
-    }
+	private void resetBorder()
+	{
+		setBorder(border);
+	}
 }
