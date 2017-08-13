@@ -26,9 +26,11 @@
 package net.runelite.client.plugins.chatcommands;
 
 import com.google.common.eventbus.Subscribe;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MessageNode;
@@ -104,7 +106,7 @@ public class ChatCommands extends Plugin
 			logger.debug("Running price lookup for {}", search);
 
 			ScheduledExecutorService executor = runelite.getExecutor();
-			executor.submit(() -> lookup(setMessage.getMessageNode(), search));
+			executor.submit(() -> lookup(setMessage.getType(), setMessage.getMessageNode(), search));
 		}
 		else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
 		{
@@ -112,7 +114,7 @@ public class ChatCommands extends Plugin
 
 			logger.debug("Running level lookup for {}", search);
 			ScheduledExecutorService executor = runelite.getExecutor();
-			executor.submit(() -> playerSkillLookup(setMessage, search));
+			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, search));
 		}
 	}
 
@@ -123,7 +125,7 @@ public class ChatCommands extends Plugin
 	 * @param messageNode The chat message containing the command.
 	 * @param search The item given with the command.
 	 */
-	private void lookup(MessageNode messageNode, String search)
+	private void lookup(ChatMessageType type, MessageNode messageNode, String search)
 	{
 		SearchResult result;
 
@@ -159,14 +161,29 @@ public class ChatCommands extends Plugin
 				return;
 			}
 
+			Color color1 = getColor(type),
+				color2 = getColorH(type);
+
+			String hexColor1 = "", hexColor2 = "";
+
+			if (config.recolorEnabled() && color1 != null && color2 != null)
+			{
+				hexColor1 = toHexCol(color1);
+				hexColor2 = toHexCol(color2);
+			}
+
 			StringBuilder builder = new StringBuilder();
-			builder.append("Price of ").append(item.getName()).append(": GE average ").append(String.format("%,d", itemPrice.getPrice()));
+			builder.append("<col=").append(hexColor1).append(">").append("Price of ")
+				.append("<col=").append(hexColor2).append(">").append(item.getName())
+				.append("<col=").append(hexColor1).append(">").append(": GE average ")
+				.append("<col=").append(hexColor2).append(">").append(String.format("%,d", itemPrice.getPrice()));
 
 			ItemComposition itemComposition = client.getItemDefinition(itemId);
 			if (itemComposition != null)
 			{
 				int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
-				builder.append(" HA value ").append(alchPrice);
+				builder.append("<col=").append(hexColor1).append(">").append(" HA value ")
+					.append("<col=").append(hexColor2).append(">").append(String.format("%,d", alchPrice));
 			}
 
 			logger.debug("Setting response {}", builder.toString());
@@ -184,7 +201,7 @@ public class ChatCommands extends Plugin
 	 * @param setMessage The chat message containing the command.
 	 * @param search The item given with the command.
 	 */
-	private void playerSkillLookup(SetMessage setMessage, String search)
+	private void playerSkillLookup(ChatMessageType type, SetMessage setMessage, String search)
 	{
 		String player = sanitize(setMessage.getName());
 
@@ -211,10 +228,24 @@ public class ChatCommands extends Plugin
 			SingleHiscoreSkillResult result = hiscoreClient.lookup(player, skill);
 			Skill hiscoreSkill = result.getSkill();
 
-			String response = new StringBuilder().append("Level ").append(skill.getName()).append(": ")
-				.append(hiscoreSkill.getLevel())
-				.append(" Experience: ").append(String.format("%,d", hiscoreSkill.getExperience()))
-				.append(" Rank: ").append(String.format("%,d", hiscoreSkill.getRank()))
+			Color color1 = getColor(type),
+				color2 = getColorH(type);
+
+			String hexColor1 = "", hexColor2 = "";
+
+			if (config.recolorEnabled() && color1 != null && color2 != null)
+			{
+				hexColor1 = toHexCol(color1);
+				hexColor2 = toHexCol(color2);
+			}
+
+			String response = new StringBuilder()
+				.append("<col=").append(hexColor1).append(">").append("Level ")
+				.append("<col=").append(hexColor2).append(">").append(skill.getName()).append(": ").append(hiscoreSkill.getLevel())
+				.append("<col=").append(hexColor1).append(">").append(" Experience: ")
+				.append("<col=").append(hexColor2).append(">").append(String.format("%,d", hiscoreSkill.getExperience()))
+				.append("<col=").append(hexColor1).append(">").append(" Rank: ")
+				.append("<col=").append(hexColor2).append(">").append(String.format("%,d", hiscoreSkill.getRank()))
 				.toString();
 
 			logger.debug("Setting response {}", response);
@@ -248,6 +279,42 @@ public class ChatCommands extends Plugin
 			}
 		}
 		return null;
+	}
+
+	private Color getColor(ChatMessageType type)
+	{
+		switch (type)
+		{
+			case PUBLIC:
+				return config.getPublicRecolor();
+			case CLANCHAT:
+				return config.getCcRecolor();
+			case PRIVATE_MESSAGE_RECEIVED:
+			case PRIVATE_MESSAGE_SENT:
+				return config.getPrivateRecolor();
+		}
+		return null;
+	}
+
+	private Color getColorH(ChatMessageType type)
+	{
+		switch (type)
+		{
+			case PUBLIC:
+				return config.getPublicHRecolor();
+			case CLANCHAT:
+				return config.getCcHRecolor();
+			case PRIVATE_MESSAGE_RECEIVED:
+			case PRIVATE_MESSAGE_SENT:
+				return config.getPrivateHRecolor();
+		}
+		return null;
+	}
+
+	private static String toHexCol(Color color)
+	{
+		// <col> doesn't support alpha
+		return color == null ? "" : Integer.toHexString(color.getRGB() & 0xFFFFFF);
 	}
 
 	/**
