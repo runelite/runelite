@@ -1,7 +1,7 @@
 package net.runelite.client.plugins.hiscore;
 
-		import net.runelite.http.api.hiscore.HiscoreResult;
-		import net.runelite.http.api.hiscore.Skill;
+import net.runelite.http.api.hiscore.HiscoreResult;
+import net.runelite.http.api.hiscore.Skill;
 
 public class CombatLevel
 {
@@ -10,8 +10,7 @@ public class CombatLevel
 	private double preciseRangedCombatLevel;
 	private double preciseMagicCombatLevel;
 
-	public CombatLevel(int attackLevel, int strengthLevel, int defenceLevel, int hitpointsLevel,
-					   int magicLevel, int rangeLevel, int prayerLevel)
+	public CombatLevel(int attackLevel, int strengthLevel, int defenceLevel, int hitpointsLevel, int magicLevel, int rangeLevel, int prayerLevel)
 	{
 		this.attackLevel = attackLevel;
 		this.strengthLevel = strengthLevel;
