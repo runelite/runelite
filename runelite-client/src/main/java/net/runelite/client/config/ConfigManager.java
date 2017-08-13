@@ -33,7 +33,12 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
@@ -305,7 +310,12 @@ public class ConfigManager
 
 		List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
 			.filter(m -> m.getParameterCount() == 0)
-			.sorted((m1, m2) -> Integer.compare(m1.getDeclaredAnnotation(ConfigItem.class).position(), (m2.getDeclaredAnnotation(ConfigItem.class).position())))
+			.sorted((m1, m2) ->
+				Integer.compare(
+					m1.getDeclaredAnnotation(ConfigItem.class).position(),
+					m2.getDeclaredAnnotation(ConfigItem.class).position()
+				)
+			)
 			.map(m -> new ConfigItemDescriptor(
 			m.getDeclaredAnnotation(ConfigItem.class),
 			m.getReturnType()
