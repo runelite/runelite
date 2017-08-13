@@ -25,6 +25,8 @@
 package net.runelite.client.config;
 
 import com.google.common.eventbus.EventBus;
+import java.awt.Color;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -311,9 +313,9 @@ public class ConfigManager
 		List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
 			.filter(m -> m.getParameterCount() == 0)
 			.map(m -> new ConfigItemDescriptor(
-			m.getDeclaredAnnotation(ConfigItem.class),
-			m.getReturnType()
-		))
+					m.getDeclaredAnnotation(ConfigItem.class),
+					m.getReturnType()
+				))
 			.collect(Collectors.toList());
 		return new ConfigDescriptor(group, items);
 	}
@@ -355,7 +357,9 @@ public class ConfigManager
 			}
 
 			logger.debug("Setting default configuration value for {}.{} to {}", group.keyName(), item.keyName(), defaultValue);
-			setConfiguration(group.keyName(), item.keyName(), defaultValue.toString());
+
+			String valueString = objectToString(defaultValue);
+			setConfiguration(group.keyName(), item.keyName(), valueString);
 		}
 	}
 
@@ -369,6 +373,20 @@ public class ConfigManager
 		{
 			return Integer.parseInt(str);
 		}
+		if (type == Color.class)
+		{
+			return Color.decode(str);
+		}
 		return str;
+	}
+
+	static String objectToString(Object object)
+	{
+		if (object instanceof Color)
+		{
+			return String.valueOf(((Color) object).getRGB());
+		}
+
+		return object.toString();
 	}
 }
