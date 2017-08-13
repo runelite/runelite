@@ -27,7 +27,7 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
-public interface Model
+public interface Model extends Renderable
 {
 	@Import("verticesX")
 	int[] getVerticesX();
