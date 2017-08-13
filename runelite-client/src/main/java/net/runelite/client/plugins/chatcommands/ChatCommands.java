@@ -26,9 +26,6 @@
 package net.runelite.client.plugins.chatcommands;
 
 import com.google.common.eventbus.Subscribe;
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MessageNode;
@@ -48,6 +45,10 @@ import net.runelite.rs.api.ItemComposition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
+
 public class ChatCommands extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(ChatCommands.class);
@@ -58,6 +59,8 @@ public class ChatCommands extends Plugin
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final Client client = RuneLite.getClient();
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
+	private static String hexColor1;
+	private static String hexColor2;
 
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
@@ -87,14 +90,26 @@ public class ChatCommands extends Plugin
 		switch (setMessage.getType())
 		{
 			case PUBLIC:
+				hexColor1 = Integer.toHexString(config.getPublicRecolor().getRGB()).substring(2);
+				hexColor2 = Integer.toHexString(config.getPublicHRecolor().getRGB()).substring(2);
+				break;
 			case CLANCHAT:
+				hexColor1 = Integer.toHexString(config.getCcRecolor().getRGB()).substring(2);
+				hexColor2 = Integer.toHexString(config.getCcHRecolor().getRGB()).substring(2);
+				break;
 			case PRIVATE_MESSAGE_RECEIVED:
 			case PRIVATE_MESSAGE_SENT:
+				hexColor1 = Integer.toHexString(config.getPrivateRecolor().getRGB()).substring(2);
+				hexColor2 = Integer.toHexString(config.getPrivateHRecolor().getRGB()).substring(2);
 				break;
 			default:
 				return;
 		}
-
+		if (!config.recolorEnabled())
+		{
+			hexColor1 = "";
+			hexColor2 = "";
+		}
 		String message = setMessage.getValue();
 
 		if (config.price() && message.toLowerCase().startsWith("!price") && message.length() > 7)
@@ -160,13 +175,17 @@ public class ChatCommands extends Plugin
 			}
 
 			StringBuilder builder = new StringBuilder();
-			builder.append("Price of ").append(item.getName()).append(": GE average ").append(String.format("%,d", itemPrice.getPrice()));
+			builder.append("<col=").append(hexColor1).append(">").append("Price of ")
+					.append("<col=").append(hexColor2).append(">").append(item.getName())
+					.append("<col=").append(hexColor1).append(">").append(": GE average ")
+					.append("<col=").append(hexColor2).append(">").append(String.format("%,d", itemPrice.getPrice()));
 
 			ItemComposition itemComposition = client.getItemDefinition(itemId);
 			if (itemComposition != null)
 			{
 				int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
-				builder.append(" HA value ").append(alchPrice);
+				builder.append("<col=").append(hexColor1).append(">").append(" HA value ")
+						.append("<col=").append(hexColor2).append(">").append(String.format("%,d", alchPrice));
 			}
 
 			logger.debug("Setting response {}", builder.toString());
@@ -211,10 +230,13 @@ public class ChatCommands extends Plugin
 			SingleHiscoreSkillResult result = hiscoreClient.lookup(player, skill);
 			Skill hiscoreSkill = result.getSkill();
 
-			String response = new StringBuilder().append("Level ").append(skill.getName()).append(": ")
-				.append(hiscoreSkill.getLevel())
-				.append(" Experience: ").append(String.format("%,d", hiscoreSkill.getExperience()))
-				.append(" Rank: ").append(String.format("%,d", hiscoreSkill.getRank()))
+			String response = new StringBuilder()
+					.append("<col=").append(hexColor1).append(">").append("Level ")
+					.append("<col=").append(hexColor2).append(">").append(skill.getName()).append(": ").append(hiscoreSkill.getLevel())
+					.append("<col=").append(hexColor1).append(">").append(" Experience: ")
+					.append("<col=").append(hexColor2).append(">").append(String.format("%,d", hiscoreSkill.getExperience()))
+					.append("<col=").append(hexColor1).append(">").append(" Rank: ")
+					.append("<col=").append(hexColor2).append(">").append(String.format("%,d", hiscoreSkill.getRank()))
 				.toString();
 
 			logger.debug("Setting response {}", response);
