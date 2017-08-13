@@ -187,12 +187,13 @@ public class HiscorePanel extends PluginPanel
         }
 
         NumberFormat formatter = NumberFormat.getInstance();
-        net.runelite.http.api.hiscore.Skill requestedSkill = result.getSkill(skillName);
+        net.runelite.http.api.hiscore.Skill requestedSkill;
 
         String text;
         switch (skillName)
         {
             case "Overall":
+                requestedSkill = result.getSkill(skillName);
                 text = "Total Level" + System.lineSeparator() +
                         "Rank: " + formatter.format(requestedSkill.getRank()) + System.lineSeparator() +
                         "Total Experience: " + formatter.format(requestedSkill.getExperience());
@@ -205,12 +206,14 @@ public class HiscorePanel extends PluginPanel
                         result.getRanged().getExperience() + result.getPrayer().getExperience());
                 break;
             default:
+                requestedSkill = result.getSkill(skillName);
                 text = "Skill: " + skillName + System.lineSeparator() +
                         "Rank: " + formatter.format(requestedSkill.getRank()) + System.lineSeparator() +
                         "Experience: " + formatter.format(requestedSkill.getExperience());
                 break;
         }
 
+        details.setFont(UIManager.getFont("Label.font"));
         details.setText(text);
     }
 
@@ -296,7 +299,8 @@ public class HiscorePanel extends PluginPanel
         }
 
         // Clear details panel
-        details.setText("");
+        details.setFont(UIManager.getFont("Label.font").deriveFont(Font.ITALIC));
+        details.setText("Click a skill to show details");
     }
 
     private void setLabel(Skill skillName, net.runelite.http.api.hiscore.Skill skill)
