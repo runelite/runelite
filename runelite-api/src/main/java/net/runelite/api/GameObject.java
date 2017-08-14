@@ -24,6 +24,12 @@
  */
 package net.runelite.api;
 
+import java.awt.Polygon;
+import java.util.ArrayList;
+import java.util.List;
+import net.runelite.api.model.Jarvis;
+import net.runelite.api.model.Vertex;
+
 /**
  *
  * @author Adam
@@ -54,5 +60,83 @@ public class GameObject extends TileObject
 	protected int getLocalY()
 	{
 		return gameObject.getY();
+	}
+
+	public Renderable getRenderable()
+	{
+		return Renderable.of(gameObject.getRenderable());
+	}
+
+	public Polygon getConvexHull()
+	{
+		Renderable renderable = getRenderable();
+		if (renderable == null)
+		{
+			return null;
+		}
+
+		Model model;
+
+		if (renderable instanceof Model)
+		{
+			model = (Model) renderable;
+		}
+		else
+		{
+			model = renderable.getModel();
+		}
+
+		if (model == null)
+		{
+			return null;
+		}
+
+		int localX = gameObject.getX();
+		int localY = gameObject.getY();
+
+		// models are orientated north (1024) and there are 2048 angles total
+		int orientation = (gameObject.getOrientation() + 1024) % 2048;
+
+		List<Vertex> verticies = model.getVertices();
+
+		if (orientation != 0)
+		{
+			// rotate verticies
+			for (int i = 0; i < verticies.size(); ++i)
+			{
+				Vertex v = verticies.get(i);
+				verticies.set(i, v.rotate(orientation));
+			}
+		}
+
+		List<Point> points = new ArrayList<>();
+
+		for (Vertex v : verticies)
+		{
+			// Compute canvas location of vertex
+			Point p = Perspective.worldToCanvas(client,
+				localX - v.getX(),
+				localY - v.getZ(),
+				-v.getY());
+			if (p != null)
+			{
+				points.add(p);
+			}
+		}
+
+		// Run Jarvis march algorithm
+		points = Jarvis.convexHull(points);
+		if (points == null)
+		{
+			return null;
+		}
+
+		// Convert to a polygon
+		Polygon p = new Polygon();
+		for (Point point : points)
+		{
+			p.addPoint(point.getX(), point.getY());
+		}
+		return p;
 	}
 }
