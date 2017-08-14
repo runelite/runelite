@@ -157,9 +157,9 @@ public class AccountService
 	public Object callback(
 		HttpServletRequest request,
 		HttpServletResponse response,
-		@RequestParam String error,
+		@RequestParam(required = false) String error,
 		@RequestParam String code,
-		@RequestParam State state
+		@RequestParam("state") String stateStr
 	) throws InterruptedException, ExecutionException, IOException
 	{
 		if (error != null)
@@ -167,6 +167,8 @@ public class AccountService
 			logger.info("Error in oauth callback: {}", error);
 			return null;
 		}
+
+		State state = gson.fromJson(stateStr, State.class);
 
 		logger.info("Got authorization code {} for uuid {}", code, state.getUuid());
 
