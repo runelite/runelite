@@ -312,6 +312,12 @@ public class ConfigManager
 
 		List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
 			.filter(m -> m.getParameterCount() == 0)
+			.sorted((m1, m2) ->
+				Integer.compare(
+					m1.getDeclaredAnnotation(ConfigItem.class).position(),
+					m2.getDeclaredAnnotation(ConfigItem.class).position()
+				)
+			)
 			.map(m -> new ConfigItemDescriptor(
 					m.getDeclaredAnnotation(ConfigItem.class),
 					m.getReturnType()
