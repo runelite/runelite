@@ -128,24 +128,12 @@ public class Player extends Actor
 			Vertex c = triangle.getC();
 
 			Triangle rotatedTriangle = new Triangle(
-				rotate(a, orientation),
-				rotate(b, orientation),
-				rotate(c, orientation)
+				a.rotate(orientation),
+				b.rotate(orientation),
+				c.rotate(orientation)
 			);
 			rotatedTriangles.add(rotatedTriangle);
 		}
 		return rotatedTriangles;
-	}
-
-	private Vertex rotate(Vertex vertex, int orientation)
-	{
-		int sin = Perspective.SINE[orientation];
-		int cos = Perspective.COSINE[orientation];
-
-		return new Vertex(
-			vertex.getX() * cos + vertex.getZ() * sin >> 16,
-			vertex.getY(),
-			vertex.getZ() * cos - vertex.getX() * sin >> 16
-		);
 	}
 }

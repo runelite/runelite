@@ -29,12 +29,13 @@ import java.util.List;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
 
-public class Model
+public class Model extends Renderable
 {
 	private final net.runelite.rs.api.Model model;
 
 	public Model(net.runelite.rs.api.Model model)
 	{
+		super(model);
 		this.model = model;
 	}
 
