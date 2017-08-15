@@ -54,8 +54,14 @@ public class ExperienceTest
 
 		level = Experience.getLevelForXp(0);
 		Assert.assertEquals(1, level);
-		
+
 		level = Experience.getLevelForXp(200_000_000);
 		Assert.assertEquals(126, level);
+	}
+
+	@Test
+	public void testGetCombatLevel()
+	{
+		Assert.assertEquals(126, Experience.getCombatLevel(99, 99, 99, 99, 70, 42, 98));
 	}
 }

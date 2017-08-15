@@ -88,4 +88,27 @@ public class Experience
 
 		return high + 2;
 	}
+
+	public static double getCombatLevelPrecise(int attackLevel, int strengthLevel,
+		int defenceLevel, int hitpointsLevel, int magicLevel,
+		int rangeLevel, int prayerLevel)
+	{
+		double melee = 0.25 * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2))
+			+ 0.325 * (attackLevel + strengthLevel);
+
+		double range = 0.25 * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2))
+			+ 0.325 * (Math.floor(rangeLevel / 2));
+
+		double magic = 0.25 * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2))
+			+ 0.325 * (Math.floor(magicLevel / 2));
+
+		return Math.max(melee, Math.max(range, magic));
+	}
+
+	public static int getCombatLevel(int attackLevel, int strengthLevel,
+		int defenceLevel, int hitpointsLevel, int magicLevel,
+		int rangeLevel, int prayerLevel)
+	{
+		return (int) getCombatLevelPrecise(attackLevel, strengthLevel, defenceLevel, hitpointsLevel, magicLevel, rangeLevel, prayerLevel);
+	}
 }
