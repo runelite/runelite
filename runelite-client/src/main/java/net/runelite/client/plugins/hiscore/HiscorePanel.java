@@ -32,7 +32,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -57,6 +56,7 @@ import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
 import static net.runelite.http.api.hiscore.HiscoreSkill.*;
+import net.runelite.http.api.hiscore.Skill;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -218,7 +218,7 @@ public class HiscorePanel extends PluginPanel
 		{
 			case "Overall":
 			{
-				net.runelite.http.api.hiscore.Skill requestedSkill = result.getOverall();
+				Skill requestedSkill = result.getOverall();
 				text = "Total Level" + System.lineSeparator()
 					+ "Rank: " + formatter.format(requestedSkill.getRank()) + System.lineSeparator()
 					+ "Total Experience: " + formatter.format(requestedSkill.getExperience());
@@ -244,7 +244,7 @@ public class HiscorePanel extends PluginPanel
 			}
 			default:
 			{
-				net.runelite.http.api.hiscore.Skill requestedSkill = result.getSkill(skill);
+				Skill requestedSkill = result.getSkill(skill);
 				text = "Skill: " + skillName + System.lineSeparator()
 					+ "Rank: " + formatter.format(requestedSkill.getRank()) + System.lineSeparator()
 					+ "Experience: " + formatter.format(requestedSkill.getExperience());
