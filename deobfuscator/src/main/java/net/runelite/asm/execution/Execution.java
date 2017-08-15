@@ -243,7 +243,7 @@ public class Execution
 			}
 		}
 
-		logger.info("Processed {} frames", fcount);
+		logger.debug("Processed {} frames", fcount);
 	}
 
 	public void addExecutionVisitor(ExecutionVisitor ev)

@@ -51,6 +51,7 @@ import net.runelite.deob.deobfuscators.arithmetic.MultiplicationDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
 import net.runelite.deob.deobfuscators.cfg.ControlFlowDeobfuscator;
+import net.runelite.deob.deobfuscators.menuaction.MenuActionDeobfuscator;
 import net.runelite.deob.deobfuscators.transformers.ClientErrorTransformer;
 import net.runelite.deob.deobfuscators.transformers.MaxMemoryTransformer;
 import net.runelite.deob.deobfuscators.transformers.ReflectionTransformer;
@@ -145,6 +146,8 @@ public class Deob
 		run(group, new Order());
 
 		run(group, new PacketHandlerOrder());
+
+		run(group, new MenuActionDeobfuscator());
 
 		new GetPathTransformer().transform(group);
 		new ClientErrorTransformer().transform(group);
