@@ -25,19 +25,24 @@
 package net.runelite.client.plugins.hiscore;
 
 import com.google.common.base.Strings;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.event.MouseInputAdapter;
+
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
+import net.runelite.client.ui.IconTextField;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -46,117 +51,216 @@ import org.slf4j.LoggerFactory;
 
 public class HiscorePanel extends PluginPanel
 {
+	private static final List<Skill> SKILL_PANEL_ORDER = Arrays.asList(
+			Skill.ATTACK, Skill.HITPOINTS, Skill.MINING,
+			Skill.STRENGTH, Skill.AGILITY, Skill.SMITHING,
+			Skill.DEFENCE, Skill.HERBLORE, Skill.FISHING,
+			Skill.RANGED, Skill.THIEVING, Skill.COOKING,
+			Skill.PRAYER, Skill.CRAFTING, Skill.FIREMAKING,
+			Skill.MAGIC, Skill.FLETCHING, Skill.WOODCUTTING,
+			Skill.RUNECRAFT, Skill.SLAYER, Skill.FARMING,
+			Skill.CONSTRUCTION, Skill.HUNTER
+	);
+
 	private static final Logger logger = LoggerFactory.getLogger(HiscorePanel.class);
 
 	private final RuneLite runelite;
 
-	private JTextField input;
-	private JButton lookupButton;
+	private final IconTextField input;
 
-	//these are inlaid left to right, wrapping to a new line after 3
-	private final JLabel attackLabel = new JLabel("--");
-	private final JLabel hitpointsLabel = new JLabel("--");
-	private final JLabel miningLabel = new JLabel("--");
-	private final JLabel strengthLabel = new JLabel("--");
-	private final JLabel agilityLabel = new JLabel("--");
-	private final JLabel smithingLabel = new JLabel("--");
-	private final JLabel defenceLabel = new JLabel("--");
-	private final JLabel herbloreLabel = new JLabel("--");
-	private final JLabel fishingLabel = new JLabel("--");
-	private final JLabel rangedLabel = new JLabel("--");
-	private final JLabel thievingLabel = new JLabel("--");
-	private final JLabel cookingLabel = new JLabel("--");
-	private final JLabel prayerLabel = new JLabel("--");
-	private final JLabel craftingLabel = new JLabel("--");
-	private final JLabel firemakingLabel = new JLabel("--");
-	private final JLabel magicLabel = new JLabel("--");
-	private final JLabel fletchingLabel = new JLabel("--");
-	private final JLabel woodcuttingLabel = new JLabel("--");
-	private final JLabel runecraftLabel = new JLabel("--");
-	private final JLabel slayerLabel = new JLabel("--");
-	private final JLabel farmingLabel = new JLabel("--");
-	private final JLabel constructionLabel = new JLabel("--");
-	private final JLabel hunterLabel = new JLabel("--");
-	private final JLabel overallLabel = new JLabel("--");
+	private final List<JLabel> skillLabels = new LinkedList<>();
 
-	private GridLayout stats;
+	private final JPanel statsPanel = new JPanel();
+	private final JTextArea details = new JTextArea();
 
 	private final HiscoreClient client = new HiscoreClient();
+	private HiscoreResult result;
+	private CombatLevel combatLevel;
 
 	public HiscorePanel(RuneLite runelite)
 	{
 		this.runelite = runelite;
 
-		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setSize(PANEL_WIDTH, PANEL_HEIGHT);
+		// Panel "constants"
+		// This was an EtchedBorder, but the style would change when the window was maximized.
+		Border subPanelBorder = BorderFactory.createLineBorder(this.getBackground().brighter(), 2);
+		Insets subPanelInsets = new Insets(2, 4, 2, 4);
+		Font labelFont = UIManager.getFont("Label.font");
+
+		// Setting base panel size
+		Dimension panelSize = new Dimension(PANEL_WIDTH, PANEL_HEIGHT);
+		setMinimumSize(panelSize);
+		setPreferredSize(panelSize);
+		setSize(panelSize);
 		setVisible(true);
 
-		input = new JTextField(11);
-		add(input);
+		// Create GBL to arrange sub items
+		GridBagLayout gridBag = new GridBagLayout();
+		setLayout(gridBag);
 
-		lookupButton = new JButton("Lookup");
-		add(lookupButton);
+		// Expand sub items to fit width of panel, align to top of panel
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.NORTH;
 
-		lookupButton.addActionListener((ActionEvent e) ->
+		// Search box
+		JPanel inputPanel = new JPanel();
+		inputPanel.setLayout(new BorderLayout(7, 7));
+		inputPanel.setBorder(subPanelBorder);
+		Icon search = null;
+		try
+		{
+			search = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream("/search.png")));
+		}
+		catch (IOException ex)
+		{
+			logger.warn(null, ex);
+		}
+		input = new IconTextField();
+		input.setIcon(search);
+		input.addActionListener((ActionEvent e) ->
 		{
 			ScheduledExecutorService executor = runelite.getExecutor();
 			executor.execute(this::lookup);
 		});
+		inputPanel.add(input, BorderLayout.CENTER);
 
-		JPanel statsPanel = new JPanel();
-		stats = new GridLayout(8, 3);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = 0;
+		c.insets = subPanelInsets;
+		gridBag.setConstraints(inputPanel, c);
+		add(inputPanel);
+
+		// Panel that holds skill icons
+		GridLayout stats = new GridLayout(8, 3);
 		statsPanel.setLayout(stats);
+		statsPanel.setBorder(subPanelBorder);
+
+		// For each skill on the ingame skill panel, create a Label and add it to the UI
+		for (Skill skill : SKILL_PANEL_ORDER)
+		{
+			statsPanel.add(makeSkillPanel(skill.getName()));
+		}
+
+		c.gridx = 0;
+		c.gridy = 1;
+		gridBag.setConstraints(statsPanel, c);
+		add(statsPanel);
+
+		JPanel totalPanel = new JPanel();
+		totalPanel.setBorder(subPanelBorder);
+		totalPanel.setLayout(new GridLayout(1, 2));
+
+		totalPanel.add(makeSkillPanel(Skill.OVERALL.getName()));
+		totalPanel.add(makeSkillPanel("Combat"));
+
+		c.gridx = 0;
+		c.gridy = 2;
+		gridBag.setConstraints(totalPanel, c);
+		add(totalPanel);
+
+		JPanel detailsPanel = new JPanel();
+		detailsPanel.setBorder(subPanelBorder);
+		detailsPanel.setLayout(new BorderLayout());
+
+		// Rather than using one JLabel for each line, make a JTextArea look and act like a JLabel
+		details.setEditable(false);
+		details.setCursor(null);
+		details.setOpaque(false);
+		details.setFocusable(false);
+		details.setFont(labelFont);
+		details.setWrapStyleWord(true);
+		details.setLineWrap(true);
+		details.setMargin(new Insets(2, 4, 4, 4));
+		details.setRows(4);
+		details.setText("");
+
+		detailsPanel.add(details, BorderLayout.CENTER);
+
+		c.gridx = 0;
+		c.gridy = 3;
+		// Last item has a nonzero weighty so it will expand to fill vertical space
+		c.weighty = 1;
+		gridBag.setConstraints(detailsPanel, c);
+		add(detailsPanel);
+	}
+
+	private void changeDetail(String skillName)
+	{
+		if (result == null)
+		{
+			return;
+		}
+
+		NumberFormat formatter = NumberFormat.getInstance();
+		net.runelite.http.api.hiscore.Skill requestedSkill;
+
+		String text;
+		switch (skillName)
+		{
+			case "Overall":
+				requestedSkill = result.getSkill(skillName);
+				text = "Total Level" + System.lineSeparator() +
+						"Rank: " + formatter.format(requestedSkill.getRank()) + System.lineSeparator() +
+						"Total Experience: " + formatter.format(requestedSkill.getExperience());
+				break;
+			case "Combat":
+				text = "Exact Combat Level: " + formatter.format(combatLevel.getPreciseCombatLevel()) + System.lineSeparator() +
+						"Experience: " + formatter.format(result.getAttack().getExperience() +
+						result.getStrength().getExperience() + result.getDefence().getExperience() +
+						result.getHitpoints().getExperience() + result.getMagic().getExperience() +
+						result.getRanged().getExperience() + result.getPrayer().getExperience());
+				break;
+			default:
+				requestedSkill = result.getSkill(skillName);
+				text = "Skill: " + skillName + System.lineSeparator() +
+						"Rank: " + formatter.format(requestedSkill.getRank()) + System.lineSeparator() +
+						"Experience: " + formatter.format(requestedSkill.getExperience());
+				break;
+		}
+
+		details.setFont(UIManager.getFont("Label.font"));
+		details.setText(text);
+	}
+
+	private JPanel makeSkillPanel(String skillName)
+	{
+		JLabel label = new JLabel();
+		label.setText("--");
+		// Store the skill that the label displays so we can tell them apart
+		label.putClientProperty("skillName", skillName);
+
+		String skillIcon = "/skill_icons/" + skillName.toLowerCase() + ".png";
+		logger.debug("Loading skill icon from {}", skillIcon);
 
 		try
 		{
-			//these are inlaid left to right, wrapping to a new line after 3
-			statsPanel.add(makeSkillPanel(Skill.ATTACK, attackLabel));
-			statsPanel.add(makeSkillPanel(Skill.HITPOINTS, hitpointsLabel));
-			statsPanel.add(makeSkillPanel(Skill.MINING, miningLabel));
-			statsPanel.add(makeSkillPanel(Skill.STRENGTH, strengthLabel));
-			statsPanel.add(makeSkillPanel(Skill.AGILITY, agilityLabel));
-			statsPanel.add(makeSkillPanel(Skill.SMITHING, smithingLabel));
-			statsPanel.add(makeSkillPanel(Skill.DEFENCE, defenceLabel));
-			statsPanel.add(makeSkillPanel(Skill.HERBLORE, herbloreLabel));
-			statsPanel.add(makeSkillPanel(Skill.FISHING, fishingLabel));
-			statsPanel.add(makeSkillPanel(Skill.RANGED, rangedLabel));
-			statsPanel.add(makeSkillPanel(Skill.THIEVING, thievingLabel));
-			statsPanel.add(makeSkillPanel(Skill.COOKING, cookingLabel));
-			statsPanel.add(makeSkillPanel(Skill.PRAYER, prayerLabel));
-			statsPanel.add(makeSkillPanel(Skill.CRAFTING, craftingLabel));
-			statsPanel.add(makeSkillPanel(Skill.FIREMAKING, firemakingLabel));
-			statsPanel.add(makeSkillPanel(Skill.MAGIC, magicLabel));
-			statsPanel.add(makeSkillPanel(Skill.FLETCHING, fletchingLabel));
-			statsPanel.add(makeSkillPanel(Skill.WOODCUTTING, woodcuttingLabel));
-			statsPanel.add(makeSkillPanel(Skill.RUNECRAFT, runecraftLabel));
-			statsPanel.add(makeSkillPanel(Skill.SLAYER, slayerLabel));
-			statsPanel.add(makeSkillPanel(Skill.FARMING, farmingLabel));
-			statsPanel.add(makeSkillPanel(Skill.CONSTRUCTION, constructionLabel));
-			statsPanel.add(makeSkillPanel(Skill.HUNTER, hunterLabel));
-			statsPanel.add(makeSkillPanel(Skill.OVERALL, overallLabel));
+			label.setIcon(new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(skillIcon))));
 		}
 		catch (IOException ex)
 		{
 			logger.warn(null, ex);
 		}
 
-		add(statsPanel);
-	}
+		// Show skill details on click
+		label.addMouseListener(new MouseInputAdapter()
+		{
+			// mouseReleased feels better than mouseClick UX-wise
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				JLabel source = (JLabel) e.getSource();
+				String skillName = (String) source.getClientProperty("skillName");
+				changeDetail(skillName);
+			}
+		});
+		skillLabels.add(label);
 
-	private JPanel makeSkillPanel(Skill skill, JLabel levelLabel) throws IOException
-	{
-		JPanel iconLevel = new JPanel();
-
-		String skillIcon = "/skill_icons/" + skill.getName().toLowerCase() + ".png";
-		logger.debug("Loading skill icon from {}", skillIcon);
-
-		JLabel icon = new JLabel(new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(skillIcon))));
-		iconLevel.add(icon);
-
-		iconLevel.add(levelLabel);
-
-		return iconLevel;
+		JPanel skillPanel = new JPanel();
+		skillPanel.add(skillLabels.get(skillLabels.size() - 1));
+		return skillPanel;
 	}
 
 	public void lookup(String username)
@@ -176,7 +280,6 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
-		HiscoreResult result;
 		try
 		{
 			result = client.lookup(lookup);
@@ -187,35 +290,25 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
-		setLabel(attackLabel, result.getAttack());
-		setLabel(defenceLabel, result.getDefence());
-		setLabel(strengthLabel, result.getStrength());
-		setLabel(hitpointsLabel, result.getHitpoints());
-		setLabel(rangedLabel, result.getRanged());
-		setLabel(prayerLabel, result.getPrayer());
-		setLabel(magicLabel, result.getMagic());
-		setLabel(cookingLabel, result.getCooking());
-		setLabel(woodcuttingLabel, result.getWoodcutting());
-		setLabel(fletchingLabel, result.getFletching());
-		setLabel(fishingLabel, result.getFishing());
-		setLabel(firemakingLabel, result.getFiremaking());
-		setLabel(craftingLabel, result.getCrafting());
-		setLabel(smithingLabel, result.getSmithing());
-		setLabel(miningLabel, result.getMining());
-		setLabel(herbloreLabel, result.getHerblore());
-		setLabel(agilityLabel, result.getAgility());
-		setLabel(thievingLabel, result.getThieving());
-		setLabel(slayerLabel, result.getSlayer());
-		setLabel(farmingLabel, result.getFarming());
-		setLabel(runecraftLabel, result.getRunecraft());
-		setLabel(hunterLabel, result.getHunter());
-		setLabel(constructionLabel, result.getConstruction());
-		setLabel(overallLabel, result.getOverall());
-	}
+		combatLevel = new CombatLevel(result);
 
-	private void setLabel(JLabel label, net.runelite.http.api.hiscore.Skill skill)
-	{
-		label.setText("" + skill.getLevel());
+		for (JLabel label : skillLabels)
+		{
+			String skillName = (String) label.getClientProperty("skillName");
+
+			if (skillName.equals("Combat"))
+			{
+				label.setText(Integer.toString(combatLevel.getCombatLevel()));
+			}
+			else
+			{
+				label.setText(Integer.toString(result.getSkill(skillName).getLevel()));
+			}
+		}
+
+		// Clear details panel
+		details.setFont(UIManager.getFont("Label.font").deriveFont(Font.ITALIC));
+		details.setText("Click a skill for details");
 	}
 
 	private static String sanitize(String lookup)
