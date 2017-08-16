@@ -185,6 +185,8 @@ public class Inject
 	
 	public void run()
 	{
+		hooks.run();
+
 		for (ClassFile cf : deobfuscated.getClasses())
 		{
 			Annotations an = cf.getAnnotations();
@@ -217,8 +219,6 @@ public class Inject
 			for (Field f : cf.getFields())
 			{
 				an = f.getAnnotations();
-				
-				hooks.process(f);
 
 				if (an == null || an.find(DeobAnnotations.EXPORT) == null)
 					continue; // not an exported field

@@ -25,19 +25,17 @@
 package net.runelite.injector;
 
 import com.google.common.collect.Lists;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
-import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
-import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.asm.attributes.code.instructions.AConstNull;
@@ -66,93 +64,49 @@ public class InjectHook
 	private static final String CLINIT = "<clinit>";
 
 	private final Inject inject;
+	private final Map<Field, Field> hooked = new HashMap<>();
 
 	public InjectHook(Inject inject)
 	{
 		this.inject = inject;
 	}
 
-	public void process(Field field)
+	private void index()
 	{
-		Annotations an = field.getAnnotations();
-		if (an == null || an.find(DeobAnnotations.HOOK) == null)
+		for (ClassFile cf : inject.getDeobfuscated().getClasses())
 		{
-			return;
+			for (Field f : cf.getFields())
+			{
+				if (DeobAnnotations.getHookName(f.getAnnotations()) != null)
+				{
+					Field ob = toObField(f);
+					hooked.put(ob, f);
+				}
+			}
 		}
-
-		// Field is hooked
-		String hookname = DeobAnnotations.getHookName(an); // hook name
-
-		// Find where the field is set
-		injectHook(field, hookname);
 	}
 
-	private void injectHook(Field field, String hookName)
+	public void run()
 	{
+		index();
+
 		for (ClassFile cf : inject.getVanilla().getClasses())
 		{
 			for (Method method : cf.getMethods())
 			{
 				Code code = method.getCode();
 
-				// Don't inject hooks into class initialization methods
 				if (code == null || method.getName().equals(CLINIT))
 				{
 					continue;
 				}
 
-				injectHook(field, hookName, method);
+				injectSetField(method);
 			}
 		}
 	}
 
-	private void injectHook(Field field, String hookName, Method method)
-	{
-		Code code = method.getCode();
-
-		boolean set = false;
-		boolean get = false;
-
-		for (Instruction i : new ArrayList<>(code.getInstructions().getInstructions()))
-		{
-			if (!(i instanceof FieldInstruction))
-			{
-				continue;
-			}
-
-			FieldInstruction fi = (FieldInstruction) i;
-
-			Field fieldBeingSet = fi.getMyField();
-
-			if (fieldBeingSet == null || !isField(field, fieldBeingSet))
-			{
-				continue;
-			}
-
-			if (i instanceof SetFieldInstruction)
-			{
-				set = true;
-			}
-			if (i instanceof GetFieldInstruction)
-			{
-				get = true;
-			}
-		}
-
-		if (set)
-		{
-			injectSetField(field, hookName, method);
-		}
-
-		// getting an array places the array reference on the stack,
-		// which can later be arraystored to, so check that
-		if (get && field.getType().isArray())
-		{
-			injectArrayStore(field, hookName, method);
-		}
-	}
-
-	private boolean isField(Field field, Field fieldBeingSet)
+	private Field toObField(Field field)
 	{
 		String obfuscatedClassName = DeobAnnotations.getObfuscatedName(field.getClassFile().getAnnotations());
 		String obfuscatedFieldName = DeobAnnotations.getObfuscatedName(field.getAnnotations()); // obfuscated name of field
@@ -166,10 +120,10 @@ public class InjectHook
 		Field obfuscatedField = obfuscatedClass.findFieldDeep(obfuscatedFieldName, type);
 		assert obfuscatedField != null;
 
-		return fieldBeingSet == obfuscatedField;
+		return obfuscatedField;
 	}
 
-	private void injectSetField(Field field, String hookName, Method method)
+	private void injectSetField(Method method)
 	{
 		Code code = method.getCode();
 		Instructions ins = code.getInstructions();
@@ -179,6 +133,7 @@ public class InjectHook
 		e.addMethod(method);
 
 		Set<Instruction> done = new HashSet<>();
+		Set<Instruction> doneIh = new HashSet<>();
 
 		e.addExecutionVisitor((InstructionContext ic) ->
 		{
@@ -189,21 +144,27 @@ public class InjectHook
 				return;
 			}
 
-			if (done.contains(i))
+			if (!done.add(i))
 			{
-				// already done?
 				return;
 			}
-
-			done.add(i);
 
 			SetFieldInstruction sfi = (SetFieldInstruction) i;
 			Field fieldBeingSet = sfi.getMyField();
 
-			if (fieldBeingSet == null || !isField(field, fieldBeingSet))
+			if (fieldBeingSet == null)// || !hooked.contains(fieldBeingSet))
 			{
 				return;
 			}
+
+			Field deobField = hooked.get(fieldBeingSet);
+			if (deobField == null)
+			{
+				return;
+			}
+
+			String hookName = DeobAnnotations.getHookName(deobField.getAnnotations()); // hook name
+			assert hookName != null;
 
 			logger.info("Found injection location for hook {} at instruction {}", hookName, sfi);
 
@@ -234,26 +195,11 @@ public class InjectHook
 			injectCallback(method, ins, idx + 1, hookName, null, objectInstruction);
 		});
 
-		e.run();
-	}
-
-	private void injectArrayStore(Field field, String hookName, Method method)
-	{
-		Code code = method.getCode();
-		Instructions ins = code.getInstructions();
-
 		// these look like:
 		// getfield
 		// iload_0
 		// iconst_0
 		// iastore
-		// so we need to execute the method.
-		Execution e = new Execution(inject.getVanilla());
-		e.noInvoke = true;
-		e.addMethod(method);
-
-		Set<Instruction> done = new HashSet<>();
-
 		e.addExecutionVisitor((InstructionContext ic) ->
 		{
 			Instruction i = ic.getInstruction();
@@ -263,21 +209,27 @@ public class InjectHook
 				return;
 			}
 
-			if (done.contains(i))
+			if (!doneIh.add(i))
 			{
-				// already done?
 				return;
 			}
 
-			done.add(i);
-
 			ArrayStore as = (ArrayStore) i;
 
-			Field f = as.getMyField(ic);
-			if (f == null || !isField(field, f))
+			Field fieldBeingSet = as.getMyField(ic);
+			if (fieldBeingSet == null)
 			{
-				return; // not the correct field
+				return;
 			}
+
+			Field deobField = hooked.get(fieldBeingSet);
+			if (deobField == null)
+			{
+				return;
+			}
+
+			String hookName = DeobAnnotations.getHookName(deobField.getAnnotations()); // hook name
+			//if (hookName == null)return;
 
 			// assume this is always at index 1
 			StackContext index = ic.getPops().get(1);
