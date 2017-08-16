@@ -26,6 +26,10 @@ package net.runelite.api;
 
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.util.ArrayList;
+import java.util.List;
+import net.runelite.api.model.Jarvis;
+import net.runelite.api.model.Vertex;
 
 public abstract class TileObject
 {
@@ -78,5 +82,57 @@ public abstract class TileObject
 	public Point getMinimapLocation()
 	{
 		return Perspective.worldToMiniMap(client, getLocalX(), getLocalY());
+	}
+
+	protected Polygon getConvexHull(Model model, int orientation)
+	{
+		int localX = getLocalX();
+		int localY = getLocalY();
+
+		// models are orientated north (1024) and there are 2048 angles total
+		orientation = (orientation + 1024) % 2048;
+
+		List<Vertex> verticies = model.getVertices();
+
+		if (orientation != 0)
+		{
+			// rotate verticies
+			for (int i = 0; i < verticies.size(); ++i)
+			{
+				Vertex v = verticies.get(i);
+				verticies.set(i, v.rotate(orientation));
+			}
+		}
+
+		List<Point> points = new ArrayList<>();
+
+		for (Vertex v : verticies)
+		{
+			// Compute canvas location of vertex
+			Point p = Perspective.worldToCanvas(client,
+				localX - v.getX(),
+				localY - v.getZ(),
+				-v.getY());
+			if (p != null)
+			{
+				points.add(p);
+			}
+		}
+
+		// Run Jarvis march algorithm
+		points = Jarvis.convexHull(points);
+		if (points == null)
+		{
+			return null;
+		}
+
+		// Convert to a polygon
+		Polygon p = new Polygon();
+		for (Point point : points)
+		{
+			p.addPoint(point.getX(), point.getY());
+		}
+
+		return p;
 	}
 }
