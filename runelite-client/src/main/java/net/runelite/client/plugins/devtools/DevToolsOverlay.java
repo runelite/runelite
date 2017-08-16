@@ -298,6 +298,12 @@ public class DevToolsOverlay extends Overlay
 			{
 				OverlayUtil.renderTileOverlay(graphics, decorObject, "ID: " + decorObject.getId(), DEEP_PURPLE);
 			}
+
+			Polygon p = decorObject.getConvexHull();
+			if (p != null)
+			{
+				graphics.drawPolygon(p);
+			}
 		}
 	}
 

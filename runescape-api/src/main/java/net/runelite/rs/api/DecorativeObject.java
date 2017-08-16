@@ -36,4 +36,10 @@ public interface DecorativeObject
 
 	@Import("y")
 	int getY();
+
+	@Import("rotation")
+	int getOrientation();
+
+	@Import("renderable1")
+	Renderable getRenderable();
 }

@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import java.awt.Polygon;
+
 /**
  * Decorative object, such as objects on walls
  *
@@ -55,5 +57,37 @@ public class DecorativeObject extends TileObject
 	protected int getLocalY()
 	{
 		return decorativeObject.getY();
+	}
+
+	public Renderable getRenderable()
+	{
+		return Renderable.of(decorativeObject.getRenderable());
+	}
+
+	public Polygon getConvexHull()
+	{
+		Renderable renderable = getRenderable();
+		if (renderable == null)
+		{
+			return null;
+		}
+
+		Model model;
+
+		if (renderable instanceof Model)
+		{
+			model = (Model) renderable;
+		}
+		else
+		{
+			model = renderable.getModel();
+		}
+
+		if (model == null)
+		{
+			return null;
+		}
+
+		return getConvexHull(model, decorativeObject.getOrientation());
 	}
 }
