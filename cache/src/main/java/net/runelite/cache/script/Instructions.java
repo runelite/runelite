@@ -402,7 +402,7 @@ public class Instructions
 		add(5017, 1, 1);
 		add(5018, 1, 1);
 		add(5019, 1, 1);
-		add(5020, 0, 0, 1, 0);
+		add(Opcodes.RUN_COMMAND, "run_command", 0, 0, 1, 0);
 		add(5021, 0, 0, 1, 0);
 		add(5022, 0, 0, 0, 1);
 		// 5100-5400
