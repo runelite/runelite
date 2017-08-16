@@ -189,6 +189,7 @@ public class Opcodes
 	public static final int GET_ITEM_NOTE_2 = 4206;
 	public static final int GET_ITEM_ISMEMBERS = 4207;
 	public static final int GET_LOCALPLAYER_NAME = 5015;
+	public static final int RUN_COMMAND = 5020;
 	public static final int GET_ISRESIZED = 5306;
 	public static final int SET_ISRESIZED = 5307;
 	public static final int LOAD_WORLDS = 6500;
