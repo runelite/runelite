@@ -198,7 +198,6 @@ public class MenuActionDeobfuscator implements Deobfuscator
 		assert min != -1;
 
 		// sort comparisons - but if they jump to the same address, they are equal..
-		//Collections.sort(comparisons, (c1, c2) -> Integer.compare(c1.getConstant().intValue(), c2.getConstant().intValue()));
 		List<Comparison> sortedComparisons = new ArrayList<>(comparisons);
 		Collections.sort(sortedComparisons, (c1, c2) -> compare(comparisons, c1, c2));
 
