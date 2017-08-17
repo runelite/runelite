@@ -1,55 +1,61 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("es")
+@ObfuscatedName("ej")
 public class class135 {
-   @ObfuscatedName("e")
-   public static boolean field1984;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 425332113
-   )
-   public static int field1983;
+   @ObfuscatedName("j")
+   public static boolean field2001;
    @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -353230347
-   )
-   public static int field1991;
-   @ObfuscatedName("y")
-   public static boolean field1993;
+   @Export("highMemory")
+   protected static boolean highMemory;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 765498379
+      intValue = -231862869
    )
-   public static int field1988;
+   public static int field1996;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 583539705
+   )
+   public static int field1998;
+   @ObfuscatedName("p")
+   public static boolean field1999;
    @ObfuscatedName("s")
-   public static int[] field1989;
-   @ObfuscatedName("ja")
    @ObfuscatedGetter(
-      intValue = -1360499069
+      intValue = 1264914355
    )
-   @Export("menuWidth")
-   static int menuWidth;
+   public static int field1997;
    @ObfuscatedName("r")
-   public static short[] field1990;
-   @ObfuscatedName("w")
+   public static int[] field2002;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 2143508581
+      intValue = 24041603
    )
-   static int field1986;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -891637711
-   )
-   static int field1987;
+   static int field2000;
 
    static {
-      field1984 = false;
-      field1983 = 0;
-      field1991 = 0;
-      field1993 = false;
-      field1988 = 0;
-      field1989 = new int[1000];
+      field2001 = false;
+      field1996 = 0;
+      field1998 = 0;
+      field1999 = false;
+      field1997 = 0;
+      field2002 = new int[1000];
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "16"
+   )
+   public static int method2612(int var0, int var1) {
+      int var2;
+      for(var2 = 0; var1 > 0; --var1) {
+         var2 = var2 << 1 | var0 & 1;
+         var0 >>>= 1;
+      }
+
+      return var2;
    }
 }

@@ -1,86 +1,54 @@
 import java.util.Comparator;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("c")
+@ObfuscatedName("e")
 final class class15 implements Comparator {
-   @ObfuscatedName("f")
-   @Export("osNameLC")
-   public static String osNameLC;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Leb;"
+   @ObfuscatedName("jq")
+   @ObfuscatedGetter(
+      intValue = -418827559
    )
-   @Export("taskManager")
-   protected static Signlink taskManager;
+   @Export("menuHeight")
+   static int menuHeight;
+   @ObfuscatedName("fu")
+   static byte[][] field298;
+   @ObfuscatedName("fg")
+   @Export("landRegionFielIds")
+   static int[] landRegionFielIds;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Ls;Ls;B)I",
-      garbageValue = "-2"
+      signature = "(Lr;Lr;I)I",
+      garbageValue = "-1927755384"
    )
-   int method83(class14 var1, class14 var2) {
-      return var1.field288.totalQuantity < var2.field288.totalQuantity?-1:(var2.field288.totalQuantity == var1.field288.totalQuantity?0:1);
+   int method87(class14 var1, class14 var2) {
+      return var1.field291.totalQuantity < var2.field291.totalQuantity?-1:(var2.field291.totalQuantity == var1.field291.totalQuantity?0:1);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method83((class14)var1, (class14)var2);
+      return this.method87((class14)var1, (class14)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2015665121"
+      signature = "(Lhn;IIB)Lcj;",
+      garbageValue = "-88"
    )
-   public static void method93() {
-      try {
-         if(class204.field2487 == 1) {
-            int var0 = class204.field2486.method3702();
-            if(var0 > 0 && class204.field2486.method3708()) {
-               var0 -= class204.field2491;
-               if(var0 < 0) {
-                  var0 = 0;
-               }
-
-               class204.field2486.method3729(var0);
-               return;
-            }
-
-            class204.field2486.method3738();
-            class204.field2486.method3705();
-            if(class204.field2488 != null) {
-               class204.field2487 = 2;
-            } else {
-               class204.field2487 = 0;
-            }
-
-            class169.field2322 = null;
-            CollisionData.field2270 = null;
-         }
-      } catch (Exception var2) {
-         var2.printStackTrace();
-         class204.field2486.method3738();
-         class204.field2487 = 0;
-         class169.field2322 = null;
-         CollisionData.field2270 = null;
-         class204.field2488 = null;
+   static Script method97(class220 var0, int var1, int var2) {
+      int var3 = (var1 << 8) + var0.field2796;
+      Script var5 = class212.method3936(var3, var0);
+      if(var5 != null) {
+         return var5;
+      } else {
+         int var6 = (var2 + '鱀' << 8) + var0.field2796;
+         var5 = class212.method3936(var6, var0);
+         return var5 != null?var5:null;
       }
-
-   }
-
-   @ObfuscatedName("jj")
-   @ObfuscatedSignature(
-      signature = "(Lhg;B)I",
-      garbageValue = "0"
-   )
-   @Export("getWidgetConfig")
-   static int getWidgetConfig(Widget var0) {
-      IntegerNode var1 = (IntegerNode)Client.widgetFlags.get((long)var0.index + ((long)var0.id << 32));
-      return var1 != null?var1.value:var0.config;
    }
 }

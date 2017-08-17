@@ -2,48 +2,48 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("am")
+@ObfuscatedName("ah")
 @Implements("WorldMapSectionBase")
 public interface WorldMapSectionBase {
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "-39567884"
+      signature = "(IIB)Z",
+      garbageValue = "122"
    )
-   boolean vmethod705(int var1, int var2);
+   boolean vmethod762(int var1, int var2);
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(IIII)Z",
-      garbageValue = "2062801574"
+      signature = "(IIIB)Z",
+      garbageValue = "1"
    )
-   boolean vmethod704(int var1, int var2, int var3);
+   boolean vmethod741(int var1, int var2, int var3);
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lae;B)V",
-      garbageValue = "-3"
+      signature = "(Lab;I)V",
+      garbageValue = "239959050"
    )
-   void vmethod703(WorldMapData var1);
+   void vmethod740(WorldMapData var1);
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(III)Lhq;",
-      garbageValue = "578346769"
-   )
-   Coordinates vmethod728(int var1, int var2);
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "-670381390"
-   )
-   int[] vmethod706(int var1, int var2, int var3);
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(Lfh;B)V",
+      signature = "(IIB)Lhh;",
       garbageValue = "0"
    )
-   void vmethod716(Buffer var1);
+   Coordinates vmethod744(int var1, int var2);
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(IIII)[I",
+      garbageValue = "216213566"
+   )
+   int[] vmethod759(int var1, int var2, int var3);
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Lfb;I)V",
+      garbageValue = "-2081425823"
+   )
+   void vmethod742(Buffer var1);
 }

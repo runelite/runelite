@@ -3,102 +3,65 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aw")
+@ObfuscatedName("at")
 public class class35 {
-   @ObfuscatedName("e")
+   @ObfuscatedName("by")
    @ObfuscatedSignature(
-      signature = "Law;"
+      signature = "Lha;"
    )
-   static final class35 field500;
-   @ObfuscatedName("n")
+   static class233 field505;
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Law;"
+      signature = "Lat;"
    )
-   static final class35 field497;
-   @ObfuscatedName("v")
-   @Export("overlayRotations")
-   static byte[][][] overlayRotations;
-   @ObfuscatedName("g")
+   static final class35 field506;
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lat;"
+   )
+   static final class35 field502;
+   @ObfuscatedName("iy")
    @ObfuscatedGetter(
-      intValue = 14813205
+      intValue = -1903218639
    )
-   final int field499;
+   @Export("plane")
+   static int plane;
+   @ObfuscatedName("ew")
+   @ObfuscatedSignature(
+      signature = "Ljh;"
+   )
+   @Export("font_p12full")
+   static Font font_p12full;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1783583469
+   )
+   final int field503;
 
    static {
-      field500 = new class35(0);
-      field497 = new class35(1);
+      field506 = new class35(0);
+      field502 = new class35(1);
    }
 
    class35(int var1) {
-      this.field499 = var1;
+      this.field503 = var1;
    }
 
-   @ObfuscatedName("fp")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1642818155"
+      signature = "(CI)Z",
+      garbageValue = "1710636095"
    )
-   static final void method495() {
-      if(GroundObject.soundSystem1 != null) {
-         GroundObject.soundSystem1.method2039();
-      }
-
-      if(Actor.soundSystem0 != null) {
-         Actor.soundSystem0.method2039();
-      }
-
+   public static boolean method507(char var0) {
+      return var0 >= 32 && var0 <= 126?true:(var0 >= 160 && var0 <= 255?true:var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376);
    }
 
-   @ObfuscatedName("hf")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "-111"
+      signature = "(IS)Z",
+      garbageValue = "1801"
    )
-   @Export("groundItemSpawned")
-   static final void groundItemSpawned(int var0, int var1) {
-      Deque var2 = Client.groundItemDeque[class29.plane][var0][var1];
-      if(var2 == null) {
-         class84.region.method2732(class29.plane, var0, var1);
-      } else {
-         long var3 = -99999999L;
-         Item var5 = null;
-
-         Item var6;
-         for(var6 = (Item)var2.getFront(); var6 != null; var6 = (Item)var2.getNext()) {
-            ItemComposition var7 = ClassInfo.getItemDefinition(var6.id);
-            long var8 = (long)var7.price;
-            if(var7.isStackable == 1) {
-               var8 *= (long)(var6.quantity + 1);
-            }
-
-            if(var8 > var3) {
-               var3 = var8;
-               var5 = var6;
-            }
-         }
-
-         if(var5 == null) {
-            class84.region.method2732(class29.plane, var0, var1);
-         } else {
-            var2.addTail(var5);
-            Item var11 = null;
-            Item var10 = null;
-
-            for(var6 = (Item)var2.getFront(); var6 != null; var6 = (Item)var2.getNext()) {
-               if(var5.id != var6.id) {
-                  if(var11 == null) {
-                     var11 = var6;
-                  }
-
-                  if(var6.id != var11.id && var10 == null) {
-                     var10 = var6;
-                  }
-               }
-            }
-
-            int var9 = var0 + (var1 << 7) + 1610612736;
-            class84.region.addItemPile(class29.plane, var0, var1, Friend.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class29.plane), var5, var9, var11, var10);
-         }
-      }
+   public static boolean method506(int var0) {
+      return (var0 >> 30 & 1) != 0;
    }
 }

@@ -4,65 +4,65 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("en")
+@ObfuscatedName("ey")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("iz")
-   @ObfuscatedGetter(
-      intValue = 900785193
+   @ObfuscatedName("ev")
+   @ObfuscatedSignature(
+      signature = "Lea;"
    )
-   static int field2113;
-   @ObfuscatedName("z")
+   static Task field2130;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1572480857
+      intValue = 1962379383
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("r")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1572962761
+      intValue = -1956735527
    )
    @Export("config")
    int config;
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 2064834737
+      intValue = 1617900715
    )
    @Export("x")
    int x;
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Leg;"
+      signature = "Leq;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1155232631
+      intValue = -389123369
    )
    @Export("y")
    int y;
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 398892399
+      intValue = 123758765
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("v")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Leg;"
+      signature = "Leq;"
    )
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -354676823
+      intValue = -99362331
    )
    @Export("orientationA")
    int orientationA;
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -2061046043
+      intValue = 1432137627
    )
    @Export("orientationB")
    int orientationB;
@@ -70,23 +70,5 @@ public final class WallObject {
    WallObject() {
       this.hash = 0;
       this.config = 0;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(Lit;I)V",
-      garbageValue = "-77716496"
-   )
-   public static void method2907(IndexDataBase var0) {
-      Varbit.varbit_ref = var0;
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(II)Lbs;",
-      garbageValue = "1664501663"
-   )
-   static MessageNode method2908(int var0) {
-      return (MessageNode)class99.field1516.get((long)var0);
    }
 }

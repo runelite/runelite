@@ -1,16 +1,38 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hs")
+@ObfuscatedName("hz")
 public class class221 {
-   @ObfuscatedName("gv")
+   @ObfuscatedName("cs")
+   public static char field2807;
+
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lcp;IS)V",
-      garbageValue = "-26196"
+      signature = "(I)V",
+      garbageValue = "1897086126"
    )
-   @Export("characterToScreen")
-   static final void characterToScreen(Actor var0, int var1) {
-      class113.method2110(var0.x, var0.y, var1);
+   public static void method4072() {
+      Object var0 = class237.field3222;
+      synchronized(class237.field3222) {
+         if(class237.field3219 != 0) {
+            class237.field3219 = 1;
+
+            try {
+               class237.field3222.wait();
+            } catch (InterruptedException var3) {
+               ;
+            }
+         }
+
+      }
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "1477019721"
+   )
+   public static boolean method4073(int var0) {
+      return (var0 >> 31 & 1) != 0;
    }
 }

@@ -1,36 +1,62 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("fd")
 public class class170 {
-   @ObfuscatedName("ck")
-   @ObfuscatedGetter(
-      longValue = 410873934902022853L
-   )
-   static long field2329;
-   @ObfuscatedName("l")
-   public static boolean field2328;
-   @ObfuscatedName("qm")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lh;"
+      signature = "(CI)Z",
+      garbageValue = "647133978"
    )
-   static class13 field2327;
+   public static boolean method3141(char var0) {
+      if((var0 <= 0 || var0 >= 128) && (var0 < 160 || var0 > 255)) {
+         if(var0 != 0) {
+            char[] var1 = class267.field3650;
 
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "272160973"
-   )
-   @Export("currentTimeMs")
-   public static synchronized long currentTimeMs() {
-      long var0 = System.currentTimeMillis();
-      if(var0 < class176.field2395) {
-         class278.field3720 += class176.field2395 - var0;
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               char var3 = var1[var2];
+               if(var0 == var3) {
+                  return true;
+               }
+            }
+         }
+
+         return false;
+      } else {
+         return true;
       }
+   }
 
-      class176.field2395 = var0;
-      return class278.field3720 + var0;
+   @ObfuscatedName("hv")
+   @ObfuscatedSignature(
+      signature = "(Lhi;B)Z",
+      garbageValue = "116"
+   )
+   static final boolean method3142(Widget var0) {
+      if(var0.tableActions == null) {
+         return false;
+      } else {
+         for(int var1 = 0; var1 < var0.tableActions.length; ++var1) {
+            int var2 = class182.method3456(var0, var1);
+            int var3 = var0.field2763[var1];
+            if(var0.tableActions[var1] == 2) {
+               if(var2 >= var3) {
+                  return false;
+               }
+            } else if(var0.tableActions[var1] == 3) {
+               if(var2 <= var3) {
+                  return false;
+               }
+            } else if(var0.tableActions[var1] == 4) {
+               if(var2 == var3) {
+                  return false;
+               }
+            } else if(var2 != var3) {
+               return false;
+            }
+         }
+
+         return true;
+      }
    }
 }

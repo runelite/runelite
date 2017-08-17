@@ -4,30 +4,31 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ep")
+@ObfuscatedName("el")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("l")
+   @ObfuscatedName("dm")
    @ObfuscatedSignature(
-      signature = "Ldv;"
+      signature = "Lil;"
    )
-   public static class104 field2044;
-   @ObfuscatedName("e")
+   @Export("indexScripts")
+   static IndexData indexScripts;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1704509713
+      intValue = 1394968655
    )
    @Export("id")
    int id;
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 114602003
+      intValue = 373213147
    )
    @Export("count")
    int count;
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @Export("types")
    int[] types;
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @Export("list")
    int[][] list;
 
@@ -55,18 +56,16 @@ public class FrameMap extends Node {
 
    }
 
-   @ObfuscatedName("ig")
+   @ObfuscatedName("fn")
    @ObfuscatedSignature(
-      signature = "(IB)Ljava/lang/String;",
-      garbageValue = "7"
+      signature = "(I)V",
+      garbageValue = "-538449664"
    )
-   static final String method2709(int var0) {
-      String var1 = Integer.toString(var0);
-
-      for(int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
-         var1 = var1.substring(0, var2) + "," + var1.substring(var2);
+   static void method2700() {
+      if(class46.renderOverview != null) {
+         class46.renderOverview.method5229(class35.plane, (XGrandExchangeOffer.localPlayer.x >> 7) + class47.baseX, (XGrandExchangeOffer.localPlayer.y >> 7) + class44.baseY, false);
+         class46.renderOverview.method5249();
       }
 
-      return var1.length() > 9?" " + RSSocket.getColTags('ﾀ') + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + RSSocket.getColTags(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + RSSocket.getColTags(16776960) + var1 + "</col>");
    }
 }

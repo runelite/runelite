@@ -4,213 +4,220 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bl")
+@ObfuscatedName("bm")
 @Implements("ScriptEvent")
 public class ScriptEvent extends Node {
-   @ObfuscatedName("fi")
-   @ObfuscatedGetter(
-      intValue = -254845199
-   )
-   @Export("baseY")
-   static int baseY;
-   @ObfuscatedName("ag")
-   static int[] field847;
-   @ObfuscatedName("o")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lhc;"
+      signature = "Lhn;"
    )
-   class220 field845;
-   @ObfuscatedName("e")
-   Object[] field849;
-   @ObfuscatedName("g")
+   class220 field863;
+   @ObfuscatedName("j")
+   Object[] field856;
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lhg;"
+      signature = "Lhi;"
    )
    @Export("widget")
    Widget widget;
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1040973181
+      intValue = -1411916729
    )
-   int field837;
+   int field857;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 747456331
+   )
+   int field858;
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "Lhi;"
+   )
+   Widget field860;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1573275857
+   )
+   int field864;
+   @ObfuscatedName("b")
+   String field854;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1693541631
+   )
+   int field859;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1156687709
+   )
+   int field861;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 2118209137
+      intValue = 291139189
    )
-   int field844;
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lhg;"
-   )
-   Widget field835;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1276526145
-   )
-   int field848;
-   @ObfuscatedName("u")
-   String field840;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1344882249
-   )
-   int field839;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -331933383
-   )
-   int field841;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1309093919
-   )
-   int field842;
-   @ObfuscatedName("n")
-   boolean field834;
+   int field862;
+   @ObfuscatedName("h")
+   boolean field865;
 
    public ScriptEvent() {
-      this.field845 = class220.field2771;
+      this.field863 = class220.field2797;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/Object;I)V",
-      garbageValue = "25335463"
+      signature = "([Ljava/lang/Object;B)V",
+      garbageValue = "68"
    )
-   public void method1113(Object[] var1) {
-      this.field849 = var1;
+   public void method1161(Object[] var1) {
+      this.field856 = var1;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Lhc;B)V",
-      garbageValue = "1"
+      signature = "(Lhn;S)V",
+      garbageValue = "-27859"
    )
-   public void method1107(class220 var1) {
-      this.field845 = var1;
+   public void method1162(class220 var1) {
+      this.field863 = var1;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)[Lhe;",
-      garbageValue = "1187028191"
+      signature = "([BIII)Ljava/lang/String;",
+      garbageValue = "899422762"
    )
-   public static Permission[] method1111() {
-      return new Permission[]{Permission.field3159, Permission.field3154, Permission.field3161, Permission.field3155, Permission.field3157, Permission.field3153};
+   @Export("getString")
+   public static String getString(byte[] var0, int var1, int var2) {
+      char[] var3 = new char[var2];
+      int var4 = 0;
+
+      for(int var5 = 0; var5 < var2; ++var5) {
+         int var6 = var0[var5 + var1] & 255;
+         if(var6 != 0) {
+            if(var6 >= 128 && var6 < 160) {
+               char var7 = class267.field3650[var6 - 128];
+               if(var7 == 0) {
+                  var7 = 63;
+               }
+
+               var6 = var7;
+            }
+
+            var3[var4++] = (char)var6;
+         }
+      }
+
+      return new String(var3, 0, var4);
    }
 
-   @ObfuscatedName("fk")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1185413086"
+      signature = "([Lch;II[I[II)V",
+      garbageValue = "-1852514334"
    )
-   static final void method1106() {
-      int var0 = class9.field248 * 128 + 64;
-      int var1 = 64 + WorldMapType2.field522 * 128;
-      int var2 = Friend.getTileHeight(var0, var1, class29.plane) - class36.field505;
-      if(class273.cameraX < var0) {
-         class273.cameraX = (var0 - class273.cameraX) * MessageNode.field874 / 1000 + class273.cameraX + class18.field315;
-         if(class273.cameraX > var0) {
-            class273.cameraX = var0;
+   static void method1163(World[] var0, int var1, int var2, int[] var3, int[] var4) {
+      if(var1 < var2) {
+         int var5 = var1 - 1;
+         int var6 = var2 + 1;
+         int var7 = (var2 + var1) / 2;
+         World var8 = var0[var7];
+         var0[var7] = var0[var1];
+         var0[var1] = var8;
+
+         while(var5 < var6) {
+            boolean var9 = true;
+
+            int var10;
+            int var11;
+            int var12;
+            do {
+               --var6;
+
+               for(var10 = 0; var10 < 4; ++var10) {
+                  if(var3[var10] == 2) {
+                     var11 = var0[var6].index;
+                     var12 = var8.index;
+                  } else if(var3[var10] == 1) {
+                     var11 = var0[var6].playerCount;
+                     var12 = var8.playerCount;
+                     if(var11 == -1 && var4[var10] == 1) {
+                        var11 = 2001;
+                     }
+
+                     if(var12 == -1 && var4[var10] == 1) {
+                        var12 = 2001;
+                     }
+                  } else if(var3[var10] == 3) {
+                     var11 = var0[var6].method1579()?1:0;
+                     var12 = var8.method1579()?1:0;
+                  } else {
+                     var11 = var0[var6].id;
+                     var12 = var8.id;
+                  }
+
+                  if(var11 != var12) {
+                     if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
+                        var9 = false;
+                     }
+                     break;
+                  }
+
+                  if(var10 == 3) {
+                     var9 = false;
+                  }
+               }
+            } while(var9);
+
+            var9 = true;
+
+            do {
+               ++var5;
+
+               for(var10 = 0; var10 < 4; ++var10) {
+                  if(var3[var10] == 2) {
+                     var11 = var0[var5].index;
+                     var12 = var8.index;
+                  } else if(var3[var10] == 1) {
+                     var11 = var0[var5].playerCount;
+                     var12 = var8.playerCount;
+                     if(var11 == -1 && var4[var10] == 1) {
+                        var11 = 2001;
+                     }
+
+                     if(var12 == -1 && var4[var10] == 1) {
+                        var12 = 2001;
+                     }
+                  } else if(var3[var10] == 3) {
+                     var11 = var0[var5].method1579()?1:0;
+                     var12 = var8.method1579()?1:0;
+                  } else {
+                     var11 = var0[var5].id;
+                     var12 = var8.id;
+                  }
+
+                  if(var11 != var12) {
+                     if((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
+                        var9 = false;
+                     }
+                     break;
+                  }
+
+                  if(var10 == 3) {
+                     var9 = false;
+                  }
+               }
+            } while(var9);
+
+            if(var5 < var6) {
+               World var13 = var0[var5];
+               var0[var5] = var0[var6];
+               var0[var6] = var13;
+            }
          }
-      }
 
-      if(class273.cameraX > var0) {
-         class273.cameraX -= MessageNode.field874 * (class273.cameraX - var0) / 1000 + class18.field315;
-         if(class273.cameraX < var0) {
-            class273.cameraX = var0;
-         }
-      }
-
-      if(PendingSpawn.cameraZ < var2) {
-         PendingSpawn.cameraZ += (var2 - PendingSpawn.cameraZ) * MessageNode.field874 / 1000 + class18.field315;
-         if(PendingSpawn.cameraZ > var2) {
-            PendingSpawn.cameraZ = var2;
-         }
-      }
-
-      if(PendingSpawn.cameraZ > var2) {
-         PendingSpawn.cameraZ -= MessageNode.field874 * (PendingSpawn.cameraZ - var2) / 1000 + class18.field315;
-         if(PendingSpawn.cameraZ < var2) {
-            PendingSpawn.cameraZ = var2;
-         }
-      }
-
-      if(GZipDecompressor.cameraY < var1) {
-         GZipDecompressor.cameraY += (var1 - GZipDecompressor.cameraY) * MessageNode.field874 / 1000 + class18.field315;
-         if(GZipDecompressor.cameraY > var1) {
-            GZipDecompressor.cameraY = var1;
-         }
-      }
-
-      if(GZipDecompressor.cameraY > var1) {
-         GZipDecompressor.cameraY -= MessageNode.field874 * (GZipDecompressor.cameraY - var1) / 1000 + class18.field315;
-         if(GZipDecompressor.cameraY < var1) {
-            GZipDecompressor.cameraY = var1;
-         }
-      }
-
-      var0 = class158.field2239 * 128 + 64;
-      var1 = class36.field510 * 128 + 64;
-      var2 = Friend.getTileHeight(var0, var1, class29.plane) - class222.field2807;
-      int var3 = var0 - class273.cameraX;
-      int var4 = var2 - PendingSpawn.cameraZ;
-      int var5 = var1 - GZipDecompressor.cameraY;
-      int var6 = (int)Math.sqrt((double)(var3 * var3 + var5 * var5));
-      int var7 = (int)(Math.atan2((double)var4, (double)var6) * 325.949D) & 2047;
-      int var8 = (int)(Math.atan2((double)var3, (double)var5) * -325.949D) & 2047;
-      if(var7 < 128) {
-         var7 = 128;
-      }
-
-      if(var7 > 383) {
-         var7 = 383;
-      }
-
-      if(class250.cameraPitch < var7) {
-         class250.cameraPitch += (var7 - class250.cameraPitch) * class150.field2180 / 1000 + ISAACCipher.field2418;
-         if(class250.cameraPitch > var7) {
-            class250.cameraPitch = var7;
-         }
-      }
-
-      if(class250.cameraPitch > var7) {
-         class250.cameraPitch -= class150.field2180 * (class250.cameraPitch - var7) / 1000 + ISAACCipher.field2418;
-         if(class250.cameraPitch < var7) {
-            class250.cameraPitch = var7;
-         }
-      }
-
-      int var9 = var8 - Player.cameraYaw;
-      if(var9 > 1024) {
-         var9 -= 2048;
-      }
-
-      if(var9 < -1024) {
-         var9 += 2048;
-      }
-
-      if(var9 > 0) {
-         Player.cameraYaw += ISAACCipher.field2418 + var9 * class150.field2180 / 1000;
-         Player.cameraYaw &= 2047;
-      }
-
-      if(var9 < 0) {
-         Player.cameraYaw -= -var9 * class150.field2180 / 1000 + ISAACCipher.field2418;
-         Player.cameraYaw &= 2047;
-      }
-
-      int var10 = var8 - Player.cameraYaw;
-      if(var10 > 1024) {
-         var10 -= 2048;
-      }
-
-      if(var10 < -1024) {
-         var10 += 2048;
-      }
-
-      if(var10 < 0 && var9 > 0 || var10 > 0 && var9 < 0) {
-         Player.cameraYaw = var8;
+         method1163(var0, var1, var6, var3, var4);
+         method1163(var0, var6 + 1, var2, var3, var4);
       }
 
    }

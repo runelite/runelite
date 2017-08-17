@@ -1,60 +1,60 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dl")
+@ObfuscatedName("da")
 public abstract class class120 extends Node {
    @ObfuscatedName("w")
-   volatile boolean field1707;
+   volatile boolean field1727;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Ldg;"
+      signature = "Lds;"
    )
-   class123 field1704;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Ldl;"
-   )
-   class120 field1706;
+   class123 field1729;
    @ObfuscatedName("a")
-   int field1705;
+   @ObfuscatedSignature(
+      signature = "Lda;"
+   )
+   class120 field1728;
+   @ObfuscatedName("v")
+   int field1726;
 
    protected class120() {
-      this.field1707 = true;
+      this.field1727 = true;
    }
 
-   @ObfuscatedName("r")
-   protected abstract void vmethod3889(int[] var1, int var2, int var3);
+   @ObfuscatedName("w")
+   protected abstract void vmethod3904(int[] var1, int var2, int var3);
 
-   @ObfuscatedName("d")
-   protected abstract void vmethod3890(int var1);
+   @ObfuscatedName("o")
+   protected abstract void vmethod3893(int var1);
 
-   @ObfuscatedName("fv")
-   final void method2315(int[] var1, int var2, int var3) {
-      if(this.field1707) {
-         this.vmethod3889(var1, var2, var3);
+   @ObfuscatedName("fd")
+   final void method2319(int[] var1, int var2, int var3) {
+      if(this.field1727) {
+         this.vmethod3904(var1, var2, var3);
       } else {
-         this.vmethod3890(var3);
+         this.vmethod3893(var3);
       }
 
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "()Ldl;"
+      signature = "()Lda;"
    )
-   protected abstract class120 vmethod3908();
+   protected abstract class120 vmethod3888();
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "()Ldl;"
+      signature = "()Lda;"
    )
-   protected abstract class120 vmethod3906();
+   protected abstract class120 vmethod3894();
 
-   @ObfuscatedName("af")
-   int vmethod2312() {
+   @ObfuscatedName("ay")
+   int vmethod2315() {
       return 255;
    }
 
-   @ObfuscatedName("z")
-   protected abstract int vmethod3904();
+   @ObfuscatedName("l")
+   protected abstract int vmethod3889();
 }

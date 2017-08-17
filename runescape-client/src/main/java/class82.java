@@ -1,255 +1,138 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cm")
+@ObfuscatedName("ct")
 public final class class82 extends Node {
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lgv;"
+      signature = "Lgi;"
    )
-   static Deque field1314;
-   @ObfuscatedName("z")
+   static Deque field1330;
+   @ObfuscatedName("nx")
    @ObfuscatedGetter(
-      intValue = 1376990283
+      intValue = -263364235
    )
-   int field1310;
+   @Export("clanChatCount")
+   static int clanChatCount;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -416510297
+   )
+   int field1326;
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lia;"
+      signature = "Lih;"
    )
-   ObjectComposition field1317;
-   @ObfuscatedName("v")
+   ObjectComposition field1329;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -513147661
+      intValue = 921934015
    )
-   int field1306;
-   @ObfuscatedName("d")
+   int field1325;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1349328989
+      intValue = 1213238287
    )
-   int field1303;
+   int field1324;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1165141025
+      intValue = -2106925397
    )
-   int field1313;
-   @ObfuscatedName("l")
-   int[] field1311;
-   @ObfuscatedName("u")
+   int field1331;
+   @ObfuscatedName("m")
+   int[] field1316;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ldq;"
    )
-   class118 field1316;
-   @ObfuscatedName("w")
+   class118 field1323;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -393032741
+      intValue = 919872157
    )
-   int field1307;
+   int field1319;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1003867189
+   )
+   int field1317;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -418169973
+      intValue = -1892123681
    )
-   int field1305;
-   @ObfuscatedName("k")
+   int field1322;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1000785789
+      intValue = 457851029
    )
-   int field1308;
-   @ObfuscatedName("y")
+   int field1327;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1052044535
+      intValue = 1736456595
    )
-   int field1304;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 905834051
-   )
-   int field1315;
+   int field1321;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Ldq;"
    )
-   class118 field1312;
-   @ObfuscatedName("h")
+   class118 field1328;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1086125481
+      intValue = -1896100879
    )
-   int field1309;
+   int field1315;
 
    static {
-      field1314 = new Deque();
+      field1330 = new Deque();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "0"
+      garbageValue = "14"
    )
-   void method1609() {
-      int var1 = this.field1310;
-      ObjectComposition var2 = this.field1317.getImpostor();
+   void method1599() {
+      int var1 = this.field1326;
+      ObjectComposition var2 = this.field1329.getImpostor();
       if(var2 != null) {
-         this.field1310 = var2.ambientSoundId;
-         this.field1306 = var2.field3457 * 128;
-         this.field1303 = var2.field3472;
-         this.field1313 = var2.field3473;
-         this.field1311 = var2.field3474;
+         this.field1326 = var2.ambientSoundId;
+         this.field1325 = var2.field3437 * 128;
+         this.field1324 = var2.field3472;
+         this.field1331 = var2.field3434;
+         this.field1316 = var2.field3474;
       } else {
-         this.field1310 = -1;
-         this.field1306 = 0;
-         this.field1303 = 0;
-         this.field1313 = 0;
-         this.field1311 = null;
-      }
-
-      if(var1 != this.field1310 && this.field1316 != null) {
-         class36.field513.method1934(this.field1316);
+         this.field1326 = -1;
+         this.field1325 = 0;
+         this.field1324 = 0;
+         this.field1331 = 0;
          this.field1316 = null;
       }
 
+      if(var1 != this.field1326 && this.field1323 != null) {
+         class56.field679.method1923(this.field1323);
+         this.field1323 = null;
+      }
+
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(ILcc;ZI)I",
-      garbageValue = "-113976482"
+      signature = "(Lfo;I)V",
+      garbageValue = "-1325312570"
    )
-   static int method1611(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class269.field3661:DecorativeObject.field2164;
-      if(var0 == 1800) {
-         int[] var4 = class84.intStack;
-         int var5 = ++class84.intStackSize - 1;
-         int var7 = class15.getWidgetConfig(var3);
-         int var6 = var7 >> 11 & 63;
-         var4[var5] = var6;
-         return 1;
-      } else if(var0 != 1801) {
-         if(var0 == 1802) {
-            if(var3.name == null) {
-               class84.scriptStringStack[++class84.scriptStringStackSize - 1] = "";
-            } else {
-               class84.scriptStringStack[++class84.scriptStringStackSize - 1] = var3.name;
-            }
-
-            return 1;
-         } else {
-            return 2;
-         }
-      } else {
-         int var8 = class84.intStack[--class84.intStackSize];
-         --var8;
-         if(var3.actions != null && var8 < var3.actions.length && var3.actions[var8] != null) {
-            class84.scriptStringStack[++class84.scriptStringStackSize - 1] = var3.actions[var8];
-         } else {
-            class84.scriptStringStack[++class84.scriptStringStackSize - 1] = "";
+   static final void method1612(PacketBuffer var0) {
+      for(int var1 = 0; var1 < class97.field1506; ++var1) {
+         int var2 = class97.field1518[var1];
+         Player var3 = Client.cachedPlayers[var2];
+         int var4 = var0.readUnsignedByte();
+         if((var4 & 64) != 0) {
+            var4 += var0.readUnsignedByte() << 8;
          }
 
-         return 1;
+         class33.method373(var0, var2, var3, var4);
       }
-   }
 
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(ILcc;ZI)I",
-      garbageValue = "-199432891"
-   )
-   static int method1619(int var0, Script var1, boolean var2) {
-      int var3;
-      int var4;
-      if(var0 == 3400) {
-         class84.intStackSize -= 2;
-         var3 = class84.intStack[class84.intStackSize];
-         var4 = class84.intStack[class84.intStackSize + 1];
-         Enum var6 = (Enum)Enum.field3392.get((long)var3);
-         Enum var5;
-         if(var6 != null) {
-            var5 = var6;
-         } else {
-            byte[] var14 = Enum.field3393.getConfigData(8, var3);
-            var6 = new Enum();
-            if(var14 != null) {
-               var6.decode(new Buffer(var14));
-            }
-
-            Enum.field3392.put(var6, (long)var3);
-            var5 = var6;
-         }
-
-         var6 = var5;
-         if(var5.valType != 115) {
-            ;
-         }
-
-         for(int var7 = 0; var7 < var6.size; ++var7) {
-            if(var4 == var6.keys[var7]) {
-               class84.scriptStringStack[++class84.scriptStringStackSize - 1] = var6.stringVals[var7];
-               var6 = null;
-               break;
-            }
-         }
-
-         if(var6 != null) {
-            class84.scriptStringStack[++class84.scriptStringStackSize - 1] = var6.defaultString;
-         }
-
-         return 1;
-      } else if(var0 == 3408) {
-         class84.intStackSize -= 4;
-         var3 = class84.intStack[class84.intStackSize];
-         var4 = class84.intStack[class84.intStackSize + 1];
-         int var11 = class84.intStack[class84.intStackSize + 2];
-         int var12 = class84.intStack[class84.intStackSize + 3];
-         Enum var8 = (Enum)Enum.field3392.get((long)var11);
-         Enum var10;
-         if(var8 != null) {
-            var10 = var8;
-         } else {
-            byte[] var13 = Enum.field3393.getConfigData(8, var11);
-            var8 = new Enum();
-            if(var13 != null) {
-               var8.decode(new Buffer(var13));
-            }
-
-            Enum.field3392.put(var8, (long)var11);
-            var10 = var8;
-         }
-
-         var8 = var10;
-         if(var3 == var10.keyType && var4 == var10.valType) {
-            for(int var9 = 0; var9 < var8.size; ++var9) {
-               if(var12 == var8.keys[var9]) {
-                  if(var4 == 115) {
-                     class84.scriptStringStack[++class84.scriptStringStackSize - 1] = var8.stringVals[var9];
-                  } else {
-                     class84.intStack[++class84.intStackSize - 1] = var8.intVals[var9];
-                  }
-
-                  var8 = null;
-                  break;
-               }
-            }
-
-            if(var8 != null) {
-               if(var4 == 115) {
-                  class84.scriptStringStack[++class84.scriptStringStackSize - 1] = var8.defaultString;
-               } else {
-                  class84.intStack[++class84.intStackSize - 1] = var8.defaultInt;
-               }
-            }
-
-            return 1;
-         } else {
-            if(var4 == 115) {
-               class84.scriptStringStack[++class84.scriptStringStackSize - 1] = "null";
-            } else {
-               class84.intStack[++class84.intStackSize - 1] = 0;
-            }
-
-            return 1;
-         }
-      } else {
-         return 2;
-      }
    }
 }

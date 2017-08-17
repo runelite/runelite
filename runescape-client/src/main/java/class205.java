@@ -2,175 +2,175 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gl")
+@ObfuscatedName("gx")
 public class class205 extends class120 {
-   @ObfuscatedName("ah")
+   @ObfuscatedName("ar")
    @ObfuscatedGetter(
-      intValue = 2008764195
+      intValue = -508490345
    )
-   int field2517;
-   @ObfuscatedName("n")
+   int field2532;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1747634435
+      intValue = -1952615853
    )
-   int field2495;
-   @ObfuscatedName("i")
-   int[] field2511;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lgk;"
-   )
-   XHashTable field2523;
-   @ObfuscatedName("d")
-   int[] field2503;
-   @ObfuscatedName("k")
-   int[] field2498;
-   @ObfuscatedName("r")
-   int[] field2500;
-   @ObfuscatedName("z")
-   int[] field2504;
+   int field2511;
    @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "[[Lgn;"
-   )
-   class206[][] field2494;
-   @ObfuscatedName("p")
-   int[] field2525;
-   @ObfuscatedName("ay")
-   @ObfuscatedSignature(
-      signature = "Lgm;"
-   )
-   class207 field2515;
-   @ObfuscatedName("ax")
-   @ObfuscatedSignature(
-      signature = "Lhf;"
-   )
-   class209 field2521;
-   @ObfuscatedName("ao")
-   @ObfuscatedGetter(
-      intValue = -1857025985
-   )
-   int field2518;
-   @ObfuscatedName("y")
-   int[] field2497;
-   @ObfuscatedName("j")
-   int[] field2508;
-   @ObfuscatedName("u")
-   int[] field2502;
-   @ObfuscatedName("ae")
-   @ObfuscatedGetter(
-      longValue = -9118587443194430333L
-   )
-   long field2520;
-   @ObfuscatedName("v")
-   int[] field2499;
-   @ObfuscatedName("x")
-   int[] field2510;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1596721305
-   )
-   int field2513;
-   @ObfuscatedName("ag")
-   @ObfuscatedSignature(
-      signature = "[[Lgn;"
-   )
-   class206[][] field2507;
-   @ObfuscatedName("au")
-   boolean field2512;
-   @ObfuscatedName("b")
-   int[] field2509;
-   @ObfuscatedName("l")
-   int[] field2505;
-   @ObfuscatedName("al")
-   @ObfuscatedGetter(
-      longValue = -2468669182736037017L
-   )
-   long field2519;
+   int[] field2527;
    @ObfuscatedName("o")
    int[] field2514;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lgr;"
+   )
+   XHashTable field2515;
+   @ObfuscatedName("x")
+   int[] field2533;
+   @ObfuscatedName("l")
+   int[] field2517;
+   @ObfuscatedName("c")
+   int[] field2528;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "[[Lgm;"
+   )
+   class206[][] field2529;
+   @ObfuscatedName("y")
+   int[] field2523;
+   @ObfuscatedName("ao")
+   @ObfuscatedSignature(
+      signature = "Lgn;"
+   )
+   class207 field2531;
+   @ObfuscatedName("aj")
+   @ObfuscatedSignature(
+      signature = "Lht;"
+   )
+   class209 field2537;
+   @ObfuscatedName("p")
+   int[] field2513;
+   @ObfuscatedName("ag")
+   @ObfuscatedGetter(
+      intValue = -1910143711
+   )
+   int field2534;
+   @ObfuscatedName("n")
+   int[] field2516;
+   @ObfuscatedName("b")
+   int[] field2518;
+   @ObfuscatedName("ab")
+   @ObfuscatedGetter(
+      longValue = 7837689466285561751L
+   )
+   long field2536;
+   @ObfuscatedName("g")
+   int[] field2510;
+   @ObfuscatedName("k")
+   int[] field2526;
    @ObfuscatedName("f")
-   int[] field2496;
+   @ObfuscatedGetter(
+      intValue = -1321020997
+   )
+   int field2512;
+   @ObfuscatedName("ax")
+   @ObfuscatedSignature(
+      signature = "[[Lgm;"
+   )
+   class206[][] field2530;
+   @ObfuscatedName("an")
+   boolean field2519;
+   @ObfuscatedName("u")
+   int[] field2525;
+   @ObfuscatedName("i")
+   int[] field2521;
+   @ObfuscatedName("av")
+   @ObfuscatedGetter(
+      longValue = 3998992942954658031L
+   )
+   long field2535;
+   @ObfuscatedName("m")
+   int[] field2520;
+   @ObfuscatedName("z")
+   int[] field2524;
 
    public class205() {
-      this.field2495 = 256;
-      this.field2513 = 1000000;
-      this.field2497 = new int[16];
-      this.field2498 = new int[16];
-      this.field2499 = new int[16];
-      this.field2504 = new int[16];
-      this.field2500 = new int[16];
-      this.field2502 = new int[16];
-      this.field2503 = new int[16];
-      this.field2514 = new int[16];
-      this.field2505 = new int[16];
-      this.field2525 = new int[16];
-      this.field2496 = new int[16];
-      this.field2509 = new int[16];
+      this.field2511 = 256;
+      this.field2512 = 1000000;
+      this.field2513 = new int[16];
+      this.field2533 = new int[16];
       this.field2510 = new int[16];
-      this.field2511 = new int[16];
-      this.field2508 = new int[16];
-      this.field2494 = new class206[16][128];
-      this.field2507 = new class206[16][128];
-      this.field2515 = new class207();
-      this.field2521 = new class209(this);
-      this.field2523 = new XHashTable(128);
-      this.method3721();
+      this.field2528 = new int[16];
+      this.field2517 = new int[16];
+      this.field2518 = new int[16];
+      this.field2514 = new int[16];
+      this.field2520 = new int[16];
+      this.field2521 = new int[16];
+      this.field2523 = new int[16];
+      this.field2524 = new int[16];
+      this.field2525 = new int[16];
+      this.field2526 = new int[16];
+      this.field2527 = new int[16];
+      this.field2516 = new int[16];
+      this.field2529 = new class206[16][128];
+      this.field2530 = new class206[16][128];
+      this.field2531 = new class207();
+      this.field2537 = new class209(this);
+      this.field2515 = new XHashTable(128);
+      this.method3709();
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "117"
+      signature = "(III)V",
+      garbageValue = "-977179636"
    )
-   void method3710(int var1, int var2) {
-      this.field2504[var1] = var2;
-      this.field2502[var1] = var2 & -128;
-      this.method3711(var1, var2);
+   void method3698(int var1, int var2) {
+      this.field2528[var1] = var2;
+      this.field2518[var1] = var2 & -128;
+      this.method3806(var1, var2);
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "-1881028436"
+      garbageValue = "1604256072"
    )
-   void method3714(int var1, int var2, int var3) {
-      class206 var4 = this.field2494[var1][var2];
+   void method3702(int var1, int var2, int var3) {
+      class206 var4 = this.field2529[var1][var2];
       if(var4 != null) {
-         this.field2494[var1][var2] = null;
-         if((this.field2525[var1] & 2) != 0) {
-            for(class206 var5 = (class206)this.field2521.field2572.getFront(); var5 != null; var5 = (class206)this.field2521.field2572.getNext()) {
-               if(var5.field2528 == var4.field2528 && var5.field2532 < 0 && var4 != var5) {
-                  var4.field2532 = 0;
+         this.field2529[var1][var2] = null;
+         if((this.field2523[var1] & 2) != 0) {
+            for(class206 var5 = (class206)this.field2537.field2591.getFront(); var5 != null; var5 = (class206)this.field2537.field2591.getNext()) {
+               if(var5.field2544 == var4.field2544 && var5.field2553 < 0 && var5 != var4) {
+                  var4.field2553 = 0;
                   break;
                }
             }
          } else {
-            var4.field2532 = 0;
+            var4.field2553 = 0;
          }
 
       }
    }
 
-   @ObfuscatedName("aw")
+   @ObfuscatedName("an")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "891611894"
+      garbageValue = "1543913822"
    )
-   void method3718(int var1) {
-      for(class206 var2 = (class206)this.field2521.field2572.getFront(); var2 != null; var2 = (class206)this.field2521.field2572.getNext()) {
-         if(var1 < 0 || var2.field2528 == var1) {
-            if(var2.field2544 != null) {
-               var2.field2544.method2161(AbstractSoundSystem.sampleRate / 100);
-               if(var2.field2544.method2165()) {
-                  this.field2521.field2573.method1911(var2.field2544);
+   void method3743(int var1) {
+      for(class206 var2 = (class206)this.field2537.field2591.getFront(); var2 != null; var2 = (class206)this.field2537.field2591.getNext()) {
+         if(var1 < 0 || var2.field2544 == var1) {
+            if(var2.field2557 != null) {
+               var2.field2557.method2199(AbstractSoundSystem.sampleRate / 100);
+               if(var2.field2557.method2204()) {
+                  this.field2537.field2589.method1894(var2.field2557);
                }
 
-               var2.method3814();
+               var2.method3817();
             }
 
-            if(var2.field2532 < 0) {
-               this.field2494[var2.field2528][var2.field2530] = null;
+            if(var2.field2553 < 0) {
+               this.field2529[var2.field2544][var2.field2559] = null;
             }
 
             var2.unlink();
@@ -179,272 +179,272 @@ public class class205 extends class120 {
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-249439335"
+      signature = "(B)V",
+      garbageValue = "0"
    )
-   public synchronized void method3738() {
-      this.field2515.method3829();
-      this.method3721();
+   public synchronized void method3758() {
+      this.field2531.method3826();
+      this.method3709();
    }
 
-   @ObfuscatedName("ac")
+   @ObfuscatedName("ar")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "2082047203"
+      garbageValue = "-1693918998"
    )
-   void method3772(int var1) {
+   void method3719(int var1) {
       if(var1 >= 0) {
-         this.field2497[var1] = 12800;
-         this.field2498[var1] = 8192;
-         this.field2499[var1] = 16383;
-         this.field2503[var1] = 8192;
-         this.field2514[var1] = 0;
-         this.field2505[var1] = 8192;
-         this.method3722(var1);
-         this.method3797(var1);
-         this.field2525[var1] = 0;
-         this.field2496[var1] = 32767;
-         this.field2509[var1] = 256;
-         this.field2510[var1] = 0;
-         this.method3725(var1, 8192);
+         this.field2513[var1] = 12800;
+         this.field2533[var1] = 8192;
+         this.field2510[var1] = 16383;
+         this.field2514[var1] = 8192;
+         this.field2520[var1] = 0;
+         this.field2521[var1] = 8192;
+         this.method3786(var1);
+         this.method3711(var1);
+         this.field2523[var1] = 0;
+         this.field2524[var1] = 32767;
+         this.field2525[var1] = 256;
+         this.field2526[var1] = 0;
+         this.method3713(var1, 8192);
       } else {
          for(var1 = 0; var1 < 16; ++var1) {
-            this.method3772(var1);
+            this.method3719(var1);
          }
 
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(IIIB)V",
+      garbageValue = "-30"
+   )
+   void method3703(int var1, int var2, int var3) {
+   }
+
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "-1308422916"
+      garbageValue = "1207632709"
    )
-   void method3712(int var1, int var2, int var3) {
-      this.method3714(var1, var2, 64);
-      if((this.field2525[var1] & 2) != 0) {
-         for(class206 var4 = (class206)this.field2521.field2572.getTail(); var4 != null; var4 = (class206)this.field2521.field2572.getPrevious()) {
-            if(var4.field2528 == var1 && var4.field2532 < 0) {
-               this.field2494[var1][var4.field2530] = null;
-               this.field2494[var1][var2] = var4;
-               int var5 = (var4.field2531 * var4.field2536 >> 12) + var4.field2534;
-               var4.field2534 += var2 - var4.field2530 << 8;
-               var4.field2531 = var5 - var4.field2534;
-               var4.field2536 = 4096;
-               var4.field2530 = var2;
+   void method3764(int var1, int var2, int var3) {
+      this.method3702(var1, var2, 64);
+      if((this.field2523[var1] & 2) != 0) {
+         for(class206 var4 = (class206)this.field2537.field2591.getTail(); var4 != null; var4 = (class206)this.field2537.field2591.getPrevious()) {
+            if(var4.field2544 == var1 && var4.field2553 < 0) {
+               this.field2529[var1][var4.field2559] = null;
+               this.field2529[var1][var2] = var4;
+               int var5 = (var4.field2548 * var4.field2549 >> 12) + var4.field2547;
+               var4.field2547 += var2 - var4.field2559 << 8;
+               var4.field2548 = var5 - var4.field2547;
+               var4.field2549 = 4096;
+               var4.field2559 = var2;
                return;
             }
          }
       }
 
-      class208 var9 = (class208)this.field2523.get((long)this.field2500[var1]);
+      class208 var9 = (class208)this.field2515.get((long)this.field2517[var1]);
       if(var9 != null) {
-         class108 var8 = var9.field2562[var2];
+         class108 var8 = var9.field2578[var2];
          if(var8 != null) {
             class206 var6 = new class206();
-            var6.field2528 = var1;
-            var6.field2527 = var9;
-            var6.field2535 = var8;
-            var6.field2529 = var9.field2570[var2];
-            var6.field2540 = var9.field2567[var2];
-            var6.field2530 = var2;
-            var6.field2526 = var3 * var3 * var9.field2564[var2] * var9.field2566 + 1024 >> 11;
-            var6.field2533 = var9.field2565[var2] & 255;
-            var6.field2534 = (var2 << 8) - (var9.field2563[var2] & 32767);
-            var6.field2537 = 0;
-            var6.field2538 = 0;
+            var6.field2544 = var1;
+            var6.field2540 = var9;
+            var6.field2542 = var8;
+            var6.field2541 = var9.field2582[var2];
+            var6.field2543 = var9.field2583[var2];
+            var6.field2559 = var2;
+            var6.field2545 = var3 * var3 * var9.field2584[var2] * var9.field2581 + 1024 >> 11;
+            var6.field2546 = var9.field2587[var2] & 255;
+            var6.field2547 = (var2 << 8) - (var9.field2579[var2] & 32767);
+            var6.field2550 = 0;
             var6.field2539 = 0;
-            var6.field2532 = -1;
-            var6.field2541 = 0;
-            if(this.field2510[var1] == 0) {
-               var6.field2544 = class118.method2224(var8, this.method3726(var6), this.method3786(var6), this.method3728(var6));
+            var6.field2552 = 0;
+            var6.field2553 = -1;
+            var6.field2555 = 0;
+            if(this.field2526[var1] == 0) {
+               var6.field2557 = class118.method2261(var8, this.method3714(var6), this.method3715(var6), this.method3716(var6));
             } else {
-               var6.field2544 = class118.method2224(var8, this.method3726(var6), 0, this.method3728(var6));
-               this.method3713(var6, var9.field2563[var2] < 0);
+               var6.field2557 = class118.method2261(var8, this.method3714(var6), 0, this.method3716(var6));
+               this.method3710(var6, var9.field2579[var2] < 0);
             }
 
-            if(var9.field2563[var2] < 0) {
-               var6.field2544.method2286(-1);
+            if(var9.field2579[var2] < 0) {
+               var6.field2557.method2184(-1);
             }
 
-            if(var6.field2540 >= 0) {
-               class206 var7 = this.field2507[var1][var6.field2540];
-               if(var7 != null && var7.field2532 < 0) {
-                  this.field2494[var1][var7.field2530] = null;
-                  var7.field2532 = 0;
+            if(var6.field2543 >= 0) {
+               class206 var7 = this.field2530[var1][var6.field2543];
+               if(var7 != null && var7.field2553 < 0) {
+                  this.field2529[var1][var7.field2559] = null;
+                  var7.field2553 = 0;
                }
 
-               this.field2507[var1][var6.field2540] = var6;
+               this.field2530[var1][var6.field2543] = var6;
             }
 
-            this.field2521.field2572.addFront(var6);
-            this.field2494[var1][var2] = var6;
+            this.field2537.field2591.addFront(var6);
+            this.field2529[var1][var2] = var6;
          }
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("ap")
    @ObfuscatedSignature(
-      signature = "(IIII)V",
-      garbageValue = "-1756273291"
+      signature = "(I)V",
+      garbageValue = "1551656833"
    )
-   void method3750(int var1, int var2, int var3) {
-   }
-
-   @ObfuscatedName("ad")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-24"
-   )
-   void method3721() {
-      this.method3718(-1);
-      this.method3772(-1);
+   void method3709() {
+      this.method3743(-1);
+      this.method3719(-1);
 
       int var1;
       for(var1 = 0; var1 < 16; ++var1) {
-         this.field2500[var1] = this.field2504[var1];
+         this.field2517[var1] = this.field2528[var1];
       }
 
       for(var1 = 0; var1 < 16; ++var1) {
-         this.field2502[var1] = this.field2504[var1] & -128;
+         this.field2518[var1] = this.field2528[var1] & -128;
       }
 
    }
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "-80"
-   )
-   void method3711(int var1, int var2) {
-      if(var2 != this.field2500[var1]) {
-         this.field2500[var1] = var2;
-
-         for(int var3 = 0; var3 < 128; ++var3) {
-            this.field2507[var1][var3] = null;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("r")
-   protected synchronized void vmethod3889(int[] var1, int var2, int var3) {
-      if(this.field2515.method3822()) {
-         int var4 = this.field2515.field2548 * this.field2513 / AbstractSoundSystem.sampleRate;
-
-         do {
-            long var5 = this.field2519 + (long)var3 * (long)var4;
-            if(this.field2520 - var5 >= 0L) {
-               this.field2519 = var5;
-               break;
-            }
-
-            int var7 = (int)(((long)var4 + (this.field2520 - this.field2519) - 1L) / (long)var4);
-            this.field2519 += (long)var4 * (long)var7;
-            this.field2521.vmethod3889(var1, var2, var7);
-            var2 += var7;
-            var3 -= var7;
-            this.method3734();
-         } while(this.field2515.method3822());
-      }
-
-      this.field2521.vmethod3889(var1, var2, var3);
-   }
-
-   @ObfuscatedName("d")
-   protected synchronized void vmethod3890(int var1) {
-      if(this.field2515.method3822()) {
-         int var2 = this.field2515.field2548 * this.field2513 / AbstractSoundSystem.sampleRate;
-
-         do {
-            long var3 = this.field2519 + (long)var1 * (long)var2;
-            if(this.field2520 - var3 >= 0L) {
-               this.field2519 = var3;
-               break;
-            }
-
-            int var5 = (int)(((long)var2 + (this.field2520 - this.field2519) - 1L) / (long)var2);
-            this.field2519 += (long)var5 * (long)var2;
-            this.field2521.vmethod3890(var5);
-            var1 -= var5;
-            this.method3734();
-         } while(this.field2515.method3822());
-      }
-
-      this.field2521.vmethod3890(var1);
-   }
-
-   @ObfuscatedName("q")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "-1899150509"
+      garbageValue = "1128486646"
    )
-   void method3800(int var1, int var2) {
-   }
+   void method3806(int var1, int var2) {
+      if(var2 != this.field2517[var1]) {
+         this.field2517[var1] = var2;
 
-   @ObfuscatedName("az")
-   @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "-67"
-   )
-   void method3764(int var1, int var2) {
-      this.field2503[var1] = var2;
-   }
-
-   @ObfuscatedName("ab")
-   @ObfuscatedSignature(
-      signature = "(Lgn;B)I",
-      garbageValue = "103"
-   )
-   int method3726(class206 var1) {
-      int var2 = var1.field2534 + (var1.field2536 * var1.field2531 >> 12);
-      var2 += (this.field2503[var1.field2528] - 8192) * this.field2509[var1.field2528] >> 12;
-      class203 var3 = var1.field2529;
-      int var4;
-      if(var3.field2478 > 0 && (var3.field2477 > 0 || this.field2514[var1.field2528] > 0)) {
-         var4 = var3.field2477 << 2;
-         int var5 = var3.field2475 << 1;
-         if(var1.field2542 < var5) {
-            var4 = var4 * var1.field2542 / var5;
+         for(int var3 = 0; var3 < 128; ++var3) {
+            this.field2530[var1][var3] = null;
          }
-
-         var4 += this.field2514[var1.field2528] >> 7;
-         double var6 = Math.sin(0.01227184630308513D * (double)(var1.field2543 & 511));
-         var2 += (int)((double)var4 * var6);
       }
 
-      var4 = (int)((double)(var1.field2535.field1601 * 256) * Math.pow(2.0D, 3.255208333333333E-4D * (double)var2) / (double)AbstractSoundSystem.sampleRate + 0.5D);
-      return var4 < 1?1:var4;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("w")
+   protected synchronized void vmethod3904(int[] var1, int var2, int var3) {
+      if(this.field2531.method3854()) {
+         int var4 = this.field2531.field2576 * this.field2512 / AbstractSoundSystem.sampleRate;
+
+         do {
+            long var5 = this.field2535 + (long)var3 * (long)var4;
+            if(this.field2536 - var5 >= 0L) {
+               this.field2535 = var5;
+               break;
+            }
+
+            int var7 = (int)((this.field2536 - this.field2535 + (long)var4 - 1L) / (long)var4);
+            this.field2535 += (long)var7 * (long)var4;
+            this.field2537.vmethod3904(var1, var2, var7);
+            var2 += var7;
+            var3 -= var7;
+            this.method3722();
+         } while(this.field2531.method3854());
+      }
+
+      this.field2537.vmethod3904(var1, var2, var3);
+   }
+
+   @ObfuscatedName("o")
+   protected synchronized void vmethod3893(int var1) {
+      if(this.field2531.method3854()) {
+         int var2 = this.field2531.field2576 * this.field2512 / AbstractSoundSystem.sampleRate;
+
+         do {
+            long var3 = (long)var2 * (long)var1 + this.field2535;
+            if(this.field2536 - var3 >= 0L) {
+               this.field2535 = var3;
+               break;
+            }
+
+            int var5 = (int)(((long)var2 + (this.field2536 - this.field2535) - 1L) / (long)var2);
+            this.field2535 += (long)var5 * (long)var2;
+            this.field2537.vmethod3893(var5);
+            var1 -= var5;
+            this.method3722();
+         } while(this.field2531.method3854());
+      }
+
+      this.field2537.vmethod3893(var1);
+   }
+
+   @ObfuscatedName("ax")
    @ObfuscatedSignature(
-      signature = "()Ldl;"
+      signature = "(III)V",
+      garbageValue = "-2054796291"
    )
-   protected synchronized class120 vmethod3908() {
+   void method3771(int var1, int var2) {
+   }
+
+   @ObfuscatedName("ao")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "-1842573418"
+   )
+   void method3705(int var1, int var2) {
+      this.field2514[var1] = var2;
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "()Lda;"
+   )
+   protected synchronized class120 vmethod3888() {
       return null;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("ac")
    @ObfuscatedSignature(
-      signature = "(Lhu;Lit;Ldp;IB)Z",
-      garbageValue = "-76"
+      signature = "(Lgm;I)I",
+      garbageValue = "-598195561"
    )
-   synchronized boolean method3703(Track1 var1, IndexDataBase var2, class113 var3, int var4) {
-      var1.method3910();
+   int method3714(class206 var1) {
+      int var2 = (var1.field2549 * var1.field2548 >> 12) + var1.field2547;
+      var2 += (this.field2514[var1.field2544] - 8192) * this.field2525[var1.field2544] >> 12;
+      class203 var3 = var1.field2541;
+      int var4;
+      if(var3.field2495 > 0 && (var3.field2488 > 0 || this.field2520[var1.field2544] > 0)) {
+         var4 = var3.field2488 << 2;
+         int var5 = var3.field2496 << 1;
+         if(var1.field2556 < var5) {
+            var4 = var4 * var1.field2556 / var5;
+         }
+
+         var4 += this.field2520[var1.field2544] >> 7;
+         double var6 = Math.sin(0.01227184630308513D * (double)(var1.field2554 & 511));
+         var2 += (int)(var6 * (double)var4);
+      }
+
+      var4 = (int)((double)(var1.field2542.field1615 * 256) * Math.pow(2.0D, 3.255208333333333E-4D * (double)var2) / (double)AbstractSoundSystem.sampleRate + 0.5D);
+      return var4 < 1?1:var4;
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(Lhe;Lia;Ldy;II)Z",
+      garbageValue = "1796561030"
+   )
+   public synchronized boolean method3690(Track1 var1, IndexDataBase var2, class113 var3, int var4) {
+      var1.method3914();
       boolean var5 = true;
       int[] var6 = null;
       if(var4 > 0) {
          var6 = new int[]{var4};
       }
 
-      for(class200 var7 = (class200)var1.field2575.method3549(); var7 != null; var7 = (class200)var1.field2575.method3556()) {
+      for(class200 var7 = (class200)var1.field2592.method3558(); var7 != null; var7 = (class200)var1.field2592.method3559()) {
          int var8 = (int)var7.hash;
-         class208 var9 = (class208)this.field2523.get((long)var8);
+         class208 var9 = (class208)this.field2515.get((long)var8);
          if(var9 == null) {
-            byte[] var11 = var2.method4120(var8);
+            byte[] var11 = var2.method4119(var8);
             class208 var10;
             if(var11 == null) {
                var10 = null;
@@ -458,32 +458,32 @@ public class class205 extends class120 {
                continue;
             }
 
-            this.field2523.put(var10, (long)var8);
+            this.field2515.put(var10, (long)var8);
          }
 
-         if(!var9.method3879(var3, var7.field2466, var6)) {
+         if(!var9.method3877(var3, var7.field2483, var6)) {
             var5 = false;
          }
       }
 
       if(var5) {
-         var1.method3912();
+         var1.method3916();
       }
 
       return var5;
    }
 
-   @ObfuscatedName("ar")
+   @ObfuscatedName("bn")
    @ObfuscatedSignature(
-      signature = "(Lgn;I)Z",
-      garbageValue = "1397996927"
+      signature = "(Lgm;I)Z",
+      garbageValue = "1656129855"
    )
-   boolean method3751(class206 var1) {
-      if(var1.field2544 == null) {
-         if(var1.field2532 >= 0) {
+   boolean method3695(class206 var1) {
+      if(var1.field2557 == null) {
+         if(var1.field2553 >= 0) {
             var1.unlink();
-            if(var1.field2540 > 0 && var1 == this.field2507[var1.field2528][var1.field2540]) {
-               this.field2507[var1.field2528][var1.field2540] = null;
+            if(var1.field2543 > 0 && var1 == this.field2530[var1.field2544][var1.field2543]) {
+               this.field2530[var1.field2544][var1.field2543] = null;
             }
          }
 
@@ -493,53 +493,53 @@ public class class205 extends class120 {
       }
    }
 
-   @ObfuscatedName("at")
+   @ObfuscatedName("ad")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-66"
+      signature = "(II)V",
+      garbageValue = "-954059980"
    )
-   void method3722(int var1) {
-      if((this.field2525[var1] & 2) != 0) {
-         for(class206 var2 = (class206)this.field2521.field2572.getFront(); var2 != null; var2 = (class206)this.field2521.field2572.getNext()) {
-            if(var2.field2528 == var1 && this.field2494[var1][var2.field2530] == null && var2.field2532 < 0) {
-               var2.field2532 = 0;
+   void method3786(int var1) {
+      if((this.field2523[var1] & 2) != 0) {
+         for(class206 var2 = (class206)this.field2537.field2591.getFront(); var2 != null; var2 = (class206)this.field2537.field2591.getNext()) {
+            if(var2.field2544 == var1 && this.field2529[var1][var2.field2559] == null && var2.field2553 < 0) {
+               var2.field2553 = 0;
             }
          }
       }
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-463744169"
+      signature = "(B)I",
+      garbageValue = "-9"
    )
-   int method3702() {
-      return this.field2495;
+   int method3704() {
+      return this.field2511;
    }
 
-   @ObfuscatedName("am")
+   @ObfuscatedName("aa")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-1319299791"
+      garbageValue = "1782527166"
    )
-   void method3797(int var1) {
-      if((this.field2525[var1] & 4) != 0) {
-         for(class206 var2 = (class206)this.field2521.field2572.getFront(); var2 != null; var2 = (class206)this.field2521.field2572.getNext()) {
-            if(var2.field2528 == var1) {
-               var2.field2546 = 0;
+   void method3711(int var1) {
+      if((this.field2523[var1] & 4) != 0) {
+         for(class206 var2 = (class206)this.field2537.field2591.getFront(); var2 != null; var2 = (class206)this.field2537.field2591.getNext()) {
+            if(var2.field2544 == var1) {
+               var2.field2560 = 0;
             }
          }
       }
 
    }
 
-   @ObfuscatedName("aq")
+   @ObfuscatedName("ai")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-1941471578"
+      garbageValue = "-1661170871"
    )
-   void method3804(int var1) {
+   void method3712(int var1) {
       int var2 = var1 & 240;
       int var3;
       int var4;
@@ -548,513 +548,547 @@ public class class205 extends class120 {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
          var5 = var1 >> 16 & 127;
-         this.method3714(var3, var4, var5);
+         this.method3702(var3, var4, var5);
       } else if(var2 == 144) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
          var5 = var1 >> 16 & 127;
          if(var5 > 0) {
-            this.method3712(var3, var4, var5);
+            this.method3764(var3, var4, var5);
          } else {
-            this.method3714(var3, var4, 64);
+            this.method3702(var3, var4, 64);
          }
 
       } else if(var2 == 160) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
          var5 = var1 >> 16 & 127;
-         this.method3750(var3, var4, var5);
+         this.method3703(var3, var4, var5);
       } else if(var2 == 176) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
          var5 = var1 >> 16 & 127;
          if(var4 == 0) {
-            this.field2502[var3] = (var5 << 14) + (this.field2502[var3] & -2080769);
+            this.field2518[var3] = (var5 << 14) + (this.field2518[var3] & -2080769);
          }
 
          if(var4 == 32) {
-            this.field2502[var3] = (var5 << 7) + (this.field2502[var3] & -16257);
+            this.field2518[var3] = (var5 << 7) + (this.field2518[var3] & -16257);
          }
 
          if(var4 == 1) {
-            this.field2514[var3] = (var5 << 7) + (this.field2514[var3] & -16257);
+            this.field2520[var3] = (var5 << 7) + (this.field2520[var3] & -16257);
          }
 
          if(var4 == 33) {
-            this.field2514[var3] = var5 + (this.field2514[var3] & -128);
+            this.field2520[var3] = var5 + (this.field2520[var3] & -128);
          }
 
          if(var4 == 5) {
-            this.field2505[var3] = (var5 << 7) + (this.field2505[var3] & -16257);
+            this.field2521[var3] = (var5 << 7) + (this.field2521[var3] & -16257);
          }
 
          if(var4 == 37) {
-            this.field2505[var3] = var5 + (this.field2505[var3] & -128);
+            this.field2521[var3] = var5 + (this.field2521[var3] & -128);
          }
 
          if(var4 == 7) {
-            this.field2497[var3] = (var5 << 7) + (this.field2497[var3] & -16257);
+            this.field2513[var3] = (var5 << 7) + (this.field2513[var3] & -16257);
          }
 
          if(var4 == 39) {
-            this.field2497[var3] = var5 + (this.field2497[var3] & -128);
+            this.field2513[var3] = var5 + (this.field2513[var3] & -128);
          }
 
          if(var4 == 10) {
-            this.field2498[var3] = (var5 << 7) + (this.field2498[var3] & -16257);
+            this.field2533[var3] = (var5 << 7) + (this.field2533[var3] & -16257);
          }
 
          if(var4 == 42) {
-            this.field2498[var3] = var5 + (this.field2498[var3] & -128);
+            this.field2533[var3] = var5 + (this.field2533[var3] & -128);
          }
 
          if(var4 == 11) {
-            this.field2499[var3] = (var5 << 7) + (this.field2499[var3] & -16257);
+            this.field2510[var3] = (var5 << 7) + (this.field2510[var3] & -16257);
          }
 
          if(var4 == 43) {
-            this.field2499[var3] = var5 + (this.field2499[var3] & -128);
+            this.field2510[var3] = var5 + (this.field2510[var3] & -128);
          }
 
          if(var4 == 64) {
             if(var5 >= 64) {
-               this.field2525[var3] |= 1;
+               this.field2523[var3] |= 1;
             } else {
-               this.field2525[var3] &= -2;
+               this.field2523[var3] &= -2;
             }
          }
 
          if(var4 == 65) {
             if(var5 >= 64) {
-               this.field2525[var3] |= 2;
+               this.field2523[var3] |= 2;
             } else {
-               this.method3722(var3);
-               this.field2525[var3] &= -3;
+               this.method3786(var3);
+               this.field2523[var3] &= -3;
             }
          }
 
          if(var4 == 99) {
-            this.field2496[var3] = (var5 << 7) + (this.field2496[var3] & 127);
+            this.field2524[var3] = (var5 << 7) + (this.field2524[var3] & 127);
          }
 
          if(var4 == 98) {
-            this.field2496[var3] = (this.field2496[var3] & 16256) + var5;
+            this.field2524[var3] = (this.field2524[var3] & 16256) + var5;
          }
 
          if(var4 == 101) {
-            this.field2496[var3] = (var5 << 7) + (this.field2496[var3] & 127) + 16384;
+            this.field2524[var3] = (var5 << 7) + (this.field2524[var3] & 127) + 16384;
          }
 
          if(var4 == 100) {
-            this.field2496[var3] = (this.field2496[var3] & 16256) + var5 + 16384;
+            this.field2524[var3] = (this.field2524[var3] & 16256) + var5 + 16384;
          }
 
          if(var4 == 120) {
-            this.method3718(var3);
+            this.method3743(var3);
          }
 
          if(var4 == 121) {
-            this.method3772(var3);
+            this.method3719(var3);
          }
 
          if(var4 == 123) {
-            this.method3720(var3);
+            this.method3708(var3);
          }
 
          int var6;
          if(var4 == 6) {
-            var6 = this.field2496[var3];
+            var6 = this.field2524[var3];
             if(var6 == 16384) {
-               this.field2509[var3] = (var5 << 7) + (this.field2509[var3] & -16257);
+               this.field2525[var3] = (var5 << 7) + (this.field2525[var3] & -16257);
             }
          }
 
          if(var4 == 38) {
-            var6 = this.field2496[var3];
+            var6 = this.field2524[var3];
             if(var6 == 16384) {
-               this.field2509[var3] = var5 + (this.field2509[var3] & -128);
+               this.field2525[var3] = var5 + (this.field2525[var3] & -128);
             }
          }
 
          if(var4 == 16) {
-            this.field2510[var3] = (var5 << 7) + (this.field2510[var3] & -16257);
+            this.field2526[var3] = (var5 << 7) + (this.field2526[var3] & -16257);
          }
 
          if(var4 == 48) {
-            this.field2510[var3] = var5 + (this.field2510[var3] & -128);
+            this.field2526[var3] = var5 + (this.field2526[var3] & -128);
          }
 
          if(var4 == 81) {
             if(var5 >= 64) {
-               this.field2525[var3] |= 4;
+               this.field2523[var3] |= 4;
             } else {
-               this.method3797(var3);
-               this.field2525[var3] &= -5;
+               this.method3711(var3);
+               this.field2523[var3] &= -5;
             }
          }
 
          if(var4 == 17) {
-            this.method3725(var3, (var5 << 7) + (this.field2511[var3] & -16257));
+            this.method3713(var3, (var5 << 7) + (this.field2527[var3] & -16257));
          }
 
          if(var4 == 49) {
-            this.method3725(var3, var5 + (this.field2511[var3] & -128));
+            this.method3713(var3, var5 + (this.field2527[var3] & -128));
          }
 
       } else if(var2 == 192) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
-         this.method3711(var3, var4 + this.field2502[var3]);
+         this.method3806(var3, var4 + this.field2518[var3]);
       } else if(var2 == 208) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
-         this.method3800(var3, var4);
+         this.method3771(var3, var4);
       } else if(var2 == 224) {
          var3 = var1 & 15;
          var4 = (var1 >> 8 & 127) + (var1 >> 9 & 16256);
-         this.method3764(var3, var4);
+         this.method3705(var3, var4);
       } else {
          var2 = var1 & 255;
          if(var2 == 255) {
-            this.method3721();
+            this.method3709();
          }
       }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "-103"
+      signature = "(I)Z",
+      garbageValue = "-1983740874"
    )
-   public synchronized boolean method3708() {
-      return this.field2515.method3822();
+   synchronized boolean method3696() {
+      return this.field2531.method3854();
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1799184012"
+      signature = "(B)V",
+      garbageValue = "4"
    )
-   synchronized void method3704() {
-      for(class208 var1 = (class208)this.field2523.method3549(); var1 != null; var1 = (class208)this.field2523.method3556()) {
-         var1.method3880();
+   public synchronized void method3692() {
+      for(class208 var1 = (class208)this.field2515.method3558(); var1 != null; var1 = (class208)this.field2515.method3559()) {
+         var1.method3879();
       }
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "-12"
+      garbageValue = "-8"
    )
-   synchronized void method3705() {
-      for(class208 var1 = (class208)this.field2523.method3549(); var1 != null; var1 = (class208)this.field2523.method3556()) {
+   synchronized void method3693() {
+      for(class208 var1 = (class208)this.field2515.method3558(); var1 != null; var1 = (class208)this.field2515.method3559()) {
          var1.unlink();
       }
 
    }
 
-   @ObfuscatedName("aj")
+   @ObfuscatedName("by")
    @ObfuscatedSignature(
-      signature = "(Lgn;[IIII)Z",
-      garbageValue = "164690905"
+      signature = "(Lgm;[IIIB)Z",
+      garbageValue = "0"
    )
-   boolean method3736(class206 var1, int[] var2, int var3, int var4) {
-      var1.field2545 = AbstractSoundSystem.sampleRate / 100;
-      if(var1.field2532 < 0 || var1.field2544 != null && !var1.field2544.method2164()) {
-         int var5 = var1.field2536;
+   boolean method3807(class206 var1, int[] var2, int var3, int var4) {
+      var1.field2558 = AbstractSoundSystem.sampleRate / 100;
+      if(var1.field2553 < 0 || var1.field2557 != null && !var1.field2557.method2159()) {
+         int var5 = var1.field2549;
          if(var5 > 0) {
-            var5 -= (int)(16.0D * Math.pow(2.0D, (double)this.field2505[var1.field2528] * 4.921259842519685E-4D) + 0.5D);
+            var5 -= (int)(16.0D * Math.pow(2.0D, (double)this.field2521[var1.field2544] * 4.921259842519685E-4D) + 0.5D);
             if(var5 < 0) {
                var5 = 0;
             }
 
-            var1.field2536 = var5;
+            var1.field2549 = var5;
          }
 
-         var1.field2544.method2162(this.method3726(var1));
-         class203 var6 = var1.field2529;
+         var1.field2557.method2157(this.method3714(var1));
+         class203 var6 = var1.field2541;
          boolean var7 = false;
-         ++var1.field2542;
-         var1.field2543 += var6.field2478;
-         double var8 = 5.086263020833333E-6D * (double)((var1.field2530 - 60 << 8) + (var1.field2531 * var1.field2536 >> 12));
-         if(var6.field2473 > 0) {
-            if(var6.field2479 > 0) {
-               var1.field2537 += (int)(128.0D * Math.pow(2.0D, (double)var6.field2479 * var8) + 0.5D);
+         ++var1.field2556;
+         var1.field2554 += var6.field2495;
+         double var8 = (double)((var1.field2559 - 60 << 8) + (var1.field2549 * var1.field2548 >> 12)) * 5.086263020833333E-6D;
+         if(var6.field2494 > 0) {
+            if(var6.field2493 > 0) {
+               var1.field2550 += (int)(128.0D * Math.pow(2.0D, (double)var6.field2493 * var8) + 0.5D);
             } else {
-               var1.field2537 += 128;
+               var1.field2550 += 128;
             }
          }
 
-         if(var6.field2471 != null) {
-            if(var6.field2474 > 0) {
-               var1.field2538 += (int)(128.0D * Math.pow(2.0D, (double)var6.field2474 * var8) + 0.5D);
+         if(var6.field2490 != null) {
+            if(var6.field2491 > 0) {
+               var1.field2539 += (int)(128.0D * Math.pow(2.0D, (double)var6.field2491 * var8) + 0.5D);
             } else {
-               var1.field2538 += 128;
+               var1.field2539 += 128;
             }
 
-            while(var1.field2539 < var6.field2471.length - 2 && var1.field2538 > (var6.field2471[var1.field2539 + 2] & 255) << 8) {
-               var1.field2539 += 2;
+            while(var1.field2552 < var6.field2490.length - 2 && var1.field2539 > (var6.field2490[var1.field2552 + 2] & 255) << 8) {
+               var1.field2552 += 2;
             }
 
-            if(var6.field2471.length - 2 == var1.field2539 && var6.field2471[var1.field2539 + 1] == 0) {
+            if(var6.field2490.length - 2 == var1.field2552 && 0 == var6.field2490[var1.field2552 + 1]) {
                var7 = true;
             }
          }
 
-         if(var1.field2532 >= 0 && var6.field2472 != null && (this.field2525[var1.field2528] & 1) == 0 && (var1.field2540 < 0 || var1 != this.field2507[var1.field2528][var1.field2540])) {
-            if(var6.field2480 > 0) {
-               var1.field2532 += (int)(128.0D * Math.pow(2.0D, (double)var6.field2480 * var8) + 0.5D);
+         if(var1.field2553 >= 0 && var6.field2489 != null && (this.field2523[var1.field2544] & 1) == 0 && (var1.field2543 < 0 || var1 != this.field2530[var1.field2544][var1.field2543])) {
+            if(var6.field2492 > 0) {
+               var1.field2553 += (int)(128.0D * Math.pow(2.0D, (double)var6.field2492 * var8) + 0.5D);
             } else {
-               var1.field2532 += 128;
+               var1.field2553 += 128;
             }
 
-            while(var1.field2541 < var6.field2472.length - 2 && var1.field2532 > (var6.field2472[var1.field2541 + 2] & 255) << 8) {
-               var1.field2541 += 2;
+            while(var1.field2555 < var6.field2489.length - 2 && var1.field2553 > (var6.field2489[var1.field2555 + 2] & 255) << 8) {
+               var1.field2555 += 2;
             }
 
-            if(var6.field2472.length - 2 == var1.field2541) {
+            if(var6.field2489.length - 2 == var1.field2555) {
                var7 = true;
             }
          }
 
          if(var7) {
-            var1.field2544.method2161(var1.field2545);
+            var1.field2557.method2199(var1.field2558);
             if(var2 != null) {
-               var1.field2544.vmethod3889(var2, var3, var4);
+               var1.field2557.vmethod3904(var2, var3, var4);
             } else {
-               var1.field2544.vmethod3890(var4);
+               var1.field2557.vmethod3893(var4);
             }
 
-            if(var1.field2544.method2165()) {
-               this.field2521.field2573.method1911(var1.field2544);
+            if(var1.field2557.method2204()) {
+               this.field2537.field2589.method1894(var1.field2557);
             }
 
-            var1.method3814();
-            if(var1.field2532 >= 0) {
+            var1.method3817();
+            if(var1.field2553 >= 0) {
                var1.unlink();
-               if(var1.field2540 > 0 && var1 == this.field2507[var1.field2528][var1.field2540]) {
-                  this.field2507[var1.field2528][var1.field2540] = null;
+               if(var1.field2543 > 0 && var1 == this.field2530[var1.field2544][var1.field2543]) {
+                  this.field2530[var1.field2544][var1.field2543] = null;
                }
             }
 
             return true;
          } else {
-            var1.field2544.method2160(var1.field2545, this.method3786(var1), this.method3728(var1));
+            var1.field2557.method2155(var1.field2558, this.method3715(var1), this.method3716(var1));
             return false;
          }
       } else {
-         var1.method3814();
+         var1.method3817();
          var1.unlink();
-         if(var1.field2540 > 0 && var1 == this.field2507[var1.field2528][var1.field2540]) {
-            this.field2507[var1.field2528][var1.field2540] = null;
+         if(var1.field2543 > 0 && var1 == this.field2530[var1.field2544][var1.field2543]) {
+            this.field2530[var1.field2544][var1.field2543] = null;
          }
 
          return true;
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IS)V",
-      garbageValue = "32767"
+      signature = "(IB)V",
+      garbageValue = "14"
    )
-   synchronized void method3729(int var1) {
-      this.field2495 = var1;
+   public synchronized void method3689(int var1) {
+      this.field2511 = var1;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "()Ldl;"
+      signature = "()Lda;"
    )
-   protected synchronized class120 vmethod3906() {
-      return this.field2521;
+   protected synchronized class120 vmethod3894() {
+      return this.field2537;
    }
 
-   @ObfuscatedName("as")
+   @ObfuscatedName("ak")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "1379168237"
+      garbageValue = "-298479168"
    )
-   void method3725(int var1, int var2) {
-      this.field2511[var1] = var2;
-      this.field2508[var1] = (int)(2097152.0D * Math.pow(2.0D, (double)var2 * 5.4931640625E-4D) + 0.5D);
+   void method3713(int var1, int var2) {
+      this.field2527[var1] = var2;
+      this.field2516[var1] = (int)(2097152.0D * Math.pow(2.0D, (double)var2 * 5.4931640625E-4D) + 0.5D);
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lhu;ZI)V",
-      garbageValue = "559869723"
+      signature = "(Lhe;ZB)V",
+      garbageValue = "69"
    )
-   synchronized void method3706(Track1 var1, boolean var2) {
-      this.method3738();
-      this.field2515.method3820(var1.field2576);
-      this.field2512 = var2;
-      this.field2519 = 0L;
-      int var3 = this.field2515.method3823();
+   public synchronized void method3717(Track1 var1, boolean var2) {
+      this.method3758();
+      this.field2531.method3820(var1.field2593);
+      this.field2519 = var2;
+      this.field2535 = 0L;
+      int var3 = this.field2531.method3851();
 
       for(int var4 = 0; var4 < var3; ++var4) {
-         this.field2515.method3824(var4);
-         this.field2515.method3830(var4);
-         this.field2515.method3839(var4);
+         this.field2531.method3824(var4);
+         this.field2531.method3822(var4);
+         this.field2531.method3825(var4);
       }
 
-      this.field2517 = this.field2515.method3832();
-      this.field2518 = this.field2515.field2552[this.field2517];
-      this.field2520 = this.field2515.method3831(this.field2518);
+      this.field2532 = this.field2531.method3831();
+      this.field2534 = this.field2531.field2572[this.field2532];
+      this.field2536 = this.field2531.method3830(this.field2534);
    }
 
-   @ObfuscatedName("an")
+   @ObfuscatedName("ba")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-850156735"
+      garbageValue = "611578778"
    )
-   void method3734() {
-      int var1 = this.field2517;
-      int var2 = this.field2518;
+   void method3722() {
+      int var1 = this.field2532;
+      int var2 = this.field2534;
 
       long var3;
-      for(var3 = this.field2520; var2 == this.field2518; var3 = this.field2515.method3831(var2)) {
-         while(var2 == this.field2515.field2552[var1]) {
-            this.field2515.method3824(var1);
-            int var5 = this.field2515.method3828(var1);
+      for(var3 = this.field2536; var2 == this.field2534; var3 = this.field2531.method3830(var2)) {
+         while(var2 == this.field2531.field2572[var1]) {
+            this.field2531.method3824(var1);
+            int var5 = this.field2531.method3869(var1);
             if(var5 == 1) {
-               this.field2515.method3826();
-               this.field2515.method3839(var1);
-               if(this.field2515.method3833()) {
-                  if(!this.field2512 || var2 == 0) {
-                     this.method3721();
-                     this.field2515.method3829();
+               this.field2531.method3847();
+               this.field2531.method3825(var1);
+               if(this.field2531.method3841()) {
+                  if(!this.field2519 || var2 == 0) {
+                     this.method3709();
+                     this.field2531.method3826();
                      return;
                   }
 
-                  this.field2515.method3834(var3);
+                  this.field2531.method3833(var3);
                }
                break;
             }
 
             if((var5 & 128) != 0) {
-               this.method3804(var5);
+               this.method3712(var5);
             }
 
-            this.field2515.method3830(var1);
-            this.field2515.method3839(var1);
+            this.field2531.method3822(var1);
+            this.field2531.method3825(var1);
          }
 
-         var1 = this.field2515.method3832();
-         var2 = this.field2515.field2552[var1];
+         var1 = this.field2531.method3831();
+         var2 = this.field2531.field2572[var1];
       }
 
-      this.field2517 = var1;
-      this.field2518 = var2;
-      this.field2520 = var3;
+      this.field2532 = var1;
+      this.field2534 = var2;
+      this.field2536 = var3;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Lgn;ZI)V",
-      garbageValue = "590263318"
+      signature = "(Lgm;ZI)V",
+      garbageValue = "-1472172887"
    )
-   void method3713(class206 var1, boolean var2) {
-      int var3 = var1.field2535.field1600.length;
+   void method3710(class206 var1, boolean var2) {
+      int var3 = var1.field2542.field1618.length;
       int var4;
-      if(var2 && var1.field2535.field1603) {
-         int var5 = var3 + var3 - var1.field2535.field1602;
-         var4 = (int)((long)this.field2510[var1.field2528] * (long)var5 >> 6);
+      if(var2 && var1.field2542.field1617) {
+         int var5 = var3 + var3 - var1.field2542.field1616;
+         var4 = (int)((long)var5 * (long)this.field2526[var1.field2544] >> 6);
          var3 <<= 8;
          if(var4 >= var3) {
             var4 = var3 + var3 - 1 - var4;
-            var1.field2544.method2230();
+            var1.field2557.method2152();
          }
       } else {
-         var4 = (int)((long)this.field2510[var1.field2528] * (long)var3 >> 6);
+         var4 = (int)((long)this.field2526[var1.field2544] * (long)var3 >> 6);
       }
 
-      var1.field2544.method2156(var4);
+      var1.field2557.method2200(var4);
    }
 
-   @ObfuscatedName("z")
-   protected synchronized int vmethod3904() {
+   @ObfuscatedName("l")
+   protected synchronized int vmethod3889() {
       return 0;
    }
 
-   @ObfuscatedName("ap")
+   @ObfuscatedName("bk")
    @ObfuscatedSignature(
-      signature = "(Lgn;I)I",
-      garbageValue = "-1230602849"
+      signature = "(Lgm;I)I",
+      garbageValue = "879128462"
    )
-   int method3786(class206 var1) {
-      class203 var2 = var1.field2529;
-      int var3 = this.field2497[var1.field2528] * this.field2499[var1.field2528] + 4096 >> 13;
-      var3 = var3 * var3 + 16384 >> 15;
-      var3 = var3 * var1.field2526 + 16384 >> 15;
-      var3 = var3 * this.field2495 + 128 >> 8;
-      if(var2.field2473 > 0) {
-         var3 = (int)((double)var3 * Math.pow(0.5D, (double)var2.field2473 * (double)var1.field2537 * 1.953125E-5D) + 0.5D);
+   int method3715(class206 var1) {
+      class203 var2 = var1.field2541;
+      int var3 = this.field2513[var1.field2544] * this.field2510[var1.field2544] + 4096 >> 13;
+      var3 = 16384 + var3 * var3 >> 15;
+      var3 = var3 * var1.field2545 + 16384 >> 15;
+      var3 = var3 * this.field2511 + 128 >> 8;
+      if(var2.field2494 > 0) {
+         var3 = (int)((double)var3 * Math.pow(0.5D, (double)var2.field2494 * 1.953125E-5D * (double)var1.field2550) + 0.5D);
       }
 
       int var4;
       int var5;
       int var6;
       int var7;
-      if(var2.field2471 != null) {
-         var4 = var1.field2538;
-         var5 = var2.field2471[var1.field2539 + 1];
-         if(var1.field2539 < var2.field2471.length - 2) {
-            var6 = (var2.field2471[var1.field2539] & 255) << 8;
-            var7 = (var2.field2471[var1.field2539 + 2] & 255) << 8;
-            var5 += (var2.field2471[var1.field2539 + 3] - var5) * (var4 - var6) / (var7 - var6);
-         }
-
-         var3 = var3 * var5 + 32 >> 6;
-      }
-
-      if(var1.field2532 > 0 && var2.field2472 != null) {
-         var4 = var1.field2532;
-         var5 = var2.field2472[var1.field2541 + 1];
-         if(var1.field2541 < var2.field2472.length - 2) {
-            var6 = (var2.field2472[var1.field2541] & 255) << 8;
-            var7 = (var2.field2472[var1.field2541 + 2] & 255) << 8;
-            var5 += (var2.field2472[var1.field2541 + 3] - var5) * (var4 - var6) / (var7 - var6);
+      if(var2.field2490 != null) {
+         var4 = var1.field2539;
+         var5 = var2.field2490[var1.field2552 + 1];
+         if(var1.field2552 < var2.field2490.length - 2) {
+            var6 = (var2.field2490[var1.field2552] & 255) << 8;
+            var7 = (var2.field2490[var1.field2552 + 2] & 255) << 8;
+            var5 += (var2.field2490[var1.field2552 + 3] - var5) * (var4 - var6) / (var7 - var6);
          }
 
          var3 = var5 * var3 + 32 >> 6;
       }
 
+      if(var1.field2553 > 0 && var2.field2489 != null) {
+         var4 = var1.field2553;
+         var5 = var2.field2489[var1.field2555 + 1];
+         if(var1.field2555 < var2.field2489.length - 2) {
+            var6 = (var2.field2489[var1.field2555] & 255) << 8;
+            var7 = (var2.field2489[var1.field2555 + 2] & 255) << 8;
+            var5 += (var4 - var6) * (var2.field2489[var1.field2555 + 3] - var5) / (var7 - var6);
+         }
+
+         var3 = 32 + var5 * var3 >> 6;
+      }
+
       return var3;
    }
 
-   @ObfuscatedName("ai")
+   @ObfuscatedName("bi")
    @ObfuscatedSignature(
-      signature = "(Lgn;B)I",
-      garbageValue = "-11"
+      signature = "(Lgm;I)I",
+      garbageValue = "859783875"
    )
-   int method3728(class206 var1) {
-      int var2 = this.field2498[var1.field2528];
-      return var2 < 8192?var2 * var1.field2533 + 32 >> 6:16384 - ((128 - var1.field2533) * (16384 - var2) + 32 >> 6);
+   int method3716(class206 var1) {
+      int var2 = this.field2533[var1.field2544];
+      return var2 < 8192?32 + var2 * var1.field2546 >> 6:16384 - (32 + (128 - var1.field2546) * (16384 - var2) >> 6);
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "15"
+      signature = "(III)V",
+      garbageValue = "739901551"
    )
-   public synchronized void method3709(int var1, int var2) {
-      this.method3710(var1, var2);
+   public synchronized void method3697(int var1, int var2) {
+      this.method3698(var1, var2);
    }
 
-   @ObfuscatedName("ak")
+   @ObfuscatedName("ag")
    @ObfuscatedSignature(
       signature = "(IB)V",
-      garbageValue = "78"
+      garbageValue = "13"
    )
-   void method3720(int var1) {
-      for(class206 var2 = (class206)this.field2521.field2572.getFront(); var2 != null; var2 = (class206)this.field2521.field2572.getNext()) {
-         if((var1 < 0 || var2.field2528 == var1) && var2.field2532 < 0) {
-            this.field2494[var2.field2528][var2.field2530] = null;
-            var2.field2532 = 0;
+   void method3708(int var1) {
+      for(class206 var2 = (class206)this.field2537.field2591.getFront(); var2 != null; var2 = (class206)this.field2537.field2591.getNext()) {
+         if((var1 < 0 || var2.field2544 == var1) && var2.field2553 < 0) {
+            this.field2529[var2.field2544][var2.field2559] = null;
+            var2.field2553 = 0;
          }
       }
 
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-2101169103"
+   )
+   static void method3813(int var0) {
+      if(var0 != -1) {
+         if(Ignore.loadWidget(var0)) {
+            Widget[] var1 = class176.widgets[var0];
+
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               Widget var3 = var1[var2];
+               if(var3.field2730 != null) {
+                  ScriptEvent var4 = new ScriptEvent();
+                  var4.widget = var3;
+                  var4.field856 = var3.field2730;
+                  class40.method567(var4, 2000000);
+               }
+            }
+
+         }
+      }
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(III)Lhi;",
+      garbageValue = "1392498278"
+   )
+   public static Widget method3812(int var0, int var1) {
+      Widget var2 = class84.method1670(var0);
+      return var1 == -1?var2:(var2 != null && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
    }
 }

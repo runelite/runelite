@@ -2,71 +2,114 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hx")
+@ObfuscatedName("hc")
 public enum class229 implements RSEnum {
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lhx;"
+      signature = "Lhc;"
    )
-   field3129(5, 0),
-   @ObfuscatedName("n")
+   field3150(3, 0),
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lhx;"
+      signature = "Lhc;"
    )
-   field3131(7, 1),
+   field3143(2, 1),
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lhc;"
+   )
+   field3144(0, 2),
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lhc;"
+   )
+   field3145(6, 3),
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lhc;"
+   )
+   field3146(1, 4),
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lhx;"
+      signature = "Lhc;"
    )
-   field3130(6, 2),
-   @ObfuscatedName("y")
+   field3147(7, 5),
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lhx;"
+      signature = "Lhc;"
    )
-   field3126(4, 3),
-   @ObfuscatedName("w")
+   field3153(5, 6),
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lhx;"
+      signature = "Lhc;"
    )
-   field3127(3, 4),
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lhx;"
-   )
-   field3132(1, 5),
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lhx;"
-   )
-   field3125(0, 6),
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lhx;"
-   )
-   field3124(2, 7);
+   field3148(4, 7);
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1863774501
+      intValue = -1502443041
    )
-   public final int field3128;
-   @ObfuscatedName("u")
+   final int field3142;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -337383587
+      intValue = 1753155741
    )
-   final int field3133;
+   public final int field3149;
 
    class229(int var3, int var4) {
-      this.field3128 = var3;
-      this.field3133 = var4;
+      this.field3149 = var3;
+      this.field3142 = var4;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "834678576"
+      garbageValue = "316484705"
    )
    public int rsOrdinal() {
-      return this.field3133;
+      return this.field3142;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-707239856"
+   )
+   static void method4092() {
+      Object var0 = class237.field3222;
+      synchronized(class237.field3222) {
+         if(class237.field3219 == 0) {
+            class237.field3221 = new Thread(new class237());
+            class237.field3221.setDaemon(true);
+            class237.field3221.start();
+            class237.field3221.setPriority(5);
+         }
+
+         class237.field3219 = 600;
+      }
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(Lfb;I)Ljava/lang/String;",
+      garbageValue = "-1997738653"
+   )
+   public static String method4091(Buffer var0) {
+      String var1;
+      try {
+         int var2 = var0.getUSmart();
+         if(var2 > 32767) {
+            var2 = 32767;
+         }
+
+         byte[] var3 = new byte[var2];
+         var0.offset += class266.field3648.decompress(var0.payload, var0.offset, var3, 0, var2);
+         String var4 = ScriptEvent.getString(var3, 0, var2);
+         var1 = var4;
+      } catch (Exception var6) {
+         var1 = "Cabbage";
+      }
+
+      return var1;
    }
 }

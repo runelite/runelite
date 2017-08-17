@@ -1,17 +1,17 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jq")
+@ObfuscatedName("jo")
 public class class267 {
-   @ObfuscatedName("e")
-   static final char[] field3653;
-   @ObfuscatedName("u")
+   @ObfuscatedName("j")
+   public static final char[] field3650;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lia;"
    )
-   static IndexDataBase field3652;
+   static IndexDataBase field3649;
 
    static {
-      field3653 = new char[]{'€', '\u0000', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u0000', 'Ž', '\u0000', '\u0000', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u0000', 'ž', 'Ÿ'};
+      field3650 = new char[]{'€', '\u0000', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u0000', 'Ž', '\u0000', '\u0000', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u0000', 'ž', 'Ÿ'};
    }
 }

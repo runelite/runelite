@@ -3,12 +3,12 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ga")
+@ObfuscatedName("gq")
 @Implements("Node2LinkedList")
 public final class Node2LinkedList {
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lgz;"
+      signature = "Lge;"
    )
    @Export("sentinel")
    CacheableNode sentinel;
@@ -19,7 +19,7 @@ public final class Node2LinkedList {
       this.sentinel.next = this.sentinel;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @Export("clear")
    void clear() {
       while(true) {
@@ -32,9 +32,9 @@ public final class Node2LinkedList {
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "()Lgz;"
+      signature = "()Lge;"
    )
    @Export("pop")
    CacheableNode pop() {
@@ -47,9 +47,9 @@ public final class Node2LinkedList {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lgz;)V"
+      signature = "(Lge;)V"
    )
    @Export("push")
    public void push(CacheableNode var1) {
@@ -63,9 +63,9 @@ public final class Node2LinkedList {
       var1.previous.next = var1;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Lgz;)V"
+      signature = "(Lge;)V"
    )
    @Export("setHead")
    public void setHead(CacheableNode var1) {
@@ -79,9 +79,9 @@ public final class Node2LinkedList {
       var1.previous.next = var1;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "()Lgz;"
+      signature = "()Lge;"
    )
    @Export("peek")
    public CacheableNode peek() {

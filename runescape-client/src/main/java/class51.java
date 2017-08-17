@@ -1,100 +1,124 @@
-import net.runelite.mapping.Export;
+import java.io.File;
+import java.io.RandomAccessFile;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aa")
+@ObfuscatedName("ay")
 public class class51 implements class104 {
-   @ObfuscatedName("cl")
-   static boolean field645;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "[Lcq;"
+   @ObfuscatedName("s")
+   static int[] field661;
+   @ObfuscatedName("kw")
+   @ObfuscatedGetter(
+      intValue = 370301669
    )
-   @Export("worldList")
-   static World[] worldList;
-   @ObfuscatedName("dm")
-   @ObfuscatedSignature(
-      signature = "Lid;"
-   )
-   @Export("vorbisIndex")
-   static IndexData vorbisIndex;
+   static int field664;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(I)Ldw;",
-      garbageValue = "1736127050"
+      signature = "(I)Ldc;",
+      garbageValue = "1153007829"
    )
-   public AbstractSoundSystem vmethod1949() {
+   public AbstractSoundSystem vmethod1939() {
       return new SourceDataSoundSystem();
    }
 
-   @ObfuscatedName("ht")
+   @ObfuscatedName("hb")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1087805458"
+      signature = "([Lhi;Lhi;ZI)V",
+      garbageValue = "-856989343"
    )
-   static final void method772(int var0) {
-      if(var0 >= 0) {
-         int var1 = Client.menuActionParams0[var0];
-         int var2 = Client.menuActionParams1[var0];
-         int var3 = Client.menuTypes[var0];
-         int var4 = Client.menuIdentifiers[var0];
-         String var5 = Client.menuOptions[var0];
-         String var6 = Client.menuTargets[var0];
-         class83.menuAction(var1, var2, var3, var4, var5, var6, MouseInput.field725, MouseInput.field726);
+   static void method812(Widget[] var0, Widget var1, boolean var2) {
+      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
+      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
+      class23.method183(var0, var1.id, var3, var4, var2);
+      if(var1.children != null) {
+         class23.method183(var1.children, var1.id, var3, var4, var2);
       }
-   }
 
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1863267056"
-   )
-   public static void method768() {
-      CombatInfo2.field3362.reset();
-      CombatInfo2.spriteCache.reset();
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "120"
-   )
-   static int method770() {
-      return 9;
-   }
-
-   @ObfuscatedName("jw")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-87"
-   )
-   static void method773(int var0) {
-      for(IntegerNode var1 = (IntegerNode)Client.widgetFlags.method3549(); var1 != null; var1 = (IntegerNode)Client.widgetFlags.method3556()) {
-         if((long)var0 == (var1.hash >> 48 & 65535L)) {
-            var1.unlink();
+      WidgetNode var5 = (WidgetNode)Client.componentTable.get((long)var1.id);
+      if(var5 != null) {
+         int var6 = var5.id;
+         if(Ignore.loadWidget(var6)) {
+            class23.method183(class176.widgets[var6], -1, var3, var4, var2);
          }
       }
 
+      if(var1.contentType == 1337) {
+         ;
+      }
+
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("an")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-114720911"
+      signature = "(Lep;III)Ldc;",
+      garbageValue = "758013495"
    )
-   static void method775() {
-      class91.underlayIds = null;
-      class61.overlayIds = null;
-      class92.overlayPaths = null;
-      class35.overlayRotations = null;
-      class61.field748 = null;
-      ChatLineBuffer.field1546 = null;
-      class61.field756 = null;
-      class20.blendedHue = null;
-      GroundObject.blendedSaturation = null;
-      class33.field473 = null;
-      class61.field746 = null;
-      class61.field742 = null;
+   public static final AbstractSoundSystem method808(Signlink var0, int var1, int var2) {
+      if(AbstractSoundSystem.sampleRate == 0) {
+         throw new IllegalStateException();
+      } else if(var1 >= 0 && var1 < 2) {
+         if(var2 < 256) {
+            var2 = 256;
+         }
+
+         try {
+            AbstractSoundSystem var3 = class294.field3887.vmethod1939();
+            var3.samples = new int[256 * (class135.highMemory?2:1)];
+            var3.field1633 = var2;
+            var3.vmethod2048();
+            var3.offset = (var2 & -1024) + 1024;
+            if(var3.offset > 16384) {
+               var3.offset = 16384;
+            }
+
+            var3.create(var3.offset);
+            if(AbstractSoundSystem.priority > 0 && class66.task == null) {
+               class66.task = new SoundTask();
+               WidgetNode.field842 = Executors.newScheduledThreadPool(1);
+               WidgetNode.field842.scheduleAtFixedRate(class66.task, 0L, 10L, TimeUnit.MILLISECONDS);
+            }
+
+            if(class66.task != null) {
+               if(class66.task.systems[var1] != null) {
+                  throw new IllegalArgumentException();
+               }
+
+               class66.task.systems[var1] = var3;
+            }
+
+            return var3;
+         } catch (Throwable var4) {
+            return new AbstractSoundSystem();
+         }
+      } else {
+         throw new IllegalArgumentException();
+      }
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(Ljava/io/File;ZB)Z",
+      garbageValue = "63"
+   )
+   public static boolean method813(File var0, boolean var1) {
+      try {
+         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
+         int var3 = var2.read();
+         var2.seek(0L);
+         var2.write(var3);
+         var2.seek(0L);
+         var2.close();
+         if(var1) {
+            var0.delete();
+         }
+
+         return true;
+      } catch (Exception var4) {
+         return false;
+      }
    }
 }

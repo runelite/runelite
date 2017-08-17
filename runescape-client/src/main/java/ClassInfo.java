@@ -6,98 +6,81 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jz")
+@ObfuscatedName("ji")
 @Implements("ClassInfo")
 public class ClassInfo extends Node {
-   @ObfuscatedName("u")
-   public static short[][] field3729;
-   @ObfuscatedName("e")
+   @ObfuscatedName("ah")
    @ObfuscatedGetter(
-      intValue = -481810017
+      intValue = -1999353723
    )
-   public int field3730;
-   @ObfuscatedName("n")
+   @Export("authCodeForLogin")
+   static int authCodeForLogin;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1561890603
+      intValue = -1933020291
+   )
+   int field3737;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1935105849
    )
    @Export("count")
-   public int count;
-   @ObfuscatedName("y")
+   int count;
+   @ObfuscatedName("x")
    @Export("errorIdentifiers")
-   public int[] errorIdentifiers;
-   @ObfuscatedName("g")
+   int[] errorIdentifiers;
+   @ObfuscatedName("p")
    @Export("type")
-   public int[] type;
-   @ObfuscatedName("w")
+   int[] type;
+   @ObfuscatedName("g")
    @Export("fields")
-   public Field[] fields;
-   @ObfuscatedName("k")
-   public int[] field3731;
-   @ObfuscatedName("v")
+   Field[] fields;
+   @ObfuscatedName("f")
+   int[] field3734;
+   @ObfuscatedName("c")
    @Export("methods")
-   public Method[] methods;
-   @ObfuscatedName("z")
+   Method[] methods;
+   @ObfuscatedName("l")
    @Export("args")
-   public byte[][][] args;
+   byte[][][] args;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("gf")
    @ObfuscatedSignature(
-      signature = "(II)Lii;",
-      garbageValue = "-1852233194"
+      signature = "(I)V",
+      garbageValue = "1883293878"
    )
-   @Export("getItemDefinition")
-   public static ItemComposition getItemDefinition(int var0) {
-      ItemComposition var1 = (ItemComposition)ItemComposition.items.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class83.item_ref.getConfigData(10, var0);
-         var1 = new ItemComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.loadBuffer(new Buffer(var2));
-         }
-
-         var1.post();
-         if(var1.notedTemplate != -1) {
-            var1.method4586(getItemDefinition(var1.notedTemplate), getItemDefinition(var1.note));
-         }
-
-         if(var1.notedId != -1) {
-            var1.method4638(getItemDefinition(var1.notedId), getItemDefinition(var1.unnotedId));
-         }
-
-         if(var1.field3530 != -1) {
-            var1.method4588(getItemDefinition(var1.field3530), getItemDefinition(var1.field3529));
-         }
-
-         if(!ItemComposition.isMembersWorld && var1.isMembers) {
-            var1.name = "Members object";
-            var1.field3521 = false;
-            var1.groundActions = null;
-            var1.inventoryActions = null;
-            var1.team = -1;
-            var1.field3524 = 0;
-            if(var1.field3525 != null) {
-               boolean var3 = false;
-
-               for(Node var4 = var1.field3525.getHead(); var4 != null; var4 = var1.field3525.getTail()) {
-                  class252 var5 = Coordinates.method3948((int)var4.hash);
-                  if(var5.field3382) {
-                     var4.unlink();
-                  } else {
-                     var3 = true;
+   static final void method4943() {
+      for(Projectile var0 = (Projectile)Client.projectiles.getFront(); var0 != null; var0 = (Projectile)Client.projectiles.getNext()) {
+         if(var0.floor == class35.plane && Client.gameCycle <= var0.cycle) {
+            if(Client.gameCycle >= var0.startTime) {
+               if(var0.interacting > 0) {
+                  NPC var1 = Client.cachedNPCs[var0.interacting - 1];
+                  if(var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
+                     var0.method1768(var1.x, var1.y, class25.getTileHeight(var1.x, var1.y, var0.floor) - var0.endHeight, Client.gameCycle);
                   }
                }
 
-               if(!var3) {
-                  var1.field3525 = null;
-               }
-            }
-         }
+               if(var0.interacting < 0) {
+                  int var2 = -var0.interacting - 1;
+                  Player var3;
+                  if(var2 == Client.localInteractingIndex) {
+                     var3 = XGrandExchangeOffer.localPlayer;
+                  } else {
+                     var3 = Client.cachedPlayers[var2];
+                  }
 
-         ItemComposition.items.put(var1, (long)var0);
-         return var1;
+                  if(var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
+                     var0.method1768(var3.x, var3.y, class25.getTileHeight(var3.x, var3.y, var0.floor) - var0.endHeight, Client.gameCycle);
+                  }
+               }
+
+               var0.method1769(Client.field957);
+               class36.region.method2713(class35.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.rotationX, -1, false);
+            }
+         } else {
+            var0.unlink();
+         }
       }
+
    }
 }

@@ -1,13 +1,13 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iz")
+@ObfuscatedName("ij")
 public class class250 {
-   @ObfuscatedName("gd")
-   @ObfuscatedGetter(
-      intValue = 225579267
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lia;"
    )
-   @Export("cameraPitch")
-   static int cameraPitch;
+   @Export("overlay_ref")
+   public static IndexDataBase overlay_ref;
 }

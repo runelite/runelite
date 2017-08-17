@@ -4,48 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("if")
+@ObfuscatedName("iu")
 @Implements("FloorUnderlayDefinition")
 public class FloorUnderlayDefinition extends CacheableNode {
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lgq;"
+      signature = "Lgs;"
    )
    @Export("underlays")
    static NodeCache underlays;
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lia;"
    )
    @Export("underlay_ref")
    static IndexDataBase underlay_ref;
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -940950813
+      intValue = 1767930221
    )
    @Export("rgbColor")
    int rgbColor;
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1340585699
+      intValue = 647397733
    )
    @Export("hue")
    public int hue;
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -886803401
+      intValue = -515530055
    )
    @Export("saturation")
    public int saturation;
-   @ObfuscatedName("v")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -475970397
+      intValue = 1854527535
    )
    @Export("hueMultiplier")
    public int hueMultiplier;
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1728272695
+      intValue = 934877127
    )
    @Export("lightness")
    public int lightness;
@@ -58,10 +58,10 @@ public class FloorUnderlayDefinition extends CacheableNode {
       this.rgbColor = 0;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "966841235"
+      garbageValue = "778818672"
    )
    @Export("setHSL")
    void setHSL(int var1) {
@@ -98,17 +98,17 @@ public class FloorUnderlayDefinition extends CacheableNode {
             var14 = (var10 - var8) / (2.0D - var10 - var8);
          }
 
-         if(var2 == var10) {
+         if(var10 == var2) {
             var12 = (var4 - var6) / (var10 - var8);
-         } else if(var10 == var4) {
+         } else if(var4 == var10) {
             var12 = (var6 - var2) / (var10 - var8) + 2.0D;
-         } else if(var6 == var10) {
-            var12 = 4.0D + (var2 - var4) / (var10 - var8);
+         } else if(var10 == var6) {
+            var12 = (var2 - var4) / (var10 - var8) + 4.0D;
          }
       }
 
       var12 /= 6.0D;
-      this.saturation = (int)(256.0D * var14);
+      this.saturation = (int)(var14 * 256.0D);
       this.lightness = (int)(var16 * 256.0D);
       if(this.saturation < 0) {
          this.saturation = 0;
@@ -123,22 +123,22 @@ public class FloorUnderlayDefinition extends CacheableNode {
       }
 
       if(var16 > 0.5D) {
-         this.hueMultiplier = (int)(512.0D * var14 * (1.0D - var16));
+         this.hueMultiplier = (int)((1.0D - var16) * var14 * 512.0D);
       } else {
-         this.hueMultiplier = (int)(512.0D * var16 * var14);
+         this.hueMultiplier = (int)(var16 * var14 * 512.0D);
       }
 
       if(this.hueMultiplier < 1) {
          this.hueMultiplier = 1;
       }
 
-      this.hue = (int)(var12 * (double)this.hueMultiplier);
+      this.hue = (int)((double)this.hueMultiplier * var12);
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lfh;IIS)V",
-      garbageValue = "4111"
+      signature = "(Lfb;IIB)V",
+      garbageValue = "-87"
    )
    @Export("decode")
    void decode(Buffer var1, int var2, int var3) {
@@ -148,20 +148,20 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1689356724"
+      garbageValue = "-938036590"
    )
    @Export("post")
    void post() {
       this.setHSL(this.rgbColor);
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lfh;IB)V",
-      garbageValue = "93"
+      signature = "(Lfb;II)V",
+      garbageValue = "-2131347926"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -175,40 +175,131 @@ public class FloorUnderlayDefinition extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IIZB)Ljava/lang/String;",
-      garbageValue = "113"
+      signature = "(Ljava/lang/CharSequence;Lkd;I)Ljava/lang/String;",
+      garbageValue = "-1564082992"
    )
-   public static String method4383(int var0, int var1, boolean var2) {
-      if(var1 >= 2 && var1 <= 36) {
-         if(var0 < 0) {
-            return Integer.toString(var0, var1);
-         } else {
-            int var3 = 2;
+   public static String method4398(CharSequence var0, class290 var1) {
+      if(var0 == null) {
+         return null;
+      } else {
+         int var2 = 0;
 
-            for(int var4 = var0 / var1; var4 != 0; ++var3) {
-               var4 /= var1;
-            }
+         int var3;
+         for(var3 = var0.length(); var2 < var3 && IndexDataBase.method4213(var0.charAt(var2)); ++var2) {
+            ;
+         }
 
-            char[] var5 = new char[var3];
-            var5[0] = 43;
+         while(var3 > var2 && IndexDataBase.method4213(var0.charAt(var3 - 1))) {
+            --var3;
+         }
 
-            for(int var6 = var3 - 1; var6 > 0; --var6) {
-               int var7 = var0;
-               var0 /= var1;
-               int var8 = var7 - var0 * var1;
-               if(var8 >= 10) {
-                  var5[var6] = (char)(var8 + 87);
-               } else {
-                  var5[var6] = (char)(var8 + 48);
+         int var4 = var3 - var2;
+         if(var4 >= 1 && var4 <= class208.method3878(var1)) {
+            StringBuilder var5 = new StringBuilder(var4);
+
+            for(int var6 = var2; var6 < var3; ++var6) {
+               char var7 = var0.charAt(var6);
+               if(ISAACCipher.method3455(var7)) {
+                  char var8;
+                  switch(var7) {
+                  case ' ':
+                  case '-':
+                  case '_':
+                  case ' ':
+                     var8 = 95;
+                     break;
+                  case '#':
+                  case '[':
+                  case ']':
+                     var8 = var7;
+                     break;
+                  case 'À':
+                  case 'Á':
+                  case 'Â':
+                  case 'Ã':
+                  case 'Ä':
+                  case 'à':
+                  case 'á':
+                  case 'â':
+                  case 'ã':
+                  case 'ä':
+                     var8 = 97;
+                     break;
+                  case 'Ç':
+                  case 'ç':
+                     var8 = 99;
+                     break;
+                  case 'È':
+                  case 'É':
+                  case 'Ê':
+                  case 'Ë':
+                  case 'è':
+                  case 'é':
+                  case 'ê':
+                  case 'ë':
+                     var8 = 101;
+                     break;
+                  case 'Í':
+                  case 'Î':
+                  case 'Ï':
+                  case 'í':
+                  case 'î':
+                  case 'ï':
+                     var8 = 105;
+                     break;
+                  case 'Ñ':
+                  case 'ñ':
+                     var8 = 110;
+                     break;
+                  case 'Ò':
+                  case 'Ó':
+                  case 'Ô':
+                  case 'Õ':
+                  case 'Ö':
+                  case 'ò':
+                  case 'ó':
+                  case 'ô':
+                  case 'õ':
+                  case 'ö':
+                     var8 = 111;
+                     break;
+                  case 'Ù':
+                  case 'Ú':
+                  case 'Û':
+                  case 'Ü':
+                  case 'ù':
+                  case 'ú':
+                  case 'û':
+                  case 'ü':
+                     var8 = 117;
+                     break;
+                  case 'ß':
+                     var8 = 98;
+                     break;
+                  case 'ÿ':
+                  case 'Ÿ':
+                     var8 = 121;
+                     break;
+                  default:
+                     var8 = Character.toLowerCase(var7);
+                  }
+
+                  if(var8 != 0) {
+                     var5.append(var8);
+                  }
                }
             }
 
-            return new String(var5);
+            if(var5.length() == 0) {
+               return null;
+            } else {
+               return var5.toString();
+            }
+         } else {
+            return null;
          }
-      } else {
-         throw new IllegalArgumentException("");
       }
    }
 }

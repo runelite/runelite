@@ -1,26 +1,22 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("kg")
+@ObfuscatedName("kc")
 public class class287 {
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1138235137
+      intValue = -1915541041
    )
-   static int field3775;
-   @ObfuscatedName("g")
+   static int field3779;
+   @ObfuscatedName("p")
+   static int[] field3781;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1022673283
+      intValue = 1843176497
    )
-   static int field3776;
-   @ObfuscatedName("y")
-   static int[] field3779;
-   @ObfuscatedName("k")
-   static int[] field3778;
-   @ObfuscatedName("z")
-   static int[] field3777;
-   @ObfuscatedName("r")
-   @Export("spritePixels")
-   static byte[][] spritePixels;
+   static int field3780;
+   @ObfuscatedName("c")
+   static int[] field3782;
+   @ObfuscatedName("l")
+   static int[] field3783;
 }

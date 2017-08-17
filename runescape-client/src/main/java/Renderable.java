@@ -1,15 +1,16 @@
+import java.io.File;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eg")
+@ObfuscatedName("eq")
 @Implements("Renderable")
 public abstract class Renderable extends CacheableNode {
-   @ObfuscatedName("ch")
+   @ObfuscatedName("cz")
    @ObfuscatedGetter(
-      intValue = -2010156075
+      intValue = -405865165
    )
    @Export("modelHeight")
    public int modelHeight;
@@ -18,17 +19,17 @@ public abstract class Renderable extends CacheableNode {
       this.modelHeight = 1000;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(I)Lew;",
-      garbageValue = "-2113451941"
+      signature = "(I)Leo;",
+      garbageValue = "1214595416"
    )
    @Export("getModel")
    protected Model getModel() {
       return null;
    }
 
-   @ObfuscatedName("cg")
+   @ObfuscatedName("ci")
    @Export("draw")
    void draw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
       Model var10 = this.getModel();
@@ -39,93 +40,47 @@ public abstract class Renderable extends CacheableNode {
 
    }
 
-   @ObfuscatedName("hx")
+   @ObfuscatedName("jf")
    @ObfuscatedSignature(
-      signature = "(Lbk;IIII)V",
-      garbageValue = "-1950339678"
+      signature = "(Lhi;I)Z",
+      garbageValue = "-1730668489"
    )
-   static final void method2898(Player var0, int var1, int var2, int var3) {
-      if(class54.localPlayer != var0) {
-         if(Client.menuOptionCount < 400) {
-            String var4;
-            int var7;
-            if(var0.totalLevel == 0) {
-               String var5 = var0.actions[0] + var0.name + var0.actions[1];
-               var7 = var0.combatLevel;
-               int var8 = class54.localPlayer.combatLevel;
-               int var9 = var8 - var7;
-               String var6;
-               if(var9 < -9) {
-                  var6 = RSSocket.getColTags(16711680);
-               } else if(var9 < -6) {
-                  var6 = RSSocket.getColTags(16723968);
-               } else if(var9 < -3) {
-                  var6 = RSSocket.getColTags(16740352);
-               } else if(var9 < 0) {
-                  var6 = RSSocket.getColTags(16756736);
-               } else if(var9 > 9) {
-                  var6 = RSSocket.getColTags('\uff00');
-               } else if(var9 > 6) {
-                  var6 = RSSocket.getColTags(4259584);
-               } else if(var9 > 3) {
-                  var6 = RSSocket.getColTags(8453888);
-               } else if(var9 > 0) {
-                  var6 = RSSocket.getColTags(12648192);
-               } else {
-                  var6 = RSSocket.getColTags(16776960);
-               }
+   static boolean method2896(Widget var0) {
+      if(Client.field1096) {
+         if(class262.getWidgetConfig(var0) != 0) {
+            return false;
+         }
 
-               var4 = var5 + var6 + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
-            } else {
-               var4 = var0.actions[0] + var0.name + var0.actions[1] + " " + " (" + "skill-" + var0.totalLevel + ")" + var0.actions[2];
-            }
-
-            int var10;
-            if(Client.itemSelectionState == 1) {
-               class165.addMenuEntry("Use", Client.field1056 + " " + "->" + " " + RSSocket.getColTags(16777215) + var4, 14, var1, var2, var3);
-            } else if(Client.spellSelected) {
-               if((class1.field4 & 8) == 8) {
-                  class165.addMenuEntry(Client.field997, Client.field1061 + " " + "->" + " " + RSSocket.getColTags(16777215) + var4, 15, var1, var2, var3);
-               }
-            } else {
-               for(var10 = 7; var10 >= 0; --var10) {
-                  if(Client.playerOptions[var10] != null) {
-                     short var11 = 0;
-                     if(Client.playerOptions[var10].equalsIgnoreCase("Attack")) {
-                        if(Client.field940 == class92.field1410) {
-                           continue;
-                        }
-
-                        if(class92.field1417 == Client.field940 || Client.field940 == class92.field1408 && var0.combatLevel > class54.localPlayer.combatLevel) {
-                           var11 = 2000;
-                        }
-
-                        if(class54.localPlayer.team != 0 && var0.team != 0) {
-                           if(var0.team == class54.localPlayer.team) {
-                              var11 = 2000;
-                           } else {
-                              var11 = 0;
-                           }
-                        }
-                     } else if(Client.playerOptionsPriorities[var10]) {
-                        var11 = 2000;
-                     }
-
-                     boolean var12 = false;
-                     var7 = Client.playerMenuTypes[var10] + var11;
-                     class165.addMenuEntry(Client.playerOptions[var10], RSSocket.getColTags(16777215) + var4, var7, var1, var2, var3);
-                  }
-               }
-            }
-
-            for(var10 = 0; var10 < Client.menuOptionCount; ++var10) {
-               if(Client.menuTypes[var10] == 23) {
-                  Client.menuTargets[var10] = RSSocket.getColTags(16777215) + var4;
-                  break;
-               }
-            }
-
+         if(var0.type == 0) {
+            return false;
          }
       }
+
+      return var0.isHidden;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Ljava/io/File;I)V",
+      garbageValue = "-927381729"
+   )
+   public static void method2894(File var0) {
+      class158.field2262 = var0;
+      if(!class158.field2262.exists()) {
+         throw new RuntimeException("");
+      } else {
+         class158.field2267 = true;
+      }
+   }
+
+   @ObfuscatedName("jc")
+   @ObfuscatedSignature(
+      signature = "(Lhi;I)Ljava/lang/String;",
+      garbageValue = "-359677229"
+   )
+   static String method2895(Widget var0) {
+      int var2 = class262.getWidgetConfig(var0);
+      int var1 = var2 >> 11 & 63;
+      return var1 == 0?null:(var0.selectedAction != null && var0.selectedAction.trim().length() != 0?var0.selectedAction:null);
    }
 }

@@ -1,97 +1,76 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ij")
+@ObfuscatedName("iq")
 public enum class258 implements RSEnum {
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Liq;"
    )
-   field3536(2, 0),
-   @ObfuscatedName("n")
+   field3533(1, 0),
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Liq;"
    )
-   field3533(1, 1),
-   @ObfuscatedName("g")
+   field3535(2, 1),
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Liq;"
    )
-   field3535(0, 2);
+   field3534(0, 2);
 
-   @ObfuscatedName("v")
-   @Export("colorsToFind")
-   public static short[] colorsToFind;
-   @ObfuscatedName("w")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1799121535
+      intValue = -729722963
    )
-   final int field3537;
-   @ObfuscatedName("y")
+   public final int field3532;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1085993091
+      intValue = -30169901
    )
-   public final int field3538;
+   final int field3536;
 
    class258(int var3, int var4) {
-      this.field3538 = var3;
-      this.field3537 = var4;
+      this.field3532 = var3;
+      this.field3536 = var4;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "834678576"
+      garbageValue = "316484705"
    )
    public int rsOrdinal() {
-      return this.field3537;
+      return this.field3536;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lid;IIIBZI)V",
-      garbageValue = "1270780403"
+      signature = "(I)[Ljr;",
+      garbageValue = "-1316988462"
    )
-   static void method4651(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
-      long var6 = (long)((var1 << 16) + var2);
-      FileRequest var8 = (FileRequest)class239.field3238.get(var6);
-      if(var8 == null) {
-         var8 = (FileRequest)class239.field3236.get(var6);
-         if(var8 == null) {
-            var8 = (FileRequest)class239.field3245.get(var6);
-            if(var8 != null) {
-               if(var5) {
-                  var8.unlinkDual();
-                  class239.field3238.put(var8, var6);
-                  --class239.field3235;
-                  ++class239.field3249;
-               }
+   static IndexedSprite[] method4663() {
+      IndexedSprite[] var0 = new IndexedSprite[class287.field3780];
 
-            } else {
-               if(!var5) {
-                  var8 = (FileRequest)class239.field3240.get(var6);
-                  if(var8 != null) {
-                     return;
-                  }
-               }
-
-               var8 = new FileRequest();
-               var8.index = var0;
-               var8.crc = var3;
-               var8.padding = var4;
-               if(var5) {
-                  class239.field3238.put(var8, var6);
-                  ++class239.field3249;
-               } else {
-                  class239.field3242.push(var8);
-                  class239.field3245.put(var8, var6);
-                  ++class239.field3235;
-               }
-
-            }
-         }
+      for(int var1 = 0; var1 < class287.field3780; ++var1) {
+         IndexedSprite var2 = var0[var1] = new IndexedSprite();
+         var2.width = class287.field3779;
+         var2.originalHeight = ISAACCipher.field2435;
+         var2.offsetX = class287.field3781[var1];
+         var2.offsetY = class211.offsetsY[var1];
+         var2.originalWidth = class266.field3647[var1];
+         var2.height = class287.field3782[var1];
+         var2.palette = class287.field3783;
+         var2.pixels = class274.spritePixels[var1];
       }
+
+      class287.field3781 = null;
+      class211.offsetsY = null;
+      class266.field3647 = null;
+      class287.field3782 = null;
+      class287.field3783 = null;
+      class274.spritePixels = null;
+      return var0;
    }
 }

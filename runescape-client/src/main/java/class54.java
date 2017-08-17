@@ -1,42 +1,30 @@
 import javax.imageio.ImageIO;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bq")
+@ObfuscatedName("ba")
 public class class54 {
-   @ObfuscatedName("if")
-   @ObfuscatedSignature(
-      signature = "Lbk;"
-   )
-   @Export("localPlayer")
-   static Player localPlayer;
-   @ObfuscatedName("aj")
-   @ObfuscatedSignature(
-      signature = "[Lkn;"
-   )
-   static SpritePixels[] field655;
-   @ObfuscatedName("ni")
-   @ObfuscatedSignature(
-      signature = "Ljg;"
-   )
-   static class277 field653;
-
    static {
       ImageIO.setUseCache(false);
    }
 
-   @ObfuscatedName("iw")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lhg;I)Lhg;",
-      garbageValue = "651142881"
+      signature = "(III)Z",
+      garbageValue = "706378799"
    )
-   static Widget method789(Widget var0) {
-      Widget var1 = Ignore.method1115(var0);
-      if(var1 == null) {
-         var1 = var0.dragParent;
-      }
+   static boolean method832(int var0, int var1) {
+      return var0 != 4 || var1 < 8;
+   }
 
-      return var1;
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Lia;Ljava/lang/String;Ljava/lang/String;I)[Lkp;",
+      garbageValue = "-1234400261"
+   )
+   public static SpritePixels[] method833(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
+      return Parameters.method4934(var0, var3, var4);
    }
 }

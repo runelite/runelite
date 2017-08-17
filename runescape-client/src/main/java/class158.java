@@ -1,154 +1,115 @@
 import java.io.File;
+import java.util.Date;
 import java.util.Hashtable;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fe")
+@ObfuscatedName("fr")
 public class class158 {
-   @ObfuscatedName("e")
-   static boolean field2242;
-   @ObfuscatedName("g")
-   static Hashtable field2240;
-   @ObfuscatedName("cc")
-   @ObfuscatedSignature(
-      signature = "Lid;"
-   )
-   @Export("indexMaps")
-   static IndexData indexMaps;
-   @ObfuscatedName("n")
-   static File field2238;
-   @ObfuscatedName("pa")
-   @ObfuscatedGetter(
-      intValue = 1171681219
-   )
-   static int field2239;
+   @ObfuscatedName("j")
+   static boolean field2267;
+   @ObfuscatedName("f")
+   static Hashtable field2265;
+   @ObfuscatedName("h")
+   static File field2262;
 
    static {
-      field2242 = false;
-      field2240 = new Hashtable(16);
+      field2267 = false;
+      field2265 = new Hashtable(16);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("j")
+   public static String method3001(long var0) {
+      class183.field2441.setTime(new Date(var0));
+      int var2 = class183.field2441.get(7);
+      int var3 = class183.field2441.get(5);
+      int var4 = class183.field2441.get(2);
+      int var5 = class183.field2441.get(1);
+      int var6 = class183.field2441.get(11);
+      int var7 = class183.field2441.get(12);
+      int var8 = class183.field2441.get(13);
+      return class183.field2442[var2 - 1] + ", " + var3 / 10 + var3 % 10 + "-" + class183.field2443[0][var4] + "-" + var5 + " " + var6 / 10 + var6 % 10 + ":" + var7 / 10 + var7 % 10 + ":" + var8 / 10 + var8 % 10 + " GMT";
+   }
+
+   @ObfuscatedName("hs")
    @ObfuscatedSignature(
-      signature = "(IIIIIZB)Lkn;",
-      garbageValue = "-53"
+      signature = "(Lbz;IIIB)V",
+      garbageValue = "-44"
    )
-   @Export("createSprite")
-   public static final SpritePixels createSprite(int var0, int var1, int var2, int var3, int var4, boolean var5) {
-      if(var1 == -1) {
-         var4 = 0;
-      } else if(var4 == 2 && var1 != 1) {
-         var4 = 1;
+   static final void method2996(Player var0, int var1, int var2, int var3) {
+      if(XGrandExchangeOffer.localPlayer != var0) {
+         if(Client.menuOptionCount < 400) {
+            String var4;
+            if(var0.totalLevel == 0) {
+               var4 = var0.actions[0] + var0.name + var0.actions[1] + class34.method465(var0.combatLevel, XGrandExchangeOffer.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
+            } else {
+               var4 = var0.actions[0] + var0.name + var0.actions[1] + " " + " (" + "skill-" + var0.totalLevel + ")" + var0.actions[2];
+            }
+
+            int var5;
+            if(Client.itemSelectionState == 1) {
+               DynamicObject.addMenuEntry("Use", Client.field1084 + " " + "->" + " " + Tile.getColTags(16777215) + var4, 14, var1, var2, var3);
+            } else if(Client.spellSelected) {
+               if((class51.field664 & 8) == 8) {
+                  DynamicObject.addMenuEntry(Client.field993, Client.field1085 + " " + "->" + " " + Tile.getColTags(16777215) + var4, 15, var1, var2, var3);
+               }
+            } else {
+               for(var5 = 7; var5 >= 0; --var5) {
+                  if(Client.playerOptions[var5] != null) {
+                     short var6 = 0;
+                     if(Client.playerOptions[var5].equalsIgnoreCase("Attack")) {
+                        if(Client.field959 == class92.field1424) {
+                           continue;
+                        }
+
+                        if(Client.field959 == class92.field1422 || Client.field959 == class92.field1426 && var0.combatLevel > XGrandExchangeOffer.localPlayer.combatLevel) {
+                           var6 = 2000;
+                        }
+
+                        if(XGrandExchangeOffer.localPlayer.team != 0 && var0.team != 0) {
+                           if(var0.team == XGrandExchangeOffer.localPlayer.team) {
+                              var6 = 2000;
+                           } else {
+                              var6 = 0;
+                           }
+                        }
+                     } else if(Client.playerOptionsPriorities[var5]) {
+                        var6 = 2000;
+                     }
+
+                     boolean var7 = false;
+                     int var8 = Client.playerMenuTypes[var5] + var6;
+                     DynamicObject.addMenuEntry(Client.playerOptions[var5], Tile.getColTags(16777215) + var4, var8, var1, var2, var3);
+                  }
+               }
+            }
+
+            for(var5 = 0; var5 < Client.menuOptionCount; ++var5) {
+               if(Client.menuTypes[var5] == 23) {
+                  Client.menuTargets[var5] = Tile.getColTags(16777215) + var4;
+                  break;
+               }
+            }
+
+         }
+      }
+   }
+
+   @ObfuscatedName("iy")
+   @ObfuscatedSignature(
+      signature = "([Ljava/lang/String;I)[Ljava/lang/String;",
+      garbageValue = "-2075309812"
+   )
+   static final String[] method3000(String[] var0) {
+      String[] var1 = new String[5];
+
+      for(int var2 = 0; var2 < 5; ++var2) {
+         var1[var2] = var2 + ": ";
+         if(var0 != null && var0[var2] != null) {
+            var1[var2] = var1[var2] + var0[var2];
+         }
       }
 
-      long var6 = (long)var0 + ((long)var1 << 16) + ((long)var2 << 38) + ((long)var4 << 40) + ((long)var3 << 42);
-      SpritePixels var8;
-      if(!var5) {
-         var8 = (SpritePixels)ItemComposition.itemSpriteCache.get(var6);
-         if(var8 != null) {
-            return var8;
-         }
-      }
-
-      ItemComposition var9 = ClassInfo.getItemDefinition(var0);
-      if(var1 > 1 && var9.countObj != null) {
-         int var10 = -1;
-
-         for(int var11 = 0; var11 < 10; ++var11) {
-            if(var1 >= var9.countCo[var11] && var9.countCo[var11] != 0) {
-               var10 = var9.countObj[var11];
-            }
-         }
-
-         if(var10 != -1) {
-            var9 = ClassInfo.getItemDefinition(var10);
-         }
-      }
-
-      Model var19 = var9.getModel(1);
-      if(var19 == null) {
-         return null;
-      } else {
-         SpritePixels var20 = null;
-         if(var9.notedTemplate != -1) {
-            var20 = createSprite(var9.note, 10, 1, 0, 0, true);
-            if(var20 == null) {
-               return null;
-            }
-         } else if(var9.notedId != -1) {
-            var20 = createSprite(var9.unnotedId, var1, var2, var3, 0, false);
-            if(var20 == null) {
-               return null;
-            }
-         } else if(var9.field3530 != -1) {
-            var20 = createSprite(var9.field3529, var1, 0, 0, 0, false);
-            if(var20 == null) {
-               return null;
-            }
-         }
-
-         int[] var12 = Rasterizer2D.graphicsPixels;
-         int var13 = Rasterizer2D.graphicsPixelsWidth;
-         int var14 = Rasterizer2D.graphicsPixelsHeight;
-         int[] var15 = new int[4];
-         Rasterizer2D.copyDrawRegion(var15);
-         var8 = new SpritePixels(36, 32);
-         Rasterizer2D.setRasterBuffer(var8.image, 36, 32);
-         Rasterizer2D.reset();
-         Graphics3D.method2627();
-         Graphics3D.method2630(16, 16);
-         Graphics3D.rasterGouraudLowRes = false;
-         if(var9.field3530 != -1) {
-            var20.method5143(0, 0);
-         }
-
-         int var16 = var9.zoom2d;
-         if(var5) {
-            var16 = (int)(1.5D * (double)var16);
-         } else if(var2 == 2) {
-            var16 = (int)((double)var16 * 1.04D);
-         }
-
-         int var17 = var16 * Graphics3D.SINE[var9.xan2d] >> 16;
-         int var18 = var16 * Graphics3D.COSINE[var9.xan2d] >> 16;
-         var19.method2519();
-         var19.method2532(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var19.modelHeight / 2 + var17 + var9.offsetY2d, var18 + var9.offsetY2d);
-         if(var9.notedId != -1) {
-            var20.method5143(0, 0);
-         }
-
-         if(var2 >= 1) {
-            var8.method5096(1);
-         }
-
-         if(var2 >= 2) {
-            var8.method5096(16777215);
-         }
-
-         if(var3 != 0) {
-            var8.method5097(var3);
-         }
-
-         Rasterizer2D.setRasterBuffer(var8.image, 36, 32);
-         if(var9.notedTemplate != -1) {
-            var20.method5143(0, 0);
-         }
-
-         if(var4 == 1 || var4 == 2 && var9.isStackable == 1) {
-            AbstractByteBuffer.field2400.method4776(GroundObject.method2500(var1), 0, 9, 16776960, 1);
-         }
-
-         if(!var5) {
-            ItemComposition.itemSpriteCache.put(var8, var6);
-         }
-
-         Rasterizer2D.setRasterBuffer(var12, var13, var14);
-         Rasterizer2D.setDrawRegion(var15);
-         Graphics3D.method2627();
-         Graphics3D.rasterGouraudLowRes = true;
-         return var8;
-      }
+      return var1;
    }
 }

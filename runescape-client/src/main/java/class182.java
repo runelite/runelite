@@ -1,66 +1,184 @@
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gy")
+@ObfuscatedName("gv")
 public class class182 {
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -933670171
-   )
-   static int field2420;
-   @ObfuscatedName("go")
+   @ObfuscatedName("ft")
    @ObfuscatedSignature(
-      signature = "[Lkn;"
+      signature = "(I)V",
+      garbageValue = "1254924404"
    )
-   static SpritePixels[] field2421;
+   static final void method3458() {
+      if(WorldMapType1.soundSystem1 != null) {
+         WorldMapType1.soundSystem1.method2031();
+      }
 
-   @ObfuscatedName("ag")
+      if(class84.soundSystem0 != null) {
+         class84.soundSystem0.method2031();
+      }
+
+   }
+
+   @ObfuscatedName("ha")
    @ObfuscatedSignature(
-      signature = "(Leb;IIB)Ldw;",
-      garbageValue = "-13"
+      signature = "(Lhi;IS)I",
+      garbageValue = "-2337"
    )
-   public static final AbstractSoundSystem method3438(Signlink var0, int var1, int var2) {
-      if(AbstractSoundSystem.sampleRate == 0) {
-         throw new IllegalStateException();
-      } else if(var1 >= 0 && var1 < 2) {
-         if(var2 < 256) {
-            var2 = 256;
-         }
-
+   static final int method3456(Widget var0, int var1) {
+      if(var0.dynamicValues != null && var1 < var0.dynamicValues.length) {
          try {
-            AbstractSoundSystem var3 = FrameMap.field2044.vmethod1949();
-            var3.samples = new int[256 * (class25.highMemory?2:1)];
-            var3.field1633 = var2;
-            var3.vmethod2046();
-            var3.offset = (var2 & -1024) + 1024;
-            if(var3.offset > 16384) {
-               var3.offset = 16384;
-            }
+            int[] var2 = var0.dynamicValues[var1];
+            int var3 = 0;
+            int var4 = 0;
+            byte var5 = 0;
 
-            var3.create(var3.offset);
-            if(class9.priority > 0 && class164.task == null) {
-               class164.task = new SoundTask();
-               IndexFile.field2258 = Executors.newScheduledThreadPool(1);
-               IndexFile.field2258.scheduleAtFixedRate(class164.task, 0L, 10L, TimeUnit.MILLISECONDS);
-            }
-
-            if(class164.task != null) {
-               if(class164.task.systems[var1] != null) {
-                  throw new IllegalArgumentException();
+            while(true) {
+               int var6 = var2[var4++];
+               int var7 = 0;
+               byte var8 = 0;
+               if(var6 == 0) {
+                  return var3;
                }
 
-               class164.task.systems[var1] = var3;
-            }
+               if(var6 == 1) {
+                  var7 = Client.boostedSkillLevels[var2[var4++]];
+               }
 
-            return var3;
-         } catch (Throwable var4) {
-            return new AbstractSoundSystem();
+               if(var6 == 2) {
+                  var7 = Client.realSkillLevels[var2[var4++]];
+               }
+
+               if(var6 == 3) {
+                  var7 = Client.skillExperiences[var2[var4++]];
+               }
+
+               int var9;
+               Widget var10;
+               int var11;
+               int var12;
+               if(var6 == 4) {
+                  var9 = var2[var4++] << 16;
+                  var9 += var2[var4++];
+                  var10 = class84.method1670(var9);
+                  var11 = var2[var4++];
+                  if(var11 != -1 && (!SoundTask.getItemDefinition(var11).isMembers || Client.isMembers)) {
+                     for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
+                        if(var11 + 1 == var10.itemIds[var12]) {
+                           var7 += var10.itemQuantities[var12];
+                        }
+                     }
+                  }
+               }
+
+               if(var6 == 5) {
+                  var7 = class212.widgetSettings[var2[var4++]];
+               }
+
+               if(var6 == 6) {
+                  var7 = class223.field2835[Client.realSkillLevels[var2[var4++]] - 1];
+               }
+
+               if(var6 == 7) {
+                  var7 = class212.widgetSettings[var2[var4++]] * 100 / '뜛';
+               }
+
+               if(var6 == 8) {
+                  var7 = XGrandExchangeOffer.localPlayer.combatLevel;
+               }
+
+               if(var6 == 9) {
+                  for(var9 = 0; var9 < 25; ++var9) {
+                     if(class223.field2836[var9]) {
+                        var7 += Client.realSkillLevels[var9];
+                     }
+                  }
+               }
+
+               if(var6 == 10) {
+                  var9 = var2[var4++] << 16;
+                  var9 += var2[var4++];
+                  var10 = class84.method1670(var9);
+                  var11 = var2[var4++];
+                  if(var11 != -1 && (!SoundTask.getItemDefinition(var11).isMembers || Client.isMembers)) {
+                     for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
+                        if(var11 + 1 == var10.itemIds[var12]) {
+                           var7 = 999999999;
+                           break;
+                        }
+                     }
+                  }
+               }
+
+               if(var6 == 11) {
+                  var7 = Client.energy;
+               }
+
+               if(var6 == 12) {
+                  var7 = Client.weight;
+               }
+
+               if(var6 == 13) {
+                  var9 = class212.widgetSettings[var2[var4++]];
+                  int var13 = var2[var4++];
+                  var7 = (var9 & 1 << var13) != 0?1:0;
+               }
+
+               if(var6 == 14) {
+                  var9 = var2[var4++];
+                  var7 = BaseVarType.method12(var9);
+               }
+
+               if(var6 == 15) {
+                  var8 = 1;
+               }
+
+               if(var6 == 16) {
+                  var8 = 2;
+               }
+
+               if(var6 == 17) {
+                  var8 = 3;
+               }
+
+               if(var6 == 18) {
+                  var7 = (XGrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
+               }
+
+               if(var6 == 19) {
+                  var7 = (XGrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
+               }
+
+               if(var6 == 20) {
+                  var7 = var2[var4++];
+               }
+
+               if(var8 == 0) {
+                  if(var5 == 0) {
+                     var3 += var7;
+                  }
+
+                  if(var5 == 1) {
+                     var3 -= var7;
+                  }
+
+                  if(var5 == 2 && var7 != 0) {
+                     var3 /= var7;
+                  }
+
+                  if(var5 == 3) {
+                     var3 *= var7;
+                  }
+
+                  var5 = 0;
+               } else {
+                  var5 = var8;
+               }
+            }
+         } catch (Exception var14) {
+            return -1;
          }
       } else {
-         throw new IllegalArgumentException();
+         return -2;
       }
    }
 }

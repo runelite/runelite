@@ -4,77 +4,72 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ec")
+@ObfuscatedName("ei")
 @Implements("DecorativeObject")
 public final class DecorativeObject {
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lhg;"
-   )
-   static Widget field2164;
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -691856725
+      intValue = -1852266975
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("d")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 2064029715
+      intValue = -1367765709
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 942793769
+      intValue = -1806805349
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 529888723
+      intValue = 1070600819
    )
    @Export("x")
    int x;
-   @ObfuscatedName("v")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -568432803
+      intValue = 237942733
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1703587219
+      intValue = 188151517
    )
    @Export("y")
    int y;
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1787392687
+      intValue = 1578198647
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("z")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Leg;"
+      signature = "Leq;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("r")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Leg;"
+      signature = "Leq;"
    )
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -254552543
+      intValue = 1391964401
    )
    @Export("renderFlag")
    int renderFlag;
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1925630649
+      intValue = 443380997
    )
    @Export("rotation")
    int rotation;
@@ -84,47 +79,46 @@ public final class DecorativeObject {
       this.renderInfoBitPacked = 0;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "-22"
+      signature = "(ILfx;Lil;I)V",
+      garbageValue = "-1639884748"
    )
-   static boolean method2935(int var0, int var1) {
-      return var0 != 4 || var1 < 8;
+   static void method2921(int var0, IndexFile var1, IndexData var2) {
+      FileSystem var3 = new FileSystem();
+      var3.field3196 = 1;
+      var3.hash = (long)var0;
+      var3.index = var1;
+      var3.data = var2;
+      Deque var4 = class237.field3224;
+      synchronized(class237.field3224) {
+         class237.field3224.addFront(var3);
+      }
+
+      class229.method4092();
    }
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1738898059"
+      signature = "(CI)Z",
+      garbageValue = "1486105043"
    )
-   public static boolean method2934(int var0) {
-      return var0 >= class222.field2784.field2804 && var0 <= class222.field2802.field2804;
+   public static boolean method2923(char var0) {
+      return var0 >= 48 && var0 <= 57 || var0 >= 65 && var0 <= 90 || var0 >= 97 && var0 <= 122;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lit;Lit;I)Z",
-      garbageValue = "1224744477"
+      signature = "(CII)I",
+      garbageValue = "1454752615"
    )
-   public static boolean method2936(IndexDataBase var0, IndexDataBase var1) {
-      Area.field3286 = var1;
-      if(!var0.method4130()) {
-         return false;
-      } else {
-         Area.field3279 = var0.fileCount(35);
-         Area.field3276 = new Area[Area.field3279];
-
-         for(int var2 = 0; var2 < Area.field3279; ++var2) {
-            byte[] var3 = var0.getConfigData(35, var2);
-            if(var3 != null) {
-               Area.field3276[var2] = new Area(var2);
-               Area.field3276[var2].method4300(new Buffer(var3));
-               Area.field3276[var2].method4290();
-            }
-         }
-
-         return true;
+   static int method2922(char var0, int var1) {
+      int var2 = var0 << 4;
+      if(Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
+         var0 = Character.toLowerCase(var0);
+         var2 = (var0 << 4) + 1;
       }
+
+      return var2;
    }
 }

@@ -1,43 +1,45 @@
-import java.util.Date;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("du")
+@ObfuscatedName("dj")
 public class class117 {
-   @ObfuscatedName("k")
-   int[][] field1674;
-   @ObfuscatedName("w")
+   @ObfuscatedName("pq")
    @ObfuscatedGetter(
-      intValue = 1470846277
+      intValue = -30496743
    )
-   int field1673;
-   @ObfuscatedName("y")
+   static int field1698;
+   @ObfuscatedName("g")
+   int[][] field1694;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -140408205
+      intValue = 1790385607
    )
-   int field1676;
+   int field1693;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -370829021
+   )
+   int field1691;
 
    public class117(int var1, int var2) {
       if(var2 != var1) {
-         int var3 = class39.method538(var1, var2);
+         int var3 = CombatInfo1.method1544(var1, var2);
          var1 /= var3;
          var2 /= var3;
-         this.field1676 = var1;
-         this.field1673 = var2;
-         this.field1674 = new int[var1][14];
+         this.field1691 = var1;
+         this.field1693 = var2;
+         this.field1694 = new int[var1][14];
 
          for(int var4 = 0; var4 < var1; ++var4) {
-            int[] var5 = this.field1674[var4];
+            int[] var5 = this.field1694[var4];
             double var6 = (double)var4 / (double)var1 + 6.0D;
             int var8 = (int)Math.floor(1.0D + (var6 - 7.0D));
             if(var8 < 0) {
                var8 = 0;
             }
 
-            int var9 = (int)Math.ceil(7.0D + var6);
+            int var9 = (int)Math.ceil(var6 + 7.0D);
             if(var9 > 14) {
                var9 = 14;
             }
@@ -57,14 +59,14 @@ public class class117 {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "([BI)[B",
-      garbageValue = "-1126683851"
+      garbageValue = "-1554092414"
    )
-   byte[] method2131(byte[] var1) {
-      if(this.field1674 != null) {
-         int var2 = (int)((long)var1.length * (long)this.field1673 / (long)this.field1676) + 14;
+   byte[] method2137(byte[] var1) {
+      if(this.field1694 != null) {
+         int var2 = (int)((long)this.field1693 * (long)var1.length / (long)this.field1691) + 14;
          int[] var3 = new int[var2];
          int var4 = 0;
          int var5 = 0;
@@ -72,17 +74,17 @@ public class class117 {
          int var6;
          for(var6 = 0; var6 < var1.length; ++var6) {
             byte var7 = var1[var6];
-            int[] var8 = this.field1674[var5];
+            int[] var8 = this.field1694[var5];
 
             int var9;
             for(var9 = 0; var9 < 14; ++var9) {
-               var3[var9 + var4] += var7 * var8[var9];
+               var3[var4 + var9] += var7 * var8[var9];
             }
 
-            var5 += this.field1673;
-            var9 = var5 / this.field1676;
+            var5 += this.field1693;
+            var9 = var5 / this.field1691;
             var4 += var9;
-            var5 -= var9 * this.field1676;
+            var5 -= var9 * this.field1691;
          }
 
          var1 = new byte[var2];
@@ -102,93 +104,41 @@ public class class117 {
       return var1;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "-1863185684"
+      garbageValue = "-506361387"
    )
-   int method2132(int var1) {
-      if(this.field1674 != null) {
-         var1 = (int)((long)var1 * (long)this.field1673 / (long)this.field1676);
+   int method2129(int var1) {
+      if(this.field1694 != null) {
+         var1 = (int)((long)var1 * (long)this.field1693 / (long)this.field1691);
       }
 
       return var1;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1234694208"
+      signature = "(IB)I",
+      garbageValue = "-93"
    )
-   int method2133(int var1) {
-      if(this.field1674 != null) {
-         var1 = (int)((long)var1 * (long)this.field1673 / (long)this.field1676) + 6;
+   int method2130(int var1) {
+      if(this.field1694 != null) {
+         var1 = (int)((long)var1 * (long)this.field1693 / (long)this.field1691) + 6;
       }
 
       return var1;
    }
 
-   @ObfuscatedName("js")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "1258171227"
+      signature = "(I)V",
+      garbageValue = "-2778040"
    )
-   static void method2139(String var0) {
-      class72.sessionToken = var0;
-
-      try {
-         String var1 = class5.clientInstance.getParameter(Parameters.field3697.key);
-         String var2 = class5.clientInstance.getParameter(Parameters.field3693.key);
-         String var3 = var1 + "settings=" + var0 + "; version=1; path=/; domain=" + var2;
-         if(var0.length() == 0) {
-            var3 = var3 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
-         } else {
-            String var4 = var3 + "; Expires=";
-            long var6 = class170.currentTimeMs() + 94608000000L;
-            class183.field2424.setTime(new Date(var6));
-            int var8 = class183.field2424.get(7);
-            int var9 = class183.field2424.get(5);
-            int var10 = class183.field2424.get(2);
-            int var11 = class183.field2424.get(1);
-            int var12 = class183.field2424.get(11);
-            int var13 = class183.field2424.get(12);
-            int var14 = class183.field2424.get(13);
-            String var5 = class183.field2422[var8 - 1] + ", " + var9 / 10 + var9 % 10 + "-" + class183.field2426[0][var10] + "-" + var11 + " " + var12 / 10 + var12 % 10 + ":" + var13 / 10 + var13 % 10 + ":" + var14 / 10 + var14 % 10 + " GMT";
-            var3 = var4 + var5 + "; Max-Age=" + 94608000L;
-         }
-
-         class52.method777(class5.clientInstance, "document.cookie=\"" + var3 + "\"");
-      } catch (Throwable var15) {
-         ;
-      }
-
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(Lit;Ljava/lang/String;Ljava/lang/String;I)Ljp;",
-      garbageValue = "-1960766185"
-   )
-   @Export("getSprite")
-   public static IndexedSprite getSprite(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.getFile(var1);
-      int var4 = var0.getChild(var3, var2);
-      IndexedSprite var5;
-      if(!Script.method1883(var0, var3, var4)) {
-         var5 = null;
-      } else {
-         var5 = class14.method80();
-      }
-
-      return var5;
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
-      garbageValue = "801556878"
-   )
-   public static Class method2140(String var0) throws ClassNotFoundException {
-      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
+   public static void method2138() {
+      ObjectComposition.objects.reset();
+      ObjectComposition.field3476.reset();
+      ObjectComposition.cachedModels.reset();
+      ObjectComposition.field3431.reset();
    }
 }

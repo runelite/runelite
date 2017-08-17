@@ -1,35 +1,49 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jf")
+@ObfuscatedName("js")
 public class class276 {
-   @ObfuscatedName("n")
-   @Export("javaVersion")
-   public static String javaVersion;
-
-   @ObfuscatedName("jy")
+   @ObfuscatedName("fx")
    @ObfuscatedSignature(
-      signature = "(IIIILkn;Lha;I)V",
-      garbageValue = "1695076712"
+      signature = "(I)V",
+      garbageValue = "-139383899"
    )
-   @Export("drawDot")
-   static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, class211 var5) {
-      if(var4 != null) {
-         int var6 = Client.mapAngle & 2047;
-         int var7 = var3 * var3 + var2 * var2;
-         if(var7 <= 6400) {
-            int var8 = Graphics3D.SINE[var6];
-            int var9 = Graphics3D.COSINE[var6];
-            int var10 = var9 * var2 + var3 * var8 >> 16;
-            int var11 = var3 * var9 - var8 * var2 >> 16;
-            if(var7 > 2500) {
-               var4.method5110(var10 + var5.field2577 / 2 - var4.maxWidth / 2, var5.field2578 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2577, var5.field2578, var5.field2581, var5.field2579);
-            } else {
-               var4.method5143(var0 + var10 + var5.field2577 / 2 - var4.maxWidth / 2, var5.field2578 / 2 + var1 - var11 - var4.maxHeight / 2);
-            }
-
-         }
-      }
+   static final void method4935() {
+      Friend.method1138();
+      class19.method162();
+      KitDefinition.identKits.reset();
+      class117.method2138();
+      NPCComposition.npcs.reset();
+      NPCComposition.npcModelCache.reset();
+      ItemComposition.items.reset();
+      ItemComposition.itemModelCache.reset();
+      ItemComposition.itemSpriteCache.reset();
+      Frames.method2902();
+      Spotanim.spotanims.reset();
+      Spotanim.field3323.reset();
+      class91.method1725();
+      Ignore.method1171();
+      XClanMember.method1208();
+      CombatInfo2.field3350.reset();
+      CombatInfo2.spriteCache.reset();
+      class253.field3382.reset();
+      class252.field3379.reset();
+      class43.method652();
+      PlayerComposition.field2620.reset();
+      class9.method39();
+      ((TextureProvider)Graphics3D.textureLoader).reset();
+      Script.field1548.reset();
+      class33.indexInterfaces.reset();
+      ScriptState.indexSoundEffects.reset();
+      class83.field1337.reset();
+      Client.field965.reset();
+      class14.indexMaps.reset();
+      class253.indexTrack1.reset();
+      class47.indexModels.reset();
+      class176.indexSprites.reset();
+      Tile.indexTextures.reset();
+      MouseInput.field744.reset();
+      DState.indexTrack2.reset();
+      FrameMap.indexScripts.reset();
    }
 }

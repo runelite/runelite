@@ -4,75 +4,69 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jh")
+@ObfuscatedName("ja")
 @Implements("Overlay")
 public class Overlay extends CacheableNode {
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lgq;"
+      signature = "Lgs;"
    )
    @Export("overlays")
    static NodeCache overlays;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   @Export("overlay_ref")
-   public static IndexDataBase overlay_ref;
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 299125737
+      intValue = 637255609
    )
    @Export("otherRgbColor")
    public int otherRgbColor;
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 973465423
+      intValue = 1993736555
    )
    @Export("color")
    public int color;
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @Export("isHidden")
    public boolean isHidden;
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -615751681
+      intValue = -1373008539
    )
    @Export("texture")
    public int texture;
-   @ObfuscatedName("v")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1581633647
+      intValue = -1246866179
    )
    @Export("hue")
    public int hue;
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1462002179
+      intValue = 163955931
    )
    @Export("otherHue")
    public int otherHue;
-   @ObfuscatedName("z")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 880213161
+      intValue = -574170681
    )
    @Export("saturation")
    public int saturation;
-   @ObfuscatedName("d")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1874253453
+      intValue = -519117301
    )
    @Export("otherSaturation")
    public int otherSaturation;
-   @ObfuscatedName("r")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 11570875
+      intValue = 1451040001
    )
    @Export("lightness")
    public int lightness;
-   @ObfuscatedName("o")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -233227827
+      intValue = -2051098771
    )
    @Export("otherLightness")
    public int otherLightness;
@@ -88,12 +82,12 @@ public class Overlay extends CacheableNode {
       this.otherRgbColor = -1;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lfh;III)V",
-      garbageValue = "1023473377"
+      signature = "(Lfb;IIB)V",
+      garbageValue = "-7"
    )
-   void method4699(Buffer var1, int var2, int var3) {
+   void method4703(Buffer var1, int var2, int var3) {
       if(var2 == 1) {
          this.color = var1.read24BitInt();
       } else if(var2 == 2) {
@@ -108,10 +102,10 @@ public class Overlay extends CacheableNode {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "1"
+      signature = "(IS)V",
+      garbageValue = "-9563"
    )
    @Export("setHSL")
    void setHSL(int var1) {
@@ -138,29 +132,29 @@ public class Overlay extends CacheableNode {
 
       double var12 = 0.0D;
       double var14 = 0.0D;
-      double var16 = (var8 + var10) / 2.0D;
+      double var16 = (var10 + var8) / 2.0D;
       if(var10 != var8) {
          if(var16 < 0.5D) {
-            var14 = (var10 - var8) / (var10 + var8);
+            var14 = (var10 - var8) / (var8 + var10);
          }
 
          if(var16 >= 0.5D) {
             var14 = (var10 - var8) / (2.0D - var10 - var8);
          }
 
-         if(var2 == var10) {
+         if(var10 == var2) {
             var12 = (var4 - var6) / (var10 - var8);
-         } else if(var4 == var10) {
+         } else if(var10 == var4) {
             var12 = 2.0D + (var6 - var2) / (var10 - var8);
-         } else if(var10 == var6) {
+         } else if(var6 == var10) {
             var12 = (var2 - var4) / (var10 - var8) + 4.0D;
          }
       }
 
       var12 /= 6.0D;
       this.hue = (int)(256.0D * var12);
-      this.saturation = (int)(256.0D * var14);
-      this.lightness = (int)(256.0D * var16);
+      this.saturation = (int)(var14 * 256.0D);
+      this.lightness = (int)(var16 * 256.0D);
       if(this.saturation < 0) {
          this.saturation = 0;
       } else if(this.saturation > 255) {
@@ -175,10 +169,10 @@ public class Overlay extends CacheableNode {
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-2007879943"
+      garbageValue = "-230067737"
    )
    @Export("post")
    void post() {
@@ -192,10 +186,10 @@ public class Overlay extends CacheableNode {
       this.setHSL(this.color);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(Lfh;IB)V",
-      garbageValue = "19"
+      signature = "(Lfb;IB)V",
+      garbageValue = "106"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -205,45 +199,7 @@ public class Overlay extends CacheableNode {
             return;
          }
 
-         this.method4699(var1, var3, var2);
+         this.method4703(var1, var3, var2);
       }
-   }
-
-   @ObfuscatedName("gm")
-   @ObfuscatedSignature(
-      signature = "(Lbe;B)V",
-      garbageValue = "29"
-   )
-   static final void method4710(PendingSpawn var0) {
-      int var1 = 0;
-      int var2 = -1;
-      int var3 = 0;
-      int var4 = 0;
-      if(var0.type == 0) {
-         var1 = class84.region.method2736(var0.level, var0.x, var0.y);
-      }
-
-      if(var0.type == 1) {
-         var1 = class84.region.method2737(var0.level, var0.x, var0.y);
-      }
-
-      if(var0.type == 2) {
-         var1 = class84.region.method2738(var0.level, var0.x, var0.y);
-      }
-
-      if(var0.type == 3) {
-         var1 = class84.region.method2739(var0.level, var0.x, var0.y);
-      }
-
-      if(var1 != 0) {
-         int var5 = class84.region.method2740(var0.level, var0.x, var0.y, var1);
-         var2 = var1 >> 14 & 32767;
-         var3 = var5 & 31;
-         var4 = var5 >> 6 & 3;
-      }
-
-      var0.field1189 = var2;
-      var0.field1191 = var3;
-      var0.field1202 = var4;
    }
 }

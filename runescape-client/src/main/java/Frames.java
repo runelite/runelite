@@ -3,21 +3,20 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ea")
+@ObfuscatedName("ef")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "[Lez;"
+      signature = "[Lev;"
    )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Lit;Lit;IZ)V",
-      garbageValue = "0"
+      signature = "(Lia;Lia;IZ)V"
    )
-   public Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
+   Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
       Deque var5 = new Deque();
       int var6 = var1.fileCount(var3);
       this.skeletons = new Frame[var6];
@@ -36,7 +35,13 @@ public class Frames extends CacheableNode {
          }
 
          if(var10 == null) {
-            byte[] var13 = var2.getChild(var11, 0);
+            byte[] var13;
+            if(var4) {
+               var13 = var2.getChild(0, var11);
+            } else {
+               var13 = var2.getChild(var11, 0);
+            }
+
             var10 = new FrameMap(var11, var13);
             var5.addFront(var10);
          }
@@ -46,12 +51,22 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1901230635"
+      signature = "(IB)Z",
+      garbageValue = "8"
    )
-   public boolean method2912(int var1) {
+   public boolean method2898(int var1) {
       return this.skeletons[var1].showing;
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1102953916"
+   )
+   public static void method2902() {
+      Sequence.sequences.reset();
+      Sequence.skeletons.reset();
    }
 }

@@ -4,20 +4,23 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cz")
+@ObfuscatedName("cc")
 @Implements("ChatLineBuffer")
 public class ChatLineBuffer {
-   @ObfuscatedName("z")
-   static byte[][][] field1546;
-   @ObfuscatedName("n")
+   @ObfuscatedName("qz")
    @ObfuscatedSignature(
-      signature = "[Lbs;"
+      signature = "Lke;"
+   )
+   static MachineInfo field1564;
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "[Lbv;"
    )
    @Export("lines")
    MessageNode[] lines;
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -858493693
+      intValue = -1659541879
    )
    @Export("length")
    int length;
@@ -26,10 +29,10 @@ public class ChatLineBuffer {
       this.lines = new MessageNode[100];
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbs;",
-      garbageValue = "-1399294280"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbv;",
+      garbageValue = "831095492"
    )
    @Export("addMessage")
    MessageNode addMessage(int var1, String var2, String var3, String var4) {
@@ -57,21 +60,35 @@ public class ChatLineBuffer {
       return var5;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(II)Lbs;",
-      garbageValue = "1239067906"
+      signature = "(II)Lbv;",
+      garbageValue = "-1504323529"
    )
-   MessageNode method1907(int var1) {
+   MessageNode method1882(int var1) {
       return var1 >= 0 && var1 < this.length?this.lines[var1]:null;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-674817479"
+      garbageValue = "663358989"
    )
-   int method1902() {
+   int method1885() {
       return this.length;
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(Lgd;III)I",
+      garbageValue = "-1508904160"
+   )
+   static int method1892(IterableHashTable var0, int var1, int var2) {
+      if(var0 == null) {
+         return var2;
+      } else {
+         IntegerNode var3 = (IntegerNode)var0.get((long)var1);
+         return var3 == null?var2:var3.value;
+      }
    }
 }

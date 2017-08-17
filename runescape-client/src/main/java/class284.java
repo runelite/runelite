@@ -2,70 +2,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("je")
+@ObfuscatedName("jp")
 public enum class284 implements RSEnum {
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lje;"
+      signature = "Ljp;"
    )
-   field3750(0, 0),
-   @ObfuscatedName("n")
+   field3752(0, 0),
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lje;"
+      signature = "Ljp;"
    )
-   field3749(1, 1),
-   @ObfuscatedName("g")
+   field3753(1, 1),
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lje;"
+      signature = "Ljp;"
    )
-   field3748(2, 2),
-   @ObfuscatedName("y")
+   field3757(2, 2),
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lje;"
+      signature = "Ljp;"
    )
-   field3751(3, 3),
-   @ObfuscatedName("w")
+   field3755(3, 3),
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lje;"
+      signature = "Ljp;"
    )
-   field3752(4, 4);
+   field3754(4, 4);
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 118808321
+      intValue = 1544766853
    )
-   final int field3753;
-   @ObfuscatedName("k")
+   public final int field3756;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1754393321
+      intValue = -686373895
    )
-   public final int field3754;
+   final int field3758;
 
    class284(int var3, int var4) {
-      this.field3754 = var3;
-      this.field3753 = var4;
+      this.field3756 = var3;
+      this.field3758 = var4;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "834678576"
+      garbageValue = "316484705"
    )
    public int rsOrdinal() {
-      return this.field3753;
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-612199165"
-   )
-   static void method5058() {
-      for(class82 var0 = (class82)class82.field1314.getFront(); var0 != null; var0 = (class82)class82.field1314.getNext()) {
-         if(var0.field1317 != null) {
-            var0.method1609();
-         }
-      }
-
+      return this.field3758;
    }
 }

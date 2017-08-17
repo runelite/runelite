@@ -4,103 +4,90 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("et")
+@ObfuscatedName("er")
 @Implements("MilliTimer")
 public class MilliTimer extends Timer {
-   @ObfuscatedName("qu")
-   @ObfuscatedSignature(
-      signature = "Lct;"
-   )
-   @Export("preferences")
-   static Preferences preferences;
-   @ObfuscatedName("hm")
-   @ObfuscatedSignature(
-      signature = "Lhg;"
-   )
-   static Widget field2195;
-   @ObfuscatedName("qr")
-   static short[] field2190;
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1564258371
+      intValue = -1880554725
    )
-   int field2191;
-   @ObfuscatedName("g")
+   int field2209;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1405868357
+      intValue = 134241459
    )
    @Export("sleepTime")
    int sleepTime;
-   @ObfuscatedName("e")
-   long[] field2196;
-   @ObfuscatedName("w")
+   @ObfuscatedName("j")
+   long[] field2212;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1631932775
+      intValue = -2100527215
    )
-   int field2193;
-   @ObfuscatedName("y")
+   int field2208;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      longValue = 7338917908246051617L
+      longValue = 4154243649992876609L
    )
    @Export("milliTime")
    long milliTime;
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1227807485
+      intValue = -1245020093
    )
-   int field2189;
+   int field2213;
 
-   MilliTimer() {
-      this.field2196 = new long[10];
-      this.field2191 = 256;
+   public MilliTimer() {
+      this.field2212 = new long[10];
+      this.field2209 = 256;
       this.sleepTime = 1;
-      this.field2193 = 0;
-      this.milliTime = class170.currentTimeMs();
+      this.field2208 = 0;
+      this.milliTime = class74.currentTimeMs();
 
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field2196[var1] = this.milliTime;
+         this.field2212[var1] = this.milliTime;
       }
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "1323858539"
+      garbageValue = "437016417"
    )
-   public int vmethod3018(int var1, int var2) {
-      int var3 = this.field2191;
+   public int vmethod3004(int var1, int var2) {
+      int var3 = this.field2209;
       int var4 = this.sleepTime;
-      this.field2191 = 300;
+      this.field2209 = 300;
       this.sleepTime = 1;
-      this.milliTime = class170.currentTimeMs();
-      if(0L == this.field2196[this.field2189]) {
-         this.field2191 = var3;
+      this.milliTime = class74.currentTimeMs();
+      if(0L == this.field2212[this.field2213]) {
+         this.field2209 = var3;
          this.sleepTime = var4;
-      } else if(this.milliTime > this.field2196[this.field2189]) {
-         this.field2191 = (int)((long)(var1 * 2560) / (this.milliTime - this.field2196[this.field2189]));
+      } else if(this.milliTime > this.field2212[this.field2213]) {
+         this.field2209 = (int)((long)(var1 * 2560) / (this.milliTime - this.field2212[this.field2213]));
       }
 
-      if(this.field2191 < 25) {
-         this.field2191 = 25;
+      if(this.field2209 < 25) {
+         this.field2209 = 25;
       }
 
-      if(this.field2191 > 256) {
-         this.field2191 = 256;
-         this.sleepTime = (int)((long)var1 - (this.milliTime - this.field2196[this.field2189]) / 10L);
+      if(this.field2209 > 256) {
+         this.field2209 = 256;
+         this.sleepTime = (int)((long)var1 - (this.milliTime - this.field2212[this.field2213]) / 10L);
       }
 
       if(this.sleepTime > var1) {
          this.sleepTime = var1;
       }
 
-      this.field2196[this.field2189] = this.milliTime;
-      this.field2189 = (this.field2189 + 1) % 10;
+      this.field2212[this.field2213] = this.milliTime;
+      this.field2213 = (this.field2213 + 1) % 10;
       int var5;
       if(this.sleepTime > 1) {
          for(var5 = 0; var5 < 10; ++var5) {
-            if(0L != this.field2196[var5]) {
-               this.field2196[var5] += (long)this.sleepTime;
+            if(this.field2212[var5] != 0L) {
+               this.field2212[var5] += (long)this.sleepTime;
             }
          }
       }
@@ -109,143 +96,111 @@ public class MilliTimer extends Timer {
          this.sleepTime = var2;
       }
 
-      class41.method585((long)this.sleepTime);
+      class10.method51((long)this.sleepTime);
 
-      for(var5 = 0; this.field2193 < 256; this.field2193 += this.field2191) {
+      for(var5 = 0; this.field2208 < 256; this.field2208 += this.field2209) {
          ++var5;
       }
 
-      this.field2193 &= 255;
+      this.field2208 &= 255;
       return var5;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1736198972"
+      signature = "(B)V",
+      garbageValue = "102"
    )
-   public void vmethod3017() {
+   public void vmethod3010() {
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field2196[var1] = 0L;
+         this.field2212[var1] = 0L;
       }
 
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("fe")
    @ObfuscatedSignature(
-      signature = "(ILcc;ZI)I",
-      garbageValue = "-135795792"
+      signature = "(S)V",
+      garbageValue = "128"
    )
-   static int method2955(int var0, Script var1, boolean var2) {
-      int var3;
-      int var4;
-      if(var0 == 100) {
-         class84.intStackSize -= 3;
-         var3 = class84.intStack[class84.intStackSize];
-         var4 = class84.intStack[class84.intStackSize + 1];
-         int var5 = class84.intStack[class84.intStackSize + 2];
-         if(var4 == 0) {
-            throw new RuntimeException();
-         } else {
-            Widget var6 = class266.method4862(var3);
-            if(var6.children == null) {
-               var6.children = new Widget[var5 + 1];
-            }
-
-            if(var6.children.length <= var5) {
-               Widget[] var7 = new Widget[var5 + 1];
-
-               for(int var8 = 0; var8 < var6.children.length; ++var8) {
-                  var7[var8] = var6.children[var8];
+   static final void method2939() {
+      for(int var0 = 0; var0 < Client.field1166; ++var0) {
+         --Client.field1169[var0];
+         if(Client.field1169[var0] >= -10) {
+            SoundEffect var9 = Client.audioEffects[var0];
+            if(var9 == null) {
+               Object var10000 = null;
+               var9 = SoundEffect.getTrack(Client.field965, Client.field1167[var0], 0);
+               if(var9 == null) {
+                  continue;
                }
 
-               var6.children = var7;
+               Client.field1169[var0] += var9.calculateDelay();
+               Client.audioEffects[var0] = var9;
             }
 
-            if(var5 > 0 && var6.children[var5 - 1] == null) {
-               throw new RuntimeException("" + (var5 - 1));
-            } else {
-               Widget var12 = new Widget();
-               var12.type = var4;
-               var12.parentId = var12.id = var6.id;
-               var12.index = var5;
-               var12.hasScript = true;
-               var6.children[var5] = var12;
-               if(var2) {
-                  class269.field3661 = var12;
-               } else {
-                  DecorativeObject.field2164 = var12;
-               }
-
-               class255.method4531(var6);
-               return 1;
-            }
-         }
-      } else {
-         Widget var9;
-         if(var0 == 101) {
-            var9 = var2?class269.field3661:DecorativeObject.field2164;
-            Widget var10 = class266.method4862(var9.id);
-            var10.children[var9.index] = null;
-            class255.method4531(var10);
-            return 1;
-         } else if(var0 == 102) {
-            var9 = class266.method4862(class84.intStack[--class84.intStackSize]);
-            var9.children = null;
-            class255.method4531(var9);
-            return 1;
-         } else if(var0 != 200) {
-            if(var0 == 201) {
-               var9 = class266.method4862(class84.intStack[--class84.intStackSize]);
-               if(var9 != null) {
-                  class84.intStack[++class84.intStackSize - 1] = 1;
-                  if(var2) {
-                     class269.field3661 = var9;
-                  } else {
-                     DecorativeObject.field2164 = var9;
+            if(Client.field1169[var0] < 0) {
+               int var2;
+               if(Client.field1170[var0] != 0) {
+                  int var3 = (Client.field1170[var0] & 255) * 128;
+                  int var4 = Client.field1170[var0] >> 16 & 255;
+                  int var5 = var4 * 128 + 64 - XGrandExchangeOffer.localPlayer.x;
+                  if(var5 < 0) {
+                     var5 = -var5;
                   }
+
+                  int var6 = Client.field1170[var0] >> 8 & 255;
+                  int var7 = var6 * 128 + 64 - XGrandExchangeOffer.localPlayer.y;
+                  if(var7 < 0) {
+                     var7 = -var7;
+                  }
+
+                  int var8 = var7 + var5 - 128;
+                  if(var8 > var3) {
+                     Client.field1169[var0] = -100;
+                     continue;
+                  }
+
+                  if(var8 < 0) {
+                     var8 = 0;
+                  }
+
+                  var2 = (var3 - var8) * Client.field1148 / var3;
                } else {
-                  class84.intStack[++class84.intStackSize - 1] = 0;
+                  var2 = Client.field974;
                }
 
-               return 1;
-            } else {
-               return 2;
+               if(var2 > 0) {
+                  class108 var10 = var9.method1961().method2005(class11.field262);
+                  class118 var11 = class118.method2232(var10, 100, var2);
+                  var11.method2184(Client.field1168[var0] - 1);
+                  class56.field679.method1894(var11);
+               }
+
+               Client.field1169[var0] = -100;
             }
          } else {
-            class84.intStackSize -= 2;
-            var3 = class84.intStack[class84.intStackSize];
-            var4 = class84.intStack[class84.intStackSize + 1];
-            Widget var11 = class24.method183(var3, var4);
-            if(var11 != null && var4 != -1) {
-               class84.intStack[++class84.intStackSize - 1] = 1;
-               if(var2) {
-                  class269.field3661 = var11;
-               } else {
-                  DecorativeObject.field2164 = var11;
-               }
-            } else {
-               class84.intStack[++class84.intStackSize - 1] = 0;
+            --Client.field1166;
+
+            for(int var1 = var0; var1 < Client.field1166; ++var1) {
+               Client.field1167[var1] = Client.field1167[var1 + 1];
+               Client.audioEffects[var1] = Client.audioEffects[var1 + 1];
+               Client.field1168[var1] = Client.field1168[var1 + 1];
+               Client.field1169[var1] = Client.field1169[var1 + 1];
+               Client.field1170[var1] = Client.field1170[var1 + 1];
             }
 
-            return 1;
+            --var0;
          }
       }
-   }
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1763559788"
-   )
-   public static final void method2956() {
-      while(true) {
-         class9 var0 = (class9)class7.field229.method3584();
-         if(var0 == null) {
-            return;
+      if(Client.field1163 && !RSSocket.method3030()) {
+         if(Client.field1024 != 0 && Client.field1095 != -1) {
+            class66.method1144(class253.indexTrack1, Client.field1095, 0, Client.field1024, false);
          }
 
-         var0.vmethod53();
+         Client.field1163 = false;
       }
+
    }
 }

@@ -2,57 +2,57 @@ import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gc")
+@ObfuscatedName("gj")
 public class class189 implements Iterator {
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lgf;"
+      signature = "Lgo;"
    )
-   CombatInfoList field2436;
-   @ObfuscatedName("n")
+   CombatInfoList field2452;
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lgx;"
+      signature = "Lga;"
    )
-   Node field2435;
-   @ObfuscatedName("g")
+   Node field2453;
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lgx;"
+      signature = "Lga;"
    )
-   Node field2437;
+   Node field2454;
 
    @ObfuscatedSignature(
-      signature = "(Lgf;)V"
+      signature = "(Lgo;)V"
    )
    class189(CombatInfoList var1) {
-      this.field2437 = null;
-      this.field2436 = var1;
-      this.field2435 = this.field2436.node.next;
-      this.field2437 = null;
+      this.field2454 = null;
+      this.field2452 = var1;
+      this.field2453 = this.field2452.node.next;
+      this.field2454 = null;
+   }
+
+   public void remove() {
+      if(this.field2454 == null) {
+         throw new IllegalStateException();
+      } else {
+         this.field2454.unlink();
+         this.field2454 = null;
+      }
    }
 
    public Object next() {
-      Node var1 = this.field2435;
-      if(var1 == this.field2436.node) {
+      Node var1 = this.field2453;
+      if(var1 == this.field2452.node) {
          var1 = null;
-         this.field2435 = null;
+         this.field2453 = null;
       } else {
-         this.field2435 = var1.next;
+         this.field2453 = var1.next;
       }
 
-      this.field2437 = var1;
+      this.field2454 = var1;
       return var1;
    }
 
    public boolean hasNext() {
-      return this.field2436.node != this.field2435;
-   }
-
-   public void remove() {
-      if(this.field2437 == null) {
-         throw new IllegalStateException();
-      } else {
-         this.field2437.unlink();
-         this.field2437 = null;
-      }
+      return this.field2452.node != this.field2453;
    }
 }

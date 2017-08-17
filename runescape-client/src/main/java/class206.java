@@ -2,132 +2,133 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gn")
+@ObfuscatedName("gm")
 public class class206 extends Node {
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lgw;"
+   )
+   class203 field2541;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 996278817
+      intValue = -1457733305
    )
-   int field2534;
-   @ObfuscatedName("y")
+   int field2549;
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lgi;"
+      signature = "Lhm;"
    )
-   class203 field2529;
-   @ObfuscatedName("n")
+   class208 field2540;
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lho;"
+      signature = "Lde;"
    )
-   class208 field2527;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Ldb;"
-   )
-   class108 field2535;
+   class108 field2542;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "Ldq;"
    )
-   class118 field2544;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -365561033
-   )
-   int field2536;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -2008549851
-   )
-   int field2528;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1036857703
-   )
-   int field2531;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1746544655
-   )
-   int field2532;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -2081133805
-   )
-   int field2545;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1944549469
-   )
-   int field2533;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1765862049
-   )
-   int field2540;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1151104393
-   )
-   int field2526;
+   class118 field2557;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1375660147
+      intValue = -632241777
    )
-   int field2546;
-   @ObfuscatedName("k")
+   int field2548;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 2028722867
+      intValue = 1047007941
    )
-   int field2530;
-   @ObfuscatedName("o")
+   int field2544;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -710261755
+      intValue = -1703788925
    )
-   int field2537;
-   @ObfuscatedName("m")
+   int field2547;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 2043763465
+      intValue = 1367491945
    )
-   int field2542;
-   @ObfuscatedName("a")
+   int field2553;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 527335659
+      intValue = -303924569
    )
-   int field2543;
+   int field2558;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -86701647
+      intValue = -1460680217
    )
-   int field2538;
-   @ObfuscatedName("h")
+   int field2546;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 426823999
+      intValue = -1631096477
    )
-   int field2539;
+   int field2543;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1686479085
+      intValue = 47007495
    )
-   int field2541;
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-507096051"
+   int field2545;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 677271641
    )
-   void method3814() {
-      this.field2527 = null;
-      this.field2535 = null;
-      this.field2529 = null;
-      this.field2544 = null;
-   }
-
+   int field2560;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1463058725
+   )
+   int field2559;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 1310868795
+   )
+   int field2550;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 527737509
+   )
+   int field2556;
    @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -1153531493
+   )
+   int field2554;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1402221533
+   )
+   int field2539;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1787242583
+   )
+   int field2552;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -2018602029
+   )
+   int field2555;
+
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "104"
+      garbageValue = "7"
    )
-   public static void method3818() {
-      class253.field3388.reset();
+   void method3817() {
+      this.field2540 = null;
+      this.field2542 = null;
+      this.field2541 = null;
+      this.field2557 = null;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "-12"
+   )
+   public static boolean method3818() {
+      ClassInfo var0 = (ClassInfo)class281.field3740.method3572();
+      return var0 != null;
    }
 }

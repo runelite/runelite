@@ -2,65 +2,65 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("ew")
 public enum class150 implements RSEnum {
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lek;"
+      signature = "Lew;"
    )
-   field2185(2, 0),
-   @ObfuscatedName("n")
+   field2202(1, 0),
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lek;"
+      signature = "Lew;"
    )
-   field2181(1, 1),
-   @ObfuscatedName("g")
+   field2203(0, 1),
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lek;"
+      signature = "Lew;"
    )
-   field2184(3, 2),
-   @ObfuscatedName("y")
+   field2201(2, 2),
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lek;"
+      signature = "Lew;"
    )
-   field2183(0, 3);
+   field2204(3, 3);
 
-   @ObfuscatedName("pv")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -127659451
+      intValue = -179661423
    )
-   static int field2180;
-   @ObfuscatedName("w")
+   final int field2199;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 419290233
+      intValue = -512797031
    )
-   public final int field2182;
-   @ObfuscatedName("k")
+   public final int field2200;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -939141307
+      intValue = 177285035
    )
-   final int field2186;
+   public static int field2205;
 
    class150(int var3, int var4) {
-      this.field2182 = var3;
-      this.field2186 = var4;
+      this.field2200 = var3;
+      this.field2199 = var4;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "834678576"
+      garbageValue = "316484705"
    )
    public int rsOrdinal() {
-      return this.field2186;
+      return this.field2199;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(CI)C",
-      garbageValue = "-1867126434"
+      signature = "(Lia;I)V",
+      garbageValue = "1839814448"
    )
-   static char method2942(char var0) {
-      return (char)(var0 == 198?'E':(var0 == 230?'e':(var0 == 223?'s':(var0 == 338?'E':(var0 == 339?'e':'\u0000')))));
+   public static void method2928(IndexDataBase var0) {
+      Enum.field3396 = var0;
    }
 }

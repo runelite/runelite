@@ -4,72 +4,52 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fi")
+@ObfuscatedName("ff")
 public class class156 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("md")
    @ObfuscatedSignature(
-      signature = "Ldo;"
+      signature = "Lcd;"
    )
-   static CacheFile field2230;
-   @ObfuscatedName("l")
+   @Export("chatMessages")
+   static Varcs chatMessages;
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Ldo;"
+      signature = "Ldt;"
    )
-   public static CacheFile field2231;
-   @ObfuscatedName("h")
+   public static CacheFile field2249;
+   @ObfuscatedName("x")
+   public static File field2245;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Ldo;"
+      signature = "Ldt;"
    )
-   public static CacheFile field2232;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -618175705
-   )
-   static int field2229;
-   @ObfuscatedName("b")
-   @Export("osName")
-   static String osName;
+   public static CacheFile field2257;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "[Ldo;"
+      signature = "Ldt;"
    )
-   public static CacheFile[] field2227;
-   @ObfuscatedName("m")
+   public static CacheFile field2253;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lia;"
+   )
+   public static IndexDataBase field2258;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1411336875
+   )
+   public static int field2247;
+   @ObfuscatedName("a")
    @Export("cacheLocations")
-   static String[] cacheLocations;
-   @ObfuscatedName("y")
-   static File field2228;
+   public static String[] cacheLocations;
+   @ObfuscatedName("v")
+   public static String[] field2255;
+   @ObfuscatedName("p")
+   public static File field2256;
 
    static {
-      field2230 = null;
-      field2231 = null;
-      field2232 = null;
-   }
-
-   @ObfuscatedName("fn")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-213164764"
-   )
-   static final void method2995() {
-      if(Client.field1040 > 0) {
-         class27.method223();
-      } else {
-         WorldMapType1.setGameState(40);
-         class22.field341 = GZipDecompressor.rssocket;
-         GZipDecompressor.rssocket = null;
-      }
-   }
-
-   @ObfuscatedName("ja")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)V",
-      garbageValue = "-136949931"
-   )
-   static final void method2987(String var0, int var1) {
-      Client.secretPacketBuffer1.putOpcode(2);
-      Client.secretPacketBuffer1.putByte(class45.getLength(var0) + 1);
-      Client.secretPacketBuffer1.putString(var0);
-      Client.secretPacketBuffer1.putByte(var1);
+      field2249 = null;
+      field2257 = null;
+      field2253 = null;
    }
 }

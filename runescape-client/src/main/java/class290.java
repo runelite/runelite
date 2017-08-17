@@ -3,90 +3,84 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kt")
+@ObfuscatedName("kd")
 public class class290 {
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lkt;"
+      signature = "Lkd;"
    )
    public static final class290 field3841;
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lkt;"
-   )
-   static final class290 field3835;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lkt;"
+      signature = "Lkd;"
    )
    static final class290 field3837;
-   @ObfuscatedName("y")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lkt;"
+      signature = "Lkd;"
    )
    static final class290 field3838;
-   @ObfuscatedName("w")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lkt;"
+      signature = "Lkd;"
    )
    static final class290 field3839;
-   @ObfuscatedName("k")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lkt;"
+      signature = "Lkd;"
    )
-   static final class290 field3844;
-   @ObfuscatedName("v")
+   static final class290 field3840;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lkt;"
+      signature = "Lkd;"
    )
-   static final class290 field3836;
-   @ObfuscatedName("z")
+   static final class290 field3846;
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lkt;"
+      signature = "Lkd;"
    )
    static final class290 field3842;
-   @ObfuscatedName("ek")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Ljk;"
+      signature = "Lkd;"
    )
-   @Export("font_p12full")
-   static Font font_p12full;
-   @ObfuscatedName("r")
+   static final class290 field3845;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lkt;"
+      signature = "Lkd;"
    )
-   public static final class290 field3843;
-   @ObfuscatedName("d")
+   public static final class290 field3844;
+   @ObfuscatedName("o")
    @Export("identifier")
    final String identifier;
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -189736661
+      intValue = 619767457
    )
-   public final int field3845;
+   public final int field3836;
 
    static {
-      field3841 = new class290(8, 0, "", "");
-      field3835 = new class290(0, 1, "", "");
-      field3837 = new class290(4, 2, "", "");
-      field3838 = new class290(3, 3, "", "");
-      field3839 = new class290(5, 4, "", "");
-      field3844 = new class290(6, 5, "", "");
-      field3836 = new class290(1, 6, "", "");
-      field3842 = new class290(7, 7, "", "");
-      field3843 = new class290(2, -1, "", "", true, new class290[]{field3841, field3835, field3837, field3839, field3838});
+      field3841 = new class290(6, 0, "", "");
+      field3837 = new class290(8, 1, "", "");
+      field3838 = new class290(7, 2, "", "");
+      field3839 = new class290(3, 3, "", "");
+      field3840 = new class290(2, 4, "", "");
+      field3846 = new class290(4, 5, "", "");
+      field3842 = new class290(5, 6, "", "");
+      field3845 = new class290(1, 7, "", "");
+      field3844 = new class290(0, -1, "", "", true, new class290[]{field3841, field3837, field3838, field3840, field3839});
    }
 
    class290(int var1, int var2, String var3, String var4) {
-      this.field3845 = var1;
+      this.field3836 = var1;
       this.identifier = var4;
    }
 
    @ObfuscatedSignature(
-      signature = "(IILjava/lang/String;Ljava/lang/String;Z[Lkt;)V"
+      signature = "(IILjava/lang/String;Ljava/lang/String;Z[Lkd;)V"
    )
    class290(int var1, int var2, String var3, String var4, boolean var5, class290[] var6) {
-      this.field3845 = var1;
+      this.field3836 = var1;
       this.identifier = var4;
    }
 

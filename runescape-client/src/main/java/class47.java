@@ -1,110 +1,199 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ai")
+@ObfuscatedName("aq")
 public class class47 {
-   @ObfuscatedName("mc")
-   @ObfuscatedSignature(
-      signature = "Lcy;"
-   )
-   @Export("chatMessages")
-   static Varcs chatMessages;
-   @ObfuscatedName("aq")
-   @Export("authCode")
-   static String authCode;
-   @ObfuscatedName("am")
+   @ObfuscatedName("ep")
    @ObfuscatedGetter(
-      intValue = -13931039
+      intValue = 269992007
    )
-   @Export("authCodeForLogin")
-   static int authCodeForLogin;
-   @ObfuscatedName("kg")
-   @ObfuscatedSignature(
-      signature = "Lhg;"
-   )
-   static Widget field602;
-   @ObfuscatedName("e")
+   @Export("baseX")
+   static int baseX;
+   @ObfuscatedName("lc")
    @ObfuscatedGetter(
-      intValue = 871549235
+      intValue = 1205565233
    )
-   public int field600;
-   @ObfuscatedName("n")
+   static int field608;
+   @ObfuscatedName("cc")
    @ObfuscatedSignature(
-      signature = "Lhq;"
+      signature = "Lil;"
    )
-   public Coordinates field597;
-   @ObfuscatedName("g")
+   @Export("indexModels")
+   static IndexData indexModels;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lhq;"
+      signature = "Ljr;"
    )
-   public Coordinates field598;
+   static IndexedSprite field601;
+   @ObfuscatedName("gc")
+   @ObfuscatedGetter(
+      intValue = -1999600263
+   )
+   @Export("cameraYaw")
+   static int cameraYaw;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 2106419741
+   )
+   public int field611;
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lhh;"
+   )
+   public Coordinates field602;
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lhh;"
+   )
+   public Coordinates field609;
 
    @ObfuscatedSignature(
-      signature = "(ILhq;Lhq;)V"
+      signature = "(ILhh;Lhh;)V"
    )
    public class47(int var1, Coordinates var2, Coordinates var3) {
-      this.field600 = var1;
-      this.field597 = var2;
-      this.field598 = var3;
+      this.field611 = var1;
+      this.field602 = var2;
+      this.field609 = var3;
    }
 
-   @ObfuscatedName("gh")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(ZB)V",
-      garbageValue = "-124"
+      signature = "(IIIIB)V",
+      garbageValue = "-118"
    )
-   @Export("flush")
-   static final void flush(boolean var0) {
-      class35.method495();
-      ++Client.audioEffectCount;
-      if(Client.audioEffectCount >= 50 || var0) {
-         Client.audioEffectCount = 0;
-         if(!Client.socketError && GZipDecompressor.rssocket != null) {
-            Client.secretPacketBuffer1.putOpcode(98);
+   @Export("setItemTableSlot")
+   static void setItemTableSlot(int var0, int var1, int var2, int var3) {
+      XItemContainer var4 = (XItemContainer)XItemContainer.itemContainers.get((long)var0);
+      if(var4 == null) {
+         var4 = new XItemContainer();
+         XItemContainer.itemContainers.put(var4, (long)var0);
+      }
 
-            try {
-               GZipDecompressor.rssocket.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);
-               Client.secretPacketBuffer1.offset = 0;
-            } catch (IOException var2) {
-               Client.socketError = true;
+      if(var4.itemIds.length <= var1) {
+         int[] var5 = new int[var1 + 1];
+         int[] var6 = new int[var1 + 1];
+
+         int var7;
+         for(var7 = 0; var7 < var4.itemIds.length; ++var7) {
+            var5[var7] = var4.itemIds[var7];
+            var6[var7] = var4.stackSizes[var7];
+         }
+
+         for(var7 = var4.itemIds.length; var7 < var1; ++var7) {
+            var5[var7] = -1;
+            var6[var7] = 0;
+         }
+
+         var4.itemIds = var5;
+         var4.stackSizes = var6;
+      }
+
+      var4.itemIds[var1] = var2;
+      var4.stackSizes[var1] = var3;
+   }
+
+   @ObfuscatedName("fy")
+   @ObfuscatedSignature(
+      signature = "(Lcr;B)V",
+      garbageValue = "20"
+   )
+   static final void method737(Actor var0) {
+      if(var0.field1230 != 0) {
+         if(var0.interacting != -1) {
+            Object var1 = null;
+            if(var0.interacting < '耀') {
+               var1 = Client.cachedNPCs[var0.interacting];
+            } else if(var0.interacting >= '耀') {
+               var1 = Client.cachedPlayers[var0.interacting - '耀'];
             }
+
+            if(var1 != null) {
+               int var2 = var0.x - ((Actor)var1).x;
+               int var3 = var0.y - ((Actor)var1).y;
+               if(var2 != 0 || var3 != 0) {
+                  var0.orientation = (int)(Math.atan2((double)var2, (double)var3) * 325.949D) & 2047;
+               }
+            } else if(var0.field1245) {
+               var0.interacting = -1;
+               var0.field1245 = false;
+            }
+         }
+
+         if(var0.field1246 != -1 && (var0.queueSize == 0 || var0.field1276 > 0)) {
+            var0.orientation = var0.field1246;
+            var0.field1246 = -1;
+         }
+
+         int var4 = var0.orientation - var0.angle & 2047;
+         if(var4 == 0 && var0.field1245) {
+            var0.interacting = -1;
+            var0.field1245 = false;
+         }
+
+         if(var4 != 0) {
+            ++var0.field1247;
+            boolean var6;
+            if(var4 > 1024) {
+               var0.angle -= var0.field1230;
+               var6 = true;
+               if(var4 < var0.field1230 || var4 > 2048 - var0.field1230) {
+                  var0.angle = var0.orientation;
+                  var6 = false;
+               }
+
+               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1247 > 25 || var6)) {
+                  if(var0.field1241 != -1) {
+                     var0.poseAnimation = var0.field1241;
+                  } else {
+                     var0.poseAnimation = var0.field1226;
+                  }
+               }
+            } else {
+               var0.angle += var0.field1230;
+               var6 = true;
+               if(var4 < var0.field1230 || var4 > 2048 - var0.field1230) {
+                  var0.angle = var0.orientation;
+                  var6 = false;
+               }
+
+               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1247 > 25 || var6)) {
+                  if(var0.field1225 != -1) {
+                     var0.poseAnimation = var0.field1225;
+                  } else {
+                     var0.poseAnimation = var0.field1226;
+                  }
+               }
+            }
+
+            var0.angle &= 2047;
+         } else {
+            var0.field1247 = 0;
          }
 
       }
    }
 
-   @ObfuscatedName("fa")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1365276847"
+      signature = "(II)Lik;",
+      garbageValue = "683685782"
    )
-   static final void method700() {
-      int[] var0 = class97.field1494;
-
-      int var1;
-      for(var1 = 0; var1 < class97.field1493; ++var1) {
-         Player var2 = Client.cachedPlayers[var0[var1]];
-         if(var2 != null && var2.field1221 > 0) {
-            --var2.field1221;
-            if(var2.field1221 == 0) {
-               var2.overhead = null;
-            }
+   public static class253 method738(int var0) {
+      class253 var1 = (class253)class253.field3382.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class253.field3385.getConfigData(34, var0);
+         var1 = new class253();
+         if(var2 != null) {
+            var1.method4473(new Buffer(var2));
          }
-      }
 
-      for(var1 = 0; var1 < Client.field952; ++var1) {
-         int var4 = Client.npcIndices[var1];
-         NPC var3 = Client.cachedNPCs[var4];
-         if(var3 != null && var3.field1221 > 0) {
-            --var3.field1221;
-            if(var3.field1221 == 0) {
-               var3.overhead = null;
-            }
-         }
+         var1.method4475();
+         class253.field3382.put(var1, (long)var0);
+         return var1;
       }
-
    }
 }

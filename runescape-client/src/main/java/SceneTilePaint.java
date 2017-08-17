@@ -4,56 +4,50 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ex")
+@ObfuscatedName("ec")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
-   @ObfuscatedName("ca")
+   @ObfuscatedName("ei")
    @ObfuscatedSignature(
-      signature = "Ley;"
+      signature = "Ljc;"
    )
-   @Export("socket")
-   static Task socket;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1676474153
-   )
-   static int field2027;
-   @ObfuscatedName("k")
+   static class263 field2052;
+   @ObfuscatedName("g")
    @Export("flatShade")
    boolean flatShade;
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1957978079
+      intValue = 986295979
    )
    @Export("swColor")
    int swColor;
-   @ObfuscatedName("v")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 2026194167
+      intValue = 2034340717
    )
    @Export("rgb")
    int rgb;
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1041049003
+      intValue = 1872615693
    )
    @Export("seColor")
    int seColor;
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 368283397
+      intValue = -106571341
    )
    @Export("neColor")
    int neColor;
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 639980995
+      intValue = 1122339439
    )
    @Export("nwColor")
    int nwColor;
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -589908737
+      intValue = -1072220281
    )
    @Export("texture")
    int texture;
@@ -69,13 +63,24 @@ public final class SceneTilePaint {
       this.flatShade = var7;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "456718783"
+      signature = "(I)V",
+      garbageValue = "915900599"
    )
-   static int method2708(int var0, int var1) {
-      XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.get((long)var0);
-      return var2 == null?0:(var1 >= 0 && var1 < var2.stackSizes.length?var2.stackSizes[var1]:0);
+   public static void method2699() {
+      if(class239.field3246 != null) {
+         class239.field3246.close();
+      }
+
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lfg;B)V",
+      garbageValue = "-9"
+   )
+   public static void method2698(Huffman var0) {
+      class266.field3648 = var0;
    }
 }

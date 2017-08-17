@@ -1,48 +1,48 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("db")
+@ObfuscatedName("de")
 public class class108 extends class123 {
-   @ObfuscatedName("n")
-   public byte[] field1600;
-   @ObfuscatedName("e")
-   public int field1601;
-   @ObfuscatedName("w")
-   public boolean field1603;
-   @ObfuscatedName("g")
-   public int field1602;
-   @ObfuscatedName("y")
-   int field1599;
+   @ObfuscatedName("h")
+   public byte[] field1618;
+   @ObfuscatedName("j")
+   public int field1615;
+   @ObfuscatedName("x")
+   public boolean field1617;
+   @ObfuscatedName("f")
+   public int field1616;
+   @ObfuscatedName("p")
+   int field1614;
 
    class108(int var1, byte[] var2, int var3, int var4) {
-      this.field1601 = var1;
-      this.field1600 = var2;
-      this.field1602 = var3;
-      this.field1599 = var4;
+      this.field1615 = var1;
+      this.field1618 = var2;
+      this.field1616 = var3;
+      this.field1614 = var4;
    }
 
    class108(int var1, byte[] var2, int var3, int var4, boolean var5) {
-      this.field1601 = var1;
-      this.field1600 = var2;
-      this.field1602 = var3;
-      this.field1599 = var4;
-      this.field1603 = var5;
+      this.field1615 = var1;
+      this.field1618 = var2;
+      this.field1616 = var3;
+      this.field1614 = var4;
+      this.field1617 = var5;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Ldu;)Ldb;"
+      signature = "(Ldj;)Lde;"
    )
-   public class108 method2011(class117 var1) {
-      this.field1600 = var1.method2131(this.field1600);
-      this.field1601 = var1.method2132(this.field1601);
-      if(this.field1602 == this.field1599) {
-         this.field1602 = this.field1599 = var1.method2133(this.field1602);
+   public class108 method2005(class117 var1) {
+      this.field1618 = var1.method2137(this.field1618);
+      this.field1615 = var1.method2129(this.field1615);
+      if(this.field1616 == this.field1614) {
+         this.field1616 = this.field1614 = var1.method2130(this.field1616);
       } else {
-         this.field1602 = var1.method2133(this.field1602);
-         this.field1599 = var1.method2133(this.field1599);
-         if(this.field1602 == this.field1599) {
-            --this.field1602;
+         this.field1616 = var1.method2130(this.field1616);
+         this.field1614 = var1.method2130(this.field1614);
+         if(this.field1616 == this.field1614) {
+            --this.field1616;
          }
       }
 

@@ -1,60 +1,49 @@
 import java.util.HashMap;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fd")
+@ObfuscatedName("fm")
 public class class169 {
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lhu;"
+   @ObfuscatedName("qy")
+   @ObfuscatedGetter(
+      intValue = 625909539
    )
-   static Track1 field2322;
+   static int field2340;
 
    static {
       new HashMap();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(Lgw;ILjava/lang/String;B)Ljava/lang/String;",
-      garbageValue = "-4"
+      signature = "(Ljava/lang/String;I)I",
+      garbageValue = "198627225"
    )
-   static String method3148(IterableHashTable var0, int var1, String var2) {
-      if(var0 == null) {
-         return var2;
-      } else {
-         ObjectNode var3 = (ObjectNode)var0.get((long)var1);
-         return var3 == null?var2:(String)var3.value;
-      }
+   @Export("getLength")
+   public static int getLength(String var0) {
+      return var0.length() + 1;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "([BB)Ljava/lang/String;",
-      garbageValue = "12"
+      signature = "(IB)Lix;",
+      garbageValue = "92"
    )
-   public static String method3149(byte[] var0) {
-      int var2 = var0.length;
-      StringBuilder var3 = new StringBuilder();
-
-      for(int var4 = 0; var4 < var2 + 0; var4 += 3) {
-         int var5 = var0[var4] & 255;
-         var3.append(class270.field3665[var5 >>> 2]);
-         if(var4 < var2 - 1) {
-            int var6 = var0[var4 + 1] & 255;
-            var3.append(class270.field3665[(var5 & 3) << 4 | var6 >>> 4]);
-            if(var4 < var2 - 2) {
-               int var7 = var0[var4 + 2] & 255;
-               var3.append(class270.field3665[(var6 & 15) << 2 | var7 >>> 6]).append(class270.field3665[var7 & 63]);
-            } else {
-               var3.append(class270.field3665[(var6 & 15) << 2]).append("=");
-            }
-         } else {
-            var3.append(class270.field3665[(var5 & 3) << 4]).append("==");
+   public static VarPlayerType method3137(int var0) {
+      VarPlayerType var1 = (VarPlayerType)VarPlayerType.varplayers.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = VarPlayerType.varplayer_ref.getConfigData(16, var0);
+         var1 = new VarPlayerType();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
          }
-      }
 
-      String var1 = var3.toString();
-      return var1;
+         VarPlayerType.varplayers.put(var1, (long)var0);
+         return var1;
+      }
    }
 }

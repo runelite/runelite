@@ -1,8 +1,11 @@
-import java.io.File;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kb")
+@ObfuscatedName("ka")
 public class class294 {
-   @ObfuscatedName("w")
-   static File field3885;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Ldl;"
+   )
+   static class104 field3887;
 }

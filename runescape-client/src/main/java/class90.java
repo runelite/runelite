@@ -1,106 +1,130 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ca")
+@ObfuscatedName("ce")
 public class class90 {
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 135317335
+      intValue = -2139335339
    )
-   int field1392;
-   @ObfuscatedName("n")
+   int field1408;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -101466435
+      intValue = 1578980989
    )
-   int field1390;
-   @ObfuscatedName("g")
+   int field1406;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 107557497
+      intValue = 457481577
    )
-   int field1394;
-   @ObfuscatedName("y")
+   int field1407;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 23640301
+      intValue = -25314593
    )
-   int field1393;
-   @ObfuscatedName("w")
-   String field1397;
+   int field1409;
+   @ObfuscatedName("x")
+   String field1411;
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("ii")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "43"
+      signature = "(Lhi;I)V",
+      garbageValue = "-978053700"
    )
-   public static void method1736() {
-      if(class239.field3237 != null) {
-         class239.field3237.close();
+   static void method1723(Widget var0) {
+      if(var0.loopCycle == Client.field1080) {
+         Client.field1112[var0.boundsIndex] = true;
       }
 
    }
 
-   @ObfuscatedName("gb")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lbm;I)V",
-      garbageValue = "534034941"
+      signature = "(Ljava/lang/Object;ZI)[B",
+      garbageValue = "1008017307"
    )
-   static final void method1735(class66 var0) {
-      if(class54.localPlayer.x >> 7 == Client.destinationX && class54.localPlayer.y >> 7 == Client.destinationY) {
-         Client.destinationX = 0;
-      }
-
-      int var1 = class97.field1493;
-      int[] var2 = class97.field1494;
-      int var3 = var1;
-      if(class66.field811 == var0 || class66.field806 == var0) {
-         var3 = 1;
-      }
-
-      for(int var4 = 0; var4 < var3; ++var4) {
-         Player var5;
-         int var6;
-         if(class66.field811 == var0) {
-            var5 = class54.localPlayer;
-            var6 = class54.localPlayer.field901 << 14;
-         } else if(class66.field806 == var0) {
-            var5 = Client.cachedPlayers[Client.field1031];
-            var6 = Client.field1031 << 14;
+   @Export("toByteArray")
+   public static byte[] toByteArray(Object var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else if(var0 instanceof byte[]) {
+         byte[] var6 = (byte[])((byte[])var0);
+         if(var1) {
+            int var4 = var6.length;
+            byte[] var5 = new byte[var4];
+            System.arraycopy(var6, 0, var5, 0, var4);
+            return var5;
          } else {
-            var5 = Client.cachedPlayers[var2[var4]];
-            var6 = var2[var4] << 14;
-            if(class66.field810 == var0 && var2[var4] == Client.field1031) {
-               continue;
-            }
+            return var6;
          }
-
-         if(var5 != null && var5.hasConfig() && !var5.hidden) {
-            var5.field898 = false;
-            if((Client.lowMemory && var1 > 50 || var1 > 200) && class66.field811 != var0 && var5.poseAnimation == var5.idlePoseAnimation) {
-               var5.field898 = true;
-            }
-
-            int var7 = var5.x >> 7;
-            int var8 = var5.y >> 7;
-            if(var7 >= 0 && var7 < 104 && var8 >= 0 && var8 < 104) {
-               if(var5.model != null && Client.gameCycle >= var5.field883 && Client.gameCycle < var5.field881) {
-                  var5.field898 = false;
-                  var5.field886 = Friend.getTileHeight(var5.x, var5.y, class29.plane);
-                  class84.region.method2837(class29.plane, var5.x, var5.y, var5.field886, 60, var5, var5.angle, var6, var5.field903, var5.field894, var5.field879, var5.field887);
-               } else {
-                  if((var5.x & 127) == 64 && (var5.y & 127) == 64) {
-                     if(Client.field1005[var7][var8] == Client.field1006) {
-                        continue;
-                     }
-
-                     Client.field1005[var7][var8] = Client.field1006;
-                  }
-
-                  var5.field886 = Friend.getTileHeight(var5.x, var5.y, class29.plane);
-                  class84.region.method2722(class29.plane, var5.x, var5.y, var5.field886, 60, var5, var5.angle, var6, var5.field1208);
-               }
-            }
-         }
+      } else if(var0 instanceof AbstractByteBuffer) {
+         AbstractByteBuffer var2 = (AbstractByteBuffer)var0;
+         return var2.get();
+      } else {
+         throw new IllegalArgumentException();
       }
+   }
 
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-2106658544"
+   )
+   static void method1721() {
+      if(class93.field1465) {
+         class93.field1446 = null;
+         class93.field1436 = null;
+         class93.field1437 = null;
+         class244.field3300 = null;
+         class92.field1425 = null;
+         class12.logoSprite = null;
+         class233.titlemuteSprite = null;
+         class47.field601 = null;
+         class3.field17 = null;
+         WorldMapType2.field534 = null;
+         class93.field1466 = null;
+         class39.field538 = null;
+         CombatInfoListHolder.field1372 = null;
+         class44.field590 = null;
+         WorldMapData.field473 = null;
+         WorldMapType3.field399 = null;
+         class93.field1440 = null;
+         BaseVarType.field28 = null;
+         class93.field1456 = null;
+         class228.field3136 = null;
+         Ignore.field871 = null;
+         class93.field1444 = null;
+         class204.field2507 = 1;
+         class204.field2502 = null;
+         class150.field2205 = -1;
+         class153.field2222 = -1;
+         class204.field2504 = 0;
+         class99.field1532 = false;
+         class204.field2505 = 2;
+         class43.sendConInfo(true);
+         class93.field1465 = false;
+      }
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1744365321"
+   )
+   static void method1722() {
+      class61.underlayIds = null;
+      class61.overlayIds = null;
+      class61.overlayPaths = null;
+      class61.overlayRotations = null;
+      class240.field3259 = null;
+      class61.field784 = null;
+      WorldMapType2.field530 = null;
+      class61.blendedHue = null;
+      WorldMapType1.blendedSaturation = null;
+      class31.field456 = null;
+      Huffman.field2325 = null;
+      class51.field661 = null;
    }
 }

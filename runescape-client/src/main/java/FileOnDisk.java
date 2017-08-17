@@ -8,27 +8,27 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dk")
+@ObfuscatedName("dr")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      longValue = 9075401115111955515L
+      longValue = -1034090272085620161L
    )
    @Export("position")
    long position;
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @Export("file")
    RandomAccessFile file;
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      longValue = 6896260715649989759L
+      longValue = 6564059205904781447L
    )
    @Export("length")
    long length;
 
    public FileOnDisk(File var1, String var2, long var3) throws IOException {
-      if(var3 == -1L) {
+      if(-1L == var3) {
          var3 = Long.MAX_VALUE;
       }
 
@@ -48,20 +48,20 @@ public final class FileOnDisk {
       this.file.seek(0L);
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(B)J",
-      garbageValue = "-23"
+      signature = "(I)J",
+      garbageValue = "-1247552989"
    )
    @Export("length")
    public final long length() throws IOException {
       return this.file.length();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "-23122"
+      signature = "(I)V",
+      garbageValue = "1890976490"
    )
    @Export("close")
    public final void close() throws IOException {
@@ -72,10 +72,10 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "([BIIB)I",
-      garbageValue = "100"
+      signature = "([BIIS)I",
+      garbageValue = "9408"
    )
    @Export("read")
    public final int read(byte[] var1, int var2, int var3) throws IOException {
@@ -87,17 +87,17 @@ public final class FileOnDisk {
       return var4;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @Export("seek")
    final void seek(long var1) throws IOException {
       this.file.seek(var1);
       this.position = var1;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "([BIIB)V",
-      garbageValue = "14"
+      signature = "([BIII)V",
+      garbageValue = "-1951727419"
    )
    @Export("write")
    public final void write(byte[] var1, int var2, int var3) throws IOException {
@@ -119,13 +119,42 @@ public final class FileOnDisk {
 
    }
 
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(Lia;III)Z",
+      garbageValue = "1739221338"
+   )
+   static boolean method2386(IndexDataBase var0, int var1, int var2) {
+      byte[] var3 = var0.getConfigData(var1, var2);
+      if(var3 == null) {
+         return false;
+      } else {
+         class279.decodeSprite(var3);
+         return true;
+      }
+   }
+
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lit;Lit;I)V",
-      garbageValue = "-857326873"
+      signature = "(IIII)I",
+      garbageValue = "84621383"
    )
-   public static void method2390(IndexDataBase var0, IndexDataBase var1) {
-      NPCComposition.field3544 = var0;
-      NPCComposition.field3542 = var1;
+   @Export("getSmoothNoise")
+   static final int getSmoothNoise(int var0, int var1, int var2) {
+      int var3 = var0 / var2;
+      int var4 = var0 & var2 - 1;
+      int var5 = var1 / var2;
+      int var6 = var1 & var2 - 1;
+      int var7 = WorldMapType1.getSmoothNoise2D(var3, var5);
+      int var8 = WorldMapType1.getSmoothNoise2D(var3 + 1, var5);
+      int var9 = WorldMapType1.getSmoothNoise2D(var3, var5 + 1);
+      int var10 = WorldMapType1.getSmoothNoise2D(var3 + 1, var5 + 1);
+      int var12 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
+      int var11 = (var12 * var8 >> 16) + ((65536 - var12) * var7 >> 16);
+      int var14 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
+      int var13 = ((65536 - var14) * var9 >> 16) + (var14 * var10 >> 16);
+      int var16 = 65536 - Graphics3D.COSINE[var6 * 1024 / var2] >> 1;
+      int var15 = ((65536 - var16) * var11 >> 16) + (var16 * var13 >> 16);
+      return var15;
    }
 }

@@ -1,199 +1,130 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("d")
+@ObfuscatedName("o")
 public final class class10 extends class9 {
-   @ObfuscatedName("ix")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1025212641
+      intValue = -845440721
    )
-   static int field261;
-   @ObfuscatedName("e")
+   final int field256;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1387685085
-   )
-   final int field258;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -1306943805
+      intValue = -727931811
    )
    final int field255;
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 255959661
+      intValue = -974872513
    )
-   final int field260;
-   @ObfuscatedName("w")
+   final int field253;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 250492253
-   )
-   final int field262;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 396354513
-   )
-   final int field254;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1342044199
+      intValue = -1018888399
    )
    final int field257;
-   @ObfuscatedName("v")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1078442841
+      intValue = -688745201
    )
-   final int field252;
+   final int field254;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -307958691
+   )
+   final int field259;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -925514625
+   )
+   final int field258;
 
    @ObfuscatedSignature(
-      signature = "(Lew;IIII)V"
+      signature = "(Leo;IIII)V"
    )
    class10(Model var1, int var2, int var3, int var4, int var5) {
-      this.field258 = var2 + var1.field1944 - var1.field1939;
-      this.field260 = var3 + var1.field1945 - var1.field1948;
-      this.field254 = var4 + var1.field1946 - var1.field1942;
-      this.field255 = var2 + var1.field1944 + var1.field1939;
-      this.field262 = var3 + var1.field1945 + var1.field1948;
-      this.field257 = var4 + var1.field1946 + var1.field1942;
-      this.field252 = var5;
+      this.field256 = var2 + var1.field1969 - var1.field1942;
+      this.field253 = var3 + var1.field1959 - var1.field1962;
+      this.field254 = var4 + var1.field1987 - var1.field1983;
+      this.field255 = var2 + var1.field1942 + var1.field1969;
+      this.field257 = var3 + var1.field1959 + var1.field1962;
+      this.field259 = var4 + var1.field1983 + var1.field1987;
+      this.field258 = var5;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-36"
+      signature = "(I)V",
+      garbageValue = "1383927671"
    )
-   final void vmethod53() {
+   final void vmethod47() {
       for(int var4 = 0; var4 < 8; ++var4) {
-         int var1 = (var4 & 1) == 0?this.field258:this.field255;
-         int var2 = (var4 & 2) == 0?this.field260:this.field262;
-         int var3 = (var4 & 4) == 0?this.field254:this.field257;
+         int var1 = (var4 & 1) == 0?this.field256:this.field255;
+         int var2 = (var4 & 2) == 0?this.field253:this.field257;
+         int var3 = (var4 & 4) == 0?this.field254:this.field259;
          if((var4 & 1) == 0) {
-            class33.method352(var1, var2, var3, this.field255, var2, var3, this.field252);
+            class19.method164(var1, var2, var3, this.field255, var2, var3, this.field258);
          }
 
          if((var4 & 2) == 0) {
-            class33.method352(var1, var2, var3, var1, this.field262, var3, this.field252);
+            class19.method164(var1, var2, var3, var1, this.field257, var3, this.field258);
          }
 
          if((var4 & 4) == 0) {
-            class33.method352(var1, var2, var3, var1, var2, this.field257, this.field252);
+            class19.method164(var1, var2, var3, var1, var2, this.field259, this.field258);
          }
       }
 
    }
 
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "-74"
-   )
-   @Export("loadWidget")
-   public static boolean loadWidget(int var0) {
-      if(Timer.validInterfaces[var0]) {
-         return true;
-      } else if(!Widget.widgetIndex.containsFile(var0)) {
-         return false;
-      } else {
-         int var1 = Widget.widgetIndex.fileCount(var0);
-         if(var1 == 0) {
-            Timer.validInterfaces[var0] = true;
-            return true;
-         } else {
-            if(Item.widgets[var0] == null) {
-               Item.widgets[var0] = new Widget[var1];
+   @ObfuscatedName("j")
+   public static final void method51(long var0) {
+      if(var0 > 0L) {
+         if(var0 % 10L == 0L) {
+            long var2 = var0 - 1L;
+
+            try {
+               Thread.sleep(var2);
+            } catch (InterruptedException var7) {
+               ;
             }
 
-            for(int var2 = 0; var2 < var1; ++var2) {
-               if(Item.widgets[var0][var2] == null) {
-                  byte[] var3 = Widget.widgetIndex.getConfigData(var0, var2);
-                  if(var3 != null) {
-                     Item.widgets[var0][var2] = new Widget();
-                     Item.widgets[var0][var2].id = var2 + (var0 << 16);
-                     if(var3[0] == -1) {
-                        Item.widgets[var0][var2].decodeActive(new Buffer(var3));
-                     } else {
-                        Item.widgets[var0][var2].decode(new Buffer(var3));
-                     }
-                  }
-               }
+            try {
+               Thread.sleep(1L);
+            } catch (InterruptedException var6) {
+               ;
             }
-
-            Timer.validInterfaces[var0] = true;
-            return true;
-         }
-      }
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Lit;Ljava/lang/String;Ljava/lang/String;B)[Ljp;",
-      garbageValue = "-101"
-   )
-   public static IndexedSprite[] method55(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.getFile(var1);
-      int var4 = var0.getChild(var3, var2);
-      IndexedSprite[] var5;
-      if(!Script.method1883(var0, var3, var4)) {
-         var5 = null;
-      } else {
-         var5 = Widget.method3998();
-      }
-
-      return var5;
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(ILcc;ZI)I",
-      garbageValue = "-1037730764"
-   )
-   static int method51(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 >= 2000) {
-         var0 -= 1000;
-         var3 = class266.method4862(class84.intStack[--class84.intStackSize]);
-      } else {
-         var3 = var2?class269.field3661:DecorativeObject.field2164;
-      }
-
-      int var4;
-      if(var0 == 1300) {
-         var4 = class84.intStack[--class84.intStackSize] - 1;
-         if(var4 >= 0 && var4 <= 9) {
-            var3.method4009(var4, class84.scriptStringStack[--class84.scriptStringStackSize]);
-            return 1;
          } else {
-            --class84.scriptStringStackSize;
-            return 1;
+            try {
+               Thread.sleep(var0);
+            } catch (InterruptedException var8) {
+               ;
+            }
          }
-      } else if(var0 == 1301) {
-         class84.intStackSize -= 2;
-         var4 = class84.intStack[class84.intStackSize];
-         int var5 = class84.intStack[class84.intStackSize + 1];
-         var3.dragParent = class24.method183(var4, var5);
-         return 1;
-      } else if(var0 == 1302) {
-         var3.field2701 = class84.intStack[--class84.intStackSize] == 1;
-         return 1;
-      } else if(var0 == 1303) {
-         var3.field2699 = class84.intStack[--class84.intStackSize];
-         return 1;
-      } else if(var0 == 1304) {
-         var3.field2700 = class84.intStack[--class84.intStackSize];
-         return 1;
-      } else if(var0 == 1305) {
-         var3.name = class84.scriptStringStack[--class84.scriptStringStackSize];
-         return 1;
-      } else if(var0 == 1306) {
-         var3.selectedAction = class84.scriptStringStack[--class84.scriptStringStackSize];
-         return 1;
-      } else if(var0 == 1307) {
-         var3.actions = null;
-         return 1;
-      } else {
-         return 2;
+
       }
+   }
+
+   @ObfuscatedName("fh")
+   @ObfuscatedSignature(
+      signature = "(Lcr;I)V",
+      garbageValue = "-1923090662"
+   )
+   static final void method46(Actor var0) {
+      if(var0.field1265 == Client.gameCycle || var0.animation == -1 || var0.actionAnimationDisable != 0 || var0.field1267 + 1 > PendingSpawn.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
+         int var1 = var0.field1265 - var0.field1264;
+         int var2 = Client.gameCycle - var0.field1264;
+         int var3 = var0.field1219 * 64 + var0.field1260 * 128;
+         int var4 = var0.field1262 * 128 + var0.field1219 * 64;
+         int var5 = var0.field1219 * 64 + var0.field1271 * 128;
+         int var6 = var0.field1263 * 128 + var0.field1219 * 64;
+         var0.x = (var2 * var5 + var3 * (var1 - var2)) / var1;
+         var0.y = (var2 * var6 + var4 * (var1 - var2)) / var1;
+      }
+
+      var0.field1276 = 0;
+      var0.orientation = var0.field1266;
+      var0.angle = var0.orientation;
    }
 }

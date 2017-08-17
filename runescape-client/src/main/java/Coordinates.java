@@ -4,44 +4,34 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hq")
+@ObfuscatedName("hh")
 @Implements("Coordinates")
 public class Coordinates {
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   public static IndexDataBase field2586;
-   @ObfuscatedName("ch")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1726273927
-   )
-   public static int field2589;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1158484197
+      intValue = 175993377
    )
    @Export("plane")
    public int plane;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 119846439
-   )
-   @Export("worldX")
-   public int worldX;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 156372255
+      intValue = -1606583697
    )
    @Export("worldY")
    public int worldY;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 274989271
+   )
+   @Export("worldX")
+   public int worldX;
 
    public Coordinates() {
       this.plane = -1;
    }
 
    @ObfuscatedSignature(
-      signature = "(Lhq;)V"
+      signature = "(Lhh;)V"
    )
    public Coordinates(Coordinates var1) {
       this.plane = var1.plane;
@@ -66,37 +56,37 @@ public class Coordinates {
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "20"
+      signature = "(I)I",
+      garbageValue = "2115820001"
    )
-   public int method3935() {
+   public int method3941() {
       return this.plane << 28 | this.worldX << 14 | this.worldY;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IIIS)V",
-      garbageValue = "26755"
+      signature = "(IIIB)V",
+      garbageValue = "65"
    )
-   public void method3934(int var1, int var2, int var3) {
+   public void method3940(int var1, int var2, int var3) {
       this.plane = var1;
       this.worldX = var2;
       this.worldY = var3;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(Lhq;B)Z",
-      garbageValue = "-113"
+      signature = "(Lhh;I)Z",
+      garbageValue = "220106790"
    )
-   boolean method3933(Coordinates var1) {
+   boolean method3943(Coordinates var1) {
       return this.plane != var1.plane?false:(this.worldX != var1.worldX?false:this.worldY == var1.worldY);
    }
 
    public boolean equals(Object var1) {
-      return this == var1?true:(!(var1 instanceof Coordinates)?false:this.method3933((Coordinates)var1));
+      return this == var1?true:(!(var1 instanceof Coordinates)?false:this.method3943((Coordinates)var1));
    }
 
    public String toString() {
@@ -104,28 +94,32 @@ public class Coordinates {
    }
 
    public int hashCode() {
-      return this.method3935();
+      return this.method3941();
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(II)Liw;",
-      garbageValue = "1834686607"
+      signature = "(Lbm;I)V",
+      garbageValue = "-881296087"
    )
-   public static class252 method3948(int var0) {
-      class252 var1 = (class252)class252.field3378.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class252.field3384.getConfigData(11, var0);
-         var1 = new class252();
-         if(var2 != null) {
-            var1.method4448(new Buffer(var2));
-         }
+   public static void method3942(ScriptEvent var0) {
+      class40.method567(var0, 200000);
+   }
 
-         var1.method4452();
-         class252.field3378.put(var1, (long)var0);
-         return var1;
+   @ObfuscatedName("hf")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "2030047754"
+   )
+   static final void method3956(int var0) {
+      if(var0 >= 0) {
+         int var1 = Client.menuActionParams0[var0];
+         int var2 = Client.menuActionParams1[var0];
+         int var3 = Client.menuTypes[var0];
+         int var4 = Client.menuIdentifiers[var0];
+         String var5 = Client.menuOptions[var0];
+         String var6 = Client.menuTargets[var0];
+         class262.menuAction(var1, var2, var3, var4, var5, var6, MouseInput.field741, MouseInput.field742);
       }
    }
 }

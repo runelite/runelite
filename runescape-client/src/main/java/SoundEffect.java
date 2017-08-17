@@ -3,24 +3,24 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("df")
+@ObfuscatedName("db")
 @Implements("SoundEffect")
 public class SoundEffect {
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @Export("start")
    int start;
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "[Lda;"
+      signature = "[Ldd;"
    )
    @Export("instruments")
    AudioInstrument[] instruments;
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @Export("end")
    int end;
 
    @ObfuscatedSignature(
-      signature = "(Lfh;)V"
+      signature = "(Lfb;)V"
    )
    SoundEffect(Buffer var1) {
       this.instruments = new AudioInstrument[10];
@@ -38,7 +38,7 @@ public class SoundEffect {
       this.end = var1.readUnsignedShort();
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @Export("mix")
    final byte[] mix() {
       int var1 = 0;
@@ -63,7 +63,7 @@ public class SoundEffect {
                int[] var7 = this.instruments[var4].synthesize(var5, this.instruments[var4].duration);
 
                for(int var8 = 0; var8 < var5; ++var8) {
-                  int var9 = var3[var8 + var6] + (var7[var8] >> 8);
+                  int var9 = (var7[var8] >> 8) + var3[var8 + var6];
                   if((var9 + 128 & -256) != 0) {
                      var9 = var9 >> 31 ^ 127;
                   }
@@ -77,16 +77,16 @@ public class SoundEffect {
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "()Ldb;"
+      signature = "()Lde;"
    )
-   public class108 method1964() {
+   public class108 method1961() {
       byte[] var1 = this.mix();
       return new class108(22050, var1, this.start * 22050 / 1000, this.end * 22050 / 1000);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @Export("calculateDelay")
    public final int calculateDelay() {
       int var1 = 9999999;
@@ -120,9 +120,9 @@ public class SoundEffect {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lit;II)Ldf;"
+      signature = "(Lia;II)Ldb;"
    )
    @Export("getTrack")
    public static SoundEffect getTrack(IndexDataBase var0, int var1, int var2) {

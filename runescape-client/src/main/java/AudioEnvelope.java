@@ -3,40 +3,40 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dd")
+@ObfuscatedName("dp")
 @Implements("AudioEnvelope")
 public class AudioEnvelope {
-   @ObfuscatedName("z")
+   @ObfuscatedName("l")
    @Export("ticks")
    int ticks;
-   @ObfuscatedName("y")
+   @ObfuscatedName("m")
    @Export("max")
    int max;
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @Export("segments")
    int segments;
-   @ObfuscatedName("v")
+   @ObfuscatedName("c")
    @Export("form")
    int form;
-   @ObfuscatedName("r")
+   @ObfuscatedName("w")
    @Export("phaseIndex")
    int phaseIndex;
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @Export("durations")
    int[] durations;
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @Export("phases")
    int[] phases;
-   @ObfuscatedName("d")
+   @ObfuscatedName("o")
    @Export("amplitude")
    int amplitude;
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @Export("step")
    int step;
-   @ObfuscatedName("w")
+   @ObfuscatedName("p")
    @Export("start")
    int start;
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @Export("end")
    int end;
 
@@ -50,9 +50,9 @@ public class AudioEnvelope {
       this.phases[1] = '\uffff';
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lfh;)V"
+      signature = "(Lfb;)V"
    )
    @Export("decode")
    final void decode(Buffer var1) {
@@ -62,7 +62,7 @@ public class AudioEnvelope {
       this.decodeSegments(var1);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @Export("reset")
    final void reset() {
       this.ticks = 0;
@@ -72,9 +72,9 @@ public class AudioEnvelope {
       this.max = 0;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Lfh;)V"
+      signature = "(Lfb;)V"
    )
    @Export("decodeSegments")
    final void decodeSegments(Buffer var1) {
@@ -89,7 +89,7 @@ public class AudioEnvelope {
 
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @Export("step")
    final int step(int var1) {
       if(this.max >= this.ticks) {

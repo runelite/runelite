@@ -1,58 +1,48 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ha")
+@ObfuscatedName("hf")
 public class class211 extends CacheableNode {
-   @ObfuscatedName("r")
+   @ObfuscatedName("x")
+   @Export("offsetsY")
+   static int[] offsetsY;
+   @ObfuscatedName("p")
+   public final int[] field2595;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 133339081
+      intValue = 204054215
    )
-   protected static int field2580;
-   @ObfuscatedName("y")
-   public final int[] field2581;
-   @ObfuscatedName("e")
+   public final int field2599;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -2020973705
+      intValue = -1314879773
    )
-   public final int field2577;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -191729773
-   )
-   public final int field2578;
-   @ObfuscatedName("g")
-   public final int[] field2579;
+   public final int field2597;
+   @ObfuscatedName("f")
+   public final int[] field2596;
 
    class211(int var1, int var2, int[] var3, int[] var4, int var5) {
-      this.field2577 = var1;
-      this.field2578 = var2;
-      this.field2579 = var3;
-      this.field2581 = var4;
+      this.field2599 = var1;
+      this.field2597 = var2;
+      this.field2596 = var3;
+      this.field2595 = var4;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(III)Z",
-      garbageValue = "1923499807"
+      garbageValue = "-1578988055"
    )
-   public boolean method3919(int var1, int var2) {
-      if(var2 >= 0 && var2 < this.field2581.length) {
-         int var3 = this.field2581[var2];
-         if(var1 >= var3 && var1 <= var3 + this.field2579[var2]) {
+   public boolean method3927(int var1, int var2) {
+      if(var2 >= 0 && var2 < this.field2595.length) {
+         int var3 = this.field2595[var2];
+         if(var1 >= var3 && var1 <= var3 + this.field2596[var2]) {
             return true;
          }
       }
 
       return false;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(Lit;I)V",
-      garbageValue = "2012310958"
-   )
-   public static void method3920(IndexDataBase var0) {
-      FloorUnderlayDefinition.underlay_ref = var0;
    }
 }
