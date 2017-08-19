@@ -90,7 +90,8 @@ public class Deob
 		formatter.printHelp("Deob", options);
 	}
 
-	private static boolean parseArgs(String[] args) {
+	private static boolean parseArgs(String[] args)
+    {
 		Options options = new Options();
 		options.addOption(null, "rename", true, "rename fields, classes, methods and local variables to sensible names.\ndefaults to true");
 		options.addOption(null, "unused-parameters", true, "remove unused method parameters.\ndefaults to true.");
@@ -103,7 +104,8 @@ public class Deob
 		try
 		{
 			cmd = parser.parse(options, args);
-		} catch (ParseException e)
+		} 
+		catch (ParseException e)
 		{
 			printHelp(options);
 			return false;
