@@ -24,46 +24,11 @@
  */
 package net.runelite.api;
 
-public class ItemLayer extends TileObject
+public interface ItemLayer extends TileObject
 {
-	private final net.runelite.rs.api.ItemLayer itemLayer;
+	Renderable getBottom();
 
-	public ItemLayer(Client client, net.runelite.rs.api.ItemLayer itemLayer)
-	{
-		super(client);
-		this.itemLayer = itemLayer;
-	}
+	Renderable getMiddle();
 
-	@Override
-	protected int getHash()
-	{
-		return itemLayer.getHash();
-	}
-
-	@Override
-	protected int getLocalX()
-	{
-		return itemLayer.getX();
-	}
-
-	@Override
-	protected int getLocalY()
-	{
-		return itemLayer.getY();
-	}
-
-	public Renderable getBottom()
-	{
-		return Renderable.of(itemLayer.getBottom());
-	}
-
-	public Renderable getMiddle()
-	{
-		return Renderable.of(itemLayer.getMiddle());
-	}
-
-	public Renderable getTop()
-	{
-		return Renderable.of(itemLayer.getTop());
-	}
+	Renderable getTop();
 }

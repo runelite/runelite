@@ -41,6 +41,7 @@ import java.util.concurrent.TimeUnit;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.Node;
 import net.runelite.api.Player;
@@ -53,7 +54,6 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.http.api.item.ItemPrice;
-import net.runelite.rs.api.ItemComposition;
 
 public class GroundItemsOverlay extends Overlay
 {

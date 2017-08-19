@@ -52,6 +52,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
+import net.runelite.api.Query;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.SessionClose;
@@ -427,5 +428,10 @@ public class RuneLite
 	public InfoBoxManager getInfoBoxManager()
 	{
 		return infoBoxManager;
+	}
+
+	public <T> T[] runQuery(Query query)
+	{
+		return (T[]) query.result(client);
 	}
 }

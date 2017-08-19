@@ -22,34 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.api;
 
-public class NPC extends Actor
+public interface NPC extends Actor
 {
-	private net.runelite.rs.api.NPC npc;
-
-	public NPC(Client client, net.runelite.rs.api.NPC npc)
-	{
-		super(client, npc);
-		this.npc = npc;
-	}
-
-	public int getId()
-	{
-		return npc.getComposition().getId();
-	}
+	int getId();
 
 	@Override
-	public String getName()
-	{
-		return npc.getComposition().getName().replace('\u00A0', ' ');
-	}
+	String getName();
 
 	@Override
-	public int getCombatLevel()
-	{
-		return npc.getComposition().getCombatLevel();
-	}
+	int getCombatLevel();
 
 }

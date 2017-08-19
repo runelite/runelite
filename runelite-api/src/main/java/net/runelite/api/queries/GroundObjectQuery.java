@@ -35,7 +35,7 @@ import java.util.Objects;
 public class GroundObjectQuery extends TileObjectQuery<GroundObject, GroundObjectQuery>
 {
 	@Override
-	protected GroundObject[] result(Client client)
+	public GroundObject[] result(Client client)
 	{
 		return getGroundObjects(client).stream().filter(Objects::nonNull).filter(predicate).toArray(GroundObject[]::new);
 	}

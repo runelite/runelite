@@ -13,8 +13,9 @@ If you have any questions please join our IRC channel on [irc.rizon.net #runelit
 - http-service - Service for api.runelite.net
 - model-viewer - RS Model, NPC/Object, and terrain viewer
 - runelite-api - runelite api, use this for plugin development
-- runescape-api - mappings correspond to these interfaces, runelite-api wraps this
-- runescape-client-injector - builds the injection from the vanilla client and the mappings
+- runelite-mixins - Mixins which are injected into the injected client's classes
+- runescape-api - mappings correspond to these interfaces, runelite-api is a subset of this
+- runescape-client-injector - builds the injected client from the vanilla client and the mappings
 - runescape-client - decompiled RuneScape client, contains mappings
 
 ## Usage

@@ -27,7 +27,9 @@ package net.runelite.client.callback;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
+import net.runelite.api.MessageNode;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.*;
@@ -35,8 +37,6 @@ import net.runelite.client.game.DeathChecker;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.rs.api.MainBufferProvider;
-import net.runelite.rs.api.MessageNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -205,7 +205,7 @@ public class Hooks
 		// Hook is fired prior to actually setting these on the MessageNode, so send them
 		// in the event too.
 		SetMessage setMessage = new SetMessage();
-		setMessage.setMessageNode(new net.runelite.api.MessageNode(messageNode));
+		setMessage.setMessageNode(messageNode);
 		setMessage.setType(ChatMessageType.of(type));
 		setMessage.setName(name);
 		setMessage.setSender(sender);

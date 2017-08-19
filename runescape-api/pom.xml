@@ -35,4 +35,12 @@
 	<groupId>net.runelite.rs</groupId>
 	<artifactId>api</artifactId>
 	<name>RuneScape API</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 </project>

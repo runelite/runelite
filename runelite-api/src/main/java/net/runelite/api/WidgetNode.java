@@ -24,18 +24,7 @@
  */
 package net.runelite.api;
 
-public class WidgetNode extends Node
+public interface WidgetNode extends Node
 {
-	private final net.runelite.rs.api.WidgetNode widgetNode;
-
-	public WidgetNode(net.runelite.rs.api.WidgetNode widgetNode)
-	{
-		super(widgetNode);
-		this.widgetNode = widgetNode;
-	}
-
-	public int getId()
-	{
-		return widgetNode.getId();
-	}
+	int getId();
 }

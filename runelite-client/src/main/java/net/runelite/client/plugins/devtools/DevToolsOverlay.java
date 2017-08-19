@@ -123,7 +123,7 @@ public class DevToolsOverlay extends Overlay
 
 	private void renderPlayers(Graphics2D graphics)
 	{
-		Player[] players = client.getPlayers();
+		Player[] players = client.getCachedPlayers();
 		Player local = client.getLocalPlayer();
 
 		if (players != null && (players.length - 1) > 0)
@@ -148,7 +148,7 @@ public class DevToolsOverlay extends Overlay
 
 	private void renderNpcs(Graphics2D graphics)
 	{
-		NPC[] npcs = client.getNpcs();
+		NPC[] npcs = client.getCachedNPCs();
 		if (npcs != null && (npcs.length - 1) > 0)
 		{
 			for (NPC npc : npcs)

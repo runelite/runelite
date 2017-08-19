@@ -81,7 +81,7 @@ public class WidgetItemQuery extends Query<WidgetItem, WidgetItemQuery>
 	}
 
 	@Override
-	protected WidgetItem[] result(Client client)
+	public WidgetItem[] result(Client client)
 	{
 		Widget widget = client.getWidget(widgetInfo);
 		if (widget != null)

@@ -33,6 +33,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.SetMessage;
@@ -46,7 +47,6 @@ import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
-import net.runelite.rs.api.ItemComposition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
