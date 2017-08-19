@@ -80,7 +80,6 @@ public class Deob
 	// default cli parameters
 	private static boolean rename = true;
 	private static boolean unusedParameters = true;
-	private static boolean runTransformers = true;
 	private static String inputJar = null;
 	private static String outputJar = null;
 
@@ -91,11 +90,10 @@ public class Deob
 	}
 
 	private static boolean parseArgs(String[] args)
-    {
+	{
 		Options options = new Options();
 		options.addOption(null, "rename", true, "rename fields, classes, methods and local variables to sensible names.\ndefaults to true");
 		options.addOption(null, "unused-parameters", true, "remove unused method parameters.\ndefaults to true.");
-		options.addOption(null, "run-transformers", true, "run various RuneLite specific bytecode transformers.\ndefaults to true");
 		options.addOption(null, "in", true, "path to the input jar file.\ndefaults to true");
 		options.addOption(null, "out", true, "path to the output jar file.\ndefaults to true");
 
@@ -118,10 +116,6 @@ public class Deob
 		if (cmd.hasOption("unused-parameters"))
 		{
 			unusedParameters = Boolean.parseBoolean(cmd.getOptionValue("unused-parameters"));
-		}
-		if (cmd.hasOption("run-transformers"))
-		{
-			runTransformers = Boolean.parseBoolean(cmd.getOptionValue("run-transformers"));
 		}
 
 		// allow output and input jar as bare arguments.
@@ -252,14 +246,12 @@ public class Deob
 
 		run(group, new MenuActionDeobfuscator());
 
-		if (runTransformers)
-		{
-			new GetPathTransformer().transform(group);
-			new ClientErrorTransformer().transform(group);
-			new ReflectionTransformer().transform(group);
-			new MaxMemoryTransformer().transform(group);
-			new RuneliteBufferTransformer().transform(group);
-		}
+
+		new GetPathTransformer().transform(group);
+		new ClientErrorTransformer().transform(group);
+		new ReflectionTransformer().transform(group);
+		new MaxMemoryTransformer().transform(group);
+		new RuneliteBufferTransformer().transform(group);
 
 		JarUtil.saveJar(group, new File(outputJar));
 
