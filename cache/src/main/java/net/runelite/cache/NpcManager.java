@@ -61,6 +61,11 @@ public class NpcManager
 			npcs.add(npc);
 		}
 	}
+	
+	public List<NpcDefinition> getNpcs()
+	{
+		return npcs;
+	}
 
 	public void dump(File out) throws IOException
 	{
