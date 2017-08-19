@@ -104,7 +104,7 @@ public class Deob
 		try
 		{
 			cmd = parser.parse(options, args);
-		} 
+		}
 		catch (ParseException e)
 		{
 			printHelp(options);
