@@ -64,7 +64,7 @@ public class NpcManager
 	
 	public List<NpcDefinition> getNpcs()
 	{
-        	return npcs;
+		return npcs;
 	}
 
 	public void dump(File out) throws IOException
