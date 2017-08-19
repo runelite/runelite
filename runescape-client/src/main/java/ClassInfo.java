@@ -64,7 +64,7 @@ public class ClassInfo extends Node {
                   int var2 = -var0.interacting - 1;
                   Player var3;
                   if(var2 == Client.localInteractingIndex) {
-                     var3 = XGrandExchangeOffer.localPlayer;
+                     var3 = GrandExchangeOffer.localPlayer;
                   } else {
                      var3 = Client.cachedPlayers[var2];
                   }

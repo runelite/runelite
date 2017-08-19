@@ -31,11 +31,11 @@ import java.time.Duration;
 import java.time.Instant;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ItemComposition;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.rs.api.ItemComposition;
 
 public class ClueScrollOverlay extends Overlay
 {

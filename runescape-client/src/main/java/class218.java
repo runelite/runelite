@@ -12,8 +12,8 @@ public class class218 {
       int var3;
       if(var0 == 6600) {
          var3 = class35.plane;
-         int var13 = (XGrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
-         int var5 = (XGrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
+         int var13 = (GrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
+         int var5 = (GrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
          WorldMapType3.method225().method5229(var3, var13, var5, true);
          return 1;
       } else {
@@ -177,9 +177,9 @@ public class class218 {
                         var3 = class84.intStack[class84.intStackSize];
                         var16 = new Coordinates(class84.intStack[class84.intStackSize + 1]);
                         var15 = WorldMapType3.method225().method5251(var3);
-                        var6 = XGrandExchangeOffer.localPlayer.field918;
-                        var7 = (XGrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
-                        var8 = (XGrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
+                        var6 = GrandExchangeOffer.localPlayer.field918;
+                        var7 = (GrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
+                        var8 = (GrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
                         var9 = new Coordinates(var6, var7, var8);
                         WorldMapType3.method225().method5231(var15, var9, var16, false);
                         return 1;
@@ -188,9 +188,9 @@ public class class218 {
                         var3 = class84.intStack[class84.intStackSize];
                         var16 = new Coordinates(class84.intStack[class84.intStackSize + 1]);
                         var15 = WorldMapType3.method225().method5251(var3);
-                        var6 = XGrandExchangeOffer.localPlayer.field918;
-                        var7 = (XGrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
-                        var8 = (XGrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
+                        var6 = GrandExchangeOffer.localPlayer.field918;
+                        var7 = (GrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
+                        var8 = (GrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
                         var9 = new Coordinates(var6, var7, var8);
                         WorldMapType3.method225().method5231(var15, var9, var16, true);
                         return 1;

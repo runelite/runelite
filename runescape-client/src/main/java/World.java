@@ -135,7 +135,7 @@ public class World {
       if(class93.worldSelectShown) {
          WorldMapType2.method553(var0);
       } else {
-         if((MouseInput.field740 == 1 || !XGrandExchangeOffer.field302 && MouseInput.field740 == 4) && MouseInput.field741 >= class93.field1434 + 765 - 50 && MouseInput.field742 >= 453) {
+         if((MouseInput.field740 == 1 || !GrandExchangeOffer.field302 && MouseInput.field740 == 4) && MouseInput.field741 >= class93.field1434 + 765 - 50 && MouseInput.field742 >= 453) {
             class3.preferences.muted = !class3.preferences.muted;
             class33.method372();
             if(!class3.preferences.muted) {
@@ -152,7 +152,7 @@ public class World {
             if(Client.gameState == 10 || Client.gameState == 11) {
                int var1;
                if(Client.languageId == 0) {
-                  if(MouseInput.field740 == 1 || !XGrandExchangeOffer.field302 && MouseInput.field740 == 4) {
+                  if(MouseInput.field740 == 1 || !GrandExchangeOffer.field302 && MouseInput.field740 == 4) {
                      var1 = class93.field1434 + 5;
                      short var2 = 463;
                      byte var3 = 100;
@@ -174,7 +174,7 @@ public class World {
                var1 = MouseInput.field740;
                int var10 = MouseInput.field741;
                int var11 = MouseInput.field742;
-               if(!XGrandExchangeOffer.field302 && var1 == 4) {
+               if(!GrandExchangeOffer.field302 && var1 == 4) {
                   var1 = 1;
                }
 
@@ -183,7 +183,7 @@ public class World {
                if(class93.loginIndex == 0) {
                   boolean var12 = false;
 
-                  while(XClanMember.method1207()) {
+                  while(ClanMember.method1207()) {
                      if(class48.field625 == 84) {
                         var12 = true;
                      }
@@ -290,7 +290,7 @@ public class World {
                         }
 
                         while(true) {
-                           while(XClanMember.method1207()) {
+                           while(ClanMember.method1207()) {
                               boolean var9 = false;
 
                               for(int var8 = 0; var8 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".length(); ++var8) {
@@ -410,7 +410,7 @@ public class World {
                               Preferences.authCode = "";
                            }
 
-                           while(XClanMember.method1207()) {
+                           while(ClanMember.method1207()) {
                               var16 = false;
 
                               for(var17 = 0; var17 < "1234567890".length(); ++var17) {
@@ -469,7 +469,7 @@ public class World {
                               class93.password = "";
                            }
 
-                           while(XClanMember.method1207()) {
+                           while(ClanMember.method1207()) {
                               var16 = false;
 
                               for(var17 = 0; var17 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".length(); ++var17) {
@@ -504,7 +504,7 @@ public class World {
                         } else if(class93.loginIndex == 6) {
                            while(true) {
                               do {
-                                 if(!XClanMember.method1207()) {
+                                 if(!ClanMember.method1207()) {
                                     var14 = 321;
                                     if(var1 == 1 && var11 >= var14 - 20 && var11 <= var14 + 20) {
                                        class93.loginMessage1 = "";
@@ -529,7 +529,7 @@ public class World {
                         }
                      }
                   } else {
-                     while(XClanMember.method1207()) {
+                     while(ClanMember.method1207()) {
                         if(class48.field625 == 84) {
                            class93.loginMessage1 = "";
                            class93.loginMessage2 = "Enter your username/email & password.";

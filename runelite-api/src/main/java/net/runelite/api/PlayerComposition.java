@@ -26,43 +26,18 @@ package net.runelite.api;
 
 import net.runelite.api.kit.KitType;
 
-public class PlayerComposition
+public interface PlayerComposition
 {
-	private final net.runelite.rs.api.PlayerComposition playerComposition;
-
-	public PlayerComposition(net.runelite.rs.api.PlayerComposition playerComposition)
-	{
-		this.playerComposition = playerComposition;
-	}
-
 	/**
-	 * Get equipment ids. If id is &ge; 256 &amp;&amp; &lt; 512 then subtract 256 and the id is a kit definition.
-	 * If the id is &ge; 512 then subtract 512 and the id is an item id.
+	 * Get equipment ids. If id is &ge; 256 &amp;&amp; &lt; 512 then
+	 * subtract 256 and the id is a kit definition. If the id is &ge; 512
+	 * then subtract 512 and the id is an item id.
 	 *
 	 * @return
 	 */
-	public int[] getEquipmentIds()
-	{
-		return playerComposition.getEquipmentIds();
-	}
+	int[] getEquipmentIds();
 
-	public int getEquipmentId(KitType type)
-	{
-		int id = getEquipmentIds()[type.getIndex()];
-		if (id < 512)
-		{
-			return -1; // not an item
-		}
-		return id - 512;
-	}
+	int getEquipmentId(KitType type);
 
-	public int getKitId(KitType type)
-	{
-		int id = getEquipmentIds()[type.getIndex()];
-		if (id < 256 || id >= 512)
-		{
-			return -1; // not a kit
-		}
-		return id - 256;
-	}
+	int getKitId(KitType type);
 }

@@ -24,71 +24,13 @@
  */
 package net.runelite.api;
 
-import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
 
-public class Model extends Renderable
+public interface Model extends Renderable
 {
-	private final net.runelite.rs.api.Model model;
+	List<Vertex> getVertices();
 
-	public Model(net.runelite.rs.api.Model model)
-	{
-		super(model);
-		this.model = model;
-	}
-
-	public List<Vertex> getVertices()
-	{
-		int[] verticesX = model.getVerticesX();
-		int[] verticesY = model.getVerticesY();
-		int[] verticesZ = model.getVerticesZ();
-
-		assert verticesX.length == verticesY.length;
-		assert verticesY.length == verticesZ.length;
-
-		List<Vertex> vertices = new ArrayList<>();
-
-		for (int i = 0; i < verticesX.length; ++i)
-		{
-			Vertex v = new Vertex(
-				verticesX[i],
-				verticesY[i],
-				verticesZ[i]
-			);
-			vertices.add(v);
-		}
-
-		return vertices;
-	}
-
-	public List<Triangle> getTriangles()
-	{
-		int[] trianglesX = model.getTrianglesX();
-		int[] trianglesY = model.getTrianglesY();
-		int[] trianglesZ = model.getTrianglesZ();
-
-		assert trianglesX.length == trianglesY.length;
-		assert trianglesY.length == trianglesZ.length;
-
-		List<Vertex> vertices = getVertices();
-		List<Triangle> triangles = new ArrayList<>(trianglesX.length);
-
-		for (int i = 0; i < trianglesX.length; ++i)
-		{
-			int triangleX = trianglesX[i];
-			int triangleY = trianglesY[i];
-			int triangleZ = trianglesZ[i];
-
-			Triangle triangle = new Triangle(
-				vertices.get(triangleX),
-				vertices.get(triangleY),
-				vertices.get(triangleZ)
-			);
-			triangles.add(triangle);
-		}
-
-		return triangles;
-	}
+	List<Triangle> getTriangles();
 }

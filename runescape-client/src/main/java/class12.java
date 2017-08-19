@@ -340,7 +340,7 @@ final class class12 implements Comparator {
             return 1;
          } else if(var0 == 1202) {
             var3.modelType = 3;
-            var3.modelId = XGrandExchangeOffer.localPlayer.composition.method3966();
+            var3.modelId = GrandExchangeOffer.localPlayer.composition.method3966();
             return 1;
          } else {
             return 2;

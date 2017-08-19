@@ -36,7 +36,7 @@ import java.util.Objects;
 public class GameObjectQuery extends TileObjectQuery<GameObject, GameObjectQuery>
 {
 	@Override
-	protected GameObject[] result(Client client)
+	public GameObject[] result(Client client)
 	{
 		return getGameObjects(client).stream().filter(Objects::nonNull).filter(predicate).toArray(GameObject[]::new);
 	}

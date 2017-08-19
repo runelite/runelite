@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import net.runelite.asm.ClassFile;
-import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
@@ -47,7 +46,6 @@ import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.DeobAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +77,7 @@ public class InjectHook
 			{
 				if (DeobAnnotations.getHookName(f.getAnnotations()) != null)
 				{
-					Field ob = toObField(f);
+					Field ob = inject.toObField(f);
 					hooked.put(ob, f);
 				}
 			}
@@ -104,23 +102,6 @@ public class InjectHook
 				injectSetField(method);
 			}
 		}
-	}
-
-	private Field toObField(Field field)
-	{
-		String obfuscatedClassName = DeobAnnotations.getObfuscatedName(field.getClassFile().getAnnotations());
-		String obfuscatedFieldName = DeobAnnotations.getObfuscatedName(field.getAnnotations()); // obfuscated name of field
-		Type type = inject.getFieldType(field);
-
-		ClassGroup vanilla = inject.getVanilla();
-
-		ClassFile obfuscatedClass = vanilla.findClass(obfuscatedClassName);
-		assert obfuscatedClass != null;
-
-		Field obfuscatedField = obfuscatedClass.findFieldDeep(obfuscatedFieldName, type);
-		assert obfuscatedField != null;
-
-		return obfuscatedField;
 	}
 
 	private void injectSetField(Method method)

@@ -258,7 +258,7 @@ public class WidgetNode extends Node {
 
                            var49 = Client.mapAngle & 2047;
                            var26 = class36.field513;
-                           var27 = class25.getTileHeight(XGrandExchangeOffer.localPlayer.x, XGrandExchangeOffer.localPlayer.y, class35.plane) - Client.field1199;
+                           var27 = class25.getTileHeight(GrandExchangeOffer.localPlayer.x, GrandExchangeOffer.localPlayer.y, class35.plane) - Client.field1199;
                            var28 = WorldMapData.field472;
                            var29 = var24 * 3 + 600;
                            var30 = 2048 - var24 & 2047;
@@ -298,8 +298,8 @@ public class WidgetNode extends Node {
                                  if(KeyFocusListener.cameraPitch < 310) {
                                     var27 = ISAACCipher.cameraX >> 7;
                                     var28 = class25.cameraY >> 7;
-                                    var29 = XGrandExchangeOffer.localPlayer.x >> 7;
-                                    var30 = XGrandExchangeOffer.localPlayer.y >> 7;
+                                    var29 = GrandExchangeOffer.localPlayer.x >> 7;
+                                    var30 = GrandExchangeOffer.localPlayer.y >> 7;
                                     if(var27 < 0 || var28 < 0 || var27 >= 104 || var28 >= 104) {
                                        var49 = class35.plane;
                                        break label1655;
@@ -382,8 +382,8 @@ public class WidgetNode extends Node {
                                     }
                                  }
 
-                                 if(XGrandExchangeOffer.localPlayer.x >= 0 && XGrandExchangeOffer.localPlayer.y >= 0 && XGrandExchangeOffer.localPlayer.x < 13312 && XGrandExchangeOffer.localPlayer.y < 13312) {
-                                    if((class61.tileSettings[class35.plane][XGrandExchangeOffer.localPlayer.x >> 7][XGrandExchangeOffer.localPlayer.y >> 7] & 4) != 0) {
+                                 if(GrandExchangeOffer.localPlayer.x >= 0 && GrandExchangeOffer.localPlayer.y >= 0 && GrandExchangeOffer.localPlayer.x < 13312 && GrandExchangeOffer.localPlayer.y < 13312) {
+                                    if((class61.tileSettings[class35.plane][GrandExchangeOffer.localPlayer.x >> 7][GrandExchangeOffer.localPlayer.y >> 7] & 4) != 0) {
                                        var26 = class35.plane;
                                     }
 
@@ -999,16 +999,16 @@ public class WidgetNode extends Node {
                                     if(var10.modelId == 0) {
                                        var69 = Client.field1008.method3970((Sequence)null, -1, (Sequence)null, -1);
                                     } else {
-                                       var69 = XGrandExchangeOffer.localPlayer.getModel();
+                                       var69 = GrandExchangeOffer.localPlayer.getModel();
                                     }
                                  } else if(var20 == -1) {
-                                    var69 = var10.method4012((Sequence)null, -1, var68, XGrandExchangeOffer.localPlayer.composition);
+                                    var69 = var10.method4012((Sequence)null, -1, var68, GrandExchangeOffer.localPlayer.composition);
                                     if(var69 == null && Widget.field2647) {
                                        class90.method1723(var10);
                                     }
                                  } else {
                                     Sequence var74 = PendingSpawn.getAnimation(var20);
-                                    var69 = var10.method4012(var74, var10.field2771, var68, XGrandExchangeOffer.localPlayer.composition);
+                                    var69 = var10.method4012(var74, var10.field2771, var68, GrandExchangeOffer.localPlayer.composition);
                                     if(var69 == null && Widget.field2647) {
                                        class90.method1723(var10);
                                     }

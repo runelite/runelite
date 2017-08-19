@@ -25,19 +25,19 @@ public class class113 {
    @ObfuscatedSignature(
       signature = "Lgr;"
    )
-   XHashTable field1675;
+   HashTable field1675;
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lgr;"
    )
-   XHashTable field1674;
+   HashTable field1674;
 
    @ObfuscatedSignature(
       signature = "(Lia;Lia;)V"
    )
    public class113(IndexDataBase var1, IndexDataBase var2) {
-      this.field1674 = new XHashTable(256);
-      this.field1675 = new XHashTable(256);
+      this.field1674 = new HashTable(256);
+      this.field1675 = new HashTable(256);
       this.sfx_index = var1;
       this.vorbis_index = var2;
    }

@@ -62,8 +62,8 @@ public class class37 {
    )
    static final void method513() {
       Client.field1136 = 0;
-      int var0 = (XGrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
-      int var1 = (XGrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
+      int var0 = (GrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
+      int var1 = (GrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
       if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
          Client.field1136 = 1;
       }

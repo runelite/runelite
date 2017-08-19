@@ -102,6 +102,6 @@ public class BuildType {
       garbageValue = "1"
    )
    static void method4101() {
-      XItemContainer.itemContainers = new XHashTable(32);
+      ItemContainer.itemContainers = new HashTable(32);
    }
 }

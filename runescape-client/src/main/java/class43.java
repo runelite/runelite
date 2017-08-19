@@ -237,7 +237,7 @@ public class class43 {
                if(!var0.field3572 || Client.field1094 == var1) {
                   String var4 = var0.name;
                   if(var0.combatLevel != 0) {
-                     var4 = var4 + class34.method465(var0.combatLevel, XGrandExchangeOffer.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")";
+                     var4 = var4 + class34.method465(var0.combatLevel, GrandExchangeOffer.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")";
                   }
 
                   if(var0.field3572 && Client.field1046) {
@@ -293,7 +293,7 @@ public class class43 {
                            if(var6[var7] != null && var6[var7].equalsIgnoreCase("Attack")) {
                               short var9 = 0;
                               if(Client.field1117 != class92.field1424) {
-                                 if(class92.field1422 == Client.field1117 || Client.field1117 == class92.field1426 && var0.combatLevel > XGrandExchangeOffer.localPlayer.combatLevel) {
+                                 if(class92.field1422 == Client.field1117 || Client.field1117 == class92.field1426 && var0.combatLevel > GrandExchangeOffer.localPlayer.combatLevel) {
                                     var9 = 2000;
                                  }
 

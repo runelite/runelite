@@ -26,113 +26,28 @@ package net.runelite.api;
 
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.ArrayList;
-import java.util.List;
-import net.runelite.api.model.Jarvis;
-import net.runelite.api.model.Vertex;
 
-public abstract class TileObject
+public interface TileObject
 {
-	protected final Client client;
+	int getHash();
 
-	public TileObject(Client client)
-	{
-		this.client = client;
-	}
+	int getX();
 
-	protected abstract int getHash();
+	int getY();
 
-	protected abstract int getLocalX();
+	int getId();
 
-	protected abstract int getLocalY();
+	Point getWorldLocation();
 
-	public int getId()
-	{
-		int hash = getHash();
-		return hash >> 14 & 32767;
-	}
+	Point getLocalLocation();
 
-	public Point getWorldLocation()
-	{
-		Point localLocation = getLocalLocation();
-		return Perspective.localToWorld(client, localLocation);
-	}
+	Point getCanvasLocation();
 
-	public Point getLocalLocation()
-	{
-		return new Point(getLocalX(), getLocalY());
-	}
+	Polygon getCanvasTilePoly();
 
-	public Point getCanvasLocation()
-	{
-		Point locaLocation = getLocalLocation();
-		return Perspective.worldToCanvas(client, locaLocation.getX(), locaLocation.getY(), 0);
-	}
+	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
 
-	public Polygon getCanvasTilePoly()
-	{
-		return Perspective.getCanvasTilePoly(client, getLocalLocation());
-	}
+	Point getMinimapLocation();
 
-	public Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset)
-	{
-		return Perspective.getCanvasTextLocation(client, graphics, getLocalLocation(), text, zOffset);
-	}
-
-	public Point getMinimapLocation()
-	{
-		return Perspective.worldToMiniMap(client, getLocalX(), getLocalY());
-	}
-
-	protected Polygon getConvexHull(Model model, int orientation)
-	{
-		int localX = getLocalX();
-		int localY = getLocalY();
-
-		// models are orientated north (1024) and there are 2048 angles total
-		orientation = (orientation + 1024) % 2048;
-
-		List<Vertex> verticies = model.getVertices();
-
-		if (orientation != 0)
-		{
-			// rotate verticies
-			for (int i = 0; i < verticies.size(); ++i)
-			{
-				Vertex v = verticies.get(i);
-				verticies.set(i, v.rotate(orientation));
-			}
-		}
-
-		List<Point> points = new ArrayList<>();
-
-		for (Vertex v : verticies)
-		{
-			// Compute canvas location of vertex
-			Point p = Perspective.worldToCanvas(client,
-				localX - v.getX(),
-				localY - v.getZ(),
-				-v.getY());
-			if (p != null)
-			{
-				points.add(p);
-			}
-		}
-
-		// Run Jarvis march algorithm
-		points = Jarvis.convexHull(points);
-		if (points == null)
-		{
-			return null;
-		}
-
-		// Convert to a polygon
-		Polygon p = new Polygon();
-		for (Point point : points)
-		{
-			p.addPoint(point.getX(), point.getY());
-		}
-
-		return p;
-	}
+	Polygon getConvexHull(Model model, int orientation);
 }

@@ -35,7 +35,7 @@ import java.util.Objects;
 public class WallObjectQuery extends TileObjectQuery<WallObject, WallObjectQuery>
 {
 	@Override
-	protected WallObject[] result(Client client)
+	public WallObject[] result(Client client)
 	{
 		return getWallObjects(client).stream().filter(Objects::nonNull).filter(predicate).toArray(WallObject[]::new);
 	}

@@ -22,11 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.injector;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
@@ -55,7 +56,7 @@ import net.runelite.asm.signature.Type;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import net.runelite.mapping.Import;
-import net.runelite.rs.api.Client;
+import net.runelite.rs.api.RSClient;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,15 +65,17 @@ public class Inject
 {
 	private static final Logger logger = LoggerFactory.getLogger(Inject.class);
 
-	public static final java.lang.Class<?> CLIENT_CLASS = Client.class;
+	public static final java.lang.Class<?> CLIENT_CLASS = RSClient.class;
 
-	public static final String API_PACKAGE_BASE = "net.runelite.rs.api.";
-	
+	public static final String API_PACKAGE_BASE = "net.runelite.rs.api.RS";
+
 	private final InjectHook hooks = new InjectHook(this);
 	private final InjectHookMethod hookMethod = new InjectHookMethod(this);
 
 	private final InjectSetter setters = new InjectSetter(this);
 	private final InjectInvoker invokes = new InjectInvoker(this);
+
+	private final MixinInjector mixinInjector = new MixinInjector(this);
 
 	// deobfuscated contains exports etc to apply to vanilla
 	private final ClassGroup deobfuscated, vanilla;
@@ -113,6 +116,7 @@ public class Inject
 
 	/**
 	 * Convert a java.lang.Class to a Type
+	 *
 	 * @param c
 	 * @return
 	 */
@@ -168,7 +172,9 @@ public class Inject
 		return new Type("L" + c.getName().replace('.', '/') + ";", dimms);
 	}
 
-	/** Build a Signature from a java method
+	/**
+	 * Build a Signature from a java method
+	 *
 	 * @param method
 	 * @return
 	 */
@@ -182,28 +188,61 @@ public class Inject
 		}
 		return builder.build();
 	}
-	
-	public void run()
+
+	public void run() throws InjectionException
 	{
 		hooks.run();
 
+		Map<ClassFile, java.lang.Class> implemented = new HashMap<>();
+
+		// inject interfaces first, so the validateTypeIsConvertibleTo
+		// check below works
 		for (ClassFile cf : deobfuscated.getClasses())
 		{
 			Annotations an = cf.getAnnotations();
 
 			if (an == null || an.size() == 0)
+			{
 				continue;
+			}
 
 			String obfuscatedName = DeobAnnotations.getObfuscatedName(an);
 			if (obfuscatedName == null)
+			{
 				obfuscatedName = cf.getName();
-			
+			}
+
 			ClassFile other = vanilla.findClass(obfuscatedName);
 			assert other != null : "unable to find vanilla class from obfuscated name: " + obfuscatedName;
-			
+
 			java.lang.Class implementingClass = injectInterface(cf, other);
 			// it can not implement an interface but still have exported static fields, which are
 			// moved to client
+
+			implemented.put(cf, implementingClass);
+		}
+
+		// requires interfaces to be injected
+		mixinInjector.inject();
+
+		for (ClassFile cf : deobfuscated.getClasses())
+		{
+			java.lang.Class implementingClass = implemented.get(cf);
+			Annotations an = cf.getAnnotations();
+
+			if (an == null || an.size() == 0)
+			{
+				continue;
+			}
+
+			String obfuscatedName = DeobAnnotations.getObfuscatedName(an);
+			if (obfuscatedName == null)
+			{
+				obfuscatedName = cf.getName();
+			}
+
+			ClassFile other = vanilla.findClass(obfuscatedName);
+			assert other != null : "unable to find vanilla class from obfuscated name: " + obfuscatedName;
 
 			InjectReplace ij = new InjectReplace(cf, other);
 			try
@@ -212,16 +251,17 @@ public class Inject
 			}
 			catch (ClassNotFoundException | IOException ex)
 			{
-				ex.printStackTrace();
-				assert false;
+				throw new InjectionException("error running inject replace", ex);
 			}
-			
+
 			for (Field f : cf.getFields())
 			{
 				an = f.getAnnotations();
 
 				if (an == null || an.find(DeobAnnotations.EXPORT) == null)
+				{
 					continue; // not an exported field
+				}
 
 				Annotation exportAnnotation = an.find(DeobAnnotations.EXPORT);
 				String exportedName = exportAnnotation.getElement().getString();
@@ -233,7 +273,7 @@ public class Inject
 				}
 
 				obfuscatedName = DeobAnnotations.getObfuscatedName(an);
-				
+
 				Annotation getterAnnotation = an.find(DeobAnnotations.OBFUSCATED_GETTER);
 				Number getter = null;
 				if (getterAnnotation != null)
@@ -245,9 +285,9 @@ public class Inject
 				Type obType = getFieldType(f);
 				Field otherf = other.findField(obfuscatedName, obType);
 				assert otherf != null;
-				
+
 				assert f.isStatic() == otherf.isStatic();
-				
+
 				ClassFile targetClass = f.isStatic() ? vanilla.findClass("client") : other; // target class for getter
 				java.lang.Class targetApiClass = f.isStatic() ? CLIENT_CLASS : implementingClass; // target api class for getter
 				if (targetApiClass == null)
@@ -269,17 +309,26 @@ public class Inject
 
 					setters.injectSetter(targetClass, targetApiClass, otherf, exportedName, setter);
 				}
-				
+
 				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetApiClass, exportedName, false);
 				if (apiMethod == null)
 				{
 					logger.info("Unable to find import method on api class {} with imported name {}, not injecting getter", targetApiClass, exportedName);
 					continue;
 				}
-				
+
+				// check that otherf is converable to apiMethod's
+				// return type
+				Type fieldType = otherf.getType();
+				Type returnType = classToType(apiMethod.getReturnType());
+				if (!validateTypeIsConvertibleTo(fieldType, returnType))
+				{
+					throw new InjectionException("Type " + fieldType + " is not convertable to " + returnType + " for getter " + apiMethod);
+				}
+
 				injectGetter(targetClass, apiMethod, otherf, getter);
 			}
-			
+
 			for (Method m : cf.getMethods())
 			{
 				hookMethod.process(m);
@@ -287,20 +336,24 @@ public class Inject
 			}
 		}
 	}
-	
+
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)
 	{
 		Annotations an = cf.getAnnotations();
 		if (an == null)
+		{
 			return null;
-		
+		}
+
 		Annotation a = an.find(DeobAnnotations.IMPLEMENTS);
 		if (a == null)
+		{
 			return null;
-		
+		}
+
 		String ifaceName = API_PACKAGE_BASE + a.getElement().getString();
 		java.lang.Class<?> apiClass;
-		
+
 		try
 		{
 			apiClass = java.lang.Class.forName(ifaceName);
@@ -324,46 +377,59 @@ public class Inject
 
 	public java.lang.reflect.Method findImportMethodOnApi(java.lang.Class<?> clazz, String name, boolean setter)
 	{
-		for (java.lang.reflect.Method method : clazz.getMethods())
+		for (java.lang.reflect.Method method : clazz.getDeclaredMethods())
 		{
-			Import i = method.getAnnotation(Import.class);
-			
-			if (i == null || !name.equals(i.value()) || i.setter() != setter)
+			if (method.isSynthetic())
+			{
+				/*
+				 * If you override an interface method in another interface
+				 * with a return type that is a child of the overriden methods
+				 * return type, both methods end up in the interface, and both
+				 * are *annotated*. But the base one is synthetic.
+				 */
 				continue;
-			
+			}
+
+			Import i = method.getAnnotation(Import.class);
+
+			if (i == null || !name.equals(i.value()) || i.setter() != setter)
+			{
+				continue;
+			}
+
 			return method;
 		}
-		
+
 		return null;
 	}
-	
+
 	private void injectGetter(ClassFile clazz, java.lang.reflect.Method method, Field field, Number getter)
 	{
 		// clazz = class file we're injecting the method into.
 		// method = api method (java reflect) that we're overriding
 		// field = field we're getting. might not be in this class if static.
 		// getter = encryption getter
-		
+
 		assert clazz.findMethod(method.getName()) == null;
 		assert field.isStatic() || field.getClassFile() == clazz;
-		
+
 		Signature sig = new Signature.Builder()
 			.setReturnType(classToType(method.getReturnType()))
 			.build();
 		Method getterMethod = new Method(clazz, method.getName(), sig);
 		getterMethod.setAccessFlags(ACC_PUBLIC);
-		
+
 		// create code
 		Code code = new Code(getterMethod);
 		getterMethod.setCode(code);
-		
+
 		Instructions instructions = code.getInstructions();
 		List<Instruction> ins = instructions.getInstructions();
-		
+
 		if (field.isStatic())
 		{
 			code.setMaxStack(1);
-			
+
 			ins.add(new GetStatic(instructions, field.getPoolField()));
 		}
 		else
@@ -373,13 +439,13 @@ public class Inject
 			ins.add(new ALoad(instructions, 0));
 			ins.add(new GetField(instructions, field.getPoolField()));
 		}
-		
+
 		if (getter != null)
 		{
 			code.setMaxStack(2);
 
 			assert getter instanceof Integer || getter instanceof Long;
-			
+
 			if (getter instanceof Integer)
 			{
 				ins.add(new LDC(instructions, (int) getter));
@@ -421,9 +487,9 @@ public class Inject
 		{
 			returnType = InstructionType.ARETURN;
 		}
-		
+
 		ins.add(new Return(instructions, returnType));
-		
+
 		clazz.addMethod(getterMethod);
 	}
 
@@ -459,6 +525,80 @@ public class Inject
 			default:
 				throw new RuntimeException("Unknown type");
 		}
+	}
+
+	Field toObField(Field field)
+	{
+		String obfuscatedClassName = DeobAnnotations.getObfuscatedName(field.getClassFile().getAnnotations());
+		String obfuscatedFieldName = DeobAnnotations.getObfuscatedName(field.getAnnotations()); // obfuscated name of field
+		Type type = getFieldType(field);
+
+		ClassFile obfuscatedClass = vanilla.findClass(obfuscatedClassName);
+		assert obfuscatedClass != null;
+
+		Field obfuscatedField = obfuscatedClass.findFieldDeep(obfuscatedFieldName, type);
+		assert obfuscatedField != null;
+
+		return obfuscatedField;
+	}
+
+	private boolean validateTypeIsConvertibleTo(Type from, Type to) throws InjectionException
+	{
+		if (from.getArrayDims() != to.getArrayDims())
+		{
+			throw new InjectionException("Array dimension mismatch");
+		}
+
+		if (from.isPrimitive())
+		{
+			return true;
+		}
+
+		ClassFile vanillaClass = vanilla.findClass(from.getType().substring(1, from.getType().length() - 1));
+		if (vanillaClass == null)
+		{
+			return true;
+		}
+
+		boolean okay = false;
+		for (Class inter : vanillaClass.getInterfaces().getInterfaces())
+		{
+			java.lang.Class c;
+
+			try
+			{
+				c = java.lang.Class.forName(inter.getName().replace('/', '.'));
+			}
+			catch (ClassNotFoundException ex)
+			{
+				continue;
+			}
+
+			okay |= check(c, to);
+		}
+
+		return okay;
+	}
+
+	private boolean check(java.lang.Class c, Type type)
+	{
+		String s = type.getType()
+			.substring(1, type.getType().length() - 1)
+			.replace('/', '.');
+
+		if (c.getName().equals(s))
+		{
+			return true;
+		}
+
+		for (java.lang.Class c2 : c.getInterfaces())
+		{
+			if (check(c2, type))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public ClassGroup getDeobfuscated()

@@ -542,8 +542,8 @@ public class CombatInfo1 extends Node {
                      }
                   }
                } else {
-                  if(XGrandExchangeOffer.localPlayer != null && XGrandExchangeOffer.localPlayer.name != null) {
-                     var3 = XGrandExchangeOffer.localPlayer.name;
+                  if(GrandExchangeOffer.localPlayer != null && GrandExchangeOffer.localPlayer.name != null) {
+                     var3 = GrandExchangeOffer.localPlayer.name;
                   } else {
                      var3 = "";
                   }

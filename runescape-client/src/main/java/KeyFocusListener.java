@@ -210,7 +210,7 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
       garbageValue = "1688493572"
    )
    static void method806(int var0) {
-      XItemContainer var1 = (XItemContainer)XItemContainer.itemContainers.get((long)var0);
+      ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
       if(var1 != null) {
          var1.unlink();
       }
@@ -228,16 +228,16 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
          Rasterizer2D.setDrawRegion(var1, var2, var4.field2599 + var1, var2 + var4.field2597);
          if(Client.field1160 != 2 && Client.field1160 != 5) {
             int var5 = Client.mapAngle & 2047;
-            int var6 = XGrandExchangeOffer.localPlayer.x / 32 + 48;
-            int var7 = 464 - XGrandExchangeOffer.localPlayer.y / 32;
+            int var6 = GrandExchangeOffer.localPlayer.x / 32 + 48;
+            int var7 = 464 - GrandExchangeOffer.localPlayer.y / 32;
             ItemComposition.field3531.method5111(var1, var2, var4.field2599, var4.field2597, var6, var7, var5, 256, var4.field2595, var4.field2596);
 
             int var8;
             int var9;
             int var10;
             for(var8 = 0; var8 < Client.field1154; ++var8) {
-               var9 = Client.field935[var8] * 4 + 2 - XGrandExchangeOffer.localPlayer.x / 32;
-               var10 = Client.field946[var8] * 4 + 2 - XGrandExchangeOffer.localPlayer.y / 32;
+               var9 = Client.field935[var8] * 4 + 2 - GrandExchangeOffer.localPlayer.x / 32;
+               var10 = Client.field946[var8] * 4 + 2 - GrandExchangeOffer.localPlayer.y / 32;
                class44.drawDot(var1, var2, var9, var10, Client.field1113[var8], var4);
             }
 
@@ -247,8 +247,8 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
                for(var9 = 0; var9 < 104; ++var9) {
                   Deque var17 = Client.groundItemDeque[class35.plane][var8][var9];
                   if(var17 != null) {
-                     var11 = var8 * 4 + 2 - XGrandExchangeOffer.localPlayer.x / 32;
-                     var12 = var9 * 4 + 2 - XGrandExchangeOffer.localPlayer.y / 32;
+                     var11 = var8 * 4 + 2 - GrandExchangeOffer.localPlayer.x / 32;
+                     var12 = var9 * 4 + 2 - GrandExchangeOffer.localPlayer.y / 32;
                      class44.drawDot(var1, var2, var11, var12, class60.mapDots[0], var4);
                   }
                }
@@ -263,8 +263,8 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
                   }
 
                   if(var21 != null && var21.isMinimapVisible && var21.field3570) {
-                     var11 = var18.x / 32 - XGrandExchangeOffer.localPlayer.x / 32;
-                     var12 = var18.y / 32 - XGrandExchangeOffer.localPlayer.y / 32;
+                     var11 = var18.x / 32 - GrandExchangeOffer.localPlayer.x / 32;
+                     var12 = var18.y / 32 - GrandExchangeOffer.localPlayer.y / 32;
                      class44.drawDot(var1, var2, var11, var12, class60.mapDots[1], var4);
                   }
                }
@@ -275,9 +275,9 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
 
             for(var10 = 0; var10 < var8; ++var10) {
                Player var19 = Client.cachedPlayers[var22[var10]];
-               if(var19 != null && var19.hasConfig() && !var19.hidden && var19 != XGrandExchangeOffer.localPlayer) {
-                  var12 = var19.x / 32 - XGrandExchangeOffer.localPlayer.x / 32;
-                  int var13 = var19.y / 32 - XGrandExchangeOffer.localPlayer.y / 32;
+               if(var19 != null && var19.hasConfig() && !var19.hidden && var19 != GrandExchangeOffer.localPlayer) {
+                  var12 = var19.x / 32 - GrandExchangeOffer.localPlayer.x / 32;
+                  int var13 = var19.y / 32 - GrandExchangeOffer.localPlayer.y / 32;
                   boolean var14 = false;
                   if(WorldMapType2.isFriended(var19.name, true)) {
                      var14 = true;
@@ -293,7 +293,7 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
                   }
 
                   boolean var20 = false;
-                  if(XGrandExchangeOffer.localPlayer.team != 0 && var19.team != 0 && var19.team == XGrandExchangeOffer.localPlayer.team) {
+                  if(GrandExchangeOffer.localPlayer.team != 0 && var19.team != 0 && var19.team == GrandExchangeOffer.localPlayer.team) {
                      var20 = true;
                   }
 
@@ -313,35 +313,35 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
                if(Client.field951 == 1 && Client.field952 >= 0 && Client.field952 < Client.cachedNPCs.length) {
                   NPC var23 = Client.cachedNPCs[Client.field952];
                   if(var23 != null) {
-                     var11 = var23.x / 32 - XGrandExchangeOffer.localPlayer.x / 32;
-                     var12 = var23.y / 32 - XGrandExchangeOffer.localPlayer.y / 32;
+                     var11 = var23.x / 32 - GrandExchangeOffer.localPlayer.x / 32;
+                     var12 = var23.y / 32 - GrandExchangeOffer.localPlayer.y / 32;
                      class36.method510(var1, var2, var11, var12, class9.field249[1], var4);
                   }
                }
 
                if(Client.field951 == 2) {
-                  var10 = 2 + (Client.hintArrowX * 4 - class47.baseX * 4) - XGrandExchangeOffer.localPlayer.x / 32;
-                  var11 = Client.hintArrowY * 4 - class44.baseY * 4 + 2 - XGrandExchangeOffer.localPlayer.y / 32;
+                  var10 = 2 + (Client.hintArrowX * 4 - class47.baseX * 4) - GrandExchangeOffer.localPlayer.x / 32;
+                  var11 = Client.hintArrowY * 4 - class44.baseY * 4 + 2 - GrandExchangeOffer.localPlayer.y / 32;
                   class36.method510(var1, var2, var10, var11, class9.field249[1], var4);
                }
 
                if(Client.field951 == 10 && Client.field953 >= 0 && Client.field953 < Client.cachedPlayers.length) {
                   Player var24 = Client.cachedPlayers[Client.field953];
                   if(var24 != null) {
-                     var11 = var24.x / 32 - XGrandExchangeOffer.localPlayer.x / 32;
-                     var12 = var24.y / 32 - XGrandExchangeOffer.localPlayer.y / 32;
+                     var11 = var24.x / 32 - GrandExchangeOffer.localPlayer.x / 32;
+                     var12 = var24.y / 32 - GrandExchangeOffer.localPlayer.y / 32;
                      class36.method510(var1, var2, var11, var12, class9.field249[1], var4);
                   }
                }
             }
 
             if(Client.destinationX != 0) {
-               var10 = Client.destinationX * 4 + 2 - XGrandExchangeOffer.localPlayer.x / 32;
-               var11 = Client.destinationY * 4 + 2 - XGrandExchangeOffer.localPlayer.y / 32;
+               var10 = Client.destinationX * 4 + 2 - GrandExchangeOffer.localPlayer.x / 32;
+               var11 = Client.destinationY * 4 + 2 - GrandExchangeOffer.localPlayer.y / 32;
                class44.drawDot(var1, var2, var10, var11, class9.field249[0], var4);
             }
 
-            if(!XGrandExchangeOffer.localPlayer.hidden) {
+            if(!GrandExchangeOffer.localPlayer.hidden) {
                Rasterizer2D.method4968(var4.field2599 / 2 + var1 - 1, var4.field2597 / 2 + var2 - 1, 3, 3, 16777215);
             }
          } else {

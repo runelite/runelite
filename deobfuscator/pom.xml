@@ -38,7 +38,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>net.runelite</groupId>
+			<groupId>net.runelite.rs</groupId>
 			<artifactId>api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -76,7 +76,7 @@
 		
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
-			<artifactId>rs-client</artifactId>
+			<artifactId>client</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>

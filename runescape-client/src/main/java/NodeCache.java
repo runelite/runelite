@@ -13,7 +13,7 @@ public final class NodeCache {
       signature = "Lgr;"
    )
    @Export("table")
-   XHashTable table;
+   HashTable table;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lgq;"
@@ -39,7 +39,7 @@ public final class NodeCache {
          ;
       }
 
-      this.table = new XHashTable(var2);
+      this.table = new HashTable(var2);
    }
 
    @ObfuscatedName("j")

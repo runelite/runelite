@@ -199,7 +199,7 @@ public class class268 {
          var0.method1525();
       }
 
-      if(XGrandExchangeOffer.localPlayer == var0 && (var0.x < 1536 || var0.y < 1536 || var0.x >= 11776 || var0.y >= 11776)) {
+      if(GrandExchangeOffer.localPlayer == var0 && (var0.x < 1536 || var0.y < 1536 || var0.x >= 11776 || var0.y >= 11776)) {
          var0.animation = -1;
          var0.graphic = -1;
          var0.field1264 = 0;

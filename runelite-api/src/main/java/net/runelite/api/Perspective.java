@@ -156,7 +156,7 @@ public class Perspective
 			int xx = y * sin + cos * x >> 16;
 			int yy = sin * x - y * cos >> 16;
 
-			int miniMapX = client.getClientWidth() - (!client.isResized() ? 208 : 167);
+			int miniMapX = client.getCanvas().getWidth() - (!client.isResized() ? 208 : 167);
 
 			x = (miniMapX + 167 / 2) + xx;
 			y = (167 / 2 - 1) + yy;

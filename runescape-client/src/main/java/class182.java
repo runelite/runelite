@@ -83,7 +83,7 @@ public class class182 {
                }
 
                if(var6 == 8) {
-                  var7 = XGrandExchangeOffer.localPlayer.combatLevel;
+                  var7 = GrandExchangeOffer.localPlayer.combatLevel;
                }
 
                if(var6 == 9) {
@@ -141,11 +141,11 @@ public class class182 {
                }
 
                if(var6 == 18) {
-                  var7 = (XGrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
+                  var7 = (GrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
                }
 
                if(var6 == 19) {
-                  var7 = (XGrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
+                  var7 = (GrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
                }
 
                if(var6 == 20) {

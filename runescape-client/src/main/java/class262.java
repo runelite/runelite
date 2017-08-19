@@ -417,7 +417,7 @@ public class class262 {
                   if(var2 == 25) {
                      var20 = class205.method3812(var1, var0);
                      if(var20 != null) {
-                        XGrandExchangeOffer.method116();
+                        GrandExchangeOffer.method116();
                         int var22 = getWidgetConfig(var20);
                         int var21 = var22 >> 11 & 63;
                         class22.method180(var1, var0, var21, var20.itemId);
@@ -530,7 +530,7 @@ public class class262 {
                         Client.field1037 = var0;
                      } else {
                         if(var2 == 38) {
-                           XGrandExchangeOffer.method116();
+                           GrandExchangeOffer.method116();
                            var20 = class84.method1670(var1);
                            Client.itemSelectionState = 1;
                            MessageNode.selectedItemIndex = var0;
@@ -896,7 +896,7 @@ public class class262 {
       }
 
       if(Client.spellSelected) {
-         XGrandExchangeOffer.method116();
+         GrandExchangeOffer.method116();
       }
 
       if(class72.field879 != null && Client.field1036 == 0) {

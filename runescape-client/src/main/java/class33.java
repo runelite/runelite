@@ -50,7 +50,7 @@ public class class33 {
       if(var1 != null) {
          return var1;
       } else {
-         var1 = XGrandExchangeOffer.method104(class18.skel_ref, Sequence.skin_ref, var0, false);
+         var1 = GrandExchangeOffer.method104(class18.skel_ref, Sequence.skin_ref, var0, false);
          if(var1 != null) {
             Sequence.skeletons.put(var1, (long)var0);
          }
@@ -217,7 +217,7 @@ public class class33 {
          if(var2.overhead.charAt(0) == 126) {
             var2.overhead = var2.overhead.substring(1);
             NPC.sendGameMessage(2, var2.name, var2.overhead);
-         } else if(var2 == XGrandExchangeOffer.localPlayer) {
+         } else if(var2 == GrandExchangeOffer.localPlayer) {
             NPC.sendGameMessage(2, var2.name, var2.overhead);
          }
 
@@ -304,7 +304,7 @@ public class class33 {
                var2.field1236 = var5 & 255;
                var2.field1274 = 150;
                var2.field1273 = var20;
-               var2.inSequence = var2 != XGrandExchangeOffer.localPlayer && var18.field3172 && "" != Client.field1144 && var16.toLowerCase().indexOf(Client.field1144) == -1;
+               var2.inSequence = var2 != GrandExchangeOffer.localPlayer && var18.field3172 && "" != Client.field1144 && var16.toLowerCase().indexOf(Client.field1144) == -1;
                int var13;
                if(var18.field3171) {
                   var13 = var20?91:1;

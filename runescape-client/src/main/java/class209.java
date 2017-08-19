@@ -766,7 +766,7 @@ public class class209 extends class120 {
          var4 = new IndexFile(var0, class156.field2257, ISAACCipher.field2429[var0], 1000000);
       }
 
-      return new IndexData(var4, XClanMember.field929, var0, var1, var2, var3);
+      return new IndexData(var4, ClanMember.field929, var0, var1, var2, var3);
    }
 
    @ObfuscatedName("gz")

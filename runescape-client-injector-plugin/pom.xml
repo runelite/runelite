@@ -34,13 +34,18 @@
 
 	<groupId>net.runelite.rs</groupId>
 	<artifactId>injector-plugin</artifactId>
-	<name>Injector Plugin</name>
+	<name>Injector</name>
 	<packaging>maven-plugin</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>deob</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>mixins</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		

@@ -17,7 +17,7 @@ public abstract class class28 {
       signature = "[Lbr;"
    )
    @Export("clanMembers")
-   static XClanMember[] clanMembers;
+   static ClanMember[] clanMembers;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 167009895

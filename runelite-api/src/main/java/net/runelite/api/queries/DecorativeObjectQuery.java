@@ -35,7 +35,7 @@ import java.util.Objects;
 public class DecorativeObjectQuery extends TileObjectQuery<DecorativeObject, DecorativeObjectQuery>
 {
 	@Override
-	protected DecorativeObject[] result(Client client)
+	public DecorativeObject[] result(Client client)
 	{
 		return getDecorativeObjects(client).stream().filter(Objects::nonNull).filter(predicate).toArray(DecorativeObject[]::new);
 	}

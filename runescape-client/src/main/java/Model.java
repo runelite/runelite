@@ -1278,7 +1278,7 @@ public class Model extends Renderable {
 
          var5 = var3?20:5;
          if(class7.field229 && var2) {
-            XGrandExchangeOffer.method117(this, var5);
+            GrandExchangeOffer.method117(this, var5);
          }
 
          int var6;

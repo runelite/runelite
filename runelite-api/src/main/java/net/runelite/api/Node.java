@@ -24,58 +24,11 @@
  */
 package net.runelite.api;
 
-public class Node
+public interface Node
 {
-	private final net.runelite.rs.api.Node node;
+	Node getNext();
 
-	public Node(net.runelite.rs.api.Node node)
-	{
-		this.node = node;
-	}
+	Node getPrevious();
 
-	@Override
-	public String toString()
-	{
-		return "Node{" + "node=" + node + '}';
-	}
-
-	public Node getNext()
-	{
-		return of(node.getNext());
-	}
-
-	public Node getPrev()
-	{
-		return of(node.getPrevious());
-	}
-
-	public long getHash()
-	{
-		return node.getHash();
-	}
-
-	public static final Node of(net.runelite.rs.api.Node node)
-	{
-		if (node == null)
-		{
-			return null;
-		}
-
-		if (node instanceof net.runelite.rs.api.Item)
-		{
-			return new Item((net.runelite.rs.api.Item) node);
-		}
-
-		if (node instanceof net.runelite.rs.api.Renderable)
-		{
-			return Renderable.of((net.runelite.rs.api.Renderable) node);
-		}
-
-		if (node instanceof net.runelite.rs.api.WidgetNode)
-		{
-			return new WidgetNode((net.runelite.rs.api.WidgetNode) node);
-		}
-
-		return new Node(node);
-	}
+	long getHash();
 }

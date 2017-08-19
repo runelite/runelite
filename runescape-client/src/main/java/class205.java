@@ -22,7 +22,7 @@ public class class205 extends class120 {
    @ObfuscatedSignature(
       signature = "Lgr;"
    )
-   XHashTable field2515;
+   HashTable field2515;
    @ObfuscatedName("x")
    int[] field2533;
    @ObfuscatedName("l")
@@ -114,7 +114,7 @@ public class class205 extends class120 {
       this.field2530 = new class206[16][128];
       this.field2531 = new class207();
       this.field2537 = new class209(this);
-      this.field2515 = new XHashTable(128);
+      this.field2515 = new HashTable(128);
       this.method3709();
    }
 

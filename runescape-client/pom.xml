@@ -33,7 +33,7 @@
 	</parent>
 
 	<groupId>net.runelite.rs</groupId>
-	<artifactId>rs-client</artifactId>
+	<artifactId>client</artifactId>
 	<name>RuneScape Client</name>
 
 	<dependencies>

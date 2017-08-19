@@ -318,7 +318,7 @@ public final class Client extends GameEngine {
       signature = "Lgr;"
    )
    @Export("componentTable")
-   static XHashTable componentTable;
+   static HashTable componentTable;
    @ObfuscatedName("lh")
    @ObfuscatedGetter(
       intValue = -234918025
@@ -404,7 +404,7 @@ public final class Client extends GameEngine {
       signature = "Lgr;"
    )
    @Export("widgetFlags")
-   static XHashTable widgetFlags;
+   static HashTable widgetFlags;
    @ObfuscatedName("hb")
    @ObfuscatedGetter(
       intValue = -1547929597
@@ -846,7 +846,7 @@ public final class Client extends GameEngine {
       signature = "[La;"
    )
    @Export("grandExchangeOffers")
-   static XGrandExchangeOffer[] grandExchangeOffers;
+   static GrandExchangeOffer[] grandExchangeOffers;
    @ObfuscatedName("nv")
    @ObfuscatedGetter(
       intValue = 296242837
@@ -1324,7 +1324,7 @@ public final class Client extends GameEngine {
       field993 = null;
       field1085 = null;
       widgetRoot = -1;
-      componentTable = new XHashTable(8);
+      componentTable = new HashTable(8);
       field1088 = 0;
       field1089 = 0;
       field1090 = null;
@@ -1365,7 +1365,7 @@ public final class Client extends GameEngine {
       field964 = new Deque();
       field1044 = new Deque();
       field1127 = new Deque();
-      widgetFlags = new XHashTable(512);
+      widgetFlags = new HashTable(512);
       field1129 = 0;
       field1080 = -2;
       field1112 = new boolean[100];
@@ -1437,7 +1437,7 @@ public final class Client extends GameEngine {
       field1008 = new PlayerComposition();
       field1198 = -1;
       field1100 = 1;
-      grandExchangeOffers = new XGrandExchangeOffer[8];
+      grandExchangeOffers = new GrandExchangeOffer[8];
       field1201 = new class74();
       field1149 = new int[50];
       field1122 = new int[50];
@@ -1751,7 +1751,7 @@ public final class Client extends GameEngine {
       this.method928();
       this.method1003();
       FileRequest.field3197 = this.method905();
-      XClanMember.field929 = new IndexFile(255, class156.field2257, class156.field2253, 500000);
+      ClanMember.field929 = new IndexFile(255, class156.field2257, class156.field2253, 500000);
       FileOnDisk var2 = null;
       Preferences var3 = new Preferences();
 
@@ -2193,7 +2193,7 @@ public final class Client extends GameEngine {
 
                var48 = class84.method1670(var2);
                var48.modelType = 3;
-               var48.modelId = XGrandExchangeOffer.localPlayer.composition.method3966();
+               var48.modelId = GrandExchangeOffer.localPlayer.composition.method3966();
                class90.method1723(var48);
                packetType = -1;
                return true;
@@ -2397,11 +2397,11 @@ public final class Client extends GameEngine {
             if(packetType == (RUNELITE_PACKET?30:254)) {
                var2 = secretPacketBuffer2.readUnsignedByte();
                if(secretPacketBuffer2.readUnsignedByte() == 0) {
-                  grandExchangeOffers[var2] = new XGrandExchangeOffer();
+                  grandExchangeOffers[var2] = new GrandExchangeOffer();
                   secretPacketBuffer2.offset += 18;
                } else {
                   --secretPacketBuffer2.offset;
-                  grandExchangeOffers[var2] = new XGrandExchangeOffer(secretPacketBuffer2, false);
+                  grandExchangeOffers[var2] = new GrandExchangeOffer(secretPacketBuffer2, false);
                }
 
                field1121 = cycleCntr;
@@ -2931,7 +2931,7 @@ public final class Client extends GameEngine {
                   }
                } else {
                   secretPacketBuffer2.readString();
-                  XClanMember var54 = new XClanMember();
+                  ClanMember var54 = new ClanMember();
                   var54.username = var16;
                   var54.field927 = FloorUnderlayDefinition.method4398(var54.username, class22.field354);
                   var54.world = var15;
@@ -2942,7 +2942,7 @@ public final class Client extends GameEngine {
                      if(var80 == 0) {
                         class28.clanMembers[var23].world = var15;
                         class28.clanMembers[var23].rank = var65;
-                        if(var16.equals(XGrandExchangeOffer.localPlayer.name)) {
+                        if(var16.equals(GrandExchangeOffer.localPlayer.name)) {
                            class84.clanChatRank = var65;
                         }
 
@@ -2966,12 +2966,12 @@ public final class Client extends GameEngine {
                   }
 
                   if(class82.clanChatCount == 0) {
-                     class28.clanMembers = new XClanMember[100];
+                     class28.clanMembers = new ClanMember[100];
                   }
 
                   class28.clanMembers[var23 + 1] = var54;
                   ++class82.clanChatCount;
-                  if(var16.equals(XGrandExchangeOffer.localPlayer.name)) {
+                  if(var16.equals(GrandExchangeOffer.localPlayer.name)) {
                      class84.clanChatRank = var65;
                   }
                }
@@ -3186,7 +3186,7 @@ public final class Client extends GameEngine {
                class2.field13 = secretPacketBuffer2.readUnsignedByte();
                MouseInput.field748 = secretPacketBuffer2.readUnsignedByte();
                Player.field915 = secretPacketBuffer2.readUnsignedShort();
-               XItemContainer.field802 = secretPacketBuffer2.readUnsignedByte();
+               ItemContainer.field802 = secretPacketBuffer2.readUnsignedByte();
                class8.field237 = secretPacketBuffer2.readUnsignedByte();
                if(class8.field237 >= 100) {
                   ISAACCipher.cameraX = class2.field13 * 128 + 64;
@@ -3421,16 +3421,16 @@ public final class Client extends GameEngine {
                }
 
                class82.clanChatCount = var4;
-               XClanMember[] var82 = new XClanMember[100];
+               ClanMember[] var82 = new ClanMember[100];
 
                for(var22 = 0; var22 < class82.clanChatCount; ++var22) {
-                  var82[var22] = new XClanMember();
+                  var82[var22] = new ClanMember();
                   var82[var22].username = secretPacketBuffer2.readString();
                   var82[var22].field927 = FloorUnderlayDefinition.method4398(var82[var22].username, class22.field354);
                   var82[var22].world = secretPacketBuffer2.readUnsignedShort();
                   var82[var22].rank = secretPacketBuffer2.readByte();
                   secretPacketBuffer2.readString();
-                  if(var82[var22].username.equals(XGrandExchangeOffer.localPlayer.name)) {
+                  if(var82[var22].username.equals(GrandExchangeOffer.localPlayer.name)) {
                      class84.clanChatRank = var82[var22].rank;
                   }
                }
@@ -3444,7 +3444,7 @@ public final class Client extends GameEngine {
 
                   for(var86 = 0; var86 < var80; ++var86) {
                      if(var82[var86].field927.compareTo(var82[var86 + 1].field927) > 0) {
-                        XClanMember var55 = var82[var86];
+                        ClanMember var55 = var82[var86];
                         var82[var86] = var82[var86 + 1];
                         var82[var86 + 1] = var55;
                         var79 = false;
@@ -3519,7 +3519,7 @@ public final class Client extends GameEngine {
                   }
                }
 
-               widgetFlags = new XHashTable(512);
+               widgetFlags = new HashTable(512);
 
                while(secretPacketBuffer2.offset < var2) {
                   var20 = secretPacketBuffer2.readInt();
@@ -3715,7 +3715,7 @@ public final class Client extends GameEngine {
                VertexNormal.rssocket = null;
             }
          } catch (Exception var44) {
-            var16 = "" + packetType + "," + secondLastFrameId + "," + thridLastFrameId + "," + packetLength + "," + (XGrandExchangeOffer.localPlayer.pathX[0] + class47.baseX) + "," + (XGrandExchangeOffer.localPlayer.pathY[0] + class44.baseY) + ",";
+            var16 = "" + packetType + "," + secondLastFrameId + "," + thridLastFrameId + "," + packetLength + "," + (GrandExchangeOffer.localPlayer.pathX[0] + class47.baseX) + "," + (GrandExchangeOffer.localPlayer.pathY[0] + class44.baseY) + ",";
 
             for(var15 = 0; var15 < packetLength && var15 < 50; ++var15) {
                var16 = var16 + secretPacketBuffer2.payload[var15] + ",";
@@ -3779,7 +3779,7 @@ public final class Client extends GameEngine {
       isMenuOpen = true;
       menuX = var8;
       Sequence.menuY = var9;
-      XGrandExchangeOffer.menuWidth = var3;
+      GrandExchangeOffer.menuWidth = var3;
       class15.menuHeight = menuOptionCount * 15 + 22;
    }
 
@@ -4071,7 +4071,7 @@ public final class Client extends GameEngine {
             }
          }
       } else {
-         XGrandExchangeOffer.method98();
+         GrandExchangeOffer.method98();
       }
 
       if(gameDrawingMode == 3) {
@@ -4085,8 +4085,8 @@ public final class Client extends GameEngine {
       }
 
       var1 = class35.plane;
-      var2 = XGrandExchangeOffer.localPlayer.x;
-      var3 = XGrandExchangeOffer.localPlayer.y;
+      var2 = GrandExchangeOffer.localPlayer.x;
+      var3 = GrandExchangeOffer.localPlayer.y;
       var4 = field957;
 
       for(class82 var14 = (class82)class82.field1330.getFront(); var14 != null; var14 = (class82)class82.field1330.getNext()) {
@@ -4287,7 +4287,7 @@ public final class Client extends GameEngine {
                }
             }
 
-            if(MouseInput.field740 == 1 || !XGrandExchangeOffer.field302 && MouseInput.field740 == 4 || MouseInput.field740 == 2) {
+            if(MouseInput.field740 == 1 || !GrandExchangeOffer.field302 && MouseInput.field740 == 4 || MouseInput.field740 == 2) {
                long var15 = (MouseInput.field736 - field944) / 50L;
                if(var15 > 4095L) {
                   var15 = 4095L;
@@ -4463,7 +4463,7 @@ public final class Client extends GameEngine {
                   field1104 = false;
                   field1147 = 0;
 
-                  while(XClanMember.method1207() && field1147 < 128) {
+                  while(ClanMember.method1207() && field1147 < 128) {
                      if(rights >= 2 && KeyFocusListener.field642[82] && class48.field625 == 66) {
                         String var35 = "";
 
@@ -4619,8 +4619,8 @@ public final class Client extends GameEngine {
                                                 --field1077;
                                              }
 
-                                             var3 = XGrandExchangeOffer.localPlayer.x;
-                                             var4 = XGrandExchangeOffer.localPlayer.y;
+                                             var3 = GrandExchangeOffer.localPlayer.x;
+                                             var4 = GrandExchangeOffer.localPlayer.y;
                                              if(class36.field513 - var3 < -500 || class36.field513 - var3 > 500 || WorldMapData.field472 - var4 < -500 || WorldMapData.field472 - var4 > 500) {
                                                 class36.field513 = var3;
                                                 WorldMapData.field472 = var4;
@@ -4634,7 +4634,7 @@ public final class Client extends GameEngine {
                                                 WorldMapData.field472 += (var4 - WorldMapData.field472) / 16;
                                              }
 
-                                             if(MouseInput.field733 == 4 && XGrandExchangeOffer.field302) {
+                                             if(MouseInput.field733 == 4 && GrandExchangeOffer.field302) {
                                                 var5 = MouseInput.field735 - field1013;
                                                 field1014 = var5 * 2;
                                                 field1013 = var5 != -1 && var5 != 1?(MouseInput.field735 + field1013) / 2:MouseInput.field735;
@@ -4715,42 +4715,42 @@ public final class Client extends GameEngine {
                                                 var4 = MouseInput.field748 * 128 + 64;
                                                 var5 = class25.getTileHeight(var3, var4, class35.plane) - Player.field915;
                                                 if(ISAACCipher.cameraX < var3) {
-                                                   ISAACCipher.cameraX += XItemContainer.field802 + (var3 - ISAACCipher.cameraX) * class8.field237 / 1000;
+                                                   ISAACCipher.cameraX += ItemContainer.field802 + (var3 - ISAACCipher.cameraX) * class8.field237 / 1000;
                                                    if(ISAACCipher.cameraX > var3) {
                                                       ISAACCipher.cameraX = var3;
                                                    }
                                                 }
 
                                                 if(ISAACCipher.cameraX > var3) {
-                                                   ISAACCipher.cameraX -= class8.field237 * (ISAACCipher.cameraX - var3) / 1000 + XItemContainer.field802;
+                                                   ISAACCipher.cameraX -= class8.field237 * (ISAACCipher.cameraX - var3) / 1000 + ItemContainer.field802;
                                                    if(ISAACCipher.cameraX < var3) {
                                                       ISAACCipher.cameraX = var3;
                                                    }
                                                 }
 
                                                 if(WorldMapData.cameraZ < var5) {
-                                                   WorldMapData.cameraZ += (var5 - WorldMapData.cameraZ) * class8.field237 / 1000 + XItemContainer.field802;
+                                                   WorldMapData.cameraZ += (var5 - WorldMapData.cameraZ) * class8.field237 / 1000 + ItemContainer.field802;
                                                    if(WorldMapData.cameraZ > var5) {
                                                       WorldMapData.cameraZ = var5;
                                                    }
                                                 }
 
                                                 if(WorldMapData.cameraZ > var5) {
-                                                   WorldMapData.cameraZ -= class8.field237 * (WorldMapData.cameraZ - var5) / 1000 + XItemContainer.field802;
+                                                   WorldMapData.cameraZ -= class8.field237 * (WorldMapData.cameraZ - var5) / 1000 + ItemContainer.field802;
                                                    if(WorldMapData.cameraZ < var5) {
                                                       WorldMapData.cameraZ = var5;
                                                    }
                                                 }
 
                                                 if(class25.cameraY < var4) {
-                                                   class25.cameraY += (var4 - class25.cameraY) * class8.field237 / 1000 + XItemContainer.field802;
+                                                   class25.cameraY += (var4 - class25.cameraY) * class8.field237 / 1000 + ItemContainer.field802;
                                                    if(class25.cameraY > var4) {
                                                       class25.cameraY = var4;
                                                    }
                                                 }
 
                                                 if(class25.cameraY > var4) {
-                                                   class25.cameraY -= class8.field237 * (class25.cameraY - var4) / 1000 + XItemContainer.field802;
+                                                   class25.cameraY -= class8.field237 * (class25.cameraY - var4) / 1000 + ItemContainer.field802;
                                                    if(class25.cameraY < var4) {
                                                       class25.cameraY = var4;
                                                    }
@@ -5276,7 +5276,7 @@ public final class Client extends GameEngine {
                   }
 
                   widgetRoot = -1;
-                  componentTable = new XHashTable(8);
+                  componentTable = new HashTable(8);
                   field1090 = null;
                   menuOptionCount = 0;
                   isMenuOpen = false;
@@ -5300,7 +5300,7 @@ public final class Client extends GameEngine {
                   class28.clanMembers = null;
 
                   for(var1 = 0; var1 < 8; ++var1) {
-                     grandExchangeOffers[var1] = new XGrandExchangeOffer();
+                     grandExchangeOffers[var1] = new GrandExchangeOffer();
                   }
 
                   class61.field779 = null;
@@ -5379,7 +5379,7 @@ public final class Client extends GameEngine {
                         cachedPlayers[var2] = null;
                      }
 
-                     XGrandExchangeOffer.localPlayer = null;
+                     GrandExchangeOffer.localPlayer = null;
 
                      for(var2 = 0; var2 < cachedNPCs.length; ++var2) {
                         NPC var19 = cachedNPCs[var2];
@@ -5637,19 +5637,19 @@ public final class Client extends GameEngine {
             int var15;
             if(isMenuOpen) {
                int var11;
-               if(var14 != 1 && (XGrandExchangeOffer.field302 || var14 != 4)) {
+               if(var14 != 1 && (GrandExchangeOffer.field302 || var14 != 4)) {
                   var2 = MouseInput.field734;
                   var11 = MouseInput.field735;
-                  if(var2 < menuX - 10 || var2 > XGrandExchangeOffer.menuWidth + menuX + 10 || var11 < Sequence.menuY - 10 || var11 > class15.menuHeight + Sequence.menuY + 10) {
+                  if(var2 < menuX - 10 || var2 > GrandExchangeOffer.menuWidth + menuX + 10 || var11 < Sequence.menuY - 10 || var11 > class15.menuHeight + Sequence.menuY + 10) {
                      isMenuOpen = false;
-                     class91.method1724(menuX, Sequence.menuY, XGrandExchangeOffer.menuWidth, class15.menuHeight);
+                     class91.method1724(menuX, Sequence.menuY, GrandExchangeOffer.menuWidth, class15.menuHeight);
                   }
                }
 
-               if(var14 == 1 || !XGrandExchangeOffer.field302 && var14 == 4) {
+               if(var14 == 1 || !GrandExchangeOffer.field302 && var14 == 4) {
                   var2 = menuX;
                   var11 = Sequence.menuY;
-                  var12 = XGrandExchangeOffer.menuWidth;
+                  var12 = GrandExchangeOffer.menuWidth;
                   var5 = MouseInput.field741;
                   var15 = MouseInput.field742;
                   int var7 = -1;
@@ -5666,11 +5666,11 @@ public final class Client extends GameEngine {
                   }
 
                   isMenuOpen = false;
-                  class91.method1724(menuX, Sequence.menuY, XGrandExchangeOffer.menuWidth, class15.menuHeight);
+                  class91.method1724(menuX, Sequence.menuY, GrandExchangeOffer.menuWidth, class15.menuHeight);
                }
             } else {
                var2 = menuOptionCount - 1;
-               if((var14 == 1 || !XGrandExchangeOffer.field302 && var14 == 4) && var2 >= 0) {
+               if((var14 == 1 || !GrandExchangeOffer.field302 && var14 == 4) && var2 >= 0) {
                   var12 = menuTypes[var2];
                   if(var12 == 39 || var12 == 40 || var12 == 41 || var12 == 42 || var12 == 43 || var12 == 33 || var12 == 34 || var12 == 35 || var12 == 36 || var12 == 37 || var12 == 38 || var12 == 1005) {
                      var5 = menuActionParams0[var2];
@@ -5710,11 +5710,11 @@ public final class Client extends GameEngine {
                   }
                }
 
-               if((var14 == 1 || !XGrandExchangeOffer.field302 && var14 == 4) && this.method1365()) {
+               if((var14 == 1 || !GrandExchangeOffer.field302 && var14 == 4) && this.method1365()) {
                   var14 = 2;
                }
 
-               if((var14 == 1 || !XGrandExchangeOffer.field302 && var14 == 4) && menuOptionCount > 0) {
+               if((var14 == 1 || !GrandExchangeOffer.field302 && var14 == 4) && menuOptionCount > 0) {
                   Coordinates.method3956(var2);
                }
 

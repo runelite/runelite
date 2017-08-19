@@ -34,7 +34,7 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.mapping.Import;
-import net.runelite.rs.api.Client;
+import net.runelite.rs.api.RSClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,7 @@ public class AnnotationIntegrityChecker
 {
 	private static final Logger logger = LoggerFactory.getLogger(AnnotationIntegrityChecker.class);
 
-	public static final java.lang.Class<?> CLIENT_CLASS = Client.class;
+	public static final java.lang.Class<?> CLIENT_CLASS = RSClient.class;
 
 	public static final String API_PACKAGE_BASE = "net.runelite.rs.api.";
 

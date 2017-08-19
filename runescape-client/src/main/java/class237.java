@@ -302,7 +302,7 @@ public class class237 implements Runnable {
 
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                      var8 = var5 + 1;
-                     if(XGrandExchangeOffer.localPlayer.pathX[0] >= var1 - var8 && XGrandExchangeOffer.localPlayer.pathX[0] <= var8 + var1 && XGrandExchangeOffer.localPlayer.pathY[0] >= var2 - var8 && XGrandExchangeOffer.localPlayer.pathY[0] <= var2 + var8 && Client.field1148 != 0 && var6 > 0 && Client.field1166 < 50) {
+                     if(GrandExchangeOffer.localPlayer.pathX[0] >= var1 - var8 && GrandExchangeOffer.localPlayer.pathX[0] <= var8 + var1 && GrandExchangeOffer.localPlayer.pathY[0] >= var2 - var8 && GrandExchangeOffer.localPlayer.pathY[0] <= var2 + var8 && Client.field1148 != 0 && var6 > 0 && Client.field1166 < 50) {
                         Client.field1167[Client.field1166] = var3;
                         Client.field1168[Client.field1166] = var6;
                         Client.field1169[Client.field1166] = var7;
@@ -413,7 +413,7 @@ public class class237 implements Runnable {
 
                      Player var15;
                      if(var32 == Client.localInteractingIndex) {
-                        var15 = XGrandExchangeOffer.localPlayer;
+                        var15 = GrandExchangeOffer.localPlayer;
                      } else {
                         var15 = Client.cachedPlayers[var32];
                      }

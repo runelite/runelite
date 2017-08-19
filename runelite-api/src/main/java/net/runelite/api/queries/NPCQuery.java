@@ -33,9 +33,9 @@ import java.util.Objects;
 public class NPCQuery extends ActorQuery<NPC, NPCQuery>
 {
 	@Override
-	protected NPC[] result(Client client)
+	public NPC[] result(Client client)
 	{
-		return Arrays.stream(client.getNpcs())
+		return Arrays.stream(client.getCachedNPCs())
 				.filter(Objects::nonNull)
 				.filter(predicate)
 				.toArray(NPC[]::new);

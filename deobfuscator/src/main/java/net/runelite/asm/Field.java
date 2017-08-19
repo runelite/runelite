@@ -76,6 +76,11 @@ public class Field
 		this.accessFlags = accessFlags;
 	}
 
+	public boolean isPublic()
+	{
+		return (accessFlags & Opcodes.ACC_PUBLIC) != 0;
+	}
+
 	public boolean isStatic()
 	{
 		return (accessFlags & Opcodes.ACC_STATIC) != 0;

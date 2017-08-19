@@ -101,6 +101,7 @@
 		<module>model-viewer-rsmv</module>
 		<module>runelite-api</module>
 		<module>runelite-client</module>
+		<module>runelite-mixins</module>
 		<module>runescape-api</module>
 		<module>runescape-client</module>
 		<module>runescape-client-injector</module>

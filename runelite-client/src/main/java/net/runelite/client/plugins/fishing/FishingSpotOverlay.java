@@ -53,8 +53,9 @@ class FishingSpotOverlay extends Overlay
 
 	private final List<Integer> ids = new ArrayList<>();
 
+	private final RuneLite runelite = RuneLite.getRunelite();
+	private final Client client = RuneLite.getClient();
 	private final FishingConfig config;
-	private final static Client client = RuneLite.getClient();
 
 	public FishingSpotOverlay(FishingPlugin plugin)
 	{
@@ -72,7 +73,7 @@ class FishingSpotOverlay extends Overlay
 
 		NPCQuery query = new NPCQuery()
 			.idEquals(Ints.toArray(ids));
-		NPC[] npcs = client.runQuery(query);
+		NPC[] npcs = runelite.runQuery(query);
 
 		for (NPC npc : npcs)
 		{

@@ -195,7 +195,7 @@ public class TextureProvider implements ITextureLoader {
    static final void initializeGPI(PacketBuffer var0) {
       var0.bitAccess();
       int var1 = Client.localInteractingIndex;
-      Player var2 = XGrandExchangeOffer.localPlayer = Client.cachedPlayers[var1] = new Player();
+      Player var2 = GrandExchangeOffer.localPlayer = Client.cachedPlayers[var1] = new Player();
       var2.field896 = var1;
       int var3 = var0.getBits(30);
       byte var4 = (byte)(var3 >> 28);

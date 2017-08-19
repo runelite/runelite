@@ -374,7 +374,7 @@ public final class Player extends Actor {
       }
 
       this.name = var1.readString();
-      if(this == XGrandExchangeOffer.localPlayer) {
+      if(this == GrandExchangeOffer.localPlayer) {
          class153.field2216 = this.name;
       }
 

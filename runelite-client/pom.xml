@@ -87,7 +87,13 @@
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
-			<artifactId>client</artifactId>
+			<artifactId>api</artifactId>
+			<version>${project.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>injected-client</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
@@ -148,13 +154,16 @@
 							<shadedClassifierName>shaded</shadedClassifierName>
 
 							<filters>
-								<!--
-								Do not filter anything under net.runelite.
-								net.runelite.rs:client gets automatically filtered otherwise because it is runtime scoped
-								and only accessed with reflection.
-								-->
+								<!-- include runtime apis -->
 								<filter>
-									<artifact>net.runelite.*:*</artifact>
+									<!-- net.runelite:injected-client and net.runelite:api -->
+									<artifact>net.runelite:*</artifact>
+									<includes>
+										<include>**</include>
+									</includes>
+								</filter>
+								<filter>
+									<artifact>net.runelite.rs:api</artifact>
 									<includes>
 										<include>**</include>
 									</includes>

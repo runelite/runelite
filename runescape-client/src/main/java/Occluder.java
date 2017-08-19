@@ -663,12 +663,12 @@ public final class Occluder {
                      }
 
                      boolean var46 = false;
-                     if((MouseInput.field733 == 1 || !XGrandExchangeOffer.field302 && MouseInput.field733 == 4) && var44) {
+                     if((MouseInput.field733 == 1 || !GrandExchangeOffer.field302 && MouseInput.field733 == 4) && var44) {
                         var46 = true;
                      }
 
                      boolean var45 = false;
-                     if((MouseInput.field740 == 1 || !XGrandExchangeOffer.field302 && MouseInput.field740 == 4) && MouseInput.field741 >= var12 && MouseInput.field742 >= var13 && MouseInput.field741 < var14 && MouseInput.field742 < var15) {
+                     if((MouseInput.field740 == 1 || !GrandExchangeOffer.field302 && MouseInput.field740 == 4) && MouseInput.field741 >= var12 && MouseInput.field742 >= var13 && MouseInput.field741 < var14 && MouseInput.field742 < var15) {
                         var45 = true;
                      }
 
@@ -961,7 +961,7 @@ public final class Occluder {
                         }
 
                         Client.field1065 = false;
-                        if(MouseInput.field733 == 1 || !XGrandExchangeOffer.field302 && MouseInput.field733 == 4) {
+                        if(MouseInput.field733 == 1 || !GrandExchangeOffer.field302 && MouseInput.field733 == 4) {
                            if(var22 >= var19 && var22 < var19 + 16 && var23 >= var11 && var23 < var11 + 16) {
                               var9.scrollY -= 4;
                               class90.method1723(var9);

@@ -206,7 +206,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
       garbageValue = "79"
    )
    static void method553(GameEngine var0) {
-      if(MouseInput.field740 == 1 || !XGrandExchangeOffer.field302 && MouseInput.field740 == 4) {
+      if(MouseInput.field740 == 1 || !GrandExchangeOffer.field302 && MouseInput.field740 == 4) {
          int var1 = class93.field1434 + 280;
          if(MouseInput.field741 >= var1 && MouseInput.field741 <= var1 + 14 && MouseInput.field742 >= 4 && MouseInput.field742 <= 18) {
             class11.method57(0, 0);
@@ -315,7 +315,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
             }
          }
 
-         if(var2.equalsIgnoreCase(FloorUnderlayDefinition.method4398(XGrandExchangeOffer.localPlayer.name, class22.field354))) {
+         if(var2.equalsIgnoreCase(FloorUnderlayDefinition.method4398(GrandExchangeOffer.localPlayer.name, class22.field354))) {
             return true;
          } else {
             return false;

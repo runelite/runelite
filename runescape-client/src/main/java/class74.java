@@ -319,7 +319,7 @@ public class class74 extends class164 {
    )
    static final void method1184(Widget var0, int var1, int var2) {
       if(Client.field1160 == 0 || Client.field1160 == 3) {
-         if(MouseInput.field740 == 1 || !XGrandExchangeOffer.field302 && MouseInput.field740 == 4) {
+         if(MouseInput.field740 == 1 || !GrandExchangeOffer.field302 && MouseInput.field740 == 4) {
             class211 var3 = var0.method4043(true);
             if(var3 == null) {
                return;
@@ -335,8 +335,8 @@ public class class74 extends class164 {
                int var8 = Graphics3D.COSINE[var6];
                int var9 = var4 * var8 + var7 * var5 >> 11;
                int var10 = var5 * var8 - var7 * var4 >> 11;
-               int var11 = var9 + XGrandExchangeOffer.localPlayer.x >> 7;
-               int var12 = XGrandExchangeOffer.localPlayer.y - var10 >> 7;
+               int var11 = var9 + GrandExchangeOffer.localPlayer.x >> 7;
+               int var12 = GrandExchangeOffer.localPlayer.y - var10 >> 7;
                Client.secretPacketBuffer1.putOpcode(110);
                Client.secretPacketBuffer1.putByte(18);
                Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field642[82]?(KeyFocusListener.field642[81]?2:1):0);
@@ -349,8 +349,8 @@ public class class74 extends class164 {
                Client.secretPacketBuffer1.putByte(0);
                Client.secretPacketBuffer1.putByte(0);
                Client.secretPacketBuffer1.putByte(89);
-               Client.secretPacketBuffer1.putShort(XGrandExchangeOffer.localPlayer.x);
-               Client.secretPacketBuffer1.putShort(XGrandExchangeOffer.localPlayer.y);
+               Client.secretPacketBuffer1.putShort(GrandExchangeOffer.localPlayer.x);
+               Client.secretPacketBuffer1.putShort(GrandExchangeOffer.localPlayer.y);
                Client.secretPacketBuffer1.putByte(63);
                Client.destinationX = var11;
                Client.destinationY = var12;

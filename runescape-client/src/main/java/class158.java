@@ -37,11 +37,11 @@ public class class158 {
       garbageValue = "-44"
    )
    static final void method2996(Player var0, int var1, int var2, int var3) {
-      if(XGrandExchangeOffer.localPlayer != var0) {
+      if(GrandExchangeOffer.localPlayer != var0) {
          if(Client.menuOptionCount < 400) {
             String var4;
             if(var0.totalLevel == 0) {
-               var4 = var0.actions[0] + var0.name + var0.actions[1] + class34.method465(var0.combatLevel, XGrandExchangeOffer.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
+               var4 = var0.actions[0] + var0.name + var0.actions[1] + class34.method465(var0.combatLevel, GrandExchangeOffer.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
             } else {
                var4 = var0.actions[0] + var0.name + var0.actions[1] + " " + " (" + "skill-" + var0.totalLevel + ")" + var0.actions[2];
             }
@@ -62,12 +62,12 @@ public class class158 {
                            continue;
                         }
 
-                        if(Client.field959 == class92.field1422 || Client.field959 == class92.field1426 && var0.combatLevel > XGrandExchangeOffer.localPlayer.combatLevel) {
+                        if(Client.field959 == class92.field1422 || Client.field959 == class92.field1426 && var0.combatLevel > GrandExchangeOffer.localPlayer.combatLevel) {
                            var6 = 2000;
                         }
 
-                        if(XGrandExchangeOffer.localPlayer.team != 0 && var0.team != 0) {
-                           if(var0.team == XGrandExchangeOffer.localPlayer.team) {
+                        if(GrandExchangeOffer.localPlayer.team != 0 && var0.team != 0) {
+                           if(var0.team == GrandExchangeOffer.localPlayer.team) {
                               var6 = 2000;
                            } else {
                               var6 = 0;

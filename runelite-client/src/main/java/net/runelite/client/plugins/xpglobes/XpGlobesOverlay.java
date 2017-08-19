@@ -93,7 +93,7 @@ public class XpGlobesOverlay extends Overlay
 		}
 
 		//check the width of the client if we can draw properly
-		int clientWidth = client.isResized() ? client.getClientWidth() : client.getViewportHeight();
+		int clientWidth = client.isResized() ? client.getCanvas().getWidth() : client.getViewportHeight();
 		if (clientWidth <= 0)
 		{
 			return null;

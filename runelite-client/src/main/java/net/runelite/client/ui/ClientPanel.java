@@ -84,13 +84,14 @@ final class ClientPanel extends JPanel
 			return;
 		}
 
-		if (!(rs instanceof net.runelite.rs.api.Client))
+		if (!(rs instanceof Client))
 		{
 			logger.error("Injected client does not implement Client!");
 			System.exit(-1);
 		}
 
-		Client client = new Client((net.runelite.rs.api.Client) rs);
+		Client client = (Client) rs;
+
 		RuneLite.setClient(client);
 
 		// This causes the whole game frame to be redrawn each frame instead

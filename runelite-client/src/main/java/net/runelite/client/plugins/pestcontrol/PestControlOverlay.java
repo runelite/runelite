@@ -54,7 +54,9 @@ public class PestControlOverlay extends Overlay
 {
 	private static final Logger logger = LoggerFactory.getLogger(PestControlOverlay.class);
 
+	private final RuneLite runelite = RuneLite.getRunelite();
 	private final Client client = RuneLite.getClient();
+
 	private final PestControl plugin;
 
 	// Pest control game
@@ -107,7 +109,7 @@ public class PestControlOverlay extends Overlay
 	private void renderSpinners(Graphics2D graphics)
 	{
 		Query query = new NPCQuery().nameEquals("Spinner");
-		NPC[] result = client.runQuery(query);
+		NPC[] result = runelite.runQuery(query);
 		Arrays.stream(result).forEach(npc -> OverlayUtil.renderActorOverlay(graphics, npc, npc.getName(), Color.CYAN));
 	}
 

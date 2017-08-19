@@ -23,7 +23,7 @@ public class class276 {
       Spotanim.field3323.reset();
       class91.method1725();
       Ignore.method1171();
-      XClanMember.method1208();
+      ClanMember.method1208();
       CombatInfo2.field3350.reset();
       CombatInfo2.spriteCache.reset();
       class253.field3382.reset();

@@ -31,63 +31,7 @@ import java.awt.Polygon;
  *
  * @author Adam
  */
-public class DecorativeObject extends TileObject
+public interface DecorativeObject extends TileObject
 {
-	private final net.runelite.rs.api.DecorativeObject decorativeObject;
-
-	public DecorativeObject(Client client, net.runelite.rs.api.DecorativeObject decorativeObject)
-	{
-		super(client);
-		this.decorativeObject = decorativeObject;
-	}
-
-	@Override
-	protected int getHash()
-	{
-		return decorativeObject.getHash();
-	}
-
-	@Override
-	protected int getLocalX()
-	{
-		return decorativeObject.getX();
-	}
-
-	@Override
-	protected int getLocalY()
-	{
-		return decorativeObject.getY();
-	}
-
-	public Renderable getRenderable()
-	{
-		return Renderable.of(decorativeObject.getRenderable());
-	}
-
-	public Polygon getConvexHull()
-	{
-		Renderable renderable = getRenderable();
-		if (renderable == null)
-		{
-			return null;
-		}
-
-		Model model;
-
-		if (renderable instanceof Model)
-		{
-			model = (Model) renderable;
-		}
-		else
-		{
-			model = renderable.getModel();
-		}
-
-		if (model == null)
-		{
-			return null;
-		}
-
-		return getConvexHull(model, decorativeObject.getOrientation());
-	}
+	Polygon getConvexHull();
 }

@@ -76,7 +76,7 @@ public class VarPlayerType extends CacheableNode {
       garbageValue = "0"
    )
    static void method4302(int var0) {
-      XItemContainer var1 = (XItemContainer)XItemContainer.itemContainers.get((long)var0);
+      ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
       if(var1 != null) {
          for(int var2 = 0; var2 < var1.itemIds.length; ++var2) {
             var1.itemIds[var2] = -1;
@@ -422,7 +422,7 @@ public class VarPlayerType extends CacheableNode {
                   var3 = 1;
                } else if(var0 == 3101) {
                   class84.intStackSize -= 2;
-                  class3.method6(XGrandExchangeOffer.localPlayer, class84.intStack[class84.intStackSize], class84.intStack[class84.intStackSize + 1]);
+                  class3.method6(GrandExchangeOffer.localPlayer, class84.intStack[class84.intStackSize], class84.intStack[class84.intStackSize + 1]);
                   var3 = 1;
                } else if(var0 == 3103) {
                   Actor.method1543();
@@ -458,7 +458,7 @@ public class VarPlayerType extends CacheableNode {
 
                   for(var9 = 0; var9 < var6; ++var9) {
                      Player var44 = Client.cachedPlayers[var39[var9]];
-                     if(var44 != null && var44 != XGrandExchangeOffer.localPlayer && var44.name != null && var44.name.equalsIgnoreCase(var51)) {
+                     if(var44 != null && var44 != GrandExchangeOffer.localPlayer && var44.name != null && var44.name.equalsIgnoreCase(var51)) {
                         if(var4 == 1) {
                            Client.secretPacketBuffer1.putOpcode(190);
                            Client.secretPacketBuffer1.method3208(var39[var9]);
@@ -503,7 +503,7 @@ public class VarPlayerType extends CacheableNode {
                   class61.method1117(var63, var4, var32);
                   var3 = 1;
                } else if(var0 == 3110) {
-                  XGrandExchangeOffer.field302 = class84.intStack[--class84.intStackSize] == 1;
+                  GrandExchangeOffer.field302 = class84.intStack[--class84.intStackSize] == 1;
                   var3 = 1;
                } else if(var0 == 3111) {
                   class84.intStack[++class84.intStackSize - 1] = class3.preferences.hideRoofs?1:0;
@@ -563,14 +563,14 @@ public class VarPlayerType extends CacheableNode {
                      var3 = 1;
                   } else {
                      int[] var58;
-                     XItemContainer var59;
+                     ItemContainer var59;
                      if(var0 == 3302) {
                         class84.intStackSize -= 2;
                         var4 = class84.intStack[class84.intStackSize];
                         var32 = class84.intStack[class84.intStackSize + 1];
                         var58 = class84.intStack;
                         var49 = ++class84.intStackSize - 1;
-                        var59 = (XItemContainer)XItemContainer.itemContainers.get((long)var4);
+                        var59 = (ItemContainer)ItemContainer.itemContainers.get((long)var4);
                         if(var59 == null) {
                            var17 = 0;
                         } else if(var32 >= 0 && var32 < var59.stackSizes.length) {
@@ -589,7 +589,7 @@ public class VarPlayerType extends CacheableNode {
                            var32 = class84.intStack[class84.intStackSize + 1];
                            var58 = class84.intStack;
                            var49 = ++class84.intStackSize - 1;
-                           var59 = (XItemContainer)XItemContainer.itemContainers.get((long)var4);
+                           var59 = (ItemContainer)ItemContainer.itemContainers.get((long)var4);
                            if(var59 == null) {
                               var17 = 0;
                            } else if(var32 == -1) {
@@ -626,8 +626,8 @@ public class VarPlayerType extends CacheableNode {
                            var3 = 1;
                         } else if(var0 == 3308) {
                            var4 = class35.plane;
-                           var32 = (XGrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
-                           var6 = (XGrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
+                           var32 = (GrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
+                           var6 = (GrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
                            class84.intStack[++class84.intStackSize - 1] = (var32 << 14) + var6 + (var4 << 28);
                            var3 = 1;
                         } else if(var0 == 3309) {
@@ -663,7 +663,7 @@ public class VarPlayerType extends CacheableNode {
                            var32 = class84.intStack[class84.intStackSize + 1];
                            var58 = class84.intStack;
                            var49 = ++class84.intStackSize - 1;
-                           var59 = (XItemContainer)XItemContainer.itemContainers.get((long)var4);
+                           var59 = (ItemContainer)ItemContainer.itemContainers.get((long)var4);
                            if(var59 == null) {
                               var17 = 0;
                            } else if(var32 == -1) {
@@ -877,7 +877,7 @@ public class VarPlayerType extends CacheableNode {
                                              }
                                           }
 
-                                          if(FloorUnderlayDefinition.method4398(XGrandExchangeOffer.localPlayer.name, class22.field354).equals(var51)) {
+                                          if(FloorUnderlayDefinition.method4398(GrandExchangeOffer.localPlayer.name, class22.field354).equals(var51)) {
                                              NPC.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
                                           } else {
                                              Client.secretPacketBuffer1.putOpcode(226);
@@ -978,7 +978,7 @@ public class VarPlayerType extends CacheableNode {
                                                 }
                                              }
 
-                                             if(FloorUnderlayDefinition.method4398(XGrandExchangeOffer.localPlayer.name, class22.field354).equals(var51)) {
+                                             if(FloorUnderlayDefinition.method4398(GrandExchangeOffer.localPlayer.name, class22.field354).equals(var51)) {
                                                 NPC.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
                                              } else {
                                                 Client.secretPacketBuffer1.putOpcode(64);
@@ -1203,7 +1203,7 @@ public class VarPlayerType extends CacheableNode {
                                  var3 = 1;
                               } else if(var0 == 3624) {
                                  var4 = class84.intStack[--class84.intStackSize];
-                                 if(class28.clanMembers != null && var4 < class82.clanChatCount && class28.clanMembers[var4].username.equalsIgnoreCase(XGrandExchangeOffer.localPlayer.name)) {
+                                 if(class28.clanMembers != null && var4 < class82.clanChatCount && class28.clanMembers[var4].username.equalsIgnoreCase(GrandExchangeOffer.localPlayer.name)) {
                                     class84.intStack[++class84.intStackSize - 1] = 1;
                                  } else {
                                     class84.intStack[++class84.intStackSize - 1] = 0;
@@ -1423,7 +1423,7 @@ public class VarPlayerType extends CacheableNode {
                            class91.scriptStringStackSize -= 2;
                            var46 = class84.scriptStringStack[class91.scriptStringStackSize];
                            var51 = class84.scriptStringStack[class91.scriptStringStackSize + 1];
-                           if(XGrandExchangeOffer.localPlayer.composition != null && XGrandExchangeOffer.localPlayer.composition.isFemale) {
+                           if(GrandExchangeOffer.localPlayer.composition != null && GrandExchangeOffer.localPlayer.composition.isFemale) {
                               class84.scriptStringStack[++class91.scriptStringStackSize - 1] = var51;
                            } else {
                               class84.scriptStringStack[++class91.scriptStringStackSize - 1] = var46;

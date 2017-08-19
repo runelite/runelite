@@ -85,8 +85,19 @@ public class InjectorValidator
 				continue;
 			}
 
+			if (cf.isAbstract())
+			{
+				// Abstract classes don't have to implement anything
+				continue;
+			}
+
 			for (Method method : c.getMethods())
 			{
+				if (method.isSynthetic())
+				{
+					continue;
+				}
+
 				// could check method signature here too but it is
 				// annoying to deal with both runelite api and java
 				// reflection api

@@ -17,7 +17,7 @@ public class class266 {
       garbageValue = "-491906604"
    )
    static final void method4875(class66 var0) {
-      if(XGrandExchangeOffer.localPlayer.x >> 7 == Client.destinationX && XGrandExchangeOffer.localPlayer.y >> 7 == Client.destinationY) {
+      if(GrandExchangeOffer.localPlayer.x >> 7 == Client.destinationX && GrandExchangeOffer.localPlayer.y >> 7 == Client.destinationY) {
          Client.destinationX = 0;
       }
 
@@ -32,8 +32,8 @@ public class class266 {
          Player var5;
          int var6;
          if(class66.field823 == var0) {
-            var5 = XGrandExchangeOffer.localPlayer;
-            var6 = XGrandExchangeOffer.localPlayer.field896 << 14;
+            var5 = GrandExchangeOffer.localPlayer;
+            var6 = GrandExchangeOffer.localPlayer.field896 << 14;
          } else if(class66.field824 == var0) {
             var5 = Client.cachedPlayers[Client.field1054];
             var6 = Client.field1054 << 14;

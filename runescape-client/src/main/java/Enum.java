@@ -125,7 +125,7 @@ public class Enum extends CacheableNode {
       garbageValue = "-78"
    )
    static int method4509(int var0, int var1) {
-      XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.get((long)var0);
+      ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
       return var2 == null?0:(var1 >= 0 && var1 < var2.stackSizes.length?var2.stackSizes[var1]:0);
    }
 }

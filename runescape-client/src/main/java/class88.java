@@ -192,7 +192,7 @@ public class class88 {
             var13.idlePoseAnimation = var13.composition.field3553;
             var13.field1241 = var13.composition.field3563;
             var13.field1225 = var13.composition.field3548;
-            var13.method1685(XGrandExchangeOffer.localPlayer.pathX[0] + var7, XGrandExchangeOffer.localPlayer.pathY[0] + var6, var5 == 1);
+            var13.method1685(GrandExchangeOffer.localPlayer.pathX[0] + var7, GrandExchangeOffer.localPlayer.pathY[0] + var6, var5 == 1);
          }
 
          Client.secretPacketBuffer2.byteAccess();

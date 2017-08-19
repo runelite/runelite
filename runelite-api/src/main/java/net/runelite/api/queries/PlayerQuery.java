@@ -33,9 +33,9 @@ import java.util.Objects;
 public class PlayerQuery extends ActorQuery<Player, PlayerQuery>
 {
 	@Override
-	protected Player[] result(Client client)
+	public Player[] result(Client client)
 	{
-		return Arrays.stream(client.getPlayers())
+		return Arrays.stream(client.getCachedPlayers())
 				.filter(Objects::nonNull)
 				.filter(predicate)
 				.toArray(Player[]::new);

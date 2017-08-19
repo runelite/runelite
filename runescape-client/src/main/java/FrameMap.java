@@ -63,7 +63,7 @@ public class FrameMap extends Node {
    )
    static void method2700() {
       if(class46.renderOverview != null) {
-         class46.renderOverview.method5229(class35.plane, (XGrandExchangeOffer.localPlayer.x >> 7) + class47.baseX, (XGrandExchangeOffer.localPlayer.y >> 7) + class44.baseY, false);
+         class46.renderOverview.method5229(class35.plane, (GrandExchangeOffer.localPlayer.x >> 7) + class47.baseX, (GrandExchangeOffer.localPlayer.y >> 7) + class44.baseY, false);
          class46.renderOverview.method5249();
       }
 

@@ -20,7 +20,7 @@ public class class239 {
    @ObfuscatedSignature(
       signature = "Lgr;"
    )
-   public static XHashTable field3239;
+   public static HashTable field3239;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1167829465
@@ -30,7 +30,7 @@ public class class239 {
    @ObfuscatedSignature(
       signature = "Lgr;"
    )
-   public static XHashTable field3250;
+   public static HashTable field3250;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lgq;"
@@ -51,7 +51,7 @@ public class class239 {
    @ObfuscatedSignature(
       signature = "Lgr;"
    )
-   public static XHashTable field3241;
+   public static HashTable field3241;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       longValue = -9032892039466249519L
@@ -66,7 +66,7 @@ public class class239 {
    @ObfuscatedSignature(
       signature = "Lgr;"
    )
-   public static XHashTable field3253;
+   public static HashTable field3253;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = 103642023
@@ -106,14 +106,14 @@ public class class239 {
 
    static {
       field3237 = 0;
-      field3250 = new XHashTable(4096);
+      field3250 = new HashTable(4096);
       field3240 = 0;
-      field3241 = new XHashTable(32);
+      field3241 = new HashTable(32);
       field3242 = 0;
       field3243 = new Node2LinkedList();
-      field3239 = new XHashTable(4096);
+      field3239 = new HashTable(4096);
       field3245 = 0;
-      field3253 = new XHashTable(4096);
+      field3253 = new HashTable(4096);
       field3247 = 0;
       field3238 = new Buffer(8);
       field3251 = 0;

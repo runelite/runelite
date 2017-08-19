@@ -48,17 +48,17 @@ public class InjectMojo extends AbstractMojo
 	@Parameter(defaultValue = "${project.build.outputDirectory}")
 	private File outputDirectory;
 
-	@Parameter(defaultValue = "${net.runelite.rs:rs-client:jar}", readonly = true, required = true)
+	@Parameter(defaultValue = "${net.runelite.rs:client:jar}", readonly = true, required = true)
 	private String rsClientPath;
 
 	@Parameter(defaultValue = "${net.runelite.rs:vanilla:jar}", readonly = true, required = true)
 	private String vanillaPath;
 
+	private final Log log = getLog();
+
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
-		Log log = getLog();
-
 		ClientVersion ver = new ClientVersion(new File(vanillaPath));
 		int version;
 		try
@@ -86,7 +86,14 @@ public class InjectMojo extends AbstractMojo
 		}
 
 		Injector injector = new Injector(rs, vanilla);
-		injector.inject();
+		try
+		{
+			injector.inject();
+		}
+		catch (InjectionException ex)
+		{
+			throw new MojoExecutionException("Error injecting client", ex);
+		}
 
 		InjectorValidator iv = new InjectorValidator(vanilla);
 		iv.validate();
@@ -110,7 +117,7 @@ public class InjectMojo extends AbstractMojo
 			throw new MojoExecutionException("Unable to write classes", ex);
 		}
 
-		log.info("Injector wrote " + vanilla.getClasses().size() + " classes, " + iv.getOkay() + " injected methods ");
+		log.info("Injector wrote " + vanilla.getClasses().size() + " classes, " + iv.getOkay() + " injected methods");
 	}
 
 	private void writeClasses(ClassGroup group, File outputDirectory) throws IOException

@@ -54,10 +54,11 @@ public class ImplingsOverlay extends Overlay
 	private static final int STATIC_SPAWN = 1618;
 	private static final int DYNAMIC_SPAWN = 1633;
 
+	private final RuneLite runelite = RuneLite.getRunelite();
+	private final Client client = RuneLite.getClient();
+
 	private final ImplingsConfig config;
 	private final List<Integer> ids;
-
-	private final Client client = RuneLite.getClient();
 
 	public ImplingsOverlay(Implings plugin)
 	{
@@ -75,7 +76,7 @@ public class ImplingsOverlay extends Overlay
 		}
 
 		NPCQuery implingQuery = new NPCQuery().idEquals(Ints.toArray(ids));
-		NPC[] implings = client.runQuery(implingQuery);
+		NPC[] implings = runelite.runQuery(implingQuery);
 		for (NPC imp : implings)
 		{
 			//Spawns have the name "null", so they get changed to "Spawn"

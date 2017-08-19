@@ -62,10 +62,13 @@ public class InjectTest
 
 	@Test
 	@Ignore
-	public void testRun() throws IOException, ClassNotFoundException
+	public void testRun() throws InjectionException
 	{
 		Inject instance = new Inject(deob, vanilla);
 		instance.run();
+
+		InjectorValidator iv = new InjectorValidator(vanilla);
+		iv.validate();
 	}
 
 }

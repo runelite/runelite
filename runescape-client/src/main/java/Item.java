@@ -35,7 +35,7 @@ public final class Item extends Renderable {
       garbageValue = "-23874"
    )
    static int method1779(int var0, int var1) {
-      XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.get((long)var0);
+      ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
       return var2 == null?-1:(var1 >= 0 && var1 < var2.itemIds.length?var2.itemIds[var1]:-1);
    }
 }

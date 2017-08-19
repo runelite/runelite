@@ -39,7 +39,7 @@ public class Injector
 		this.vanilla = vanilla;
 	}
 
-	public void inject()
+	public void inject() throws InjectionException
 	{
 		Inject instance = new Inject(deobfuscated, vanilla);
 		instance.run();
@@ -50,7 +50,7 @@ public class Injector
 		JarUtil.saveJar(vanilla, out);
 	}
 
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args) throws IOException, InjectionException
 	{
 		if (args.length < 3)
 		{

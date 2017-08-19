@@ -32,7 +32,7 @@ public class class14 {
    @ObfuscatedSignature(
       signature = "La;"
    )
-   public final XGrandExchangeOffer field291;
+   public final GrandExchangeOffer field291;
 
    @ObfuscatedSignature(
       signature = "(Lfb;BI)V"
@@ -44,7 +44,7 @@ public class class14 {
       this.field286 = var1.readLong();
       int var4 = var1.readInt();
       int var5 = var1.readInt();
-      this.field291 = new XGrandExchangeOffer();
+      this.field291 = new GrandExchangeOffer();
       this.field291.method102(2);
       this.field291.method103(var2);
       this.field291.price = var4;

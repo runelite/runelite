@@ -10,7 +10,7 @@ public class Track1 extends Node {
    @ObfuscatedSignature(
       signature = "Lgr;"
    )
-   XHashTable field2592;
+   HashTable field2592;
    @ObfuscatedName("h")
    byte[] field2593;
 
@@ -336,7 +336,7 @@ public class Track1 extends Node {
    @ObfuscatedName("h")
    void method3914() {
       if(this.field2592 == null) {
-         this.field2592 = new XHashTable(16);
+         this.field2592 = new HashTable(16);
          int[] var1 = new int[16];
          int[] var2 = new int[16];
          var2[9] = 128;
