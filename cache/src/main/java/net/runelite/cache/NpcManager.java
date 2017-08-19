@@ -62,7 +62,8 @@ public class NpcManager
 		}
 	}
 	
-	public List<NpcDefinition> getNpcs() {
+	public List<NpcDefinition> getNpcs()
+	{
         	return npcs;
 	}
 
