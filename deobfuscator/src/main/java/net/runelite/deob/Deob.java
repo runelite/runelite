@@ -27,6 +27,10 @@ package net.runelite.deob;
 import com.google.common.base.Stopwatch;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.execution.Execution;
 import net.runelite.deob.deobfuscators.transformers.GetPathTransformer;
@@ -57,6 +61,12 @@ import net.runelite.deob.deobfuscators.transformers.MaxMemoryTransformer;
 import net.runelite.deob.deobfuscators.transformers.ReflectionTransformer;
 import net.runelite.deob.deobfuscators.transformers.RuneliteBufferTransformer;
 import net.runelite.deob.util.JarUtil;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,23 +77,111 @@ public class Deob
 	public static final int OBFUSCATED_NAME_MAX_LEN = 2;
 	private static final boolean CHECK_EXEC = false;
 
+	// default cli parameters
+	private static boolean rename = true;
+	private static boolean unusedParameters = true;
+	private static boolean runTransformers = true;
+	private static String inputJar = null;
+	private static String outputJar = null;
+
+	private static void printHelp(Options options)
+	{
+		HelpFormatter formatter = new HelpFormatter();
+		formatter.printHelp("Deob", options);
+	}
+
+	private static boolean parseArgs(String[] args) {
+		Options options = new Options();
+		options.addOption(null, "rename", true, "rename fields, classes, methods and local variables to sensible names.\ndefaults to true");
+		options.addOption(null, "unused-parameters", true, "remove unused method parameters.\ndefaults to true.");
+		options.addOption(null, "run-transformers", true, "run various RuneLite specific bytecode transformers.\ndefaults to true");
+		options.addOption(null, "in", true, "path to the input jar file.\ndefaults to true");
+		options.addOption(null, "out", true, "path to the output jar file.\ndefaults to true");
+
+		CommandLineParser parser = new DefaultParser();
+		CommandLine cmd;
+		try
+		{
+			cmd = parser.parse(options, args);
+		} catch (ParseException e)
+		{
+			printHelp(options);
+			return false;
+		}
+
+		if (cmd.hasOption("rename"))
+		{
+			rename = Boolean.parseBoolean(cmd.getOptionValue("rename"));
+		}
+		if (cmd.hasOption("unused-parameters"))
+		{
+			unusedParameters = Boolean.parseBoolean(cmd.getOptionValue("unused-parameters"));
+		}
+		if (cmd.hasOption("run-transformers"))
+		{
+			runTransformers = Boolean.parseBoolean(cmd.getOptionValue("run-transformers"));
+		}
+
+		// allow output and input jar as bare arguments.
+		// if --in or --out is specified, these will be overridden.
+		List<String> additional = cmd.getArgList();
+		if (additional.size() == 2)
+		{
+			inputJar = additional.get(0);
+			outputJar = additional.get(1);
+		}
+
+
+		if (cmd.hasOption("in"))
+		{
+			inputJar = cmd.getOptionValue("in");
+
+		}
+		if (cmd.hasOption("out"))
+		{
+			outputJar = cmd.getOptionValue("out");
+		}
+
+		if (inputJar == null)
+		{
+			System.err.println("no input file specified! use the \"--in\" option.");
+			printHelp(options);
+			return false;
+		}
+		else if (!Files.isReadable(Paths.get(inputJar)))
+		{
+			System.err.println("file \"" + inputJar + "\" does not exist or is not readable!");
+			return false;
+		}
+
+		if (outputJar == null)
+		{
+			System.err.println("no output jar specified! use the \"--out\" option.");
+			printHelp(options);
+			return false;
+		}
+
+		return true;
+	}
+
+
 	public static void main(String[] args) throws IOException
 	{
-		if (args == null || args.length < 2)
-		{
-			System.err.println("Syntax: input_jar output_jar");
-			System.exit(-1);
-		}
+		if (!parseArgs(args))
+			return;
 
 		logger.info("Deobfuscator revision {}", DeobProperties.getRevision());
 
 		Stopwatch stopwatch = Stopwatch.createStarted();
 
-		ClassGroup group = JarUtil.loadJar(new File(args[0]));
+		ClassGroup group = JarUtil.loadJar(new File(inputJar));
 
 		run(group, new ControlFlowDeobfuscator());
 
-		run(group, new RenameUnique());
+		if (rename)
+		{
+			run(group, new RenameUnique());
+		}
 
 		// remove except RuntimeException
 		run(group, new RuntimeExceptions());
@@ -103,8 +201,11 @@ public class Deob
 		run(group, new UnreachedCode());
 		run(group, new UnusedMethods());
 
-		// remove unused parameters
-		run(group, new UnusedParameters());
+		if (unusedParameters)
+		{
+			// remove unused parameters
+			run(group, new UnusedParameters());
+		}
 
 		// remove unused fields
 		run(group, new UnusedFields());
@@ -149,13 +250,16 @@ public class Deob
 
 		run(group, new MenuActionDeobfuscator());
 
-		new GetPathTransformer().transform(group);
-		new ClientErrorTransformer().transform(group);
-		new ReflectionTransformer().transform(group);
-		new MaxMemoryTransformer().transform(group);
-		new RuneliteBufferTransformer().transform(group);
+		if (runTransformers)
+		{
+			new GetPathTransformer().transform(group);
+			new ClientErrorTransformer().transform(group);
+			new ReflectionTransformer().transform(group);
+			new MaxMemoryTransformer().transform(group);
+			new RuneliteBufferTransformer().transform(group);
+		}
 
-		JarUtil.saveJar(group, new File(args[1]));
+		JarUtil.saveJar(group, new File(outputJar));
 
 		stopwatch.stop();
 		logger.info("Done in {}", stopwatch);
