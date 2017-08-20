@@ -74,6 +74,11 @@ public class StaticStep
 			return null;
 		}
 
+		if (to.isNative())
+		{
+			return null;
+		}
+
 		Frame f2 = new Frame(e, to);
 		f2.initialize(i);
 		f2.setOrder(f.getOrder());

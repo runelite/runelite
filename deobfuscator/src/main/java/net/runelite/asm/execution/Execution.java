@@ -184,6 +184,11 @@ public class Execution
 			return null;
 		}
 
+		if (to.isNative())
+		{
+			return null;
+		}
+
 		Frame f = new Frame(this, to);
 		f.initialize(from);
 		this.addFrame(f);
