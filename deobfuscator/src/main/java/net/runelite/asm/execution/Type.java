@@ -84,6 +84,11 @@ public class Type
 			case "J":
 				return long.class.getCanonicalName();
 			default:
+				if (type.endsWith(";"))
+				{
+					type = type.substring(1, type.length() - 1);
+				}
+
 				return type.replace("/", ".");
 		}
 	}
