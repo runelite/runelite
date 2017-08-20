@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.AConstNull;
 import net.runelite.asm.attributes.code.instructions.CheckCast;
 import net.runelite.asm.execution.Execution;
@@ -70,12 +71,9 @@ public class CastNull implements Deobfuscator
 	
 	private void visit(MethodContext ctx)
 	{
-		for (Instruction i : interesting)
-		{
-			i.getInstructions().remove(i);
-			++removed;
-		}
-			
+		Instructions ins = ctx.getMethod().getCode().getInstructions();
+		interesting.forEach(ins::remove);
+		removed += interesting.size();
 		interesting.clear();
 		notInteresting.clear();
 	}
