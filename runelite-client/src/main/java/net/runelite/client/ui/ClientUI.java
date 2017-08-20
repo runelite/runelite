@@ -36,6 +36,7 @@ import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
+import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +58,8 @@ public final class ClientUI extends JFrame
 	{
 		init();
 		pack();
+		TitleBarPane titleBarPane = new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI());
+		titleBarPane.editTitleBar(this);
 		setTitle("RuneLite");
 		setIconImage(RuneLite.ICON);
 		setLocationRelativeTo(getOwner());
