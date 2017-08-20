@@ -99,7 +99,13 @@ public class ChatCommands extends Plugin
 
 		String message = setMessage.getValue();
 
-		if (config.price() && message.toLowerCase().startsWith("!price") && message.length() > 7)
+		if (config.lvl() && message.toLowerCase().equals("!total"))
+		{
+			logger.debug("Running total level lookup");
+			ScheduledExecutorService executor = runelite.getExecutor();
+			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, "total"));
+		}
+		else if (config.price() && message.toLowerCase().startsWith("!price") && message.length() > 7)
 		{
 			String search = message.substring(7);
 
