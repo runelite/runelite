@@ -36,6 +36,7 @@ import net.runelite.client.config.ConfigItem;
 public interface ChatCommandsConfig
 {
 	@ConfigItem(
+		position = 0,
 		keyName = "price",
 		name = "Price Command",
 		description = "Configures whether the Price command is enabled"
@@ -46,6 +47,7 @@ public interface ChatCommandsConfig
 	}
 
 	@ConfigItem(
+		position = 1,
 		keyName = "lvl",
 		name = "Level Command",
 		description = "Configures whether the Level command is enabled"
@@ -56,6 +58,7 @@ public interface ChatCommandsConfig
 	}
 
 	@ConfigItem(
+		position = 2,
 		keyName = "enableRecolor",
 		name = "Enable command recolor",
 		description = "Configures whether chat commands are recolored"
@@ -66,6 +69,7 @@ public interface ChatCommandsConfig
 	}
 
 	@ConfigItem(
+		position = 3,
 		keyName = "hexColorPublic",
 		name = "Public chat",
 		description = "Color of Public chat"
@@ -76,6 +80,7 @@ public interface ChatCommandsConfig
 	}
 
 	@ConfigItem(
+		position = 4,
 		keyName = "hexColorPublicH",
 		name = "Public chat highlight",
 		description = "Color of Public chat highlight"
@@ -86,6 +91,7 @@ public interface ChatCommandsConfig
 	}
 
 	@ConfigItem(
+		position = 5,
 		keyName = "hexColorPrivate",
 		name = "Private chat",
 		description = "Color of Private chat"
@@ -96,6 +102,7 @@ public interface ChatCommandsConfig
 	}
 
 	@ConfigItem(
+		position = 6,
 		keyName = "hexColorPrivateH",
 		name = "Private chat highlight",
 		description = "Color of Private chat highlight"
@@ -106,6 +113,7 @@ public interface ChatCommandsConfig
 	}
 
 	@ConfigItem(
+		position = 7,
 		keyName = "hexColorCc",
 		name = "Clan chat",
 		description = "Color of Clan chat"
@@ -116,6 +124,7 @@ public interface ChatCommandsConfig
 	}
 
 	@ConfigItem(
+		position = 8,
 		keyName = "hexColorCcH",
 		name = "Clan chat Highlight",
 		description = "Color of Clan chat highlight"
