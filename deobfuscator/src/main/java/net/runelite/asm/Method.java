@@ -36,6 +36,7 @@ import net.runelite.asm.signature.Signature;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.MethodVisitor;
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
+import static org.objectweb.asm.Opcodes.ACC_NATIVE;
 import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
 import static org.objectweb.asm.Opcodes.ACC_PROTECTED;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
@@ -152,6 +153,11 @@ public class Method
 	public void setDescriptor(Signature signature)
 	{
 		this.arguments = signature;
+	}
+
+	public boolean isNative()
+	{
+		return (accessFlags & ACC_NATIVE) != 0;
 	}
 
 	public boolean isStatic()
