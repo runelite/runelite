@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.execution.Execution;
+import net.runelite.deob.deobfuscators.RedundantCast;
 import net.runelite.deob.deobfuscators.transformers.GetPathTransformer;
 import net.runelite.deob.deobfuscators.CastNull;
 import net.runelite.deob.deobfuscators.constparam.ConstantParameter;
@@ -140,6 +141,8 @@ public class Deob
 		run(group, new Lvt());
 
 		run(group, new CastNull());
+
+		run(group, new RedundantCast());
 
 		run(group, new EnumDeobfuscator());
 
