@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -34,7 +35,6 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
 import org.objectweb.asm.MethodVisitor;
@@ -69,7 +69,7 @@ public class LStore extends Instruction implements LVTInstruction
 		Variables variables = frame.getVariables();
 		
 		StackContext value = stack.pop();
-		assert value.getType().equals(new Type(long.class.getName()));
+		assert value.getType().equals(Type.LONG);
 		ins.pop(value);
 		
 		variables.set(index, new VariableContext(ins, value));

@@ -28,6 +28,7 @@ package net.runelite.asm.attributes.code.instructions;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.Field;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -73,7 +74,7 @@ public class LCmp extends Instruction implements MappableInstruction
 				result = new Value(-1);
 		}
 		
-		StackContext ctx = new StackContext(ins, int.class, result);
+		StackContext ctx = new StackContext(ins, Type.INT, result);
 		stack.push(ctx);
 		
 		ins.push(ctx);

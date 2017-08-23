@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.annotation.Annotation;
@@ -51,7 +52,6 @@ import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.attributes.code.instructions.Return;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.asm.visitors.ClassFileVisitor;
 import net.runelite.deob.DeobAnnotations;
 import org.objectweb.asm.ClassReader;
@@ -190,13 +190,13 @@ public class InjectReplace
 				{
 					Type type = m.getDescriptor().getTypeOfArg(i);
 
-					if (type.getArrayDims() > 0 || !type.isPrimitive())
+					if (type.getDimensions() > 0 || !type.isPrimitive())
 					{
 						ins.add(new ALoad(instructions, index++));
 					}
 					else
 					{
-						switch (type.getType())
+						switch (type.toString())
 						{
 							case "B":
 							case "C":
@@ -315,7 +315,7 @@ public class InjectReplace
 
 					// XXX we could maybe just pull the variable off of the lvt here, instead
 					// if we know we haven't overwritten it?
-					if (type.getArrayDims() > 0 || !type.isPrimitive())
+					if (type.getDimensions() > 0 || !type.isPrimitive())
 					{
 						ins.add(offset, new AConstNull(instructions));
 					}
@@ -326,7 +326,7 @@ public class InjectReplace
 							garbageValue = "0";
 						}
 
-						switch (type.getType())
+						switch (type.toString())
 						{
 							case "Z":
 							case "B":

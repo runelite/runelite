@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -56,7 +57,6 @@ import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.deobfuscators.exprargorder.Expression;
 import org.slf4j.Logger;
@@ -267,7 +267,7 @@ public class ExprArgOrder implements Deobfuscator
 					break;
 				}
 
-				lvt += type.getSlots();
+				lvt += type.getSize();
 			}
 		}
 

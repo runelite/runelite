@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Exceptions;
 import net.runelite.asm.attributes.code.Instruction;
@@ -50,7 +51,6 @@ import net.runelite.asm.attributes.code.instructions.MultiANewArray;
 import net.runelite.asm.attributes.code.instructions.TableSwitch;
 import net.runelite.asm.pool.Field;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Handle;
 import org.objectweb.asm.Label;
@@ -247,7 +247,8 @@ public class CodeVisitor extends MethodVisitor
 	public void visitTypeInsn(int opcode, String type)
 	{
 		TypeInstruction i = (TypeInstruction) createInstructionFromOpcode(opcode);
-		i.setType(new Type(type));
+		Type t = Type.fromAsmString(type);
+		i.setType(t);
 	}
 
 	@Override
@@ -269,8 +270,10 @@ public class CodeVisitor extends MethodVisitor
 
 		assert ii instanceof InvokeInterface == itf;
 
+		Type type = new Type(owner);
+
 		net.runelite.asm.pool.Method entry = new net.runelite.asm.pool.Method(
-			new net.runelite.asm.pool.Class(owner),
+			new net.runelite.asm.pool.Class(type.getInternalName()),
 			name,
 			new Signature(desc)
 		);

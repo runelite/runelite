@@ -22,42 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.pool;
 
 public class Class
 {
-	private final java.lang.String name;
-	
-	public Class(java.lang.String name)
+	private final String name;
+
+	public Class(String name)
 	{
+		assert !name.startsWith("L") && !name.endsWith(";");
 		this.name = name;
 	}
-	
-	public Class(java.lang.String name, int dimms)
+
+	public Class(String name, int dimms)
 	{
+		assert !name.startsWith("L") && !name.endsWith(";");
+
 		while (dimms-- > 0)
+		{
 			name = "[" + name;
-		
+		}
+
 		this.name = name;
 	}
 
 	@Override
-	public java.lang.String toString()
+	public String toString()
 	{
 		return name;
 	}
-	
+
 	@Override
 	public boolean equals(Object other)
 	{
 		if (!(other instanceof Class))
+		{
 			return false;
-		
+		}
+
 		Class c = (Class) other;
 		return name.equals(c.name);
 	}
-	
+
 	@Override
 	public int hashCode()
 	{

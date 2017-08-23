@@ -79,7 +79,7 @@ public class IllegalStateExceptions implements Deobfuscator
 					
 					New new2 = (New) ins2;
 					net.runelite.asm.pool.Class clazz = new2.getNewClass();
-					if (!clazz.getName().equals("java/lang/IllegalStateException"))
+					if (!clazz.getName().contains("java/lang/IllegalStateException"))
 						continue;
 
 					interesting.add(ins);

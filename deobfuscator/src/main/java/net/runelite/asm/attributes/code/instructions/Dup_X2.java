@@ -35,7 +35,6 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
 
 public class Dup_X2 extends Instruction implements DupInstruction
 {
@@ -53,7 +52,7 @@ public class Dup_X2 extends Instruction implements DupInstruction
 		StackContext one = stack.pop();
 		StackContext two = stack.pop();
 		StackContext three = null;
-		if (!two.getType().equals(new Type(double.class.getCanonicalName())) && !two.getType().equals(new Type(long.class.getCanonicalName())))
+		if (two.getType().getSize() == 1)
 			three = stack.pop();
 		
 		ins.pop(one, two);

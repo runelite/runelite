@@ -145,7 +145,7 @@ public class UnusedParameters implements Deobfuscator
 
 		for (int variableIndex = 0, lvtIndex = offset;
 			variableIndex < signature.size();
-			lvtIndex += signature.getTypeOfArg(variableIndex++).getSlots())
+			lvtIndex += signature.getTypeOfArg(variableIndex++).getSize())
 		{
 			List<? extends Instruction> lv = method.findLVTInstructionsForVariable(lvtIndex);
 			if (lv == null || lv.isEmpty())
@@ -164,7 +164,7 @@ public class UnusedParameters implements Deobfuscator
 		int lvtIndex = offset;
 		for (int variableIndex = 0;
 			variableIndex < parameter;
-			lvtIndex += signature.getTypeOfArg(variableIndex++).getSlots());
+			lvtIndex += signature.getTypeOfArg(variableIndex++).getSize());
 		return lvtIndex;
 	}
 
@@ -194,7 +194,7 @@ public class UnusedParameters implements Deobfuscator
 
 	public void removeParameter(ClassGroup group, List<Method> methods, Signature signature, Execution execution, int paramIndex, int lvtIndex)
 	{
-		int slots = signature.getTypeOfArg(paramIndex).getSlots();
+		int slots = signature.getTypeOfArg(paramIndex).getSize();
 
 		for (ClassFile cf : group.getClasses())
 		{

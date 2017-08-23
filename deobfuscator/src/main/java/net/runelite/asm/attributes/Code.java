@@ -68,7 +68,7 @@ public class Code
 		int num = m.isStatic() ? 0 : 1;
 		Signature sig = m.getDescriptor();
 		for (int i = 0; i < sig.size(); ++i)
-			num += sig.getTypeOfArg(i).getSlots();
+			num += sig.getTypeOfArg(i).getSize();
 		return num;
 	}
 

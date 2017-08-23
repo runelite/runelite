@@ -27,8 +27,8 @@ package net.runelite.deob.deobfuscators.mapping;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,9 +53,7 @@ public class ConstructorMapper
 			return type;
 		}
 
-		String className = type.getType();
-		className = className.substring(1, className.length() - 1); // remove L ;
-		ClassFile cf = source.findClass(className);
+		ClassFile cf = source.findClass(type.getInternalName());
 		if (cf == null)
 		{
 			return type;

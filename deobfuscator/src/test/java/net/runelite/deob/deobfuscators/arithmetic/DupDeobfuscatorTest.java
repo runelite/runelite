@@ -25,6 +25,7 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
@@ -42,7 +43,6 @@ import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.pool.Field;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.ClassGroupFactory;
 import net.runelite.deob.Deobfuscator;
 import org.junit.Assert;
@@ -139,7 +139,7 @@ public class DupDeobfuscatorTest
 		{
 			new AConstNull(ins), // this
 			new Dup(ins), // this this
-			new GetField(ins, new Field(new Class("test"), "field", new Type("I"))),
+			new GetField(ins, new Field(new Class("test"), "field", Type.INT)),
 			new LDC(ins, 830083863), // this this I I
 			new IMul(ins), // this this I
 			new LDC(ins, 830083863),

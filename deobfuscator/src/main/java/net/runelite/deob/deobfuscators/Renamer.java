@@ -30,12 +30,12 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Interfaces;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Exceptions;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.asm.signature.util.VirtualMethods;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
@@ -107,9 +107,9 @@ public class Renamer implements Deobfuscator
 				{
 					Type type = signature.getTypeOfArg(i);
 
-					if (type.getType().equals("L" + cf.getName() + ";"))
+					if (type.getInternalName().equals(cf.getName()))
 					{
-						builder.addArgument(new Type("L" + name + ";", type.getArrayDims()));
+						builder.addArgument(Type.getType("L" + name + ";", type.getDimensions()));
 					}
 					else
 					{
@@ -118,9 +118,9 @@ public class Renamer implements Deobfuscator
 				}
 
 				// rename return type
-				if (signature.getReturnValue().getType().equals("L" + cf.getName() + ";"))
+				if (signature.getReturnValue().getInternalName().equals(cf.getName()))
 				{
-					builder.setReturnType(new Type("L" + name + ";", signature.getReturnValue().getArrayDims()));
+					builder.setReturnType(Type.getType("L" + name + ";", signature.getReturnValue().getDimensions()));
 				}
 				else
 				{
@@ -151,15 +151,15 @@ public class Renamer implements Deobfuscator
 			// rename on fields
 			for (Field field : c.getFields())
 			{
-				if (field.getType().getType().equals("L" + cf.getName() + ";"))
+				if (field.getType().getInternalName().equals(cf.getName()))
 				{
 					if (field.getAnnotations().find(DeobAnnotations.OBFUSCATED_SIGNATURE) == null)
 					{
 						//Signature was updated. Annotate it
-						field.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_SIGNATURE, "signature", field.getType().getFullType());
+						field.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_SIGNATURE, "signature", field.getType().toString());
 					}
 
-					field.setType(new Type("L" + name + ";", field.getType().getArrayDims()));
+					field.setType(Type.getType("L" + name + ";", field.getType().getDimensions()));
 				}
 			}
 		}
@@ -280,19 +280,14 @@ public class Renamer implements Deobfuscator
 			return t;
 		}
 
-		String className = t.getType();
-		assert className.startsWith("L");
-		assert className.endsWith(";");
-
-		className = className.substring(1, className.length() - 1); // remove L ;
-
+		String className = t.getInternalName();
 		String newName = mappings.get(new net.runelite.asm.pool.Class(className));
 		if (newName == null)
 		{
 			return t;
 		}
 
-		Type type = new Type("L" + newName + ";", t.getArrayDims());
+		Type type = Type.getType("L" + newName + ";", t.getDimensions());
 
 		logger.debug("Renamed {} -> {}", t, type);
 

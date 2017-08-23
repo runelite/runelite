@@ -27,7 +27,7 @@ package net.runelite.asm.visitors;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Field;
-import net.runelite.asm.signature.Type;
+import net.runelite.asm.Type;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.FieldVisitor;

@@ -24,6 +24,7 @@
  */
 package net.runelite.asm.signature;
 
+import net.runelite.asm.Type;
 import org.junit.Assert;
 import org.junit.Test;
 

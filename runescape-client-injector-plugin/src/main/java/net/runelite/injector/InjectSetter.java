@@ -28,6 +28,7 @@ import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
@@ -39,7 +40,7 @@ import net.runelite.asm.attributes.code.instructions.PutField;
 import net.runelite.asm.attributes.code.instructions.PutStatic;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
+
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

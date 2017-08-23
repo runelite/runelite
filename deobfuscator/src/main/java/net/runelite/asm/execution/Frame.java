@@ -28,6 +28,7 @@ import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Exception;
 import net.runelite.asm.attributes.code.Instruction;
@@ -36,6 +37,7 @@ import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
+import net.runelite.asm.signature.Signature;
 
 public class Frame
 {
@@ -78,13 +80,15 @@ public class Frame
 		int pos = 0;
 		if (!method.isStatic())
 		{
-			variables.set(pos++, new VariableContext(new Type(method.getClassFile().getName())).markParameter());
+			variables.set(pos++, new VariableContext(Type.getType(method.getClassFile().getPoolClass())).markParameter());
 		}
 
-		for (int i = 0; i < method.getDescriptor().size(); ++i)
+		Signature descriptor = method.getDescriptor();
+		for (int i = 0; i < descriptor.size(); ++i)
 		{
-			variables.set(pos, new VariableContext(new Type(method.getDescriptor().getTypeOfArg(i))).markParameter());
-			pos += method.getDescriptor().getTypeOfArg(i).getSlots();
+			Type argumentType = descriptor.getTypeOfArg(i);
+			variables.set(pos, new VariableContext(argumentType).markParameter());
+			pos += argumentType.getSize();
 		}
 
 		Code code = method.getCode();
@@ -128,11 +132,11 @@ public class Frame
 			StackContext argument = pops.remove(0);
 
 			// Set variable type to the methods,  not the objects on the stack.
-			VariableContext vctx = new VariableContext(ctx, new Type(method.getDescriptor().getTypeOfArg(i)), argument.getValue());
+			VariableContext vctx = new VariableContext(ctx, method.getDescriptor().getTypeOfArg(i), argument.getValue());
 			vctx.markParameter();
 
 			variables.set(lvtOffset, vctx);
-			lvtOffset += method.getDescriptor().getTypeOfArg(i).getSlots();
+			lvtOffset += method.getDescriptor().getTypeOfArg(i).getSize();
 		}
 
 		assert pops.isEmpty();
@@ -347,7 +351,7 @@ public class Frame
 				}
 
 				InstructionContext ins = new InstructionContext(ictx.getInstruction(), f);
-				StackContext ctx = new StackContext(ins, new Type("java/lang/Exception"), Value.UNKNOWN);
+				StackContext ctx = new StackContext(ins, Type.EXCEPTION, Value.UNKNOWN);
 				stack.push(ctx);
 
 				ins.push(ctx);

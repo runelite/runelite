@@ -26,7 +26,7 @@ package net.runelite.deob.deobfuscators.transformers.buffer;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Field;
-import net.runelite.asm.signature.Type;
+import net.runelite.asm.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

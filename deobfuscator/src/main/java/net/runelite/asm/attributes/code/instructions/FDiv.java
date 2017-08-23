@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -63,7 +64,7 @@ public class FDiv extends Instruction implements DivisionInstruction
 				result = new Value(f1 / f2);
 		}
 		
-		StackContext ctx = new StackContext(ins, float.class, result);
+		StackContext ctx = new StackContext(ins, Type.FLOAT, result);
 		stack.push(ctx);
 		
 		ins.push(ctx);

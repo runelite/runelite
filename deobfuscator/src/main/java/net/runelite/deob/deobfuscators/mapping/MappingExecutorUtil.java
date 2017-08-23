@@ -30,6 +30,7 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Interfaces;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.ArrayLoad;
 import net.runelite.asm.attributes.code.instruction.types.ConversionInstruction;
@@ -47,7 +48,6 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 
 public class MappingExecutorUtil
 {	
@@ -204,7 +204,7 @@ public class MappingExecutorUtil
 					int paramIndex = 0;
 					for (int lvtIndex = 0 /* static */;
 						paramIndex < sig.size();
-						lvtIndex += sig.getTypeOfArg(paramIndex++).getSlots())
+						lvtIndex += sig.getTypeOfArg(paramIndex++).getSize())
 						if (lvtIndex == lvt.getVariableIndex())
 							break;
 					assert paramIndex < sig.size();
@@ -232,8 +232,14 @@ public class MappingExecutorUtil
 
 	public static boolean isMaybeEqual(Type t1, Type t2)
 	{
-		if (t1.getArrayDims() != t2.getArrayDims())
+		if (t1.getDimensions() != t2.getDimensions())
 			return false;
+
+		while (t1.getDimensions() > 0)
+		{
+			t1 = t1.getSubtype();
+			t2 = t2.getSubtype();
+		}
 
 		if (t1.isPrimitive() || t2.isPrimitive())
 			return t1.equals(t2);

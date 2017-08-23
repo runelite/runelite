@@ -35,6 +35,7 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -59,7 +60,6 @@ import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.deobfuscators.transformers.buffer.BufferFinder;
 import net.runelite.deob.deobfuscators.packethandler.PacketLengthFinder;
@@ -566,11 +566,11 @@ public class PacketHandlerOrder implements Deobfuscator
 
 	private int compareType(Type t1, Type t2)
 	{
-		if (t1.getArrayDims() != t2.getArrayDims())
+		if (t1.getDimensions() != t2.getDimensions())
 		{
-			return Integer.compare(t1.getArrayDims(), t2.getArrayDims());
+			return Integer.compare(t1.getDimensions(), t2.getDimensions());
 		}
-		return t1.getType().compareTo(t2.getType());
+		return t1.toString().compareTo(t2.toString());
 	}
 
 	public static int hashConstants(List<Object> constants)

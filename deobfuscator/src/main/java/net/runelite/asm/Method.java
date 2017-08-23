@@ -80,7 +80,7 @@ public class Method
 	{
 		for (Annotation annotation : annotations.getAnnotations())
 		{
-			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().getFullType(), true);
+			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().toString(), true);
 			annotation.accept(av);
 		}
 

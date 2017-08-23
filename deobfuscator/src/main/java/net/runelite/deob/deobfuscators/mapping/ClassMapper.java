@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
+import net.runelite.asm.Type;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import org.apache.commons.collections4.CollectionUtils;
 
 public class ClassMapper

@@ -26,6 +26,7 @@ package net.runelite.deob.deobfuscators;
 
 import java.util.Optional;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
@@ -35,7 +36,6 @@ import net.runelite.asm.attributes.code.instructions.CheckCast;
 import net.runelite.asm.attributes.code.instructions.IAdd;
 import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.Return;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.ClassGroupFactory;
 import org.junit.Assert;
 import org.junit.Test;

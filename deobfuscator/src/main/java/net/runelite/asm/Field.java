@@ -26,7 +26,6 @@ package net.runelite.asm;
 
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
-import net.runelite.asm.signature.Type;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
@@ -54,7 +53,7 @@ public class Field
 	{
 		for (Annotation annotation : annotations.getAnnotations())
 		{
-			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().getFullType(), true);
+			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().toString(), true);
 			annotation.accept(av);
 		}
 

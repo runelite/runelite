@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.Method;
@@ -42,7 +41,7 @@ import org.objectweb.asm.MethodVisitor;
 public class ILoad extends Instruction implements LVTInstruction
 {
 	private int index;
-	
+
 	public ILoad(Instructions instructions, int index)
 	{
 		super(instructions, InstructionType.ILOAD);
@@ -74,19 +73,19 @@ public class ILoad extends Instruction implements LVTInstruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		Variables variables = frame.getVariables();
-		
+
 		VariableContext vctx = variables.get(index);
-		assert vctx.getType().isInt();
+		assert vctx.getType().isStackInt();
 		ins.read(vctx);
-		
+
 		StackContext ctx = new StackContext(ins, vctx);
 		stack.push(ctx);
-		
+
 		ins.push(ctx);
-		
+
 		return ins;
 	}
-	
+
 	@Override
 	public int getVariableIndex()
 	{

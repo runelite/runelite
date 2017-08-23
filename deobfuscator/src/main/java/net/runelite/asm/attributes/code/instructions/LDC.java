@@ -24,6 +24,7 @@
  */
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -32,7 +33,6 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import org.objectweb.asm.MethodVisitor;
 import static org.objectweb.asm.Opcodes.DCONST_0;
@@ -139,7 +139,7 @@ public class LDC extends Instruction implements PushConstantInstruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 
-		StackContext ctx = new StackContext(ins, Type.fromBoxedPrimitive(value), new Value(value));
+		StackContext ctx = new StackContext(ins, Type.getType(value), new Value(value));
 		stack.push(ctx);
 
 		ins.push(ctx);

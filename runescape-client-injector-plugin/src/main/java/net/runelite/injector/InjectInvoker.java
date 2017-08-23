@@ -28,6 +28,7 @@ import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
@@ -43,7 +44,6 @@ import net.runelite.asm.attributes.code.instructions.LLoad;
 import net.runelite.asm.attributes.code.instructions.Return;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.DeobAnnotations;
 import static net.runelite.deob.DeobAnnotations.EXPORT;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
@@ -193,7 +193,7 @@ public class InjectInvoker
 				garbage = "0";
 			}
 
-			switch (lastGarbageArgumentType.getType())
+			switch (lastGarbageArgumentType.toString())
 			{
 				case "Z":
 				case "B":
@@ -232,9 +232,9 @@ public class InjectInvoker
 		Type returnValue = invokeMethod.getDescriptor().getReturnValue();
 		InstructionType returnType;
 
-		if (returnValue.isPrimitive() && returnValue.getArrayDims() == 0)
+		if (returnValue.isPrimitive() && returnValue.getDimensions() == 0)
 		{
-			switch (returnValue.getType())
+			switch (returnValue.toString())
 			{
 				case "Z":
 				case "I":

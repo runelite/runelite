@@ -22,11 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -35,13 +35,11 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
-import net.runelite.asm.pool.Class;
 import org.objectweb.asm.MethodVisitor;
 
 public class CheckCast extends Instruction implements TypeInstruction
 {
-	private Class clazz; // XXX unncesssary?
+	private Type type;
 	private ClassFile myClass;
 
 	public CheckCast(Instructions instructions)
@@ -57,7 +55,7 @@ public class CheckCast extends Instruction implements TypeInstruction
 	@Override
 	public void accept(MethodVisitor visitor)
 	{
-		visitor.visitTypeInsn(this.getType().getCode(), this.getType_().getFullType());
+		visitor.visitTypeInsn(this.getType().getCode(), type.toAsmString());
 	}
 
 	@Override
@@ -65,45 +63,48 @@ public class CheckCast extends Instruction implements TypeInstruction
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
-		
+
 		StackContext value = stack.pop();
-		
+
 		ins.pop(value);
-		
+
 		StackContext ctx = new StackContext(ins,
-			new Type(new net.runelite.asm.signature.Type(clazz.getName())),
+			type,
 			value.getValue()
 		);
 		stack.push(ctx);
-		
+
 		ins.push(ctx);
-		
+
 		return ins;
 	}
-	
+
 	@Override
 	public void lookup()
 	{
 		ClassGroup group = this.getInstructions().getCode().getMethod().getClassFile().getGroup();
-		myClass = group.findClass(clazz.getName());
+		myClass = group.findClass(type.getInternalName());
 	}
-	
+
 	@Override
 	public void regeneratePool()
 	{
 		if (myClass != null)
-			clazz = myClass.getPoolClass();
+		{
+			int dimms = type.getDimensions();
+			type = Type.getType("L" + myClass.getName() + ";", dimms);
+		}
 	}
 
 	@Override
-	public net.runelite.asm.signature.Type getType_()
+	public Type getType_()
 	{
-		return new net.runelite.asm.signature.Type(clazz.getName());
+		return type;
 	}
 
 	@Override
-	public void setType(net.runelite.asm.signature.Type type)
+	public void setType(Type type)
 	{
-		clazz = new Class(type.getFullType());
+		this.type = type;
 	}
 }

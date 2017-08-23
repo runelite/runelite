@@ -27,9 +27,10 @@ package net.runelite.asm.attributes;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
-import net.runelite.asm.signature.Type;
 
 public class Annotations
 {

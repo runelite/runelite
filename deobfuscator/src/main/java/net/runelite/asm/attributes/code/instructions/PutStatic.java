@@ -72,7 +72,7 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		visitor.visitFieldInsn(this.getType().getCode(),
 			field.getClazz().getName(),
 			field.getName(),
-			field.getType().getFullType());
+			field.getType().toString());
 	}
 
 	@Override

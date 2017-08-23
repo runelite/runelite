@@ -39,6 +39,7 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
@@ -61,7 +62,6 @@ import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
 import org.apache.commons.collections4.CollectionUtils;
@@ -248,9 +248,9 @@ public class ModArith implements Deobfuscator
 				if (fi.getMyField() == null)
 					continue;
 
-				if ((!fi.getField().getType().getType().equals("I")
-					&& !fi.getField().getType().getType().equals("J"))
-					|| fi.getField().getType().getArrayDims() != 0)
+				if ((!fi.getField().getType().equals(Type.INT)
+					&& !fi.getField().getType().equals(Type.LONG))
+					|| fi.getField().getType().isArray())
 					continue;
 
 				List<InstructionContext> l = getInsInExpr(ctx, new HashSet());
@@ -607,10 +607,10 @@ public class ModArith implements Deobfuscator
 				if (col == null)
 					continue;
 				
-				String typeStr = f.getType().getType();
-				assert typeStr.equals("I") || typeStr.equals("J");
+				Type type = f.getType();
+				assert type.equals(Type.INT) || type.equals(Type.LONG);
 				
-				Class typeOfField = f.getType().getType().equals("I") ? Integer.class : Long.class;
+				Class typeOfField = type.equals(Type.INT) ? Integer.class : Long.class;
 				
 				// filter out non big ones
 				Collection<AssociatedConstant> col2 = col.stream()

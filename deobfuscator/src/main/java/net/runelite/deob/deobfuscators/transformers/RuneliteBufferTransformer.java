@@ -28,7 +28,7 @@ import java.io.IOException;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
-import net.runelite.asm.signature.Type;
+import net.runelite.asm.Type;
 import net.runelite.deob.Transformer;
 import net.runelite.deob.deobfuscators.transformers.buffer.BufferFinder;
 import net.runelite.deob.deobfuscators.transformers.buffer.BufferMethodInjector;

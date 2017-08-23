@@ -36,8 +36,8 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.DeobTestProperties;
 import net.runelite.deob.util.JarUtil;
@@ -218,8 +218,8 @@ public class MappingDumper
 				jField.addProperty("owner", f.isStatic() ? "" : implName);
 				jField.addProperty("class", className);
 				jField.addProperty("field", fieldName);
-				jField.addProperty("obfSignature", (obfType != null ? obfType.getFullType() : ""));
-				jField.addProperty("signature", f.getType().getFullType());
+				jField.addProperty("obfSignature", (obfType != null ? obfType.toString() : ""));
+				jField.addProperty("signature", f.getType().toString());
 				jField.addProperty("multiplier", (getter != null ? getter : 0));
 				jField.addProperty("static", f.isStatic());
 
@@ -268,7 +268,7 @@ public class MappingDumper
 	private static String typeToString(Type type)
 	{
 		String subType;
-		switch (type.getType())
+		switch (type.toString())
 		{
 			case "B":
 				subType = byte.class.getCanonicalName();
@@ -298,14 +298,13 @@ public class MappingDumper
 				subType = void.class.getCanonicalName();
 				break;
 			default:
-				String t = type.getType();
-				subType = t.substring(1, t.length() - 1).replace("/", ".");
+				subType = type.getInternalName();
 				break;
 		}
 
 		if (type.isArray())
 		{
-			for (int i = 0; i < type.getArrayDims(); ++i)
+			for (int i = 0; i < type.getDimensions(); ++i)
 			{
 				subType += "[]";
 			}

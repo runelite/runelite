@@ -27,6 +27,7 @@ package net.runelite.injector;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
@@ -34,7 +35,6 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.DeobAnnotations;
 import static net.runelite.injector.InjectHook.HOOKS;
 import org.slf4j.Logger;
@@ -100,7 +100,7 @@ public class InjectHookMethod
 		if (!deobMethod.isStatic())
 		{
 			// Add variable to signature
-			builder.addArgument(0, new Type("Ljava/lang/Object;")); // XXX this should be the API class..
+			builder.addArgument(0, Type.OBJECT); // XXX this should be the API class..
 			instructions.addInstruction(insertPos++, new ALoad(instructions, 0));
 		}
 
@@ -114,7 +114,7 @@ public class InjectHookMethod
 			Instruction load = inject.createLoadForTypeIndex(instructions, type, index);
 			instructions.addInstruction(insertPos++, load);
 
-			index += type.getSlots();
+			index += type.getSize();
 		}
 
 		// Invoke callback

@@ -34,6 +34,7 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
@@ -83,7 +84,7 @@ public class FieldInliner implements Deobfuscator
 		{
 			for (Field f : cf.getFields())
 			{
-				if (!f.isStatic() || !f.getType().getFullType().equals("Ljava/lang/String;"))
+				if (!f.isStatic() || !f.getType().equals(Type.STRING))
 					continue;
 				
 				Object constantValue = f.getValue();

@@ -33,6 +33,7 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Interfaces;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.annotation.Annotation;
@@ -52,7 +53,6 @@ import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.attributes.code.instructions.Return;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import net.runelite.mapping.Import;
@@ -166,10 +166,10 @@ public class Inject
 					throw new RuntimeException("unknown primitive type " + c.getName());
 			}
 
-			return new Type(s, dimms);
+			return Type.getType(s, dimms);
 		}
 
-		return new Type("L" + c.getName().replace('.', '/') + ";", dimms);
+		return Type.getType("L" + c.getName().replace('.', '/') + ";", dimms);
 	}
 
 	/**
@@ -459,9 +459,9 @@ public class Inject
 		}
 
 		InstructionType returnType;
-		if (field.getType().isPrimitive() && field.getType().getArrayDims() == 0)
+		if (field.getType().isPrimitive() && field.getType().getDimensions() == 0)
 		{
-			switch (field.getType().getType())
+			switch (field.getType().toString())
 			{
 				case "B":
 				case "C":
@@ -503,12 +503,12 @@ public class Inject
 	 */
 	public Instruction createLoadForTypeIndex(Instructions instructions, Type type, int index)
 	{
-		if (type.getArrayDims() > 0 || !type.isPrimitive())
+		if (type.getDimensions() > 0 || !type.isPrimitive())
 		{
 			return new ALoad(instructions, index);
 		}
 
-		switch (type.getType())
+		switch (type.toString())
 		{
 			case "B":
 			case "C":
@@ -544,7 +544,7 @@ public class Inject
 
 	private boolean validateTypeIsConvertibleTo(Type from, Type to) throws InjectionException
 	{
-		if (from.getArrayDims() != to.getArrayDims())
+		if (from.getDimensions() != to.getDimensions())
 		{
 			throw new InjectionException("Array dimension mismatch");
 		}
@@ -554,7 +554,7 @@ public class Inject
 			return true;
 		}
 
-		ClassFile vanillaClass = vanilla.findClass(from.getType().substring(1, from.getType().length() - 1));
+		ClassFile vanillaClass = vanilla.findClass(from.getInternalName());
 		if (vanillaClass == null)
 		{
 			return true;
@@ -582,8 +582,7 @@ public class Inject
 
 	private boolean check(java.lang.Class c, Type type)
 	{
-		String s = type.getType()
-			.substring(1, type.getType().length() - 1)
+		String s = type.getInternalName()
 			.replace('/', '.');
 
 		if (c.getName().equals(s))

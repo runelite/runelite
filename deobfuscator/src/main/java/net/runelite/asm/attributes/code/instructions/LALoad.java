@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -52,7 +53,7 @@ public class LALoad extends Instruction implements ArrayLoad
 		
 		ins.pop(index, array);
 		
-		StackContext ctx = new StackContext(ins, long.class, array.getValue().arrayGet(index.getValue()).cast(long.class));
+		StackContext ctx = new StackContext(ins, Type.LONG, array.getValue().arrayGet(index.getValue()).cast(long.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);

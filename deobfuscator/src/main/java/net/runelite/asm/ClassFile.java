@@ -30,7 +30,6 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -102,13 +101,13 @@ public class ClassFile
 
 		for (Annotation annotation : annotations.getAnnotations())
 		{
-			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().getFullType(), true);
+			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().toString(), true);
 			annotation.accept(av);
 		}
 
 		for (Field field : fields)
 		{
-			FieldVisitor fv = visitor.visitField(field.getAccessFlags(), field.getName(), field.getType().getFullType(), null, field.getValue());
+			FieldVisitor fv = visitor.visitField(field.getAccessFlags(), field.getName(), field.getType().toString(), null, field.getValue());
 			field.accept(fv);
 		}
 

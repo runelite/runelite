@@ -40,7 +40,6 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.pool.Method;
 import net.runelite.asm.signature.Signature;
@@ -101,7 +100,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 		if (!method.getType().isVoid())
 		{
 			StackContext ctx = new StackContext(ins,
-				new Type(method.getType().getReturnValue()),
+				method.getType().getReturnValue(),
 				Value.UNKNOWN
 			);
 			stack.push(ctx);

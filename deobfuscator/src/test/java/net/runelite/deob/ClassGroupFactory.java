@@ -28,11 +28,11 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 
 public class ClassGroupFactory
 {
@@ -58,7 +58,7 @@ public class ClassGroupFactory
 		cf.setSuperName("java/lang/Object");
 		group.addClass(cf);
 
-		Field field = new Field(cf, "field", new Type("I"));
+		Field field = new Field(cf, "field", Type.INT);
 		field.setStatic();
 		cf.addField(field);
 

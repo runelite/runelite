@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -51,7 +52,7 @@ public class ArrayLength extends Instruction
 		
 		ins.pop(array);
 		
-		StackContext ctx = new StackContext(ins, int.class, array.getValue().arrayLength());
+		StackContext ctx = new StackContext(ins, Type.INT, array.getValue().arrayLength());
 		stack.push(ctx);
 		
 		ins.push(ctx);

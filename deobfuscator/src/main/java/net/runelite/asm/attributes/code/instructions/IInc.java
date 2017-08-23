@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -32,7 +33,6 @@ import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstructionType;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
-import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
@@ -61,7 +61,7 @@ public class IInc extends Instruction implements LVTInstruction
 		Variables var = frame.getVariables();
 		
 		VariableContext vctx = var.get(index);
-		assert vctx.getType().isInt();
+		assert vctx.getType().isStackInt();
 		ins.read(vctx);
 		
 		Value value = vctx.getValue();
@@ -72,7 +72,7 @@ public class IInc extends Instruction implements LVTInstruction
 			value = new Value(i);
 		}
 		
-		vctx = new VariableContext(ins, new Type(int.class.getCanonicalName()), value);
+		vctx = new VariableContext(ins, Type.INT, value);
 		var.set(index, vctx);
 		
 		return ins;

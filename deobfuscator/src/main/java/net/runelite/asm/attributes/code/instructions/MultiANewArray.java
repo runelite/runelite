@@ -26,6 +26,7 @@ package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -34,7 +35,6 @@ import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Value;
-import net.runelite.asm.signature.Type;
 import org.objectweb.asm.MethodVisitor;
 
 public class MultiANewArray extends Instruction
@@ -51,7 +51,7 @@ public class MultiANewArray extends Instruction
 	@Override
 	public void accept(MethodVisitor visitor)
 	{
-		visitor.visitMultiANewArrayInsn(type.getFullType(), dimensions);
+		visitor.visitMultiANewArrayInsn(type.toString(), dimensions);
 	}
 
 	@Override
@@ -69,8 +69,7 @@ public class MultiANewArray extends Instruction
 			lenghts[i] = ctx.getValue();
 		}
 
-		net.runelite.asm.execution.Type t = new net.runelite.asm.execution.Type(type);
-		StackContext ctx = new StackContext(ins, t, Value.newArray(lenghts));
+		StackContext ctx = new StackContext(ins, type, Value.newArray(lenghts));
 		stack.push(ctx);
 
 		ins.push(ctx);
@@ -81,14 +80,8 @@ public class MultiANewArray extends Instruction
 	@Override
 	public void lookup()
 	{
-		String name = type.getType();
-		if (name.startsWith("L") && name.endsWith(";"))
-		{
-			name = name.substring(1, name.length() - 1);
-		}
-
 		ClassGroup group = this.getInstructions().getCode().getMethod().getClassFile().getGroup();
-		myClass = group.findClass(name);
+		myClass = group.findClass(type.getInternalName());
 	}
 
 	@Override
@@ -96,8 +89,7 @@ public class MultiANewArray extends Instruction
 	{
 		if (myClass != null)
 		{
-			String className = dimensions > 0 ? "L" + myClass.getName() + ";" : myClass.getName();
-			type = new Type(className, type.getArrayDims());
+			type = Type.getType("L" + myClass.getName() + ";", type.getDimensions());
 		}
 	}
 
